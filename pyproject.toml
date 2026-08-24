@@ -12,10 +12,10 @@ include-package-data = true
 name = "model-agrologistic"
 version = "0.0.1"
 authors = [
-    {name = "cvictorr2508email="cvictorr2508@gmail.com"}
+    {name = "cvictorr2508", email = "cvictorr2508@gmail.com"}
 ]
 maintainers = [
-    {name = "cvictorr2508email="cvictorr2508@gmail.com"}
+    {name = "cvictorr2508", email = "cvictorr2508@gmail.com"}
 ]
 description = "SiloDSS"
 readme = "README.md"
@@ -37,8 +37,6 @@ dependencies = [
     "gurobipy==12.0.3",
     "numpy",
     "scipy",
-    "requests",
-    "torch",
     "networkx"
 ]
 
