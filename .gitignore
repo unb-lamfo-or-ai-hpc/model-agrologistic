@@ -225,3 +225,7 @@ examples/ofertas/*
 # Gurobi Secrets
 secrets/
 secrets/*
+*.lic
+
+# Old files
+*.old
