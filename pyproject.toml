@@ -1,44 +1,169 @@
 [build-system]
-requires = ["setuptools"]
+requires = ["setuptools>=69", "wheel"]
 build-backend = "setuptools.build_meta"
 
-[tool.setuptools.packages.find]
-where = ["."]
-
-[tool.setuptools]
-include-package-data = true
 
 [project]
 name = "model-agrologistic"
-version = "0.0.1"
-authors = [
-    {name = "cvictorr2508", email = "cvictorr2508@gmail.com"}
-]
-maintainers = [
-    {name = "cvictorr2508", email = "cvictorr2508@gmail.com"}
-]
-description = "SiloDSS"
+version = "0.1.0"
+description = "Headless agricultural logistics optimization core for HPC experiments and GNN dataset generation."
 readme = "README.md"
-license = {file = "LICENSE"}
-requires-python = "~=3.10.0"
-dependencies = [
-    "pandas==2.3.3",
-    "openpyxl==3.1.5",
-    "lxml==6.0.2",
-    "xlrd==2.0.2",
-    "requests==2.32.5",
-    "pyomo==6.10.0",
-    "psutil==7.2.2",
-    "statsmodels==0.14.4",
-    "prophet==1.1.6",
-    "xgboost==2.1.3",
-    "scikit-learn==1.6.1",
-    "torch==2.9.0",
-    "gurobipy==12.0.3",
-    "numpy",
-    "scipy",
-    "networkx"
+requires-python = ">=3.13,<3.14"
+license = { file = "LICENSE" }
+
+authors = [
+    { name = "cvictorr2508", email = "cvictorr2508@gmail.com" }
 ]
 
+maintainers = [
+    { name = "cvictorr2508", email = "cvictorr2508@gmail.com" }
+]
+
+keywords = [
+    "agricultural-logistics",
+    "mixed-integer-linear-programming",
+    "facility-location",
+    "gurobi",
+    "pyomo",
+    "scip",
+    "hpc",
+    "graph-neural-networks"
+]
+
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Education",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Mathematics",
+]
+
+dependencies = [
+    # Core scientific stack
+    "numpy>=2.1,<3",
+    "scipy>=1.14,<2",
+    "pandas>=2.2,<3",
+
+    # Spreadsheet and structured-data ingestion
+    "openpyxl>=3.1,<4",
+    "xlrd>=2.0,<3",
+    "lxml>=5.0,<7",
+
+    # Optimization core
+    "gurobipy>=13.0.2,<14",
+    "pyomo>=6.10,<7",
+
+    # OSRM / HTTP / configuration
+    "requests>=2.32,<3",
+    "pyyaml>=6.0,<7",
+
+    # Utilities
+    "psutil>=6.0,<8",
+    "networkx>=3.4,<4",
+]
+
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "ruff>=0.8",
+    "mypy>=1.13",
+]
+
+gurobi = [
+    "gurobipy>=13.0.2,<14",
+]
+
+pyomo = [
+    "pyomo>=6.10,<7",
+]
+
+scip = [
+    "pyomo>=6.10,<7",
+]
+
+hpc = [
+    "gurobipy>=13.0.2,<14",
+    "pyomo>=6.10,<7",
+    "psutil>=6.0,<8",
+    "pyyaml>=6.0,<7",
+]
+
+gnn = [
+    "torch>=2.8",
+    "scikit-learn>=1.6,<2",
+    "networkx>=3.4,<4",
+]
+
+forecasting = [
+    "statsmodels>=0.14,<1",
+    "xgboost>=2.1,<4",
+    "prophet>=1.1,<2",
+]
+
+all = [
+    "pytest>=8.0",
+    "ruff>=0.8",
+    "mypy>=1.13",
+    "gurobipy>=13.0.2,<14",
+    "pyomo>=6.10,<7",
+    "psutil>=6.0,<8",
+    "pyyaml>=6.0,<7",
+    "torch>=2.8",
+    "scikit-learn>=1.6,<2",
+    "networkx>=3.4,<4",
+    "statsmodels>=0.14,<1",
+    "xgboost>=2.1,<4",
+    "prophet>=1.1,<2",
+]
+
+
 [project.scripts]
-silodss-run = "src.__main__:main"
+model-agrologistic = "src.__main__:main"
+
+
+[project.urls]
+Homepage = "https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic"
+Repository = "https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic"
+Issues = "https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/issues"
+
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src", "src.*"]
+exclude = [
+    "tests",
+    "tests.*",
+    "benchmark",
+    "benchmark.*",
+    "scripts",
+    "scripts.*",
+    "data",
+    "data.*",
+    "docs",
+    "docs.*",
+]
+
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "-ra"
+
+
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+ignore = []
+
+
+[tool.mypy]
+python_version = "3.13"
+ignore_missing_imports = true
+strict = false

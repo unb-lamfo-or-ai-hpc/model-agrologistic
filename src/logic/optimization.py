@@ -15,12 +15,11 @@ The facade is responsible for:
 It must not build solver-specific models directly.
 """
 
-import os
-from pathlib import Path
-
 from __future__ import annotations
 
+import os
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import Any, Literal
 
 from src.logic.model_config import ModelConfig, RunConfig, SolverConfig
