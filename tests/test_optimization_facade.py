@@ -168,11 +168,13 @@ def test_facade_validates_data_before_dispatching():
 
 def test_gurobipy_backend_stub_raises_not_implemented():
     data = tiny_valid_data()
+    data.scenarios = ["expected"]
+    data.scenario_prob = {"expected": 1.0}
 
     with pytest.raises(OptimizationBackendNotImplementedError):
         solve_model(
             data=data,
-            model_config=ModelConfig(mode="det"),
+            model_config=ModelConfig(mode="sto"),
             solver_config=SolverConfig(backend="gurobipy", solver_name="gurobi"),
         )
 
