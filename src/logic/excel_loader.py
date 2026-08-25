@@ -96,6 +96,9 @@ class ExcelLoaderConfig:
 
     candidate_cost_policy: CandidateCostPolicy = "variable_from_total"
 
+    demand_node_id_column: str = "ID_Demanda"
+    split_overlapping_demand_nodes: bool = True
+
     default_unmet_demand_penalty: float = 1_000_000.0
     default_emergency_static_penalty: float = 1_000_000.0
     default_emergency_reception_penalty: float = 1_000_000.0
@@ -171,6 +174,7 @@ def load_model_data_from_excel(
         demanda=demanda,
         supply_total_by_product_period=supply_total_by_product_period,
         loader_warnings=loader_warnings,
+        config=config,
     )
 
     (
@@ -198,7 +202,11 @@ def load_model_data_from_excel(
     }
 
     freight_dest = {
-        customer: _lookup_freight_for_city(customer, freight_by_state)
+        customer: _lookup_freight_for_node(
+            node_id=customer,
+            node_info=customer_node_info,
+            freight_by_state=freight_by_state,
+        )
         for customer in customers
     }
 
@@ -351,6 +359,23 @@ def load_model_data_from_excel(
         },
     )
 
+def _lookup_freight_for_node(
+    node_id: str,
+    node_info: dict[str, NodeInfo],
+    freight_by_state: dict[str, float],
+) -> float:
+    state = node_info[node_id].state
+
+    if state is None:
+        state = _state_from_city(node_id)
+
+    if state is None:
+        return 0.0
+
+    if state not in freight_by_state:
+        raise ValueError(f"Missing freight rate for state {state!r}, node {node_id!r}.")
+
+    return freight_by_state[state]
 
 # ---------------------------------------------------------------------
 # Workbook schema
@@ -422,6 +447,7 @@ def _load_demand(
     demanda: pd.DataFrame,
     supply_total_by_product_period: dict[tuple[str, str], float],
     loader_warnings: list[str],
+    config: ExcelLoaderConfig,
 ) -> tuple[
     list[str],
     list[str],
@@ -451,6 +477,8 @@ def _load_demand(
             "Legacy demand interpretation is being used."
         )
 
+    demand_types_by_city = _collect_demand_types_by_city(demanda, has_new_schema)
+
     for _, row in demanda.iterrows():
         if _is_blank_row(row, required_fields=["Produto", "Cidade", "Data"]):
             continue
@@ -478,22 +506,30 @@ def _load_demand(
         if not demand_type:
             demand_type = "DOMESTICA"
 
-        _append_unique(customers, city)
+        customer_id = _resolve_customer_id(
+            row=row,
+            city=city,
+            demand_type=demand_type,
+            demand_types_by_city=demand_types_by_city,
+            config=config,
+        )
+
+        _append_unique(customers, customer_id)
 
         if demand_type == "DOMESTICA":
-            _append_unique(domestic_customers, city)
+            _append_unique(domestic_customers, customer_id)
             value = _first_numeric_value(raw_model_weight, raw_weight)
-            _add_to_mapping(demand_dom, (city, product, period), value)
+            _add_to_mapping(demand_dom, (customer_id, product, period), value)
 
         elif demand_type == "EXPORTACAO":
-            _append_unique(export_customers, city)
+            _append_unique(export_customers, customer_id)
 
             if limit_rule == "AUTO_OFERTA_TOTAL_PRODUTO_PERIODO":
                 value = supply_total_by_product_period.get((product, period), 0.0)
             else:
                 value = _first_numeric_value(raw_model_weight, raw_weight)
 
-            _add_to_mapping(demand_exp, (city, product, period), value)
+            _add_to_mapping(demand_exp, (customer_id, product, period), value)
 
         else:
             raise ValueError(
@@ -501,14 +537,18 @@ def _load_demand(
                 f"({city}, {product}, {period})."
             )
 
-        if city not in node_info:
-            node_info[city] = NodeInfo(
-                node_id=city,
+        if customer_id not in node_info:
+            node_info[customer_id] = NodeInfo(
+                node_id=customer_id,
                 node_type="customer",
                 name=city,
                 state=_state_from_city(city),
                 latitude=_parse_optional_float(row["Latitude"]),
                 longitude=_parse_optional_float(row["Longitude"]),
+                metadata={
+                    "city": city,
+                    "demand_type": demand_type,
+                },
             )
 
     return (
@@ -826,6 +866,51 @@ def _normalize_limit_rule(value: Any) -> str:
 
     return text
 
+
+def _collect_demand_types_by_city(
+    demanda: pd.DataFrame,
+    has_new_schema: bool,
+) -> dict[str, set[str]]:
+    demand_types_by_city: dict[str, set[str]] = {}
+
+    for _, row in demanda.iterrows():
+        if _is_blank_row(row, required_fields=["Produto", "Cidade", "Data"]):
+            continue
+
+        city = _normalize_text(row["Cidade"])
+
+        if has_new_schema:
+            demand_type = _normalize_demand_type(row["Tipo_Demanda"])
+        elif _is_infinity_token(row["Peso (ton)"]):
+            demand_type = "EXPORTACAO"
+        else:
+            demand_type = "DOMESTICA"
+
+        demand_types_by_city.setdefault(city, set()).add(demand_type)
+
+    return demand_types_by_city
+
+
+def _resolve_customer_id(
+    row: pd.Series,
+    city: str,
+    demand_type: str,
+    demand_types_by_city: dict[str, set[str]],
+    config: ExcelLoaderConfig,
+) -> str:
+    if config.demand_node_id_column in row.index:
+        explicit_id = _normalize_text(row[config.demand_node_id_column])
+
+        if explicit_id:
+            return explicit_id
+
+    if (
+        config.split_overlapping_demand_nodes
+        and len(demand_types_by_city.get(city, set())) > 1
+    ):
+        return f"{city} | {demand_type}"
+
+    return city
 
 # ---------------------------------------------------------------------
 # Distance helpers

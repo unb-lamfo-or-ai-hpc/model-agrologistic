@@ -290,3 +290,84 @@ def test_fixed_total_candidate_cost_policy_is_used_when_enhanced_columns_absent(
 
     assert data.opening_fixed_cost["W2"] == 3000.0
     assert data.candidate_capacity_cost["W2"] == 0.0
+
+def test_loader_splits_overlapping_domestic_and_export_customers(tmp_path):
+    path = tmp_path / "overlap_demand.xlsx"
+    build_tiny_golden_excel(path)
+
+    all_sheets = pd.read_excel(path, sheet_name=None, engine="openpyxl")
+    demanda = all_sheets["Demanda"]
+
+    extra_domestic = demanda.iloc[[0]].copy()
+    extra_domestic.loc[:, "Cidade"] = "Santos - SP"
+    extra_domestic.loc[:, "Latitude"] = -23.9535
+    extra_domestic.loc[:, "Longitude"] = -46.3350
+    extra_domestic.loc[:, "Tipo_Demanda"] = "DOMESTICA"
+    extra_domestic.loc[:, "Regra_Limite"] = "FIXO"
+    extra_domestic.loc[:, "Peso (ton)"] = 10.0
+    extra_domestic.loc[:, "Peso_Modelo (ton)"] = 10.0
+    extra_domestic.loc[:, "Fonte_Parametro"] = "Informado"
+
+    demanda = pd.concat([demanda, extra_domestic], ignore_index=True)
+    all_sheets["Demanda"] = demanda
+
+    with pd.ExcelWriter(path, engine="openpyxl") as writer:
+        for sheet_name, df in all_sheets.items():
+            df.to_excel(writer, sheet_name=sheet_name, index=False)
+
+    data = load_model_data_from_excel(path)
+
+    assert "Santos - SP | DOMESTICA" in data.domestic_customers
+    assert "Santos - SP | EXPORTACAO" in data.export_customers
+
+    assert set(data.domestic_customers).isdisjoint(set(data.export_customers))
+
+    assert data.demand_dom[("Santos - SP | DOMESTICA", "Soja", "2026-01")] == 10.0
+    assert data.demand_exp[("Santos - SP | EXPORTACAO", "Soja", "2026-01")] == 150.0
+
+def test_legacy_infinity_overlap_is_split_with_correct_export_id(tmp_path):
+    path = tmp_path / "legacy_overlap_infinity.xlsx"
+    build_tiny_golden_excel(path)
+
+    all_sheets = pd.read_excel(path, sheet_name=None, engine="openpyxl")
+    demanda = all_sheets["Demanda"]
+
+    extra_domestic = demanda.iloc[[0]].copy()
+    extra_domestic.loc[:, "Cidade"] = "Santos - SP"
+    extra_domestic.loc[:, "Latitude"] = -23.9535
+    extra_domestic.loc[:, "Longitude"] = -46.3350
+    extra_domestic.loc[:, "Tipo_Demanda"] = "DOMESTICA"
+    extra_domestic.loc[:, "Regra_Limite"] = "FIXO"
+    extra_domestic.loc[:, "Peso (ton)"] = 10.0
+    extra_domestic.loc[:, "Peso_Modelo (ton)"] = 10.0
+
+    demanda = pd.concat([demanda, extra_domestic], ignore_index=True)
+
+    demanda = demanda.drop(
+        columns=[
+            "Tipo_Demanda",
+            "Regra_Limite",
+            "Peso_Modelo (ton)",
+            "Fonte_Parametro",
+            "Observacao",
+        ]
+    )
+
+    demanda.loc[1, "Peso (ton)"] = "∞"
+    demanda.loc[2, "Peso (ton)"] = "∞"
+
+    all_sheets["Demanda"] = demanda
+
+    with pd.ExcelWriter(path, engine="openpyxl") as writer:
+        for sheet_name, df in all_sheets.items():
+            df.to_excel(writer, sheet_name=sheet_name, index=False)
+
+    data = load_model_data_from_excel(path)
+
+    assert "Santos - SP | DOMESTICA" in data.domestic_customers
+    assert "Santos - SP | EXPORTACAO" in data.export_customers
+
+    assert set(data.domestic_customers).isdisjoint(set(data.export_customers))
+
+    assert data.demand_dom[("Santos - SP | DOMESTICA", "Soja", "2026-01")] == 10.0
+    assert data.demand_exp[("Santos - SP | EXPORTACAO", "Soja", "2026-01")] == 150.0
