@@ -67,10 +67,10 @@ def solve_model_gurobipy(
             "Direct origin-to-customer routes are not implemented yet."
         )
 
-    if data.demand_exp:
-        raise OptimizationBackendNotImplementedError(
-            "Export demand constraints are not implemented yet."
-        )
+    #if data.demand_exp:
+    #    raise OptimizationBackendNotImplementedError(
+    #        "Export demand constraints are not implemented yet."
+    #    )
 
     return _solve_deterministic_core(
         data=data,
@@ -346,6 +346,23 @@ def _solve_deterministic_core(
                     == rhs,
                     name=f"domestic_demand[{customer},{product},{period}]",
                 )
+
+       # ------------------------------------------------------------------
+    # Export demand upper bounds
+    #
+    # Export markets are not mandatory demand nodes. They act as finite,
+    # non-binding upper bounds used to represent an external market.
+    # ------------------------------------------------------------------
+
+    for customer in data.export_customers:
+        for product in data.products:
+            for period in data.periods:
+                rhs = data.demand_exp.get((customer, product, period), 0.0)
+
+                model.addConstr(
+                    flow_dc.sum("*", customer, product, period) <= rhs,
+                    name=f"export_upper_bound[{customer},{product},{period}]",
+                ) 
 
     # ------------------------------------------------------------------
     # Warehouse capacities
@@ -708,6 +725,11 @@ def _extract_deterministic_result(
                     "origin": None,
                     "warehouse": warehouse,
                     "customer": customer,
+                    "customer_type": (
+                        "export"
+                        if customer in data.export_customers
+                        else "domestic"
+                    ),
                     "product": product,
                     "period": period,
                     "value": value,
