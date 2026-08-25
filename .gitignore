@@ -229,3 +229,8 @@ secrets/*
 
 # Old files
 *.old
+
+# data files
+data/raw/
+data/processed/
+data/results/
