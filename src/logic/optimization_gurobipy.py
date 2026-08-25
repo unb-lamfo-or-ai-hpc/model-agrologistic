@@ -652,7 +652,7 @@ def _warehouse_to_customer_unit_cost(
     customer: str,
     product: str,
 ) -> float:
-    del warehouse, product
+    del product
 
     distance = data.dist_dc.get((warehouse, customer), 0.0)
     freight = data.freight_dest.get(customer, 0.0)
