@@ -705,6 +705,82 @@ def _validate_stochastic_structure(
             location="scenario_prob",
         )
 
+    if config.mode != "sto":
+        return
+
+    expected_supply_keys = {
+        (scenario, origin, product, period)
+        for scenario in data.scenarios
+        for origin in data.origins
+        for product in data.products
+        for period in data.periods
+    }
+    expected_domestic_demand_keys = {
+        (scenario, customer, product, period)
+        for scenario in data.scenarios
+        for customer in data.domestic_customers
+        for product in data.products
+        for period in data.periods
+    }
+    expected_export_demand_keys = {
+        (scenario, customer, product, period)
+        for scenario in data.scenarios
+        for customer in data.export_customers
+        for product in data.products
+        for period in data.periods
+    }
+
+    _validate_stochastic_mapping_keys(
+        mapping_name="supply_s",
+        actual_keys=set(data.supply_s),
+        expected_keys=expected_supply_keys,
+        result=result,
+    )
+    _validate_stochastic_mapping_keys(
+        mapping_name="demand_dom_s",
+        actual_keys=set(data.demand_dom_s),
+        expected_keys=expected_domestic_demand_keys,
+        result=result,
+    )
+    _validate_stochastic_mapping_keys(
+        mapping_name="demand_exp_s",
+        actual_keys=set(data.demand_exp_s),
+        expected_keys=expected_export_demand_keys,
+        result=result,
+    )
+
+
+def _validate_stochastic_mapping_keys(
+    mapping_name: str,
+    actual_keys: set[tuple[str, str, str, str]],
+    expected_keys: set[tuple[str, str, str, str]],
+    result: ValidationResult,
+) -> None:
+    missing_keys = sorted(expected_keys - actual_keys)
+    extra_keys = sorted(actual_keys - expected_keys)
+
+    if missing_keys:
+        preview = missing_keys[:5]
+        result.add_error(
+            code="MISSING_STOCHASTIC_PARAMETER",
+            message=(
+                f"{mapping_name} is missing {len(missing_keys)} required keys. "
+                f"First keys: {preview}."
+            ),
+            location=mapping_name,
+        )
+
+    if extra_keys:
+        preview = extra_keys[:5]
+        result.add_error(
+            code="INVALID_STOCHASTIC_PARAMETER_KEY",
+            message=(
+                f"{mapping_name} contains {len(extra_keys)} unexpected keys. "
+                f"First keys: {preview}."
+            ),
+            location=mapping_name,
+        )
+
 
 # ---------------------------------------------------------------------
 # Connectivity validation

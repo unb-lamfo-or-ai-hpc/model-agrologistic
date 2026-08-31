@@ -1,6 +1,7 @@
 from pathlib import Path
 
 import pandas as pd
+import pytest
 
 from src.logic.excel_loader import ExcelLoaderConfig, load_model_data_from_excel
 from src.logic.model_config import ModelConfig
@@ -182,6 +183,53 @@ def build_tiny_golden_excel(path: Path) -> None:
         ]
     )
 
+    cenarios = pd.DataFrame(
+        [
+            {
+                "Cenario": "base",
+                "Probabilidade": 1.0,
+                "Ativo": "SIM",
+                "Multiplicador_Oferta": 1.0,
+                "Multiplicador_Demanda_Domestica": 1.0,
+            },
+            {
+                "Cenario": "baixo",
+                "Probabilidade": 0.25,
+                "Ativo": "NAO",
+                "Multiplicador_Oferta": 0.8,
+                "Multiplicador_Demanda_Domestica": 0.9,
+            },
+            {
+                "Cenario": "alto",
+                "Probabilidade": 0.25,
+                "Ativo": "NAO",
+                "Multiplicador_Oferta": 1.2,
+                "Multiplicador_Demanda_Domestica": 1.1,
+            },
+        ]
+    )
+    oferta_cenarios = pd.DataFrame(
+        columns=[
+            "Cenario",
+            "Produto",
+            "Cidade",
+            "Data",
+            "Peso (ton)",
+            "Multiplicador",
+        ]
+    )
+    demanda_cenarios = pd.DataFrame(
+        columns=[
+            "Cenario",
+            "Produto",
+            "Cidade",
+            "Data",
+            "Tipo_Demanda",
+            "Peso_Modelo (ton)",
+            "Multiplicador",
+        ]
+    )
+
     with pd.ExcelWriter(path, engine="openpyxl") as writer:
         oferta.to_excel(writer, sheet_name="Oferta", index=False)
         demanda.to_excel(writer, sheet_name="Demanda", index=False)
@@ -190,6 +238,9 @@ def build_tiny_golden_excel(path: Path) -> None:
         tarifa_armz.to_excel(writer, sheet_name="Tarifa_Armz", index=False)
         custo_invest.to_excel(writer, sheet_name="Custo_Invest", index=False)
         parametros_modelo.to_excel(writer, sheet_name="Parametros_Modelo", index=False)
+        cenarios.to_excel(writer, sheet_name="Cenarios", index=False)
+        oferta_cenarios.to_excel(writer, sheet_name="Oferta_Cenarios", index=False)
+        demanda_cenarios.to_excel(writer, sheet_name="Demanda_Cenarios", index=False)
 
 
 def test_load_model_data_from_golden_excel_schema(tmp_path):
@@ -236,6 +287,7 @@ def test_load_model_data_from_golden_excel_schema(tmp_path):
     assert data.transshipment_cost == {"W1": 3.0, "W2": 7.0}
 
     assert data.metadata["loader_warnings"] == []
+    assert data.scenarios == []
 
 
 def test_loader_builds_transshipment_routes_distances_and_costs(tmp_path):
@@ -438,4 +490,88 @@ def test_legacy_infinity_overlap_is_split_with_correct_export_id(tmp_path):
 
     assert data.demand_dom[("Santos - SP | DOMESTICA", "Soja", "2026-01")] == 10.0
     assert data.demand_exp[("Santos - SP | EXPORTACAO", "Soja", "2026-01")] == 150.0
+
+
+def test_loader_builds_degenerate_base_scenario_when_enabled(tmp_path):
+    path = tmp_path / "base_scenario.xlsx"
+    build_tiny_golden_excel(path)
+
+    data = load_model_data_from_excel(
+        path,
+        config=ExcelLoaderConfig(include_stochastic_scenarios=True),
+    )
+
+    assert data.scenarios == ["base"]
+    assert data.scenario_prob == {"base": 1.0}
+    assert data.supply_s[("base", "Rio Verde - GO", "Soja", "2026-01")] == 100.0
+    assert data.demand_dom_s[("base", "Goiânia - GO", "Soja", "2026-01")] == 80.0
+    assert data.demand_exp_s[("base", "Santos - SP", "Soja", "2026-01")] == 150.0
+    assert data.metadata["scenario_multipliers"] == {
+        "base": {
+            "supply": 1.0,
+            "domestic_demand": 1.0,
+            "export_demand": 1.0,
+        }
+    }
+
+
+def test_loader_applies_active_scenario_multipliers(tmp_path):
+    path = tmp_path / "multiple_scenarios.xlsx"
+    build_tiny_golden_excel(path)
+
+    all_sheets = pd.read_excel(path, sheet_name=None, engine="openpyxl")
+    scenarios = all_sheets["Cenarios"]
+    scenarios.loc[scenarios["Cenario"] == "base", "Probabilidade"] = 0.5
+    scenarios.loc[:, "Ativo"] = "SIM"
+    all_sheets["Cenarios"] = scenarios
+
+    with pd.ExcelWriter(path, engine="openpyxl") as writer:
+        for sheet_name, df in all_sheets.items():
+            df.to_excel(writer, sheet_name=sheet_name, index=False)
+
+    data = load_model_data_from_excel(
+        path,
+        config=ExcelLoaderConfig(include_stochastic_scenarios=True),
+    )
+
+    assert data.scenarios == ["base", "baixo", "alto"]
+    assert data.scenario_prob == {"base": 0.5, "baixo": 0.25, "alto": 0.25}
+    assert data.supply_s[("baixo", "Rio Verde - GO", "Soja", "2026-01")] == 80.0
+    assert data.demand_dom_s[("baixo", "Goiânia - GO", "Soja", "2026-01")] == 72.0
+    assert data.demand_exp_s[("baixo", "Santos - SP", "Soja", "2026-01")] == 120.0
+
+    validation = validate_model_data(
+        data,
+        config=ModelConfig(mode="sto", candidate_capacity_mode="scalable"),
+    )
+    assert validation.is_valid, [issue.message for issue in validation.errors]
+
+
+def test_loader_rejects_scenario_override_rows_until_supported(tmp_path):
+    path = tmp_path / "scenario_overrides.xlsx"
+    build_tiny_golden_excel(path)
+
+    all_sheets = pd.read_excel(path, sheet_name=None, engine="openpyxl")
+    all_sheets["Oferta_Cenarios"] = pd.DataFrame(
+        [
+            {
+                "Cenario": "base",
+                "Produto": "Soja",
+                "Cidade": "Rio Verde - GO",
+                "Data": "2026-01",
+                "Peso (ton)": 90.0,
+                "Multiplicador": 1.0,
+            }
+        ]
+    )
+
+    with pd.ExcelWriter(path, engine="openpyxl") as writer:
+        for sheet_name, df in all_sheets.items():
+            df.to_excel(writer, sheet_name=sheet_name, index=False)
+
+    with pytest.raises(ValueError, match="scenario-specific rows"):
+        load_model_data_from_excel(
+            path,
+            config=ExcelLoaderConfig(include_stochastic_scenarios=True),
+        )
 

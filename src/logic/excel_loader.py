@@ -82,6 +82,12 @@ REQUIRED_COLUMNS = {
     },
 }
 
+SCENARIO_REQUIRED_COLUMNS = {
+    "Cenario",
+    "Probabilidade",
+    "Ativo",
+}
+
 
 @dataclass(slots=True)
 class ExcelLoaderConfig:
@@ -94,6 +100,9 @@ class ExcelLoaderConfig:
     include_export_routes: bool = True
     include_transshipment_routes: bool = False
     include_direct_origin_customer_routes: bool = False
+
+    # Opt-in preserves deterministic loading for existing callers.
+    include_stochastic_scenarios: bool = False
 
     candidate_cost_policy: CandidateCostPolicy = "variable_from_total"
 
@@ -137,6 +146,11 @@ def load_model_data_from_excel(
         if "Parametros_Modelo" in sheets
         else pd.DataFrame()
     )
+    cenarios = (
+        _clean_dataframe(sheets["Cenarios"])
+        if config.include_stochastic_scenarios and "Cenarios" in sheets
+        else pd.DataFrame()
+    )
 
     loader_warnings: list[str] = []
 
@@ -177,6 +191,34 @@ def load_model_data_from_excel(
         loader_warnings=loader_warnings,
         config=config,
     )
+
+    scenarios: list[str] = []
+    scenario_prob: dict[str, float] = {}
+    supply_s: dict[tuple[str, str, str, str], float] = {}
+    demand_dom_s: dict[tuple[str, str, str, str], float] = {}
+    demand_exp_s: dict[tuple[str, str, str, str], float] = {}
+    scenario_multipliers: dict[str, dict[str, float]] = {}
+
+    if config.include_stochastic_scenarios:
+        _validate_scenario_schema(sheets)
+        (
+            scenarios,
+            scenario_prob,
+            supply_s,
+            demand_dom_s,
+            demand_exp_s,
+            scenario_multipliers,
+        ) = _load_scenarios(
+            cenarios=cenarios,
+            origins=origins,
+            domestic_customers=domestic_customers,
+            export_customers=export_customers,
+            products=products,
+            periods=periods,
+            supply=supply,
+            demand_dom=demand_dom,
+            demand_exp=demand_exp,
+        )
 
     (
         warehouses,
@@ -343,6 +385,11 @@ def load_model_data_from_excel(
         supply=supply,
         demand_dom=demand_dom,
         demand_exp=demand_exp,
+        scenarios=scenarios,
+        scenario_prob=scenario_prob,
+        supply_s=supply_s,
+        demand_dom_s=demand_dom_s,
+        demand_exp_s=demand_exp_s,
         dist_od=dist_od,
         dist_dc=dist_dc,
         dist_dd=dist_dd,
@@ -375,6 +422,7 @@ def load_model_data_from_excel(
             "reported_candidate_total_opening_cost": reported_candidate_total_opening_cost,
             "investment_cost_table": investment_cost_table,
             "parameter_table": parameter_table,
+            "scenario_multipliers": scenario_multipliers,
             "loader_warnings": loader_warnings,
         },
     )
@@ -419,6 +467,33 @@ def _validate_workbook_schema(sheets: dict[str, pd.DataFrame]) -> None:
             )
 
 
+def _validate_scenario_schema(sheets: dict[str, pd.DataFrame]) -> None:
+    if "Cenarios" not in sheets:
+        raise ValueError(
+            "ExcelLoaderConfig.include_stochastic_scenarios requires "
+            "a 'Cenarios' sheet."
+        )
+
+    columns = {str(column).strip() for column in sheets["Cenarios"].columns}
+    missing_columns = sorted(SCENARIO_REQUIRED_COLUMNS - columns)
+
+    if missing_columns:
+        raise ValueError(
+            "Sheet 'Cenarios' is missing required columns: "
+            f"{missing_columns}"
+        )
+
+    for override_sheet in ("Oferta_Cenarios", "Demanda_Cenarios"):
+        if override_sheet not in sheets:
+            continue
+        if not _clean_dataframe(sheets[override_sheet]).empty:
+            raise ValueError(
+                f"Sheet {override_sheet!r} contains scenario-specific rows, "
+                "which are not supported yet. This stage reads multipliers "
+                "from 'Cenarios'."
+            )
+
+
 def _clean_dataframe(df: pd.DataFrame) -> pd.DataFrame:
     cleaned = df.copy()
     cleaned.columns = [str(column).strip() for column in cleaned.columns]
@@ -429,6 +504,140 @@ def _clean_dataframe(df: pd.DataFrame) -> pd.DataFrame:
 # ---------------------------------------------------------------------
 # Sheet loaders
 # ---------------------------------------------------------------------
+
+
+def _load_scenarios(
+    cenarios: pd.DataFrame,
+    origins: list[str],
+    domestic_customers: list[str],
+    export_customers: list[str],
+    products: list[str],
+    periods: list[str],
+    supply: dict[tuple[str, str, str], float],
+    demand_dom: dict[tuple[str, str, str], float],
+    demand_exp: dict[tuple[str, str, str], float],
+) -> tuple[
+    list[str],
+    dict[str, float],
+    dict[tuple[str, str, str, str], float],
+    dict[tuple[str, str, str, str], float],
+    dict[tuple[str, str, str, str], float],
+    dict[str, dict[str, float]],
+]:
+    scenarios: list[str] = []
+    scenario_prob: dict[str, float] = {}
+    scenario_multipliers: dict[str, dict[str, float]] = {}
+
+    supply_multiplier_column = _first_existing_dataframe_column(
+        cenarios,
+        ["Multiplicador_Oferta", "Multiplicador Oferta"],
+    )
+    domestic_multiplier_column = _first_existing_dataframe_column(
+        cenarios,
+        [
+            "Multiplicador_Demanda_Domestica",
+            "Multiplicador Demanda Domestica",
+            "Multiplicador Demanda Doméstica",
+        ],
+    )
+    export_multiplier_column = _first_existing_dataframe_column(
+        cenarios,
+        [
+            "Multiplicador_Demanda_Exportacao",
+            "Multiplicador Demanda Exportacao",
+            "Multiplicador Demanda Exportação",
+        ],
+    )
+
+    for _, row in cenarios.iterrows():
+        if _is_blank_row(row, required_fields=["Cenario"]):
+            continue
+        if not _is_yes(row["Ativo"]):
+            continue
+
+        scenario = _normalize_text(row["Cenario"])
+        if scenario in scenario_prob:
+            raise ValueError(f"Duplicate active scenario {scenario!r} in 'Cenarios'.")
+
+        probability = _parse_float(row["Probabilidade"])
+        supply_multiplier = _first_numeric_value(
+            row[supply_multiplier_column]
+            if supply_multiplier_column is not None
+            else None,
+            1.0,
+        )
+        domestic_multiplier = _first_numeric_value(
+            row[domestic_multiplier_column]
+            if domestic_multiplier_column is not None
+            else None,
+            1.0,
+        )
+        export_multiplier = _first_numeric_value(
+            row[export_multiplier_column]
+            if export_multiplier_column is not None
+            else None,
+            supply_multiplier,
+        )
+
+        multipliers = {
+            "supply": supply_multiplier,
+            "domestic_demand": domestic_multiplier,
+            "export_demand": export_multiplier,
+        }
+        if any(value < 0.0 for value in multipliers.values()):
+            raise ValueError(
+                f"Scenario {scenario!r} contains a negative multiplier: "
+                f"{multipliers}."
+            )
+
+        scenarios.append(scenario)
+        scenario_prob[scenario] = probability
+        scenario_multipliers[scenario] = multipliers
+
+    if not scenarios:
+        raise ValueError(
+            "No active scenarios were found in the 'Cenarios' sheet."
+        )
+
+    supply_s = {
+        (scenario, origin, product, period): (
+            supply.get((origin, product, period), 0.0)
+            * scenario_multipliers[scenario]["supply"]
+        )
+        for scenario in scenarios
+        for origin in origins
+        for product in products
+        for period in periods
+    }
+    demand_dom_s = {
+        (scenario, customer, product, period): (
+            demand_dom.get((customer, product, period), 0.0)
+            * scenario_multipliers[scenario]["domestic_demand"]
+        )
+        for scenario in scenarios
+        for customer in domestic_customers
+        for product in products
+        for period in periods
+    }
+    demand_exp_s = {
+        (scenario, customer, product, period): (
+            demand_exp.get((customer, product, period), 0.0)
+            * scenario_multipliers[scenario]["export_demand"]
+        )
+        for scenario in scenarios
+        for customer in export_customers
+        for product in products
+        for period in periods
+    }
+
+    return (
+        scenarios,
+        scenario_prob,
+        supply_s,
+        demand_dom_s,
+        demand_exp_s,
+        scenario_multipliers,
+    )
 
 
 def _load_supply(
