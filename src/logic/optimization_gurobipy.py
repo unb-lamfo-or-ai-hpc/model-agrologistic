@@ -10,6 +10,7 @@ Current implementation:
 - inventory balance;
 - existing and candidate warehouse capacities;
 - candidate opening and scalable/fixed candidate capacity;
+- scalable expansion of existing warehouse static capacity;
 - unmet domestic demand;
 - export demand upper bounds;
 - emergency static capacity;
@@ -17,7 +18,6 @@ Current implementation:
 
 Not implemented yet:
 - stochastic formulation;
-- expansion;
 - bulkification;
 - EVPI/VSS.
 """
@@ -126,6 +126,12 @@ def _solve_deterministic_core(
     ]
 
     candidate_warehouses = list(data.candidate_warehouses)
+    expansion_warehouses = [
+        warehouse
+        for warehouse in data.existing_warehouses
+        if model_config.allow_capacity_expansion
+        and data.max_expand_capacity.get(warehouse, 0.0) > 0.0
+    ]
 
     # ------------------------------------------------------------------
     # Variables
@@ -177,6 +183,19 @@ def _solve_deterministic_core(
         lb=0.0,
         vtype=GRB.CONTINUOUS,
         name="candidate_capacity",
+    )
+
+    expand_warehouse = model.addVars(
+        expansion_warehouses,
+        vtype=GRB.BINARY,
+        name="expand_warehouse",
+    )
+
+    expand_capacity = model.addVars(
+        expansion_warehouses,
+        lb=0.0,
+        vtype=GRB.CONTINUOUS,
+        name="expand_capacity",
     )
 
     unmet_ub = GRB.INFINITY if model_config.allow_unmet_domestic_demand else 0.0
@@ -265,6 +284,17 @@ def _solve_deterministic_core(
     else:
         candidate_capacity_cost = 0.0
 
+    expansion_fixed_cost = gp.quicksum(
+        expand_warehouse[warehouse] * data.expand_fixed_cost.get(warehouse, 0.0)
+        for warehouse in expansion_warehouses
+    )
+
+    expansion_variable_cost = gp.quicksum(
+        expand_capacity[warehouse]
+        * data.expand_variable_cost.get(warehouse, 0.0)
+        for warehouse in expansion_warehouses
+    )
+
     unmet_demand_cost = gp.quicksum(
         unmet_demand[customer, product, period]
         * data.unmet_demand_penalty.get((customer, product), DEFAULT_PENALTY)
@@ -291,6 +321,8 @@ def _solve_deterministic_core(
         + storage_cost
         + opening_cost
         + candidate_capacity_cost
+        + expansion_fixed_cost
+        + expansion_variable_cost
         + unmet_demand_cost
         + emergency_static_cost
         + emergency_reception_cost
@@ -317,6 +349,17 @@ def _solve_deterministic_core(
                 <= max_capacity * open_candidate[warehouse],
                 name=f"candidate_scalable_capacity[{warehouse}]",
             )
+
+    # ------------------------------------------------------------------
+    # Existing warehouse expansion constraints
+    # ------------------------------------------------------------------
+
+    for warehouse in expansion_warehouses:
+        model.addConstr(
+            expand_capacity[warehouse]
+            <= data.max_expand_capacity[warehouse] * expand_warehouse[warehouse],
+            name=f"expansion_capacity[{warehouse}]",
+        )
 
     # ------------------------------------------------------------------
     # Supply balance
@@ -415,6 +458,7 @@ def _solve_deterministic_core(
             static_capacity = _effective_static_capacity_expr(
                 data=data,
                 candidate_capacity=candidate_capacity,
+                expand_capacity=expand_capacity,
                 warehouse=warehouse,
             )
 
@@ -524,6 +568,8 @@ def _solve_deterministic_core(
         inventory=inventory,
         open_candidate=open_candidate,
         candidate_capacity=candidate_capacity,
+        expand_warehouse=expand_warehouse,
+        expand_capacity=expand_capacity,
         unmet_demand=unmet_demand,
         emergency_static_capacity=emergency_static_capacity,
         emergency_reception_capacity=emergency_reception_capacity,
@@ -535,6 +581,8 @@ def _solve_deterministic_core(
             "storage": storage_cost,
             "opening": opening_cost,
             "candidate_capacity": candidate_capacity_cost,
+            "expansion_fixed": expansion_fixed_cost,
+            "expansion_variable": expansion_variable_cost,
             "unmet_demand": unmet_demand_cost,
             "emergency_static": emergency_static_cost,
             "emergency_reception": emergency_reception_cost,
@@ -629,12 +677,16 @@ def _active_warehouse_expr(
 def _effective_static_capacity_expr(
     data: ModelData,
     candidate_capacity: Any,
+    expand_capacity: Any,
     warehouse: str,
 ) -> Any:
     capacity = data.static_capacity.get(warehouse, 0.0)
 
     if warehouse in data.candidate_warehouses:
         capacity = capacity + candidate_capacity[warehouse]
+
+    if warehouse in expand_capacity:
+        capacity = capacity + expand_capacity[warehouse]
 
     return capacity
 
@@ -774,6 +826,8 @@ def _extract_deterministic_result(
     inventory: Any,
     open_candidate: Any,
     candidate_capacity: Any,
+    expand_warehouse: Any,
+    expand_capacity: Any,
     unmet_demand: Any,
     emergency_static_capacity: Any,
     emergency_reception_capacity: Any,
@@ -914,6 +968,13 @@ def _extract_deterministic_result(
             open_value = 1.0 if warehouse in data.existing_warehouses else 0.0
             candidate_capacity_value = 0.0
 
+        if warehouse in expand_capacity:
+            expand_value = _value(expand_warehouse[warehouse])
+            expansion_capacity_value = _value(expand_capacity[warehouse])
+        else:
+            expand_value = 0.0
+            expansion_capacity_value = 0.0
+
         warehouse_decisions.append(
             {
                 "warehouse": warehouse,
@@ -921,10 +982,13 @@ def _extract_deterministic_result(
                 "is_candidate": warehouse in data.candidate_warehouses,
                 "open": open_value,
                 "candidate_capacity": candidate_capacity_value,
+                "expand": expand_value,
+                "expansion_capacity": expansion_capacity_value,
                 "static_capacity": data.static_capacity.get(warehouse, 0.0),
                 "effective_static_capacity": (
                     data.static_capacity.get(warehouse, 0.0)
                     + candidate_capacity_value
+                    + expansion_capacity_value
                 ),
             }
         )
@@ -961,6 +1025,7 @@ def _extract_deterministic_result(
             "gurobi_status_code": model.Status,
             "solution_count": model.SolCount,
             "candidate_capacity_mode": model_config.candidate_capacity_mode,
+            "allow_capacity_expansion": model_config.allow_capacity_expansion,
         },
     )
 
