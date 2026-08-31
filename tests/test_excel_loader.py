@@ -97,6 +97,7 @@ def build_tiny_golden_excel(path: Path) -> None:
                 "Cap. Expedição (t)": 200.0,
                 "Cap. Estática Máxima (t)": 0.0,
                 "Custo de Abertura ($)": 0.0,
+                "Custo de Transbordo ($/t)": 3.0,
                 "Permite_Granelizacao": "SIM",
             },
             {
@@ -113,6 +114,7 @@ def build_tiny_golden_excel(path: Path) -> None:
                 "Cap. Expedição (t)": 0.0,
                 "Cap. Estática Máxima (t)": 300.0,
                 "Custo de Abertura ($)": 3000.0,
+                "Custo de Transbordo ($/t)": 7.0,
                 "Custo_Fixo_Abertura_Modelo ($)": 1000.0,
                 "Custo_Variavel_Capacidade_Modelo ($/t)": 20.0,
                 "Permite_Granelizacao": "NAO",
@@ -216,7 +218,58 @@ def test_load_model_data_from_golden_excel_schema(tmp_path):
     assert data.opening_fixed_cost["W2"] == 1000.0
     assert data.candidate_capacity_cost["W2"] == 20.0
 
+    assert data.freight_warehouse == {"W1": 1.0, "W2": 2.0}
+    assert data.transshipment_cost == {"W1": 3.0, "W2": 7.0}
+
     assert data.metadata["loader_warnings"] == []
+
+
+def test_loader_builds_transshipment_routes_distances_and_costs(tmp_path):
+    path = tmp_path / "tiny_golden_transshipment.xlsx"
+    build_tiny_golden_excel(path)
+
+    data = load_model_data_from_excel(
+        path,
+        config=ExcelLoaderConfig(include_transshipment_routes=True),
+    )
+
+    assert ("W1", "W2", "Soja") in data.routes_dd
+    assert ("W2", "W1", "Soja") in data.routes_dd
+    assert ("W1", "W1", "Soja") not in data.routes_dd
+    assert ("W1", "W2") in data.dist_dd
+    assert ("W2", "W1") in data.dist_dd
+
+    assert data.freight_warehouse == {"W1": 1.0, "W2": 2.0}
+    assert data.transshipment_cost == {"W1": 3.0, "W2": 7.0}
+
+    result = validate_model_data(
+        data=data,
+        config=ModelConfig(mode="det", candidate_capacity_mode="scalable"),
+        require_distances=True,
+    )
+
+    assert result.is_valid, [issue.message for issue in result.errors]
+
+
+def test_loader_uses_explicit_default_when_transshipment_column_is_absent(tmp_path):
+    path = tmp_path / "tiny_golden_transshipment_default.xlsx"
+    build_tiny_golden_excel(path)
+
+    all_sheets = pd.read_excel(path, sheet_name=None, engine="openpyxl")
+    all_sheets["Warehouses"] = all_sheets["Warehouses"].drop(
+        columns=["Custo de Transbordo ($/t)"]
+    )
+
+    with pd.ExcelWriter(path, engine="openpyxl") as writer:
+        for sheet_name, df in all_sheets.items():
+            df.to_excel(writer, sheet_name=sheet_name, index=False)
+
+    data = load_model_data_from_excel(
+        path,
+        config=ExcelLoaderConfig(default_transshipment_cost=4.5),
+    )
+
+    assert data.transshipment_cost == {"W1": 4.5, "W2": 4.5}
 
 
 def test_loaded_golden_excel_data_passes_model_validation(tmp_path):
@@ -371,3 +424,4 @@ def test_legacy_infinity_overlap_is_split_with_correct_export_id(tmp_path):
 
     assert data.demand_dom[("Santos - SP | DOMESTICA", "Soja", "2026-01")] == 10.0
     assert data.demand_exp[("Santos - SP | EXPORTACAO", "Soja", "2026-01")] == 150.0
+

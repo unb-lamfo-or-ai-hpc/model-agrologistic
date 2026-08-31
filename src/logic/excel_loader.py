@@ -189,6 +189,7 @@ def load_model_data_from_excel(
         max_candidate_capacity,
         opening_fixed_cost,
         candidate_capacity_cost,
+        transshipment_cost,
         reported_candidate_total_opening_cost,
     ) = _load_warehouses(
         warehouses_df=warehouses_df,
@@ -210,8 +211,12 @@ def load_model_data_from_excel(
         for customer in customers
     }
 
-    transshipment_cost = {
-        warehouse: config.default_transshipment_cost
+    freight_warehouse = {
+        warehouse: _lookup_freight_for_node(
+            node_id=warehouse,
+            node_info=warehouse_node_info,
+            freight_by_state=freight_by_state,
+        )
         for warehouse in warehouses
     }
 
@@ -336,6 +341,7 @@ def load_model_data_from_excel(
         dist_oc=dist_oc,
         freight_origin=freight_origin,
         freight_dest=freight_dest,
+        freight_warehouse=freight_warehouse,
         transshipment_cost=transshipment_cost,
         storage_tariff=storage_tariff,
         static_capacity=static_capacity,
@@ -578,6 +584,7 @@ def _load_warehouses(
     dict[str, float],
     dict[str, float],
     dict[str, float],
+    dict[str, float],
 ]:
     del parameter_table
 
@@ -595,7 +602,20 @@ def _load_warehouses(
     max_candidate_capacity: dict[str, float] = {}
     opening_fixed_cost: dict[str, float] = {}
     candidate_capacity_cost: dict[str, float] = {}
+    transshipment_cost: dict[str, float] = {}
     reported_candidate_total_opening_cost: dict[str, float] = {}
+
+    transshipment_cost_column = _first_existing_dataframe_column(
+        warehouses_df,
+        [
+            "Custo de Transbordo ($/t)",
+            "Custo de Transbordo (R$/t)",
+            "Custo Transbordo ($/t)",
+            "Custo Transbordo (R$/t)",
+            "Custo_Transbordo ($/t)",
+            "Custo_Transbordo (R$/t)",
+        ],
+    )
 
     for _, row in warehouses_df.iterrows():
         if _is_blank_row(row, required_fields=["CDA", "Status"]):
@@ -629,6 +649,14 @@ def _load_warehouses(
         static_capacity[warehouse] = _parse_float(row["Cap. Estática (t)"])
         reception_capacity[warehouse] = _parse_float(row["Cap. Recepção (t)"])
         shipping_capacity[warehouse] = _parse_float(row["Cap. Expedição (t)"])
+        transshipment_cost[warehouse] = (
+            _first_numeric_value(
+                row[transshipment_cost_column],
+                config.default_transshipment_cost,
+            )
+            if transshipment_cost_column is not None
+            else config.default_transshipment_cost
+        )
 
         if is_candidate:
             max_capacity = _parse_float(row["Cap. Estática Máxima (t)"])
@@ -711,6 +739,7 @@ def _load_warehouses(
         max_candidate_capacity,
         opening_fixed_cost,
         candidate_capacity_cost,
+        transshipment_cost,
         reported_candidate_total_opening_cost,
     )
 
@@ -1162,3 +1191,4 @@ def _is_bulk_eligible(row: pd.Series, warehouse_type: str) -> bool:
             "estrutural",
         ]
     )
+

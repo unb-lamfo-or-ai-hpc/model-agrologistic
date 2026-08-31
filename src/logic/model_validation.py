@@ -286,6 +286,7 @@ def _validate_nonnegative_parameters(
         "duration_oc": data.duration_oc,
         "freight_origin": data.freight_origin,
         "freight_dest": data.freight_dest,
+        "freight_warehouse": data.freight_warehouse,
         "transshipment_cost": data.transshipment_cost,
         "storage_tariff": data.storage_tariff,
         "static_capacity": data.static_capacity,
@@ -493,6 +494,15 @@ def _validate_capacity_and_cost_parameters(
     config: ModelConfig,
     result: ValidationResult,
 ) -> None:
+    dd_origins = {warehouse_from for warehouse_from, _, _ in data.routes_dd}
+    dd_destinations = {warehouse_to for _, warehouse_to, _ in data.routes_dd}
+
+    for warehouse in sorted(dd_origins):
+        _require_key(data.freight_warehouse, warehouse, "freight_warehouse", result)
+
+    for warehouse in sorted(dd_destinations):
+        _require_key(data.transshipment_cost, warehouse, "transshipment_cost", result)
+
     for warehouse in data.existing_warehouses:
         _require_key(data.static_capacity, warehouse, "static_capacity", result)
         _require_key(data.reception_capacity, warehouse, "reception_capacity", result)
@@ -784,3 +794,4 @@ def _has_incoming_domestic_route(
     )
 
     return has_dc or has_oc
+
