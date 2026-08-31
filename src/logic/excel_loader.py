@@ -10,6 +10,7 @@ solver-specific packages such as gurobipy or pyomo.
 
 from __future__ import annotations
 
+import unicodedata
 from dataclasses import dataclass
 from math import asin, cos, radians, sin, sqrt
 from pathlib import Path
@@ -189,12 +190,19 @@ def load_model_data_from_excel(
         max_candidate_capacity,
         opening_fixed_cost,
         candidate_capacity_cost,
+        max_expand_capacity,
+        expand_fixed_cost,
+        expand_variable_cost,
+        max_bulk_capacity,
+        bulk_fixed_cost,
+        bulk_variable_cost,
         transshipment_cost,
         reported_candidate_total_opening_cost,
     ) = _load_warehouses(
         warehouses_df=warehouses_df,
         config=config,
         parameter_table=parameter_table,
+        investment_cost_table=investment_cost_table,
     )
 
     freight_origin = {
@@ -350,6 +358,12 @@ def load_model_data_from_excel(
         max_candidate_capacity=max_candidate_capacity,
         opening_fixed_cost=opening_fixed_cost,
         candidate_capacity_cost=candidate_capacity_cost,
+        max_expand_capacity=max_expand_capacity,
+        expand_fixed_cost=expand_fixed_cost,
+        expand_variable_cost=expand_variable_cost,
+        max_bulk_capacity=max_bulk_capacity,
+        bulk_fixed_cost=bulk_fixed_cost,
+        bulk_variable_cost=bulk_variable_cost,
         unmet_demand_penalty=unmet_demand_penalty,
         emergency_static_capacity_penalty=emergency_static_capacity_penalty,
         emergency_reception_capacity_penalty=emergency_reception_capacity_penalty,
@@ -571,12 +585,19 @@ def _load_warehouses(
     warehouses_df: pd.DataFrame,
     config: ExcelLoaderConfig,
     parameter_table: dict[str, Any],
+    investment_cost_table: dict[str, dict[str, float]],
 ) -> tuple[
     list[str],
     list[str],
     list[str],
     list[str],
     dict[str, NodeInfo],
+    dict[str, float],
+    dict[str, float],
+    dict[str, float],
+    dict[str, float],
+    dict[str, float],
+    dict[str, float],
     dict[str, float],
     dict[str, float],
     dict[str, float],
@@ -602,6 +623,12 @@ def _load_warehouses(
     max_candidate_capacity: dict[str, float] = {}
     opening_fixed_cost: dict[str, float] = {}
     candidate_capacity_cost: dict[str, float] = {}
+    max_expand_capacity: dict[str, float] = {}
+    expand_fixed_cost: dict[str, float] = {}
+    expand_variable_cost: dict[str, float] = {}
+    max_bulk_capacity: dict[str, float] = {}
+    bulk_fixed_cost: dict[str, float] = {}
+    bulk_variable_cost: dict[str, float] = {}
     transshipment_cost: dict[str, float] = {}
     reported_candidate_total_opening_cost: dict[str, float] = {}
 
@@ -615,6 +642,67 @@ def _load_warehouses(
             "Custo_Transbordo ($/t)",
             "Custo_Transbordo (R$/t)",
         ],
+    )
+
+    max_expand_capacity_column = _first_existing_dataframe_column(
+        warehouses_df,
+        [
+            "Cap_Expansao_Maxima_Modelo (t)",
+            "Cap. Expansão Máxima (t)",
+            "Cap. Expansao Maxima (t)",
+            "Capacidade Máxima de Expansão (t)",
+        ],
+    )
+    expand_fixed_cost_column = _first_existing_dataframe_column(
+        warehouses_df,
+        [
+            "Custo Fixo Expansão ($)",
+            "Custo Fixo Expansao ($)",
+            "Custo_Fixo_Expansao ($)",
+        ],
+    )
+    expand_variable_cost_column = _first_existing_dataframe_column(
+        warehouses_df,
+        [
+            "Custo_Expansao_Modelo ($/t)",
+            "Custo Variável Expansão ($/t)",
+            "Custo Variavel Expansao ($/t)",
+            "Custo_Variavel_Expansao ($/t)",
+        ],
+    )
+    max_bulk_capacity_column = _first_existing_dataframe_column(
+        warehouses_df,
+        [
+            "Cap. Granelização Máxima (t)",
+            "Cap. Granelizacao Maxima (t)",
+            "Capacidade Máxima de Granelização (t)",
+        ],
+    )
+    bulk_fixed_cost_column = _first_existing_dataframe_column(
+        warehouses_df,
+        [
+            "Custo Fixo Granelização ($)",
+            "Custo Fixo Granelizacao ($)",
+            "Custo_Fixo_Granelizacao ($)",
+        ],
+    )
+    bulk_variable_cost_column = _first_existing_dataframe_column(
+        warehouses_df,
+        [
+            "Custo_Granelizacao_Modelo ($/t)",
+            "Custo Variável Granelização ($/t)",
+            "Custo Variavel Granelizacao ($/t)",
+            "Custo_Variavel_Granelizacao ($/t)",
+        ],
+    )
+
+    default_expand_variable_cost = _investment_average_cost(
+        investment_cost_table,
+        "expansao",
+    )
+    default_bulk_variable_cost = _investment_average_cost(
+        investment_cost_table,
+        "granelizacao",
     )
 
     for _, row in warehouses_df.iterrows():
@@ -712,6 +800,53 @@ def _load_warehouses(
                     f"Invalid candidate_cost_policy={config.candidate_cost_policy!r}."
                 )
 
+        expansion_allowed = _is_optional_feature_enabled(
+            row,
+            ["Permite_Expansao", "Permite_Expansão"],
+        )
+
+        if (
+            is_existing
+            and expansion_allowed
+            and max_expand_capacity_column is not None
+        ):
+            max_expansion = _parse_float(row[max_expand_capacity_column])
+            if max_expansion > 0.0:
+                max_expand_capacity[warehouse] = max_expansion
+                expand_fixed_cost[warehouse] = _first_numeric_value(
+                    row[expand_fixed_cost_column]
+                    if expand_fixed_cost_column is not None
+                    else None,
+                    0.0,
+                )
+                expand_variable_cost[warehouse] = _first_numeric_value(
+                    row[expand_variable_cost_column]
+                    if expand_variable_cost_column is not None
+                    else None,
+                    default_expand_variable_cost,
+                )
+
+        if warehouse in bulk_eligible_warehouses:
+            max_bulk = (
+                _parse_float(row[max_bulk_capacity_column])
+                if max_bulk_capacity_column is not None
+                else static_capacity[warehouse]
+            )
+            if max_bulk > 0.0:
+                max_bulk_capacity[warehouse] = max_bulk
+                bulk_fixed_cost[warehouse] = _first_numeric_value(
+                    row[bulk_fixed_cost_column]
+                    if bulk_fixed_cost_column is not None
+                    else None,
+                    0.0,
+                )
+                bulk_variable_cost[warehouse] = _first_numeric_value(
+                    row[bulk_variable_cost_column]
+                    if bulk_variable_cost_column is not None
+                    else None,
+                    default_bulk_variable_cost,
+                )
+
         node_info[warehouse] = NodeInfo(
             node_id=warehouse,
             node_type="warehouse",
@@ -739,6 +874,12 @@ def _load_warehouses(
         max_candidate_capacity,
         opening_fixed_cost,
         candidate_capacity_cost,
+        max_expand_capacity,
+        expand_fixed_cost,
+        expand_variable_cost,
+        max_bulk_capacity,
+        bulk_fixed_cost,
+        bulk_variable_cost,
         transshipment_cost,
         reported_candidate_total_opening_cost,
     )
@@ -791,6 +932,19 @@ def _build_investment_cost_table(custo_invest: pd.DataFrame) -> dict[str, dict[s
         }
 
     return table
+
+
+def _investment_average_cost(
+    investment_cost_table: dict[str, dict[str, float]],
+    investment_type: str,
+) -> float:
+    target = _fold_text(investment_type)
+
+    for name, costs in investment_cost_table.items():
+        if target in _fold_text(name):
+            return float(costs.get("average", 0.0))
+
+    return 0.0
 
 
 def _build_parameter_table(parametros_modelo: pd.DataFrame) -> dict[str, Any]:
@@ -1042,6 +1196,11 @@ def _normalize_text(value: Any) -> str:
     return str(value).strip()
 
 
+def _fold_text(value: Any) -> str:
+    text = unicodedata.normalize("NFKD", _normalize_text(value).casefold())
+    return "".join(character for character in text if not unicodedata.combining(character))
+
+
 def _normalize_period(value: Any) -> str:
     if pd.isna(value):
         raise ValueError("Period/Data cannot be empty.")
@@ -1164,6 +1323,11 @@ def _first_existing_dataframe_column(
 def _is_yes(value: Any) -> bool:
     text = _normalize_text(value).upper()
     return text in {"SIM", "S", "YES", "Y", "TRUE", "1"}
+
+
+def _is_optional_feature_enabled(row: pd.Series, candidates: list[str]) -> bool:
+    column = _first_existing_column(row, candidates)
+    return True if column is None else _is_yes(row[column])
 
 
 def _is_bulk_eligible(row: pd.Series, warehouse_type: str) -> bool:

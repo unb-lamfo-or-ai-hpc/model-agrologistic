@@ -98,7 +98,11 @@ def build_tiny_golden_excel(path: Path) -> None:
                 "Cap. Estática Máxima (t)": 0.0,
                 "Custo de Abertura ($)": 0.0,
                 "Custo de Transbordo ($/t)": 3.0,
+                "Permite_Expansao": "SIM",
+                "Cap_Expansao_Maxima_Modelo (t)": 75.0,
+                "Custo_Expansao_Modelo ($/t)": 900.0,
                 "Permite_Granelizacao": "SIM",
+                "Custo_Granelizacao_Modelo ($/t)": 520.0,
             },
             {
                 "CDA": "W2",
@@ -117,7 +121,11 @@ def build_tiny_golden_excel(path: Path) -> None:
                 "Custo de Transbordo ($/t)": 7.0,
                 "Custo_Fixo_Abertura_Modelo ($)": 1000.0,
                 "Custo_Variavel_Capacidade_Modelo ($/t)": 20.0,
+                "Permite_Expansao": "NAO",
+                "Cap_Expansao_Maxima_Modelo (t)": 0.0,
+                "Custo_Expansao_Modelo ($/t)": 0.0,
                 "Permite_Granelizacao": "NAO",
+                "Custo_Granelizacao_Modelo ($/t)": 0.0,
             },
         ]
     )
@@ -217,6 +225,12 @@ def test_load_model_data_from_golden_excel_schema(tmp_path):
 
     assert data.opening_fixed_cost["W2"] == 1000.0
     assert data.candidate_capacity_cost["W2"] == 20.0
+    assert data.max_expand_capacity == {"W1": 75.0}
+    assert data.expand_fixed_cost == {"W1": 0.0}
+    assert data.expand_variable_cost == {"W1": 900.0}
+    assert data.max_bulk_capacity == {"W1": 200.0}
+    assert data.bulk_fixed_cost == {"W1": 0.0}
+    assert data.bulk_variable_cost == {"W1": 520.0}
 
     assert data.freight_warehouse == {"W1": 1.0, "W2": 2.0}
     assert data.transshipment_cost == {"W1": 3.0, "W2": 7.0}
