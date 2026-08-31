@@ -201,9 +201,30 @@ def test_valid_stochastic_structure_passes_validation():
     assert result.is_valid
 
 
+def test_stochastic_mode_requires_complete_scenario_parameter_maps():
+    data = tiny_valid_data()
+    data.scenarios = ["base"]
+    data.scenario_prob = {"base": 1.0}
+    data.supply_s = {}
+    data.demand_dom_s = {("base", "C1", "soy", "t1"): 100.0}
+
+    result = validate_model_data(
+        data,
+        config=ModelConfig(mode="sto"),
+    )
+
+    assert not result.is_valid
+    assert any(
+        issue.code == "MISSING_STOCHASTIC_PARAMETER"
+        and issue.location == "supply_s"
+        for issue in result.errors
+    )
+
+
 def test_validate_or_raise_raises_for_invalid_data():
     data = tiny_valid_data()
     data.origins.append("O1")
 
     with pytest.raises(ModelDataValidationError):
         validate_or_raise_model_data(data)
+
