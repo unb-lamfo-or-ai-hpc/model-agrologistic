@@ -166,19 +166,39 @@ def test_facade_validates_data_before_dispatching():
         )
 
 
-def test_gurobipy_backend_stub_raises_not_implemented():
+def test_gurobipy_backend_dispatches_to_stochastic_extensive_form(monkeypatch):
+    import src.logic.optimization_gurobipy_stochastic as stochastic_backend
+
     data = tiny_valid_data()
     data.scenarios = ["expected"]
     data.scenario_prob = {"expected": 1.0}
     data.supply_s = {("expected", "O1", "soy", "t1"): 100.0}
     data.demand_dom_s = {("expected", "C1", "soy", "t1"): 100.0}
 
-    with pytest.raises(OptimizationBackendNotImplementedError):
-        solve_model(
-            data=data,
-            model_config=ModelConfig(mode="sto"),
-            solver_config=SolverConfig(backend="gurobipy", solver_name="gurobi"),
+    def fake_solve_stochastic(data, model_config, solver_config):
+        return OptimizationResult(
+            status="optimal",
+            objective_value=321.0,
+            solver_backend=solver_config.backend,
+            solver_name=solver_config.solver_name,
+            model_mode=model_config.mode,
         )
+
+    monkeypatch.setattr(
+        stochastic_backend,
+        "solve_stochastic_model_gurobipy",
+        fake_solve_stochastic,
+    )
+
+    result = solve_model(
+        data=data,
+        model_config=ModelConfig(mode="sto"),
+        solver_config=SolverConfig(backend="gurobipy", solver_name="gurobi"),
+    )
+
+    assert result.status == "optimal"
+    assert result.objective_value == 321.0
+    assert result.model_mode == "sto"
 
 
 def test_pyomo_backend_stub_raises_not_implemented():
@@ -287,4 +307,3 @@ def test_facade_respects_explicit_gurobi_license_file_in_solver_options(
 
     assert result.status == "optimal"
     assert os.environ["GRB_LICENSE_FILE"] == str(license_file)
-
