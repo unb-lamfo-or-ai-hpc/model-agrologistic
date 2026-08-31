@@ -31,6 +31,8 @@ def solve_stochastic_model_gurobipy(
     data: ModelData,
     model_config: ModelConfig,
     solver_config: SolverConfig,
+    *,
+    fixed_first_stage: list[dict[str, Any]] | None = None,
 ) -> OptimizationResult:
     """Solve the risk-neutral two-stage extensive form."""
 
@@ -227,6 +229,18 @@ def solve_stochastic_model_gurobipy(
         bulkify_warehouse=bulkify_warehouse,
         bulk_capacity=bulk_capacity,
     )
+    if fixed_first_stage is not None:
+        _fix_first_stage_decisions(
+            model=model,
+            data=data,
+            decisions=fixed_first_stage,
+            open_candidate=open_candidate,
+            candidate_capacity=candidate_capacity,
+            expand_warehouse=expand_warehouse,
+            expand_capacity=expand_capacity,
+            bulkify_warehouse=bulkify_warehouse,
+            bulk_capacity=bulk_capacity,
+        )
 
     for scenario in scenarios:
         _add_scenario_constraints(
@@ -266,6 +280,7 @@ def solve_stochastic_model_gurobipy(
             "bulkify_warehouse",
             "bulk_capacity",
         ],
+        "first_stage_fixed": fixed_first_stage is not None,
     }
     if model.SolCount == 0:
         return OptimizationResult(
@@ -479,6 +494,62 @@ def _add_first_stage_constraints(
         model.addConstr(
             bulkify_warehouse[warehouse] <= active,
             name=f"bulkification_only_if_active[{warehouse}]",
+        )
+
+
+def _fix_first_stage_decisions(
+    *,
+    model: Any,
+    data: ModelData,
+    decisions: list[dict[str, Any]],
+    open_candidate: Any,
+    candidate_capacity: Any,
+    expand_warehouse: Any,
+    expand_capacity: Any,
+    bulkify_warehouse: Any,
+    bulk_capacity: Any,
+) -> None:
+    by_warehouse = {decision["warehouse"]: decision for decision in decisions}
+    missing = sorted(set(data.warehouses) - set(by_warehouse))
+    if missing:
+        raise ValueError(
+            "Fixed first-stage decisions are missing warehouses: "
+            f"{missing}."
+        )
+
+    for warehouse in data.candidate_warehouses:
+        decision = by_warehouse[warehouse]
+        model.addConstr(
+            open_candidate[warehouse] == round(float(decision["open"])),
+            name=f"fix_open_candidate[{warehouse}]",
+        )
+        model.addConstr(
+            candidate_capacity[warehouse]
+            == float(decision["candidate_capacity"]),
+            name=f"fix_candidate_capacity[{warehouse}]",
+        )
+
+    for warehouse in expand_capacity.keys():
+        decision = by_warehouse[warehouse]
+        model.addConstr(
+            expand_warehouse[warehouse] == round(float(decision["expand"])),
+            name=f"fix_expand_warehouse[{warehouse}]",
+        )
+        model.addConstr(
+            expand_capacity[warehouse]
+            == float(decision["expansion_capacity"]),
+            name=f"fix_expand_capacity[{warehouse}]",
+        )
+
+    for warehouse in bulk_capacity.keys():
+        decision = by_warehouse[warehouse]
+        model.addConstr(
+            bulkify_warehouse[warehouse] == round(float(decision["bulkify"])),
+            name=f"fix_bulkify_warehouse[{warehouse}]",
+        )
+        model.addConstr(
+            bulk_capacity[warehouse] == float(decision["bulk_capacity"]),
+            name=f"fix_bulk_capacity[{warehouse}]",
         )
 
 

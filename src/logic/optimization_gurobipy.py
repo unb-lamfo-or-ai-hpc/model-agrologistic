@@ -17,8 +17,7 @@ Current implementation:
 - emergency static capacity;
 - emergency reception capacity.
 
-Not implemented yet:
-- EVPI/VSS.
+EVPI/VSS analysis is implemented in stochastic_analysis_gurobipy.py.
 """
 
 from __future__ import annotations

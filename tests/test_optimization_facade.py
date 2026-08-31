@@ -7,6 +7,7 @@ from src.logic.model_validation import ModelDataValidationError
 from src.logic.optimization import (
     OptimizationBackendNotImplementedError,
     OptimizationResult,
+    calculate_evpi_vss,
     solve_model,
 )
 
@@ -199,6 +200,40 @@ def test_gurobipy_backend_dispatches_to_stochastic_extensive_form(monkeypatch):
     assert result.status == "optimal"
     assert result.objective_value == 321.0
     assert result.model_mode == "sto"
+
+
+def test_evpi_vss_facade_dispatches_to_native_gurobi_analysis(monkeypatch):
+    import src.logic.stochastic_analysis_gurobipy as stochastic_analysis
+
+    data = tiny_valid_data()
+    data.scenarios = ["expected"]
+    data.scenario_prob = {"expected": 1.0}
+    data.supply_s = {("expected", "O1", "soy", "t1"): 100.0}
+    data.demand_dom_s = {("expected", "C1", "soy", "t1"): 100.0}
+    sentinel = object()
+
+    monkeypatch.setattr(
+        stochastic_analysis,
+        "calculate_evpi_vss_gurobipy",
+        lambda **_kwargs: sentinel,
+    )
+
+    result = calculate_evpi_vss(
+        data=data,
+        model_config=ModelConfig(mode="sto"),
+        solver_config=SolverConfig(backend="gurobipy", solver_name="gurobi"),
+    )
+
+    assert result is sentinel
+
+
+def test_evpi_vss_facade_requires_stochastic_mode():
+    with pytest.raises(ValueError, match="mode='sto'"):
+        calculate_evpi_vss(
+            data=tiny_valid_data(),
+            model_config=ModelConfig(mode="det"),
+            solver_config=SolverConfig(backend="gurobipy", solver_name="gurobi"),
+        )
 
 
 def test_pyomo_backend_stub_raises_not_implemented():
