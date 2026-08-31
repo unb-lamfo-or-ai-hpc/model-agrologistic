@@ -307,3 +307,32 @@ def test_facade_respects_explicit_gurobi_license_file_in_solver_options(
 
     assert result.status == "optimal"
     assert os.environ["GRB_LICENSE_FILE"] == str(license_file)
+
+
+def test_gurobi_license_discovery_accepts_project_local_secrets_directory(
+    monkeypatch,
+    tmp_path,
+):
+    import src.logic.optimization as optimization
+
+    license_file = tmp_path / "secrets" / "gurobi.lic"
+    license_file.parent.mkdir()
+    license_file.write_text(
+        "WLSACCESSID=dummy\n"
+        "WLSSECRET=dummy\n"
+        "LICENSEID=123\n",
+        encoding="utf-8",
+    )
+
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.delenv("GRB_LICENSE_FILE", raising=False)
+    monkeypatch.setattr(
+        optimization,
+        "DEFAULT_GUROBI_LICENSE_FILE",
+        str(tmp_path / "missing" / "gurobi.lic"),
+    )
+
+    configured_path = optimization.configure_gurobi_wls_license(SolverConfig())
+
+    assert configured_path == str(license_file.resolve())
+    assert os.environ["GRB_LICENSE_FILE"] == str(license_file.resolve())

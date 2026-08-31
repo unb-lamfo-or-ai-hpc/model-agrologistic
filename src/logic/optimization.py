@@ -38,6 +38,7 @@ OptimizationStatus = Literal[
 ]
 
 DEFAULT_GUROBI_LICENSE_FILE = "/secrets/gurobi.lic"
+PROJECT_GUROBI_LICENSE_RELATIVE_PATH = Path("secrets/gurobi.lic")
 GUROBI_SOLVER_NAMES = {"gurobi", "gurobipy"}
 
 
@@ -64,7 +65,8 @@ def configure_gurobi_wls_license(solver_config: SolverConfig) -> str | None:
     1. solver_config.solver_options["GRB_LICENSE_FILE"];
     2. solver_config.solver_options["license_file"];
     3. existing GRB_LICENSE_FILE environment variable;
-    4. default HPC secret path: /secrets/gurobi.lic.
+    4. default HPC secret path: /secrets/gurobi.lic;
+    5. secrets/gurobi.lic relative to the working directory or project root.
 
     Returns
     -------
@@ -86,10 +88,20 @@ def configure_gurobi_wls_license(solver_config: SolverConfig) -> str | None:
     if existing_license_file:
         return existing_license_file
 
-    default_license_file = Path(DEFAULT_GUROBI_LICENSE_FILE)
-    if default_license_file.is_file():
-        os.environ["GRB_LICENSE_FILE"] = str(default_license_file)
-        return str(default_license_file)
+    project_root = Path(__file__).resolve().parents[2]
+    default_candidates = (
+        Path(DEFAULT_GUROBI_LICENSE_FILE),
+        Path.cwd() / PROJECT_GUROBI_LICENSE_RELATIVE_PATH,
+        project_root / PROJECT_GUROBI_LICENSE_RELATIVE_PATH,
+    )
+
+    for candidate in default_candidates:
+        if not candidate.is_file():
+            continue
+
+        license_path = str(candidate.resolve())
+        os.environ["GRB_LICENSE_FILE"] = license_path
+        return license_path
 
     return None
 
