@@ -41,3 +41,24 @@ def test_golden_excel_template_can_be_loaded_and_validated():
     assert set(data.domestic_customers).isdisjoint(set(data.export_customers))
 
     assert data.metadata["loader_warnings"] == []
+
+
+@pytest.mark.skipif(
+    not TEMPLATE_PATH.exists(),
+    reason="Golden Excel template is not available in data/templates.",
+)
+def test_golden_excel_template_populates_expansion_and_bulkification():
+    data = load_model_data_from_excel(TEMPLATE_PATH)
+    warehouse = "35.0287.0002-6"
+
+    assert warehouse in data.existing_warehouses
+    assert warehouse in data.bulk_eligible_warehouses
+
+    assert data.max_expand_capacity[warehouse] == pytest.approx(222.5)
+    assert data.expand_fixed_cost[warehouse] == pytest.approx(0.0)
+    assert data.expand_variable_cost[warehouse] == pytest.approx(900.0)
+
+    assert data.max_bulk_capacity[warehouse] == pytest.approx(890.0)
+    assert data.bulk_fixed_cost[warehouse] == pytest.approx(0.0)
+    assert data.bulk_variable_cost[warehouse] == pytest.approx(520.0)
+
