@@ -575,3 +575,59 @@ def test_loader_rejects_scenario_override_rows_until_supported(tmp_path):
             config=ExcelLoaderConfig(include_stochastic_scenarios=True),
         )
 
+
+def test_loader_generates_all_nine_supply_demand_combinations(tmp_path):
+    path = tmp_path / "nine_scenarios.xlsx"
+    build_tiny_golden_excel(path)
+
+    data = load_model_data_from_excel(
+        path,
+        config=ExcelLoaderConfig(
+            include_stochastic_scenarios=True,
+            scenario_generation_mode="cartesian",
+        ),
+    )
+
+    assert len(data.scenarios) == 9
+    assert sum(data.scenario_prob.values()) == pytest.approx(1.0)
+    scenario = "oferta_baixo__demanda_alto"
+    assert scenario in data.scenarios
+    assert data.supply_s[(scenario, "Rio Verde - GO", "Soja", "2026-01")] == 80.0
+    assert data.demand_dom_s[(scenario, "Goiânia - GO", "Soja", "2026-01")] == 88.0
+    assert data.demand_exp_s[(scenario, "Santos - SP", "Soja", "2026-01")] == 120.0
+
+
+def test_loader_accepts_an_explicit_user_selected_scenario_subset(tmp_path):
+    path = tmp_path / "selected_scenarios.xlsx"
+    build_tiny_golden_excel(path)
+
+    data = load_model_data_from_excel(
+        path,
+        config=ExcelLoaderConfig(
+            include_stochastic_scenarios=True,
+            scenario_generation_mode="cartesian",
+            stochastic_combinations=(
+                ("baixo", "alto"),
+                ("base", "base"),
+                ("alto", "baixo"),
+            ),
+            stochastic_probabilities=(0.2, 0.5, 0.3),
+        ),
+    )
+
+    assert data.scenarios == [
+        "oferta_baixo__demanda_alto",
+        "oferta_base__demanda_base",
+        "oferta_alto__demanda_baixo",
+    ]
+    assert data.scenario_prob == {
+        "oferta_baixo__demanda_alto": 0.2,
+        "oferta_base__demanda_base": 0.5,
+        "oferta_alto__demanda_baixo": 0.3,
+    }
+
+    validation = validate_model_data(
+        data,
+        config=ModelConfig(mode="sto", candidate_capacity_mode="scalable"),
+    )
+    assert validation.is_valid, [issue.message for issue in validation.errors]

@@ -22,6 +22,7 @@ from src.logic.model_data import ModelData, NodeInfo
 
 
 CandidateCostPolicy = Literal["variable_from_total", "fixed_total"]
+ScenarioGenerationMode = Literal["active_rows", "cartesian"]
 
 
 REQUIRED_SHEETS = {
@@ -103,6 +104,14 @@ class ExcelLoaderConfig:
 
     # Opt-in preserves deterministic loading for existing callers.
     include_stochastic_scenarios: bool = False
+    # ``active_rows`` reads the scenarios activated in the workbook.
+    # ``cartesian`` combines user-selected supply and demand levels. The
+    # explicit combinations option permits any scenario count from 1 to 9.
+    scenario_generation_mode: ScenarioGenerationMode = "active_rows"
+    stochastic_supply_levels: tuple[str, ...] = ("baixo", "base", "alto")
+    stochastic_demand_levels: tuple[str, ...] = ("baixo", "base", "alto")
+    stochastic_combinations: tuple[tuple[str, str], ...] | None = None
+    stochastic_probabilities: tuple[float, ...] | None = None
 
     candidate_cost_policy: CandidateCostPolicy = "variable_from_total"
 
@@ -210,6 +219,7 @@ def load_model_data_from_excel(
             scenario_multipliers,
         ) = _load_scenarios(
             cenarios=cenarios,
+            config=config,
             origins=origins,
             domestic_customers=domestic_customers,
             export_customers=export_customers,
@@ -422,6 +432,11 @@ def load_model_data_from_excel(
             "reported_candidate_total_opening_cost": reported_candidate_total_opening_cost,
             "investment_cost_table": investment_cost_table,
             "parameter_table": parameter_table,
+            "scenario_generation_mode": (
+                config.scenario_generation_mode
+                if config.include_stochastic_scenarios
+                else None
+            ),
             "scenario_multipliers": scenario_multipliers,
             "loader_warnings": loader_warnings,
         },
@@ -508,6 +523,7 @@ def _clean_dataframe(df: pd.DataFrame) -> pd.DataFrame:
 
 def _load_scenarios(
     cenarios: pd.DataFrame,
+    config: ExcelLoaderConfig,
     origins: list[str],
     domestic_customers: list[str],
     export_customers: list[str],
@@ -549,31 +565,100 @@ def _load_scenarios(
         ],
     )
 
+    rows_by_level: dict[str, pd.Series] = {}
+    ordered_rows: list[pd.Series] = []
+
     for _, row in cenarios.iterrows():
         if _is_blank_row(row, required_fields=["Cenario"]):
             continue
-        if not _is_yes(row["Ativo"]):
-            continue
+        level = _normalize_text(row["Cenario"])
+        folded_level = _fold_text(level)
+        if folded_level in rows_by_level:
+            raise ValueError(f"Duplicate scenario level {level!r} in 'Cenarios'.")
+        rows_by_level[folded_level] = row
+        ordered_rows.append(row)
 
-        scenario = _normalize_text(row["Cenario"])
+    scenario_specs: list[tuple[str, float, pd.Series, pd.Series]] = []
+
+    if config.scenario_generation_mode == "active_rows":
+        for row in ordered_rows:
+            if not _is_yes(row["Ativo"]):
+                continue
+            scenario = _normalize_text(row["Cenario"])
+            scenario_specs.append(
+                (scenario, _parse_float(row["Probabilidade"]), row, row)
+            )
+    elif config.scenario_generation_mode == "cartesian":
+        combinations = config.stochastic_combinations
+        if combinations is None:
+            combinations = tuple(
+                (supply_level, demand_level)
+                for supply_level in config.stochastic_supply_levels
+                for demand_level in config.stochastic_demand_levels
+            )
+
+        if not 1 <= len(combinations) <= 9:
+            raise ValueError(
+                "Cartesian stochastic generation requires between 1 and 9 "
+                "scenario combinations."
+            )
+        if len(set(combinations)) != len(combinations):
+            raise ValueError("Stochastic scenario combinations must be unique.")
+
+        probabilities = config.stochastic_probabilities
+        if probabilities is None:
+            probabilities = tuple(1.0 / len(combinations) for _ in combinations)
+        if len(probabilities) != len(combinations):
+            raise ValueError(
+                "stochastic_probabilities must contain one value per "
+                "scenario combination."
+            )
+
+        for (supply_level, demand_level), probability in zip(
+            combinations,
+            probabilities,
+            strict=True,
+        ):
+            supply_row = rows_by_level.get(_fold_text(supply_level))
+            demand_row = rows_by_level.get(_fold_text(demand_level))
+            if supply_row is None:
+                raise ValueError(
+                    f"Unknown stochastic supply level {supply_level!r}."
+                )
+            if demand_row is None:
+                raise ValueError(
+                    f"Unknown stochastic demand level {demand_level!r}."
+                )
+            scenario = (
+                f"oferta_{_scenario_slug(supply_level)}"
+                f"__demanda_{_scenario_slug(demand_level)}"
+            )
+            scenario_specs.append(
+                (scenario, float(probability), supply_row, demand_row)
+            )
+    else:
+        raise ValueError(
+            f"Invalid scenario_generation_mode={config.scenario_generation_mode!r}."
+        )
+
+    for scenario, probability, supply_row, demand_row in scenario_specs:
         if scenario in scenario_prob:
-            raise ValueError(f"Duplicate active scenario {scenario!r} in 'Cenarios'.")
+            raise ValueError(f"Duplicate generated scenario {scenario!r}.")
 
-        probability = _parse_float(row["Probabilidade"])
         supply_multiplier = _first_numeric_value(
-            row[supply_multiplier_column]
+            supply_row[supply_multiplier_column]
             if supply_multiplier_column is not None
             else None,
             1.0,
         )
         domestic_multiplier = _first_numeric_value(
-            row[domestic_multiplier_column]
+            demand_row[domestic_multiplier_column]
             if domestic_multiplier_column is not None
             else None,
             1.0,
         )
         export_multiplier = _first_numeric_value(
-            row[export_multiplier_column]
+            supply_row[export_multiplier_column]
             if export_multiplier_column is not None
             else None,
             supply_multiplier,
@@ -1410,6 +1495,10 @@ def _fold_text(value: Any) -> str:
     return "".join(character for character in text if not unicodedata.combining(character))
 
 
+def _scenario_slug(value: Any) -> str:
+    return "_".join(_fold_text(value).replace("-", " ").split())
+
+
 def _normalize_period(value: Any) -> str:
     if pd.isna(value):
         raise ValueError("Period/Data cannot be empty.")
@@ -1564,4 +1653,3 @@ def _is_bulk_eligible(row: pd.Series, warehouse_type: str) -> bool:
             "estrutural",
         ]
     )
-

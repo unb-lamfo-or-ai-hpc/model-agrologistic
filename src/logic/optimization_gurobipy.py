@@ -18,7 +18,6 @@ Current implementation:
 - emergency reception capacity.
 
 Not implemented yet:
-- stochastic formulation;
 - EVPI/VSS.
 """
 
@@ -30,7 +29,6 @@ from typing import Any
 from src.logic.model_config import ModelConfig, SolverConfig
 from src.logic.model_data import ModelData
 from src.logic.optimization import (
-    OptimizationBackendNotImplementedError,
     OptimizationResult,
     configure_gurobi_wls_license,
 )
@@ -51,10 +49,15 @@ def solve_model_gurobipy(
 
     configure_gurobi_wls_license(solver_config)
 
-    if model_config.mode != "det":
-        raise OptimizationBackendNotImplementedError(
-            "The native gurobipy backend currently supports only "
-            "ModelConfig(mode='det'). The stochastic model will be implemented later."
+    if model_config.mode == "sto":
+        from src.logic.optimization_gurobipy_stochastic import (
+            solve_stochastic_model_gurobipy,
+        )
+
+        return solve_stochastic_model_gurobipy(
+            data=data,
+            model_config=model_config,
+            solver_config=solver_config,
         )
 
     return _solve_deterministic_core(
@@ -1115,4 +1118,3 @@ def _expression_value(expression: Any) -> float:
         return float(expression)
 
     return float(expression.getValue())
-
