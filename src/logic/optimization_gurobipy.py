@@ -4,6 +4,7 @@ Native gurobipy backend for agricultural logistics optimization.
 Current implementation:
 - deterministic MILP core;
 - origin -> warehouse flows;
+- direct origin -> customer flows;
 - warehouse -> domestic/export customer flows;
 - warehouse -> warehouse transshipment flows;
 - inventory balance;
@@ -16,7 +17,6 @@ Current implementation:
 
 Not implemented yet:
 - stochastic formulation;
-- direct origin-to-customer flow;
 - expansion;
 - bulkification;
 - EVPI/VSS.
@@ -57,11 +57,6 @@ def solve_model_gurobipy(
             "ModelConfig(mode='det'). The stochastic model will be implemented later."
         )
 
-    if model_config.use_direct_origin_customer or data.routes_oc:
-        raise OptimizationBackendNotImplementedError(
-            "Direct origin-to-customer routes are not implemented yet."
-        )
-
     return _solve_deterministic_core(
         data=data,
         model_config=model_config,
@@ -95,6 +90,13 @@ def _solve_deterministic_core(
         (warehouse, customer, product, period)
         for warehouse, customer, product in sorted(data.routes_dc)
         for period in data.periods
+    ]
+
+    oc_keys = [
+        (origin, customer, product, period)
+        for origin, customer, product in sorted(data.routes_oc)
+        for period in data.periods
+        if model_config.use_direct_origin_customer
     ]
 
     dd_keys = [
@@ -141,6 +143,13 @@ def _solve_deterministic_core(
         lb=0.0,
         vtype=GRB.CONTINUOUS,
         name="flow_dc",
+    )
+
+    flow_oc = model.addVars(
+        oc_keys,
+        lb=0.0,
+        vtype=GRB.CONTINUOUS,
+        name="flow_oc",
     )
 
     flow_dd = model.addVars(
@@ -219,6 +228,12 @@ def _solve_deterministic_core(
         for warehouse, customer, product, period in dc_keys
     )
 
+    transport_oc_cost = gp.quicksum(
+        flow_oc[origin, customer, product, period]
+        * _origin_to_customer_unit_cost(data, origin, customer, product)
+        for origin, customer, product, period in oc_keys
+    )
+
     transport_dd_cost = gp.quicksum(
         flow_dd[warehouse_from, warehouse_to, product, period]
         * _warehouse_to_warehouse_unit_cost(
@@ -271,6 +286,7 @@ def _solve_deterministic_core(
     objective = (
         transport_od_cost
         + transport_dc_cost
+        + transport_oc_cost
         + transport_dd_cost
         + storage_cost
         + opening_cost
@@ -316,7 +332,9 @@ def _solve_deterministic_core(
                 rhs = data.supply.get((origin, product, period), 0.0)
 
                 model.addConstr(
-                    flow_od.sum(origin, "*", product, period) == rhs,
+                    flow_od.sum(origin, "*", product, period)
+                    + flow_oc.sum(origin, "*", product, period)
+                    == rhs,
                     name=f"supply_balance[{origin},{product},{period}]",
                 )
 
@@ -363,6 +381,7 @@ def _solve_deterministic_core(
 
                 model.addConstr(
                     flow_dc.sum("*", customer, product, period)
+                    + flow_oc.sum("*", customer, product, period)
                     + unmet_demand[customer, product, period]
                     == rhs,
                     name=f"domestic_demand[{customer},{product},{period}]",
@@ -381,7 +400,9 @@ def _solve_deterministic_core(
                 rhs = data.demand_exp.get((customer, product, period), 0.0)
 
                 model.addConstr(
-                    flow_dc.sum("*", customer, product, period) <= rhs,
+                    flow_dc.sum("*", customer, product, period)
+                    + flow_oc.sum("*", customer, product, period)
+                    <= rhs,
                     name=f"export_upper_bound[{customer},{product},{period}]",
                 )
 
@@ -498,6 +519,7 @@ def _solve_deterministic_core(
         runtime_seconds=runtime_seconds,
         flow_od=flow_od,
         flow_dc=flow_dc,
+        flow_oc=flow_oc,
         flow_dd=flow_dd,
         inventory=inventory,
         open_candidate=open_candidate,
@@ -508,6 +530,7 @@ def _solve_deterministic_core(
         cost_components={
             "transport_od": transport_od_cost,
             "transport_dc": transport_dc_cost,
+            "transport_oc": transport_oc_cost,
             "transport_dd": transport_dd_cost,
             "storage": storage_cost,
             "opening": opening_cost,
@@ -700,6 +723,20 @@ def _warehouse_to_customer_unit_cost(
     return distance * freight
 
 
+def _origin_to_customer_unit_cost(
+    data: ModelData,
+    origin: str,
+    customer: str,
+    product: str,
+) -> float:
+    del product
+
+    distance = data.dist_oc.get((origin, customer), 0.0)
+    freight = data.freight_origin.get(origin, 0.0)
+
+    return distance * freight
+
+
 def _warehouse_to_warehouse_unit_cost(
     data: ModelData,
     warehouse_from: str,
@@ -732,6 +769,7 @@ def _extract_deterministic_result(
     runtime_seconds: float,
     flow_od: Any,
     flow_dc: Any,
+    flow_oc: Any,
     flow_dd: Any,
     inventory: Any,
     open_candidate: Any,
@@ -766,6 +804,26 @@ def _extract_deterministic_result(
                     "route_type": "DC",
                     "origin": None,
                     "warehouse": warehouse,
+                    "customer": customer,
+                    "customer_type": (
+                        "export"
+                        if customer in data.export_customers
+                        else "domestic"
+                    ),
+                    "product": product,
+                    "period": period,
+                    "value": value,
+                }
+            )
+
+    for origin, customer, product, period in flow_oc.keys():
+        value = _value(flow_oc[origin, customer, product, period])
+        if value > VALUE_TOL:
+            flows.append(
+                {
+                    "route_type": "OC",
+                    "origin": origin,
+                    "warehouse": None,
                     "customer": customer,
                     "customer_type": (
                         "export"
