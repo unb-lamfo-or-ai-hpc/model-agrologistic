@@ -170,6 +170,8 @@ def test_gurobipy_backend_stub_raises_not_implemented():
     data = tiny_valid_data()
     data.scenarios = ["expected"]
     data.scenario_prob = {"expected": 1.0}
+    data.supply_s = {("expected", "O1", "soy", "t1"): 100.0}
+    data.demand_dom_s = {("expected", "C1", "soy", "t1"): 100.0}
 
     with pytest.raises(OptimizationBackendNotImplementedError):
         solve_model(
@@ -285,3 +287,4 @@ def test_facade_respects_explicit_gurobi_license_file_in_solver_options(
 
     assert result.status == "optimal"
     assert os.environ["GRB_LICENSE_FILE"] == str(license_file)
+
