@@ -4,19 +4,19 @@ Native gurobipy backend for agricultural logistics optimization.
 Current implementation:
 - deterministic MILP core;
 - origin -> warehouse flows;
-- warehouse -> domestic customer flows;
+- warehouse -> domestic/export customer flows;
+- warehouse -> warehouse transshipment flows;
 - inventory balance;
 - existing and candidate warehouse capacities;
 - candidate opening and scalable/fixed candidate capacity;
 - unmet domestic demand;
+- export demand upper bounds;
 - emergency static capacity;
 - emergency reception capacity.
 
 Not implemented yet:
 - stochastic formulation;
-- warehouse-to-warehouse transshipment;
 - direct origin-to-customer flow;
-- export demand;
 - expansion;
 - bulkification;
 - EVPI/VSS.
@@ -57,20 +57,10 @@ def solve_model_gurobipy(
             "ModelConfig(mode='det'). The stochastic model will be implemented later."
         )
 
-    if data.routes_dd:
-        raise OptimizationBackendNotImplementedError(
-            "Warehouse-to-warehouse transshipment routes are not implemented yet."
-        )
-
     if model_config.use_direct_origin_customer or data.routes_oc:
         raise OptimizationBackendNotImplementedError(
             "Direct origin-to-customer routes are not implemented yet."
         )
-
-    #if data.demand_exp:
-    #    raise OptimizationBackendNotImplementedError(
-    #        "Export demand constraints are not implemented yet."
-    #    )
 
     return _solve_deterministic_core(
         data=data,
@@ -104,6 +94,12 @@ def _solve_deterministic_core(
     dc_keys = [
         (warehouse, customer, product, period)
         for warehouse, customer, product in sorted(data.routes_dc)
+        for period in data.periods
+    ]
+
+    dd_keys = [
+        (warehouse_from, warehouse_to, product, period)
+        for warehouse_from, warehouse_to, product in sorted(data.routes_dd)
         for period in data.periods
     ]
 
@@ -145,6 +141,13 @@ def _solve_deterministic_core(
         lb=0.0,
         vtype=GRB.CONTINUOUS,
         name="flow_dc",
+    )
+
+    flow_dd = model.addVars(
+        dd_keys,
+        lb=0.0,
+        vtype=GRB.CONTINUOUS,
+        name="flow_dd",
     )
 
     inventory = model.addVars(
@@ -216,6 +219,17 @@ def _solve_deterministic_core(
         for warehouse, customer, product, period in dc_keys
     )
 
+    transport_dd_cost = gp.quicksum(
+        flow_dd[warehouse_from, warehouse_to, product, period]
+        * _warehouse_to_warehouse_unit_cost(
+            data=data,
+            warehouse_from=warehouse_from,
+            warehouse_to=warehouse_to,
+            product=product,
+        )
+        for warehouse_from, warehouse_to, product, period in dd_keys
+    )
+
     storage_cost = gp.quicksum(
         inventory[warehouse, product, period]
         * data.storage_tariff.get((warehouse, product), 0.0)
@@ -257,6 +271,7 @@ def _solve_deterministic_core(
     objective = (
         transport_od_cost
         + transport_dc_cost
+        + transport_dd_cost
         + storage_cost
         + opening_cost
         + candidate_capacity_cost
@@ -318,8 +333,14 @@ def _solve_deterministic_core(
                     else inventory[warehouse, product, data.periods[period_index - 1]]
                 )
 
-                inflow = flow_od.sum("*", warehouse, product, period)
-                outflow = flow_dc.sum(warehouse, "*", product, period)
+                inflow = (
+                    flow_od.sum("*", warehouse, product, period)
+                    + flow_dd.sum("*", warehouse, product, period)
+                )
+                outflow = (
+                    flow_dc.sum(warehouse, "*", product, period)
+                    + flow_dd.sum(warehouse, "*", product, period)
+                )
 
                 model.addConstr(
                     inventory[warehouse, product, period]
@@ -347,7 +368,7 @@ def _solve_deterministic_core(
                     name=f"domestic_demand[{customer},{product},{period}]",
                 )
 
-       # ------------------------------------------------------------------
+    # ------------------------------------------------------------------
     # Export demand upper bounds
     #
     # Export markets are not mandatory demand nodes. They act as finite,
@@ -362,7 +383,7 @@ def _solve_deterministic_core(
                 model.addConstr(
                     flow_dc.sum("*", customer, product, period) <= rhs,
                     name=f"export_upper_bound[{customer},{product},{period}]",
-                ) 
+                )
 
     # ------------------------------------------------------------------
     # Warehouse capacities
@@ -394,9 +415,9 @@ def _solve_deterministic_core(
 
             model.addConstr(
                 gp.quicksum(
-                    flow_od[origin, warehouse, product, period]
-                    for origin, route_warehouse, product in data.routes_od
-                    if route_warehouse == warehouse
+                    flow_od.sum("*", warehouse, product, period)
+                    + flow_dd.sum("*", warehouse, product, period)
+                    for product in data.products
                 )
                 <= reception_capacity + emergency_reception_capacity[warehouse, period],
                 name=f"reception_capacity[{warehouse},{period}]",
@@ -411,9 +432,9 @@ def _solve_deterministic_core(
 
             model.addConstr(
                 gp.quicksum(
-                    flow_dc[warehouse, customer, product, period]
-                    for route_warehouse, customer, product in data.routes_dc
-                    if route_warehouse == warehouse
+                    flow_dc.sum(warehouse, "*", product, period)
+                    + flow_dd.sum(warehouse, "*", product, period)
+                    for product in data.products
                 )
                 <= shipping_capacity,
                 name=f"shipping_capacity[{warehouse},{period}]",
@@ -477,6 +498,7 @@ def _solve_deterministic_core(
         runtime_seconds=runtime_seconds,
         flow_od=flow_od,
         flow_dc=flow_dc,
+        flow_dd=flow_dd,
         inventory=inventory,
         open_candidate=open_candidate,
         candidate_capacity=candidate_capacity,
@@ -486,6 +508,7 @@ def _solve_deterministic_core(
         cost_components={
             "transport_od": transport_od_cost,
             "transport_dc": transport_dc_cost,
+            "transport_dd": transport_dd_cost,
             "storage": storage_cost,
             "opening": opening_cost,
             "candidate_capacity": candidate_capacity_cost,
@@ -677,6 +700,30 @@ def _warehouse_to_customer_unit_cost(
     return distance * freight
 
 
+def _warehouse_to_warehouse_unit_cost(
+    data: ModelData,
+    warehouse_from: str,
+    warehouse_to: str,
+    product: str,
+) -> float:
+    del product
+
+    distance = data.dist_dd.get((warehouse_from, warehouse_to), 0.0)
+
+    freight = (
+        data.freight_dest.get(warehouse_from)
+        or data.freight_origin.get(warehouse_from)
+        or data.freight_dest.get(warehouse_to)
+        or data.freight_origin.get(warehouse_to)
+        or 0.0
+    )
+
+    interhub_factor = float(data.metadata.get("interhub_factor", 1.0))
+    receiving_handling_cost = data.transshipment_cost.get(warehouse_to, 0.0)
+
+    return interhub_factor * distance * freight + receiving_handling_cost
+
+
 # ---------------------------------------------------------------------
 # Result extraction
 # ---------------------------------------------------------------------
@@ -691,6 +738,7 @@ def _extract_deterministic_result(
     runtime_seconds: float,
     flow_od: Any,
     flow_dc: Any,
+    flow_dd: Any,
     inventory: Any,
     open_candidate: Any,
     candidate_capacity: Any,
@@ -730,6 +778,20 @@ def _extract_deterministic_result(
                         if customer in data.export_customers
                         else "domestic"
                     ),
+                    "product": product,
+                    "period": period,
+                    "value": value,
+                }
+            )
+
+    for warehouse_from, warehouse_to, product, period in flow_dd.keys():
+        value = _value(flow_dd[warehouse_from, warehouse_to, product, period])
+        if value > VALUE_TOL:
+            flows.append(
+                {
+                    "route_type": "DD",
+                    "warehouse_from": warehouse_from,
+                    "warehouse_to": warehouse_to,
                     "product": product,
                     "period": period,
                     "value": value,
