@@ -165,12 +165,14 @@ class ModelData:
     #
     # freight_origin[(origin)]
     # freight_dest[(customer)]
+    # freight_warehouse[(warehouse)]
     # transshipment_cost[(warehouse)]
     # storage_tariff[(warehouse, product)]
     # -----------------------------------------------------------------
 
     freight_origin: dict[NodeId, float] = field(default_factory=dict)
     freight_dest: dict[NodeId, float] = field(default_factory=dict)
+    freight_warehouse: dict[NodeId, float] = field(default_factory=dict)
     transshipment_cost: dict[NodeId, float] = field(default_factory=dict)
     storage_tariff: dict[Key2, float] = field(default_factory=dict)
 
@@ -282,3 +284,4 @@ class ModelData:
                     nodes.append(node)
 
         return nodes
+

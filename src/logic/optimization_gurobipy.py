@@ -710,13 +710,7 @@ def _warehouse_to_warehouse_unit_cost(
 
     distance = data.dist_dd.get((warehouse_from, warehouse_to), 0.0)
 
-    freight = (
-        data.freight_dest.get(warehouse_from)
-        or data.freight_origin.get(warehouse_from)
-        or data.freight_dest.get(warehouse_to)
-        or data.freight_origin.get(warehouse_to)
-        or 0.0
-    )
+    freight = data.freight_warehouse[warehouse_from]
 
     interhub_factor = float(data.metadata.get("interhub_factor", 1.0))
     receiving_handling_cost = data.transshipment_cost.get(warehouse_to, 0.0)
@@ -922,3 +916,4 @@ def _expression_value(expression: Any) -> float:
         return float(expression)
 
     return float(expression.getValue())
+

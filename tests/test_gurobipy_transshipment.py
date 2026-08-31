@@ -1,8 +1,10 @@
 import pytest
 
+from src.logic.excel_loader import ExcelLoaderConfig, load_model_data_from_excel
 from src.logic.model_config import ModelConfig, SolverConfig
 from src.logic.model_data import ModelData
 from src.logic.optimization import configure_gurobi_wls_license, solve_model
+from tests.test_excel_loader import build_tiny_golden_excel
 
 
 def require_gurobi_available() -> None:
@@ -86,8 +88,10 @@ def base_transshipment_data(
         },
         freight_dest={
             "C1": 1.0,
+        },
+        freight_warehouse={
             "W1": 1.0,
-            "W2": 1.0,
+            "W2": 2.0,
         },
         transshipment_cost={
             "W1": 0.0,
@@ -251,6 +255,89 @@ def test_transshipment_is_used_when_economically_advantageous():
     assert customer_flow(result, "C1") == pytest.approx(100.0)
 
 
+def test_transshipment_cost_uses_origin_freight_factor_and_destination_handling():
+    require_gurobi_available()
+
+    data = base_transshipment_data(
+        routes_dc={("W2", "C1", "soy")},
+        routes_dd={("W1", "W2", "soy")},
+        dist_dc={("W2", "C1"): 1.0},
+        dist_dd={("W1", "W2"): 4.0},
+        supply=10.0,
+        demand=10.0,
+    )
+    data.freight_warehouse["W1"] = 3.0
+    data.freight_warehouse["W2"] = 99.0
+    data.transshipment_cost["W2"] = 5.0
+    data.metadata["interhub_factor"] = 0.5
+
+    result = solve_transshipment_data(data)
+
+    expected_unit_cost = 0.5 * 4.0 * 3.0 + 5.0
+
+    assert result.status == "optimal"
+    assert dd_flow(result, "W1", "W2") == pytest.approx(10.0)
+    assert result.cost_breakdown["transport_dd"] == pytest.approx(
+        10.0 * expected_unit_cost
+    )
+
+
+def test_excel_loaded_cost_contract_drives_transshipment_solver(tmp_path):
+    require_gurobi_available()
+
+    path = tmp_path / "excel_to_gurobi_transshipment.xlsx"
+    build_tiny_golden_excel(path)
+
+    data = load_model_data_from_excel(
+        path,
+        config=ExcelLoaderConfig(
+            include_export_routes=False,
+            include_transshipment_routes=True,
+        ),
+    )
+
+    origin = "Rio Verde - GO"
+    customer = "Goiânia - GO"
+    product = "Soja"
+    period = "2026-01"
+
+    data.origins = [origin]
+    data.customers = [customer]
+    data.domestic_customers = [customer]
+    data.export_customers = []
+    data.periods = [period]
+    data.existing_warehouses = ["W1", "W2"]
+    data.candidate_warehouses = []
+
+    data.routes_od = {(origin, "W1", product)}
+    data.routes_dc = {("W2", customer, product)}
+    data.routes_dd = {("W1", "W2", product)}
+    data.supply = {(origin, product, period): 100.0}
+    data.demand_dom = {(customer, product, period): 100.0}
+    data.demand_exp = {}
+
+    data.static_capacity = {"W1": 500.0, "W2": 500.0}
+    data.reception_capacity = {"W1": 500.0, "W2": 500.0}
+    data.shipping_capacity = {"W1": 500.0, "W2": 500.0}
+    data.metadata["interhub_factor"] = 0.5
+
+    result = solve_transshipment_data(data)
+
+    expected_unit_cost = (
+        0.5
+        * data.dist_dd[("W1", "W2")]
+        * data.freight_warehouse["W1"]
+        + data.transshipment_cost["W2"]
+    )
+
+    assert result.status == "optimal"
+    assert dd_flow(result, "W1", "W2") == pytest.approx(100.0)
+    assert customer_flow(result, customer) == pytest.approx(100.0)
+    assert result.cost_breakdown["transport_dd"] == pytest.approx(
+        100.0 * expected_unit_cost
+    )
+
+
 def test_transshipment_respects_receiving_warehouse_reception_capacity():
     require_gurobi_available()
 
@@ -318,3 +405,4 @@ def test_transshipment_respects_sending_warehouse_shipping_capacity():
     assert dd_flow(result, "W1", "W2") == pytest.approx(30.0)
     assert customer_flow(result, "C1") == pytest.approx(30.0)
     assert inventory_at(result, "W1") == pytest.approx(70.0)
+
