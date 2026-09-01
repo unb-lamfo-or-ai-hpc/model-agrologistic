@@ -55,7 +55,7 @@ def test_top_k_keeps_nearest_routes_per_connectivity_group():
     routes = select_routes(data, config)
 
     assert routes.od == {("O1", "W2", "soy")}
-    assert routes.dc == {("W3", "C1", "soy")}
+    assert routes.dc == {("W2", "C1", "soy"), ("W3", "C1", "soy")}
     assert len(routes.dd) == 3
     assert routes.oc == {("O1", "C1", "soy")}
 
@@ -81,7 +81,7 @@ def test_pareto_filter_keeps_at_least_one_route_per_group():
     )
 
     assert len(routes.od) == 1
-    assert len(routes.dc) == 1
+    assert len(routes.dc) == 2
     assert len(routes.dd) == 3
 
 
@@ -95,11 +95,31 @@ def test_model_size_estimate_reflects_route_filtering():
 
     assert filtered.flow_variables < unfiltered.flow_variables
     assert filtered.routes_od == 1
-    assert filtered.routes_dc == 1
+    assert filtered.routes_dc == 2
     assert filtered.routes_dd == 3
 
 
 def test_top_k_strategy_requires_a_limit():
     with pytest.raises(ValueError, match="route_top_k is required"):
         ModelConfig(route_filter_strategy="top_k")
+
+
+def test_filtered_inbound_warehouse_keeps_an_export_exit():
+    data = route_data()
+    data.customers.append("EXP")
+    data.export_customers.append("EXP")
+    data.routes_dc.update(
+        (warehouse, "EXP", "soy") for warehouse in data.warehouses
+    )
+    data.dist_dc.update(
+        {(warehouse, "EXP"): 100.0 for warehouse in data.warehouses}
+    )
+
+    routes = select_routes(
+        data,
+        ModelConfig(route_filter_strategy="top_k", route_top_k=1),
+    )
+
+    assert ("W2", "C1", "soy") in routes.dc
+    assert ("W2", "EXP", "soy") in routes.dc
 

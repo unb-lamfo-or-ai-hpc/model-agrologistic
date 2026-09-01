@@ -89,3 +89,28 @@ Set `solver.compute_iis: true` to diagnose an infeasible Gurobi model. The
 runner exports the bounded list of IIS constraints and variable bounds to
 `infeasibility.json`; `iis_max_items` controls the maximum exported items.
 
+## Stage 5.3 route-filter calibration
+
+Run the versioned sensitivity campaign before selecting a filtered network for
+the nine-scenario stochastic experiment:
+
+```bash
+python scripts/run_batch_hpc.py \
+  experiments/route_filter_sensitivity.yaml \
+  --dry-run
+
+python scripts/run_batch_hpc.py \
+  experiments/route_filter_sensitivity.yaml
+```
+
+The campaign compares `top_k` values 3, 5, and 10 with a 5% Pareto filter.
+Filtered OD warehouses keep outbound customer coverage and an export exit when
+one exists. The cumulative inventory Big-M is computed from only the origins
+and upstream warehouses that can reach each facility through selected OD/DD
+routes.
+
+`run_summary.json` and the aggregated `batch_summary.csv` include total unmet
+demand and static, reception, and combined emergency-capacity use. Select the
+smallest network whose objective and emergency-capacity indicators remain
+stable before running EVPI/VSS.
+
