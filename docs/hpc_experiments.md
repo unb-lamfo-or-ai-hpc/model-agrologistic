@@ -141,3 +141,33 @@ routes. Summaries additionally report total and served domestic demand,
 domestic service level, and total direct flow. Update `example_hpc.yaml` only
 after this comparison identifies the final policy for the nine-scenario run.
 
+The first direct-route comparison raised domestic service from 38.47% to
+79.34% for `top_k=10` and reduced combined emergency capacity from 39.18
+billion to 471.7 thousand ton-periods. Pareto 5% reached only 48.43% service
+because customer-group filtering did not guarantee a direct exit for every
+origin/product. Direct route selection now augments the filtered set with the
+nearest domestic and export exit for every origin/product. Rerun only the two
+direct cases after this coverage change:
+
+```bash
+python scripts/run_batch_hpc.py \
+  experiments/network_policy_sensitivity.yaml \
+  --index 2 \
+  --dry-run
+python scripts/run_batch_hpc.py \
+  experiments/network_policy_sensitivity.yaml \
+  --index 3 \
+  --dry-run
+
+python scripts/run_batch_hpc.py \
+  experiments/network_policy_sensitivity.yaml \
+  --index 2
+python scripts/run_batch_hpc.py \
+  experiments/network_policy_sensitivity.yaml \
+  --index 3
+
+python scripts/run_batch_hpc.py \
+  experiments/network_policy_sensitivity.yaml \
+  --aggregate-only
+```
+

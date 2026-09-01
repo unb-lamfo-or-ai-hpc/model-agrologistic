@@ -123,3 +123,33 @@ def test_filtered_inbound_warehouse_keeps_an_export_exit():
     assert ("W2", "C1", "soy") in routes.dc
     assert ("W2", "EXP", "soy") in routes.dc
 
+
+def test_filtered_direct_network_keeps_exits_for_every_origin():
+    data = route_data()
+    data.origins = ["O1", "O2", "O3"]
+    data.customers.append("EXP")
+    data.export_customers.append("EXP")
+    data.routes_oc = {
+        (origin, customer, "soy")
+        for origin in data.origins
+        for customer in data.customers
+    }
+    data.dist_oc = {
+        (origin, customer): float(origin[-1])
+        for origin in data.origins
+        for customer in data.customers
+    }
+
+    routes = select_routes(
+        data,
+        ModelConfig(
+            route_filter_strategy="top_k",
+            route_top_k=1,
+            use_direct_origin_customer=True,
+        ),
+    )
+
+    for origin in data.origins:
+        assert (origin, "C1", "soy") in routes.oc
+        assert (origin, "EXP", "soy") in routes.oc
+

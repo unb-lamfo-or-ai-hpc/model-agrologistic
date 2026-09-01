@@ -30,7 +30,9 @@ def select_routes(data: ModelData, config: ModelConfig) -> SelectedRoutes:
     customer/product, and DD routes by source warehouse/product. A top-k or
     Pareto selection is first applied inside each group. DC routes are then
     augmented so every warehouse/product selected on an OD route has an
-    outbound customer route and, when available, an export route.
+    outbound customer route and, when available, an export route. When direct
+    routes are enabled, every origin/product also keeps its nearest domestic
+    customer and export exits.
     """
 
     od = _select(
@@ -47,6 +49,18 @@ def select_routes(data: ModelData, config: ModelConfig) -> SelectedRoutes:
     )
     dc.update(_outbound_routes_for_selected_warehouses(data, config, od))
 
+    oc: set[RouteOC] = set()
+    if config.use_direct_origin_customer:
+        oc = _select(
+            data.routes_oc,
+            config,
+            group=lambda route: (route[1], route[2]),
+            distance=lambda route: data.dist_oc.get(
+                (route[0], route[1]), float("inf")
+            ),
+        )
+        oc.update(_direct_routes_for_all_origins(data, config))
+
     return SelectedRoutes(
         od=od,
         dc=dc,
@@ -62,18 +76,7 @@ def select_routes(data: ModelData, config: ModelConfig) -> SelectedRoutes:
             if config.use_warehouse_transshipment
             else set()
         ),
-        oc=(
-            _select(
-                data.routes_oc,
-                config,
-                group=lambda route: (route[1], route[2]),
-                distance=lambda route: data.dist_oc.get(
-                    (route[0], route[1]), float("inf")
-                ),
-            )
-            if config.use_direct_origin_customer
-            else set()
-        ),
+        oc=oc,
     )
 
 
@@ -137,6 +140,32 @@ def _outbound_routes_for_selected_warehouses(
             ),
         )
     )
+    return selected
+
+
+def _direct_routes_for_all_origins(
+    data: ModelData,
+    config: ModelConfig,
+) -> set[RouteOC]:
+    """Keep domestic and export exits for every direct origin/product group."""
+
+    if config.route_filter_strategy == "none":
+        return set()
+
+    selected: set[RouteOC] = set()
+    for customers in (data.domestic_customers, data.export_customers):
+        candidates = {
+            route for route in data.routes_oc if route[1] in customers
+        }
+        selected.update(
+            _nearest_per_group(
+                candidates,
+                group=lambda route: (route[0], route[2]),
+                distance=lambda route: data.dist_oc.get(
+                    (route[0], route[1]), float("inf")
+                ),
+            )
+        )
     return selected
 
 
