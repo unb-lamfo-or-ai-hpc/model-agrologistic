@@ -18,6 +18,7 @@ from src.logic.optimization_gurobipy import (
     _effective_static_capacity_expr,
     _expression_value,
     _import_gurobi,
+    _infeasibility_metadata,
     _map_gurobi_status,
     _origin_to_customer_unit_cost,
     _origin_to_warehouse_unit_cost,
@@ -25,6 +26,7 @@ from src.logic.optimization_gurobipy import (
     _warehouse_to_customer_unit_cost,
     _warehouse_to_warehouse_unit_cost,
 )
+from src.logic.route_filtering import select_routes
 
 
 def solve_stochastic_model_gurobipy(
@@ -43,29 +45,30 @@ def solve_stochastic_model_gurobipy(
     _apply_solver_parameters(model, solver_config)
 
     scenarios = list(data.scenarios)
+    routes = select_routes(data, model_config)
     od_keys = [
         (scenario, origin, warehouse, product, period)
         for scenario in scenarios
-        for origin, warehouse, product in sorted(data.routes_od)
+        for origin, warehouse, product in sorted(routes.od)
         for period in data.periods
     ]
     dc_keys = [
         (scenario, warehouse, customer, product, period)
         for scenario in scenarios
-        for warehouse, customer, product in sorted(data.routes_dc)
+        for warehouse, customer, product in sorted(routes.dc)
         for period in data.periods
     ]
     oc_keys = [
         (scenario, origin, customer, product, period)
         for scenario in scenarios
-        for origin, customer, product in sorted(data.routes_oc)
+        for origin, customer, product in sorted(routes.oc)
         for period in data.periods
         if model_config.use_direct_origin_customer
     ]
     dd_keys = [
         (scenario, warehouse_from, warehouse_to, product, period)
         for scenario in scenarios
-        for warehouse_from, warehouse_to, product in sorted(data.routes_dd)
+        for warehouse_from, warehouse_to, product in sorted(routes.dd)
         for period in data.periods
         if model_config.use_warehouse_transshipment
     ]
@@ -281,6 +284,7 @@ def solve_stochastic_model_gurobipy(
             "bulk_capacity",
         ],
         "first_stage_fixed": fixed_first_stage is not None,
+        **_infeasibility_metadata(model, GRB, solver_config),
     }
     if model.SolCount == 0:
         return OptimizationResult(
@@ -678,17 +682,20 @@ def _add_scenario_constraints(
                 name=f"shipping_capacity[{scenario},{warehouse},{period}]",
             )
 
-            big_m = _scenario_period_big_m(data, scenario, period)
+            static_big_m = _scenario_cumulative_inventory_big_m(
+                data, scenario, period
+            )
+            reception_big_m = _scenario_period_big_m(data, scenario, period)
             model.addConstr(
                 emergency_static_capacity[scenario, warehouse, period]
-                <= big_m * active,
+                <= static_big_m * active,
                 name=(
                     f"emergency_static_only_if_active[{scenario},{warehouse},{period}]"
                 ),
             )
             model.addConstr(
                 emergency_reception_capacity[scenario, warehouse, period]
-                <= big_m * active,
+                <= reception_big_m * active,
                 name=(
                     f"emergency_reception_only_if_active[{scenario},{warehouse},{period}]"
                 ),
@@ -696,6 +703,8 @@ def _add_scenario_constraints(
 
 
 def _scenario_period_big_m(data: ModelData, scenario: str, period: str) -> float:
+    """Return a safe per-period bound for scenario throughput slacks."""
+
     supply = sum(
         data.supply_s[scenario, origin, product, period]
         for origin in data.origins
@@ -712,6 +721,29 @@ def _scenario_period_big_m(data: ModelData, scenario: str, period: str) -> float
         for product in data.products
     )
     return max(1.0, supply + initial, demand)
+
+
+def _scenario_cumulative_inventory_big_m(
+    data: ModelData,
+    scenario: str,
+    period: str,
+) -> float:
+    """Return the scenario inventory bound accumulated through ``period``."""
+
+    period_index = data.periods.index(period)
+    elapsed_periods = data.periods[: period_index + 1]
+    cumulative_supply = sum(
+        data.supply_s[scenario, origin, product, elapsed_period]
+        for origin in data.origins
+        for product in data.products
+        for elapsed_period in elapsed_periods
+    )
+    initial = sum(
+        data.initial_inventory.get((warehouse, product), 0.0)
+        for warehouse in data.warehouses
+        for product in data.products
+    )
+    return max(1.0, cumulative_supply + initial)
 
 
 def _extract_stochastic_result(
@@ -980,3 +1012,4 @@ def _extract_warehouse_decisions(
             }
         )
     return decisions
+

@@ -31,6 +31,7 @@ from src.logic.optimization import (
     OptimizationResult,
     configure_gurobi_wls_license,
 )
+from src.logic.route_filtering import select_routes
 
 
 DEFAULT_PENALTY = 1_000_000.0
@@ -82,28 +83,30 @@ def _solve_deterministic_core(
     # Index sets
     # ------------------------------------------------------------------
 
+    routes = select_routes(data, model_config)
+
     od_keys = [
         (origin, warehouse, product, period)
-        for origin, warehouse, product in sorted(data.routes_od)
+        for origin, warehouse, product in sorted(routes.od)
         for period in data.periods
     ]
 
     dc_keys = [
         (warehouse, customer, product, period)
-        for warehouse, customer, product in sorted(data.routes_dc)
+        for warehouse, customer, product in sorted(routes.dc)
         for period in data.periods
     ]
 
     oc_keys = [
         (origin, customer, product, period)
-        for origin, customer, product in sorted(data.routes_oc)
+        for origin, customer, product in sorted(routes.oc)
         for period in data.periods
         if model_config.use_direct_origin_customer
     ]
 
     dd_keys = [
         (warehouse_from, warehouse_to, product, period)
-        for warehouse_from, warehouse_to, product in sorted(data.routes_dd)
+        for warehouse_from, warehouse_to, product in sorted(routes.dd)
         for period in data.periods
     ]
 
@@ -577,15 +580,18 @@ def _solve_deterministic_core(
         )
 
         for period in data.periods:
-            big_m = _period_big_m(data, period)
+            static_big_m = _cumulative_inventory_big_m(data, period)
+            reception_big_m = _period_big_m(data, period)
 
             model.addConstr(
-                emergency_static_capacity[warehouse, period] <= big_m * active,
+                emergency_static_capacity[warehouse, period]
+                <= static_big_m * active,
                 name=f"emergency_static_only_if_active[{warehouse},{period}]",
             )
 
             model.addConstr(
-                emergency_reception_capacity[warehouse, period] <= big_m * active,
+                emergency_reception_capacity[warehouse, period]
+                <= reception_big_m * active,
                 name=f"emergency_reception_only_if_active[{warehouse},{period}]",
             )
 
@@ -599,6 +605,7 @@ def _solve_deterministic_core(
     status = _map_gurobi_status(model, GRB)
 
     if model.SolCount == 0:
+        infeasibility = _infeasibility_metadata(model, GRB, solver_config)
         return OptimizationResult(
             status=status,
             solver_backend="gurobipy",
@@ -608,6 +615,7 @@ def _solve_deterministic_core(
             metadata={
                 "gurobi_status_code": model.Status,
                 "solution_count": model.SolCount,
+                **infeasibility,
             },
         )
 
@@ -695,6 +703,55 @@ def _apply_solver_parameters(model: Any, solver_config: SolverConfig) -> None:
         if option_name in ignored_options:
             continue
         model.setParam(option_name, option_value)
+
+
+def _infeasibility_metadata(
+    model: Any,
+    GRB: Any,
+    solver_config: SolverConfig,
+) -> dict[str, Any]:
+    """Compute a bounded IIS diagnostic when explicitly requested."""
+
+    if model.Status != GRB.INFEASIBLE or not solver_config.compute_iis:
+        return {}
+
+    started_at = perf_counter()
+    try:
+        model.computeIIS()
+        constraint_names = [
+            constraint.ConstrName
+            for constraint in model.getConstrs()
+            if constraint.IISConstr
+        ]
+        bound_names = [
+            f"{variable.VarName}:{bound}"
+            for variable in model.getVars()
+            for bound, included in (
+                ("lower", variable.IISLB),
+                ("upper", variable.IISUB),
+            )
+            if included
+        ]
+        limit = solver_config.iis_max_items
+        return {
+            "iis_computed": True,
+            "iis_minimal": bool(model.IISMinimal),
+            "iis_runtime_seconds": perf_counter() - started_at,
+            "iis_constraint_count": len(constraint_names),
+            "iis_bound_count": len(bound_names),
+            "iis_constraints": constraint_names[:limit],
+            "iis_bounds": bound_names[:limit],
+            "iis_truncated": (
+                len(constraint_names) > limit or len(bound_names) > limit
+            ),
+        }
+    except Exception as error:
+        return {
+            "iis_computed": False,
+            "iis_error_type": type(error).__name__,
+            "iis_error_message": str(error),
+            "iis_runtime_seconds": perf_counter() - started_at,
+        }
 
 
 def _map_gurobi_status(model: Any, GRB: Any) -> str:
@@ -791,6 +848,8 @@ def _effective_shipping_capacity_expr(
 
 
 def _period_big_m(data: ModelData, period: str) -> float:
+    """Return a safe per-period bound for throughput slacks."""
+
     supply = sum(
         data.supply.get((origin, product, period), 0.0)
         for origin in data.origins
@@ -810,6 +869,32 @@ def _period_big_m(data: ModelData, period: str) -> float:
     )
 
     return max(1.0, supply + initial_inventory, demand)
+
+
+def _cumulative_inventory_big_m(data: ModelData, period: str) -> float:
+    """Return an inventory bound that respects accumulation over time.
+
+    Inventory can carry all supply received in earlier periods. Bounding an
+    emergency storage slack by only the current period's supply can therefore
+    make a valid multi-period instance infeasible. Demand is omitted because
+    it cannot increase warehouse inventory.
+    """
+
+    period_index = data.periods.index(period)
+    elapsed_periods = data.periods[: period_index + 1]
+    cumulative_supply = sum(
+        data.supply.get((origin, product, elapsed_period), 0.0)
+        for origin in data.origins
+        for product in data.products
+        for elapsed_period in elapsed_periods
+    )
+    initial_inventory = sum(
+        data.initial_inventory.get((warehouse, product), 0.0)
+        for warehouse in data.warehouses
+        for product in data.products
+    )
+
+    return max(1.0, cumulative_supply + initial_inventory)
 
 
 def _origin_to_warehouse_unit_cost(
@@ -1117,3 +1202,4 @@ def _expression_value(expression: Any) -> float:
         return float(expression)
 
     return float(expression.getValue())
+
