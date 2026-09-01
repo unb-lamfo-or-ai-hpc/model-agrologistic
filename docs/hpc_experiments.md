@@ -21,6 +21,20 @@ Indices are zero-based:
 python scripts/run_batch_hpc.py experiments/example_hpc.yaml --index 0
 ```
 
+Before solving, inspect the selected routes and estimated variable count:
+
+```bash
+python scripts/run_batch_hpc.py \
+  experiments/example_hpc.yaml \
+  --index 0 \
+  --dry-run
+```
+
+Every run writes `preflight.json`. By default, the runner refuses an estimate
+above two million variables. Configure `route_filter_strategy: top_k` with
+`route_top_k`, use `pareto`, or explicitly set
+`max_estimated_variables: null` when a larger run is intentional.
+
 The command also reads `SLURM_ARRAY_TASK_ID` when `--index` is omitted. A Slurm
 submission can therefore use:
 
@@ -50,6 +64,7 @@ Each experiment owns a directory named after its validated run name:
 ```text
 <output_dir>/<experiment_name>/
 ├── result.json
+├── preflight.json
 ├── run_summary.json
 ├── warehouse_decisions.csv
 ├── flows.csv

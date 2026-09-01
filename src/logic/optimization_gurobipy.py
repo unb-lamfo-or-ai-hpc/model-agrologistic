@@ -31,6 +31,7 @@ from src.logic.optimization import (
     OptimizationResult,
     configure_gurobi_wls_license,
 )
+from src.logic.route_filtering import select_routes
 
 
 DEFAULT_PENALTY = 1_000_000.0
@@ -82,28 +83,30 @@ def _solve_deterministic_core(
     # Index sets
     # ------------------------------------------------------------------
 
+    routes = select_routes(data, model_config)
+
     od_keys = [
         (origin, warehouse, product, period)
-        for origin, warehouse, product in sorted(data.routes_od)
+        for origin, warehouse, product in sorted(routes.od)
         for period in data.periods
     ]
 
     dc_keys = [
         (warehouse, customer, product, period)
-        for warehouse, customer, product in sorted(data.routes_dc)
+        for warehouse, customer, product in sorted(routes.dc)
         for period in data.periods
     ]
 
     oc_keys = [
         (origin, customer, product, period)
-        for origin, customer, product in sorted(data.routes_oc)
+        for origin, customer, product in sorted(routes.oc)
         for period in data.periods
         if model_config.use_direct_origin_customer
     ]
 
     dd_keys = [
         (warehouse_from, warehouse_to, product, period)
-        for warehouse_from, warehouse_to, product in sorted(data.routes_dd)
+        for warehouse_from, warehouse_to, product in sorted(routes.dd)
         for period in data.periods
     ]
 
@@ -1117,3 +1120,4 @@ def _expression_value(expression: Any) -> float:
         return float(expression)
 
     return float(expression.getValue())
+

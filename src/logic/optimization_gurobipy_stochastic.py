@@ -25,6 +25,7 @@ from src.logic.optimization_gurobipy import (
     _warehouse_to_customer_unit_cost,
     _warehouse_to_warehouse_unit_cost,
 )
+from src.logic.route_filtering import select_routes
 
 
 def solve_stochastic_model_gurobipy(
@@ -43,29 +44,30 @@ def solve_stochastic_model_gurobipy(
     _apply_solver_parameters(model, solver_config)
 
     scenarios = list(data.scenarios)
+    routes = select_routes(data, model_config)
     od_keys = [
         (scenario, origin, warehouse, product, period)
         for scenario in scenarios
-        for origin, warehouse, product in sorted(data.routes_od)
+        for origin, warehouse, product in sorted(routes.od)
         for period in data.periods
     ]
     dc_keys = [
         (scenario, warehouse, customer, product, period)
         for scenario in scenarios
-        for warehouse, customer, product in sorted(data.routes_dc)
+        for warehouse, customer, product in sorted(routes.dc)
         for period in data.periods
     ]
     oc_keys = [
         (scenario, origin, customer, product, period)
         for scenario in scenarios
-        for origin, customer, product in sorted(data.routes_oc)
+        for origin, customer, product in sorted(routes.oc)
         for period in data.periods
         if model_config.use_direct_origin_customer
     ]
     dd_keys = [
         (scenario, warehouse_from, warehouse_to, product, period)
         for scenario in scenarios
-        for warehouse_from, warehouse_to, product in sorted(data.routes_dd)
+        for warehouse_from, warehouse_to, product in sorted(routes.dd)
         for period in data.periods
         if model_config.use_warehouse_transshipment
     ]
@@ -980,3 +982,4 @@ def _extract_warehouse_decisions(
             }
         )
     return decisions
+

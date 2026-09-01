@@ -35,6 +35,11 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="Only rebuild batch_summary.csv from existing per-run summaries.",
     )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Load data and report model size without building or solving it.",
+    )
     return parser
 
 
@@ -51,6 +56,7 @@ def main(argv: list[str] | None = None) -> int:
 
     from src.logic.experiment_runner import (
         aggregate_experiment_summaries,
+        inspect_manifest,
         load_experiment_manifest,
         run_manifest,
     )
@@ -65,6 +71,14 @@ def main(argv: list[str] | None = None) -> int:
         return 0
 
     index = selected_index(args.index)
+    if args.dry_run:
+        inspect_manifest(
+            manifest,
+            indices=[index] if index is not None else None,
+            output_root=output_root,
+        )
+        return 0
+
     summaries = run_manifest(
         manifest,
         indices=[index] if index is not None else None,

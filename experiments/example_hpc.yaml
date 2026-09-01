@@ -3,15 +3,19 @@ output_dir: ../data/results/hpc
 continue_on_error: true
 
 defaults:
+  max_estimated_variables: 2000000
   solver:
     backend: gurobipy
     solver_name: gurobi
     mip_gap: 0.01
-    time_limit: 3600
+    time_limit: 300
     threads: 0
     seed: 0
+    tee: true
   model:
     use_warehouse_transshipment: true
+    route_filter_strategy: top_k
+    route_top_k: 3
     allow_capacity_expansion: true
     allow_bulkification: true
 

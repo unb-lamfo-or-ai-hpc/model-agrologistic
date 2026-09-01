@@ -27,6 +27,7 @@ from src.logic.optimization import (
     calculate_evpi_vss,
     solve_model,
 )
+from src.logic.route_filtering import select_routes
 
 
 MANIFEST_VERSION = 1
@@ -43,6 +44,7 @@ class ExperimentSpec:
     model: ModelConfig = field(default_factory=ModelConfig)
     solver: SolverConfig = field(default_factory=SolverConfig)
     calculate_evpi_vss: bool = False
+    max_estimated_variables: int | None = 2_000_000
     metadata: dict[str, Any] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
@@ -58,6 +60,8 @@ class ExperimentSpec:
             )
         if self.calculate_evpi_vss and self.model.mode != "sto":
             raise ValueError("EVPI/VSS can only be requested for stochastic runs.")
+        if self.max_estimated_variables is not None and self.max_estimated_variables <= 0:
+            raise ValueError("max_estimated_variables must be positive or null.")
 
 
 @dataclass(slots=True)
@@ -92,9 +96,28 @@ class ExperimentRunSummary:
     error_message: str | None = None
 
 
+@dataclass(frozen=True, slots=True)
+class ModelSizeEstimate:
+    """Pre-solve route and variable counts used by the HPC safety guard."""
+
+    scenario_count: int
+    period_count: int
+    routes_od: int
+    routes_dc: int
+    routes_dd: int
+    routes_oc: int
+    flow_variables: int
+    inventory_variables: int
+    unmet_demand_variables: int
+    emergency_capacity_variables: int
+    investment_variables: int
+    total_variables: int
+
+
 Loader = Callable[[str | Path, ExcelLoaderConfig | None], ModelData]
 Solver = Callable[..., OptimizationResult]
 EVPICalculator = Callable[..., EVPIVSSResult]
+Progress = Callable[[str], None]
 
 
 def load_experiment_manifest(path: str | Path) -> ExperimentManifest:
@@ -146,6 +169,7 @@ def run_experiment(
     loader: Loader = load_model_data_from_excel,
     solver: Solver = solve_model,
     evpi_calculator: EVPICalculator = calculate_evpi_vss,
+    progress: Progress = print,
 ) -> ExperimentRunSummary:
     """Execute one experiment and atomically export its structured artifacts."""
 
@@ -153,8 +177,15 @@ def run_experiment(
     run_dir = Path(output_root).resolve() / spec.name
     run_dir.mkdir(parents=True, exist_ok=True)
 
+    progress(f"[{spec.name}] loading {spec.workbook}")
     data = loader(spec.workbook, spec.loader)
+    estimate = estimate_model_size(data, spec.model)
+    _write_json(run_dir / "preflight.json", asdict(estimate))
+    progress(_preflight_message(spec, estimate))
+    _enforce_size_limit(spec, estimate)
+
     evpi_result: EVPIVSSResult | None = None
+    progress(f"[{spec.name}] building and solving model")
     if spec.calculate_evpi_vss:
         evpi_result = evpi_calculator(
             data=data,
@@ -170,9 +201,11 @@ def run_experiment(
         )
 
     if result.has_solution:
+        progress(f"[{spec.name}] calculating DynCap and Turnover")
         attach_storage_metrics(data, result)
 
     finished = datetime.now(timezone.utc)
+    progress(f"[{spec.name}] exporting structured artifacts")
     _export_run_artifacts(
         spec=spec,
         result=result,
@@ -190,7 +223,78 @@ def run_experiment(
         finished=finished,
     )
     _write_json(run_dir / "run_summary.json", asdict(summary))
+    progress(f"[{spec.name}] finished with status={summary.status}")
     return summary
+
+
+def inspect_experiment(
+    spec: ExperimentSpec,
+    output_root: str | Path,
+    *,
+    loader: Loader = load_model_data_from_excel,
+    progress: Progress = print,
+) -> ModelSizeEstimate:
+    """Load an instance and export its model-size estimate without solving."""
+
+    run_dir = Path(output_root).resolve() / spec.name
+    progress(f"[{spec.name}] loading {spec.workbook}")
+    data = loader(spec.workbook, spec.loader)
+    estimate = estimate_model_size(data, spec.model)
+    _write_json(run_dir / "preflight.json", asdict(estimate))
+    progress(_preflight_message(spec, estimate))
+    return estimate
+
+
+def estimate_model_size(data: ModelData, config: ModelConfig) -> ModelSizeEstimate:
+    """Estimate variables created by the native deterministic/extensive form."""
+
+    routes = select_routes(data, config)
+    scenarios = len(data.scenarios) if config.mode == "sto" else 1
+    periods = len(data.periods)
+    flow_variables = scenarios * periods * (
+        len(routes.od) + len(routes.dc) + len(routes.dd) + len(routes.oc)
+    )
+    inventory_variables = (
+        scenarios * len(data.warehouses) * len(data.products) * periods
+    )
+    unmet_variables = (
+        scenarios * len(data.domestic_customers) * len(data.products) * periods
+    )
+    emergency_variables = scenarios * len(data.warehouses) * periods * 2
+    expansion_count = sum(
+        config.allow_capacity_expansion
+        and data.max_expand_capacity.get(warehouse, 0.0) > 0.0
+        for warehouse in data.existing_warehouses
+    )
+    bulk_count = sum(
+        config.allow_bulkification
+        and data.max_bulk_capacity.get(warehouse, 0.0) > 0.0
+        for warehouse in data.bulk_eligible_warehouses
+    )
+    investment_variables = 2 * (
+        len(data.candidate_warehouses) + expansion_count + bulk_count
+    )
+    total_variables = (
+        flow_variables
+        + inventory_variables
+        + unmet_variables
+        + emergency_variables
+        + investment_variables
+    )
+    return ModelSizeEstimate(
+        scenario_count=scenarios,
+        period_count=periods,
+        routes_od=len(routes.od),
+        routes_dc=len(routes.dc),
+        routes_dd=len(routes.dd),
+        routes_oc=len(routes.oc),
+        flow_variables=flow_variables,
+        inventory_variables=inventory_variables,
+        unmet_demand_variables=unmet_variables,
+        emergency_capacity_variables=emergency_variables,
+        investment_variables=investment_variables,
+        total_variables=total_variables,
+    )
 
 
 def run_manifest(
@@ -201,6 +305,7 @@ def run_manifest(
     loader: Loader = load_model_data_from_excel,
     solver: Solver = solve_model,
     evpi_calculator: EVPICalculator = calculate_evpi_vss,
+    progress: Progress = print,
 ) -> list[ExperimentRunSummary]:
     """Execute all or selected manifest entries, optionally continuing on errors."""
 
@@ -223,6 +328,7 @@ def run_manifest(
                 loader=loader,
                 solver=solver,
                 evpi_calculator=evpi_calculator,
+                progress=progress,
             )
         except Exception as error:
             summary = _export_failed_run(spec, root, error)
@@ -232,6 +338,35 @@ def run_manifest(
         else:
             summaries.append(summary)
     return summaries
+
+
+def inspect_manifest(
+    manifest: ExperimentManifest,
+    *,
+    indices: list[int] | None = None,
+    output_root: str | Path | None = None,
+    loader: Loader = load_model_data_from_excel,
+    progress: Progress = print,
+) -> list[ModelSizeEstimate]:
+    """Preflight all or selected manifest entries without importing a solver."""
+
+    selected = indices if indices is not None else list(range(len(manifest.experiments)))
+    invalid = [index for index in selected if index < 0 or index >= len(manifest.experiments)]
+    if invalid:
+        raise IndexError(
+            f"Experiment indices out of range: {invalid}; valid range is "
+            f"0..{len(manifest.experiments) - 1}."
+        )
+    root = Path(output_root).resolve() if output_root else manifest.output_dir
+    return [
+        inspect_experiment(
+            manifest.experiments[index],
+            root,
+            loader=loader,
+            progress=progress,
+        )
+        for index in selected
+    ]
 
 
 def aggregate_experiment_summaries(output_root: str | Path) -> Path:
@@ -279,6 +414,12 @@ def _parse_experiment(
             model=ModelConfig(**model_values),
             solver=SolverConfig(**solver_values),
             calculate_evpi_vss=bool(item.get("calculate_evpi_vss", False)),
+            max_estimated_variables=_optional_int(
+                item.get(
+                    "max_estimated_variables",
+                    defaults.get("max_estimated_variables", 2_000_000),
+                )
+            ),
             metadata=_mapping(item.get("metadata", {}), "experiment.metadata"),
         )
     except TypeError as error:
@@ -402,6 +543,7 @@ def _spec_payload(spec: ExperimentSpec) -> dict[str, Any]:
         "model": asdict(spec.model),
         "solver": asdict(spec.solver),
         "calculate_evpi_vss": spec.calculate_evpi_vss,
+        "max_estimated_variables": spec.max_estimated_variables,
         "metadata": spec.metadata,
     }
 
@@ -473,6 +615,38 @@ def _csv_value(value: Any) -> Any:
 
 def _optional_float(value: Any) -> float | None:
     return None if value is None else float(value)
+
+
+def _optional_int(value: Any) -> int | None:
+    return None if value is None else int(value)
+
+
+def _preflight_message(
+    spec: ExperimentSpec,
+    estimate: ModelSizeEstimate,
+) -> str:
+    return (
+        f"[{spec.name}] preflight: scenarios={estimate.scenario_count}, "
+        f"periods={estimate.period_count}, "
+        f"routes(OD/DC/DD/OC)={estimate.routes_od}/{estimate.routes_dc}/"
+        f"{estimate.routes_dd}/{estimate.routes_oc}, "
+        f"estimated_variables={estimate.total_variables:,}"
+    )
+
+
+def _enforce_size_limit(
+    spec: ExperimentSpec,
+    estimate: ModelSizeEstimate,
+) -> None:
+    limit = spec.max_estimated_variables
+    if limit is None or estimate.total_variables <= limit:
+        return
+    raise ValueError(
+        f"Experiment {spec.name!r} is estimated to create "
+        f"{estimate.total_variables:,} variables, above its safety limit of "
+        f"{limit:,}. Apply route_filter_strategy='top_k' or 'pareto', reduce "
+        "the scenario set, or explicitly set max_estimated_variables=null."
+    )
 
 
 def _execution_context() -> dict[str, Any]:

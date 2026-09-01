@@ -9,6 +9,8 @@ from src.logic.experiment_runner import (
     ExperimentManifest,
     ExperimentSpec,
     aggregate_experiment_summaries,
+    estimate_model_size,
+    inspect_manifest,
     load_experiment_manifest,
     run_experiment,
     run_manifest,
@@ -192,6 +194,7 @@ def test_run_experiment_exports_complete_json_csv_and_metrics(
 
     expected_files = {
         "result.json",
+        "preflight.json",
         "run_summary.json",
         "warehouse_decisions.csv",
         "flows.csv",
@@ -282,6 +285,46 @@ def test_manifest_rejects_out_of_range_index(tmp_path):
 
     with pytest.raises(IndexError, match="valid range"):
         run_manifest(manifest, indices=[1])
+
+
+def test_preflight_blocks_oversized_run_before_solver(tmp_path):
+    spec = experiment("guarded")
+    spec.max_estimated_variables = 1
+    solver_called = False
+
+    def should_not_solve(**_kwargs):
+        nonlocal solver_called
+        solver_called = True
+        return solved_result()
+
+    with pytest.raises(ValueError, match="above its safety limit"):
+        run_experiment(
+            spec,
+            tmp_path,
+            loader=fake_loader,
+            solver=should_not_solve,
+            progress=lambda _message: None,
+        )
+
+    assert solver_called is False
+    assert (tmp_path / "guarded" / "preflight.json").is_file()
+
+
+def test_inspect_manifest_reports_size_without_solving(tmp_path):
+    manifest = ExperimentManifest(
+        experiments=[experiment("planned")],
+        output_dir=tmp_path,
+    )
+
+    estimates = inspect_manifest(
+        manifest,
+        loader=fake_loader,
+        progress=lambda _message: None,
+    )
+
+    assert estimates[0] == estimate_model_size(model_data(), ModelConfig(mode="det"))
+    assert (tmp_path / "planned" / "preflight.json").is_file()
+    assert not (tmp_path / "planned" / "result.json").exists()
 
 
 def test_slurm_array_index_is_used_unless_cli_overrides_it(monkeypatch):

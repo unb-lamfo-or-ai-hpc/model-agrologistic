@@ -223,6 +223,11 @@ class ModelConfig:
         if self.route_top_k is not None and self.route_top_k <= 0:
             raise ValueError("route_top_k must be positive or None.")
 
+        if self.route_filter_strategy == "top_k" and self.route_top_k is None:
+            raise ValueError(
+                "route_top_k is required when route_filter_strategy='top_k'."
+            )
+
         if self.terminal_inventory_penalty < 0:
             raise ValueError("terminal_inventory_penalty must be non-negative.")
 
@@ -257,3 +262,4 @@ class RunConfig:
     run_name: str = "default_run"
     output_dir: str = "outputs"
     metadata: dict[str, Any] = field(default_factory=dict)
+
