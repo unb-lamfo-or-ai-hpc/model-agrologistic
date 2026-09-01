@@ -105,6 +105,7 @@ def configure_gurobi_wls_license(solver_config: SolverConfig) -> str | None:
 
     return None
 
+
 class OptimizationBackendNotImplementedError(NotImplementedError):
     """Raised when a selected optimization backend is not implemented yet."""
 
@@ -149,6 +150,25 @@ class OptimizationResult:
     def has_solution(self) -> bool:
         """Return True if the result contains a usable feasible solution."""
         return self.status in {"optimal", "feasible", "time_limit"}
+
+
+@dataclass(slots=True)
+class EVPIVSSResult:
+    """Economic value metrics and the optimization runs used to compute them."""
+
+    recourse_problem: float
+    wait_and_see: float
+    expected_value_problem: float
+    expected_result_of_ev_solution: float
+    evpi: float
+    vss: float
+
+    recourse_problem_result: OptimizationResult
+    wait_and_see_results: dict[str, OptimizationResult]
+    expected_value_problem_result: OptimizationResult
+    expected_result_result: OptimizationResult
+
+    metadata: dict[str, Any] = field(default_factory=dict)
 
 
 def solve_model(
@@ -235,3 +255,47 @@ def solve_model(
         )
 
     raise ValueError(f"Unknown solver backend: {solver_config.backend!r}")
+
+
+def calculate_evpi_vss(
+    data: ModelData,
+    model_config: ModelConfig | None = None,
+    solver_config: SolverConfig | None = None,
+    *,
+    validate: bool = True,
+    require_distances: bool = True,
+) -> EVPIVSSResult:
+    """Calculate EVPI and VSS for a two-stage stochastic model."""
+
+    if model_config is None:
+        model_config = ModelConfig(mode="sto")
+    if solver_config is None:
+        solver_config = SolverConfig()
+
+    if model_config.mode != "sto":
+        raise ValueError("EVPI/VSS calculation requires ModelConfig(mode='sto').")
+
+    if validate:
+        validate_or_raise_model_data(
+            data=data,
+            config=model_config,
+            require_distances=require_distances,
+        )
+
+    if solver_config.backend != "gurobipy":
+        raise OptimizationBackendNotImplementedError(
+            "EVPI/VSS is currently implemented for the native gurobipy "
+            "backend only."
+        )
+
+    configure_gurobi_wls_license(solver_config)
+
+    from src.logic.stochastic_analysis_gurobipy import (
+        calculate_evpi_vss_gurobipy,
+    )
+
+    return calculate_evpi_vss_gurobipy(
+        data=data,
+        model_config=model_config,
+        solver_config=solver_config,
+    )
