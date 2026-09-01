@@ -62,6 +62,7 @@ def solved_result() -> OptimizationResult:
                 "route_type": "DC",
                 "warehouse": "W1",
                 "customer": "C1",
+                "customer_type": "domestic",
                 "product": "soy",
                 "period": "t2",
                 "value": 80.0,
@@ -229,6 +230,10 @@ def test_run_experiment_exports_complete_json_csv_and_metrics(
     assert summary.dyn_cap == pytest.approx(600.0)
     assert summary.turnover == pytest.approx(6.0)
     assert summary.total_unmet_demand == pytest.approx(5.0)
+    assert summary.total_domestic_demand == pytest.approx(85.0)
+    assert summary.served_domestic_demand == pytest.approx(80.0)
+    assert summary.domestic_service_level == pytest.approx(80.0 / 85.0)
+    assert summary.total_direct_flow == pytest.approx(0.0)
     assert summary.emergency_static_capacity == pytest.approx(10.0)
     assert summary.emergency_reception_capacity == pytest.approx(20.0)
     assert summary.total_emergency_capacity == pytest.approx(30.0)

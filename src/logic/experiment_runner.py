@@ -86,6 +86,10 @@ class ExperimentRunSummary:
     dyn_cap: float | None
     turnover: float | None
     total_unmet_demand: float | None
+    total_domestic_demand: float | None
+    served_domestic_demand: float | None
+    domestic_service_level: float | None
+    total_direct_flow: float | None
     emergency_static_capacity: float | None
     emergency_reception_capacity: float | None
     total_emergency_capacity: float | None
@@ -499,6 +503,11 @@ def _build_summary(
     started: datetime,
     finished: datetime,
 ) -> ExperimentRunSummary:
+    (
+        total_domestic_demand,
+        served_domestic_demand,
+        domestic_service_level,
+    ) = _domestic_service_metrics(result)
     return ExperimentRunSummary(
         name=spec.name,
         status=result.status,
@@ -509,6 +518,14 @@ def _build_summary(
         turnover=_optional_float(result.metrics.get("Turnover")),
         total_unmet_demand=_weighted_record_total(
             result, result.unmet_demand
+        ),
+        total_domestic_demand=total_domestic_demand,
+        served_domestic_demand=served_domestic_demand,
+        domestic_service_level=domestic_service_level,
+        total_direct_flow=_weighted_record_total(
+            result,
+            result.flows,
+            route_type="OC",
         ),
         emergency_static_capacity=_weighted_record_total(
             result,
@@ -550,6 +567,10 @@ def _export_failed_run(
         dyn_cap=None,
         turnover=None,
         total_unmet_demand=None,
+        total_domestic_demand=None,
+        served_domestic_demand=None,
+        domestic_service_level=None,
+        total_direct_flow=None,
         emergency_static_capacity=None,
         emergency_reception_capacity=None,
         total_emergency_capacity=None,
@@ -657,8 +678,7 @@ def _optional_int(value: Any) -> int | None:
 def _weighted_record_total(
     result: OptimizationResult,
     records: list[dict[str, Any]],
-    *,
-    capacity_type: str | None = None,
+    **filters: Any,
 ) -> float | None:
     if not result.has_solution:
         return None
@@ -667,7 +687,7 @@ def _weighted_record_total(
     scenario_metrics = result.metrics.get("scenario_metrics", {})
     total = 0.0
     for record in records:
-        if capacity_type is not None and record.get("capacity_type") != capacity_type:
+        if any(record.get(key) != value for key, value in filters.items()):
             continue
         scenario = record.get("scenario")
         probability = 1.0
@@ -678,6 +698,25 @@ def _weighted_record_total(
             )
         total += float(record.get("value", 0.0)) * float(probability)
     return total
+
+
+def _domestic_service_metrics(
+    result: OptimizationResult,
+) -> tuple[float | None, float | None, float | None]:
+    if not result.has_solution:
+        return None, None, None
+
+    served = _weighted_record_total(
+        result,
+        result.flows,
+        customer_type="domestic",
+    )
+    unmet = _weighted_record_total(result, result.unmet_demand)
+    assert served is not None
+    assert unmet is not None
+    total = served + unmet
+    service_level = served / total if total > 0.0 else 1.0
+    return total, served, service_level
 
 
 def _preflight_message(

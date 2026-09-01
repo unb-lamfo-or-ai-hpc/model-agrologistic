@@ -114,3 +114,30 @@ demand and static, reception, and combined emergency-capacity use. Select the
 smallest network whose objective and emergency-capacity indicators remain
 stable before running EVPI/VSS.
 
+The first NPAD campaign completed with 144 passing tests and four optimal
+solutions. Pareto 5% reduced the objective by 0.82%, runtime by 8.41%, and
+combined emergency capacity by 0.88% relative to `top_k=10`, but increased
+unmet domestic demand by 4.59%. Its domestic service level was 35.13%, versus
+37.98% for `top_k=10`, so the filtered network must not be selected from the
+objective alone.
+
+The golden workbook declares `days_per_period=30`, while the first campaign
+used the model default of 22. It also left optional direct origin-customer and
+origin-export routes disabled, forcing all supply through warehouse shipping
+capacity. Run the follow-up campaign at 30 days to separate the route-filter
+effect from the network-policy effect:
+
+```bash
+python scripts/run_batch_hpc.py \
+  experiments/network_policy_sensitivity.yaml \
+  --dry-run
+
+python scripts/run_batch_hpc.py \
+  experiments/network_policy_sensitivity.yaml
+```
+
+This campaign compares Pareto 5% with `top_k=10`, both with and without direct
+routes. Summaries additionally report total and served domestic demand,
+domestic service level, and total direct flow. Update `example_hpc.yaml` only
+after this comparison identifies the final policy for the nine-scenario run.
+
