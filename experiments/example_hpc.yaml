@@ -1,0 +1,41 @@
+version: 1
+output_dir: ../data/results/hpc
+continue_on_error: true
+
+defaults:
+  solver:
+    backend: gurobipy
+    solver_name: gurobi
+    mip_gap: 0.01
+    time_limit: 3600
+    threads: 0
+    seed: 0
+  model:
+    use_warehouse_transshipment: true
+    allow_capacity_expansion: true
+    allow_bulkification: true
+
+experiments:
+  - name: deterministic_baseline
+    workbook: ../data/templates/model_agrologistic_padrao_ouro.xlsx
+    model:
+      mode: det
+    loader:
+      include_transshipment_routes: true
+    metadata:
+      family: baseline
+
+  - name: stochastic_nine_scenarios
+    workbook: ../data/templates/model_agrologistic_padrao_ouro.xlsx
+    model:
+      mode: sto
+    loader:
+      include_transshipment_routes: true
+      include_stochastic_scenarios: true
+      scenario_generation_mode: cartesian
+      stochastic_supply_levels: [baixo, base, alto]
+      stochastic_demand_levels: [baixo, base, alto]
+    calculate_evpi_vss: true
+    metadata:
+      family: stochastic
+
