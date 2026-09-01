@@ -14,6 +14,7 @@ from src.logic.experiment_runner import (
     load_experiment_manifest,
     run_experiment,
     run_manifest,
+    _weighted_record_total,
 )
 from src.logic.excel_loader import ExcelLoaderConfig
 from src.logic.model_config import ModelConfig, SolverConfig
@@ -61,6 +62,7 @@ def solved_result() -> OptimizationResult:
                 "route_type": "DC",
                 "warehouse": "W1",
                 "customer": "C1",
+                "customer_type": "domestic",
                 "product": "soy",
                 "period": "t2",
                 "value": 80.0,
@@ -73,6 +75,28 @@ def solved_result() -> OptimizationResult:
                 "period": "t2",
                 "value": 20.0,
             }
+        ],
+        unmet_demand=[
+            {
+                "customer": "C1",
+                "product": "soy",
+                "period": "t1",
+                "value": 5.0,
+            }
+        ],
+        emergency_capacity=[
+            {
+                "warehouse": "W1",
+                "period": "t1",
+                "capacity_type": "static",
+                "value": 10.0,
+            },
+            {
+                "warehouse": "W1",
+                "period": "t2",
+                "capacity_type": "reception",
+                "value": 20.0,
+            },
         ],
     )
 
@@ -94,6 +118,28 @@ def fake_loader(_path, _config):
 
 def fake_solver(**_kwargs):
     return solved_result()
+
+
+def test_stochastic_diagnostic_totals_are_probability_weighted():
+    result = OptimizationResult(
+        status="optimal",
+        unmet_demand=[
+            {"scenario": "low", "value": 10.0},
+            {"scenario": "high", "value": 30.0},
+        ],
+        emergency_capacity=[
+            {"scenario": "low", "capacity_type": "static", "value": 4.0},
+            {"scenario": "high", "capacity_type": "static", "value": 12.0},
+        ],
+        metadata={"scenario_probabilities": {"low": 0.75, "high": 0.25}},
+    )
+
+    assert _weighted_record_total(result, result.unmet_demand) == pytest.approx(15.0)
+    assert _weighted_record_total(
+        result,
+        result.emergency_capacity,
+        capacity_type="static",
+    ) == pytest.approx(6.0)
 
 
 def test_manifest_loads_defaults_and_resolves_relative_paths(tmp_path):
@@ -135,6 +181,21 @@ experiments:
         ("alto", "alto"),
     )
     assert spec.loader.stochastic_probabilities == (0.4, 0.6)
+
+
+def test_example_manifest_uses_calibrated_direct_network():
+    path = Path(__file__).parents[1] / "experiments" / "example_hpc.yaml"
+    manifest = load_experiment_manifest(path)
+
+    deterministic, stochastic = manifest.experiments
+    for spec in (deterministic, stochastic):
+        assert spec.loader.include_direct_origin_customer_routes is True
+        assert spec.model.use_direct_origin_customer is True
+        assert spec.model.route_filter_strategy == "top_k"
+        assert spec.model.route_top_k == 10
+        assert spec.model.days_per_period == pytest.approx(30.0)
+
+    assert stochastic.max_estimated_variables == 6_000_000
 
 
 def test_manifest_rejects_duplicate_and_unsafe_names(tmp_path):
@@ -183,6 +244,14 @@ def test_run_experiment_exports_complete_json_csv_and_metrics(
     assert summary.objective_value == pytest.approx(123.0)
     assert summary.dyn_cap == pytest.approx(600.0)
     assert summary.turnover == pytest.approx(6.0)
+    assert summary.total_unmet_demand == pytest.approx(5.0)
+    assert summary.total_domestic_demand == pytest.approx(85.0)
+    assert summary.served_domestic_demand == pytest.approx(80.0)
+    assert summary.domestic_service_level == pytest.approx(80.0 / 85.0)
+    assert summary.total_direct_flow == pytest.approx(0.0)
+    assert summary.emergency_static_capacity == pytest.approx(10.0)
+    assert summary.emergency_reception_capacity == pytest.approx(20.0)
+    assert summary.total_emergency_capacity == pytest.approx(30.0)
     assert payload["schema_version"] == 1
     assert payload["experiment"]["metadata"] == {"replicate": 1}
     assert payload["result"]["metrics"]["DynCap"] == pytest.approx(600.0)

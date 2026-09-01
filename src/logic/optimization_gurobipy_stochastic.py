@@ -5,6 +5,7 @@ from __future__ import annotations
 from time import perf_counter
 from typing import Any
 
+from src.logic.capacity_bounds import stochastic_inventory_bounds
 from src.logic.model_config import ModelConfig, SolverConfig
 from src.logic.model_data import ModelData
 from src.logic.optimization import OptimizationResult
@@ -46,6 +47,7 @@ def solve_stochastic_model_gurobipy(
 
     scenarios = list(data.scenarios)
     routes = select_routes(data, model_config)
+    inventory_big_m = stochastic_inventory_bounds(data, routes)
     od_keys = [
         (scenario, origin, warehouse, product, period)
         for scenario in scenarios
@@ -155,18 +157,24 @@ def solve_stochastic_model_gurobipy(
     emergency_static_capacity = model.addVars(
         emergency_keys,
         lb=0.0,
-        ub=(GRB.INFINITY if model_config.allow_emergency_static_capacity else 0.0),
+        ub={
+            key: inventory_big_m[key]
+            if model_config.allow_emergency_static_capacity
+            else 0.0
+            for key in emergency_keys
+        },
         vtype=GRB.CONTINUOUS,
         name="emergency_static_capacity",
     )
     emergency_reception_capacity = model.addVars(
         emergency_keys,
         lb=0.0,
-        ub=(
-            GRB.INFINITY
+        ub={
+            key: _scenario_period_big_m(data, key[0], key[2])
             if model_config.allow_emergency_reception_capacity
             else 0.0
-        ),
+            for key in emergency_keys
+        },
         vtype=GRB.CONTINUOUS,
         name="emergency_reception_capacity",
     )
@@ -636,7 +644,6 @@ def _add_scenario_constraints(
                 )
 
     for warehouse in data.warehouses:
-        active = _active_warehouse_expr(data, open_candidate, warehouse)
         for period in data.periods:
             static_capacity = _effective_static_capacity_expr(
                 data,
@@ -682,24 +689,28 @@ def _add_scenario_constraints(
                 name=f"shipping_capacity[{scenario},{warehouse},{period}]",
             )
 
-            static_big_m = _scenario_cumulative_inventory_big_m(
-                data, scenario, period
-            )
-            reception_big_m = _scenario_period_big_m(data, scenario, period)
-            model.addConstr(
-                emergency_static_capacity[scenario, warehouse, period]
-                <= static_big_m * active,
-                name=(
-                    f"emergency_static_only_if_active[{scenario},{warehouse},{period}]"
-                ),
-            )
-            model.addConstr(
-                emergency_reception_capacity[scenario, warehouse, period]
-                <= reception_big_m * active,
-                name=(
-                    f"emergency_reception_only_if_active[{scenario},{warehouse},{period}]"
-                ),
-            )
+            if warehouse in data.candidate_warehouses:
+                model.addGenConstrIndicator(
+                    open_candidate[warehouse],
+                    False,
+                    emergency_static_capacity[scenario, warehouse, period] == 0.0,
+                    name=(
+                        "emergency_static_only_if_active"
+                        f"[{scenario},{warehouse},{period}]"
+                    ),
+                )
+                model.addGenConstrIndicator(
+                    open_candidate[warehouse],
+                    False,
+                    emergency_reception_capacity[
+                        scenario, warehouse, period
+                    ]
+                    == 0.0,
+                    name=(
+                        "emergency_reception_only_if_active"
+                        f"[{scenario},{warehouse},{period}]"
+                    ),
+                )
 
 
 def _scenario_period_big_m(data: ModelData, scenario: str, period: str) -> float:

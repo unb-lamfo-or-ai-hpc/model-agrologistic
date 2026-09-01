@@ -1,0 +1,80 @@
+version: 1
+output_dir: ../data/results/hpc/network_policy_sensitivity
+continue_on_error: true
+
+defaults:
+  max_estimated_variables: 2000000
+  loader:
+    include_transshipment_routes: true
+  solver:
+    backend: gurobipy
+    solver_name: gurobi
+    mip_gap: 0.01
+    time_limit: 300
+    threads: 0
+    seed: 0
+    tee: true
+    compute_iis: true
+    iis_max_items: 200
+  model:
+    mode: det
+    use_warehouse_transshipment: true
+    days_per_period: 30
+    allow_capacity_expansion: true
+    allow_bulkification: true
+
+experiments:
+  - name: pareto_05_warehouse_days_30
+    workbook: ../data/templates/model_agrologistic_padrao_ouro.xlsx
+    model:
+      route_filter_strategy: pareto
+      pareto_fraction: 0.05
+    metadata:
+      family: network_policy_sensitivity
+      strategy: pareto
+      pareto_fraction: 0.05
+      direct_origin_customer: false
+      days_per_period: 30
+
+  - name: top_k_10_warehouse_days_30
+    workbook: ../data/templates/model_agrologistic_padrao_ouro.xlsx
+    model:
+      route_filter_strategy: top_k
+      route_top_k: 10
+    metadata:
+      family: network_policy_sensitivity
+      strategy: top_k
+      route_top_k: 10
+      direct_origin_customer: false
+      days_per_period: 30
+
+  - name: pareto_05_direct_days_30
+    workbook: ../data/templates/model_agrologistic_padrao_ouro.xlsx
+    loader:
+      include_direct_origin_customer_routes: true
+    model:
+      use_direct_origin_customer: true
+      route_filter_strategy: pareto
+      pareto_fraction: 0.05
+    metadata:
+      family: network_policy_sensitivity
+      strategy: pareto
+      pareto_fraction: 0.05
+      direct_origin_customer: true
+      days_per_period: 30
+
+  - name: top_k_10_direct_days_30
+    workbook: ../data/templates/model_agrologistic_padrao_ouro.xlsx
+    loader:
+      include_direct_origin_customer_routes: true
+    model:
+      use_direct_origin_customer: true
+      route_filter_strategy: top_k
+      route_top_k: 10
+    metadata:
+      family: network_policy_sensitivity
+      strategy: top_k
+      route_top_k: 10
+      direct_origin_customer: true
+      days_per_period: 30
+

@@ -25,6 +25,7 @@ from __future__ import annotations
 from time import perf_counter
 from typing import Any
 
+from src.logic.capacity_bounds import deterministic_inventory_bounds
 from src.logic.model_config import ModelConfig, SolverConfig
 from src.logic.model_data import ModelData
 from src.logic.optimization import (
@@ -84,6 +85,7 @@ def _solve_deterministic_core(
     # ------------------------------------------------------------------
 
     routes = select_routes(data, model_config)
+    inventory_big_m = deterministic_inventory_bounds(data, routes)
 
     od_keys = [
         (origin, warehouse, product, period)
@@ -233,12 +235,18 @@ def _solve_deterministic_core(
         name="unmet_demand",
     )
 
-    emergency_static_ub = (
-        GRB.INFINITY if model_config.allow_emergency_static_capacity else 0.0
-    )
-    emergency_reception_ub = (
-        GRB.INFINITY if model_config.allow_emergency_reception_capacity else 0.0
-    )
+    emergency_static_ub = {
+        key: inventory_big_m[key]
+        if model_config.allow_emergency_static_capacity
+        else 0.0
+        for key in emergency_keys
+    }
+    emergency_reception_ub = {
+        key: _period_big_m(data, key[1])
+        if model_config.allow_emergency_reception_capacity
+        else 0.0
+        for key in emergency_keys
+    }
 
     emergency_static_capacity = model.addVars(
         emergency_keys,
@@ -566,32 +574,24 @@ def _solve_deterministic_core(
             )
 
     # ------------------------------------------------------------------
-    # Emergency capacity must be tied to active infrastructure
+    # Emergency capacity must be tied to active candidate infrastructure.
     #
-    # Critical rule:
-    # A closed candidate warehouse cannot use emergency capacity.
+    # Variable upper bounds carry the network-aware physical limits. Indicator
+    # constraints avoid injecting those large values into the linear matrix.
     # ------------------------------------------------------------------
 
-    for warehouse in data.warehouses:
-        active = _active_warehouse_expr(
-            data=data,
-            open_candidate=open_candidate,
-            warehouse=warehouse,
-        )
-
+    for warehouse in data.candidate_warehouses:
         for period in data.periods:
-            static_big_m = _cumulative_inventory_big_m(data, period)
-            reception_big_m = _period_big_m(data, period)
-
-            model.addConstr(
-                emergency_static_capacity[warehouse, period]
-                <= static_big_m * active,
+            model.addGenConstrIndicator(
+                open_candidate[warehouse],
+                False,
+                emergency_static_capacity[warehouse, period] == 0.0,
                 name=f"emergency_static_only_if_active[{warehouse},{period}]",
             )
-
-            model.addConstr(
-                emergency_reception_capacity[warehouse, period]
-                <= reception_big_m * active,
+            model.addGenConstrIndicator(
+                open_candidate[warehouse],
+                False,
+                emergency_reception_capacity[warehouse, period] == 0.0,
                 name=f"emergency_reception_only_if_active[{warehouse},{period}]",
             )
 

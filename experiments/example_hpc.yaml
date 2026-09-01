@@ -16,8 +16,10 @@ defaults:
     iis_max_items: 200
   model:
     use_warehouse_transshipment: true
+    use_direct_origin_customer: true
     route_filter_strategy: top_k
-    route_top_k: 3
+    route_top_k: 10
+    days_per_period: 30
     allow_capacity_expansion: true
     allow_bulkification: true
 
@@ -28,15 +30,18 @@ experiments:
       mode: det
     loader:
       include_transshipment_routes: true
+      include_direct_origin_customer_routes: true
     metadata:
       family: baseline
 
   - name: stochastic_nine_scenarios
     workbook: ../data/templates/model_agrologistic_padrao_ouro.xlsx
+    max_estimated_variables: 6000000
     model:
       mode: sto
     loader:
       include_transshipment_routes: true
+      include_direct_origin_customer_routes: true
       include_stochastic_scenarios: true
       scenario_generation_mode: cartesian
       stochastic_supply_levels: [baixo, base, alto]
