@@ -183,6 +183,21 @@ experiments:
     assert spec.loader.stochastic_probabilities == (0.4, 0.6)
 
 
+def test_example_manifest_uses_calibrated_direct_network():
+    path = Path(__file__).parents[1] / "experiments" / "example_hpc.yaml"
+    manifest = load_experiment_manifest(path)
+
+    deterministic, stochastic = manifest.experiments
+    for spec in (deterministic, stochastic):
+        assert spec.loader.include_direct_origin_customer_routes is True
+        assert spec.model.use_direct_origin_customer is True
+        assert spec.model.route_filter_strategy == "top_k"
+        assert spec.model.route_top_k == 10
+        assert spec.model.days_per_period == pytest.approx(30.0)
+
+    assert stochastic.max_estimated_variables == 6_000_000
+
+
 def test_manifest_rejects_duplicate_and_unsafe_names(tmp_path):
     manifest_path = tmp_path / "experiments.yaml"
     manifest_path.write_text(

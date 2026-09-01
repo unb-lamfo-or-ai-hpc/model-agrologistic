@@ -171,3 +171,16 @@ python scripts/run_batch_hpc.py \
   --aggregate-only
 ```
 
+The augmented direct-route rerun confirmed `top_k=10` as the calibrated
+policy: 79.34% domestic service, 140.03 million tonnes unmet, and only 470.3
+thousand ton-periods of combined emergency capacity. Pareto 5% reached 45.89%
+service and is too sparse for the production experiment.
+
+A complete direct network can serve at most 80.37% of domestic demand without
+carrying supply between periods at origins. The remaining gap therefore comes
+primarily from seasonal timing and warehouse shipping capacity, not from the
+`top_k=10` filter. `example_hpc.yaml` now uses direct routes, `top_k=10`, and
+30 days per period. The nine-scenario extensive form explicitly raises the
+preflight limit to six million variables. Calibrating shipping-capacity units
+or adding origin inventory is a separate follow-up modeling decision.
+
