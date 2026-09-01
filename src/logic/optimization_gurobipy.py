@@ -580,15 +580,18 @@ def _solve_deterministic_core(
         )
 
         for period in data.periods:
-            big_m = _period_big_m(data, period)
+            static_big_m = _cumulative_inventory_big_m(data, period)
+            reception_big_m = _period_big_m(data, period)
 
             model.addConstr(
-                emergency_static_capacity[warehouse, period] <= big_m * active,
+                emergency_static_capacity[warehouse, period]
+                <= static_big_m * active,
                 name=f"emergency_static_only_if_active[{warehouse},{period}]",
             )
 
             model.addConstr(
-                emergency_reception_capacity[warehouse, period] <= big_m * active,
+                emergency_reception_capacity[warehouse, period]
+                <= reception_big_m * active,
                 name=f"emergency_reception_only_if_active[{warehouse},{period}]",
             )
 
@@ -845,6 +848,8 @@ def _effective_shipping_capacity_expr(
 
 
 def _period_big_m(data: ModelData, period: str) -> float:
+    """Return a safe per-period bound for throughput slacks."""
+
     supply = sum(
         data.supply.get((origin, product, period), 0.0)
         for origin in data.origins
@@ -864,6 +869,32 @@ def _period_big_m(data: ModelData, period: str) -> float:
     )
 
     return max(1.0, supply + initial_inventory, demand)
+
+
+def _cumulative_inventory_big_m(data: ModelData, period: str) -> float:
+    """Return an inventory bound that respects accumulation over time.
+
+    Inventory can carry all supply received in earlier periods. Bounding an
+    emergency storage slack by only the current period's supply can therefore
+    make a valid multi-period instance infeasible. Demand is omitted because
+    it cannot increase warehouse inventory.
+    """
+
+    period_index = data.periods.index(period)
+    elapsed_periods = data.periods[: period_index + 1]
+    cumulative_supply = sum(
+        data.supply.get((origin, product, elapsed_period), 0.0)
+        for origin in data.origins
+        for product in data.products
+        for elapsed_period in elapsed_periods
+    )
+    initial_inventory = sum(
+        data.initial_inventory.get((warehouse, product), 0.0)
+        for warehouse in data.warehouses
+        for product in data.products
+    )
+
+    return max(1.0, cumulative_supply + initial_inventory)
 
 
 def _origin_to_warehouse_unit_cost(
