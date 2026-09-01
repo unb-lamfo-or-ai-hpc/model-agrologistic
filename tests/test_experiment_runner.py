@@ -241,6 +241,37 @@ def test_manifest_can_continue_after_a_failed_run(tmp_path):
     assert failure["error_message"] == "solver unavailable"
 
 
+def test_infeasible_result_exports_iis_diagnostic(tmp_path):
+    result = OptimizationResult(
+        status="infeasible",
+        solver_backend="gurobipy",
+        solver_name="gurobi",
+        model_mode="det",
+        metadata={
+            "iis_computed": True,
+            "iis_constraints": ["supply_balance[O1,soy,t1]"],
+            "iis_bounds": [],
+        },
+    )
+
+    summary = run_experiment(
+        experiment("infeasible"),
+        tmp_path,
+        loader=fake_loader,
+        solver=lambda **_kwargs: result,
+        progress=lambda _message: None,
+    )
+
+    diagnostic = json.loads(
+        (tmp_path / "infeasible" / "infeasibility.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert summary.status == "infeasible"
+    assert diagnostic["iis_computed"] is True
+    assert diagnostic["iis_constraints"] == ["supply_balance[O1,soy,t1]"]
+
+
 def test_selected_indices_support_slurm_array_isolation(tmp_path):
     manifest = ExperimentManifest(
         experiments=[experiment("run_0"), experiment("run_1")],

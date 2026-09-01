@@ -602,6 +602,7 @@ def _solve_deterministic_core(
     status = _map_gurobi_status(model, GRB)
 
     if model.SolCount == 0:
+        infeasibility = _infeasibility_metadata(model, GRB, solver_config)
         return OptimizationResult(
             status=status,
             solver_backend="gurobipy",
@@ -611,6 +612,7 @@ def _solve_deterministic_core(
             metadata={
                 "gurobi_status_code": model.Status,
                 "solution_count": model.SolCount,
+                **infeasibility,
             },
         )
 
@@ -698,6 +700,55 @@ def _apply_solver_parameters(model: Any, solver_config: SolverConfig) -> None:
         if option_name in ignored_options:
             continue
         model.setParam(option_name, option_value)
+
+
+def _infeasibility_metadata(
+    model: Any,
+    GRB: Any,
+    solver_config: SolverConfig,
+) -> dict[str, Any]:
+    """Compute a bounded IIS diagnostic when explicitly requested."""
+
+    if model.Status != GRB.INFEASIBLE or not solver_config.compute_iis:
+        return {}
+
+    started_at = perf_counter()
+    try:
+        model.computeIIS()
+        constraint_names = [
+            constraint.ConstrName
+            for constraint in model.getConstrs()
+            if constraint.IISConstr
+        ]
+        bound_names = [
+            f"{variable.VarName}:{bound}"
+            for variable in model.getVars()
+            for bound, included in (
+                ("lower", variable.IISLB),
+                ("upper", variable.IISUB),
+            )
+            if included
+        ]
+        limit = solver_config.iis_max_items
+        return {
+            "iis_computed": True,
+            "iis_minimal": bool(model.IISMinimal),
+            "iis_runtime_seconds": perf_counter() - started_at,
+            "iis_constraint_count": len(constraint_names),
+            "iis_bound_count": len(bound_names),
+            "iis_constraints": constraint_names[:limit],
+            "iis_bounds": bound_names[:limit],
+            "iis_truncated": (
+                len(constraint_names) > limit or len(bound_names) > limit
+            ),
+        }
+    except Exception as error:
+        return {
+            "iis_computed": False,
+            "iis_error_type": type(error).__name__,
+            "iis_error_message": str(error),
+            "iis_runtime_seconds": perf_counter() - started_at,
+        }
 
 
 def _map_gurobi_status(model: Any, GRB: Any) -> str:

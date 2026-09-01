@@ -18,6 +18,7 @@ from src.logic.optimization_gurobipy import (
     _effective_static_capacity_expr,
     _expression_value,
     _import_gurobi,
+    _infeasibility_metadata,
     _map_gurobi_status,
     _origin_to_customer_unit_cost,
     _origin_to_warehouse_unit_cost,
@@ -283,6 +284,7 @@ def solve_stochastic_model_gurobipy(
             "bulk_capacity",
         ],
         "first_stage_fixed": fixed_first_stage is not None,
+        **_infeasibility_metadata(model, GRB, solver_config),
     }
     if model.SolCount == 0:
         return OptimizationResult(

@@ -77,6 +77,8 @@ class SolverConfig:
 
     tee: bool = False
     log_file: str | None = None
+    compute_iis: bool = False
+    iis_max_items: int = 200
 
     solver_options: dict[str, Any] = field(default_factory=dict)
 
@@ -107,6 +109,9 @@ class SolverConfig:
 
         if self.seed is not None and self.seed < 0:
             raise ValueError("seed must be non-negative or None.")
+
+        if self.iis_max_items <= 0:
+            raise ValueError("iis_max_items must be positive.")
 
 
 # ---------------------------------------------------------------------

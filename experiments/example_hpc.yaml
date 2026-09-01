@@ -12,6 +12,8 @@ defaults:
     threads: 0
     seed: 0
     tee: true
+    compute_iis: true
+    iis_max_items: 200
   model:
     use_warehouse_transshipment: true
     route_filter_strategy: top_k

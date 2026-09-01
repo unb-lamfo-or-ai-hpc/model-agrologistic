@@ -71,6 +71,7 @@ Each experiment owns a directory named after its validated run name:
 ├── inventories.csv
 ├── unmet_demand.csv
 ├── emergency_capacity.csv
+├── infeasibility.json          # only when IIS was requested
 ├── storage_by_warehouse.csv
 └── storage_by_scenario.csv
 ```
@@ -83,4 +84,8 @@ is never partially visible to another process.
 Failed jobs create `run_summary.json` with `status=error`, exception type, and
 message. Set `continue_on_error: true` to let a local sequential batch continue
 after an individual failure.
+
+Set `solver.compute_iis: true` to diagnose an infeasible Gurobi model. The
+runner exports the bounded list of IIS constraints and variable bounds to
+`infeasibility.json`; `iis_max_items` controls the maximum exported items.
 

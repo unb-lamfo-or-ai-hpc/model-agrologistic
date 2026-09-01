@@ -475,6 +475,15 @@ def _export_run_artifacts(
         for scenario, metrics in storage.get("scenario_metrics", {}).items()
     ]
     _write_csv(run_dir / "storage_by_scenario.csv", scenario_records)
+    if result.metadata.get("iis_computed") is not None:
+        _write_json(
+            run_dir / "infeasibility.json",
+            {
+                key: value
+                for key, value in result.metadata.items()
+                if key.startswith("iis_")
+            },
+        )
 
 
 def _build_summary(
