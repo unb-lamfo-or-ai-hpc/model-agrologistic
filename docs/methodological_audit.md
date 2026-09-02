@@ -62,6 +62,19 @@ python scripts/audit_existing_run.py experiments/example_hpc.yaml --index 1
 python scripts/audit_existing_run.py experiments/example_hpc.yaml --index 2
 ```
 
+The audit command is introduced by PR #12. Confirm that the checkout contains
+that revision before invoking it:
+
+```bash
+git fetch origin
+git rev-parse --short HEAD
+git rev-parse --short origin/develop
+test -f scripts/audit_existing_run.py
+```
+
+If the local and remote revisions differ, synchronize first. A missing script
+on an older checkout is not an audit or Python failure.
+
 ## Decision gates
 
 1. **Units:** confirm whether reception and shipping capacities are daily and

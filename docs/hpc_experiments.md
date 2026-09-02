@@ -284,6 +284,37 @@ The validated submission profile targets `intel-128` with 16 CPUs and 64 GiB:
 sbatch scripts/run_model_agrologistic.slurm
 ```
 
+Keep the versioned script unchanged for temporary scheduler choices. Slurm
+command-line options override the corresponding `#SBATCH` defaults without
+making the Git checkout dirty. For example:
+
+```bash
+sbatch \
+  --partition=intel-256 \
+  --mem=192G \
+  --export=ALL,EXPERIMENT_INDEX=2 \
+  --job-name=agrologistic-evpi-vss \
+  scripts/run_model_agrologistic.slurm
+```
+
+Scheduler files named `slurm-*.out` are ignored by Git. Structured logs and
+results remain under `data/results/hpc/`, which is also intentionally local.
+
+If an earlier local resource edit blocks a fast-forward pull, preserve it in a
+named stash before synchronizing:
+
+```bash
+git stash push \
+  -m "local Slurm profile before synchronization" \
+  -- scripts/run_model_agrologistic.slurm
+git pull --ff-only origin develop
+git stash show -p stash@{0}
+```
+
+Inspect the saved patch, but do not reapply it when the remote profile already
+contains the intended defaults. The stash remains recoverable until explicitly
+dropped.
+
 The default `EXPERIMENT_INDEX=1` runs only the nine-scenario RP. Select index 2
 explicitly for the checkpointed EVPI/VSS campaign. After a job finishes,
 inspect accounting with:
