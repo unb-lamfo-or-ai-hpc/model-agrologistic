@@ -65,6 +65,7 @@ Each experiment owns a directory named after its validated run name:
 <output_dir>/<experiment_name>/
 ├── result.json
 ├── preflight.json
+├── model_audit.json
 ├── run_summary.json
 ├── warehouse_decisions.csv
 ├── flows.csv
@@ -87,6 +88,24 @@ operating cost, domestic demand served and unmet, service level, direct flow,
 emergency capacity, DynCap, and Turnover separately for every scenario. These
 values are not probability-weighted; the aggregate expected values remain in
 `run_summary.json`.
+
+`model_audit.json` is a non-blocking methodological diagnostic. It inventories
+parameter scales, zero-cost investment opportunities, capacity totals before
+and after `days_per_period`, objective-component shares, activated zero-cost
+investments, and expected/scenario service levels. Findings are warnings for
+review; they do not silently modify inputs or solver behavior.
+
+To audit an already completed run without solving it again:
+
+```bash
+python scripts/audit_existing_run.py \
+  experiments/example_hpc.yaml \
+  --index 1
+```
+
+Use index 2 for the completed EVPI/VSS run. The command verifies the workbook
+hash, loader contract, and mathematical model configuration before combining
+the current input with the stored structured result.
 
 Failed jobs create `run_summary.json` with `status=error`, exception type, and
 message. Set `continue_on_error: true` to let a local sequential batch continue
@@ -264,6 +283,37 @@ The validated submission profile targets `intel-128` with 16 CPUs and 64 GiB:
 ```bash
 sbatch scripts/run_model_agrologistic.slurm
 ```
+
+Keep the versioned script unchanged for temporary scheduler choices. Slurm
+command-line options override the corresponding `#SBATCH` defaults without
+making the Git checkout dirty. For example:
+
+```bash
+sbatch \
+  --partition=intel-256 \
+  --mem=192G \
+  --export=ALL,EXPERIMENT_INDEX=2 \
+  --job-name=agrologistic-evpi-vss \
+  scripts/run_model_agrologistic.slurm
+```
+
+Scheduler files named `slurm-*.out` are ignored by Git. Structured logs and
+results remain under `data/results/hpc/`, which is also intentionally local.
+
+If an earlier local resource edit blocks a fast-forward pull, preserve it in a
+named stash before synchronizing:
+
+```bash
+git stash push \
+  -m "local Slurm profile before synchronization" \
+  -- scripts/run_model_agrologistic.slurm
+git pull --ff-only origin develop
+git stash show -p stash@{0}
+```
+
+Inspect the saved patch, but do not reapply it when the remote profile already
+contains the intended defaults. The stash remains recoverable until explicitly
+dropped.
 
 The default `EXPERIMENT_INDEX=1` runs only the nine-scenario RP. Select index 2
 explicitly for the checkpointed EVPI/VSS campaign. After a job finishes,

@@ -10,7 +10,7 @@ import os
 import platform
 import re
 import sys
-from dataclasses import asdict, dataclass, field
+from dataclasses import asdict, dataclass, field, fields
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Callable
@@ -19,6 +19,7 @@ import yaml
 
 from src.logic.excel_loader import ExcelLoaderConfig, load_model_data_from_excel
 from src.logic.metrics import attach_storage_metrics
+from src.logic.model_audit import build_model_audit
 from src.logic.model_config import ModelConfig, SolverConfig
 from src.logic.model_data import ModelData
 from src.logic.optimization import (
@@ -193,6 +194,10 @@ def run_experiment(
 
     progress(f"[{spec.name}] loading {spec.workbook}")
     data = loader(spec.workbook, spec.loader)
+    _write_json(
+        run_dir / "model_audit.json",
+        build_model_audit(data, spec.model),
+    )
     estimate = estimate_model_size(data, spec.model)
     _write_json(run_dir / "preflight.json", asdict(estimate))
     progress(_preflight_message(spec, estimate))
@@ -226,6 +231,7 @@ def run_experiment(
     progress(f"[{spec.name}] exporting structured artifacts")
     _export_run_artifacts(
         spec=spec,
+        data=data,
         result=result,
         evpi_result=evpi_result,
         run_dir=run_dir,
@@ -257,10 +263,62 @@ def inspect_experiment(
     run_dir = Path(output_root).resolve() / spec.name
     progress(f"[{spec.name}] loading {spec.workbook}")
     data = loader(spec.workbook, spec.loader)
+    _write_json(
+        run_dir / "model_audit.json",
+        build_model_audit(data, spec.model),
+    )
     estimate = estimate_model_size(data, spec.model)
     _write_json(run_dir / "preflight.json", asdict(estimate))
     progress(_preflight_message(spec, estimate))
     return estimate
+
+
+def audit_existing_run(
+    spec: ExperimentSpec,
+    output_root: str | Path,
+    *,
+    loader: Loader = load_model_data_from_excel,
+    progress: Progress = print,
+) -> Path:
+    """Audit an existing structured result without solving the model again."""
+
+    run_dir = Path(output_root).resolve() / spec.name
+    result_path = run_dir / "result.json"
+    if not result_path.is_file():
+        raise FileNotFoundError(f"Structured result not found: {result_path}")
+
+    payload = json.loads(result_path.read_text(encoding="utf-8"))
+    experiment_payload = payload.get("experiment", {})
+    expected_payload = json.loads(json.dumps(_spec_payload(spec)))
+    mismatches = [
+        key
+        for key in ("workbook_sha256", "loader", "model")
+        if experiment_payload.get(key) != expected_payload.get(key)
+    ]
+    if mismatches:
+        raise ValueError(
+            "Existing result is incompatible with the selected experiment "
+            f"for: {', '.join(mismatches)}."
+        )
+
+    result_payload = payload.get("result")
+    if not isinstance(result_payload, dict):
+        raise ValueError(f"Invalid result payload in {result_path}.")
+    result_fields = {item.name for item in fields(OptimizationResult)}
+    result = OptimizationResult(
+        **{
+            key: value
+            for key, value in result_payload.items()
+            if key in result_fields and key != "raw_solver_result"
+        }
+    )
+
+    progress(f"[{spec.name}] loading {spec.workbook}")
+    data = loader(spec.workbook, spec.loader)
+    audit_path = run_dir / "model_audit.json"
+    _write_json(audit_path, build_model_audit(data, spec.model, result))
+    progress(f"[{spec.name}] audit -> {audit_path}")
+    return audit_path
 
 
 def estimate_model_size(data: ModelData, config: ModelConfig) -> ModelSizeEstimate:
@@ -469,6 +527,7 @@ def _normalize_loader_sequences(values: dict[str, Any]) -> None:
 def _export_run_artifacts(
     *,
     spec: ExperimentSpec,
+    data: ModelData,
     result: OptimizationResult,
     evpi_result: EVPIVSSResult | None,
     run_dir: Path,
@@ -487,6 +546,10 @@ def _export_run_artifacts(
         "stochastic_performance": _evpi_payload(evpi_result),
     }
     _write_json(run_dir / "result.json", payload)
+    _write_json(
+        run_dir / "model_audit.json",
+        build_model_audit(data, spec.model, result),
+    )
     _write_csv(run_dir / "warehouse_decisions.csv", result.warehouse_decisions)
     _write_csv(run_dir / "flows.csv", result.flows)
     _write_csv(run_dir / "inventories.csv", result.inventories)

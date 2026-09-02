@@ -13,6 +13,13 @@ shipping capacity and seasonal supply limit how much product can reach demand
 in the required period. Unmet demand is currently allowed and penalized, so a
 solution below 100% service can still be optimal and feasible.
 
+The nine-scenario RP subsequently obtained an expected service level of
+78.70%, ranging from 74.48% to 81.44% by scenario. Supply uncertainty had the
+larger effect. Unmet-demand penalties represented 99.45% of the objective,
+while 69 candidate warehouses were opened with zero reported opening and
+candidate-capacity costs. These observations make cost and unit auditing a
+prerequisite for interpreting the completed EVPI/VSS pipeline result.
+
 This result must not be corrected by silently changing penalties, capacities,
 or time conversion factors. Each alternative below represents either a data
 correction or a different mathematical model and therefore requires a named,
@@ -99,6 +106,10 @@ the scenario-level diagnostics needed at gate 2. The complete EVPI/VSS command
 also remains available as a pipeline validation, but its results should not be
 treated as definitive until the methodological gate is closed.
 
+Stage 5.5 automates this gate through `model_audit.json`; see
+[`methodological_audit.md`](methodological_audit.md). The audit records evidence
+but deliberately does not choose or enforce a service policy.
+
 ## Recommended experiment design
 
 Retain the current model as `baseline_no_origin_inventory`. If a structural
@@ -114,4 +125,3 @@ baseline. At minimum, compare:
 Report objective value, domestic service level, unmet demand, emergency
 capacity, DynCap, Turnover, investment decisions, runtime, gap, and memory for
 each variant.
-

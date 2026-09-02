@@ -234,3 +234,6 @@ secrets/*
 data/raw/
 data/processed/
 data/results/
+
+# Slurm scheduler output written in the submission directory
+slurm-*.out
