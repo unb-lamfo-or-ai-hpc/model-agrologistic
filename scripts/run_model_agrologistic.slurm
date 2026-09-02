@@ -46,8 +46,7 @@ echo "cpu_time_limit_seconds=$(ulimit -t)"
 echo "python=${python_executable}"
 "${python_executable}" --version
 
-/usr/bin/time -v \
-  "${python_executable}" scripts/run_batch_hpc.py \
+"${python_executable}" scripts/run_batch_hpc.py \
     experiments/example_hpc.yaml \
     --index "${experiment_index}" \
   2>&1 | tee "${run_log}"
