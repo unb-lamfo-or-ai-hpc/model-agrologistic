@@ -14,6 +14,7 @@ from src.logic.experiment_runner import (
     load_experiment_manifest,
     run_experiment,
     run_manifest,
+    _scenario_performance_records,
     _weighted_record_total,
 )
 from src.logic.excel_loader import ExcelLoaderConfig
@@ -142,6 +143,74 @@ def test_stochastic_diagnostic_totals_are_probability_weighted():
     ) == pytest.approx(6.0)
 
 
+def test_scenario_performance_records_are_unweighted_and_complete():
+    result = OptimizationResult(
+        status="optimal",
+        flows=[
+            {
+                "scenario": "low",
+                "route_type": "OC",
+                "customer_type": "domestic",
+                "value": 60.0,
+            },
+            {
+                "scenario": "low",
+                "route_type": "DC",
+                "customer_type": "domestic",
+                "value": 20.0,
+            },
+        ],
+        unmet_demand=[{"scenario": "low", "value": 20.0}],
+        emergency_capacity=[
+            {
+                "scenario": "low",
+                "capacity_type": "static",
+                "value": 3.0,
+            },
+            {
+                "scenario": "low",
+                "capacity_type": "reception",
+                "value": 2.0,
+            },
+        ],
+        metrics={
+            "scenario_metrics": {
+                "low": {
+                    "probability": 0.25,
+                    "operating_cost": 123.0,
+                    "total_flow": 80.0,
+                }
+            },
+            "storage": {
+                "scenario_metrics": {
+                    "low": {
+                        "dynamic_capacity": 45.0,
+                        "turnover": 1.5,
+                    }
+                }
+            },
+        },
+        metadata={"scenario_probabilities": {"low": 0.25}},
+    )
+
+    records = _scenario_performance_records(result)
+
+    assert len(records) == 1
+    record = records[0]
+    assert record["probability"] == pytest.approx(0.25)
+    assert record["operating_cost"] == pytest.approx(123.0)
+    assert record["total_direct_flow"] == pytest.approx(60.0)
+    assert record["total_domestic_demand"] == pytest.approx(100.0)
+    assert record["served_domestic_demand"] == pytest.approx(80.0)
+    assert record["total_unmet_demand"] == pytest.approx(20.0)
+    assert record["domestic_service_level"] == pytest.approx(0.8)
+    assert record["emergency_static_capacity"] == pytest.approx(3.0)
+    assert record["emergency_reception_capacity"] == pytest.approx(2.0)
+    assert record["total_emergency_capacity"] == pytest.approx(5.0)
+    assert record["dynamic_capacity"] == pytest.approx(45.0)
+    assert record["turnover"] == pytest.approx(1.5)
+
+
 def test_manifest_loads_defaults_and_resolves_relative_paths(tmp_path):
     workbook = tmp_path / "instance.xlsx"
     workbook.touch()
@@ -203,7 +272,7 @@ def test_example_manifest_uses_calibrated_direct_network():
     for spec in (stochastic_rp, stochastic_evpi_vss):
         assert spec.solver.time_limit == 7200
         assert spec.solver.threads == 16
-        assert spec.solver.solver_options["SoftMemLimit"] == 176
+        assert spec.solver.solver_options["SoftMemLimit"] == 56
         assert spec.solver.solver_options["NumericFocus"] == 1
 
 
@@ -290,6 +359,7 @@ def test_run_experiment_exports_complete_json_csv_and_metrics(
         "inventories.csv",
         "unmet_demand.csv",
         "emergency_capacity.csv",
+        "scenario_performance.csv",
         "storage_by_warehouse.csv",
         "storage_by_scenario.csv",
     }
@@ -454,5 +524,3 @@ def test_slurm_array_index_is_used_unless_cli_overrides_it(monkeypatch):
 
     assert selected_index(None) == 4
     assert selected_index(2) == 2
-
-

@@ -492,6 +492,10 @@ def _export_run_artifacts(
     _write_csv(run_dir / "inventories.csv", result.inventories)
     _write_csv(run_dir / "unmet_demand.csv", result.unmet_demand)
     _write_csv(run_dir / "emergency_capacity.csv", result.emergency_capacity)
+    _write_csv(
+        run_dir / "scenario_performance.csv",
+        _scenario_performance_records(result),
+    )
 
     storage = result.metrics.get("storage", {})
     _write_csv(run_dir / "storage_by_warehouse.csv", storage.get("warehouse_metrics", []))
@@ -733,6 +737,104 @@ def _weighted_record_total(
     return total
 
 
+def _scenario_performance_records(
+    result: OptimizationResult,
+) -> list[dict[str, Any]]:
+    """Build unweighted operational diagnostics for each stochastic scenario."""
+
+    probabilities = result.metadata.get("scenario_probabilities", {})
+    scenario_metrics = result.metrics.get("scenario_metrics", {})
+    storage_metrics = result.metrics.get("storage", {}).get(
+        "scenario_metrics",
+        {},
+    )
+    record_scenarios = [
+        record["scenario"]
+        for records in (
+            result.flows,
+            result.unmet_demand,
+            result.emergency_capacity,
+        )
+        for record in records
+        if record.get("scenario") is not None
+    ]
+    scenarios = list(
+        dict.fromkeys(
+            [
+                *probabilities,
+                *scenario_metrics,
+                *storage_metrics,
+                *record_scenarios,
+            ]
+        )
+    )
+
+    records: list[dict[str, Any]] = []
+    for scenario in scenarios:
+        served = _scenario_record_total(
+            result.flows,
+            scenario,
+            customer_type="domestic",
+        )
+        unmet = _scenario_record_total(result.unmet_demand, scenario)
+        total_demand = served + unmet
+        emergency_static = _scenario_record_total(
+            result.emergency_capacity,
+            scenario,
+            capacity_type="static",
+        )
+        emergency_reception = _scenario_record_total(
+            result.emergency_capacity,
+            scenario,
+            capacity_type="reception",
+        )
+        core = scenario_metrics.get(scenario, {})
+        storage = storage_metrics.get(scenario, {})
+        records.append(
+            {
+                "scenario": scenario,
+                "probability": probabilities.get(
+                    scenario,
+                    core.get("probability"),
+                ),
+                "operating_cost": core.get("operating_cost"),
+                "total_flow": core.get("total_flow"),
+                "total_direct_flow": _scenario_record_total(
+                    result.flows,
+                    scenario,
+                    route_type="OC",
+                ),
+                "total_domestic_demand": total_demand,
+                "served_domestic_demand": served,
+                "total_unmet_demand": unmet,
+                "domestic_service_level": (
+                    served / total_demand if total_demand > 0.0 else 1.0
+                ),
+                "emergency_static_capacity": emergency_static,
+                "emergency_reception_capacity": emergency_reception,
+                "total_emergency_capacity": (
+                    emergency_static + emergency_reception
+                ),
+                "dynamic_capacity": storage.get("dynamic_capacity"),
+                "turnover": storage.get("turnover"),
+            }
+        )
+    return records
+
+
+def _scenario_record_total(
+    records: list[dict[str, Any]],
+    scenario: Any,
+    **filters: Any,
+) -> float:
+    return sum(
+        float(record.get("value", 0.0))
+        for record in records
+        if record.get("scenario") == scenario
+        and all(record.get(key) == value for key, value in filters.items())
+    )
+
+
 def _domestic_service_metrics(
     result: OptimizationResult,
 ) -> tuple[float | None, float | None, float | None]:
@@ -837,4 +939,3 @@ def _mapping(value: Any, label: str) -> dict[str, Any]:
 def _resolve_path(value: Any, base_dir: Path) -> Path:
     path = Path(str(value))
     return path.resolve() if path.is_absolute() else (base_dir / path).resolve()
-

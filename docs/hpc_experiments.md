@@ -71,6 +71,7 @@ Each experiment owns a directory named after its validated run name:
 ├── inventories.csv
 ├── unmet_demand.csv
 ├── emergency_capacity.csv
+├── scenario_performance.csv
 ├── infeasibility.json          # only when IIS was requested
 ├── storage_by_warehouse.csv
 └── storage_by_scenario.csv
@@ -80,6 +81,12 @@ Each experiment owns a directory named after its validated run name:
 timestamps, metrics, and optional EVPI/VSS values. The raw solver object is not
 serialized. JSON and CSV files are written atomically so a completed artifact
 is never partially visible to another process.
+
+For stochastic runs, `scenario_performance.csv` reports the probability,
+operating cost, domestic demand served and unmet, service level, direct flow,
+emergency capacity, DynCap, and Turnover separately for every scenario. These
+values are not probability-weighted; the aggregate expected values remain in
+`run_summary.json`.
 
 Failed jobs create `run_summary.json` with `status=error`, exception type, and
 message. Set `continue_on_error: true` to let a local sequential batch continue
@@ -252,15 +259,15 @@ per-process virtual-memory limit. Gurobi exhausted that limit after presolve,
 before finding an incumbent. Large stochastic runs must therefore use a Slurm
 compute node rather than the service node.
 
-The versioned submission script targets `intel-256` with 16 CPUs and 192 GiB:
+The validated submission profile targets `intel-128` with 16 CPUs and 64 GiB:
 
 ```bash
 sbatch scripts/run_model_agrologistic.slurm
 ```
 
-The default `EXPERIMENT_INDEX=1` runs only the nine-scenario RP. Do not submit
-index 2 until the RP has produced a usable solution and its resource profile
-has been reviewed. After a job finishes, inspect accounting with:
+The default `EXPERIMENT_INDEX=1` runs only the nine-scenario RP. Select index 2
+explicitly for the checkpointed EVPI/VSS campaign. After a job finishes,
+inspect accounting with:
 
 ```bash
 sacct -j <job-id> \
@@ -268,22 +275,30 @@ sacct -j <job-id> \
 ```
 
 The stochastic entries use a two-hour Gurobi limit, 16 solver threads,
-`NumericFocus=1`, and `SoftMemLimit=176` GB. The Slurm request leaves memory
-outside the Gurobi soft limit for Python, model construction, and operating
-system overhead. A soft-memory termination returns a diagnostic Gurobi status
-instead of an abrupt allocation exception.
+`NumericFocus=1`, and `SoftMemLimit=56` GB. The 8 GiB difference from the Slurm
+request is reserved for Python, model construction, and operating-system
+overhead. A soft-memory termination returns a diagnostic Gurobi status instead
+of an abrupt cgroup allocation failure.
 
-If 192 GiB is insufficient, resubmit the same script on the less available
-`intel-512` partition with a larger request:
+The production RP job `2071952` completed optimally in 14 minutes 52 seconds.
+It used 16,623,156 KiB of peak resident memory (about 15.9 GiB), obtained a
+zero optimality gap, and produced an expected domestic service level of
+78.70%. The scenario service levels ranged from 74.48% to 81.44%. The complete
+checkpointed EVPI/VSS campaign subsequently completed on `intel-128` with a
+64 GiB request.
+
+For a materially larger scenario set or workbook, use `intel-256` as the first
+fallback:
 
 ```bash
 sbatch \
-  --partition=intel-512 \
-  --mem=384G \
+  --partition=intel-256 \
+  --mem=192G \
   scripts/run_model_agrologistic.slurm
 ```
 
-`intel-128` is appropriate for deterministic or reduced-scenario pilots, but
-not for the already observed memory footprint of the nine-scenario extensive
-form.
-
+The first service-node failure was caused by an inherited 48 GiB virtual-memory
+limit, not by resident-memory demand. The Slurm script removes inherited
+virtual-memory and CPU-time limits and executes the selected virtual
+environment's Python directly, without depending on a node-specific Conda
+initialization script or `/usr/bin/time`.

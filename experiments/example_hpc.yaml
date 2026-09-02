@@ -41,7 +41,7 @@ experiments:
       time_limit: 7200
       threads: 16
       solver_options:
-        SoftMemLimit: 176
+        SoftMemLimit: 56
         NumericFocus: 1
     model:
       mode: sto
@@ -64,7 +64,7 @@ experiments:
       time_limit: 7200
       threads: 16
       solver_options:
-        SoftMemLimit: 176
+        SoftMemLimit: 56
         NumericFocus: 1
     model:
       mode: sto
@@ -80,4 +80,3 @@ experiments:
     metadata:
       family: stochastic
       phase: evpi_vss_after_rp_validation
-

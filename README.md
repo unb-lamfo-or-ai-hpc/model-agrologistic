@@ -435,13 +435,13 @@ Completed:
 - DynCap and Turnover metrics aligned with Artur's thesis;
 - reproducible local and Slurm experiment manifests;
 - structured JSON/CSV exports, preflight model-size guards, and IIS diagnostics;
-- calibrated route policy using `top_k=10`, direct routes, and 30 days per period.
+- calibrated route policy using `top_k=10`, direct routes, and 30 days per period;
+- successful nine-scenario RP and checkpointed EVPI/VSS campaigns on NPAD.
 
 Current:
 
-- Stage 5.4 progressive nine-scenario campaign;
-- atomic EVPI/VSS checkpoints, progress reporting, and safe restart;
-- methodological validation of the remaining domestic service-level gap.
+- methodological validation of the remaining domestic service-level gap;
+- audit of investment costs, capacity units, and objective scaling.
 
 Before definitive EVPI/VSS and sensitivity results, the project will audit
 shipping/reception capacity units and use the nine-scenario RP pilot to decide
@@ -451,7 +451,6 @@ throughput capacity, or impose an explicit service policy. See
 
 Planned:
 
-- production nine-scenario RP and EVPI/VSS runs on NPAD/HPC;
 - scenario, penalty, and service-policy sensitivity campaigns;
 - scientific result tables and plots;
 - Pyomo/SCIP parity and backend equivalence, if retained as a project
@@ -462,6 +461,4 @@ Planned:
 ## License
 
 See `LICENSE`.
-
-
 

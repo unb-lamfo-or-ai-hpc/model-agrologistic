@@ -1,10 +1,10 @@
 #!/bin/bash
 #SBATCH --job-name=agrologistic-rp
-#SBATCH --partition=intel-256
+#SBATCH --partition=intel-128
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=16
-#SBATCH --mem=192G
+#SBATCH --mem=64G
 #SBATCH --time=06:00:00
 #SBATCH --output=slurm-%x-%j.out
 
@@ -47,6 +47,6 @@ echo "python=${python_executable}"
 "${python_executable}" --version
 
 "${python_executable}" scripts/run_batch_hpc.py \
-    experiments/example_hpc.yaml \
-    --index "${experiment_index}" \
+  experiments/example_hpc.yaml \
+  --index "${experiment_index}" \
   2>&1 | tee "${run_log}"
