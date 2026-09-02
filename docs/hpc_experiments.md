@@ -245,3 +245,45 @@ service-level modeling decision described in
 `docs/service_level_methodology.md` must be frozen before definitive EVPI/VSS
 and sensitivity results are reported.
 
+### NPAD memory profile and Slurm submission
+
+The first nine-scenario RP attempt was executed on `service0` with a 48 GiB
+per-process virtual-memory limit. Gurobi exhausted that limit after presolve,
+before finding an incumbent. Large stochastic runs must therefore use a Slurm
+compute node rather than the service node.
+
+The versioned submission script targets `intel-256` with 16 CPUs and 192 GiB:
+
+```bash
+sbatch scripts/run_model_agrologistic.slurm
+```
+
+The default `EXPERIMENT_INDEX=1` runs only the nine-scenario RP. Do not submit
+index 2 until the RP has produced a usable solution and its resource profile
+has been reviewed. After a job finishes, inspect accounting with:
+
+```bash
+sacct -j <job-id> \
+  --format=JobID,JobName,Partition,State,Elapsed,AllocCPUS,ReqMem,MaxRSS,ExitCode
+```
+
+The stochastic entries use a two-hour Gurobi limit, 16 solver threads,
+`NumericFocus=1`, and `SoftMemLimit=176` GB. The Slurm request leaves memory
+outside the Gurobi soft limit for Python, model construction, and operating
+system overhead. A soft-memory termination returns a diagnostic Gurobi status
+instead of an abrupt allocation exception.
+
+If 192 GiB is insufficient, resubmit the same script on the less available
+`intel-512` partition with a larger request:
+
+```bash
+sbatch \
+  --partition=intel-512 \
+  --mem=384G \
+  scripts/run_model_agrologistic.slurm
+```
+
+`intel-128` is appropriate for deterministic or reduced-scenario pilots, but
+not for the already observed memory footprint of the nine-scenario extensive
+form.
+

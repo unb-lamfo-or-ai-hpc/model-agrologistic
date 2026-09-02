@@ -87,6 +87,7 @@ class ExperimentRunSummary:
     status: str
     objective_value: float | None
     runtime_seconds: float | None
+    peak_rss_mb: float | None
     mip_gap: float | None
     dyn_cap: float | None
     turnover: float | None
@@ -338,6 +339,7 @@ def run_manifest(
     summaries: list[ExperimentRunSummary] = []
     for index in selected:
         spec = manifest.experiments[index]
+        run_started = datetime.now(timezone.utc)
         try:
             summary = run_experiment(
                 spec,
@@ -348,7 +350,12 @@ def run_manifest(
                 progress=progress,
             )
         except Exception as error:
-            summary = _export_failed_run(spec, root, error)
+            summary = _export_failed_run(
+                spec,
+                root,
+                error,
+                started=run_started,
+            )
             summaries.append(summary)
             if not manifest.continue_on_error:
                 raise
@@ -518,11 +525,13 @@ def _build_summary(
         served_domestic_demand,
         domestic_service_level,
     ) = _domestic_service_metrics(result)
+    gurobi_status_name = result.metadata.get("gurobi_status_name")
     return ExperimentRunSummary(
         name=spec.name,
         status=result.status,
         objective_value=result.objective_value,
         runtime_seconds=result.runtime_seconds,
+        peak_rss_mb=_peak_rss_mb(),
         mip_gap=result.mip_gap,
         dyn_cap=_optional_float(result.metrics.get("DynCap")),
         turnover=_optional_float(result.metrics.get("Turnover")),
@@ -557,6 +566,16 @@ def _build_summary(
         finished_at_utc=finished.isoformat(),
         slurm_job_id=os.environ.get("SLURM_JOB_ID"),
         slurm_array_task_id=os.environ.get("SLURM_ARRAY_TASK_ID"),
+        error_type=(
+            "GurobiTermination"
+            if result.status == "error" and gurobi_status_name
+            else None
+        ),
+        error_message=(
+            f"Gurobi terminated with {gurobi_status_name} and no usable solution."
+            if result.status == "error" and gurobi_status_name
+            else None
+        ),
     )
 
 
@@ -564,15 +583,18 @@ def _export_failed_run(
     spec: ExperimentSpec,
     output_root: Path,
     error: Exception,
+    *,
+    started: datetime,
 ) -> ExperimentRunSummary:
-    timestamp = datetime.now(timezone.utc).isoformat()
+    finished = datetime.now(timezone.utc)
     run_dir = output_root / spec.name
     run_dir.mkdir(parents=True, exist_ok=True)
     summary = ExperimentRunSummary(
         name=spec.name,
         status="error",
         objective_value=None,
-        runtime_seconds=None,
+        runtime_seconds=(finished - started).total_seconds(),
+        peak_rss_mb=_peak_rss_mb(),
         mip_gap=None,
         dyn_cap=None,
         turnover=None,
@@ -587,8 +609,8 @@ def _export_failed_run(
         evpi=None,
         vss=None,
         output_dir=str(run_dir),
-        started_at_utc=timestamp,
-        finished_at_utc=timestamp,
+        started_at_utc=started.isoformat(),
+        finished_at_utc=finished.isoformat(),
         slurm_job_id=os.environ.get("SLURM_JOB_ID"),
         slurm_array_task_id=os.environ.get("SLURM_ARRAY_TASK_ID"),
         error_type=type(error).__name__,
@@ -793,6 +815,19 @@ def _checkpoint_identity(spec: ExperimentSpec) -> str:
     return hashlib.sha256(encoded).hexdigest()
 
 
+def _peak_rss_mb() -> float | None:
+    """Return peak resident memory for the current process when available."""
+
+    try:
+        import resource
+    except ImportError:
+        return None
+
+    peak = float(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss)
+    divisor = 1024.0 * 1024.0 if sys.platform == "darwin" else 1024.0
+    return peak / divisor
+
+
 def _mapping(value: Any, label: str) -> dict[str, Any]:
     if not isinstance(value, dict):
         raise ValueError(f"{label} must be a mapping.")
@@ -802,6 +837,4 @@ def _mapping(value: Any, label: str) -> dict[str, Any]:
 def _resolve_path(value: Any, base_dir: Path) -> Path:
     path = Path(str(value))
     return path.resolve() if path.is_absolute() else (base_dir / path).resolve()
-
-
 

@@ -20,6 +20,7 @@ from src.logic.optimization_gurobipy import (
     _expression_value,
     _import_gurobi,
     _infeasibility_metadata,
+    _gurobi_status_name,
     _map_gurobi_status,
     _origin_to_customer_unit_cost,
     _origin_to_warehouse_unit_cost,
@@ -280,6 +281,7 @@ def solve_stochastic_model_gurobipy(
 
     common_metadata = {
         "gurobi_status_code": model.Status,
+        "gurobi_status_name": _gurobi_status_name(model, GRB),
         "solution_count": model.SolCount,
         "formulation": "two_stage_extensive_form",
         "scenario_probabilities": dict(data.scenario_prob),

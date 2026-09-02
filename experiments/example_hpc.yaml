@@ -37,6 +37,12 @@ experiments:
   - name: stochastic_nine_scenarios_rp
     workbook: ../data/templates/model_agrologistic_padrao_ouro.xlsx
     max_estimated_variables: 6000000
+    solver:
+      time_limit: 7200
+      threads: 16
+      solver_options:
+        SoftMemLimit: 176
+        NumericFocus: 1
     model:
       mode: sto
     loader:
@@ -54,6 +60,12 @@ experiments:
   - name: stochastic_nine_scenarios_evpi_vss
     workbook: ../data/templates/model_agrologistic_padrao_ouro.xlsx
     max_estimated_variables: 6000000
+    solver:
+      time_limit: 7200
+      threads: 16
+      solver_options:
+        SoftMemLimit: 176
+        NumericFocus: 1
     model:
       mode: sto
     loader:

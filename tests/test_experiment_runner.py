@@ -200,6 +200,11 @@ def test_example_manifest_uses_calibrated_direct_network():
     assert stochastic_evpi_vss.max_estimated_variables == 6_000_000
     assert stochastic_evpi_vss.calculate_evpi_vss is True
     assert stochastic_evpi_vss.resume_evpi_vss is True
+    for spec in (stochastic_rp, stochastic_evpi_vss):
+        assert spec.solver.time_limit == 7200
+        assert spec.solver.threads == 16
+        assert spec.solver.solver_options["SoftMemLimit"] == 176
+        assert spec.solver.solver_options["NumericFocus"] == 1
 
 
 def test_manifest_rejects_duplicate_and_unsafe_names(tmp_path):
@@ -323,6 +328,8 @@ def test_manifest_can_continue_after_a_failed_run(tmp_path):
     )
     assert failure["error_type"] == "RuntimeError"
     assert failure["error_message"] == "solver unavailable"
+    assert failure["runtime_seconds"] is not None
+    assert "peak_rss_mb" in failure
 
 
 def test_infeasible_result_exports_iis_diagnostic(tmp_path):
@@ -447,6 +454,5 @@ def test_slurm_array_index_is_used_unless_cli_overrides_it(monkeypatch):
 
     assert selected_index(None) == 4
     assert selected_index(2) == 2
-
 
 

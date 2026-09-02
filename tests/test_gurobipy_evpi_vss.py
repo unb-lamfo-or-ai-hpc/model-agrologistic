@@ -5,6 +5,7 @@ import pytest
 from src.logic.model_config import ModelConfig, SolverConfig
 from src.logic.model_data import ModelData
 from src.logic.optimization import OptimizationResult, calculate_evpi_vss
+from src.logic.optimization_gurobipy import _gurobi_status_name
 from src.logic.stochastic_analysis_gurobipy import (
     _expected_value_data,
     _single_scenario_data,
@@ -93,6 +94,16 @@ def gurobi_config() -> SolverConfig:
 
 def expansion_capacity(result) -> float:
     return result.warehouse_decisions[0]["expansion_capacity"]
+
+
+def test_gurobi_status_name_reports_resource_limits():
+    class FakeGRB:
+        MEM_LIMIT = 17
+
+    class FakeModel:
+        Status = 17
+
+    assert _gurobi_status_name(FakeModel(), FakeGRB()) == "MEM_LIMIT"
 
 
 def test_expected_value_projection_uses_scenario_probabilities():
