@@ -37,4 +37,3 @@ echo "environment=${environment_path}"
     experiments/example_hpc.yaml \
     --index "${experiment_index}" \
   2>&1 | tee "${run_log}"
-
