@@ -44,6 +44,7 @@ class ExperimentSpec:
     model: ModelConfig = field(default_factory=ModelConfig)
     solver: SolverConfig = field(default_factory=SolverConfig)
     calculate_evpi_vss: bool = False
+    resume_evpi_vss: bool = False
     max_estimated_variables: int | None = 2_000_000
     metadata: dict[str, Any] = field(default_factory=dict)
 
@@ -60,6 +61,10 @@ class ExperimentSpec:
             )
         if self.calculate_evpi_vss and self.model.mode != "sto":
             raise ValueError("EVPI/VSS can only be requested for stochastic runs.")
+        if self.resume_evpi_vss and not self.calculate_evpi_vss:
+            raise ValueError(
+                "resume_evpi_vss requires calculate_evpi_vss=true."
+            )
         if self.max_estimated_variables is not None and self.max_estimated_variables <= 0:
             raise ValueError("max_estimated_variables must be positive or null.")
 
@@ -82,6 +87,7 @@ class ExperimentRunSummary:
     status: str
     objective_value: float | None
     runtime_seconds: float | None
+    peak_rss_mb: float | None
     mip_gap: float | None
     dyn_cap: float | None
     turnover: float | None
@@ -199,6 +205,10 @@ def run_experiment(
             data=data,
             model_config=spec.model,
             solver_config=spec.solver,
+            checkpoint_dir=run_dir / "evpi_vss_checkpoints",
+            checkpoint_identity=_checkpoint_identity(spec),
+            resume=spec.resume_evpi_vss,
+            progress=progress,
         )
         result = evpi_result.recourse_problem_result
     else:
@@ -329,6 +339,7 @@ def run_manifest(
     summaries: list[ExperimentRunSummary] = []
     for index in selected:
         spec = manifest.experiments[index]
+        run_started = datetime.now(timezone.utc)
         try:
             summary = run_experiment(
                 spec,
@@ -339,7 +350,12 @@ def run_manifest(
                 progress=progress,
             )
         except Exception as error:
-            summary = _export_failed_run(spec, root, error)
+            summary = _export_failed_run(
+                spec,
+                root,
+                error,
+                started=run_started,
+            )
             summaries.append(summary)
             if not manifest.continue_on_error:
                 raise
@@ -422,6 +438,7 @@ def _parse_experiment(
             model=ModelConfig(**model_values),
             solver=SolverConfig(**solver_values),
             calculate_evpi_vss=bool(item.get("calculate_evpi_vss", False)),
+            resume_evpi_vss=bool(item.get("resume_evpi_vss", False)),
             max_estimated_variables=_optional_int(
                 item.get(
                     "max_estimated_variables",
@@ -475,6 +492,10 @@ def _export_run_artifacts(
     _write_csv(run_dir / "inventories.csv", result.inventories)
     _write_csv(run_dir / "unmet_demand.csv", result.unmet_demand)
     _write_csv(run_dir / "emergency_capacity.csv", result.emergency_capacity)
+    _write_csv(
+        run_dir / "scenario_performance.csv",
+        _scenario_performance_records(result),
+    )
 
     storage = result.metrics.get("storage", {})
     _write_csv(run_dir / "storage_by_warehouse.csv", storage.get("warehouse_metrics", []))
@@ -508,11 +529,13 @@ def _build_summary(
         served_domestic_demand,
         domestic_service_level,
     ) = _domestic_service_metrics(result)
+    gurobi_status_name = result.metadata.get("gurobi_status_name")
     return ExperimentRunSummary(
         name=spec.name,
         status=result.status,
         objective_value=result.objective_value,
         runtime_seconds=result.runtime_seconds,
+        peak_rss_mb=_peak_rss_mb(),
         mip_gap=result.mip_gap,
         dyn_cap=_optional_float(result.metrics.get("DynCap")),
         turnover=_optional_float(result.metrics.get("Turnover")),
@@ -547,6 +570,16 @@ def _build_summary(
         finished_at_utc=finished.isoformat(),
         slurm_job_id=os.environ.get("SLURM_JOB_ID"),
         slurm_array_task_id=os.environ.get("SLURM_ARRAY_TASK_ID"),
+        error_type=(
+            "GurobiTermination"
+            if result.status == "error" and gurobi_status_name
+            else None
+        ),
+        error_message=(
+            f"Gurobi terminated with {gurobi_status_name} and no usable solution."
+            if result.status == "error" and gurobi_status_name
+            else None
+        ),
     )
 
 
@@ -554,15 +587,18 @@ def _export_failed_run(
     spec: ExperimentSpec,
     output_root: Path,
     error: Exception,
+    *,
+    started: datetime,
 ) -> ExperimentRunSummary:
-    timestamp = datetime.now(timezone.utc).isoformat()
+    finished = datetime.now(timezone.utc)
     run_dir = output_root / spec.name
     run_dir.mkdir(parents=True, exist_ok=True)
     summary = ExperimentRunSummary(
         name=spec.name,
         status="error",
         objective_value=None,
-        runtime_seconds=None,
+        runtime_seconds=(finished - started).total_seconds(),
+        peak_rss_mb=_peak_rss_mb(),
         mip_gap=None,
         dyn_cap=None,
         turnover=None,
@@ -577,8 +613,8 @@ def _export_failed_run(
         evpi=None,
         vss=None,
         output_dir=str(run_dir),
-        started_at_utc=timestamp,
-        finished_at_utc=timestamp,
+        started_at_utc=started.isoformat(),
+        finished_at_utc=finished.isoformat(),
         slurm_job_id=os.environ.get("SLURM_JOB_ID"),
         slurm_array_task_id=os.environ.get("SLURM_ARRAY_TASK_ID"),
         error_type=type(error).__name__,
@@ -597,6 +633,7 @@ def _spec_payload(spec: ExperimentSpec) -> dict[str, Any]:
         "model": asdict(spec.model),
         "solver": asdict(spec.solver),
         "calculate_evpi_vss": spec.calculate_evpi_vss,
+        "resume_evpi_vss": spec.resume_evpi_vss,
         "max_estimated_variables": spec.max_estimated_variables,
         "metadata": spec.metadata,
     }
@@ -700,6 +737,104 @@ def _weighted_record_total(
     return total
 
 
+def _scenario_performance_records(
+    result: OptimizationResult,
+) -> list[dict[str, Any]]:
+    """Build unweighted operational diagnostics for each stochastic scenario."""
+
+    probabilities = result.metadata.get("scenario_probabilities", {})
+    scenario_metrics = result.metrics.get("scenario_metrics", {})
+    storage_metrics = result.metrics.get("storage", {}).get(
+        "scenario_metrics",
+        {},
+    )
+    record_scenarios = [
+        record["scenario"]
+        for records in (
+            result.flows,
+            result.unmet_demand,
+            result.emergency_capacity,
+        )
+        for record in records
+        if record.get("scenario") is not None
+    ]
+    scenarios = list(
+        dict.fromkeys(
+            [
+                *probabilities,
+                *scenario_metrics,
+                *storage_metrics,
+                *record_scenarios,
+            ]
+        )
+    )
+
+    records: list[dict[str, Any]] = []
+    for scenario in scenarios:
+        served = _scenario_record_total(
+            result.flows,
+            scenario,
+            customer_type="domestic",
+        )
+        unmet = _scenario_record_total(result.unmet_demand, scenario)
+        total_demand = served + unmet
+        emergency_static = _scenario_record_total(
+            result.emergency_capacity,
+            scenario,
+            capacity_type="static",
+        )
+        emergency_reception = _scenario_record_total(
+            result.emergency_capacity,
+            scenario,
+            capacity_type="reception",
+        )
+        core = scenario_metrics.get(scenario, {})
+        storage = storage_metrics.get(scenario, {})
+        records.append(
+            {
+                "scenario": scenario,
+                "probability": probabilities.get(
+                    scenario,
+                    core.get("probability"),
+                ),
+                "operating_cost": core.get("operating_cost"),
+                "total_flow": core.get("total_flow"),
+                "total_direct_flow": _scenario_record_total(
+                    result.flows,
+                    scenario,
+                    route_type="OC",
+                ),
+                "total_domestic_demand": total_demand,
+                "served_domestic_demand": served,
+                "total_unmet_demand": unmet,
+                "domestic_service_level": (
+                    served / total_demand if total_demand > 0.0 else 1.0
+                ),
+                "emergency_static_capacity": emergency_static,
+                "emergency_reception_capacity": emergency_reception,
+                "total_emergency_capacity": (
+                    emergency_static + emergency_reception
+                ),
+                "dynamic_capacity": storage.get("dynamic_capacity"),
+                "turnover": storage.get("turnover"),
+            }
+        )
+    return records
+
+
+def _scenario_record_total(
+    records: list[dict[str, Any]],
+    scenario: Any,
+    **filters: Any,
+) -> float:
+    return sum(
+        float(record.get("value", 0.0))
+        for record in records
+        if record.get("scenario") == scenario
+        and all(record.get(key) == value for key, value in filters.items())
+    )
+
+
 def _domestic_service_metrics(
     result: OptimizationResult,
 ) -> tuple[float | None, float | None, float | None]:
@@ -768,6 +903,33 @@ def _file_sha256(path: Path) -> str | None:
     return digest.hexdigest()
 
 
+def _checkpoint_identity(spec: ExperimentSpec) -> str:
+    """Bind resumable checkpoints to the workbook and complete run contract."""
+
+    payload = _spec_payload(spec)
+    payload.pop("resume_evpi_vss", None)
+    encoded = json.dumps(
+        payload,
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    return hashlib.sha256(encoded).hexdigest()
+
+
+def _peak_rss_mb() -> float | None:
+    """Return peak resident memory for the current process when available."""
+
+    try:
+        import resource
+    except ImportError:
+        return None
+
+    peak = float(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss)
+    divisor = 1024.0 * 1024.0 if sys.platform == "darwin" else 1024.0
+    return peak / divisor
+
+
 def _mapping(value: Any, label: str) -> dict[str, Any]:
     if not isinstance(value, dict):
         raise ValueError(f"{label} must be a mapping.")
@@ -777,4 +939,3 @@ def _mapping(value: Any, label: str) -> dict[str, Any]:
 def _resolve_path(value: Any, base_dir: Path) -> Path:
     path = Path(str(value))
     return path.resolve() if path.is_absolute() else (base_dir / path).resolve()
-

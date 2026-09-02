@@ -39,7 +39,7 @@ The command also reads `SLURM_ARRAY_TASK_ID` when `--index` is omitted. A Slurm
 submission can therefore use:
 
 ```bash
-sbatch --array=0-1 run_model_agrologistic.slurm
+sbatch --array=0-2 run_model_agrologistic.slurm
 ```
 
 with the job step:
@@ -71,6 +71,7 @@ Each experiment owns a directory named after its validated run name:
 ├── inventories.csv
 ├── unmet_demand.csv
 ├── emergency_capacity.csv
+├── scenario_performance.csv
 ├── infeasibility.json          # only when IIS was requested
 ├── storage_by_warehouse.csv
 └── storage_by_scenario.csv
@@ -80,6 +81,12 @@ Each experiment owns a directory named after its validated run name:
 timestamps, metrics, and optional EVPI/VSS values. The raw solver object is not
 serialized. JSON and CSV files are written atomically so a completed artifact
 is never partially visible to another process.
+
+For stochastic runs, `scenario_performance.csv` reports the probability,
+operating cost, domestic demand served and unmet, service level, direct flow,
+emergency capacity, DynCap, and Turnover separately for every scenario. These
+values are not probability-weighted; the aggregate expected values remain in
+`run_summary.json`.
 
 Failed jobs create `run_summary.json` with `status=error`, exception type, and
 message. Set `continue_on_error: true` to let a local sequential batch continue
@@ -184,3 +191,114 @@ primarily from seasonal timing and warehouse shipping capacity, not from the
 preflight limit to six million variables. Calibrating shipping-capacity units
 or adding origin inventory is a separate follow-up modeling decision.
 
+## Stage 5.4 progressive stochastic campaign
+
+The production example deliberately separates the nine-scenario recourse
+problem from the complete EVPI/VSS analysis. Validate the extensive form first:
+
+```bash
+python scripts/run_batch_hpc.py \
+  experiments/example_hpc.yaml \
+  --index 1 \
+  --dry-run
+
+python scripts/run_batch_hpc.py \
+  experiments/example_hpc.yaml \
+  --index 1
+```
+
+Index 1 solves RP only. Inspect `run_summary.json`, `result.json`, the Gurobi
+log, runtime, gap, service level, emergency capacity, and the scheduler's peak
+memory before starting index 2.
+
+The complete nine-scenario analysis performs 12 optimizations: RP, EV, EEV,
+and one wait-and-see problem per scenario. Start it only after the RP pilot is
+computationally acceptable:
+
+```bash
+python scripts/run_batch_hpc.py \
+  experiments/example_hpc.yaml \
+  --index 2 \
+  --dry-run
+
+python scripts/run_batch_hpc.py \
+  experiments/example_hpc.yaml \
+  --index 2
+```
+
+Index 2 sets `resume_evpi_vss: true`. Every usable intermediate solution is
+stored atomically under:
+
+```text
+data/results/hpc/stochastic_nine_scenarios_evpi_vss/
+└── evpi_vss_checkpoints/
+    ├── manifest.json
+    ├── progress.json
+    ├── rp.json
+    ├── ev.json
+    ├── eev.json
+    └── ws_000.json ... ws_008.json
+```
+
+`progress.json` identifies the active step and the number of completed solves.
+If the job is interrupted, submit the same command again. Completed steps are
+restored only when the workbook hash and complete experiment configuration
+match. A changed workbook, scenario contract, model option, or solver option
+receives a different checkpoint identity and is rejected instead of silently
+mixing incompatible results.
+
+The RP pilot is a diagnostic baseline, not the final scientific campaign. The
+service-level modeling decision described in
+`docs/service_level_methodology.md` must be frozen before definitive EVPI/VSS
+and sensitivity results are reported.
+
+### NPAD memory profile and Slurm submission
+
+The first nine-scenario RP attempt was executed on `service0` with a 48 GiB
+per-process virtual-memory limit. Gurobi exhausted that limit after presolve,
+before finding an incumbent. Large stochastic runs must therefore use a Slurm
+compute node rather than the service node.
+
+The validated submission profile targets `intel-128` with 16 CPUs and 64 GiB:
+
+```bash
+sbatch scripts/run_model_agrologistic.slurm
+```
+
+The default `EXPERIMENT_INDEX=1` runs only the nine-scenario RP. Select index 2
+explicitly for the checkpointed EVPI/VSS campaign. After a job finishes,
+inspect accounting with:
+
+```bash
+sacct -j <job-id> \
+  --format=JobID,JobName,Partition,State,Elapsed,AllocCPUS,ReqMem,MaxRSS,ExitCode
+```
+
+The stochastic entries use a two-hour Gurobi limit, 16 solver threads,
+`NumericFocus=1`, and `SoftMemLimit=56` GB. The 8 GiB difference from the Slurm
+request is reserved for Python, model construction, and operating-system
+overhead. A soft-memory termination returns a diagnostic Gurobi status instead
+of an abrupt cgroup allocation failure.
+
+The production RP job `2071952` completed optimally in 14 minutes 52 seconds.
+It used 16,623,156 KiB of peak resident memory (about 15.9 GiB), obtained a
+zero optimality gap, and produced an expected domestic service level of
+78.70%. The scenario service levels ranged from 74.48% to 81.44%. The complete
+checkpointed EVPI/VSS campaign subsequently completed on `intel-128` with a
+64 GiB request.
+
+For a materially larger scenario set or workbook, use `intel-256` as the first
+fallback:
+
+```bash
+sbatch \
+  --partition=intel-256 \
+  --mem=192G \
+  scripts/run_model_agrologistic.slurm
+```
+
+The first service-node failure was caused by an inherited 48 GiB virtual-memory
+limit, not by resident-memory demand. The Slurm script removes inherited
+virtual-memory and CPU-time limits and executes the selected virtual
+environment's Python directly, without depending on a node-specific Conda
+initialization script or `/usr/bin/time`.

@@ -614,6 +614,7 @@ def _solve_deterministic_core(
             runtime_seconds=runtime_seconds,
             metadata={
                 "gurobi_status_code": model.Status,
+                "gurobi_status_name": _gurobi_status_name(model, GRB),
                 "solution_count": model.SolCount,
                 **infeasibility,
             },
@@ -625,6 +626,7 @@ def _solve_deterministic_core(
         solver_config=solver_config,
         model=model,
         status=status,
+        gurobi_status_name=_gurobi_status_name(model, GRB),
         runtime_seconds=runtime_seconds,
         flow_od=flow_od,
         flow_dc=flow_dc,
@@ -771,6 +773,40 @@ def _map_gurobi_status(model: Any, GRB: Any) -> str:
         return "feasible"
 
     return "error"
+
+
+def _gurobi_status_name(model: Any, GRB: Any) -> str:
+    """Return the symbolic Gurobi termination status for diagnostics."""
+
+    names = (
+        "LOADED",
+        "OPTIMAL",
+        "INFEASIBLE",
+        "INF_OR_UNBD",
+        "UNBOUNDED",
+        "CUTOFF",
+        "ITERATION_LIMIT",
+        "NODE_LIMIT",
+        "TIME_LIMIT",
+        "SOLUTION_LIMIT",
+        "INTERRUPTED",
+        "NUMERIC",
+        "SUBOPTIMAL",
+        "INPROGRESS",
+        "USER_OBJ_LIMIT",
+        "WORK_LIMIT",
+        "MEM_LIMIT",
+        "LOCALLY_OPTIMAL",
+        "LOCALLY_INFEASIBLE",
+    )
+    return next(
+        (
+            name
+            for name in names
+            if getattr(GRB, name, object()) == model.Status
+        ),
+        f"UNKNOWN_{model.Status}",
+    )
 
 
 # ---------------------------------------------------------------------
@@ -968,6 +1004,7 @@ def _extract_deterministic_result(
     solver_config: SolverConfig,
     model: Any,
     status: str,
+    gurobi_status_name: str,
     runtime_seconds: float,
     flow_od: Any,
     flow_dc: Any,
@@ -1185,6 +1222,7 @@ def _extract_deterministic_result(
         metrics=metrics,
         metadata={
             "gurobi_status_code": model.Status,
+            "gurobi_status_name": gurobi_status_name,
             "solution_count": model.SolCount,
             "candidate_capacity_mode": model_config.candidate_capacity_mode,
             "allow_capacity_expansion": model_config.allow_capacity_expansion,

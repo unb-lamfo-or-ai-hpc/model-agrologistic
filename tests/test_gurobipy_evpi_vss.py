@@ -1,8 +1,11 @@
+import json
+
 import pytest
 
 from src.logic.model_config import ModelConfig, SolverConfig
 from src.logic.model_data import ModelData
-from src.logic.optimization import calculate_evpi_vss
+from src.logic.optimization import OptimizationResult, calculate_evpi_vss
+from src.logic.optimization_gurobipy import _gurobi_status_name
 from src.logic.stochastic_analysis_gurobipy import (
     _expected_value_data,
     _single_scenario_data,
@@ -93,6 +96,16 @@ def expansion_capacity(result) -> float:
     return result.warehouse_decisions[0]["expansion_capacity"]
 
 
+def test_gurobi_status_name_reports_resource_limits():
+    class FakeGRB:
+        MEM_LIMIT = 17
+
+    class FakeModel:
+        Status = 17
+
+    assert _gurobi_status_name(FakeModel(), FakeGRB()) == "MEM_LIMIT"
+
+
 def test_expected_value_projection_uses_scenario_probabilities():
     data = capacity_newsvendor_data()
 
@@ -171,3 +184,104 @@ def test_evpi_vss_report_formulas_and_probabilities():
         "alto": 0.5,
     }
     assert result.metadata["consistency_warnings"] == []
+
+
+def test_evpi_vss_checkpoints_resume_every_completed_solve(tmp_path, monkeypatch):
+    import src.logic.stochastic_analysis_gurobipy as analysis
+
+    calls: list[str] = []
+
+    def fake_stochastic(**kwargs):
+        label = "eev" if kwargs.get("fixed_first_stage") is not None else "rp"
+        calls.append(label)
+        return OptimizationResult(
+            status="optimal",
+            objective_value=55.0 if label == "eev" else 50.0,
+            warehouse_decisions=[{"warehouse": "W1", "open": 1.0}],
+            raw_solver_result=object(),
+        )
+
+    def fake_deterministic(*, data, **_kwargs):
+        source = data.metadata["deterministic_projection"]
+        calls.append(source)
+        objectives = {
+            "expected_value": 30.0,
+            "wait_and_see:baixo": 0.0,
+            "wait_and_see:alto": 60.0,
+        }
+        return OptimizationResult(
+            status="optimal",
+            objective_value=objectives[source],
+            warehouse_decisions=[{"warehouse": "W1", "open": 1.0}],
+            raw_solver_result=object(),
+        )
+
+    monkeypatch.setattr(analysis, "solve_stochastic_model_gurobipy", fake_stochastic)
+    monkeypatch.setattr(analysis, "_solve_deterministic_core", fake_deterministic)
+    checkpoint_dir = tmp_path / "checkpoints"
+
+    first = analysis.calculate_evpi_vss_gurobipy(
+        data=capacity_newsvendor_data(),
+        model_config=stochastic_config(),
+        solver_config=gurobi_config(),
+        checkpoint_dir=checkpoint_dir,
+        checkpoint_identity="workbook-and-config-sha",
+    )
+
+    assert calls == [
+        "rp",
+        "expected_value",
+        "eev",
+        "wait_and_see:baixo",
+        "wait_and_see:alto",
+    ]
+    assert first.evpi == pytest.approx(20.0)
+    assert first.vss == pytest.approx(5.0)
+
+    calls.clear()
+    resumed = analysis.calculate_evpi_vss_gurobipy(
+        data=capacity_newsvendor_data(),
+        model_config=stochastic_config(),
+        solver_config=gurobi_config(),
+        checkpoint_dir=checkpoint_dir,
+        checkpoint_identity="workbook-and-config-sha",
+        resume=True,
+    )
+
+    assert calls == []
+    assert resumed.evpi == pytest.approx(20.0)
+    assert resumed.vss == pytest.approx(5.0)
+    assert resumed.metadata["restored_checkpoint_steps"] == [
+        "rp",
+        "ev",
+        "eev",
+        "ws_000",
+        "ws_001",
+    ]
+    progress = json.loads(
+        (checkpoint_dir / "progress.json").read_text(encoding="utf-8")
+    )
+    assert progress["status"] == "complete"
+    assert progress["completed_count"] == 5
+    assert progress["total_steps"] == 5
+
+
+def test_evpi_vss_resume_rejects_a_different_experiment(tmp_path):
+    import src.logic.stochastic_analysis_gurobipy as analysis
+
+    checkpoint_dir = tmp_path / "checkpoints"
+    analysis._CheckpointStore.create(
+        checkpoint_dir,
+        identity="first-experiment",
+        resume=False,
+        total_steps=5,
+    )
+
+    with pytest.raises(ValueError, match="do not match"):
+        analysis._CheckpointStore.create(
+            checkpoint_dir,
+            identity="changed-experiment",
+            resume=True,
+            total_steps=5,
+        )
+

@@ -1,2 +1,6 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# Shell and Slurm scripts must remain executable on Unix/HPC systems.
+*.sh text eol=lf
+*.slurm text eol=lf

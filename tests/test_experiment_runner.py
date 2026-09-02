@@ -14,6 +14,7 @@ from src.logic.experiment_runner import (
     load_experiment_manifest,
     run_experiment,
     run_manifest,
+    _scenario_performance_records,
     _weighted_record_total,
 )
 from src.logic.excel_loader import ExcelLoaderConfig
@@ -142,6 +143,74 @@ def test_stochastic_diagnostic_totals_are_probability_weighted():
     ) == pytest.approx(6.0)
 
 
+def test_scenario_performance_records_are_unweighted_and_complete():
+    result = OptimizationResult(
+        status="optimal",
+        flows=[
+            {
+                "scenario": "low",
+                "route_type": "OC",
+                "customer_type": "domestic",
+                "value": 60.0,
+            },
+            {
+                "scenario": "low",
+                "route_type": "DC",
+                "customer_type": "domestic",
+                "value": 20.0,
+            },
+        ],
+        unmet_demand=[{"scenario": "low", "value": 20.0}],
+        emergency_capacity=[
+            {
+                "scenario": "low",
+                "capacity_type": "static",
+                "value": 3.0,
+            },
+            {
+                "scenario": "low",
+                "capacity_type": "reception",
+                "value": 2.0,
+            },
+        ],
+        metrics={
+            "scenario_metrics": {
+                "low": {
+                    "probability": 0.25,
+                    "operating_cost": 123.0,
+                    "total_flow": 80.0,
+                }
+            },
+            "storage": {
+                "scenario_metrics": {
+                    "low": {
+                        "dynamic_capacity": 45.0,
+                        "turnover": 1.5,
+                    }
+                }
+            },
+        },
+        metadata={"scenario_probabilities": {"low": 0.25}},
+    )
+
+    records = _scenario_performance_records(result)
+
+    assert len(records) == 1
+    record = records[0]
+    assert record["probability"] == pytest.approx(0.25)
+    assert record["operating_cost"] == pytest.approx(123.0)
+    assert record["total_direct_flow"] == pytest.approx(60.0)
+    assert record["total_domestic_demand"] == pytest.approx(100.0)
+    assert record["served_domestic_demand"] == pytest.approx(80.0)
+    assert record["total_unmet_demand"] == pytest.approx(20.0)
+    assert record["domestic_service_level"] == pytest.approx(0.8)
+    assert record["emergency_static_capacity"] == pytest.approx(3.0)
+    assert record["emergency_reception_capacity"] == pytest.approx(2.0)
+    assert record["total_emergency_capacity"] == pytest.approx(5.0)
+    assert record["dynamic_capacity"] == pytest.approx(45.0)
+    assert record["turnover"] == pytest.approx(1.5)
+
+
 def test_manifest_loads_defaults_and_resolves_relative_paths(tmp_path):
     workbook = tmp_path / "instance.xlsx"
     workbook.touch()
@@ -187,15 +256,24 @@ def test_example_manifest_uses_calibrated_direct_network():
     path = Path(__file__).parents[1] / "experiments" / "example_hpc.yaml"
     manifest = load_experiment_manifest(path)
 
-    deterministic, stochastic = manifest.experiments
-    for spec in (deterministic, stochastic):
+    deterministic, stochastic_rp, stochastic_evpi_vss = manifest.experiments
+    for spec in (deterministic, stochastic_rp, stochastic_evpi_vss):
         assert spec.loader.include_direct_origin_customer_routes is True
         assert spec.model.use_direct_origin_customer is True
         assert spec.model.route_filter_strategy == "top_k"
         assert spec.model.route_top_k == 10
         assert spec.model.days_per_period == pytest.approx(30.0)
 
-    assert stochastic.max_estimated_variables == 6_000_000
+    assert stochastic_rp.max_estimated_variables == 6_000_000
+    assert stochastic_rp.calculate_evpi_vss is False
+    assert stochastic_evpi_vss.max_estimated_variables == 6_000_000
+    assert stochastic_evpi_vss.calculate_evpi_vss is True
+    assert stochastic_evpi_vss.resume_evpi_vss is True
+    for spec in (stochastic_rp, stochastic_evpi_vss):
+        assert spec.solver.time_limit == 7200
+        assert spec.solver.threads == 16
+        assert spec.solver.solver_options["SoftMemLimit"] == 56
+        assert spec.solver.solver_options["NumericFocus"] == 1
 
 
 def test_manifest_rejects_duplicate_and_unsafe_names(tmp_path):
@@ -222,6 +300,17 @@ def test_stochastic_spec_requires_scenario_loading():
             name="invalid_sto",
             workbook=Path("input.xlsx"),
             model=ModelConfig(mode="sto"),
+        )
+
+
+def test_resume_requires_evpi_vss_analysis():
+    with pytest.raises(ValueError, match="calculate_evpi_vss=true"):
+        ExperimentSpec(
+            name="invalid_resume",
+            workbook=Path("input.xlsx"),
+            model=ModelConfig(mode="sto"),
+            loader=ExcelLoaderConfig(include_stochastic_scenarios=True),
+            resume_evpi_vss=True,
         )
 
 
@@ -270,6 +359,7 @@ def test_run_experiment_exports_complete_json_csv_and_metrics(
         "inventories.csv",
         "unmet_demand.csv",
         "emergency_capacity.csv",
+        "scenario_performance.csv",
         "storage_by_warehouse.csv",
         "storage_by_scenario.csv",
     }
@@ -308,6 +398,8 @@ def test_manifest_can_continue_after_a_failed_run(tmp_path):
     )
     assert failure["error_type"] == "RuntimeError"
     assert failure["error_message"] == "solver unavailable"
+    assert failure["runtime_seconds"] is not None
+    assert "peak_rss_mb" in failure
 
 
 def test_infeasible_result_exports_iis_diagnostic(tmp_path):
@@ -432,4 +524,3 @@ def test_slurm_array_index_is_used_unless_cli_overrides_it(monkeypatch):
 
     assert selected_index(None) == 4
     assert selected_index(2) == 2
-
