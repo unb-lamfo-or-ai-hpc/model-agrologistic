@@ -20,7 +20,7 @@ from __future__ import annotations
 import os
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Literal
+from typing import Any, Callable, Literal
 
 from src.logic.model_config import ModelConfig, RunConfig, SolverConfig
 from src.logic.model_data import ModelData
@@ -264,8 +264,17 @@ def calculate_evpi_vss(
     *,
     validate: bool = True,
     require_distances: bool = True,
+    checkpoint_dir: str | Path | None = None,
+    checkpoint_identity: str | None = None,
+    resume: bool = False,
+    progress: Callable[[str], None] | None = None,
 ) -> EVPIVSSResult:
-    """Calculate EVPI and VSS for a two-stage stochastic model."""
+    """Calculate EVPI and VSS for a two-stage stochastic model.
+
+    Intermediate solutions can be checkpointed and safely restored by
+    providing ``checkpoint_dir``, a stable ``checkpoint_identity``, and
+    ``resume=True`` on the continuation call.
+    """
 
     if model_config is None:
         model_config = ModelConfig(mode="sto")
@@ -298,4 +307,10 @@ def calculate_evpi_vss(
         data=data,
         model_config=model_config,
         solver_config=solver_config,
+        checkpoint_dir=checkpoint_dir,
+        checkpoint_identity=checkpoint_identity,
+        resume=resume,
+        progress=progress,
     )
+
+

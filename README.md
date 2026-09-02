@@ -423,39 +423,45 @@ If `gurobipy` is installed but no valid license is available, Gurobi-specific te
 
 ## Development Status
 
-This repository is under active refactoring.
-
 Completed:
 
-- removal of web frontend files;
-- removal of Docker application entry points;
-- canonical `ModelData` structure;
-- model and solver configuration objects;
-- model validation layer;
-- optimization facade;
-- minimal deterministic native Gurobi backend;
-- Python 3.13 environment validation;
-- Gurobi 13 execution validation on HPC.
+- headless optimization core and canonical `ModelData`;
+- golden Excel loader and validation layer;
+- deterministic native Gurobi formulation;
+- warehouse transshipment and direct origin-customer routes;
+- capacity expansion and bulkification;
+- two-stage stochastic extensive form with 1 to 9 configurable scenarios;
+- RP, WS, EV, EEV, EVPI, and VSS calculations;
+- DynCap and Turnover metrics aligned with Artur's thesis;
+- reproducible local and Slurm experiment manifests;
+- structured JSON/CSV exports, preflight model-size guards, and IIS diagnostics;
+- calibrated route policy using `top_k=10`, direct routes, and 30 days per period.
 
-In progress:
+Current:
 
-- golden Excel input schema;
-- minimal Excel loader;
-- deterministic model completion in native Gurobi.
+- Stage 5.4 progressive nine-scenario campaign;
+- atomic EVPI/VSS checkpoints, progress reporting, and safe restart;
+- methodological validation of the remaining domestic service-level gap.
+
+Before definitive EVPI/VSS and sensitivity results, the project will audit
+shipping/reception capacity units and use the nine-scenario RP pilot to decide
+whether the baseline should retain unmet demand, add origin inventory, expand
+throughput capacity, or impose an explicit service policy. See
+[`docs/service_level_methodology.md`](docs/service_level_methodology.md).
 
 Planned:
 
-- full deterministic Gurobi formulation;
-- Excel-driven deterministic instances;
-- Pyomo-compatible deterministic formulation;
-- backend equivalence tests;
-- two-stage stochastic formulation;
-- scenario-based Excel input;
-- EVPI and VSS computation;
-- HPC batch scripts.
+- production nine-scenario RP and EVPI/VSS runs on NPAD/HPC;
+- scenario, penalty, and service-policy sensitivity campaigns;
+- scientific result tables and plots;
+- Pyomo/SCIP parity and backend equivalence, if retained as a project
+  requirement.
 
 ---
 
 ## License
 
 See `LICENSE`.
+
+
+

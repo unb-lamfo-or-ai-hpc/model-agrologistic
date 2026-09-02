@@ -187,15 +187,19 @@ def test_example_manifest_uses_calibrated_direct_network():
     path = Path(__file__).parents[1] / "experiments" / "example_hpc.yaml"
     manifest = load_experiment_manifest(path)
 
-    deterministic, stochastic = manifest.experiments
-    for spec in (deterministic, stochastic):
+    deterministic, stochastic_rp, stochastic_evpi_vss = manifest.experiments
+    for spec in (deterministic, stochastic_rp, stochastic_evpi_vss):
         assert spec.loader.include_direct_origin_customer_routes is True
         assert spec.model.use_direct_origin_customer is True
         assert spec.model.route_filter_strategy == "top_k"
         assert spec.model.route_top_k == 10
         assert spec.model.days_per_period == pytest.approx(30.0)
 
-    assert stochastic.max_estimated_variables == 6_000_000
+    assert stochastic_rp.max_estimated_variables == 6_000_000
+    assert stochastic_rp.calculate_evpi_vss is False
+    assert stochastic_evpi_vss.max_estimated_variables == 6_000_000
+    assert stochastic_evpi_vss.calculate_evpi_vss is True
+    assert stochastic_evpi_vss.resume_evpi_vss is True
 
 
 def test_manifest_rejects_duplicate_and_unsafe_names(tmp_path):
@@ -222,6 +226,17 @@ def test_stochastic_spec_requires_scenario_loading():
             name="invalid_sto",
             workbook=Path("input.xlsx"),
             model=ModelConfig(mode="sto"),
+        )
+
+
+def test_resume_requires_evpi_vss_analysis():
+    with pytest.raises(ValueError, match="calculate_evpi_vss=true"):
+        ExperimentSpec(
+            name="invalid_resume",
+            workbook=Path("input.xlsx"),
+            model=ModelConfig(mode="sto"),
+            loader=ExcelLoaderConfig(include_stochastic_scenarios=True),
+            resume_evpi_vss=True,
         )
 
 
@@ -432,4 +447,6 @@ def test_slurm_array_index_is_used_unless_cli_overrides_it(monkeypatch):
 
     assert selected_index(None) == 4
     assert selected_index(2) == 2
+
+
 

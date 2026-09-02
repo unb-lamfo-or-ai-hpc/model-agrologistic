@@ -44,6 +44,7 @@ class ExperimentSpec:
     model: ModelConfig = field(default_factory=ModelConfig)
     solver: SolverConfig = field(default_factory=SolverConfig)
     calculate_evpi_vss: bool = False
+    resume_evpi_vss: bool = False
     max_estimated_variables: int | None = 2_000_000
     metadata: dict[str, Any] = field(default_factory=dict)
 
@@ -60,6 +61,10 @@ class ExperimentSpec:
             )
         if self.calculate_evpi_vss and self.model.mode != "sto":
             raise ValueError("EVPI/VSS can only be requested for stochastic runs.")
+        if self.resume_evpi_vss and not self.calculate_evpi_vss:
+            raise ValueError(
+                "resume_evpi_vss requires calculate_evpi_vss=true."
+            )
         if self.max_estimated_variables is not None and self.max_estimated_variables <= 0:
             raise ValueError("max_estimated_variables must be positive or null.")
 
@@ -199,6 +204,10 @@ def run_experiment(
             data=data,
             model_config=spec.model,
             solver_config=spec.solver,
+            checkpoint_dir=run_dir / "evpi_vss_checkpoints",
+            checkpoint_identity=_checkpoint_identity(spec),
+            resume=spec.resume_evpi_vss,
+            progress=progress,
         )
         result = evpi_result.recourse_problem_result
     else:
@@ -422,6 +431,7 @@ def _parse_experiment(
             model=ModelConfig(**model_values),
             solver=SolverConfig(**solver_values),
             calculate_evpi_vss=bool(item.get("calculate_evpi_vss", False)),
+            resume_evpi_vss=bool(item.get("resume_evpi_vss", False)),
             max_estimated_variables=_optional_int(
                 item.get(
                     "max_estimated_variables",
@@ -597,6 +607,7 @@ def _spec_payload(spec: ExperimentSpec) -> dict[str, Any]:
         "model": asdict(spec.model),
         "solver": asdict(spec.solver),
         "calculate_evpi_vss": spec.calculate_evpi_vss,
+        "resume_evpi_vss": spec.resume_evpi_vss,
         "max_estimated_variables": spec.max_estimated_variables,
         "metadata": spec.metadata,
     }
@@ -768,6 +779,20 @@ def _file_sha256(path: Path) -> str | None:
     return digest.hexdigest()
 
 
+def _checkpoint_identity(spec: ExperimentSpec) -> str:
+    """Bind resumable checkpoints to the workbook and complete run contract."""
+
+    payload = _spec_payload(spec)
+    payload.pop("resume_evpi_vss", None)
+    encoded = json.dumps(
+        payload,
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    return hashlib.sha256(encoded).hexdigest()
+
+
 def _mapping(value: Any, label: str) -> dict[str, Any]:
     if not isinstance(value, dict):
         raise ValueError(f"{label} must be a mapping.")
@@ -777,4 +802,6 @@ def _mapping(value: Any, label: str) -> dict[str, Any]:
 def _resolve_path(value: Any, base_dir: Path) -> Path:
     path = Path(str(value))
     return path.resolve() if path.is_absolute() else (base_dir / path).resolve()
+
+
 

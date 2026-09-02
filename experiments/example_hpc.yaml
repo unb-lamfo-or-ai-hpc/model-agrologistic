@@ -34,7 +34,24 @@ experiments:
     metadata:
       family: baseline
 
-  - name: stochastic_nine_scenarios
+  - name: stochastic_nine_scenarios_rp
+    workbook: ../data/templates/model_agrologistic_padrao_ouro.xlsx
+    max_estimated_variables: 6000000
+    model:
+      mode: sto
+    loader:
+      include_transshipment_routes: true
+      include_direct_origin_customer_routes: true
+      include_stochastic_scenarios: true
+      scenario_generation_mode: cartesian
+      stochastic_supply_levels: [baixo, base, alto]
+      stochastic_demand_levels: [baixo, base, alto]
+    calculate_evpi_vss: false
+    metadata:
+      family: stochastic
+      phase: rp_pilot
+
+  - name: stochastic_nine_scenarios_evpi_vss
     workbook: ../data/templates/model_agrologistic_padrao_ouro.xlsx
     max_estimated_variables: 6000000
     model:
@@ -47,6 +64,8 @@ experiments:
       stochastic_supply_levels: [baixo, base, alto]
       stochastic_demand_levels: [baixo, base, alto]
     calculate_evpi_vss: true
+    resume_evpi_vss: true
     metadata:
       family: stochastic
+      phase: evpi_vss_after_rp_validation
 

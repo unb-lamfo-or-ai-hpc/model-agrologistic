@@ -39,7 +39,7 @@ The command also reads `SLURM_ARRAY_TASK_ID` when `--index` is omitted. A Slurm
 submission can therefore use:
 
 ```bash
-sbatch --array=0-1 run_model_agrologistic.slurm
+sbatch --array=0-2 run_model_agrologistic.slurm
 ```
 
 with the job step:
@@ -183,4 +183,65 @@ primarily from seasonal timing and warehouse shipping capacity, not from the
 30 days per period. The nine-scenario extensive form explicitly raises the
 preflight limit to six million variables. Calibrating shipping-capacity units
 or adding origin inventory is a separate follow-up modeling decision.
+
+## Stage 5.4 progressive stochastic campaign
+
+The production example deliberately separates the nine-scenario recourse
+problem from the complete EVPI/VSS analysis. Validate the extensive form first:
+
+```bash
+python scripts/run_batch_hpc.py \
+  experiments/example_hpc.yaml \
+  --index 1 \
+  --dry-run
+
+python scripts/run_batch_hpc.py \
+  experiments/example_hpc.yaml \
+  --index 1
+```
+
+Index 1 solves RP only. Inspect `run_summary.json`, `result.json`, the Gurobi
+log, runtime, gap, service level, emergency capacity, and the scheduler's peak
+memory before starting index 2.
+
+The complete nine-scenario analysis performs 12 optimizations: RP, EV, EEV,
+and one wait-and-see problem per scenario. Start it only after the RP pilot is
+computationally acceptable:
+
+```bash
+python scripts/run_batch_hpc.py \
+  experiments/example_hpc.yaml \
+  --index 2 \
+  --dry-run
+
+python scripts/run_batch_hpc.py \
+  experiments/example_hpc.yaml \
+  --index 2
+```
+
+Index 2 sets `resume_evpi_vss: true`. Every usable intermediate solution is
+stored atomically under:
+
+```text
+data/results/hpc/stochastic_nine_scenarios_evpi_vss/
+└── evpi_vss_checkpoints/
+    ├── manifest.json
+    ├── progress.json
+    ├── rp.json
+    ├── ev.json
+    ├── eev.json
+    └── ws_000.json ... ws_008.json
+```
+
+`progress.json` identifies the active step and the number of completed solves.
+If the job is interrupted, submit the same command again. Completed steps are
+restored only when the workbook hash and complete experiment configuration
+match. A changed workbook, scenario contract, model option, or solver option
+receives a different checkpoint identity and is rejected instead of silently
+mixing incompatible results.
+
+The RP pilot is a diagnostic baseline, not the final scientific campaign. The
+service-level modeling decision described in
+`docs/service_level_methodology.md` must be frozen before definitive EVPI/VSS
+and sensitivity results are reported.
 
