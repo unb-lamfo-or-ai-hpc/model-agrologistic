@@ -9,6 +9,7 @@ from src.logic.experiment_runner import (
     ExperimentManifest,
     ExperimentSpec,
     aggregate_experiment_summaries,
+    audit_existing_run,
     estimate_model_size,
     inspect_manifest,
     load_experiment_manifest,
@@ -352,6 +353,7 @@ def test_run_experiment_exports_complete_json_csv_and_metrics(
 
     expected_files = {
         "result.json",
+        "model_audit.json",
         "preflight.json",
         "run_summary.json",
         "warehouse_decisions.csv",
@@ -369,6 +371,27 @@ def test_run_experiment_exports_complete_json_csv_and_metrics(
         storage_rows = list(csv.DictReader(file))
     assert storage_rows[0]["warehouse"] == "W1"
     assert float(storage_rows[0]["dynamic_capacity"]) == pytest.approx(600.0)
+
+
+def test_existing_result_can_be_audited_without_solving_again(tmp_path):
+    spec = experiment()
+    run_experiment(
+        spec,
+        tmp_path,
+        loader=fake_loader,
+        solver=fake_solver,
+    )
+    audit_path = tmp_path / spec.name / "model_audit.json"
+    audit_path.unlink()
+
+    rebuilt = audit_existing_run(spec, tmp_path, loader=fake_loader)
+    audit = json.loads(rebuilt.read_text(encoding="utf-8"))
+
+    assert rebuilt == audit_path.resolve()
+    assert audit["solution"]["objective_value"] == pytest.approx(123.0)
+    assert audit["solution"]["service"]["expected"] == pytest.approx(
+        80.0 / 85.0
+    )
 
 
 def test_manifest_can_continue_after_a_failed_run(tmp_path):

@@ -65,6 +65,7 @@ Each experiment owns a directory named after its validated run name:
 <output_dir>/<experiment_name>/
 ├── result.json
 ├── preflight.json
+├── model_audit.json
 ├── run_summary.json
 ├── warehouse_decisions.csv
 ├── flows.csv
@@ -87,6 +88,24 @@ operating cost, domestic demand served and unmet, service level, direct flow,
 emergency capacity, DynCap, and Turnover separately for every scenario. These
 values are not probability-weighted; the aggregate expected values remain in
 `run_summary.json`.
+
+`model_audit.json` is a non-blocking methodological diagnostic. It inventories
+parameter scales, zero-cost investment opportunities, capacity totals before
+and after `days_per_period`, objective-component shares, activated zero-cost
+investments, and expected/scenario service levels. Findings are warnings for
+review; they do not silently modify inputs or solver behavior.
+
+To audit an already completed run without solving it again:
+
+```bash
+python scripts/audit_existing_run.py \
+  experiments/example_hpc.yaml \
+  --index 1
+```
+
+Use index 2 for the completed EVPI/VSS run. The command verifies the workbook
+hash, loader contract, and mathematical model configuration before combining
+the current input with the stored structured result.
 
 Failed jobs create `run_summary.json` with `status=error`, exception type, and
 message. Set `continue_on_error: true` to let a local sequential batch continue

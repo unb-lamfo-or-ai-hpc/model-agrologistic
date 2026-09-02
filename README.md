@@ -436,18 +436,20 @@ Completed:
 - reproducible local and Slurm experiment manifests;
 - structured JSON/CSV exports, preflight model-size guards, and IIS diagnostics;
 - calibrated route policy using `top_k=10`, direct routes, and 30 days per period;
-- successful nine-scenario RP and checkpointed EVPI/VSS campaigns on NPAD.
+- successful nine-scenario RP and checkpointed EVPI/VSS campaigns on NPAD;
+- solver-independent methodological audit of inputs and structured solutions.
 
 Current:
 
-- methodological validation of the remaining domestic service-level gap;
-- audit of investment costs, capacity units, and objective scaling.
+- Stage 5.5 review of investment costs, capacity units, objective scaling, and
+  the domestic service policy.
 
 Before definitive EVPI/VSS and sensitivity results, the project will audit
 shipping/reception capacity units and use the nine-scenario RP pilot to decide
 whether the baseline should retain unmet demand, add origin inventory, expand
 throughput capacity, or impose an explicit service policy. See
-[`docs/service_level_methodology.md`](docs/service_level_methodology.md).
+[`docs/service_level_methodology.md`](docs/service_level_methodology.md) and
+[`docs/methodological_audit.md`](docs/methodological_audit.md).
 
 Planned:
 
@@ -461,4 +463,3 @@ Planned:
 ## License
 
 See `LICENSE`.
-
