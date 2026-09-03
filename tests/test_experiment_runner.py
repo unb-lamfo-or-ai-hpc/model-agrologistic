@@ -625,6 +625,8 @@ def test_service_policy_comparison_exports_matched_deltas(tmp_path):
     assert comparison["delta_economic_cost"] == pytest.approx(27.0)
     assert comparison["unmet_demand_reduction_fraction"] == pytest.approx(1.0)
     assert comparison["emergency_capacity_ratio"] == pytest.approx(1.0)
+    assert comparison["emergency_static_capacity_ratio"] == pytest.approx(1.0)
+    assert comparison["emergency_reception_capacity_ratio"] == pytest.approx(1.0)
     assert comparison["economic_cost_change_fraction"] == pytest.approx(
         27.0 / 123.0
     )

@@ -38,6 +38,8 @@ SERVICE_POLICY_COMPARISON_METRICS = (
     "minimum_scenario_service_level",
     "maximum_scenario_service_level",
     "total_unmet_demand",
+    "emergency_static_capacity",
+    "emergency_reception_capacity",
     "total_emergency_capacity",
     "economic_cost",
     "penalized_cost",
@@ -603,6 +605,14 @@ def _service_policy_comparison_record(
     record["emergency_capacity_ratio"] = _ratio(
         record["lexicographic_total_emergency_capacity"],
         record["penalty_total_emergency_capacity"],
+    )
+    record["emergency_static_capacity_ratio"] = _ratio(
+        record["lexicographic_emergency_static_capacity"],
+        record["penalty_emergency_static_capacity"],
+    )
+    record["emergency_reception_capacity_ratio"] = _ratio(
+        record["lexicographic_emergency_reception_capacity"],
+        record["penalty_emergency_reception_capacity"],
     )
     record["economic_cost_change_fraction"] = _change_fraction(
         record["lexicographic_economic_cost"],

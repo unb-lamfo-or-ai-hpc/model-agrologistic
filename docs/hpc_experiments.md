@@ -348,10 +348,12 @@ In addition to `batch_summary.csv`, this command writes
 contains both policies and reports `lexicographic - penalty` deltas for service,
 unmet demand, emergency capacity, economic and penalized costs, DynCap,
 Turnover, runtime, and peak memory. Service differences are also reported in
-percentage points. The comparison also reports unmet-demand reduction,
-emergency-capacity and runtime ratios, and relative changes in economic and
-penalized costs. A pair is labeled `optimal`, `usable_nonoptimal`, `failed`, or
-`pending`, so partial campaigns remain auditable.
+percentage points. Static and reception emergency slacks are kept separate in
+both absolute and relative diagnostics. The comparison also reports
+unmet-demand reduction, combined emergency-capacity and runtime ratios, and
+relative changes in economic and penalized costs. A pair is labeled `optimal`,
+`usable_nonoptimal`, `failed`, or `pending`, so partial campaigns remain
+auditable.
 
 Minimum and maximum scenario service levels are intentionally empty for a
 deterministic run. A deterministic instance has one outcome but no stochastic
