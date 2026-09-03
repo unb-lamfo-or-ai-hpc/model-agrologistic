@@ -90,10 +90,26 @@ values are not probability-weighted; the aggregate expected values remain in
 `run_summary.json`.
 
 `model_audit.json` is a non-blocking methodological diagnostic. It inventories
-parameter scales, zero-cost investment opportunities, capacity totals before
-and after `days_per_period`, objective-component shares, activated zero-cost
-investments, and expected/scenario service levels. Findings are warnings for
-review; they do not silently modify inputs or solver behavior.
+parameter scales, entirely free investment opportunities, capacity totals
+before and after the effective days for each period, penalized-cost component
+shares, capacity-based investment activations, and expected/scenario service
+levels. Findings are warnings for review; they do not silently modify inputs or
+solver behavior.
+
+The experiment manifest may select the service objective explicitly:
+
+```yaml
+model:
+  objective_policy: penalty
+  days_per_period: 30
+  days_per_period_by_period:
+    "2026-02": 28
+```
+
+Use `penalty` for scalar monetary comparisons and EVPI/VSS. Use
+`lexicographic` only for the separate service-priority experiment; it minimizes
+expected unmet demand, expected emergency capacity, and economic cost in that
+order.
 
 To audit an already completed run without solving it again:
 
@@ -147,8 +163,10 @@ unmet domestic demand by 4.59%. Its domestic service level was 35.13%, versus
 37.98% for `top_k=10`, so the filtered network must not be selected from the
 objective alone.
 
-The golden workbook declares `days_per_period=30`, while the first campaign
-used the model default of 22. It also left optional direct origin-customer and
+The golden workbook declares `days_per_period=30`, while the first historical
+campaign used the former model default of 22. Stage 5.6 changes the fallback to
+30 and permits `days_per_period_by_period` overrides. The first campaign also
+left optional direct origin-customer and
 origin-export routes disabled, forcing all supply through warehouse shipping
 capacity. Run the follow-up campaign at 30 days to separate the route-filter
 effect from the network-policy effect:
@@ -352,3 +370,25 @@ limit, not by resident-memory demand. The Slurm script removes inherited
 virtual-memory and CPU-time limits and executes the selected virtual
 environment's Python directly, without depending on a node-specific Conda
 initialization script or `/usr/bin/time`.
+
+### Interactive NPAD environment
+
+The current NPAD environment at `/home/vrrcelestino/venv313` is a Conda prefix
+environment, not a standard Python `venv`. Activate it in an interactive shell
+with:
+
+```bash
+conda activate /home/vrrcelestino/venv313
+which python
+python --version
+```
+
+The reported executable should be `/home/vrrcelestino/venv313/bin/python`, and
+the version should be Python 3.13. Do not use
+`source /home/vrrcelestino/venv313/bin/activate` for this environment because
+that activation script is only created by a standard Python `venv`.
+
+No activation is needed inside the supplied Slurm script. By default, it calls
+`/home/vrrcelestino/venv313/bin/python` directly. Override this behavior with
+`AGROLOGISTIC_ENV` or `AGROLOGISTIC_PYTHON` only when running from another
+environment.

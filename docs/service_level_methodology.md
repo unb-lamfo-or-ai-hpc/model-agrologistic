@@ -13,12 +13,13 @@ shipping capacity and seasonal supply limit how much product can reach demand
 in the required period. Unmet demand is currently allowed and penalized, so a
 solution below 100% service can still be optimal and feasible.
 
-The nine-scenario RP subsequently obtained an expected service level of
+The pre-Stage 5.6 nine-scenario RP obtained an expected service level of
 78.70%, ranging from 74.48% to 81.44% by scenario. Supply uncertainty had the
 larger effect. Unmet-demand penalties represented 99.45% of the objective,
-while 69 candidate warehouses were opened with zero reported opening and
-candidate-capacity costs. These observations make cost and unit auditing a
-prerequisite for interpreting the completed EVPI/VSS pipeline result.
+while 69 candidate warehouses were opened with zero loaded model cost. The
+workbook nevertheless contained positive total construction estimates. Stage
+5.6 converts those totals into costs per ton instead of treating candidate
+capacity as free.
 
 This result must not be corrected by silently changing penalties, capacities,
 or time conversion factors. Each alternative below represents either a data
@@ -79,6 +80,30 @@ Consequence: feasibility must be checked carefully. A 100% target may be
 impossible without alternatives B, C, or D; high penalties alone do not create
 physical capacity.
 
+Stage 5.6 implements the least disruptive service-policy comparison through
+`objective_policy`:
+
+- `penalty` minimizes the existing monetary objective, including the configured
+  unmet-demand and emergency-capacity penalties;
+- `lexicographic` first minimizes expected unmet-demand tonnage, then expected
+  emergency-capacity tonnage, and finally real economic cost.
+
+Both policies keep the same physical constraints and feasibility slacks. The
+lexicographic policy changes only the priority among objectives, so it avoids
+calibrating an even larger arbitrary penalty. It does not impose a minimum
+service level by scenario. Such constraints remain a later sensitivity option
+after the attainable service frontier is measured.
+
+The service policy therefore enters the objective function, while the domestic
+demand equation remains a constraint:
+
+```text
+served[c,p,t,s] + unmet[c,p,t,s] = domestic_demand[c,p,t,s]
+```
+
+Under a future service-floor policy, a target such as `alpha` would enter as an
+additional constraint. Stage 5.6 deliberately does not add that constraint.
+
 ### F. Increase route density
 
 Use a larger `top_k` or the complete direct network as a sensitivity case.
@@ -91,24 +116,35 @@ model size. This is useful as a control, but it is not the leading remedy.
 
 The decision should be made in three gates:
 
-1. **Now, before interpreting production results:** audit the units and temporal
-   meaning of shipping and reception capacities. Correct any data-contract
-   error before further scientific comparisons.
-2. **After the nine-scenario RP pilot:** inspect service by scenario, period,
-   product, and binding capacity. Use this evidence to decide whether origin
-   inventory, throughput expansion, or an explicit service policy is justified.
-3. **Before definitive EVPI/VSS and sensitivity campaigns:** freeze the chosen
-   formulation and workbook contract. EVPI and VSS from different structural
-   models are not directly comparable.
+1. **Stage 5.6:** correct the candidate-cost loading contract, support effective
+   days by period, and expose penalty versus lexicographic objectives without a
+   service floor.
+2. **Next campaign:** compare attainable service and slack usage under the two
+   objective policies using the same network and workbook.
+3. **Before a scenario service target:** build a service-cost frontier and set a
+   target only if it is operationally justified and attainable.
+4. **Before definitive EVPI/VSS:** freeze one scalar monetary objective. Current
+   EVPI/VSS calculations intentionally reject the lexicographic mode because a
+   vector objective requires a separately defined value-of-information metric.
 
 The Stage 5.4 RP pilot may run under the current baseline because it provides
 the scenario-level diagnostics needed at gate 2. The complete EVPI/VSS command
 also remains available as a pipeline validation, but its results should not be
 treated as definitive until the methodological gate is closed.
 
-Stage 5.5 automates this gate through `model_audit.json`; see
+Stages 5.5–5.6 automate this gate through `model_audit.json`; see
 [`methodological_audit.md`](methodological_audit.md). The audit records evidence
-but deliberately does not choose or enforce a service policy.
+and records the selected objective policy without enforcing a service floor.
+
+## Supply allocation contract
+
+Every origin-period supply value is allocated by an equality constraint. It
+must flow directly to a customer or enter a warehouse. Warehouse balance then
+routes it to domestic demand, export demand, transshipment, or inventory. No
+unused-supply or disposal variable exists in this formulation. Terminal
+inventory policy and storage costs must therefore remain visible when results
+are interpreted, because they determine the economic meaning of keeping supply
+in the network instead of exporting it.
 
 ## Recommended experiment design
 

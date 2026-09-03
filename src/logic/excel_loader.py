@@ -1066,16 +1066,44 @@ def _load_warehouses(
             reported_candidate_total_opening_cost[warehouse] = reported_total_cost
 
             if fixed_cost_column is not None or variable_cost_column is not None:
-                opening_fixed_cost[warehouse] = (
+                explicit_fixed_cost = (
                     _parse_float(row[fixed_cost_column])
                     if fixed_cost_column is not None
                     else 0.0
                 )
-                candidate_capacity_cost[warehouse] = (
+                explicit_variable_cost = (
                     _parse_float(row[variable_cost_column])
                     if variable_cost_column is not None
                     else 0.0
                 )
+
+                # Blank enhancement columns are represented as zeros in some
+                # workbooks. When both components are zero, retain the
+                # documented total construction estimate through the selected
+                # cost policy instead of making candidate capacity free.
+                if (
+                    explicit_fixed_cost == 0.0
+                    and explicit_variable_cost == 0.0
+                    and reported_total_cost > 0.0
+                ):
+                    if config.candidate_cost_policy == "variable_from_total":
+                        opening_fixed_cost[warehouse] = 0.0
+                        candidate_capacity_cost[warehouse] = (
+                            reported_total_cost / max_capacity
+                            if max_capacity > 0.0
+                            else 0.0
+                        )
+                    elif config.candidate_cost_policy == "fixed_total":
+                        opening_fixed_cost[warehouse] = reported_total_cost
+                        candidate_capacity_cost[warehouse] = 0.0
+                    else:
+                        raise ValueError(
+                            "Invalid candidate_cost_policy="
+                            f"{config.candidate_cost_policy!r}."
+                        )
+                else:
+                    opening_fixed_cost[warehouse] = explicit_fixed_cost
+                    candidate_capacity_cost[warehouse] = explicit_variable_cost
 
             elif config.candidate_cost_policy == "variable_from_total":
                 opening_fixed_cost[warehouse] = 0.0

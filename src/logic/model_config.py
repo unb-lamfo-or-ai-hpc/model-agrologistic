@@ -28,6 +28,7 @@ ModelMode: TypeAlias = Literal["det", "sto"]
 CandidateCapacityMode: TypeAlias = Literal["fixed", "scalable"]
 TerminalInventoryPolicy: TypeAlias = Literal["free", "zero", "penalized", "target"]
 RouteFilterStrategy: TypeAlias = Literal["none", "pareto", "top_k"]
+ObjectivePolicy: TypeAlias = Literal["penalty", "lexicographic"]
 
 
 VALID_SOLVER_BACKENDS = {"gurobipy", "pyomo"}
@@ -35,6 +36,7 @@ VALID_MODEL_MODES = {"det", "sto"}
 VALID_CANDIDATE_CAPACITY_MODES = {"fixed", "scalable"}
 VALID_TERMINAL_INVENTORY_POLICIES = {"free", "zero", "penalized", "target"}
 VALID_ROUTE_FILTER_STRATEGIES = {"none", "pareto", "top_k"}
+VALID_OBJECTIVE_POLICIES = {"penalty", "lexicographic"}
 
 
 # ---------------------------------------------------------------------
@@ -170,6 +172,11 @@ class ModelConfig:
     # emergency slack must be represented as distinct variables.
     separate_emergency_capacity_slacks: bool = True
 
+    # ``penalty`` preserves the single weighted-cost objective. The optional
+    # ``lexicographic`` policy minimizes expected unmet demand first,
+    # emergency capacity second, and economic cost third.
+    objective_policy: ObjectivePolicy = "penalty"
+
     # -----------------------------------------------------------------
     # Inventory policy
     # -----------------------------------------------------------------
@@ -183,9 +190,10 @@ class ModelConfig:
     # Time conversion
     # -----------------------------------------------------------------
 
-    # Number of operating days represented by one period.
-    # This is useful for reception/shipping capacity constraints.
-    days_per_period: float = 22.0
+    # Fallback number of operating days represented by one monthly period.
+    # Per-period values override this fallback when supplied.
+    days_per_period: float = 30.0
+    days_per_period_by_period: dict[str, float] = field(default_factory=dict)
 
     # -----------------------------------------------------------------
     # Numerical tolerances
@@ -222,6 +230,12 @@ class ModelConfig:
                 f"Expected one of {sorted(VALID_ROUTE_FILTER_STRATEGIES)}."
             )
 
+        if self.objective_policy not in VALID_OBJECTIVE_POLICIES:
+            raise ValueError(
+                f"Invalid objective_policy: {self.objective_policy!r}. "
+                f"Expected one of {sorted(VALID_OBJECTIVE_POLICIES)}."
+            )
+
         if not 0 < self.pareto_fraction <= 1:
             raise ValueError("pareto_fraction must be in the interval (0, 1].")
 
@@ -239,11 +253,27 @@ class ModelConfig:
         if self.days_per_period <= 0:
             raise ValueError("days_per_period must be positive.")
 
+        invalid_period_days = {
+            period: days
+            for period, days in self.days_per_period_by_period.items()
+            if days <= 0
+        }
+        if invalid_period_days:
+            raise ValueError(
+                "days_per_period_by_period values must be positive: "
+                f"{invalid_period_days}."
+            )
+
         if self.feasibility_tolerance <= 0:
             raise ValueError("feasibility_tolerance must be positive.")
 
         if self.evpi_vss_tolerance <= 0:
             raise ValueError("evpi_vss_tolerance must be positive.")
+
+    def operating_days(self, period: str) -> float:
+        """Return operating days for one period, falling back to the default."""
+
+        return float(self.days_per_period_by_period.get(period, self.days_per_period))
 
 
 # ---------------------------------------------------------------------
@@ -267,4 +297,3 @@ class RunConfig:
     run_name: str = "default_run"
     output_dir: str = "outputs"
     metadata: dict[str, Any] = field(default_factory=dict)
-

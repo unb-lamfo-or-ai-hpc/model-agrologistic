@@ -89,10 +89,12 @@ def test_input_audit_reports_zero_costs_scales_and_period_capacity():
     assert capacity["reception_daily"] == pytest.approx(10.0)
     assert capacity["reception_per_period"] == pytest.approx(300.0)
     assert capacity["shipping_per_period"] == pytest.approx(240.0)
-    assert zero_cost["candidate_opening"]["count"] == 1
-    assert zero_cost["candidate_capacity"]["count"] == 1
-    assert zero_cost["expansion_fixed"]["sample"] == ["W1"]
-    assert zero_cost["bulkification_fixed"]["sample"] == ["W1"]
+    assert capacity["reception_per_period_by_period"]["t1"] == pytest.approx(
+        300.0
+    )
+    assert zero_cost["candidate_total"]["count"] == 1
+    assert zero_cost["expansion_total"]["count"] == 0
+    assert zero_cost["bulkification_total"]["count"] == 0
     assert "LARGE_INPUT_VALUE" in codes
 
 
@@ -114,8 +116,27 @@ def test_solution_audit_reports_dominance_service_and_free_decisions():
     assert service["expected"] == pytest.approx(0.7)
     assert service["minimum_scenario"] == pytest.approx(0.6)
     assert service["maximum_scenario"] == pytest.approx(0.8)
-    assert active["candidate_opening"]["sample"] == ["W2"]
-    assert active["expansion_fixed"]["sample"] == ["W1"]
-    assert active["bulkification_fixed"]["sample"] == ["W1"]
+    assert active["candidate_total"]["sample"] == ["W2"]
+    assert active["expansion_total"]["count"] == 0
+    assert active["bulkification_total"]["count"] == 0
     assert "DOMINANT_OBJECTIVE_COMPONENT" in codes
     assert "ZERO_COST_ACTIVE_INVESTMENT" in codes
+
+
+def test_investment_activity_uses_capacity_instead_of_binary_values():
+    data = auditable_data()
+    data.candidate_capacity_cost["W2"] = 10.0
+    result = solved_stochastic_result()
+    result.warehouse_decisions[0]["expansion_capacity"] = 0.0
+    result.warehouse_decisions[0]["bulk_capacity"] = 0.0
+    result.warehouse_decisions[1]["candidate_capacity"] = 0.0
+
+    audit = build_model_audit(data, ModelConfig(), result)
+    decisions = audit["solution"]["investment_decisions"]
+
+    assert decisions["candidates_opened"] == 0
+    assert decisions["warehouses_expanded"] == 0
+    assert decisions["warehouses_bulkified"] == 0
+    assert "ZERO_COST_ACTIVE_INVESTMENT" not in {
+        finding["code"] for finding in audit["findings"]
+    }

@@ -67,6 +67,26 @@ def test_golden_excel_template_populates_expansion_and_bulkification():
     not TEMPLATE_PATH.exists(),
     reason="Golden Excel template is not available in data/templates.",
 )
+def test_golden_excel_template_prices_candidate_capacity_per_ton():
+    data = load_model_data_from_excel(TEMPLATE_PATH)
+
+    for warehouse in data.candidate_warehouses:
+        maximum = data.max_candidate_capacity[warehouse]
+        reported_total = data.metadata["reported_candidate_total_opening_cost"][
+            warehouse
+        ]
+
+        assert reported_total > 0.0
+        assert data.opening_fixed_cost[warehouse] == pytest.approx(0.0)
+        assert data.candidate_capacity_cost[warehouse] == pytest.approx(
+            reported_total / maximum
+        )
+
+
+@pytest.mark.skipif(
+    not TEMPLATE_PATH.exists(),
+    reason="Golden Excel template is not available in data/templates.",
+)
 def test_golden_excel_template_loads_active_stochastic_scenarios():
     data = load_model_data_from_excel(
         TEMPLATE_PATH,
@@ -94,4 +114,3 @@ def test_golden_excel_template_loads_active_stochastic_scenarios():
         require_distances=True,
     )
     assert result.is_valid, [issue.message for issue in result.errors]
-
