@@ -118,7 +118,13 @@ def test_lexicographic_policy_serves_demand_before_minimizing_cost():
 
     assert penalty_result.metrics["total_unmet_demand"] == pytest.approx(100.0)
     assert lexicographic_result.metrics["total_unmet_demand"] == pytest.approx(0.0)
+    assert lexicographic_result.objective_value == pytest.approx(0.0)
     assert lexicographic_result.metadata["objective_policy"] == "lexicographic"
+    assert lexicographic_result.metadata["objective_priority_order"] == [
+        "emergency_capacity",
+        "unmet_demand",
+        "economic_cost",
+    ]
     assert lexicographic_result.metrics["objective_values"][
         "economic_cost"
     ] > penalty_result.metrics["objective_values"]["economic_cost"]

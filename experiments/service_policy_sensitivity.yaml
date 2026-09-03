@@ -1,0 +1,121 @@
+version: 1
+output_dir: ../data/results/hpc/service_policy_sensitivity
+continue_on_error: true
+
+defaults:
+  max_estimated_variables: 2000000
+  solver:
+    backend: gurobipy
+    solver_name: gurobi
+    mip_gap: 0.01
+    time_limit: 7200
+    threads: 16
+    seed: 0
+    tee: true
+    compute_iis: true
+    iis_max_items: 200
+    solver_options:
+      SoftMemLimit: 56
+      NumericFocus: 1
+  loader:
+    include_transshipment_routes: true
+    include_direct_origin_customer_routes: true
+  model:
+    use_warehouse_transshipment: true
+    use_direct_origin_customer: true
+    route_filter_strategy: top_k
+    route_top_k: 10
+    days_per_period: 30
+    allow_capacity_expansion: true
+    allow_bulkification: true
+
+experiments:
+  - name: service_det_penalty
+    workbook: ../data/templates/model_agrologistic_padrao_ouro.xlsx
+    model:
+      mode: det
+      objective_policy: penalty
+    metadata:
+      family: service_policy_sensitivity
+      campaign_gate: gate_1_deterministic
+      comparison_group: deterministic
+
+  - name: service_det_lexicographic
+    workbook: ../data/templates/model_agrologistic_padrao_ouro.xlsx
+    model:
+      mode: det
+      objective_policy: lexicographic
+    metadata:
+      family: service_policy_sensitivity
+      campaign_gate: gate_1_deterministic
+      comparison_group: deterministic
+
+  - name: service_sto_3_penalty
+    workbook: ../data/templates/model_agrologistic_padrao_ouro.xlsx
+    model:
+      mode: sto
+      objective_policy: penalty
+    loader:
+      include_stochastic_scenarios: true
+      scenario_generation_mode: cartesian
+      stochastic_combinations:
+        - [baixo, alto]
+        - [base, base]
+        - [alto, baixo]
+    metadata:
+      family: service_policy_sensitivity
+      campaign_gate: gate_2_three_scenarios
+      comparison_group: stochastic_three_scenarios
+      scenario_design: stress_central_favorable
+
+  - name: service_sto_3_lexicographic
+    workbook: ../data/templates/model_agrologistic_padrao_ouro.xlsx
+    model:
+      mode: sto
+      objective_policy: lexicographic
+    loader:
+      include_stochastic_scenarios: true
+      scenario_generation_mode: cartesian
+      stochastic_combinations:
+        - [baixo, alto]
+        - [base, base]
+        - [alto, baixo]
+    metadata:
+      family: service_policy_sensitivity
+      campaign_gate: gate_2_three_scenarios
+      comparison_group: stochastic_three_scenarios
+      scenario_design: stress_central_favorable
+
+  - name: service_sto_9_penalty
+    workbook: ../data/templates/model_agrologistic_padrao_ouro.xlsx
+    max_estimated_variables: 6000000
+    model:
+      mode: sto
+      objective_policy: penalty
+    loader:
+      include_stochastic_scenarios: true
+      scenario_generation_mode: cartesian
+      stochastic_supply_levels: [baixo, base, alto]
+      stochastic_demand_levels: [baixo, base, alto]
+    metadata:
+      family: service_policy_sensitivity
+      campaign_gate: gate_3_nine_scenarios
+      comparison_group: stochastic_nine_scenarios
+      scenario_design: full_cartesian
+
+  - name: service_sto_9_lexicographic
+    workbook: ../data/templates/model_agrologistic_padrao_ouro.xlsx
+    max_estimated_variables: 6000000
+    model:
+      mode: sto
+      objective_policy: lexicographic
+    loader:
+      include_stochastic_scenarios: true
+      scenario_generation_mode: cartesian
+      stochastic_supply_levels: [baixo, base, alto]
+      stochastic_demand_levels: [baixo, base, alto]
+    metadata:
+      family: service_policy_sensitivity
+      campaign_gate: gate_3_nine_scenarios
+      comparison_group: stochastic_nine_scenarios
+      scenario_design: full_cartesian

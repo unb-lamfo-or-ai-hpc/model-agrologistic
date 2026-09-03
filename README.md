@@ -451,12 +451,12 @@ Completed:
 - successful nine-scenario RP and checkpointed EVPI/VSS campaigns on NPAD;
 - solver-independent methodological audit of inputs and structured solutions;
 - pragmatic Stage 5.6 policy contract: candidate construction cost per ton,
-  period-specific operating days, and optional lexicographic service priority.
+  period-specific operating days, and an optional lexicographic slack policy.
 
 Current:
 
-- Stage 5.6 validation of the corrected investment-cost contract and the
-  penalty-versus-lexicographic service-policy comparison.
+- Stage 5.7 progressive penalty-versus-lexicographic service-policy campaign,
+  with matched deterministic, three-scenario, and nine-scenario experiments.
 
 The model keeps full origin-supply allocation, treats reception and shipping
 as daily rates converted with a 30-day fallback, and does not impose an
@@ -467,7 +467,6 @@ objective. See
 
 Planned:
 
-- penalty-versus-lexicographic service-policy sensitivity campaign;
 - attainable service-cost frontier before any scenario service constraint;
 - scientific result tables and plots;
 - Pyomo/SCIP parity and backend equivalence, if retained as a project

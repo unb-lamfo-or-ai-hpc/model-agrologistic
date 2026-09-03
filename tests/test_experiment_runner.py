@@ -9,6 +9,7 @@ from src.logic.experiment_runner import (
     ExperimentManifest,
     ExperimentSpec,
     aggregate_experiment_summaries,
+    aggregate_service_policy_comparisons,
     audit_existing_run,
     estimate_model_size,
     inspect_manifest,
@@ -100,6 +101,12 @@ def solved_result() -> OptimizationResult:
                 "value": 20.0,
             },
         ],
+        metrics={
+            "objective_values": {
+                "economic_cost": 123.0,
+                "penalized_cost": 5_000_123.0,
+            }
+        },
     )
 
 
@@ -278,6 +285,62 @@ def test_example_manifest_uses_calibrated_direct_network():
         assert spec.solver.solver_options["NumericFocus"] == 1
 
 
+def test_service_policy_manifest_defines_three_matched_gates():
+    path = (
+        Path(__file__).parents[1]
+        / "experiments"
+        / "service_policy_sensitivity.yaml"
+    )
+    manifest = load_experiment_manifest(path)
+
+    assert len(manifest.experiments) == 6
+    groups: dict[str, set[str]] = {}
+    for spec in manifest.experiments:
+        group = str(spec.metadata["comparison_group"])
+        groups.setdefault(group, set()).add(spec.model.objective_policy)
+        assert spec.calculate_evpi_vss is False
+        assert spec.model.route_filter_strategy == "top_k"
+        assert spec.model.route_top_k == 10
+        assert spec.model.days_per_period == pytest.approx(30.0)
+
+    assert groups == {
+        "deterministic": {"penalty", "lexicographic"},
+        "stochastic_three_scenarios": {"penalty", "lexicographic"},
+        "stochastic_nine_scenarios": {"penalty", "lexicographic"},
+    }
+    three_scenario_specs = manifest.experiments[2:4]
+    for spec in three_scenario_specs:
+        assert spec.loader.stochastic_combinations == (
+            ("baixo", "alto"),
+            ("base", "base"),
+            ("alto", "baixo"),
+        )
+    for spec in manifest.experiments[4:6]:
+        assert spec.max_estimated_variables == 6_000_000
+
+
+def test_service_policy_manifest_rejects_an_unmatched_pair(tmp_path):
+    manifest_path = tmp_path / "unmatched.yaml"
+    manifest_path.write_text(
+        """
+version: 1
+experiments:
+  - name: penalty
+    workbook: input.xlsx
+    model: {objective_policy: penalty, days_per_period: 30}
+    metadata: {comparison_group: same_case}
+  - name: lexicographic
+    workbook: input.xlsx
+    model: {objective_policy: lexicographic, days_per_period: 22}
+    metadata: {comparison_group: same_case}
+""".strip(),
+        encoding="utf-8",
+    )
+
+    with pytest.raises(ValueError, match="changes settings"):
+        load_experiment_manifest(manifest_path)
+
+
 def test_manifest_rejects_duplicate_and_unsafe_names(tmp_path):
     manifest_path = tmp_path / "experiments.yaml"
     manifest_path.write_text(
@@ -316,6 +379,17 @@ def test_resume_requires_evpi_vss_analysis():
         )
 
 
+def test_evpi_vss_spec_rejects_lexicographic_policy_early():
+    with pytest.raises(ValueError, match="objective_policy='penalty'"):
+        ExperimentSpec(
+            name="invalid_lexicographic_evpi",
+            workbook=Path("input.xlsx"),
+            model=ModelConfig(mode="sto", objective_policy="lexicographic"),
+            loader=ExcelLoaderConfig(include_stochastic_scenarios=True),
+            calculate_evpi_vss=True,
+        )
+
+
 def test_run_experiment_exports_complete_json_csv_and_metrics(
     tmp_path,
     monkeypatch,
@@ -333,12 +407,18 @@ def test_run_experiment_exports_complete_json_csv_and_metrics(
 
     assert summary.status == "optimal"
     assert summary.objective_value == pytest.approx(123.0)
+    assert summary.objective_policy == "penalty"
+    assert summary.scenario_count == 1
+    assert summary.economic_cost == pytest.approx(123.0)
+    assert summary.penalized_cost == pytest.approx(5_000_123.0)
     assert summary.dyn_cap == pytest.approx(600.0)
     assert summary.turnover == pytest.approx(6.0)
     assert summary.total_unmet_demand == pytest.approx(5.0)
     assert summary.total_domestic_demand == pytest.approx(85.0)
     assert summary.served_domestic_demand == pytest.approx(80.0)
     assert summary.domestic_service_level == pytest.approx(80.0 / 85.0)
+    assert summary.minimum_scenario_service_level is None
+    assert summary.maximum_scenario_service_level is None
     assert summary.total_direct_flow == pytest.approx(0.0)
     assert summary.emergency_static_capacity == pytest.approx(10.0)
     assert summary.emergency_reception_capacity == pytest.approx(20.0)
@@ -367,6 +447,7 @@ def test_run_experiment_exports_complete_json_csv_and_metrics(
         "storage_by_scenario.csv",
     }
     assert {path.name for path in run_dir.iterdir()} == expected_files
+    assert (run_dir / "scenario_performance.csv").read_text(encoding="utf-8") == ""
 
     with (run_dir / "storage_by_warehouse.csv").open(encoding="utf-8") as file:
         storage_rows = list(csv.DictReader(file))
@@ -491,6 +572,64 @@ def test_aggregate_summaries_builds_one_csv_after_array_completion(tmp_path):
         rows = list(csv.DictReader(file))
     assert [row["name"] for row in rows] == ["run_0", "run_1"]
     assert all(row["status"] == "optimal" for row in rows)
+
+
+def test_service_policy_comparison_exports_matched_deltas(tmp_path):
+    def policy_result(**kwargs):
+        result = solved_result()
+        if kwargs["model_config"].objective_policy == "lexicographic":
+            result.flows[0]["value"] = 85.0
+            result.unmet_demand[0]["value"] = 0.0
+            result.metrics["objective_values"] = {
+                "economic_cost": 150.0,
+                "penalized_cost": 150.0,
+            }
+        return result
+
+    for policy in ("penalty", "lexicographic"):
+        spec = ExperimentSpec(
+            name=f"det_{policy}",
+            workbook=Path("input.xlsx"),
+            model=ModelConfig(mode="det", objective_policy=policy),
+            metadata={
+                "comparison_group": "deterministic",
+                "campaign_gate": "gate_1_deterministic",
+            },
+        )
+        run_experiment(
+            spec,
+            tmp_path,
+            loader=fake_loader,
+            solver=policy_result,
+            progress=lambda _message: None,
+        )
+
+    target = aggregate_service_policy_comparisons(tmp_path)
+    assert target == tmp_path / "service_policy_comparison.csv"
+
+    payload = json.loads(
+        (tmp_path / "service_policy_comparison.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    comparison = payload["comparisons"][0]
+    assert payload["delta_convention"] == "lexicographic_minus_penalty"
+    assert comparison["pair_status"] == "optimal"
+    assert comparison["delta_domestic_service_level"] == pytest.approx(
+        1.0 - (80.0 / 85.0)
+    )
+    assert comparison["delta_service_percentage_points"] == pytest.approx(
+        100.0 * (1.0 - (80.0 / 85.0))
+    )
+    assert comparison["delta_total_unmet_demand"] == pytest.approx(-5.0)
+    assert comparison["delta_economic_cost"] == pytest.approx(27.0)
+    assert comparison["unmet_demand_reduction_fraction"] == pytest.approx(1.0)
+    assert comparison["emergency_capacity_ratio"] == pytest.approx(1.0)
+    assert comparison["emergency_static_capacity_ratio"] == pytest.approx(1.0)
+    assert comparison["emergency_reception_capacity_ratio"] == pytest.approx(1.0)
+    assert comparison["economic_cost_change_fraction"] == pytest.approx(
+        27.0 / 123.0
+    )
 
 
 def test_manifest_rejects_out_of_range_index(tmp_path):

@@ -160,7 +160,7 @@ def test_penalty_policy_uses_one_weighted_objective():
     assert model.objectives == []
 
 
-def test_lexicographic_policy_orders_service_slacks_before_economic_cost():
+def test_lexicographic_policy_prioritizes_physical_feasibility_slack():
     model = FakeModel()
 
     _set_objective_policy(
@@ -175,8 +175,13 @@ def test_lexicographic_policy_orders_service_slacks_before_economic_cost():
 
     assert model.ModelSense == FakeGRB.MINIMIZE
     assert [expression for expression, _ in model.objectives] == [
-        "unmet",
         "emergency",
+        "unmet",
         "economic",
     ]
     assert [options["priority"] for _, options in model.objectives] == [3, 2, 1]
+    assert [options["name"] for _, options in model.objectives] == [
+        "minimize_emergency_capacity",
+        "minimize_unmet_demand",
+        "minimize_economic_cost",
+    ]

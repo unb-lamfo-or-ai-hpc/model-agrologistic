@@ -107,9 +107,10 @@ model:
 ```
 
 Use `penalty` for scalar monetary comparisons and EVPI/VSS. Use
-`lexicographic` only for the separate service-priority experiment; it minimizes
-expected unmet demand, expected emergency capacity, and economic cost in that
-order.
+`lexicographic` only for the separate feasibility-and-service experiment. It
+minimizes expected emergency capacity first, expected unmet demand second, and
+economic cost third. This ordering prevents a service gain from being purchased
+with unrestricted fictitious capacity.
 
 To audit an already completed run without solving it again:
 
@@ -289,6 +290,117 @@ service-level modeling decision described in
 `docs/service_level_methodology.md` must be frozen before definitive EVPI/VSS
 and sensitivity results are reported.
 
+## Stage 5.7 service-policy sensitivity campaign
+
+The versioned `experiments/service_policy_sensitivity.yaml` manifest compares
+`penalty` and `lexicographic` objectives without changing physical constraints,
+route density, capacity assumptions, or input data. The six entries form three
+matched gates:
+
+| Gate | Indices | Scenario design | Purpose |
+| --- | --- | --- | --- |
+| 1 | 0-1 | deterministic | Verify the policy effect at the lowest computational cost. |
+| 2 | 2-3 | stress, central, and favorable | Test whether the effect persists across three contrasting conditions. |
+| 3 | 4-5 | complete nine-scenario Cartesian set | Produce the final extensive-form comparison. |
+
+The three-scenario gate uses equal-probability diagnostic cases: low supply
+with high demand, base supply with base demand, and high supply with low demand.
+These probabilities define a sensitivity experiment, not an empirical forecast.
+
+Inspect each pair before advancing:
+
+```bash
+python scripts/run_batch_hpc.py \
+  experiments/service_policy_sensitivity.yaml \
+  --index 0 \
+  --dry-run
+
+python scripts/run_batch_hpc.py \
+  experiments/service_policy_sensitivity.yaml \
+  --index 1 \
+  --dry-run
+```
+
+On Slurm, submit one gate at a time as an array:
+
+```bash
+sbatch \
+  --array=0-1 \
+  --export=ALL,EXPERIMENT_MANIFEST=experiments/service_policy_sensitivity.yaml \
+  --job-name=agrologistic-service-gate-1 \
+  scripts/run_model_agrologistic.slurm
+```
+
+Replace `--array=0-1` with `2-3` only after gate 1 is acceptable, and with
+`4-5` only after gate 2 is acceptable. The Slurm script derives the experiment
+index from `SLURM_ARRAY_TASK_ID`; an explicit `EXPERIMENT_INDEX` still takes
+precedence.
+
+After both runs in a gate finish, rebuild the summaries:
+
+```bash
+python scripts/run_batch_hpc.py \
+  experiments/service_policy_sensitivity.yaml \
+  --aggregate-only
+```
+
+In addition to `batch_summary.csv`, this command writes
+`service_policy_comparison.csv` and `service_policy_comparison.json`. Each row
+contains both policies and reports `lexicographic - penalty` deltas for service,
+unmet demand, emergency capacity, economic and penalized costs, DynCap,
+Turnover, runtime, and peak memory. Service differences are also reported in
+percentage points. Static and reception emergency slacks are kept separate in
+both absolute and relative diagnostics. The comparison also reports
+unmet-demand reduction, combined emergency-capacity and runtime ratios, and
+relative changes in economic and penalized costs. A pair is labeled `optimal`,
+`usable_nonoptimal`, `failed`, or `pending`, so partial campaigns remain
+auditable.
+
+Minimum and maximum scenario service levels are intentionally empty for a
+deterministic run. A deterministic instance has one outcome but no stochastic
+scenario distribution; its service level is reported only in the aggregate
+field.
+
+A positive service delta is not sufficient to advance a gate. Inspect whether
+the lexicographic solution obtains that gain by using materially more emergency
+capacity. Emergency capacity is a feasibility slack rather than planned
+infrastructure, so a large ratio signals that the hierarchy is exposing a
+physical bottleneck, not identifying a directly implementable network plan.
+
+The first gate initially tested unmet demand before emergency capacity. It
+raised deterministic service from 79.34% to 93.11%, but static and reception
+emergency slacks increased by factors of approximately 1,108 and 689. Stage 5.7
+therefore changes the hierarchy to emergency capacity, unmet demand, and
+economic cost. The deterministic pair must be rerun under this corrected
+contract before gate 2 starts.
+
+No entry calculates EVPI or VSS. Those metrics remain restricted to the scalar
+`penalty` objective and must not be used to compare a hierarchical objective
+with a monetary objective.
+
+### Completed Stage 5.7 campaign
+
+All three matched gates completed on NPAD with optimal solutions:
+
+| Gate | Scenarios | Penalty service | Lexicographic service | Service delta | Penalty runtime | Lexicographic runtime |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 1 | 79.336% | 79.061% | -0.275 pp | 43.0 s | 89.5 s |
+| 2 | 3 | 78.302% | 78.011% | -0.291 pp | 178.5 s | 439.2 s |
+| 3 | 9 | 78.698% | 78.402% | -0.295 pp | 947.1 s | 2,285.9 s |
+
+For the complete nine-scenario gate, the lexicographic policy reduced combined
+emergency capacity from 552,682.90 ton-period units to numerical tolerance,
+reduced economic cost by 0.929%, and increased unmet demand by 2.00 million
+tonnes. Peak resident memory increased from approximately 16.98 GiB to
+20.63 GiB, remaining within the validated 64 GiB Slurm profile.
+
+The stable result across all gates closes the policy-selection experiment.
+`penalty` remains the monetary reference and `lexicographic` remains a
+feasibility-slack robustness diagnostic. The approximately 21% persistent
+domestic service gap is now treated as a structural-model diagnostic for the
+next reproducibility and bottleneck-analysis stage, not as evidence that the
+unmet-demand penalty should be increased.
+
 ### NPAD memory profile and Slurm submission
 
 The first nine-scenario RP attempt was executed on `service0` with a 48 GiB
@@ -333,9 +445,10 @@ Inspect the saved patch, but do not reapply it when the remote profile already
 contains the intended defaults. The stash remains recoverable until explicitly
 dropped.
 
-The default `EXPERIMENT_INDEX=1` runs only the nine-scenario RP. Select index 2
-explicitly for the checkpointed EVPI/VSS campaign. After a job finishes,
-inspect accounting with:
+With the default manifest, `EXPERIMENT_INDEX=1` runs only the nine-scenario RP.
+Select index 2 explicitly for the checkpointed EVPI/VSS campaign. Set
+`EXPERIMENT_MANIFEST` when running another versioned campaign. After a job
+finishes, inspect accounting with:
 
 ```bash
 sacct -j <job-id> \

@@ -321,6 +321,15 @@ def solve_stochastic_model_gurobipy(
         ],
         "first_stage_fixed": fixed_first_stage is not None,
         "objective_policy": model_config.objective_policy,
+        "objective_priority_order": (
+            ["penalized_cost"]
+            if model_config.objective_policy == "penalty"
+            else [
+                "expected_emergency_capacity",
+                "expected_unmet_demand",
+                "economic_cost",
+            ]
+        ),
         **_infeasibility_metadata(model, GRB, solver_config),
     }
     if model.SolCount == 0:
@@ -980,7 +989,7 @@ def _extract_stochastic_result(
         objective_value=(
             penalized_cost
             if model_config.objective_policy == "penalty"
-            else expected_unmet_quantity
+            else expected_emergency_quantity
         ),
         solver_backend="gurobipy",
         solver_name=solver_config.solver_name,

@@ -56,6 +56,7 @@ def main(argv: list[str] | None = None) -> int:
 
     from src.logic.experiment_runner import (
         aggregate_experiment_summaries,
+        aggregate_service_policy_comparisons,
         inspect_manifest,
         load_experiment_manifest,
         run_manifest,
@@ -68,6 +69,9 @@ def main(argv: list[str] | None = None) -> int:
     if args.aggregate_only:
         target = aggregate_experiment_summaries(output_root)
         print(f"Summary written to {target}")
+        comparison_target = aggregate_service_policy_comparisons(output_root)
+        if comparison_target is not None:
+            print(f"Service-policy comparison written to {comparison_target}")
         return 0
 
     index = selected_index(args.index)
@@ -89,6 +93,7 @@ def main(argv: list[str] | None = None) -> int:
     # array tasks write only their isolated run_summary.json files.
     if index is None:
         aggregate_experiment_summaries(output_root)
+        aggregate_service_policy_comparisons(output_root)
 
     failures = [summary for summary in summaries if summary.status == "error"]
     for summary in summaries:
@@ -98,4 +103,3 @@ def main(argv: list[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
