@@ -92,8 +92,9 @@ on an older checkout is not an audit or Python failure.
    must enter a domestic, export, or warehouse-inventory path; no disposal or
    unused-supply variable is introduced.
 4. **Service policy:** keep `penalty` as the reproducible legacy baseline and
-   provide `lexicographic` as an explicit alternative. No arbitrary service
-   floor is imposed in Stage 5.6.
+   provide a feasibility-first `lexicographic` alternative that minimizes
+   emergency capacity before unmet demand and economic cost. No arbitrary
+   service floor is imposed in Stage 5.6.
 5. **Freeze and rerun:** version the selected objective policy before new
    scientific comparisons. Scalar EVPI/VSS remains restricted to the penalty
    objective.

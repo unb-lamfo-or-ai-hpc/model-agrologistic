@@ -85,14 +85,24 @@ Stage 5.6 implements the least disruptive service-policy comparison through
 
 - `penalty` minimizes the existing monetary objective, including the configured
   unmet-demand and emergency-capacity penalties;
-- `lexicographic` first minimizes expected unmet-demand tonnage, then expected
-  emergency-capacity tonnage, and finally real economic cost.
+- `lexicographic` first minimizes expected emergency-capacity tonnage, then
+  expected unmet-demand tonnage, and finally real economic cost.
 
 Both policies keep the same physical constraints and feasibility slacks. The
 lexicographic policy changes only the priority among objectives, so it avoids
-calibrating an even larger arbitrary penalty. It does not impose a minimum
-service level by scenario. Such constraints remain a later sensitivity option
-after the attainable service frontier is measured.
+calibrating an even larger arbitrary penalty. Emergency capacity precedes
+unmet demand because it represents fictitious infrastructure and must remain a
+last-resort feasibility relaxation. The second priority then finds the maximum
+service attainable without degrading that minimum relaxation. The policy does
+not impose a minimum service level by scenario. Such constraints remain a later
+sensitivity option after the attainable service frontier is measured.
+
+The initial deterministic gate confirmed why this order matters. Minimizing
+unmet demand first improved service by 13.77 percentage points, but multiplied
+static emergency capacity by approximately 1,108 and reception emergency
+capacity by approximately 689. That solution is a useful stress bound, not an
+implementable network policy. The corrected feasibility-first hierarchy must
+be validated before the stochastic gates proceed.
 
 The service policy therefore enters the objective function, while the domestic
 demand equation remains a constraint:

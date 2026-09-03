@@ -173,8 +173,9 @@ class ModelConfig:
     separate_emergency_capacity_slacks: bool = True
 
     # ``penalty`` preserves the single weighted-cost objective. The optional
-    # ``lexicographic`` policy minimizes expected unmet demand first,
-    # emergency capacity second, and economic cost third.
+    # ``lexicographic`` policy minimizes emergency capacity first, expected
+    # unmet demand second, and economic cost third. This keeps physical
+    # feasibility slacks as a last resort before maximizing service.
     objective_policy: ObjectivePolicy = "penalty"
 
     # -----------------------------------------------------------------

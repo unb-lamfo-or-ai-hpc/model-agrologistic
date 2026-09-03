@@ -744,22 +744,22 @@ def _set_objective_policy(
     model.ModelSense = GRB.MINIMIZE
     tolerance = config.feasibility_tolerance
     model.setObjectiveN(
-        unmet_quantity,
+        emergency_quantity,
         index=0,
         priority=3,
         weight=1.0,
         abstol=tolerance,
         reltol=0.0,
-        name="minimize_unmet_demand",
+        name="minimize_emergency_capacity",
     )
     model.setObjectiveN(
-        emergency_quantity,
+        unmet_quantity,
         index=1,
         priority=2,
         weight=1.0,
         abstol=tolerance,
         reltol=0.0,
-        name="minimize_emergency_capacity",
+        name="minimize_unmet_demand",
     )
     model.setObjectiveN(
         economic_cost,
@@ -1300,7 +1300,7 @@ def _extract_deterministic_result(
         objective_value=(
             penalized_cost_value
             if model_config.objective_policy == "penalty"
-            else unmet_quantity_value
+            else emergency_quantity_value
         ),
         solver_backend="gurobipy",
         solver_name=solver_config.solver_name,
@@ -1320,6 +1320,15 @@ def _extract_deterministic_result(
             "solution_count": model.SolCount,
             "candidate_capacity_mode": model_config.candidate_capacity_mode,
             "objective_policy": model_config.objective_policy,
+            "objective_priority_order": (
+                ["penalized_cost"]
+                if model_config.objective_policy == "penalty"
+                else [
+                    "emergency_capacity",
+                    "unmet_demand",
+                    "economic_cost",
+                ]
+            ),
             "allow_capacity_expansion": model_config.allow_capacity_expansion,
             "allow_bulkification": model_config.allow_bulkification,
         },

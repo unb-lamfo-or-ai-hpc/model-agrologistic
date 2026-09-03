@@ -451,7 +451,7 @@ Completed:
 - successful nine-scenario RP and checkpointed EVPI/VSS campaigns on NPAD;
 - solver-independent methodological audit of inputs and structured solutions;
 - pragmatic Stage 5.6 policy contract: candidate construction cost per ton,
-  period-specific operating days, and optional lexicographic service priority.
+  period-specific operating days, and an optional lexicographic slack policy.
 
 Current:
 

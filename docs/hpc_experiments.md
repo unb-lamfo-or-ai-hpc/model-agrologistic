@@ -107,9 +107,10 @@ model:
 ```
 
 Use `penalty` for scalar monetary comparisons and EVPI/VSS. Use
-`lexicographic` only for the separate service-priority experiment; it minimizes
-expected unmet demand, expected emergency capacity, and economic cost in that
-order.
+`lexicographic` only for the separate feasibility-and-service experiment. It
+minimizes expected emergency capacity first, expected unmet demand second, and
+economic cost third. This ordering prevents a service gain from being purchased
+with unrestricted fictitious capacity.
 
 To audit an already completed run without solving it again:
 
@@ -365,6 +366,13 @@ the lexicographic solution obtains that gain by using materially more emergency
 capacity. Emergency capacity is a feasibility slack rather than planned
 infrastructure, so a large ratio signals that the hierarchy is exposing a
 physical bottleneck, not identifying a directly implementable network plan.
+
+The first gate initially tested unmet demand before emergency capacity. It
+raised deterministic service from 79.34% to 93.11%, but static and reception
+emergency slacks increased by factors of approximately 1,108 and 689. Stage 5.7
+therefore changes the hierarchy to emergency capacity, unmet demand, and
+economic cost. The deterministic pair must be rerun under this corrected
+contract before gate 2 starts.
 
 No entry calculates EVPI or VSS. Those metrics remain restricted to the scalar
 `penalty` objective and must not be used to compare a hierarchical objective
