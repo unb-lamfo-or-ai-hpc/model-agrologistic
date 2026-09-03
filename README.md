@@ -357,6 +357,18 @@ python3.13 -m venv venv313
 source venv313/bin/activate
 ```
 
+On NPAD, the existing `/home/vrrcelestino/venv313` installation is a Conda
+prefix environment despite its directory name. Activate it interactively with:
+
+```bash
+conda activate /home/vrrcelestino/venv313
+```
+
+The `source /home/vrrcelestino/venv313/bin/activate` command only applies to a
+standard Python `venv` and is not available for this Conda environment. Slurm
+jobs do not require activation because the provided script invokes the
+environment's Python executable directly.
+
 Upgrade `pip`:
 
 ```bash

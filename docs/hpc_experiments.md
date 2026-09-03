@@ -370,3 +370,25 @@ limit, not by resident-memory demand. The Slurm script removes inherited
 virtual-memory and CPU-time limits and executes the selected virtual
 environment's Python directly, without depending on a node-specific Conda
 initialization script or `/usr/bin/time`.
+
+### Interactive NPAD environment
+
+The current NPAD environment at `/home/vrrcelestino/venv313` is a Conda prefix
+environment, not a standard Python `venv`. Activate it in an interactive shell
+with:
+
+```bash
+conda activate /home/vrrcelestino/venv313
+which python
+python --version
+```
+
+The reported executable should be `/home/vrrcelestino/venv313/bin/python`, and
+the version should be Python 3.13. Do not use
+`source /home/vrrcelestino/venv313/bin/activate` for this environment because
+that activation script is only created by a standard Python `venv`.
+
+No activation is needed inside the supplied Slurm script. By default, it calls
+`/home/vrrcelestino/venv313/bin/python` directly. Override this behavior with
+`AGROLOGISTIC_ENV` or `AGROLOGISTIC_PYTHON` only when running from another
+environment.
