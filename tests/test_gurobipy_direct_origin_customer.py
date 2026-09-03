@@ -69,11 +69,17 @@ def base_direct_data(
     )
 
 
-def solve_direct_data(data: ModelData, *, enabled: bool = True):
+def solve_direct_data(
+    data: ModelData,
+    *,
+    enabled: bool = True,
+    objective_policy: str = "penalty",
+):
     return solve_model(
         data=data,
         model_config=ModelConfig(
             mode="det",
+            objective_policy=objective_policy,
             use_direct_origin_customer=enabled,
             candidate_capacity_mode="scalable",
             days_per_period=1.0,
@@ -90,6 +96,32 @@ def solve_direct_data(data: ModelData, *, enabled: bool = True):
             tee=False,
         ),
     )
+
+
+def test_lexicographic_policy_serves_demand_before_minimizing_cost():
+    require_gurobi_available()
+
+    data = base_direct_data(
+        routes_oc=set(),
+        dist_oc={},
+        dist_dc={("W1", "C1"): 100.0},
+        storage_tariff=0.0,
+    )
+    data.unmet_demand_penalty[("C1", "soy")] = 0.1
+
+    penalty_result = solve_direct_data(data, enabled=False)
+    lexicographic_result = solve_direct_data(
+        data,
+        enabled=False,
+        objective_policy="lexicographic",
+    )
+
+    assert penalty_result.metrics["total_unmet_demand"] == pytest.approx(100.0)
+    assert lexicographic_result.metrics["total_unmet_demand"] == pytest.approx(0.0)
+    assert lexicographic_result.metadata["objective_policy"] == "lexicographic"
+    assert lexicographic_result.metrics["objective_values"][
+        "economic_cost"
+    ] > penalty_result.metrics["objective_values"]["economic_cost"]
 
 
 def route_flow(result, route_type: str, *, customer: str | None = None) -> float:
@@ -269,4 +301,3 @@ def test_excel_direct_routes_feed_the_gurobi_model(tmp_path):
     assert result.cost_breakdown["transport_oc"] == pytest.approx(
         expected_transport_cost
     )
-

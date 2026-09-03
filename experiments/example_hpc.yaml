@@ -19,6 +19,7 @@ defaults:
     use_direct_origin_customer: true
     route_filter_strategy: top_k
     route_top_k: 10
+    objective_policy: penalty
     days_per_period: 30
     allow_capacity_expansion: true
     allow_bulkification: true

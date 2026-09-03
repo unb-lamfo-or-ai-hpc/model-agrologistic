@@ -24,6 +24,7 @@ from src.logic.optimization_gurobipy import (
     _map_gurobi_status,
     _origin_to_customer_unit_cost,
     _origin_to_warehouse_unit_cost,
+    _set_objective_policy,
     _value,
     _warehouse_to_customer_unit_cost,
     _warehouse_to_warehouse_unit_cost,
@@ -221,10 +222,35 @@ def solve_stochastic_model_gurobipy(
         )
         for component in next(iter(scenario_costs.values()))
     }
-    model.setObjective(
-        gp.quicksum(investment_costs.values())
-        + gp.quicksum(expected_costs.values()),
-        GRB.MINIMIZE,
+    economic_cost = gp.quicksum(investment_costs.values()) + gp.quicksum(
+        expression
+        for component, expression in expected_costs.items()
+        if component
+        not in {"unmet_demand", "emergency_static", "emergency_reception"}
+    )
+    penalized_cost = gp.quicksum(investment_costs.values()) + gp.quicksum(
+        expected_costs.values()
+    )
+    expected_unmet_quantity = gp.quicksum(
+        data.scenario_prob[key[0]] * unmet_demand[key]
+        for key in unmet_keys
+    )
+    expected_emergency_quantity = gp.quicksum(
+        data.scenario_prob[key[0]]
+        * (
+            emergency_static_capacity[key]
+            + emergency_reception_capacity[key]
+        )
+        for key in emergency_keys
+    )
+    _set_objective_policy(
+        model=model,
+        GRB=GRB,
+        config=model_config,
+        penalized_cost=penalized_cost,
+        unmet_quantity=expected_unmet_quantity,
+        emergency_quantity=expected_emergency_quantity,
+        economic_cost=economic_cost,
     )
 
     _add_first_stage_constraints(
@@ -294,6 +320,7 @@ def solve_stochastic_model_gurobipy(
             "bulk_capacity",
         ],
         "first_stage_fixed": fixed_first_stage is not None,
+        "objective_policy": model_config.objective_policy,
         **_infeasibility_metadata(model, GRB, solver_config),
     }
     if model.SolCount == 0:
@@ -665,7 +692,7 @@ def _add_scenario_constraints(
             )
 
             reception_capacity = _effective_reception_capacity_expr(
-                data, model_config, candidate_capacity, warehouse
+                data, model_config, candidate_capacity, warehouse, period
             )
             model.addConstr(
                 gp.quicksum(
@@ -679,7 +706,7 @@ def _add_scenario_constraints(
             )
 
             shipping_capacity = _effective_shipping_capacity_expr(
-                data, model_config, candidate_capacity, warehouse
+                data, model_config, candidate_capacity, warehouse, period
             )
             model.addConstr(
                 gp.quicksum(
@@ -925,10 +952,36 @@ def _extract_stochastic_result(
     investment_cost = sum(
         _expression_value(expression) for expression in investment_costs.values()
     )
+    expected_unmet_quantity = sum(
+        data.scenario_prob[record["scenario"]] * record["value"]
+        for record in unmet_records
+    )
+    expected_emergency_quantity = sum(
+        data.scenario_prob[record["scenario"]] * record["value"]
+        for record in emergency_records
+    )
+    economic_cost = investment_cost + sum(
+        value
+        for name, value in cost_breakdown.items()
+        if name not in investment_costs
+        and name
+        not in {"unmet_demand", "emergency_static", "emergency_reception"}
+    )
+    penalized_cost = sum(cost_breakdown.values())
+    objective_values = {
+        "expected_unmet_demand": expected_unmet_quantity,
+        "expected_emergency_capacity": expected_emergency_quantity,
+        "economic_cost": economic_cost,
+        "penalized_cost": penalized_cost,
+    }
 
     return OptimizationResult(
         status=status,
-        objective_value=float(model.ObjVal),
+        objective_value=(
+            penalized_cost
+            if model_config.objective_policy == "penalty"
+            else expected_unmet_quantity
+        ),
         solver_backend="gurobipy",
         solver_name=solver_config.solver_name,
         model_mode=model_config.mode,
@@ -944,6 +997,7 @@ def _extract_stochastic_result(
             "investment_cost": investment_cost,
             "expected_operating_cost": expected_operating_cost,
             "scenario_metrics": scenario_metrics,
+            "objective_values": objective_values,
         },
         metadata={
             **metadata,
@@ -1025,4 +1079,3 @@ def _extract_warehouse_decisions(
             }
         )
     return decisions
-

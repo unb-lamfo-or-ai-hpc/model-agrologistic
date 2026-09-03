@@ -1,4 +1,4 @@
-# Stage 5.5 methodological audit
+# Stage 5.5–5.6 methodological audit
 
 ## Purpose
 
@@ -8,8 +8,8 @@ result. Stage 5.5 creates a reproducible audit gate before any formulation or
 workbook value is changed.
 
 The audit is deliberately non-blocking. It reports facts and warnings in
-`model_audit.json`; it never substitutes costs, changes units, increases
-capacity, or imposes a service target.
+`model_audit.json`; it never invents costs, changes units, increases capacity,
+or imposes a service target.
 
 ## Current baseline evidence
 
@@ -17,30 +17,37 @@ capacity, or imposes a service target.
 - scenario range: 74.48% to 81.44%;
 - unmet-demand cost: 99.45% of the objective;
 - 69 candidate warehouses opened;
-- reported opening and candidate-capacity costs: zero;
+- candidate construction was initially loaded with zero model cost even though
+  the workbook reported a positive total construction estimate;
 - 146 warehouses expanded and 92 bulkified;
 - all binary variables eliminated by presolve in the production RP.
 
-The zero costs may be intentional placeholders, but they remove an important
-network-design trade-off. The technical EVPI/VSS result must therefore remain
-classified as a pipeline baseline until the data owners confirm these values.
+Stage 5.6 resolves the candidate-cost inconsistency without creating a fixed
+cost split. When both optional model-cost columns are zero, the loader converts
+the workbook's reported total construction estimate to a linear cost per ton:
+`reported_total_cost / maximum_candidate_capacity`. Expansion and
+bulkification already use positive literature-based costs per ton. A zero fixed
+component is therefore acceptable whenever the corresponding variable cost is
+positive.
 
 ## Audit contract
 
 The input section reports:
 
-- model mode, scenario count, periods, and `days_per_period`;
+- model mode, scenario count, periods, objective policy, the 30-day fallback,
+  and effective days for every period;
 - static, daily reception/shipping, and converted per-period capacities;
 - count, zero count, minimum, maximum, and positive scale ratio for key
   capacities, costs, penalties, supply, and demand;
-- investment opportunities whose configured fixed or variable cost is zero;
+- investment opportunities whose complete applicable cost is zero;
 - parameters reaching `1e9`, which may indicate a sentinel or scaling issue.
 
 When a structured solution is available, the solution section adds:
 
 - objective components and their shares;
 - investment counts and selected capacities;
-- activated investments whose associated configured cost is zero;
+- capacity-based investment activations whose complete applicable cost is
+  zero;
 - expected, minimum, maximum, and per-scenario domestic service levels;
 - a warning when one component represents at least 90% of the objective.
 
@@ -77,18 +84,20 @@ on an older checkout is not an audit or Python failure.
 
 ## Decision gates
 
-1. **Units:** confirm whether reception and shipping capacities are daily and
-   whether the 30-day conversion is applied exactly once.
-2. **Investment economics:** confirm or replace zero opening, candidate,
-   expansion-fixed, and bulkification-fixed costs using traceable sources.
-3. **Penalty scale:** decide whether the 99.45% unmet-demand share expresses an
-   intentional lexicographic-like service priority or a unit mismatch.
-4. **Service policy:** select the unconstrained baseline, an explicit minimum
-   service target, scenario targets, or a separate structural alternative.
-5. **Freeze and rerun:** version the chosen workbook/formulation and rerun RP,
-   EVPI/VSS, and sensitivities. Results from different contracts must not be
-   compared as if they belonged to the same model.
+1. **Units:** reception and shipping remain daily rates and are multiplied
+   exactly once by `days_per_period_by_period[t]`, with 30 days as the fallback.
+2. **Investment economics:** use constant returns to scale and the observed
+   cost per ton. Do not fabricate a fixed/variable decomposition.
+3. **Supply allocation:** keep origin supply balance as an equality. Every ton
+   must enter a domestic, export, or warehouse-inventory path; no disposal or
+   unused-supply variable is introduced.
+4. **Service policy:** keep `penalty` as the reproducible legacy baseline and
+   provide `lexicographic` as an explicit alternative. No arbitrary service
+   floor is imposed in Stage 5.6.
+5. **Freeze and rerun:** version the selected objective policy before new
+   scientific comparisons. Scalar EVPI/VSS remains restricted to the penalty
+   objective.
 
-Until all gates are closed, retain the present formulation under the name
-`baseline_no_origin_inventory` and label its EVPI/VSS result as technical or
-exploratory.
+The pre-Stage 5.6 EVPI/VSS result remains a technical pipeline baseline because
+candidate investment was free in that run. It must not be compared directly
+with results produced after the corrected candidate-cost loading contract.

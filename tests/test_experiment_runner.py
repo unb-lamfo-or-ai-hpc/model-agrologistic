@@ -263,6 +263,7 @@ def test_example_manifest_uses_calibrated_direct_network():
         assert spec.model.use_direct_origin_customer is True
         assert spec.model.route_filter_strategy == "top_k"
         assert spec.model.route_top_k == 10
+        assert spec.model.objective_policy == "penalty"
         assert spec.model.days_per_period == pytest.approx(30.0)
 
     assert stochastic_rp.max_estimated_variables == 6_000_000

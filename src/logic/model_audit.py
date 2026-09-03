@@ -9,10 +9,11 @@ from src.logic.model_data import ModelData
 from src.logic.optimization import OptimizationResult
 
 
-AUDIT_SCHEMA_VERSION = 1
+AUDIT_SCHEMA_VERSION = 2
 LARGE_VALUE_THRESHOLD = 1_000_000_000.0
 DOMINANT_OBJECTIVE_SHARE = 0.9
 SAMPLE_LIMIT = 20
+ACTIVE_CAPACITY_TOL = 1e-7
 
 
 def build_model_audit(
@@ -67,7 +68,11 @@ def build_model_audit(
         "input": {
             "model_mode": config.mode,
             "candidate_capacity_mode": config.candidate_capacity_mode,
+            "objective_policy": config.objective_policy,
             "days_per_period": config.days_per_period,
+            "effective_days_per_period": {
+                period: config.operating_days(period) for period in data.periods
+            },
             "set_counts": {
                 "origins": len(data.origins),
                 "warehouses": len(data.warehouses),
@@ -161,61 +166,51 @@ def _zero_cost_opportunities(
     data: ModelData,
     config: ModelConfig,
 ) -> dict[str, list[str]]:
-    opportunities = {
-        "candidate_opening": sorted(
+    return {
+        "candidate_total": sorted(
             warehouse
             for warehouse in data.candidate_warehouses
             if data.max_candidate_capacity.get(warehouse, 0.0) > 0.0
             and data.opening_fixed_cost.get(warehouse, 0.0) == 0.0
+            and (
+                config.candidate_capacity_mode != "scalable"
+                or data.candidate_capacity_cost.get(warehouse, 0.0) == 0.0
+            )
         ),
-        "candidate_capacity": [],
-        "expansion_fixed": sorted(
+        "expansion_total": sorted(
             warehouse
             for warehouse, maximum in data.max_expand_capacity.items()
             if maximum > 0.0
             and data.expand_fixed_cost.get(warehouse, 0.0) == 0.0
-        ),
-        "expansion_variable": sorted(
-            warehouse
-            for warehouse, maximum in data.max_expand_capacity.items()
-            if maximum > 0.0
             and data.expand_variable_cost.get(warehouse, 0.0) == 0.0
         ),
-        "bulkification_fixed": sorted(
+        "bulkification_total": sorted(
             warehouse
             for warehouse, maximum in data.max_bulk_capacity.items()
             if maximum > 0.0
             and data.bulk_fixed_cost.get(warehouse, 0.0) == 0.0
-        ),
-        "bulkification_variable": sorted(
-            warehouse
-            for warehouse, maximum in data.max_bulk_capacity.items()
-            if maximum > 0.0
             and data.bulk_variable_cost.get(warehouse, 0.0) == 0.0
         ),
     }
-    if config.candidate_capacity_mode == "scalable":
-        opportunities["candidate_capacity"] = sorted(
-            warehouse
-            for warehouse in data.candidate_warehouses
-            if data.max_candidate_capacity.get(warehouse, 0.0) > 0.0
-            and data.candidate_capacity_cost.get(warehouse, 0.0) == 0.0
-        )
-    return opportunities
 
 
-def _capacity_totals(data: ModelData, config: ModelConfig) -> dict[str, float]:
-    days = float(config.days_per_period)
+def _capacity_totals(data: ModelData, config: ModelConfig) -> dict[str, Any]:
+    reception_daily = sum(map(float, data.reception_capacity.values()))
+    shipping_daily = sum(map(float, data.shipping_capacity.values()))
     return {
         "static": sum(map(float, data.static_capacity.values())),
-        "reception_daily": sum(map(float, data.reception_capacity.values())),
-        "reception_per_period": (
-            sum(map(float, data.reception_capacity.values())) * days
-        ),
-        "shipping_daily": sum(map(float, data.shipping_capacity.values())),
-        "shipping_per_period": (
-            sum(map(float, data.shipping_capacity.values())) * days
-        ),
+        "reception_daily": reception_daily,
+        "reception_per_period": reception_daily * float(config.days_per_period),
+        "reception_per_period_by_period": {
+            period: reception_daily * config.operating_days(period)
+            for period in data.periods
+        },
+        "shipping_daily": shipping_daily,
+        "shipping_per_period": shipping_daily * float(config.days_per_period),
+        "shipping_per_period_by_period": {
+            period: shipping_daily * config.operating_days(period)
+            for period in data.periods
+        },
         "maximum_candidate": sum(
             map(float, data.max_candidate_capacity.values())
         ),
@@ -234,8 +229,9 @@ def _solution_audit(
     cost_components = {
         name: float(value) for name, value in result.cost_breakdown.items()
     }
+    penalized_cost_total = sum(cost_components.values())
     cost_shares = {
-        name: value / objective if objective else None
+        name: value / penalized_cost_total if penalized_cost_total else None
         for name, value in cost_components.items()
     }
     dominant_components = [
@@ -251,9 +247,9 @@ def _solution_audit(
                 "warning",
                 "DOMINANT_OBJECTIVE_COMPONENT",
                 (
-                    "A single objective component represents at least 90% "
-                    "of the objective; verify that the intended economic or "
-                    "service priority is correctly scaled."
+                    "A single component represents at least 90% of the "
+                    "penalized cost total; verify the intended economic or "
+                    "service interpretation."
                 ),
                 dominant_components,
             )
@@ -281,6 +277,8 @@ def _solution_audit(
     return (
         {
             "objective_value": objective,
+            "objective_policy": result.metadata.get("objective_policy", "penalty"),
+            "penalized_cost_total": penalized_cost_total,
             "cost_components": cost_components,
             "cost_component_shares": cost_shares,
             "investment_decisions": _investment_decision_summary(result),
@@ -301,29 +299,39 @@ def _zero_cost_active_investments(
     data: ModelData,
     result: OptimizationResult,
 ) -> dict[str, list[str]]:
+    candidate_mode = result.metadata.get("candidate_capacity_mode", "scalable")
     active = {
-        "candidate_opening": [],
-        "expansion_fixed": [],
-        "bulkification_fixed": [],
+        "candidate_total": [],
+        "expansion_total": [],
+        "bulkification_total": [],
     }
     for decision in result.warehouse_decisions:
         warehouse = str(decision.get("warehouse"))
+        candidate_capacity = float(decision.get("candidate_capacity", 0.0))
+        expansion_capacity = float(decision.get("expansion_capacity", 0.0))
+        bulk_capacity = float(decision.get("bulk_capacity", 0.0))
         if (
-            float(decision.get("open", 0.0)) > 0.5
+            candidate_capacity > ACTIVE_CAPACITY_TOL
             and warehouse in data.candidate_warehouses
             and data.opening_fixed_cost.get(warehouse, 0.0) == 0.0
+            and (
+                candidate_mode != "scalable"
+                or data.candidate_capacity_cost.get(warehouse, 0.0) == 0.0
+            )
         ):
-            active["candidate_opening"].append(warehouse)
+            active["candidate_total"].append(warehouse)
         if (
-            float(decision.get("expand", 0.0)) > 0.5
+            expansion_capacity > ACTIVE_CAPACITY_TOL
             and data.expand_fixed_cost.get(warehouse, 0.0) == 0.0
+            and data.expand_variable_cost.get(warehouse, 0.0) == 0.0
         ):
-            active["expansion_fixed"].append(warehouse)
+            active["expansion_total"].append(warehouse)
         if (
-            float(decision.get("bulkify", 0.0)) > 0.5
+            bulk_capacity > ACTIVE_CAPACITY_TOL
             and data.bulk_fixed_cost.get(warehouse, 0.0) == 0.0
+            and data.bulk_variable_cost.get(warehouse, 0.0) == 0.0
         ):
-            active["bulkification_fixed"].append(warehouse)
+            active["bulkification_total"].append(warehouse)
     return active
 
 
@@ -331,16 +339,16 @@ def _investment_decision_summary(result: OptimizationResult) -> dict[str, float]
     decisions = result.warehouse_decisions
     return {
         "candidates_opened": sum(
-            float(decision.get("open", 0.0)) > 0.5
+            float(decision.get("candidate_capacity", 0.0)) > ACTIVE_CAPACITY_TOL
             and bool(decision.get("is_candidate", False))
             for decision in decisions
         ),
         "warehouses_expanded": sum(
-            float(decision.get("expand", 0.0)) > 0.5
+            float(decision.get("expansion_capacity", 0.0)) > ACTIVE_CAPACITY_TOL
             for decision in decisions
         ),
         "warehouses_bulkified": sum(
-            float(decision.get("bulkify", 0.0)) > 0.5
+            float(decision.get("bulk_capacity", 0.0)) > ACTIVE_CAPACITY_TOL
             for decision in decisions
         ),
         "candidate_capacity": sum(

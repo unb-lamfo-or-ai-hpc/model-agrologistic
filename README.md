@@ -437,23 +437,26 @@ Completed:
 - structured JSON/CSV exports, preflight model-size guards, and IIS diagnostics;
 - calibrated route policy using `top_k=10`, direct routes, and 30 days per period;
 - successful nine-scenario RP and checkpointed EVPI/VSS campaigns on NPAD;
-- solver-independent methodological audit of inputs and structured solutions.
+- solver-independent methodological audit of inputs and structured solutions;
+- pragmatic Stage 5.6 policy contract: candidate construction cost per ton,
+  period-specific operating days, and optional lexicographic service priority.
 
 Current:
 
-- Stage 5.5 review of investment costs, capacity units, objective scaling, and
-  the domestic service policy.
+- Stage 5.6 validation of the corrected investment-cost contract and the
+  penalty-versus-lexicographic service-policy comparison.
 
-Before definitive EVPI/VSS and sensitivity results, the project will audit
-shipping/reception capacity units and use the nine-scenario RP pilot to decide
-whether the baseline should retain unmet demand, add origin inventory, expand
-throughput capacity, or impose an explicit service policy. See
+The model keeps full origin-supply allocation, treats reception and shipping
+as daily rates converted with a 30-day fallback, and does not impose an
+arbitrary service floor. Scalar EVPI/VSS remains available only for the penalty
+objective. See
 [`docs/service_level_methodology.md`](docs/service_level_methodology.md) and
 [`docs/methodological_audit.md`](docs/methodological_audit.md).
 
 Planned:
 
-- scenario, penalty, and service-policy sensitivity campaigns;
+- penalty-versus-lexicographic service-policy sensitivity campaign;
+- attainable service-cost frontier before any scenario service constraint;
 - scientific result tables and plots;
 - Pyomo/SCIP parity and backend equivalence, if retained as a project
   requirement.

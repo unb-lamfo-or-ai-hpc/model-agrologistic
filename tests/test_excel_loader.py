@@ -410,6 +410,27 @@ def test_fixed_total_candidate_cost_policy_is_used_when_enhanced_columns_absent(
     assert data.opening_fixed_cost["W2"] == 3000.0
     assert data.candidate_capacity_cost["W2"] == 0.0
 
+
+def test_zero_enhancement_columns_fall_back_to_reported_total_cost(tmp_path):
+    path = tmp_path / "zero_candidate_cost_components.xlsx"
+    build_tiny_golden_excel(path)
+
+    all_sheets = pd.read_excel(path, sheet_name=None, engine="openpyxl")
+    warehouses = all_sheets["Warehouses"]
+    candidate = warehouses["Status"].str.casefold().str.startswith("candidat")
+    warehouses.loc[candidate, "Custo_Fixo_Abertura_Modelo ($)"] = 0.0
+    warehouses.loc[candidate, "Custo_Variavel_Capacidade_Modelo ($/t)"] = 0.0
+
+    with pd.ExcelWriter(path, engine="openpyxl") as writer:
+        for sheet_name, dataframe in all_sheets.items():
+            dataframe.to_excel(writer, sheet_name=sheet_name, index=False)
+
+    data = load_model_data_from_excel(path)
+
+    assert data.opening_fixed_cost["W2"] == 0.0
+    assert data.candidate_capacity_cost["W2"] == pytest.approx(10.0)
+
+
 def test_loader_splits_overlapping_domestic_and_export_customers(tmp_path):
     path = tmp_path / "overlap_demand.xlsx"
     build_tiny_golden_excel(path)

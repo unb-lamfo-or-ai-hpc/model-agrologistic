@@ -358,7 +358,7 @@ def _solve_deterministic_core(
         for warehouse, period in emergency_keys
     )
 
-    objective = (
+    economic_cost = (
         transport_od_cost
         + transport_dc_cost
         + transport_oc_cost
@@ -370,12 +370,27 @@ def _solve_deterministic_core(
         + expansion_variable_cost
         + bulkification_fixed_cost
         + bulkification_variable_cost
+    )
+    penalized_cost = (
+        economic_cost
         + unmet_demand_cost
         + emergency_static_cost
         + emergency_reception_cost
     )
-
-    model.setObjective(objective, GRB.MINIMIZE)
+    unmet_quantity = gp.quicksum(unmet_demand[key] for key in unmet_keys)
+    emergency_quantity = gp.quicksum(
+        emergency_static_capacity[key] + emergency_reception_capacity[key]
+        for key in emergency_keys
+    )
+    _set_objective_policy(
+        model=model,
+        GRB=GRB,
+        config=model_config,
+        penalized_cost=penalized_cost,
+        unmet_quantity=unmet_quantity,
+        emergency_quantity=emergency_quantity,
+        economic_cost=economic_cost,
+    )
 
     # ------------------------------------------------------------------
     # Candidate capacity constraints
@@ -544,6 +559,7 @@ def _solve_deterministic_core(
                 model_config=model_config,
                 candidate_capacity=candidate_capacity,
                 warehouse=warehouse,
+                period=period,
             )
 
             model.addConstr(
@@ -561,6 +577,7 @@ def _solve_deterministic_core(
                 model_config=model_config,
                 candidate_capacity=candidate_capacity,
                 warehouse=warehouse,
+                period=period,
             )
 
             model.addConstr(
@@ -616,6 +633,7 @@ def _solve_deterministic_core(
                 "gurobi_status_code": model.Status,
                 "gurobi_status_name": _gurobi_status_name(model, GRB),
                 "solution_count": model.SolCount,
+                "objective_policy": model_config.objective_policy,
                 **infeasibility,
             },
         )
@@ -705,6 +723,53 @@ def _apply_solver_parameters(model: Any, solver_config: SolverConfig) -> None:
         if option_name in ignored_options:
             continue
         model.setParam(option_name, option_value)
+
+
+def _set_objective_policy(
+    *,
+    model: Any,
+    GRB: Any,
+    config: ModelConfig,
+    penalized_cost: Any,
+    unmet_quantity: Any,
+    emergency_quantity: Any,
+    economic_cost: Any,
+) -> None:
+    """Configure the weighted or hierarchical service objective."""
+
+    if config.objective_policy == "penalty":
+        model.setObjective(penalized_cost, GRB.MINIMIZE)
+        return
+
+    model.ModelSense = GRB.MINIMIZE
+    tolerance = config.feasibility_tolerance
+    model.setObjectiveN(
+        unmet_quantity,
+        index=0,
+        priority=3,
+        weight=1.0,
+        abstol=tolerance,
+        reltol=0.0,
+        name="minimize_unmet_demand",
+    )
+    model.setObjectiveN(
+        emergency_quantity,
+        index=1,
+        priority=2,
+        weight=1.0,
+        abstol=tolerance,
+        reltol=0.0,
+        name="minimize_emergency_capacity",
+    )
+    model.setObjectiveN(
+        economic_cost,
+        index=2,
+        priority=1,
+        weight=1.0,
+        abstol=0.0,
+        reltol=0.0,
+        name="minimize_economic_cost",
+    )
 
 
 def _infeasibility_metadata(
@@ -854,8 +919,12 @@ def _effective_reception_capacity_expr(
     model_config: ModelConfig,
     candidate_capacity: Any,
     warehouse: str,
+    period: str,
 ) -> Any:
-    capacity = data.reception_capacity.get(warehouse, 0.0) * model_config.days_per_period
+    capacity = (
+        data.reception_capacity.get(warehouse, 0.0)
+        * model_config.operating_days(period)
+    )
 
     # Minimal deterministic core assumption:
     # for candidate facilities, the chosen static capacity is also used as
@@ -871,8 +940,12 @@ def _effective_shipping_capacity_expr(
     model_config: ModelConfig,
     candidate_capacity: Any,
     warehouse: str,
+    period: str,
 ) -> Any:
-    capacity = data.shipping_capacity.get(warehouse, 0.0) * model_config.days_per_period
+    capacity = (
+        data.shipping_capacity.get(warehouse, 0.0)
+        * model_config.operating_days(period)
+    )
 
     # Minimal deterministic core assumption:
     # for candidate facilities, the chosen static capacity is also used as
@@ -1196,18 +1269,39 @@ def _extract_deterministic_result(
         name: _expression_value(expression)
         for name, expression in cost_components.items()
     }
+    economic_cost_value = sum(
+        value
+        for name, value in cost_breakdown.items()
+        if name not in {"unmet_demand", "emergency_static", "emergency_reception"}
+    )
+    penalized_cost_value = sum(cost_breakdown.values())
+    unmet_quantity_value = sum(record["value"] for record in unmet_records)
+    emergency_quantity_value = sum(
+        record["value"] for record in emergency_records
+    )
+    objective_values = {
+        "unmet_demand": unmet_quantity_value,
+        "emergency_capacity": emergency_quantity_value,
+        "economic_cost": economic_cost_value,
+        "penalized_cost": penalized_cost_value,
+    }
 
     metrics = {
         "total_flow": sum(record["value"] for record in flows),
-        "total_unmet_demand": sum(record["value"] for record in unmet_records),
-        "total_emergency_capacity": sum(record["value"] for record in emergency_records),
+        "total_unmet_demand": unmet_quantity_value,
+        "total_emergency_capacity": emergency_quantity_value,
+        "objective_values": objective_values,
     }
 
     mip_gap = getattr(model, "MIPGap", None)
 
     return OptimizationResult(
         status=status,
-        objective_value=float(model.ObjVal),
+        objective_value=(
+            penalized_cost_value
+            if model_config.objective_policy == "penalty"
+            else unmet_quantity_value
+        ),
         solver_backend="gurobipy",
         solver_name=solver_config.solver_name,
         model_mode=model_config.mode,
@@ -1225,6 +1319,7 @@ def _extract_deterministic_result(
             "gurobi_status_name": gurobi_status_name,
             "solution_count": model.SolCount,
             "candidate_capacity_mode": model_config.candidate_capacity_mode,
+            "objective_policy": model_config.objective_policy,
             "allow_capacity_expansion": model_config.allow_capacity_expansion,
             "allow_bulkification": model_config.allow_bulkification,
         },
@@ -1240,4 +1335,3 @@ def _expression_value(expression: Any) -> float:
         return float(expression)
 
     return float(expression.getValue())
-

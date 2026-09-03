@@ -284,6 +284,13 @@ def calculate_evpi_vss(
     if model_config.mode != "sto":
         raise ValueError("EVPI/VSS calculation requires ModelConfig(mode='sto').")
 
+    if model_config.objective_policy != "penalty":
+        raise ValueError(
+            "EVPI/VSS calculation currently requires "
+            "objective_policy='penalty' because the reported indicators "
+            "assume one scalar monetary objective."
+        )
+
     if validate:
         validate_or_raise_model_data(
             data=data,
@@ -312,5 +319,3 @@ def calculate_evpi_vss(
         resume=resume,
         progress=progress,
     )
-
-

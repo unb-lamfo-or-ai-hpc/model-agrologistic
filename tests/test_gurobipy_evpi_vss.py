@@ -128,6 +128,18 @@ def test_wait_and_see_projection_preserves_one_scenario_realization():
     assert projected.metadata["deterministic_projection"] == "wait_and_see:alto"
 
 
+def test_evpi_vss_rejects_lexicographic_objective_until_vector_metrics_exist():
+    with pytest.raises(ValueError, match="objective_policy='penalty'"):
+        calculate_evpi_vss(
+            data=capacity_newsvendor_data(),
+            model_config=ModelConfig(
+                mode="sto",
+                objective_policy="lexicographic",
+            ),
+            solver_config=gurobi_config(),
+        )
+
+
 def test_evpi_vss_match_analytical_capacity_example():
     require_gurobi_available()
 
@@ -284,4 +296,3 @@ def test_evpi_vss_resume_rejects_a_different_experiment(tmp_path):
             resume=True,
             total_steps=5,
         )
-
