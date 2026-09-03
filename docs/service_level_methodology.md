@@ -101,8 +101,34 @@ The initial deterministic gate confirmed why this order matters. Minimizing
 unmet demand first improved service by 13.77 percentage points, but multiplied
 static emergency capacity by approximately 1,108 and reception emergency
 capacity by approximately 689. That solution is a useful stress bound, not an
-implementable network policy. The corrected feasibility-first hierarchy must
-be validated before the stochastic gates proceed.
+implementable network policy.
+
+The corrected feasibility-first hierarchy was subsequently validated in three
+matched gates on NPAD:
+
+| Gate | Scenarios | Penalty service | Lexicographic service | Service delta | Emergency capacity removed | Economic-cost change |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Deterministic | 1 | 79.336% | 79.061% | -0.275 pp | 460,451.70 | -0.662% |
+| Diagnostic stochastic | 3 | 78.302% | 78.011% | -0.291 pp | 497,060.56 | -0.716% |
+| Full stochastic | 9 | 78.698% | 78.402% | -0.295 pp | 552,682.90 | -0.929% |
+
+All six runs reached an optimal status. In every gate, the lexicographic policy
+reduced emergency capacity to numerical tolerance while changing domestic
+service by less than 0.30 percentage points. The effect is stable as the
+scenario set grows, but the lexicographic solves required approximately 2.1 to
+2.5 times the penalty-policy runtime.
+
+The campaign therefore retains `penalty` as the scalar monetary reference for
+cost comparisons and EVPI/VSS. The `lexicographic` policy remains a robustness
+diagnostic that tests whether a monetary solution relies on fictitious
+emergency infrastructure. It is not a replacement monetary objective.
+
+Both policies still leave approximately 21% of domestic demand unserved. This
+persistent gap is too large to classify unmet demand as an exceptional
+feasibility fallback. It indicates a structural limitation in the current
+temporal and network contract. A service floor or a larger penalty must not be
+introduced before the binding capacity, timing, inventory, and route
+constraints are identified.
 
 The service policy therefore enters the objective function, while the domestic
 demand equation remains a constraint:
