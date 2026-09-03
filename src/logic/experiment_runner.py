@@ -596,6 +596,26 @@ def _service_policy_comparison_record(
     record["delta_service_percentage_points"] = (
         100.0 * service_delta if service_delta is not None else None
     )
+    record["unmet_demand_reduction_fraction"] = _reduction_fraction(
+        record["penalty_total_unmet_demand"],
+        record["lexicographic_total_unmet_demand"],
+    )
+    record["emergency_capacity_ratio"] = _ratio(
+        record["lexicographic_total_emergency_capacity"],
+        record["penalty_total_emergency_capacity"],
+    )
+    record["economic_cost_change_fraction"] = _change_fraction(
+        record["lexicographic_economic_cost"],
+        record["penalty_economic_cost"],
+    )
+    record["penalized_cost_change_fraction"] = _change_fraction(
+        record["lexicographic_penalized_cost"],
+        record["penalty_penalized_cost"],
+    )
+    record["runtime_ratio"] = _ratio(
+        record["lexicographic_runtime_seconds"],
+        record["penalty_runtime_seconds"],
+    )
     return record
 
 
@@ -982,6 +1002,28 @@ def _numeric_delta(left: Any, right: Any) -> float | None:
         return None
 
 
+def _ratio(numerator: Any, denominator: Any) -> float | None:
+    if numerator is None or denominator is None:
+        return None
+    try:
+        denominator_value = float(denominator)
+        if denominator_value == 0.0:
+            return None
+        return float(numerator) / denominator_value
+    except (TypeError, ValueError):
+        return None
+
+
+def _change_fraction(value: Any, baseline: Any) -> float | None:
+    ratio = _ratio(value, baseline)
+    return None if ratio is None else ratio - 1.0
+
+
+def _reduction_fraction(baseline: Any, value: Any) -> float | None:
+    change = _change_fraction(value, baseline)
+    return None if change is None else -change
+
+
 def _metadata_text(spec: ExperimentSpec, key: str) -> str | None:
     value = spec.metadata.get(key)
     return None if value is None else str(value)
@@ -1046,6 +1088,13 @@ def _scenario_performance_records(
         for record in records
         if record.get("scenario") is not None
     ]
+    if (
+        result.model_mode != "sto"
+        and not probabilities
+        and not scenario_metrics
+        and not record_scenarios
+    ):
+        return []
     scenarios = list(
         dict.fromkeys(
             [

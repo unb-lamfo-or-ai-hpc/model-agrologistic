@@ -348,8 +348,21 @@ In addition to `batch_summary.csv`, this command writes
 contains both policies and reports `lexicographic - penalty` deltas for service,
 unmet demand, emergency capacity, economic and penalized costs, DynCap,
 Turnover, runtime, and peak memory. Service differences are also reported in
-percentage points. A pair is labeled `optimal`, `usable_nonoptimal`, `failed`,
-or `pending`, so partial campaigns remain auditable.
+percentage points. The comparison also reports unmet-demand reduction,
+emergency-capacity and runtime ratios, and relative changes in economic and
+penalized costs. A pair is labeled `optimal`, `usable_nonoptimal`, `failed`, or
+`pending`, so partial campaigns remain auditable.
+
+Minimum and maximum scenario service levels are intentionally empty for a
+deterministic run. A deterministic instance has one outcome but no stochastic
+scenario distribution; its service level is reported only in the aggregate
+field.
+
+A positive service delta is not sufficient to advance a gate. Inspect whether
+the lexicographic solution obtains that gain by using materially more emergency
+capacity. Emergency capacity is a feasibility slack rather than planned
+infrastructure, so a large ratio signals that the hierarchy is exposing a
+physical bottleneck, not identifying a directly implementable network plan.
 
 No entry calculates EVPI or VSS. Those metrics remain restricted to the scalar
 `penalty` objective and must not be used to compare a hierarchical objective

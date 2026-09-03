@@ -417,6 +417,8 @@ def test_run_experiment_exports_complete_json_csv_and_metrics(
     assert summary.total_domestic_demand == pytest.approx(85.0)
     assert summary.served_domestic_demand == pytest.approx(80.0)
     assert summary.domestic_service_level == pytest.approx(80.0 / 85.0)
+    assert summary.minimum_scenario_service_level is None
+    assert summary.maximum_scenario_service_level is None
     assert summary.total_direct_flow == pytest.approx(0.0)
     assert summary.emergency_static_capacity == pytest.approx(10.0)
     assert summary.emergency_reception_capacity == pytest.approx(20.0)
@@ -445,6 +447,7 @@ def test_run_experiment_exports_complete_json_csv_and_metrics(
         "storage_by_scenario.csv",
     }
     assert {path.name for path in run_dir.iterdir()} == expected_files
+    assert (run_dir / "scenario_performance.csv").read_text(encoding="utf-8") == ""
 
     with (run_dir / "storage_by_warehouse.csv").open(encoding="utf-8") as file:
         storage_rows = list(csv.DictReader(file))
@@ -620,6 +623,11 @@ def test_service_policy_comparison_exports_matched_deltas(tmp_path):
     )
     assert comparison["delta_total_unmet_demand"] == pytest.approx(-5.0)
     assert comparison["delta_economic_cost"] == pytest.approx(27.0)
+    assert comparison["unmet_demand_reduction_fraction"] == pytest.approx(1.0)
+    assert comparison["emergency_capacity_ratio"] == pytest.approx(1.0)
+    assert comparison["economic_cost_change_fraction"] == pytest.approx(
+        27.0 / 123.0
+    )
 
 
 def test_manifest_rejects_out_of_range_index(tmp_path):
