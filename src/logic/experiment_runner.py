@@ -33,6 +33,19 @@ from src.logic.route_filtering import select_routes
 
 MANIFEST_VERSION = 1
 SAFE_RUN_NAME = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
+SERVICE_POLICY_COMPARISON_METRICS = (
+    "domestic_service_level",
+    "minimum_scenario_service_level",
+    "maximum_scenario_service_level",
+    "total_unmet_demand",
+    "total_emergency_capacity",
+    "economic_cost",
+    "penalized_cost",
+    "dyn_cap",
+    "turnover",
+    "runtime_seconds",
+    "peak_rss_mb",
+)
 
 
 @dataclass(slots=True)
@@ -62,6 +75,11 @@ class ExperimentSpec:
             )
         if self.calculate_evpi_vss and self.model.mode != "sto":
             raise ValueError("EVPI/VSS can only be requested for stochastic runs.")
+        if self.calculate_evpi_vss and self.model.objective_policy != "penalty":
+            raise ValueError(
+                "EVPI/VSS requires objective_policy='penalty' because its "
+                "values compare scalar monetary objectives."
+            )
         if self.resume_evpi_vss and not self.calculate_evpi_vss:
             raise ValueError(
                 "resume_evpi_vss requires calculate_evpi_vss=true."
@@ -86,7 +104,13 @@ class ExperimentRunSummary:
 
     name: str
     status: str
+    objective_policy: str
+    comparison_group: str | None
+    campaign_gate: str | None
+    scenario_count: int | None
     objective_value: float | None
+    economic_cost: float | None
+    penalized_cost: float | None
     runtime_seconds: float | None
     peak_rss_mb: float | None
     mip_gap: float | None
@@ -96,6 +120,8 @@ class ExperimentRunSummary:
     total_domestic_demand: float | None
     served_domestic_demand: float | None
     domestic_service_level: float | None
+    minimum_scenario_service_level: float | None
+    maximum_scenario_service_level: float | None
     total_direct_flow: float | None
     emergency_static_capacity: float | None
     emergency_reception_capacity: float | None
@@ -164,6 +190,7 @@ def load_experiment_manifest(path: str | Path) -> ExperimentManifest:
     duplicates = sorted({name for name in names if names.count(name) > 1})
     if duplicates:
         raise ValueError(f"Experiment names must be unique; duplicates: {duplicates}.")
+    _validate_service_policy_groups(experiments)
 
     output_dir = _resolve_path(
         raw.get("output_dir", "data/results/hpc"),
@@ -465,6 +492,113 @@ def aggregate_experiment_summaries(output_root: str | Path) -> Path:
     return target
 
 
+def aggregate_service_policy_comparisons(
+    output_root: str | Path,
+) -> Path | None:
+    """Export paired penalty-versus-lexicographic campaign diagnostics."""
+
+    root = Path(output_root).resolve()
+    groups: dict[str, dict[str, dict[str, Any]]] = {}
+    for path in sorted(root.glob("*/run_summary.json")):
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        if not isinstance(payload, dict):
+            continue
+        group = payload.get("comparison_group")
+        policy = payload.get("objective_policy")
+        if not group or policy not in {"penalty", "lexicographic"}:
+            continue
+        policy_runs = groups.setdefault(str(group), {})
+        if policy in policy_runs:
+            raise ValueError(
+                f"Comparison group {group!r} contains more than one "
+                f"{policy!r} run."
+            )
+        policy_runs[str(policy)] = payload
+
+    if not groups:
+        return None
+
+    records = [
+        _service_policy_comparison_record(group, policy_runs)
+        for group, policy_runs in sorted(groups.items())
+    ]
+    csv_target = root / "service_policy_comparison.csv"
+    json_target = root / "service_policy_comparison.json"
+    _write_csv(csv_target, records)
+    _write_json(
+        json_target,
+        {
+            "schema_version": 1,
+            "delta_convention": "lexicographic_minus_penalty",
+            "comparisons": records,
+        },
+    )
+    return csv_target
+
+
+def _service_policy_comparison_record(
+    group: str,
+    policy_runs: dict[str, dict[str, Any]],
+) -> dict[str, Any]:
+    penalty = policy_runs.get("penalty")
+    lexicographic = policy_runs.get("lexicographic")
+    present = [record for record in (penalty, lexicographic) if record]
+    scenario_counts = {
+        int(record["scenario_count"])
+        for record in present
+        if record.get("scenario_count") is not None
+    }
+
+    if penalty is None or lexicographic is None:
+        pair_status = "pending"
+    elif penalty.get("status") == "optimal" and lexicographic.get("status") == "optimal":
+        pair_status = "optimal"
+    elif all(record.get("domestic_service_level") is not None for record in present):
+        pair_status = "usable_nonoptimal"
+    else:
+        pair_status = "failed"
+
+    record: dict[str, Any] = {
+        "comparison_group": group,
+        "campaign_gate": next(
+            (
+                item.get("campaign_gate")
+                for item in present
+                if item.get("campaign_gate") is not None
+            ),
+            None,
+        ),
+        "pair_status": pair_status,
+        "scenario_count": (
+            next(iter(scenario_counts)) if len(scenario_counts) == 1 else None
+        ),
+        "scenario_count_consistent": len(scenario_counts) <= 1,
+        "penalty_name": penalty.get("name") if penalty else None,
+        "penalty_status": penalty.get("status") if penalty else None,
+        "lexicographic_name": (
+            lexicographic.get("name") if lexicographic else None
+        ),
+        "lexicographic_status": (
+            lexicographic.get("status") if lexicographic else None
+        ),
+    }
+    for metric in SERVICE_POLICY_COMPARISON_METRICS:
+        penalty_value = penalty.get(metric) if penalty else None
+        lexicographic_value = lexicographic.get(metric) if lexicographic else None
+        record[f"penalty_{metric}"] = penalty_value
+        record[f"lexicographic_{metric}"] = lexicographic_value
+        record[f"delta_{metric}"] = _numeric_delta(
+            lexicographic_value,
+            penalty_value,
+        )
+
+    service_delta = record["delta_domestic_service_level"]
+    record["delta_service_percentage_points"] = (
+        100.0 * service_delta if service_delta is not None else None
+    )
+    return record
+
+
 def _parse_experiment(
     raw: Any,
     defaults: dict[str, Any],
@@ -522,6 +656,41 @@ def _normalize_loader_sequences(values: dict[str, Any]) -> None:
         values["stochastic_probabilities"] = tuple(
             float(value) for value in values["stochastic_probabilities"]
         )
+
+
+def _validate_service_policy_groups(experiments: list[ExperimentSpec]) -> None:
+    groups: dict[str, list[ExperimentSpec]] = {}
+    for spec in experiments:
+        group = _metadata_text(spec, "comparison_group")
+        if group is not None:
+            groups.setdefault(group, []).append(spec)
+
+    for group, pair in groups.items():
+        policies = {spec.model.objective_policy for spec in pair}
+        if len(pair) != 2 or policies != {"penalty", "lexicographic"}:
+            raise ValueError(
+                f"Service-policy comparison group {group!r} must contain "
+                "exactly one penalty run and one lexicographic run."
+            )
+        left, right = pair
+        if _comparison_contract(left) != _comparison_contract(right):
+            raise ValueError(
+                f"Service-policy comparison group {group!r} changes settings "
+                "other than objective_policy."
+            )
+
+
+def _comparison_contract(spec: ExperimentSpec) -> dict[str, Any]:
+    model = asdict(spec.model)
+    model.pop("objective_policy")
+    return {
+        "workbook": str(spec.workbook),
+        "loader": asdict(spec.loader),
+        "model": model,
+        "solver": asdict(spec.solver),
+        "calculate_evpi_vss": spec.calculate_evpi_vss,
+        "max_estimated_variables": spec.max_estimated_variables,
+    }
 
 
 def _export_run_artifacts(
@@ -592,11 +761,26 @@ def _build_summary(
         served_domestic_demand,
         domestic_service_level,
     ) = _domestic_service_metrics(result)
+    scenario_records = _scenario_performance_records(result)
+    scenario_service_levels = [
+        float(record["domestic_service_level"])
+        for record in scenario_records
+        if record.get("domestic_service_level") is not None
+    ]
+    objective_values = result.metrics.get("objective_values", {})
     gurobi_status_name = result.metadata.get("gurobi_status_name")
     return ExperimentRunSummary(
         name=spec.name,
         status=result.status,
+        objective_policy=spec.model.objective_policy,
+        comparison_group=_metadata_text(spec, "comparison_group"),
+        campaign_gate=_metadata_text(spec, "campaign_gate"),
+        scenario_count=(
+            len(scenario_records) if scenario_records else 1
+        ),
         objective_value=result.objective_value,
+        economic_cost=_optional_float(objective_values.get("economic_cost")),
+        penalized_cost=_optional_float(objective_values.get("penalized_cost")),
         runtime_seconds=result.runtime_seconds,
         peak_rss_mb=_peak_rss_mb(),
         mip_gap=result.mip_gap,
@@ -608,6 +792,12 @@ def _build_summary(
         total_domestic_demand=total_domestic_demand,
         served_domestic_demand=served_domestic_demand,
         domestic_service_level=domestic_service_level,
+        minimum_scenario_service_level=(
+            min(scenario_service_levels) if scenario_service_levels else None
+        ),
+        maximum_scenario_service_level=(
+            max(scenario_service_levels) if scenario_service_levels else None
+        ),
         total_direct_flow=_weighted_record_total(
             result,
             result.flows,
@@ -659,7 +849,13 @@ def _export_failed_run(
     summary = ExperimentRunSummary(
         name=spec.name,
         status="error",
+        objective_policy=spec.model.objective_policy,
+        comparison_group=_metadata_text(spec, "comparison_group"),
+        campaign_gate=_metadata_text(spec, "campaign_gate"),
+        scenario_count=_configured_scenario_count(spec),
         objective_value=None,
+        economic_cost=None,
+        penalized_cost=None,
         runtime_seconds=(finished - started).total_seconds(),
         peak_rss_mb=_peak_rss_mb(),
         mip_gap=None,
@@ -669,6 +865,8 @@ def _export_failed_run(
         total_domestic_demand=None,
         served_domestic_demand=None,
         domestic_service_level=None,
+        minimum_scenario_service_level=None,
+        maximum_scenario_service_level=None,
         total_direct_flow=None,
         emergency_static_capacity=None,
         emergency_reception_capacity=None,
@@ -773,6 +971,33 @@ def _optional_float(value: Any) -> float | None:
 
 def _optional_int(value: Any) -> int | None:
     return None if value is None else int(value)
+
+
+def _numeric_delta(left: Any, right: Any) -> float | None:
+    if left is None or right is None:
+        return None
+    try:
+        return float(left) - float(right)
+    except (TypeError, ValueError):
+        return None
+
+
+def _metadata_text(spec: ExperimentSpec, key: str) -> str | None:
+    value = spec.metadata.get(key)
+    return None if value is None else str(value)
+
+
+def _configured_scenario_count(spec: ExperimentSpec) -> int | None:
+    if spec.model.mode == "det":
+        return 1
+    if spec.loader.stochastic_combinations is not None:
+        return len(spec.loader.stochastic_combinations)
+    if spec.loader.scenario_generation_mode == "cartesian":
+        return (
+            len(spec.loader.stochastic_supply_levels)
+            * len(spec.loader.stochastic_demand_levels)
+        )
+    return None
 
 
 def _weighted_record_total(

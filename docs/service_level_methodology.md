@@ -119,8 +119,9 @@ The decision should be made in three gates:
 1. **Stage 5.6:** correct the candidate-cost loading contract, support effective
    days by period, and expose penalty versus lexicographic objectives without a
    service floor.
-2. **Next campaign:** compare attainable service and slack usage under the two
-   objective policies using the same network and workbook.
+2. **Stage 5.7:** compare attainable service and slack usage under the two
+   objective policies using matched deterministic, three-scenario, and
+   nine-scenario experiments from `service_policy_sensitivity.yaml`.
 3. **Before a scenario service target:** build a service-cost frontier and set a
    target only if it is operationally justified and attainable.
 4. **Before definitive EVPI/VSS:** freeze one scalar monetary objective. Current
@@ -132,7 +133,8 @@ the scenario-level diagnostics needed at gate 2. The complete EVPI/VSS command
 also remains available as a pipeline validation, but its results should not be
 treated as definitive until the methodological gate is closed.
 
-Stages 5.5–5.6 automate this gate through `model_audit.json`; see
+Stages 5.5–5.7 automate this gate through `model_audit.json`, structured run
+summaries, and paired policy comparisons; see
 [`methodological_audit.md`](methodological_audit.md). The audit records evidence
 and records the selected objective policy without enforcing a service floor.
 
