@@ -643,6 +643,73 @@ def test_loader_applies_active_scenario_multipliers(tmp_path):
     assert validation.is_valid, [issue.message for issue in validation.errors]
 
 
+def test_loader_uses_frozen_long_form_workbook_distances(tmp_path):
+    path = tmp_path / "frozen_distances.xlsx"
+    build_tiny_golden_excel(path)
+    sheets = pd.read_excel(path, sheet_name=None, engine="openpyxl")
+    rows = []
+    pairs = {
+        "OD": [
+            (origin, warehouse)
+            for origin in ("Rio Verde - GO", "Jataí - GO")
+            for warehouse in ("W1", "W2")
+        ],
+        "DC": [
+            (warehouse, customer)
+            for warehouse in ("W1", "W2")
+            for customer in ("Goiânia - GO", "Santos - SP")
+        ],
+        "DD": [("W1", "W2"), ("W2", "W1")],
+    }
+    for arc_type, arc_pairs in pairs.items():
+        for index, (origin, destination) in enumerate(arc_pairs, start=1):
+            rows.append(
+                {
+                    "Tipo_Arco": arc_type,
+                    "Origem": origin,
+                    "Destino": destination,
+                    "Distancia_km": 1000 + index,
+                }
+            )
+    sheets["Distancias"] = pd.DataFrame(rows)
+    with pd.ExcelWriter(path, engine="openpyxl") as writer:
+        for sheet_name, frame in sheets.items():
+            frame.to_excel(writer, sheet_name=sheet_name, index=False)
+
+    data = load_model_data_from_excel(
+        path,
+        ExcelLoaderConfig(
+            compute_haversine_distances=False,
+            use_workbook_distances=True,
+            include_transshipment_routes=True,
+        ),
+    )
+
+    assert data.dist_od[("Rio Verde - GO", "W1")] == 1001
+    assert data.dist_dd[("W2", "W1")] == 1002
+    assert data.dist_oc == {}
+    assert data.metadata["distance_source"] == "workbook"
+
+
+def test_loader_rejects_missing_frozen_distance_pairs(tmp_path):
+    path = tmp_path / "missing_frozen_distances.xlsx"
+    build_tiny_golden_excel(path)
+
+    with pytest.raises(ValueError, match="requires sheet 'Distancias'"):
+        load_model_data_from_excel(
+            path,
+            ExcelLoaderConfig(
+                compute_haversine_distances=False,
+                use_workbook_distances=True,
+            ),
+        )
+
+
+def test_loader_rejects_ambiguous_distance_sources():
+    with pytest.raises(ValueError, match="mutually exclusive"):
+        ExcelLoaderConfig(use_workbook_distances=True)
+
+
 def test_loader_rejects_scenario_override_rows_until_supported(tmp_path):
     path = tmp_path / "scenario_overrides.xlsx"
     build_tiny_golden_excel(path)
@@ -776,3 +843,4 @@ def test_loader_accepts_an_explicit_user_selected_scenario_subset(tmp_path):
         config=ModelConfig(mode="sto", candidate_capacity_mode="scalable"),
     )
     assert validation.is_valid, [issue.message for issue in validation.errors]
+

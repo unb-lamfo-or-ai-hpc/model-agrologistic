@@ -455,14 +455,13 @@ Completed:
 
 Current:
 
-- Sprint 2 scientific validation, beginning with verified acquisition and
-  structural reconciliation of the Artur benchmark source pool against the
-  gold-workbook extension track. The first named legacy instance is persisted
-  with content hashes and a frozen Haversine distance proxy; its duplicate-key
-  and domestic/export sampling ambiguities are surfaced before optimization.
-  The separate `bounded_reproduction_v1` normalization conserves tonnage,
-  removes duplicate typed keys, and publishes a transformation audit without
-  modifying the raw bundle.
+- Sprint 2 scientific validation of the Artur benchmark source pool against
+  the gold-workbook extension track. The first named legacy instance is
+  persisted and normalized with content hashes and transformation audits. A
+  canonical solver adapter now combines that normalized instance with pinned
+  historical reference tables and frozen Haversine distances. Its deterministic
+  manifest is explicitly labelled as a bounded reproduction because the
+  historical OSRM matrix and forecasting path are not available.
 
 The model keeps full origin-supply allocation, treats reception and shipping
 as daily rates converted with a 30-day fallback, and does not impose an
@@ -478,8 +477,8 @@ gates are documented in
 
 Planned:
 
-- solver-ready workbook adaptation for the normalized deterministic Artur
-  benchmark instance;
+- NPAD execution and result audit for the initial deterministic bounded
+  reproduction;
 - frozen OSRM route evidence when an identifiable historical routing snapshot
   becomes available;
 - controlled thesis-result reconciliation followed by three- and nine-scenario

@@ -1,0 +1,50 @@
+version: 1
+output_dir: ../data/results/hpc/artur_bounded_reproduction
+continue_on_error: false
+
+defaults:
+  max_estimated_variables: 200000
+  solver:
+    backend: gurobipy
+    solver_name: gurobi
+    mip_gap: 0.01
+    time_limit: 600
+    threads: 16
+    seed: 42
+    tee: true
+    compute_iis: true
+    iis_max_items: 200
+  model:
+    mode: det
+    use_warehouse_transshipment: true
+    use_direct_origin_customer: false
+    route_filter_strategy: none
+    objective_policy: penalty
+    candidate_capacity_mode: scalable
+    terminal_inventory_policy: free
+    days_per_period: 30
+    allow_capacity_expansion: true
+    allow_bulkification: true
+  loader:
+    compute_haversine_distances: false
+    use_workbook_distances: true
+    include_export_routes: true
+    include_transshipment_routes: true
+    include_direct_origin_customer_routes: false
+    candidate_cost_policy: fixed_total
+    default_unmet_demand_penalty: 1000000
+    default_emergency_static_penalty: 1000000
+    default_emergency_reception_penalty: 1000000
+
+experiments:
+  - name: artur_legacy_i001_bounded_det
+    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver/model_input.xlsx
+    metadata:
+      family: artur_bounded_reproduction
+      campaign_gate: gate_2b_controlled_deterministic
+      comparison_status: bounded_reproduction
+      source_commit_sha: 9d190ce91bb60c192329c4bbd5638f24909cb1e2
+      distance_method: haversine_v1_frozen
+      historical_distance_method: OSRM
+      forecasting_reconstructed: false
+

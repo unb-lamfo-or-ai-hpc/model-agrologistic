@@ -180,6 +180,55 @@ are the Haversine-versus-OSRM distance difference and the unreconstructed
 forecasting path. The normalized bundle is suitable for the next model-adapter
 gate, but it is not yet an exact thesis instance.
 
+#### Canonical solver adapter
+
+The normalized tables can be converted into a solver workbook without changing
+the raw or normalized evidence:
+
+```bash
+python scripts/build_artur_solver_workbook.py --name artur_legacy_i001
+```
+
+The command writes `solver/model_input.xlsx` and `solver/adapter_audit.json`
+beside the instance. It verifies every normalized-table hash and every pinned
+reference asset before adapting the schema. The workbook contains the frozen
+Haversine distances in a long-form `Distancias` sheet; the experiment loader is
+configured to read these values and is forbidden from recomputing them.
+
+The adapter uses the pinned historical freight, storage, transshipment, and
+investment reference tables. It translates only field names and status labels,
+sets candidate opening cost to the historical fixed-total interpretation, and
+records the benchmark expansion and bulkification assumptions explicitly. The
+following semantic differences remain material:
+
+- the frozen Haversine matrix is not the historical OSRM matrix;
+- the historical forecasting path is not reconstructed;
+- the current model's capacity coupling is not identical to the historical
+  reception and shipping expansion ratio.
+
+Consequently, the resulting solve is a bounded reproduction of the initial
+instance, not an exact numerical replication. It is useful for validating the
+data lineage, feasibility, cost decomposition, decisions, service, DynCap,
+Turnover, runtime, and memory under a controlled current-model interpretation.
+
+The deterministic experiment is versioned in
+`experiments/artur_bounded_reproduction.yaml`. Run its preflight first:
+
+```bash
+python scripts/run_batch_hpc.py \
+  experiments/artur_bounded_reproduction.yaml \
+  --index 0 \
+  --dry-run
+```
+
+If the preflight signature agrees with the adapter audit, run the bounded solve:
+
+```bash
+python scripts/run_batch_hpc.py \
+  experiments/artur_bounded_reproduction.yaml \
+  --index 0
+```
+
 ### Gate 2C: stochastic extension
 
 - Apply the documented three- and nine-scenario structures to a persisted Gate
