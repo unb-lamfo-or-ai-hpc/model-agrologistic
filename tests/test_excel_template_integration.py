@@ -2,10 +2,12 @@ from pathlib import Path
 
 import pytest
 
-from src.logic.excel_loader import ExcelLoaderConfig, load_model_data_from_excel
+from src.logic.excel_loader import (
+    ExcelLoaderConfig,
+    load_model_data_from_excel,
+)
 from src.logic.model_config import ModelConfig
 from src.logic.model_validation import validate_model_data
-
 
 TEMPLATE_PATH = Path("data/templates/model_agrologistic_padrao_ouro.xlsx")
 

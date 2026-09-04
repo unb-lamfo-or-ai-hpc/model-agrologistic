@@ -5,9 +5,12 @@ from pathlib import Path
 import pytest
 
 from scripts.run_batch_hpc import selected_index
+from src.logic.excel_loader import ExcelLoaderConfig
 from src.logic.experiment_runner import (
     ExperimentManifest,
     ExperimentSpec,
+    _scenario_performance_records,
+    _weighted_record_total,
     aggregate_experiment_summaries,
     aggregate_service_policy_comparisons,
     audit_existing_run,
@@ -16,10 +19,7 @@ from src.logic.experiment_runner import (
     load_experiment_manifest,
     run_experiment,
     run_manifest,
-    _scenario_performance_records,
-    _weighted_record_total,
 )
-from src.logic.excel_loader import ExcelLoaderConfig
 from src.logic.model_config import ModelConfig, SolverConfig
 from src.logic.model_data import ModelData
 from src.logic.optimization import OptimizationResult

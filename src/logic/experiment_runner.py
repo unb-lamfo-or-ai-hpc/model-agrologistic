@@ -11,11 +11,12 @@ import platform
 import re
 import site
 import sys
+from collections.abc import Callable
 from dataclasses import asdict, dataclass, field, fields
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from importlib.metadata import PackageNotFoundError, version
 from pathlib import Path
-from typing import Any, Callable
+from typing import Any
 
 import yaml
 
@@ -219,7 +220,7 @@ def run_experiment(
 ) -> ExperimentRunSummary:
     """Execute one experiment and atomically export its structured artifacts."""
 
-    started = datetime.now(timezone.utc)
+    started = datetime.now(UTC)
     run_dir = Path(output_root).resolve() / spec.name
     run_dir.mkdir(parents=True, exist_ok=True)
 
@@ -261,7 +262,7 @@ def run_experiment(
         progress(f"[{spec.name}] calculating DynCap and Turnover")
         attach_storage_metrics(data, result)
 
-    finished = datetime.now(timezone.utc)
+    finished = datetime.now(UTC)
     progress(f"[{spec.name}] exporting structured artifacts")
     _export_run_artifacts(
         spec=spec,
@@ -434,7 +435,7 @@ def run_manifest(
     summaries: list[ExperimentRunSummary] = []
     for index in selected:
         spec = manifest.experiments[index]
-        run_started = datetime.now(timezone.utc)
+        run_started = datetime.now(UTC)
         try:
             summary = run_experiment(
                 spec,
@@ -881,7 +882,7 @@ def _export_failed_run(
     *,
     started: datetime,
 ) -> ExperimentRunSummary:
-    finished = datetime.now(timezone.utc)
+    finished = datetime.now(UTC)
     run_dir = output_root / spec.name
     run_dir.mkdir(parents=True, exist_ok=True)
     summary = ExperimentRunSummary(

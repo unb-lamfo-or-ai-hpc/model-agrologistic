@@ -4,7 +4,6 @@ from pathlib import Path
 
 from src.logic.excel_loader import load_model_data_from_excel
 
-
 CONTRACT_PATH = Path("data/manifests/mvp_data_contract.json")
 
 
