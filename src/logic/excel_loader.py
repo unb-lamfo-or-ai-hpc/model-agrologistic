@@ -20,7 +20,6 @@ import pandas as pd
 
 from src.logic.model_data import ModelData, NodeInfo
 
-
 CandidateCostPolicy = Literal["variable_from_total", "fixed_total"]
 ScenarioGenerationMode = Literal["active_rows", "cartesian"]
 
@@ -255,6 +254,7 @@ def load_model_data_from_excel(
         config=config,
         parameter_table=parameter_table,
         investment_cost_table=investment_cost_table,
+        loader_warnings=loader_warnings,
     )
 
     freight_origin = {
@@ -880,6 +880,7 @@ def _load_warehouses(
     config: ExcelLoaderConfig,
     parameter_table: dict[str, Any],
     investment_cost_table: dict[str, dict[str, float]],
+    loader_warnings: list[str],
 ) -> tuple[
     list[str],
     list[str],
@@ -901,8 +902,6 @@ def _load_warehouses(
     dict[str, float],
     dict[str, float],
 ]:
-    del parameter_table
-
     warehouses: list[str] = []
     existing_warehouses: list[str] = []
     candidate_warehouses: list[str] = []
@@ -990,6 +989,14 @@ def _load_warehouses(
         ],
     )
 
+    default_candidate_variable_cost = _investment_average_cost(
+        investment_cost_table,
+        "novo armazem convencional",
+    )
+    default_expand_capacity_fraction = _parameter_float(
+        parameter_table,
+        "expansion_capacity_fraction_default",
+    )
     default_expand_variable_cost = _investment_average_cost(
         investment_cost_table,
         "expansao",
@@ -998,6 +1005,9 @@ def _load_warehouses(
         investment_cost_table,
         "granelizacao",
     )
+
+    derived_candidate_cost_count = 0
+    derived_expansion_capacity_count = 0
 
     for _, row in warehouses_df.iterrows():
         if _is_blank_row(row, required_fields=["CDA", "Status"]):
@@ -1042,7 +1052,8 @@ def _load_warehouses(
 
         if is_candidate:
             max_capacity = _parse_float(row["Cap. Estática Máxima (t)"])
-            reported_total_cost = _parse_float(row["Custo de Abertura ($)"])
+            reported_total_cost_raw = row["Custo de Abertura ($)"]
+            reported_total_cost = _parse_float(reported_total_cost_raw)
 
             fixed_cost_column = _first_existing_column(
                 row,
@@ -1056,6 +1067,7 @@ def _load_warehouses(
             variable_cost_column = _first_existing_column(
                 row,
                 [
+                    "Custo_Capacidade_Candidata_Modelo ($/t)",
                     "Custo_Variavel_Capacidade_Modelo ($/t)",
                     "Custo Variável de Capacidade ($/t)",
                     "Custo_Variavel_Capacidade ($/t)",
@@ -1066,13 +1078,23 @@ def _load_warehouses(
             reported_candidate_total_opening_cost[warehouse] = reported_total_cost
 
             if fixed_cost_column is not None or variable_cost_column is not None:
+                explicit_fixed_cost_raw = (
+                    row[fixed_cost_column]
+                    if fixed_cost_column is not None
+                    else None
+                )
+                explicit_variable_cost_raw = (
+                    row[variable_cost_column]
+                    if variable_cost_column is not None
+                    else None
+                )
                 explicit_fixed_cost = (
-                    _parse_float(row[fixed_cost_column])
+                    _parse_float(explicit_fixed_cost_raw)
                     if fixed_cost_column is not None
                     else 0.0
                 )
                 explicit_variable_cost = (
-                    _parse_float(row[variable_cost_column])
+                    _parse_float(explicit_variable_cost_raw)
                     if variable_cost_column is not None
                     else 0.0
                 )
@@ -1081,26 +1103,43 @@ def _load_warehouses(
                 # workbooks. When both components are zero, retain the
                 # documented total construction estimate through the selected
                 # cost policy instead of making candidate capacity free.
-                if (
-                    explicit_fixed_cost == 0.0
-                    and explicit_variable_cost == 0.0
-                    and reported_total_cost > 0.0
-                ):
-                    if config.candidate_cost_policy == "variable_from_total":
-                        opening_fixed_cost[warehouse] = 0.0
-                        candidate_capacity_cost[warehouse] = (
-                            reported_total_cost / max_capacity
-                            if max_capacity > 0.0
-                            else 0.0
+                if explicit_fixed_cost == 0.0 and explicit_variable_cost == 0.0:
+                    effective_total_cost = reported_total_cost
+                    formula_values_missing = _is_blank_value(
+                        reported_total_cost_raw
+                    ) and _is_blank_value(explicit_variable_cost_raw)
+
+                    if formula_values_missing and max_capacity > 0.0:
+                        if default_candidate_variable_cost <= 0.0:
+                            raise ValueError(
+                                "Candidate investment formulas have no cached "
+                                "values and Custo_Invest has no positive average "
+                                "cost for Novo Armazém Convencional."
+                            )
+                        effective_total_cost = (
+                            max_capacity * default_candidate_variable_cost
                         )
-                    elif config.candidate_cost_policy == "fixed_total":
-                        opening_fixed_cost[warehouse] = reported_total_cost
-                        candidate_capacity_cost[warehouse] = 0.0
+                        derived_candidate_cost_count += 1
+
+                    if effective_total_cost > 0.0:
+                        if config.candidate_cost_policy == "variable_from_total":
+                            opening_fixed_cost[warehouse] = 0.0
+                            candidate_capacity_cost[warehouse] = (
+                                effective_total_cost / max_capacity
+                                if max_capacity > 0.0
+                                else 0.0
+                            )
+                        elif config.candidate_cost_policy == "fixed_total":
+                            opening_fixed_cost[warehouse] = effective_total_cost
+                            candidate_capacity_cost[warehouse] = 0.0
+                        else:
+                            raise ValueError(
+                                "Invalid candidate_cost_policy="
+                                f"{config.candidate_cost_policy!r}."
+                            )
                     else:
-                        raise ValueError(
-                            "Invalid candidate_cost_policy="
-                            f"{config.candidate_cost_policy!r}."
-                        )
+                        opening_fixed_cost[warehouse] = explicit_fixed_cost
+                        candidate_capacity_cost[warehouse] = explicit_variable_cost
                 else:
                     opening_fixed_cost[warehouse] = explicit_fixed_cost
                     candidate_capacity_cost[warehouse] = explicit_variable_cost
@@ -1127,12 +1166,22 @@ def _load_warehouses(
             ["Permite_Expansao", "Permite_Expansão"],
         )
 
-        if (
-            is_existing
-            and expansion_allowed
-            and max_expand_capacity_column is not None
-        ):
-            max_expansion = _parse_float(row[max_expand_capacity_column])
+        if is_existing and expansion_allowed:
+            max_expansion_raw = (
+                row[max_expand_capacity_column]
+                if max_expand_capacity_column is not None
+                else None
+            )
+            max_expansion = _parse_float(max_expansion_raw)
+            if (
+                _is_blank_value(max_expansion_raw)
+                and default_expand_capacity_fraction > 0.0
+            ):
+                max_expansion = (
+                    static_capacity[warehouse]
+                    * default_expand_capacity_fraction
+                )
+                derived_expansion_capacity_count += 1
             if max_expansion > 0.0:
                 max_expand_capacity[warehouse] = max_expansion
                 expand_fixed_cost[warehouse] = _first_numeric_value(
@@ -1182,6 +1231,19 @@ def _load_warehouses(
                 "holder": holder,
                 "type": warehouse_type,
             },
+        )
+
+    if derived_candidate_cost_count:
+        loader_warnings.append(
+            "Derived candidate capacity cost from Custo_Invest for "
+            f"{derived_candidate_cost_count} candidate warehouses because "
+            "formula-backed cost cells had no cached numeric values."
+        )
+    if derived_expansion_capacity_count:
+        loader_warnings.append(
+            "Derived maximum expansion capacity from Parametros_Modelo for "
+            f"{derived_expansion_capacity_count} existing warehouses because "
+            "formula-backed capacity cells had no cached numeric values."
         )
 
     return (
@@ -1265,6 +1327,19 @@ def _investment_average_cost(
     for name, costs in investment_cost_table.items():
         if target in _fold_text(name):
             return float(costs.get("average", 0.0))
+
+    return 0.0
+
+
+def _parameter_float(
+    parameter_table: dict[str, Any],
+    parameter_name: str,
+) -> float:
+    target = _fold_text(parameter_name)
+
+    for name, value in parameter_table.items():
+        if _fold_text(name) == target:
+            return _first_numeric_value(value)
 
     return 0.0
 
@@ -1563,6 +1638,13 @@ def _parse_optional_float(value: Any) -> float | None:
         return None
 
     return _parse_float(value)
+
+
+def _is_blank_value(value: Any) -> bool:
+    if value is None or pd.isna(value):
+        return True
+
+    return isinstance(value, str) and not value.strip()
 
 
 def _first_numeric_value(*values: Any) -> float:
