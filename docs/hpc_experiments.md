@@ -6,6 +6,18 @@ mathematical formulation, solver parameters, and researcher metadata.
 
 ## Run a complete manifest
 
+Activate the selected Conda environment and disable user-site packages before
+running commands interactively. This keeps packages under `~/.local` from
+overriding the environment:
+
+```bash
+conda activate /home/vrrcelestino/venv313
+export PYTHONNOUSERSITE=1
+python -c 'import sys, pandas, openpyxl; print(sys.executable); print(pandas.__version__); print(openpyxl.__version__)'
+```
+
+The provided Slurm script sets `PYTHONNOUSERSITE=1` automatically.
+
 ```bash
 python scripts/run_batch_hpc.py experiments/example_hpc.yaml
 ```
@@ -30,9 +42,10 @@ python scripts/run_batch_hpc.py \
   --dry-run
 ```
 
-Every run writes `preflight.json`. By default, the runner refuses an estimate
-above two million variables. Configure `route_filter_strategy: top_k` with
-`route_top_k`, use `pareto`, or explicitly set
+Every run writes `preflight.json` with the workbook SHA-256, structural data
+signature, runtime package versions, selected routes, and model-size estimate.
+By default, the runner refuses an estimate above two million variables.
+Configure `route_filter_strategy: top_k` with `route_top_k`, use `pareto`, or explicitly set
 `max_estimated_variables: null` when a larger run is intentional.
 
 The command also reads `SLURM_ARRAY_TASK_ID` when `--index` is omitted. A Slurm
@@ -377,29 +390,6 @@ contract before gate 2 starts.
 No entry calculates EVPI or VSS. Those metrics remain restricted to the scalar
 `penalty` objective and must not be used to compare a hierarchical objective
 with a monetary objective.
-
-### Completed Stage 5.7 campaign
-
-All three matched gates completed on NPAD with optimal solutions:
-
-| Gate | Scenarios | Penalty service | Lexicographic service | Service delta | Penalty runtime | Lexicographic runtime |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| 1 | 1 | 79.336% | 79.061% | -0.275 pp | 43.0 s | 89.5 s |
-| 2 | 3 | 78.302% | 78.011% | -0.291 pp | 178.5 s | 439.2 s |
-| 3 | 9 | 78.698% | 78.402% | -0.295 pp | 947.1 s | 2,285.9 s |
-
-For the complete nine-scenario gate, the lexicographic policy reduced combined
-emergency capacity from 552,682.90 ton-period units to numerical tolerance,
-reduced economic cost by 0.929%, and increased unmet demand by 2.00 million
-tonnes. Peak resident memory increased from approximately 16.98 GiB to
-20.63 GiB, remaining within the validated 64 GiB Slurm profile.
-
-The stable result across all gates closes the policy-selection experiment.
-`penalty` remains the monetary reference and `lexicographic` remains a
-feasibility-slack robustness diagnostic. The approximately 21% persistent
-domestic service gap is now treated as a structural-model diagnostic for the
-next reproducibility and bottleneck-analysis stage, not as evidence that the
-unmet-demand penalty should be increased.
 
 ### NPAD memory profile and Slurm submission
 

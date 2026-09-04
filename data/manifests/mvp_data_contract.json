@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "frozen_on": "2026-09-04",
+  "tracks": {
+    "artur_benchmark_reproduction": {
+      "purpose": "Bounded reproduction of the deterministic and stochastic thesis cases.",
+      "repository": "https://github.com/cvictorr2508/silodss",
+      "commit_sha": "9d190ce91bb60c192329c4bbd5638f24909cb1e2",
+      "subtree": "benchmark",
+      "assets": [
+        {"path": "benchmark/Armazens_Cadastrados_SICARM.txt", "git_blob_sha": "0acea8c29f38dc5ac76708fd573907c934d4e978", "size_bytes": 8099000},
+        {"path": "benchmark/Custos_Investimento.xlsx", "git_blob_sha": "ba754459587b6fa76bf504e6e4a98ff441ab7cb4", "size_bytes": 8759},
+        {"path": "benchmark/Custos_Transbordo.xlsx", "git_blob_sha": "ff93994b9b1ec843864734a2fd6b690222867606", "size_bytes": 8630},
+        {"path": "benchmark/Edited_Demand.xlsx", "git_blob_sha": "c2d2232734bef0287893aa3f945ce39b9fe99880", "size_bytes": 161143},
+        {"path": "benchmark/Edited_Supply.xlsx", "git_blob_sha": "2fb64428f6e1a034d11abaf26f3c928679b211d3", "size_bytes": 219470},
+        {"path": "benchmark/Initial_Inventory.xlsx", "git_blob_sha": "b6b7bd56ec1c7953e4b1174ae7b3f45d22630a9e", "size_bytes": 14939},
+        {"path": "benchmark/Tarifa_de_Armazenagem.xlsx", "git_blob_sha": "9c8428e73377fbf3d18190f1eecbe50f54dd9e6e", "size_bytes": 10248},
+        {"path": "benchmark/Valor_Tonelada_km.xlsx", "git_blob_sha": "27eafbf9ba58f2652f5984a8db751e19e4a8f841", "size_bytes": 10710},
+        {"path": "benchmark/Warehouses.xlsx", "git_blob_sha": "c03d8b299e9c3bf8e743f9790fb9ade6c2562051", "size_bytes": 22620},
+        {"path": "benchmark/benchmark_config.json", "git_blob_sha": "ddb5144ecf1e0b9e5e17e494626969f8f483edb6", "size_bytes": 1862}
+      ]
+    },
+    "gold_workbook_extension": {
+      "purpose": "Canonical MVP extension and robustness analysis.",
+      "path": "data/templates/model_agrologistic_padrao_ouro.xlsx",
+      "sha256": "de3bdc51b2c338194a5013165bec2884b68784fb207ae8c762984a1b44856082",
+      "size_bytes": 507684,
+      "structural_signature": {
+        "origins": 37,
+        "warehouses": 215,
+        "existing_warehouses": 146,
+        "candidate_warehouses": 69,
+        "domestic_customers": 27,
+        "export_customers": 10,
+        "products": 2,
+        "periods": 60
+      }
+    }
+  }
+}

@@ -455,15 +455,17 @@ Completed:
 
 Current:
 
-- Stage 5.7 progressive penalty-versus-lexicographic service-policy campaign,
-  with matched deterministic, three-scenario, and nine-scenario experiments.
+- Stage 5.8 MVP and data freeze, with separate Artur benchmark reproduction
+  and gold-workbook extension tracks.
 
 The model keeps full origin-supply allocation, treats reception and shipping
 as daily rates converted with a 30-day fallback, and does not impose an
 arbitrary service floor. Scalar EVPI/VSS remains available only for the penalty
 objective. See
 [`docs/service_level_methodology.md`](docs/service_level_methodology.md) and
-[`docs/methodological_audit.md`](docs/methodological_audit.md).
+[`docs/methodological_audit.md`](docs/methodological_audit.md). The MVP boundary
+and frozen data identities are documented in
+[`docs/mvp_scope_and_data_contract.md`](docs/mvp_scope_and_data_contract.md).
 
 Planned:
 

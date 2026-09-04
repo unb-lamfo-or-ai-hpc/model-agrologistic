@@ -5,9 +5,12 @@ from pathlib import Path
 import pytest
 
 from scripts.run_batch_hpc import selected_index
+from src.logic.excel_loader import ExcelLoaderConfig
 from src.logic.experiment_runner import (
     ExperimentManifest,
     ExperimentSpec,
+    _scenario_performance_records,
+    _weighted_record_total,
     aggregate_experiment_summaries,
     aggregate_service_policy_comparisons,
     audit_existing_run,
@@ -16,10 +19,7 @@ from src.logic.experiment_runner import (
     load_experiment_manifest,
     run_experiment,
     run_manifest,
-    _scenario_performance_records,
-    _weighted_record_total,
 )
-from src.logic.excel_loader import ExcelLoaderConfig
 from src.logic.model_config import ModelConfig, SolverConfig
 from src.logic.model_data import ModelData
 from src.logic.optimization import OptimizationResult
@@ -404,6 +404,9 @@ def test_run_experiment_exports_complete_json_csv_and_metrics(
     )
     run_dir = tmp_path / "det_baseline"
     payload = json.loads((run_dir / "result.json").read_text(encoding="utf-8"))
+    preflight = json.loads(
+        (run_dir / "preflight.json").read_text(encoding="utf-8")
+    )
 
     assert summary.status == "optimal"
     assert summary.objective_value == pytest.approx(123.0)
@@ -428,6 +431,23 @@ def test_run_experiment_exports_complete_json_csv_and_metrics(
     assert payload["result"]["metrics"]["DynCap"] == pytest.approx(600.0)
     assert payload["execution"]["slurm_job_id"] == "12345"
     assert payload["execution"]["slurm_array_task_id"] == "7"
+    assert payload["execution"]["python_executable"]
+    assert payload["execution"]["package_versions"]["pandas"]
+    assert preflight["schema_version"] == 1
+    assert preflight["workbook_sha256"] is None
+    assert preflight["data_signature"]["counts"] == {
+        "candidate_warehouses": 0,
+        "domestic_customers": 1,
+        "existing_warehouses": 1,
+        "export_customers": 0,
+        "origins": 1,
+        "periods": 2,
+        "products": 1,
+        "scenarios": 0,
+        "warehouses": 1,
+    }
+    assert preflight["data_signature"]["loader_warning_count"] == 0
+    assert preflight["execution"]["package_versions"]["openpyxl"]
     assert summary.slurm_job_id == "12345"
     assert summary.slurm_array_task_id == "7"
     assert "raw_solver_result" not in payload["result"]
