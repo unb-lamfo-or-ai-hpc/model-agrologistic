@@ -9,9 +9,11 @@ import json
 import os
 import platform
 import re
+import site
 import sys
 from dataclasses import asdict, dataclass, field, fields
 from datetime import datetime, timezone
+from importlib.metadata import PackageNotFoundError, version
 from pathlib import Path
 from typing import Any, Callable
 
@@ -228,7 +230,10 @@ def run_experiment(
         build_model_audit(data, spec.model),
     )
     estimate = estimate_model_size(data, spec.model)
-    _write_json(run_dir / "preflight.json", asdict(estimate))
+    _write_json(
+        run_dir / "preflight.json",
+        _preflight_payload(spec, data, estimate),
+    )
     progress(_preflight_message(spec, estimate))
     _enforce_size_limit(spec, estimate)
 
@@ -297,7 +302,10 @@ def inspect_experiment(
         build_model_audit(data, spec.model),
     )
     estimate = estimate_model_size(data, spec.model)
-    _write_json(run_dir / "preflight.json", asdict(estimate))
+    _write_json(
+        run_dir / "preflight.json",
+        _preflight_payload(spec, data, estimate),
+    )
     progress(_preflight_message(spec, estimate))
     return estimate
 
@@ -1214,6 +1222,65 @@ def _preflight_message(
     )
 
 
+def _preflight_payload(
+    spec: ExperimentSpec,
+    data: ModelData,
+    estimate: ModelSizeEstimate,
+) -> dict[str, Any]:
+    """Build a human-auditable fingerprint without changing size fields."""
+
+    return {
+        **asdict(estimate),
+        "schema_version": 1,
+        "workbook_sha256": _file_sha256(spec.workbook),
+        "data_signature": _data_signature(data),
+        "execution": _execution_context(),
+    }
+
+
+def _data_signature(data: ModelData) -> dict[str, Any]:
+    stochastic_totals = {
+        scenario: {
+            "supply": sum(
+                value
+                for (record_scenario, *_), value in data.supply_s.items()
+                if record_scenario == scenario
+            ),
+            "domestic_demand": sum(
+                value
+                for (record_scenario, *_), value in data.demand_dom_s.items()
+                if record_scenario == scenario
+            ),
+            "export_upper_bound": sum(
+                value
+                for (record_scenario, *_), value in data.demand_exp_s.items()
+                if record_scenario == scenario
+            ),
+        }
+        for scenario in data.scenarios
+    }
+    return {
+        "counts": {
+            "origins": len(data.origins),
+            "warehouses": len(data.warehouses),
+            "existing_warehouses": len(data.existing_warehouses),
+            "candidate_warehouses": len(data.candidate_warehouses),
+            "domestic_customers": len(data.domestic_customers),
+            "export_customers": len(data.export_customers),
+            "products": len(data.products),
+            "periods": len(data.periods),
+            "scenarios": len(data.scenarios),
+        },
+        "deterministic_totals": {
+            "supply": sum(data.supply.values()),
+            "domestic_demand": sum(data.demand_dom.values()),
+            "export_upper_bound": sum(data.demand_exp.values()),
+        },
+        "stochastic_totals_by_scenario": stochastic_totals,
+        "loader_warning_count": len(data.metadata.get("loader_warnings", [])),
+    }
+
+
 def _enforce_size_limit(
     spec: ExperimentSpec,
     estimate: ModelSizeEstimate,
@@ -1234,10 +1301,32 @@ def _execution_context() -> dict[str, Any]:
         "hostname": platform.node(),
         "platform": platform.platform(),
         "python_version": sys.version,
+        "python_executable": sys.executable,
+        "python_prefix": sys.prefix,
+        "python_no_user_site": os.environ.get("PYTHONNOUSERSITE"),
+        "user_site_enabled": site.ENABLE_USER_SITE,
+        "package_versions": {
+            distribution: _installed_version(distribution)
+            for distribution in (
+                "model-agrologistic",
+                "numpy",
+                "pandas",
+                "openpyxl",
+                "gurobipy",
+                "PyYAML",
+            )
+        },
         "slurm_job_id": os.environ.get("SLURM_JOB_ID"),
         "slurm_array_job_id": os.environ.get("SLURM_ARRAY_JOB_ID"),
         "slurm_array_task_id": os.environ.get("SLURM_ARRAY_TASK_ID"),
     }
+
+
+def _installed_version(distribution: str) -> str | None:
+    try:
+        return version(distribution)
+    except PackageNotFoundError:
+        return None
 
 
 def _file_sha256(path: Path) -> str | None:

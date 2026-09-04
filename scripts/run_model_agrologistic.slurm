@@ -30,6 +30,7 @@ fi
 export OMP_NUM_THREADS="${SLURM_CPUS_PER_TASK}"
 export OPENBLAS_NUM_THREADS="${SLURM_CPUS_PER_TASK}"
 export MKL_NUM_THREADS="${SLURM_CPUS_PER_TASK}"
+export PYTHONNOUSERSITE=1
 
 experiment_manifest="${EXPERIMENT_MANIFEST:-experiments/example_hpc.yaml}"
 experiment_index="${EXPERIMENT_INDEX:-${SLURM_ARRAY_TASK_ID:-1}}"
@@ -46,6 +47,7 @@ echo "memory_per_node=${SLURM_MEM_PER_NODE:-unknown}MB"
 echo "virtual_memory_limit_kb=$(ulimit -v)"
 echo "cpu_time_limit_seconds=$(ulimit -t)"
 echo "python=${python_executable}"
+echo "python_no_user_site=${PYTHONNOUSERSITE}"
 "${python_executable}" --version
 
 "${python_executable}" scripts/run_batch_hpc.py \

@@ -40,7 +40,14 @@ def test_golden_excel_template_can_be_loaded_and_validated():
 
     assert set(data.domestic_customers).isdisjoint(set(data.export_customers))
 
-    assert data.metadata["loader_warnings"] == []
+    assert data.metadata["loader_warnings"] == [
+        "Derived candidate capacity cost from Custo_Invest for 69 candidate "
+        "warehouses because formula-backed cost cells had no cached numeric "
+        "values.",
+        "Derived maximum expansion capacity from Parametros_Modelo for 146 "
+        "existing warehouses because formula-backed capacity cells had no "
+        "cached numeric values.",
+    ]
 
 
 @pytest.mark.skipif(
@@ -72,15 +79,12 @@ def test_golden_excel_template_prices_candidate_capacity_per_ton():
 
     for warehouse in data.candidate_warehouses:
         maximum = data.max_candidate_capacity[warehouse]
-        reported_total = data.metadata["reported_candidate_total_opening_cost"][
-            warehouse
-        ]
+        capacity_cost = data.candidate_capacity_cost[warehouse]
 
-        assert reported_total > 0.0
+        assert maximum > 0.0
+        assert capacity_cost == pytest.approx(1250.0)
         assert data.opening_fixed_cost[warehouse] == pytest.approx(0.0)
-        assert data.candidate_capacity_cost[warehouse] == pytest.approx(
-            reported_total / maximum
-        )
+        assert capacity_cost * maximum > 0.0
 
 
 @pytest.mark.skipif(

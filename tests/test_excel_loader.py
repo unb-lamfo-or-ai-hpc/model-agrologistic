@@ -370,6 +370,7 @@ def test_legacy_infinity_demand_is_still_supported(tmp_path):
             "Observacao",
         ]
     )
+    demanda["Peso (ton)"] = demanda["Peso (ton)"].astype(object)
     demanda.loc[1, "Peso (ton)"] = "∞"
     demanda.loc[2, "Peso (ton)"] = "∞"
 
@@ -566,6 +567,7 @@ def test_legacy_infinity_overlap_is_split_with_correct_export_id(tmp_path):
         ]
     )
 
+    demanda["Peso (ton)"] = demanda["Peso (ton)"].astype(object)
     demanda.loc[1, "Peso (ton)"] = "∞"
     demanda.loc[2, "Peso (ton)"] = "∞"
 
@@ -668,6 +670,55 @@ def test_loader_rejects_scenario_override_rows_until_supported(tmp_path):
             path,
             config=ExcelLoaderConfig(include_stochastic_scenarios=True),
         )
+
+
+def test_loader_ignores_documented_scenario_override_placeholders(tmp_path):
+    path = tmp_path / "scenario_override_placeholders.xlsx"
+    build_tiny_golden_excel(path)
+
+    all_sheets = pd.read_excel(path, sheet_name=None, engine="openpyxl")
+    all_sheets["Oferta_Cenarios"] = pd.DataFrame(
+        [
+            {
+                "Cenario": "base",
+                "Produto": None,
+                "Cidade": None,
+                "Data": None,
+                "Peso (ton)": None,
+                "Multiplicador": 1.0,
+                "Fonte_Parametro": "Informado",
+                "Observacao": "Optional template row.",
+            }
+        ]
+    )
+    all_sheets["Demanda_Cenarios"] = pd.DataFrame(
+        [
+            {
+                "Cenario": "base",
+                "Produto": None,
+                "Cidade": None,
+                "Data": None,
+                "Tipo_Demanda": "DOMESTICA",
+                "Regra_Limite": "FIXO",
+                "Peso (ton)": None,
+                "Peso_Modelo (ton)": None,
+                "Multiplicador": 1.0,
+                "Fonte_Parametro": "Informado",
+                "Observacao": "Optional template row.",
+            }
+        ]
+    )
+
+    with pd.ExcelWriter(path, engine="openpyxl") as writer:
+        for sheet_name, dataframe in all_sheets.items():
+            dataframe.to_excel(writer, sheet_name=sheet_name, index=False)
+
+    data = load_model_data_from_excel(
+        path,
+        config=ExcelLoaderConfig(include_stochastic_scenarios=True),
+    )
+
+    assert data.scenarios == ["base"]
 
 
 def test_loader_generates_all_nine_supply_demand_combinations(tmp_path):

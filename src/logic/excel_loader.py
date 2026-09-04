@@ -501,12 +501,26 @@ def _validate_scenario_schema(sheets: dict[str, pd.DataFrame]) -> None:
     for override_sheet in ("Oferta_Cenarios", "Demanda_Cenarios"):
         if override_sheet not in sheets:
             continue
-        if not _clean_dataframe(sheets[override_sheet]).empty:
+        if _has_scenario_override_rows(sheets[override_sheet]):
             raise ValueError(
                 f"Sheet {override_sheet!r} contains scenario-specific rows, "
                 "which are not supported yet. This stage reads multipliers "
                 "from 'Cenarios'."
             )
+
+
+def _has_scenario_override_rows(dataframe: pd.DataFrame) -> bool:
+    """Distinguish documented placeholder rows from actual scenario data."""
+
+    cleaned = _clean_dataframe(dataframe)
+    data_columns = [
+        column
+        for column in ("Produto", "Cidade", "Data", "Peso (ton)", "Peso_Modelo (ton)")
+        if column in cleaned.columns
+    ]
+    if not data_columns:
+        return not cleaned.empty
+    return bool(cleaned[data_columns].notna().any(axis=1).any())
 
 
 def _clean_dataframe(df: pd.DataFrame) -> pd.DataFrame:
