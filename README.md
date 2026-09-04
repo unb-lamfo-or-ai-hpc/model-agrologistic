@@ -15,7 +15,8 @@ The project originated from the SiloDSS codebase, which was initially designed a
 - structured Excel-based model input;
 - canonical, solver-agnostic model data structures;
 - native Gurobi execution through `gurobipy`;
-- solver-neutral execution through `Pyomo`, especially for SCIP;
+- Gurobi as the primary and currently validated solver backend;
+- possible future independent validation with SCIP through `PySCIPOpt`;
 - precomputed distance matrices using Haversine or OSRM;
 - reproducible execution in local and HPC environments.
 
@@ -252,18 +253,20 @@ This backend is intended for:
 - HPC batch runs;
 - production-quality computational experiments.
 
-### 2. Pyomo backend
+### 2. Future SCIP validation
 
-The Pyomo backend is retained as a solver-neutral alternative.
+The MVP solver backend is native Gurobi through `gurobipy`. The existing Pyomo
+scaffold is not part of the validated MVP execution path.
 
-This backend is intended for:
+If a second solver is required after the TRL 6 demonstration, the preferred
+path is a native SCIP implementation through `PySCIPOpt` for:
 
-- SCIP execution;
-- comparison with the native Gurobi implementation;
+- independent comparison with the native Gurobi implementation;
 - open-source solver experiments;
 - mathematical equivalence testing.
 
-The objective is to keep both backends mathematically equivalent for supported model variants.
+CBC is not a target backend. Its name is retained only when necessary to
+describe the provenance of historical thesis results.
 
 ---
 
@@ -333,7 +336,7 @@ prepare Excel input
   -> load and validate ModelData
   -> generate or load distance matrices
   -> submit batch jobs
-  -> solve MILP instances with Gurobi or SCIP
+  -> solve MILP instances with Gurobi
   -> export solution and metrics
 ```
 
@@ -485,8 +488,8 @@ Planned:
   EVPI/VSS extensions;
 - attainable service-cost frontier before any scenario service constraint;
 - scientific result tables and plots;
-- Pyomo/SCIP parity and backend equivalence, if retained as a project
-  requirement.
+- optional native PySCIPOpt implementation and backend-equivalence tests after
+  the Gurobi-based TRL 6 MVP is complete, if retained as a project requirement.
 
 ---
 

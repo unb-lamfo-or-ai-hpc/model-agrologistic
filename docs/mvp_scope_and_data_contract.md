@@ -25,8 +25,10 @@ The frozen MVP includes:
 - YAML campaigns, Slurm execution, preflight size guards, resumable EVPI/VSS,
   and structured JSON/CSV artifacts.
 
-Pyomo/SCIP parity, a graphical interface, automated forecasting, and a trained
-GNN are outside this MVP. They may be evaluated after the TRL 6 demonstration.
+A native PySCIPOpt implementation, backend parity, a graphical interface,
+automated forecasting, and a trained GNN are outside this MVP. They may be
+evaluated after the Gurobi-based TRL 6 demonstration. CBC is not a target
+backend for this project.
 
 ## Two evidence tracks
 

@@ -47,7 +47,10 @@ experiments:
       distance_method: haversine_v1_frozen
       historical_distance_method: OSRM
       solver_backend: gurobipy
-      historical_solver_backend: cbc
+      solver_policy: gurobipy_primary
+      historical_reference_solver_backend: cbc
+      reproduce_historical_solver: false
+      future_optional_backend: pyscipopt
       pilot_time_limit_seconds: 600
       historical_time_limit_seconds: 1800
       forecasting_reconstructed: false

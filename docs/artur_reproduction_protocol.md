@@ -205,8 +205,13 @@ following semantic differences remain material:
 - the historical forecasting path is not reconstructed;
 - the current model's capacity coupling is not identical to the historical
   reception and shipping expansion ratio;
-- the controlled pilot uses Gurobi with a 600-second limit, whereas the
-  historical benchmark configuration used CBC with an 1,800-second limit.
+- the controlled pilot uses Gurobi with a 600-second limit. The historical
+  benchmark configuration used CBC with a 1,800-second limit, but that fact is
+  retained only as provenance and CBC is not reproduced or used in this project.
+
+All current reproduction and extension results use Gurobi. A native PySCIPOpt
+implementation may later provide independent backend validation, but it is
+outside this gate and outside the frozen TRL 6 MVP.
 
 Consequently, the resulting solve is a bounded reproduction of the initial
 instance, not an exact numerical replication. It is useful for validating the
