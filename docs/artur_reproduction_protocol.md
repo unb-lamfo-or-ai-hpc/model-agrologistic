@@ -36,6 +36,12 @@ Subsequent offline verification omits `--fetch`:
 python scripts/reconcile_artur_benchmark.py
 ```
 
+The first named benchmark iteration can then be generated and persisted:
+
+```bash
+python scripts/build_artur_instance.py --name artur_legacy_i001
+```
+
 The default cache is `data/raw/artur_benchmark/<commit>/`. The generated JSON
 and CSV reports are written to `data/results/reproducibility/`. Raw and result
 artifacts are local evidence and should not be treated as source code.
@@ -105,6 +111,42 @@ replication of the thesis.
   routing service and response cache.
 - Compare feasibility, objective components, decisions, DynCap, Turnover,
   service, runtime, and memory with the available thesis evidence.
+
+The versioned `artur_legacy_i001` specification reproduces the historical
+request for 5 supply nodes, 5 domestic-demand nodes, 1 export node, and 20
+warehouses. It persists the sampled supply, demand, warehouse, and distance
+tables as CSV files and records a SHA-256 digest for each table. Distances use a
+frozen Haversine definition at this gate and are explicitly marked as not
+equivalent to the historical OSRM distances.
+
+#### Initial-instance semantic audit
+
+Faithful execution of the pinned sampling rules exposed historical input
+ambiguities that must be resolved before solving:
+
+- the five sampled supply cities produce 1,020 rows, including 300 duplicated
+  product-city-period key groups and 900 rows participating in duplicates;
+- the legacy demand pool mixes finite domestic demand with unbounded export
+  rows; the five requested domestic nodes therefore realize only three finite
+  domestic nodes and two unbounded export nodes;
+- the separately generated Santos export node overlaps a sampled legacy node,
+  producing 120 duplicated demand key groups and 240 rows participating in
+  duplicates;
+- the historical forecasting path has not yet been reconstructed.
+
+The raw sampled tables are retained as evidence. They must not be passed to the
+current solver through an implicit last-write-wins mapping. The next gate must
+choose and document one normalization policy:
+
+1. preserve legacy rows only for forensic reconstruction;
+2. aggregate duplicate supply keys, classify demand by finite or unbounded
+   value, and deduplicate export keys for the bounded-reproduction model;
+3. resample domestic nodes from finite rows only, which is a corrected model
+   extension rather than reproduction of the historical sampler.
+
+Policy 2 is the recommended primary bounded-reproduction path. Policies 1 and
+3 remain useful sensitivity references. All policies must retain the raw bundle
+hashes and publish a transformation audit.
 
 ### Gate 2C: stochastic extension
 

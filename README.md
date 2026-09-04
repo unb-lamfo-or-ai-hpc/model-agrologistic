@@ -457,7 +457,9 @@ Current:
 
 - Sprint 2 scientific validation, beginning with verified acquisition and
   structural reconciliation of the Artur benchmark source pool against the
-  gold-workbook extension track.
+  gold-workbook extension track. The first named legacy instance is persisted
+  with content hashes and a frozen Haversine distance proxy; its duplicate-key
+  and domestic/export sampling ambiguities are surfaced before optimization.
 
 The model keeps full origin-supply allocation, treats reception and shipping
 as daily rates converted with a 30-day fallback, and does not impose an
@@ -473,7 +475,10 @@ gates are documented in
 
 Planned:
 
-- persisted deterministic Artur benchmark instances and frozen route distances;
+- explicit normalization policy and transformation audit for the first
+  deterministic Artur benchmark instance;
+- frozen OSRM route evidence when an identifiable historical routing snapshot
+  becomes available;
 - controlled thesis-result reconciliation followed by three- and nine-scenario
   EVPI/VSS extensions;
 - attainable service-cost frontier before any scenario service constraint;

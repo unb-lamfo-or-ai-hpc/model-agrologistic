@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "purpose": "Named, persistent instances for bounded reconstruction of Artur's benchmark.",
+  "instances": {
+    "artur_legacy_i001": {
+      "supply_nodes": 5,
+      "domestic_demand_nodes": 5,
+      "export_nodes": 1,
+      "warehouses": 20,
+      "distance_method": "haversine_v1"
+    }
+  }
+}
+
