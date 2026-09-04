@@ -25,6 +25,8 @@ class ArturSolverAdapterConfig:
     expansion_max_tons: float = 10_000.0
     expansion_fixed_cost: float = 1_000.0
     expansion_variable_cost_per_ton: float = 1_050.0
+    historical_expansion_reception_ratio: float = 0.20
+    historical_expansion_shipping_ratio: float = 0.20
     bulkification_max_tons: float = 4_000.0
     bulkification_fixed_cost: float = 5_000.0
     bulkification_variable_cost_per_ton: float = 680.0
@@ -155,6 +157,12 @@ def build_artur_solver_workbook(
             "expansion_max_tons_per_existing_warehouse": config.expansion_max_tons,
             "expansion_fixed_cost": config.expansion_fixed_cost,
             "expansion_variable_cost_per_ton": config.expansion_variable_cost_per_ton,
+            "historical_expansion_reception_ratio_not_applied": (
+                config.historical_expansion_reception_ratio
+            ),
+            "historical_expansion_shipping_ratio_not_applied": (
+                config.historical_expansion_shipping_ratio
+            ),
             "bulkification_max_tons_per_eligible_warehouse": config.bulkification_max_tons,
             "bulkification_fixed_cost": config.bulkification_fixed_cost,
             "bulkification_variable_cost_per_ton": (

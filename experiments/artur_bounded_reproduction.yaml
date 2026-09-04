@@ -46,5 +46,9 @@ experiments:
       source_commit_sha: 9d190ce91bb60c192329c4bbd5638f24909cb1e2
       distance_method: haversine_v1_frozen
       historical_distance_method: OSRM
+      solver_backend: gurobipy
+      historical_solver_backend: cbc
+      pilot_time_limit_seconds: 600
+      historical_time_limit_seconds: 1800
       forecasting_reconstructed: false
 
