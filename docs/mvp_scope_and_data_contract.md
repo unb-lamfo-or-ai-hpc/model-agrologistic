@@ -109,3 +109,9 @@ classified. Deterministic and stochastic numerical comparisons must use a
 persisted generated instance and a frozen distance matrix before they can be
 described as exact replication.
 
+Duplicate-key normalization is performed only after the raw instance hashes
+have been verified. The normalized files and transformation audit are written
+beside, never over, the raw evidence. Conservation of supply tonnage, finite
+domestic demand, warehouse rows, and distance rows is an executable acceptance
+condition.
+

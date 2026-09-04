@@ -148,6 +148,38 @@ Policy 2 is the recommended primary bounded-reproduction path. Policies 1 and
 3 remain useful sensitivity references. All policies must retain the raw bundle
 hashes and publish a transformation audit.
 
+The recommended policy is implemented as `bounded_reproduction_v1`. It first
+verifies the SHA-256 and size of every raw instance table, then writes normalized
+tables to a separate `normalized/` directory:
+
+```bash
+python scripts/normalize_artur_instance.py --name artur_legacy_i001
+```
+
+For the pinned initial instance, normalization produced the following audit:
+
+| Dataset metric | Before | After | Interpretation |
+|---|---:|---:|---|
+| Supply rows | 1,020 | 420 | Duplicate keys aggregated |
+| Supply duplicate key groups | 300 | 0 | Resolved |
+| Supply total (t) | 151,325,494.505 | 151,325,494.505 | Conserved |
+| Demand rows | 720 | 600 | Duplicate export keys removed |
+| Demand duplicate typed-key groups | 120 | 0 | Resolved |
+| Finite domestic demand (t) | 35,956,500.397 | 35,956,500.397 | Conserved |
+| Unbounded export rows | 360 | 240 | One row retained per key |
+| Warehouse rows | 20 | 20 | Preserved |
+| Distance rows | 580 | 580 | Preserved |
+
+The normalized demand explicitly labels finite rows as `DOMESTICA/FIXO` and
+unbounded rows as `EXPORTACAO/AUTO_OFERTA_TOTAL_PRODUTO_PERIODO`. If a key has
+both meanings, both typed rows are preserved. Conflicting coordinates cause a
+hard failure rather than an arbitrary first-value selection.
+
+After normalization, the remaining barriers to historical numerical comparison
+are the Haversine-versus-OSRM distance difference and the unreconstructed
+forecasting path. The normalized bundle is suitable for the next model-adapter
+gate, but it is not yet an exact thesis instance.
+
 ### Gate 2C: stochastic extension
 
 - Apply the documented three- and nine-scenario structures to a persisted Gate

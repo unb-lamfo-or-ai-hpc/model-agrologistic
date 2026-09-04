@@ -460,6 +460,9 @@ Current:
   gold-workbook extension track. The first named legacy instance is persisted
   with content hashes and a frozen Haversine distance proxy; its duplicate-key
   and domestic/export sampling ambiguities are surfaced before optimization.
+  The separate `bounded_reproduction_v1` normalization conserves tonnage,
+  removes duplicate typed keys, and publishes a transformation audit without
+  modifying the raw bundle.
 
 The model keeps full origin-supply allocation, treats reception and shipping
 as daily rates converted with a 30-day fallback, and does not impose an
@@ -475,8 +478,8 @@ gates are documented in
 
 Planned:
 
-- explicit normalization policy and transformation audit for the first
-  deterministic Artur benchmark instance;
+- solver-ready workbook adaptation for the normalized deterministic Artur
+  benchmark instance;
 - frozen OSRM route evidence when an identifiable historical routing snapshot
   becomes available;
 - controlled thesis-result reconciliation followed by three- and nine-scenario
