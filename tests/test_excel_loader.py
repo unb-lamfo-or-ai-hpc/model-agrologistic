@@ -2,6 +2,8 @@ from pathlib import Path
 
 import pandas as pd
 import pytest
+from openpyxl import load_workbook
+from openpyxl.utils import get_column_letter
 
 from src.logic.excel_loader import ExcelLoaderConfig, load_model_data_from_excel
 from src.logic.model_config import ModelConfig
@@ -429,6 +431,77 @@ def test_zero_enhancement_columns_fall_back_to_reported_total_cost(tmp_path):
 
     assert data.opening_fixed_cost["W2"] == 0.0
     assert data.candidate_capacity_cost["W2"] == pytest.approx(10.0)
+
+
+def test_uncached_candidate_cost_formulas_use_investment_table(tmp_path):
+    path = tmp_path / "uncached_candidate_cost_formulas.xlsx"
+    build_tiny_golden_excel(path)
+
+    workbook = load_workbook(path)
+    warehouses = workbook["Warehouses"]
+    columns = {cell.value: cell.column for cell in warehouses[1]}
+    max_capacity_column = columns["Cap. Estática Máxima (t)"]
+    total_cost_column = columns["Custo de Abertura ($)"]
+    fixed_cost_column = columns["Custo_Fixo_Abertura_Modelo ($)"]
+    variable_cost_column = columns["Custo_Variavel_Capacidade_Modelo ($/t)"]
+    max_capacity_letter = get_column_letter(max_capacity_column)
+    total_cost_letter = get_column_letter(total_cost_column)
+
+    warehouses.cell(1, variable_cost_column).value = (
+        "Custo_Capacidade_Candidata_Modelo ($/t)"
+    )
+    warehouses.cell(3, total_cost_column).value = (
+        f"={max_capacity_letter}3*AVERAGE(Custo_Invest!$B$2:$C$2)"
+    )
+    warehouses.cell(3, fixed_cost_column).value = 0.0
+    warehouses.cell(3, variable_cost_column).value = (
+        f'=IF($B3="Candidato",IF(${max_capacity_letter}3>0,'
+        f'${total_cost_letter}3/${max_capacity_letter}3,0),0)'
+    )
+    workbook.save(path)
+
+    data = load_model_data_from_excel(path)
+
+    assert data.opening_fixed_cost["W2"] == 0.0
+    assert data.candidate_capacity_cost["W2"] == pytest.approx(1250.0)
+    assert data.metadata["loader_warnings"] == [
+        "Derived candidate capacity cost from Custo_Invest for 1 candidate "
+        "warehouses because formula-backed cost cells had no cached numeric "
+        "values."
+    ]
+
+
+def test_uncached_expansion_formulas_use_parameter_and_investment_tables(tmp_path):
+    path = tmp_path / "uncached_expansion_formulas.xlsx"
+    build_tiny_golden_excel(path)
+
+    workbook = load_workbook(path)
+    parameters = workbook["Parametros_Modelo"]
+    parameters.append(
+        ["expansion_capacity_fraction_default", 0.25, "Sintético"]
+    )
+
+    warehouses = workbook["Warehouses"]
+    columns = {cell.value: cell.column for cell in warehouses[1]}
+    max_expansion_column = columns["Cap_Expansao_Maxima_Modelo (t)"]
+    expansion_cost_column = columns["Custo_Expansao_Modelo ($/t)"]
+    warehouses.cell(2, max_expansion_column).value = (
+        "=I2*Parametros_Modelo!$B$3"
+    )
+    warehouses.cell(2, expansion_cost_column).value = (
+        "=AVERAGE(Custo_Invest!$B$3:$C$3)"
+    )
+    workbook.save(path)
+
+    data = load_model_data_from_excel(path)
+
+    assert data.max_expand_capacity["W1"] == pytest.approx(50.0)
+    assert data.expand_variable_cost["W1"] == pytest.approx(900.0)
+    assert data.metadata["loader_warnings"] == [
+        "Derived maximum expansion capacity from Parametros_Modelo for 1 "
+        "existing warehouses because formula-backed capacity cells had no "
+        "cached numeric values."
+    ]
 
 
 def test_loader_splits_overlapping_domestic_and_export_customers(tmp_path):
