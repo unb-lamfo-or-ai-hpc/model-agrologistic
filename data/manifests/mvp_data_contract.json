@@ -18,7 +18,49 @@
         {"path": "benchmark/Valor_Tonelada_km.xlsx", "git_blob_sha": "27eafbf9ba58f2652f5984a8db751e19e4a8f841", "size_bytes": 10710},
         {"path": "benchmark/Warehouses.xlsx", "git_blob_sha": "c03d8b299e9c3bf8e743f9790fb9ade6c2562051", "size_bytes": 22620},
         {"path": "benchmark/benchmark_config.json", "git_blob_sha": "ddb5144ecf1e0b9e5e17e494626969f8f483edb6", "size_bytes": 1862}
-      ]
+      ],
+      "reconstruction_dependencies": [
+        {
+          "path": "scripts/benchmark_model.py",
+          "git_blob_sha": "7d1eeb151f1e845afadf0adf75f89ac81a98a80b",
+          "size_bytes": 48876,
+          "role": "benchmark_generator"
+        },
+        {
+          "path": "src/view/assets/data/municipios.csv",
+          "git_blob_sha": "86cda35ec73ac2d7192faf42b4fb0590508efcee",
+          "size_bytes": 390201,
+          "role": "municipality_sampling_frame"
+        },
+        {
+          "path": "src/view/assets/data/estados.csv",
+          "git_blob_sha": "d3f1c61a519c28e95fec574b52e92aca1aa18799",
+          "size_bytes": 1077,
+          "role": "state_reference"
+        }
+      ],
+      "reproduction_controls": {
+        "python_random_seed": 42,
+        "numpy_random_seed": 42,
+        "sampling_random_states": {
+          "supply_nodes": 42,
+          "demand_nodes": 43,
+          "export_nodes": 44,
+          "warehouse_nodes": 42
+        },
+        "feasibility_scaling": {
+          "enabled": true,
+          "supply_to_demand_factor": 1.5
+        },
+        "distance_engine": {
+          "name": "OSRM",
+          "frozen_matrix_available": false
+        },
+        "terminal_instance": {
+          "selection_rule": "first generated instance with solve time of at least 600 seconds",
+          "last_generated_files_available": false
+        }
+      }
     },
     "gold_workbook_extension": {
       "purpose": "Canonical MVP extension and robustness analysis.",
@@ -38,3 +80,4 @@
     }
   }
 }
+

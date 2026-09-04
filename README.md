@@ -455,8 +455,9 @@ Completed:
 
 Current:
 
-- Stage 5.8 MVP and data freeze, with separate Artur benchmark reproduction
-  and gold-workbook extension tracks.
+- Sprint 2 scientific validation, beginning with verified acquisition and
+  structural reconciliation of the Artur benchmark source pool against the
+  gold-workbook extension track.
 
 The model keeps full origin-supply allocation, treats reception and shipping
 as daily rates converted with a 30-day fallback, and does not impose an
@@ -466,9 +467,15 @@ objective. See
 [`docs/methodological_audit.md`](docs/methodological_audit.md). The MVP boundary
 and frozen data identities are documented in
 [`docs/mvp_scope_and_data_contract.md`](docs/mvp_scope_and_data_contract.md).
+The bounded-reproduction criteria, established data lineage, and validation
+gates are documented in
+[`docs/artur_reproduction_protocol.md`](docs/artur_reproduction_protocol.md).
 
 Planned:
 
+- persisted deterministic Artur benchmark instances and frozen route distances;
+- controlled thesis-result reconciliation followed by three- and nine-scenario
+  EVPI/VSS extensions;
 - attainable service-cost frontier before any scenario service constraint;
 - scientific result tables and plots;
 - Pyomo/SCIP parity and backend equivalence, if retained as a project
@@ -479,3 +486,4 @@ Planned:
 ## License
 
 See `LICENSE`.
+

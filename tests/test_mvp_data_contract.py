@@ -36,5 +36,13 @@ def test_artur_benchmark_source_is_pinned_to_immutable_assets():
     assert len(track["commit_sha"]) == 40
     assert track["subtree"] == "benchmark"
     assert len(track["assets"]) == 10
+    assert len(track["reconstruction_dependencies"]) == 3
     assert all(len(asset["git_blob_sha"]) == 40 for asset in track["assets"])
     assert all(asset["size_bytes"] > 0 for asset in track["assets"])
+    assert all(
+        len(asset["git_blob_sha"]) == 40
+        for asset in track["reconstruction_dependencies"]
+    )
+    assert track["reproduction_controls"]["python_random_seed"] == 42
+    assert track["reproduction_controls"]["distance_engine"]["frozen_matrix_available"] is False
+
