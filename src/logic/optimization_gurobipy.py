@@ -539,6 +539,7 @@ def _solve_deterministic_core(
         for period in data.periods:
             static_capacity = _effective_static_capacity_expr(
                 data=data,
+                model_config=model_config,
                 candidate_capacity=candidate_capacity,
                 expand_capacity=expand_capacity,
                 bulk_capacity=bulk_capacity,
@@ -558,6 +559,8 @@ def _solve_deterministic_core(
                 data=data,
                 model_config=model_config,
                 candidate_capacity=candidate_capacity,
+                expand_capacity=expand_capacity,
+                bulk_capacity=bulk_capacity,
                 warehouse=warehouse,
                 period=period,
             )
@@ -576,6 +579,8 @@ def _solve_deterministic_core(
                 data=data,
                 model_config=model_config,
                 candidate_capacity=candidate_capacity,
+                expand_capacity=expand_capacity,
+                bulk_capacity=bulk_capacity,
                 warehouse=warehouse,
                 period=period,
             )
@@ -895,6 +900,7 @@ def _active_warehouse_expr(
 
 def _effective_static_capacity_expr(
     data: ModelData,
+    model_config: ModelConfig,
     candidate_capacity: Any,
     expand_capacity: Any,
     bulk_capacity: Any,
@@ -908,7 +914,10 @@ def _effective_static_capacity_expr(
     if warehouse in expand_capacity:
         capacity = capacity + expand_capacity[warehouse]
 
-    if warehouse in bulk_capacity:
+    if (
+        model_config.capacity_coupling_policy == "period_equivalent"
+        and warehouse in bulk_capacity
+    ):
         capacity = capacity + bulk_capacity[warehouse]
 
     return capacity
@@ -918,6 +927,8 @@ def _effective_reception_capacity_expr(
     data: ModelData,
     model_config: ModelConfig,
     candidate_capacity: Any,
+    expand_capacity: Any,
+    bulk_capacity: Any,
     warehouse: str,
     period: str,
 ) -> Any:
@@ -926,11 +937,31 @@ def _effective_reception_capacity_expr(
         * model_config.operating_days(period)
     )
 
-    # Minimal deterministic core assumption:
-    # for candidate facilities, the chosen static capacity is also used as
-    # an aggregate per-period reception bound.
+    if model_config.capacity_coupling_policy == "period_equivalent":
+        # Preserve the established MVP interpretation for all existing runs.
+        if warehouse in data.candidate_warehouses:
+            capacity = capacity + candidate_capacity[warehouse]
+        return capacity
+
+    days = model_config.operating_days(period)
     if warehouse in data.candidate_warehouses:
-        capacity = capacity + candidate_capacity[warehouse]
+        capacity += (
+            candidate_capacity[warehouse]
+            * model_config.candidate_reception_daily_factor
+            * days
+        )
+    if warehouse in expand_capacity:
+        capacity += (
+            expand_capacity[warehouse]
+            * model_config.expansion_reception_daily_factor
+            * days
+        )
+    if warehouse in bulk_capacity:
+        capacity += (
+            bulk_capacity[warehouse]
+            * model_config.bulkification_reception_daily_factor
+            * days
+        )
 
     return capacity
 
@@ -939,6 +970,8 @@ def _effective_shipping_capacity_expr(
     data: ModelData,
     model_config: ModelConfig,
     candidate_capacity: Any,
+    expand_capacity: Any,
+    bulk_capacity: Any,
     warehouse: str,
     period: str,
 ) -> Any:
@@ -947,11 +980,31 @@ def _effective_shipping_capacity_expr(
         * model_config.operating_days(period)
     )
 
-    # Minimal deterministic core assumption:
-    # for candidate facilities, the chosen static capacity is also used as
-    # an aggregate per-period shipping bound.
+    if model_config.capacity_coupling_policy == "period_equivalent":
+        # Preserve the established MVP interpretation for all existing runs.
+        if warehouse in data.candidate_warehouses:
+            capacity = capacity + candidate_capacity[warehouse]
+        return capacity
+
+    days = model_config.operating_days(period)
     if warehouse in data.candidate_warehouses:
-        capacity = capacity + candidate_capacity[warehouse]
+        capacity += (
+            candidate_capacity[warehouse]
+            * model_config.candidate_shipping_daily_factor
+            * days
+        )
+    if warehouse in expand_capacity:
+        capacity += (
+            expand_capacity[warehouse]
+            * model_config.expansion_shipping_daily_factor
+            * days
+        )
+    if warehouse in bulk_capacity:
+        capacity += (
+            bulk_capacity[warehouse]
+            * model_config.bulkification_shipping_daily_factor
+            * days
+        )
 
     return capacity
 
@@ -1260,7 +1313,12 @@ def _extract_deterministic_result(
                     data.static_capacity.get(warehouse, 0.0)
                     + candidate_capacity_value
                     + expansion_capacity_value
-                    + bulk_capacity_value
+                    + (
+                        bulk_capacity_value
+                        if model_config.capacity_coupling_policy
+                        == "period_equivalent"
+                        else 0.0
+                    )
                 ),
             }
         )
@@ -1331,6 +1389,19 @@ def _extract_deterministic_result(
             ),
             "allow_capacity_expansion": model_config.allow_capacity_expansion,
             "allow_bulkification": model_config.allow_bulkification,
+            "capacity_coupling_policy": model_config.capacity_coupling_policy,
+            "capacity_coupling_daily_factors": {
+                "candidate_reception": model_config.candidate_reception_daily_factor,
+                "candidate_shipping": model_config.candidate_shipping_daily_factor,
+                "expansion_reception": model_config.expansion_reception_daily_factor,
+                "expansion_shipping": model_config.expansion_shipping_daily_factor,
+                "bulkification_reception": (
+                    model_config.bulkification_reception_daily_factor
+                ),
+                "bulkification_shipping": (
+                    model_config.bulkification_shipping_daily_factor
+                ),
+            },
         },
     )
 

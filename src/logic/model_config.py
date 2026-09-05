@@ -29,6 +29,7 @@ CandidateCapacityMode: TypeAlias = Literal["fixed", "scalable"]
 TerminalInventoryPolicy: TypeAlias = Literal["free", "zero", "penalized", "target"]
 RouteFilterStrategy: TypeAlias = Literal["none", "pareto", "top_k"]
 ObjectivePolicy: TypeAlias = Literal["penalty", "lexicographic"]
+CapacityCouplingPolicy: TypeAlias = Literal["period_equivalent", "daily_factors"]
 
 
 VALID_SOLVER_BACKENDS = {"gurobipy", "pyomo"}
@@ -37,6 +38,7 @@ VALID_CANDIDATE_CAPACITY_MODES = {"fixed", "scalable"}
 VALID_TERMINAL_INVENTORY_POLICIES = {"free", "zero", "penalized", "target"}
 VALID_ROUTE_FILTER_STRATEGIES = {"none", "pareto", "top_k"}
 VALID_OBJECTIVE_POLICIES = {"penalty", "lexicographic"}
+VALID_CAPACITY_COUPLING_POLICIES = {"period_equivalent", "daily_factors"}
 
 
 # ---------------------------------------------------------------------
@@ -159,6 +161,17 @@ class ModelConfig:
     allow_capacity_expansion: bool = True
     allow_bulkification: bool = True
 
+    # ``period_equivalent`` preserves the established MVP formulation.
+    # ``daily_factors`` reproduces the historical SiloDSS interpretation:
+    # installed capacity also changes daily reception and shipping throughput.
+    capacity_coupling_policy: CapacityCouplingPolicy = "period_equivalent"
+    candidate_reception_daily_factor: float = 0.20
+    candidate_shipping_daily_factor: float = 0.20
+    expansion_reception_daily_factor: float = 0.20
+    expansion_shipping_daily_factor: float = 0.20
+    bulkification_reception_daily_factor: float = 1.0
+    bulkification_shipping_daily_factor: float = 1.0
+
     # -----------------------------------------------------------------
     # Demand and emergency capacity policies
     # -----------------------------------------------------------------
@@ -235,6 +248,34 @@ class ModelConfig:
             raise ValueError(
                 f"Invalid objective_policy: {self.objective_policy!r}. "
                 f"Expected one of {sorted(VALID_OBJECTIVE_POLICIES)}."
+            )
+
+        if self.capacity_coupling_policy not in VALID_CAPACITY_COUPLING_POLICIES:
+            raise ValueError(
+                f"Invalid capacity_coupling_policy: "
+                f"{self.capacity_coupling_policy!r}. Expected one of "
+                f"{sorted(VALID_CAPACITY_COUPLING_POLICIES)}."
+            )
+
+        capacity_factors = {
+            "candidate_reception_daily_factor": self.candidate_reception_daily_factor,
+            "candidate_shipping_daily_factor": self.candidate_shipping_daily_factor,
+            "expansion_reception_daily_factor": self.expansion_reception_daily_factor,
+            "expansion_shipping_daily_factor": self.expansion_shipping_daily_factor,
+            "bulkification_reception_daily_factor": (
+                self.bulkification_reception_daily_factor
+            ),
+            "bulkification_shipping_daily_factor": (
+                self.bulkification_shipping_daily_factor
+            ),
+        }
+        invalid_capacity_factors = {
+            name: value for name, value in capacity_factors.items() if value < 0
+        }
+        if invalid_capacity_factors:
+            raise ValueError(
+                "Capacity coupling factors must be non-negative: "
+                f"{invalid_capacity_factors}."
             )
 
         if not 0 < self.pareto_fraction <= 1:

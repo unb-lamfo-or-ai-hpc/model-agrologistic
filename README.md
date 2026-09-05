@@ -463,8 +463,11 @@ Current:
   persisted and normalized with content hashes and transformation audits. A
   canonical solver adapter now combines that normalized instance with pinned
   historical reference tables and frozen Haversine distances. Its deterministic
-  manifest is explicitly labelled as a bounded reproduction because the
-  historical OSRM matrix and forecasting path are not available.
+  manifest now activates the historical daily throughput factors for candidate,
+  expansion, and bulkification capacity without changing the default semantics
+  of prior MVP campaigns. It remains explicitly labelled as a bounded
+  reproduction because the historical OSRM matrix, forecasting path, and every
+  historical capacity eligibility rule are not available or not yet reproduced.
 
 The model keeps full origin-supply allocation, treats reception and shipping
 as daily rates converted with a 30-day fallback, and does not impose an
@@ -496,4 +499,3 @@ Planned:
 ## License
 
 See `LICENSE`.
-

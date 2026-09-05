@@ -198,13 +198,39 @@ configured to read these values and is forbidden from recomputing them.
 The adapter uses the pinned historical freight, storage, transshipment, and
 investment reference tables. It translates only field names and status labels,
 sets candidate opening cost to the historical fixed-total interpretation, and
-records the benchmark expansion and bulkification assumptions explicitly. The
-following semantic differences remain material:
+records the benchmark expansion and bulkification assumptions explicitly.
+
+The controlled experiment activates `capacity_coupling_policy: daily_factors`.
+For every period `t`, the corresponding number of operating days multiplies
+the following installed-capacity contributions to reception and shipping:
+
+| Decision | Reception factor | Shipping factor |
+|---|---:|---:|
+| Candidate static capacity | 0.20/day | 0.20/day |
+| Expansion capacity | 0.20/day | 0.20/day |
+| Bulkification capacity | 1.00/day | 1.00/day |
+
+Candidate and expansion capacities remain static-storage capacity.
+Bulkification is treated as throughput capacity under this policy and is not
+added to the static-storage bound. The default `period_equivalent` policy is
+unchanged, so prior gold-workbook experiments remain reproducible. Both the
+deterministic and stochastic Gurobi formulations use the selected policy.
+
+The first bounded solve, before activating these historical daily factors, was
+optimal in 4.52 seconds but required 3,799,238,836 aggregate tonne-periods of
+emergency capacity. Emergency static capacity represented approximately 97.3%
+of the penalized objective. This is evidence of a capacity-semantics mismatch,
+not a plausible physical result. The daily-factor rerun is therefore a required
+controlled correction, and its result must not overwrite the earlier evidence.
+
+The following semantic differences remain material:
 
 - the frozen Haversine matrix is not the historical OSRM matrix;
 - the historical forecasting path is not reconstructed;
-- the current model's capacity coupling is not identical to the historical
-  reception and shipping expansion ratio;
+- the current model retains separate static and reception emergency slacks,
+  whereas the historical formulation reused one emergency-capacity variable;
+- the current formulation does not yet reproduce every historical eligibility
+  and mutual-exclusion rule for expansion and bulkification;
 - the controlled pilot uses Gurobi with a 600-second limit. The historical
   benchmark configuration used CBC with a 1,800-second limit, but that fact is
   retained only as provenance and CBC is not reproduced or used in this project.
@@ -236,6 +262,12 @@ python scripts/run_batch_hpc.py \
   --index 0
 ```
 
+Before rerunning after a semantic change, preserve the existing result directory
+under a labelled comparison directory. The new `run_summary.json` must record
+`capacity_coupling_policy: daily_factors` in its model configuration or result
+metadata. Compare the two runs primarily through emergency capacity, service,
+economic cost, investment decisions, DynCap, and Turnover.
+
 ### Gate 2C: stochastic extension
 
 - Apply the documented three- and nine-scenario structures to a persisted Gate
@@ -252,4 +284,3 @@ A run may be called an exact replication only if its generated input tables,
 distance matrix, transformations, solver configuration, and comparison target
 are all versioned and identical to the historical case. Otherwise it must be
 labelled either a bounded reproduction or a model extension.
-

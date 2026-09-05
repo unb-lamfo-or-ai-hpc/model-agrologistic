@@ -685,6 +685,7 @@ def _add_scenario_constraints(
         for period in data.periods:
             static_capacity = _effective_static_capacity_expr(
                 data,
+                model_config,
                 candidate_capacity,
                 expand_capacity,
                 bulk_capacity,
@@ -701,7 +702,13 @@ def _add_scenario_constraints(
             )
 
             reception_capacity = _effective_reception_capacity_expr(
-                data, model_config, candidate_capacity, warehouse, period
+                data,
+                model_config,
+                candidate_capacity,
+                expand_capacity,
+                bulk_capacity,
+                warehouse,
+                period,
             )
             model.addConstr(
                 gp.quicksum(
@@ -715,7 +722,13 @@ def _add_scenario_constraints(
             )
 
             shipping_capacity = _effective_shipping_capacity_expr(
-                data, model_config, candidate_capacity, warehouse, period
+                data,
+                model_config,
+                candidate_capacity,
+                expand_capacity,
+                bulk_capacity,
+                warehouse,
+                period,
             )
             model.addConstr(
                 gp.quicksum(
@@ -919,6 +932,7 @@ def _extract_stochastic_result(
 
     warehouse_decisions = _extract_warehouse_decisions(
         data=data,
+        model_config=model_config,
         open_candidate=open_candidate,
         candidate_capacity=candidate_capacity,
         expand_warehouse=expand_warehouse,
@@ -1011,6 +1025,19 @@ def _extract_stochastic_result(
         metadata={
             **metadata,
             "candidate_capacity_mode": model_config.candidate_capacity_mode,
+            "capacity_coupling_policy": model_config.capacity_coupling_policy,
+            "capacity_coupling_daily_factors": {
+                "candidate_reception": model_config.candidate_reception_daily_factor,
+                "candidate_shipping": model_config.candidate_shipping_daily_factor,
+                "expansion_reception": model_config.expansion_reception_daily_factor,
+                "expansion_shipping": model_config.expansion_shipping_daily_factor,
+                "bulkification_reception": (
+                    model_config.bulkification_reception_daily_factor
+                ),
+                "bulkification_shipping": (
+                    model_config.bulkification_shipping_daily_factor
+                ),
+            },
             "second_stage_decisions": [
                 "flow_od",
                 "flow_dc",
@@ -1040,6 +1067,7 @@ def _extract_scenario_values(
 def _extract_warehouse_decisions(
     *,
     data: ModelData,
+    model_config: ModelConfig,
     open_candidate: Any,
     candidate_capacity: Any,
     expand_warehouse: Any,
@@ -1083,7 +1111,12 @@ def _extract_warehouse_decisions(
                     data.static_capacity.get(warehouse, 0.0)
                     + candidate_value
                     + expansion_value
-                    + bulk_value
+                    + (
+                        bulk_value
+                        if model_config.capacity_coupling_policy
+                        == "period_equivalent"
+                        else 0.0
+                    )
                 ),
             }
         )

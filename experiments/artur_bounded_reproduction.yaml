@@ -25,6 +25,13 @@ defaults:
     days_per_period: 30
     allow_capacity_expansion: true
     allow_bulkification: true
+    capacity_coupling_policy: daily_factors
+    candidate_reception_daily_factor: 0.20
+    candidate_shipping_daily_factor: 0.20
+    expansion_reception_daily_factor: 0.20
+    expansion_shipping_daily_factor: 0.20
+    bulkification_reception_daily_factor: 1.0
+    bulkification_shipping_daily_factor: 1.0
   loader:
     compute_haversine_distances: false
     use_workbook_distances: true
@@ -54,4 +61,3 @@ experiments:
       pilot_time_limit_seconds: 600
       historical_time_limit_seconds: 1800
       forecasting_reconstructed: false
-
