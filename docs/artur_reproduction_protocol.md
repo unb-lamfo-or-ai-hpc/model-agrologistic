@@ -189,11 +189,29 @@ the raw or normalized evidence:
 python scripts/build_artur_solver_workbook.py --name artur_legacy_i001
 ```
 
+After an adapter correction, replace only the derived solver workbook and its
+audit explicitly:
+
+```bash
+python scripts/build_artur_solver_workbook.py \
+  --name artur_legacy_i001 \
+  --overwrite
+```
+
 The command writes `solver/model_input.xlsx` and `solver/adapter_audit.json`
 beside the instance. It verifies every normalized-table hash and every pinned
 reference asset before adapting the schema. The workbook contains the frozen
 Haversine distances in a long-form `Distancias` sheet; the experiment loader is
 configured to read these values and is forbidden from recomputing them.
+
+The adapter completes the robust demand schema by adding `Peso_Modelo (ton)`.
+This field is equal to finite domestic demand and remains empty for automatic
+export upper bounds. The adapter then verifies that domestic and export node
+counts survive loading. This guard was added after the initial controlled solve
+showed zero export flow: without the third schema column, the loader selected
+its legacy path and silently failed to create export customers. The resulting
+115,368,994 tonnes of terminal inventory explained the dominant static-capacity
+slack in that diagnostic run.
 
 The adapter uses the pinned historical freight, storage, transshipment, and
 investment reference tables. It translates only field names and status labels,

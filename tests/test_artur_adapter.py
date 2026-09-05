@@ -3,6 +3,7 @@ import json
 from pathlib import Path
 
 import pandas as pd
+import pytest
 
 from src.logic.artur_adapter import build_artur_solver_workbook
 from src.logic.artur_benchmark import git_blob_sha
@@ -170,7 +171,33 @@ def test_adapter_builds_audited_workbook_with_frozen_distances(tmp_path: Path):
     assert data.dist_od[("Origin - GO", "W1")] == 101
     assert data.opening_fixed_cost["W2"] == 1000
     assert data.max_expand_capacity["W1"] == 10_000
+    assert data.domestic_customers == ["Demand - GO"]
+    assert data.export_customers == ["Port - SP"]
+    assert data.demand_exp[("Port - SP", "Corn", "2025-01")] == 10.0
+    assert ("W1", "Port - SP", "Corn") in data.routes_dc
     assert audit["reproduction_level"] == "bounded"
+    assert audit["model_data_signature"]["export_customers"] == 1
+    assert audit["model_data_signature"]["export_upper_bound_tons"] == 10.0
     assert audit["model_data_signature"]["routes_dd"] == 2
     assert len(audit["workbook"]["sha256"]) == 64
 
+    demand_sheet = pd.read_excel(workbook, sheet_name="Demanda")
+    assert "Peso_Modelo (ton)" in demand_sheet.columns
+
+    with pytest.raises(FileExistsError):
+        build_artur_solver_workbook(
+            normalized_dir,
+            tmp_path / "cache",
+            tmp_path / "instance" / "solver",
+            contract_path=contract_path,
+        )
+
+    rebuilt_workbook, rebuilt_audit = build_artur_solver_workbook(
+        normalized_dir,
+        tmp_path / "cache",
+        tmp_path / "instance" / "solver",
+        contract_path=contract_path,
+        overwrite=True,
+    )
+    assert rebuilt_workbook == workbook
+    assert rebuilt_audit == audit_path

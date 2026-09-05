@@ -42,6 +42,7 @@ def build_artur_solver_workbook(
     *,
     contract_path: Path = Path("data/manifests/mvp_data_contract.json"),
     config: ArturSolverAdapterConfig = ArturSolverAdapterConfig(),
+    overwrite: bool = False,
 ) -> tuple[Path, Path]:
     """Verify lineage, adapt schemas, write a workbook, and validate its loader view."""
 
@@ -51,7 +52,7 @@ def build_artur_solver_workbook(
     benchmark_dir = cache_dir / track["commit_sha"] / "benchmark"
 
     supply = pd.read_csv(normalized_dir / "supply.csv")
-    demand = pd.read_csv(normalized_dir / "demand.csv")
+    demand = _adapt_demand(pd.read_csv(normalized_dir / "demand.csv"))
     warehouses = _adapt_warehouses(
         pd.read_csv(normalized_dir / "warehouses.csv"),
         pd.read_excel(benchmark_dir / "Custos_Transbordo.xlsx"),
@@ -96,7 +97,7 @@ def build_artur_solver_workbook(
         ]
     )
 
-    output_dir.mkdir(parents=True, exist_ok=False)
+    output_dir.mkdir(parents=True, exist_ok=overwrite)
     workbook_path = output_dir / "model_input.xlsx"
     with pd.ExcelWriter(workbook_path, engine="openpyxl") as writer:
         supply.to_excel(writer, sheet_name="Oferta", index=False)
@@ -120,6 +121,24 @@ def build_artur_solver_workbook(
         default_emergency_reception_penalty=config.emergency_reception_penalty,
     )
     model_data = load_model_data_from_excel(workbook_path, loader_config)
+    expected_domestic_nodes = int(
+        demand.loc[demand["Tipo_Demanda"] == "DOMESTICA", "Cidade"].nunique()
+    )
+    expected_export_nodes = int(
+        demand.loc[demand["Tipo_Demanda"] == "EXPORTACAO", "Cidade"].nunique()
+    )
+    if len(model_data.domestic_customers) != expected_domestic_nodes:
+        raise ValueError(
+            "Adapted workbook changed the normalized domestic-customer count: "
+            f"expected {expected_domestic_nodes}, loaded "
+            f"{len(model_data.domestic_customers)}."
+        )
+    if len(model_data.export_customers) != expected_export_nodes:
+        raise ValueError(
+            "Adapted workbook changed the normalized export-customer count: "
+            f"expected {expected_export_nodes}, loaded "
+            f"{len(model_data.export_customers)}."
+        )
     workbook_bytes = workbook_path.read_bytes()
     adapter_audit = {
         "schema_version": 1,
@@ -137,6 +156,7 @@ def build_artur_solver_workbook(
             "compute_haversine_distances": False,
             "use_workbook_distances": True,
             "include_transshipment_routes": True,
+            "include_export_routes": True,
             "include_direct_origin_customer_routes": False,
             "candidate_cost_policy": "fixed_total",
         },
@@ -151,16 +171,17 @@ def build_artur_solver_workbook(
             "routes_dc": len(model_data.routes_dc),
             "routes_dd": len(model_data.routes_dd),
             "routes_oc": len(model_data.routes_oc),
+            "export_upper_bound_tons": sum(model_data.demand_exp.values()),
         },
         "adapter_assumptions": {
             "days_per_period": 30,
             "expansion_max_tons_per_existing_warehouse": config.expansion_max_tons,
             "expansion_fixed_cost": config.expansion_fixed_cost,
             "expansion_variable_cost_per_ton": config.expansion_variable_cost_per_ton,
-            "historical_expansion_reception_ratio_not_applied": (
+            "historical_expansion_reception_daily_factor": (
                 config.historical_expansion_reception_ratio
             ),
-            "historical_expansion_shipping_ratio_not_applied": (
+            "historical_expansion_shipping_daily_factor": (
                 config.historical_expansion_shipping_ratio
             ),
             "bulkification_max_tons_per_eligible_warehouse": config.bulkification_max_tons,
@@ -172,7 +193,7 @@ def build_artur_solver_workbook(
         "remaining_limitations": [
             "DISTANCE_METHOD_DIFFERS_FROM_HISTORICAL_OSRM",
             "FORECASTING_PATH_NOT_RECONSTRUCTED",
-            "CURRENT_CAPACITY_COUPLING_DIFFERS_FROM_LEGACY_EXPANSION_RATIO",
+            "SOLVER_MANIFEST_MUST_ENABLE_DAILY_CAPACITY_FACTORS",
         ],
     }
     audit_path = output_dir / "adapter_audit.json"
@@ -198,6 +219,21 @@ def _load_verified_normalized_tables(normalized_dir: Path) -> dict[str, Any]:
                 f"Normalized instance integrity check failed for {filename}."
             )
     return audit
+
+
+def _adapt_demand(source: pd.DataFrame) -> pd.DataFrame:
+    """Complete the robust demand schema without changing normalized quantities."""
+
+    required = {"Peso (ton)", "Tipo_Demanda", "Regra_Limite"}
+    missing = sorted(required - set(source.columns))
+    if missing:
+        raise ValueError(f"Normalized demand is missing columns: {missing}.")
+
+    adapted = source.copy()
+    adapted["Peso_Modelo (ton)"] = pd.to_numeric(
+        adapted["Peso (ton)"], errors="coerce"
+    )
+    return adapted
 
 
 def _adapt_warehouses(
@@ -306,4 +342,3 @@ def _first_column(frame: pd.DataFrame, candidates: tuple[str, ...]) -> str:
 
 def _optional_column(frame: pd.DataFrame, candidates: tuple[str, ...]) -> str | None:
     return next((column for column in candidates if column in frame.columns), None)
-

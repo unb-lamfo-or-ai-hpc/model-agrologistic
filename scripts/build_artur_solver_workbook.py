@@ -33,6 +33,11 @@ def main() -> int:
         type=Path,
         default=PROJECT_ROOT / "data/manifests/mvp_data_contract.json",
     )
+    parser.add_argument(
+        "--overwrite",
+        action="store_true",
+        help="Replace the existing solver workbook and adapter audit.",
+    )
     args = parser.parse_args()
 
     instance_dir = args.instance_root / args.name
@@ -41,6 +46,7 @@ def main() -> int:
         args.cache_dir,
         instance_dir / "solver",
         contract_path=args.contract,
+        overwrite=args.overwrite,
     )
     print(f"Solver workbook written to {workbook}")
     print(f"Adapter audit written to {audit}")
@@ -50,4 +56,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
