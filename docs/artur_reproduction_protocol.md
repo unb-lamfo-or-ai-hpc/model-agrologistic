@@ -241,6 +241,31 @@ of the penalized objective. This is evidence of a capacity-semantics mismatch,
 not a plausible physical result. The daily-factor rerun is therefore a required
 controlled correction, and its result must not overwrite the earlier evidence.
 
+#### Controlled deterministic result
+
+The sequence of NPAD runs isolated two independent adapter and formulation
+effects. All three runs used the same persisted normalized instance and Gurobi:
+
+| Configuration | Service | Unmet demand (t) | Static emergency (t-period) | Reception emergency (t-period) | Economic cost | Penalized objective |
+|---|---:|---:|---:|---:|---:|---:|
+| Period-equivalent capacity, missing export schema | 97.7633% | 804,227.419 | 3,698,595,487.391 | 100,643,348.625 | 211,606,673,285.85 | 3,800,254,670,108,168.00 |
+| Daily factors, missing export schema | 100.0000% | 0.000 | 3,682,682,917.153 | 0.009 | 216,293,886,716.28 | 3,682,899,211,048,164.00 |
+| Daily factors, robust export schema | 100.0000% | 0.000 | 0.012 | 0.009 | 57,030,242,108.25 | 57,030,262,708.25 |
+
+The second diagnostic had no export flow and ended with 115,368,994.109 tonnes
+in inventory, exactly the supply remaining after domestic service. Completing
+the robust demand schema restored export customers and reduced total emergency
+capacity to 0.0206 tonne-period. The residual contributes only 20,600 monetary
+units to the objective and is treated as numerical tolerance, not physical
+capacity. The corrected solve was optimal in 3.10 seconds with a relative MIP
+gap of 3.83e-7, DynCap of 30,834,300.413, and Turnover of 28.7544.
+
+This result satisfies Gate 2B for a controlled bounded reproduction: material
+balance, domestic service, export disposal, capacity feasibility, and objective
+decomposition are coherent under the documented current implementation. It
+does not remove the OSRM, forecasting, solver, or remaining historical-rule
+differences required for an exact numerical replication claim.
+
 The following semantic differences remain material:
 
 - the frozen Haversine matrix is not the historical OSRM matrix;

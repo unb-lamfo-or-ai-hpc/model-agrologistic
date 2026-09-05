@@ -468,6 +468,9 @@ Current:
   of prior MVP campaigns. It remains explicitly labelled as a bounded
   reproduction because the historical OSRM matrix, forecasting path, and every
   historical capacity eligibility rule are not available or not yet reproduced.
+  The corrected deterministic Gate 2B run reached 100% domestic service with
+  zero unmet demand and only 0.0206 aggregate tonne-period of numerical
+  emergency slack after the adapter restored explicit export customers.
 
 The model keeps full origin-supply allocation, treats reception and shipping
 as daily rates converted with a 30-day fallback, and does not impose an
@@ -483,12 +486,10 @@ gates are documented in
 
 Planned:
 
-- NPAD execution and result audit for the initial deterministic bounded
-  reproduction;
 - frozen OSRM route evidence when an identifiable historical routing snapshot
   becomes available;
-- controlled thesis-result reconciliation followed by three- and nine-scenario
-  EVPI/VSS extensions;
+- Gate 2C three- and nine-scenario EVPI/VSS extensions on the persisted Artur
+  instance, kept separate from exact thesis-result replication claims;
 - attainable service-cost frontier before any scenario service constraint;
 - scientific result tables and plots;
 - optional native PySCIPOpt implementation and backend-equivalence tests after
