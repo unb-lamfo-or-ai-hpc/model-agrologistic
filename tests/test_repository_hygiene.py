@@ -243,3 +243,19 @@ def test_archive_restore_refuses_a_checksum_mismatch(tmp_path):
 
     with pytest.raises(RuntimeError, match="checksum does not match"):
         restore_quarantine_archive(repo_root, archive_path)
+
+
+def test_quarantine_refuses_a_filesystem_root_destination(tmp_path):
+    repo_root = tmp_path / "repository"
+    repo_root.mkdir()
+    initialize_repository(repo_root)
+    plan = build_quarantine_plan(repo_root, [])
+    plan_path = tmp_path / "plan.json"
+    plan_path.write_text(json.dumps(plan), encoding="utf-8")
+
+    with pytest.raises(RuntimeError, match="outside the repository"):
+        apply_quarantine_plan(
+            repo_root,
+            plan_path,
+            Path(repo_root.anchor),
+        )
