@@ -66,8 +66,6 @@ experiments:
       comparison_status: controlled_extension
       scenario_design: stress_central_favorable
       scenario_multiplier_source: gold_workbook_synthetic_design
-      slack_interpretation: complete_recourse_infrastructure_gap
-      monetary_interpretation: economic_cost_plus_nonobserved_big_m_penalties
       source_commit_sha: 9d190ce91bb60c192329c4bbd5638f24909cb1e2
       forecasting_reconstructed: false
 
@@ -81,7 +79,48 @@ experiments:
       comparison_status: controlled_extension
       scenario_design: stress_central_favorable
       scenario_multiplier_source: gold_workbook_synthetic_design
-      slack_interpretation: complete_recourse_infrastructure_gap
-      monetary_interpretation: decomposed_penalty_dependent_evpi_vss
+      source_commit_sha: 9d190ce91bb60c192329c4bbd5638f24909cb1e2
+      forecasting_reconstructed: false
+
+  - name: artur_legacy_i001_sto_9_rp
+    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver/model_input.xlsx
+    max_estimated_variables: 2000000
+    solver:
+      time_limit: 7200
+    loader:
+      stochastic_supply_levels: [baixo, base, alto]
+      stochastic_demand_levels: [baixo, base, alto]
+      stochastic_combinations: null
+      stochastic_probabilities: null
+    calculate_evpi_vss: false
+    metadata:
+      family: artur_stochastic_extension
+      campaign_gate: gate_2d_nine_scenario_rp
+      comparison_status: controlled_extension
+      scenario_design: full_factorial_three_by_three
+      scenario_multiplier_source: gold_workbook_synthetic_design
+      probability_policy: equal_experimental_weights
+      source_commit_sha: 9d190ce91bb60c192329c4bbd5638f24909cb1e2
+      forecasting_reconstructed: false
+
+  - name: artur_legacy_i001_sto_9_evpi_vss
+    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver/model_input.xlsx
+    max_estimated_variables: 2000000
+    solver:
+      time_limit: 7200
+    loader:
+      stochastic_supply_levels: [baixo, base, alto]
+      stochastic_demand_levels: [baixo, base, alto]
+      stochastic_combinations: null
+      stochastic_probabilities: null
+    calculate_evpi_vss: true
+    resume_evpi_vss: true
+    metadata:
+      family: artur_stochastic_extension
+      campaign_gate: gate_2d_nine_scenario_evpi_vss
+      comparison_status: controlled_extension
+      scenario_design: full_factorial_three_by_three
+      scenario_multiplier_source: gold_workbook_synthetic_design
+      probability_policy: equal_experimental_weights
       source_commit_sha: 9d190ce91bb60c192329c4bbd5638f24909cb1e2
       forecasting_reconstructed: false
