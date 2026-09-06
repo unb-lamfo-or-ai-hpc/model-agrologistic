@@ -463,7 +463,12 @@ Current:
   favorable supply-demand combinations, followed by checkpointed monetary
   EVPI/VSS under the scalar penalty objective. The scenario levels come from
   the gold workbook's synthetic design and are not presented as reconstructed
-  thesis forecasts.
+  thesis forecasts. The accepted RP reached 100% domestic service in every
+  scenario, while the 1.15 supply scenario exposed a residual reception gap
+  after every eligible investment reached its configured upper bound. The MVP
+  preserves this result as infrastructure-planning evidence: emergency slack
+  maintains complete recourse, and its Big-M contribution is reported
+  separately from observed economic costs.
 
 The model keeps full origin-supply allocation, treats reception and shipping
 as daily rates converted with a 30-day fallback, and does not impose an

@@ -140,3 +140,83 @@ def test_investment_activity_uses_capacity_instead_of_binary_values():
     assert "ZERO_COST_ACTIVE_INVESTMENT" not in {
         finding["code"] for finding in audit["findings"]
     }
+
+
+def test_stochastic_audit_reports_material_balance_capacity_gap_and_saturation():
+    data = auditable_data()
+    data.scenarios = ["low", "high"]
+    data.scenario_prob = {"low": 0.5, "high": 0.5}
+    data.supply_s = {
+        ("low", "O1", "soy", "t1"): 100.0,
+        ("high", "O1", "soy", "t1"): 120.0,
+    }
+    result = OptimizationResult(
+        status="optimal",
+        objective_value=60_000_100.0,
+        cost_breakdown={"transport_dc": 100.0, "emergency_reception": 60_000_000.0},
+        warehouse_decisions=[
+            {
+                "warehouse": "W1",
+                "expansion_capacity": 20.0,
+                "bulk_capacity": 5.0,
+            },
+            {
+                "warehouse": "W2",
+                "is_candidate": True,
+                "candidate_capacity": 50.0,
+            },
+        ],
+        flows=[
+            {
+                "scenario": "low",
+                "customer_type": "domestic",
+                "value": 80.0,
+            },
+            {
+                "scenario": "high",
+                "customer_type": "domestic",
+                "value": 60.0,
+            },
+            {
+                "scenario": "high",
+                "customer_type": "export",
+                "value": 20.0,
+            },
+        ],
+        inventories=[
+            {"scenario": "low", "period": "t1", "value": 20.0},
+            {"scenario": "high", "period": "t1", "value": 40.0},
+        ],
+        emergency_capacity=[
+            {
+                "scenario": "high",
+                "warehouse": "W2",
+                "period": "t1",
+                "capacity_type": "reception",
+                "value": 60.0,
+            }
+        ],
+        metadata={"scenario_probabilities": {"low": 0.5, "high": 0.5}},
+    )
+
+    audit = build_model_audit(
+        data,
+        ModelConfig(mode="sto", days_per_period=30.0),
+        result,
+    )
+
+    solution = audit["solution"]
+    assert solution["material_balance"]["all_within_tolerance"] is True
+    assert solution["capacity_adequacy"]["status"] == (
+        "emergency_capacity_required"
+    )
+    high = solution["capacity_adequacy"]["by_scenario"][1]
+    assert high["peak_emergency_reception_tons_per_day"] == pytest.approx(2.0)
+    assert high["peak_reception_warehouse"] == "W2"
+    assert all(
+        values["all_eligible_at_maximum"]
+        for values in solution["investment_saturation"].values()
+    )
+    codes = {finding["code"] for finding in audit["findings"]}
+    assert "EMERGENCY_CAPACITY_REQUIRED" in codes
+    assert "INVESTMENT_CAPACITY_SATURATED" in codes

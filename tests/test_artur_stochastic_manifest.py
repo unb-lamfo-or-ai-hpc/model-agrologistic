@@ -43,6 +43,12 @@ def test_three_scenario_manifest_preserves_the_validated_model_profile():
         "comparison_group" not in experiment["metadata"]
         for experiment in experiments
     )
+    assert experiments[0]["metadata"]["slack_interpretation"] == (
+        "complete_recourse_infrastructure_gap"
+    )
+    assert experiments[1]["metadata"]["monetary_interpretation"] == (
+        "decomposed_penalty_dependent_evpi_vss"
+    )
 
 
 @pytest.mark.parametrize(
