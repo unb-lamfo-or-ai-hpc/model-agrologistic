@@ -7,9 +7,11 @@ import hashlib
 import json
 import shutil
 import subprocess
+import tarfile
+import tempfile
 from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from typing import Iterable
 
 
@@ -453,6 +455,153 @@ def _write_json_atomically(path: Path, payload: dict[str, object]) -> None:
     temporary.replace(path)
 
 
+def _validate_quarantine_manifest(
+    manifest_path: Path,
+) -> tuple[dict[str, object], Path]:
+    manifest_path = manifest_path.resolve()
+    payload = json.loads(manifest_path.read_text(encoding="utf-8"))
+    if payload.get("schema_version") != QUARANTINE_SCHEMA_VERSION:
+        raise RepositoryHygieneError("Unsupported quarantine manifest schema.")
+    run_root = Path(str(payload["quarantine_root"])).resolve()
+    if run_root != manifest_path.parent:
+        raise RepositoryHygieneError(
+            "The quarantine manifest does not belong to its containing directory."
+        )
+    repo_root = Path(str(payload["repo_root"])).resolve()
+    if _is_relative_to(run_root, repo_root):
+        raise RepositoryHygieneError(
+            "The quarantine manifest points inside the repository."
+        )
+    return payload, run_root
+
+
+def _validate_quarantine_contents(
+    payload: dict[str, object],
+    run_root: Path,
+) -> None:
+    for entry in payload.get("entries", []):
+        source = (run_root / str(entry["quarantine_path"])).resolve()
+        if not _is_relative_to(source, run_root):
+            raise RepositoryHygieneError(
+                "The quarantine artifact path escapes the manifest directory."
+            )
+        if not source.exists() or _tree_sha256(source) != entry.get("tree_sha256"):
+            raise RepositoryHygieneError(
+                f"Quarantine artifact is missing or changed: {source}"
+            )
+
+
+def _validate_archive_members(
+    members: list[tarfile.TarInfo],
+    expected_root_name: str,
+) -> None:
+    if not members:
+        raise RepositoryHygieneError("The quarantine archive is empty.")
+    for member in members:
+        if "\\" in member.name:
+            raise RepositoryHygieneError("Unsafe path in quarantine archive.")
+        path = PurePosixPath(member.name)
+        if (
+            path.is_absolute()
+            or ".." in path.parts
+            or not path.parts
+            or path.parts[0] != expected_root_name
+        ):
+            raise RepositoryHygieneError("Unsafe path in quarantine archive.")
+        if member.issym() or member.islnk() or member.isdev() or member.isfifo():
+            raise RepositoryHygieneError(
+                "Links and special files are not supported in quarantine archives."
+            )
+
+
+def _verify_quarantine_archive(archive_path: Path, run_name: str) -> None:
+    prefix = "model-agrologistic-archive-check-"
+    with tempfile.TemporaryDirectory(prefix=prefix) as root:
+        verification_root = Path(root)
+        with tarfile.open(archive_path, mode="r:gz") as archive:
+            members = archive.getmembers()
+            _validate_archive_members(members, run_name)
+            archive.extractall(verification_root, members=members)
+        extracted_root = verification_root / run_name
+        manifest_path = extracted_root / "quarantine_manifest.json"
+        if not manifest_path.is_file():
+            raise RepositoryHygieneError(
+                "The quarantine archive does not contain its manifest."
+            )
+        payload = json.loads(manifest_path.read_text(encoding="utf-8"))
+        if payload.get("schema_version") != QUARANTINE_SCHEMA_VERSION:
+            raise RepositoryHygieneError("Unsupported quarantine manifest schema.")
+        _validate_quarantine_contents(payload, extracted_root)
+
+
+def compress_quarantine_manifest(
+    manifest_path: Path,
+    *,
+    remove_source: bool = False,
+) -> tuple[Path, Path]:
+    """Create and verify a gzip-compressed tar archive of one quarantine run."""
+
+    payload, run_root = _validate_quarantine_manifest(manifest_path)
+    _validate_quarantine_contents(payload, run_root)
+    archive_path = run_root.with_name(f"{run_root.name}.tar.gz")
+    checksum_path = archive_path.with_name(f"{archive_path.name}.sha256")
+    if archive_path.exists() or checksum_path.exists():
+        raise RepositoryHygieneError(
+            f"The quarantine archive already exists: {archive_path}"
+        )
+
+    temporary_archive = archive_path.with_name(f".{archive_path.name}.tmp")
+    try:
+        with tarfile.open(temporary_archive, mode="w:gz") as archive:
+            archive.add(run_root, arcname=run_root.name, recursive=True)
+        temporary_archive.replace(archive_path)
+        _verify_quarantine_archive(archive_path, run_root.name)
+    except Exception:
+        temporary_archive.unlink(missing_ok=True)
+        archive_path.unlink(missing_ok=True)
+        raise
+
+    archive_hash = _sha256_file(archive_path)
+    checksum_path.write_text(
+        f"{archive_hash}  {archive_path.name}\n",
+        encoding="utf-8",
+    )
+    if remove_source:
+        shutil.rmtree(run_root)
+    return archive_path, checksum_path
+
+
+def restore_quarantine_archive(repo_root: Path, archive_path: Path) -> None:
+    """Verify, extract, and restore one compressed quarantine archive."""
+
+    repo_root = repo_root.resolve()
+    archive_path = archive_path.resolve()
+    if not archive_path.name.endswith(".tar.gz"):
+        raise RepositoryHygieneError("Expected a .tar.gz quarantine archive.")
+    checksum_path = archive_path.with_name(f"{archive_path.name}.sha256")
+    if not checksum_path.is_file():
+        raise RepositoryHygieneError("The quarantine archive checksum is missing.")
+    expected_hash = checksum_path.read_text(encoding="utf-8").split()[0]
+    if _sha256_file(archive_path) != expected_hash:
+        raise RepositoryHygieneError("The quarantine archive checksum does not match.")
+
+    run_name = archive_path.name[: -len(".tar.gz")]
+    run_root = archive_path.parent / run_name
+    if run_root.exists():
+        raise RepositoryHygieneError(
+            f"The quarantine extraction directory already exists: {run_root}"
+        )
+    _verify_quarantine_archive(archive_path, run_name)
+    with tarfile.open(archive_path, mode="r:gz") as archive:
+        members = archive.getmembers()
+        _validate_archive_members(members, run_name)
+        archive.extractall(archive_path.parent, members=members)
+    restore_quarantine_manifest(
+        repo_root,
+        run_root / "quarantine_manifest.json",
+    )
+
+
 def apply_quarantine_plan(
     repo_root: Path,
     plan_path: Path,
@@ -538,15 +687,7 @@ def restore_quarantine_manifest(repo_root: Path, manifest_path: Path) -> None:
     """Restore every non-restored artifact recorded in a quarantine manifest."""
 
     repo_root = repo_root.resolve()
-    manifest_path = manifest_path.resolve()
-    payload = json.loads(manifest_path.read_text(encoding="utf-8"))
-    if payload.get("schema_version") != QUARANTINE_SCHEMA_VERSION:
-        raise RepositoryHygieneError("Unsupported quarantine manifest schema.")
-    run_root = Path(str(payload["quarantine_root"])).resolve()
-    if run_root != manifest_path.parent:
-        raise RepositoryHygieneError(
-            "The quarantine manifest does not belong to its containing directory."
-        )
+    payload, run_root = _validate_quarantine_manifest(manifest_path)
 
     for entry in payload.get("entries", []):
         if entry.get("restored"):
