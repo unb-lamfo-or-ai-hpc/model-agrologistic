@@ -458,19 +458,17 @@ Completed:
 
 Current:
 
-- Sprint 2 scientific validation of the Artur benchmark source pool against
-  the gold-workbook extension track. The first named legacy instance is
-  persisted and normalized with content hashes and transformation audits. A
-  canonical solver adapter now combines that normalized instance with pinned
-  historical reference tables and frozen Haversine distances. Its deterministic
-  manifest now activates the historical daily throughput factors for candidate,
-  expansion, and bulkification capacity without changing the default semantics
-  of prior MVP campaigns. It remains explicitly labelled as a bounded
-  reproduction because the historical OSRM matrix, forecasting path, and every
-  historical capacity eligibility rule are not available or not yet reproduced.
-  The corrected deterministic Gate 2B run reached 100% domestic service with
-  zero unmet demand and only 0.0206 aggregate tonne-period of numerical
-  emergency slack after the adapter restored explicit export customers.
+- Gate 2C controlled stochastic extension of the accepted Artur deterministic
+  instance. The initial campaign uses three explicit adverse, central, and
+  favorable supply-demand combinations, followed by checkpointed monetary
+  EVPI/VSS under the scalar penalty objective. The scenario levels come from
+  the gold workbook's synthetic design and are not presented as reconstructed
+  thesis forecasts. The accepted RP reached 100% domestic service in every
+  scenario, while the 1.15 supply scenario exposed a residual reception gap
+  after every eligible investment reached its configured upper bound. The MVP
+  preserves this result as infrastructure-planning evidence: emergency slack
+  maintains complete recourse, and its Big-M contribution is reported
+  separately from observed economic costs.
 
 The model keeps full origin-supply allocation, treats reception and shipping
 as daily rates converted with a 30-day fallback, and does not impose an
@@ -483,13 +481,16 @@ and frozen data identities are documented in
 The bounded-reproduction criteria, established data lineage, and validation
 gates are documented in
 [`docs/artur_reproduction_protocol.md`](docs/artur_reproduction_protocol.md).
+The controlled stochastic design and execution gates are documented in
+[`docs/artur_stochastic_extension.md`](docs/artur_stochastic_extension.md).
 
 Planned:
 
 - frozen OSRM route evidence when an identifiable historical routing snapshot
   becomes available;
 - Gate 2C three- and nine-scenario EVPI/VSS extensions on the persisted Artur
-  instance, kept separate from exact thesis-result replication claims;
+  instance, with the nine-scenario campaign conditional on acceptance of the
+  three-scenario gate and kept separate from exact thesis replication claims;
 - attainable service-cost frontier before any scenario service constraint;
 - scientific result tables and plots;
 - optional native PySCIPOpt implementation and backend-equivalence tests after

@@ -1,0 +1,87 @@
+version: 1
+output_dir: ../data/results/hpc/artur_stochastic_extension
+continue_on_error: false
+
+defaults:
+  max_estimated_variables: 750000
+  solver:
+    backend: gurobipy
+    solver_name: gurobi
+    mip_gap: 0.0001
+    time_limit: 3600
+    threads: 16
+    seed: 42
+    tee: true
+    compute_iis: true
+    iis_max_items: 200
+    solver_options:
+      SoftMemLimit: 56
+      NumericFocus: 1
+  model:
+    mode: sto
+    objective_policy: penalty
+    use_warehouse_transshipment: true
+    use_direct_origin_customer: false
+    route_filter_strategy: none
+    candidate_capacity_mode: scalable
+    terminal_inventory_policy: free
+    days_per_period: 30
+    allow_capacity_expansion: true
+    allow_bulkification: true
+    capacity_coupling_policy: daily_factors
+    candidate_reception_daily_factor: 0.20
+    candidate_shipping_daily_factor: 0.20
+    expansion_reception_daily_factor: 0.20
+    expansion_shipping_daily_factor: 0.20
+    bulkification_reception_daily_factor: 1.0
+    bulkification_shipping_daily_factor: 1.0
+  loader:
+    compute_haversine_distances: false
+    use_workbook_distances: true
+    include_export_routes: true
+    include_transshipment_routes: true
+    include_direct_origin_customer_routes: false
+    include_stochastic_scenarios: true
+    scenario_generation_mode: cartesian
+    stochastic_combinations:
+      - [baixo, alto]
+      - [base, base]
+      - [alto, baixo]
+    stochastic_probabilities:
+      - 0.3333333333333333
+      - 0.3333333333333333
+      - 0.3333333333333333
+    candidate_cost_policy: fixed_total
+    default_unmet_demand_penalty: 1000000
+    default_emergency_static_penalty: 1000000
+    default_emergency_reception_penalty: 1000000
+
+experiments:
+  - name: artur_legacy_i001_sto_3_rp
+    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver/model_input.xlsx
+    calculate_evpi_vss: false
+    metadata:
+      family: artur_stochastic_extension
+      campaign_gate: gate_2c_three_scenario_rp
+      comparison_status: controlled_extension
+      scenario_design: stress_central_favorable
+      scenario_multiplier_source: gold_workbook_synthetic_design
+      slack_interpretation: complete_recourse_infrastructure_gap
+      monetary_interpretation: economic_cost_plus_nonobserved_big_m_penalties
+      source_commit_sha: 9d190ce91bb60c192329c4bbd5638f24909cb1e2
+      forecasting_reconstructed: false
+
+  - name: artur_legacy_i001_sto_3_evpi_vss
+    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver/model_input.xlsx
+    calculate_evpi_vss: true
+    resume_evpi_vss: true
+    metadata:
+      family: artur_stochastic_extension
+      campaign_gate: gate_2c_three_scenario_evpi_vss
+      comparison_status: controlled_extension
+      scenario_design: stress_central_favorable
+      scenario_multiplier_source: gold_workbook_synthetic_design
+      slack_interpretation: complete_recourse_infrastructure_gap
+      monetary_interpretation: decomposed_penalty_dependent_evpi_vss
+      source_commit_sha: 9d190ce91bb60c192329c4bbd5638f24909cb1e2
+      forecasting_reconstructed: false

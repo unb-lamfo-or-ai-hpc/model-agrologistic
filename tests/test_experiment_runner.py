@@ -9,6 +9,7 @@ from src.logic.excel_loader import ExcelLoaderConfig
 from src.logic.experiment_runner import (
     ExperimentManifest,
     ExperimentSpec,
+    _evpi_vss_decomposition,
     _scenario_performance_records,
     _weighted_record_total,
     aggregate_experiment_summaries,
@@ -22,7 +23,7 @@ from src.logic.experiment_runner import (
 )
 from src.logic.model_config import ModelConfig, SolverConfig
 from src.logic.model_data import ModelData
-from src.logic.optimization import OptimizationResult
+from src.logic.optimization import EVPIVSSResult, OptimizationResult
 
 
 def model_data() -> ModelData:
@@ -149,6 +150,80 @@ def test_stochastic_diagnostic_totals_are_probability_weighted():
         result.emergency_capacity,
         capacity_type="static",
     ) == pytest.approx(6.0)
+
+
+def test_evpi_vss_decomposition_separates_economic_and_penalty_values():
+    rp = OptimizationResult(
+        status="optimal",
+        cost_breakdown={
+            "opening": 10.0,
+            "transport_dc": 90.0,
+            "emergency_reception": 100.0,
+        },
+        emergency_capacity=[
+            {"capacity_type": "reception", "value": 50.0}
+        ],
+    )
+    ws_low = OptimizationResult(
+        status="optimal",
+        cost_breakdown={"opening": 4.0, "transport_dc": 76.0},
+    )
+    ws_high = OptimizationResult(
+        status="optimal",
+        cost_breakdown={
+            "opening": 8.0,
+            "transport_dc": 82.0,
+            "emergency_reception": 70.0,
+        },
+        emergency_capacity=[
+            {"capacity_type": "reception", "value": 35.0}
+        ],
+    )
+    ev = OptimizationResult(
+        status="optimal",
+        cost_breakdown={"opening": 5.0, "transport_dc": 85.0},
+    )
+    eev = OptimizationResult(
+        status="optimal",
+        cost_breakdown={
+            "opening": 5.0,
+            "transport_dc": 95.0,
+            "emergency_reception": 300.0,
+        },
+        emergency_capacity=[
+            {"capacity_type": "reception", "value": 150.0}
+        ],
+    )
+    result = EVPIVSSResult(
+        recourse_problem=200.0,
+        wait_and_see=140.0,
+        expected_value_problem=90.0,
+        expected_result_of_ev_solution=400.0,
+        evpi=60.0,
+        vss=200.0,
+        recourse_problem_result=rp,
+        wait_and_see_results={"low": ws_low, "high": ws_high},
+        expected_value_problem_result=ev,
+        expected_result_result=eev,
+        metadata={"scenario_probabilities": {"low": 0.25, "high": 0.75}},
+    )
+
+    decomposition = _evpi_vss_decomposition(result)
+
+    assert decomposition["cost_profiles"]["wait_and_see"]["groups"] == {
+        "investment": pytest.approx(7.0),
+        "operation": pytest.approx(80.5),
+        "penalty": pytest.approx(52.5),
+    }
+    assert decomposition["evpi_by_group"]["penalty"] == pytest.approx(47.5)
+    assert decomposition["vss_by_group"]["penalty"] == pytest.approx(200.0)
+    assert decomposition["vss_by_group"]["investment"] == pytest.approx(-5.0)
+    assert decomposition["physical_recourse_profiles"]["wait_and_see"][
+        "emergency_reception_tons_over_periods"
+    ] == pytest.approx(26.25)
+    assert decomposition["interpretation"][
+        "penalty_values_are_observed_monetary_costs"
+    ] is False
 
 
 def test_scenario_performance_records_are_unweighted_and_complete():
@@ -426,6 +501,9 @@ def test_run_experiment_exports_complete_json_csv_and_metrics(
     assert summary.emergency_static_capacity == pytest.approx(10.0)
     assert summary.emergency_reception_capacity == pytest.approx(20.0)
     assert summary.total_emergency_capacity == pytest.approx(30.0)
+    assert summary.capacity_adequacy_status == "domestic_service_shortfall"
+    assert summary.material_balance_ok is None
+    assert summary.penalty_cost_share == pytest.approx(0.0)
     assert payload["schema_version"] == 1
     assert payload["experiment"]["metadata"] == {"replicate": 1}
     assert payload["result"]["metrics"]["DynCap"] == pytest.approx(600.0)
@@ -465,9 +543,26 @@ def test_run_experiment_exports_complete_json_csv_and_metrics(
         "scenario_performance.csv",
         "storage_by_warehouse.csv",
         "storage_by_scenario.csv",
+        "material_balance_by_scenario.csv",
+        "capacity_gap_by_scenario.csv",
+        "investment_saturation.csv",
+        "emergency_capacity_daily.csv",
+        "evpi_vss_decomposition.csv",
     }
     assert {path.name for path in run_dir.iterdir()} == expected_files
     assert (run_dir / "scenario_performance.csv").read_text(encoding="utf-8") == ""
+
+    with (run_dir / "capacity_gap_by_scenario.csv").open(encoding="utf-8") as file:
+        capacity_rows = list(csv.DictReader(file))
+    assert capacity_rows[0]["status"] == "domestic_service_shortfall"
+
+    with (run_dir / "emergency_capacity_daily.csv").open(encoding="utf-8") as file:
+        emergency_rows = list(csv.DictReader(file))
+    reception = next(
+        row for row in emergency_rows if row["capacity_type"] == "reception"
+    )
+    assert float(reception["days_in_period"]) == pytest.approx(30.0)
+    assert float(reception["value_tons_per_day"]) == pytest.approx(20.0 / 30.0)
 
     with (run_dir / "storage_by_warehouse.csv").open(encoding="utf-8") as file:
         storage_rows = list(csv.DictReader(file))
