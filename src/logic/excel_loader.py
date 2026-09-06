@@ -12,7 +12,7 @@ from __future__ import annotations
 
 import unicodedata
 from dataclasses import dataclass
-from math import asin, cos, radians, sin, sqrt
+from math import asin, cos, isfinite, radians, sin, sqrt
 from pathlib import Path
 from typing import Any, Literal
 
@@ -96,6 +96,7 @@ class ExcelLoaderConfig:
     """
 
     compute_haversine_distances: bool = True
+    use_workbook_distances: bool = False
 
     include_export_routes: bool = True
     include_transshipment_routes: bool = False
@@ -121,6 +122,13 @@ class ExcelLoaderConfig:
     default_emergency_static_penalty: float = 1_000_000.0
     default_emergency_reception_penalty: float = 1_000_000.0
     default_transshipment_cost: float = 0.0
+
+    def __post_init__(self) -> None:
+        if self.compute_haversine_distances and self.use_workbook_distances:
+            raise ValueError(
+                "compute_haversine_distances and use_workbook_distances are "
+                "mutually exclusive."
+            )
 
 
 def load_model_data_from_excel(
@@ -157,6 +165,11 @@ def load_model_data_from_excel(
     cenarios = (
         _clean_dataframe(sheets["Cenarios"])
         if config.include_stochastic_scenarios and "Cenarios" in sheets
+        else pd.DataFrame()
+    )
+    distances_df = (
+        _clean_dataframe(sheets["Distancias"])
+        if config.use_workbook_distances and "Distancias" in sheets
         else pd.DataFrame()
     )
 
@@ -361,6 +374,20 @@ def load_model_data_from_excel(
             node_info=node_info,
         )
 
+    elif config.use_workbook_distances:
+        dist_od, dist_dc, dist_dd, dist_oc = _load_workbook_distances(
+            distances=distances_df,
+            required_pairs={
+                "OD": {(origin, warehouse) for origin, warehouse, _ in routes_od},
+                "DC": {(warehouse, customer) for warehouse, customer, _ in routes_dc},
+                "DD": {
+                    (warehouse_from, warehouse_to)
+                    for warehouse_from, warehouse_to, _ in routes_dd
+                },
+                "OC": {(origin, customer) for origin, customer, _ in routes_oc},
+            },
+        )
+
     unmet_demand_penalty = {
         (customer, product): config.default_unmet_demand_penalty
         for customer in domestic_customers
@@ -439,6 +466,13 @@ def load_model_data_from_excel(
             ),
             "scenario_multipliers": scenario_multipliers,
             "loader_warnings": loader_warnings,
+            "distance_source": (
+                "workbook"
+                if config.use_workbook_distances
+                else "haversine"
+                if config.compute_haversine_distances
+                else "none"
+            ),
         },
     )
 
@@ -480,6 +514,67 @@ def _validate_workbook_schema(sheets: dict[str, pd.DataFrame]) -> None:
             raise ValueError(
                 f"Sheet {sheet_name!r} is missing required columns: {missing_columns}"
             )
+
+
+def _load_workbook_distances(
+    distances: pd.DataFrame,
+    required_pairs: dict[str, set[tuple[str, str]]],
+) -> tuple[
+    dict[tuple[str, str], float],
+    dict[tuple[str, str], float],
+    dict[tuple[str, str], float],
+    dict[tuple[str, str], float],
+]:
+    """Load and validate a frozen long-form distance matrix."""
+
+    required_columns = {"Tipo_Arco", "Origem", "Destino", "Distancia_km"}
+    missing_columns = sorted(required_columns - set(distances.columns))
+    if missing_columns:
+        raise ValueError(
+            "Workbook distance loading requires sheet 'Distancias' with columns: "
+            f"{sorted(required_columns)}; missing {missing_columns}."
+        )
+
+    matrices: dict[str, dict[tuple[str, str], float]] = {
+        arc_type: {} for arc_type in required_pairs
+    }
+    for _, row in distances.iterrows():
+        arc_type = _normalize_text(row["Tipo_Arco"]).upper()
+        if arc_type not in matrices:
+            raise ValueError(f"Unknown distance arc type {arc_type!r} in 'Distancias'.")
+        pair = (
+            _normalize_text(row["Origem"]),
+            _normalize_text(row["Destino"]),
+        )
+        if pair in matrices[arc_type]:
+            raise ValueError(
+                f"Duplicate {arc_type} distance for {pair[0]!r} -> {pair[1]!r}."
+            )
+        value = _parse_float(row["Distancia_km"])
+        if not isfinite(value) or value < 0.0:
+            raise ValueError(
+                f"Distance for {arc_type} {pair[0]!r} -> {pair[1]!r} "
+                "must be finite and non-negative."
+            )
+        matrices[arc_type][pair] = value
+
+    for arc_type, pairs in required_pairs.items():
+        missing_pairs = sorted(pairs - set(matrices[arc_type]))
+        if missing_pairs:
+            preview = ", ".join(
+                f"{origin!r} -> {destination!r}"
+                for origin, destination in missing_pairs[:5]
+            )
+            raise ValueError(
+                f"Sheet 'Distancias' is missing {len(missing_pairs)} required "
+                f"{arc_type} pairs. First missing pairs: {preview}."
+            )
+        matrices[arc_type] = {
+            pair: matrices[arc_type][pair]
+            for pair in pairs
+        }
+
+    return matrices["OD"], matrices["DC"], matrices["DD"], matrices["OC"]
 
 
 def _validate_scenario_schema(sheets: dict[str, pd.DataFrame]) -> None:
@@ -1777,3 +1872,4 @@ def _is_bulk_eligible(row: pd.Series, warehouse_type: str) -> bool:
             "estrutural",
         ]
     )
+

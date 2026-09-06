@@ -15,7 +15,8 @@ The project originated from the SiloDSS codebase, which was initially designed a
 - structured Excel-based model input;
 - canonical, solver-agnostic model data structures;
 - native Gurobi execution through `gurobipy`;
-- solver-neutral execution through `Pyomo`, especially for SCIP;
+- Gurobi as the primary and currently validated solver backend;
+- possible future independent validation with SCIP through `PySCIPOpt`;
 - precomputed distance matrices using Haversine or OSRM;
 - reproducible execution in local and HPC environments.
 
@@ -252,18 +253,20 @@ This backend is intended for:
 - HPC batch runs;
 - production-quality computational experiments.
 
-### 2. Pyomo backend
+### 2. Future SCIP validation
 
-The Pyomo backend is retained as a solver-neutral alternative.
+The MVP solver backend is native Gurobi through `gurobipy`. The existing Pyomo
+scaffold is not part of the validated MVP execution path.
 
-This backend is intended for:
+If a second solver is required after the TRL 6 demonstration, the preferred
+path is a native SCIP implementation through `PySCIPOpt` for:
 
-- SCIP execution;
-- comparison with the native Gurobi implementation;
+- independent comparison with the native Gurobi implementation;
 - open-source solver experiments;
 - mathematical equivalence testing.
 
-The objective is to keep both backends mathematically equivalent for supported model variants.
+CBC is not a target backend. Its name is retained only when necessary to
+describe the provenance of historical thesis results.
 
 ---
 
@@ -333,7 +336,7 @@ prepare Excel input
   -> load and validate ModelData
   -> generate or load distance matrices
   -> submit batch jobs
-  -> solve MILP instances with Gurobi or SCIP
+  -> solve MILP instances with Gurobi
   -> export solution and metrics
 ```
 
@@ -455,8 +458,19 @@ Completed:
 
 Current:
 
-- Stage 5.8 MVP and data freeze, with separate Artur benchmark reproduction
-  and gold-workbook extension tracks.
+- Sprint 2 scientific validation of the Artur benchmark source pool against
+  the gold-workbook extension track. The first named legacy instance is
+  persisted and normalized with content hashes and transformation audits. A
+  canonical solver adapter now combines that normalized instance with pinned
+  historical reference tables and frozen Haversine distances. Its deterministic
+  manifest now activates the historical daily throughput factors for candidate,
+  expansion, and bulkification capacity without changing the default semantics
+  of prior MVP campaigns. It remains explicitly labelled as a bounded
+  reproduction because the historical OSRM matrix, forecasting path, and every
+  historical capacity eligibility rule are not available or not yet reproduced.
+  The corrected deterministic Gate 2B run reached 100% domestic service with
+  zero unmet demand and only 0.0206 aggregate tonne-period of numerical
+  emergency slack after the adapter restored explicit export customers.
 
 The model keeps full origin-supply allocation, treats reception and shipping
 as daily rates converted with a 30-day fallback, and does not impose an
@@ -466,13 +480,20 @@ objective. See
 [`docs/methodological_audit.md`](docs/methodological_audit.md). The MVP boundary
 and frozen data identities are documented in
 [`docs/mvp_scope_and_data_contract.md`](docs/mvp_scope_and_data_contract.md).
+The bounded-reproduction criteria, established data lineage, and validation
+gates are documented in
+[`docs/artur_reproduction_protocol.md`](docs/artur_reproduction_protocol.md).
 
 Planned:
 
+- frozen OSRM route evidence when an identifiable historical routing snapshot
+  becomes available;
+- Gate 2C three- and nine-scenario EVPI/VSS extensions on the persisted Artur
+  instance, kept separate from exact thesis-result replication claims;
 - attainable service-cost frontier before any scenario service constraint;
 - scientific result tables and plots;
-- Pyomo/SCIP parity and backend equivalence, if retained as a project
-  requirement.
+- optional native PySCIPOpt implementation and backend-equivalence tests after
+  the Gurobi-based TRL 6 MVP is complete, if retained as a project requirement.
 
 ---
 

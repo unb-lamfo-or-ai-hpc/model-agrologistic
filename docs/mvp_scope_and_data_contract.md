@@ -25,8 +25,10 @@ The frozen MVP includes:
 - YAML campaigns, Slurm execution, preflight size guards, resumable EVPI/VSS,
   and structured JSON/CSV artifacts.
 
-Pyomo/SCIP parity, a graphical interface, automated forecasting, and a trained
-GNN are outside this MVP. They may be evaluated after the TRL 6 demonstration.
+A native PySCIPOpt implementation, backend parity, a graphical interface,
+automated forecasting, and a trained GNN are outside this MVP. They may be
+evaluated after the Gurobi-based TRL 6 demonstration. CBC is not a target
+backend for this project.
 
 ## Two evidence tracks
 
@@ -43,6 +45,11 @@ This track supports comparison with the thesis assumptions and published case
 structure. Numerical identity must not be claimed until every generated input,
 random seed, network-construction rule, solver setting, and historical software
 dependency used by the thesis has been reconstructed or recovered.
+
+The executable acquisition and reconciliation procedure is documented in
+[`artur_reproduction_protocol.md`](artur_reproduction_protocol.md). It verifies
+the source files and external generator dependencies by their Git blob identity
+before any comparison is produced.
 
 ### Gold workbook extension
 
@@ -93,3 +100,20 @@ Sprint 1 is complete when all of the following hold on NPAD:
 Warnings from unsupported Excel data-validation extensions are currently
 non-blocking because the loader reads values rather than re-saving the official
 workbook. They must be revisited if the pipeline starts writing that workbook.
+
+## Sprint 2 acceptance gate
+
+Sprint 2 starts with source integrity and structural reconciliation. The initial
+gate is complete when all 13 historical source and reconstruction files pass
+their byte-level contract, the generated report demonstrates preserved supply
+and domestic-demand lineage, and warehouse/schema extensions are explicitly
+classified. Deterministic and stochastic numerical comparisons must use a
+persisted generated instance and a frozen distance matrix before they can be
+described as exact replication.
+
+Duplicate-key normalization is performed only after the raw instance hashes
+have been verified. The normalized files and transformation audit are written
+beside, never over, the raw evidence. Conservation of supply tonnage, finite
+domestic demand, warehouse rows, and distance rows is an executable acceptance
+condition.
+
