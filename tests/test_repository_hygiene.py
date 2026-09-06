@@ -15,6 +15,8 @@ from src.logic.repository_hygiene import (
     audit_repository,
     build_quarantine_plan,
     classify_relative_path,
+    compress_quarantine_manifest,
+    restore_quarantine_archive,
     restore_quarantine_manifest,
 )
 
@@ -176,3 +178,68 @@ def test_quarantine_refuses_a_manually_added_protected_category(tmp_path):
             plan_path,
             tmp_path / "quarantine",
         )
+
+
+def test_compressed_quarantine_is_verified_and_reversible(tmp_path):
+    repo_root = tmp_path / "repository"
+    repo_root.mkdir()
+    initialize_repository(repo_root)
+    cache_file = repo_root / ".pytest_cache/state.json"
+    cache_file.parent.mkdir()
+    cache_file.write_text("temporary", encoding="utf-8")
+
+    entries = audit_repository(repo_root)
+    plan = build_quarantine_plan(repo_root, entries)
+    plan_path = tmp_path / "plan.json"
+    plan_path.write_text(json.dumps(plan), encoding="utf-8")
+    manifest_path = apply_quarantine_plan(
+        repo_root,
+        plan_path,
+        tmp_path / "quarantine",
+    )
+
+    archive_path, checksum_path = compress_quarantine_manifest(
+        manifest_path,
+        remove_source=True,
+    )
+
+    assert archive_path.is_file()
+    assert checksum_path.is_file()
+    assert not manifest_path.parent.exists()
+
+    restore_quarantine_archive(repo_root, archive_path)
+
+    assert cache_file.read_text(encoding="utf-8") == "temporary"
+    restored_manifest = archive_path.parent / archive_path.name.removesuffix(
+        ".tar.gz"
+    ) / "quarantine_manifest.json"
+    restored = json.loads(restored_manifest.read_text(encoding="utf-8"))
+    assert restored["entries"][0]["restored"] is True
+
+
+def test_archive_restore_refuses_a_checksum_mismatch(tmp_path):
+    repo_root = tmp_path / "repository"
+    repo_root.mkdir()
+    initialize_repository(repo_root)
+    cache_file = repo_root / ".pytest_cache/state.json"
+    cache_file.parent.mkdir()
+    cache_file.write_text("temporary", encoding="utf-8")
+
+    entries = audit_repository(repo_root)
+    plan = build_quarantine_plan(repo_root, entries)
+    plan_path = tmp_path / "plan.json"
+    plan_path.write_text(json.dumps(plan), encoding="utf-8")
+    manifest_path = apply_quarantine_plan(
+        repo_root,
+        plan_path,
+        tmp_path / "quarantine",
+    )
+    archive_path, _ = compress_quarantine_manifest(
+        manifest_path,
+        remove_source=True,
+    )
+    with archive_path.open("ab") as stream:
+        stream.write(b"changed")
+
+    with pytest.raises(RuntimeError, match="checksum does not match"):
+        restore_quarantine_archive(repo_root, archive_path)
