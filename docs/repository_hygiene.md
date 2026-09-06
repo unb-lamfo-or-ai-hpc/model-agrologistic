@@ -9,9 +9,9 @@ files.
 The audit assigns each untracked or ignored artifact to one category:
 
 - `SAFE_GENERATED`: caches, Python bytecode, build metadata, and temporary files;
-- `COMPLETED_CHECKPOINT`: resumable EVPI/VSS state whose optimal run and final
-  decomposition are both present;
-- `DUPLICATE_LOG`: a root Slurm log with a byte-identical retained copy;
+- `PIPELINE_REQUIRED`: resumable EVPI/VSS state retained for pipeline recovery;
+- `DUPLICATE_LOG`: a root Slurm log with a byte-identical retained copy, kept
+  as a scientific trace;
 - `SCIENTIFIC_ARCHIVE`: HPC output that requires an explicit retention decision;
 - `PROTECTED`: source code, tests, experiment manifests, canonical inputs,
   processed Artur instances, reproducibility evidence, and secrets;
@@ -31,15 +31,12 @@ By default, reports are written to the persistent sibling directory
 `../model-agrologistic-hygiene-audit`. The generated quarantine plan contains
 only `SAFE_GENERATED` entries.
 
-Completed checkpoints and verified duplicate logs may be added explicitly:
-
-```bash
-python scripts/audit_repository_hygiene.py \
-  --include-completed-checkpoints \
-  --include-duplicate-logs
-```
-
 Review `quarantine_plan.json` before continuing.
+
+The plan is intentionally restricted to `SAFE_GENERATED`. Checkpoints, solver
+outputs, Slurm logs, raw data, processed instances, templates, manifests, and
+reproducibility artifacts cannot be added through command-line options. The
+apply command also rejects a manually edited plan containing any other category.
 
 ## Apply a reviewed plan
 
