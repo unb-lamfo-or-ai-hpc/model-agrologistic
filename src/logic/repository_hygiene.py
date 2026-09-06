@@ -1,11 +1,11 @@
 """Audit and quarantine untracked repository artifacts without deleting evidence."""
-import re
 
 from __future__ import annotations
 
 import csv
 import hashlib
 import json
+import re
 import shutil
 import subprocess
 import tarfile
@@ -20,14 +20,13 @@ AUDIT_SCHEMA_VERSION = 1
 QUARANTINE_SCHEMA_VERSION = 1
 
 SAFE_GENERATED = "SAFE_GENERATED"
-COMPLETED_CHECKPOINT = "COMPLETED_CHECKPOINT"
 DUPLICATE_LOG = "DUPLICATE_LOG"
+PIPELINE_REQUIRED = "PIPELINE_REQUIRED"
 SCIENTIFIC_ARCHIVE = "SCIENTIFIC_ARCHIVE"
 PROTECTED = "PROTECTED"
 UNCLASSIFIED = "UNCLASSIFIED"
 
 AUTO_QUARANTINE = "AUTO_QUARANTINE"
-REVIEW_QUARANTINE = "REVIEW_QUARANTINE"
 KEEP = "KEEP"
 REVIEW = "REVIEW"
 
@@ -50,6 +49,7 @@ _PROTECTED_PREFIXES = (
     Path("src"),
     Path("tests"),
 )
+_QUARANTINE_RUN_PATTERN = re.compile(r"\d{8}T\d{6}Z")
 
 
 class RepositoryHygieneError(RuntimeError):
@@ -154,18 +154,6 @@ def _find_hpc_run_root(repo_root: Path, path: Path) -> Path:
     return path
 
 
-def _load_run_status(run_root: Path) -> str | None:
-    summary_path = run_root / "run_summary.json"
-    if not summary_path.is_file():
-        return None
-    try:
-        payload = json.loads(summary_path.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError):
-        return None
-    status = payload.get("status")
-    return str(status).lower() if status is not None else None
-
-
 def _sha256_file(path: Path) -> str:
     digest = hashlib.sha256()
     with path.open("rb") as stream:
@@ -205,21 +193,11 @@ def classify_relative_path(
 
     checkpoint_root = _checkpoint_root(relative_path)
     if checkpoint_root is not None:
-        run_root = repo_root / checkpoint_root.parent
-        status = _load_run_status(run_root)
-        decomposition = run_root / "evpi_vss_decomposition.csv"
-        if status == "optimal" and decomposition.is_file():
-            return (
-                checkpoint_root,
-                COMPLETED_CHECKPOINT,
-                REVIEW_QUARANTINE,
-                "The optimal EVPI/VSS run has a completed decomposition artifact.",
-            )
         return (
             checkpoint_root,
-            SCIENTIFIC_ARCHIVE,
+            PIPELINE_REQUIRED,
             KEEP,
-            "Checkpoint completion could not be verified.",
+            "EVPI/VSS checkpoints are retained for pipeline recovery and verification.",
         )
 
     for prefix in _PROTECTED_PREFIXES:
@@ -238,8 +216,8 @@ def classify_relative_path(
             return (
                 relative_path,
                 DUPLICATE_LOG,
-                REVIEW_QUARANTINE,
-                "An identical log is retained under data/results/hpc/slurm_logs.",
+                KEEP,
+                "An identical log exists, but scientific traces remain retained.",
             )
         return (
             relative_path,
@@ -318,14 +296,6 @@ def audit_repository(repo_root: Path) -> list[AuditEntry]:
         size_bytes = sum(path.stat().st_size for path in files)
         latest_mtime = max((path.stat().st_mtime for path in files), default=0.0)
         latest_mtime_utc = (
-            _QUARANTINE_RUN_PATTERN = re.compile(r"\d{8}T\d{6}Z")
-            if (
-        not _QUARANTINE_RUN_PATTERN.fullmatch(run_root.name)
-        or run_root.parent == Path(run_root.anchor)
-    ):
-        raise RepositoryHygieneError(
-            "The quarantine manifest does not identify a bounded run directory."
-        )
             datetime.fromtimestamp(latest_mtime, timezone.utc).isoformat()
             if latest_mtime
             else ""
@@ -367,17 +337,10 @@ def _tree_sha256(path: Path) -> str:
 def build_quarantine_plan(
     repo_root: Path,
     entries: Iterable[AuditEntry],
-    *,
-    include_completed_checkpoints: bool = False,
-    include_duplicate_logs: bool = False,
 ) -> dict[str, object]:
     """Build a reviewable plan without moving repository artifacts."""
 
     allowed = {SAFE_GENERATED}
-    if include_completed_checkpoints:
-        allowed.add(COMPLETED_CHECKPOINT)
-    if include_duplicate_logs:
-        allowed.add(DUPLICATE_LOG)
 
     repo_root = repo_root.resolve()
     planned = []
@@ -480,14 +443,13 @@ def _validate_quarantine_manifest(
     if _is_relative_to(run_root, repo_root):
         raise RepositoryHygieneError(
             "The quarantine manifest points inside the repository."
-                if (
-        not _QUARANTINE_RUN_PATTERN.fullmatch(run_name)
+        )
+    if (
+        not _QUARANTINE_RUN_PATTERN.fullmatch(run_root.name)
         or run_root.parent == Path(run_root.anchor)
-        or _is_relative_to(run_root, repo_root)
     ):
         raise RepositoryHygieneError(
-            "The archive does not identify a bounded external quarantine run."
-        )
+            "The quarantine manifest does not identify a bounded run directory."
         )
     return payload, run_root
 
@@ -603,10 +565,15 @@ def restore_quarantine_archive(repo_root: Path, archive_path: Path) -> None:
         raise RepositoryHygieneError("The quarantine archive checksum does not match.")
 
     run_name = archive_path.name[: -len(".tar.gz")]
+    run_root = archive_path.parent / run_name
     if (
-        _is_relative_to(quarantine_root, repo_root)
-        or quarantine_root == Path(quarantine_root.anchor)
+        not _QUARANTINE_RUN_PATTERN.fullmatch(run_name)
+        or run_root.parent == Path(run_root.anchor)
+        or _is_relative_to(run_root, repo_root)
     ):
+        raise RepositoryHygieneError(
+            "The archive does not identify a bounded external quarantine run."
+        )
     if run_root.exists():
         raise RepositoryHygieneError(
             f"The quarantine extraction directory already exists: {run_root}"
@@ -631,7 +598,10 @@ def apply_quarantine_plan(
 
     repo_root = repo_root.resolve()
     quarantine_root = quarantine_root.resolve()
-    if _is_relative_to(quarantine_root, repo_root):
+    if (
+        _is_relative_to(quarantine_root, repo_root)
+        or quarantine_root == Path(quarantine_root.anchor)
+    ):
         raise RepositoryHygieneError(
             "The quarantine root must be outside the repository."
         )
@@ -659,11 +629,7 @@ def apply_quarantine_plan(
     _write_json_atomically(manifest_path, manifest)
 
     for planned in payload.get("entries", []):
-        if planned.get("category") not in {
-            SAFE_GENERATED,
-            COMPLETED_CHECKPOINT,
-            DUPLICATE_LOG,
-        }:
+        if planned.get("category") != SAFE_GENERATED:
             raise RepositoryHygieneError(
                 "The quarantine plan contains a category that cannot be moved."
             )
