@@ -56,6 +56,24 @@ The command refuses tracked files, symlinks, changed artifacts, paths outside
 the repository, and quarantine destinations inside the repository. Every move
 is recorded with its original path and SHA-256 tree digest.
 
+## Compress a quarantine
+
+After reviewing the generated manifest, create and verify a gzip-compressed tar
+archive. The explicit removal option deletes the uncompressed quarantine only
+after the archive contents have passed the per-artifact integrity checks:
+
+```bash
+python scripts/quarantine_repository_artifacts.py \
+  compress \
+  /home/vrrcelestino/model-agrologistic-quarantine/<timestamp>/\
+quarantine_manifest.json \
+  --remove-source
+```
+
+The command writes `<timestamp>.tar.gz` and `<timestamp>.tar.gz.sha256` next to
+the original quarantine directory. Keep both files. The checksum is verified
+before any archive restoration.
+
 ## Restore
 
 Use the generated manifest to restore quarantined artifacts:
@@ -67,3 +85,14 @@ python scripts/quarantine_repository_artifacts.py \
 ```
 
 Restoration refuses missing, modified, or conflicting artifacts.
+
+A compressed quarantine can be restored directly:
+
+```bash
+python scripts/quarantine_repository_artifacts.py \
+  restore-archive \
+  /home/vrrcelestino/model-agrologistic-quarantine/<timestamp>.tar.gz
+```
+
+The archive is checked, extracted, and validated against every artifact digest
+before the original repository paths are restored.
