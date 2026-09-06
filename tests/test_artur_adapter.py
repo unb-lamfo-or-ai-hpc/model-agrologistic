@@ -179,10 +179,32 @@ def test_adapter_builds_audited_workbook_with_frozen_distances(tmp_path: Path):
     assert audit["model_data_signature"]["export_customers"] == 1
     assert audit["model_data_signature"]["export_upper_bound_tons"] == 10.0
     assert audit["model_data_signature"]["routes_dd"] == 2
+    assert audit["stochastic_extension_signature"]["scenarios"] == [
+        "oferta_baixo__demanda_alto",
+        "oferta_base__demanda_base",
+        "oferta_alto__demanda_baixo",
+    ]
+    assert audit["stochastic_extension_signature"]["scenario_probabilities"] == {
+        "oferta_baixo__demanda_alto": 1.0 / 3.0,
+        "oferta_base__demanda_base": 1.0 / 3.0,
+        "oferta_alto__demanda_baixo": 1.0 / 3.0,
+    }
     assert len(audit["workbook"]["sha256"]) == 64
 
     demand_sheet = pd.read_excel(workbook, sheet_name="Demanda")
     assert "Peso_Modelo (ton)" in demand_sheet.columns
+    scenario_sheet = pd.read_excel(workbook, sheet_name="Cenarios")
+    assert scenario_sheet["Multiplicador_Oferta"].tolist() == [1.0, 0.85, 1.15]
+    assert scenario_sheet["Multiplicador_Demanda_Domestica"].tolist() == [
+        1.0,
+        0.95,
+        1.05,
+    ]
+    assert scenario_sheet["Multiplicador_Demanda_Exportacao"].tolist() == [
+        1.0,
+        0.85,
+        1.15,
+    ]
 
     with pytest.raises(FileExistsError):
         build_artur_solver_workbook(

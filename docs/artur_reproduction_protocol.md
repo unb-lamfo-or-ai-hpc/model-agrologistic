@@ -321,6 +321,13 @@ economic cost, investment decisions, DynCap, and Turnover.
   EVPI or VSS.
 - Report gold-workbook results as extensions and robustness tests.
 
+The executable three-scenario protocol is documented in
+[`artur_stochastic_extension.md`](artur_stochastic_extension.md). It begins with
+an adverse, central, and favorable joint state using the synthetic multipliers
+from the gold workbook and equal experimental probabilities. These assumptions
+support controlled extension and sensitivity analysis; they do not reconstruct
+the thesis forecasting process.
+
 ## Acceptance rule
 
 A run may be called an exact replication only if its generated input tables,

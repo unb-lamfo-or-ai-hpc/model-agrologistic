@@ -33,6 +33,24 @@ class ArturSolverAdapterConfig:
     unmet_demand_penalty: float = 1_000_000.0
     emergency_static_penalty: float = 1_000_000.0
     emergency_reception_penalty: float = 1_000_000.0
+    low_supply_multiplier: float = 0.85
+    high_supply_multiplier: float = 1.15
+    low_domestic_demand_multiplier: float = 0.95
+    high_domestic_demand_multiplier: float = 1.05
+
+    def __post_init__(self) -> None:
+        if not 0.0 < self.low_supply_multiplier <= 1.0:
+            raise ValueError("low_supply_multiplier must be in the interval (0, 1].")
+        if self.high_supply_multiplier < 1.0:
+            raise ValueError("high_supply_multiplier must be at least 1.")
+        if not 0.0 < self.low_domestic_demand_multiplier <= 1.0:
+            raise ValueError(
+                "low_domestic_demand_multiplier must be in the interval (0, 1]."
+            )
+        if self.high_domestic_demand_multiplier < 1.0:
+            raise ValueError(
+                "high_domestic_demand_multiplier must be at least 1."
+            )
 
 
 def build_artur_solver_workbook(
@@ -62,6 +80,7 @@ def build_artur_solver_workbook(
     freight = pd.read_excel(benchmark_dir / "Valor_Tonelada_km.xlsx")
     storage = pd.read_excel(benchmark_dir / "Tarifa_de_Armazenagem.xlsx")
     investment = pd.read_excel(benchmark_dir / "Custos_Investimento.xlsx")
+    scenarios = _build_scenario_definitions(config)
     parameters = pd.DataFrame(
         [
             {
@@ -109,6 +128,7 @@ def build_artur_solver_workbook(
         distances.to_excel(writer, sheet_name="Distancias", index=False)
         parameters.to_excel(writer, sheet_name="Parametros_Modelo", index=False)
         provenance.to_excel(writer, sheet_name="Proveniencia", index=False)
+        scenarios.to_excel(writer, sheet_name="Cenarios", index=False)
 
     loader_config = ExcelLoaderConfig(
         compute_haversine_distances=False,
@@ -121,6 +141,30 @@ def build_artur_solver_workbook(
         default_emergency_reception_penalty=config.emergency_reception_penalty,
     )
     model_data = load_model_data_from_excel(workbook_path, loader_config)
+    stochastic_data = load_model_data_from_excel(
+        workbook_path,
+        ExcelLoaderConfig(
+            compute_haversine_distances=False,
+            use_workbook_distances=True,
+            include_export_routes=True,
+            include_transshipment_routes=True,
+            include_direct_origin_customer_routes=False,
+            include_stochastic_scenarios=True,
+            scenario_generation_mode="cartesian",
+            stochastic_combinations=(
+                ("baixo", "alto"),
+                ("base", "base"),
+                ("alto", "baixo"),
+            ),
+            stochastic_probabilities=(1.0 / 3.0,) * 3,
+            candidate_cost_policy="fixed_total",
+            default_unmet_demand_penalty=config.unmet_demand_penalty,
+            default_emergency_static_penalty=config.emergency_static_penalty,
+            default_emergency_reception_penalty=(
+                config.emergency_reception_penalty
+            ),
+        ),
+    )
     expected_domestic_nodes = int(
         demand.loc[demand["Tipo_Demanda"] == "DOMESTICA", "Cidade"].nunique()
     )
@@ -173,6 +217,14 @@ def build_artur_solver_workbook(
             "routes_oc": len(model_data.routes_oc),
             "export_upper_bound_tons": sum(model_data.demand_exp.values()),
         },
+        "stochastic_extension_signature": {
+            "classification": "controlled_extension",
+            "scenarios": list(stochastic_data.scenarios),
+            "scenario_probabilities": dict(stochastic_data.scenario_prob),
+            "scenario_multipliers": stochastic_data.metadata.get(
+                "scenario_multipliers", {}
+            ),
+        },
         "adapter_assumptions": {
             "days_per_period": 30,
             "expansion_max_tons_per_existing_warehouse": config.expansion_max_tons,
@@ -189,6 +241,7 @@ def build_artur_solver_workbook(
             "bulkification_variable_cost_per_ton": (
                 config.bulkification_variable_cost_per_ton
             ),
+            "scenario_multiplier_source": "gold_workbook_synthetic_design",
         },
         "remaining_limitations": [
             "DISTANCE_METHOD_DIFFERS_FROM_HISTORICAL_OSRM",
@@ -234,6 +287,49 @@ def _adapt_demand(source: pd.DataFrame) -> pd.DataFrame:
         adapted["Peso (ton)"], errors="coerce"
     )
     return adapted
+
+
+def _build_scenario_definitions(config: ArturSolverAdapterConfig) -> pd.DataFrame:
+    """Return the explicit scenario levels used by controlled extensions."""
+
+    return pd.DataFrame(
+        [
+            {
+                "Cenario": "base",
+                "Probabilidade": 1.0,
+                "Ativo": "SIM",
+                "Multiplicador_Oferta": 1.0,
+                "Multiplicador_Demanda_Domestica": 1.0,
+                "Multiplicador_Demanda_Exportacao": 1.0,
+                "Descricao": "Deterministic reference level",
+                "Fonte_Parametro": "Gold workbook synthetic design",
+            },
+            {
+                "Cenario": "baixo",
+                "Probabilidade": 0.0,
+                "Ativo": "NAO",
+                "Multiplicador_Oferta": config.low_supply_multiplier,
+                "Multiplicador_Demanda_Domestica": (
+                    config.low_domestic_demand_multiplier
+                ),
+                "Multiplicador_Demanda_Exportacao": config.low_supply_multiplier,
+                "Descricao": "Low parameter level",
+                "Fonte_Parametro": "Gold workbook synthetic design",
+            },
+            {
+                "Cenario": "alto",
+                "Probabilidade": 0.0,
+                "Ativo": "NAO",
+                "Multiplicador_Oferta": config.high_supply_multiplier,
+                "Multiplicador_Demanda_Domestica": (
+                    config.high_domestic_demand_multiplier
+                ),
+                "Multiplicador_Demanda_Exportacao": config.high_supply_multiplier,
+                "Descricao": "High parameter level",
+                "Fonte_Parametro": "Gold workbook synthetic design",
+            },
+        ]
+    )
 
 
 def _adapt_warehouses(
