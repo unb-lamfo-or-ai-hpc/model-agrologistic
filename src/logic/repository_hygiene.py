@@ -1,4 +1,5 @@
 """Audit and quarantine untracked repository artifacts without deleting evidence."""
+import re
 
 from __future__ import annotations
 
@@ -317,6 +318,14 @@ def audit_repository(repo_root: Path) -> list[AuditEntry]:
         size_bytes = sum(path.stat().st_size for path in files)
         latest_mtime = max((path.stat().st_mtime for path in files), default=0.0)
         latest_mtime_utc = (
+            _QUARANTINE_RUN_PATTERN = re.compile(r"\d{8}T\d{6}Z")
+            if (
+        not _QUARANTINE_RUN_PATTERN.fullmatch(run_root.name)
+        or run_root.parent == Path(run_root.anchor)
+    ):
+        raise RepositoryHygieneError(
+            "The quarantine manifest does not identify a bounded run directory."
+        )
             datetime.fromtimestamp(latest_mtime, timezone.utc).isoformat()
             if latest_mtime
             else ""
@@ -471,6 +480,14 @@ def _validate_quarantine_manifest(
     if _is_relative_to(run_root, repo_root):
         raise RepositoryHygieneError(
             "The quarantine manifest points inside the repository."
+                if (
+        not _QUARANTINE_RUN_PATTERN.fullmatch(run_name)
+        or run_root.parent == Path(run_root.anchor)
+        or _is_relative_to(run_root, repo_root)
+    ):
+        raise RepositoryHygieneError(
+            "The archive does not identify a bounded external quarantine run."
+        )
         )
     return payload, run_root
 
@@ -586,7 +603,10 @@ def restore_quarantine_archive(repo_root: Path, archive_path: Path) -> None:
         raise RepositoryHygieneError("The quarantine archive checksum does not match.")
 
     run_name = archive_path.name[: -len(".tar.gz")]
-    run_root = archive_path.parent / run_name
+    if (
+        _is_relative_to(quarantine_root, repo_root)
+        or quarantine_root == Path(quarantine_root.anchor)
+    ):
     if run_root.exists():
         raise RepositoryHygieneError(
             f"The quarantine extraction directory already exists: {run_root}"
