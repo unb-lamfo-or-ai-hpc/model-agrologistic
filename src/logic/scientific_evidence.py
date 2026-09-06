@@ -42,6 +42,15 @@ CORE_COMPARISON_METRICS = (
     "runtime_seconds",
     "peak_rss_mb",
 )
+INVESTMENT_DECISION_METRICS = (
+    "open",
+    "candidate_capacity",
+    "expand",
+    "expansion_capacity",
+    "bulkify",
+    "bulk_capacity",
+    "effective_static_capacity",
+)
 TRACEABLE_ARTIFACT_NAMES = (
     "run_summary.json",
     "result.json",
@@ -84,7 +93,14 @@ def build_mvp_scientific_evidence(
     loaded = [_load_evidence_run(run) for run in runs]
     summary_rows = [_summary_row(item) for item in loaded]
     comparison_rows = _comparison_rows(summary_rows)
-    check_rows = _acceptance_checks(summary_rows, loaded, tolerance)
+    investment_rows = _investment_rows(loaded, tolerance)
+    investment_change_rows = _investment_change_rows(investment_rows, tolerance)
+    check_rows = _acceptance_checks(
+        summary_rows,
+        loaded,
+        investment_rows,
+        tolerance,
+    )
     decomposition_rows = _decomposition_rows(loaded)
     provenance_rows = _provenance_rows(loaded)
 
@@ -93,6 +109,8 @@ def build_mvp_scientific_evidence(
         "comparison_csv": output / "mvp_gate_comparison.csv",
         "checks_csv": output / "mvp_acceptance_checks.csv",
         "decomposition_csv": output / "mvp_evpi_vss_decomposition.csv",
+        "investment_decisions_csv": output / "mvp_investment_decisions.csv",
+        "investment_changes_csv": output / "mvp_investment_changes.csv",
         "provenance_csv": output / "mvp_evidence_provenance.csv",
         "report_md": output / "mvp_scientific_evidence.md",
         "manifest_json": output / "mvp_evidence_manifest.json",
@@ -101,8 +119,13 @@ def build_mvp_scientific_evidence(
     _write_csv(paths["comparison_csv"], comparison_rows)
     _write_csv(paths["checks_csv"], check_rows)
     _write_csv(paths["decomposition_csv"], decomposition_rows)
+    _write_csv(paths["investment_decisions_csv"], investment_rows)
+    _write_csv(paths["investment_changes_csv"], investment_change_rows)
     _write_csv(paths["provenance_csv"], provenance_rows)
-    _atomic_write(paths["report_md"], _markdown_report(summary_rows, comparison_rows))
+    _atomic_write(
+        paths["report_md"],
+        _markdown_report(summary_rows, comparison_rows, investment_change_rows),
+    )
 
     blocking_failures = [
         row for row in check_rows if row["severity"] == "error" and not row["passed"]
@@ -123,6 +146,10 @@ def build_mvp_scientific_evidence(
             "monetary_caveat": (
                 "VSS penalty components are capacity-adequacy indicators and are not "
                 "observed monetary benefits."
+            ),
+            "probability_policy_fallback": (
+                "When legacy metadata omits the declared policy, the package labels "
+                "the observed probability vector without claiming its provenance."
             ),
         },
         "inputs": provenance_rows,
@@ -149,6 +176,8 @@ def _load_evidence_run(run: EvidenceRun) -> dict[str, Any]:
         raise FileNotFoundError(f"Structured result not found: {result_path}")
     summary = _read_mapping(summary_path)
     result = _read_mapping(result_path)
+    audit_path = run_dir / "model_audit.json"
+    audit = _read_mapping(audit_path) if audit_path.is_file() else {}
     stochastic = result.get("stochastic_performance")
     if stochastic is not None and not isinstance(stochastic, dict):
         raise ValueError(f"Invalid stochastic_performance in {result_path}.")
@@ -157,6 +186,7 @@ def _load_evidence_run(run: EvidenceRun) -> dict[str, Any]:
         "summary": summary,
         "result": result,
         "stochastic": stochastic,
+        "audit": audit,
     }
 
 
@@ -195,6 +225,16 @@ def _summary_row(item: dict[str, Any]) -> dict[str, Any]:
     metadata = result.get("experiment", {}).get("metadata", {})
     if not isinstance(metadata, dict):
         metadata = {}
+    material_balance, material_balance_source = _material_balance_status(
+        summary,
+        item["audit"],
+    )
+    probability_policy, probability_policy_source = _probability_policy(
+        metadata,
+        stochastic,
+    )
+    decisions = _warehouse_decisions(item)
+    investment_summary = _investment_summary(decisions)
     return {
         "gate": run.gate,
         "design": run.design,
@@ -215,7 +255,8 @@ def _summary_row(item: dict[str, Any]) -> dict[str, Any]:
         "emergency_static_capacity": _number(summary.get("emergency_static_capacity")),
         "emergency_reception_capacity": _number(summary.get("emergency_reception_capacity")),
         "capacity_adequacy_status": summary.get("capacity_adequacy_status"),
-        "material_balance_ok": summary.get("material_balance_ok"),
+        "material_balance_ok": material_balance,
+        "material_balance_source": material_balance_source,
         "dyn_cap": _number(summary.get("dyn_cap")),
         "turnover": _number(summary.get("turnover")),
         "evpi": _first_number(stochastic.get("evpi"), summary.get("evpi")),
@@ -223,8 +264,90 @@ def _summary_row(item: dict[str, Any]) -> dict[str, Any]:
         "runtime_seconds": _number(summary.get("runtime_seconds")),
         "peak_rss_mb": _number(summary.get("peak_rss_mb")),
         "slurm_job_id": summary.get("slurm_job_id"),
-        "probability_policy": metadata.get("probability_policy"),
+        "probability_policy": probability_policy,
+        "probability_policy_source": probability_policy_source,
         "forecasting_reconstructed": metadata.get("forecasting_reconstructed"),
+        **investment_summary,
+    }
+
+
+def _material_balance_status(
+    summary: dict[str, Any],
+    audit: dict[str, Any],
+) -> tuple[bool | None, str | None]:
+    summary_value = summary.get("material_balance_ok")
+    if isinstance(summary_value, bool):
+        return summary_value, "run_summary"
+    solution = audit.get("solution", {})
+    if not isinstance(solution, dict):
+        return None, None
+    material_balance = solution.get("material_balance", {})
+    if not isinstance(material_balance, dict):
+        return None, None
+    audit_value = material_balance.get("all_within_tolerance")
+    if isinstance(audit_value, bool):
+        return audit_value, "model_audit"
+    return None, None
+
+
+def _probability_policy(
+    metadata: dict[str, Any],
+    stochastic: dict[str, Any],
+) -> tuple[str | None, str | None]:
+    declared = metadata.get("probability_policy")
+    if declared:
+        return str(declared), "experiment_metadata"
+    stochastic_metadata = stochastic.get("metadata", {})
+    if not isinstance(stochastic_metadata, dict):
+        return None, None
+    probabilities = stochastic_metadata.get("scenario_probabilities", {})
+    if not isinstance(probabilities, dict) or not probabilities:
+        return None, None
+    values = [_number(value) for value in probabilities.values()]
+    if any(value is None for value in values):
+        return None, None
+    observed = [value for value in values if value is not None]
+    if max(observed) - min(observed) <= 1e-12:
+        return "equal_observed_weights", "stochastic_performance"
+    return "explicit_observed_weights", "stochastic_performance"
+
+
+def _warehouse_decisions(item: dict[str, Any]) -> list[dict[str, Any]]:
+    result_payload = item["result"].get("result", {})
+    if not isinstance(result_payload, dict):
+        return []
+    decisions = result_payload.get("warehouse_decisions", [])
+    if not isinstance(decisions, list):
+        return []
+    return [decision for decision in decisions if isinstance(decision, dict)]
+
+
+def _investment_summary(decisions: list[dict[str, Any]]) -> dict[str, Any]:
+    return {
+        "investment_decision_count": len(decisions),
+        "candidates_opened": sum(
+            bool(decision.get("is_candidate"))
+            and (_number(decision.get("candidate_capacity")) or 0.0) > 1e-7
+            for decision in decisions
+        ),
+        "candidate_capacity": sum(
+            _number(decision.get("candidate_capacity")) or 0.0 for decision in decisions
+        ),
+        "warehouses_expanded": sum(
+            (_number(decision.get("expansion_capacity")) or 0.0) > 1e-7 for decision in decisions
+        ),
+        "expansion_capacity": sum(
+            _number(decision.get("expansion_capacity")) or 0.0 for decision in decisions
+        ),
+        "warehouses_bulkified": sum(
+            (_number(decision.get("bulk_capacity")) or 0.0) > 1e-7 for decision in decisions
+        ),
+        "bulk_capacity": sum(
+            _number(decision.get("bulk_capacity")) or 0.0 for decision in decisions
+        ),
+        "effective_static_capacity": sum(
+            _number(decision.get("effective_static_capacity")) or 0.0 for decision in decisions
+        ),
     }
 
 
@@ -269,9 +392,105 @@ def _comparison_rows(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return records
 
 
+def _investment_rows(
+    loaded: list[dict[str, Any]],
+    tolerance: float,
+) -> list[dict[str, Any]]:
+    records: list[dict[str, Any]] = []
+    for item in loaded:
+        run: EvidenceRun = item["run"]
+        result = item["result"]
+        metadata = result.get("experiment", {}).get("metadata", {})
+        if not isinstance(metadata, dict):
+            metadata = {}
+        decisions = _warehouse_decisions(item)
+        warehouse_ids = [str(decision.get("warehouse", "")) for decision in decisions]
+        if any(not warehouse for warehouse in warehouse_ids):
+            raise ValueError(f"Gate {run.gate} contains a warehouse decision without an ID.")
+        duplicates = sorted(
+            warehouse for warehouse in set(warehouse_ids) if warehouse_ids.count(warehouse) > 1
+        )
+        if duplicates:
+            raise ValueError(
+                f"Gate {run.gate} contains duplicate warehouse decisions: {duplicates}."
+            )
+        for decision in decisions:
+            candidate_capacity = _number(decision.get("candidate_capacity")) or 0.0
+            expansion_capacity = _number(decision.get("expansion_capacity")) or 0.0
+            bulk_capacity = _number(decision.get("bulk_capacity")) or 0.0
+            records.append(
+                {
+                    "gate": run.gate,
+                    "design": run.design,
+                    "classification": metadata.get("comparison_status", "bounded_reproduction"),
+                    "warehouse": str(decision["warehouse"]),
+                    "is_existing": bool(decision.get("is_existing", False)),
+                    "is_candidate": bool(decision.get("is_candidate", False)),
+                    "open": _number(decision.get("open")) or 0.0,
+                    "candidate_capacity": candidate_capacity,
+                    "expand": _number(decision.get("expand")) or 0.0,
+                    "expansion_capacity": expansion_capacity,
+                    "bulkify": _number(decision.get("bulkify")) or 0.0,
+                    "bulk_capacity": bulk_capacity,
+                    "static_capacity": _number(decision.get("static_capacity")) or 0.0,
+                    "effective_static_capacity": (
+                        _number(decision.get("effective_static_capacity")) or 0.0
+                    ),
+                    "selected_for_investment": (
+                        candidate_capacity > tolerance
+                        or expansion_capacity > tolerance
+                        or bulk_capacity > tolerance
+                    ),
+                }
+            )
+    return records
+
+
+def _investment_change_rows(
+    records: list[dict[str, Any]],
+    tolerance: float,
+) -> list[dict[str, Any]]:
+    gates = list(dict.fromkeys(str(record["gate"]) for record in records))
+    by_gate = {
+        gate: {str(record["warehouse"]): record for record in records if record["gate"] == gate}
+        for gate in gates
+    }
+    changes: list[dict[str, Any]] = []
+    for baseline_gate, comparison_gate in zip(gates, gates[1:], strict=False):
+        baseline_records = by_gate[baseline_gate]
+        comparison_records = by_gate[comparison_gate]
+        warehouses = sorted(set(baseline_records) | set(comparison_records))
+        for warehouse in warehouses:
+            baseline = baseline_records.get(warehouse, {})
+            comparison = comparison_records.get(warehouse, {})
+            for metric in INVESTMENT_DECISION_METRICS:
+                baseline_value = _number(baseline.get(metric)) or 0.0
+                comparison_value = _number(comparison.get(metric)) or 0.0
+                delta = comparison_value - baseline_value
+                changes.append(
+                    {
+                        "baseline_gate": baseline_gate,
+                        "comparison_gate": comparison_gate,
+                        "warehouse": warehouse,
+                        "baseline_present": bool(baseline),
+                        "comparison_present": bool(comparison),
+                        "metric": metric,
+                        "baseline_value": baseline_value,
+                        "comparison_value": comparison_value,
+                        "delta": delta,
+                        "changed": abs(delta) > tolerance,
+                        "comparison_scope": (
+                            "controlled_extension_not_direct_thesis_numeric_validation"
+                        ),
+                    }
+                )
+    return changes
+
+
 def _acceptance_checks(
     rows: list[dict[str, Any]],
     loaded: list[dict[str, Any]],
+    investment_rows: list[dict[str, Any]],
     tolerance: float,
 ) -> list[dict[str, Any]]:
     checks: list[dict[str, Any]] = []
@@ -316,6 +535,15 @@ def _acceptance_checks(
             material_balance is True,
             "error" if gate != "gate_2b" else "warning",
             material_balance,
+        )
+        gate_investments = [record for record in investment_rows if record["gate"] == gate]
+        _add_check(
+            checks,
+            gate,
+            "first_stage_decisions_exported",
+            bool(gate_investments),
+            "error",
+            len(gate_investments),
         )
 
         stochastic = item["stochastic"]
@@ -441,6 +669,7 @@ def _provenance_rows(loaded: list[dict[str, Any]]) -> list[dict[str, Any]]:
 def _markdown_report(
     rows: list[dict[str, Any]],
     comparisons: list[dict[str, Any]],
+    investment_changes: list[dict[str, Any]],
 ) -> str:
     lines = [
         "# MVP scientific evidence",
@@ -469,6 +698,55 @@ def _markdown_report(
                 evpi=_format_number(row["evpi"], 2),
                 vss=_format_number(row["vss"], 2),
             )
+        )
+
+    lines.extend(
+        [
+            "",
+            "## First-stage investment summary",
+            "",
+            "| Gate | Candidates opened | Candidate capacity | Expanded warehouses | "
+            "Expansion capacity | Bulkified warehouses | Bulk capacity |",
+            "|---|---:|---:|---:|---:|---:|---:|",
+        ]
+    )
+    for row in rows:
+        lines.append(
+            "| {gate} | {opened} | {candidate} | {expanded} | {expansion} | "
+            "{bulkified} | {bulk} |".format(
+                gate=row["gate"],
+                opened=row["candidates_opened"],
+                candidate=_format_number(row["candidate_capacity"], 4),
+                expanded=row["warehouses_expanded"],
+                expansion=_format_number(row["expansion_capacity"], 4),
+                bulkified=row["warehouses_bulkified"],
+                bulk=_format_number(row["bulk_capacity"], 4),
+            )
+        )
+
+    changed_by_transition: dict[tuple[str, str], set[str]] = {}
+    for record in investment_changes:
+        if not record["changed"]:
+            continue
+        transition = (
+            str(record["baseline_gate"]),
+            str(record["comparison_gate"]),
+        )
+        changed_by_transition.setdefault(transition, set()).add(str(record["warehouse"]))
+    lines.extend(
+        [
+            "",
+            "## First-stage decision stability",
+            "",
+            "| Baseline | Comparison | Warehouses with a changed investment decision |",
+            "|---|---|---:|",
+        ]
+    )
+    for baseline, comparison in zip(rows, rows[1:], strict=False):
+        transition = (str(baseline["gate"]), str(comparison["gate"]))
+        lines.append(
+            f"| {transition[0]} | {transition[1]} | "
+            f"{len(changed_by_transition.get(transition, set()))} |"
         )
 
     lines.extend(
