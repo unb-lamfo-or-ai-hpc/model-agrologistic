@@ -206,6 +206,7 @@ def test_stochastic_audit_reports_material_balance_capacity_gap_and_saturation()
     )
 
     solution = audit["solution"]
+    assert audit["schema_version"] == 3
     assert solution["material_balance"]["all_within_tolerance"] is True
     assert solution["capacity_adequacy"]["status"] == (
         "emergency_capacity_required"

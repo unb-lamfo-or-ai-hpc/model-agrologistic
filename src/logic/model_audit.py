@@ -9,7 +9,7 @@ from src.logic.model_data import ModelData
 from src.logic.optimization import OptimizationResult
 
 
-AUDIT_SCHEMA_VERSION = 2
+AUDIT_SCHEMA_VERSION = 3
 LARGE_VALUE_THRESHOLD = 1_000_000_000.0
 DOMINANT_OBJECTIVE_SHARE = 0.9
 SAMPLE_LIMIT = 20
