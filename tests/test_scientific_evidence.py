@@ -24,6 +24,8 @@ def test_evidence_package_consolidates_gates_and_decomposition(tmp_path):
         "comparison_csv",
         "checks_csv",
         "decomposition_csv",
+        "investment_decisions_csv",
+        "investment_changes_csv",
         "provenance_csv",
         "report_md",
         "manifest_json",
@@ -35,6 +37,12 @@ def test_evidence_package_consolidates_gates_and_decomposition(tmp_path):
     assert float(summary[2]["vss"]) == pytest.approx(21.0)
     assert float(summary[2]["penalty_cost"]) == pytest.approx(900.0)
     assert float(summary[2]["penalty_cost_share"]) == pytest.approx(0.9)
+    assert int(summary[2]["candidates_opened"]) == 1
+    assert float(summary[2]["candidate_capacity"]) == pytest.approx(90.0)
+    assert summary[1]["probability_policy"] == "equal_observed_weights"
+    assert summary[1]["probability_policy_source"] == "stochastic_performance"
+    assert summary[0]["material_balance_ok"] == "True"
+    assert summary[0]["material_balance_source"] == "model_audit"
 
     comparisons = _read_csv(paths["comparison_csv"])
     gate_2d_evpi = next(
@@ -45,6 +53,20 @@ def test_evidence_package_consolidates_gates_and_decomposition(tmp_path):
         and row["metric"] == "evpi"
     )
     assert float(gate_2d_evpi["delta"]) == pytest.approx(1.0)
+
+    investments = _read_csv(paths["investment_decisions_csv"])
+    assert len(investments) == 3
+    assert all(row["warehouse"] == "W1" for row in investments)
+    changes = _read_csv(paths["investment_changes_csv"])
+    candidate_change = next(
+        row
+        for row in changes
+        if row["baseline_gate"] == "gate_2c"
+        and row["comparison_gate"] == "gate_2d"
+        and row["metric"] == "candidate_capacity"
+    )
+    assert float(candidate_change["delta"]) == pytest.approx(10.0)
+    assert candidate_change["changed"] == "True"
 
     decomposition = _read_csv(paths["decomposition_csv"])
     penalty = next(
@@ -133,7 +155,7 @@ def _write_run(
         "emergency_static_capacity": 0.0,
         "emergency_reception_capacity": 0.0009,
         "capacity_adequacy_status": "emergency_capacity_required",
-        "material_balance_ok": True,
+        "material_balance_ok": None if gate == "gate_2b" else True,
         "dyn_cap": 25.0,
         "turnover": 2.5,
         "evpi": evpi if stochastic else None,
@@ -195,7 +217,7 @@ def _write_run(
                 "comparison_status": (
                     "controlled_extension" if stochastic else "bounded_reproduction"
                 ),
-                "probability_policy": ("equal_experimental_weights" if stochastic else None),
+                "probability_policy": ("equal_experimental_weights" if gate == "gate_2d" else None),
                 "forecasting_reconstructed": False,
             }
         },
@@ -204,12 +226,39 @@ def _write_run(
                 "opening": 40.0,
                 "storage": 60.0,
                 "emergency_reception": 900.0,
-            }
+            },
+            "warehouse_decisions": [
+                {
+                    "warehouse": "W1",
+                    "is_existing": False,
+                    "is_candidate": True,
+                    "open": 1.0,
+                    "candidate_capacity": {
+                        "gate_2b": 70.0,
+                        "gate_2c": 80.0,
+                        "gate_2d": 90.0,
+                    }[gate],
+                    "expand": 0.0,
+                    "expansion_capacity": 0.0,
+                    "bulkify": 0.0,
+                    "bulk_capacity": 0.0,
+                    "static_capacity": 0.0,
+                    "effective_static_capacity": {
+                        "gate_2b": 70.0,
+                        "gate_2c": 80.0,
+                        "gate_2d": 90.0,
+                    }[gate],
+                }
+            ],
         },
         "stochastic_performance": stochastic_performance,
     }
     (run_dir / "run_summary.json").write_text(json.dumps(summary), encoding="utf-8")
     (run_dir / "result.json").write_text(json.dumps(result), encoding="utf-8")
+    (run_dir / "model_audit.json").write_text(
+        json.dumps({"solution": {"material_balance": {"all_within_tolerance": True}}}),
+        encoding="utf-8",
+    )
     return EvidenceRun(gate, gate, run_dir)
 
 
