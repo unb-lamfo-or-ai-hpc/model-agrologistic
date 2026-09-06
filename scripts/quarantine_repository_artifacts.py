@@ -16,6 +16,8 @@ def main() -> int:
 
     from src.logic.repository_hygiene import (
         apply_quarantine_plan,
+        compress_quarantine_manifest,
+        restore_quarantine_archive,
         restore_quarantine_manifest,
     )
 
@@ -30,6 +32,13 @@ def main() -> int:
     restore_parser = subparsers.add_parser("restore")
     restore_parser.add_argument("manifest", type=Path)
 
+    compress_parser = subparsers.add_parser("compress")
+    compress_parser.add_argument("manifest", type=Path)
+    compress_parser.add_argument("--remove-source", action="store_true")
+
+    archive_parser = subparsers.add_parser("restore-archive")
+    archive_parser.add_argument("archive", type=Path)
+
     args = parser.parse_args()
     if args.command == "apply":
         manifest = apply_quarantine_plan(
@@ -40,6 +49,20 @@ def main() -> int:
         print(f"Quarantine manifest: {manifest}")
         return 0
 
+    if args.command == "compress":
+        archive, checksum = compress_quarantine_manifest(
+            args.manifest,
+            remove_source=args.remove_source,
+        )
+        print(f"Quarantine archive: {archive}")
+        print(f"SHA-256 checksum: {checksum}")
+        return 0
+
+    if args.command == "restore-archive":
+        restore_quarantine_archive(args.repo, args.archive)
+        print("Compressed quarantine restored.")
+        return 0
+
     restore_quarantine_manifest(args.repo, args.manifest)
     print("Quarantined artifacts restored.")
     return 0
@@ -47,4 +70,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
