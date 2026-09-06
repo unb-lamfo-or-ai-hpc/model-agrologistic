@@ -6,10 +6,9 @@ import pytest
 
 from src.logic.repository_hygiene import (
     AUTO_QUARANTINE,
-    COMPLETED_CHECKPOINT,
     KEEP,
+    PIPELINE_REQUIRED,
     PROTECTED,
-    REVIEW_QUARANTINE,
     SAFE_GENERATED,
     apply_quarantine_plan,
     audit_repository,
@@ -55,7 +54,7 @@ def test_research_inputs_and_reproducibility_evidence_are_protected(
     assert action == KEEP
 
 
-def test_optimal_evpi_vss_checkpoint_requires_decomposition(tmp_path):
+def test_evpi_vss_checkpoint_is_retained_for_pipeline_recovery(tmp_path):
     run_root = tmp_path / "data/results/hpc/campaign/run"
     checkpoint = run_root / "evpi_vss_checkpoints/state.json"
     checkpoint.parent.mkdir(parents=True)
@@ -75,8 +74,8 @@ def test_optimal_evpi_vss_checkpoint_requires_decomposition(tmp_path):
     )
 
     assert unit == Path("data/results/hpc/campaign/run/evpi_vss_checkpoints")
-    assert category == COMPLETED_CHECKPOINT
-    assert action == REVIEW_QUARANTINE
+    assert category == PIPELINE_REQUIRED
+    assert action == KEEP
 
 
 def test_default_plan_only_contains_generated_artifacts(tmp_path):
@@ -94,6 +93,38 @@ def test_default_plan_only_contains_generated_artifacts(tmp_path):
     assert [entry["path"] for entry in plan["entries"]] == [
         "tests/__pycache__"
     ]
+
+
+def test_pipeline_checkpoint_cannot_be_added_to_a_quarantine_plan(tmp_path):
+    repo_root = tmp_path / "repository"
+    repo_root.mkdir()
+    initialize_repository(repo_root)
+    checkpoint = repo_root / "data/results/hpc/campaign/run/evpi_vss_checkpoints"
+    checkpoint.mkdir(parents=True)
+    (checkpoint / "state.json").write_text("{}", encoding="utf-8")
+
+    entries = audit_repository(repo_root)
+    pipeline_entry = next(
+        entry for entry in entries if entry.category == PIPELINE_REQUIRED
+    )
+    plan = build_quarantine_plan(repo_root, entries)
+    plan["entries"].append(
+        {
+            "path": pipeline_entry.path,
+            "category": PIPELINE_REQUIRED,
+            "size_bytes": pipeline_entry.size_bytes,
+            "tree_sha256": "manually-edited-plan",
+        }
+    )
+    plan_path = tmp_path / "plan.json"
+    plan_path.write_text(json.dumps(plan), encoding="utf-8")
+
+    with pytest.raises(RuntimeError, match="category that cannot be moved"):
+        apply_quarantine_plan(
+            repo_root,
+            plan_path,
+            tmp_path / "quarantine",
+        )
 
 
 def test_quarantine_is_reversible_and_keeps_manifest(tmp_path):
