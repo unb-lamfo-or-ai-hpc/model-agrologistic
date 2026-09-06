@@ -45,6 +45,10 @@ The command writes:
 - `mvp_acceptance_checks.csv`: physical and mathematical acceptance checks;
 - `mvp_evpi_vss_decomposition.csv`: long-form RP, WS, EV, EEV, EVPI, VSS, and
   physical-recourse decomposition;
+- `mvp_investment_decisions.csv`: opening, candidate capacity, expansion, and
+  bulkification decisions for every warehouse and gate;
+- `mvp_investment_changes.csv`: warehouse-level first-stage changes between
+  consecutive gates;
 - `mvp_evidence_provenance.csv`: SHA-256 hashes for every available source
   artifact;
 - `mvp_scientific_evidence.md`: a generated, human-readable summary;
@@ -64,6 +68,7 @@ A stochastic gate is accepted when:
 - domestic service is at least `1 - tolerance`;
 - unmet domestic demand is within tolerance;
 - material balance is explicitly reported as valid;
+- first-stage warehouse decisions are present and uniquely identified;
 - scenario probabilities exist and sum to one;
 - EVPI and VSS are non-negative within tolerance.
 
@@ -73,9 +78,16 @@ first-stage investments. This is a strategic model output for public investment
 planning.
 
 Gate 2B predates some consolidated physical diagnostics. A missing
-`material_balance_ok` field is therefore a warning for the deterministic gate,
-not a blocking failure. Re-running Gate 2B with the current exporter removes
-that warning and strengthens provenance.
+`material_balance_ok` field in its run summary is recovered from
+`model_audit.json` when the audit contains the current material-balance result.
+If neither artifact reports it, the deterministic gate receives a warning
+rather than a blocking failure.
+
+Legacy stochastic runs may omit `probability_policy` while still exporting the
+complete probability vector. In that case, the evidence package reports either
+`equal_observed_weights` or `explicit_observed_weights` and records
+`stochastic_performance` as the inference source. This describes the observed
+vector without making an unsupported claim about how it was originally chosen.
 
 ## Cost and value-of-information interpretation
 
@@ -115,6 +127,10 @@ correlated states are expanded to the complete supply-demand Cartesian product.
 This statement remains conditional on the synthetic multipliers and equal
 experimental probabilities.
 
+Aggregate stability does not prove that every facility decision is identical.
+The warehouse-level decision and change tables must be inspected before making
+location-specific investment recommendations.
+
 ## NPAD validation
 
 Validate the implementation before generating the evidence package:
@@ -144,6 +160,8 @@ PY
 cat data/results/reproducibility/mvp_scientific_evidence/mvp_gate_summary.csv
 cat data/results/reproducibility/mvp_scientific_evidence/mvp_gate_comparison.csv
 cat data/results/reproducibility/mvp_scientific_evidence/mvp_acceptance_checks.csv
+cat data/results/reproducibility/mvp_scientific_evidence/mvp_investment_decisions.csv
+cat data/results/reproducibility/mvp_scientific_evidence/mvp_investment_changes.csv
 ```
 
 Generated evidence remains an HPC artifact and should not be committed unless a
