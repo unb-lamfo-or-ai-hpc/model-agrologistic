@@ -63,7 +63,6 @@ experiments:
     metadata:
       family: artur_stochastic_extension
       campaign_gate: gate_2c_three_scenario_rp
-      comparison_group: artur_three_scenario_penalty
       comparison_status: controlled_extension
       scenario_design: stress_central_favorable
       scenario_multiplier_source: gold_workbook_synthetic_design
@@ -77,7 +76,6 @@ experiments:
     metadata:
       family: artur_stochastic_extension
       campaign_gate: gate_2c_three_scenario_evpi_vss
-      comparison_group: artur_three_scenario_penalty
       comparison_status: controlled_extension
       scenario_design: stress_central_favorable
       scenario_multiplier_source: gold_workbook_synthetic_design

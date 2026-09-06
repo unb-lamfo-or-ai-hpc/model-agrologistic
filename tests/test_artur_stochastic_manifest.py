@@ -39,6 +39,10 @@ def test_three_scenario_manifest_preserves_the_validated_model_profile():
         experiment["metadata"]["comparison_status"] == "controlled_extension"
         for experiment in experiments
     )
+    assert all(
+        "comparison_group" not in experiment["metadata"]
+        for experiment in experiments
+    )
 
 
 @pytest.mark.parametrize(
