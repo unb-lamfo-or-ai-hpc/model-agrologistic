@@ -10,7 +10,7 @@ from src.logic.model_config import ModelConfig
 MANIFEST = Path("experiments/artur_stochastic_extension.yaml")
 
 
-def test_three_scenario_manifest_preserves_the_validated_model_profile():
+def test_stochastic_extension_manifest_preserves_the_validated_model_profile():
     payload = yaml.safe_load(MANIFEST.read_text(encoding="utf-8"))
     defaults = payload["defaults"]
     experiments = payload["experiments"]
@@ -33,8 +33,11 @@ def test_three_scenario_manifest_preserves_the_validated_model_profile():
     assert [experiment["calculate_evpi_vss"] for experiment in experiments] == [
         False,
         True,
+        False,
+        True,
     ]
     assert experiments[1]["resume_evpi_vss"] is True
+    assert experiments[3]["resume_evpi_vss"] is True
     assert all(
         experiment["metadata"]["comparison_status"] == "controlled_extension"
         for experiment in experiments
@@ -49,6 +52,31 @@ def test_three_scenario_manifest_preserves_the_validated_model_profile():
     assert experiments[1]["metadata"]["monetary_interpretation"] == (
         "decomposed_penalty_dependent_evpi_vss"
     )
+
+
+def test_nine_scenario_runs_use_the_full_factorial_design():
+    payload = yaml.safe_load(MANIFEST.read_text(encoding="utf-8"))
+    rp, evpi_vss = payload["experiments"][2:]
+    loader = rp["loader"]
+
+    assert rp["name"] == "artur_legacy_i001_sto_9_rp"
+    assert evpi_vss["name"] == "artur_legacy_i001_sto_9_evpi_vss"
+    assert loader["stochastic_combinations"] is None
+    assert loader["stochastic_probabilities"] is None
+    assert loader["stochastic_supply_levels"] == ["baixo", "base", "alto"]
+    assert loader["stochastic_demand_levels"] == ["baixo", "base", "alto"]
+    assert rp["calculate_evpi_vss"] is False
+    assert evpi_vss["calculate_evpi_vss"] is True
+    assert evpi_vss["resume_evpi_vss"] is True
+    assert rp["max_estimated_variables"] == 2_000_000
+    assert evpi_vss["max_estimated_variables"] == 2_000_000
+    assert rp["metadata"]["campaign_gate"] == "gate_2d_nine_scenario_rp"
+    assert (
+        evpi_vss["metadata"]["campaign_gate"]
+        == "gate_2d_nine_scenario_evpi_vss"
+    )
+    assert rp["metadata"]["probability_policy"] == "equal_experimental_weights"
+    assert evpi_vss["loader"] == loader
 
 
 @pytest.mark.parametrize(
