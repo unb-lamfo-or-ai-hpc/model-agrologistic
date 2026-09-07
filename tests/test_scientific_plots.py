@@ -5,6 +5,7 @@ from pathlib import Path
 
 import pytest
 
+from src.logic import scientific_plots as scientific_plots_module
 from src.logic.scientific_plots import ScientificPlotError, build_publication_plots
 
 
@@ -55,17 +56,19 @@ def test_publication_plots_reject_a_nonaccepted_evidence_package(tmp_path):
         build_publication_plots(evidence, tmp_path / "plots", dpi=72)
 
 
-def test_publication_plots_reject_a_modified_source_table(tmp_path):
+def test_publication_plots_reject_a_modified_source_table(tmp_path, monkeypatch):
     evidence = _write_evidence_package(tmp_path / "evidence")
     with (evidence / "mvp_gate_summary.csv").open("a", encoding="utf-8") as stream:
         stream.write("tampered\n")
+    monkeypatch.setattr(scientific_plots_module, "_plot_dependencies", _unexpected_plot_import)
 
     with pytest.raises(ScientificPlotError, match="checksum mismatch"):
         build_publication_plots(evidence, tmp_path / "plots", dpi=72)
 
 
-def test_publication_plots_reject_a_blocking_acceptance_check(tmp_path):
+def test_publication_plots_reject_a_blocking_acceptance_check(tmp_path, monkeypatch):
     evidence = _write_evidence_package(tmp_path / "evidence", failed_check=True)
+    monkeypatch.setattr(scientific_plots_module, "_plot_dependencies", _unexpected_plot_import)
 
     with pytest.raises(ScientificPlotError, match="blocking failure"):
         build_publication_plots(evidence, tmp_path / "plots", dpi=72)
@@ -250,3 +253,7 @@ def _read_csv(path: Path) -> list[dict[str, str]]:
 
 def _sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def _unexpected_plot_import():
+    raise AssertionError("Plot dependencies were imported before evidence validation.")

@@ -18,11 +18,15 @@ pipeline used in Artur's thesis.
 Install the project with the visualization dependency group:
 
 ```bash
+export PYTHONNOUSERSITE=1
 python -m pip install -e '.[visualization]'
 ```
 
 The development dependency group also includes the plotting stack, so contributors may instead
-install `.[dev]`.
+install `.[dev]`. It also installs the declared build tools (`setuptools` and `wheel`) into the
+active development environment. Export `PYTHONNOUSERSITE=1` before installation so that packages
+found only in a user-level site directory are not mistaken for packages available in the isolated
+environment.
 
 ## Generation
 

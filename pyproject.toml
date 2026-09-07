@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=77", "wheel"]
+requires = ["setuptools>=77", "wheel>=0.45"]
 build-backend = "setuptools.build_meta"
 
 
@@ -67,6 +67,8 @@ dev = [
     "pytest>=8.0,<10",
     "ruff>=0.8,<1",
     "seaborn>=0.13,<1",
+    "setuptools>=77",
+    "wheel>=0.45,<1",
 ]
 
 visualization = [
@@ -112,8 +114,10 @@ all = [
     "prophet>=1.1,<2",
     "ruff>=0.8,<1",
     "seaborn>=0.13,<1",
+    "setuptools>=77",
     "statsmodels>=0.14,<1",
     "torch>=2.8,<3",
+    "wheel>=0.45,<1",
     "xgboost>=2.1,<4",
 ]
 

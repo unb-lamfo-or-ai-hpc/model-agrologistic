@@ -151,7 +151,12 @@ def _load_evidence_frames(
     evidence_root: Path,
     manifest: dict[str, Any],
 ) -> tuple[dict[str, Any], dict[str, dict[str, Any]]]:
-    _, _, pd = _plot_dependencies()
+    try:
+        import pandas as pd
+    except ImportError as exc:
+        raise ScientificPlotError(
+            "Evidence validation requires the project's core pandas dependency."
+        ) from exc
     outputs = manifest["outputs"]
     frames: dict[str, Any] = {}
     sources: dict[str, dict[str, Any]] = {}
