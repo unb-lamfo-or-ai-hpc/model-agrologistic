@@ -7,9 +7,12 @@ import pytest
 
 from src.logic.repository_hygiene import (
     AUTO_QUARANTINE,
+    FAILED_PROTOCOL_RUN,
+    FAILED_SLURM_LOG,
     KEEP,
     PIPELINE_REQUIRED,
     PROTECTED,
+    RELEASE_EVIDENCE,
     SAFE_GENERATED,
     apply_quarantine_plan,
     audit_repository,
@@ -26,6 +29,17 @@ def initialize_repository(path: Path) -> None:
     if git is None:
         pytest.skip("git is required for repository-hygiene integration tests")
     subprocess.run([git, "init", str(path)], check=True, capture_output=True)
+
+
+def write_protocol_run(repo_root: Path, name: str, status: str) -> Path:
+    run_root = repo_root / "data/results/releases" / name
+    run_root.mkdir(parents=True)
+    (run_root / "protocol_manifest.json").write_text(
+        json.dumps({"overall_status": status}),
+        encoding="utf-8",
+    )
+    (run_root / "environment.json").write_text("{}", encoding="utf-8")
+    return run_root
 
 
 def test_cache_rules_take_precedence_over_protected_source_prefix(tmp_path):
@@ -97,6 +111,94 @@ def test_default_plan_only_contains_generated_artifacts(tmp_path):
     assert [entry["path"] for entry in plan["entries"]] == [
         "tests/__pycache__"
     ]
+
+
+def test_accepted_release_evidence_is_never_planned_for_quarantine(tmp_path):
+    initialize_repository(tmp_path)
+    run_root = write_protocol_run(tmp_path, "trl6-v0.1.0-final", "accepted")
+
+    entries = audit_repository(tmp_path)
+    release_entry = next(
+        entry for entry in entries if entry.path == "data/results/releases/trl6-v0.1.0-final"
+    )
+    plan = build_quarantine_plan(
+        tmp_path,
+        entries,
+        include_failed_protocol_runs=True,
+    )
+
+    assert release_entry.category == RELEASE_EVIDENCE
+    assert release_entry.recommended_action == KEEP
+    assert run_root.exists()
+    assert not plan["entries"]
+
+
+def test_rejected_protocol_run_requires_explicit_plan_opt_in(tmp_path):
+    initialize_repository(tmp_path)
+    write_protocol_run(tmp_path, "trl6-v0.1.0-candidate-03", "rejected")
+
+    entries = audit_repository(tmp_path)
+    failed_entry = next(
+        entry
+        for entry in entries
+        if entry.path == "data/results/releases/trl6-v0.1.0-candidate-03"
+    )
+    default_plan = build_quarantine_plan(tmp_path, entries)
+    reviewed_plan = build_quarantine_plan(
+        tmp_path,
+        entries,
+        include_failed_protocol_runs=True,
+    )
+
+    assert failed_entry.category == FAILED_PROTOCOL_RUN
+    assert failed_entry.recommended_action == "REVIEW"
+    assert not default_plan["entries"]
+    assert [entry["path"] for entry in reviewed_plan["entries"]] == [
+        "data/results/releases/trl6-v0.1.0-candidate-03"
+    ]
+
+
+def test_explicit_failed_slurm_job_id_is_reviewable(tmp_path):
+    initialize_repository(tmp_path)
+    failed_log = tmp_path / "slurm-trl6-2080717.out"
+    failed_log.write_text("failed before protocol execution", encoding="utf-8")
+
+    entries = audit_repository(tmp_path, failed_slurm_job_ids={"2080717"})
+    log_entry = next(entry for entry in entries if entry.path == failed_log.name)
+    plan = build_quarantine_plan(
+        tmp_path,
+        entries,
+        failed_slurm_job_ids={"2080717"},
+    )
+
+    assert log_entry.category == FAILED_SLURM_LOG
+    assert log_entry.recommended_action == "REVIEW"
+    assert [entry["path"] for entry in plan["entries"]] == [failed_log.name]
+
+
+def test_apply_rejects_an_accepted_run_relabelled_as_failed(tmp_path):
+    repo_root = tmp_path / "repository"
+    repo_root.mkdir()
+    initialize_repository(repo_root)
+    write_protocol_run(repo_root, "trl6-v0.1.0-final", "accepted")
+
+    entries = audit_repository(repo_root)
+    release_entry = next(entry for entry in entries if entry.category == RELEASE_EVIDENCE)
+    plan = build_quarantine_plan(repo_root, entries)
+    plan["reviewed_categories"] = [FAILED_PROTOCOL_RUN]
+    plan["entries"].append(
+        {
+            "path": release_entry.path,
+            "category": FAILED_PROTOCOL_RUN,
+            "size_bytes": release_entry.size_bytes,
+            "tree_sha256": "manually-relabeled-release",
+        }
+    )
+    plan_path = tmp_path / "plan.json"
+    plan_path.write_text(json.dumps(plan), encoding="utf-8")
+
+    with pytest.raises(RuntimeError, match="classification changed after planning"):
+        apply_quarantine_plan(repo_root, plan_path, tmp_path / "quarantine")
 
 
 def test_pipeline_checkpoint_cannot_be_added_to_a_quarantine_plan(tmp_path):
