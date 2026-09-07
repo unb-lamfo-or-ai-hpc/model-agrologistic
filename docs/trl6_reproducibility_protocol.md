@@ -57,6 +57,22 @@ Never reuse an output directory from a different workbook or source commit. The
 script deliberately builds the controlled instance beneath the selected release
 directory and overrides the manifest workbook path for that run.
 
+### Slurm nodes without Git
+
+Some compute-node images do not expose the `git` executable. Verify the source
+revision and clean tree on the submission node, then export the evidence to the
+job:
+
+```bash
+export AGROLOGISTIC_SOURCE_COMMIT="$(git rev-parse HEAD)"
+test -z "$(git status --porcelain)"
+export AGROLOGISTIC_SOURCE_IS_CLEAN=1
+```
+
+The protocol records `source_provenance_method = scheduler_environment` in this
+case. If either value is absent or invalid, provenance is not accepted; a
+missing Git executable is never interpreted as evidence of a clean tree.
+
 ## Acceptance evidence
 
 Inspect at minimum:

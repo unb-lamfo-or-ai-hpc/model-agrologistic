@@ -1,6 +1,7 @@
 import json
 from pathlib import Path
 
+import src.logic.trl6_protocol as trl6_protocol
 from src.logic.trl6_protocol import (
     build_protocol_plan,
     capture_environment,
@@ -51,6 +52,36 @@ def test_environment_snapshot_does_not_export_license_secrets(tmp_path: Path) ->
     assert "wlsaccessid" not in encoded
     assert "licenseid" not in encoded
     assert "gurobi_license_configured" in encoded
+
+
+def test_environment_uses_explicit_scheduler_provenance_without_git(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    monkeypatch.setattr(trl6_protocol, "_git_value", lambda *_args: None)
+    monkeypatch.setenv("AGROLOGISTIC_SOURCE_COMMIT", "a" * 40)
+    monkeypatch.setenv("AGROLOGISTIC_SOURCE_IS_CLEAN", "1")
+
+    snapshot = capture_environment(tmp_path)
+
+    assert snapshot["source_commit"] == "a" * 40
+    assert snapshot["source_is_dirty"] is False
+    assert snapshot["source_provenance_method"] == "scheduler_environment"
+
+
+def test_environment_never_assumes_clean_provenance_without_evidence(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    monkeypatch.setattr(trl6_protocol, "_git_value", lambda *_args: None)
+    monkeypatch.delenv("AGROLOGISTIC_SOURCE_COMMIT", raising=False)
+    monkeypatch.delenv("AGROLOGISTIC_SOURCE_IS_CLEAN", raising=False)
+
+    snapshot = capture_environment(tmp_path)
+
+    assert snapshot["source_commit"] is None
+    assert snapshot["source_is_dirty"] is None
+    assert snapshot["source_provenance_method"] == "unavailable"
 
 
 def test_checksums_cover_portable_release_evidence(tmp_path: Path) -> None:

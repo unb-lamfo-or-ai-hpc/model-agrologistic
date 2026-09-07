@@ -257,6 +257,9 @@ def build_protocol_plan(
 def capture_environment(project_root: Path) -> dict[str, object]:
     """Capture reproducibility metadata without exposing license credentials."""
 
+    source_commit, source_is_dirty, source_provenance_method = _source_provenance(
+        project_root
+    )
     package_versions: dict[str, str | None] = {}
     for package in CORE_PACKAGES:
         try:
@@ -268,8 +271,9 @@ def capture_environment(project_root: Path) -> dict[str, object]:
         "schema_version": 1,
         "release_version": RELEASE_VERSION,
         "captured_at_utc": datetime.now(UTC).isoformat(),
-        "source_commit": _git_value(project_root, "rev-parse", "HEAD"),
-        "source_is_dirty": bool(_git_value(project_root, "status", "--porcelain")),
+        "source_commit": source_commit,
+        "source_is_dirty": source_is_dirty,
+        "source_provenance_method": source_provenance_method,
         "python": {
             "executable": sys.executable,
             "version": platform.python_version(),
@@ -368,7 +372,10 @@ def _write_protocol_manifest(
 ) -> dict[str, object]:
     failed = [result.name for result in results if result.status == "failed"]
     evidence_status = _evidence_status(output_root)
-    provenance_valid = bool(environment["source_commit"]) and not environment["source_is_dirty"]
+    provenance_valid = (
+        bool(environment["source_commit"])
+        and environment["source_is_dirty"] is False
+    )
     complete = len(results) == expected_step_count
     if failed or not provenance_valid or evidence_status == "rejected":
         overall_status = "rejected"
@@ -407,16 +414,46 @@ def _evidence_status(output_root: Path) -> str | None:
 
 
 def _git_value(project_root: Path, *arguments: str) -> str | None:
-    completed = subprocess.run(
-        ("git", *arguments),
-        cwd=project_root,
-        check=False,
-        capture_output=True,
-        text=True,
-    )
+    try:
+        completed = subprocess.run(
+            ("git", *arguments),
+            cwd=project_root,
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+    except FileNotFoundError:
+        return None
     if completed.returncode != 0:
         return None
     return completed.stdout.strip()
+
+
+def _source_provenance(project_root: Path) -> tuple[str | None, bool | None, str]:
+    """Resolve provenance from Git or explicitly supplied scheduler metadata."""
+
+    git_commit = _git_value(project_root, "rev-parse", "HEAD")
+    git_status = _git_value(project_root, "status", "--porcelain")
+    if git_commit is not None and git_status is not None:
+        return git_commit, bool(git_status), "git"
+
+    supplied_commit = os.environ.get("AGROLOGISTIC_SOURCE_COMMIT") or None
+    supplied_clean = _environment_boolean("AGROLOGISTIC_SOURCE_IS_CLEAN")
+    if supplied_commit is not None and supplied_clean is not None:
+        return supplied_commit, not supplied_clean, "scheduler_environment"
+    return supplied_commit, None, "unavailable"
+
+
+def _environment_boolean(name: str) -> bool | None:
+    value = os.environ.get(name)
+    if value is None:
+        return None
+    normalized = value.strip().lower()
+    if normalized in {"1", "true", "yes"}:
+        return True
+    if normalized in {"0", "false", "no"}:
+        return False
+    return None
 
 
 def _sha256(path: Path) -> str:
