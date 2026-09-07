@@ -1,94 +1,82 @@
 # Model Agrologistic
 
-**Headless optimization core for deterministic and two-stage stochastic agricultural logistics models.**
+Research software for deterministic and two-stage stochastic planning of
+agricultural logistics networks.
 
----
+The project provides a headless mixed-integer linear programming core for
+evaluating long-horizon warehouse opening, capacity expansion, bulkification,
+storage, domestic distribution, transshipment, direct transport, and export
+decisions. Native `gurobipy` is the validated solver backend.
 
-## Overview
+## Research status
 
-`model-agrologistic` is a research-oriented Python project for modeling and solving agricultural logistics network optimization problems.
+Version `0.1.0` is the TRL 6 research demonstrator candidate. It has been
+demonstrated on a Slurm-based HPC environment with controlled deterministic,
+three-scenario, and nine-scenario experiments. TRL 6 is used here as a research
+readiness claim supported by execution in a relevant computational environment;
+it is not an independent certification or a production-readiness claim.
 
-The project originated from the SiloDSS codebase, which was initially designed as a web-based decision support system. This repository is now being refactored into a **headless computational core** focused on:
-
-- deterministic mixed-integer linear programming models;
-- two-stage stochastic mixed-integer linear programming models;
-- structured Excel-based model input;
-- canonical, solver-agnostic model data structures;
-- native Gurobi execution through `gurobipy`;
-- solver-neutral execution through `Pyomo`, especially for SCIP;
-- precomputed distance matrices using Haversine or OSRM;
-- reproducible execution in local and HPC environments.
-
-The central objective is to implement, validate, and extend the mathematical models from Artur's thesis while keeping the code modular, testable, and independent from any graphical interface.
-
----
-
-## Current Refactoring Goal
-
-The current goal is to transform the former SiloDSS application into a modular optimization pipeline:
+The code originated from the SiloDSS project and was refactored into a testable,
+interface-independent optimization pipeline:
 
 ```text
-Excel input data
-  -> Excel loader
+Excel workbook
   -> canonical ModelData
   -> model validation
-  -> distance matrix generation or loading
-  -> MILP backend
-  -> solution extraction
-  -> metrics
-  -> experiment outputs
+  -> route selection
+  -> deterministic or stochastic MILP
+  -> structured results
+  -> DynCap, Turnover, EVPI, and VSS evidence
 ```
 
-The optimization backends must not read Excel files directly. They receive only canonical data objects.
+## Implemented scope
 
-The current canonical workflow is:
+- deterministic and two-stage stochastic MILP formulations;
+- one to nine configurable supply-demand scenarios;
+- existing and candidate warehouses;
+- opening, scalable candidate capacity, expansion, and bulkification decisions;
+- origin-warehouse, warehouse-demand, warehouse-warehouse, and optional direct routes;
+- period-specific inventory balance and terminal inventory;
+- domestic and export demand classes;
+- daily reception and shipping rates converted through `days_per_period`;
+- unmet-demand and emergency-capacity slack for complete recourse;
+- structured JSON and CSV outputs, model audits, IIS diagnostics, and HPC preflight;
+- dynamic capacity (`DynCap`) and inventory turnover (`Turnover`);
+- recourse problem, wait-and-see, expected-value, EEV, EVPI, and VSS calculations;
+- reproducibility gates for the controlled Artur benchmark instance.
 
-```text
-.xlsx workbook
-   ↓
-src/logic/excel_loader.py
-   ↓
-src/logic/model_data.py
-   ↓
-src/logic/model_validation.py
-   ↓
-src/logic/optimization.py
-   ↓
-src/logic/optimization_gurobipy.py
-   or
-src/logic/optimization_pyomo.py
-   ↓
-OptimizationResult
-```
+## Scientific policy
 
----
+The frozen demonstrator follows four policies that are central to interpreting
+its results:
 
-## Golden Excel Template
+1. Domestic demand is expected to be fully served in the accepted controlled
+   experiments.
+2. Every tonne of supply must be allocated to domestic demand, export flow, or
+   terminal inventory.
+3. Emergency static and reception capacity are feasibility-preserving slack
+   variables. Their use is reported as an infrastructure-gap indicator and is
+   not an automatic rejection criterion.
+4. Big-M penalty values are not observed shortage prices. Monetary conclusions
+   about VSS must therefore use the exported investment, operating, and penalty
+   decomposition.
 
-The project uses a golden Excel template as the standard model input schema:
+See [Service-level methodology](docs/service_level_methodology.md) and
+[Methodological audit](docs/methodological_audit.md) for the full rationale.
+
+## Data contract and lineage
+
+The canonical input schema is:
 
 ```text
 data/templates/model_agrologistic_padrao_ouro.xlsx
 ```
 
-This workbook is intended to be filled and reviewed by humans, but read automatically by the Python loader.
+The workbook uses Portuguese sheet and column identifiers because those names
+are part of the stable data contract. Documentation and source-code comments are
+written in English.
 
-The template includes:
-
-- documented input sheets;
-- model parameters;
-- deterministic supply and demand;
-- warehouse parameters;
-- cost parameters;
-- scenario structure for future stochastic models;
-- a data dictionary;
-- a model-change log.
-
-The loader should read sheets by name, not by sheet position.
-
-### Required deterministic sheets
-
-The minimum deterministic loader depends on:
+Required deterministic sheets include:
 
 ```text
 Oferta
@@ -100,20 +88,7 @@ Custo_Invest
 Parametros_Modelo
 ```
 
-### Governance and documentation sheets
-
-The following sheets should be kept in the template for documentation and reproducibility:
-
-```text
-00_README
-Dicionario_Dados
-Alteracoes_Modelo
-Listas
-```
-
-### Future stochastic sheets
-
-The following sheets are reserved for the two-stage stochastic model:
+Stochastic inputs use:
 
 ```text
 Cenarios
@@ -121,361 +96,177 @@ Oferta_Cenarios
 Demanda_Cenarios
 ```
 
----
-
-## Demand Representation
-
-The Excel template should not use `∞` as a numeric demand value.
-
-Instead, export-market rows should be represented explicitly using:
+Export demand is represented by an explicit rule instead of an infinity token:
 
 ```text
 Tipo_Demanda = EXPORTACAO
 Regra_Limite = AUTO_OFERTA_TOTAL_PRODUTO_PERIODO
 ```
 
-For deterministic models, the loader interprets this rule as:
+The frozen workbook identity, upstream Artur assets, and transformation rules
+are recorded in `data/manifests/`. See
+[MVP scope and data contract](docs/mvp_scope_and_data_contract.md) and
+[Artur reproduction protocol](docs/artur_reproduction_protocol.md).
 
-```text
-export_upper_bound[p, t] =
-    sum of supply over all origins for product p and period t
-```
+## Requirements
 
-For stochastic models, the corresponding rule will be scenario-dependent:
+- Python 3.13;
+- a platform supported by the declared Python packages;
+- Gurobi 13 for validated optimization runs;
+- a valid Gurobi license for model solution;
+- Slurm only when using the supplied HPC submission script.
 
-```text
-export_upper_bound[p, t, s] =
-    sum of supply over all origins for product p, period t, and scenario s
-```
+The complete dependency declaration is maintained in `pyproject.toml`.
 
-This preserves the thesis assumption of a non-binding export market while keeping the Excel file machine-readable.
-
----
-
-## Model Improvements and Excel Schema Changes
-
-The project may improve the original thesis model when doing so increases mathematical consistency, computational robustness, or experimental reproducibility.
-
-Every model improvement must be classified as one of the following:
-
-```text
-1. No Excel schema change required
-2. Optional Excel schema change recommended
-3. Required Excel schema change
-```
-
-When a new model parameter is introduced, the Excel template must indicate whether the value is:
-
-```text
-Informado
-Estimado
-Sintético
-Derivado_da_Oferta
-Derivado_de_Custo_Invest
-Derivado_de_Warehouses
-```
-
-This rule ensures that synthetic parameters remain transparent and traceable.
-
----
-
-## Planned Architecture
-
-```text
-model-agrologistic/
-├── data/
-│   ├── templates/
-│   │   └── model_agrologistic_padrao_ouro.xlsx
-│   ├── examples/
-│   ├── raw/
-│   ├── processed/
-│   ├── distances/
-│   └── results/
-│
-├── scripts/
-│   ├── build_distance_matrix.py
-│   ├── run_single_instance.py
-│   └── run_batch_hpc.py
-│
-├── src/
-│   └── logic/
-│       ├── model_data.py
-│       ├── model_config.py
-│       ├── model_validation.py
-│       ├── excel_loader.py
-│       ├── distance_matrix.py
-│       ├── osrm.py
-│       ├── optimization.py
-│       ├── optimization_gurobipy.py
-│       ├── optimization_pyomo.py
-│       └── metrics.py
-│
-├── tests/
-│   ├── test_model_data.py
-│   ├── test_model_config.py
-│   ├── test_model_validation.py
-│   ├── test_excel_loader.py
-│   ├── test_gurobipy_deterministic.py
-│   ├── test_pyomo_deterministic.py
-│   ├── test_backend_equivalence.py
-│   └── test_stochastic_model.py
-│
-├── pyproject.toml
-└── README.md
-```
-
-The `data/templates/` directory is versioned because it contains the canonical input schema.
-
-The following directories should normally remain outside version control:
-
-```text
-data/raw/
-data/processed/
-data/results/
-```
-
----
-
-## Optimization Backends
-
-The project is being designed to support two complementary optimization backends.
-
-### 1. Native Gurobi backend
-
-The primary backend uses `gurobipy` directly.
-
-This backend is intended for:
-
-- large-scale MILP experiments;
-- high-performance execution;
-- tighter control over Gurobi parameters;
-- HPC batch runs;
-- production-quality computational experiments.
-
-### 2. Pyomo backend
-
-The Pyomo backend is retained as a solver-neutral alternative.
-
-This backend is intended for:
-
-- SCIP execution;
-- comparison with the native Gurobi implementation;
-- open-source solver experiments;
-- mathematical equivalence testing.
-
-The objective is to keep both backends mathematically equivalent for supported model variants.
-
----
-
-## Mathematical Scope
-
-The model family includes agricultural logistics network optimization with:
-
-- origins, warehouses, candidate facilities, and demand nodes;
-- multiple products;
-- multiple time periods;
-- deterministic and two-stage stochastic formulations;
-- origin-to-warehouse flows;
-- warehouse-to-customer flows;
-- warehouse-to-warehouse transshipment;
-- optional direct origin-to-customer flows;
-- warehouse opening decisions;
-- capacity expansion decisions;
-- bulkification decisions;
-- storage, freight, and transshipment costs;
-- unmet demand penalties;
-- emergency capacity penalties;
-- dynamic capacity and turnover metrics;
-- EVPI and VSS for stochastic experiments.
-
-During the refactoring, particular attention is given to:
-
-- enforcing zero-supply and zero-demand balance constraints;
-- preventing emergency capacity at closed candidate facilities;
-- distinguishing static capacity slack from reception capacity slack;
-- making candidate capacity decisions economically consistent;
-- separating Excel ingestion from optimization backends;
-- making deterministic and stochastic inputs extensible;
-- preserving traceability for synthetic or derived parameters.
-
----
-
-## Distance Matrices
-
-Distance matrices should be generated or loaded before optimization.
-
-The optimization backends should not query OSRM during model construction or solution.
-
-The intended workflow is:
-
-```text
-geographic nodes
-  -> Haversine or OSRM preprocessing
-  -> distance matrices
-  -> ModelData
-  -> optimization backend
-```
-
-For unit tests and small examples, Haversine distances may be computed directly from coordinates.
-
-For larger experiments, OSRM should be used as a preprocessing step and cached to disk.
-
----
-
-## HPC Execution
-
-The repository is being prepared for execution in HPC environments, including Slurm-based clusters.
-
-The intended workflow is:
-
-```text
-prepare Excel input
-  -> load and validate ModelData
-  -> generate or load distance matrices
-  -> submit batch jobs
-  -> solve MILP instances with Gurobi or SCIP
-  -> export solution and metrics
-```
-
-Docker is not required for the HPC workflow.
-
----
-
-## Installation
-
-Clone the repository:
+Install the validated core and development tools:
 
 ```bash
-git clone https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic.git
-cd model-agrologistic
+python3.13 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install -e ".[dev]"
 ```
 
-Create and activate a Python 3.13 virtual environment:
+Install every declared optional research dependency:
 
 ```bash
-python3.13 -m venv venv313
-source venv313/bin/activate
+python -m pip install -e ".[all]"
 ```
 
-On NPAD, the existing `/home/vrrcelestino/venv313` installation is a Conda
-prefix environment despite its directory name. Activate it interactively with:
+`Pyomo` and native `PySCIPOpt` are optional post-MVP research dependencies.
+They are not validated alternatives to the Gurobi backend in version `0.1.0`.
+CBC is not a target backend.
+
+### NPAD environment
+
+The established NPAD environment is a Conda prefix despite its `venv313` name:
 
 ```bash
 conda activate /home/vrrcelestino/venv313
 ```
 
-The `source /home/vrrcelestino/venv313/bin/activate` command only applies to a
-standard Python `venv` and is not available for this Conda environment. Slurm
-jobs do not require activation because the provided script invokes the
-environment's Python executable directly.
-
-Upgrade `pip`:
+Slurm jobs may invoke its interpreter directly and do not require interactive
+activation. Set a different interpreter when needed:
 
 ```bash
-python -m pip install --upgrade pip
+export AGROLOGISTIC_PYTHON=/path/to/python
 ```
 
-Install the project in editable mode with development dependencies:
+## Gurobi license
+
+Configure a license without committing credentials:
 
 ```bash
-pip install -e ".[dev]"
+export GRB_LICENSE_FILE=/absolute/path/to/gurobi.lic
 ```
 
-Install all optional dependencies when needed:
+WLS access IDs, secrets, license files, and credential values must never be
+stored in manifests, logs, environment snapshots, or release artifacts.
+
+## Quality checks
 
 ```bash
-pip install -e ".[all]"
-```
-
----
-
-## Gurobi License
-
-The native Gurobi backend requires a valid Gurobi license.
-
-For WLS or HPC environments, the license file can be configured using:
-
-```bash
-export GRB_LICENSE_FILE=/secrets/gurobi.lic
-```
-
-or by passing a license path through `SolverConfig.solver_options`.
-
-The code is prepared to use `/secrets/gurobi.lic` as the default license path when available.
-
----
-
-## Running Tests
-
-Run all tests:
-
-```bash
+python -m ruff check .
 python -m pytest
 ```
 
-Run only the core structural tests:
+Tests that require an operational Gurobi environment are skipped when a license
+is unavailable. The final licensed validation is performed on NPAD.
+
+## TRL 6 reproducibility protocol
+
+Inspect the ordered protocol without executing it:
 
 ```bash
-python -m pytest \
-  tests/test_model_data.py \
-  tests/test_model_config.py \
-  tests/test_model_validation.py \
-  tests/test_optimization_facade.py
+python scripts/run_trl6_protocol.py --print-plan
 ```
 
-Run Gurobi deterministic tests:
+Run quality checks, rebuild the controlled Artur input, and execute every
+preflight without solving the models:
 
 ```bash
-python -m pytest tests/test_gurobipy_deterministic.py
+python scripts/run_trl6_protocol.py --fetch-artur-assets
 ```
 
-If `gurobipy` is installed but no valid license is available, Gurobi-specific tests may be skipped.
+Run the complete licensed protocol in a clean checkout:
 
----
+```bash
+python scripts/run_trl6_protocol.py \
+  --fetch-artur-assets \
+  --execute-solver
+```
 
-## Development Status
+The default release output is isolated under:
 
-Completed:
+```text
+data/results/releases/trl6-v0.1.0/
+```
 
-- headless optimization core and canonical `ModelData`;
-- golden Excel loader and validation layer;
-- deterministic native Gurobi formulation;
-- warehouse transshipment and direct origin-customer routes;
-- capacity expansion and bulkification;
-- two-stage stochastic extensive form with 1 to 9 configurable scenarios;
-- RP, WS, EV, EEV, EVPI, and VSS calculations;
-- DynCap and Turnover metrics aligned with Artur's thesis;
-- reproducible local and Slurm experiment manifests;
-- structured JSON/CSV exports, preflight model-size guards, and IIS diagnostics;
-- calibrated route policy using `top_k=10`, direct routes, and 30 days per period;
-- successful nine-scenario RP and checkpointed EVPI/VSS campaigns on NPAD;
-- solver-independent methodological audit of inputs and structured solutions;
-- pragmatic Stage 5.6 policy contract: candidate construction cost per ton,
-  period-specific operating days, and an optional lexicographic slack policy.
+Use a new `--output-dir` for every candidate run. Existing result directories
+are not silently deleted or treated as evidence for a rebuilt workbook. The
+protocol exports an environment snapshot, step manifest, scientific evidence,
+and `SHA256SUMS` without copying Gurobi credentials.
 
-Current:
+See [TRL 6 reproducibility protocol](docs/trl6_reproducibility_protocol.md).
 
-- Stage 5.8 MVP and data freeze, with separate Artur benchmark reproduction
-  and gold-workbook extension tracks.
+## HPC execution
 
-The model keeps full origin-supply allocation, treats reception and shipping
-as daily rates converted with a 30-day fallback, and does not impose an
-arbitrary service floor. Scalar EVPI/VSS remains available only for the penalty
-objective. See
-[`docs/service_level_methodology.md`](docs/service_level_methodology.md) and
-[`docs/methodological_audit.md`](docs/methodological_audit.md). The MVP boundary
-and frozen data identities are documented in
-[`docs/mvp_scope_and_data_contract.md`](docs/mvp_scope_and_data_contract.md).
+Run one experiment interactively:
 
-Planned:
+```bash
+python scripts/run_batch_hpc.py experiments/artur_stochastic_extension.yaml --index 0
+```
 
-- attainable service-cost frontier before any scenario service constraint;
-- scientific result tables and plots;
-- Pyomo/SCIP parity and backend equivalence, if retained as a project
-  requirement.
+Submit through Slurm:
 
----
+```bash
+EXPERIMENT_MANIFEST=experiments/artur_stochastic_extension.yaml \
+EXPERIMENT_INDEX=0 \
+sbatch scripts/run_model_agrologistic.slurm
+```
 
-## License
+The supplied Slurm script defaults to `intel-128`, 16 CPUs, and 64 GiB. Adjust
+resource requests to the selected manifest and cluster policy.
 
-See `LICENSE`.
+## Repository structure
+
+```text
+data/manifests/     frozen data identities and instance specifications
+data/templates/     canonical Excel input schema
+docs/               scientific and execution documentation
+experiments/        versioned deterministic and stochastic manifests
+scripts/            data preparation, execution, audit, and release commands
+src/logic/          canonical data, formulations, metrics, and evidence logic
+tests/              solver-independent and licensed integration tests
+```
+
+Raw source assets, generated instances, solver outputs, and large HPC artifacts
+remain outside version control. The repository hygiene policy classifies them as
+pipeline-required, protected, scientific archive, or safe-generated artifacts.
+
+Historical exploratory benchmarking, forecasting, internationalization, and
+OSRM helper modules are preserved for provenance but are outside the frozen TRL
+6 execution and lint contract. Their exact paths are declared in the Ruff
+exclusion list in `pyproject.toml`; none is invoked by the release protocol.
+
+## Known limitations
+
+- the historical OSRM snapshot used in the thesis was not recovered;
+- the original forecasting path was not reconstructed;
+- the three- and nine-scenario designs are controlled extensions, not recovered
+  historical forecasts;
+- Big-M penalty components are feasibility devices, not observed monetary costs;
+- only the native Gurobi backend is validated for the TRL 6 demonstrator;
+- the software is a research prototype and not an operational public-sector system.
+
+These limitations preserve the distinction between bounded reproduction,
+controlled extension, and direct numerical replication.
+
+## Citation and license
+
+Use the metadata in `CITATION.cff` when citing a tagged release. Release assets
+record the exact source commit and checksums used for the reported results.
+
+The source code is licensed under the GNU General Public License v3.0. See
+`LICENSE`. Dataset provenance and third-party terms remain attached to their
+respective source records and are not replaced by the software license.

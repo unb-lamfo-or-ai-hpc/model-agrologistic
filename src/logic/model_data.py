@@ -21,33 +21,32 @@ The goal is to provide a common data contract for:
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any, TypeAlias
-
+from typing import Any
 
 # ---------------------------------------------------------------------
 # Type aliases
 # ---------------------------------------------------------------------
 
-NodeId: TypeAlias = str
-ProductId: TypeAlias = str
-PeriodId: TypeAlias = str
-ScenarioId: TypeAlias = str
+type NodeId = str
+type ProductId = str
+type PeriodId = str
+type ScenarioId = str
 
-RouteOD: TypeAlias = tuple[NodeId, NodeId, ProductId]
+type RouteOD = tuple[NodeId, NodeId, ProductId]
 """Origin -> warehouse route: (origin, warehouse, product)."""
 
-RouteDC: TypeAlias = tuple[NodeId, NodeId, ProductId]
+type RouteDC = tuple[NodeId, NodeId, ProductId]
 """Warehouse -> customer route: (warehouse, customer, product)."""
 
-RouteDD: TypeAlias = tuple[NodeId, NodeId, ProductId]
+type RouteDD = tuple[NodeId, NodeId, ProductId]
 """Warehouse -> warehouse route: (warehouse_from, warehouse_to, product)."""
 
-RouteOC: TypeAlias = tuple[NodeId, NodeId, ProductId]
+type RouteOC = tuple[NodeId, NodeId, ProductId]
 """Direct origin -> customer route: (origin, customer, product)."""
 
-Key2: TypeAlias = tuple[str, str]
-Key3: TypeAlias = tuple[str, str, str]
-Key4: TypeAlias = tuple[str, str, str, str]
+type Key2 = tuple[str, str]
+type Key3 = tuple[str, str, str]
+type Key4 = tuple[str, str, str, str]
 
 
 # ---------------------------------------------------------------------
@@ -284,4 +283,3 @@ class ModelData:
                     nodes.append(node)
 
         return nodes
-

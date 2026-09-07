@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the tagged release."
+title: "Model Agrologistic: a TRL 6 agricultural logistics optimization demonstrator"
+type: software
+version: 0.1.0
+authors:
+  - family-names: "Celestino"
+    given-names: "Victor Rafael R"
+    alias: "cvictorr2508"
+repository-code: "https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic"
+url: "https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic"
+license: GPL-3.0-only
+keywords:
+  - agricultural logistics
+  - mixed-integer linear programming
+  - stochastic programming
+  - warehouse investment
+  - high-performance computing
