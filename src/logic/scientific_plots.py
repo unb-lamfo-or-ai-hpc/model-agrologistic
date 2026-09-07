@@ -681,7 +681,7 @@ def _configure_style(plt, sns) -> None:
             "figure.dpi": 120,
             "savefig.dpi": 300,
             "font.family": "DejaVu Sans",
-            "axes.titleweight": "semibold",
+            "axes.titleweight": "bold",
             "axes.spines.top": False,
             "axes.spines.right": False,
             "legend.frameon": False,

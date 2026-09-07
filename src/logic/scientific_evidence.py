@@ -658,7 +658,9 @@ def _provenance_rows(loaded: list[dict[str, Any]]) -> list[dict[str, Any]]:
                         "gate": run.gate,
                         "design": run.design,
                         "artifact": name,
-                        "path": str(path),
+                        "path": (
+                            f"{run.gate}/{run.run_dir.name}/{name}"
+                        ),
                         "size_bytes": path.stat().st_size,
                         "sha256": _sha256(path),
                     }
