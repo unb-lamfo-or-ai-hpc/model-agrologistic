@@ -73,6 +73,11 @@ The protocol records `source_provenance_method = scheduler_environment` in this
 case. If either value is absent or invalid, provenance is not accepted; a
 missing Git executable is never interpreted as evidence of a clean tree.
 
+Repository-hygiene integration tests that create temporary Git repositories
+are skipped when the compute-node image has no Git executable. They must pass
+on GitHub Actions for the exact candidate commit; all solver-independent tests
+that do not require Git continue to run on the compute node.
+
 ## Acceptance evidence
 
 Inspect at minimum:

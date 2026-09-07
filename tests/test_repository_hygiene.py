@@ -1,4 +1,5 @@
 import json
+import shutil
 import subprocess
 from pathlib import Path
 
@@ -21,7 +22,10 @@ from src.logic.repository_hygiene import (
 
 
 def initialize_repository(path: Path) -> None:
-    subprocess.run(["git", "init", str(path)], check=True, capture_output=True)
+    git = shutil.which("git")
+    if git is None:
+        pytest.skip("git is required for repository-hygiene integration tests")
+    subprocess.run([git, "init", str(path)], check=True, capture_output=True)
 
 
 def test_cache_rules_take_precedence_over_protected_source_prefix(tmp_path):
