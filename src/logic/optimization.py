@@ -18,14 +18,14 @@ It must not build solver-specific models directly.
 from __future__ import annotations
 
 import os
+from collections.abc import Callable
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Callable, Literal
+from typing import Any, Literal
 
 from src.logic.model_config import ModelConfig, RunConfig, SolverConfig
 from src.logic.model_data import ModelData
 from src.logic.model_validation import validate_or_raise_model_data
-
 
 OptimizationStatus = Literal[
     "optimal",

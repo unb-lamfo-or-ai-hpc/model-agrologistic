@@ -16,20 +16,19 @@ It must not import:
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any, Literal, TypeAlias
-
+from typing import Any, Literal
 
 # ---------------------------------------------------------------------
 # Type aliases
 # ---------------------------------------------------------------------
 
-SolverBackend: TypeAlias = Literal["gurobipy", "pyomo"]
-ModelMode: TypeAlias = Literal["det", "sto"]
-CandidateCapacityMode: TypeAlias = Literal["fixed", "scalable"]
-TerminalInventoryPolicy: TypeAlias = Literal["free", "zero", "penalized", "target"]
-RouteFilterStrategy: TypeAlias = Literal["none", "pareto", "top_k"]
-ObjectivePolicy: TypeAlias = Literal["penalty", "lexicographic"]
-CapacityCouplingPolicy: TypeAlias = Literal["period_equivalent", "daily_factors"]
+type SolverBackend = Literal["gurobipy", "pyomo"]
+type ModelMode = Literal["det", "sto"]
+type CandidateCapacityMode = Literal["fixed", "scalable"]
+type TerminalInventoryPolicy = Literal["free", "zero", "penalized", "target"]
+type RouteFilterStrategy = Literal["none", "pareto", "top_k"]
+type ObjectivePolicy = Literal["penalty", "lexicographic"]
+type CapacityCouplingPolicy = Literal["period_equivalent", "daily_factors"]
 
 
 VALID_SOLVER_BACKENDS = {"gurobipy", "pyomo"}

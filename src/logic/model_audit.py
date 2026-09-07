@@ -2,12 +2,12 @@
 
 from __future__ import annotations
 
-from typing import Any, Mapping
+from collections.abc import Mapping
+from typing import Any
 
 from src.logic.model_config import ModelConfig
 from src.logic.model_data import ModelData
 from src.logic.optimization import OptimizationResult
-
 
 AUDIT_SCHEMA_VERSION = 3
 LARGE_VALUE_THRESHOLD = 1_000_000_000.0

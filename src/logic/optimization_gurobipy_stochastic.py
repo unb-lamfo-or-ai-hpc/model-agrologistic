@@ -18,9 +18,9 @@ from src.logic.optimization_gurobipy import (
     _effective_shipping_capacity_expr,
     _effective_static_capacity_expr,
     _expression_value,
+    _gurobi_status_name,
     _import_gurobi,
     _infeasibility_metadata,
-    _gurobi_status_name,
     _map_gurobi_status,
     _origin_to_customer_unit_cost,
     _origin_to_warehouse_unit_cost,
@@ -1060,7 +1060,7 @@ def _extract_scenario_values(
     for key in variables.keys():
         value = _value(variables[key])
         if value > VALUE_TOL:
-            records.append({**dict(zip(fields, key)), "value": value})
+            records.append({**dict(zip(fields, key, strict=False)), "value": value})
     return records
 
 

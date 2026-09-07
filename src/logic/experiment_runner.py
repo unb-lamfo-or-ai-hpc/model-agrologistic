@@ -33,7 +33,6 @@ from src.logic.optimization import (
 )
 from src.logic.route_filtering import select_routes
 
-
 MANIFEST_VERSION = 1
 SAFE_RUN_NAME = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
 SERVICE_POLICY_COMPARISON_METRICS = (

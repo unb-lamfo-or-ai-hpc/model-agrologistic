@@ -34,7 +34,6 @@ from src.logic.optimization import (
 )
 from src.logic.route_filtering import select_routes
 
-
 DEFAULT_PENALTY = 1_000_000.0
 VALUE_TOL = 1e-7
 
@@ -1411,7 +1410,7 @@ def _value(variable: Any) -> float:
 
 
 def _expression_value(expression: Any) -> float:
-    if isinstance(expression, (int, float)):
+    if isinstance(expression, int | float):
         return float(expression)
 
     return float(expression.getValue())

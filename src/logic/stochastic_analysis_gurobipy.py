@@ -3,10 +3,11 @@
 from __future__ import annotations
 
 import json
+from collections.abc import Callable
 from dataclasses import fields, replace
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
-from typing import Any, Callable
+from typing import Any
 
 from src.logic.model_config import ModelConfig, SolverConfig
 from src.logic.model_data import ModelData
@@ -326,7 +327,7 @@ class _CheckpointStore:
 
 
 def _utc_now() -> str:
-    return datetime.now(timezone.utc).isoformat()
+    return datetime.now(UTC).isoformat()
 
 
 def _expected_value_data(data: ModelData) -> ModelData:
@@ -445,4 +446,3 @@ def _require_objective(result: OptimizationResult, label: str) -> float:
 
 def _zero_within_tolerance(value: float, tolerance: float) -> float:
     return 0.0 if abs(value) <= tolerance else value
-

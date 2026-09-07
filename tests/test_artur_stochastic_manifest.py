@@ -6,7 +6,6 @@ import yaml
 from src.logic.artur_adapter import ArturSolverAdapterConfig
 from src.logic.model_config import ModelConfig
 
-
 MANIFEST = Path("experiments/artur_stochastic_extension.yaml")
 
 

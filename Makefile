@@ -1,42 +1,45 @@
-# Makefile for SiloDSS Development Workflow
+# Headless development and release commands for model-agrologistic.
 
-# Variables
-VENV_NAME := silodss_env
-PYTHON := python3
-PIP := $(VENV_NAME)/bin/pip
-PORT := 8050
+PYTHON ?= python3.13
+TRL6_OUTPUT ?= data/results/releases/trl6-v0.1.0-candidate
 
-# Targets
-
-.PHONY: help setup install run clean
+.PHONY: help install lint test audit protocol-plan preflight protocol evidence build
 
 help:
-	@echo "SiloDSS Development Workflow"
-	@echo "---------------------------"
-	@echo "make setup   - Create virtual environment and install dependencies"
-	@echo "make run     - Start the SiloDSS application (automatically kills previous instance)"
-	@echo "make clean   - Remove virtual environment and build artifacts"
+	@echo "make install       Install the project and development requirements"
+	@echo "make lint          Run Ruff"
+	@echo "make test          Run the complete test suite"
+	@echo "make audit         Audit repository hygiene"
+	@echo "make protocol-plan Print the ordered TRL 6 protocol"
+	@echo "make preflight     Run quality, data, and model-size preflight checks"
+	@echo "make protocol      Run the complete licensed TRL 6 protocol"
+	@echo "make evidence      Rebuild evidence from the configured accepted runs"
+	@echo "make build         Build source and wheel distributions"
 
-setup:
-	$(PYTHON) -m venv $(VENV_NAME)
-	@echo "Virtual environment created."
-	@echo "Installing dependencies..."
-	$(VENV_NAME)/bin/pip install --upgrade pip
-	$(VENV_NAME)/bin/pip install -e .
-	@echo "Dependencies installed."
+install:
+	$(PYTHON) -m pip install --upgrade pip
+	$(PYTHON) -m pip install -e ".[dev]"
 
-install: setup
-	@echo "Project installed in editable mode."
+lint:
+	$(PYTHON) -m ruff check .
 
-run:
-	@echo "Checking for existing process on port $(PORT)..."
-	-@kill $$(lsof -t -i :$(PORT)) 2>/dev/null || true
-	@echo "Starting SiloDSS application..."
-	$(VENV_NAME)/bin/python -m src.__main__
+test:
+	$(PYTHON) -m pytest
 
-clean:
-	@echo "Cleaning up..."
-	rm -rf $(VENV_NAME)
-	rm -rf *.egg-info
-	rm -rf __pycache__
-	@echo "Cleanup complete."
+audit:
+	$(PYTHON) scripts/audit_repository_hygiene.py
+
+protocol-plan:
+	$(PYTHON) scripts/run_trl6_protocol.py --print-plan --output-dir $(TRL6_OUTPUT)
+
+preflight:
+	$(PYTHON) scripts/run_trl6_protocol.py --fetch-artur-assets --output-dir $(TRL6_OUTPUT)
+
+protocol:
+	$(PYTHON) scripts/run_trl6_protocol.py --fetch-artur-assets --execute-solver --output-dir $(TRL6_OUTPUT)
+
+evidence:
+	$(PYTHON) scripts/build_mvp_scientific_evidence.py
+
+build:
+	$(PYTHON) -m build

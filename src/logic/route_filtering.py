@@ -2,15 +2,12 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import dataclass
 from math import ceil
-from typing import Callable, TypeVar
 
 from src.logic.model_config import ModelConfig
 from src.logic.model_data import ModelData, RouteDC, RouteDD, RouteOC, RouteOD
-
-
-Route = TypeVar("Route", RouteOD, RouteDC, RouteDD, RouteOC)
 
 
 @dataclass(frozen=True, slots=True)
@@ -80,7 +77,7 @@ def select_routes(data: ModelData, config: ModelConfig) -> SelectedRoutes:
     )
 
 
-def _select(
+def _select[Route: (RouteOD, RouteDC, RouteDD, RouteOC)](
     routes: set[Route],
     config: ModelConfig,
     *,
@@ -169,7 +166,7 @@ def _direct_routes_for_all_origins(
     return selected
 
 
-def _nearest_per_group(
+def _nearest_per_group[Route: (RouteOD, RouteDC, RouteDD, RouteOC)](
     routes: set[Route],
     *,
     group: Callable[[Route], tuple[str, str]],
@@ -183,4 +180,3 @@ def _nearest_per_group(
         min(candidates, key=lambda route: (distance(route), route))
         for candidates in grouped.values()
     }
-
