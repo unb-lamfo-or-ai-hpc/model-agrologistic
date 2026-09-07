@@ -2,8 +2,7 @@ from types import SimpleNamespace
 
 import pytest
 
-from src.logic.model_config import ModelConfig
-from src.logic.model_config import SolverConfig
+from src.logic.model_config import ModelConfig, SolverConfig
 from src.logic.model_data import ModelData
 from src.logic.optimization import solve_model
 from src.logic.optimization_gurobipy import (

@@ -15,9 +15,9 @@ It must not import:
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from dataclasses import dataclass, field
 from math import isclose, isfinite
-from typing import Mapping
 
 from src.logic.model_config import ModelConfig
 from src.logic.model_data import ModelData
@@ -337,7 +337,7 @@ def _is_valid_number(value: object) -> bool:
     if isinstance(value, bool):
         return False
 
-    if not isinstance(value, (int, float)):
+    if not isinstance(value, int | float):
         return False
 
     return isfinite(float(value))
@@ -870,4 +870,3 @@ def _has_incoming_domestic_route(
     )
 
     return has_dc or has_oc
-

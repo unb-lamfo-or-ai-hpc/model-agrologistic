@@ -14,7 +14,6 @@ import pandas as pd
 
 from src.logic.artur_benchmark import AssetIntegrityError
 
-
 DEMAND_KEY = ["Produto", "Cidade", "Data"]
 SUPPLY_KEY = ["Produto", "Cidade", "Data"]
 NODE_ATTRIBUTES = ["Latitude", "Longitude"]
@@ -329,4 +328,3 @@ def _audit_row(dataset: str, metric: str, before: int | float, after: int | floa
         "delta": after - before,
         "status": "preserved" if math.isclose(float(before), float(after)) else "transformed",
     }
-

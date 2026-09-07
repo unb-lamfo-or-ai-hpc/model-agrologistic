@@ -33,7 +33,6 @@ from src.logic.optimization import (
 )
 from src.logic.route_filtering import select_routes
 
-
 MANIFEST_VERSION = 1
 SAFE_RUN_NAME = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
 SERVICE_POLICY_COMPARISON_METRICS = (
@@ -50,19 +49,6 @@ SERVICE_POLICY_COMPARISON_METRICS = (
     "turnover",
     "runtime_seconds",
     "peak_rss_mb",
-)
-PENALTY_COST_COMPONENTS = frozenset(
-    {"unmet_demand", "emergency_static", "emergency_reception"}
-)
-INVESTMENT_COST_COMPONENTS = frozenset(
-    {
-        "opening",
-        "candidate_capacity",
-        "expansion_fixed",
-        "expansion_variable",
-        "bulkification_fixed",
-        "bulkification_variable",
-    }
 )
 
 
@@ -144,9 +130,6 @@ class ExperimentRunSummary:
     emergency_static_capacity: float | None
     emergency_reception_capacity: float | None
     total_emergency_capacity: float | None
-    capacity_adequacy_status: str | None
-    material_balance_ok: bool | None
-    penalty_cost_share: float | None
     evpi: float | None
     vss: float | None
     output_dir: str
@@ -280,7 +263,7 @@ def run_experiment(
 
     finished = datetime.now(UTC)
     progress(f"[{spec.name}] exporting structured artifacts")
-    audit = _export_run_artifacts(
+    _export_run_artifacts(
         spec=spec,
         data=data,
         result=result,
@@ -296,7 +279,6 @@ def run_experiment(
         run_dir=run_dir,
         started=started,
         finished=finished,
-        audit=audit,
     )
     _write_json(run_dir / "run_summary.json", asdict(summary))
     progress(f"[{spec.name}] finished with status={summary.status}")
@@ -758,7 +740,7 @@ def _export_run_artifacts(
     run_dir: Path,
     started: datetime,
     finished: datetime,
-) -> dict[str, Any]:
+) -> None:
     payload = {
         "schema_version": 1,
         "experiment": _spec_payload(spec),
@@ -771,8 +753,10 @@ def _export_run_artifacts(
         "stochastic_performance": _evpi_payload(evpi_result),
     }
     _write_json(run_dir / "result.json", payload)
-    audit = build_model_audit(data, spec.model, result)
-    _write_json(run_dir / "model_audit.json", audit)
+    _write_json(
+        run_dir / "model_audit.json",
+        build_model_audit(data, spec.model, result),
+    )
     _write_csv(run_dir / "warehouse_decisions.csv", result.warehouse_decisions)
     _write_csv(run_dir / "flows.csv", result.flows)
     _write_csv(run_dir / "inventories.csv", result.inventories)
@@ -781,32 +765,6 @@ def _export_run_artifacts(
     _write_csv(
         run_dir / "scenario_performance.csv",
         _scenario_performance_records(result),
-    )
-    solution_audit = audit.get("solution", {})
-    _write_csv(
-        run_dir / "material_balance_by_scenario.csv",
-        solution_audit.get("material_balance", {}).get("by_scenario", []),
-    )
-    _write_csv(
-        run_dir / "capacity_gap_by_scenario.csv",
-        solution_audit.get("capacity_adequacy", {}).get("by_scenario", []),
-    )
-    _write_csv(
-        run_dir / "investment_saturation.csv",
-        [
-            {"investment_type": investment_type, **values}
-            for investment_type, values in solution_audit.get(
-                "investment_saturation", {}
-            ).items()
-        ],
-    )
-    _write_csv(
-        run_dir / "emergency_capacity_daily.csv",
-        _emergency_capacity_daily_records(result, spec.model),
-    )
-    _write_csv(
-        run_dir / "evpi_vss_decomposition.csv",
-        _evpi_vss_decomposition_records(evpi_result),
     )
 
     storage = result.metrics.get("storage", {})
@@ -825,7 +783,6 @@ def _export_run_artifacts(
                 if key.startswith("iis_")
             },
         )
-    return audit
 
 
 def _build_summary(
@@ -836,7 +793,6 @@ def _build_summary(
     run_dir: Path,
     started: datetime,
     finished: datetime,
-    audit: dict[str, Any],
 ) -> ExperimentRunSummary:
     (
         total_domestic_demand,
@@ -851,14 +807,6 @@ def _build_summary(
     ]
     objective_values = result.metrics.get("objective_values", {})
     gurobi_status_name = result.metadata.get("gurobi_status_name")
-    solution_audit = audit.get("solution", {})
-    material_balance = solution_audit.get("material_balance", {})
-    capacity_adequacy = solution_audit.get("capacity_adequacy", {})
-    cost_shares = solution_audit.get("cost_component_shares", {})
-    penalty_cost_share = sum(
-        float(cost_shares.get(component) or 0.0)
-        for component in PENALTY_COST_COMPONENTS
-    )
     return ExperimentRunSummary(
         name=spec.name,
         status=result.status,
@@ -906,9 +854,6 @@ def _build_summary(
         total_emergency_capacity=_weighted_record_total(
             result, result.emergency_capacity
         ),
-        capacity_adequacy_status=capacity_adequacy.get("status"),
-        material_balance_ok=material_balance.get("all_within_tolerance"),
-        penalty_cost_share=penalty_cost_share,
         evpi=evpi_result.evpi if evpi_result else None,
         vss=evpi_result.vss if evpi_result else None,
         output_dir=str(run_dir),
@@ -964,9 +909,6 @@ def _export_failed_run(
         emergency_static_capacity=None,
         emergency_reception_capacity=None,
         total_emergency_capacity=None,
-        capacity_adequacy_status=None,
-        material_balance_ok=None,
-        penalty_cost_share=None,
         evpi=None,
         vss=None,
         output_dir=str(run_dir),
@@ -1026,206 +968,8 @@ def _evpi_payload(result: EVPIVSSResult | None) -> dict[str, Any] | None:
         "expected_result_of_ev_solution": result.expected_result_of_ev_solution,
         "evpi": result.evpi,
         "vss": result.vss,
-        "decomposition": _evpi_vss_decomposition(result),
         "metadata": result.metadata,
     }
-
-
-def _evpi_vss_decomposition(result: EVPIVSSResult) -> dict[str, Any]:
-    """Separate monetary objective components from Big-M penalty components."""
-
-    probabilities = {
-        str(scenario): float(probability)
-        for scenario, probability in result.metadata.get(
-            "scenario_probabilities", {}
-        ).items()
-    }
-    component_profiles = {
-        "recourse_problem": _cost_components(
-            result.recourse_problem_result.cost_breakdown
-        ),
-        "wait_and_see": _expected_cost_components(
-            result.wait_and_see_results,
-            probabilities,
-        ),
-        "expected_value_problem": _cost_components(
-            result.expected_value_problem_result.cost_breakdown
-        ),
-        "expected_result_of_ev_solution": _cost_components(
-            result.expected_result_result.cost_breakdown
-        ),
-    }
-    cost_profiles = {
-        name: {
-            "components": components,
-            "groups": _group_cost_components(components),
-        }
-        for name, components in component_profiles.items()
-    }
-    rp = cost_profiles["recourse_problem"]
-    ws = cost_profiles["wait_and_see"]
-    eev = cost_profiles["expected_result_of_ev_solution"]
-    return {
-        "interpretation": {
-            "penalty_values_are_observed_monetary_costs": False,
-            "evpi_component_sign": "recourse_problem_minus_wait_and_see",
-            "vss_component_sign": (
-                "expected_result_of_ev_solution_minus_recourse_problem"
-            ),
-        },
-        "cost_profiles": cost_profiles,
-        "evpi_by_component": _mapping_difference(
-            rp["components"], ws["components"]
-        ),
-        "evpi_by_group": _mapping_difference(rp["groups"], ws["groups"]),
-        "vss_by_component": _mapping_difference(
-            eev["components"], rp["components"]
-        ),
-        "vss_by_group": _mapping_difference(eev["groups"], rp["groups"]),
-        "physical_recourse_profiles": {
-            "recourse_problem": _physical_recourse_profile(
-                result.recourse_problem_result
-            ),
-            "wait_and_see": _expected_physical_recourse_profile(
-                result.wait_and_see_results,
-                probabilities,
-            ),
-            "expected_result_of_ev_solution": _physical_recourse_profile(
-                result.expected_result_result
-            ),
-        },
-    }
-
-
-def _cost_components(values: dict[str, Any]) -> dict[str, float]:
-    return {name: float(value) for name, value in values.items()}
-
-
-def _expected_cost_components(
-    results: dict[str, OptimizationResult],
-    probabilities: dict[str, float],
-) -> dict[str, float]:
-    components: dict[str, float] = {}
-    for scenario, scenario_result in results.items():
-        probability = probabilities.get(str(scenario), 0.0)
-        for name, value in scenario_result.cost_breakdown.items():
-            components[name] = components.get(name, 0.0) + probability * float(value)
-    return components
-
-
-def _group_cost_components(components: dict[str, float]) -> dict[str, float]:
-    grouped = {"investment": 0.0, "operation": 0.0, "penalty": 0.0}
-    for name, value in components.items():
-        if name in PENALTY_COST_COMPONENTS:
-            group = "penalty"
-        elif name in INVESTMENT_COST_COMPONENTS:
-            group = "investment"
-        else:
-            group = "operation"
-        grouped[group] += float(value)
-    return grouped
-
-
-def _mapping_difference(
-    left: dict[str, float],
-    right: dict[str, float],
-) -> dict[str, float]:
-    return {
-        key: float(left.get(key, 0.0)) - float(right.get(key, 0.0))
-        for key in sorted(set(left) | set(right))
-    }
-
-
-def _physical_recourse_profile(result: OptimizationResult) -> dict[str, float]:
-    return {
-        "unmet_demand_tons": float(
-            _weighted_record_total(result, result.unmet_demand) or 0.0
-        ),
-        "emergency_static_tons_over_periods": float(
-            _weighted_record_total(
-                result,
-                result.emergency_capacity,
-                capacity_type="static",
-            )
-            or 0.0
-        ),
-        "emergency_reception_tons_over_periods": float(
-            _weighted_record_total(
-                result,
-                result.emergency_capacity,
-                capacity_type="reception",
-            )
-            or 0.0
-        ),
-    }
-
-
-def _expected_physical_recourse_profile(
-    results: dict[str, OptimizationResult],
-    probabilities: dict[str, float],
-) -> dict[str, float]:
-    profile = {
-        "unmet_demand_tons": 0.0,
-        "emergency_static_tons_over_periods": 0.0,
-        "emergency_reception_tons_over_periods": 0.0,
-    }
-    for scenario, scenario_result in results.items():
-        probability = probabilities.get(str(scenario), 0.0)
-        scenario_profile = _physical_recourse_profile(scenario_result)
-        for name, value in scenario_profile.items():
-            profile[name] += probability * value
-    return profile
-
-
-def _evpi_vss_decomposition_records(
-    result: EVPIVSSResult | None,
-) -> list[dict[str, Any]]:
-    if result is None:
-        return []
-    decomposition = _evpi_vss_decomposition(result)
-    records: list[dict[str, Any]] = []
-    for solution, profile in decomposition["cost_profiles"].items():
-        for component, value in profile["components"].items():
-            records.append(
-                {
-                    "section": "solution_cost_component",
-                    "comparison": solution,
-                    "item": component,
-                    "value": value,
-                }
-            )
-        for group, value in profile["groups"].items():
-            records.append(
-                {
-                    "section": "solution_cost_group",
-                    "comparison": solution,
-                    "item": group,
-                    "value": value,
-                }
-            )
-    for comparison in ("evpi", "vss"):
-        for level in ("component", "group"):
-            key = f"{comparison}_by_{level}"
-            for item, value in decomposition[key].items():
-                records.append(
-                    {
-                        "section": f"{comparison}_{level}",
-                        "comparison": comparison,
-                        "item": item,
-                        "value": value,
-                    }
-                )
-    for solution, profile in decomposition["physical_recourse_profiles"].items():
-        for item, value in profile.items():
-            records.append(
-                {
-                    "section": "physical_recourse",
-                    "comparison": solution,
-                    "item": item,
-                    "value": value,
-                }
-            )
-    return records
 
 
 def _write_json(path: Path, payload: Any) -> None:
@@ -1254,7 +998,7 @@ def _atomic_write_text(path: Path, text: str) -> None:
 
 
 def _csv_value(value: Any) -> Any:
-    if isinstance(value, (dict, list, tuple)):
+    if isinstance(value, dict | list | tuple):
         return json.dumps(value, ensure_ascii=False, sort_keys=True)
     return value
 
@@ -1339,31 +1083,6 @@ def _weighted_record_total(
             )
         total += float(record.get("value", 0.0)) * float(probability)
     return total
-
-
-def _emergency_capacity_daily_records(
-    result: OptimizationResult,
-    config: ModelConfig,
-) -> list[dict[str, Any]]:
-    """Add period length and daily-equivalent values to emergency records."""
-
-    records: list[dict[str, Any]] = []
-    for record in result.emergency_capacity:
-        period = str(record.get("period"))
-        days = float(config.operating_days(period))
-        value = float(record.get("value", 0.0))
-        records.append(
-            {
-                **record,
-                "days_in_period": days,
-                "value_tons_per_day": (
-                    value / days
-                    if record.get("capacity_type") == "reception" and days > 0.0
-                    else None
-                ),
-            }
-        )
-    return records
 
 
 def _scenario_performance_records(

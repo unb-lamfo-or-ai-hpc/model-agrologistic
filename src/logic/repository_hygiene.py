@@ -10,11 +10,10 @@ import shutil
 import subprocess
 import tarfile
 import tempfile
+from collections.abc import Iterable
 from dataclasses import asdict, dataclass
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path, PurePosixPath
-from typing import Iterable
-
 
 AUDIT_SCHEMA_VERSION = 1
 QUARANTINE_SCHEMA_VERSION = 1
@@ -296,7 +295,7 @@ def audit_repository(repo_root: Path) -> list[AuditEntry]:
         size_bytes = sum(path.stat().st_size for path in files)
         latest_mtime = max((path.stat().st_mtime for path in files), default=0.0)
         latest_mtime_utc = (
-            datetime.fromtimestamp(latest_mtime, timezone.utc).isoformat()
+            datetime.fromtimestamp(latest_mtime, UTC).isoformat()
             if latest_mtime
             else ""
         )
@@ -359,7 +358,7 @@ def build_quarantine_plan(
 
     return {
         "schema_version": QUARANTINE_SCHEMA_VERSION,
-        "created_at_utc": datetime.now(timezone.utc).isoformat(),
+        "created_at_utc": datetime.now(UTC).isoformat(),
         "repo_root": str(repo_root),
         "entries": planned,
     }
@@ -395,7 +394,7 @@ def write_audit_artifacts(
 
     audit_payload = {
         "schema_version": AUDIT_SCHEMA_VERSION,
-        "created_at_utc": datetime.now(timezone.utc).isoformat(),
+        "created_at_utc": datetime.now(UTC).isoformat(),
         "summary": {
             "entry_count": len(entries),
             "size_bytes": sum(entry.size_bytes for entry in entries),
@@ -615,13 +614,13 @@ def apply_quarantine_plan(
             "The quarantine plan belongs to another repository."
         )
 
-    timestamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    timestamp = datetime.now(UTC).strftime("%Y%m%dT%H%M%SZ")
     run_root = quarantine_root / timestamp
     run_root.mkdir(parents=True, exist_ok=False)
     manifest_path = run_root / "quarantine_manifest.json"
     manifest: dict[str, object] = {
         "schema_version": QUARANTINE_SCHEMA_VERSION,
-        "created_at_utc": datetime.now(timezone.utc).isoformat(),
+        "created_at_utc": datetime.now(UTC).isoformat(),
         "repo_root": str(repo_root),
         "quarantine_root": str(run_root),
         "entries": [],

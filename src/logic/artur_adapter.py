@@ -59,11 +59,12 @@ def build_artur_solver_workbook(
     output_dir: Path,
     *,
     contract_path: Path = Path("data/manifests/mvp_data_contract.json"),
-    config: ArturSolverAdapterConfig = ArturSolverAdapterConfig(),
+    config: ArturSolverAdapterConfig | None = None,
     overwrite: bool = False,
 ) -> tuple[Path, Path]:
     """Verify lineage, adapt schemas, write a workbook, and validate its loader view."""
 
+    config = config or ArturSolverAdapterConfig()
     audit = _load_verified_normalized_tables(normalized_dir)
     track = load_artur_contract(contract_path)
     materialize_artur_assets(track, cache_dir, fetch_missing=False)

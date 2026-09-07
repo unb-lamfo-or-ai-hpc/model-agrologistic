@@ -1,5 +1,6 @@
-import pytest
 import os
+
+import pytest
 
 from src.logic.model_config import ModelConfig, RunConfig, SolverConfig
 from src.logic.model_data import ModelData

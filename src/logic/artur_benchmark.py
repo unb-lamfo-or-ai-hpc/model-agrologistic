@@ -14,7 +14,6 @@ from urllib.request import urlopen
 
 import pandas as pd
 
-
 DEFAULT_CONTRACT_PATH = Path("data/manifests/mvp_data_contract.json")
 
 
@@ -376,4 +375,3 @@ def _numeric_series_equal(left: pd.Series, right: pd.Series) -> bool:
         return False
     differences = (left_values.fillna(0.0) - right_values.fillna(0.0)).abs()
     return bool((differences <= 1e-8).all())
-

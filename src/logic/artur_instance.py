@@ -12,7 +12,6 @@ from typing import Any
 
 import pandas as pd
 
-
 PORTS_POOL = (
     "Santos - SP",
     "Paranaguá - PR",
@@ -391,4 +390,3 @@ def _legacy_semantic_warnings(
         warnings.append("DUPLICATE_DEMAND_KEYS_REQUIRE_NORMALIZATION_BEFORE_SOLVE")
     warnings.append("FORECASTING_PATH_NOT_RECONSTRUCTED")
     return warnings
-
