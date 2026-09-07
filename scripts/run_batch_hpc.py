@@ -8,7 +8,6 @@ import os
 import sys
 from pathlib import Path
 
-
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 
@@ -29,6 +28,11 @@ def build_parser() -> argparse.ArgumentParser:
         "--output-dir",
         type=Path,
         help="Override the output directory declared in the manifest.",
+    )
+    parser.add_argument(
+        "--workbook",
+        type=Path,
+        help="Override the workbook for every selected experiment.",
     )
     parser.add_argument(
         "--aggregate-only",
@@ -64,6 +68,10 @@ def main(argv: list[str] | None = None) -> int:
 
     args = build_parser().parse_args(argv)
     manifest = load_experiment_manifest(args.manifest)
+    if args.workbook:
+        workbook = args.workbook.resolve()
+        for experiment in manifest.experiments:
+            experiment.workbook = workbook
     output_root = args.output_dir.resolve() if args.output_dir else manifest.output_dir
 
     if args.aggregate_only:
