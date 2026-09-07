@@ -9,6 +9,12 @@ files.
 The audit assigns each untracked or ignored artifact to one category:
 
 - `SAFE_GENERATED`: caches, Python bytecode, build metadata, and temporary files;
+- `FAILED_PROTOCOL_RUN`: a release-protocol directory whose manifest explicitly
+  reports `overall_status=rejected`;
+- `FAILED_SLURM_LOG`: a root Slurm log whose job ID was explicitly supplied by
+  the researcher as failed;
+- `RELEASE_EVIDENCE`: an accepted release-protocol directory that is immutable
+  and cannot enter a quarantine plan;
 - `PIPELINE_REQUIRED`: resumable EVPI/VSS state retained for pipeline recovery;
 - `DUPLICATE_LOG`: a root Slurm log with a byte-identical retained copy, kept
   as a scientific trace;
@@ -18,6 +24,9 @@ The audit assigns each untracked or ignored artifact to one category:
 - `UNCLASSIFIED`: artifacts that require manual review.
 
 Scientific archives are never included in an automatic quarantine plan.
+Rejected protocol runs and failed-job logs are also excluded by default. They
+enter a plan only through explicit command-line opt-in and remain recoverable
+from the compressed quarantine archive.
 
 ## Audit
 
@@ -37,6 +46,37 @@ The plan is intentionally restricted to `SAFE_GENERATED`. Checkpoints, solver
 outputs, Slurm logs, raw data, processed instances, templates, manifests, and
 reproducibility artifacts cannot be added through command-line options. The
 apply command also rejects a manually edited plan containing any other category.
+
+## Post-certification cleanup
+
+After a definitive release run has been accepted and its checksums have been
+verified, generate a second audit that explicitly identifies rejected release
+runs and known failed Slurm jobs. For the v0.1.0 campaign, the failed jobs were
+`2080717` and `2080723`:
+
+```bash
+python scripts/audit_repository_hygiene.py \
+  --include-failed-protocol-runs \
+  --failed-slurm-job-id 2080717 \
+  --failed-slurm-job-id 2080723
+```
+
+This command remains read-only. A protocol run is eligible only when its own
+`protocol_manifest.json` explicitly records `overall_status=rejected`. Accepted
+runs, including `trl6-v0.1.0-final`, remain blocked even if a quarantine plan is
+manually edited. Logs are eligible only for the exact job IDs supplied above.
+
+Before applying the plan, inspect both the category summary and every entry:
+
+```bash
+cat ../model-agrologistic-hygiene-audit/repository_hygiene_audit.csv
+cat ../model-agrologistic-hygiene-audit/quarantine_plan.json
+```
+
+An incomplete directory without a valid protocol manifest remains a scientific
+archive requiring separate manual investigation. Empty directories are not
+reported by Git and may be removed only after confirming that they contain no
+files, links, or hidden state.
 
 ## Apply a reviewed plan
 

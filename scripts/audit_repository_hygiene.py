@@ -23,6 +23,24 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--repo", type=Path, default=PROJECT_ROOT)
     parser.add_argument("--output-dir", type=Path)
+    parser.add_argument(
+        "--include-failed-protocol-runs",
+        action="store_true",
+        help=(
+            "Include only release runs whose protocol manifest explicitly reports "
+            "overall_status=rejected in the reviewed quarantine plan."
+        ),
+    )
+    parser.add_argument(
+        "--failed-slurm-job-id",
+        action="append",
+        default=[],
+        metavar="JOB_ID",
+        help=(
+            "Classify the root Slurm log for an explicitly identified failed job as "
+            "reviewable. Repeat for multiple job IDs."
+        ),
+    )
     args = parser.parse_args()
 
     repo_root = args.repo.resolve()
@@ -33,8 +51,16 @@ def main() -> int:
     )
     if output_dir == repo_root or repo_root in output_dir.parents:
         parser.error("--output-dir must be outside the repository.")
-    entries = audit_repository(repo_root)
-    plan = build_quarantine_plan(repo_root, entries)
+    entries = audit_repository(
+        repo_root,
+        failed_slurm_job_ids=args.failed_slurm_job_id,
+    )
+    plan = build_quarantine_plan(
+        repo_root,
+        entries,
+        include_failed_protocol_runs=args.include_failed_protocol_runs,
+        failed_slurm_job_ids=args.failed_slurm_job_id,
+    )
     csv_path, json_path, plan_path = write_audit_artifacts(
         output_dir,
         entries,
