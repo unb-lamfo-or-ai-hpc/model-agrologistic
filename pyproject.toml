@@ -53,6 +53,9 @@ dependencies = [
 
     # Versioned experiment manifests.
     "pyyaml>=6.0,<7",
+
+    # Optional OSRM distance client retained by the repository.
+    "requests>=2.32,<3",
 ]
 
 
@@ -81,15 +84,28 @@ hpc = [
     "pyyaml>=6.0,<7",
 ]
 
+forecasting = [
+    "importlib-resources>=6,<7",
+    "prophet>=1.1,<2",
+    "statsmodels>=0.14,<1",
+    "torch>=2.8,<3",
+    "xgboost>=2.1,<4",
+]
+
 all = [
     "build>=1.2,<2",
     "gurobipy>=13.0.2,<14",
+    "importlib-resources>=6,<7",
     "mypy>=1.13,<2",
     "pyomo>=6.10,<7",
     "pyscipopt>=6.2,<7",
     "pytest>=8.0,<10",
     "pyyaml>=6.0,<7",
+    "prophet>=1.1,<2",
     "ruff>=0.8,<1",
+    "statsmodels>=0.14,<1",
+    "torch>=2.8,<3",
+    "xgboost>=2.1,<4",
 ]
 
 
@@ -126,6 +142,17 @@ addopts = "-ra"
 [tool.ruff]
 line-length = 100
 target-version = "py313"
+extend-exclude = [
+    # Pre-MVP exploratory and interface-support modules preserved for provenance.
+    "scripts/benchmark_model.py",
+    "scripts/inspect_excel_instance.py",
+    "src/logic/i18n.py",
+    "src/logic/osrm.py",
+    "src/logic/prediction.py",
+    "src/logic/utils.py",
+    "tests/test_haversine.py",
+    "tests/test_osrm.py",
+]
 
 
 [tool.ruff.lint]

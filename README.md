@@ -244,6 +244,11 @@ Raw source assets, generated instances, solver outputs, and large HPC artifacts
 remain outside version control. The repository hygiene policy classifies them as
 pipeline-required, protected, scientific archive, or safe-generated artifacts.
 
+Historical exploratory benchmarking, forecasting, internationalization, and
+OSRM helper modules are preserved for provenance but are outside the frozen TRL
+6 execution and lint contract. Their exact paths are declared in the Ruff
+exclusion list in `pyproject.toml`; none is invoked by the release protocol.
+
 ## Known limitations
 
 - the historical OSRM snapshot used in the thesis was not recovered;
