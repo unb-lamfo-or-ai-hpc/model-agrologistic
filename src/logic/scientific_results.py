@@ -986,7 +986,7 @@ def _plot_stochastic_transport_work(frame, *, plt, sns, pd):
         figsize=(11.0, 3.6 * len(designs)),
         squeeze=False,
     )
-    tidy = (
+    plotted = (
         frame.groupby(
             ["design", "scenario", "route_path", "product"],
             as_index=False,
@@ -1001,7 +1001,7 @@ def _plot_stochastic_transport_work(frame, *, plt, sns, pd):
         )
     )
     for axis, design in zip(axes.flat, designs, strict=True):
-        data = tidy[tidy["design"] == design]
+        data = plotted[plotted["design"] == design]
         matrix = data.pivot(
             index="route_product",
             columns="scenario",
@@ -1020,7 +1020,13 @@ def _plot_stochastic_transport_work(frame, *, plt, sns, pd):
         axis.set_ylabel("Route type and product")
     figure.suptitle("Transport work across stochastic scenarios")
     figure.tight_layout()
-    return figure, tidy, "Cells report total transport work by route type and scenario."
+    exported = frame.copy()
+    exported["billion_tonne_kilometres"] = (
+        exported["tonne_kilometres"] / 1e9
+    )
+    return figure, exported, (
+        "Cells report total transport work by route type and scenario."
+    )
 
 
 def _plot_stochastic_warehouse_profiles(frame, *, plt, sns, pd):
