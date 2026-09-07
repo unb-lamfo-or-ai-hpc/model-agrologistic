@@ -5,8 +5,13 @@ from pathlib import Path
 from types import SimpleNamespace
 
 import pandas as pd
+import pytest
 
-from src.logic.scientific_results import build_scientific_results_presentation
+from src.logic.scientific_results import (
+    ScientificResultsError,
+    _flow_distance,
+    build_scientific_results_presentation,
+)
 
 
 def test_reader_facing_package_preserves_experimental_meaning(tmp_path: Path) -> None:
@@ -84,6 +89,25 @@ def test_reader_facing_package_preserves_experimental_meaning(tmp_path: Path) ->
     assert row["minimum"] == 420.0
     assert row["maximum"] == 620.0
 
+    transport = pd.read_csv(paths["deterministic_transport_work_csv"])
+    assert "typed_customer_alias" in set(transport["distance_resolution"])
+
+
+def test_typed_customer_alias_rejects_ambiguous_distances() -> None:
+    distances = SimpleNamespace(
+        dist_dc={
+            ("W1", "C1"): 10.0,
+            ("W1", "C1 | EXPORTACAO"): 20.0,
+        }
+    )
+    flow = {
+        "warehouse": "W1",
+        "customer": "C1 | DOMESTICA",
+    }
+
+    with pytest.raises(ScientificResultsError, match="unambiguous DC distance"):
+        _flow_distance(distances, flow, "DC")
+
 
 def _write_run(
     run_dir: Path,
@@ -134,7 +158,7 @@ def _write_run(
                     **scenario_fields,
                     "route_type": "DC",
                     "warehouse": "W1",
-                    "customer": "C1",
+                    "customer": "C1 | DOMESTICA",
                     "customer_type": "domestic",
                     "product": "Soy",
                     "period": "2025-01",
@@ -148,7 +172,7 @@ def _write_run(
                     **scenario_fields,
                     "route_type": "OC",
                     "origin": "O1",
-                    "customer": "C1",
+                    "customer": "C1 | DOMESTICA",
                     "customer_type": "domestic",
                     "product": "Soy",
                     "period": "2025-01",

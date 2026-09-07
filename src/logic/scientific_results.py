@@ -532,7 +532,11 @@ def _transport_work_records(runs, data_loader, pd):
             if value <= 0.0:
                 continue
             route_type = str(flow["route_type"]).upper()
-            distance = _flow_distance(data, flow, route_type)
+            distance, distance_resolution = _flow_distance(
+                data,
+                flow,
+                route_type,
+            )
             route_key = _route_key(flow, route_type)
             records.append(
                 {
@@ -547,6 +551,7 @@ def _transport_work_records(runs, data_loader, pd):
                     "product": str(flow.get("product", "All products")),
                     "tonnes": value,
                     "distance_km": distance,
+                    "distance_resolution": distance_resolution,
                     "tonne_kilometres": value * distance,
                 }
             )
@@ -557,7 +562,14 @@ def _transport_work_records(runs, data_loader, pd):
         )
     return (
         frame.groupby(
-            ["design", "scenario", "route_type", "route_path", "product"],
+            [
+                "design",
+                "scenario",
+                "route_type",
+                "route_path",
+                "product",
+                "distance_resolution",
+            ],
             as_index=False,
         )[["tonnes", "tonne_kilometres"]]
         .sum()
@@ -1235,7 +1247,11 @@ def _central_or_expected_inventory(run: CompletedRun, pd):
     )
 
 
-def _flow_distance(data: Any, flow: dict[str, Any], route_type: str) -> float:
+def _flow_distance(
+    data: Any,
+    flow: dict[str, Any],
+    route_type: str,
+) -> tuple[float, str]:
     if route_type == "OD":
         key = (str(flow["origin"]), str(flow["warehouse"]))
         mapping = data.dist_od
@@ -1250,9 +1266,44 @@ def _flow_distance(data: Any, flow: dict[str, Any], route_type: str) -> float:
         mapping = data.dist_dd
     else:
         raise ScientificResultsError(f"Unsupported route type: {route_type}")
-    if key not in mapping:
-        raise ScientificResultsError(f"Missing {route_type} distance for route {key}.")
-    return float(mapping[key])
+    if key in mapping:
+        return float(mapping[key]), "exact"
+    if route_type not in {"DC", "OC"}:
+        raise ScientificResultsError(
+            f"Missing {route_type} distance for route {key}."
+        )
+
+    physical_destination = _physical_customer_id(key[1])
+    candidates = [
+        (pair, float(distance))
+        for pair, distance in mapping.items()
+        if pair[0] == key[0]
+        and _physical_customer_id(str(pair[1])) == physical_destination
+    ]
+    if len(candidates) == 1:
+        return candidates[0][1], "typed_customer_alias"
+    distinct_distances = {distance for _pair, distance in candidates}
+    if candidates and len(distinct_distances) == 1:
+        return candidates[0][1], "typed_customer_alias_equal_distances"
+    candidate_text = ", ".join(str(pair) for pair, _distance in candidates[:5])
+    raise ScientificResultsError(
+        f"Missing unambiguous {route_type} distance for route {key}. "
+        f"Physical-customer candidates: {candidate_text or 'none'}."
+    )
+
+
+def _physical_customer_id(value: str) -> str:
+    base, separator, suffix = value.rpartition(" | ")
+    if separator and suffix.strip().upper() in {
+        "DOMESTICA",
+        "DOMÉSTICA",
+        "DOMESTIC",
+        "EXPORTACAO",
+        "EXPORTAÇÃO",
+        "EXPORT",
+    }:
+        return base.strip()
+    return value.strip()
 
 
 def _route_key(flow: dict[str, Any], route_type: str) -> str:

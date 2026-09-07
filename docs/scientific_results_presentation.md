@@ -124,6 +124,11 @@ policy, and route policy.
   readability; VSS and objective values use billions.
 - Transport work is calculated as transported tonnes multiplied by route
   distance and displayed in billion tonne-kilometres.
+- Distance joins first require the exact exported node identifier. For legacy
+  overlapping demand locations, the generator may resolve a typed domestic or
+  export identifier to its physical city identifier only when the match is
+  unique or all matching records report the same distance. The tidy transport
+  data records the resolution mode, and ambiguous aliases stop generation.
 - DynCap is annualized and displayed in tonnes per year or million tonnes per
   year, depending on the figure.
 - Turnover is measured in inventory cycles per year.
