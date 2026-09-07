@@ -167,3 +167,14 @@ cat data/results/reproducibility/mvp_scientific_evidence/mvp_investment_changes.
 Generated evidence remains an HPC artifact and should not be committed unless a
 later publication snapshot explicitly freezes it with its provenance manifest.
 
+## Publication figures
+
+After the manifest reports an accepted package, generate the traceable PNG, PDF,
+and tidy CSV figure set with:
+
+```bash
+python scripts/generate_scientific_plots.py
+```
+
+The figure definitions, units, Big-M interpretation boundary, and provenance
+checks are documented in [the scientific visualization protocol](scientific_visualization.md).
