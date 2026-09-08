@@ -173,6 +173,11 @@ def load_model_data_from_excel(
         if config.include_stochastic_scenarios and "Cenarios" in sheets
         else pd.DataFrame()
     )
+    initial_inventory_df = (
+        _clean_dataframe(sheets["Estoque_Inicial"])
+        if "Estoque_Inicial" in sheets
+        else pd.DataFrame()
+    )
     distances_df = (
         _clean_dataframe(sheets["Distancias"])
         if config.use_workbook_distances and "Distancias" in sheets
@@ -274,6 +279,12 @@ def load_model_data_from_excel(
         parameter_table=parameter_table,
         investment_cost_table=investment_cost_table,
         loader_warnings=loader_warnings,
+    )
+
+    initial_inventory = _load_initial_inventory(
+        initial_inventory_df,
+        warehouses=warehouses,
+        products=products,
     )
 
     freight_origin = {
@@ -431,6 +442,7 @@ def load_model_data_from_excel(
         supply=supply,
         demand_dom=demand_dom,
         demand_exp=demand_exp,
+        initial_inventory=initial_inventory,
         scenarios=scenarios,
         scenario_prob=scenario_prob,
         supply_s=supply_s,
@@ -466,6 +478,9 @@ def load_model_data_from_excel(
             "loader": "src.logic.excel_loader.load_model_data_from_excel",
             "candidate_cost_policy": config.candidate_cost_policy,
             "penalty_policy": config.penalty_policy,
+            "initial_inventory_source": (
+                "Estoque_Inicial" if not initial_inventory_df.empty else "zero_default"
+            ),
             "reported_candidate_total_opening_cost": reported_candidate_total_opening_cost,
             "investment_cost_table": investment_cost_table,
             "parameter_table": parameter_table,
@@ -1514,6 +1529,44 @@ def _expand_storage_tariffs(
             )
 
     return storage_tariff
+
+
+def _load_initial_inventory(
+    frame: pd.DataFrame,
+    *,
+    warehouses: list[str],
+    products: list[str],
+) -> dict[tuple[str, str], float]:
+    """Load the optional thesis-compatible initial inventory table."""
+
+    if frame.empty:
+        return {}
+
+    required = {"CDA", "Produto", "Estoque Inicial (t)"}
+    missing = sorted(required - set(frame.columns))
+    if missing:
+        raise ValueError(
+            "Estoque_Inicial is missing required columns: "
+            f"{missing}."
+        )
+
+    warehouse_set = set(warehouses)
+    product_set = set(products)
+    inventory: dict[tuple[str, str], float] = {}
+    for _, row in frame.iterrows():
+        key = (_normalize_text(row["CDA"]), _normalize_text(row["Produto"]))
+        if key[0] not in warehouse_set or key[1] not in product_set:
+            raise ValueError(
+                "Estoque_Inicial references an unknown model index: "
+                f"{key}."
+            )
+        if key in inventory:
+            raise ValueError(f"Duplicate Estoque_Inicial key: {key}.")
+        value = _parse_float(row["Estoque Inicial (t)"])
+        if value < 0:
+            raise ValueError(f"Initial inventory must be non-negative for {key}.")
+        inventory[key] = value
+    return inventory
 
 
 def _build_penalty_rates(
