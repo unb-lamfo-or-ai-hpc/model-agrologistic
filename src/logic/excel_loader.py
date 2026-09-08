@@ -21,6 +21,7 @@ import pandas as pd
 from src.logic.model_data import ModelData, NodeInfo
 
 CandidateCostPolicy = Literal["variable_from_total", "fixed_total"]
+PenaltyPolicy = Literal["thesis_dynamic", "fixed"]
 ScenarioGenerationMode = Literal["active_rows", "cartesian"]
 
 
@@ -118,6 +119,7 @@ class ExcelLoaderConfig:
     demand_node_id_column: str = "ID_Demanda"
     split_overlapping_demand_nodes: bool = True
 
+    penalty_policy: PenaltyPolicy = "thesis_dynamic"
     default_unmet_demand_penalty: float = 1_000_000.0
     default_emergency_static_penalty: float = 1_000_000.0
     default_emergency_reception_penalty: float = 1_000_000.0
@@ -128,6 +130,10 @@ class ExcelLoaderConfig:
             raise ValueError(
                 "compute_haversine_distances and use_workbook_distances are "
                 "mutually exclusive."
+            )
+        if self.penalty_policy not in {"thesis_dynamic", "fixed"}:
+            raise ValueError(
+                "penalty_policy must be either 'thesis_dynamic' or 'fixed'."
             )
 
 
@@ -388,21 +394,24 @@ def load_model_data_from_excel(
             },
         )
 
-    unmet_demand_penalty = {
-        (customer, product): config.default_unmet_demand_penalty
-        for customer in domestic_customers
-        for product in products
-    }
-
-    emergency_static_capacity_penalty = {
-        warehouse: config.default_emergency_static_penalty
-        for warehouse in warehouses
-    }
-
-    emergency_reception_capacity_penalty = {
-        warehouse: config.default_emergency_reception_penalty
-        for warehouse in warehouses
-    }
+    (
+        unmet_demand_penalty,
+        emergency_static_capacity_penalty,
+        emergency_reception_capacity_penalty,
+    ) = _build_penalty_rates(
+        config=config,
+        warehouses=warehouses,
+        domestic_customers=domestic_customers,
+        products=products,
+        routes_dc=routes_dc,
+        routes_oc=routes_oc,
+        dist_dc=dist_dc,
+        dist_oc=dist_oc,
+        freight_origin=freight_origin,
+        freight_warehouse=freight_warehouse,
+        expand_variable_cost=expand_variable_cost,
+        storage_tariff=storage_tariff,
+    )
 
     return ModelData(
         origins=origins,
@@ -456,6 +465,7 @@ def load_model_data_from_excel(
             "source_excel": str(path),
             "loader": "src.logic.excel_loader.load_model_data_from_excel",
             "candidate_cost_policy": config.candidate_cost_policy,
+            "penalty_policy": config.penalty_policy,
             "reported_candidate_total_opening_cost": reported_candidate_total_opening_cost,
             "investment_cost_table": investment_cost_table,
             "parameter_table": parameter_table,
@@ -1504,6 +1514,78 @@ def _expand_storage_tariffs(
             )
 
     return storage_tariff
+
+
+def _build_penalty_rates(
+    *,
+    config: ExcelLoaderConfig,
+    warehouses: list[str],
+    domestic_customers: list[str],
+    products: list[str],
+    routes_dc: set[tuple[str, str, str]],
+    routes_oc: set[tuple[str, str, str]],
+    dist_dc: dict[tuple[str, str], float],
+    dist_oc: dict[tuple[str, str], float],
+    freight_origin: dict[str, float],
+    freight_warehouse: dict[str, float],
+    expand_variable_cost: dict[str, float],
+    storage_tariff: dict[tuple[str, str], float],
+) -> tuple[
+    dict[tuple[str, str], float],
+    dict[str, float],
+    dict[str, float],
+]:
+    """Build fixed or thesis-compatible dynamic complete-recourse penalties."""
+
+    if config.penalty_policy == "fixed":
+        return (
+            {
+                (customer, product): config.default_unmet_demand_penalty
+                for customer in domestic_customers
+                for product in products
+            },
+            {
+                warehouse: config.default_emergency_static_penalty
+                for warehouse in warehouses
+            },
+            {
+                warehouse: config.default_emergency_reception_penalty
+                for warehouse in warehouses
+            },
+        )
+
+    reference_cost = max(
+        100.0,
+        max(expand_variable_cost.values(), default=0.0),
+        max(storage_tariff.values(), default=0.0),
+    )
+    emergency_rate = 50.0 * reference_cost
+
+    unmet_rates: dict[tuple[str, str], float] = {}
+    for customer in domestic_customers:
+        for product in products:
+            route_costs = [
+                dist_dc.get((warehouse, customer), 0.0)
+                * freight_warehouse.get(warehouse, 0.0)
+                for warehouse, route_customer, route_product in routes_dc
+                if route_customer == customer and route_product == product
+            ]
+            route_costs.extend(
+                dist_oc.get((origin, customer), 0.0)
+                * freight_origin.get(origin, 0.0)
+                for origin, route_customer, route_product in routes_oc
+                if route_customer == customer and route_product == product
+            )
+            unmet_rates[(customer, product)] = 100.0 * max(
+                reference_cost,
+                max(route_costs, default=0.0),
+            )
+
+    return (
+        unmet_rates,
+        {warehouse: emergency_rate for warehouse in warehouses},
+        {warehouse: emergency_rate for warehouse in warehouses},
+    )
 
 
 # ---------------------------------------------------------------------
