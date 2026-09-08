@@ -100,7 +100,7 @@ def solve_stochastic_model_gurobipy(
     candidate_warehouses = list(data.candidate_warehouses)
     expansion_warehouses = [
         warehouse
-        for warehouse in data.existing_warehouses
+        for warehouse in data.warehouses
         if model_config.allow_capacity_expansion
         and data.max_expand_capacity.get(warehouse, 0.0) > 0.0
     ]
@@ -466,6 +466,7 @@ def _build_scenario_costs(
                     warehouse_from=key[1],
                     warehouse_to=key[2],
                     product=key[3],
+                    model_config=model_config,
                 )
                 for key in dd_keys
                 if key[0] == scenario
@@ -528,10 +529,15 @@ def _add_first_stage_constraints(
             )
 
     for warehouse in expansion_warehouses:
+        active = _active_warehouse_expr(data, open_candidate, warehouse)
         model.addConstr(
             expand_capacity[warehouse]
             <= data.max_expand_capacity[warehouse] * expand_warehouse[warehouse],
             name=f"expansion_capacity[{warehouse}]",
+        )
+        model.addConstr(
+            expand_warehouse[warehouse] <= active,
+            name=f"expansion_only_if_active[{warehouse}]",
         )
 
     for warehouse in bulkification_warehouses:
@@ -544,6 +550,15 @@ def _add_first_stage_constraints(
         model.addConstr(
             bulkify_warehouse[warehouse] <= active,
             name=f"bulkification_only_if_active[{warehouse}]",
+        )
+
+    for warehouse in sorted(
+        set(expansion_warehouses) & set(bulkification_warehouses)
+    ):
+        active = _active_warehouse_expr(data, open_candidate, warehouse)
+        model.addConstr(
+            expand_warehouse[warehouse] + bulkify_warehouse[warehouse] <= active,
+            name=f"expansion_bulkification_exclusion[{warehouse}]",
         )
 
 
@@ -1026,6 +1041,7 @@ def _extract_stochastic_result(
             **metadata,
             "candidate_capacity_mode": model_config.candidate_capacity_mode,
             "capacity_coupling_policy": model_config.capacity_coupling_policy,
+            "interhub_factor": model_config.interhub_factor,
             "capacity_coupling_daily_factors": {
                 "candidate_reception": model_config.candidate_reception_daily_factor,
                 "candidate_shipping": model_config.candidate_shipping_daily_factor,
