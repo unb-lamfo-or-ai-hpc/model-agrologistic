@@ -33,10 +33,10 @@ class ArturSolverAdapterConfig:
     unmet_demand_penalty: float = 1_000_000.0
     emergency_static_penalty: float = 1_000_000.0
     emergency_reception_penalty: float = 1_000_000.0
-    low_supply_multiplier: float = 0.85
-    high_supply_multiplier: float = 1.15
-    low_domestic_demand_multiplier: float = 0.95
-    high_domestic_demand_multiplier: float = 1.05
+    low_supply_multiplier: float = 0.80
+    high_supply_multiplier: float = 1.20
+    low_domestic_demand_multiplier: float = 0.80
+    high_domestic_demand_multiplier: float = 1.20
 
     def __post_init__(self) -> None:
         if not 0.0 < self.low_supply_multiplier <= 1.0:
@@ -81,6 +81,10 @@ def build_artur_solver_workbook(
     freight = pd.read_excel(benchmark_dir / "Valor_Tonelada_km.xlsx")
     storage = pd.read_excel(benchmark_dir / "Tarifa_de_Armazenagem.xlsx")
     investment = pd.read_excel(benchmark_dir / "Custos_Investimento.xlsx")
+    initial_inventory = _build_initial_inventory(
+        warehouses,
+        products=list(dict.fromkeys(supply["Produto"].astype(str))),
+    )
     scenarios = _build_scenario_definitions(config)
     parameters = pd.DataFrame(
         [
@@ -122,6 +126,9 @@ def build_artur_solver_workbook(
     with pd.ExcelWriter(workbook_path, engine="openpyxl") as writer:
         supply.to_excel(writer, sheet_name="Oferta", index=False)
         demand.to_excel(writer, sheet_name="Demanda", index=False)
+        initial_inventory.to_excel(
+            writer, sheet_name="Estoque_Inicial", index=False
+        )
         warehouses.to_excel(writer, sheet_name="Warehouses", index=False)
         freight.to_excel(writer, sheet_name="Frete", index=False)
         storage.to_excel(writer, sheet_name="Tarifa_Armz", index=False)
@@ -137,6 +144,7 @@ def build_artur_solver_workbook(
         include_transshipment_routes=True,
         include_direct_origin_customer_routes=False,
         candidate_cost_policy="fixed_total",
+        penalty_policy="thesis_dynamic",
         default_unmet_demand_penalty=config.unmet_demand_penalty,
         default_emergency_static_penalty=config.emergency_static_penalty,
         default_emergency_reception_penalty=config.emergency_reception_penalty,
@@ -157,8 +165,9 @@ def build_artur_solver_workbook(
                 ("base", "base"),
                 ("alto", "baixo"),
             ),
-            stochastic_probabilities=(1.0 / 3.0,) * 3,
+            stochastic_probabilities=(0.33, 0.34, 0.33),
             candidate_cost_policy="fixed_total",
+            penalty_policy="thesis_dynamic",
             default_unmet_demand_penalty=config.unmet_demand_penalty,
             default_emergency_static_penalty=config.emergency_static_penalty,
             default_emergency_reception_penalty=(
@@ -187,7 +196,7 @@ def build_artur_solver_workbook(
     workbook_bytes = workbook_path.read_bytes()
     adapter_audit = {
         "schema_version": 1,
-        "reproduction_level": "bounded",
+        "reproduction_level": "thesis_compatible_bounded",
         "instance_name": audit["instance_name"],
         "source_commit_sha": track["commit_sha"],
         "normalization_policy": audit["normalization_policy"],
@@ -204,6 +213,8 @@ def build_artur_solver_workbook(
             "include_export_routes": True,
             "include_direct_origin_customer_routes": False,
             "candidate_cost_policy": "fixed_total",
+            "penalty_policy": "thesis_dynamic",
+            "initial_inventory_policy": "full_existing_static_capacity_equal_product_split",
         },
         "model_data_signature": {
             "origins": len(model_data.origins),
@@ -217,6 +228,7 @@ def build_artur_solver_workbook(
             "routes_dd": len(model_data.routes_dd),
             "routes_oc": len(model_data.routes_oc),
             "export_upper_bound_tons": sum(model_data.demand_exp.values()),
+            "initial_inventory_tons": sum(model_data.initial_inventory.values()),
         },
         "stochastic_extension_signature": {
             "classification": "controlled_extension",
@@ -242,7 +254,7 @@ def build_artur_solver_workbook(
             "bulkification_variable_cost_per_ton": (
                 config.bulkification_variable_cost_per_ton
             ),
-            "scenario_multiplier_source": "gold_workbook_synthetic_design",
+            "scenario_multiplier_source": "thesis_case_study_design",
         },
         "remaining_limitations": [
             "DISTANCE_METHOD_DIFFERS_FROM_HISTORICAL_OSRM",
@@ -288,6 +300,34 @@ def _adapt_demand(source: pd.DataFrame) -> pd.DataFrame:
         adapted["Peso (ton)"], errors="coerce"
     )
     return adapted
+
+
+def _build_initial_inventory(
+    warehouses: pd.DataFrame,
+    *,
+    products: list[str],
+) -> pd.DataFrame:
+    """Reproduce the thesis initial stock assumption for existing warehouses."""
+
+    if not products:
+        raise ValueError("Initial inventory requires at least one product.")
+
+    existing = warehouses.loc[
+        warehouses["Status"] == "Existente",
+        ["CDA", "Cap. Estática (t)"],
+    ].copy()
+    rows = []
+    for _, warehouse in existing.iterrows():
+        share = float(warehouse["Cap. Estática (t)"]) / len(products)
+        rows.extend(
+            {
+                "CDA": str(warehouse["CDA"]),
+                "Produto": product,
+                "Estoque Inicial (t)": share,
+            }
+            for product in products
+        )
+    return pd.DataFrame(rows)
 
 
 def _build_scenario_definitions(config: ArturSolverAdapterConfig) -> pd.DataFrame:
