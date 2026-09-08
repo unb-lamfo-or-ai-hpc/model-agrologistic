@@ -175,7 +175,7 @@ def test_adapter_builds_audited_workbook_with_frozen_distances(tmp_path: Path):
     assert data.export_customers == ["Port - SP"]
     assert data.demand_exp[("Port - SP", "Corn", "2025-01")] == 10.0
     assert ("W1", "Port - SP", "Corn") in data.routes_dc
-    assert audit["reproduction_level"] == "bounded"
+    assert audit["reproduction_level"] == "thesis_compatible_bounded"
     assert audit["model_data_signature"]["export_customers"] == 1
     assert audit["model_data_signature"]["export_upper_bound_tons"] == 10.0
     assert audit["model_data_signature"]["routes_dd"] == 2
@@ -185,25 +185,34 @@ def test_adapter_builds_audited_workbook_with_frozen_distances(tmp_path: Path):
         "oferta_alto__demanda_baixo",
     ]
     assert audit["stochastic_extension_signature"]["scenario_probabilities"] == {
-        "oferta_baixo__demanda_alto": 1.0 / 3.0,
-        "oferta_base__demanda_base": 1.0 / 3.0,
-        "oferta_alto__demanda_baixo": 1.0 / 3.0,
+        "oferta_baixo__demanda_alto": 0.33,
+        "oferta_base__demanda_base": 0.34,
+        "oferta_alto__demanda_baixo": 0.33,
     }
+    assert audit["model_data_signature"]["initial_inventory_tons"] == 100.0
+    assert data.initial_inventory == {("W1", "Corn"): 100.0}
     assert len(audit["workbook"]["sha256"]) == 64
+
+    initial_inventory_sheet = pd.read_excel(
+        workbook, sheet_name="Estoque_Inicial"
+    )
+    assert initial_inventory_sheet.to_dict("records") == [
+        {"CDA": "W1", "Produto": "Corn", "Estoque Inicial (t)": 100.0}
+    ]
 
     demand_sheet = pd.read_excel(workbook, sheet_name="Demanda")
     assert "Peso_Modelo (ton)" in demand_sheet.columns
     scenario_sheet = pd.read_excel(workbook, sheet_name="Cenarios")
-    assert scenario_sheet["Multiplicador_Oferta"].tolist() == [1.0, 0.85, 1.15]
+    assert scenario_sheet["Multiplicador_Oferta"].tolist() == [1.0, 0.8, 1.2]
     assert scenario_sheet["Multiplicador_Demanda_Domestica"].tolist() == [
         1.0,
-        0.95,
-        1.05,
+        0.8,
+        1.2,
     ]
     assert scenario_sheet["Multiplicador_Demanda_Exportacao"].tolist() == [
         1.0,
-        0.85,
-        1.15,
+        0.8,
+        1.2,
     ]
 
     with pytest.raises(FileExistsError):
