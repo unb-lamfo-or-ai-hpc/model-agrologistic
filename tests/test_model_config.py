@@ -69,6 +69,9 @@ def test_default_model_config_is_deterministic():
     assert config.allow_emergency_reception_capacity is True
     assert config.terminal_inventory_policy == "free"
     assert config.objective_policy == "penalty"
+    assert config.capacity_coupling_policy == "daily_factors"
+    assert config.interhub_factor == pytest.approx(1.0)
+    assert config.separate_emergency_capacity_slacks is True
     assert config.days_per_period == pytest.approx(30.0)
 
 
@@ -185,3 +188,11 @@ def test_lexicographic_policy_prioritizes_physical_feasibility_slack():
         "minimize_unmet_demand",
         "minimize_economic_cost",
     ]
+
+
+def test_v020_rejects_ambiguous_emergency_slack_and_negative_interhub_factor():
+    with pytest.raises(ValueError, match="requires separate"):
+        ModelConfig(separate_emergency_capacity_slacks=False)
+
+    with pytest.raises(ValueError, match="interhub_factor"):
+        ModelConfig(interhub_factor=-0.01)
