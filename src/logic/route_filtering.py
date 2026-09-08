@@ -32,6 +32,9 @@ def select_routes(data: ModelData, config: ModelConfig) -> SelectedRoutes:
     customer and export exits.
     """
 
+    if config.route_filter_strategy == "thesis_pareto":
+        return _select_thesis_pareto_routes(data, config)
+
     od = _select(
         data.routes_od,
         config,
@@ -74,6 +77,63 @@ def select_routes(data: ModelData, config: ModelConfig) -> SelectedRoutes:
             else set()
         ),
         oc=oc,
+    )
+
+
+def _select_thesis_pareto_routes(
+    data: ModelData,
+    config: ModelConfig,
+) -> SelectedRoutes:
+    """Reproduce the historical 80/20 route construction exactly.
+
+    The historical implementation retained the shortest ceil(0.20 * n)
+    candidates in each source/product group. It did not add routes after
+    filtering to repair network coverage. The configured fraction remains
+    explicit so controlled sensitivity runs can reuse the historical grouping
+    without being mislabeled as the thesis's 20 percent experiment.
+    """
+
+    return SelectedRoutes(
+        od=_select(
+            data.routes_od,
+            config,
+            group=lambda route: (route[0], route[2]),
+            distance=lambda route: data.dist_od.get(
+                (route[0], route[1]), float("inf")
+            ),
+        ),
+        dc=_select(
+            data.routes_dc,
+            config,
+            group=lambda route: (route[0], route[2]),
+            distance=lambda route: data.dist_dc.get(
+                (route[0], route[1]), float("inf")
+            ),
+        ),
+        dd=(
+            _select(
+                data.routes_dd,
+                config,
+                group=lambda route: (route[0], route[2]),
+                distance=lambda route: data.dist_dd.get(
+                    (route[0], route[1]), float("inf")
+                ),
+            )
+            if config.use_warehouse_transshipment
+            else set()
+        ),
+        oc=(
+            _select(
+                data.routes_oc,
+                config,
+                group=lambda route: (route[0], route[2]),
+                distance=lambda route: data.dist_oc.get(
+                    (route[0], route[1]), float("inf")
+                ),
+            )
+            if config.use_direct_origin_customer
+            else set()
+        ),
     )
 
 
