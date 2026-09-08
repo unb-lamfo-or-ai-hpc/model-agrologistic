@@ -26,7 +26,7 @@ type SolverBackend = Literal["gurobipy", "pyomo"]
 type ModelMode = Literal["det", "sto"]
 type CandidateCapacityMode = Literal["fixed", "scalable"]
 type TerminalInventoryPolicy = Literal["free", "zero", "penalized", "target"]
-type RouteFilterStrategy = Literal["none", "pareto", "top_k"]
+type RouteFilterStrategy = Literal["none", "pareto", "thesis_pareto", "top_k"]
 type ObjectivePolicy = Literal["penalty", "lexicographic"]
 type CapacityCouplingPolicy = Literal["period_equivalent", "daily_factors"]
 
@@ -35,7 +35,7 @@ VALID_SOLVER_BACKENDS = {"gurobipy", "pyomo"}
 VALID_MODEL_MODES = {"det", "sto"}
 VALID_CANDIDATE_CAPACITY_MODES = {"fixed", "scalable"}
 VALID_TERMINAL_INVENTORY_POLICIES = {"free", "zero", "penalized", "target"}
-VALID_ROUTE_FILTER_STRATEGIES = {"none", "pareto", "top_k"}
+VALID_ROUTE_FILTER_STRATEGIES = {"none", "pareto", "thesis_pareto", "top_k"}
 VALID_OBJECTIVE_POLICIES = {"penalty", "lexicographic"}
 VALID_CAPACITY_COUPLING_POLICIES = {"period_equivalent", "daily_factors"}
 
@@ -146,6 +146,7 @@ class ModelConfig:
 
     use_direct_origin_customer: bool = False
     use_warehouse_transshipment: bool = True
+    interhub_factor: float = 1.0
 
     route_filter_strategy: RouteFilterStrategy = "none"
     pareto_fraction: float = 0.20
@@ -160,10 +161,10 @@ class ModelConfig:
     allow_capacity_expansion: bool = True
     allow_bulkification: bool = True
 
-    # ``period_equivalent`` preserves the established MVP formulation.
-    # ``daily_factors`` reproduces the historical SiloDSS interpretation:
-    # installed capacity also changes daily reception and shipping throughput.
-    capacity_coupling_policy: CapacityCouplingPolicy = "period_equivalent"
+    # The thesis-compatible default converts daily throughput into each
+    # modeled period and couples investment capacity to throughput.
+    # ``period_equivalent`` remains available only for v0.1 evidence replay.
+    capacity_coupling_policy: CapacityCouplingPolicy = "daily_factors"
     candidate_reception_daily_factor: float = 0.20
     candidate_shipping_daily_factor: float = 0.20
     expansion_reception_daily_factor: float = 0.20
@@ -180,8 +181,8 @@ class ModelConfig:
     allow_emergency_static_capacity: bool = True
     allow_emergency_reception_capacity: bool = True
 
-    # If True, static-capacity emergency slack and reception-capacity
-    # emergency slack must be represented as distinct variables.
+    # v0.2 intentionally keeps dimensionally different complete-recourse
+    # slacks separate. False is rejected to prevent an ambiguous shared slack.
     separate_emergency_capacity_slacks: bool = True
 
     # ``penalty`` preserves the single weighted-cost objective. The optional
@@ -220,6 +221,14 @@ class ModelConfig:
             raise ValueError(
                 f"Invalid model mode: {self.mode!r}. "
                 f"Expected one of {sorted(VALID_MODEL_MODES)}."
+            )
+
+        if self.interhub_factor < 0:
+            raise ValueError("interhub_factor must be non-negative.")
+
+        if not self.separate_emergency_capacity_slacks:
+            raise ValueError(
+                "v0.2 requires separate static and reception emergency slacks."
             )
 
         if self.candidate_capacity_mode not in VALID_CANDIDATE_CAPACITY_MODES:
