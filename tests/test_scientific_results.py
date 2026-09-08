@@ -68,12 +68,21 @@ def test_reader_facing_package_preserves_experimental_meaning(tmp_path: Path) ->
     manifest = json.loads(paths["manifest_json"].read_text(encoding="utf-8"))
     assert len(manifest["figures"]) == 10
     assert "not equivalent" in manifest["scientific_scope"]["network_policy"]
+    assert "20 percent" in manifest["route_filter_semantics"][
+        "historical_artur_reference"
+    ]
+    lineage = manifest["instance_lineage"]["artur_legacy_i001"]
+    assert lineage["binary_workbook_snapshots_identical"] is True
+    assert lineage["workbook_sha256"] == ["synthetic-workbook"]
     assert all(path.is_file() and path.stat().st_size > 0 for path in paths.values())
 
     deterministic = pd.read_csv(paths["deterministic_configuration_summary_csv"])
     assert set(deterministic["route_filter"]) == {"pareto", "top_k"}
     assert set(deterministic["direct_arcs"]) == {False, True}
     assert not deterministic["configuration"].str.contains("alpha", case=False).any()
+    labels = set(deterministic["configuration"])
+    assert any("Coverage-preserving shortest 5% per group" in item for item in labels)
+    assert any("Coverage-preserving top-10 per group" in item for item in labels)
 
     stochastic = pd.read_csv(paths["stochastic_configuration_summary_csv"])
     assert set(stochastic["row_scope"]) == {

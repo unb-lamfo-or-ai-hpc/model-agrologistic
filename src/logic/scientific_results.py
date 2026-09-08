@@ -260,18 +260,65 @@ def build_scientific_results_presentation(
         figure_manifest.append(record)
 
     source_runs = [*deterministic, baseline, *stochastic]
+    source_instance_ids = {
+        **{run.name: "gold_workbook_network" for run in deterministic},
+        **{
+            run.name: "artur_legacy_i001"
+            for run in (baseline, *stochastic)
+        },
+    }
+    artur_workbook_hashes = sorted(
+        {
+            str(run.experiment.get("workbook_sha256"))
+            for run in (baseline, *stochastic)
+            if run.experiment.get("workbook_sha256")
+        }
+    )
     manifest = {
         "schema_version": PRESENTATION_SCHEMA_VERSION,
         "created_at_utc": datetime.now(UTC).isoformat(),
         "scientific_scope": {
             "network_policy": (
-                "full gold-workbook deterministic sensitivity; route filters are "
-                "not equivalent to the thesis interhub cost factor"
+                "full gold-workbook deterministic sensitivity using exploratory "
+                "coverage-preserving shortest-distance and top-k route filters; "
+                "these filters are not equivalent to either the historical "
+                "20-percent filter or the thesis interhub cost factor"
             ),
             "stochastic": (
                 "bounded legacy reproduction and controlled three- and "
                 "nine-scenario extensions"
             ),
+        },
+        "route_filter_semantics": {
+            "current_pareto": (
+                "retains the configured shortest-distance fraction within route "
+                "groups and then adds coverage-preserving routes"
+            ),
+            "current_top_k": (
+                "retains the configured number of shortest routes within route "
+                "groups and then adds coverage-preserving routes"
+            ),
+            "historical_artur_reference": (
+                "retains 20 percent of distance-ranked candidates within the "
+                "historical OD, DC, DD, and OC group definitions without the "
+                "current coverage augmentations"
+            ),
+        },
+        "instance_lineage": {
+            "artur_legacy_i001": {
+                "comparison_basis": (
+                    "shared normalized adaptation protocol and logical solver-input "
+                    "path"
+                ),
+                "binary_workbook_snapshots_identical": (
+                    len(artur_workbook_hashes) == 1
+                ),
+                "workbook_sha256": artur_workbook_hashes,
+                "interpretation": (
+                    "binary workbook hashes may differ across runs produced after "
+                    "workbook rebuilds; this is not a byte-identical replay"
+                ),
+            }
         },
         "units": {
             "money": "model monetary units; Big-M penalties are non-observed",
@@ -283,6 +330,7 @@ def build_scientific_results_presentation(
         "source_runs": [
             {
                 "name": run.name,
+                "logical_instance_id": source_instance_ids[run.name],
                 "result_sha256": _sha256(run.run_dir / "result.json"),
                 "workbook_sha256": run.experiment.get("workbook_sha256"),
             }
@@ -994,8 +1042,9 @@ def _plot_cross_design_cost_composition(frame, *, plt, sns, pd):
     axis.set_title("Deterministic and stochastic economic cost composition")
     figure.tight_layout()
     return figure, frame, (
-        "The bounded baseline and stochastic extensions share the same adapted "
-        "instance."
+        "The bounded baseline and stochastic extensions derive from the same "
+        "logical Artur adaptation protocol; binary workbook snapshot hashes are "
+        "reported separately."
     )
 
 
@@ -1435,9 +1484,11 @@ def _network_policy_label(run: CompletedRun) -> str:
 def _route_policy_label(model: dict[str, Any]) -> str:
     strategy = str(model.get("route_filter_strategy", "none"))
     if strategy == "pareto":
-        return f"Pareto {100.0 * float(model.get('pareto_fraction', 0.0)):g}%"
+        fraction = 100.0 * float(model.get("pareto_fraction", 0.0))
+        return f"Coverage-preserving shortest {fraction:g}% per group"
     if strategy == "top_k":
-        return f"Top-k {int(model.get('route_top_k') or 0)}"
+        count = int(model.get("route_top_k") or 0)
+        return f"Coverage-preserving top-{count} per group"
     return "Unfiltered routes"
 
 

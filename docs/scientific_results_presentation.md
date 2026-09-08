@@ -21,19 +21,29 @@ instance differs from the thesis.
 The generator keeps two evidence domains separate.
 
 1. The full gold-workbook deterministic campaign compares direct
-   origin-customer arcs and route-set reduction policies. Its valid factors are
-   direct arcs enabled or disabled and Pareto or top-k route selection.
+   origin-customer arcs and exploratory route-set reduction policies. Its
+   completed factors retain either the shortest 5 percent of candidates or the
+   shortest ten candidates within route groups, followed by explicit
+   coverage-preserving route augmentation.
 2. The adapted Artur instance compares the bounded deterministic baseline with
-   controlled three- and nine-scenario stochastic extensions. These runs share
-   the same transformed supply, demand, warehouse, and distance basis.
+   controlled three- and nine-scenario stochastic extensions. These runs derive
+   from the same normalized adaptation protocol and logical input path. Because
+   they were solved after separate workbook rebuilds, their binary XLSX hashes
+   differ and are reported individually in the presentation manifest.
 
-The thesis interhub factor, commonly denoted by alpha, multiplies interhub
-transport cost. It is not a route-selection rule. A Pareto fraction or top-k
-filter changes which arcs enter the model, whereas alpha changes the cost of
-retained warehouse-to-warehouse arcs. Current results therefore report the
-implemented direct-arc and route-filter factors explicitly and never relabel
-them as alpha. An alpha sensitivity study requires a separate experiment
-manifest and is outside this generator's evidence contract.
+Two historical mechanisms must also remain distinct. The thesis interhub
+factor, commonly denoted by alpha, multiplies interhub transport cost and does
+not select routes. Artur's historical Pareto switch separately retained the
+shortest 20 percent of distance-ranked candidates inside its OD, DC, DD, and OC
+groups. The current reusable filter accepts a configurable fraction or top-k
+value, but adds coverage-preserving routes and uses complementary grouping for
+some destination arcs. Consequently, the completed 5-percent and top-10
+campaign is an exploratory computational extension, not a reproduction of
+Artur's 80/20 filter. A faithful historical comparison requires a dedicated
+route-filter policy that reproduces the original grouping and augmentation
+rules, followed by new solver runs. Likewise, an alpha sensitivity study
+requires a separate experiment manifest. Neither comparison is manufactured
+from the current results.
 
 ## Generation
 
@@ -149,8 +159,10 @@ Big-M penalty contributions separately, especially when interpreting VSS.
 
 The tables and figures reproduce the thesis's presentation logic, not its exact
 numbering or numerical values. Captions should identify the evidence domain,
-instance, scenario design, direct-arc setting, and route policy. Any later alpha
-sensitivity result must be introduced as a distinct experimental factor. The
+instance, scenario design, direct-arc setting, and route policy. The current
+5-percent and top-10 filters must be described as coverage-preserving
+exploratory sparsification policies. A future historical 20-percent filter and
+any alpha sensitivity must be introduced as distinct experimental factors. The
 tidy CSV files are the authoritative values for manuscript tables and provide a
 portable input for Quarto.
 
