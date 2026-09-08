@@ -134,7 +134,7 @@ def _solve_deterministic_core(
     candidate_warehouses = list(data.candidate_warehouses)
     expansion_warehouses = [
         warehouse
-        for warehouse in data.existing_warehouses
+        for warehouse in data.warehouses
         if model_config.allow_capacity_expansion
         and data.max_expand_capacity.get(warehouse, 0.0) > 0.0
     ]
@@ -292,6 +292,7 @@ def _solve_deterministic_core(
             warehouse_from=warehouse_from,
             warehouse_to=warehouse_to,
             product=product,
+            model_config=model_config,
         )
         for warehouse_from, warehouse_to, product, period in dd_keys
     )
@@ -416,10 +417,19 @@ def _solve_deterministic_core(
     # ------------------------------------------------------------------
 
     for warehouse in expansion_warehouses:
+        active = _active_warehouse_expr(
+            data=data,
+            open_candidate=open_candidate,
+            warehouse=warehouse,
+        )
         model.addConstr(
             expand_capacity[warehouse]
             <= data.max_expand_capacity[warehouse] * expand_warehouse[warehouse],
             name=f"expansion_capacity[{warehouse}]",
+        )
+        model.addConstr(
+            expand_warehouse[warehouse] <= active,
+            name=f"expansion_only_if_active[{warehouse}]",
         )
 
     # ------------------------------------------------------------------
@@ -440,6 +450,19 @@ def _solve_deterministic_core(
         model.addConstr(
             bulkify_warehouse[warehouse] <= active,
             name=f"bulkification_only_if_active[{warehouse}]",
+        )
+
+    for warehouse in sorted(
+        set(expansion_warehouses) & set(bulkification_warehouses)
+    ):
+        active = _active_warehouse_expr(
+            data=data,
+            open_candidate=open_candidate,
+            warehouse=warehouse,
+        )
+        model.addConstr(
+            expand_warehouse[warehouse] + bulkify_warehouse[warehouse] <= active,
+            name=f"expansion_bulkification_exclusion[{warehouse}]",
         )
 
     # ------------------------------------------------------------------
@@ -1069,7 +1092,9 @@ def _origin_to_warehouse_unit_cost(
     distance = data.dist_od.get((origin, warehouse), 0.0)
     freight = data.freight_origin.get(origin, 0.0)
 
-    return distance * freight
+    receiving_handling_cost = data.transshipment_cost.get(warehouse, 0.0)
+
+    return distance * freight + receiving_handling_cost
 
 
 def _warehouse_to_customer_unit_cost(
@@ -1081,7 +1106,7 @@ def _warehouse_to_customer_unit_cost(
     del product
 
     distance = data.dist_dc.get((warehouse, customer), 0.0)
-    freight = data.freight_dest.get(customer, 0.0)
+    freight = data.freight_warehouse.get(warehouse, 0.0)
 
     return distance * freight
 
@@ -1105,6 +1130,7 @@ def _warehouse_to_warehouse_unit_cost(
     warehouse_from: str,
     warehouse_to: str,
     product: str,
+    model_config: ModelConfig,
 ) -> float:
     del product
 
@@ -1112,7 +1138,7 @@ def _warehouse_to_warehouse_unit_cost(
 
     freight = data.freight_warehouse[warehouse_from]
 
-    interhub_factor = float(data.metadata.get("interhub_factor", 1.0))
+    interhub_factor = model_config.interhub_factor
     receiving_handling_cost = data.transshipment_cost.get(warehouse_to, 0.0)
 
     return interhub_factor * distance * freight + receiving_handling_cost
@@ -1389,6 +1415,7 @@ def _extract_deterministic_result(
             "allow_capacity_expansion": model_config.allow_capacity_expansion,
             "allow_bulkification": model_config.allow_bulkification,
             "capacity_coupling_policy": model_config.capacity_coupling_policy,
+            "interhub_factor": model_config.interhub_factor,
             "capacity_coupling_daily_factors": {
                 "candidate_reception": model_config.candidate_reception_daily_factor,
                 "candidate_shipping": model_config.candidate_shipping_daily_factor,
