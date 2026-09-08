@@ -10,6 +10,7 @@ import pytest
 from src.logic.scientific_results import (
     ScientificResultsError,
     _flow_distance,
+    _normalize_exported_loader_values,
     build_scientific_results_presentation,
 )
 
@@ -107,6 +108,37 @@ def test_typed_customer_alias_rejects_ambiguous_distances() -> None:
 
     with pytest.raises(ScientificResultsError, match="unambiguous DC distance"):
         _flow_distance(distances, flow, "DC")
+
+
+def test_exported_stochastic_loader_sequences_are_restored_as_tuples() -> None:
+    exported = json.loads(
+        json.dumps(
+            {
+                "stochastic_supply_levels": ["baixo", "base", "alto"],
+                "stochastic_demand_levels": ["baixo", "base", "alto"],
+                "stochastic_combinations": [
+                    ["baixo", "alto"],
+                    ["base", "base"],
+                    ["alto", "baixo"],
+                ],
+                "stochastic_probabilities": [1 / 3, 1 / 3, 1 / 3],
+            }
+        )
+    )
+
+    restored = _normalize_exported_loader_values(exported)
+
+    assert restored["stochastic_supply_levels"] == ("baixo", "base", "alto")
+    assert restored["stochastic_demand_levels"] == ("baixo", "base", "alto")
+    assert restored["stochastic_combinations"] == (
+        ("baixo", "alto"),
+        ("base", "base"),
+        ("alto", "baixo"),
+    )
+    assert len(set(restored["stochastic_combinations"])) == 3
+    assert restored["stochastic_probabilities"] == pytest.approx(
+        (1 / 3, 1 / 3, 1 / 3)
+    )
 
 
 def _write_run(

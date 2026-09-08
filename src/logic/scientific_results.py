@@ -354,8 +354,29 @@ def _default_data_loader(run: CompletedRun) -> Any:
         )
     return load_model_data_from_excel(
         workbook,
-        ExcelLoaderConfig(**experiment.get("loader", {})),
+        ExcelLoaderConfig(
+            **_normalize_exported_loader_values(experiment.get("loader", {}))
+        ),
     )
+
+
+def _normalize_exported_loader_values(raw: dict[str, Any]) -> dict[str, Any]:
+    """Restore tuple-valued loader fields after their JSON serialization."""
+
+    values = dict(raw)
+    for key in ("stochastic_supply_levels", "stochastic_demand_levels"):
+        if values.get(key) is not None:
+            values[key] = tuple(str(value) for value in values[key])
+    if values.get("stochastic_combinations") is not None:
+        values["stochastic_combinations"] = tuple(
+            tuple(str(level) for level in combination)
+            for combination in values["stochastic_combinations"]
+        )
+    if values.get("stochastic_probabilities") is not None:
+        values["stochastic_probabilities"] = tuple(
+            float(value) for value in values["stochastic_probabilities"]
+        )
+    return values
 
 
 def _deterministic_summary(runs: list[CompletedRun], pd):
