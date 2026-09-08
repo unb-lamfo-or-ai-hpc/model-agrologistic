@@ -49,8 +49,8 @@ The command writes:
   bulkification decisions for every warehouse and gate;
 - `mvp_investment_changes.csv`: warehouse-level first-stage changes between
   consecutive gates;
-- `mvp_evidence_provenance.csv`: SHA-256 hashes for every available source
-  artifact;
+- `mvp_evidence_provenance.csv`: SHA-256 hashes and stable relative identifiers
+  for every available source artifact; no host-specific absolute path is exported;
 - `mvp_scientific_evidence.md`: a generated, human-readable summary;
 - `mvp_evidence_manifest.json`: schema, interpretation contract, gate order,
   acceptance status, and output hashes.
@@ -167,3 +167,14 @@ cat data/results/reproducibility/mvp_scientific_evidence/mvp_investment_changes.
 Generated evidence remains an HPC artifact and should not be committed unless a
 later publication snapshot explicitly freezes it with its provenance manifest.
 
+## Publication figures
+
+After the manifest reports an accepted package, generate the traceable PNG, PDF,
+and tidy CSV figure set with:
+
+```bash
+python scripts/generate_scientific_plots.py
+```
+
+The figure definitions, units, Big-M interpretation boundary, and provenance
+checks are documented in [the scientific visualization protocol](scientific_visualization.md).

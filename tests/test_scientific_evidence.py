@@ -84,6 +84,11 @@ def test_evidence_package_consolidates_gates_and_decomposition(tmp_path):
     assert manifest["blocking_failure_count"] == 0
     assert manifest["inputs"]
     assert all(len(record["sha256"]) == 64 for record in manifest["inputs"])
+    assert all(not Path(record["path"]).is_absolute() for record in manifest["inputs"])
+    assert all(
+        record["path"].split("/", maxsplit=1)[0] == record["gate"]
+        for record in manifest["inputs"]
+    )
     assert "controlled stochastic extensions" in paths["report_md"].read_text(encoding="utf-8")
 
 

@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=77", "wheel"]
+requires = ["setuptools>=77", "wheel>=0.45"]
 build-backend = "setuptools.build_meta"
 
 
@@ -62,9 +62,18 @@ dependencies = [
 [project.optional-dependencies]
 dev = [
     "build>=1.2,<2",
+    "matplotlib>=3.9,<4",
     "mypy>=1.13,<2",
     "pytest>=8.0,<10",
     "ruff>=0.8,<1",
+    "seaborn>=0.13,<1",
+    "setuptools>=77",
+    "wheel>=0.45,<1",
+]
+
+visualization = [
+    "matplotlib>=3.9,<4",
+    "seaborn>=0.13,<1",
 ]
 
 gurobi = [
@@ -96,6 +105,7 @@ all = [
     "build>=1.2,<2",
     "gurobipy>=13.0.2,<14",
     "importlib-resources>=6,<7",
+    "matplotlib>=3.9,<4",
     "mypy>=1.13,<2",
     "pyomo>=6.10,<7",
     "pyscipopt>=6.2,<7",
@@ -103,8 +113,11 @@ all = [
     "pyyaml>=6.0,<7",
     "prophet>=1.1,<2",
     "ruff>=0.8,<1",
+    "seaborn>=0.13,<1",
+    "setuptools>=77",
     "statsmodels>=0.14,<1",
     "torch>=2.8,<3",
+    "wheel>=0.45,<1",
     "xgboost>=2.1,<4",
 ]
 
