@@ -1,9 +1,9 @@
 from __future__ import annotations
 
+from pathlib import Path
+
 import pytest
 import yaml
-
-from pathlib import Path
 
 from src.logic.excel_loader import ExcelLoaderConfig, _build_penalty_rates
 from src.logic.model_config import ModelConfig
