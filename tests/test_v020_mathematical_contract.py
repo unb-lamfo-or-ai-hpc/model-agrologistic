@@ -17,6 +17,16 @@ from src.logic.optimization_gurobipy import (
 
 def test_thesis_transport_cost_equations_use_the_correct_endpoint_rates():
     data = ModelData(
+        origins=["O1"],
+        warehouses=["W1", "W2"],
+        existing_warehouses=["W1", "W2"],
+        candidate_warehouses=[],
+        bulk_eligible_warehouses=[],
+        customers=["C1"],
+        domestic_customers=["C1"],
+        export_customers=[],
+        products=["soy"],
+        periods=["t1"],
         dist_od={("O1", "W1"): 10.0},
         dist_dc={("W1", "C1"): 500.0},
         dist_dd={("W1", "W2"): 30.0},
