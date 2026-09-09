@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import tomllib
 from pathlib import Path
 
 import pytest
@@ -197,7 +198,11 @@ def test_scip_remains_an_explicit_solver_neutral_provision():
     assert config.backend == "pyomo"
     assert config.solver_name == "scip"
 
-    pyproject = (
-        Path(__file__).resolve().parents[1] / "pyproject.toml"
-    ).read_text(encoding="utf-8")
-    assert 'scip = ["pyscipopt>=6.2,<7"]' in pyproject
+    pyproject = tomllib.loads(
+        (
+            Path(__file__).resolve().parents[1] / "pyproject.toml"
+        ).read_text(encoding="utf-8")
+    )
+    assert pyproject["project"]["optional-dependencies"]["scip"] == [
+        "pyscipopt>=6.2,<7"
+    ]
