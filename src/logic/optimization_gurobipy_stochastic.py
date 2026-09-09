@@ -5,7 +5,6 @@ from __future__ import annotations
 from time import perf_counter
 from typing import Any
 
-from src.logic.capacity_bounds import stochastic_inventory_bounds
 from src.logic.model_config import ModelConfig, SolverConfig
 from src.logic.model_data import ModelData
 from src.logic.optimization import OptimizationResult
@@ -49,7 +48,6 @@ def solve_stochastic_model_gurobipy(
 
     scenarios = list(data.scenarios)
     routes = select_routes(data, model_config)
-    inventory_big_m = stochastic_inventory_bounds(data, routes)
     od_keys = [
         (scenario, origin, warehouse, product, period)
         for scenario in scenarios
@@ -159,24 +157,22 @@ def solve_stochastic_model_gurobipy(
     emergency_static_capacity = model.addVars(
         emergency_keys,
         lb=0.0,
-        ub={
-            key: inventory_big_m[key]
+        ub=(
+            GRB.INFINITY
             if model_config.allow_emergency_static_capacity
             else 0.0
-            for key in emergency_keys
-        },
+        ),
         vtype=GRB.CONTINUOUS,
         name="emergency_static_capacity",
     )
     emergency_reception_capacity = model.addVars(
         emergency_keys,
         lb=0.0,
-        ub={
-            key: _scenario_period_big_m(data, key[0], key[2])
+        ub=(
+            GRB.INFINITY
             if model_config.allow_emergency_reception_capacity
             else 0.0
-            for key in emergency_keys
-        },
+        ),
         vtype=GRB.CONTINUOUS,
         name="emergency_reception_capacity",
     )
@@ -302,7 +298,10 @@ def solve_stochastic_model_gurobipy(
             bulk_capacity=bulk_capacity,
         )
 
+    model_build_seconds = perf_counter() - started_at
+    optimization_started_at = perf_counter()
     model.optimize()
+    optimization_seconds = perf_counter() - optimization_started_at
     runtime_seconds = perf_counter() - started_at
     status = _map_gurobi_status(model, GRB)
 
@@ -310,6 +309,10 @@ def solve_stochastic_model_gurobipy(
         "gurobi_status_code": model.Status,
         "gurobi_status_name": _gurobi_status_name(model, GRB),
         "solution_count": model.SolCount,
+        "timings": {
+            "model_build_seconds": model_build_seconds,
+            "optimization_seconds": optimization_seconds,
+        },
         "formulation": "two_stage_extensive_form",
         "scenario_probabilities": dict(data.scenario_prob),
         "first_stage_decisions": [

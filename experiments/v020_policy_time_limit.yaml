@@ -1,0 +1,71 @@
+version: 1
+output_dir: ../data/results/hpc/v020_policy_time_limit
+continue_on_error: true
+
+defaults:
+  max_estimated_variables: 25000000
+  solver:
+    backend: gurobipy
+    solver_name: gurobi
+    mip_gap: 0.0
+    threads: 16
+    seed: 42
+    tee: true
+    compute_iis: true
+    iis_max_items: 200
+    solver_options:
+      SoftMemLimit: 56
+      NumericFocus: 1
+  model:
+    mode: sto
+    objective_policy: penalty
+    interhub_factor: 1.0
+    use_warehouse_transshipment: true
+    use_direct_origin_customer: true
+    route_filter_strategy: thesis_pareto
+    pareto_fraction: 0.20
+    candidate_capacity_mode: scalable
+    terminal_inventory_policy: free
+    capacity_coupling_policy: daily_factors
+    days_per_period: 30
+    allow_capacity_expansion: true
+    allow_bulkification: true
+    separate_emergency_capacity_slacks: true
+  loader:
+    include_export_routes: true
+    include_transshipment_routes: true
+    include_direct_origin_customer_routes: true
+    include_stochastic_scenarios: true
+    scenario_generation_mode: cartesian
+    stochastic_supply_levels: [baixo, base, alto]
+    stochastic_demand_levels: [baixo, base, alto]
+    candidate_cost_policy: variable_from_total
+    penalty_policy: thesis_dynamic
+
+experiments:
+  - name: policy_sto9_p20_direct_t600
+    workbook: ../data/templates/model_agrologistic_padrao_ouro.xlsx
+    solver:
+      time_limit: 600
+    metadata:
+      evidence_profile: policy_mvp_v020
+      experiment_dimension: time_limit
+      time_limit_seconds: 600
+
+  - name: policy_sto9_p20_direct_t3600
+    workbook: ../data/templates/model_agrologistic_padrao_ouro.xlsx
+    solver:
+      time_limit: 3600
+    metadata:
+      evidence_profile: policy_mvp_v020
+      experiment_dimension: time_limit
+      time_limit_seconds: 3600
+
+  - name: policy_sto9_p20_direct_t14400
+    workbook: ../data/templates/model_agrologistic_padrao_ouro.xlsx
+    solver:
+      time_limit: 14400
+    metadata:
+      evidence_profile: policy_mvp_v020
+      experiment_dimension: time_limit
+      time_limit_seconds: 14400

@@ -108,6 +108,12 @@ def solved_result() -> OptimizationResult:
                 "penalized_cost": 5_000_123.0,
             }
         },
+        metadata={
+            "timings": {
+                "model_build_seconds": 1.25,
+                "optimization_seconds": 3.25,
+            }
+        },
     )
 
 
@@ -489,6 +495,13 @@ def test_run_experiment_exports_complete_json_csv_and_metrics(
     assert summary.scenario_count == 1
     assert summary.economic_cost == pytest.approx(123.0)
     assert summary.penalized_cost == pytest.approx(5_000_123.0)
+    assert summary.data_read_seconds is not None
+    assert summary.data_read_seconds >= 0.0
+    assert summary.model_build_seconds == pytest.approx(1.25)
+    assert summary.optimization_seconds == pytest.approx(3.25)
+    assert payload["result"]["metadata"]["timings"][
+        "data_read_seconds"
+    ] == pytest.approx(summary.data_read_seconds)
     assert summary.dyn_cap == pytest.approx(600.0)
     assert summary.turnover == pytest.approx(6.0)
     assert summary.total_unmet_demand == pytest.approx(5.0)
@@ -619,6 +632,9 @@ def test_manifest_can_continue_after_a_failed_run(tmp_path):
     assert failure["error_type"] == "RuntimeError"
     assert failure["error_message"] == "solver unavailable"
     assert failure["runtime_seconds"] is not None
+    assert failure["data_read_seconds"] is None
+    assert failure["model_build_seconds"] is None
+    assert failure["optimization_seconds"] is None
     assert "peak_rss_mb" in failure
 
 

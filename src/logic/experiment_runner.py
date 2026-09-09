@@ -16,6 +16,7 @@ from dataclasses import asdict, dataclass, field, fields
 from datetime import UTC, datetime
 from importlib.metadata import PackageNotFoundError, version
 from pathlib import Path
+from time import perf_counter
 from typing import Any
 
 import yaml
@@ -129,6 +130,9 @@ class ExperimentRunSummary:
     economic_cost: float | None
     penalized_cost: float | None
     runtime_seconds: float | None
+    data_read_seconds: float | None
+    model_build_seconds: float | None
+    optimization_seconds: float | None
     peak_rss_mb: float | None
     mip_gap: float | None
     dyn_cap: float | None
@@ -240,7 +244,9 @@ def run_experiment(
     run_dir.mkdir(parents=True, exist_ok=True)
 
     progress(f"[{spec.name}] loading {spec.workbook}")
+    data_read_started_at = perf_counter()
     data = loader(spec.workbook, spec.loader)
+    data_read_seconds = perf_counter() - data_read_started_at
     _write_json(
         run_dir / "model_audit.json",
         build_model_audit(data, spec.model),
@@ -272,6 +278,9 @@ def run_experiment(
             model_config=spec.model,
             solver_config=spec.solver,
         )
+
+    timings = result.metadata.setdefault("timings", {})
+    timings["data_read_seconds"] = data_read_seconds
 
     if result.has_solution:
         progress(f"[{spec.name}] calculating DynCap and Turnover")
@@ -849,6 +858,7 @@ def _build_summary(
         if record.get("domestic_service_level") is not None
     ]
     objective_values = result.metrics.get("objective_values", {})
+    timings = result.metadata.get("timings", {})
     gurobi_status_name = result.metadata.get("gurobi_status_name")
     solution_audit = audit.get("solution", {})
     material_balance = solution_audit.get("material_balance", {})
@@ -871,6 +881,9 @@ def _build_summary(
         economic_cost=_optional_float(objective_values.get("economic_cost")),
         penalized_cost=_optional_float(objective_values.get("penalized_cost")),
         runtime_seconds=result.runtime_seconds,
+        data_read_seconds=_optional_float(timings.get("data_read_seconds")),
+        model_build_seconds=_optional_float(timings.get("model_build_seconds")),
+        optimization_seconds=_optional_float(timings.get("optimization_seconds")),
         peak_rss_mb=_peak_rss_mb(),
         mip_gap=result.mip_gap,
         dyn_cap=_optional_float(result.metrics.get("DynCap")),
@@ -949,6 +962,9 @@ def _export_failed_run(
         economic_cost=None,
         penalized_cost=None,
         runtime_seconds=(finished - started).total_seconds(),
+        data_read_seconds=None,
+        model_build_seconds=None,
+        optimization_seconds=None,
         peak_rss_mb=_peak_rss_mb(),
         mip_gap=None,
         dyn_cap=None,

@@ -25,7 +25,6 @@ from __future__ import annotations
 from time import perf_counter
 from typing import Any
 
-from src.logic.capacity_bounds import deterministic_inventory_bounds
 from src.logic.model_config import ModelConfig, SolverConfig
 from src.logic.model_data import ModelData
 from src.logic.optimization import (
@@ -84,7 +83,6 @@ def _solve_deterministic_core(
     # ------------------------------------------------------------------
 
     routes = select_routes(data, model_config)
-    inventory_big_m = deterministic_inventory_bounds(data, routes)
 
     od_keys = [
         (origin, warehouse, product, period)
@@ -234,18 +232,12 @@ def _solve_deterministic_core(
         name="unmet_demand",
     )
 
-    emergency_static_ub = {
-        key: inventory_big_m[key]
-        if model_config.allow_emergency_static_capacity
-        else 0.0
-        for key in emergency_keys
-    }
-    emergency_reception_ub = {
-        key: _period_big_m(data, key[1])
-        if model_config.allow_emergency_reception_capacity
-        else 0.0
-        for key in emergency_keys
-    }
+    emergency_static_ub = (
+        GRB.INFINITY if model_config.allow_emergency_static_capacity else 0.0
+    )
+    emergency_reception_ub = (
+        GRB.INFINITY if model_config.allow_emergency_reception_capacity else 0.0
+    )
 
     emergency_static_capacity = model.addVars(
         emergency_keys,
@@ -620,8 +612,8 @@ def _solve_deterministic_core(
     # ------------------------------------------------------------------
     # Emergency capacity must be tied to active candidate infrastructure.
     #
-    # Variable upper bounds carry the network-aware physical limits. Indicator
-    # constraints avoid injecting those large values into the linear matrix.
+    # Emergency slacks are unbounded feasibility devices at active facilities.
+    # Indicators prevent closed candidates from acting as ghost warehouses.
     # ------------------------------------------------------------------
 
     for warehouse in data.candidate_warehouses:
@@ -643,7 +635,10 @@ def _solve_deterministic_core(
     # Solve
     # ------------------------------------------------------------------
 
+    model_build_seconds = perf_counter() - started_at
+    optimization_started_at = perf_counter()
     model.optimize()
+    optimization_seconds = perf_counter() - optimization_started_at
 
     runtime_seconds = perf_counter() - started_at
     status = _map_gurobi_status(model, GRB)
@@ -661,6 +656,10 @@ def _solve_deterministic_core(
                 "gurobi_status_name": _gurobi_status_name(model, GRB),
                 "solution_count": model.SolCount,
                 "objective_policy": model_config.objective_policy,
+                "timings": {
+                    "model_build_seconds": model_build_seconds,
+                    "optimization_seconds": optimization_seconds,
+                },
                 **infeasibility,
             },
         )
@@ -673,6 +672,8 @@ def _solve_deterministic_core(
         status=status,
         gurobi_status_name=_gurobi_status_name(model, GRB),
         runtime_seconds=runtime_seconds,
+        model_build_seconds=model_build_seconds,
+        optimization_seconds=optimization_seconds,
         flow_od=flow_od,
         flow_dc=flow_dc,
         flow_oc=flow_oc,
@@ -1157,6 +1158,8 @@ def _extract_deterministic_result(
     status: str,
     gurobi_status_name: str,
     runtime_seconds: float,
+    model_build_seconds: float,
+    optimization_seconds: float,
     flow_od: Any,
     flow_dc: Any,
     flow_oc: Any,
@@ -1401,6 +1404,10 @@ def _extract_deterministic_result(
             "gurobi_status_code": model.Status,
             "gurobi_status_name": gurobi_status_name,
             "solution_count": model.SolCount,
+            "timings": {
+                "model_build_seconds": model_build_seconds,
+                "optimization_seconds": optimization_seconds,
+            },
             "candidate_capacity_mode": model_config.candidate_capacity_mode,
             "objective_policy": model_config.objective_policy,
             "objective_priority_order": (

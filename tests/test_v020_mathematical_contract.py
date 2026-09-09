@@ -6,7 +6,7 @@ import pytest
 import yaml
 
 from src.logic.excel_loader import ExcelLoaderConfig, _build_penalty_rates
-from src.logic.model_config import ModelConfig
+from src.logic.model_config import ModelConfig, SolverConfig
 from src.logic.model_data import ModelData
 from src.logic.optimization_gurobipy import (
     _origin_to_warehouse_unit_cost,
@@ -48,28 +48,40 @@ def test_thesis_transport_cost_equations_use_the_correct_endpoint_rates():
     ) == pytest.approx(79.0)
 
 
-def test_thesis_dynamic_penalties_follow_the_historical_scaling_rule():
+def test_thesis_dynamic_unmet_penalty_is_customer_indexed():
     unmet, emergency_static, emergency_reception = _build_penalty_rates(
         config=ExcelLoaderConfig(
             compute_haversine_distances=False,
             penalty_policy="thesis_dynamic",
         ),
-        warehouses=["W1"],
+        warehouses=["W1", "W2"],
         domestic_customers=["C1"],
-        products=["soy"],
-        routes_dc={("W1", "C1", "soy")},
+        products=["soy", "corn"],
+        routes_dc={
+            ("W1", "C1", "soy"),
+            ("W2", "C1", "corn"),
+        },
         routes_oc={("O1", "C1", "soy")},
-        dist_dc={("W1", "C1"): 500.0},
+        dist_dc={
+            ("W1", "C1"): 500.0,
+            ("W2", "C1"): 1000.0,
+        },
         dist_oc={("O1", "C1"): 25.0},
         freight_origin={"O1": 2.0},
-        freight_warehouse={"W1": 3.0},
+        freight_warehouse={"W1": 3.0, "W2": 4.0},
         expand_variable_cost={"W1": 1050.0},
         storage_tariff={("W1", "soy"): 20.0},
     )
 
-    assert emergency_static == {"W1": pytest.approx(52_500.0)}
-    assert emergency_reception == {"W1": pytest.approx(52_500.0)}
-    assert unmet == {("C1", "soy"): pytest.approx(150_000.0)}
+    assert emergency_static == {
+        "W1": pytest.approx(52_500.0),
+        "W2": pytest.approx(52_500.0),
+    }
+    assert emergency_reception == emergency_static
+    assert unmet == {
+        ("C1", "soy"): pytest.approx(400_000.0),
+        ("C1", "corn"): pytest.approx(400_000.0),
+    }
 
 
 def test_fixed_penalties_remain_available_for_archived_v010_replay():
@@ -99,6 +111,22 @@ def test_fixed_penalties_remain_available_for_archived_v010_replay():
     assert emergency_reception == {"W1": 33.0}
 
 
+def test_complete_recourse_slacks_preserve_candidate_activation():
+    root = Path(__file__).resolve().parents[1]
+    deterministic = (root / "src/logic/optimization_gurobipy.py").read_text(
+        encoding="utf-8"
+    )
+    stochastic = (
+        root / "src/logic/optimization_gurobipy_stochastic.py"
+    ).read_text(encoding="utf-8")
+
+    for source in (deterministic, stochastic):
+        assert "GRB.INFINITY" in source
+        assert "emergency_static_only_if_active" in source
+        assert "emergency_reception_only_if_active" in source
+        assert "inventory_big_m =" not in source
+
+
 def test_v020_experiment_profiles_separate_reproduction_and_extension():
     root = Path(__file__).resolve().parents[1]
     thesis = yaml.safe_load(
@@ -108,6 +136,11 @@ def test_v020_experiment_profiles_separate_reproduction_and_extension():
     )
     policy = yaml.safe_load(
         (root / "experiments/v020_policy_mvp.yaml").read_text(encoding="utf-8")
+    )
+    time_study = yaml.safe_load(
+        (root / "experiments/v020_policy_time_limit.yaml").read_text(
+            encoding="utf-8"
+        )
     )
 
     thesis_runs = thesis["experiments"]
@@ -134,9 +167,37 @@ def test_v020_experiment_profiles_separate_reproduction_and_extension():
     )
 
     policy_runs = policy["experiments"]
-    assert [run["model"]["mode"] for run in policy_runs] == ["det", "sto"]
-    assert policy["defaults"]["model"]["route_filter_strategy"] == "none"
-    assert policy["defaults"]["model"]["use_direct_origin_customer"] is True
-    assert policy_runs[1]["metadata"]["scenario_design"] == (
-        "full_factorial_three_by_three"
+    assert len(policy_runs) == 18
+    assert {run["model"]["mode"] for run in policy_runs} == {"det", "sto"}
+    assert sorted(
+        {run["model"]["pareto_fraction"] for run in policy_runs}
+    ) == pytest.approx([0.15, 0.20, 0.25])
+    assert {
+        run["model"]["use_direct_origin_customer"] for run in policy_runs
+    } == {False, True}
+    assert policy["defaults"]["model"]["route_filter_strategy"] == "thesis_pareto"
+    assert all(
+        run["metadata"]["route_policy"] == "grouped_nearest_edge_fraction"
+        for run in policy_runs
     )
+    assert all(
+        "full_network" not in run["name"]
+        and run["metadata"]["route_policy"] != "complete_network"
+        for run in policy_runs
+    )
+
+    assert [
+        run["solver"]["time_limit"] for run in time_study["experiments"]
+    ] == [600, 3600, 14400]
+    assert time_study["defaults"]["solver"]["mip_gap"] == pytest.approx(0.0)
+
+
+def test_scip_remains_an_explicit_solver_neutral_provision():
+    config = SolverConfig(backend="pyomo", solver_name="scip")
+    assert config.backend == "pyomo"
+    assert config.solver_name == "scip"
+
+    pyproject = (
+        Path(__file__).resolve().parents[1] / "pyproject.toml"
+    ).read_text(encoding="utf-8")
+    assert 'scip = ["pyscipopt>=6.2,<7"]' in pyproject

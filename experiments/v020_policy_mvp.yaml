@@ -1,14 +1,14 @@
 version: 1
 output_dir: ../data/results/hpc/v020_policy_mvp
-continue_on_error: false
+continue_on_error: true
 
 defaults:
-  max_estimated_variables: 6000000
+  max_estimated_variables: 25000000
   solver:
     backend: gurobipy
     solver_name: gurobi
     mip_gap: 0.01
-    time_limit: 7200
+    time_limit: 3600
     threads: 16
     seed: 42
     tee: true
@@ -21,8 +21,7 @@ defaults:
     objective_policy: penalty
     interhub_factor: 1.0
     use_warehouse_transshipment: true
-    use_direct_origin_customer: true
-    route_filter_strategy: none
+    route_filter_strategy: thesis_pareto
     candidate_capacity_mode: scalable
     terminal_inventory_policy: free
     capacity_coupling_policy: daily_factors
@@ -38,29 +37,333 @@ defaults:
     penalty_policy: thesis_dynamic
 
 experiments:
-  - name: policy_mvp_full_network_det
+  - name: policy_det_p15_warehouse
     workbook: ../data/templates/model_agrologistic_padrao_ouro.xlsx
     model:
       mode: det
+      pareto_fraction: 0.15
+      use_direct_origin_customer: false
     metadata:
-      evidence_profile: policy_mvp
-      comparison_scope: full_network_deterministic_extension
-      route_policy: complete_network
+      evidence_profile: policy_mvp_v020
+      scenario_design: deterministic
+      route_policy: grouped_nearest_edge_fraction
+      route_fraction: 0.15
+      direct_arcs: false
+      warehouse_population: canonical_gold_workbook
 
-  - name: policy_mvp_full_network_sto_9
+  - name: policy_det_p15_direct
+    workbook: ../data/templates/model_agrologistic_padrao_ouro.xlsx
+    model:
+      mode: det
+      pareto_fraction: 0.15
+      use_direct_origin_customer: true
+    metadata:
+      evidence_profile: policy_mvp_v020
+      scenario_design: deterministic
+      route_policy: grouped_nearest_edge_fraction
+      route_fraction: 0.15
+      direct_arcs: true
+      warehouse_population: canonical_gold_workbook
+
+  - name: policy_det_p20_warehouse
+    workbook: ../data/templates/model_agrologistic_padrao_ouro.xlsx
+    model:
+      mode: det
+      pareto_fraction: 0.20
+      use_direct_origin_customer: false
+    metadata:
+      evidence_profile: policy_mvp_v020
+      scenario_design: deterministic
+      route_policy: grouped_nearest_edge_fraction
+      route_fraction: 0.20
+      direct_arcs: false
+      warehouse_population: canonical_gold_workbook
+
+  - name: policy_det_p20_direct
+    workbook: ../data/templates/model_agrologistic_padrao_ouro.xlsx
+    model:
+      mode: det
+      pareto_fraction: 0.20
+      use_direct_origin_customer: true
+    metadata:
+      evidence_profile: policy_mvp_v020
+      scenario_design: deterministic
+      route_policy: grouped_nearest_edge_fraction
+      route_fraction: 0.20
+      direct_arcs: true
+      warehouse_population: canonical_gold_workbook
+
+  - name: policy_det_p25_warehouse
+    workbook: ../data/templates/model_agrologistic_padrao_ouro.xlsx
+    model:
+      mode: det
+      pareto_fraction: 0.25
+      use_direct_origin_customer: false
+    metadata:
+      evidence_profile: policy_mvp_v020
+      scenario_design: deterministic
+      route_policy: grouped_nearest_edge_fraction
+      route_fraction: 0.25
+      direct_arcs: false
+      warehouse_population: canonical_gold_workbook
+
+  - name: policy_det_p25_direct
+    workbook: ../data/templates/model_agrologistic_padrao_ouro.xlsx
+    model:
+      mode: det
+      pareto_fraction: 0.25
+      use_direct_origin_customer: true
+    metadata:
+      evidence_profile: policy_mvp_v020
+      scenario_design: deterministic
+      route_policy: grouped_nearest_edge_fraction
+      route_fraction: 0.25
+      direct_arcs: true
+      warehouse_population: canonical_gold_workbook
+
+  - name: policy_sto3_p15_warehouse
     workbook: ../data/templates/model_agrologistic_padrao_ouro.xlsx
     model:
       mode: sto
+      pareto_fraction: 0.15
+      use_direct_origin_customer: false
+    loader:
+      include_stochastic_scenarios: true
+      scenario_generation_mode: custom
+      stochastic_combinations:
+        - [baixo, alto]
+        - [base, base]
+        - [alto, baixo]
+      stochastic_probabilities: [0.33, 0.34, 0.33]
+    metadata:
+      evidence_profile: policy_mvp_v020
+      scenario_design: coupled_three_scenarios
+      route_policy: grouped_nearest_edge_fraction
+      route_fraction: 0.15
+      direct_arcs: false
+      warehouse_population: canonical_gold_workbook
+
+  - name: policy_sto3_p15_direct
+    workbook: ../data/templates/model_agrologistic_padrao_ouro.xlsx
+    model:
+      mode: sto
+      pareto_fraction: 0.15
+      use_direct_origin_customer: true
+    loader:
+      include_stochastic_scenarios: true
+      scenario_generation_mode: custom
+      stochastic_combinations:
+        - [baixo, alto]
+        - [base, base]
+        - [alto, baixo]
+      stochastic_probabilities: [0.33, 0.34, 0.33]
+    metadata:
+      evidence_profile: policy_mvp_v020
+      scenario_design: coupled_three_scenarios
+      route_policy: grouped_nearest_edge_fraction
+      route_fraction: 0.15
+      direct_arcs: true
+      warehouse_population: canonical_gold_workbook
+
+  - name: policy_sto3_p20_warehouse
+    workbook: ../data/templates/model_agrologistic_padrao_ouro.xlsx
+    model:
+      mode: sto
+      pareto_fraction: 0.20
+      use_direct_origin_customer: false
+    loader:
+      include_stochastic_scenarios: true
+      scenario_generation_mode: custom
+      stochastic_combinations:
+        - [baixo, alto]
+        - [base, base]
+        - [alto, baixo]
+      stochastic_probabilities: [0.33, 0.34, 0.33]
+    metadata:
+      evidence_profile: policy_mvp_v020
+      scenario_design: coupled_three_scenarios
+      route_policy: grouped_nearest_edge_fraction
+      route_fraction: 0.20
+      direct_arcs: false
+      warehouse_population: canonical_gold_workbook
+
+  - name: policy_sto3_p20_direct
+    workbook: ../data/templates/model_agrologistic_padrao_ouro.xlsx
+    model:
+      mode: sto
+      pareto_fraction: 0.20
+      use_direct_origin_customer: true
+    loader:
+      include_stochastic_scenarios: true
+      scenario_generation_mode: custom
+      stochastic_combinations:
+        - [baixo, alto]
+        - [base, base]
+        - [alto, baixo]
+      stochastic_probabilities: [0.33, 0.34, 0.33]
+    metadata:
+      evidence_profile: policy_mvp_v020
+      scenario_design: coupled_three_scenarios
+      route_policy: grouped_nearest_edge_fraction
+      route_fraction: 0.20
+      direct_arcs: true
+      warehouse_population: canonical_gold_workbook
+
+  - name: policy_sto3_p25_warehouse
+    workbook: ../data/templates/model_agrologistic_padrao_ouro.xlsx
+    model:
+      mode: sto
+      pareto_fraction: 0.25
+      use_direct_origin_customer: false
+    loader:
+      include_stochastic_scenarios: true
+      scenario_generation_mode: custom
+      stochastic_combinations:
+        - [baixo, alto]
+        - [base, base]
+        - [alto, baixo]
+      stochastic_probabilities: [0.33, 0.34, 0.33]
+    metadata:
+      evidence_profile: policy_mvp_v020
+      scenario_design: coupled_three_scenarios
+      route_policy: grouped_nearest_edge_fraction
+      route_fraction: 0.25
+      direct_arcs: false
+      warehouse_population: canonical_gold_workbook
+
+  - name: policy_sto3_p25_direct
+    workbook: ../data/templates/model_agrologistic_padrao_ouro.xlsx
+    model:
+      mode: sto
+      pareto_fraction: 0.25
+      use_direct_origin_customer: true
+    loader:
+      include_stochastic_scenarios: true
+      scenario_generation_mode: custom
+      stochastic_combinations:
+        - [baixo, alto]
+        - [base, base]
+        - [alto, baixo]
+      stochastic_probabilities: [0.33, 0.34, 0.33]
+    metadata:
+      evidence_profile: policy_mvp_v020
+      scenario_design: coupled_three_scenarios
+      route_policy: grouped_nearest_edge_fraction
+      route_fraction: 0.25
+      direct_arcs: true
+      warehouse_population: canonical_gold_workbook
+
+  - name: policy_sto9_p15_warehouse
+    workbook: ../data/templates/model_agrologistic_padrao_ouro.xlsx
+    model:
+      mode: sto
+      pareto_fraction: 0.15
+      use_direct_origin_customer: false
     loader:
       include_stochastic_scenarios: true
       scenario_generation_mode: cartesian
       stochastic_supply_levels: [baixo, base, alto]
       stochastic_demand_levels: [baixo, base, alto]
-    calculate_evpi_vss: true
-    resume_evpi_vss: true
     metadata:
-      evidence_profile: policy_mvp
-      comparison_scope: full_network_nine_scenario_extension
-      scenario_design: full_factorial_three_by_three
-      probability_policy: equal_experimental_weights
-      route_policy: complete_network
+      evidence_profile: policy_mvp_v020
+      scenario_design: cartesian_nine_scenarios
+      route_policy: grouped_nearest_edge_fraction
+      route_fraction: 0.15
+      direct_arcs: false
+      warehouse_population: canonical_gold_workbook
+
+  - name: policy_sto9_p15_direct
+    workbook: ../data/templates/model_agrologistic_padrao_ouro.xlsx
+    model:
+      mode: sto
+      pareto_fraction: 0.15
+      use_direct_origin_customer: true
+    loader:
+      include_stochastic_scenarios: true
+      scenario_generation_mode: cartesian
+      stochastic_supply_levels: [baixo, base, alto]
+      stochastic_demand_levels: [baixo, base, alto]
+    metadata:
+      evidence_profile: policy_mvp_v020
+      scenario_design: cartesian_nine_scenarios
+      route_policy: grouped_nearest_edge_fraction
+      route_fraction: 0.15
+      direct_arcs: true
+      warehouse_population: canonical_gold_workbook
+
+  - name: policy_sto9_p20_warehouse
+    workbook: ../data/templates/model_agrologistic_padrao_ouro.xlsx
+    model:
+      mode: sto
+      pareto_fraction: 0.20
+      use_direct_origin_customer: false
+    loader:
+      include_stochastic_scenarios: true
+      scenario_generation_mode: cartesian
+      stochastic_supply_levels: [baixo, base, alto]
+      stochastic_demand_levels: [baixo, base, alto]
+    metadata:
+      evidence_profile: policy_mvp_v020
+      scenario_design: cartesian_nine_scenarios
+      route_policy: grouped_nearest_edge_fraction
+      route_fraction: 0.20
+      direct_arcs: false
+      warehouse_population: canonical_gold_workbook
+
+  - name: policy_sto9_p20_direct
+    workbook: ../data/templates/model_agrologistic_padrao_ouro.xlsx
+    model:
+      mode: sto
+      pareto_fraction: 0.20
+      use_direct_origin_customer: true
+    loader:
+      include_stochastic_scenarios: true
+      scenario_generation_mode: cartesian
+      stochastic_supply_levels: [baixo, base, alto]
+      stochastic_demand_levels: [baixo, base, alto]
+    metadata:
+      evidence_profile: policy_mvp_v020
+      scenario_design: cartesian_nine_scenarios
+      route_policy: grouped_nearest_edge_fraction
+      route_fraction: 0.20
+      direct_arcs: true
+      warehouse_population: canonical_gold_workbook
+
+  - name: policy_sto9_p25_warehouse
+    workbook: ../data/templates/model_agrologistic_padrao_ouro.xlsx
+    model:
+      mode: sto
+      pareto_fraction: 0.25
+      use_direct_origin_customer: false
+    loader:
+      include_stochastic_scenarios: true
+      scenario_generation_mode: cartesian
+      stochastic_supply_levels: [baixo, base, alto]
+      stochastic_demand_levels: [baixo, base, alto]
+    metadata:
+      evidence_profile: policy_mvp_v020
+      scenario_design: cartesian_nine_scenarios
+      route_policy: grouped_nearest_edge_fraction
+      route_fraction: 0.25
+      direct_arcs: false
+      warehouse_population: canonical_gold_workbook
+
+  - name: policy_sto9_p25_direct
+    workbook: ../data/templates/model_agrologistic_padrao_ouro.xlsx
+    model:
+      mode: sto
+      pareto_fraction: 0.25
+      use_direct_origin_customer: true
+    loader:
+      include_stochastic_scenarios: true
+      scenario_generation_mode: cartesian
+      stochastic_supply_levels: [baixo, base, alto]
+      stochastic_demand_levels: [baixo, base, alto]
+    metadata:
+      evidence_profile: policy_mvp_v020
+      scenario_design: cartesian_nine_scenarios
+      route_policy: grouped_nearest_edge_fraction
+      route_fraction: 0.25
+      direct_arcs: true
+      warehouse_population: canonical_gold_workbook
+

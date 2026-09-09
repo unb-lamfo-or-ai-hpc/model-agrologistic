@@ -1616,23 +1616,24 @@ def _build_penalty_rates(
 
     unmet_rates: dict[tuple[str, str], float] = {}
     for customer in domestic_customers:
+        route_costs = [
+            dist_dc.get((warehouse, customer), 0.0)
+            * freight_warehouse.get(warehouse, 0.0)
+            for warehouse, route_customer, _product in routes_dc
+            if route_customer == customer
+        ]
+        route_costs.extend(
+            dist_oc.get((origin, customer), 0.0)
+            * freight_origin.get(origin, 0.0)
+            for origin, route_customer, _product in routes_oc
+            if route_customer == customer
+        )
+        customer_rate = 100.0 * max(
+            reference_cost,
+            max(route_costs, default=0.0),
+        )
         for product in products:
-            route_costs = [
-                dist_dc.get((warehouse, customer), 0.0)
-                * freight_warehouse.get(warehouse, 0.0)
-                for warehouse, route_customer, route_product in routes_dc
-                if route_customer == customer and route_product == product
-            ]
-            route_costs.extend(
-                dist_oc.get((origin, customer), 0.0)
-                * freight_origin.get(origin, 0.0)
-                for origin, route_customer, route_product in routes_oc
-                if route_customer == customer and route_product == product
-            )
-            unmet_rates[(customer, product)] = 100.0 * max(
-                reference_cost,
-                max(route_costs, default=0.0),
-            )
+            unmet_rates[(customer, product)] = customer_rate
 
     return (
         unmet_rates,
