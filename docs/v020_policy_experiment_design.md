@@ -23,6 +23,13 @@ fraction. Compare feasibility status, domestic service, material balance,
 separate emergency slacks, investment decisions, objective components, MIP
 gap, and timing regions.
 
+Route filtering must pass the audit described in
+`docs/v020_route_connectivity_audit.md` before these configurations are used as
+policy evidence. The historical `thesis_pareto` strategy is retained only for
+reproduction. The policy experiments will use a separately named
+connectivity-preserving strategy after the audit gate; no Big-M distance or
+synthetic route may be used to repair the graph.
+
 Submit one index at a time. Promote the three-scenario and nine-scenario cases
 only after the corresponding deterministic preflight and solve are accepted.
 
@@ -85,3 +92,4 @@ commit, environment, solver configuration, route counts, estimated variable
 count, three timing regions, status, incumbent, bound or MIP gap, memory, model
 audit, and structured solution artifacts. Results are extensions of the thesis
 case study and must not be presented as direct numerical replication.
+

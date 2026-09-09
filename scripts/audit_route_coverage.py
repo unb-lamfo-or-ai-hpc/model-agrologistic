@@ -17,6 +17,13 @@ def main() -> int:
 
     from src.logic.excel_loader import load_model_data_from_excel
     from src.logic.experiment_runner import load_experiment_manifest
+
+    from src.logic.route_connectivity import (
+        CONNECTIVITY_GAP_FIELDS,
+        CONNECTIVITY_REPAIR_FIELDS,
+        ROUTE_DECISION_FIELDS,
+        build_route_connectivity_diagnostics,
+    )
     from src.logic.route_coverage import build_route_coverage_audit
 
     parser = argparse.ArgumentParser(description=__doc__)
@@ -54,10 +61,14 @@ def main() -> int:
     output_dir.mkdir(parents=True, exist_ok=True)
 
     summaries: list[dict[str, object]] = []
+    route_decisions: list[dict[str, object]] = []
+    connectivity_gaps: list[dict[str, object]] = []
+    repair_candidates: list[dict[str, object]] = []
     for index in indices:
         spec = manifest.experiments[index]
         data = load_model_data_from_excel(spec.workbook, spec.loader)
         audit = build_route_coverage_audit(data, spec.model)
+        diagnostics = build_route_connectivity_diagnostics(data, spec.model)
         payload = {
             "experiment_index": index,
             "experiment_name": spec.name,
@@ -77,6 +88,26 @@ def main() -> int:
             **audit["summary"],
         }
         summaries.append(summary)
+        identity = {
+            "experiment_index": index,
+            "experiment_name": spec.name,
+            "route_filter_strategy": spec.model.route_filter_strategy,
+            "pareto_fraction": spec.model.pareto_fraction,
+            "direct_origin_customer": spec.model.use_direct_origin_customer,
+            "warehouse_transshipment": spec.model.use_warehouse_transshipment,
+        }
+        route_decisions.extend(
+            {**identity, **record}
+            for record in diagnostics["route_filter_decisions"]
+        )
+        connectivity_gaps.extend(
+            {**identity, **record}
+            for record in diagnostics["connectivity_gaps"]
+        )
+        repair_candidates.extend(
+            {**identity, **record}
+            for record in diagnostics["connectivity_repair_candidates"]
+        )
         print(
             f"[{spec.name}] domestic_reachable="
             f"{summary['all_active_domestic_customers_reachable']} "
@@ -94,8 +125,52 @@ def main() -> int:
         writer.writeheader()
         writer.writerows(summaries)
     print(f"Route coverage summary written to {csv_target}")
+
+    identity_fields = (
+        "experiment_index",
+        "experiment_name",
+        "route_filter_strategy",
+        "pareto_fraction",
+        "direct_origin_customer",
+        "warehouse_transshipment",
+    )
+    detailed_outputs = (
+        (
+            "route_filter_decisions.csv",
+            route_decisions,
+            (*identity_fields, *ROUTE_DECISION_FIELDS),
+        ),
+        (
+            "connectivity_gaps.csv",
+            connectivity_gaps,
+            (*identity_fields, *CONNECTIVITY_GAP_FIELDS),
+        ),
+        (
+            "connectivity_repair_candidates.csv",
+            repair_candidates,
+            (*identity_fields, *CONNECTIVITY_REPAIR_FIELDS),
+        ),
+    )
+    for filename, records, fieldnames in detailed_outputs:
+        target = output_dir / filename
+        _write_records(target, records, fieldnames)
+        print(f"Detailed route audit written to {target}")
     return 0
+
+
+def _write_records(
+    target: Path,
+    records: list[dict[str, object]],
+    fieldnames: tuple[str, ...],
+) -> None:
+    """Write a deterministic CSV, preserving its schema when no rows exist."""
+
+    with target.open("w", encoding="utf-8", newline="") as stream:
+        writer = csv.DictWriter(stream, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(records)
 
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
