@@ -1,0 +1,299 @@
+version: 1
+output_dir: ../data/results/hpc/v020_thesis_compatible
+continue_on_error: false
+
+defaults:
+  max_estimated_variables: 1000000
+  solver:
+    backend: gurobipy
+    solver_name: gurobi
+    mip_gap: 0.0001
+    time_limit: 7200
+    threads: 16
+    seed: 42
+    tee: true
+    compute_iis: true
+    iis_max_items: 200
+    solver_options:
+      SoftMemLimit: 56
+      NumericFocus: 1
+  model:
+    mode: det
+    objective_policy: penalty
+    use_warehouse_transshipment: true
+    route_filter_strategy: thesis_pareto
+    pareto_fraction: 0.20
+    candidate_capacity_mode: scalable
+    terminal_inventory_policy: free
+    capacity_coupling_policy: daily_factors
+    days_per_period: 30
+    allow_capacity_expansion: true
+    allow_bulkification: true
+    separate_emergency_capacity_slacks: true
+  loader:
+    compute_haversine_distances: false
+    use_workbook_distances: true
+    include_export_routes: true
+    include_transshipment_routes: true
+    candidate_cost_policy: fixed_total
+    penalty_policy: thesis_dynamic
+
+experiments:
+  - name: thesis_det_alpha_0_8_warehouse
+    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver/model_input.xlsx
+    model:
+      mode: det
+      interhub_factor: 0.8
+      use_direct_origin_customer: false
+    loader:
+      include_direct_origin_customer_routes: false
+    metadata:
+      evidence_profile: thesis_compatible
+      comparison_scope: bounded_mathematical_reproduction
+      scenario_design: deterministic_reference
+      route_policy: historical_shortest_twenty_percent
+      direct_origin_customer: false
+      interhub_factor: 0.8
+      distance_limitation: bounded_haversine_not_historical_osrm
+
+  - name: thesis_det_alpha_0_8_direct
+    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver/model_input.xlsx
+    model:
+      mode: det
+      interhub_factor: 0.8
+      use_direct_origin_customer: true
+    loader:
+      include_direct_origin_customer_routes: true
+    metadata:
+      evidence_profile: thesis_compatible
+      comparison_scope: bounded_mathematical_reproduction
+      scenario_design: deterministic_reference
+      route_policy: historical_shortest_twenty_percent
+      direct_origin_customer: true
+      interhub_factor: 0.8
+      distance_limitation: bounded_haversine_not_historical_osrm
+
+  - name: thesis_det_alpha_1_warehouse
+    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver/model_input.xlsx
+    model:
+      mode: det
+      interhub_factor: 1.0
+      use_direct_origin_customer: false
+    loader:
+      include_direct_origin_customer_routes: false
+    metadata:
+      evidence_profile: thesis_compatible
+      comparison_scope: bounded_mathematical_reproduction
+      scenario_design: deterministic_reference
+      route_policy: historical_shortest_twenty_percent
+      direct_origin_customer: false
+      interhub_factor: 1.0
+      distance_limitation: bounded_haversine_not_historical_osrm
+
+  - name: thesis_det_alpha_1_direct
+    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver/model_input.xlsx
+    model:
+      mode: det
+      interhub_factor: 1.0
+      use_direct_origin_customer: true
+    loader:
+      include_direct_origin_customer_routes: true
+    metadata:
+      evidence_profile: thesis_compatible
+      comparison_scope: bounded_mathematical_reproduction
+      scenario_design: deterministic_reference
+      route_policy: historical_shortest_twenty_percent
+      direct_origin_customer: true
+      interhub_factor: 1.0
+      distance_limitation: bounded_haversine_not_historical_osrm
+
+  - name: thesis_det_alpha_1_2_warehouse
+    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver/model_input.xlsx
+    model:
+      mode: det
+      interhub_factor: 1.2
+      use_direct_origin_customer: false
+    loader:
+      include_direct_origin_customer_routes: false
+    metadata:
+      evidence_profile: thesis_compatible
+      comparison_scope: bounded_mathematical_reproduction
+      scenario_design: deterministic_reference
+      route_policy: historical_shortest_twenty_percent
+      direct_origin_customer: false
+      interhub_factor: 1.2
+      distance_limitation: bounded_haversine_not_historical_osrm
+
+  - name: thesis_det_alpha_1_2_direct
+    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver/model_input.xlsx
+    model:
+      mode: det
+      interhub_factor: 1.2
+      use_direct_origin_customer: true
+    loader:
+      include_direct_origin_customer_routes: true
+    metadata:
+      evidence_profile: thesis_compatible
+      comparison_scope: bounded_mathematical_reproduction
+      scenario_design: deterministic_reference
+      route_policy: historical_shortest_twenty_percent
+      direct_origin_customer: true
+      interhub_factor: 1.2
+      distance_limitation: bounded_haversine_not_historical_osrm
+
+  - name: thesis_sto_alpha_0_8_warehouse
+    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver/model_input.xlsx
+    model:
+      mode: sto
+      interhub_factor: 0.8
+      use_direct_origin_customer: false
+    loader:
+      include_direct_origin_customer_routes: false
+      include_stochastic_scenarios: true
+      scenario_generation_mode: cartesian
+      stochastic_combinations:
+        - [baixo, alto]
+        - [base, base]
+        - [alto, baixo]
+      stochastic_probabilities: [0.33, 0.34, 0.33]
+    calculate_evpi_vss: true
+    resume_evpi_vss: true
+    metadata:
+      evidence_profile: thesis_compatible
+      comparison_scope: bounded_mathematical_reproduction
+      scenario_design: thesis_coupled_three_scenarios
+      route_policy: historical_shortest_twenty_percent
+      direct_origin_customer: false
+      interhub_factor: 0.8
+      distance_limitation: bounded_haversine_not_historical_osrm
+
+  - name: thesis_sto_alpha_0_8_direct
+    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver/model_input.xlsx
+    model:
+      mode: sto
+      interhub_factor: 0.8
+      use_direct_origin_customer: true
+    loader:
+      include_direct_origin_customer_routes: true
+      include_stochastic_scenarios: true
+      scenario_generation_mode: cartesian
+      stochastic_combinations:
+        - [baixo, alto]
+        - [base, base]
+        - [alto, baixo]
+      stochastic_probabilities: [0.33, 0.34, 0.33]
+    calculate_evpi_vss: true
+    resume_evpi_vss: true
+    metadata:
+      evidence_profile: thesis_compatible
+      comparison_scope: bounded_mathematical_reproduction
+      scenario_design: thesis_coupled_three_scenarios
+      route_policy: historical_shortest_twenty_percent
+      direct_origin_customer: true
+      interhub_factor: 0.8
+      distance_limitation: bounded_haversine_not_historical_osrm
+
+  - name: thesis_sto_alpha_1_warehouse
+    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver/model_input.xlsx
+    model:
+      mode: sto
+      interhub_factor: 1.0
+      use_direct_origin_customer: false
+    loader:
+      include_direct_origin_customer_routes: false
+      include_stochastic_scenarios: true
+      scenario_generation_mode: cartesian
+      stochastic_combinations:
+        - [baixo, alto]
+        - [base, base]
+        - [alto, baixo]
+      stochastic_probabilities: [0.33, 0.34, 0.33]
+    calculate_evpi_vss: true
+    resume_evpi_vss: true
+    metadata:
+      evidence_profile: thesis_compatible
+      comparison_scope: bounded_mathematical_reproduction
+      scenario_design: thesis_coupled_three_scenarios
+      route_policy: historical_shortest_twenty_percent
+      direct_origin_customer: false
+      interhub_factor: 1.0
+      distance_limitation: bounded_haversine_not_historical_osrm
+
+  - name: thesis_sto_alpha_1_direct
+    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver/model_input.xlsx
+    model:
+      mode: sto
+      interhub_factor: 1.0
+      use_direct_origin_customer: true
+    loader:
+      include_direct_origin_customer_routes: true
+      include_stochastic_scenarios: true
+      scenario_generation_mode: cartesian
+      stochastic_combinations:
+        - [baixo, alto]
+        - [base, base]
+        - [alto, baixo]
+      stochastic_probabilities: [0.33, 0.34, 0.33]
+    calculate_evpi_vss: true
+    resume_evpi_vss: true
+    metadata:
+      evidence_profile: thesis_compatible
+      comparison_scope: bounded_mathematical_reproduction
+      scenario_design: thesis_coupled_three_scenarios
+      route_policy: historical_shortest_twenty_percent
+      direct_origin_customer: true
+      interhub_factor: 1.0
+      distance_limitation: bounded_haversine_not_historical_osrm
+
+  - name: thesis_sto_alpha_1_2_warehouse
+    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver/model_input.xlsx
+    model:
+      mode: sto
+      interhub_factor: 1.2
+      use_direct_origin_customer: false
+    loader:
+      include_direct_origin_customer_routes: false
+      include_stochastic_scenarios: true
+      scenario_generation_mode: cartesian
+      stochastic_combinations:
+        - [baixo, alto]
+        - [base, base]
+        - [alto, baixo]
+      stochastic_probabilities: [0.33, 0.34, 0.33]
+    calculate_evpi_vss: true
+    resume_evpi_vss: true
+    metadata:
+      evidence_profile: thesis_compatible
+      comparison_scope: bounded_mathematical_reproduction
+      scenario_design: thesis_coupled_three_scenarios
+      route_policy: historical_shortest_twenty_percent
+      direct_origin_customer: false
+      interhub_factor: 1.2
+      distance_limitation: bounded_haversine_not_historical_osrm
+
+  - name: thesis_sto_alpha_1_2_direct
+    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver/model_input.xlsx
+    model:
+      mode: sto
+      interhub_factor: 1.2
+      use_direct_origin_customer: true
+    loader:
+      include_direct_origin_customer_routes: true
+      include_stochastic_scenarios: true
+      scenario_generation_mode: cartesian
+      stochastic_combinations:
+        - [baixo, alto]
+        - [base, base]
+        - [alto, baixo]
+      stochastic_probabilities: [0.33, 0.34, 0.33]
+    calculate_evpi_vss: true
+    resume_evpi_vss: true
+    metadata:
+      evidence_profile: thesis_compatible
+      comparison_scope: bounded_mathematical_reproduction
+      scenario_design: thesis_coupled_three_scenarios
+      route_policy: historical_shortest_twenty_percent
+      direct_origin_customer: true
+      interhub_factor: 1.2
+      distance_limitation: bounded_haversine_not_historical_osrm
+
