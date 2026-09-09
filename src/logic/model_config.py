@@ -22,7 +22,7 @@ from typing import Any, Literal
 # Type aliases
 # ---------------------------------------------------------------------
 
-type SolverBackend = Literal["gurobipy", "pyomo"]
+type SolverBackend = Literal["gurobipy", "pyomo", "pyscipopt"]
 type ModelMode = Literal["det", "sto"]
 type CandidateCapacityMode = Literal["fixed", "scalable"]
 type TerminalInventoryPolicy = Literal["free", "zero", "penalized", "target"]
@@ -31,7 +31,7 @@ type ObjectivePolicy = Literal["penalty", "lexicographic"]
 type CapacityCouplingPolicy = Literal["period_equivalent", "daily_factors"]
 
 
-VALID_SOLVER_BACKENDS = {"gurobipy", "pyomo"}
+VALID_SOLVER_BACKENDS = {"gurobipy", "pyomo", "pyscipopt"}
 VALID_MODEL_MODES = {"det", "sto"}
 VALID_CANDIDATE_CAPACITY_MODES = {"fixed", "scalable"}
 VALID_TERMINAL_INVENTORY_POLICIES = {"free", "zero", "penalized", "target"}
@@ -60,14 +60,16 @@ class SolverConfig:
             time_limit=3600,
         )
 
-    Pyomo with SCIP:
+    Reserved native PySCIPOpt backend:
 
         SolverConfig(
-            backend="pyomo",
+            backend="pyscipopt",
             solver_name="scip",
             mip_gap=0.01,
             time_limit=3600,
         )
+
+    The native PySCIPOpt formulation is intentionally not implemented yet.
     """
 
     backend: SolverBackend = "gurobipy"
@@ -99,6 +101,15 @@ class SolverConfig:
             raise ValueError(
                 "When backend='gurobipy', solver_name must be 'gurobi' "
                 "or 'gurobipy'."
+            )
+
+        if self.backend == "pyscipopt" and self.solver_name.lower() not in {
+            "scip",
+            "pyscipopt",
+        }:
+            raise ValueError(
+                "When backend='pyscipopt', solver_name must be 'scip' "
+                "or 'pyscipopt'."
             )
 
         if self.mip_gap < 0:

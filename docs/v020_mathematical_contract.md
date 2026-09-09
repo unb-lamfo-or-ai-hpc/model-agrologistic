@@ -134,11 +134,13 @@ their individual result artifacts.
 
 ## Solver provision
 
-Gurobi remains the validated v0.2 reference backend. The solver-neutral facade,
-the Pyomo backend, and the optional `scip` dependency group preserve an
-explicit route to SCIP. SCIP results may enter comparative evidence only after
-formulation-parity, status-mapping, parameter, and EVPI/VSS tests pass. Until
-then, SCIP is a provision rather than a validated substitute.
+Gurobi remains the validated v0.2 reference backend. The solver facade now
+reserves an explicit `pyscipopt` backend identifier, and the optional `scip`
+dependency group installs PySCIPOpt. The reserved backend raises a clear
+not-implemented error until its native formulation exists. SCIP results may
+enter comparative evidence only after formulation-parity, status-mapping,
+parameter, and EVPI/VSS tests pass. Until then, SCIP is a provision rather than
+a validated substitute.
 
 ## Acceptance gate
 

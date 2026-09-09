@@ -9,6 +9,10 @@ import yaml
 from src.logic.excel_loader import ExcelLoaderConfig, _build_penalty_rates
 from src.logic.model_config import ModelConfig, SolverConfig
 from src.logic.model_data import ModelData
+from src.logic.optimization import (
+    OptimizationBackendNotImplementedError,
+    solve_model,
+)
 from src.logic.optimization_gurobipy import (
     _origin_to_warehouse_unit_cost,
     _warehouse_to_customer_unit_cost,
@@ -194,9 +198,16 @@ def test_v020_experiment_profiles_separate_reproduction_and_extension():
 
 
 def test_scip_remains_an_explicit_solver_neutral_provision():
-    config = SolverConfig(backend="pyomo", solver_name="scip")
-    assert config.backend == "pyomo"
+    config = SolverConfig(backend="pyscipopt", solver_name="scip")
+    assert config.backend == "pyscipopt"
     assert config.solver_name == "scip"
+    with pytest.raises(OptimizationBackendNotImplementedError):
+        solve_model(
+            data=ModelData(),
+            model_config=ModelConfig(),
+            solver_config=config,
+            validate=False,
+        )
 
     pyproject = tomllib.loads(
         (

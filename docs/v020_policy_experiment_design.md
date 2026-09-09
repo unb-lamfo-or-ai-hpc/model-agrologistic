@@ -63,9 +63,10 @@ mathematically infeasible.
 
 ## Gate P4: solver parity
 
-Gurobi is the reference solver. The repository already exposes a
-solver-neutral facade, a Pyomo route to SCIP, and an optional PySCIPOpt
-dependency. Before SCIP is used as evidence, add and pass parity tests for:
+Gurobi is the reference solver. The repository reserves a native
+`pyscipopt` backend identifier and provides an optional PySCIPOpt dependency;
+the backend remains deliberately unimplemented. Before SCIP is used as
+evidence, implement it and pass parity tests for:
 
 - all first- and second-stage variables and constraints;
 - grouped route filtering and direct-arc policies;

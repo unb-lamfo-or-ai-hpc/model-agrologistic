@@ -5,7 +5,8 @@ This module provides the public entry point for solving ModelData instances.
 It dispatches the optimization run to the selected backend:
 
 - gurobipy: native Gurobi implementation;
-- pyomo: solver-neutral implementation, including SCIP.
+- pyomo: solver-neutral implementation;
+- pyscipopt: reserved native SCIP integration point.
 
 The facade is responsible for:
 - validating ModelData before solving;
@@ -252,6 +253,12 @@ def solve_model(
             data=data,
             model_config=model_config,
             solver_config=solver_config,
+        )
+
+    if solver_config.backend == "pyscipopt":
+        raise OptimizationBackendNotImplementedError(
+            "The native PySCIPOpt backend is provisioned but not implemented. "
+            "Use the validated gurobipy backend for v0.2 evidence."
         )
 
     raise ValueError(f"Unknown solver backend: {solver_config.backend!r}")
