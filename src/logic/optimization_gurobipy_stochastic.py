@@ -198,6 +198,7 @@ def solve_stochastic_model_gurobipy(
     scenario_costs = _build_scenario_costs(
         gp=gp,
         data=data,
+        model_config=model_config,
         scenarios=scenarios,
         od_keys=od_keys,
         dc_keys=dc_keys,
@@ -421,6 +422,7 @@ def _build_scenario_costs(
     *,
     gp: Any,
     data: ModelData,
+    model_config: ModelConfig,
     scenarios: list[str],
     od_keys: list[tuple[str, ...]],
     dc_keys: list[tuple[str, ...]],
