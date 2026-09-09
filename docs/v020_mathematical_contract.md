@@ -81,6 +81,38 @@ selected network is Pareto-optimal.
 The `pareto` and `top_k` policies remain archived exploratory v0.1 methods.
 Their results are not numerically comparable with the thesis reproduction.
 
+## Road-distance contract
+
+OSRM is the primary road-distance authority for thesis-compatible v0.2
+evidence. Distance calculation is a preprocessing step: the adapter queries
+the OSRM Table service for every OD, DC, DD, and OC pair and materializes the
+result in the solver workbook. Optimization, EVPI/VSS, and restart operations
+therefore remain offline and consume an immutable matrix.
+
+The Table service reports distance along the fastest route selected by the
+configured OSRM profile. The grouped 20-percent thesis filter subsequently
+ranks those materialized road distances. The result must not be described as a
+Euclidean or Haversine nearest-neighbour network.
+
+Haversine multiplied by the configured tortuosity factor is allowed only when
+OSRM returns no route for a pair or snaps an endpoint beyond the declared
+distance threshold. Each fallback records its source and reason in the
+Distancias sheet and in distance_audit.csv. OSRM connection failures, timeouts,
+HTTP failures, malformed responses, and unsupported response codes are fatal;
+they cannot silently change the distance method.
+
+The adapter audit records the endpoint, profile, OSRM data version when
+reported, operator-provided dataset identifier, request count, and route counts
+by source and fallback reason. A thesis experiment requires
+required_distance_source set to osrm_primary and rejects legacy workbooks
+without this provenance. Exact numerical replication additionally requires the
+historical OSM extract and OSRM profile. Without those artifacts, the run is
+method-compatible rather than bitwise identical to the historical thesis.
+
+GraphHopper is a planned multimodal extension and is outside the v0.2 thesis
+gate. It may later replace Haversine fallback with explicit rail or waterway
+paths, but it must use the same materialized-matrix and provenance contract.
+
 ## Evidence profiles
 
 ### Thesis-compatible bounded reproduction
@@ -93,8 +125,9 @@ probabilities 0.33, 0.34, and 0.33. Initial stock fills existing static
 capacity and is divided equally among products.
 
 This is a mathematical reproduction on the bounded reconstructed instance.
-The historical OSRM matrix and forecasting path remain unavailable, and this
-limitation is carried in the evidence metadata.
+The OSRM matrix is rebuilt and frozen with route-level provenance. The exact
+historical OSM extract and forecasting path remain unavailable, and those
+limitations are carried in the evidence metadata.
 
 ### Reduced-network policy MVP
 
@@ -147,15 +180,16 @@ a validated substitute.
 PR #25 is accepted only after:
 
 1. all unit and integration tests pass;
-2. thesis deterministic and three-scenario profiles pass dry-run preflight;
-3. all reduced policy profiles pass staged preflight;
-4. licensed Gurobi solves validate representative thesis deterministic and
+2. the OSRM matrix passes provenance and route-coverage audits before any solve;
+3. thesis deterministic and three-scenario profiles pass dry-run preflight;
+4. all reduced policy profiles pass staged preflight;
+5. licensed Gurobi solves validate representative thesis deterministic and
    stochastic profiles;
-5. licensed Gurobi solves validate the 20-percent policy deterministic and
+6. licensed Gurobi solves validate the 20-percent policy deterministic and
    nine-scenario profiles within the approved HPC envelope;
-6. the time-limit study exports incumbent objective, MIP gap, and the three
+7. the time-limit study exports incumbent objective, MIP gap, and the three
    timing regions;
-7. material balance, domestic service, separate emergency slacks, investment
+8. material balance, domestic service, separate emergency slacks, investment
    decisions, EVPI/VSS decomposition, and provenance remain dimensionally
    valid.
 

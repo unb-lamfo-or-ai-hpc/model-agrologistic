@@ -7,7 +7,7 @@ import json
 from dataclasses import dataclass
 from math import asin, cos, radians, sin, sqrt
 from pathlib import Path
-from typing import Any
+from typing import Any, Literal
 
 import pandas as pd
 
@@ -17,6 +17,7 @@ from src.logic.artur_benchmark import (
     materialize_artur_assets,
 )
 from src.logic.excel_loader import ExcelLoaderConfig, load_model_data_from_excel
+from src.logic.osrm import OSRMClient, OSRMMatrixResult
 
 
 @dataclass(frozen=True, slots=True)
@@ -38,8 +39,32 @@ class ArturSolverAdapterConfig:
     high_supply_multiplier: float = 1.20
     low_domestic_demand_multiplier: float = 0.80
     high_domestic_demand_multiplier: float = 1.20
+    distance_provider: Literal["osrm", "normalized"] = "osrm"
+    osrm_base_url: str = "http://localhost:5000"
+    osrm_profile: str = "driving"
+    osrm_max_table_size: int = 100
+    osrm_timeout_seconds: float = 30.0
+    osrm_retries: int = 2
+    osrm_max_snap_distance_m: float = 50_000.0
+    haversine_fallback_factor: float = 1.3
+    osrm_fallback_on_no_route: bool = True
+    osrm_dataset_id: str | None = None
 
     def __post_init__(self) -> None:
+        if self.distance_provider not in {"osrm", "normalized"}:
+            raise ValueError(
+                "distance_provider must be either 'osrm' or 'normalized'."
+            )
+        if self.osrm_max_table_size < 2:
+            raise ValueError("osrm_max_table_size must be at least 2.")
+        if self.osrm_timeout_seconds <= 0:
+            raise ValueError("osrm_timeout_seconds must be positive.")
+        if self.osrm_retries < 0:
+            raise ValueError("osrm_retries cannot be negative.")
+        if self.osrm_max_snap_distance_m < 0:
+            raise ValueError("osrm_max_snap_distance_m cannot be negative.")
+        if self.haversine_fallback_factor < 1:
+            raise ValueError("haversine_fallback_factor must be at least 1.")
         if not 0.0 < self.low_supply_multiplier <= 1.0:
             raise ValueError("low_supply_multiplier must be in the interval (0, 1].")
         if self.high_supply_multiplier < 1.0:
@@ -62,6 +87,7 @@ def build_artur_solver_workbook(
     contract_path: Path = Path("data/manifests/mvp_data_contract.json"),
     config: ArturSolverAdapterConfig | None = None,
     overwrite: bool = False,
+    osrm_client: OSRMClient | None = None,
 ) -> tuple[Path, Path]:
     """Verify lineage, adapt schemas, write a workbook, and validate its loader view."""
 
@@ -78,13 +104,41 @@ def build_artur_solver_workbook(
         pd.read_excel(benchmark_dir / "Custos_Transbordo.xlsx"),
         config,
     )
-    distances = pd.concat(
-        [
-            _adapt_distances(pd.read_csv(normalized_dir / "distances.csv")),
-            _build_direct_distances(supply, demand),
-        ],
-        ignore_index=True,
-    )
+    if config.distance_provider == "osrm":
+        client = osrm_client or OSRMClient(
+            base_url=config.osrm_base_url,
+            max_table_size=config.osrm_max_table_size,
+            profile=config.osrm_profile,
+            timeout_seconds=config.osrm_timeout_seconds,
+            retries=config.osrm_retries,
+            max_snap_distance_m=config.osrm_max_snap_distance_m,
+            haversine_fallback_factor=config.haversine_fallback_factor,
+            fallback_on_no_route=config.osrm_fallback_on_no_route,
+        )
+        distances, distance_summary = _build_osrm_distances(
+            supply,
+            demand,
+            warehouses,
+            client,
+            dataset_id=config.osrm_dataset_id,
+        )
+    else:
+        distances = pd.concat(
+            [
+                _adapt_distances(pd.read_csv(normalized_dir / "distances.csv")),
+                _build_direct_distances(supply, demand),
+            ],
+            ignore_index=True,
+        )
+        distance_summary = _summarize_distance_provenance(
+            distances,
+            provider="normalized",
+            endpoint=None,
+            profile=None,
+            request_count=0,
+            data_versions=(),
+            dataset_id=None,
+        )
     freight = pd.read_excel(benchmark_dir / "Valor_Tonelada_km.xlsx")
     storage = pd.read_excel(benchmark_dir / "Tarifa_de_Armazenagem.xlsx")
     investment = pd.read_excel(benchmark_dir / "Custos_Investimento.xlsx")
@@ -122,7 +176,15 @@ def build_artur_solver_workbook(
             {"Field": "reproduction_level", "Value": "bounded"},
             {"Field": "source_commit_sha", "Value": track["commit_sha"]},
             {"Field": "normalization_policy", "Value": audit["normalization_policy"]},
-            {"Field": "distance_method", "Value": "haversine_v1_frozen"},
+            {
+                "Field": "distance_method",
+                "Value": distance_summary["distance_method"],
+            },
+            {"Field": "distance_provider", "Value": config.distance_provider},
+            {
+                "Field": "osrm_dataset_id",
+                "Value": config.osrm_dataset_id or "not_recorded",
+            },
             {"Field": "historical_distance_method", "Value": "OSRM"},
             {"Field": "forecasting_reconstructed", "Value": False},
         ]
@@ -130,6 +192,8 @@ def build_artur_solver_workbook(
 
     output_dir.mkdir(parents=True, exist_ok=overwrite)
     workbook_path = output_dir / "model_input.xlsx"
+    distance_audit_path = output_dir / "distance_audit.csv"
+    distances.to_csv(distance_audit_path, index=False, lineterminator="\n")
     with pd.ExcelWriter(workbook_path, engine="openpyxl") as writer:
         supply.to_excel(writer, sheet_name="Oferta", index=False)
         demand.to_excel(writer, sheet_name="Demanda", index=False)
@@ -148,6 +212,9 @@ def build_artur_solver_workbook(
     loader_config = ExcelLoaderConfig(
         compute_haversine_distances=False,
         use_workbook_distances=True,
+        required_distance_source=(
+            "osrm_primary" if config.distance_provider == "osrm" else "any"
+        ),
         include_transshipment_routes=True,
         include_direct_origin_customer_routes=False,
         candidate_cost_policy="fixed_total",
@@ -162,6 +229,9 @@ def build_artur_solver_workbook(
         ExcelLoaderConfig(
             compute_haversine_distances=False,
             use_workbook_distances=True,
+            required_distance_source=(
+                "osrm_primary" if config.distance_provider == "osrm" else "any"
+            ),
             include_export_routes=True,
             include_transshipment_routes=True,
             include_direct_origin_customer_routes=False,
@@ -219,7 +289,11 @@ def build_artur_solver_workbook(
             "include_transshipment_routes": True,
             "include_export_routes": True,
             "include_direct_origin_customer_routes": False,
-            "direct_distance_method": "haversine_v1_frozen",
+            "required_distance_source": (
+                "osrm_primary" if config.distance_provider == "osrm" else "any"
+            ),
+            "distance_provider": config.distance_provider,
+            "distance_method": distance_summary["distance_method"],
             "candidate_cost_policy": "fixed_total",
             "penalty_policy": "thesis_dynamic",
             "initial_inventory_policy": "full_existing_static_capacity_equal_product_split",
@@ -246,6 +320,13 @@ def build_artur_solver_workbook(
                 "scenario_multipliers", {}
             ),
         },
+        "distance_provenance": {
+            **distance_summary,
+            "audit_path": str(distance_audit_path),
+            "audit_sha256": hashlib.sha256(
+                distance_audit_path.read_bytes()
+            ).hexdigest(),
+        },
         "adapter_assumptions": {
             "days_per_period": 30,
             "expansion_max_tons_per_existing_warehouse": config.expansion_max_tons,
@@ -265,7 +346,17 @@ def build_artur_solver_workbook(
             "scenario_multiplier_source": "thesis_case_study_design",
         },
         "remaining_limitations": [
-            "DISTANCE_METHOD_DIFFERS_FROM_HISTORICAL_OSRM",
+            *(
+                ["OSRM_DATASET_ID_NOT_RECORDED"]
+                if config.distance_provider == "osrm"
+                and not config.osrm_dataset_id
+                else []
+            ),
+            *(
+                ["LEGACY_NORMALIZED_HAVERSINE_DISTANCE_MODE"]
+                if config.distance_provider == "normalized"
+                else []
+            ),
             "FORECASTING_PATH_NOT_RECONSTRUCTED",
             "SOLVER_MANIFEST_MUST_ENABLE_DAILY_CAPACITY_FACTORS",
         ],
@@ -448,6 +539,171 @@ def _adapt_warehouses(
     return adapted
 
 
+
+def _build_osrm_distances(
+    supply: pd.DataFrame,
+    demand: pd.DataFrame,
+    warehouses: pd.DataFrame,
+    client: OSRMClient,
+    *,
+    dataset_id: str | None,
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Materialize OD, DC, DD, and OC distances from the OSRM Table service."""
+
+    origins = supply[
+        ["Cidade", "Latitude", "Longitude"]
+    ].drop_duplicates(subset=["Cidade"])
+    origins = origins.rename(columns={"Cidade": "node_id"})
+    warehouse_nodes = warehouses[
+        ["CDA", "Latitude", "Longitude"]
+    ].drop_duplicates(subset=["CDA"])
+    warehouse_nodes = warehouse_nodes.rename(columns={"CDA": "node_id"})
+    customers = _customer_nodes(demand)
+
+    requests = [
+        ("OD", origins, warehouse_nodes, False),
+        ("DC", warehouse_nodes, customers, False),
+        ("DD", warehouse_nodes, warehouse_nodes, True),
+        ("OC", origins, customers, False),
+    ]
+    frames: list[pd.DataFrame] = []
+    request_count = 0
+    data_versions: set[str] = set()
+
+    for arc_type, source_nodes, destination_nodes, exclude_self in requests:
+        result = client.get_distance_matrix_detailed(
+            _node_coordinates(source_nodes),
+            _node_coordinates(destination_nodes),
+        )
+        request_count += result.request_count
+        data_versions.update(result.data_versions)
+        frames.append(
+            _distance_rows_from_matrix(
+                arc_type,
+                source_nodes,
+                destination_nodes,
+                result,
+                exclude_self=exclude_self,
+            )
+        )
+
+    distances = pd.concat(frames, ignore_index=True)
+    summary = _summarize_distance_provenance(
+        distances,
+        provider="osrm",
+        endpoint=client.base_url,
+        profile=client.profile,
+        request_count=request_count,
+        data_versions=tuple(sorted(data_versions)),
+        dataset_id=dataset_id,
+    )
+    return distances, summary
+
+
+def _customer_nodes(demand: pd.DataFrame) -> pd.DataFrame:
+    """Return customer identifiers exactly as the Excel loader constructs them."""
+
+    columns = ["Cidade", "Tipo_Demanda", "Latitude", "Longitude"]
+    customers = demand[columns].drop_duplicates(
+        subset=["Cidade", "Tipo_Demanda"]
+    ).copy()
+    type_counts = customers.groupby("Cidade")["Tipo_Demanda"].nunique()
+    customers["node_id"] = customers.apply(
+        lambda row: (
+            f"{row['Cidade']} | {row['Tipo_Demanda']}"
+            if int(type_counts.loc[row["Cidade"]]) > 1
+            else str(row["Cidade"])
+        ),
+        axis=1,
+    )
+    return customers[["node_id", "Latitude", "Longitude"]]
+
+
+def _node_coordinates(nodes: pd.DataFrame) -> list[tuple[float, float]]:
+    return [
+        (float(row["Latitude"]), float(row["Longitude"]))
+        for _, row in nodes.iterrows()
+    ]
+
+
+def _distance_rows_from_matrix(
+    arc_type: str,
+    source_nodes: pd.DataFrame,
+    destination_nodes: pd.DataFrame,
+    result: OSRMMatrixResult,
+    *,
+    exclude_self: bool,
+) -> pd.DataFrame:
+    rows: list[dict[str, Any]] = []
+    source_ids = source_nodes["node_id"].astype(str).tolist()
+    destination_ids = destination_nodes["node_id"].astype(str).tolist()
+
+    for row_index, origin in enumerate(source_ids):
+        for column_index, destination in enumerate(destination_ids):
+            if exclude_self and origin == destination:
+                continue
+            rows.append(
+                {
+                    "Tipo_Arco": arc_type,
+                    "Origem": origin,
+                    "Destino": destination,
+                    "Distancia_km": (
+                        result.distances_m[row_index][column_index] / 1000.0
+                    ),
+                    "Duracao_s": result.durations_s[row_index][column_index],
+                    "Fonte_Distancia": result.sources[row_index][column_index],
+                    "Motivo_Fallback": (
+                        result.fallback_reasons[row_index][column_index]
+                    ),
+                }
+            )
+    return pd.DataFrame(rows)
+
+
+def _summarize_distance_provenance(
+    distances: pd.DataFrame,
+    *,
+    provider: str,
+    endpoint: str | None,
+    profile: str | None,
+    request_count: int,
+    data_versions: tuple[str, ...],
+    dataset_id: str | None,
+) -> dict[str, Any]:
+    source_counts = {
+        str(key): int(value)
+        for key, value in distances["Fonte_Distancia"].value_counts().items()
+    }
+    fallback_rows = distances.loc[
+        distances["Fonte_Distancia"] == "haversine_fallback"
+    ]
+    fallback_reasons = {
+        str(key): int(value)
+        for key, value in fallback_rows["Motivo_Fallback"].value_counts().items()
+    }
+    arc_counts = {
+        str(key): int(value)
+        for key, value in distances["Tipo_Arco"].value_counts().items()
+    }
+    return {
+        "provider": provider,
+        "distance_method": (
+            "osrm_table_fastest_route_with_audited_haversine_fallback"
+            if provider == "osrm"
+            else "normalized_haversine_v1_legacy"
+        ),
+        "endpoint": endpoint,
+        "profile": profile,
+        "dataset_id": dataset_id,
+        "osrm_data_versions": list(data_versions),
+        "osrm_request_count": request_count,
+        "route_count": int(len(distances)),
+        "route_count_by_arc_type": arc_counts,
+        "route_count_by_source": source_counts,
+        "fallback_count": int(len(fallback_rows)),
+        "fallback_count_by_reason": fallback_reasons,
+    }
+
 def _build_direct_distances(
     supply: pd.DataFrame,
     demand: pd.DataFrame,
@@ -488,6 +744,9 @@ def _build_direct_distances(
                         float(customer["Latitude"]),
                         float(customer["Longitude"]),
                     ),
+                    "Duracao_s": None,
+                    "Fonte_Distancia": "normalized_haversine_legacy",
+                    "Motivo_Fallback": "legacy_normalized_input",
                 }
             )
     return pd.DataFrame(rows)
@@ -518,14 +777,18 @@ def _adapt_distances(source: pd.DataFrame) -> pd.DataFrame:
     missing = sorted(required - set(source.columns))
     if missing:
         raise ValueError(f"Normalized distances are missing columns: {missing}")
-    return source.rename(
+    adapted = source.rename(
         columns={
             "arc_type": "Tipo_Arco",
             "origin": "Origem",
             "destination": "Destino",
             "distance_km": "Distancia_km",
         }
-    )[["Tipo_Arco", "Origem", "Destino", "Distancia_km"]]
+    )[["Tipo_Arco", "Origem", "Destino", "Distancia_km"]].copy()
+    adapted["Duracao_s"] = None
+    adapted["Fonte_Distancia"] = "normalized_haversine_legacy"
+    adapted["Motivo_Fallback"] = "legacy_normalized_input"
+    return adapted
 
 
 def _transshipment_cost_by_status(frame: pd.DataFrame) -> dict[str, float]:

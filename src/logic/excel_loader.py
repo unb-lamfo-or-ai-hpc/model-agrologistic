@@ -23,6 +23,7 @@ from src.logic.model_data import ModelData, NodeInfo
 CandidateCostPolicy = Literal["variable_from_total", "fixed_total"]
 PenaltyPolicy = Literal["thesis_dynamic", "fixed"]
 ScenarioGenerationMode = Literal["active_rows", "cartesian"]
+DistanceSourceRequirement = Literal["any", "osrm_primary"]
 
 
 REQUIRED_SHEETS = {
@@ -98,6 +99,7 @@ class ExcelLoaderConfig:
 
     compute_haversine_distances: bool = True
     use_workbook_distances: bool = False
+    required_distance_source: DistanceSourceRequirement = "any"
 
     include_export_routes: bool = True
     include_transshipment_routes: bool = False
@@ -130,6 +132,19 @@ class ExcelLoaderConfig:
             raise ValueError(
                 "compute_haversine_distances and use_workbook_distances are "
                 "mutually exclusive."
+            )
+        if self.required_distance_source not in {"any", "osrm_primary"}:
+            raise ValueError(
+                "required_distance_source must be either 'any' or "
+                "'osrm_primary'."
+            )
+        if (
+            self.required_distance_source == "osrm_primary"
+            and not self.use_workbook_distances
+        ):
+            raise ValueError(
+                "required_distance_source='osrm_primary' requires "
+                "use_workbook_distances=True."
             )
         if self.penalty_policy not in {"thesis_dynamic", "fixed"}:
             raise ValueError(
@@ -392,17 +407,23 @@ def load_model_data_from_excel(
         )
 
     elif config.use_workbook_distances:
+        required_distance_pairs = {
+            "OD": {(origin, warehouse) for origin, warehouse, _ in routes_od},
+            "DC": {(warehouse, customer) for warehouse, customer, _ in routes_dc},
+            "DD": {
+                (warehouse_from, warehouse_to)
+                for warehouse_from, warehouse_to, _ in routes_dd
+            },
+            "OC": {(origin, customer) for origin, customer, _ in routes_oc},
+        }
+        if config.required_distance_source == "osrm_primary":
+            _validate_osrm_primary_distance_provenance(
+                distances_df,
+                required_distance_pairs,
+            )
         dist_od, dist_dc, dist_dd, dist_oc = _load_workbook_distances(
             distances=distances_df,
-            required_pairs={
-                "OD": {(origin, warehouse) for origin, warehouse, _ in routes_od},
-                "DC": {(warehouse, customer) for warehouse, customer, _ in routes_dc},
-                "DD": {
-                    (warehouse_from, warehouse_to)
-                    for warehouse_from, warehouse_to, _ in routes_dd
-                },
-                "OC": {(origin, customer) for origin, customer, _ in routes_oc},
-            },
+            required_pairs=required_distance_pairs,
         )
 
     (
@@ -498,6 +519,12 @@ def load_model_data_from_excel(
                 if config.compute_haversine_distances
                 else "none"
             ),
+            "distance_source_requirement": config.required_distance_source,
+            "distance_provenance": (
+                _distance_provenance_summary(distances_df)
+                if config.use_workbook_distances
+                else {}
+            ),
         },
     )
 
@@ -540,6 +567,86 @@ def _validate_workbook_schema(sheets: dict[str, pd.DataFrame]) -> None:
                 f"Sheet {sheet_name!r} is missing required columns: {missing_columns}"
             )
 
+
+
+def _validate_osrm_primary_distance_provenance(
+    distances: pd.DataFrame,
+    required_pairs: dict[str, set[tuple[str, str]]],
+) -> None:
+    """Reject thesis evidence that is not backed by an audited OSRM matrix."""
+
+    required_columns = {"Fonte_Distancia", "Motivo_Fallback"}
+    missing = sorted(required_columns - set(distances.columns))
+    if missing:
+        raise ValueError(
+            "OSRM-primary distance loading requires provenance columns "
+            f"{sorted(required_columns)}; missing {missing}."
+        )
+
+    active_arc_types = {
+        arc_type for arc_type, pairs in required_pairs.items() if pairs
+    }
+    relevant = distances.loc[
+        distances["Tipo_Arco"].map(
+            lambda value: _normalize_text(value).upper()
+        ).isin(active_arc_types)
+    ].copy()
+    if relevant.empty:
+        raise ValueError("OSRM-primary distance provenance has no active routes.")
+
+    relevant["_source"] = relevant["Fonte_Distancia"].map(
+        lambda value: _normalize_text(value).casefold()
+    )
+    allowed = {"osrm", "haversine_fallback"}
+    invalid = sorted(set(relevant["_source"]) - allowed)
+    if invalid:
+        raise ValueError(
+            "OSRM-primary distance provenance contains unsupported sources: "
+            f"{invalid}."
+        )
+    if "osrm" not in set(relevant["_source"]):
+        raise ValueError(
+            "OSRM-primary distance provenance requires at least one OSRM route."
+        )
+
+    fallback = relevant.loc[relevant["_source"] == "haversine_fallback"]
+    missing_reason = fallback["Motivo_Fallback"].map(
+        lambda value: _normalize_text(value)
+    ).eq("")
+    if bool(missing_reason.any()):
+        raise ValueError(
+            "Every Haversine fallback route requires Motivo_Fallback."
+        )
+
+
+def _distance_provenance_summary(distances: pd.DataFrame) -> dict[str, Any]:
+    """Summarize workbook distance sources without changing route values."""
+
+    if "Fonte_Distancia" not in distances.columns:
+        return {"route_count": int(len(distances)), "source_counts": {}}
+    sources = distances["Fonte_Distancia"].map(
+        lambda value: _normalize_text(value).casefold()
+    )
+    source_counts = {
+        str(source): int(count) for source, count in sources.value_counts().items()
+    }
+    fallback_reason_counts: dict[str, int] = {}
+    if "Motivo_Fallback" in distances.columns:
+        fallback_reasons = distances.loc[
+            sources == "haversine_fallback",
+            "Motivo_Fallback",
+        ].map(_normalize_text)
+        fallback_reason_counts = {
+            str(reason): int(count)
+            for reason, count in fallback_reasons.value_counts().items()
+            if reason
+        }
+    return {
+        "route_count": int(len(distances)),
+        "source_counts": source_counts,
+        "fallback_count": int(source_counts.get("haversine_fallback", 0)),
+        "fallback_reason_counts": fallback_reason_counts,
+    }
 
 def _load_workbook_distances(
     distances: pd.DataFrame,

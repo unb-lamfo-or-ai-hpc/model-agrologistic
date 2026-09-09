@@ -5,9 +5,13 @@ from pathlib import Path
 import pandas as pd
 import pytest
 
-from src.logic.artur_adapter import build_artur_solver_workbook
+from src.logic.artur_adapter import (
+    ArturSolverAdapterConfig,
+    build_artur_solver_workbook,
+)
 from src.logic.artur_benchmark import git_blob_sha
 from src.logic.excel_loader import ExcelLoaderConfig, load_model_data_from_excel
+from src.logic.osrm import OSRMMatrixResult
 
 
 def _write_csv_with_identity(path: Path, frame: pd.DataFrame) -> dict:
@@ -151,11 +155,13 @@ def test_adapter_builds_audited_workbook_with_frozen_distances(tmp_path: Path):
         encoding="utf-8",
     )
 
+    legacy_config = ArturSolverAdapterConfig(distance_provider="normalized")
     workbook, audit_path = build_artur_solver_workbook(
         normalized_dir,
         tmp_path / "cache",
         tmp_path / "instance" / "solver",
         contract_path=contract_path,
+        config=legacy_config,
     )
 
     data = load_model_data_from_excel(
@@ -221,6 +227,7 @@ def test_adapter_builds_audited_workbook_with_frozen_distances(tmp_path: Path):
             tmp_path / "cache",
             tmp_path / "instance" / "solver",
             contract_path=contract_path,
+            config=legacy_config,
         )
 
     rebuilt_workbook, rebuilt_audit = build_artur_solver_workbook(
@@ -228,7 +235,84 @@ def test_adapter_builds_audited_workbook_with_frozen_distances(tmp_path: Path):
         tmp_path / "cache",
         tmp_path / "instance" / "solver",
         contract_path=contract_path,
+        config=legacy_config,
         overwrite=True,
     )
     assert rebuilt_workbook == workbook
     assert rebuilt_audit == audit_path
+
+    class StubOSRMClient:
+        base_url = "http://osrm.test"
+        profile = "driving"
+
+        def get_distance_matrix_detailed(
+            self,
+            origins: list[tuple[float, float]],
+            destinations: list[tuple[float, float]],
+        ) -> OSRMMatrixResult:
+            row_count = len(origins)
+            column_count = len(destinations)
+            return OSRMMatrixResult(
+                distances_m=[
+                    [1000.0 * (row + column + 1) for column in range(column_count)]
+                    for row in range(row_count)
+                ],
+                durations_s=[
+                    [60.0 for _ in range(column_count)]
+                    for _ in range(row_count)
+                ],
+                sources=[
+                    ["osrm" for _ in range(column_count)]
+                    for _ in range(row_count)
+                ],
+                fallback_reasons=[
+                    [None for _ in range(column_count)]
+                    for _ in range(row_count)
+                ],
+                request_count=1,
+                data_versions=("fixture-graph",),
+            )
+
+    osrm_workbook, osrm_audit_path = build_artur_solver_workbook(
+        normalized_dir,
+        tmp_path / "cache",
+        tmp_path / "instance" / "solver_osrm",
+        contract_path=contract_path,
+        config=ArturSolverAdapterConfig(
+            distance_provider="osrm",
+            osrm_dataset_id="fixture-pbf-sha256",
+        ),
+        osrm_client=StubOSRMClient(),
+    )
+    osrm_data = load_model_data_from_excel(
+        osrm_workbook,
+        ExcelLoaderConfig(
+            compute_haversine_distances=False,
+            use_workbook_distances=True,
+            required_distance_source="osrm_primary",
+            include_transshipment_routes=True,
+            include_direct_origin_customer_routes=True,
+            candidate_cost_policy="fixed_total",
+        ),
+    )
+    osrm_distances = pd.read_excel(osrm_workbook, sheet_name="Distancias")
+    osrm_audit = json.loads(osrm_audit_path.read_text(encoding="utf-8"))
+
+    assert len(osrm_distances) == 10
+    assert set(osrm_distances["Fonte_Distancia"]) == {"osrm"}
+    assert osrm_distances["Duracao_s"].notna().all()
+    assert len(osrm_data.dist_oc) == 2
+    assert osrm_audit["distance_provenance"]["fallback_count"] == 0
+    assert osrm_audit["distance_provenance"]["route_count_by_arc_type"] == {
+        "DC": 4,
+        "DD": 2,
+        "OC": 2,
+        "OD": 2,
+    }
+    assert osrm_audit["distance_provenance"]["dataset_id"] == (
+        "fixture-pbf-sha256"
+    )
+    assert "OSRM_DATASET_ID_NOT_RECORDED" not in osrm_audit[
+        "remaining_limitations"
+    ]
+

@@ -33,6 +33,7 @@ defaults:
   loader:
     compute_haversine_distances: false
     use_workbook_distances: true
+    required_distance_source: osrm_primary
     include_export_routes: true
     include_transshipment_routes: true
     candidate_cost_policy: fixed_total
@@ -40,7 +41,7 @@ defaults:
 
 experiments:
   - name: thesis_det_alpha_0_8_warehouse
-    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver_v020/model_input.xlsx
+    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver_v020_osrm/model_input.xlsx
     model:
       mode: det
       interhub_factor: 0.8
@@ -54,10 +55,10 @@ experiments:
       route_policy: historical_shortest_twenty_percent
       direct_origin_customer: false
       interhub_factor: 0.8
-      distance_limitation: bounded_haversine_not_historical_osrm
+      distance_authority: osrm_primary_with_audited_haversine_fallback
 
   - name: thesis_det_alpha_0_8_direct
-    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver_v020/model_input.xlsx
+    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver_v020_osrm/model_input.xlsx
     model:
       mode: det
       interhub_factor: 0.8
@@ -71,10 +72,10 @@ experiments:
       route_policy: historical_shortest_twenty_percent
       direct_origin_customer: true
       interhub_factor: 0.8
-      distance_limitation: bounded_haversine_not_historical_osrm
+      distance_authority: osrm_primary_with_audited_haversine_fallback
 
   - name: thesis_det_alpha_1_warehouse
-    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver_v020/model_input.xlsx
+    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver_v020_osrm/model_input.xlsx
     model:
       mode: det
       interhub_factor: 1.0
@@ -88,10 +89,10 @@ experiments:
       route_policy: historical_shortest_twenty_percent
       direct_origin_customer: false
       interhub_factor: 1.0
-      distance_limitation: bounded_haversine_not_historical_osrm
+      distance_authority: osrm_primary_with_audited_haversine_fallback
 
   - name: thesis_det_alpha_1_direct
-    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver_v020/model_input.xlsx
+    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver_v020_osrm/model_input.xlsx
     model:
       mode: det
       interhub_factor: 1.0
@@ -105,10 +106,10 @@ experiments:
       route_policy: historical_shortest_twenty_percent
       direct_origin_customer: true
       interhub_factor: 1.0
-      distance_limitation: bounded_haversine_not_historical_osrm
+      distance_authority: osrm_primary_with_audited_haversine_fallback
 
   - name: thesis_det_alpha_1_2_warehouse
-    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver_v020/model_input.xlsx
+    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver_v020_osrm/model_input.xlsx
     model:
       mode: det
       interhub_factor: 1.2
@@ -122,10 +123,10 @@ experiments:
       route_policy: historical_shortest_twenty_percent
       direct_origin_customer: false
       interhub_factor: 1.2
-      distance_limitation: bounded_haversine_not_historical_osrm
+      distance_authority: osrm_primary_with_audited_haversine_fallback
 
   - name: thesis_det_alpha_1_2_direct
-    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver_v020/model_input.xlsx
+    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver_v020_osrm/model_input.xlsx
     model:
       mode: det
       interhub_factor: 1.2
@@ -139,10 +140,10 @@ experiments:
       route_policy: historical_shortest_twenty_percent
       direct_origin_customer: true
       interhub_factor: 1.2
-      distance_limitation: bounded_haversine_not_historical_osrm
+      distance_authority: osrm_primary_with_audited_haversine_fallback
 
   - name: thesis_sto_alpha_0_8_warehouse
-    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver_v020/model_input.xlsx
+    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver_v020_osrm/model_input.xlsx
     model:
       mode: sto
       interhub_factor: 0.8
@@ -165,10 +166,10 @@ experiments:
       route_policy: historical_shortest_twenty_percent
       direct_origin_customer: false
       interhub_factor: 0.8
-      distance_limitation: bounded_haversine_not_historical_osrm
+      distance_authority: osrm_primary_with_audited_haversine_fallback
 
   - name: thesis_sto_alpha_0_8_direct
-    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver_v020/model_input.xlsx
+    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver_v020_osrm/model_input.xlsx
     model:
       mode: sto
       interhub_factor: 0.8
@@ -191,10 +192,10 @@ experiments:
       route_policy: historical_shortest_twenty_percent
       direct_origin_customer: true
       interhub_factor: 0.8
-      distance_limitation: bounded_haversine_not_historical_osrm
+      distance_authority: osrm_primary_with_audited_haversine_fallback
 
   - name: thesis_sto_alpha_1_warehouse
-    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver_v020/model_input.xlsx
+    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver_v020_osrm/model_input.xlsx
     model:
       mode: sto
       interhub_factor: 1.0
@@ -217,10 +218,10 @@ experiments:
       route_policy: historical_shortest_twenty_percent
       direct_origin_customer: false
       interhub_factor: 1.0
-      distance_limitation: bounded_haversine_not_historical_osrm
+      distance_authority: osrm_primary_with_audited_haversine_fallback
 
   - name: thesis_sto_alpha_1_direct
-    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver_v020/model_input.xlsx
+    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver_v020_osrm/model_input.xlsx
     model:
       mode: sto
       interhub_factor: 1.0
@@ -243,10 +244,10 @@ experiments:
       route_policy: historical_shortest_twenty_percent
       direct_origin_customer: true
       interhub_factor: 1.0
-      distance_limitation: bounded_haversine_not_historical_osrm
+      distance_authority: osrm_primary_with_audited_haversine_fallback
 
   - name: thesis_sto_alpha_1_2_warehouse
-    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver_v020/model_input.xlsx
+    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver_v020_osrm/model_input.xlsx
     model:
       mode: sto
       interhub_factor: 1.2
@@ -269,10 +270,10 @@ experiments:
       route_policy: historical_shortest_twenty_percent
       direct_origin_customer: false
       interhub_factor: 1.2
-      distance_limitation: bounded_haversine_not_historical_osrm
+      distance_authority: osrm_primary_with_audited_haversine_fallback
 
   - name: thesis_sto_alpha_1_2_direct
-    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver_v020/model_input.xlsx
+    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver_v020_osrm/model_input.xlsx
     model:
       mode: sto
       interhub_factor: 1.2
@@ -295,5 +296,5 @@ experiments:
       route_policy: historical_shortest_twenty_percent
       direct_origin_customer: true
       interhub_factor: 1.2
-      distance_limitation: bounded_haversine_not_historical_osrm
+      distance_authority: osrm_primary_with_audited_haversine_fallback
 

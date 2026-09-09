@@ -182,6 +182,19 @@ def test_v020_experiment_profiles_separate_reproduction_and_extension():
     assert thesis["defaults"]["model"]["route_filter_strategy"] == "thesis_pareto"
     assert thesis["defaults"]["model"]["pareto_fraction"] == pytest.approx(0.20)
     assert thesis["defaults"]["loader"]["penalty_policy"] == "thesis_dynamic"
+    assert (
+        thesis["defaults"]["loader"]["required_distance_source"]
+        == "osrm_primary"
+    )
+    assert all(
+        "/solver_v020_osrm/model_input.xlsx" in run["workbook"]
+        for run in thesis_runs
+    )
+    assert all(
+        run["metadata"]["distance_authority"]
+        == "osrm_primary_with_audited_haversine_fallback"
+        for run in thesis_runs
+    )
     stochastic_runs = [
         run for run in thesis_runs if run["model"]["mode"] == "sto"
     ]

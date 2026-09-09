@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import os
 import sys
 from pathlib import Path
 
@@ -13,7 +14,10 @@ def main() -> int:
     if str(PROJECT_ROOT) not in sys.path:
         sys.path.insert(0, str(PROJECT_ROOT))
 
-    from src.logic.artur_adapter import build_artur_solver_workbook
+    from src.logic.artur_adapter import (
+        ArturSolverAdapterConfig,
+        build_artur_solver_workbook,
+    )
 
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--name", default="artur_legacy_i001")
@@ -42,6 +46,50 @@ def main() -> int:
         default=PROJECT_ROOT / "data/manifests/mvp_data_contract.json",
     )
     parser.add_argument(
+        "--distance-provider",
+        choices=("osrm", "normalized"),
+        default="osrm",
+        help=(
+            "Distance authority. OSRM is required for thesis-compatible v0.2 "
+            "evidence; normalized preserves the archived legacy matrix only."
+        ),
+    )
+    parser.add_argument(
+        "--osrm-base-url",
+        default=os.environ.get("OSRM_BASE_URL", "http://localhost:5000"),
+        help="OSRM HTTP endpoint used during workbook materialization.",
+    )
+    parser.add_argument(
+        "--osrm-dataset-id",
+        default=os.environ.get("OSRM_DATASET_ID"),
+        help=(
+            "Immutable identifier for the OSRM graph, preferably the OSM PBF "
+            "SHA-256 plus profile/container version."
+        ),
+    )
+    parser.add_argument("--osrm-profile", default="driving")
+    parser.add_argument("--osrm-max-table-size", type=int, default=100)
+    parser.add_argument("--osrm-timeout-seconds", type=float, default=30.0)
+    parser.add_argument("--osrm-retries", type=int, default=2)
+    parser.add_argument(
+        "--osrm-max-snap-distance-m",
+        type=float,
+        default=50_000.0,
+    )
+    parser.add_argument(
+        "--haversine-fallback-factor",
+        type=float,
+        default=1.3,
+    )
+    parser.add_argument(
+        "--fail-on-no-road-route",
+        action="store_true",
+        help=(
+            "Disable the audited Haversine fallback for pairs that OSRM "
+            "classifies as unroutable."
+        ),
+    )
+    parser.add_argument(
         "--overwrite",
         action="store_true",
         help="Replace the existing solver workbook and adapter audit.",
@@ -50,16 +98,30 @@ def main() -> int:
 
     instance_dir = args.instance_root / args.name
     output_dir = args.output_dir or (instance_dir / "solver")
+    config = ArturSolverAdapterConfig(
+        distance_provider=args.distance_provider,
+        osrm_base_url=args.osrm_base_url,
+        osrm_profile=args.osrm_profile,
+        osrm_max_table_size=args.osrm_max_table_size,
+        osrm_timeout_seconds=args.osrm_timeout_seconds,
+        osrm_retries=args.osrm_retries,
+        osrm_max_snap_distance_m=args.osrm_max_snap_distance_m,
+        haversine_fallback_factor=args.haversine_fallback_factor,
+        osrm_fallback_on_no_route=not args.fail_on_no_road_route,
+        osrm_dataset_id=args.osrm_dataset_id,
+    )
     workbook, audit = build_artur_solver_workbook(
         instance_dir / "normalized",
         args.cache_dir,
         output_dir,
         contract_path=args.contract,
+        config=config,
         overwrite=args.overwrite,
     )
     print(f"Solver workbook written to {workbook}")
     print(f"Adapter audit written to {audit}")
     print("Reproduction level: thesis-compatible bounded")
+    print(f"Distance provider: {args.distance_provider}")
     return 0
 
 

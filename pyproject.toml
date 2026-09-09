@@ -54,7 +54,7 @@ dependencies = [
     # Versioned experiment manifests.
     "pyyaml>=6.0,<7",
 
-    # Optional OSRM distance client retained by the repository.
+    # OSRM client used to materialize auditable road-distance matrices.
     "requests>=2.32,<3",
 ]
 
@@ -160,11 +160,9 @@ extend-exclude = [
     "scripts/benchmark_model.py",
     "scripts/inspect_excel_instance.py",
     "src/logic/i18n.py",
-    "src/logic/osrm.py",
     "src/logic/prediction.py",
     "src/logic/utils.py",
     "tests/test_haversine.py",
-    "tests/test_osrm.py",
 ]
 
 

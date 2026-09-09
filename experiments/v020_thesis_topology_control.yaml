@@ -33,6 +33,7 @@ defaults:
   loader:
     compute_haversine_distances: false
     use_workbook_distances: true
+    required_distance_source: osrm_primary
     include_export_routes: true
     include_transshipment_routes: true
     include_direct_origin_customer_routes: false
@@ -41,7 +42,7 @@ defaults:
 
 experiments:
   - name: thesis_topology_control_det_unfiltered
-    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver_v020/model_input.xlsx
+    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver_v020_osrm/model_input.xlsx
     model:
       mode: det
     metadata:
@@ -53,7 +54,7 @@ experiments:
       scientific_use: diagnose_historical_filter_on_reconstructed_distances
 
   - name: thesis_topology_control_sto3_unfiltered
-    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver_v020/model_input.xlsx
+    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver_v020_osrm/model_input.xlsx
     model:
       mode: sto
     loader:
