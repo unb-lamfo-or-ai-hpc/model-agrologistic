@@ -212,7 +212,14 @@ def test_v020_experiment_profiles_separate_reproduction_and_extension():
     assert {
         run["model"]["use_direct_origin_customer"] for run in policy_runs
     } == {False, True}
-    assert policy["defaults"]["model"]["route_filter_strategy"] == "thesis_pareto"
+    assert (
+        policy["defaults"]["model"]["route_filter_strategy"]
+        == "connectivity_preserving_pareto"
+    )
+    assert (
+        policy["defaults"]["model"]["connectivity_export_policy"]
+        == "one_sink_per_product"
+    )
     assert all(
         run["metadata"]["route_policy"] == "grouped_nearest_edge_fraction"
         for run in policy_runs
@@ -227,6 +234,14 @@ def test_v020_experiment_profiles_separate_reproduction_and_extension():
         run["solver"]["time_limit"] for run in time_study["experiments"]
     ] == [600, 3600, 14400]
     assert time_study["defaults"]["solver"]["mip_gap"] == pytest.approx(0.0)
+    assert (
+        time_study["defaults"]["model"]["route_filter_strategy"]
+        == "connectivity_preserving_pareto"
+    )
+    assert (
+        time_study["defaults"]["model"]["connectivity_export_policy"]
+        == "one_sink_per_product"
+    )
 
 
 def test_scip_remains_an_explicit_solver_neutral_provision():
