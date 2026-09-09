@@ -28,6 +28,15 @@ def main() -> int:
         default=PROJECT_ROOT / "data/raw/artur_benchmark",
     )
     parser.add_argument(
+        "--output-dir",
+        type=Path,
+        default=None,
+        help=(
+            "Solver-workbook directory. The default preserves the legacy "
+            "instance layout; v0.2 runs should use a separate directory."
+        ),
+    )
+    parser.add_argument(
         "--contract",
         type=Path,
         default=PROJECT_ROOT / "data/manifests/mvp_data_contract.json",
@@ -40,10 +49,11 @@ def main() -> int:
     args = parser.parse_args()
 
     instance_dir = args.instance_root / args.name
+    output_dir = args.output_dir or (instance_dir / "solver")
     workbook, audit = build_artur_solver_workbook(
         instance_dir / "normalized",
         args.cache_dir,
-        instance_dir / "solver",
+        output_dir,
         contract_path=args.contract,
         overwrite=args.overwrite,
     )
