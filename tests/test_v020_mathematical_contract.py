@@ -1,6 +1,9 @@
 from __future__ import annotations
 
 import pytest
+import yaml
+
+from pathlib import Path
 
 from src.logic.excel_loader import ExcelLoaderConfig, _build_penalty_rates
 from src.logic.model_config import ModelConfig
@@ -84,3 +87,46 @@ def test_fixed_penalties_remain_available_for_archived_v010_replay():
     assert unmet == {("C1", "soy"): 11.0}
     assert emergency_static == {"W1": 22.0}
     assert emergency_reception == {"W1": 33.0}
+
+
+def test_v020_experiment_profiles_separate_reproduction_and_extension():
+    root = Path(__file__).resolve().parents[1]
+    thesis = yaml.safe_load(
+        (root / "experiments/v020_thesis_compatible.yaml").read_text(
+            encoding="utf-8"
+        )
+    )
+    policy = yaml.safe_load(
+        (root / "experiments/v020_policy_mvp.yaml").read_text(encoding="utf-8")
+    )
+
+    thesis_runs = thesis["experiments"]
+    assert len(thesis_runs) == 12
+    assert {run["model"]["mode"] for run in thesis_runs} == {"det", "sto"}
+    assert {run["model"]["interhub_factor"] for run in thesis_runs} == {
+        0.8,
+        1.0,
+        1.2,
+    }
+    assert {run["model"]["use_direct_origin_customer"] for run in thesis_runs} == {
+        False,
+        True,
+    }
+    assert thesis["defaults"]["model"]["route_filter_strategy"] == "thesis_pareto"
+    assert thesis["defaults"]["model"]["pareto_fraction"] == pytest.approx(0.20)
+    assert thesis["defaults"]["loader"]["penalty_policy"] == "thesis_dynamic"
+    stochastic_runs = [
+        run for run in thesis_runs if run["model"]["mode"] == "sto"
+    ]
+    assert all(
+        run["loader"]["stochastic_probabilities"] == [0.33, 0.34, 0.33]
+        for run in stochastic_runs
+    )
+
+    policy_runs = policy["experiments"]
+    assert [run["model"]["mode"] for run in policy_runs] == ["det", "sto"]
+    assert policy["defaults"]["model"]["route_filter_strategy"] == "none"
+    assert policy["defaults"]["model"]["use_direct_origin_customer"] is True
+    assert policy_runs[1]["metadata"]["scenario_design"] == (
+        "full_factorial_three_by_three"
+    )
