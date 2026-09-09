@@ -40,7 +40,7 @@ defaults:
 
 experiments:
   - name: thesis_det_alpha_0_8_warehouse
-    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver/model_input.xlsx
+    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver_v020/model_input.xlsx
     model:
       mode: det
       interhub_factor: 0.8
@@ -57,7 +57,7 @@ experiments:
       distance_limitation: bounded_haversine_not_historical_osrm
 
   - name: thesis_det_alpha_0_8_direct
-    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver/model_input.xlsx
+    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver_v020/model_input.xlsx
     model:
       mode: det
       interhub_factor: 0.8
@@ -74,7 +74,7 @@ experiments:
       distance_limitation: bounded_haversine_not_historical_osrm
 
   - name: thesis_det_alpha_1_warehouse
-    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver/model_input.xlsx
+    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver_v020/model_input.xlsx
     model:
       mode: det
       interhub_factor: 1.0
@@ -91,7 +91,7 @@ experiments:
       distance_limitation: bounded_haversine_not_historical_osrm
 
   - name: thesis_det_alpha_1_direct
-    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver/model_input.xlsx
+    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver_v020/model_input.xlsx
     model:
       mode: det
       interhub_factor: 1.0
@@ -108,7 +108,7 @@ experiments:
       distance_limitation: bounded_haversine_not_historical_osrm
 
   - name: thesis_det_alpha_1_2_warehouse
-    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver/model_input.xlsx
+    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver_v020/model_input.xlsx
     model:
       mode: det
       interhub_factor: 1.2
@@ -125,7 +125,7 @@ experiments:
       distance_limitation: bounded_haversine_not_historical_osrm
 
   - name: thesis_det_alpha_1_2_direct
-    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver/model_input.xlsx
+    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver_v020/model_input.xlsx
     model:
       mode: det
       interhub_factor: 1.2
@@ -142,7 +142,7 @@ experiments:
       distance_limitation: bounded_haversine_not_historical_osrm
 
   - name: thesis_sto_alpha_0_8_warehouse
-    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver/model_input.xlsx
+    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver_v020/model_input.xlsx
     model:
       mode: sto
       interhub_factor: 0.8
@@ -168,7 +168,7 @@ experiments:
       distance_limitation: bounded_haversine_not_historical_osrm
 
   - name: thesis_sto_alpha_0_8_direct
-    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver/model_input.xlsx
+    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver_v020/model_input.xlsx
     model:
       mode: sto
       interhub_factor: 0.8
@@ -194,7 +194,7 @@ experiments:
       distance_limitation: bounded_haversine_not_historical_osrm
 
   - name: thesis_sto_alpha_1_warehouse
-    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver/model_input.xlsx
+    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver_v020/model_input.xlsx
     model:
       mode: sto
       interhub_factor: 1.0
@@ -220,7 +220,7 @@ experiments:
       distance_limitation: bounded_haversine_not_historical_osrm
 
   - name: thesis_sto_alpha_1_direct
-    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver/model_input.xlsx
+    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver_v020/model_input.xlsx
     model:
       mode: sto
       interhub_factor: 1.0
@@ -246,7 +246,7 @@ experiments:
       distance_limitation: bounded_haversine_not_historical_osrm
 
   - name: thesis_sto_alpha_1_2_warehouse
-    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver/model_input.xlsx
+    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver_v020/model_input.xlsx
     model:
       mode: sto
       interhub_factor: 1.2
@@ -272,7 +272,7 @@ experiments:
       distance_limitation: bounded_haversine_not_historical_osrm
 
   - name: thesis_sto_alpha_1_2_direct
-    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver/model_input.xlsx
+    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver_v020/model_input.xlsx
     model:
       mode: sto
       interhub_factor: 1.2
