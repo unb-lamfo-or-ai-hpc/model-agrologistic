@@ -457,17 +457,31 @@ def _build_direct_distances(
     origins = supply[
         ["Cidade", "Latitude", "Longitude"]
     ].drop_duplicates(subset=["Cidade"])
-    customers = demand[
-        ["Cidade", "Latitude", "Longitude"]
-    ].drop_duplicates(subset=["Cidade"])
+    customer_columns = [
+        "Cidade",
+        "Tipo_Demanda",
+        "Latitude",
+        "Longitude",
+    ]
+    customers = demand[customer_columns].drop_duplicates(
+        subset=["Cidade", "Tipo_Demanda"]
+    )
+    type_counts = customers.groupby("Cidade")["Tipo_Demanda"].nunique()
     rows = []
     for _, origin in origins.iterrows():
         for _, customer in customers.iterrows():
+            city = str(customer["Cidade"])
+            demand_type = str(customer["Tipo_Demanda"])
+            customer_id = (
+                f"{city} | {demand_type}"
+                if int(type_counts.loc[city]) > 1
+                else city
+            )
             rows.append(
                 {
                     "Tipo_Arco": "OC",
                     "Origem": str(origin["Cidade"]),
-                    "Destino": str(customer["Cidade"]),
+                    "Destino": customer_id,
                     "Distancia_km": _haversine_km(
                         float(origin["Latitude"]),
                         float(origin["Longitude"]),
