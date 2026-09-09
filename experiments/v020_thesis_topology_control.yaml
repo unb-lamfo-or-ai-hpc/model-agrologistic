@@ -1,0 +1,74 @@
+version: 1
+output_dir: ../data/results/hpc/v020_thesis_topology_control
+continue_on_error: false
+
+defaults:
+  max_estimated_variables: 1000000
+  solver:
+    backend: gurobipy
+    solver_name: gurobi
+    mip_gap: 0.0001
+    time_limit: 7200
+    threads: 16
+    seed: 42
+    tee: true
+    compute_iis: true
+    iis_max_items: 200
+    solver_options:
+      SoftMemLimit: 56
+      NumericFocus: 1
+  model:
+    objective_policy: penalty
+    use_warehouse_transshipment: true
+    use_direct_origin_customer: false
+    route_filter_strategy: none
+    candidate_capacity_mode: scalable
+    terminal_inventory_policy: free
+    capacity_coupling_policy: daily_factors
+    days_per_period: 30
+    interhub_factor: 0.8
+    allow_capacity_expansion: true
+    allow_bulkification: true
+    separate_emergency_capacity_slacks: true
+  loader:
+    compute_haversine_distances: false
+    use_workbook_distances: true
+    include_export_routes: true
+    include_transshipment_routes: true
+    include_direct_origin_customer_routes: false
+    candidate_cost_policy: fixed_total
+    penalty_policy: thesis_dynamic
+
+experiments:
+  - name: thesis_topology_control_det_unfiltered
+    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver_v020/model_input.xlsx
+    model:
+      mode: det
+    metadata:
+      evidence_profile: diagnostic_only
+      comparison_scope: bounded_topology_control
+      route_policy: unfiltered_causal_control
+      direct_origin_customer: false
+      interhub_factor: 0.8
+      scientific_use: diagnose_historical_filter_on_reconstructed_distances
+
+  - name: thesis_topology_control_sto3_unfiltered
+    workbook: ../data/processed/artur_reproduction/artur_legacy_i001/solver_v020/model_input.xlsx
+    model:
+      mode: sto
+    loader:
+      include_stochastic_scenarios: true
+      scenario_generation_mode: cartesian
+      stochastic_combinations:
+        - [baixo, alto]
+        - [base, base]
+        - [alto, baixo]
+      stochastic_probabilities: [0.33, 0.34, 0.33]
+    metadata:
+      evidence_profile: diagnostic_only
+      comparison_scope: bounded_topology_control
+      scenario_design: thesis_coupled_three_scenarios
+      route_policy: unfiltered_causal_control
+      direct_origin_customer: false
+      interhub_factor: 0.8
+      scientific_use: diagnose_historical_filter_on_reconstructed_distances
