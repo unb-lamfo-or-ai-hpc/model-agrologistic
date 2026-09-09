@@ -62,12 +62,11 @@ storage capacity, nor that its warehouses will be opened by the MILP.
 Capacity adequacy remains an optimization outcome and is reported separately
 through unmet-demand and emergency-capacity slacks.
 
-## Proposed policy extension after the audit gate
+## Policy extension accepted after the audit gate
 
-After the audit is reviewed, the policy profile may introduce a distinct
-`connectivity_preserving_pareto` strategy. That strategy should start from the
-same grouped fraction and add only the real, excluded routes required by an
-explicit service-connectivity contract. The initial contract is:
+The policy profile uses a distinct `connectivity_preserving_pareto` strategy.
+It starts from the same grouped fraction and adds only the real, excluded
+routes required by an explicit service-connectivity contract. The contract is:
 
 1. every active domestic customer/product pair must be reachable from at least
    one active supply origin;
@@ -78,6 +77,13 @@ explicit service-connectivity contract. The initial contract is:
 4. the thesis-compatible profile remains unchanged;
 5. the policy profile reports base and repaired route counts separately and
    evaluates 15, 20, and 25 percent fractions.
+
+Repairs are applied in deterministic customer/product order and reuse routes
+added for earlier pairs. Each path is lexicographically minimal under the
+audit criterion. This is a transparent greedy connectivity heuristic; it does
+not claim to solve a global Steiner-network problem. The MILP subsequently
+decides whether the structurally available warehouses and routes should be
+used, subject to ordinary investment, capacity, and cost constraints.
 
 Requiring every export port to be reachable is a stronger resilience policy
 and should be evaluated separately. It is not needed merely to preserve the
@@ -95,6 +101,6 @@ python scripts/audit_route_coverage.py \
   data/results/hpc/v020_thesis_compatible_osrm/route_coverage
 ```
 
-The audit is solver-free. The three CSV files should be inspected before any
-connectivity repair is activated in an experiment.
+The audit is solver-free. Its three CSV files establish the traceable baseline
+against which policy repair routes are reported.
 

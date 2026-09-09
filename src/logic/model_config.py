@@ -26,7 +26,17 @@ type SolverBackend = Literal["gurobipy", "pyomo", "pyscipopt"]
 type ModelMode = Literal["det", "sto"]
 type CandidateCapacityMode = Literal["fixed", "scalable"]
 type TerminalInventoryPolicy = Literal["free", "zero", "penalized", "target"]
-type RouteFilterStrategy = Literal["none", "pareto", "thesis_pareto", "top_k"]
+type RouteFilterStrategy = Literal[
+    "none",
+    "pareto",
+    "thesis_pareto",
+    "connectivity_preserving_pareto",
+    "top_k",
+]
+type ConnectivityExportPolicy = Literal[
+    "one_sink_per_product",
+    "all_active_customer_product_pairs",
+]
 type ObjectivePolicy = Literal["penalty", "lexicographic"]
 type CapacityCouplingPolicy = Literal["period_equivalent", "daily_factors"]
 
@@ -35,7 +45,17 @@ VALID_SOLVER_BACKENDS = {"gurobipy", "pyomo", "pyscipopt"}
 VALID_MODEL_MODES = {"det", "sto"}
 VALID_CANDIDATE_CAPACITY_MODES = {"fixed", "scalable"}
 VALID_TERMINAL_INVENTORY_POLICIES = {"free", "zero", "penalized", "target"}
-VALID_ROUTE_FILTER_STRATEGIES = {"none", "pareto", "thesis_pareto", "top_k"}
+VALID_ROUTE_FILTER_STRATEGIES = {
+    "none",
+    "pareto",
+    "thesis_pareto",
+    "connectivity_preserving_pareto",
+    "top_k",
+}
+VALID_CONNECTIVITY_EXPORT_POLICIES = {
+    "one_sink_per_product",
+    "all_active_customer_product_pairs",
+}
 VALID_OBJECTIVE_POLICIES = {"penalty", "lexicographic"}
 VALID_CAPACITY_COUPLING_POLICIES = {"period_equivalent", "daily_factors"}
 
@@ -162,6 +182,7 @@ class ModelConfig:
     route_filter_strategy: RouteFilterStrategy = "none"
     pareto_fraction: float = 0.20
     route_top_k: int | None = None
+    connectivity_export_policy: ConnectivityExportPolicy = "one_sink_per_product"
 
     # -----------------------------------------------------------------
     # Facility location and capacity decisions
@@ -263,6 +284,13 @@ class ModelConfig:
                 f"Expected one of {sorted(VALID_ROUTE_FILTER_STRATEGIES)}."
             )
 
+        if self.connectivity_export_policy not in VALID_CONNECTIVITY_EXPORT_POLICIES:
+            raise ValueError(
+                "Invalid connectivity_export_policy: "
+                f"{self.connectivity_export_policy!r}. Expected one of "
+                f"{sorted(VALID_CONNECTIVITY_EXPORT_POLICIES)}."
+            )
+
         if self.objective_policy not in VALID_OBJECTIVE_POLICIES:
             raise ValueError(
                 f"Invalid objective_policy: {self.objective_policy!r}. "
@@ -358,3 +386,4 @@ class RunConfig:
     run_name: str = "default_run"
     output_dir: str = "outputs"
     metadata: dict[str, Any] = field(default_factory=dict)
+

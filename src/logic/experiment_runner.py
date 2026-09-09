@@ -171,6 +171,14 @@ class ModelSizeEstimate:
     routes_dc: int
     routes_dd: int
     routes_oc: int
+    base_routes_od: int
+    base_routes_dc: int
+    base_routes_dd: int
+    base_routes_oc: int
+    repair_routes_od: int
+    repair_routes_dc: int
+    repair_routes_dd: int
+    repair_routes_oc: int
     flow_variables: int
     inventory_variables: int
     unmet_demand_variables: int
@@ -427,6 +435,14 @@ def estimate_model_size(data: ModelData, config: ModelConfig) -> ModelSizeEstima
         routes_dc=len(routes.dc),
         routes_dd=len(routes.dd),
         routes_oc=len(routes.oc),
+        base_routes_od=len(routes.od) - len(routes.repair_od),
+        base_routes_dc=len(routes.dc) - len(routes.repair_dc),
+        base_routes_dd=len(routes.dd) - len(routes.repair_dd),
+        base_routes_oc=len(routes.oc) - len(routes.repair_oc),
+        repair_routes_od=len(routes.repair_od),
+        repair_routes_dc=len(routes.repair_dc),
+        repair_routes_dd=len(routes.repair_dd),
+        repair_routes_oc=len(routes.repair_oc),
         flow_variables=flow_variables,
         inventory_variables=inventory_variables,
         unmet_demand_variables=unmet_variables,
@@ -1514,6 +1530,9 @@ def _preflight_message(
         f"periods={estimate.period_count}, "
         f"routes(OD/DC/DD/OC)={estimate.routes_od}/{estimate.routes_dc}/"
         f"{estimate.routes_dd}/{estimate.routes_oc}, "
+        f"repairs(OD/DC/DD/OC)={estimate.repair_routes_od}/"
+        f"{estimate.repair_routes_dc}/{estimate.repair_routes_dd}/"
+        f"{estimate.repair_routes_oc}, "
         f"estimated_variables={estimate.total_variables:,}"
     )
 
@@ -1671,3 +1690,4 @@ def _mapping(value: Any, label: str) -> dict[str, Any]:
 def _resolve_path(value: Any, base_dir: Path) -> Path:
     path = Path(str(value))
     return path.resolve() if path.is_absolute() else (base_dir / path).resolve()
+

@@ -26,9 +26,11 @@ gap, and timing regions.
 Route filtering must pass the audit described in
 `docs/v020_route_connectivity_audit.md` before these configurations are used as
 policy evidence. The historical `thesis_pareto` strategy is retained only for
-reproduction. The policy experiments will use a separately named
-connectivity-preserving strategy after the audit gate; no Big-M distance or
-synthetic route may be used to repair the graph.
+reproduction. The policy experiments use the separately named
+`connectivity_preserving_pareto` strategy. It requires every active domestic
+customer/product pair and at least one export sink per active product to be
+reachable. No Big-M distance or synthetic route may be used to repair the
+graph. Preflight reports the base and repair counts for each route family.
 
 Submit one index at a time. Promote the three-scenario and nine-scenario cases
 only after the corresponding deterministic preflight and solve are accepted.

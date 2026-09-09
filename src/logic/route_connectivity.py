@@ -49,6 +49,10 @@ CONNECTIVITY_GAP_FIELDS = (
     "path_edge_count",
 )
 
+
+class RouteConnectivityError(ValueError):
+    """Raised when the declared connectivity contract cannot be repaired."""
+
 CONNECTIVITY_REPAIR_FIELDS = (
     "customer",
     "customer_class",
@@ -218,6 +222,165 @@ def build_route_connectivity_diagnostics(
     }
 
 
+def apply_connectivity_repair(
+    data: ModelData,
+    config: ModelConfig,
+    selected: SelectedRoutes,
+) -> SelectedRoutes:
+    """Add the smallest deterministic paths required by the policy contract.
+
+    Domestic customer/product pairs are repaired individually. Export is a
+    surplus-disposition option, so the default contract requires at least one
+    reachable export sink per active product. The stronger all-sinks contract
+    remains configurable for resilience studies. Each iteration reuses routes
+    added earlier, which makes the repair deterministic and parsimonious but
+    does not claim a globally minimum Steiner network.
+    """
+
+    current = SelectedRoutes(
+        od=set(selected.od),
+        dc=set(selected.dc),
+        dd=set(selected.dd),
+        oc=set(selected.oc),
+    )
+    repairs: dict[str, set[Route]] = {
+        "OD": set(),
+        "DC": set(),
+        "DD": set(),
+        "OC": set(),
+    }
+    active_supply = _active_supply_pairs(data, config)
+
+    for customer, product in sorted(_active_customer_pairs(data, config, "domestic")):
+        path = _minimal_repair_path(
+            data,
+            config,
+            current,
+            active_supply,
+            customer,
+            product,
+        )
+        if path is None:
+            raise RouteConnectivityError(
+                "No finite eligible path can connect active domestic demand "
+                f"for customer={customer!r}, product={product!r}."
+            )
+        current = _add_path(current, repairs, path)
+
+    active_export = _active_customer_pairs(data, config, "export")
+    export_by_product: dict[str, list[str]] = {}
+    for customer, product in active_export:
+        export_by_product.setdefault(product, []).append(customer)
+
+    for product, customers in sorted(export_by_product.items()):
+        if config.connectivity_export_policy == "all_active_customer_product_pairs":
+            for customer in sorted(customers):
+                path = _minimal_repair_path(
+                    data,
+                    config,
+                    current,
+                    active_supply,
+                    customer,
+                    product,
+                )
+                if path is None:
+                    raise RouteConnectivityError(
+                        "No finite eligible path can connect active export demand "
+                        f"for customer={customer!r}, product={product!r}."
+                    )
+                current = _add_path(current, repairs, path)
+            continue
+
+        candidate_paths = [
+            path
+            for customer in sorted(customers)
+            if (
+                path := _minimal_repair_path(
+                    data,
+                    config,
+                    current,
+                    active_supply,
+                    customer,
+                    product,
+                )
+            )
+            is not None
+        ]
+        if not candidate_paths:
+            raise RouteConnectivityError(
+                "No finite eligible path reaches an export sink for active "
+                f"product={product!r}."
+            )
+        current = _add_path(
+            current,
+            repairs,
+            min(candidate_paths, key=_path_score),
+        )
+
+    return SelectedRoutes(
+        od=current.od,
+        dc=current.dc,
+        dd=current.dd,
+        oc=current.oc,
+        repair_od=repairs["OD"],
+        repair_dc=repairs["DC"],
+        repair_dd=repairs["DD"],
+        repair_oc=repairs["OC"],
+    )
+
+
+def _active_customer_pairs(
+    data: ModelData,
+    config: ModelConfig,
+    customer_class: str,
+) -> set[tuple[str, str]]:
+    if customer_class == "domestic":
+        values = data.demand_dom_s if config.mode == "sto" else data.demand_dom
+    else:
+        values = data.demand_exp_s if config.mode == "sto" else data.demand_exp
+    node_index = 1 if config.mode == "sto" else 0
+    product_index = 2 if config.mode == "sto" else 1
+    return {
+        (str(key[node_index]), str(key[product_index]))
+        for key, value in values.items()
+        if float(value) > 0.0
+    }
+
+
+def _add_path(
+    selected: SelectedRoutes,
+    repairs: dict[str, set[Route]],
+    path: tuple[_Edge, ...],
+) -> SelectedRoutes:
+    route_sets: dict[str, set[Route]] = {
+        "OD": set(selected.od),
+        "DC": set(selected.dc),
+        "DD": set(selected.dd),
+        "OC": set(selected.oc),
+    }
+    for edge in path:
+        route = (edge.source, edge.destination, edge.product)
+        if route not in route_sets[edge.route_type]:
+            route_sets[edge.route_type].add(route)
+            repairs[edge.route_type].add(route)
+    return SelectedRoutes(
+        od=route_sets["OD"],
+        dc=route_sets["DC"],
+        dd=route_sets["DD"],
+        oc=route_sets["OC"],
+    )
+
+
+def _path_score(path: tuple[_Edge, ...]) -> tuple[object, ...]:
+    added = [edge for edge in path if not edge.selected]
+    return (
+        len(added),
+        sum(edge.distance_km for edge in added),
+        sum(edge.distance_km for edge in path),
+        tuple(edge.signature for edge in path),
+    )
+
+
 def _route_filter_decisions(
     data: ModelData,
     config: ModelConfig,
@@ -237,7 +400,7 @@ def _route_filter_decisions(
                 route
             )
 
-        for (group_node, product), candidates in sorted(grouped.items()):
+        for (group_node, _product), candidates in sorted(grouped.items()):
             ordered = sorted(
                 candidates,
                 key=lambda route: (_distance(family, route), route),
@@ -253,6 +416,8 @@ def _route_filter_decisions(
                     reason = "unfiltered"
                 elif selected_by_base:
                     reason = "within_group_cutoff"
+                elif route in _repair_routes(selected, family.route_type):
+                    reason = "connectivity_repair"
                 elif is_selected:
                     reason = "coverage_augmentation"
                 else:
@@ -321,7 +486,10 @@ def _selection_group(
     config: ModelConfig,
 ) -> tuple[str, str]:
     source, destination, product = route
-    if config.route_filter_strategy == "thesis_pareto":
+    if config.route_filter_strategy in {
+        "thesis_pareto",
+        "connectivity_preserving_pareto",
+    }:
         return source, product
     if family.route_type in {"OD", "DD"}:
         return source, product
@@ -329,7 +497,10 @@ def _selection_group(
 
 
 def _group_node_role(family: _RouteFamily, config: ModelConfig) -> str:
-    if config.route_filter_strategy == "thesis_pareto":
+    if config.route_filter_strategy in {
+        "thesis_pareto",
+        "connectivity_preserving_pareto",
+    }:
         return "source"
     return "source" if family.route_type in {"OD", "DD"} else "destination"
 
@@ -340,6 +511,10 @@ def _selection_cutoff(candidate_count: int, config: ModelConfig) -> int:
     if config.route_filter_strategy == "top_k":
         return min(candidate_count, int(config.route_top_k or 0))
     return max(1, ceil(candidate_count * config.pareto_fraction))
+
+
+def _repair_routes(selected: SelectedRoutes, route_type: str) -> set[Route]:
+    return set(getattr(selected, f"repair_{route_type.lower()}", set()))
 
 
 def _distance(family: _RouteFamily, route: Route) -> float:

@@ -22,7 +22,8 @@ defaults:
     interhub_factor: 1.0
     use_warehouse_transshipment: true
     use_direct_origin_customer: true
-    route_filter_strategy: thesis_pareto
+    route_filter_strategy: connectivity_preserving_pareto
+    connectivity_export_policy: one_sink_per_product
     pareto_fraction: 0.20
     candidate_capacity_mode: scalable
     terminal_inventory_policy: free
@@ -69,3 +70,4 @@ experiments:
       evidence_profile: policy_mvp_v020
       experiment_dimension: time_limit
       time_limit_seconds: 14400
+

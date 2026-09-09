@@ -21,7 +21,8 @@ defaults:
     objective_policy: penalty
     interhub_factor: 1.0
     use_warehouse_transshipment: true
-    route_filter_strategy: thesis_pareto
+    route_filter_strategy: connectivity_preserving_pareto
+    connectivity_export_policy: one_sink_per_product
     candidate_capacity_mode: scalable
     terminal_inventory_policy: free
     capacity_coupling_policy: daily_factors
@@ -46,7 +47,7 @@ experiments:
     metadata:
       evidence_profile: policy_mvp_v020
       scenario_design: deterministic
-      route_policy: grouped_nearest_edge_fraction
+      route_policy: connectivity_preserving_grouped_edge_fraction
       route_fraction: 0.15
       direct_arcs: false
       warehouse_population: canonical_gold_workbook
@@ -60,7 +61,7 @@ experiments:
     metadata:
       evidence_profile: policy_mvp_v020
       scenario_design: deterministic
-      route_policy: grouped_nearest_edge_fraction
+      route_policy: connectivity_preserving_grouped_edge_fraction
       route_fraction: 0.15
       direct_arcs: true
       warehouse_population: canonical_gold_workbook
@@ -74,7 +75,7 @@ experiments:
     metadata:
       evidence_profile: policy_mvp_v020
       scenario_design: deterministic
-      route_policy: grouped_nearest_edge_fraction
+      route_policy: connectivity_preserving_grouped_edge_fraction
       route_fraction: 0.20
       direct_arcs: false
       warehouse_population: canonical_gold_workbook
@@ -88,7 +89,7 @@ experiments:
     metadata:
       evidence_profile: policy_mvp_v020
       scenario_design: deterministic
-      route_policy: grouped_nearest_edge_fraction
+      route_policy: connectivity_preserving_grouped_edge_fraction
       route_fraction: 0.20
       direct_arcs: true
       warehouse_population: canonical_gold_workbook
@@ -102,7 +103,7 @@ experiments:
     metadata:
       evidence_profile: policy_mvp_v020
       scenario_design: deterministic
-      route_policy: grouped_nearest_edge_fraction
+      route_policy: connectivity_preserving_grouped_edge_fraction
       route_fraction: 0.25
       direct_arcs: false
       warehouse_population: canonical_gold_workbook
@@ -116,7 +117,7 @@ experiments:
     metadata:
       evidence_profile: policy_mvp_v020
       scenario_design: deterministic
-      route_policy: grouped_nearest_edge_fraction
+      route_policy: connectivity_preserving_grouped_edge_fraction
       route_fraction: 0.25
       direct_arcs: true
       warehouse_population: canonical_gold_workbook
@@ -138,7 +139,7 @@ experiments:
     metadata:
       evidence_profile: policy_mvp_v020
       scenario_design: coupled_three_scenarios
-      route_policy: grouped_nearest_edge_fraction
+      route_policy: connectivity_preserving_grouped_edge_fraction
       route_fraction: 0.15
       direct_arcs: false
       warehouse_population: canonical_gold_workbook
@@ -160,7 +161,7 @@ experiments:
     metadata:
       evidence_profile: policy_mvp_v020
       scenario_design: coupled_three_scenarios
-      route_policy: grouped_nearest_edge_fraction
+      route_policy: connectivity_preserving_grouped_edge_fraction
       route_fraction: 0.15
       direct_arcs: true
       warehouse_population: canonical_gold_workbook
@@ -182,7 +183,7 @@ experiments:
     metadata:
       evidence_profile: policy_mvp_v020
       scenario_design: coupled_three_scenarios
-      route_policy: grouped_nearest_edge_fraction
+      route_policy: connectivity_preserving_grouped_edge_fraction
       route_fraction: 0.20
       direct_arcs: false
       warehouse_population: canonical_gold_workbook
@@ -204,7 +205,7 @@ experiments:
     metadata:
       evidence_profile: policy_mvp_v020
       scenario_design: coupled_three_scenarios
-      route_policy: grouped_nearest_edge_fraction
+      route_policy: connectivity_preserving_grouped_edge_fraction
       route_fraction: 0.20
       direct_arcs: true
       warehouse_population: canonical_gold_workbook
@@ -226,7 +227,7 @@ experiments:
     metadata:
       evidence_profile: policy_mvp_v020
       scenario_design: coupled_three_scenarios
-      route_policy: grouped_nearest_edge_fraction
+      route_policy: connectivity_preserving_grouped_edge_fraction
       route_fraction: 0.25
       direct_arcs: false
       warehouse_population: canonical_gold_workbook
@@ -248,7 +249,7 @@ experiments:
     metadata:
       evidence_profile: policy_mvp_v020
       scenario_design: coupled_three_scenarios
-      route_policy: grouped_nearest_edge_fraction
+      route_policy: connectivity_preserving_grouped_edge_fraction
       route_fraction: 0.25
       direct_arcs: true
       warehouse_population: canonical_gold_workbook
@@ -267,7 +268,7 @@ experiments:
     metadata:
       evidence_profile: policy_mvp_v020
       scenario_design: cartesian_nine_scenarios
-      route_policy: grouped_nearest_edge_fraction
+      route_policy: connectivity_preserving_grouped_edge_fraction
       route_fraction: 0.15
       direct_arcs: false
       warehouse_population: canonical_gold_workbook
@@ -286,7 +287,7 @@ experiments:
     metadata:
       evidence_profile: policy_mvp_v020
       scenario_design: cartesian_nine_scenarios
-      route_policy: grouped_nearest_edge_fraction
+      route_policy: connectivity_preserving_grouped_edge_fraction
       route_fraction: 0.15
       direct_arcs: true
       warehouse_population: canonical_gold_workbook
@@ -305,7 +306,7 @@ experiments:
     metadata:
       evidence_profile: policy_mvp_v020
       scenario_design: cartesian_nine_scenarios
-      route_policy: grouped_nearest_edge_fraction
+      route_policy: connectivity_preserving_grouped_edge_fraction
       route_fraction: 0.20
       direct_arcs: false
       warehouse_population: canonical_gold_workbook
@@ -324,7 +325,7 @@ experiments:
     metadata:
       evidence_profile: policy_mvp_v020
       scenario_design: cartesian_nine_scenarios
-      route_policy: grouped_nearest_edge_fraction
+      route_policy: connectivity_preserving_grouped_edge_fraction
       route_fraction: 0.20
       direct_arcs: true
       warehouse_population: canonical_gold_workbook
@@ -343,7 +344,7 @@ experiments:
     metadata:
       evidence_profile: policy_mvp_v020
       scenario_design: cartesian_nine_scenarios
-      route_policy: grouped_nearest_edge_fraction
+      route_policy: connectivity_preserving_grouped_edge_fraction
       route_fraction: 0.25
       direct_arcs: false
       warehouse_population: canonical_gold_workbook
@@ -362,7 +363,7 @@ experiments:
     metadata:
       evidence_profile: policy_mvp_v020
       scenario_design: cartesian_nine_scenarios
-      route_policy: grouped_nearest_edge_fraction
+      route_policy: connectivity_preserving_grouped_edge_fraction
       route_fraction: 0.25
       direct_arcs: true
       warehouse_population: canonical_gold_workbook

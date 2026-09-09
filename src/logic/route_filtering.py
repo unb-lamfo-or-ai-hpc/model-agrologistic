@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from collections.abc import Callable
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from math import ceil
 
 from src.logic.model_config import ModelConfig
@@ -18,6 +18,10 @@ class SelectedRoutes:
     dc: set[RouteDC]
     dd: set[RouteDD]
     oc: set[RouteOC]
+    repair_od: set[RouteOD] = field(default_factory=set)
+    repair_dc: set[RouteDC] = field(default_factory=set)
+    repair_dd: set[RouteDD] = field(default_factory=set)
+    repair_oc: set[RouteOC] = field(default_factory=set)
 
 
 def select_routes(data: ModelData, config: ModelConfig) -> SelectedRoutes:
@@ -34,6 +38,12 @@ def select_routes(data: ModelData, config: ModelConfig) -> SelectedRoutes:
 
     if config.route_filter_strategy == "thesis_pareto":
         return _select_thesis_pareto_routes(data, config)
+
+    if config.route_filter_strategy == "connectivity_preserving_pareto":
+        from src.logic.route_connectivity import apply_connectivity_repair
+
+        base_routes = _select_thesis_pareto_routes(data, config)
+        return apply_connectivity_repair(data, config, base_routes)
 
     od = _select(
         data.routes_od,
@@ -240,3 +250,4 @@ def _nearest_per_group[Route: (RouteOD, RouteDC, RouteDD, RouteOC)](
         min(candidates, key=lambda route: (distance(route), route))
         for candidates in grouped.values()
     }
+

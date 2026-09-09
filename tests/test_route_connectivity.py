@@ -1,6 +1,7 @@
 from src.logic.model_config import ModelConfig
 from src.logic.model_data import ModelData
 from src.logic.route_connectivity import build_route_connectivity_diagnostics
+from src.logic.route_filtering import select_routes
 
 
 def disconnected_customer_data() -> ModelData:
@@ -142,4 +143,95 @@ def test_repair_prefers_shorter_added_route_for_upstream_disconnection():
         ("OD", True),
         ("DC", False),
     ]
+
+
+def connectivity_config(
+    *,
+    fraction: float = 0.20,
+    export_policy: str = "one_sink_per_product",
+) -> ModelConfig:
+    return ModelConfig(
+        route_filter_strategy="connectivity_preserving_pareto",
+        pareto_fraction=fraction,
+        connectivity_export_policy=export_policy,
+        use_warehouse_transshipment=False,
+        use_direct_origin_customer=False,
+    )
+
+
+def two_export_sink_data() -> ModelData:
+    return ModelData(
+        origins=["O1"],
+        warehouses=["W1"],
+        existing_warehouses=["W1"],
+        candidate_warehouses=[],
+        bulk_eligible_warehouses=[],
+        customers=["C1", "EXP1", "EXP2"],
+        domestic_customers=["C1"],
+        export_customers=["EXP1", "EXP2"],
+        products=["soy"],
+        periods=["t1"],
+        routes_od={("O1", "W1", "soy")},
+        routes_dc={
+            ("W1", "C1", "soy"),
+            ("W1", "EXP1", "soy"),
+            ("W1", "EXP2", "soy"),
+        },
+        dist_od={("O1", "W1"): 1.0},
+        dist_dc={
+            ("W1", "C1"): 1.0,
+            ("W1", "EXP1"): 2.0,
+            ("W1", "EXP2"): 3.0,
+        },
+        supply={("O1", "soy", "t1"): 3.0},
+        demand_dom={("C1", "soy", "t1"): 1.0},
+        demand_exp={
+            ("EXP1", "soy", "t1"): 10.0,
+            ("EXP2", "soy", "t1"): 10.0,
+        },
+    )
+
+
+def test_policy_repairs_all_domestic_pairs_and_records_added_routes():
+    routes = select_routes(disconnected_customer_data(), connectivity_config())
+
+    assert ("W1", "C2", "soy") in routes.dc
+    assert ("W1", "EXP", "soy") in routes.dc
+    assert routes.repair_dc == {
+        ("W1", "C2", "soy"),
+        ("W1", "EXP", "soy"),
+    }
+
+    diagnostics = build_route_connectivity_diagnostics(
+        disconnected_customer_data(),
+        connectivity_config(),
+    )
+    repaired = [
+        record
+        for record in diagnostics["route_filter_decisions"]
+        if record["selection_reason"] == "connectivity_repair"
+    ]
+    assert {record["destination"] for record in repaired} == {"C2", "EXP"}
+
+
+def test_default_export_contract_keeps_one_reachable_sink_per_product():
+    routes = select_routes(two_export_sink_data(), connectivity_config(fraction=0.34))
+
+    assert ("W1", "EXP1", "soy") in routes.dc
+    assert ("W1", "EXP2", "soy") not in routes.dc
+    assert routes.repair_dc == set()
+
+
+def test_stronger_export_contract_repairs_every_active_sink():
+    routes = select_routes(
+        two_export_sink_data(),
+        connectivity_config(
+            fraction=0.34,
+            export_policy="all_active_customer_product_pairs",
+        ),
+    )
+
+    assert ("W1", "EXP1", "soy") in routes.dc
+    assert ("W1", "EXP2", "soy") in routes.dc
+    assert routes.repair_dc == {("W1", "EXP2", "soy")}
 
