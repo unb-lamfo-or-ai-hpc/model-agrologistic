@@ -203,7 +203,18 @@ def test_scip_remains_an_explicit_solver_neutral_provision():
     assert config.solver_name == "scip"
     with pytest.raises(OptimizationBackendNotImplementedError):
         solve_model(
-            data=ModelData(),
+            data=ModelData(
+                origins=[],
+                warehouses=[],
+                existing_warehouses=[],
+                candidate_warehouses=[],
+                bulk_eligible_warehouses=[],
+                customers=[],
+                domestic_customers=[],
+                export_customers=[],
+                products=[],
+                periods=[],
+            ),
             model_config=ModelConfig(),
             solver_config=config,
             validate=False,
