@@ -6,7 +6,12 @@ from pathlib import Path
 import pytest
 import yaml
 
-from src.logic.excel_loader import ExcelLoaderConfig, _build_penalty_rates
+from src.logic.excel_loader import (
+    ExcelLoaderConfig,
+    _build_penalty_rates,
+    load_model_data_from_excel,
+)
+from src.logic.experiment_runner import load_experiment_manifest
 from src.logic.model_config import ModelConfig, SolverConfig
 from src.logic.model_data import ModelData
 from src.logic.optimization import (
@@ -147,6 +152,20 @@ def test_v020_experiment_profiles_separate_reproduction_and_extension():
             encoding="utf-8"
         )
     )
+    policy_manifest = load_experiment_manifest(
+        root / "experiments/v020_policy_mvp.yaml"
+    )
+    stochastic_three = next(
+        spec
+        for spec in policy_manifest.experiments
+        if spec.name == "policy_sto3_p20_warehouse"
+    )
+    stochastic_data = load_model_data_from_excel(
+        stochastic_three.workbook,
+        stochastic_three.loader,
+    )
+    assert len(stochastic_data.scenarios) == 3
+    assert sum(stochastic_data.scenario_prob.values()) == pytest.approx(1.0)
 
     thesis_runs = thesis["experiments"]
     assert len(thesis_runs) == 12

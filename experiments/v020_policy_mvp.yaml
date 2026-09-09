@@ -129,7 +129,7 @@ experiments:
       use_direct_origin_customer: false
     loader:
       include_stochastic_scenarios: true
-      scenario_generation_mode: custom
+      scenario_generation_mode: cartesian
       stochastic_combinations:
         - [baixo, alto]
         - [base, base]
@@ -151,7 +151,7 @@ experiments:
       use_direct_origin_customer: true
     loader:
       include_stochastic_scenarios: true
-      scenario_generation_mode: custom
+      scenario_generation_mode: cartesian
       stochastic_combinations:
         - [baixo, alto]
         - [base, base]
@@ -173,7 +173,7 @@ experiments:
       use_direct_origin_customer: false
     loader:
       include_stochastic_scenarios: true
-      scenario_generation_mode: custom
+      scenario_generation_mode: cartesian
       stochastic_combinations:
         - [baixo, alto]
         - [base, base]
@@ -195,7 +195,7 @@ experiments:
       use_direct_origin_customer: true
     loader:
       include_stochastic_scenarios: true
-      scenario_generation_mode: custom
+      scenario_generation_mode: cartesian
       stochastic_combinations:
         - [baixo, alto]
         - [base, base]
@@ -217,7 +217,7 @@ experiments:
       use_direct_origin_customer: false
     loader:
       include_stochastic_scenarios: true
-      scenario_generation_mode: custom
+      scenario_generation_mode: cartesian
       stochastic_combinations:
         - [baixo, alto]
         - [base, base]
@@ -239,7 +239,7 @@ experiments:
       use_direct_origin_customer: true
     loader:
       include_stochastic_scenarios: true
-      scenario_generation_mode: custom
+      scenario_generation_mode: cartesian
       stochastic_combinations:
         - [baixo, alto]
         - [base, base]
