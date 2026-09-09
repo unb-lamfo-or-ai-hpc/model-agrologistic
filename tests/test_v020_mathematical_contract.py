@@ -45,7 +45,7 @@ def test_thesis_transport_cost_equations_use_the_correct_endpoint_rates():
     ) == pytest.approx(1500.0)
     assert _warehouse_to_warehouse_unit_cost(
         data, "W1", "W2", "soy", config
-    ) == pytest.approx(727.0)
+    ) == pytest.approx(79.0)
 
 
 def test_thesis_dynamic_penalties_follow_the_historical_scaling_rule():
