@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 import json
 from dataclasses import dataclass
+from math import asin, cos, radians, sin, sqrt
 from pathlib import Path
 from typing import Any
 
@@ -77,7 +78,13 @@ def build_artur_solver_workbook(
         pd.read_excel(benchmark_dir / "Custos_Transbordo.xlsx"),
         config,
     )
-    distances = _adapt_distances(pd.read_csv(normalized_dir / "distances.csv"))
+    distances = pd.concat(
+        [
+            _adapt_distances(pd.read_csv(normalized_dir / "distances.csv")),
+            _build_direct_distances(supply, demand),
+        ],
+        ignore_index=True,
+    )
     freight = pd.read_excel(benchmark_dir / "Valor_Tonelada_km.xlsx")
     storage = pd.read_excel(benchmark_dir / "Tarifa_de_Armazenagem.xlsx")
     investment = pd.read_excel(benchmark_dir / "Custos_Investimento.xlsx")
@@ -212,6 +219,7 @@ def build_artur_solver_workbook(
             "include_transshipment_routes": True,
             "include_export_routes": True,
             "include_direct_origin_customer_routes": False,
+            "direct_distance_method": "haversine_v1_frozen",
             "candidate_cost_policy": "fixed_total",
             "penalty_policy": "thesis_dynamic",
             "initial_inventory_policy": "full_existing_static_capacity_equal_product_split",
@@ -438,6 +446,57 @@ def _adapt_warehouses(
         eligible.astype(float) * config.bulkification_variable_cost_per_ton
     )
     return adapted
+
+
+def _build_direct_distances(
+    supply: pd.DataFrame,
+    demand: pd.DataFrame,
+) -> pd.DataFrame:
+    """Build the missing bounded OC matrix with the frozen Haversine method."""
+
+    origins = supply[
+        ["Cidade", "Latitude", "Longitude"]
+    ].drop_duplicates(subset=["Cidade"])
+    customers = demand[
+        ["Cidade", "Latitude", "Longitude"]
+    ].drop_duplicates(subset=["Cidade"])
+    rows = []
+    for _, origin in origins.iterrows():
+        for _, customer in customers.iterrows():
+            rows.append(
+                {
+                    "Tipo_Arco": "OC",
+                    "Origem": str(origin["Cidade"]),
+                    "Destino": str(customer["Cidade"]),
+                    "Distancia_km": _haversine_km(
+                        float(origin["Latitude"]),
+                        float(origin["Longitude"]),
+                        float(customer["Latitude"]),
+                        float(customer["Longitude"]),
+                    ),
+                }
+            )
+    return pd.DataFrame(rows)
+
+
+def _haversine_km(
+    latitude_a: float,
+    longitude_a: float,
+    latitude_b: float,
+    longitude_b: float,
+) -> float:
+    """Return great-circle distance in kilometres for the bounded adapter."""
+
+    earth_radius_km = 6371.0088
+    lat_a = radians(latitude_a)
+    lat_b = radians(latitude_b)
+    delta_lat = lat_b - lat_a
+    delta_lon = radians(longitude_b - longitude_a)
+    haversine = (
+        sin(delta_lat / 2.0) ** 2
+        + cos(lat_a) * cos(lat_b) * sin(delta_lon / 2.0) ** 2
+    )
+    return 2.0 * earth_radius_km * asin(sqrt(haversine))
 
 
 def _adapt_distances(source: pd.DataFrame) -> pd.DataFrame:
