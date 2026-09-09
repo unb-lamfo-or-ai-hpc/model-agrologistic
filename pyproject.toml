@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "model-agrologistic"
-version = "0.1.0"
+version = "0.2.0.dev0"
 description = "TRL 6 research demonstrator for deterministic and stochastic agricultural logistics optimization."
 readme = "README.md"
 requires-python = ">=3.13,<3.14"
