@@ -49,7 +49,7 @@ def main() -> int:
     )
     print(f"Solver workbook written to {workbook}")
     print(f"Adapter audit written to {audit}")
-    print("Reproduction level: bounded")
+    print("Reproduction level: thesis-compatible bounded")
     return 0
 
 
