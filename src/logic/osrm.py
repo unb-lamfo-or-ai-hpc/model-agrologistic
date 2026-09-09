@@ -485,7 +485,7 @@ class OSRMClient:
     ) -> float:
         latitude_a, longitude_a = coordinate_a
         latitude_b, longitude_b = coordinate_b
-        earth_radius_m = 6_371_008.8
+        earth_radius_m = 6_371_000.0
 
         latitude_a_rad = math.radians(latitude_a)
         latitude_b_rad = math.radians(latitude_b)
