@@ -1,16 +1,12 @@
-from __future__ import annotations
-
-from pathlib import Path
-
-
-SCRIPT = (
-    Path(__file__).resolve().parents[1]
-    / "scripts/materialize_policy_osrm_215.slurm"
+SCRIPT = __file__.replace("\\", "/").replace(
+    "tests/test_policy_osrm_slurm.py",
+    "scripts/materialize_policy_osrm_215.slurm",
 )
 
 
 def test_policy_osrm_launcher_is_bounded_and_reproducible():
-    raw = SCRIPT.read_bytes()
+    with open(SCRIPT, "rb") as stream:
+        raw = stream.read()
     text = raw.decode("utf-8")
 
     assert b"\r" not in raw
