@@ -67,6 +67,25 @@ def main() -> int:
             "SHA-256 plus profile/container version."
         ),
     )
+    parser.add_argument(
+        "--osrm-cache-path",
+        type=Path,
+        default=(
+            Path(os.environ["OSRM_CACHE_PATH"])
+            if os.environ.get("OSRM_CACHE_PATH")
+            else None
+        ),
+        help=(
+            "Optional persistent SQLite pair cache. An immutable OSRM dataset "
+            "identifier is required when this option is enabled."
+        ),
+    )
+    parser.add_argument(
+        "--osrm-cache-busy-timeout-ms",
+        type=int,
+        default=30_000,
+        help="SQLite lock wait used by concurrent materialization jobs.",
+    )
     parser.add_argument("--osrm-profile", default="driving")
     parser.add_argument("--osrm-max-table-size", type=int, default=100)
     parser.add_argument("--osrm-timeout-seconds", type=float, default=30.0)
@@ -109,6 +128,8 @@ def main() -> int:
         haversine_fallback_factor=args.haversine_fallback_factor,
         osrm_fallback_on_no_route=not args.fail_on_no_road_route,
         osrm_dataset_id=args.osrm_dataset_id,
+        osrm_cache_path=args.osrm_cache_path,
+        osrm_cache_busy_timeout_ms=args.osrm_cache_busy_timeout_ms,
     )
     workbook, audit = build_artur_solver_workbook(
         instance_dir / "normalized",
@@ -127,3 +148,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+

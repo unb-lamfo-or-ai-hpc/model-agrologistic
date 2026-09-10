@@ -8,16 +8,22 @@ service failures are fatal and never trigger the fallback.
 
 from __future__ import annotations
 
+import hashlib
+import json
 import math
+import sqlite3
 import time
 from collections.abc import Callable
 from dataclasses import dataclass
+from datetime import datetime, timezone
+from pathlib import Path
 from typing import Any
 
 import requests
 
 Coordinate = tuple[float, float]
 RequestGet = Callable[..., Any]
+CACHE_SCHEMA_VERSION = 1
 
 
 class OSRMError(RuntimeError):
@@ -37,6 +43,117 @@ class OSRMNoRouteError(OSRMError):
 
 
 @dataclass(frozen=True, slots=True)
+class OSRMCacheRecord:
+    """One provenance-bound route record stored in the persistent cache."""
+
+    cache_key: str
+    key_payload_json: str
+    distance_m: float
+    duration_s: float | None
+    source: str
+    fallback_reason: str | None
+    data_version: str | None
+    created_at_utc: str
+
+
+class OSRMPairCache:
+    """Persistent SQLite cache for ordered OSRM coordinate pairs."""
+
+    def __init__(self, path: str | Path, *, busy_timeout_ms: int = 30_000) -> None:
+        if busy_timeout_ms <= 0:
+            raise ValueError("busy_timeout_ms must be positive.")
+
+        self.path = Path(path)
+        self.busy_timeout_ms = busy_timeout_ms
+        self.path.parent.mkdir(parents=True, exist_ok=True)
+        self._initialize()
+
+    def read_many(self, cache_keys: list[str]) -> dict[str, OSRMCacheRecord]:
+        """Read existing cache records without changing their timestamps."""
+
+        if not cache_keys:
+            return {}
+
+        records: dict[str, OSRMCacheRecord] = {}
+        with self._connect() as connection:
+            for start in range(0, len(cache_keys), 900):
+                chunk = cache_keys[start : start + 900]
+                placeholders = ",".join("?" for _ in chunk)
+                rows = connection.execute(
+                    "SELECT cache_key, key_payload_json, distance_m, duration_s, "
+                    "source, fallback_reason, data_version, created_at_utc "
+                    f"FROM osrm_pair_cache WHERE cache_key IN ({placeholders})",
+                    chunk,
+                ).fetchall()
+                for row in rows:
+                    record = OSRMCacheRecord(*row)
+                    records[record.cache_key] = record
+        return records
+
+    def write_many(self, records: list[OSRMCacheRecord]) -> int:
+        """Atomically insert new records and preserve concurrent first writers."""
+
+        if not records:
+            return 0
+
+        with self._connect() as connection:
+            before = connection.total_changes
+            connection.executemany(
+                "INSERT OR IGNORE INTO osrm_pair_cache ("
+                "cache_key, key_payload_json, distance_m, duration_s, source, "
+                "fallback_reason, data_version, created_at_utc"
+                ") VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                [
+                    (
+                        record.cache_key,
+                        record.key_payload_json,
+                        record.distance_m,
+                        record.duration_s,
+                        record.source,
+                        record.fallback_reason,
+                        record.data_version,
+                        record.created_at_utc,
+                    )
+                    for record in records
+                ],
+            )
+            return connection.total_changes - before
+
+    def _initialize(self) -> None:
+        with self._connect() as connection:
+            current_version = int(
+                connection.execute("PRAGMA user_version").fetchone()[0]
+            )
+            if current_version not in {0, CACHE_SCHEMA_VERSION}:
+                raise OSRMError(
+                    "Unsupported OSRM cache schema version "
+                    f"{current_version}; expected {CACHE_SCHEMA_VERSION}."
+                )
+            connection.execute(
+                "CREATE TABLE IF NOT EXISTS osrm_pair_cache ("
+                "cache_key TEXT PRIMARY KEY, "
+                "key_payload_json TEXT NOT NULL, "
+                "distance_m REAL NOT NULL, "
+                "duration_s REAL, "
+                "source TEXT NOT NULL, "
+                "fallback_reason TEXT, "
+                "data_version TEXT, "
+                "created_at_utc TEXT NOT NULL"
+                ")"
+            )
+            connection.execute(f"PRAGMA user_version = {CACHE_SCHEMA_VERSION}")
+
+    def _connect(self) -> sqlite3.Connection:
+        connection = sqlite3.connect(
+            self.path,
+            timeout=self.busy_timeout_ms / 1_000.0,
+        )
+        connection.execute(f"PRAGMA busy_timeout = {self.busy_timeout_ms}")
+        connection.execute("PRAGMA journal_mode = WAL")
+        return connection
+
+
+@dataclass(frozen=True, slots=True)
 class OSRMMatrixResult:
     """Distance matrix and cell-level routing provenance."""
 
@@ -46,6 +163,9 @@ class OSRMMatrixResult:
     fallback_reasons: list[list[str | None]]
     request_count: int
     data_versions: tuple[str, ...]
+    cache_hit_count: int = 0
+    cache_miss_count: int = 0
+    cache_write_count: int = 0
 
     @property
     def fallback_count(self) -> int:
@@ -73,6 +193,9 @@ class OSRMClient:
         max_snap_distance_m: float = 50_000.0,
         haversine_fallback_factor: float = 1.3,
         fallback_on_no_route: bool = True,
+        dataset_id: str | None = None,
+        cache_path: str | Path | None = None,
+        cache_busy_timeout_ms: int = 30_000,
         request_get: RequestGet | None = None,
     ) -> None:
         if max_table_size < 2:
@@ -85,6 +208,11 @@ class OSRMClient:
             raise ValueError("max_snap_distance_m cannot be negative.")
         if haversine_fallback_factor < 1:
             raise ValueError("haversine_fallback_factor must be at least 1.")
+        if cache_path is not None and not str(dataset_id or "").strip():
+            raise ValueError(
+                "dataset_id must be a non-empty immutable identifier when "
+                "cache_path is configured."
+            )
 
         self.base_url = base_url.rstrip("/")
         self.max_table_size = max_table_size
@@ -95,6 +223,12 @@ class OSRMClient:
         self.max_snap_distance_m = max_snap_distance_m
         self.haversine_fallback_factor = haversine_fallback_factor
         self.fallback_on_no_route = fallback_on_no_route
+        self.dataset_id = str(dataset_id).strip() if dataset_id else None
+        self._cache = (
+            OSRMPairCache(cache_path, busy_timeout_ms=cache_busy_timeout_ms)
+            if cache_path is not None
+            else None
+        )
         self._request_get = request_get or requests.get
 
     def get_distance_matrix(
@@ -137,33 +271,121 @@ class OSRMClient:
         reasons: list[list[str | None]] = [
             [None] * column_count for _ in range(row_count)
         ]
+        cell_data_versions: list[list[str | None]] = [
+            [None] * column_count for _ in range(row_count)
+        ]
 
-        chunk_size = max(1, self.max_table_size // 2)
         request_count = 0
         data_versions: set[str] = set()
+        cache_hit_count = 0
+        cache_miss_count = 0
+        cache_write_count = 0
+        cache_keys: dict[tuple[int, int], tuple[str, str]] = {}
+        missing_columns_by_row: dict[int, tuple[int, ...]] = {}
 
-        for row_start in range(0, row_count, chunk_size):
-            origin_chunk = checked_origins[row_start : row_start + chunk_size]
-            for column_start in range(0, column_count, chunk_size):
-                destination_chunk = checked_destinations[
-                    column_start : column_start + chunk_size
-                ]
-                payload = self._table_request(origin_chunk, destination_chunk)
-                request_count += 1
-                data_version = payload.get("data_version")
-                if data_version:
-                    data_versions.add(str(data_version))
-                self._apply_table_chunk(
-                    payload=payload,
-                    origins=origin_chunk,
-                    destinations=destination_chunk,
-                    row_start=row_start,
-                    column_start=column_start,
-                    distances=distances,
-                    durations=durations,
-                    sources=sources,
-                    reasons=reasons,
+        if self._cache is None:
+            missing_columns_by_row = {
+                row: tuple(range(column_count)) for row in range(row_count)
+            }
+        else:
+            for row, origin in enumerate(checked_origins):
+                for column, destination in enumerate(checked_destinations):
+                    cache_keys[row, column] = self._cache_identity(
+                        origin,
+                        destination,
+                    )
+            cached = self._cache.read_many(
+                [cache_key for cache_key, _ in cache_keys.values()]
+            )
+            for row in range(row_count):
+                missing: list[int] = []
+                for column in range(column_count):
+                    cache_key, _ = cache_keys[row, column]
+                    record = cached.get(cache_key)
+                    if record is None:
+                        missing.append(column)
+                        cache_miss_count += 1
+                        continue
+                    distances[row][column] = record.distance_m
+                    durations[row][column] = record.duration_s
+                    sources[row][column] = record.source
+                    reasons[row][column] = record.fallback_reason
+                    if record.data_version:
+                        data_versions.add(record.data_version)
+                    cache_hit_count += 1
+                if missing:
+                    missing_columns_by_row[row] = tuple(missing)
+
+        grouped_rows: dict[tuple[int, ...], list[int]] = {}
+        for row, columns in missing_columns_by_row.items():
+            grouped_rows.setdefault(columns, []).append(row)
+
+        for column_indices, row_indices in grouped_rows.items():
+            if len(row_indices) + len(column_indices) <= self.max_table_size:
+                row_chunk_size = len(row_indices)
+                column_chunk_size = len(column_indices)
+            else:
+                row_chunk_size = max(1, self.max_table_size // 2)
+                column_chunk_size = max(1, self.max_table_size - row_chunk_size)
+
+            for row_start in range(0, len(row_indices), row_chunk_size):
+                row_chunk = row_indices[row_start : row_start + row_chunk_size]
+                origin_chunk = [checked_origins[row] for row in row_chunk]
+                for column_start in range(
+                    0,
+                    len(column_indices),
+                    column_chunk_size,
+                ):
+                    column_chunk = column_indices[
+                        column_start : column_start + column_chunk_size
+                    ]
+                    destination_chunk = [
+                        checked_destinations[column] for column in column_chunk
+                    ]
+                    payload = self._table_request(origin_chunk, destination_chunk)
+                    request_count += 1
+                    raw_data_version = payload.get("data_version")
+                    data_version = (
+                        str(raw_data_version) if raw_data_version else None
+                    )
+                    if data_version:
+                        data_versions.add(data_version)
+                    self._apply_table_chunk(
+                        payload=payload,
+                        origins=origin_chunk,
+                        destinations=destination_chunk,
+                        row_indices=row_chunk,
+                        column_indices=list(column_chunk),
+                        distances=distances,
+                        durations=durations,
+                        sources=sources,
+                        reasons=reasons,
+                    )
+                    for row in row_chunk:
+                        for column in column_chunk:
+                            cell_data_versions[row][column] = data_version
+
+        if self._cache is not None and cache_miss_count:
+            created_at_utc = datetime.now(timezone.utc).isoformat()
+            records = []
+            for (row, column), (cache_key, key_payload_json) in cache_keys.items():
+                if row not in missing_columns_by_row:
+                    continue
+                if column not in missing_columns_by_row[row]:
+                    continue
+                records.append(
+                    OSRMCacheRecord(
+                        cache_key=cache_key,
+                        key_payload_json=key_payload_json,
+                        distance_m=float(distances[row][column]),
+                        duration_s=durations[row][column],
+                        source=str(sources[row][column]),
+                        fallback_reason=reasons[row][column],
+                        data_version=cell_data_versions[row][column],
+                        created_at_utc=created_at_utc,
+                    )
                 )
+            cache_write_count = self._cache.write_many(records)
 
         unresolved = [
             (row, column)
@@ -189,7 +411,35 @@ class OSRMClient:
             fallback_reasons=reasons,
             request_count=request_count,
             data_versions=tuple(sorted(data_versions)),
+            cache_hit_count=cache_hit_count,
+            cache_miss_count=cache_miss_count,
+            cache_write_count=cache_write_count,
         )
+
+    def _cache_identity(
+        self,
+        origin: Coordinate,
+        destination: Coordinate,
+    ) -> tuple[str, str]:
+        payload = {
+            "annotations": ["distance", "duration"],
+            "dataset_id": self.dataset_id,
+            "destination": [destination[0], destination[1]],
+            "fallback_on_no_route": self.fallback_on_no_route,
+            "haversine_fallback_factor": self.haversine_fallback_factor,
+            "max_snap_distance_m": self.max_snap_distance_m,
+            "origin": [origin[0], origin[1]],
+            "profile": self.profile,
+            "schema_version": CACHE_SCHEMA_VERSION,
+            "service": "table",
+        }
+        serialized = json.dumps(
+            payload,
+            sort_keys=True,
+            separators=(",", ":"),
+            ensure_ascii=True,
+        )
+        return hashlib.sha256(serialized.encode("utf-8")).hexdigest(), serialized
 
     def get_route(
         self,
@@ -278,8 +528,8 @@ class OSRMClient:
         payload: dict[str, Any],
         origins: list[Coordinate],
         destinations: list[Coordinate],
-        row_start: int,
-        column_start: int,
+        row_indices: list[int],
+        column_indices: list[int],
         distances: list[list[float | None]],
         durations: list[list[float | None]],
         sources: list[list[str | None]],
@@ -292,8 +542,8 @@ class OSRMClient:
                         origin,
                         destination,
                         "osrm_no_table",
-                        row_start + row,
-                        column_start + column,
+                        row_indices[row],
+                        column_indices[column],
                         distances,
                         durations,
                         sources,
@@ -331,8 +581,8 @@ class OSRMClient:
 
         for row, origin in enumerate(origins):
             for column, destination in enumerate(destinations):
-                target_row = row_start + row
-                target_column = column_start + column
+                target_row = row_indices[row]
+                target_column = column_indices[column]
                 reason = None
                 if row in bad_sources or column in bad_destinations:
                     reason = "osrm_snap_exceeds_limit"
@@ -498,3 +748,4 @@ class OSRMClient:
             * math.sin(delta_longitude / 2.0) ** 2
         )
         return 2.0 * earth_radius_m * math.asin(math.sqrt(haversine))
+

@@ -271,6 +271,9 @@ def test_adapter_builds_audited_workbook_with_frozen_distances(tmp_path: Path):
                 ],
                 request_count=1,
                 data_versions=("fixture-graph",),
+                cache_hit_count=row_count * column_count,
+                cache_miss_count=0,
+                cache_write_count=0,
             )
 
     osrm_workbook, osrm_audit_path = build_artur_solver_workbook(
@@ -312,7 +315,11 @@ def test_adapter_builds_audited_workbook_with_frozen_distances(tmp_path: Path):
     assert osrm_audit["distance_provenance"]["dataset_id"] == (
         "fixture-pbf-sha256"
     )
+    assert osrm_audit["distance_provenance"]["osrm_cache_hit_count"] == 12
+    assert osrm_audit["distance_provenance"]["osrm_cache_miss_count"] == 0
+    assert osrm_audit["distance_provenance"]["osrm_cache_write_count"] == 0
     assert "OSRM_DATASET_ID_NOT_RECORDED" not in osrm_audit[
         "remaining_limitations"
     ]
+
 

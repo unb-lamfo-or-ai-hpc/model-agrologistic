@@ -49,6 +49,8 @@ class ArturSolverAdapterConfig:
     haversine_fallback_factor: float = 1.3
     osrm_fallback_on_no_route: bool = True
     osrm_dataset_id: str | None = None
+    osrm_cache_path: Path | None = None
+    osrm_cache_busy_timeout_ms: int = 30_000
 
     def __post_init__(self) -> None:
         if self.distance_provider not in {"osrm", "normalized"}:
@@ -65,6 +67,14 @@ class ArturSolverAdapterConfig:
             raise ValueError("osrm_max_snap_distance_m cannot be negative.")
         if self.haversine_fallback_factor < 1:
             raise ValueError("haversine_fallback_factor must be at least 1.")
+        if self.osrm_cache_busy_timeout_ms <= 0:
+            raise ValueError("osrm_cache_busy_timeout_ms must be positive.")
+        if self.osrm_cache_path is not None and not str(
+            self.osrm_dataset_id or ""
+        ).strip():
+            raise ValueError(
+                "osrm_dataset_id is required when osrm_cache_path is configured."
+            )
         if not 0.0 < self.low_supply_multiplier <= 1.0:
             raise ValueError("low_supply_multiplier must be in the interval (0, 1].")
         if self.high_supply_multiplier < 1.0:
@@ -114,6 +124,9 @@ def build_artur_solver_workbook(
             max_snap_distance_m=config.osrm_max_snap_distance_m,
             haversine_fallback_factor=config.haversine_fallback_factor,
             fallback_on_no_route=config.osrm_fallback_on_no_route,
+            dataset_id=config.osrm_dataset_id,
+            cache_path=config.osrm_cache_path,
+            cache_busy_timeout_ms=config.osrm_cache_busy_timeout_ms,
         )
         distances, distance_summary = _build_osrm_distances(
             supply,
@@ -138,6 +151,9 @@ def build_artur_solver_workbook(
             request_count=0,
             data_versions=(),
             dataset_id=None,
+            cache_hit_count=0,
+            cache_miss_count=0,
+            cache_write_count=0,
         )
     freight = pd.read_excel(benchmark_dir / "Valor_Tonelada_km.xlsx")
     storage = pd.read_excel(benchmark_dir / "Tarifa_de_Armazenagem.xlsx")
@@ -569,6 +585,9 @@ def _build_osrm_distances(
     frames: list[pd.DataFrame] = []
     request_count = 0
     data_versions: set[str] = set()
+    cache_hit_count = 0
+    cache_miss_count = 0
+    cache_write_count = 0
 
     for arc_type, source_nodes, destination_nodes, exclude_self in requests:
         result = client.get_distance_matrix_detailed(
@@ -577,6 +596,9 @@ def _build_osrm_distances(
         )
         request_count += result.request_count
         data_versions.update(result.data_versions)
+        cache_hit_count += result.cache_hit_count
+        cache_miss_count += result.cache_miss_count
+        cache_write_count += result.cache_write_count
         frames.append(
             _distance_rows_from_matrix(
                 arc_type,
@@ -596,6 +618,9 @@ def _build_osrm_distances(
         request_count=request_count,
         data_versions=tuple(sorted(data_versions)),
         dataset_id=dataset_id,
+        cache_hit_count=cache_hit_count,
+        cache_miss_count=cache_miss_count,
+        cache_write_count=cache_write_count,
     )
     return distances, summary
 
@@ -669,6 +694,9 @@ def _summarize_distance_provenance(
     request_count: int,
     data_versions: tuple[str, ...],
     dataset_id: str | None,
+    cache_hit_count: int,
+    cache_miss_count: int,
+    cache_write_count: int,
 ) -> dict[str, Any]:
     source_counts = {
         str(key): int(value)
@@ -697,6 +725,9 @@ def _summarize_distance_provenance(
         "dataset_id": dataset_id,
         "osrm_data_versions": list(data_versions),
         "osrm_request_count": request_count,
+        "osrm_cache_hit_count": cache_hit_count,
+        "osrm_cache_miss_count": cache_miss_count,
+        "osrm_cache_write_count": cache_write_count,
         "route_count": int(len(distances)),
         "route_count_by_arc_type": arc_counts,
         "route_count_by_source": source_counts,
@@ -815,3 +846,4 @@ def _first_column(frame: pd.DataFrame, candidates: tuple[str, ...]) -> str:
 
 def _optional_column(frame: pd.DataFrame, candidates: tuple[str, ...]) -> str | None:
     return next((column for column in candidates if column in frame.columns), None)
+
