@@ -221,7 +221,7 @@ def build_population_order(
     anchor["selection_stratum"] = "canonical_gold_anchor"
     anchor["selection_hash"] = anchor[WAREHOUSE_ID].map(
         lambda warehouse: hashlib.sha256(
-            f"{selection_seed}|anchor|{warehouse}".encode("utf-8")
+            f"{selection_seed}|anchor|{warehouse}".encode()
         ).hexdigest()
     )
     anchor = anchor.sort_values(["selection_hash", WAREHOUSE_ID]).reset_index(
@@ -351,7 +351,7 @@ def _rank_candidates(candidates: pd.DataFrame, seed: str) -> pd.DataFrame:
     )
     ranked["selection_hash"] = ranked[WAREHOUSE_ID].map(
         lambda warehouse: hashlib.sha256(
-            f"{seed}|{warehouse}".encode("utf-8")
+            f"{seed}|{warehouse}".encode()
         ).hexdigest()
     )
     ranked = ranked.sort_values(
