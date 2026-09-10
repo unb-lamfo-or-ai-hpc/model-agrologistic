@@ -15,7 +15,7 @@ import sqlite3
 import time
 from collections.abc import Callable
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
@@ -366,7 +366,7 @@ class OSRMClient:
                             cell_data_versions[row][column] = data_version
 
         if self._cache is not None and cache_miss_count:
-            created_at_utc = datetime.now(timezone.utc).isoformat()
+            created_at_utc = datetime.now(UTC).isoformat()
             records = []
             for (row, column), (cache_key, key_payload_json) in cache_keys.items():
                 if row not in missing_columns_by_row:
