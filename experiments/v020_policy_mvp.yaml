@@ -31,6 +31,9 @@ defaults:
     allow_bulkification: true
     separate_emergency_capacity_slacks: true
   loader:
+    compute_haversine_distances: false
+    use_workbook_distances: true
+    required_distance_source: osrm_primary
     include_export_routes: true
     include_transshipment_routes: true
     include_direct_origin_customer_routes: true
@@ -39,7 +42,7 @@ defaults:
 
 experiments:
   - name: policy_det_p15_warehouse
-    workbook: ../data/templates/model_agrologistic_padrao_ouro.xlsx
+    workbook: ../data/processed/policy_population_v020_osrm/warehouses_215/model_input.xlsx
     model:
       mode: det
       pareto_fraction: 0.15
@@ -50,10 +53,10 @@ experiments:
       route_policy: connectivity_preserving_grouped_edge_fraction
       route_fraction: 0.15
       direct_arcs: false
-      warehouse_population: canonical_gold_workbook
+      warehouse_population: warehouses_215_osrm_authoritative
 
   - name: policy_det_p15_direct
-    workbook: ../data/templates/model_agrologistic_padrao_ouro.xlsx
+    workbook: ../data/processed/policy_population_v020_osrm/warehouses_215/model_input.xlsx
     model:
       mode: det
       pareto_fraction: 0.15
@@ -64,10 +67,10 @@ experiments:
       route_policy: connectivity_preserving_grouped_edge_fraction
       route_fraction: 0.15
       direct_arcs: true
-      warehouse_population: canonical_gold_workbook
+      warehouse_population: warehouses_215_osrm_authoritative
 
   - name: policy_det_p20_warehouse
-    workbook: ../data/templates/model_agrologistic_padrao_ouro.xlsx
+    workbook: ../data/processed/policy_population_v020_osrm/warehouses_215/model_input.xlsx
     model:
       mode: det
       pareto_fraction: 0.20
@@ -78,10 +81,10 @@ experiments:
       route_policy: connectivity_preserving_grouped_edge_fraction
       route_fraction: 0.20
       direct_arcs: false
-      warehouse_population: canonical_gold_workbook
+      warehouse_population: warehouses_215_osrm_authoritative
 
   - name: policy_det_p20_direct
-    workbook: ../data/templates/model_agrologistic_padrao_ouro.xlsx
+    workbook: ../data/processed/policy_population_v020_osrm/warehouses_215/model_input.xlsx
     model:
       mode: det
       pareto_fraction: 0.20
@@ -92,10 +95,10 @@ experiments:
       route_policy: connectivity_preserving_grouped_edge_fraction
       route_fraction: 0.20
       direct_arcs: true
-      warehouse_population: canonical_gold_workbook
+      warehouse_population: warehouses_215_osrm_authoritative
 
   - name: policy_det_p25_warehouse
-    workbook: ../data/templates/model_agrologistic_padrao_ouro.xlsx
+    workbook: ../data/processed/policy_population_v020_osrm/warehouses_215/model_input.xlsx
     model:
       mode: det
       pareto_fraction: 0.25
@@ -106,10 +109,10 @@ experiments:
       route_policy: connectivity_preserving_grouped_edge_fraction
       route_fraction: 0.25
       direct_arcs: false
-      warehouse_population: canonical_gold_workbook
+      warehouse_population: warehouses_215_osrm_authoritative
 
   - name: policy_det_p25_direct
-    workbook: ../data/templates/model_agrologistic_padrao_ouro.xlsx
+    workbook: ../data/processed/policy_population_v020_osrm/warehouses_215/model_input.xlsx
     model:
       mode: det
       pareto_fraction: 0.25
@@ -120,10 +123,10 @@ experiments:
       route_policy: connectivity_preserving_grouped_edge_fraction
       route_fraction: 0.25
       direct_arcs: true
-      warehouse_population: canonical_gold_workbook
+      warehouse_population: warehouses_215_osrm_authoritative
 
   - name: policy_sto3_p15_warehouse
-    workbook: ../data/templates/model_agrologistic_padrao_ouro.xlsx
+    workbook: ../data/processed/policy_population_v020_osrm/warehouses_215/model_input.xlsx
     model:
       mode: sto
       pareto_fraction: 0.15
@@ -142,10 +145,10 @@ experiments:
       route_policy: connectivity_preserving_grouped_edge_fraction
       route_fraction: 0.15
       direct_arcs: false
-      warehouse_population: canonical_gold_workbook
+      warehouse_population: warehouses_215_osrm_authoritative
 
   - name: policy_sto3_p15_direct
-    workbook: ../data/templates/model_agrologistic_padrao_ouro.xlsx
+    workbook: ../data/processed/policy_population_v020_osrm/warehouses_215/model_input.xlsx
     model:
       mode: sto
       pareto_fraction: 0.15
@@ -164,10 +167,10 @@ experiments:
       route_policy: connectivity_preserving_grouped_edge_fraction
       route_fraction: 0.15
       direct_arcs: true
-      warehouse_population: canonical_gold_workbook
+      warehouse_population: warehouses_215_osrm_authoritative
 
   - name: policy_sto3_p20_warehouse
-    workbook: ../data/templates/model_agrologistic_padrao_ouro.xlsx
+    workbook: ../data/processed/policy_population_v020_osrm/warehouses_215/model_input.xlsx
     model:
       mode: sto
       pareto_fraction: 0.20
@@ -186,10 +189,10 @@ experiments:
       route_policy: connectivity_preserving_grouped_edge_fraction
       route_fraction: 0.20
       direct_arcs: false
-      warehouse_population: canonical_gold_workbook
+      warehouse_population: warehouses_215_osrm_authoritative
 
   - name: policy_sto3_p20_direct
-    workbook: ../data/templates/model_agrologistic_padrao_ouro.xlsx
+    workbook: ../data/processed/policy_population_v020_osrm/warehouses_215/model_input.xlsx
     model:
       mode: sto
       pareto_fraction: 0.20
@@ -208,10 +211,10 @@ experiments:
       route_policy: connectivity_preserving_grouped_edge_fraction
       route_fraction: 0.20
       direct_arcs: true
-      warehouse_population: canonical_gold_workbook
+      warehouse_population: warehouses_215_osrm_authoritative
 
   - name: policy_sto3_p25_warehouse
-    workbook: ../data/templates/model_agrologistic_padrao_ouro.xlsx
+    workbook: ../data/processed/policy_population_v020_osrm/warehouses_215/model_input.xlsx
     model:
       mode: sto
       pareto_fraction: 0.25
@@ -230,10 +233,10 @@ experiments:
       route_policy: connectivity_preserving_grouped_edge_fraction
       route_fraction: 0.25
       direct_arcs: false
-      warehouse_population: canonical_gold_workbook
+      warehouse_population: warehouses_215_osrm_authoritative
 
   - name: policy_sto3_p25_direct
-    workbook: ../data/templates/model_agrologistic_padrao_ouro.xlsx
+    workbook: ../data/processed/policy_population_v020_osrm/warehouses_215/model_input.xlsx
     model:
       mode: sto
       pareto_fraction: 0.25
@@ -252,10 +255,10 @@ experiments:
       route_policy: connectivity_preserving_grouped_edge_fraction
       route_fraction: 0.25
       direct_arcs: true
-      warehouse_population: canonical_gold_workbook
+      warehouse_population: warehouses_215_osrm_authoritative
 
   - name: policy_sto9_p15_warehouse
-    workbook: ../data/templates/model_agrologistic_padrao_ouro.xlsx
+    workbook: ../data/processed/policy_population_v020_osrm/warehouses_215/model_input.xlsx
     model:
       mode: sto
       pareto_fraction: 0.15
@@ -271,10 +274,10 @@ experiments:
       route_policy: connectivity_preserving_grouped_edge_fraction
       route_fraction: 0.15
       direct_arcs: false
-      warehouse_population: canonical_gold_workbook
+      warehouse_population: warehouses_215_osrm_authoritative
 
   - name: policy_sto9_p15_direct
-    workbook: ../data/templates/model_agrologistic_padrao_ouro.xlsx
+    workbook: ../data/processed/policy_population_v020_osrm/warehouses_215/model_input.xlsx
     model:
       mode: sto
       pareto_fraction: 0.15
@@ -290,10 +293,10 @@ experiments:
       route_policy: connectivity_preserving_grouped_edge_fraction
       route_fraction: 0.15
       direct_arcs: true
-      warehouse_population: canonical_gold_workbook
+      warehouse_population: warehouses_215_osrm_authoritative
 
   - name: policy_sto9_p20_warehouse
-    workbook: ../data/templates/model_agrologistic_padrao_ouro.xlsx
+    workbook: ../data/processed/policy_population_v020_osrm/warehouses_215/model_input.xlsx
     model:
       mode: sto
       pareto_fraction: 0.20
@@ -309,10 +312,10 @@ experiments:
       route_policy: connectivity_preserving_grouped_edge_fraction
       route_fraction: 0.20
       direct_arcs: false
-      warehouse_population: canonical_gold_workbook
+      warehouse_population: warehouses_215_osrm_authoritative
 
   - name: policy_sto9_p20_direct
-    workbook: ../data/templates/model_agrologistic_padrao_ouro.xlsx
+    workbook: ../data/processed/policy_population_v020_osrm/warehouses_215/model_input.xlsx
     model:
       mode: sto
       pareto_fraction: 0.20
@@ -328,10 +331,10 @@ experiments:
       route_policy: connectivity_preserving_grouped_edge_fraction
       route_fraction: 0.20
       direct_arcs: true
-      warehouse_population: canonical_gold_workbook
+      warehouse_population: warehouses_215_osrm_authoritative
 
   - name: policy_sto9_p25_warehouse
-    workbook: ../data/templates/model_agrologistic_padrao_ouro.xlsx
+    workbook: ../data/processed/policy_population_v020_osrm/warehouses_215/model_input.xlsx
     model:
       mode: sto
       pareto_fraction: 0.25
@@ -347,10 +350,10 @@ experiments:
       route_policy: connectivity_preserving_grouped_edge_fraction
       route_fraction: 0.25
       direct_arcs: false
-      warehouse_population: canonical_gold_workbook
+      warehouse_population: warehouses_215_osrm_authoritative
 
   - name: policy_sto9_p25_direct
-    workbook: ../data/templates/model_agrologistic_padrao_ouro.xlsx
+    workbook: ../data/processed/policy_population_v020_osrm/warehouses_215/model_input.xlsx
     model:
       mode: sto
       pareto_fraction: 0.25
@@ -366,5 +369,5 @@ experiments:
       route_policy: connectivity_preserving_grouped_edge_fraction
       route_fraction: 0.25
       direct_arcs: true
-      warehouse_population: canonical_gold_workbook
+      warehouse_population: warehouses_215_osrm_authoritative
 

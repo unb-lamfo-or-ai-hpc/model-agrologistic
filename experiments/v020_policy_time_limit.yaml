@@ -33,6 +33,9 @@ defaults:
     allow_bulkification: true
     separate_emergency_capacity_slacks: true
   loader:
+    compute_haversine_distances: false
+    use_workbook_distances: true
+    required_distance_source: osrm_primary
     include_export_routes: true
     include_transshipment_routes: true
     include_direct_origin_customer_routes: true
@@ -45,29 +48,35 @@ defaults:
 
 experiments:
   - name: policy_sto9_p20_direct_t600
-    workbook: ../data/templates/model_agrologistic_padrao_ouro.xlsx
+    workbook: ../data/processed/policy_population_v020_osrm/warehouses_215/model_input.xlsx
     solver:
       time_limit: 600
     metadata:
       evidence_profile: policy_mvp_v020
+      warehouse_population: warehouses_215_osrm_authoritative
+      distance_authority: osrm_primary_with_audited_haversine_fallback
       experiment_dimension: time_limit
       time_limit_seconds: 600
 
   - name: policy_sto9_p20_direct_t3600
-    workbook: ../data/templates/model_agrologistic_padrao_ouro.xlsx
+    workbook: ../data/processed/policy_population_v020_osrm/warehouses_215/model_input.xlsx
     solver:
       time_limit: 3600
     metadata:
       evidence_profile: policy_mvp_v020
+      warehouse_population: warehouses_215_osrm_authoritative
+      distance_authority: osrm_primary_with_audited_haversine_fallback
       experiment_dimension: time_limit
       time_limit_seconds: 3600
 
   - name: policy_sto9_p20_direct_t14400
-    workbook: ../data/templates/model_agrologistic_padrao_ouro.xlsx
+    workbook: ../data/processed/policy_population_v020_osrm/warehouses_215/model_input.xlsx
     solver:
       time_limit: 14400
     metadata:
       evidence_profile: policy_mvp_v020
+      warehouse_population: warehouses_215_osrm_authoritative
+      distance_authority: osrm_primary_with_audited_haversine_fallback
       experiment_dimension: time_limit
       time_limit_seconds: 14400
 
