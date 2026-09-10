@@ -9,7 +9,6 @@ import yaml
 from src.logic.excel_loader import (
     ExcelLoaderConfig,
     _build_penalty_rates,
-    load_model_data_from_excel,
 )
 from src.logic.experiment_runner import load_experiment_manifest
 from src.logic.model_config import ModelConfig, SolverConfig
@@ -160,12 +159,10 @@ def test_v020_experiment_profiles_separate_reproduction_and_extension():
         for spec in policy_manifest.experiments
         if spec.name == "policy_sto3_p20_warehouse"
     )
-    stochastic_data = load_model_data_from_excel(
-        stochastic_three.workbook,
-        stochastic_three.loader,
-    )
-    assert len(stochastic_data.scenarios) == 3
-    assert sum(stochastic_data.scenario_prob.values()) == pytest.approx(1.0)
+    assert len(stochastic_three.loader.stochastic_combinations or []) == 3
+    assert sum(
+        stochastic_three.loader.stochastic_probabilities or []
+    ) == pytest.approx(1.0)
 
     thesis_runs = thesis["experiments"]
     assert len(thesis_runs) == 12
@@ -230,6 +227,18 @@ def test_v020_experiment_profiles_separate_reproduction_and_extension():
         and run["metadata"]["route_policy"] != "complete_network"
         for run in policy_runs
     )
+
+    assert all(
+        "/policy_population_v020_osrm/warehouses_215/model_input.xlsx"
+        in run["workbook"]
+        for run in policy_runs
+    )
+    assert (
+        policy["defaults"]["loader"]["required_distance_source"]
+        == "osrm_primary"
+    )
+    assert policy["defaults"]["loader"]["compute_haversine_distances"] is False
+    assert policy["defaults"]["loader"]["use_workbook_distances"] is True
 
     assert [
         run["solver"]["time_limit"] for run in time_study["experiments"]
