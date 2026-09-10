@@ -625,6 +625,25 @@ def _build_osrm_distances(
     return distances, summary
 
 
+def build_osrm_distance_table(
+    supply: pd.DataFrame,
+    demand: pd.DataFrame,
+    warehouses: pd.DataFrame,
+    client: OSRMClient,
+    *,
+    dataset_id: str | None,
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Expose the audited workbook distance builder for policy workbooks."""
+
+    return _build_osrm_distances(
+        supply,
+        demand,
+        warehouses,
+        client,
+        dataset_id=dataset_id,
+    )
+
+
 def _customer_nodes(demand: pd.DataFrame) -> pd.DataFrame:
     """Return customer identifiers exactly as the Excel loader constructs them."""
 
@@ -846,4 +865,3 @@ def _first_column(frame: pd.DataFrame, candidates: tuple[str, ...]) -> str:
 
 def _optional_column(frame: pd.DataFrame, candidates: tuple[str, ...]) -> str | None:
     return next((column for column in candidates if column in frame.columns), None)
-

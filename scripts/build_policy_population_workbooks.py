@@ -35,7 +35,13 @@ def main() -> int:
         type=Path,
         default=PROJECT_ROOT / "data/processed/policy_population_v020",
     )
-    parser.add_argument("--target-populations", type=int, nargs="+")
+    parser.add_argument(
+        "--target-populations",
+        type=int,
+        nargs="+",
+        required=True,
+        help="Explicit bounded levels to materialize; no level is implicit.",
+    )
     parser.add_argument("--source-sheet-name", default="Sheet1")
     parser.add_argument("--anchor-sheet-name", default="Warehouses")
     parser.add_argument("--overwrite", action="store_true")
@@ -46,9 +52,7 @@ def main() -> int:
         args.anchor_workbook,
         args.population_order,
         args.output_dir,
-        target_populations=(
-            tuple(args.target_populations) if args.target_populations else None
-        ),
+        target_populations=tuple(args.target_populations),
         source_sheet_name=args.source_sheet_name,
         anchor_sheet_name=args.anchor_sheet_name,
         overwrite=args.overwrite,
@@ -62,4 +66,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

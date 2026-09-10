@@ -20,8 +20,9 @@ sampling. Facilities that share coordinates remain distinct records because a
 shared coordinate does not imply a duplicated facility identifier. The OSRM cache
 can nevertheless reuse coordinate-pair queries for these facilities.
 
-The default nested population levels are 215, 500, 1,000, 2,000, 5,000, 10,000,
-and 18,000 facilities. After the canonical anchor, candidates are ranked
+The registered nested checkpoints are 215, 500, 1,000, 2,000, 5,000, 10,000,
+and 18,000 facilities. The 18,000 level is a registry ceiling, not a solve
+target or feasibility claim. After the canonical anchor, candidates are ranked
 deterministically across state, warehouse type, and observed static-capacity
 quartile. A SHA-256 seeded order resolves ties and makes the selection independent
 of source-row order.
@@ -55,7 +56,8 @@ The experiment is intentionally not a full factorial design.
 3. Run solver-free preflight checks for route coverage, variable count, and memory
    risk.
 4. Solve the deterministic reference configuration while increasing population
-   size. Stop escalation when a documented resource or time criterion is reached.
+   size. Stop escalation when a documented resource criterion is reached or no
+   accepted incumbent is produced within 14,400 seconds.
 5. At accepted population sizes, escalate uncertainty from deterministic to three
    coupled scenarios and then to nine Cartesian scenarios.
 6. Evaluate direct-arc and 15%, 20%, and 25% route-density sensitivity only at
@@ -63,6 +65,16 @@ The experiment is intentionally not a full factorial design.
    policy combination.
 7. At selected computational frontiers, compare 600, 3,600, and 14,400 second time
    limits and report incumbent quality, bound, MIP gap, and phase-specific runtime.
+
+For the reference frontier, a population is classified as computationally solved
+only when the 14,400-second run returns a feasible incumbent with a relative MIP
+gap no greater than 1%, passes material balance, satisfies domestic demand within
+the registered numerical tolerance, allocates all supply, and terminates without a
+numerical or memory failure. A time-limit result with a feasible incumbent but a
+larger gap remains scientifically informative, but it is classified as censored
+rather than solved. The 1% gap is the default frontier criterion and must be stated
+with every reported threshold; sensitivity results may use a different registered
+gap without silently changing the reference definition.
 
 ## Sparse-route interpretation at scale
 
@@ -90,8 +102,8 @@ and repair edge counts, solver and version, time limit, MIP gap, data-read time,
 model-build time, optimization time, peak memory, feasibility-slack use, domestic
 service, material balance, investment decisions, and objective decomposition.
 
-The largest successfully solved instance and the first rejected or resource-limited
-instance jointly define the observed computational frontier. This frontier is an
-empirical property of the tested hardware and configuration, not a universal limit
-of the mathematical formulation.
-
+The largest successfully solved instance and the first rejected, resource-limited,
+or 14,400-second-censored instance jointly bracket the observed computational
+frontier. Reaching 18,000 facilities is neither expected nor required. This frontier
+is an empirical property of the tested hardware and configuration, not a universal
+limit of the mathematical formulation.
