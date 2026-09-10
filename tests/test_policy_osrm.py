@@ -111,7 +111,11 @@ def test_policy_osrm_materialization_rejects_negative_distance(tmp_path: Path):
             }
         ).to_excel(writer, sheet_name="Demanda", index=False)
         pd.DataFrame(
-            {"CDA": ["W1"], "Latitude": [0.5], "Longitude": [0.5]}
+            {
+                "CDA": ["W1", "W2"],
+                "Latitude": [0.5, 0.6],
+                "Longitude": [0.5, 0.6],
+            }
         ).to_excel(writer, sheet_name="Warehouses", index=False)
 
     with pytest.raises(ValueError, match="non-finite or negative distances"):
