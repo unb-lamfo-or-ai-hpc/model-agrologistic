@@ -221,7 +221,8 @@ def test_v020_experiment_profiles_separate_reproduction_and_extension():
         == "one_sink_per_product"
     )
     assert all(
-        run["metadata"]["route_policy"] == "grouped_nearest_edge_fraction"
+        run["metadata"]["route_policy"]
+        == "connectivity_preserving_grouped_edge_fraction"
         for run in policy_runs
     )
     assert all(
