@@ -286,10 +286,13 @@ def build_population_order(
             "population_role",
         ]
     ].merge(order, on=WAREHOUSE_ID, how="left", validate="one_to_one")
+    order["population_role_rank"] = order["population_role"].map(
+        {"existing": 0, "candidate": 1}
+    )
     order = order.sort_values(
-        ["population_role", "candidate_rank", WAREHOUSE_ID],
+        ["population_role_rank", "candidate_rank", WAREHOUSE_ID],
         na_position="first",
-    ).reset_index(drop=True)
+    ).drop(columns="population_role_rank").reset_index(drop=True)
 
     levels = _summarize_levels(prepared, ranked, len(existing), targets)
     coordinate_duplicate_rows = int(
