@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import sqlite3
 from unittest.mock import Mock
 
 import pytest
@@ -159,6 +160,48 @@ def test_malformed_table_response_is_fatal():
         client.get_distance_matrix([(0.0, 0.0)], [(1.0, 1.0)])
 
 
+def test_sub_metre_negative_distance_roundoff_is_clamped_and_audited():
+    client = OSRMClient(
+        request_get=lambda _url, timeout: _response(
+            {
+                "code": "Ok",
+                "distances": [[-0.4]],
+                "durations": [[0.0]],
+                "sources": [{"distance": 0.0}],
+                "destinations": [{"distance": 0.0}],
+            }
+        )
+    )
+
+    result = client.get_distance_matrix_detailed(
+        [(0.0, 0.0)],
+        [(0.0, 0.00001)],
+    )
+
+    assert result.distances_m == [[0.0]]
+    assert result.durations_s == [[0.0]]
+    assert result.sources == [["osrm"]]
+    assert result.negative_distance_normalization_count == 1
+
+
+@pytest.mark.parametrize("distance", [-1.1, float("inf"), float("nan")])
+def test_invalid_osrm_distances_fail_closed(distance):
+    client = OSRMClient(
+        request_get=lambda _url, timeout: _response(
+            {
+                "code": "Ok",
+                "distances": [[distance]],
+                "durations": [[0.0]],
+                "sources": [{"distance": 0.0}],
+                "destinations": [{"distance": 0.0}],
+            }
+        )
+    )
+
+    with pytest.raises(OSRMResponseError, match="OSRM distance"):
+        client.get_distance_matrix([(0.0, 0.0)], [(1.0, 1.0)])
+
+
 def test_cache_requires_immutable_dataset_identity(tmp_path):
     with pytest.raises(ValueError, match="dataset_id"):
         OSRMClient(cache_path=tmp_path / "routes.sqlite")
@@ -201,6 +244,32 @@ def test_complete_cache_hit_avoids_osrm_request(tmp_path):
     assert second.cache_write_count == 0
     assert second.distances_m == [[1234.0]]
     assert second.data_versions == ("brazil-260901-osrm-v6",)
+
+
+def test_legacy_negative_roundoff_cache_record_is_normalized_on_read(tmp_path):
+    cache_path = tmp_path / "routes.sqlite"
+    client = OSRMClient(
+        dataset_id="dataset-a",
+        cache_path=cache_path,
+        request_get=lambda _url, timeout: _response(
+            {
+                "code": "Ok",
+                "distances": [[100.0]],
+                "durations": [[0.0]],
+                "sources": [{"distance": 0.0}],
+                "destinations": [{"distance": 0.0}],
+            }
+        ),
+    )
+    client.get_distance_matrix_detailed([(0.0, 0.0)], [(1.0, 1.0)])
+    with sqlite3.connect(cache_path) as connection:
+        connection.execute("UPDATE osrm_pair_cache SET distance_m = -0.2")
+
+    result = client.get_distance_matrix_detailed([(0.0, 0.0)], [(1.0, 1.0)])
+
+    assert result.distances_m == [[0.0]]
+    assert result.cache_hit_count == 1
+    assert result.negative_distance_normalization_count == 1
 
 
 def test_partial_cache_request_queries_only_missing_pairs(tmp_path):

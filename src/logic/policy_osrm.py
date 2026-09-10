@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 import shutil
 from dataclasses import dataclass
 from datetime import UTC, datetime
@@ -116,8 +117,32 @@ def _validate_distance_table(
             f"OSRM route counts differ from the complete matrix: {observed} "
             f"!= {expected}."
         )
-    if distances["Distancia_km"].isna().any():
-        raise ValueError("OSRM materialization produced missing distances.")
+    numeric_distances = pd.to_numeric(
+        distances["Distancia_km"],
+        errors="coerce",
+    )
+    invalid_distances = numeric_distances.map(
+        lambda value: not math.isfinite(float(value)) or value < 0.0
+    )
+    if invalid_distances.any():
+        sample = distances.loc[
+            invalid_distances,
+            ["Tipo_Arco", "Origem", "Destino", "Distancia_km"],
+        ].head(5)
+        raise ValueError(
+            "OSRM materialization produced non-finite or negative distances. "
+            f"First invalid rows: {sample.to_dict('records')}."
+        )
+    if "Duracao_s" in distances:
+        durations = pd.to_numeric(distances["Duracao_s"], errors="coerce")
+        has_duration = distances["Duracao_s"].notna()
+        invalid_durations = has_duration & durations.map(
+            lambda value: not math.isfinite(float(value)) or value < 0.0
+        )
+        if invalid_durations.any():
+            raise ValueError(
+                "OSRM materialization produced non-finite or negative durations."
+            )
     accepted_sources = {"osrm", "haversine_fallback"}
     invalid_sources = sorted(
         set(distances["Fonte_Distancia"].dropna().astype(str)) - accepted_sources

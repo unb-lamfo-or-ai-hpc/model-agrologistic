@@ -166,6 +166,7 @@ class OSRMMatrixResult:
     cache_hit_count: int = 0
     cache_miss_count: int = 0
     cache_write_count: int = 0
+    negative_distance_normalization_count: int = 0
 
     @property
     def fallback_count(self) -> int:
@@ -191,6 +192,7 @@ class OSRMClient:
         retries: int = 2,
         retry_backoff_seconds: float = 0.25,
         max_snap_distance_m: float = 50_000.0,
+        negative_distance_roundoff_tolerance_m: float = 1.0,
         haversine_fallback_factor: float = 1.3,
         fallback_on_no_route: bool = True,
         dataset_id: str | None = None,
@@ -206,6 +208,14 @@ class OSRMClient:
             raise ValueError("retries cannot be negative.")
         if max_snap_distance_m < 0:
             raise ValueError("max_snap_distance_m cannot be negative.")
+        if (
+            not math.isfinite(negative_distance_roundoff_tolerance_m)
+            or negative_distance_roundoff_tolerance_m < 0
+        ):
+            raise ValueError(
+                "negative_distance_roundoff_tolerance_m must be finite and "
+                "non-negative."
+            )
         if haversine_fallback_factor < 1:
             raise ValueError("haversine_fallback_factor must be at least 1.")
         if cache_path is not None and not str(dataset_id or "").strip():
@@ -221,6 +231,9 @@ class OSRMClient:
         self.retries = retries
         self.retry_backoff_seconds = retry_backoff_seconds
         self.max_snap_distance_m = max_snap_distance_m
+        self.negative_distance_roundoff_tolerance_m = (
+            negative_distance_roundoff_tolerance_m
+        )
         self.haversine_fallback_factor = haversine_fallback_factor
         self.fallback_on_no_route = fallback_on_no_route
         self.dataset_id = str(dataset_id).strip() if dataset_id else None
@@ -280,6 +293,7 @@ class OSRMClient:
         cache_hit_count = 0
         cache_miss_count = 0
         cache_write_count = 0
+        negative_distance_normalization_count = 0
         cache_keys: dict[tuple[int, int], tuple[str, str]] = {}
         missing_columns_by_row: dict[int, tuple[int, ...]] = {}
 
@@ -306,8 +320,16 @@ class OSRMClient:
                         missing.append(column)
                         cache_miss_count += 1
                         continue
-                    distances[row][column] = record.distance_m
-                    durations[row][column] = record.duration_s
+                    normalized_distance, was_normalized = (
+                        self._normalize_osrm_distance(record.distance_m)
+                    )
+                    distances[row][column] = normalized_distance
+                    durations[row][column] = self._validate_nonnegative_measure(
+                        record.duration_s,
+                        name="OSRM cached duration",
+                        allow_none=True,
+                    )
+                    negative_distance_normalization_count += int(was_normalized)
                     sources[row][column] = record.source
                     reasons[row][column] = record.fallback_reason
                     if record.data_version:
@@ -350,7 +372,7 @@ class OSRMClient:
                     )
                     if data_version:
                         data_versions.add(data_version)
-                    self._apply_table_chunk(
+                    negative_distance_normalization_count += self._apply_table_chunk(
                         payload=payload,
                         origins=origin_chunk,
                         destinations=destination_chunk,
@@ -414,6 +436,9 @@ class OSRMClient:
             cache_hit_count=cache_hit_count,
             cache_miss_count=cache_miss_count,
             cache_write_count=cache_write_count,
+            negative_distance_normalization_count=(
+                negative_distance_normalization_count
+            ),
         )
 
     def _cache_identity(
@@ -485,13 +510,22 @@ class OSRMClient:
 
         route = routes[0]
         try:
+            distance, distance_was_normalized = self._normalize_osrm_distance(
+                route["distance"]
+            )
+            duration = self._validate_nonnegative_measure(
+                route["duration"],
+                name="OSRM route duration",
+                allow_none=False,
+            )
             return {
                 "geometry": route["geometry"],
-                "distance": float(route["distance"]),
-                "duration": float(route["duration"]),
+                "distance": distance,
+                "duration": duration,
                 "type": "osrm",
                 "fallback_reason": None,
                 "data_version": payload.get("data_version"),
+                "negative_distance_normalized": distance_was_normalized,
             }
         except (KeyError, TypeError, ValueError) as exc:
             raise OSRMResponseError(
@@ -534,7 +568,8 @@ class OSRMClient:
         durations: list[list[float | None]],
         sources: list[list[str | None]],
         reasons: list[list[str | None]],
-    ) -> None:
+    ) -> int:
+        negative_distance_normalization_count = 0
         if payload.get("code") == "NoTable":
             for row, origin in enumerate(origins):
                 for column, destination in enumerate(destinations):
@@ -549,7 +584,7 @@ class OSRMClient:
                         sources,
                         reasons,
                     )
-            return
+            return negative_distance_normalization_count
 
         raw_distances = payload.get("distances")
         raw_durations = payload.get("durations")
@@ -604,18 +639,27 @@ class OSRMClient:
                     continue
 
                 try:
-                    distances[target_row][target_column] = float(
-                        raw_distances[row][column]
+                    normalized_distance, was_normalized = (
+                        self._normalize_osrm_distance(
+                            raw_distances[row][column]
+                        )
                     )
+                    distances[target_row][target_column] = normalized_distance
+                    negative_distance_normalization_count += int(was_normalized)
                     raw_duration = raw_durations[row][column]
                     durations[target_row][target_column] = (
-                        None if raw_duration is None else float(raw_duration)
+                        self._validate_nonnegative_measure(
+                            raw_duration,
+                            name="OSRM Table duration",
+                            allow_none=True,
+                        )
                     )
                 except (TypeError, ValueError) as exc:
                     raise OSRMResponseError(
                         "OSRM Table response contains non-numeric values."
                     ) from exc
                 sources[target_row][target_column] = "osrm"
+        return negative_distance_normalization_count
 
     def _assign_fallback(
         self,
@@ -698,9 +742,51 @@ class OSRMClient:
                 raise OSRMResponseError(
                     "OSRM waypoint snap distance must be numeric."
                 ) from exc
+            if not math.isfinite(snap_distance) or snap_distance < 0:
+                raise OSRMResponseError(
+                    "OSRM waypoint snap distance must be finite and non-negative."
+                )
             if snap_distance > self.max_snap_distance_m:
                 bad.add(index)
         return bad
+
+    def _normalize_osrm_distance(self, value: Any) -> tuple[float, bool]:
+        """Clamp only documented sub-metre OSRM roundoff to physical zero."""
+
+        distance = self._validate_nonnegative_measure(
+            value,
+            name="OSRM distance",
+            allow_none=False,
+            allow_negative_roundoff=True,
+        )
+        if distance < 0:
+            return 0.0, True
+        return distance, False
+
+    def _validate_nonnegative_measure(
+        self,
+        value: Any,
+        *,
+        name: str,
+        allow_none: bool,
+        allow_negative_roundoff: bool = False,
+    ) -> float | None:
+        if value is None and allow_none:
+            return None
+        try:
+            measure = float(value)
+        except (TypeError, ValueError) as exc:
+            raise OSRMResponseError(f"{name} must be numeric.") from exc
+        if not math.isfinite(measure):
+            raise OSRMResponseError(f"{name} must be finite.")
+        if measure < 0:
+            within_roundoff = (
+                allow_negative_roundoff
+                and measure >= -self.negative_distance_roundoff_tolerance_m
+            )
+            if not within_roundoff:
+                raise OSRMResponseError(f"{name} must be non-negative.")
+        return measure
 
     @staticmethod
     def _matrix_shape_matches(

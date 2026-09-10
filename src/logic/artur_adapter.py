@@ -588,6 +588,7 @@ def _build_osrm_distances(
     cache_hit_count = 0
     cache_miss_count = 0
     cache_write_count = 0
+    negative_distance_normalization_count = 0
 
     for arc_type, source_nodes, destination_nodes, exclude_self in requests:
         result = client.get_distance_matrix_detailed(
@@ -599,6 +600,9 @@ def _build_osrm_distances(
         cache_hit_count += result.cache_hit_count
         cache_miss_count += result.cache_miss_count
         cache_write_count += result.cache_write_count
+        negative_distance_normalization_count += (
+            result.negative_distance_normalization_count
+        )
         frames.append(
             _distance_rows_from_matrix(
                 arc_type,
@@ -621,6 +625,9 @@ def _build_osrm_distances(
         cache_hit_count=cache_hit_count,
         cache_miss_count=cache_miss_count,
         cache_write_count=cache_write_count,
+        negative_distance_normalization_count=(
+            negative_distance_normalization_count
+        ),
     )
     return distances, summary
 
@@ -716,6 +723,7 @@ def _summarize_distance_provenance(
     cache_hit_count: int,
     cache_miss_count: int,
     cache_write_count: int,
+    negative_distance_normalization_count: int = 0,
 ) -> dict[str, Any]:
     source_counts = {
         str(key): int(value)
@@ -747,6 +755,9 @@ def _summarize_distance_provenance(
         "osrm_cache_hit_count": cache_hit_count,
         "osrm_cache_miss_count": cache_miss_count,
         "osrm_cache_write_count": cache_write_count,
+        "osrm_negative_distance_normalization_count": (
+            negative_distance_normalization_count
+        ),
         "route_count": int(len(distances)),
         "route_count_by_arc_type": arc_counts,
         "route_count_by_source": source_counts,
