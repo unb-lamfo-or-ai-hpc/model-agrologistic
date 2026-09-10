@@ -1,12 +1,21 @@
 #!/bin/bash
-#SBATCH --job-name=osrm-policy-215
+#SBATCH --job-name=osrm-policy
 #SBATCH --partition=intel-256
 #SBATCH --cpus-per-task=16
 #SBATCH --mem=192G
 #SBATCH --time=12:00:00
-#SBATCH --output=slurm-osrm-policy-215-%j.out
+#SBATCH --output=slurm-osrm-policy-%j.out
 
 set -eu
+
+TARGET_POPULATION="${TARGET_POPULATION:-}"
+case "$TARGET_POPULATION" in
+  215|500) ;;
+  *)
+    printf 'TARGET_POPULATION must be explicitly set to 215 or 500.\n' >&2
+    false
+    ;;
+esac
 
 PROJECT_ROOT="${PROJECT_ROOT:-/home/vrrcelestino/model-agrologistic}"
 PYTHON="${PYTHON:-/home/vrrcelestino/venv313/bin/python}"
@@ -26,14 +35,15 @@ EXPECTED_PROFILE_SHA256="9809a111a8fc8c465c2d6ef3208938a2a7c35fab0d3cda407ffa7ff
 OSRM_DATA_VERSION="brazil-260901-osrm-v6.0.0-driving-mld"
 OSRM_DATASET_ID="pbf:brazil-260901@sha256:${EXPECTED_PBF_SHA256};osrm:v6.0.0;oci:sha256:5116c66d814485be70bc7b239be890e4d36f62b1025a2f1c8139c20fa2697309;sif:sha256:${EXPECTED_SIF_SHA256};profile:driving@sha256:${EXPECTED_PROFILE_SHA256};algorithm:MLD"
 
-INPUT_WORKBOOK="$PROJECT_ROOT/data/processed/policy_population_v020/warehouses_215/model_input.xlsx"
-FINAL_OUTPUT="$PROJECT_ROOT/data/processed/policy_population_v020_osrm/warehouses_215"
-AUDIT_DIR="$OSRM_ROOT/audits/policy-215-job-${SLURM_JOB_ID}"
+INPUT_WORKBOOK="$PROJECT_ROOT/data/processed/policy_population_v020/warehouses_${TARGET_POPULATION}/model_input.xlsx"
+FINAL_OUTPUT="$PROJECT_ROOT/data/processed/policy_population_v020_osrm/warehouses_${TARGET_POPULATION}"
+AUDIT_DIR="$OSRM_ROOT/audits/policy-${TARGET_POPULATION}-job-${SLURM_JOB_ID}"
 
 mkdir -p "$AUDIT_DIR" "$(dirname "$OSRM_CACHE_PATH")"
 
 printf 'job_id=%s\n' "$SLURM_JOB_ID"
 printf 'host=%s\n' "$(hostname)"
+printf 'target_population=%s\n' "$TARGET_POPULATION"
 printf 'source_commit=%s\n' "${SOURCE_COMMIT:-not-recorded}"
 printf 'cpus=%s\n' "$SLURM_CPUS_PER_TASK"
 printf '%s\n' "${SOURCE_COMMIT:-not-recorded}" \
@@ -97,7 +107,7 @@ if [ "$AVAILABLE_KB" -lt "$MINIMUM_KB" ]; then
   false
 fi
 
-WORK_DIR="$(mktemp -d "/tmp/osrm-policy-215-${SLURM_JOB_ID}-XXXXXX")"
+WORK_DIR="$(mktemp -d "/tmp/osrm-policy-${TARGET_POPULATION}-${SLURM_JOB_ID}-XXXXXX")"
 OSRM_PID=""
 
 cleanup()
@@ -108,7 +118,7 @@ cleanup()
   fi
 
   case "$WORK_DIR" in
-    /tmp/osrm-policy-215-"${SLURM_JOB_ID}"-*)
+    /tmp/osrm-policy-"${TARGET_POPULATION}"-"${SLURM_JOB_ID}"-*)
       rm -rf -- "$WORK_DIR"
       ;;
     *)
@@ -230,6 +240,8 @@ test -s "$FINAL_OUTPUT/osrm_materialization_audit.json"
 
 "$PYTHON" - \
   "$FINAL_OUTPUT/osrm_materialization_audit.json" \
+  "$INPUT_WORKBOOK" \
+  "$TARGET_POPULATION" \
   "$OSRM_DATASET_ID" \
   "$OSRM_DATA_VERSION" \
   > "$AUDIT_DIR/policy-materialization-check.json" <<'PY'
@@ -237,11 +249,32 @@ import json
 import sys
 from pathlib import Path
 
+import pandas as pd
+
 audit = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
-expected_dataset_id = sys.argv[2]
-expected_data_version = sys.argv[3]
+input_workbook = Path(sys.argv[2])
+target_population = int(sys.argv[3])
+expected_dataset_id = sys.argv[4]
+expected_data_version = sys.argv[5]
 provenance = audit["distance_provenance"]
-expected_counts = {"OD": 7_955, "DC": 7_955, "DD": 46_010, "OC": 1_369}
+
+sheets = pd.read_excel(
+    input_workbook,
+    sheet_name=["Oferta", "Demanda", "Warehouses"],
+    engine="openpyxl",
+)
+origin_count = sheets["Oferta"]["Cidade"].dropna().astype(str).nunique()
+warehouse_count = sheets["Warehouses"]["CDA"].dropna().astype(str).nunique()
+customer_count = len(
+    sheets["Demanda"][["Cidade", "Tipo_Demanda"]].drop_duplicates()
+)
+assert warehouse_count == target_population
+expected_counts = {
+    "OD": origin_count * warehouse_count,
+    "DC": warehouse_count * customer_count,
+    "DD": warehouse_count * (warehouse_count - 1),
+    "OC": origin_count * customer_count,
+}
 accepted_sources = {"osrm", "haversine_fallback"}
 accepted_fallbacks = {
     "osrm_no_route",
@@ -259,6 +292,7 @@ assert set(provenance["fallback_count_by_reason"]) <= accepted_fallbacks
 
 summary = {
     "status": "accepted",
+    "target_population": target_population,
     "route_count": provenance["route_count"],
     "route_count_by_arc_type": provenance["route_count_by_arc_type"],
     "route_count_by_source": provenance["route_count_by_source"],
@@ -304,4 +338,5 @@ du -sh "$FINAL_OUTPUT" "$OSRM_CACHE_PATH" \
   | tee "$AUDIT_DIR/persistent-output-size.txt"
 df -h /tmp | tee "$AUDIT_DIR/df-before-cleanup.txt"
 
-printf 'OSRM POLICY 215 MATERIALIZATION GATE: READY FOR REVIEW\n'
+printf 'OSRM POLICY %s MATERIALIZATION GATE: READY FOR REVIEW\n' \
+  "$TARGET_POPULATION"
