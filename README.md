@@ -1,5 +1,7 @@
 # Model Agrologistic
 
+Research project developed within an international cooperation between the University of Brasília (UnB) and National University of the Littoral, Argentina.
+
 Research software for deterministic and two-stage stochastic planning of
 agricultural logistics networks.
 
