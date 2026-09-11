@@ -123,6 +123,13 @@ class ExperimentRunSummary:
     name: str
     status: str
     objective_policy: str
+    lexicographic_overall_status: str | None
+    lexicographic_completed_stage_count: int | None
+    service_target_status: str | None
+    service_certification_status: str | None
+    service_stage_status: str | None
+    capacity_stage_status: str | None
+    economic_stage_status: str | None
     comparison_group: str | None
     campaign_gate: str | None
     scenario_count: int | None
@@ -810,6 +817,10 @@ def _export_run_artifacts(
     _write_csv(run_dir / "unmet_demand.csv", result.unmet_demand)
     _write_csv(run_dir / "emergency_capacity.csv", result.emergency_capacity)
     _write_csv(
+        run_dir / "lexicographic_stages.csv",
+        result.metadata.get("lexicographic_stages", []),
+    )
+    _write_csv(
         run_dir / "scenario_performance.csv",
         _scenario_performance_records(result),
     )
@@ -898,6 +909,19 @@ def _build_summary(
         name=spec.name,
         status=result.status,
         objective_policy=spec.model.objective_policy,
+        lexicographic_overall_status=result.metadata.get(
+            "lexicographic_overall_status"
+        ),
+        lexicographic_completed_stage_count=result.metadata.get(
+            "lexicographic_completed_stage_count"
+        ),
+        service_target_status=result.metadata.get("service_target_status"),
+        service_certification_status=result.metadata.get(
+            "service_certification_status"
+        ),
+        service_stage_status=result.metadata.get("service_stage_status"),
+        capacity_stage_status=result.metadata.get("capacity_stage_status"),
+        economic_stage_status=result.metadata.get("economic_stage_status"),
         comparison_group=_metadata_text(spec, "comparison_group"),
         campaign_gate=_metadata_text(spec, "campaign_gate"),
         scenario_count=(
@@ -994,6 +1018,13 @@ def _export_failed_run(
         name=spec.name,
         status="error",
         objective_policy=spec.model.objective_policy,
+        lexicographic_overall_status=None,
+        lexicographic_completed_stage_count=None,
+        service_target_status=None,
+        service_certification_status=None,
+        service_stage_status=None,
+        capacity_stage_status=None,
+        economic_stage_status=None,
         comparison_group=_metadata_text(spec, "comparison_group"),
         campaign_gate=_metadata_text(spec, "campaign_gate"),
         scenario_count=_configured_scenario_count(spec),
