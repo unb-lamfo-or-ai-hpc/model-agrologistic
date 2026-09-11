@@ -125,6 +125,28 @@ def test_lexicographic_policy_serves_demand_before_minimizing_cost():
         "emergency_capacity",
         "economic_cost",
     ]
+    assert lexicographic_result.metadata["lexicographic_overall_status"] == "complete"
+    assert (
+        lexicographic_result.metadata["lexicographic_completed_stage_count"]
+        == 3
+    )
+    assert lexicographic_result.metadata["service_target_status"] == "attained"
+    assert (
+        lexicographic_result.metadata["service_certification_status"]
+        == "certified_zero_within_tolerance"
+    )
+    assert [
+        stage["stage_role"]
+        for stage in lexicographic_result.metadata["lexicographic_stages"]
+    ] == [
+        "unmet_demand",
+        "emergency_capacity",
+        "economic_cost",
+    ]
+    assert all(
+        stage["status"] == "OPTIMAL"
+        for stage in lexicographic_result.metadata["lexicographic_stages"]
+    )
     assert lexicographic_result.metrics["objective_values"][
         "economic_cost"
     ] > penalty_result.metrics["objective_values"]["economic_cost"]
