@@ -121,8 +121,8 @@ def test_lexicographic_policy_serves_demand_before_minimizing_cost():
     assert lexicographic_result.objective_value == pytest.approx(0.0)
     assert lexicographic_result.metadata["objective_policy"] == "lexicographic"
     assert lexicographic_result.metadata["objective_priority_order"] == [
-        "emergency_capacity",
         "unmet_demand",
+        "emergency_capacity",
         "economic_cost",
     ]
     assert lexicographic_result.metrics["objective_values"][
