@@ -18,7 +18,7 @@ defaults:
       NumericFocus: 1
   model:
     mode: sto
-    objective_policy: penalty
+    objective_policy: lexicographic
     interhub_factor: 1.0
     use_warehouse_transshipment: true
     use_direct_origin_customer: true
