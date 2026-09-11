@@ -772,22 +772,22 @@ def _set_objective_policy(
     model.ModelSense = GRB.MINIMIZE
     tolerance = config.feasibility_tolerance
     model.setObjectiveN(
-        emergency_quantity,
+        unmet_quantity,
         index=0,
         priority=3,
         weight=1.0,
         abstol=tolerance,
         reltol=0.0,
-        name="minimize_emergency_capacity",
+        name="minimize_unmet_demand",
     )
     model.setObjectiveN(
-        unmet_quantity,
+        emergency_quantity,
         index=1,
         priority=2,
         weight=1.0,
         abstol=tolerance,
         reltol=0.0,
-        name="minimize_unmet_demand",
+        name="minimize_emergency_capacity",
     )
     model.setObjectiveN(
         economic_cost,
@@ -1416,8 +1416,8 @@ def _extract_deterministic_result(
                 ["penalized_cost"]
                 if model_config.objective_policy == "penalty"
                 else [
-                    "emergency_capacity",
                     "unmet_demand",
+                    "emergency_capacity",
                     "economic_cost",
                 ]
             ),
