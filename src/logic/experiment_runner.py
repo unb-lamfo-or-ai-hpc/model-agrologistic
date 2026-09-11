@@ -27,6 +27,7 @@ from src.logic.metrics import attach_storage_metrics
 from src.logic.model_audit import build_model_audit
 from src.logic.model_config import ModelConfig, SolverConfig
 from src.logic.model_data import ModelData
+from src.logic.objective_diagnostics import stage_degradation_records
 from src.logic.optimization import (
     EVPIVSSResult,
     OptimizationResult,
@@ -34,6 +35,8 @@ from src.logic.optimization import (
     solve_model,
 )
 from src.logic.route_filtering import select_routes
+from src.logic.run_integrity import implementation_identity, verify_completion, write_completion
+from src.logic.solution_validation import validate_solution
 
 MANIFEST_VERSION = 1
 SAFE_RUN_NAME = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
@@ -174,6 +177,9 @@ class ExperimentRunSummary:
     slurm_array_task_id: str | None = None
     error_type: str | None = None
     error_message: str | None = None
+    independent_validation_status: str | None = None
+    end_to_end_seconds: float | None = None
+    postoptimality_seconds: float | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -263,8 +269,11 @@ def run_experiment(
     """Execute one experiment and atomically export its structured artifacts."""
 
     started = datetime.now(UTC)
+    wall_started = perf_counter()
     run_dir = Path(output_root).resolve() / spec.name
     run_dir.mkdir(parents=True, exist_ok=True)
+    identity = _checkpoint_identity(spec)
+    _write_json(run_dir / "run_completion.json", {"status": "running", "run_identity": identity})
 
     progress(f"[{spec.name}] loading {spec.workbook}")
     data_read_started_at = perf_counter()
@@ -284,6 +293,7 @@ def run_experiment(
     _enforce_size_limit(spec, estimate)
 
     evpi_result: EVPIVSSResult | None = None
+    solve_started = perf_counter()
     progress(f"[{spec.name}] building and solving model")
     if spec.calculate_evpi_vss:
         evpi_result = evpi_calculator(
@@ -305,6 +315,26 @@ def run_experiment(
 
     timings = result.metadata.setdefault("timings", {})
     timings["data_read_seconds"] = data_read_seconds
+    timings["solve_sequence_wall_seconds"] = perf_counter() - solve_started
+    timings["postoptimality_seconds"] = (
+        evpi_result.metadata.get("postoptimality_seconds", 0.0) if evpi_result else 0.0
+    )
+    result.metadata["run_identity"] = identity
+    result.metadata["implementation_identity"] = implementation_identity()
+    result.metadata["mathematical_contract"] = data.metadata["mathematical_contract"]
+    result.metadata["lexicographic_stages"] = stage_degradation_records(
+        result.metadata.get("lexicographic_stages", []),
+        result.metrics.get("objective_values", {}),
+        mip_gap=float(spec.solver.solver_options.get("MIPGap", spec.solver.mip_gap)),
+        mip_gap_abs=float(spec.solver.solver_options.get("MIPGapAbs", 1e-10)),
+        objective_abs_tol=spec.model.feasibility_tolerance,
+    )
+
+    validation_started = perf_counter()
+    independent = validate_solution(data, spec.model, result)
+    timings["independent_validation_seconds"] = perf_counter() - validation_started
+    result.metadata["independent_validation_status"] = independent["status"]
+    _write_json(run_dir / "independent_validation.json", independent)
 
     if result.has_solution:
         progress(f"[{spec.name}] calculating DynCap and Turnover")
@@ -312,6 +342,7 @@ def run_experiment(
 
     finished = datetime.now(UTC)
     progress(f"[{spec.name}] exporting structured artifacts")
+    export_started = perf_counter()
     audit = _export_run_artifacts(
         spec=spec,
         data=data,
@@ -321,6 +352,15 @@ def run_experiment(
         started=started,
         finished=finished,
     )
+    timings["artifact_export_seconds"] = perf_counter() - export_started
+    timings["end_to_end_seconds"] = perf_counter() - wall_started
+    finished = datetime.now(UTC)
+    # Refresh timing metadata after the bulk export. Final marker bookkeeping
+    # is excluded from end_to_end_seconds and never counted as optimization.
+    payload = json.loads((run_dir / "result.json").read_text(encoding="utf-8"))
+    payload["result"]["metadata"] = result.metadata
+    payload["execution"]["finished_at_utc"] = finished.isoformat()
+    _write_json(run_dir / "result.json", payload)
     summary = _build_summary(
         spec=spec,
         result=result,
@@ -330,7 +370,21 @@ def run_experiment(
         finished=finished,
         audit=audit,
     )
+    summary.independent_validation_status = independent["status"]
+    summary.end_to_end_seconds = timings["end_to_end_seconds"]
+    summary.postoptimality_seconds = timings["postoptimality_seconds"]
     _write_json(run_dir / "run_summary.json", asdict(summary))
+    write_completion(run_dir, identity, [
+        run_dir / name for name in (
+            "result.json", "run_summary.json", "independent_validation.json",
+            "model_audit.json", "flows.csv", "inventories.csv", "warehouse_decisions.csv",
+            "unmet_demand.csv", "emergency_capacity.csv", "lexicographic_stages.csv",
+            "preflight.json", "scenario_performance.csv", "material_balance_by_scenario.csv",
+            "capacity_gap_by_scenario.csv", "investment_saturation.csv",
+            "emergency_capacity_daily.csv",
+            "evpi_vss_decomposition.csv", "storage_by_warehouse.csv", "storage_by_scenario.csv",
+        )
+    ] + ([run_dir / "value_analysis_timings.csv"] if evpi_result else []))
     progress(f"[{spec.name}] finished with status={summary.status}")
     return summary
 
@@ -401,10 +455,23 @@ def audit_existing_run(
         }
     )
 
+    saved_identity = result.metadata.get("run_identity")
+    if saved_identity and saved_identity != _checkpoint_identity(spec):
+        raise ValueError("Existing result uses a different implementation or execution contract.")
+
     progress(f"[{spec.name}] loading {spec.workbook}")
     data = loader(spec.workbook, spec.loader)
+    if saved_identity:
+        data = prepare_model_data(data, spec.model)
     audit_path = run_dir / "model_audit.json"
     _write_json(audit_path, build_model_audit(data, spec.model, result))
+    retrospective = validate_solution(prepare_model_data(data, spec.model), spec.model, result)
+    retrospective["qualification"] = (
+        "Retrospective check against the selected current contract; original solve provenance "
+        "is retained. This does not create a current-run completion certificate."
+    )
+    retrospective["original_result_sha256"] = _file_sha256(result_path)
+    _write_json(run_dir / "independent_validation_reaudit.json", retrospective)
     progress(f"[{spec.name}] audit -> {audit_path}")
     return audit_path
 
@@ -547,12 +614,39 @@ def inspect_manifest(
     ]
 
 
-def aggregate_experiment_summaries(output_root: str | Path) -> Path:
+def _aggregation_eligibility(root, manifest):
+    if manifest is None:
+        # Kept for retrospective API consumers; not current-contract certification.
+        return None
+    accepted, records = set(), []
+    expected = {spec.name: spec for spec in manifest.experiments}
+    for path in sorted(root.glob("*/run_summary.json")):
+        name = path.parent.name
+        if name not in expected:
+            valid, reason = False, "not_in_selected_manifest"
+        else:
+            valid, reason = verify_completion(path.parent, _checkpoint_identity(expected[name]))
+        records.append({"name": name, "included": valid, "reason": reason})
+        if valid:
+            accepted.add(name)
+    _write_json(root / "aggregation_audit.json", {
+        "schema_version": 1, "mode": "current_contract_only", "runs": records,
+        "excluded_count": sum(not row["included"] for row in records),
+    })
+    return accepted
+
+
+def aggregate_experiment_summaries(
+    output_root: str | Path, *, manifest: ExperimentManifest | None = None
+) -> Path:
     """Combine per-run summaries after local or Slurm-array execution."""
 
     root = Path(output_root).resolve()
     records: list[dict[str, Any]] = []
+    eligibility = _aggregation_eligibility(root, manifest)
     for path in sorted(root.glob("*/run_summary.json")):
+        if eligibility is not None and path.parent.name not in eligibility:
+            continue
         payload = json.loads(path.read_text(encoding="utf-8"))
         if isinstance(payload, dict):
             records.append(payload)
@@ -563,12 +657,16 @@ def aggregate_experiment_summaries(output_root: str | Path) -> Path:
 
 def aggregate_service_policy_comparisons(
     output_root: str | Path,
+    *, manifest: ExperimentManifest | None = None,
 ) -> Path | None:
     """Export paired penalty-versus-lexicographic campaign diagnostics."""
 
     root = Path(output_root).resolve()
     groups: dict[str, dict[str, dict[str, Any]]] = {}
+    eligibility = _aggregation_eligibility(root, manifest)
     for path in sorted(root.glob("*/run_summary.json")):
+        if eligibility is not None and path.parent.name not in eligibility:
+            continue
         payload = json.loads(path.read_text(encoding="utf-8"))
         if not isinstance(payload, dict):
             continue
@@ -853,6 +951,11 @@ def _export_run_artifacts(
         run_dir / "evpi_vss_decomposition.csv",
         _evpi_vss_decomposition_records(evpi_result),
     )
+    if evpi_result:
+        _write_csv(run_dir / "value_analysis_timings.csv", [
+            {**row, "current_execution": json.dumps(row.get("current_execution", {}))}
+            for row in evpi_result.metadata.get("component_timings", [])
+        ])
 
     storage = result.metrics.get("storage", {})
     _write_csv(run_dir / "storage_by_warehouse.csv", storage.get("warehouse_metrics", []))
@@ -1699,6 +1802,12 @@ def _execution_context() -> dict[str, Any]:
         "slurm_job_id": os.environ.get("SLURM_JOB_ID"),
         "slurm_array_job_id": os.environ.get("SLURM_ARRAY_JOB_ID"),
         "slurm_array_task_id": os.environ.get("SLURM_ARRAY_TASK_ID"),
+        "slurm_partition": os.environ.get("SLURM_JOB_PARTITION"),
+        "slurm_cpus_per_task": os.environ.get("SLURM_CPUS_PER_TASK"),
+        "slurm_mem_per_node_mb": os.environ.get("SLURM_MEM_PER_NODE"),
+        "source_commit_declared": os.environ.get("AGROLOGISTIC_SOURCE_COMMIT"),
+        "source_commit_authority": "submission_environment_not_independently_verified",
+        "memory_measurement_scope": "process_lifetime_high_water_mark",
     }
 
 
@@ -1724,6 +1833,7 @@ def _checkpoint_identity(spec: ExperimentSpec) -> str:
 
     payload = _spec_payload(spec)
     payload.pop("resume_evpi_vss", None)
+    payload["implementation"] = implementation_identity()["sha256"]
     encoded = json.dumps(
         payload,
         ensure_ascii=False,
@@ -1755,4 +1865,3 @@ def _mapping(value: Any, label: str) -> dict[str, Any]:
 def _resolve_path(value: Any, base_dir: Path) -> Path:
     path = Path(str(value))
     return path.resolve() if path.is_absolute() else (base_dir / path).resolve()
-

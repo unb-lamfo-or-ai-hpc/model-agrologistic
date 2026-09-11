@@ -373,7 +373,8 @@ def solve_stochastic_model_gurobipy(
             metadata=common_metadata,
         )
 
-    return _extract_stochastic_result(
+    extraction_started = perf_counter()
+    result = _extract_stochastic_result(
         data=data,
         model_config=model_config,
         solver_config=solver_config,
@@ -400,6 +401,9 @@ def solve_stochastic_model_gurobipy(
         scenario_costs=scenario_costs,
         metadata=common_metadata,
     )
+    result.metadata["timings"]["result_extraction_seconds"] = perf_counter() - extraction_started
+    result.metadata["timings"]["solver_reported_runtime_seconds"] = float(model.Runtime)
+    return result
 
 
 def _build_investment_costs(

@@ -3,10 +3,12 @@
 from __future__ import annotations
 
 import json
+import math
 from collections.abc import Callable
 from dataclasses import fields, replace
 from datetime import UTC, datetime
 from pathlib import Path
+from time import perf_counter
 from typing import Any
 
 from src.logic.model_config import ModelConfig, SolverConfig
@@ -16,6 +18,8 @@ from src.logic.optimization_gurobipy import _solve_deterministic_core
 from src.logic.optimization_gurobipy_stochastic import (
     solve_stochastic_model_gurobipy,
 )
+from src.logic.run_integrity import implementation_identity, scientific_identity
+from src.logic.solution_validation import validate_solution
 
 
 def calculate_evpi_vss_gurobipy(
@@ -40,6 +44,11 @@ def calculate_evpi_vss_gurobipy(
     if model_config.objective_policy != "penalty":
         raise ValueError("Classical EVPI/VSS requires the common scalar penalty objective.")
     data = prepare_model_data(data, model_config)
+    if checkpoint_dir is not None:
+        checkpoint_identity = scientific_identity({
+            "caller": checkpoint_identity, "data": data, "model": model_config,
+            "solver": solver_config, "implementation": implementation_identity()["sha256"],
+        })
     report = progress or (lambda _message: None)
     store = _CheckpointStore.create(
         checkpoint_dir,
@@ -60,6 +69,7 @@ def calculate_evpi_vss_gurobipy(
         report=report,
     )
     recourse_problem = _require_objective(recourse_result, "recourse problem")
+    postoptimality_started = perf_counter()
 
     deterministic_config = replace(model_config, mode="det")
     expected_data = _expected_value_data(data)
@@ -118,6 +128,27 @@ def calculate_evpi_vss_gurobipy(
         wait_and_see += data.scenario_prob[scenario] * scenario_objective
 
     raw_evpi = recourse_problem - wait_and_see
+    component_validation = {
+        "RP": validate_solution(data, model_config, recourse_result),
+        "EV": validate_solution(expected_data, deterministic_config, expected_value_result),
+        "EEV": validate_solution(data, model_config, expected_result),
+        **{
+            "WS:" + scenario: validate_solution(
+                _single_scenario_data(data, scenario), deterministic_config, item
+            ) for scenario, item in wait_and_see_results.items()
+        },
+    }
+    first_stage_fields = (
+        "open", "candidate_capacity", "expand", "expansion_capacity", "bulkify", "bulk_capacity"
+    )
+    ev_decisions = {r["warehouse"]: r for r in expected_value_result.warehouse_decisions}
+    eev_fixed_decisions_valid = all(
+        row["warehouse"] in ev_decisions and all(
+            math.isclose(float(row.get(f, math.nan)),
+                         float(ev_decisions[row["warehouse"]].get(f, math.nan)),
+                         rel_tol=1e-8, abs_tol=1e-5) for f in first_stage_fields
+        ) for row in expected_result.warehouse_decisions
+    ) and len(expected_result.warehouse_decisions) == len(data.warehouses)
     raw_vss = expected_result_of_ev_solution - recourse_problem
     tolerance = model_config.evpi_vss_tolerance
     evpi = _zero_within_tolerance(raw_evpi, tolerance)
@@ -187,6 +218,18 @@ def calculate_evpi_vss_gurobipy(
         expected_value_problem_result=expected_value_result,
         expected_result_result=expected_result,
         metadata={
+            "component_validation": component_validation,
+            "eev_fixed_decisions_valid": eev_fixed_decisions_valid,
+            "postoptimality_seconds": perf_counter() - postoptimality_started,
+            "component_timings": [
+                {"component": name, **item.metadata.get("timings", {}),
+                 "current_execution": item.metadata.get("component_execution", {})}
+                for name, item in [
+                    ("RP", recourse_result), ("EV", expected_value_result),
+                    ("EEV", expected_result),
+                    *[("WS:" + scenario, item) for scenario, item in wait_and_see_results.items()],
+                ]
+            ],
             "formulation": "risk_neutral_two_stage",
             "sense": "minimize",
             "evpi_formula": "RP - WS",
@@ -227,17 +270,24 @@ def _solve_or_restore(
     store: _CheckpointStore | None,
     report: Callable[[str], None],
 ) -> OptimizationResult:
+    started = perf_counter()
     if store:
         restored = store.load(key)
         if restored is not None:
             report(f"[EVPI/VSS] restored {label} from checkpoint")
             store.complete(key, label, restored=True)
+            restored.metadata["component_execution"] = {
+                "source": "restored", "wall_seconds": perf_counter() - started,
+            }
             return restored
         store.start(key, label)
 
     report(f"[EVPI/VSS] solving {label}")
     result = solve()
     _require_objective(result, label)
+    result.metadata["component_execution"] = {
+        "source": "solved", "wall_seconds": perf_counter() - started,
+    }
     if store:
         store.save(key, result)
         store.complete(key, label, restored=False)
@@ -497,6 +547,10 @@ def _solver_objective_interval(
 
     objective_value = float(objective)
     bound_value = float(bound)
+    if not math.isfinite(objective_value) or not math.isfinite(bound_value):
+        return None
+    if bound_value > objective_value + 1e-6 + 1e-12 * abs(objective_value):
+        raise ValueError("A minimization bound exceeds its incumbent; interval is invalid.")
     return {
         "lower_bound": min(bound_value, objective_value),
         "upper_bound": max(bound_value, objective_value),

@@ -100,6 +100,9 @@ def test_reception_slack_is_period_overflow_in_both_backends(days, expected, mod
     )
     assert overflow == pytest.approx(expected, abs=1e-5)
     assert overflow / days == pytest.approx(expected / days, abs=1e-5)
+    from src.logic.solution_validation import validate_solution
+    audit = validate_solution(prepare_model_data(data, config), config, result)
+    assert audit["status"] == "accepted", audit["failure_samples"]
 
 
 def test_shared_and_separate_slacks_are_not_cost_equivalent():

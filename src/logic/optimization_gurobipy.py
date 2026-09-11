@@ -11,7 +11,7 @@ Current implementation:
 - existing and candidate warehouse capacities;
 - candidate opening and scalable/fixed candidate capacity;
 - scalable expansion of existing warehouse static capacity;
-- scalable bulkification of eligible warehouse static capacity;
+- scalable bulkification of eligible warehouse handling capacity;
 - unmet domestic demand;
 - export demand upper bounds;
 - emergency static capacity;
@@ -684,7 +684,8 @@ def _solve_deterministic_core(
             },
         )
 
-    return _extract_deterministic_result(
+    extraction_started = perf_counter()
+    result = _extract_deterministic_result(
         data=data,
         model_config=model_config,
         solver_config=solver_config,
@@ -727,6 +728,11 @@ def _solve_deterministic_core(
             "emergency_reception": emergency_reception_cost,
         },
     )
+
+
+    result.metadata["timings"]["result_extraction_seconds"] = perf_counter() - extraction_started
+    result.metadata["timings"]["solver_reported_runtime_seconds"] = float(model.Runtime)
+    return result
 
 
 # ---------------------------------------------------------------------
@@ -1082,7 +1088,13 @@ def _lexicographic_stage_diagnostics(
     elif primary_objective_value <= feasibility_tolerance + VALUE_TOL:
         service_certification_status = "certified_zero_within_tolerance"
         service_target_status = "attained"
-    elif service_stage and service_stage.get("status") == "OPTIMAL":
+    elif (
+        service_stage
+        and service_stage.get("status") == "OPTIMAL"
+        and service_stage.get("objective_bound") is not None
+        and isfinite(service_stage["objective_bound"])
+        and service_stage["objective_bound"] > feasibility_tolerance + VALUE_TOL
+    ):
         service_certification_status = "certified_minimum_positive"
         service_target_status = "not_attainable"
     else:

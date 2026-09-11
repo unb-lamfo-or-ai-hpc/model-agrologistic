@@ -544,6 +544,8 @@ def test_run_experiment_exports_complete_json_csv_and_metrics(
     assert "raw_solver_result" not in payload["result"]
 
     expected_files = {
+        "independent_validation.json",
+        "run_completion.json",
         "result.json",
         "model_audit.json",
         "preflight.json",
