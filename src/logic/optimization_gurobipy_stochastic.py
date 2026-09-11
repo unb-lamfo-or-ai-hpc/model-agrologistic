@@ -21,6 +21,8 @@ from src.logic.optimization_gurobipy import (
     _import_gurobi,
     _infeasibility_metadata,
     _map_gurobi_status,
+    _lexicographic_stage_diagnostics,
+    _optimize_with_stage_observer,
     _origin_to_customer_unit_cost,
     _origin_to_warehouse_unit_cost,
     _set_objective_policy,
@@ -300,7 +302,21 @@ def solve_stochastic_model_gurobipy(
 
     model_build_seconds = perf_counter() - started_at
     optimization_started_at = perf_counter()
-    model.optimize()
+    lexicographic_stages = _optimize_with_stage_observer(
+        model=model,
+        GRB=GRB,
+        objective_policy=model_config.objective_policy,
+        objective_names=(
+            "expected_unmet_demand",
+            "expected_emergency_capacity",
+            "economic_cost",
+        ),
+        objective_roles=(
+            "unmet_demand",
+            "emergency_capacity",
+            "economic_cost",
+        ),
+    )
     optimization_seconds = perf_counter() - optimization_started_at
     runtime_seconds = perf_counter() - started_at
     status = _map_gurobi_status(model, GRB)
@@ -325,6 +341,13 @@ def solve_stochastic_model_gurobipy(
         ],
         "first_stage_fixed": fixed_first_stage is not None,
         "objective_policy": model_config.objective_policy,
+        **_lexicographic_stage_diagnostics(
+            model=model,
+            GRB=GRB,
+            objective_policy=model_config.objective_policy,
+            stages=lexicographic_stages,
+            primary_objective_value=None,
+        ),
         "objective_priority_order": (
             ["penalized_cost"]
             if model_config.objective_policy == "penalty"
@@ -351,6 +374,7 @@ def solve_stochastic_model_gurobipy(
         model_config=model_config,
         solver_config=solver_config,
         model=model,
+        GRB=GRB,
         status=status,
         runtime_seconds=runtime_seconds,
         flow_od=flow_od,
@@ -834,6 +858,7 @@ def _extract_stochastic_result(
     model_config: ModelConfig,
     solver_config: SolverConfig,
     model: Any,
+    GRB: Any,
     status: str,
     runtime_seconds: float,
     flow_od: Any,
@@ -1044,6 +1069,13 @@ def _extract_stochastic_result(
         },
         metadata={
             **metadata,
+            **_lexicographic_stage_diagnostics(
+                model=model,
+                GRB=GRB,
+                objective_policy=model_config.objective_policy,
+                stages=metadata.get("lexicographic_stages", []),
+                primary_objective_value=expected_unmet_quantity,
+            ),
             "gurobi_objective_value": getattr(model, "ObjVal", None),
             "gurobi_objective_bound": getattr(model, "ObjBound", None),
             "candidate_capacity_mode": model_config.candidate_capacity_mode,
