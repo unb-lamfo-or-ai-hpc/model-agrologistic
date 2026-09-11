@@ -1044,6 +1044,8 @@ def _extract_stochastic_result(
         },
         metadata={
             **metadata,
+            "gurobi_objective_value": getattr(model, "ObjVal", None),
+            "gurobi_objective_bound": getattr(model, "ObjBound", None),
             "candidate_capacity_mode": model_config.candidate_capacity_mode,
             "capacity_coupling_policy": model_config.capacity_coupling_policy,
             "interhub_factor": model_config.interhub_factor,
