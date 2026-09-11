@@ -329,8 +329,8 @@ def solve_stochastic_model_gurobipy(
             ["penalized_cost"]
             if model_config.objective_policy == "penalty"
             else [
-                "expected_emergency_capacity",
                 "expected_unmet_demand",
+                "expected_emergency_capacity",
                 "economic_cost",
             ]
         ),
@@ -1023,7 +1023,7 @@ def _extract_stochastic_result(
         objective_value=(
             penalized_cost
             if model_config.objective_policy == "penalty"
-            else expected_emergency_quantity
+            else expected_unmet_quantity
         ),
         solver_backend="gurobipy",
         solver_name=solver_config.solver_name,
