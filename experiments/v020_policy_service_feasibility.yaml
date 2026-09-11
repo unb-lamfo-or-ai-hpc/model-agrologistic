@@ -1,0 +1,72 @@
+version: 1
+output_dir: ../data/results/hpc/v020_policy_service_feasibility
+continue_on_error: true
+
+defaults:
+  max_estimated_variables: 2000000
+  solver:
+    backend: gurobipy
+    solver_name: gurobi
+    mip_gap: 0.001
+    time_limit: 3600
+    threads: 16
+    seed: 42
+    tee: true
+    compute_iis: true
+    iis_max_items: 200
+    solver_options:
+      SoftMemLimit: 56
+      NumericFocus: 1
+  model:
+    objective_policy: lexicographic
+    interhub_factor: 1.0
+    use_warehouse_transshipment: true
+    route_filter_strategy: connectivity_preserving_pareto
+    connectivity_export_policy: one_sink_per_product
+    candidate_capacity_mode: scalable
+    terminal_inventory_policy: free
+    capacity_coupling_policy: daily_factors
+    days_per_period: 30
+    allow_capacity_expansion: true
+    allow_bulkification: true
+    separate_emergency_capacity_slacks: true
+  loader:
+    compute_haversine_distances: false
+    use_workbook_distances: true
+    required_distance_source: osrm_primary
+    include_export_routes: true
+    include_transshipment_routes: true
+    include_direct_origin_customer_routes: true
+    candidate_cost_policy: variable_from_total
+    penalty_policy: thesis_dynamic
+
+experiments:
+  - name: policy_service_feasibility_p20_warehouse
+    workbook: ../data/processed/policy_population_v020_osrm/warehouses_215/model_input.xlsx
+    model:
+      mode: det
+      pareto_fraction: 0.20
+      use_direct_origin_customer: false
+    metadata:
+      evidence_profile: policy_service_feasibility_v020
+      diagnostic_purpose: minimum_domestic_shortfall
+      scenario_design: deterministic
+      route_policy: connectivity_preserving_grouped_edge_fraction
+      route_fraction: 0.20
+      direct_arcs: false
+      warehouse_population: warehouses_215_osrm_authoritative
+
+  - name: policy_service_feasibility_p20_direct
+    workbook: ../data/processed/policy_population_v020_osrm/warehouses_215/model_input.xlsx
+    model:
+      mode: det
+      pareto_fraction: 0.20
+      use_direct_origin_customer: true
+    metadata:
+      evidence_profile: policy_service_feasibility_v020
+      diagnostic_purpose: minimum_domestic_shortfall
+      scenario_design: deterministic
+      route_policy: connectivity_preserving_grouped_edge_fraction
+      route_fraction: 0.20
+      direct_arcs: true
+      warehouse_population: warehouses_215_osrm_authoritative
