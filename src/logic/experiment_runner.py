@@ -127,6 +127,7 @@ class ExperimentRunSummary:
     campaign_gate: str | None
     scenario_count: int | None
     objective_value: float | None
+    objective_bound: float | None
     economic_cost: float | None
     penalized_cost: float | None
     runtime_seconds: float | None
@@ -151,7 +152,13 @@ class ExperimentRunSummary:
     material_balance_ok: bool | None
     penalty_cost_share: float | None
     evpi: float | None
+    evpi_lower_bound: float | None
+    evpi_upper_bound: float | None
+    evpi_certification_status: str | None
     vss: float | None
+    vss_lower_bound: float | None
+    vss_upper_bound: float | None
+    vss_certification_status: str | None
     output_dir: str
     started_at_utc: str
     finished_at_utc: str
@@ -884,6 +891,9 @@ def _build_summary(
         float(cost_shares.get(component) or 0.0)
         for component in PENALTY_COST_COMPONENTS
     )
+    value_metadata = evpi_result.metadata if evpi_result else {}
+    evpi_interval = value_metadata.get("evpi_interval") or {}
+    vss_interval = value_metadata.get("vss_interval") or {}
     return ExperimentRunSummary(
         name=spec.name,
         status=result.status,
@@ -894,6 +904,9 @@ def _build_summary(
             len(scenario_records) if scenario_records else 1
         ),
         objective_value=result.objective_value,
+        objective_bound=_optional_float(
+            result.metadata.get("gurobi_objective_bound")
+        ),
         economic_cost=_optional_float(objective_values.get("economic_cost")),
         penalized_cost=_optional_float(objective_values.get("penalized_cost")),
         runtime_seconds=result.runtime_seconds,
@@ -938,7 +951,17 @@ def _build_summary(
         material_balance_ok=material_balance.get("all_within_tolerance"),
         penalty_cost_share=penalty_cost_share,
         evpi=evpi_result.evpi if evpi_result else None,
+        evpi_lower_bound=_optional_float(evpi_interval.get("lower_bound")),
+        evpi_upper_bound=_optional_float(evpi_interval.get("upper_bound")),
+        evpi_certification_status=value_metadata.get(
+            "evpi_certification_status"
+        ),
         vss=evpi_result.vss if evpi_result else None,
+        vss_lower_bound=_optional_float(vss_interval.get("lower_bound")),
+        vss_upper_bound=_optional_float(vss_interval.get("upper_bound")),
+        vss_certification_status=value_metadata.get(
+            "vss_certification_status"
+        ),
         output_dir=str(run_dir),
         started_at_utc=started.isoformat(),
         finished_at_utc=finished.isoformat(),
@@ -975,6 +998,7 @@ def _export_failed_run(
         campaign_gate=_metadata_text(spec, "campaign_gate"),
         scenario_count=_configured_scenario_count(spec),
         objective_value=None,
+        objective_bound=None,
         economic_cost=None,
         penalized_cost=None,
         runtime_seconds=(finished - started).total_seconds(),
@@ -999,7 +1023,13 @@ def _export_failed_run(
         material_balance_ok=None,
         penalty_cost_share=None,
         evpi=None,
+        evpi_lower_bound=None,
+        evpi_upper_bound=None,
+        evpi_certification_status=None,
         vss=None,
+        vss_lower_bound=None,
+        vss_upper_bound=None,
+        vss_certification_status=None,
         output_dir=str(run_dir),
         started_at_utc=started.isoformat(),
         finished_at_utc=finished.isoformat(),
@@ -1031,6 +1061,7 @@ def _result_payload(result: OptimizationResult) -> dict[str, Any]:
     return {
         "status": result.status,
         "objective_value": result.objective_value,
+        "objective_bound": result.metadata.get("gurobi_objective_bound"),
         "solver_backend": result.solver_backend,
         "solver_name": result.solver_name,
         "model_mode": result.model_mode,
