@@ -933,7 +933,8 @@ def _finite_callback_value(model: Any, callback_code: int) -> float | None:
 
     try:
         value = float(model.cbGet(callback_code))
-    except (AttributeError, TypeError, ValueError):
+    except Exception:  # noqa: BLE001
+        # Gurobi can reject MIP-only fields for presolved continuous passes.
         return None
     return value if isfinite(value) else None
 
