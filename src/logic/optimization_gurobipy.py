@@ -1386,7 +1386,7 @@ def _extract_deterministic_result(
         objective_value=(
             penalized_cost_value
             if model_config.objective_policy == "penalty"
-            else emergency_quantity_value
+            else unmet_quantity_value
         ),
         solver_backend="gurobipy",
         solver_name=solver_config.solver_name,
