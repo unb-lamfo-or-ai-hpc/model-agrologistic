@@ -5,6 +5,7 @@ from __future__ import annotations
 from time import perf_counter
 from typing import Any
 
+from src.logic.mathematical_contract import prepare_model_data
 from src.logic.model_config import ModelConfig, SolverConfig
 from src.logic.model_data import ModelData
 from src.logic.optimization import OptimizationResult
@@ -44,6 +45,8 @@ def solve_stochastic_model_gurobipy(
 
     gp, GRB = _import_gurobi()
     started_at = perf_counter()
+
+    data = prepare_model_data(data, model_config)
 
     model = gp.Model("model_agrologistic_stochastic_extensive_form")
     _apply_solver_parameters(model, solver_config)
@@ -322,6 +325,7 @@ def solve_stochastic_model_gurobipy(
     status = _map_gurobi_status(model, GRB)
 
     common_metadata = {
+        "mathematical_contract": data.metadata.get("mathematical_contract", {}),
         "gurobi_status_code": model.Status,
         "gurobi_status_name": _gurobi_status_name(model, GRB),
         "solution_count": model.SolCount,

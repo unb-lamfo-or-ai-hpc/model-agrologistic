@@ -213,14 +213,14 @@ class ModelConfig:
     allow_emergency_static_capacity: bool = True
     allow_emergency_reception_capacity: bool = True
 
-    # v0.2 intentionally keeps dimensionally different complete-recourse
-    # slacks separate. False is rejected to prevent an ambiguous shared slack.
+    # Stock exceedance and period reception overflow describe separate
+    # mechanisms. Neither slack is a daily rate or installed capacity.
     separate_emergency_capacity_slacks: bool = True
 
     # ``penalty`` preserves the single weighted-cost objective. The optional
     # ``lexicographic`` policy minimizes unmet domestic demand first,
     # emergency capacity second, and economic cost third. This makes domestic
-    # service the primary policy outcome while retaining complete recourse.
+    # service the primary policy outcome while relaxing selected constraints.
     objective_policy: ObjectivePolicy = "penalty"
 
     # -----------------------------------------------------------------

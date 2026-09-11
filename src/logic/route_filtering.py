@@ -24,6 +24,19 @@ class SelectedRoutes:
     repair_oc: set[RouteOC] = field(default_factory=set)
 
 
+def route_policy_signature(config: ModelConfig) -> dict:
+    """Identify graph semantics, excluding scenario projection and solver limits."""
+
+    return {
+        name: getattr(config, name)
+        for name in (
+            "route_filter_strategy", "pareto_fraction", "route_top_k",
+            "connectivity_export_policy", "use_direct_origin_customer",
+            "use_warehouse_transshipment",
+        )
+    }
+
+
 def select_routes(data: ModelData, config: ModelConfig) -> SelectedRoutes:
     """Select compact routes while preserving end-to-end flow coverage.
 
@@ -35,6 +48,16 @@ def select_routes(data: ModelData, config: ModelConfig) -> SelectedRoutes:
     routes are enabled, every origin/product also keeps its nearest domestic
     customer and export exits.
     """
+
+    frozen = data.metadata.get("_frozen_routes")
+    if frozen is not None:
+        contract = data.metadata.get("mathematical_contract", {})
+        if contract.get("route_policy") != route_policy_signature(config):
+            raise ValueError("Frozen route contract differs from the requested policy.")
+        return SelectedRoutes(**{
+            name: {tuple(route) for route in records}
+            for name, records in frozen.items()
+        })
 
     if config.route_filter_strategy == "thesis_pareto":
         return _select_thesis_pareto_routes(data, config)

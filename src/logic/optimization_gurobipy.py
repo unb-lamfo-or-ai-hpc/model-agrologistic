@@ -26,6 +26,7 @@ from math import isfinite
 from time import perf_counter
 from typing import Any
 
+from src.logic.mathematical_contract import prepare_model_data
 from src.logic.model_config import ModelConfig, SolverConfig
 from src.logic.model_data import ModelData
 from src.logic.optimization import (
@@ -75,6 +76,8 @@ def _solve_deterministic_core(
     gp, GRB = _import_gurobi()
 
     started_at = perf_counter()
+
+    data = prepare_model_data(data, model_config)
 
     model = gp.Model("model_agrologistic_deterministic")
     _apply_solver_parameters(model, solver_config)
@@ -1616,6 +1619,7 @@ def _extract_deterministic_result(
         emergency_capacity=emergency_records,
         metrics=metrics,
         metadata={
+            "mathematical_contract": data.metadata.get("mathematical_contract", {}),
             "gurobi_status_code": model.Status,
             "gurobi_status_name": gurobi_status_name,
             "gurobi_objective_value": getattr(model, "ObjVal", None),

@@ -2,10 +2,11 @@
 
 ## Purpose
 
-Version 0.2.0 restores the mathematical parameterization used in Artur's
-deterministic and stochastic case studies. The only deliberate structural
-extension is that static-capacity and reception-capacity feasibility slacks
-are represented separately because they have different physical units.
+Version 0.2.0 reconstructs a thesis-compatible core and explicitly separates
+it from the policy extension. Stock exceedance and reception overflow have
+separate feasibility variables. This changes a shared-slack penalty from
+P*max(stock_excess, reception_overflow) to P*(stock_excess + reception_overflow)
+for a fixed plan with both violations; numerical equivalence is not claimed.
 
 This contract supersedes the exploratory v0.1 network-policy formulation for
 new experiments. The accepted v0.1.0 certification package remains immutable
@@ -33,7 +34,7 @@ throughput through the configured factors and the operating days in each
 period. Expansion and bulkification are mutually exclusive at a warehouse.
 The thesis-compatible default is the daily-factor capacity policy.
 
-## Complete recourse and candidate activation
+## Conditional feasibility relaxation and candidate activation
 
 Unmet demand, emergency static capacity, and emergency reception capacity are
 feasibility devices with thesis-compatible dynamic Big-M penalty rates. Their
@@ -49,7 +50,9 @@ emergency slacks to zero whenever the candidate opening binary is zero.
 Removing those indicators would create a ghost warehouse that could receive
 or store material without paying the opening decision. Complete recourse is
 thus available over the active infrastructure, while opening semantics remain
-economically valid.
+economically valid. This is not a proof of complete recourse for every input:
+shipping capacity, origin connectivity, export bounds, and activation remain
+hard constraints. An isolated positive-supply origin is still infeasible.
 
 Emergency-capacity penalty rates equal fifty times the largest reference
 expansion or storage rate, subject to a floor of 100. The unmet-demand rate is
@@ -59,10 +62,37 @@ then replicated across products in the canonical data structure. These rates
 preserve feasibility and support qualitative capacity-gap interpretation; they
 are not observed shortage prices.
 
-Static and reception slacks must be reported separately and may not be summed
-as if they were dimensionally identical. Their activation is a research
-result, not an automatic acceptance failure. Domestic service and material
-balance remain the primary validity conditions.
+Reception slack is added AFTER daily throughput is multiplied by operating
+days. It is overflow tonnes within the period, not tonnes/day. Its daily
+equivalent is obtained by division by operating days. Multiplying the slack
+by 30 in the objective would apply the conversion twice and is prohibited.
+
+The policy capacity stage uses an equal-weight additive violation score for
+stock exceedance and reception overflow, probability-weighted under
+uncertainty. This score is not installed capacity. Export each component,
+its period aggregation, and its physical peak separately. Emergency use is a
+research result, not an automatic acceptance failure.
+
+Before optimization, the selected network and dynamic penalty vector are
+frozen together. Historical dynamic penalties inspect selected DC/OC routes,
+not discarded routes. RP, EV, WS, and EEV retain the same frozen network and
+penalties; scenario projection does not recompute connectivity repair.
+
+Only free terminal inventory is currently implemented by the native backend.
+Other policies and nonzero terminal penalties fail explicitly before a solve.
+
+Candidate/expansion investments use tonnes of static capacity. Their daily
+throughput factors have units 1/day. The tonne-based bulkification investment
+uses explicit daily factors too; its historical coefficient of 1/day maps it
+to daily handling. Costs and upper bounds must use that declared investment
+basis, not silently switch between tonnes and tonnes/day. Bulkification does
+not add static capacity under daily_factors.
+
+The hierarchy is solved within declared MIP and objective tolerances. Setting
+ObjNRelTol to zero does not remove the Gurobi MIPGap/MIPGapAbs contribution to
+the admissible level of previous objectives. Record pass-end and final values,
+bounds, effective tolerances, and observed degradation separately. Classical
+monetary EVPI/VSS is restricted to a common scalar penalty objective.
 
 ## Route policies
 

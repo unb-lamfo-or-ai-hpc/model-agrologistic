@@ -35,6 +35,11 @@ def calculate_evpi_vss_gurobipy(
     checkpoints carrying the same caller-provided identity.
     """
 
+    from src.logic.mathematical_contract import prepare_model_data
+
+    if model_config.objective_policy != "penalty":
+        raise ValueError("Classical EVPI/VSS requires the common scalar penalty objective.")
+    data = prepare_model_data(data, model_config)
     report = progress or (lambda _message: None)
     store = _CheckpointStore.create(
         checkpoint_dir,

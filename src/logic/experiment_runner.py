@@ -22,6 +22,7 @@ from typing import Any
 import yaml
 
 from src.logic.excel_loader import ExcelLoaderConfig, load_model_data_from_excel
+from src.logic.mathematical_contract import prepare_model_data
 from src.logic.metrics import attach_storage_metrics
 from src.logic.model_audit import build_model_audit
 from src.logic.model_config import ModelConfig, SolverConfig
@@ -269,6 +270,7 @@ def run_experiment(
     data_read_started_at = perf_counter()
     data = loader(spec.workbook, spec.loader)
     data_read_seconds = perf_counter() - data_read_started_at
+    data = prepare_model_data(data, spec.model)
     _write_json(
         run_dir / "model_audit.json",
         build_model_audit(data, spec.model),
@@ -345,6 +347,7 @@ def inspect_experiment(
     run_dir = Path(output_root).resolve() / spec.name
     progress(f"[{spec.name}] loading {spec.workbook}")
     data = loader(spec.workbook, spec.loader)
+    data = prepare_model_data(data, spec.model)
     _write_json(
         run_dir / "model_audit.json",
         build_model_audit(data, spec.model),
