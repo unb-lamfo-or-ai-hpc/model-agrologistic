@@ -553,6 +553,7 @@ def test_run_experiment_exports_complete_json_csv_and_metrics(
         "inventories.csv",
         "unmet_demand.csv",
         "emergency_capacity.csv",
+        "lexicographic_stages.csv",
         "scenario_performance.csv",
         "storage_by_warehouse.csv",
         "storage_by_scenario.csv",
@@ -818,3 +819,30 @@ def test_slurm_array_index_is_used_unless_cli_overrides_it(monkeypatch):
 
     assert selected_index(None) == 4
     assert selected_index(2) == 2
+
+
+
+def test_v020_policy_manifests_use_service_first_lexicographic_objective():
+    root = Path(__file__).parents[1]
+    for filename in ("v020_policy_mvp.yaml", "v020_policy_time_limit.yaml"):
+        manifest = load_experiment_manifest(root / "experiments" / filename)
+        assert all(
+            spec.model.objective_policy == "lexicographic"
+            for spec in manifest.experiments
+        )
+
+    diagnostic = load_experiment_manifest(
+        root / "experiments" / "v020_policy_service_feasibility.yaml"
+    )
+    assert len(diagnostic.experiments) == 3
+    assert all(
+        spec.model.objective_policy == "lexicographic"
+        for spec in diagnostic.experiments
+    )
+    confirmation = diagnostic.experiments[2]
+    assert confirmation.name == "policy_service_feasibility_p20_direct_t14400"
+    assert confirmation.solver.time_limit == 14400
+    assert (
+        confirmation.metadata["diagnostic_purpose"]
+        == "certify_secondary_and_tertiary_lexicographic_stages"
+    )
