@@ -1403,6 +1403,8 @@ def _extract_deterministic_result(
         metadata={
             "gurobi_status_code": model.Status,
             "gurobi_status_name": gurobi_status_name,
+            "gurobi_objective_value": getattr(model, "ObjVal", None),
+            "gurobi_objective_bound": getattr(model, "ObjBound", None),
             "solution_count": model.SolCount,
             "timings": {
                 "model_build_seconds": model_build_seconds,
