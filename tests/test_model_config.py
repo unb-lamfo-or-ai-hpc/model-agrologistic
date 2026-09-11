@@ -163,7 +163,7 @@ def test_penalty_policy_uses_one_weighted_objective():
     assert model.objectives == []
 
 
-def test_lexicographic_policy_prioritizes_physical_feasibility_slack():
+def test_lexicographic_policy_prioritizes_domestic_service():
     model = FakeModel()
 
     _set_objective_policy(
@@ -184,8 +184,8 @@ def test_lexicographic_policy_prioritizes_physical_feasibility_slack():
     ]
     assert [options["priority"] for _, options in model.objectives] == [3, 2, 1]
     assert [options["name"] for _, options in model.objectives] == [
-        "minimize_emergency_capacity",
         "minimize_unmet_demand",
+        "minimize_emergency_capacity",
         "minimize_economic_cost",
     ]
 
