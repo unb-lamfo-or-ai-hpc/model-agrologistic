@@ -35,6 +35,37 @@ graph. Preflight reports the base and repair counts for each route family.
 Submit one index at a time. Promote the three-scenario and nine-scenario cases
 only after the corresponding deterministic preflight and solve are accepted.
 
+## Service-first objective and stage certification
+
+Policy experiments use a three-level lexicographic objective:
+
+1. minimize unmet domestic demand;
+2. conditional on the service optimum, minimize static and reception emergency
+   capacity;
+3. conditional on both preceding optima, minimize economic cost.
+
+This policy differs intentionally from the thesis-compatible weighted Big-M
+objective, which remains unchanged in the reproduction manifest. The policy
+hierarchy represents domestic service as the public-sector requirement and
+interprets emergency-capacity variables as infrastructure-gap diagnostics, not
+as an automatic rejection criterion.
+
+Gurobi's global terminal status is insufficient to establish which
+multiobjective passes finished. Each policy run therefore records the
+`MULTIOBJ` callback outcome for every completed pass in
+`lexicographic_stages.csv`, including its status, incumbent, bound, gap,
+runtime, work, nodes, and solution count when available. The run summary also
+reports whether the service target was attained and certified, whether the
+overall hierarchy completed, and separate service, capacity, and economic
+stage statuses. A later-stage time limit never invalidates a certified
+zero-shortfall first stage, but emergency-capacity and economic values remain
+provisional unless their own passes complete optimally.
+
+The deterministic direct-arc diagnostic at 14,400 seconds is the next
+certification gate. Stochastic policy runs remain blocked until that result
+demonstrates either completion of the secondary and tertiary passes or an
+explicitly reported residual censoring pattern.
+
 ## Gate P2: time-to-gap profile
 
 Use `experiments/v020_policy_time_limit.yaml`. Hold the nine-scenario,
