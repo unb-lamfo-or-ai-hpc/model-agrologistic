@@ -118,16 +118,56 @@ def calculate_evpi_vss_gurobipy(
     evpi = _zero_within_tolerance(raw_evpi, tolerance)
     vss = _zero_within_tolerance(raw_vss, tolerance)
 
+    objective_intervals = {
+        "recourse_problem": _solver_objective_interval(recourse_result),
+        "wait_and_see": _weighted_solver_objective_interval(
+            wait_and_see_results,
+            data.scenario_prob,
+        ),
+        "expected_value_problem": _solver_objective_interval(
+            expected_value_result
+        ),
+        "expected_result_of_ev_solution": _solver_objective_interval(
+            expected_result
+        ),
+    }
+    evpi_interval = _difference_interval(
+        objective_intervals["recourse_problem"],
+        objective_intervals["wait_and_see"],
+    )
+    vss_interval = _difference_interval(
+        objective_intervals["expected_result_of_ev_solution"],
+        objective_intervals["recourse_problem"],
+    )
+    evpi_certification_status = _classify_nonnegative_interval(
+        evpi_interval,
+        tolerance,
+    )
+    vss_certification_status = _classify_nonnegative_interval(
+        vss_interval,
+        tolerance,
+    )
+
     consistency_warnings: list[str] = []
-    if evpi < -tolerance:
+    if evpi_certification_status == "inconsistent_negative":
         consistency_warnings.append(
-            "EVPI is negative beyond the configured tolerance. Check solver "
-            "optimality gaps and numerical settings."
+            "The solver-bound EVPI interval is strictly negative. Check model "
+            "consistency, objective scaling, and solver termination."
         )
-    if vss < -tolerance:
+    elif evpi < -tolerance:
         consistency_warnings.append(
-            "VSS is negative beyond the configured tolerance. Check solver "
-            "optimality gaps and numerical settings."
+            "The EVPI point estimate is negative, but its solver-bound interval "
+            "does not certify a negative value."
+        )
+    if vss_certification_status == "inconsistent_negative":
+        consistency_warnings.append(
+            "The solver-bound VSS interval is strictly negative. Check fixed "
+            "first-stage decisions, objective scaling, and solver termination."
+        )
+    elif vss < -tolerance:
+        consistency_warnings.append(
+            "The VSS point estimate is negative, but its solver-bound interval "
+            "does not certify a negative value."
         )
 
     result = EVPIVSSResult(
@@ -150,6 +190,11 @@ def calculate_evpi_vss_gurobipy(
             "evpi_vss_tolerance": tolerance,
             "raw_evpi": raw_evpi,
             "raw_vss": raw_vss,
+            "objective_intervals": objective_intervals,
+            "evpi_interval": evpi_interval,
+            "vss_interval": vss_interval,
+            "evpi_certification_status": evpi_certification_status,
+            "vss_certification_status": vss_certification_status,
             "consistency_warnings": consistency_warnings,
             "checkpoint_directory": str(store.path) if store else None,
             "restored_checkpoint_steps": list(store.restored_steps) if store else [],
@@ -433,6 +478,78 @@ def _as_deterministic_data(
         demand_exp_s={},
         metadata={**data.metadata, "deterministic_projection": source},
     )
+
+
+def _solver_objective_interval(
+    result: OptimizationResult,
+) -> dict[str, float] | None:
+    """Return the certified minimization interval reported by Gurobi."""
+
+    objective = result.metadata.get("gurobi_objective_value")
+    bound = result.metadata.get("gurobi_objective_bound")
+    if objective is None or bound is None:
+        return None
+
+    objective_value = float(objective)
+    bound_value = float(bound)
+    return {
+        "lower_bound": min(bound_value, objective_value),
+        "upper_bound": max(bound_value, objective_value),
+    }
+
+
+def _weighted_solver_objective_interval(
+    results: dict[str, OptimizationResult],
+    probabilities: dict[str, float],
+) -> dict[str, float] | None:
+    """Combine scenario objective intervals with their declared probabilities."""
+
+    lower_bound = 0.0
+    upper_bound = 0.0
+    for scenario, result in results.items():
+        interval = _solver_objective_interval(result)
+        if interval is None:
+            return None
+        probability = float(probabilities[scenario])
+        lower_bound += probability * interval["lower_bound"]
+        upper_bound += probability * interval["upper_bound"]
+    return {
+        "lower_bound": lower_bound,
+        "upper_bound": upper_bound,
+    }
+
+
+def _difference_interval(
+    left: dict[str, float] | None,
+    right: dict[str, float] | None,
+) -> dict[str, float] | None:
+    """Return the interval enclosing every value of left minus right."""
+
+    if left is None or right is None:
+        return None
+    return {
+        "lower_bound": left["lower_bound"] - right["upper_bound"],
+        "upper_bound": left["upper_bound"] - right["lower_bound"],
+    }
+
+
+def _classify_nonnegative_interval(
+    interval: dict[str, float] | None,
+    tolerance: float,
+) -> str:
+    """Classify a theoretically non-negative metric using solver bounds."""
+
+    if interval is None:
+        return "unavailable"
+    lower_bound = interval["lower_bound"]
+    upper_bound = interval["upper_bound"]
+    if lower_bound > tolerance:
+        return "certified_positive"
+    if lower_bound >= -tolerance:
+        return "certified_nonnegative"
+    if upper_bound < -tolerance:
+        return "inconsistent_negative"
+    return "numerically_indeterminate"
 
 
 def _require_objective(result: OptimizationResult, label: str) -> float:
