@@ -178,8 +178,8 @@ def test_lexicographic_policy_prioritizes_domestic_service():
 
     assert model.ModelSense == FakeGRB.MINIMIZE
     assert [expression for expression, _ in model.objectives] == [
-        "emergency",
         "unmet",
+        "emergency",
         "economic",
     ]
     assert [options["priority"] for _, options in model.objectives] == [3, 2, 1]
