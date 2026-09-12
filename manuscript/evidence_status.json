@@ -15,6 +15,8 @@
   "remaining_failed_check": "three_completed_passes",
   "source_report": "Maintainer-supplied NPAD report after jobs 2088823_0 and 2088823_1",
   "numeric_results_included": false,
+  "numeric_results_definition": "Final comparative optimization tables and figures; preliminary route counts and scheduler diagnostics are recorded separately.",
+  "preliminary_observations": "preliminary_observations.json",
   "pending_items": [
     "Diagnose incomplete warehouse-only nine-scenario hierarchy and obtain four-level acceptance",
     "Reviewed frozen numeric tables, plots and provenance",

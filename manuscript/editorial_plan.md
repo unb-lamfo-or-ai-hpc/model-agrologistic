@@ -39,14 +39,22 @@ The current draft develops methods while the warehouse-only nine-scenario
 acceptance remains unresolved. Final results will replace status prose and
 may require moving detailed extraction/validation tables to supplementary files.
 
-## Structure adapted from Manuscript Benchmark V0
+## Substantive synthesis, not editorial instructions
 
-Retain its progression from introduction and structured literature review to
-materials/methods, deterministic and stochastic models, results/discussion,
-conclusion and disclosure. Replace its unfinished artificial-generation and
-space-reduction headings with the implemented data-lineage and network-selection
-protocol. Synthetic generation, dimensionality reduction and a definitive
-scalability frontier must not appear as completed methods.
+The 2026-09-12 correction removes references to the working benchmark document
+and writing instructions from the article. That document is an editorial aid,
+not a citable research source. Retain a substantive synthesis of published
+studies, including grain-storage reviews and relevant thesis references.
+Do not claim a newly executed systematic search without its underlying records.
+
+The expanded draft has 29 citations, preliminary preparation/scheduler
+observations, a sourced NPAD environment description, a fuller discussion and
+future Benders work. The Benders documents are not equivalent to the current
+model: see benders_extension_audit.md. Decomposition and optimization above
+500 warehouses remain future work. Final numerical tables/figures still require
+the accepted frozen PR25 package. The current render has 24 pages including
+references; edit toward the approximate body-page target after those tables
+and figures replace the temporary validation-status narrative.
 
 ## AI disclosure
 
@@ -65,11 +73,11 @@ plotting code; no AI-generated synthetic result images are introduced.
 
 1. Complete PR25 acceptance and retain the exact frozen evidence identities.
 2. Resume PR26 only after that validation, as explicitly requested.
-3. Reconcile the literature search date and alternative-source counts.
-4. Check all extraction attributes against original papers before a systematic
-   review claim; identify the exact thesis bibliographic record and obtain its
-   formulation chapter for a symbol-by-symbol historical crosswalk.
-5. Reconcile the eleven newly cited records with Zotero collection Q9G99YM3.
-   Seven earlier records remain verified; do not claim all eighteen are members.
+3. Check substantive extraction attributes against original papers; any future
+   new systematic-search claim also requires reconciled screening records.
+4. Identify the exact thesis bibliographic record and obtain its formulation
+   chapter for a symbol-by-symbol historical crosswalk.
+5. All 29 cited sources are now verified members of Zotero collection Q9G99YM3.
+   Keep bibliography and collection mapping synchronized without duplicate imports.
 6. Import validated tables/figures, finalize author contributions and obtain
    author approval. Request review before any Ready/merge or Pages publication.

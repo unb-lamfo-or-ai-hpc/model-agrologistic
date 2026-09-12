@@ -72,17 +72,17 @@ The workflow uses the Pages artifact/OIDC mechanism and does not push a
 
 ## References and Zotero
 
-Eighteen references are cited in the expanded draft. Seventeen records were
-located in the accessible local library; the Mascarenhas article was checked
-against its publisher page and has no verified local item key.
+Twenty-nine references are cited in the expanded draft and are verified in
+the manuscript collection. Existing items were reused; the Mascarenhas article
+and official NPAD hardware page were added as public bibliographic records.
 [citation_selection.json](citation_selection.json) maps manuscript citation
 keys to Zotero item keys and DOI or publisher URLs. These are different identifiers. Only public
 bibliographic fields were transcribed to `references.bib`; abstracts, notes,
 attachment paths and library export internals are intentionally excluded.
 
 The maintainer created **Model Agrologistic — Manuscript v0.2**, collection
-`Q9G99YM3`, and authorized adding cited records. Seven memberships were verified;
-the eleven newly selected references still require collection reconciliation. Collection
+`Q9G99YM3`, and authorized adding cited records. All 29 memberships were verified
+through the local API after the scoped update in Zotero Desktop. Collection
 membership verification is tracked in `citation_selection.json`; do not
 reimport the bibliography and create duplicates.
 The title/metadata review was selective, with local abstracts read where
@@ -90,8 +90,9 @@ available. It does not imply that every supplied paper was read in full.
 
 The related-work section distinguishes grain-network location, stochastic and
 robust planning, operational integration, and adjacent biomass-network methods.
-It synthesizes nine core studies reported in the maintainer-supplied benchmark
-draft and situates them with review, reporting and methodological references.
+It synthesizes published studies and reviews, supplemented by relevant references
+from the thesis bibliography. The working benchmark and writing requirements
+are not cited or described as research content in the article.
 It does not claim a newly completed systematic review or implementation of the
 methods described in cited studies.
 
@@ -99,13 +100,15 @@ methods described in cited studies.
 PDF identity, its provisional screening counts, the inconsistent arithmetic in
 the alternative-source flow and the ambiguous search date. Original search
 exports and screening decisions are needed before certifying a systematic
-review. The private source PDF is not redistributed.
+review. The private source PDF is not redistributed. This is an internal
+editorial audit; its unreconciled search counts are not results of this article.
 
 Bibliographic spellings follow Zotero except for a documented correction of
 `soybe an` to `soybean` in Dubke/Pizzolato, matching the article title and text.
 Foulds retains page 74 as registered in Crossref; the complete page range should
 be checked before submission. Proper geographic names are protected from
-BibTeX case conversion. No correction was applied to the user's library.
+BibTeX case conversion. Existing bibliographic metadata was not overwritten in
+the user's library.
 
 ## Editorial and mathematical development
 
@@ -123,6 +126,12 @@ case-study excerpt, not the complete mathematical chapter: matching its exact
 original numbering or claiming complete historical equivalence is not justified.
 The author-supplied generative-AI declaration appears immediately before the
 references and still requires author confirmation before submission.
+
+[benders_extension_audit.md](benders_extension_audit.md) records the supplied
+master/subproblem/flow documents and the changes needed before an equivalent
+decomposition can be implemented. [preliminary_observations.json](preliminary_observations.json)
+separates reported routing and scheduler observations from final comparative
+optimization results. NPAD hardware is cited from its official source.
 
 ## Template and licensing
 

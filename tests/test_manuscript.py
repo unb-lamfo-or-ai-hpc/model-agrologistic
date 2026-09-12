@@ -112,3 +112,26 @@ def test_benchmark_is_not_labeled_as_verified_slr(manuscript):
     assert audit["alternative_flow_reported"]["identified"] == 20
     assert audit["alternative_flow_reported"]["sought"] == 19
     assert audit["unresolved"]
+
+
+def test_editorial_source_is_not_manuscript_content(manuscript):
+    path = manuscript / "index.qmd"
+    path.write_text(path.read_text(encoding="utf-8") + "\nManuscript Benchmark V0",
+                    encoding="utf-8")
+    with pytest.raises(ValueError, match="Editorial instructions"):
+        CHECKER.check()
+
+
+def test_benders_has_feasibility_and_bound_qualifications(manuscript):
+    article = (manuscript / "index.qmd").read_text(encoding="utf-8")
+    assert "{#eq-benders-feasibility}" in article
+    assert "A time-limited master incumbent is not a" in article
+    assert "not an implemented component" in article
+    assert "does not remove all network" in article
+
+
+def test_hardware_and_preliminary_results_are_distinguished(manuscript):
+    article = (manuscript / "index.qmd").read_text(encoding="utf-8")
+    assert "@npad2026" in article
+    assert "not primary optimization times" in article
+    assert "not the arcs retained by the MILP" in article

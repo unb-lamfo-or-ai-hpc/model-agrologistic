@@ -42,7 +42,7 @@ def check(*, rendered: bool = False, publication: bool = False) -> None:
     )
     if any(row["email"] not in email_lines for row in records):
         raise ValueError("SBC email block omits an author")
-    keys = re.findall(r"@(?:article|incollection)\{([^,]+),", bibliography)
+    keys = re.findall(r"@(?:article|incollection|book|misc)\{([^,]+),", bibliography)
     cited = set(re.findall(r"(?<!\w)@([A-Za-z][A-Za-z0-9_-]*)", article))
     cited = {key for key in cited if not key.startswith(("eq-", "tbl-", "fig-", "sec-"))}
     if len(keys) != len(set(keys)) or set(keys) != cited:
@@ -65,6 +65,14 @@ def check(*, rendered: bool = False, publication: bool = False) -> None:
                      "{#eq-sto-capacity}", "{#eq-indicator}"):
         if required not in article:
             raise ValueError(f"Missing formulation section: {required}")
+    for prohibited in ("Manuscript Benchmark", "supplied benchmark",
+                       "conventional presentation sequence", "Questions for extracting"):
+        if prohibited.casefold() in article.casefold():
+            raise ValueError("Editorial instructions must not appear as research content")
+    for required in ("## HPC experimental environment", "# Future work:",
+                     "{#eq-benders-feasibility}", "@kaltis2026", "@npad2026"):
+        if required not in article:
+            raise ValueError(f"Missing scientific context: {required}")
     labels = re.findall(r"\{#((?:eq|tbl|fig|sec)-[A-Za-z0-9_-]+)\}", article)
     references = set(re.findall(r"@((?:eq|tbl|fig|sec)-[A-Za-z0-9_-]+)", article))
     if len(labels) != len(set(labels)) or references - set(labels):
