@@ -13,6 +13,8 @@ execute:
   enabled: false
   freeze: auto
 lang: en
+metadata-files:
+  - authors.json
 bibliography: references.bib
 format:
   html:

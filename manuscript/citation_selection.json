@@ -2,8 +2,13 @@
   "schema_version": 1,
   "review_date": "2026-09-12",
   "scope": "Focused metadata/title review; abstracts inspected where present. No claim of full-text review or systematic coverage.",
-  "proposed_collection": "Model Agrologistic — Manuscript v0.2",
-  "collection_created": false,
+  "collection_name": "Model Agrologistic — Manuscript v0.2",
+  "collection_key": "Q9G99YM3",
+  "collection_created": true,
+  "collection_created_by": "maintainer",
+  "membership_verified": true,
+  "membership_verified_date": "2026-09-12",
+  "verified_member_count": 7,
   "records": [
     {
       "citation_key": "rosa2025",

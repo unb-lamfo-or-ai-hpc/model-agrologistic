@@ -52,3 +52,31 @@ def test_changed_style_is_rejected(manuscript):
     (manuscript / "_extensions/sbc/sbc-template.sty").write_text("changed")
     with pytest.raises(ValueError, match="checksum mismatch"):
         CHECKER.check()
+
+
+def test_approved_author_order(manuscript):
+    metadata = json.loads((manuscript / "authors.json").read_text(encoding="utf-8"))
+    assert [row["name"] for row in metadata["author"]] == [
+        "Victor Rafael Rezende Celestino", "Artur Guerra Rosa",
+        "Andréia Elizabeth Silva Barros", "Gabriela Corsano",
+        "Luis Javier Zeballos", "Rodolfo Dondo", "Silvia Araujo dos Reis",
+    ]
+    assert [row["institute"] for row in metadata["author"]] == ["1", "1", "1", "2", "2", "2", "1"]
+
+
+def test_invalid_orcid_is_rejected(manuscript):
+    path = manuscript / "authors.json"
+    metadata = json.loads(path.read_text(encoding="utf-8"))
+    metadata["author"][0]["orcid"] = "0000-0001-5913-2998"
+    path.write_text(json.dumps(metadata), encoding="utf-8")
+    with pytest.raises(ValueError, match="Invalid ORCID checksum"):
+        CHECKER.check()
+
+
+def test_missing_pdf_email_is_rejected(manuscript):
+    path = manuscript / "authors.json"
+    metadata = json.loads(path.read_text(encoding="utf-8"))
+    metadata["sbc-affiliations"][0]["email-lines"] = []
+    path.write_text(json.dumps(metadata), encoding="utf-8")
+    with pytest.raises(ValueError, match="SBC email block"):
+        CHECKER.check()

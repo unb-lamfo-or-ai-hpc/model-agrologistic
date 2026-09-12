@@ -18,6 +18,30 @@ def check(*, rendered: bool = False, publication: bool = False) -> None:
     selection = json.loads((MANUSCRIPT / "citation_selection.json").read_text())
     evidence = json.loads((MANUSCRIPT / "evidence_status.json").read_text())
     provenance = json.loads((MANUSCRIPT / "template_provenance.json").read_text())
+    authors = json.loads((MANUSCRIPT / "authors.json").read_text(encoding="utf-8"))
+    records = authors["author"]
+    if len(records) != 7 or len({row["orcid"] for row in records}) != 7:
+        raise ValueError("Seven distinct author ORCIDs are required")
+    institutions = {row["id"] for row in authors["affiliations"]}
+    for row in records:
+        if not row["name"].strip() or not re.fullmatch(r"[^\s@]+@[^\s@]+\.[^\s@]+", row["email"]):
+            raise ValueError("Author name and email are required")
+        identifier = row["orcid"].replace("-", "")
+        if not re.fullmatch(r"\d{15}[\dX]", identifier):
+            raise ValueError("Invalid ORCID format")
+        total = 0
+        for digit in identifier[:15]:
+            total = (total + int(digit)) * 2
+        check_digit = (12 - total % 11) % 11
+        if identifier[-1] != ("X" if check_digit == 10 else str(check_digit)):
+            raise ValueError("Invalid ORCID checksum")
+        if any(affiliation["ref"] not in institutions for affiliation in row["affiliations"]):
+            raise ValueError("Unresolved author affiliation")
+    email_lines = " ".join(
+        line for row in authors["sbc-affiliations"] for line in row["email-lines"]
+    )
+    if any(row["email"] not in email_lines for row in records):
+        raise ValueError("SBC email block omits an author")
     keys = re.findall(r"@article\{([^,]+),", bibliography)
     cited = set(re.findall(r"(?<!\w)@([A-Za-z][A-Za-z0-9_-]*)", article))
     cited = {key for key in cited if not key.startswith(("eq-", "tbl-", "fig-", "sec-"))}
@@ -48,6 +72,9 @@ def check(*, rendered: bool = False, publication: bool = False) -> None:
                 raise ValueError(f"Missing rendered reference: {key}")
         if "citation-not-found" in html or "?@" in html:
             raise ValueError("Unresolved rendered cross-reference or citation")
+        for row in records:
+            if row["orcid"] not in html or row["email"] not in html:
+                raise ValueError(f"Missing rendered author metadata: {row['name']}")
         pdf = MANUSCRIPT / "_manuscript/index.pdf"
         if not pdf.is_file() or not pdf.read_bytes().startswith(b"%PDF-"):
             raise ValueError("SBC PDF output missing or malformed")

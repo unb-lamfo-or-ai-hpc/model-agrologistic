@@ -23,6 +23,9 @@ $if(natbib)$
 \setcitestyle{authoryear,round,aysep={ }}
 $endif$
 \usepackage{hyperref}
+% ORCID links and institution wrappers are downstream manuscript adaptations.
+\usepackage{orcidlink}
+\newcommand{\institution}[1]{#1}
 % Downstream adaptation: print-friendly links and searchable PDF metadata.
 \hypersetup{hidelinks}
 $if(title)$
@@ -46,7 +49,7 @@ $if(title)$
 $endif$
 
 $if(by-author)$
-\author{$for(by-author)$$by-author.name.literal$$if(by-author.metadata.institute)$\inst{$by-author.metadata.institute$}$endif$$sep$, $endfor$}
+\author{$for(by-author)$$by-author.name.literal$$if(by-author.orcid)$\,\orcidlink{$by-author.orcid$}$endif$$if(by-author.metadata.institute)$\inst{$by-author.metadata.institute$}$endif$$if(by-author.metadata.row-end)$\\$else$\quad $endif$$endfor$}
 $else$
 $if(author)$
 \author{$for(author)$$author$$sep$, $endfor$}
@@ -54,7 +57,7 @@ $endif$
 $endif$
 
 $if(sbc-affiliations)$
-\address{$for(sbc-affiliations)$$sbc-affiliations.text$$if(sbc-affiliations.email)$\email{$sbc-affiliations.email$}$endif$$sep$
+\address{$for(sbc-affiliations)$\institution{$sbc-affiliations.text$}$for(sbc-affiliations.email-lines)$\email{$sbc-affiliations.email-lines$}$endfor$$sep$
 \nextinstitute
 $endfor$}
 $else$

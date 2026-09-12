@@ -6,14 +6,19 @@
   "reference_source_commit": "177a469c5a55f292062c625bbcc71f7e93d5cd73",
   "reference_source_document": "docs/v020_validation_report.md",
   "reference_selection": "experiments/v020_validation_reference.yaml",
-  "accepted_reference_count": 8,
+  "accepted_reference_count": 9,
   "expected_reference_count": 10,
-  "final_four_level_status": "pending",
+  "final_four_level_status": "rejected",
+  "accepted_levels": [1, 2, 3],
+  "pending_levels": [4],
+  "remaining_reference": "policy_sto9_p20_warehouse_t14400",
+  "remaining_failed_check": "three_completed_passes",
+  "source_report": "Maintainer-supplied NPAD report after jobs 2088823_0 and 2088823_1",
   "numeric_results_included": false,
   "pending_items": [
-    "Final isolated nine-scenario receipts and four-level acceptance",
+    "Diagnose incomplete warehouse-only nine-scenario hierarchy and obtain four-level acceptance",
     "Reviewed frozen numeric tables, plots and provenance",
-    "Author list, affiliations, contributions and thesis citation",
+    "Author contributions, final manuscript approval and thesis citation",
     "Public-data and third-party licensing review",
     "Maintainer approval before review and Pages publication"
   ]

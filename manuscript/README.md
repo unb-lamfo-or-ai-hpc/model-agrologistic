@@ -4,7 +4,10 @@ This is a **working draft**, not the final v0.2 experimental report. It uses
 Quarto Manuscript with the pinned `quarto-sbc` extension, produces companion
 HTML and SBC PDF documents, and never executes optimization during rendering.
 All original prose is English; bibliographic titles and proper names retain
-their source language. Author metadata is provisional and requires approval.
+their source language. The seven authors, their order, affiliations, ORCIDs and
+email addresses are maintainer-supplied in `authors.json`. Contributions and
+final manuscript approval remain pending. HTML uses Quarto's native metadata;
+the PDF maps it to `\author`, `\orcidlink`, `\institution` and `\email`.
 
 ## Render from the repository root
 
@@ -32,9 +35,10 @@ The standalone manuscript does not change the active NPAD execution checkout.
 ## Evidence and reporting boundary
 
 [evidence_status.json](evidence_status.json) records the current cutoff and
-pending deliverables. The draft's status text derives from the versioned PR25
-narrative at the recorded source commit, not a newly captured final certificate.
-Eight references were accepted; the two remaining final receipts are pending.
+pending deliverables. The latest status comes from the maintainer-supplied
+NPAD report after jobs 2088823_0/1. Nine reference runs are accepted; the
+warehouse-only nine-scenario run lacks three completed lexicographic passes.
+Levels 1-3 are accepted, level 4 remains pending, and overall status is rejected.
 No exploratory v0.1 or pre-contract v0.2 numbers are relabeled as final results.
 
 Before publication, import a reviewed, immutable evidence package with its
@@ -58,11 +62,11 @@ manual publication workflow restricted to `main`, the `github-pages`
 environment and repository variable `MANUSCRIPT_PAGES_ENABLED=true`.
 It also requires the manuscript publication gate to pass.
 
-At creation, the repository is private and `has_pages=false`. A maintainer must
-verify plan/organization eligibility and configure **Settings > Pages > Source:
-GitHub Actions**. A public-visibility change is a separate decision, not part of
-this PR. The intended URL after successful deployment is
-`https://unb-lamfo-or-ai-hpc.github.io/model-agrologistic/`; it is not live yet.
+On 12 September 2026, repository metadata confirms public visibility and
+`has_pages=true`. The maintainer reports **Settings > Pages > Source: GitHub
+Actions** configured. These settings do not certify deployment of this draft.
+The intended manuscript URL after successful deployment is
+`https://unb-lamfo-or-ai-hpc.github.io/model-agrologistic/`.
 The workflow uses the Pages artifact/OIDC mechanism and does not push a
 `gh-pages` branch. Quarto Pub is not a second publication destination.
 
@@ -74,9 +78,10 @@ keys to Zotero item keys and DOIs. These are different identifiers. Only public
 bibliographic fields were transcribed to `references.bib`; abstracts, notes,
 attachment paths and library export internals are intentionally excluded.
 
-Proposed collection: **Model Agrologistic — Manuscript v0.2**. It has not been
-created. After destination confirmation, add the seven existing records by
-their Zotero item keys; do not reimport the bibliography and create duplicates.
+The maintainer created **Model Agrologistic — Manuscript v0.2**, collection
+`Q9G99YM3`, and authorized adding the seven existing cited records. Collection
+membership verification is tracked in `citation_selection.json`; do not
+reimport the bibliography and create duplicates.
 The title/metadata review was selective, with local abstracts read where
 available. It does not imply that every supplied paper was read in full.
 
@@ -101,8 +106,9 @@ Upstream: `cvictorr2508/quarto-sbc`, version 0.2.0, commit
 `88eaa11eeee9f86cd8594466e4644b321c8d7b75`.
 The adapter/style is vendored to avoid resolving a mutable branch at render
 time. The downstream adapter loads `calc` for Pandoc's proportional table
-widths, hides print-link boxes, records the PDF title, and suppresses an empty
-affiliation marker. The SBC style itself is unchanged. See
+widths, hides print-link boxes, records the PDF title, adds ORCID links and an
+institution wrapper, and wraps the author list across explicit rows. Quarto's
+native author metadata remains available to HTML. The SBC style is unchanged. See
 [template_provenance.json](template_provenance.json),
 [upstream license](vendor/quarto-sbc-LICENSE) and
 [third-party notices](vendor/THIRD_PARTY_NOTICES.md).

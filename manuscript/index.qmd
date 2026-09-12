@@ -1,8 +1,6 @@
 ---
 title: "Reproducible grain-storage investment planning under uncertainty"
 subtitle: "A mathematical-contract and HPC evidence framework for Model Agrologistic"
-author:
-  - name: Victor Rafael R Celestino
 date: 2026-09-12
 abstract: >-
   Strategic grain-storage planning links long-lived infrastructure decisions to
@@ -28,10 +26,12 @@ keywords:
 ---
 
 **Working manuscript, not a completed experimental report.** The evidence
-cutoff is 12 September 2026. Eight selected reference executions were reported
-accepted; two nine-scenario retries were still running in the latest received
-checkpoint. The author metadata identifies the software maintainer for this
-draft; the final author list, affiliations and contributions require approval.
+cutoff is 12 September 2026. Nine of ten selected reference executions were
+accepted. The nine-scenario warehouse-only retry passed independent solution
+and service checks but did not complete all three lexicographic passes; final
+HPC acceptance remains pending. Author order, affiliations, ORCIDs and email
+addresses were supplied by the research lead. Contributions and final manuscript
+approval remain to be documented.
 
 # Introduction
 
@@ -279,9 +279,11 @@ objective in @eq-hierarchy.
 
 # Evidence status and planned results presentation
 
-At the stated cutoff, the versioned validation narrative reports levels 1-3
-accepted on NPAD and eight selected references accepted. The remaining
-nine-scenario retries have no final receipt in this manuscript snapshot.
+At the stated cutoff, the maintainer-supplied validation report accepts levels
+1-3 and nine selected references. Overall acceptance is rejected because the
+nine-scenario warehouse-only retry lacks three completed lexicographic passes;
+level 4 remains pending. Its independently validated incumbent does not establish
+completion of the objective hierarchy. The nine-scenario direct-arc retry is accepted.
 Therefore, final objective, investment, service, capacity-gap and stochastic-value
 tables are deliberately withheld. Older exploratory CSVs use different
 contracts and cannot fill these cells. This is a pending evidence boundary,
@@ -340,7 +342,9 @@ only after the remaining selected HPC evidence is independently accepted.
 
 The source repository is
 [Model Agrologistic](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic).
-At this draft's cutoff it is private and no GitHub Pages site is deployed.
+At this draft's cutoff the repository is public and GitHub Pages is enabled;
+the maintainer reports GitHub Actions as the publishing source. Configuration
+alone does not establish deployment of this working manuscript.
 The manuscript uses the pinned
 [quarto-sbc template](https://github.com/cvictorr2508/quarto-sbc/tree/88eaa11eeee9f86cd8594466e4644b321c8d7b75).
 Its HTML and SBC PDF builds execute no solver, do not contact Zotero and require
@@ -349,9 +353,9 @@ attachments, licenses and raw HPC working directories are not publication inputs
 
 The repository includes the mathematical contract, reference manifests,
 independent-validation implementation and publication instructions. Final
-publication requires a reviewed frozen evidence package and approved author
-metadata. Public data availability and licensing must be checked before changing
-repository visibility. Rendering successfully certifies document construction,
+publication requires a reviewed frozen evidence package and final manuscript
+approval. Public data availability and third-party licensing must be checked
+before publishing additional artifacts. Rendering successfully certifies document construction,
 not scientific acceptance.
 
 # References
