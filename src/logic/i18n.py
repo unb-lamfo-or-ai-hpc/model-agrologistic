@@ -1,3 +1,9 @@
+"""Legacy interface translations with stable source-language lookup keys.
+
+Portuguese keys are compatibility data; English documentation must not change
+their spelling or fallback behavior for existing interface consumers.
+"""
+
 import json
 import os
 

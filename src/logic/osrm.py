@@ -4,6 +4,12 @@ OSRM is the primary road-distance authority. Haversine estimates are permitted
 only for pairs that OSRM identifies as unroutable or whose snapped coordinate
 is farther from the road graph than the configured tolerance. Transport or
 service failures are fatal and never trigger the fallback.
+
+Table distances follow the fastest route for the selected driving profile,
+not an independently shortest-distance route. Cache keys use ordered coordinate
+pairs and routing provenance; different facilities may share coordinates, so
+logical route counts and unique cached-pair counts need not agree. A fallback
+is a labeled approximation, not a reconstructed multimodal path.
 """
 
 from __future__ import annotations

@@ -1,4 +1,10 @@
-"""Auditable route-filter decisions and connectivity-repair candidates."""
+"""Auditable route-filter decisions and connectivity-repair candidates.
+
+Policy repair uses eligible materialized routes, not invented distances. Its
+deterministic path ordering is a greedy coverage mechanism, not a proof of a
+globally minimum repair network. Reachability alone does not establish
+throughput feasibility or domestic-service attainment.
+"""
 
 from __future__ import annotations
 

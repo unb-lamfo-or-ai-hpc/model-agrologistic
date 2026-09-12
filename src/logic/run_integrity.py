@@ -43,7 +43,9 @@ def implementation_identity() -> dict:
     """Hash normalized source, not Git availability on a compute node.
 
     Line-ending normalization makes Windows and Linux checkouts equivalent.
-    Documentation-only changes do not invalidate a mathematical checkpoint.
+    External documentation is excluded, but comments and docstrings inside
+    these Python source files do change the identity. Preserve old receipts
+    with their original checkout; semantic equivalence does not rewrite them.
     Runtime versions are included because numerical replay is environment-sensitive.
     """
     root = Path(__file__).parent

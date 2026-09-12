@@ -48,9 +48,8 @@ capacity is linked to the opening binary, while the two emergency variables
 are independent variables. Indicator constraints consequently force both
 emergency slacks to zero whenever the candidate opening binary is zero.
 Removing those indicators would create a ghost warehouse that could receive
-or store material without paying the opening decision. Complete recourse is
-thus available over the active infrastructure, while opening semantics remain
-economically valid. This is not a proof of complete recourse for every input:
+or store material without paying the opening decision. Relaxation is conditional
+on active infrastructure; it is not a proof of complete recourse for every input:
 shipping capacity, origin connectivity, export bounds, and activation remain
 hard constraints. An isolated positive-supply origin is still infeasible.
 
@@ -103,8 +102,10 @@ each group with deterministic distance and identifier tie-breaking. No
 coverage-repair routes are added after filtering.
 
 The historical thesis profile fixes this fraction at 20 percent. The policy
-profile reuses the same grouped operator at 15, 20, and 25 percent as a
-controlled edge-density sensitivity factor. In that profile the word
+profile reuses the grouped operator and adds separately reported eligible-route
+connectivity repairs. Its 15, 20, and 25 percent fractions define a controlled
+edge-density sensitivity factor; only selected 20-percent references belong to
+the final MVP gate. In that profile the word
 "fraction" is preferred to "Pareto": the experiments do not claim that the
 selected network is Pareto-optimal.
 
@@ -168,10 +169,12 @@ limitations are carried in the evidence metadata.
 - direct origin-to-customer arcs disabled and enabled;
 - grouped nearest-edge fractions of 15, 20, and 25 percent.
 
-These 18 runs use the canonical gold workbook and a 3,600-second reference
-limit. They are policy extensions for public-investment analysis, not thesis
-replications. Runs must be submitted by index and promoted progressively
-rather than launched as an uncontrolled batch.
+These configurations use the 215-warehouse OSRM-materialized derivative of the
+canonical gold workbook, not the unmaterialized template directly. The base
+budget is 3,600 seconds; the final nine-scenario references use separately
+identified 14,400-second retries. They are policy extensions, not numerical
+thesis replications. Submit explicit indices; the complete sensitivity campaign
+is not required for MVP acceptance.
 
 `experiments/v020_policy_time_limit.yaml` holds the nine-scenario, direct,
 20-percent configuration fixed and varies only the time limit over 600, 3,600,
@@ -186,8 +189,9 @@ in `docs/v020_policy_experiment_design.md`.
 Every primary solve reports three non-overlapping measurements:
 
 - `data_read_seconds`: workbook loading and canonical-data construction;
-- `model_build_seconds`: route selection and Gurobi model construction before
-  calling `model.optimize()`;
+- `model_build_seconds`: backend preparation and Gurobi model construction
+  before `model.optimize()`; the runner's earlier contract-freezing work is
+  outside this backend interval;
 - `optimization_seconds`: wall time spent inside `model.optimize()`.
 
 `runtime_seconds` remains the backward-compatible build-plus-optimization
@@ -207,20 +211,17 @@ a validated substitute.
 
 ## Acceptance gate
 
-PR #25 is accepted only after:
+The executable final selection is
+[v020_validation_reference.yaml](../experiments/v020_validation_reference.yaml),
+not the entire factorial or scalability study. It requires ten selected runs:
+four bounded thesis-method cases, two deterministic service-first cases, two
+three-scenario policy cases and two nine-scenario retries. The
+[four-level report](v020_validation_report.md) distinguishes mathematical/data
+contracts, zero-skip licensed quality, independent residual/cost validation and
+completed HPC references. Emergency use does not itself fail acceptance.
 
-1. all unit and integration tests pass;
-2. the OSRM matrix passes provenance and route-coverage audits before any solve;
-3. thesis deterministic and three-scenario profiles pass dry-run preflight;
-4. all reduced policy profiles pass staged preflight;
-5. licensed Gurobi solves validate representative thesis deterministic and
-   stochastic profiles;
-6. licensed Gurobi solves validate the 20-percent policy deterministic and
-   nine-scenario profiles within the approved HPC envelope;
-7. the time-limit study exports incumbent objective, MIP gap, and the three
-   timing regions;
-8. material balance, domestic service, separate emergency slacks, investment
-   decisions, EVPI/VSS decomposition, and provenance remain dimensionally
-   valid.
-
-Version 0.2.0 remains a development candidate until this gate is complete.
+Runtime, data and implementation identities must match; stale artifacts and
+incomplete hierarchies are not admitted. Exact numerical reproduction of the
+thesis, larger populations and the definitive time-to-gap frontier are not
+implied by this bounded acceptance. Version 0.2 remains a development candidate
+until the selected reference evidence is accepted and reviewed.

@@ -1,5 +1,13 @@
 # Scientific visualization protocol
 
+> Historical development record. Results and commands below refer to their named
+> earlier campaigns, not automatic v0.2 acceptance. Use the
+> [current mathematical contract](v020_mathematical_contract.md),
+> [validation report](v020_validation_report.md) and
+> [results interpretation](results_interpretation.md) for current claims.
+> In particular, old objective ordering, slack-unit labels and complete-recourse
+> language must not be transferred to new evidence without checking the contract.
+
 ## Purpose and scope
 
 This protocol converts the accepted MVP scientific evidence package into deterministic,

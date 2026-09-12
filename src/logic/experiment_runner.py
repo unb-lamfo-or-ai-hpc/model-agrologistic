@@ -1,4 +1,10 @@
-"""Reproducible experiment execution and structured result export for HPC."""
+"""Reproducible experiment execution and structured result export for HPC.
+
+Separate data loading, primary optimization, post-optimality and artifact
+processing. Solver status, independent residual checks and completed scientific
+references are distinct observations. Completion markers bind closed artifacts
+to the current identity; aggregation must not silently promote stale evidence.
+"""
 
 from __future__ import annotations
 

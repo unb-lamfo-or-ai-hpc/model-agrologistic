@@ -1,5 +1,12 @@
 # HPC experiments and structured outputs
 
+> Scope note: this guide includes historical campaign examples. For current
+> v0.2 selection use [the experiment catalogue](../experiments/README.md) and
+> [the bounded retry runbook](pr25_nine_scenario_retry.md). Do not execute a
+> complete manifest or change an active NPAD checkout merely to follow an older
+> example. Current units and acceptance are defined by the
+> [mathematical contract](v020_mathematical_contract.md).
+
 Stage 5.2 introduces versioned YAML manifests for reproducible local and HPC
 experiments. Each manifest records the input workbook, loader choices,
 mathematical formulation, solver parameters, and researcher metadata.

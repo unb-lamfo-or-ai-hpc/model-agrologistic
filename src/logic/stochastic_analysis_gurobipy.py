@@ -1,4 +1,12 @@
-"""EVPI and VSS analysis for the native gurobipy stochastic model."""
+"""Scalar value-of-information analysis for the native stochastic model.
+
+For minimization, EVPI = RP - WS and VSS = EEV - RP under one frozen network
+and penalty vector. Incumbent differences alone are not certificates: retain
+bound intervals and qualify Big-M contributions separately from economic cost.
+This module rejects lexicographic objectives, whose priorities do not define a
+common scalar monetary comparison. Post-optimality work is timed separately
+from the primary RP solve, including checkpoint reuse semantics.
+"""
 
 from __future__ import annotations
 

@@ -18,6 +18,12 @@ Current implementation:
 - emergency reception capacity.
 
 EVPI/VSS analysis is implemented in stochastic_analysis_gurobipy.py.
+
+Feasibility slacks relax stock and reception constraints separately. They do
+not create unconditional complete recourse: shipping and connectivity remain
+hard constraints. Reception overflow is already period tonnes and must not
+receive a second operating-day multiplier. The policy hierarchy is solved
+within declared tolerances; a primary objective value is not money.
 """
 
 from __future__ import annotations

@@ -1,5 +1,10 @@
 # Warehouse population scalability protocol
 
+> MVP boundary: OSRM materialization has been exercised at 215 and 500
+> warehouses. Larger populations, the definitive 14,400-second solve frontier
+> and the full sensitivity campaign are deferred. Registry levels below define
+> future experiments, not a requirement to optimize all 18,000 facilities.
+
 ## Purpose
 
 The policy extension evaluates how model size and stochastic dimensionality affect
