@@ -1,0 +1,14 @@
+/.quarto/
+/_manuscript/
+/_freeze/
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+*.tex
+*.pdf
+!_extensions/sbc/template.tex
+/sbc-template.sty
+
+**/*.quarto_ipynb

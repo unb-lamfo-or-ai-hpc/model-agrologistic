@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "review_date": "2026-09-12",
+  "scope": "Focused metadata/title review; abstracts inspected where present. No claim of full-text review or systematic coverage.",
+  "proposed_collection": "Model Agrologistic — Manuscript v0.2",
+  "collection_created": false,
+  "records": [
+    {
+      "citation_key": "rosa2025",
+      "zotero_item_key": "TFD29N7F",
+      "doi": "10.1590/1806-9649-2025v32e4925"
+    },
+    {
+      "citation_key": "reis2023",
+      "zotero_item_key": "LTMV44AI",
+      "doi": "10.3390/logistics7030049"
+    },
+    {
+      "citation_key": "foulds2005",
+      "zotero_item_key": "J9C5NNLU",
+      "doi": "10.1504/IJOR.2005.007434"
+    },
+    {
+      "citation_key": "dubke2011",
+      "zotero_item_key": "SBV9GHVE",
+      "doi": "10.1590/S0101-74382011000100003"
+    },
+    {
+      "citation_key": "mardaneh2021",
+      "zotero_item_key": "WCVTJ8N8",
+      "doi": "10.1016/j.knosys.2021.107037"
+    },
+    {
+      "citation_key": "steiner2017",
+      "zotero_item_key": "G9SBLRJJ",
+      "doi": "10.1016/j.cie.2017.07.019"
+    },
+    {
+      "citation_key": "maiyar2019",
+      "zotero_item_key": "74YMVWBD",
+      "doi": "10.1016/j.ijpe.2018.07.021"
+    }
+  ]
+}

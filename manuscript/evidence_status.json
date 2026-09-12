@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "as_of": "2026-09-12",
+  "manuscript_status": "working_draft",
+  "publication_ready": false,
+  "reference_source_commit": "177a469c5a55f292062c625bbcc71f7e93d5cd73",
+  "reference_source_document": "docs/v020_validation_report.md",
+  "reference_selection": "experiments/v020_validation_reference.yaml",
+  "accepted_reference_count": 8,
+  "expected_reference_count": 10,
+  "final_four_level_status": "pending",
+  "numeric_results_included": false,
+  "pending_items": [
+    "Final isolated nine-scenario receipts and four-level acceptance",
+    "Reviewed frozen numeric tables, plots and provenance",
+    "Author list, affiliations, contributions and thesis citation",
+    "Public-data and third-party licensing review",
+    "Maintainer approval before review and Pages publication"
+  ]
+}

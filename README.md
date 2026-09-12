@@ -172,7 +172,9 @@ solver/runtime versions and experiment configuration. The code is licensed under
 [GPL-3.0-only](LICENSE); third-party data and software retain their own licensing
 and attribution requirements.
 
-A Quarto Manuscript based on `cvictorr2508/quarto-sbc` is planned after the
-reference evidence and documentation review. It must distinguish thesis-method
-comparison, historical v0.1 evidence and policy extensions. This branch neither
-publishes the article nor changes repository visibility.
+A [working Quarto Manuscript](manuscript/README.md), based on a pinned
+`cvictorr2508/quarto-sbc` template, is developed in parallel with final reference
+validation. It distinguishes thesis-method comparison, historical v0.1 evidence
+and policy extensions. Rendering does not execute the solver. The draft includes
+explicit pending-evidence labels; publication and repository visibility remain
+separate maintainer decisions.

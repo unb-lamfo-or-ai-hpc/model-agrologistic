@@ -1,0 +1,66 @@
+"""Check a solver-free manuscript draft without certifying scientific results."""
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+import re
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+MANUSCRIPT = ROOT / "manuscript"
+
+
+def check(*, rendered: bool = False, publication: bool = False) -> None:
+    """Fail on unresolved citations, changed vendor files or unsafe publication."""
+    article = (MANUSCRIPT / "index.qmd").read_text(encoding="utf-8")
+    bibliography = (MANUSCRIPT / "references.bib").read_text(encoding="utf-8")
+    selection = json.loads((MANUSCRIPT / "citation_selection.json").read_text())
+    evidence = json.loads((MANUSCRIPT / "evidence_status.json").read_text())
+    provenance = json.loads((MANUSCRIPT / "template_provenance.json").read_text())
+    keys = re.findall(r"@article\{([^,]+),", bibliography)
+    cited = set(re.findall(r"(?<!\w)@([A-Za-z][A-Za-z0-9_-]*)", article))
+    cited = {key for key in cited if not key.startswith(("eq-", "tbl-", "fig-", "sec-"))}
+    if len(keys) != len(set(keys)) or set(keys) != cited:
+        raise ValueError(f"Bibliography/citation mismatch: {set(keys) ^ cited}")
+    if {row["citation_key"] for row in selection["records"]} != cited:
+        raise ValueError("Zotero selection must map exactly the cited records")
+    for row in selection["records"]:
+        if row["doi"] not in bibliography:
+            raise ValueError(f"Missing DOI for {row['citation_key']}")
+    if re.search(r"(?im)^\s*(file|abstract|note)\s*=", bibliography):
+        raise ValueError("Private library fields must not be published")
+    if "```{" in article:
+        raise ValueError("Manuscript rendering must not execute research code")
+    for relative, digest in provenance["vendored_sha256"].items():
+        observed = hashlib.sha256((MANUSCRIPT / relative).read_bytes()).hexdigest()
+        if observed != digest:
+            raise ValueError(f"Vendored template checksum mismatch: {relative}")
+    if evidence["final_four_level_status"] != "accepted":
+        if evidence["publication_ready"] or evidence["numeric_results_included"]:
+            raise ValueError("Pending evidence cannot be labeled publication-ready")
+        if "Working manuscript" not in article or "pending" not in article:
+            raise ValueError("Pending scientific status must be visible")
+    if rendered:
+        html = (MANUSCRIPT / "_manuscript/index.html").read_text(encoding="utf-8")
+        for key in keys:
+            if f'id="ref-{key}"' not in html:
+                raise ValueError(f"Missing rendered reference: {key}")
+        if "citation-not-found" in html or "?@" in html:
+            raise ValueError("Unresolved rendered cross-reference or citation")
+        pdf = MANUSCRIPT / "_manuscript/index.pdf"
+        if not pdf.is_file() or not pdf.read_bytes().startswith(b"%PDF-"):
+            raise ValueError("SBC PDF output missing or malformed")
+    if publication:
+        # An accepted, hash-verified evidence importer is a later reviewed step.
+        # This working-draft PR must never deploy by changing a Boolean alone.
+        raise ValueError("Publication blocked: final evidence import and author review pending")
+    print(f"MANUSCRIPT DRAFT CHECK: accepted ({len(keys)} cited references)")
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--rendered", action="store_true")
+    parser.add_argument("--publication", action="store_true")
+    args = parser.parse_args()
+    check(rendered=args.rendered, publication=args.publication)
