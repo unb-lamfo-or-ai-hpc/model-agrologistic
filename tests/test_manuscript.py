@@ -80,3 +80,35 @@ def test_missing_pdf_email_is_rejected(manuscript):
     path.write_text(json.dumps(metadata), encoding="utf-8")
     with pytest.raises(ValueError, match="SBC email block"):
         CHECKER.check()
+
+
+def test_ai_declaration_is_before_references(manuscript):
+    article = (manuscript / "index.qmd").read_text(encoding="utf-8")
+    assert article.index("# Reproducibility and availability") < article.index(
+        "# Declaration of generative AI") < article.index("# References")
+    for name in ("Gurobot", "Gemini 3.1 Pro", "5.6 Sol", "6.0 Astra"):
+        assert name in article
+
+
+def test_missing_stochastic_formulation_is_rejected(manuscript):
+    path = manuscript / "index.qmd"
+    path.write_text(path.read_text(encoding="utf-8").replace(
+        "## Two-stage stochastic model", "## Other model"), encoding="utf-8")
+    with pytest.raises(ValueError, match="Missing formulation"):
+        CHECKER.check()
+
+
+def test_unresolved_equation_is_rejected(manuscript):
+    path = manuscript / "index.qmd"
+    path.write_text(path.read_text(encoding="utf-8") + "\n@eq-invented", encoding="utf-8")
+    with pytest.raises(ValueError, match="mathematical cross-reference"):
+        CHECKER.check()
+
+
+def test_benchmark_is_not_labeled_as_verified_slr(manuscript):
+    audit = json.loads((manuscript / "benchmark_review_audit.json").read_text())
+    assert audit["review_status"] == "provisional_structural_synthesis"
+    assert len(audit["identified_core_studies"]) == 9
+    assert audit["alternative_flow_reported"]["identified"] == 20
+    assert audit["alternative_flow_reported"]["sought"] == 19
+    assert audit["unresolved"]

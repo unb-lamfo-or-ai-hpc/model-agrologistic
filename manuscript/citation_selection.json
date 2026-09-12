@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "review_date": "2026-09-12",
-  "scope": "Focused metadata/title review; abstracts inspected where present. No claim of full-text review or systematic coverage.",
+  "scope": "Supplied benchmark narrative and structural tables read; selected local abstracts and bibliographic metadata checked. No new systematic search or blanket original-paper full-text review.",
   "collection_name": "Model Agrologistic — Manuscript v0.2",
   "collection_key": "Q9G99YM3",
   "collection_created": true,
   "collection_created_by": "maintainer",
-  "membership_verified": true,
+  "membership_verified": false,
   "membership_verified_date": "2026-09-12",
   "verified_member_count": 7,
   "records": [
@@ -44,6 +44,86 @@
       "citation_key": "maiyar2019",
       "zotero_item_key": "74YMVWBD",
       "doi": "10.1016/j.ijpe.2018.07.021"
+    },
+    {
+      "citation_key": "mogale2020",
+      "zotero_item_key": "7IJYQZRQ",
+      "doi": "10.1007/s10479-020-03664-y",
+      "membership_verified": false,
+      "metadata_source": "Zotero local API; supplied benchmark"
+    },
+    {
+      "citation_key": "mogale2023",
+      "zotero_item_key": "VNEHZQ9J",
+      "doi": "10.1080/00207543.2022.2078746",
+      "membership_verified": false,
+      "metadata_source": "Zotero local API; supplied benchmark"
+    },
+    {
+      "citation_key": "milanez2026",
+      "zotero_item_key": "4HBTP3LC",
+      "doi": "10.15728/bbr.2024.1837.en",
+      "membership_verified": false,
+      "metadata_source": "Zotero local API; supplied benchmark"
+    },
+    {
+      "citation_key": "granillo2019",
+      "zotero_item_key": "J67QX7ML",
+      "doi": "10.15446/dyna.v86n208.72056",
+      "membership_verified": false,
+      "metadata_source": "Zotero local API; supplied benchmark"
+    },
+    {
+      "citation_key": "morais2023",
+      "zotero_item_key": "DKZVI4BT",
+      "doi": "10.3390/su15021063",
+      "membership_verified": false,
+      "metadata_source": "Zotero local API; supplied benchmark"
+    },
+    {
+      "citation_key": "mendoza2021",
+      "zotero_item_key": "7CDHUICA",
+      "doi": "10.1007/978-3-030-86702-7_33",
+      "membership_verified": false,
+      "metadata_source": "Zotero local API; supplied benchmark"
+    },
+    {
+      "citation_key": "vazquez2021",
+      "zotero_item_key": "GU4J33D9",
+      "doi": "10.1016/j.compchemeng.2021.107223",
+      "membership_verified": false,
+      "metadata_source": "Zotero local API; supplied benchmark"
+    },
+    {
+      "citation_key": "page2021",
+      "zotero_item_key": "MJMKNIGJ",
+      "doi": "10.1136/bmj.n71",
+      "membership_verified": false,
+      "metadata_source": "Zotero local API; supplied benchmark"
+    },
+    {
+      "citation_key": "anselmino2025",
+      "zotero_item_key": "VYK2IIDQ",
+      "doi": "10.1016/j.biombioe.2025.107686",
+      "membership_verified": false,
+      "metadata_source": "Zotero local API; supplied benchmark"
+    },
+    {
+      "citation_key": "guimaraes2017",
+      "zotero_item_key": "VQ7RQEDW",
+      "doi": "10.19272/201706702006",
+      "membership_verified": false,
+      "metadata_source": "Zotero local API; supplied benchmark",
+      "metadata_correction": "Author order, spelling, volume and pages checked against publisher page; no library record edited."
+    },
+    {
+      "citation_key": "mascarenhas2014",
+      "zotero_item_key": null,
+      "doi": null,
+      "url": "https://www.revistaespacios.com/a14v35n11/14351123.html",
+      "metadata_source": "Publisher full-text page; no matching local Zotero record found",
+      "membership_verified": false
     }
-  ]
+  ],
+  "collection_note": "Seven original references verified in the collection. Eleven newly cited references require collection reconciliation; one was not found locally. No duplicates imported."
 }

@@ -42,7 +42,7 @@ def check(*, rendered: bool = False, publication: bool = False) -> None:
     )
     if any(row["email"] not in email_lines for row in records):
         raise ValueError("SBC email block omits an author")
-    keys = re.findall(r"@article\{([^,]+),", bibliography)
+    keys = re.findall(r"@(?:article|incollection)\{([^,]+),", bibliography)
     cited = set(re.findall(r"(?<!\w)@([A-Za-z][A-Za-z0-9_-]*)", article))
     cited = {key for key in cited if not key.startswith(("eq-", "tbl-", "fig-", "sec-"))}
     if len(keys) != len(set(keys)) or set(keys) != cited:
@@ -50,8 +50,25 @@ def check(*, rendered: bool = False, publication: bool = False) -> None:
     if {row["citation_key"] for row in selection["records"]} != cited:
         raise ValueError("Zotero selection must map exactly the cited records")
     for row in selection["records"]:
-        if row["doi"] not in bibliography:
-            raise ValueError(f"Missing DOI for {row['citation_key']}")
+        identifier = row.get("doi") or row.get("url")
+        if not identifier or identifier not in bibliography:
+            raise ValueError(f"Missing bibliographic identifier for {row['citation_key']}")
+    declaration = "# Declaration of generative AI and AI-assisted technologies"
+    if not (article.index("# Reproducibility and availability")
+            < article.index(declaration) < article.index("# References")):
+        raise ValueError("AI declaration must precede References")
+    if re.search(r"^# ", article[article.index(declaration) + 2:
+                                article.index("# References")], re.MULTILINE):
+        raise ValueError("AI declaration must immediately precede References")
+    for required in ("## Deterministic model", "## Two-stage stochastic model",
+                     "{#tbl-sets}", "{#tbl-parameters}", "{#tbl-variables}",
+                     "{#eq-sto-capacity}", "{#eq-indicator}"):
+        if required not in article:
+            raise ValueError(f"Missing formulation section: {required}")
+    labels = re.findall(r"\{#((?:eq|tbl|fig|sec)-[A-Za-z0-9_-]+)\}", article)
+    references = set(re.findall(r"@((?:eq|tbl|fig|sec)-[A-Za-z0-9_-]+)", article))
+    if len(labels) != len(set(labels)) or references - set(labels):
+        raise ValueError("Duplicate or unresolved mathematical cross-reference")
     if re.search(r"(?im)^\s*(file|abstract|note)\s*=", bibliography):
         raise ValueError("Private library fields must not be published")
     if "```{" in article:

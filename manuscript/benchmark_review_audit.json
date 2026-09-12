@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "review_date": "2026-09-12",
+  "source_filename": "Manuscript_Benchmark_V0.pdf",
+  "source_sha256": "c6262326000e9b1d15da22a6e94aaa4b9d73da921d0a1b8511b1f8a1f262b46a",
+  "source_pages": 21,
+  "source_distribution": "User-supplied working manuscript; source PDF not redistributed",
+  "review_status": "provisional_structural_synthesis",
+  "database_flow_reported": {
+    "identified": 478, "duplicates": 59, "screened": 419,
+    "screening_excluded": 404, "sought": 15, "not_retrieved": 1,
+    "assessed": 14, "full_text_excluded": 8, "included": 6
+  },
+  "alternative_flow_reported": {
+    "identified": 20, "duplicates": 2, "sought": 19,
+    "not_retrieved": 1, "assessed": 18, "excluded": 15, "included": 3
+  },
+  "identified_core_studies": [
+    "foulds2005", "mascarenhas2014", "guimaraes2017", "granillo2019",
+    "mogale2020", "mendoza2021", "vazquez2021", "morais2023", "milanez2026"
+  ],
+  "unresolved": [
+    "Alternative-source arithmetic: 20 minus 2 is 18, not the reported 19 sought; do not guess which count is wrong.",
+    "Search date 04-10-2026 needs explicit ISO interpretation and supporting search exports.",
+    "PRISMA figure caption states authors (2025), while the manuscript tables state 2026; reconcile chronology.",
+    "Foulds is coded single-period in one source table but dynamic in its title and narrative; avoid copying that inconsistency.",
+    "Counts of origins, customers and sites are model dimensions, not optimization integer variables unless actually chosen.",
+    "Search exports, screening decisions and original-paper extraction checks are not supplied in this review."
+  ],
+  "data_method_boundary": "The source describes harvest-calendar and population-based disaggregation; these descriptions are not independently certified as the lineage of every frozen workbook.",
+  "thesis_excerpt_boundary": "Available thesis PDF covers case-study pages 174-193, not the complete mathematical chapter; current equations derive from the audited v0.2 contract and implementation."
+}

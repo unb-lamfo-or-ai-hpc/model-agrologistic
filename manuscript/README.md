@@ -72,33 +72,57 @@ The workflow uses the Pages artifact/OIDC mechanism and does not push a
 
 ## References and Zotero
 
-Seven focused references were selected from the accessible local library.
+Eighteen references are cited in the expanded draft. Seventeen records were
+located in the accessible local library; the Mascarenhas article was checked
+against its publisher page and has no verified local item key.
 [citation_selection.json](citation_selection.json) maps manuscript citation
-keys to Zotero item keys and DOIs. These are different identifiers. Only public
+keys to Zotero item keys and DOI or publisher URLs. These are different identifiers. Only public
 bibliographic fields were transcribed to `references.bib`; abstracts, notes,
 attachment paths and library export internals are intentionally excluded.
 
 The maintainer created **Model Agrologistic — Manuscript v0.2**, collection
-`Q9G99YM3`, and authorized adding the seven existing cited records. Collection
+`Q9G99YM3`, and authorized adding cited records. Seven memberships were verified;
+the eleven newly selected references still require collection reconciliation. Collection
 membership verification is tracked in `citation_selection.json`; do not
 reimport the bibliography and create duplicates.
 The title/metadata review was selective, with local abstracts read where
 available. It does not imply that every supplied paper was read in full.
 
-Selected roles: grain-storage location review (Rosa); dynamic location (Foulds);
-Brazilian export terminals (Dubke/Pizzolato); regional silo location (Steiner
-Neto and colleagues); grain decision support (Mardaneh and colleagues);
-soybean uncertainty (Reis and colleagues); and intermodal disruption as a
-distinct, unimplemented extension (Maiyar/Thakkar). General UMAP, learned-cut
-selection and Benders references are not cited because those methods are not
-implemented here. Broader food-chain reviews remain candidates for a later
-literature expansion, not mandatory citations.
+The related-work section distinguishes grain-network location, stochastic and
+robust planning, operational integration, and adjacent biomass-network methods.
+It synthesizes nine core studies reported in the maintainer-supplied benchmark
+draft and situates them with review, reporting and methodological references.
+It does not claim a newly completed systematic review or implementation of the
+methods described in cited studies.
+
+[benchmark_review_audit.json](benchmark_review_audit.json) records the supplied
+PDF identity, its provisional screening counts, the inconsistent arithmetic in
+the alternative-source flow and the ambiguous search date. Original search
+exports and screening decisions are needed before certifying a systematic
+review. The private source PDF is not redistributed.
 
 Bibliographic spellings follow Zotero except for a documented correction of
 `soybe an` to `soybean` in Dubke/Pizzolato, matching the article title and text.
 Foulds retains page 74 as registered in Crossref; the complete page range should
 be checked before submission. Proper geographic names are protected from
 BibTeX case conversion. No correction was applied to the user's library.
+
+## Editorial and mathematical development
+
+[editorial_plan.md](editorial_plan.md) records Computers and Electronics in
+Agriculture as the preferred, not confirmed, journal and an internal target of
+20 body pages plus references. This is not a verified journal page limit. The
+SBC template remains the agreed review format; journal-specific conversion
+requires a later editorial decision.
+
+The mathematical section provides separate deterministic and two-stage
+stochastic formulations, symbol tables and numbered objectives/constraints.
+[formulation_traceability.md](formulation_traceability.md) maps them to the
+current mathematical contract and implementation. The supplied Artur PDF is a
+case-study excerpt, not the complete mathematical chapter: matching its exact
+original numbering or claiming complete historical equivalence is not justified.
+The author-supplied generative-AI declaration appears immediately before the
+references and still requires author confirmation before submission.
 
 ## Template and licensing
 
