@@ -1,6 +1,11 @@
 # PR #25: mathematical contract and four-level validation report
 
-Status: **ready for code review; final licensed NPAD validation pending**.
+Status (2026-09-12): **levels 1-3 accepted on NPAD; two nine-scenario
+reference retries pending for level 4**. Eight references are accepted.
+The maintainer-supplied isolated report is
+`report-isolated-20260912T122327075162Z/v020_validation_report.json`.
+Read the [bounded retry runbook](pr25_nine_scenario_retry.md) before submitting
+anything; do not repeat the eight accepted runs or the licensed quality suite.
 This report supersedes the earlier claim that reception slack needed another
 30-day multiplier. It does not supersede or modify the archived v0.1.0 evidence.
 
@@ -163,6 +168,13 @@ not block acceptance. Missing reference runs remain pending; the archived
 v0.1 certificate is never substituted for them.
 
 ## Final NPAD validation
+
+The commands in this section describe the initial protocol bootstrap. That
+quality gate has now passed on NPAD with zero skipped tests. The next action
+is only the [two-run, 14400-second retry](pr25_nine_scenario_retry.md).
+The default reference plan now retains eight unchanged accepted references and
+selects the two explicitly named retries. The old selection is preserved in
+`experiments/v020_validation_reference_t3600.yaml` for historical inspection.
 
 Run from `/home/vrrcelestino/model-agrologistic`, in the established conda
 environment `/home/vrrcelestino/venv313`. Do not paste Markdown fence markers

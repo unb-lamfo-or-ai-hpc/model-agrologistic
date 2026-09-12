@@ -1,7 +1,9 @@
 schema_version: 1
 scope: >-
   Bounded alpha=0.8 thesis-method comparison and 215-warehouse OSRM service-first
-  policy references at 20-percent retained arcs. Not numerical replication of
+  policy references at 20-percent retained arcs. The nine-scenario references
+  use explicitly identified 14400-second retries; the other eight references
+  are unchanged. Not numerical replication of
   all published thesis tables and not the full scalability campaign.
 campaigns:
   - profile: thesis_method_with_separate_slacks
@@ -14,5 +16,9 @@ campaigns:
     output_dir: data/results/validation/pr25-final/service
   - profile: policy_service_first_stochastic
     manifest: experiments/v020_policy_mvp.yaml
-    indices: [8, 9, 14, 15]
+    indices: [8, 9]
     output_dir: data/results/validation/pr25-final/policy
+  - profile: policy_service_first_stochastic_nine_t14400
+    manifest: experiments/v020_policy_nine_scenario_retry.yaml
+    indices: [0, 1]
+    output_dir: data/results/validation/pr25-final/policy-nine-t14400
