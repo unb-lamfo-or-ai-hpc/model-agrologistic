@@ -1,284 +1,117 @@
-# PR #25: mathematical contract and four-level validation report
+# v0.2 mathematical contract and validation results
 
-Status (2026-09-13): **levels 1-3 accepted in the latest supplied NPAD report;
-level 4 remains pending and the overall report is rejected**. Nine references
-are accepted. The warehouse-only nine-scenario retry stopped at Gurobi's
-soft-memory limit; its incomplete objective hierarchy is not accepted.
-Read the [dual/four-thread retry runbook](pr25_warehouse_dual_retry.md) before submitting
-anything; do not repeat the nine accepted runs or the licensed quality suite.
-This report supersedes the earlier claim that reception slack needed another
-30-day multiplier. It does not supersede or modify the archived v0.1.0 evidence.
+## Bounded demonstration outcome
 
-## Executive conclusion
+The selected NPAD experiment comprises ten reference configurations. Nine were
+accepted. The final warehouse-only nine-scenario execution returned a
+service-feasible, independently validated incumbent but did not complete the
+three-stage objective hierarchy. Development of the bounded MVP is closed with
+this computational limitation explicitly retained.
 
-### Latest result: the larger-memory attempt also stopped
+The original four-level certificate remains **rejected**. Levels 1-3 were
+accepted; level 4 remains **pending** in the frozen validator's terminology.
+Closing development is not equivalent to accepting the original ten-case
+certificate. The target relative MIP gap remains 0.01 (1%), not 0.10 (10%).
+No model, numerical tolerance or acceptance rule was changed for this closure.
 
-The report `report-memory128-20260913T171425Z/v020_validation_report.json`
-confirms nine accepted references and one rejected warehouse-only nine-scenario
-run. Levels 1–3 are accepted, level 4 is pending, and overall status is rejected.
-Job 2089838 used a 192 GiB allocation but reached Gurobi's 128 decimal GB soft
-limit after 12650.56 optimization seconds; it explored 16 nodes and retained
-economic incumbent 764469455725.4, bound 410003580551.1, gap 46.3676%.
-MaxRSS was 116192580 KiB (approximately 110.8 GiB). The only failed run check
-remains `three_completed_passes`; no local residual, cost, service or provenance
-failure was reported. The allocation itself did not report a Slurm OOM kill.
+The [immutable NPAD report](evidence/pr25-final/v020_validation_report.json)
+and [structured closure observations](evidence/pr25-final/closure.json)
+contain the implementation fingerprint and reference identities.
+The [evidence guide](evidence/pr25-final/README.md) describes their scope.
 
-The next bounded numerical experiment explicitly sets `Method=1` (dual simplex
-for the root relaxation) and `Threads=4`, keeping SoftMemLimit=128, Slurm memory
-192 GiB, 14400 seconds and every mathematical/acceptance setting unchanged.
-This jointly changes algorithm and parallelism, not the mathematical model;
-runtime differences cannot be attributed to one change alone. Neither lower
-memory usage nor successful convergence is presumed. The previous plan and
-both partial runs remain archived. The final plan still preserves exactly nine
-accepted references. No `src/logic` or dependency change is made.
+## Four validation levels
 
-### Historical resource-only attempt (superseded for execution)
+| Level | Outcome | Evidence and interpretation |
+|---|---|---|
+| 1: mathematical and data contract | Accepted | Selected network, penalties, activation, conservation and unit contracts match the reference formulation |
+| 2: software and licensed analytical tests | Accepted | NPAD Ruff, pytest and build returned zero; no licensed tests were skipped |
+| 3: independent solution validation | Accepted | Exported local residuals, costs and usable incumbents passed the independent checker |
+| 4: HPC reference demonstration | Pending in the original certificate | Nine references accepted; the warehouse-only nine-scenario hierarchy is incomplete |
 
-The supplied tail of `slurm-pr25-nine-retry-2088823_0.out` explicitly reports
-`Memory limit reached` after 11393.77 optimization seconds. The final displayed
-economic incumbent is 764469455725.4, with bound 409973108225.9 and gap 46.3716%.
-The run assessor accepts the contract, independent residuals/costs, network and
-penalties, incumbent, per-scenario domestic service, service certification,
-final-stage values, timing and HPC identity; only `three_completed_passes`
-fails. This is not evidence of infeasibility or a Slurm out-of-memory kill.
-Slurm exit 1 is consistent with post-solve rejection of the incomplete hierarchy.
+The quality receipt's generic sentence about skipped licensed tests is a
+conditional qualification, not evidence that any test was skipped:
+`skipped_tests` is zero. The successful software suite does not erase a failed
+HPC reference. The tested implementation fingerprint is
+`c9cfe18e8c1fe19d4e5659139804b4b8dea7b650d4c5e0c3dcb8b5afde4f3042`.
 
-The next execution changes only `SoftMemLimit` from 56 to 128 decimal GB,
-requests 192 GiB from Slurm, and preserves 16 threads, 14400 seconds, all
-tolerances and mathematical settings. A new run identity and output root
-preserve the partial evidence. Nine accepted references retain their exact
-specifications and paths; the preceding plan is archived as
-`experiments/v020_validation_reference_t14400.yaml`.
+## Reference configurations
 
-No optimization/validation implementation source or dependency is changed.
-The approved implementation/runtime receipt remains applicable if its hash
-still matches; new orchestration tests are verified separately. More memory
-does not guarantee convergence within the time budget. The final four-level
-report is still required. PRs #26 and #27 are frozen by maintainer instruction.
+| Model family | Scenarios | Direct arcs | Outcome |
+|---|---:|---|---|
+| Thesis-method, alpha 0.8 | 1 | Disabled | Accepted |
+| Thesis-method, alpha 0.8 | 1 | Enabled | Accepted |
+| Thesis-method, alpha 0.8 | 3 | Disabled | Accepted |
+| Thesis-method, alpha 0.8 | 3 | Enabled | Accepted |
+| Policy service-first | 1 | Disabled | Accepted |
+| Policy service-first, 14,400 s | 1 | Enabled | Accepted |
+| Policy service-first | 3 | Disabled | Accepted |
+| Policy service-first | 3 | Enabled | Accepted |
+| Policy service-first, 14,400 s | 9 | Enabled | Accepted |
+| Policy service-first, dual simplex/four threads | 9 | Disabled | Rejected: incomplete hierarchy |
 
-The two bounded implementation commits add a frozen mathematical contract and
-an independent solution checker. Their purpose is to make incorrect results
-detectable and to qualify scientific claims, not to guarantee zero emergency
-use or to manufacture a numerical match with Artur's published tables.
+Policy references use 215 warehouses and the grouped 20% road-arc rule with
+declared connectivity handling. Acceptance does not certify all alpha values,
+route fractions, warehouse populations or unique investment decisions.
+OSRM data preparation at 500 warehouses is not a completed optimization study.
 
-The first commit is `58e5f49c74e2dba166ce4542f33486ec4681928c`.
-Its GitHub Quality workflow passed:
-[run 34651985438](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/actions/runs/34651985438).
-The second commit contains this report and the executable validation protocol.
-Final CI and NPAD receipts are recorded in the PR conversation without rewriting
-the immutable execution artifacts.
+## Final warehouse-only trial
 
-## Level 1 — mathematical and data contract
+Job 2091731 used the intel-256 partition, four CPUs, 192 GiB of allocated
+memory, dual simplex and a 14,400-second optimization budget. Slurm reports
+FAILED with exit 1:0 after 04:05:46. Maximum RSS was 28,572,324 KiB
+(approximately 27.25 GiB). Its solver-stage export identifies a time limit,
+not an out-of-memory termination or an infeasible model.
 
-Implemented and covered by analytical regression tests:
+| Stage | Status | Incumbent | Bound | Relative gap | Optimizer time (s) |
+|---|---|---:|---:|---:|---:|
+| Expected unmet demand | OPTIMAL | 0 | -2.852e-9 | Not informative at zero objective | 484.263 |
+| Expected capacity-violation score | TIME_LIMIT | 159,075,421,601.43033 | 0 | 100% | 13,916.598 |
+| Economic cost | Not executed | Not available | Not available | Not available | Not available |
 
-- Reception capacity enters a period constraint as daily nominal capacity
-  multiplied by operating days, followed by **period overflow in tonnes**.
-  The overflow must not be multiplied by operating days again. Its daily
-  equivalent is overflow divided by days, only for reporting.
-- Static emergency quantities are stock exceedances indexed by warehouse and
-  period. Their sum over time is not installed capacity. The secondary policy
-  objective is an explicitly chosen equal-weight violation score combining
-  different operational mechanisms, not a physical construction target.
-- Historical shared slack and approved separate slacks are distinguished:
-  for fixed exceedances `a` and `b`, a common penalty rate gives
-  `P * max(a, b)` versus `P * (a + b)`. This extension is not numerically neutral.
-- Dynamic unmet-demand penalties use the selected network, not discarded long
-  routes. The selected OD/DC/DD/OC sets, connectivity repairs and penalty vector
-  are frozen before RP, EV, WS or EEV projections. Hashes and the actual penalty
-  vector are exported. Different configurations can still have different
-  dynamic penalties; cross-configuration penalized costs need that qualification.
-- Only the implemented free-terminal-inventory policy is accepted. Unsupported
-  zero, target and penalized options fail before optimization rather than being
-  silently ignored.
-- Candidate opening, investment eligibility, expansion/bulkification exclusion,
-  supply conservation and export upper bounds are retained. No new slack family
-  or route-expansion experiment was introduced.
-- Bulkification's daily coupling factor has units `1/day` when the investment
-  decision and cost basis are tonnes. Under `daily_factors`, bulkification does
-  not automatically increase static capacity.
+The service target and independent residual/cost checks were accepted. The
+capacity score is not a monetary objective or an installed-capacity estimate.
+The capacity pass's incumbent and zero lower bound cannot establish quality
+within 1%, or even 10%. The unexecuted economic pass has no final economic
+optimum or gap. The near-zero service bound and relative-gap sentinel must not
+be interpreted as failure of the separately certified domestic-service target.
 
-**Qualification:** the model does not have unconditional complete recourse.
-Shipping remains hard, candidates require activation, and all supply requires
-an allowed outlet. Emergency use is a diagnostic finding, not a rejection rule.
+Earlier warehouse-only trials reached soft-memory limits with economic gaps
+near 46.37%. Changing solver method and thread count reduced observed memory
+consumption in the last trial, but the hierarchy stopped at an earlier stage.
+The combined changes and different progress preclude a causal speedup claim.
+All unsuccessful attempts remain part of the development evidence.
 
-## Level 2 — software verification
+## Mathematical and numerical qualifications
 
-The local Python 3.13 suite and distribution build are run through
-`scripts/run_validation_suite.py`. The receipt binds the checks to normalized
-implementation source and relevant runtime versions, retaining command logs
-and JUnit results. A final certificate rejects a receipt with skipped tests.
+- Reception overflow is tonnes within a period, after nominal daily capacity
+  is multiplied by operating days. Multiplying the slack by 30 again is wrong.
+- Static exceedance is a warehouse-period stock quantity; summing it across
+  periods does not yield installed storage capacity. The secondary objective
+  is an explicit equal-weight violation score, not a construction target.
+- Separate capacity slacks are not equivalent to a shared historical slack:
+  under a common rate, fixed exceedances incur a sum rather than their maximum.
+- Networks and penalty vectors are frozen across RP, EV, WS and EEV projections.
+  Scalar value metrics require compatible objectives and valid bound intervals;
+  intervals crossing zero do not establish the sign of stochastic value.
+- Independent feasibility checks do not establish nominal physical capacity
+  adequacy, unique investment plans, historical numerical replication or a
+  complete scalability frontier.
+- The historical OSM snapshot and forecasting path were not reconstructed.
+  The thesis-method results are qualified reproductions with extensions, not
+  exact matches to all published thesis tables.
+- v0.1 evidence is retained as historical development evidence. This changed
+  v0.2 model has no automatic external TRL accreditation.
 
-New tests cover:
+## Further research
 
-- 28-, 30- and 31-day capacity conversions;
-- both deterministic and stochastic Gurobi formulations on small analytical instances;
-- non-equivalence of common and separate penalty slacks;
-- frozen route/penalty semantics across scenario projections;
-- local residuals that cancel in aggregate but still must be rejected;
-- negative/nonfinite, duplicate and unknown-index records;
-- candidate activation, disabled slacks, shipping, static and reception limits;
-- independent transport, inventory, investment and penalty cost reconstruction;
-- probability-weighted recourse with first-stage investment charged once;
-- stale or corrupted artifact exclusion and objective-bound consistency;
-- four-level acceptance remaining pending when required evidence is missing.
+The warehouse-only nine-scenario limitation motivates scenario decomposition,
+controlled solver-method/thread experiments and larger nested candidate
+populations. Benders decomposition and native SCIP support require their own
+formulation and validation work. A complete 15/20/25% screening campaign and
+the practical scalability frontier are not established by the bounded MVP.
 
-Local Gurobi is installed, but the available license is expired. Licensed tests
-are therefore explicitly skipped locally. This is not recorded as an NPAD pass.
-Final local receipt (2026-09-11): **280 passed, 49 skipped, 4 warnings**, in
-59.44 seconds; Ruff and distribution build both passed. The executable
-four-level report returned `pending`, as required without current NPAD evidence.
-The implementation/runtime fingerprint was
-`c34d41e9856bc9d23eff3787ef8ffac9c033f6e4552dc2ca4d720d4f5b195313`.
-The PR conversation records the corresponding remote commit and CI results.
-
-## Level 3 — independent mathematical solution validation
-
-`src/logic/solution_validation.py` imports neither Gurobi expressions nor the
-optimization model's capacity/cost helpers. It reconstructs the following from
-canonical input and sparse structured solution records:
-
-| Family | Independent check |
-|---|---|
-| Input/output indexing | Scenario, route, product, period and node membership; duplicate records |
-| Supply | All origin/product/period equalities, including zero supply |
-| Inventory | Warehouse/product/period recurrence, including initial inventory and DD inflow/outflow |
-| Domestic demand | Delivered volume plus shortage equals input demand, including zero demand |
-| Export | Deliveries do not exceed the declared market upper bound |
-| Capacity | Static stock, period reception overflow and hard period shipping constraints |
-| Investment | Binary/activation/bound/eligibility checks and expansion-bulkification exclusion |
-| Stochastic structure | Probability sum and nonnegative weights; one shared first-stage decision set |
-| Costs | All 14 monetary components reconstructed; investments counted once, recourse weighted once |
-| Value analysis | RP/EV/EEV/each WS validated; EEV decisions compared with the EV plan |
-
-The default local residual tolerance is `1e-5 + 1e-8 * max(abs(lhs), abs(rhs))`.
-Cost checks additionally disclose a conservative coefficient-based error budget
-for the native sparse export threshold of `1e-7`. Investment records are dense
-and receive no sparse-export allowance. The checker reports every family count,
-maximum residual and a bounded failure sample. Passing means consistency within
-the disclosed tolerances, not exact arithmetic or proof of global optimality.
-
-Service denominators in this independent report come from input demand, not
-from adding served and unmet quantities extracted from the solution. Legacy
-summary columns remain available; the independent report is the new acceptance
-authority. A retrospective audit writes `independent_validation_reaudit.json`
-without upgrading the provenance of the original solve.
-
-Classical EVPI/VSS remains restricted to the common scalar penalty objective.
-Nonfinite bounds are unavailable; materially reversed minimization bounds are
-rejected. An interval crossing zero remains numerically indeterminate, not a
-certified positive value. Big-M-dominated values are not calibrated monetary
-benefits. Lexicographic policy runs do not receive classical EVPI/VSS labels.
-
-## Level 4 — HPC execution and scientific evidence
-
-Implemented controls, awaiting final NPAD receipts:
-
-- Run fingerprints include workbook/configuration and normalized implementation
-  plus runtime versions. Value-analysis checkpoint fingerprints additionally
-  bind canonical data, selected graph and penalties.
-- A completion marker is written last with artifact checksums. Manifest-aware
-  CLI aggregation excludes interrupted, altered and old-contract outputs, writes
-  `aggregation_audit.json`, and never deletes excluded evidence. The legacy
-  Python aggregation API without a manifest is retrospective, not certification.
-- Timings distinguish data reading, model construction, measured `optimize()`
-  wall time, solver-reported runtime, result extraction, independent validation,
-  bulk artifact export and end-to-end time. The latter excludes final metadata
-  refresh and checksum bookkeeping. Nested timers must not be added twice.
-  Backend model-build time excludes the runner's initial frozen-network
-  preparation, which remains included in end-to-end time. These timers are
-  observational regions, not an exhaustive additive partition of wall time.
-- Post-optimality time starts after RP and covers EV/EEV/WS plus analysis.
-  Original component timings and current solve/restore durations are separate;
-  `value_analysis_timings.csv` makes this distinction inspectable.
-- Lexicographic pass-end values and final-incumbent values are both retained.
-  Configured MIPGap/MIPGapAbs and objective tolerances are exported. The
-  inherited MIP base follows Gurobi's documented rule; `ObjNRelTol=0` alone
-  does not impose an exact lock on the earlier incumbent. LP-only semantics
-  must not be inferred from this MIP diagnostic.
-- Slurm job/array/task IDs, partition, CPU/memory requests and process-lifetime
-  peak-RSS scope are reported. A submission-supplied source commit is labeled
-  as a declaration; implementation content hashes remain independently computed.
-
-The reference plan is `experiments/v020_validation_reference.yaml`: four
-alpha=0.8 thesis-method cases, two service-first deterministic cases and four
-three-/nine-scenario policy cases, at 215 warehouses and the 20% topology.
-This is a bounded reference scope, not all six historical configurations, a
-500-warehouse solve certificate or a definitive scalability frontier.
-
-The executable report cannot be accepted until all selected current-contract
-artifacts, licensed quality checks, local residuals, service requirements,
-stage evidence and timing/provenance checks are present. Emergency use does
-not block acceptance. Missing reference runs remain pending; the archived
-v0.1 certificate is never substituted for them.
-
-## Final NPAD validation
-
-The commands in this section describe the initial protocol bootstrap. That
-quality gate has now passed on NPAD with zero skipped tests. The next action
-is only the [two-run, 14400-second retry](pr25_nine_scenario_retry.md).
-The default reference plan now retains eight unchanged accepted references and
-selects the two explicitly named retries. The old selection is preserved in
-`experiments/v020_validation_reference_t3600.yaml` for historical inspection.
-
-Run from `/home/vrrcelestino/model-agrologistic`, in the established conda
-environment `/home/vrrcelestino/venv313`. Do not paste Markdown fence markers
-into the terminal and do not execute these commands from quarantine directories.
-
-```bash
-cd /home/vrrcelestino/model-agrologistic
-conda activate /home/vrrcelestino/venv313
-git fetch origin
-git switch feature/v0.2-mathematical-reformulation
-git pull --ff-only origin feature/v0.2-mathematical-reformulation
-export PYTHONNOUSERSITE=1
-export PYTHONDONTWRITEBYTECODE=1
-export GRB_LICENSE_FILE=/home/vrrcelestino/model-agrologistic/secrets/gurobi.lic
-export AGROLOGISTIC_SOURCE_COMMIT="$(git rev-parse HEAD)"
-python scripts/run_validation_suite.py \
-  --output-dir data/results/validation/pr25-final/quality
-```
-
-First inspect `quality_report.json`: zero failed commands and zero skipped
-licensed tests are required. Only then run the selected references via Slurm,
-using the manifests and indices in the reference plan and its **new** output
-directories. For example, the first small reference is:
-
-```bash
-python scripts/run_batch_hpc.py \
-  experiments/v020_thesis_compatible.yaml \
-  --index 0 --output-dir data/results/validation/pr25-final/thesis
-```
-
-Do not change Slurm memory requests as a substitute for changing Gurobi's
-SoftMemLimit, nor the scheduler wall limit as a substitute for solver TimeLimit.
-Large policy references belong on compute nodes; do not submit them merely to
-check the quality receipt. Preserve all historical result directories.
-
-After the planned references are available:
-
-```bash
-python scripts/validate_v020_evidence.py \
-  --quality-report data/results/validation/pr25-final/quality/quality_report.json \
-  --output-dir data/results/validation/pr25-final/report
-```
-
-The command returns nonzero for pending/rejected evidence but does not close
-the parent interactive shell. It never starts a solver or silently fills gaps.
-
-## Publication boundaries and next work
-
-Exact reproduction of Artur's numerical tables is **not established**. The
-pinned source supports a methodological comparison, but the historical OSM
-snapshot and forecasting path are not reconstructed and separate slacks change
-the penalty objective. Report bounded method-compatible results separately
-from the policy extension. Extreme DynCap/Turnover under emergency use are not
-proof of nominal-network efficiency; DD handling and the nominal denominator
-must remain visible in figure/table captions.
-
-No v0.2 merge or release certification follows from code review alone. After
-the bounded NPAD gate: freeze the accepted run set for tables/plots, complete
-PR #26's English-only documentation/comment review, and draft PR #27's Quarto
-Manuscript using `cvictorr2508/quarto-sbc`. Networks above 500 warehouses, SCIP,
-the full 15/20/25% campaign and the definitive 14,400-second scalability frontier
-remain outside the MVP critical path.
+The historical [dual retry procedure](pr25_warehouse_dual_retry.md) and its
+preceding resource experiments remain reproducibility records, not required
+additional runs for this development closure. The earlier detailed
+[implementation audit](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/d7081273909cbabc33d1e9c0b819982894420a4e/docs/v020_validation_report.md)
+is preserved at its original commit.
