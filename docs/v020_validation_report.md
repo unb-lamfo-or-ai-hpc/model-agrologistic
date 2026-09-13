@@ -1,15 +1,37 @@
 # PR #25: mathematical contract and four-level validation report
 
-Status (2026-09-12): **levels 1-3 accepted on NPAD; two nine-scenario
-reference retries pending for level 4**. Eight references are accepted.
-The maintainer-supplied isolated report is
-`report-isolated-20260912T122327075162Z/v020_validation_report.json`.
-Read the [bounded retry runbook](pr25_nine_scenario_retry.md) before submitting
-anything; do not repeat the eight accepted runs or the licensed quality suite.
+Status (2026-09-13): **levels 1-3 accepted in the latest supplied NPAD report;
+level 4 remains pending and the overall report is rejected**. Nine references
+are accepted. The warehouse-only nine-scenario retry stopped at Gurobi's
+soft-memory limit; its incomplete objective hierarchy is not accepted.
+Read the [memory retry runbook](pr25_warehouse_memory_retry.md) before submitting
+anything; do not repeat the nine accepted runs or the licensed quality suite.
 This report supersedes the earlier claim that reception slack needed another
 30-day multiplier. It does not supersede or modify the archived v0.1.0 evidence.
 
 ## Executive conclusion
+
+The supplied tail of `slurm-pr25-nine-retry-2088823_0.out` explicitly reports
+`Memory limit reached` after 11393.77 optimization seconds. The final displayed
+economic incumbent is 764469455725.4, with bound 409973108225.9 and gap 46.3716%.
+The run assessor accepts the contract, independent residuals/costs, network and
+penalties, incumbent, per-scenario domestic service, service certification,
+final-stage values, timing and HPC identity; only `three_completed_passes`
+fails. This is not evidence of infeasibility or a Slurm out-of-memory kill.
+Slurm exit 1 is consistent with post-solve rejection of the incomplete hierarchy.
+
+The next execution changes only `SoftMemLimit` from 56 to 128 decimal GB,
+requests 192 GiB from Slurm, and preserves 16 threads, 14400 seconds, all
+tolerances and mathematical settings. A new run identity and output root
+preserve the partial evidence. Nine accepted references retain their exact
+specifications and paths; the preceding plan is archived as
+`experiments/v020_validation_reference_t14400.yaml`.
+
+No optimization/validation implementation source or dependency is changed.
+The approved implementation/runtime receipt remains applicable if its hash
+still matches; new orchestration tests are verified separately. More memory
+does not guarantee convergence within the time budget. The final four-level
+report is still required. PRs #26 and #27 are frozen by maintainer instruction.
 
 The two bounded implementation commits add a frozen mathematical contract and
 an independent solution checker. Their purpose is to make incorrect results

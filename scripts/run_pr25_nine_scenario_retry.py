@@ -12,10 +12,14 @@ from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = "experiments/v020_policy_nine_scenario_retry.yaml"
+MEMORY_MANIFEST = "experiments/v020_policy_warehouse_memory_retry.yaml"
 QUALITY = "data/results/validation/pr25-final/quality/quality_report.json"
 
 
-def run_retry(index: int, *, check_only: bool = False, project_root: Path = PROJECT_ROOT) -> int:
+def run_retry(
+    index: int, *, check_only: bool = False, memory_retry: bool = False,
+    project_root: Path = PROJECT_ROOT,
+) -> int:
     """Require the approved runtime; preserve both partial and completed outputs."""
     from src.logic.experiment_runner import load_experiment_manifest
     from src.logic.run_integrity import implementation_identity
@@ -23,6 +27,8 @@ def run_retry(index: int, *, check_only: bool = False, project_root: Path = PROJ
 
     if index not in (0, 1):
         raise ValueError("Only retry indices 0 and 1 are supported.")
+    if memory_retry and index != 0:
+        raise ValueError("The memory retry contains only warehouse index 0.")
     quality = json.loads((project_root / QUALITY).read_text(encoding="utf-8"))
     if not (
         quality.get("status") == "accepted"
@@ -33,9 +39,11 @@ def run_retry(index: int, *, check_only: bool = False, project_root: Path = PROJ
             "Quality/runtime mismatch. Use PYTHONNOUSERSITE=1 and the approved Python; "
             "do not reinstall packages or rewrite the receipt."
         )
-    manifest = load_experiment_manifest(project_root / MANIFEST)
-    if len(manifest.experiments) != 2:
-        raise ValueError("The bounded retry manifest must contain exactly two runs.")
+    manifest_path = MEMORY_MANIFEST if memory_retry else MANIFEST
+    manifest = load_experiment_manifest(project_root / manifest_path)
+    expected_runs = 1 if memory_retry else 2
+    if len(manifest.experiments) != expected_runs:
+        raise ValueError(f"The selected retry manifest must contain exactly {expected_runs} runs.")
     spec = manifest.experiments[index]
     if not spec.workbook.is_file():
         raise FileNotFoundError(f"OSRM workbook not found: {spec.workbook}")
@@ -53,9 +61,16 @@ def run_retry(index: int, *, check_only: bool = False, project_root: Path = PROJ
         return 0
     if not os.environ.get("SLURM_JOB_ID"):
         raise ValueError("Submit this optimization through Slurm, not the login node.")
+    if memory_retry:
+        # Slurm reports --mem in MiB; Gurobi SoftMemLimit uses decimal GB.
+        # Keep an explicit allocation margin for Python and solver overshoot.
+        memory_mib = int(os.environ.get("SLURM_MEM_PER_NODE", "0"))
+        cpus = int(os.environ.get("SLURM_CPUS_PER_TASK", "0"))
+        if memory_mib < 192 * 1024 or cpus < 16:
+            raise ValueError("The memory retry requires --mem=192G and at least 16 CPUs.")
     command = [
         sys.executable, str(project_root / "scripts/run_batch_hpc.py"),
-        str(project_root / MANIFEST), "--index", str(index), "--output-dir", str(output),
+        str(project_root / manifest_path), "--index", str(index), "--output-dir", str(output),
     ]
     completed = subprocess.run(command, cwd=project_root, check=False)
     if completed.returncode:
@@ -70,8 +85,10 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--index", type=int, choices=(0, 1), required=True)
     parser.add_argument("--check-only", action="store_true")
+    parser.add_argument("--memory-retry", action="store_true",
+                        help="Select the isolated warehouse-only 128 GB soft-limit retry.")
     args = parser.parse_args()
-    return run_retry(args.index, check_only=args.check_only)
+    return run_retry(args.index, check_only=args.check_only, memory_retry=args.memory_retry)
 
 
 if __name__ == "__main__":
