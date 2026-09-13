@@ -21,7 +21,9 @@ import pandas as pd
 from src.logic.model_data import ModelData, NodeInfo
 
 CandidateCostPolicy = Literal["variable_from_total", "fixed_total"]
+PenaltyPolicy = Literal["thesis_dynamic", "fixed"]
 ScenarioGenerationMode = Literal["active_rows", "cartesian"]
+DistanceSourceRequirement = Literal["any", "osrm_primary"]
 
 
 REQUIRED_SHEETS = {
@@ -97,6 +99,7 @@ class ExcelLoaderConfig:
 
     compute_haversine_distances: bool = True
     use_workbook_distances: bool = False
+    required_distance_source: DistanceSourceRequirement = "any"
 
     include_export_routes: bool = True
     include_transshipment_routes: bool = False
@@ -118,6 +121,7 @@ class ExcelLoaderConfig:
     demand_node_id_column: str = "ID_Demanda"
     split_overlapping_demand_nodes: bool = True
 
+    penalty_policy: PenaltyPolicy = "thesis_dynamic"
     default_unmet_demand_penalty: float = 1_000_000.0
     default_emergency_static_penalty: float = 1_000_000.0
     default_emergency_reception_penalty: float = 1_000_000.0
@@ -128,6 +132,23 @@ class ExcelLoaderConfig:
             raise ValueError(
                 "compute_haversine_distances and use_workbook_distances are "
                 "mutually exclusive."
+            )
+        if self.required_distance_source not in {"any", "osrm_primary"}:
+            raise ValueError(
+                "required_distance_source must be either 'any' or "
+                "'osrm_primary'."
+            )
+        if (
+            self.required_distance_source == "osrm_primary"
+            and not self.use_workbook_distances
+        ):
+            raise ValueError(
+                "required_distance_source='osrm_primary' requires "
+                "use_workbook_distances=True."
+            )
+        if self.penalty_policy not in {"thesis_dynamic", "fixed"}:
+            raise ValueError(
+                "penalty_policy must be either 'thesis_dynamic' or 'fixed'."
             )
 
 
@@ -165,6 +186,11 @@ def load_model_data_from_excel(
     cenarios = (
         _clean_dataframe(sheets["Cenarios"])
         if config.include_stochastic_scenarios and "Cenarios" in sheets
+        else pd.DataFrame()
+    )
+    initial_inventory_df = (
+        _clean_dataframe(sheets["Estoque_Inicial"])
+        if "Estoque_Inicial" in sheets
         else pd.DataFrame()
     )
     distances_df = (
@@ -268,6 +294,12 @@ def load_model_data_from_excel(
         parameter_table=parameter_table,
         investment_cost_table=investment_cost_table,
         loader_warnings=loader_warnings,
+    )
+
+    initial_inventory = _load_initial_inventory(
+        initial_inventory_df,
+        warehouses=warehouses,
+        products=products,
     )
 
     freight_origin = {
@@ -375,34 +407,43 @@ def load_model_data_from_excel(
         )
 
     elif config.use_workbook_distances:
+        required_distance_pairs = {
+            "OD": {(origin, warehouse) for origin, warehouse, _ in routes_od},
+            "DC": {(warehouse, customer) for warehouse, customer, _ in routes_dc},
+            "DD": {
+                (warehouse_from, warehouse_to)
+                for warehouse_from, warehouse_to, _ in routes_dd
+            },
+            "OC": {(origin, customer) for origin, customer, _ in routes_oc},
+        }
+        if config.required_distance_source == "osrm_primary":
+            _validate_osrm_primary_distance_provenance(
+                distances_df,
+                required_distance_pairs,
+            )
         dist_od, dist_dc, dist_dd, dist_oc = _load_workbook_distances(
             distances=distances_df,
-            required_pairs={
-                "OD": {(origin, warehouse) for origin, warehouse, _ in routes_od},
-                "DC": {(warehouse, customer) for warehouse, customer, _ in routes_dc},
-                "DD": {
-                    (warehouse_from, warehouse_to)
-                    for warehouse_from, warehouse_to, _ in routes_dd
-                },
-                "OC": {(origin, customer) for origin, customer, _ in routes_oc},
-            },
+            required_pairs=required_distance_pairs,
         )
 
-    unmet_demand_penalty = {
-        (customer, product): config.default_unmet_demand_penalty
-        for customer in domestic_customers
-        for product in products
-    }
-
-    emergency_static_capacity_penalty = {
-        warehouse: config.default_emergency_static_penalty
-        for warehouse in warehouses
-    }
-
-    emergency_reception_capacity_penalty = {
-        warehouse: config.default_emergency_reception_penalty
-        for warehouse in warehouses
-    }
+    (
+        unmet_demand_penalty,
+        emergency_static_capacity_penalty,
+        emergency_reception_capacity_penalty,
+    ) = _build_penalty_rates(
+        config=config,
+        warehouses=warehouses,
+        domestic_customers=domestic_customers,
+        products=products,
+        routes_dc=routes_dc,
+        routes_oc=routes_oc,
+        dist_dc=dist_dc,
+        dist_oc=dist_oc,
+        freight_origin=freight_origin,
+        freight_warehouse=freight_warehouse,
+        expand_variable_cost=expand_variable_cost,
+        storage_tariff=storage_tariff,
+    )
 
     return ModelData(
         origins=origins,
@@ -422,6 +463,7 @@ def load_model_data_from_excel(
         supply=supply,
         demand_dom=demand_dom,
         demand_exp=demand_exp,
+        initial_inventory=initial_inventory,
         scenarios=scenarios,
         scenario_prob=scenario_prob,
         supply_s=supply_s,
@@ -456,6 +498,10 @@ def load_model_data_from_excel(
             "source_excel": str(path),
             "loader": "src.logic.excel_loader.load_model_data_from_excel",
             "candidate_cost_policy": config.candidate_cost_policy,
+            "penalty_policy": config.penalty_policy,
+            "initial_inventory_source": (
+                "Estoque_Inicial" if not initial_inventory_df.empty else "zero_default"
+            ),
             "reported_candidate_total_opening_cost": reported_candidate_total_opening_cost,
             "investment_cost_table": investment_cost_table,
             "parameter_table": parameter_table,
@@ -472,6 +518,12 @@ def load_model_data_from_excel(
                 else "haversine"
                 if config.compute_haversine_distances
                 else "none"
+            ),
+            "distance_source_requirement": config.required_distance_source,
+            "distance_provenance": (
+                _distance_provenance_summary(distances_df)
+                if config.use_workbook_distances
+                else {}
             ),
         },
     )
@@ -515,6 +567,86 @@ def _validate_workbook_schema(sheets: dict[str, pd.DataFrame]) -> None:
                 f"Sheet {sheet_name!r} is missing required columns: {missing_columns}"
             )
 
+
+
+def _validate_osrm_primary_distance_provenance(
+    distances: pd.DataFrame,
+    required_pairs: dict[str, set[tuple[str, str]]],
+) -> None:
+    """Reject thesis evidence that is not backed by an audited OSRM matrix."""
+
+    required_columns = {"Fonte_Distancia", "Motivo_Fallback"}
+    missing = sorted(required_columns - set(distances.columns))
+    if missing:
+        raise ValueError(
+            "OSRM-primary distance loading requires provenance columns "
+            f"{sorted(required_columns)}; missing {missing}."
+        )
+
+    active_arc_types = {
+        arc_type for arc_type, pairs in required_pairs.items() if pairs
+    }
+    relevant = distances.loc[
+        distances["Tipo_Arco"].map(
+            lambda value: _normalize_text(value).upper()
+        ).isin(active_arc_types)
+    ].copy()
+    if relevant.empty:
+        raise ValueError("OSRM-primary distance provenance has no active routes.")
+
+    relevant["_source"] = relevant["Fonte_Distancia"].map(
+        lambda value: _normalize_text(value).casefold()
+    )
+    allowed = {"osrm", "haversine_fallback"}
+    invalid = sorted(set(relevant["_source"]) - allowed)
+    if invalid:
+        raise ValueError(
+            "OSRM-primary distance provenance contains unsupported sources: "
+            f"{invalid}."
+        )
+    if "osrm" not in set(relevant["_source"]):
+        raise ValueError(
+            "OSRM-primary distance provenance requires at least one OSRM route."
+        )
+
+    fallback = relevant.loc[relevant["_source"] == "haversine_fallback"]
+    missing_reason = fallback["Motivo_Fallback"].map(
+        lambda value: _normalize_text(value)
+    ).eq("")
+    if bool(missing_reason.any()):
+        raise ValueError(
+            "Every Haversine fallback route requires Motivo_Fallback."
+        )
+
+
+def _distance_provenance_summary(distances: pd.DataFrame) -> dict[str, Any]:
+    """Summarize workbook distance sources without changing route values."""
+
+    if "Fonte_Distancia" not in distances.columns:
+        return {"route_count": int(len(distances)), "source_counts": {}}
+    sources = distances["Fonte_Distancia"].map(
+        lambda value: _normalize_text(value).casefold()
+    )
+    source_counts = {
+        str(source): int(count) for source, count in sources.value_counts().items()
+    }
+    fallback_reason_counts: dict[str, int] = {}
+    if "Motivo_Fallback" in distances.columns:
+        fallback_reasons = distances.loc[
+            sources == "haversine_fallback",
+            "Motivo_Fallback",
+        ].map(_normalize_text)
+        fallback_reason_counts = {
+            str(reason): int(count)
+            for reason, count in fallback_reasons.value_counts().items()
+            if reason
+        }
+    return {
+        "route_count": int(len(distances)),
+        "source_counts": source_counts,
+        "fallback_count": int(source_counts.get("haversine_fallback", 0)),
+        "fallback_reason_counts": fallback_reason_counts,
+    }
 
 def _load_workbook_distances(
     distances: pd.DataFrame,
@@ -1504,6 +1636,117 @@ def _expand_storage_tariffs(
             )
 
     return storage_tariff
+
+
+def _load_initial_inventory(
+    frame: pd.DataFrame,
+    *,
+    warehouses: list[str],
+    products: list[str],
+) -> dict[tuple[str, str], float]:
+    """Load the optional thesis-compatible initial inventory table."""
+
+    if frame.empty:
+        return {}
+
+    required = {"CDA", "Produto", "Estoque Inicial (t)"}
+    missing = sorted(required - set(frame.columns))
+    if missing:
+        raise ValueError(
+            "Estoque_Inicial is missing required columns: "
+            f"{missing}."
+        )
+
+    warehouse_set = set(warehouses)
+    product_set = set(products)
+    inventory: dict[tuple[str, str], float] = {}
+    for _, row in frame.iterrows():
+        key = (_normalize_text(row["CDA"]), _normalize_text(row["Produto"]))
+        if key[0] not in warehouse_set or key[1] not in product_set:
+            raise ValueError(
+                "Estoque_Inicial references an unknown model index: "
+                f"{key}."
+            )
+        if key in inventory:
+            raise ValueError(f"Duplicate Estoque_Inicial key: {key}.")
+        value = _parse_float(row["Estoque Inicial (t)"])
+        if value < 0:
+            raise ValueError(f"Initial inventory must be non-negative for {key}.")
+        inventory[key] = value
+    return inventory
+
+
+def _build_penalty_rates(
+    *,
+    config: ExcelLoaderConfig,
+    warehouses: list[str],
+    domestic_customers: list[str],
+    products: list[str],
+    routes_dc: set[tuple[str, str, str]],
+    routes_oc: set[tuple[str, str, str]],
+    dist_dc: dict[tuple[str, str], float],
+    dist_oc: dict[tuple[str, str], float],
+    freight_origin: dict[str, float],
+    freight_warehouse: dict[str, float],
+    expand_variable_cost: dict[str, float],
+    storage_tariff: dict[tuple[str, str], float],
+) -> tuple[
+    dict[tuple[str, str], float],
+    dict[str, float],
+    dict[str, float],
+]:
+    """Build fixed or thesis-compatible dynamic complete-recourse penalties."""
+
+    if config.penalty_policy == "fixed":
+        return (
+            {
+                (customer, product): config.default_unmet_demand_penalty
+                for customer in domestic_customers
+                for product in products
+            },
+            {
+                warehouse: config.default_emergency_static_penalty
+                for warehouse in warehouses
+            },
+            {
+                warehouse: config.default_emergency_reception_penalty
+                for warehouse in warehouses
+            },
+        )
+
+    reference_cost = max(
+        100.0,
+        max(expand_variable_cost.values(), default=0.0),
+        max(storage_tariff.values(), default=0.0),
+    )
+    emergency_rate = 50.0 * reference_cost
+
+    unmet_rates: dict[tuple[str, str], float] = {}
+    for customer in domestic_customers:
+        route_costs = [
+            dist_dc.get((warehouse, customer), 0.0)
+            * freight_warehouse.get(warehouse, 0.0)
+            for warehouse, route_customer, _product in routes_dc
+            if route_customer == customer
+        ]
+        route_costs.extend(
+            dist_oc.get((origin, customer), 0.0)
+            * freight_origin.get(origin, 0.0)
+            for origin, route_customer, _product in routes_oc
+            if route_customer == customer
+        )
+        customer_rate = 100.0 * max(
+            reference_cost,
+            max(route_costs, default=0.0),
+        )
+        for product in products:
+            unmet_rates[(customer, product)] = customer_rate
+
+    return (
+        unmet_rates,
+        {warehouse: emergency_rate for warehouse in warehouses},
+        {warehouse: emergency_rate for warehouse in warehouses},
+    )
 
 
 # ---------------------------------------------------------------------

@@ -108,6 +108,12 @@ def solved_result() -> OptimizationResult:
                 "penalized_cost": 5_000_123.0,
             }
         },
+        metadata={
+            "timings": {
+                "model_build_seconds": 1.25,
+                "optimization_seconds": 3.25,
+            }
+        },
     )
 
 
@@ -489,6 +495,13 @@ def test_run_experiment_exports_complete_json_csv_and_metrics(
     assert summary.scenario_count == 1
     assert summary.economic_cost == pytest.approx(123.0)
     assert summary.penalized_cost == pytest.approx(5_000_123.0)
+    assert summary.data_read_seconds is not None
+    assert summary.data_read_seconds >= 0.0
+    assert summary.model_build_seconds == pytest.approx(1.25)
+    assert summary.optimization_seconds == pytest.approx(3.25)
+    assert payload["result"]["metadata"]["timings"][
+        "data_read_seconds"
+    ] == pytest.approx(summary.data_read_seconds)
     assert summary.dyn_cap == pytest.approx(600.0)
     assert summary.turnover == pytest.approx(6.0)
     assert summary.total_unmet_demand == pytest.approx(5.0)
@@ -531,6 +544,8 @@ def test_run_experiment_exports_complete_json_csv_and_metrics(
     assert "raw_solver_result" not in payload["result"]
 
     expected_files = {
+        "independent_validation.json",
+        "run_completion.json",
         "result.json",
         "model_audit.json",
         "preflight.json",
@@ -540,6 +555,7 @@ def test_run_experiment_exports_complete_json_csv_and_metrics(
         "inventories.csv",
         "unmet_demand.csv",
         "emergency_capacity.csv",
+        "lexicographic_stages.csv",
         "scenario_performance.csv",
         "storage_by_warehouse.csv",
         "storage_by_scenario.csv",
@@ -619,6 +635,9 @@ def test_manifest_can_continue_after_a_failed_run(tmp_path):
     assert failure["error_type"] == "RuntimeError"
     assert failure["error_message"] == "solver unavailable"
     assert failure["runtime_seconds"] is not None
+    assert failure["data_read_seconds"] is None
+    assert failure["model_build_seconds"] is None
+    assert failure["optimization_seconds"] is None
     assert "peak_rss_mb" in failure
 
 
@@ -802,3 +821,30 @@ def test_slurm_array_index_is_used_unless_cli_overrides_it(monkeypatch):
 
     assert selected_index(None) == 4
     assert selected_index(2) == 2
+
+
+
+def test_v020_policy_manifests_use_service_first_lexicographic_objective():
+    root = Path(__file__).parents[1]
+    for filename in ("v020_policy_mvp.yaml", "v020_policy_time_limit.yaml"):
+        manifest = load_experiment_manifest(root / "experiments" / filename)
+        assert all(
+            spec.model.objective_policy == "lexicographic"
+            for spec in manifest.experiments
+        )
+
+    diagnostic = load_experiment_manifest(
+        root / "experiments" / "v020_policy_service_feasibility.yaml"
+    )
+    assert len(diagnostic.experiments) == 3
+    assert all(
+        spec.model.objective_policy == "lexicographic"
+        for spec in diagnostic.experiments
+    )
+    confirmation = diagnostic.experiments[2]
+    assert confirmation.name == "policy_service_feasibility_p20_direct_t14400"
+    assert confirmation.solver.time_limit == 14400
+    assert (
+        confirmation.metadata["diagnostic_purpose"]
+        == "certify_secondary_and_tertiary_lexicographic_stages"
+    )

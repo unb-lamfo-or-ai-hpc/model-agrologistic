@@ -11,7 +11,7 @@ Current implementation:
 - existing and candidate warehouse capacities;
 - candidate opening and scalable/fixed candidate capacity;
 - scalable expansion of existing warehouse static capacity;
-- scalable bulkification of eligible warehouse static capacity;
+- scalable bulkification of eligible warehouse handling capacity;
 - unmet domestic demand;
 - export demand upper bounds;
 - emergency static capacity;
@@ -22,10 +22,11 @@ EVPI/VSS analysis is implemented in stochastic_analysis_gurobipy.py.
 
 from __future__ import annotations
 
+from math import isfinite
 from time import perf_counter
 from typing import Any
 
-from src.logic.capacity_bounds import deterministic_inventory_bounds
+from src.logic.mathematical_contract import prepare_model_data
 from src.logic.model_config import ModelConfig, SolverConfig
 from src.logic.model_data import ModelData
 from src.logic.optimization import (
@@ -76,6 +77,8 @@ def _solve_deterministic_core(
 
     started_at = perf_counter()
 
+    data = prepare_model_data(data, model_config)
+
     model = gp.Model("model_agrologistic_deterministic")
     _apply_solver_parameters(model, solver_config)
 
@@ -84,7 +87,6 @@ def _solve_deterministic_core(
     # ------------------------------------------------------------------
 
     routes = select_routes(data, model_config)
-    inventory_big_m = deterministic_inventory_bounds(data, routes)
 
     od_keys = [
         (origin, warehouse, product, period)
@@ -134,7 +136,7 @@ def _solve_deterministic_core(
     candidate_warehouses = list(data.candidate_warehouses)
     expansion_warehouses = [
         warehouse
-        for warehouse in data.existing_warehouses
+        for warehouse in data.warehouses
         if model_config.allow_capacity_expansion
         and data.max_expand_capacity.get(warehouse, 0.0) > 0.0
     ]
@@ -234,18 +236,12 @@ def _solve_deterministic_core(
         name="unmet_demand",
     )
 
-    emergency_static_ub = {
-        key: inventory_big_m[key]
-        if model_config.allow_emergency_static_capacity
-        else 0.0
-        for key in emergency_keys
-    }
-    emergency_reception_ub = {
-        key: _period_big_m(data, key[1])
-        if model_config.allow_emergency_reception_capacity
-        else 0.0
-        for key in emergency_keys
-    }
+    emergency_static_ub = (
+        GRB.INFINITY if model_config.allow_emergency_static_capacity else 0.0
+    )
+    emergency_reception_ub = (
+        GRB.INFINITY if model_config.allow_emergency_reception_capacity else 0.0
+    )
 
     emergency_static_capacity = model.addVars(
         emergency_keys,
@@ -292,6 +288,7 @@ def _solve_deterministic_core(
             warehouse_from=warehouse_from,
             warehouse_to=warehouse_to,
             product=product,
+            model_config=model_config,
         )
         for warehouse_from, warehouse_to, product, period in dd_keys
     )
@@ -416,10 +413,19 @@ def _solve_deterministic_core(
     # ------------------------------------------------------------------
 
     for warehouse in expansion_warehouses:
+        active = _active_warehouse_expr(
+            data=data,
+            open_candidate=open_candidate,
+            warehouse=warehouse,
+        )
         model.addConstr(
             expand_capacity[warehouse]
             <= data.max_expand_capacity[warehouse] * expand_warehouse[warehouse],
             name=f"expansion_capacity[{warehouse}]",
+        )
+        model.addConstr(
+            expand_warehouse[warehouse] <= active,
+            name=f"expansion_only_if_active[{warehouse}]",
         )
 
     # ------------------------------------------------------------------
@@ -440,6 +446,19 @@ def _solve_deterministic_core(
         model.addConstr(
             bulkify_warehouse[warehouse] <= active,
             name=f"bulkification_only_if_active[{warehouse}]",
+        )
+
+    for warehouse in sorted(
+        set(expansion_warehouses) & set(bulkification_warehouses)
+    ):
+        active = _active_warehouse_expr(
+            data=data,
+            open_candidate=open_candidate,
+            warehouse=warehouse,
+        )
+        model.addConstr(
+            expand_warehouse[warehouse] + bulkify_warehouse[warehouse] <= active,
+            name=f"expansion_bulkification_exclusion[{warehouse}]",
         )
 
     # ------------------------------------------------------------------
@@ -597,8 +616,8 @@ def _solve_deterministic_core(
     # ------------------------------------------------------------------
     # Emergency capacity must be tied to active candidate infrastructure.
     #
-    # Variable upper bounds carry the network-aware physical limits. Indicator
-    # constraints avoid injecting those large values into the linear matrix.
+    # Emergency slacks are unbounded feasibility devices at active facilities.
+    # Indicators prevent closed candidates from acting as ghost warehouses.
     # ------------------------------------------------------------------
 
     for warehouse in data.candidate_warehouses:
@@ -620,7 +639,19 @@ def _solve_deterministic_core(
     # Solve
     # ------------------------------------------------------------------
 
-    model.optimize()
+    model_build_seconds = perf_counter() - started_at
+    optimization_started_at = perf_counter()
+    lexicographic_stages = _optimize_with_stage_observer(
+        model=model,
+        GRB=GRB,
+        objective_policy=model_config.objective_policy,
+        objective_names=(
+            "unmet_demand",
+            "emergency_capacity",
+            "economic_cost",
+        ),
+    )
+    optimization_seconds = perf_counter() - optimization_started_at
 
     runtime_seconds = perf_counter() - started_at
     status = _map_gurobi_status(model, GRB)
@@ -638,18 +669,33 @@ def _solve_deterministic_core(
                 "gurobi_status_name": _gurobi_status_name(model, GRB),
                 "solution_count": model.SolCount,
                 "objective_policy": model_config.objective_policy,
+                **_lexicographic_stage_diagnostics(
+                    model=model,
+                    GRB=GRB,
+                    objective_policy=model_config.objective_policy,
+                    stages=lexicographic_stages,
+                    primary_objective_value=None,
+                ),
+                "timings": {
+                    "model_build_seconds": model_build_seconds,
+                    "optimization_seconds": optimization_seconds,
+                },
                 **infeasibility,
             },
         )
 
-    return _extract_deterministic_result(
+    extraction_started = perf_counter()
+    result = _extract_deterministic_result(
         data=data,
         model_config=model_config,
         solver_config=solver_config,
         model=model,
+        GRB=GRB,
         status=status,
         gurobi_status_name=_gurobi_status_name(model, GRB),
         runtime_seconds=runtime_seconds,
+        model_build_seconds=model_build_seconds,
+        optimization_seconds=optimization_seconds,
         flow_od=flow_od,
         flow_dc=flow_dc,
         flow_oc=flow_oc,
@@ -664,6 +710,7 @@ def _solve_deterministic_core(
         unmet_demand=unmet_demand,
         emergency_static_capacity=emergency_static_capacity,
         emergency_reception_capacity=emergency_reception_capacity,
+        lexicographic_stages=lexicographic_stages,
         cost_components={
             "transport_od": transport_od_cost,
             "transport_dc": transport_dc_cost,
@@ -681,6 +728,11 @@ def _solve_deterministic_core(
             "emergency_reception": emergency_reception_cost,
         },
     )
+
+
+    result.metadata["timings"]["result_extraction_seconds"] = perf_counter() - extraction_started
+    result.metadata["timings"]["solver_reported_runtime_seconds"] = float(model.Runtime)
+    return result
 
 
 # ---------------------------------------------------------------------
@@ -748,22 +800,22 @@ def _set_objective_policy(
     model.ModelSense = GRB.MINIMIZE
     tolerance = config.feasibility_tolerance
     model.setObjectiveN(
-        emergency_quantity,
+        unmet_quantity,
         index=0,
         priority=3,
         weight=1.0,
         abstol=tolerance,
         reltol=0.0,
-        name="minimize_emergency_capacity",
+        name="minimize_unmet_demand",
     )
     model.setObjectiveN(
-        unmet_quantity,
+        emergency_quantity,
         index=1,
         priority=2,
         weight=1.0,
         abstol=tolerance,
         reltol=0.0,
-        name="minimize_unmet_demand",
+        name="minimize_emergency_capacity",
     )
     model.setObjectiveN(
         economic_cost,
@@ -876,6 +928,206 @@ def _gurobi_status_name(model: Any, GRB: Any) -> str:
         ),
         f"UNKNOWN_{model.Status}",
     )
+
+
+def _gurobi_status_name_from_code(status_code: int, GRB: Any) -> str:
+    """Return a symbolic Gurobi status for a callback-reported code."""
+
+    status_proxy = type("StatusProxy", (), {"Status": status_code})()
+    return _gurobi_status_name(status_proxy, GRB)
+
+
+def _finite_callback_value(model: Any, callback_code: int) -> float | None:
+    """Read a finite numeric callback value, returning None when unavailable."""
+
+    try:
+        value = float(model.cbGet(callback_code))
+    except Exception:  # noqa: BLE001
+        # Gurobi can reject MIP-only fields for presolved continuous passes.
+        return None
+    return value if isfinite(value) else None
+
+
+def _optimize_with_stage_observer(
+    *,
+    model: Any,
+    GRB: Any,
+    objective_policy: str,
+    objective_names: tuple[str, ...],
+    objective_roles: tuple[str, ...] | None = None,
+) -> list[dict[str, Any]]:
+    """Optimize and capture the terminal state of each lexicographic pass."""
+
+    if objective_policy != "lexicographic":
+        model.optimize()
+        return []
+
+    callback = getattr(GRB, "Callback", None)
+    required_codes = (
+        "MULTIOBJ",
+        "MULTIOBJ_OBJCNT",
+        "MULTIOBJ_STATUS",
+        "MULTIOBJ_OBJBST",
+        "MULTIOBJ_OBJBND",
+        "MULTIOBJ_MIPGAP",
+        "MULTIOBJ_ITRCNT",
+        "MULTIOBJ_NODCNT",
+        "MULTIOBJ_NODLFT",
+        "MULTIOBJ_SOLCNT",
+        "MULTIOBJ_RUNTIME",
+        "MULTIOBJ_WORK",
+    )
+    missing_codes = [
+        code for code in required_codes if callback is None or not hasattr(callback, code)
+    ]
+    if missing_codes:
+        raise RuntimeError(
+            "Lexicographic stage observability requires Gurobi 12 or later; "
+            f"missing callback codes: {', '.join(missing_codes)}."
+        )
+
+    stages: list[dict[str, Any]] = []
+    stage_roles = objective_roles or objective_names
+    if len(stage_roles) != len(objective_names):
+        raise ValueError("Objective names and roles must have equal length.")
+
+    def observe_stage(callback_model: Any, where: int) -> None:
+        if where != callback.MULTIOBJ:
+            return
+
+        completed_count = int(
+            callback_model.cbGet(callback.MULTIOBJ_OBJCNT)
+        )
+        stage_index = max(0, completed_count - 1)
+        status_code = int(callback_model.cbGet(callback.MULTIOBJ_STATUS))
+        objective_name = (
+            objective_names[stage_index]
+            if stage_index < len(objective_names)
+            else f"objective_{stage_index + 1}"
+        )
+        stages.append(
+            {
+                "stage_number": stage_index + 1,
+                "objective_name": objective_name,
+                "stage_role": (
+                    stage_roles[stage_index]
+                    if stage_index < len(stage_roles)
+                    else f"objective_{stage_index + 1}"
+                ),
+                "status_code": status_code,
+                "status": _gurobi_status_name_from_code(status_code, GRB),
+                "objective_value": _finite_callback_value(
+                    callback_model, callback.MULTIOBJ_OBJBST
+                ),
+                "objective_bound": _finite_callback_value(
+                    callback_model, callback.MULTIOBJ_OBJBND
+                ),
+                "mip_gap": _finite_callback_value(
+                    callback_model, callback.MULTIOBJ_MIPGAP
+                ),
+                "iteration_count": _finite_callback_value(
+                    callback_model, callback.MULTIOBJ_ITRCNT
+                ),
+                "node_count": _finite_callback_value(
+                    callback_model, callback.MULTIOBJ_NODCNT
+                ),
+                "nodes_remaining": _finite_callback_value(
+                    callback_model, callback.MULTIOBJ_NODLFT
+                ),
+                "solution_count": _finite_callback_value(
+                    callback_model, callback.MULTIOBJ_SOLCNT
+                ),
+                "runtime_seconds": _finite_callback_value(
+                    callback_model, callback.MULTIOBJ_RUNTIME
+                ),
+                "work_units": _finite_callback_value(
+                    callback_model, callback.MULTIOBJ_WORK
+                ),
+            }
+        )
+
+    model.optimize(observe_stage)
+    return stages
+
+
+def _lexicographic_stage_diagnostics(
+    *,
+    model: Any,
+    GRB: Any,
+    objective_policy: str,
+    stages: list[dict[str, Any]],
+    primary_objective_value: float | None,
+) -> dict[str, Any]:
+    """Classify lexicographic evidence without inferring unfinished passes."""
+
+    if objective_policy != "lexicographic":
+        return {}
+
+    stage_by_name = {
+        stage.get("stage_role", stage["objective_name"]): stage
+        for stage in stages
+    }
+    expected_names = (
+        "unmet_demand",
+        "emergency_capacity",
+        "economic_cost",
+    )
+    completed_count = sum(
+        stage_by_name.get(name, {}).get("status") == "OPTIMAL"
+        for name in expected_names
+    )
+    service_stage = stage_by_name.get("unmet_demand")
+    feasibility_tolerance = max(
+        VALUE_TOL,
+        float(getattr(getattr(model, "Params", None), "FeasibilityTol", 1e-6)),
+    )
+
+    if primary_objective_value is None:
+        service_certification_status = "unavailable"
+        service_target_status = "unavailable"
+    elif primary_objective_value <= feasibility_tolerance + VALUE_TOL:
+        service_certification_status = "certified_zero_within_tolerance"
+        service_target_status = "attained"
+    elif (
+        service_stage
+        and service_stage.get("status") == "OPTIMAL"
+        and service_stage.get("objective_bound") is not None
+        and isfinite(service_stage["objective_bound"])
+        and service_stage["objective_bound"] > feasibility_tolerance + VALUE_TOL
+    ):
+        service_certification_status = "certified_minimum_positive"
+        service_target_status = "not_attainable"
+    else:
+        service_certification_status = "provisional_positive"
+        service_target_status = "not_attained_by_incumbent"
+
+    return {
+        "lexicographic_stages": stages,
+        "lexicographic_expected_stage_count": len(expected_names),
+        "lexicographic_completed_stage_count": completed_count,
+        "lexicographic_overall_status": (
+            "complete"
+            if completed_count == len(expected_names)
+            else "partial"
+            if stages
+            else "unavailable"
+        ),
+        "service_target_status": service_target_status,
+        "service_certification_status": service_certification_status,
+        "service_stage_status": (
+            service_stage.get("status") if service_stage else "NOT_STARTED"
+        ),
+        "capacity_stage_status": (
+            stage_by_name.get("emergency_capacity", {}).get(
+                "status", "NOT_STARTED"
+            )
+        ),
+        "economic_stage_status": (
+            stage_by_name.get("economic_cost", {}).get(
+                "status", "NOT_STARTED"
+            )
+        ),
+    }
 
 
 # ---------------------------------------------------------------------
@@ -1069,7 +1321,9 @@ def _origin_to_warehouse_unit_cost(
     distance = data.dist_od.get((origin, warehouse), 0.0)
     freight = data.freight_origin.get(origin, 0.0)
 
-    return distance * freight
+    receiving_handling_cost = data.transshipment_cost.get(warehouse, 0.0)
+
+    return distance * freight + receiving_handling_cost
 
 
 def _warehouse_to_customer_unit_cost(
@@ -1081,7 +1335,7 @@ def _warehouse_to_customer_unit_cost(
     del product
 
     distance = data.dist_dc.get((warehouse, customer), 0.0)
-    freight = data.freight_dest.get(customer, 0.0)
+    freight = data.freight_warehouse.get(warehouse, 0.0)
 
     return distance * freight
 
@@ -1105,6 +1359,7 @@ def _warehouse_to_warehouse_unit_cost(
     warehouse_from: str,
     warehouse_to: str,
     product: str,
+    model_config: ModelConfig,
 ) -> float:
     del product
 
@@ -1112,7 +1367,7 @@ def _warehouse_to_warehouse_unit_cost(
 
     freight = data.freight_warehouse[warehouse_from]
 
-    interhub_factor = float(data.metadata.get("interhub_factor", 1.0))
+    interhub_factor = model_config.interhub_factor
     receiving_handling_cost = data.transshipment_cost.get(warehouse_to, 0.0)
 
     return interhub_factor * distance * freight + receiving_handling_cost
@@ -1128,9 +1383,12 @@ def _extract_deterministic_result(
     model_config: ModelConfig,
     solver_config: SolverConfig,
     model: Any,
+    GRB: Any,
     status: str,
     gurobi_status_name: str,
     runtime_seconds: float,
+    model_build_seconds: float,
+    optimization_seconds: float,
     flow_od: Any,
     flow_dc: Any,
     flow_oc: Any,
@@ -1145,6 +1403,7 @@ def _extract_deterministic_result(
     unmet_demand: Any,
     emergency_static_capacity: Any,
     emergency_reception_capacity: Any,
+    lexicographic_stages: list[dict[str, Any]],
     cost_components: dict[str, Any],
 ) -> OptimizationResult:
     flows: list[dict[str, Any]] = []
@@ -1357,7 +1616,7 @@ def _extract_deterministic_result(
         objective_value=(
             penalized_cost_value
             if model_config.objective_policy == "penalty"
-            else emergency_quantity_value
+            else unmet_quantity_value
         ),
         solver_backend="gurobipy",
         solver_name=solver_config.solver_name,
@@ -1372,23 +1631,38 @@ def _extract_deterministic_result(
         emergency_capacity=emergency_records,
         metrics=metrics,
         metadata={
+            "mathematical_contract": data.metadata.get("mathematical_contract", {}),
             "gurobi_status_code": model.Status,
             "gurobi_status_name": gurobi_status_name,
+            "gurobi_objective_value": getattr(model, "ObjVal", None),
+            "gurobi_objective_bound": getattr(model, "ObjBound", None),
             "solution_count": model.SolCount,
+            "timings": {
+                "model_build_seconds": model_build_seconds,
+                "optimization_seconds": optimization_seconds,
+            },
             "candidate_capacity_mode": model_config.candidate_capacity_mode,
             "objective_policy": model_config.objective_policy,
+            **_lexicographic_stage_diagnostics(
+                model=model,
+                GRB=GRB,
+                objective_policy=model_config.objective_policy,
+                stages=lexicographic_stages,
+                primary_objective_value=unmet_quantity_value,
+            ),
             "objective_priority_order": (
                 ["penalized_cost"]
                 if model_config.objective_policy == "penalty"
                 else [
-                    "emergency_capacity",
                     "unmet_demand",
+                    "emergency_capacity",
                     "economic_cost",
                 ]
             ),
             "allow_capacity_expansion": model_config.allow_capacity_expansion,
             "allow_bulkification": model_config.allow_bulkification,
             "capacity_coupling_policy": model_config.capacity_coupling_policy,
+            "interhub_factor": model_config.interhub_factor,
             "capacity_coupling_daily_factors": {
                 "candidate_reception": model_config.candidate_reception_daily_factor,
                 "candidate_shipping": model_config.candidate_shipping_daily_factor,

@@ -3,10 +3,12 @@
 from __future__ import annotations
 
 import json
+import math
 from collections.abc import Callable
 from dataclasses import fields, replace
 from datetime import UTC, datetime
 from pathlib import Path
+from time import perf_counter
 from typing import Any
 
 from src.logic.model_config import ModelConfig, SolverConfig
@@ -16,6 +18,8 @@ from src.logic.optimization_gurobipy import _solve_deterministic_core
 from src.logic.optimization_gurobipy_stochastic import (
     solve_stochastic_model_gurobipy,
 )
+from src.logic.run_integrity import implementation_identity, scientific_identity
+from src.logic.solution_validation import validate_solution
 
 
 def calculate_evpi_vss_gurobipy(
@@ -35,6 +39,16 @@ def calculate_evpi_vss_gurobipy(
     checkpoints carrying the same caller-provided identity.
     """
 
+    from src.logic.mathematical_contract import prepare_model_data
+
+    if model_config.objective_policy != "penalty":
+        raise ValueError("Classical EVPI/VSS requires the common scalar penalty objective.")
+    data = prepare_model_data(data, model_config)
+    if checkpoint_dir is not None:
+        checkpoint_identity = scientific_identity({
+            "caller": checkpoint_identity, "data": data, "model": model_config,
+            "solver": solver_config, "implementation": implementation_identity()["sha256"],
+        })
     report = progress or (lambda _message: None)
     store = _CheckpointStore.create(
         checkpoint_dir,
@@ -55,6 +69,7 @@ def calculate_evpi_vss_gurobipy(
         report=report,
     )
     recourse_problem = _require_objective(recourse_result, "recourse problem")
+    postoptimality_started = perf_counter()
 
     deterministic_config = replace(model_config, mode="det")
     expected_data = _expected_value_data(data)
@@ -113,21 +128,82 @@ def calculate_evpi_vss_gurobipy(
         wait_and_see += data.scenario_prob[scenario] * scenario_objective
 
     raw_evpi = recourse_problem - wait_and_see
+    component_validation = {
+        "RP": validate_solution(data, model_config, recourse_result),
+        "EV": validate_solution(expected_data, deterministic_config, expected_value_result),
+        "EEV": validate_solution(data, model_config, expected_result),
+        **{
+            "WS:" + scenario: validate_solution(
+                _single_scenario_data(data, scenario), deterministic_config, item
+            ) for scenario, item in wait_and_see_results.items()
+        },
+    }
+    first_stage_fields = (
+        "open", "candidate_capacity", "expand", "expansion_capacity", "bulkify", "bulk_capacity"
+    )
+    ev_decisions = {r["warehouse"]: r for r in expected_value_result.warehouse_decisions}
+    eev_fixed_decisions_valid = all(
+        row["warehouse"] in ev_decisions and all(
+            math.isclose(float(row.get(f, math.nan)),
+                         float(ev_decisions[row["warehouse"]].get(f, math.nan)),
+                         rel_tol=1e-8, abs_tol=1e-5) for f in first_stage_fields
+        ) for row in expected_result.warehouse_decisions
+    ) and len(expected_result.warehouse_decisions) == len(data.warehouses)
     raw_vss = expected_result_of_ev_solution - recourse_problem
     tolerance = model_config.evpi_vss_tolerance
     evpi = _zero_within_tolerance(raw_evpi, tolerance)
     vss = _zero_within_tolerance(raw_vss, tolerance)
 
+    objective_intervals = {
+        "recourse_problem": _solver_objective_interval(recourse_result),
+        "wait_and_see": _weighted_solver_objective_interval(
+            wait_and_see_results,
+            data.scenario_prob,
+        ),
+        "expected_value_problem": _solver_objective_interval(
+            expected_value_result
+        ),
+        "expected_result_of_ev_solution": _solver_objective_interval(
+            expected_result
+        ),
+    }
+    evpi_interval = _difference_interval(
+        objective_intervals["recourse_problem"],
+        objective_intervals["wait_and_see"],
+    )
+    vss_interval = _difference_interval(
+        objective_intervals["expected_result_of_ev_solution"],
+        objective_intervals["recourse_problem"],
+    )
+    evpi_certification_status = _classify_nonnegative_interval(
+        evpi_interval,
+        tolerance,
+    )
+    vss_certification_status = _classify_nonnegative_interval(
+        vss_interval,
+        tolerance,
+    )
+
     consistency_warnings: list[str] = []
-    if evpi < -tolerance:
+    if evpi_certification_status == "inconsistent_negative":
         consistency_warnings.append(
-            "EVPI is negative beyond the configured tolerance. Check solver "
-            "optimality gaps and numerical settings."
+            "The solver-bound EVPI interval is strictly negative. Check model "
+            "consistency, objective scaling, and solver termination."
         )
-    if vss < -tolerance:
+    elif evpi < -tolerance:
         consistency_warnings.append(
-            "VSS is negative beyond the configured tolerance. Check solver "
-            "optimality gaps and numerical settings."
+            "The EVPI point estimate is negative, but its solver-bound interval "
+            "does not certify a negative value."
+        )
+    if vss_certification_status == "inconsistent_negative":
+        consistency_warnings.append(
+            "The solver-bound VSS interval is strictly negative. Check fixed "
+            "first-stage decisions, objective scaling, and solver termination."
+        )
+    elif vss < -tolerance:
+        consistency_warnings.append(
+            "The VSS point estimate is negative, but its solver-bound interval "
+            "does not certify a negative value."
         )
 
     result = EVPIVSSResult(
@@ -142,6 +218,18 @@ def calculate_evpi_vss_gurobipy(
         expected_value_problem_result=expected_value_result,
         expected_result_result=expected_result,
         metadata={
+            "component_validation": component_validation,
+            "eev_fixed_decisions_valid": eev_fixed_decisions_valid,
+            "postoptimality_seconds": perf_counter() - postoptimality_started,
+            "component_timings": [
+                {"component": name, **item.metadata.get("timings", {}),
+                 "current_execution": item.metadata.get("component_execution", {})}
+                for name, item in [
+                    ("RP", recourse_result), ("EV", expected_value_result),
+                    ("EEV", expected_result),
+                    *[("WS:" + scenario, item) for scenario, item in wait_and_see_results.items()],
+                ]
+            ],
             "formulation": "risk_neutral_two_stage",
             "sense": "minimize",
             "evpi_formula": "RP - WS",
@@ -150,6 +238,11 @@ def calculate_evpi_vss_gurobipy(
             "evpi_vss_tolerance": tolerance,
             "raw_evpi": raw_evpi,
             "raw_vss": raw_vss,
+            "objective_intervals": objective_intervals,
+            "evpi_interval": evpi_interval,
+            "vss_interval": vss_interval,
+            "evpi_certification_status": evpi_certification_status,
+            "vss_certification_status": vss_certification_status,
             "consistency_warnings": consistency_warnings,
             "checkpoint_directory": str(store.path) if store else None,
             "restored_checkpoint_steps": list(store.restored_steps) if store else [],
@@ -177,17 +270,24 @@ def _solve_or_restore(
     store: _CheckpointStore | None,
     report: Callable[[str], None],
 ) -> OptimizationResult:
+    started = perf_counter()
     if store:
         restored = store.load(key)
         if restored is not None:
             report(f"[EVPI/VSS] restored {label} from checkpoint")
             store.complete(key, label, restored=True)
+            restored.metadata["component_execution"] = {
+                "source": "restored", "wall_seconds": perf_counter() - started,
+            }
             return restored
         store.start(key, label)
 
     report(f"[EVPI/VSS] solving {label}")
     result = solve()
     _require_objective(result, label)
+    result.metadata["component_execution"] = {
+        "source": "solved", "wall_seconds": perf_counter() - started,
+    }
     if store:
         store.save(key, result)
         store.complete(key, label, restored=False)
@@ -433,6 +533,82 @@ def _as_deterministic_data(
         demand_exp_s={},
         metadata={**data.metadata, "deterministic_projection": source},
     )
+
+
+def _solver_objective_interval(
+    result: OptimizationResult,
+) -> dict[str, float] | None:
+    """Return the certified minimization interval reported by Gurobi."""
+
+    objective = result.metadata.get("gurobi_objective_value")
+    bound = result.metadata.get("gurobi_objective_bound")
+    if objective is None or bound is None:
+        return None
+
+    objective_value = float(objective)
+    bound_value = float(bound)
+    if not math.isfinite(objective_value) or not math.isfinite(bound_value):
+        return None
+    if bound_value > objective_value + 1e-6 + 1e-12 * abs(objective_value):
+        raise ValueError("A minimization bound exceeds its incumbent; interval is invalid.")
+    return {
+        "lower_bound": min(bound_value, objective_value),
+        "upper_bound": max(bound_value, objective_value),
+    }
+
+
+def _weighted_solver_objective_interval(
+    results: dict[str, OptimizationResult],
+    probabilities: dict[str, float],
+) -> dict[str, float] | None:
+    """Combine scenario objective intervals with their declared probabilities."""
+
+    lower_bound = 0.0
+    upper_bound = 0.0
+    for scenario, result in results.items():
+        interval = _solver_objective_interval(result)
+        if interval is None:
+            return None
+        probability = float(probabilities[scenario])
+        lower_bound += probability * interval["lower_bound"]
+        upper_bound += probability * interval["upper_bound"]
+    return {
+        "lower_bound": lower_bound,
+        "upper_bound": upper_bound,
+    }
+
+
+def _difference_interval(
+    left: dict[str, float] | None,
+    right: dict[str, float] | None,
+) -> dict[str, float] | None:
+    """Return the interval enclosing every value of left minus right."""
+
+    if left is None or right is None:
+        return None
+    return {
+        "lower_bound": left["lower_bound"] - right["upper_bound"],
+        "upper_bound": left["upper_bound"] - right["lower_bound"],
+    }
+
+
+def _classify_nonnegative_interval(
+    interval: dict[str, float] | None,
+    tolerance: float,
+) -> str:
+    """Classify a theoretically non-negative metric using solver bounds."""
+
+    if interval is None:
+        return "unavailable"
+    lower_bound = interval["lower_bound"]
+    upper_bound = interval["upper_bound"]
+    if lower_bound > tolerance:
+        return "certified_positive"
+    if lower_bound >= -tolerance:
+        return "certified_nonnegative"
+    if upper_bound < -tolerance:
+        return "inconsistent_negative"
+    return "numerically_indeterminate"
 
 
 def _require_objective(result: OptimizationResult, label: str) -> float:

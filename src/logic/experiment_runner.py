@@ -16,15 +16,18 @@ from dataclasses import asdict, dataclass, field, fields
 from datetime import UTC, datetime
 from importlib.metadata import PackageNotFoundError, version
 from pathlib import Path
+from time import perf_counter
 from typing import Any
 
 import yaml
 
 from src.logic.excel_loader import ExcelLoaderConfig, load_model_data_from_excel
+from src.logic.mathematical_contract import prepare_model_data
 from src.logic.metrics import attach_storage_metrics
 from src.logic.model_audit import build_model_audit
 from src.logic.model_config import ModelConfig, SolverConfig
 from src.logic.model_data import ModelData
+from src.logic.objective_diagnostics import stage_degradation_records
 from src.logic.optimization import (
     EVPIVSSResult,
     OptimizationResult,
@@ -32,6 +35,8 @@ from src.logic.optimization import (
     solve_model,
 )
 from src.logic.route_filtering import select_routes
+from src.logic.run_integrity import implementation_identity, verify_completion, write_completion
+from src.logic.solution_validation import validate_solution
 
 MANIFEST_VERSION = 1
 SAFE_RUN_NAME = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
@@ -122,13 +127,24 @@ class ExperimentRunSummary:
     name: str
     status: str
     objective_policy: str
+    lexicographic_overall_status: str | None
+    lexicographic_completed_stage_count: int | None
+    service_target_status: str | None
+    service_certification_status: str | None
+    service_stage_status: str | None
+    capacity_stage_status: str | None
+    economic_stage_status: str | None
     comparison_group: str | None
     campaign_gate: str | None
     scenario_count: int | None
     objective_value: float | None
+    objective_bound: float | None
     economic_cost: float | None
     penalized_cost: float | None
     runtime_seconds: float | None
+    data_read_seconds: float | None
+    model_build_seconds: float | None
+    optimization_seconds: float | None
     peak_rss_mb: float | None
     mip_gap: float | None
     dyn_cap: float | None
@@ -147,7 +163,13 @@ class ExperimentRunSummary:
     material_balance_ok: bool | None
     penalty_cost_share: float | None
     evpi: float | None
+    evpi_lower_bound: float | None
+    evpi_upper_bound: float | None
+    evpi_certification_status: str | None
     vss: float | None
+    vss_lower_bound: float | None
+    vss_upper_bound: float | None
+    vss_certification_status: str | None
     output_dir: str
     started_at_utc: str
     finished_at_utc: str
@@ -155,6 +177,9 @@ class ExperimentRunSummary:
     slurm_array_task_id: str | None = None
     error_type: str | None = None
     error_message: str | None = None
+    independent_validation_status: str | None = None
+    end_to_end_seconds: float | None = None
+    postoptimality_seconds: float | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -167,6 +192,14 @@ class ModelSizeEstimate:
     routes_dc: int
     routes_dd: int
     routes_oc: int
+    base_routes_od: int
+    base_routes_dc: int
+    base_routes_dd: int
+    base_routes_oc: int
+    repair_routes_od: int
+    repair_routes_dc: int
+    repair_routes_dd: int
+    repair_routes_oc: int
     flow_variables: int
     inventory_variables: int
     unmet_demand_variables: int
@@ -236,11 +269,17 @@ def run_experiment(
     """Execute one experiment and atomically export its structured artifacts."""
 
     started = datetime.now(UTC)
+    wall_started = perf_counter()
     run_dir = Path(output_root).resolve() / spec.name
     run_dir.mkdir(parents=True, exist_ok=True)
+    identity = _checkpoint_identity(spec)
+    _write_json(run_dir / "run_completion.json", {"status": "running", "run_identity": identity})
 
     progress(f"[{spec.name}] loading {spec.workbook}")
+    data_read_started_at = perf_counter()
     data = loader(spec.workbook, spec.loader)
+    data_read_seconds = perf_counter() - data_read_started_at
+    data = prepare_model_data(data, spec.model)
     _write_json(
         run_dir / "model_audit.json",
         build_model_audit(data, spec.model),
@@ -254,6 +293,7 @@ def run_experiment(
     _enforce_size_limit(spec, estimate)
 
     evpi_result: EVPIVSSResult | None = None
+    solve_started = perf_counter()
     progress(f"[{spec.name}] building and solving model")
     if spec.calculate_evpi_vss:
         evpi_result = evpi_calculator(
@@ -273,12 +313,36 @@ def run_experiment(
             solver_config=spec.solver,
         )
 
+    timings = result.metadata.setdefault("timings", {})
+    timings["data_read_seconds"] = data_read_seconds
+    timings["solve_sequence_wall_seconds"] = perf_counter() - solve_started
+    timings["postoptimality_seconds"] = (
+        evpi_result.metadata.get("postoptimality_seconds", 0.0) if evpi_result else 0.0
+    )
+    result.metadata["run_identity"] = identity
+    result.metadata["implementation_identity"] = implementation_identity()
+    result.metadata["mathematical_contract"] = data.metadata["mathematical_contract"]
+    result.metadata["lexicographic_stages"] = stage_degradation_records(
+        result.metadata.get("lexicographic_stages", []),
+        result.metrics.get("objective_values", {}),
+        mip_gap=float(spec.solver.solver_options.get("MIPGap", spec.solver.mip_gap)),
+        mip_gap_abs=float(spec.solver.solver_options.get("MIPGapAbs", 1e-10)),
+        objective_abs_tol=spec.model.feasibility_tolerance,
+    )
+
+    validation_started = perf_counter()
+    independent = validate_solution(data, spec.model, result)
+    timings["independent_validation_seconds"] = perf_counter() - validation_started
+    result.metadata["independent_validation_status"] = independent["status"]
+    _write_json(run_dir / "independent_validation.json", independent)
+
     if result.has_solution:
         progress(f"[{spec.name}] calculating DynCap and Turnover")
         attach_storage_metrics(data, result)
 
     finished = datetime.now(UTC)
     progress(f"[{spec.name}] exporting structured artifacts")
+    export_started = perf_counter()
     audit = _export_run_artifacts(
         spec=spec,
         data=data,
@@ -288,6 +352,15 @@ def run_experiment(
         started=started,
         finished=finished,
     )
+    timings["artifact_export_seconds"] = perf_counter() - export_started
+    timings["end_to_end_seconds"] = perf_counter() - wall_started
+    finished = datetime.now(UTC)
+    # Refresh timing metadata after the bulk export. Final marker bookkeeping
+    # is excluded from end_to_end_seconds and never counted as optimization.
+    payload = json.loads((run_dir / "result.json").read_text(encoding="utf-8"))
+    payload["result"]["metadata"] = result.metadata
+    payload["execution"]["finished_at_utc"] = finished.isoformat()
+    _write_json(run_dir / "result.json", payload)
     summary = _build_summary(
         spec=spec,
         result=result,
@@ -297,7 +370,21 @@ def run_experiment(
         finished=finished,
         audit=audit,
     )
+    summary.independent_validation_status = independent["status"]
+    summary.end_to_end_seconds = timings["end_to_end_seconds"]
+    summary.postoptimality_seconds = timings["postoptimality_seconds"]
     _write_json(run_dir / "run_summary.json", asdict(summary))
+    write_completion(run_dir, identity, [
+        run_dir / name for name in (
+            "result.json", "run_summary.json", "independent_validation.json",
+            "model_audit.json", "flows.csv", "inventories.csv", "warehouse_decisions.csv",
+            "unmet_demand.csv", "emergency_capacity.csv", "lexicographic_stages.csv",
+            "preflight.json", "scenario_performance.csv", "material_balance_by_scenario.csv",
+            "capacity_gap_by_scenario.csv", "investment_saturation.csv",
+            "emergency_capacity_daily.csv",
+            "evpi_vss_decomposition.csv", "storage_by_warehouse.csv", "storage_by_scenario.csv",
+        )
+    ] + ([run_dir / "value_analysis_timings.csv"] if evpi_result else []))
     progress(f"[{spec.name}] finished with status={summary.status}")
     return summary
 
@@ -314,6 +401,7 @@ def inspect_experiment(
     run_dir = Path(output_root).resolve() / spec.name
     progress(f"[{spec.name}] loading {spec.workbook}")
     data = loader(spec.workbook, spec.loader)
+    data = prepare_model_data(data, spec.model)
     _write_json(
         run_dir / "model_audit.json",
         build_model_audit(data, spec.model),
@@ -367,10 +455,23 @@ def audit_existing_run(
         }
     )
 
+    saved_identity = result.metadata.get("run_identity")
+    if saved_identity and saved_identity != _checkpoint_identity(spec):
+        raise ValueError("Existing result uses a different implementation or execution contract.")
+
     progress(f"[{spec.name}] loading {spec.workbook}")
     data = loader(spec.workbook, spec.loader)
+    if saved_identity:
+        data = prepare_model_data(data, spec.model)
     audit_path = run_dir / "model_audit.json"
     _write_json(audit_path, build_model_audit(data, spec.model, result))
+    retrospective = validate_solution(prepare_model_data(data, spec.model), spec.model, result)
+    retrospective["qualification"] = (
+        "Retrospective check against the selected current contract; original solve provenance "
+        "is retained. This does not create a current-run completion certificate."
+    )
+    retrospective["original_result_sha256"] = _file_sha256(result_path)
+    _write_json(run_dir / "independent_validation_reaudit.json", retrospective)
     progress(f"[{spec.name}] audit -> {audit_path}")
     return audit_path
 
@@ -418,6 +519,14 @@ def estimate_model_size(data: ModelData, config: ModelConfig) -> ModelSizeEstima
         routes_dc=len(routes.dc),
         routes_dd=len(routes.dd),
         routes_oc=len(routes.oc),
+        base_routes_od=len(routes.od) - len(routes.repair_od),
+        base_routes_dc=len(routes.dc) - len(routes.repair_dc),
+        base_routes_dd=len(routes.dd) - len(routes.repair_dd),
+        base_routes_oc=len(routes.oc) - len(routes.repair_oc),
+        repair_routes_od=len(routes.repair_od),
+        repair_routes_dc=len(routes.repair_dc),
+        repair_routes_dd=len(routes.repair_dd),
+        repair_routes_oc=len(routes.repair_oc),
         flow_variables=flow_variables,
         inventory_variables=inventory_variables,
         unmet_demand_variables=unmet_variables,
@@ -505,12 +614,39 @@ def inspect_manifest(
     ]
 
 
-def aggregate_experiment_summaries(output_root: str | Path) -> Path:
+def _aggregation_eligibility(root, manifest):
+    if manifest is None:
+        # Kept for retrospective API consumers; not current-contract certification.
+        return None
+    accepted, records = set(), []
+    expected = {spec.name: spec for spec in manifest.experiments}
+    for path in sorted(root.glob("*/run_summary.json")):
+        name = path.parent.name
+        if name not in expected:
+            valid, reason = False, "not_in_selected_manifest"
+        else:
+            valid, reason = verify_completion(path.parent, _checkpoint_identity(expected[name]))
+        records.append({"name": name, "included": valid, "reason": reason})
+        if valid:
+            accepted.add(name)
+    _write_json(root / "aggregation_audit.json", {
+        "schema_version": 1, "mode": "current_contract_only", "runs": records,
+        "excluded_count": sum(not row["included"] for row in records),
+    })
+    return accepted
+
+
+def aggregate_experiment_summaries(
+    output_root: str | Path, *, manifest: ExperimentManifest | None = None
+) -> Path:
     """Combine per-run summaries after local or Slurm-array execution."""
 
     root = Path(output_root).resolve()
     records: list[dict[str, Any]] = []
+    eligibility = _aggregation_eligibility(root, manifest)
     for path in sorted(root.glob("*/run_summary.json")):
+        if eligibility is not None and path.parent.name not in eligibility:
+            continue
         payload = json.loads(path.read_text(encoding="utf-8"))
         if isinstance(payload, dict):
             records.append(payload)
@@ -521,12 +657,16 @@ def aggregate_experiment_summaries(output_root: str | Path) -> Path:
 
 def aggregate_service_policy_comparisons(
     output_root: str | Path,
+    *, manifest: ExperimentManifest | None = None,
 ) -> Path | None:
     """Export paired penalty-versus-lexicographic campaign diagnostics."""
 
     root = Path(output_root).resolve()
     groups: dict[str, dict[str, dict[str, Any]]] = {}
+    eligibility = _aggregation_eligibility(root, manifest)
     for path in sorted(root.glob("*/run_summary.json")):
+        if eligibility is not None and path.parent.name not in eligibility:
+            continue
         payload = json.loads(path.read_text(encoding="utf-8"))
         if not isinstance(payload, dict):
             continue
@@ -778,6 +918,10 @@ def _export_run_artifacts(
     _write_csv(run_dir / "unmet_demand.csv", result.unmet_demand)
     _write_csv(run_dir / "emergency_capacity.csv", result.emergency_capacity)
     _write_csv(
+        run_dir / "lexicographic_stages.csv",
+        result.metadata.get("lexicographic_stages", []),
+    )
+    _write_csv(
         run_dir / "scenario_performance.csv",
         _scenario_performance_records(result),
     )
@@ -807,6 +951,11 @@ def _export_run_artifacts(
         run_dir / "evpi_vss_decomposition.csv",
         _evpi_vss_decomposition_records(evpi_result),
     )
+    if evpi_result:
+        _write_csv(run_dir / "value_analysis_timings.csv", [
+            {**row, "current_execution": json.dumps(row.get("current_execution", {}))}
+            for row in evpi_result.metadata.get("component_timings", [])
+        ])
 
     storage = result.metrics.get("storage", {})
     _write_csv(run_dir / "storage_by_warehouse.csv", storage.get("warehouse_metrics", []))
@@ -849,6 +998,7 @@ def _build_summary(
         if record.get("domestic_service_level") is not None
     ]
     objective_values = result.metrics.get("objective_values", {})
+    timings = result.metadata.get("timings", {})
     gurobi_status_name = result.metadata.get("gurobi_status_name")
     solution_audit = audit.get("solution", {})
     material_balance = solution_audit.get("material_balance", {})
@@ -858,19 +1008,41 @@ def _build_summary(
         float(cost_shares.get(component) or 0.0)
         for component in PENALTY_COST_COMPONENTS
     )
+    value_metadata = evpi_result.metadata if evpi_result else {}
+    evpi_interval = value_metadata.get("evpi_interval") or {}
+    vss_interval = value_metadata.get("vss_interval") or {}
     return ExperimentRunSummary(
         name=spec.name,
         status=result.status,
         objective_policy=spec.model.objective_policy,
+        lexicographic_overall_status=result.metadata.get(
+            "lexicographic_overall_status"
+        ),
+        lexicographic_completed_stage_count=result.metadata.get(
+            "lexicographic_completed_stage_count"
+        ),
+        service_target_status=result.metadata.get("service_target_status"),
+        service_certification_status=result.metadata.get(
+            "service_certification_status"
+        ),
+        service_stage_status=result.metadata.get("service_stage_status"),
+        capacity_stage_status=result.metadata.get("capacity_stage_status"),
+        economic_stage_status=result.metadata.get("economic_stage_status"),
         comparison_group=_metadata_text(spec, "comparison_group"),
         campaign_gate=_metadata_text(spec, "campaign_gate"),
         scenario_count=(
             len(scenario_records) if scenario_records else 1
         ),
         objective_value=result.objective_value,
+        objective_bound=_optional_float(
+            result.metadata.get("gurobi_objective_bound")
+        ),
         economic_cost=_optional_float(objective_values.get("economic_cost")),
         penalized_cost=_optional_float(objective_values.get("penalized_cost")),
         runtime_seconds=result.runtime_seconds,
+        data_read_seconds=_optional_float(timings.get("data_read_seconds")),
+        model_build_seconds=_optional_float(timings.get("model_build_seconds")),
+        optimization_seconds=_optional_float(timings.get("optimization_seconds")),
         peak_rss_mb=_peak_rss_mb(),
         mip_gap=result.mip_gap,
         dyn_cap=_optional_float(result.metrics.get("DynCap")),
@@ -909,7 +1081,17 @@ def _build_summary(
         material_balance_ok=material_balance.get("all_within_tolerance"),
         penalty_cost_share=penalty_cost_share,
         evpi=evpi_result.evpi if evpi_result else None,
+        evpi_lower_bound=_optional_float(evpi_interval.get("lower_bound")),
+        evpi_upper_bound=_optional_float(evpi_interval.get("upper_bound")),
+        evpi_certification_status=value_metadata.get(
+            "evpi_certification_status"
+        ),
         vss=evpi_result.vss if evpi_result else None,
+        vss_lower_bound=_optional_float(vss_interval.get("lower_bound")),
+        vss_upper_bound=_optional_float(vss_interval.get("upper_bound")),
+        vss_certification_status=value_metadata.get(
+            "vss_certification_status"
+        ),
         output_dir=str(run_dir),
         started_at_utc=started.isoformat(),
         finished_at_utc=finished.isoformat(),
@@ -942,13 +1124,24 @@ def _export_failed_run(
         name=spec.name,
         status="error",
         objective_policy=spec.model.objective_policy,
+        lexicographic_overall_status=None,
+        lexicographic_completed_stage_count=None,
+        service_target_status=None,
+        service_certification_status=None,
+        service_stage_status=None,
+        capacity_stage_status=None,
+        economic_stage_status=None,
         comparison_group=_metadata_text(spec, "comparison_group"),
         campaign_gate=_metadata_text(spec, "campaign_gate"),
         scenario_count=_configured_scenario_count(spec),
         objective_value=None,
+        objective_bound=None,
         economic_cost=None,
         penalized_cost=None,
         runtime_seconds=(finished - started).total_seconds(),
+        data_read_seconds=None,
+        model_build_seconds=None,
+        optimization_seconds=None,
         peak_rss_mb=_peak_rss_mb(),
         mip_gap=None,
         dyn_cap=None,
@@ -967,7 +1160,13 @@ def _export_failed_run(
         material_balance_ok=None,
         penalty_cost_share=None,
         evpi=None,
+        evpi_lower_bound=None,
+        evpi_upper_bound=None,
+        evpi_certification_status=None,
         vss=None,
+        vss_lower_bound=None,
+        vss_upper_bound=None,
+        vss_certification_status=None,
         output_dir=str(run_dir),
         started_at_utc=started.isoformat(),
         finished_at_utc=finished.isoformat(),
@@ -999,6 +1198,7 @@ def _result_payload(result: OptimizationResult) -> dict[str, Any]:
     return {
         "status": result.status,
         "objective_value": result.objective_value,
+        "objective_bound": result.metadata.get("gurobi_objective_bound"),
         "solver_backend": result.solver_backend,
         "solver_name": result.solver_name,
         "model_mode": result.model_mode,
@@ -1498,6 +1698,9 @@ def _preflight_message(
         f"periods={estimate.period_count}, "
         f"routes(OD/DC/DD/OC)={estimate.routes_od}/{estimate.routes_dc}/"
         f"{estimate.routes_dd}/{estimate.routes_oc}, "
+        f"repairs(OD/DC/DD/OC)={estimate.repair_routes_od}/"
+        f"{estimate.repair_routes_dc}/{estimate.repair_routes_dd}/"
+        f"{estimate.repair_routes_oc}, "
         f"estimated_variables={estimate.total_variables:,}"
     )
 
@@ -1599,6 +1802,12 @@ def _execution_context() -> dict[str, Any]:
         "slurm_job_id": os.environ.get("SLURM_JOB_ID"),
         "slurm_array_job_id": os.environ.get("SLURM_ARRAY_JOB_ID"),
         "slurm_array_task_id": os.environ.get("SLURM_ARRAY_TASK_ID"),
+        "slurm_partition": os.environ.get("SLURM_JOB_PARTITION"),
+        "slurm_cpus_per_task": os.environ.get("SLURM_CPUS_PER_TASK"),
+        "slurm_mem_per_node_mb": os.environ.get("SLURM_MEM_PER_NODE"),
+        "source_commit_declared": os.environ.get("AGROLOGISTIC_SOURCE_COMMIT"),
+        "source_commit_authority": "submission_environment_not_independently_verified",
+        "memory_measurement_scope": "process_lifetime_high_water_mark",
     }
 
 
@@ -1624,6 +1833,7 @@ def _checkpoint_identity(spec: ExperimentSpec) -> str:
 
     payload = _spec_payload(spec)
     payload.pop("resume_evpi_vss", None)
+    payload["implementation"] = implementation_identity()["sha256"]
     encoded = json.dumps(
         payload,
         ensure_ascii=False,

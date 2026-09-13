@@ -5,7 +5,7 @@ from __future__ import annotations
 from time import perf_counter
 from typing import Any
 
-from src.logic.capacity_bounds import stochastic_inventory_bounds
+from src.logic.mathematical_contract import prepare_model_data
 from src.logic.model_config import ModelConfig, SolverConfig
 from src.logic.model_data import ModelData
 from src.logic.optimization import OptimizationResult
@@ -21,7 +21,9 @@ from src.logic.optimization_gurobipy import (
     _gurobi_status_name,
     _import_gurobi,
     _infeasibility_metadata,
+    _lexicographic_stage_diagnostics,
     _map_gurobi_status,
+    _optimize_with_stage_observer,
     _origin_to_customer_unit_cost,
     _origin_to_warehouse_unit_cost,
     _set_objective_policy,
@@ -44,12 +46,13 @@ def solve_stochastic_model_gurobipy(
     gp, GRB = _import_gurobi()
     started_at = perf_counter()
 
+    data = prepare_model_data(data, model_config)
+
     model = gp.Model("model_agrologistic_stochastic_extensive_form")
     _apply_solver_parameters(model, solver_config)
 
     scenarios = list(data.scenarios)
     routes = select_routes(data, model_config)
-    inventory_big_m = stochastic_inventory_bounds(data, routes)
     od_keys = [
         (scenario, origin, warehouse, product, period)
         for scenario in scenarios
@@ -100,7 +103,7 @@ def solve_stochastic_model_gurobipy(
     candidate_warehouses = list(data.candidate_warehouses)
     expansion_warehouses = [
         warehouse
-        for warehouse in data.existing_warehouses
+        for warehouse in data.warehouses
         if model_config.allow_capacity_expansion
         and data.max_expand_capacity.get(warehouse, 0.0) > 0.0
     ]
@@ -159,24 +162,22 @@ def solve_stochastic_model_gurobipy(
     emergency_static_capacity = model.addVars(
         emergency_keys,
         lb=0.0,
-        ub={
-            key: inventory_big_m[key]
+        ub=(
+            GRB.INFINITY
             if model_config.allow_emergency_static_capacity
             else 0.0
-            for key in emergency_keys
-        },
+        ),
         vtype=GRB.CONTINUOUS,
         name="emergency_static_capacity",
     )
     emergency_reception_capacity = model.addVars(
         emergency_keys,
         lb=0.0,
-        ub={
-            key: _scenario_period_big_m(data, key[0], key[2])
+        ub=(
+            GRB.INFINITY
             if model_config.allow_emergency_reception_capacity
             else 0.0
-            for key in emergency_keys
-        },
+        ),
         vtype=GRB.CONTINUOUS,
         name="emergency_reception_capacity",
     )
@@ -198,6 +199,7 @@ def solve_stochastic_model_gurobipy(
     scenario_costs = _build_scenario_costs(
         gp=gp,
         data=data,
+        model_config=model_config,
         scenarios=scenarios,
         od_keys=od_keys,
         dc_keys=dc_keys,
@@ -301,14 +303,36 @@ def solve_stochastic_model_gurobipy(
             bulk_capacity=bulk_capacity,
         )
 
-    model.optimize()
+    model_build_seconds = perf_counter() - started_at
+    optimization_started_at = perf_counter()
+    lexicographic_stages = _optimize_with_stage_observer(
+        model=model,
+        GRB=GRB,
+        objective_policy=model_config.objective_policy,
+        objective_names=(
+            "expected_unmet_demand",
+            "expected_emergency_capacity",
+            "economic_cost",
+        ),
+        objective_roles=(
+            "unmet_demand",
+            "emergency_capacity",
+            "economic_cost",
+        ),
+    )
+    optimization_seconds = perf_counter() - optimization_started_at
     runtime_seconds = perf_counter() - started_at
     status = _map_gurobi_status(model, GRB)
 
     common_metadata = {
+        "mathematical_contract": data.metadata.get("mathematical_contract", {}),
         "gurobi_status_code": model.Status,
         "gurobi_status_name": _gurobi_status_name(model, GRB),
         "solution_count": model.SolCount,
+        "timings": {
+            "model_build_seconds": model_build_seconds,
+            "optimization_seconds": optimization_seconds,
+        },
         "formulation": "two_stage_extensive_form",
         "scenario_probabilities": dict(data.scenario_prob),
         "first_stage_decisions": [
@@ -321,12 +345,19 @@ def solve_stochastic_model_gurobipy(
         ],
         "first_stage_fixed": fixed_first_stage is not None,
         "objective_policy": model_config.objective_policy,
+        **_lexicographic_stage_diagnostics(
+            model=model,
+            GRB=GRB,
+            objective_policy=model_config.objective_policy,
+            stages=lexicographic_stages,
+            primary_objective_value=None,
+        ),
         "objective_priority_order": (
             ["penalized_cost"]
             if model_config.objective_policy == "penalty"
             else [
-                "expected_emergency_capacity",
                 "expected_unmet_demand",
+                "expected_emergency_capacity",
                 "economic_cost",
             ]
         ),
@@ -342,11 +373,13 @@ def solve_stochastic_model_gurobipy(
             metadata=common_metadata,
         )
 
-    return _extract_stochastic_result(
+    extraction_started = perf_counter()
+    result = _extract_stochastic_result(
         data=data,
         model_config=model_config,
         solver_config=solver_config,
         model=model,
+        GRB=GRB,
         status=status,
         runtime_seconds=runtime_seconds,
         flow_od=flow_od,
@@ -368,6 +401,9 @@ def solve_stochastic_model_gurobipy(
         scenario_costs=scenario_costs,
         metadata=common_metadata,
     )
+    result.metadata["timings"]["result_extraction_seconds"] = perf_counter() - extraction_started
+    result.metadata["timings"]["solver_reported_runtime_seconds"] = float(model.Runtime)
+    return result
 
 
 def _build_investment_costs(
@@ -421,6 +457,7 @@ def _build_scenario_costs(
     *,
     gp: Any,
     data: ModelData,
+    model_config: ModelConfig,
     scenarios: list[str],
     od_keys: list[tuple[str, ...]],
     dc_keys: list[tuple[str, ...]],
@@ -466,6 +503,7 @@ def _build_scenario_costs(
                     warehouse_from=key[1],
                     warehouse_to=key[2],
                     product=key[3],
+                    model_config=model_config,
                 )
                 for key in dd_keys
                 if key[0] == scenario
@@ -528,10 +566,15 @@ def _add_first_stage_constraints(
             )
 
     for warehouse in expansion_warehouses:
+        active = _active_warehouse_expr(data, open_candidate, warehouse)
         model.addConstr(
             expand_capacity[warehouse]
             <= data.max_expand_capacity[warehouse] * expand_warehouse[warehouse],
             name=f"expansion_capacity[{warehouse}]",
+        )
+        model.addConstr(
+            expand_warehouse[warehouse] <= active,
+            name=f"expansion_only_if_active[{warehouse}]",
         )
 
     for warehouse in bulkification_warehouses:
@@ -544,6 +587,15 @@ def _add_first_stage_constraints(
         model.addConstr(
             bulkify_warehouse[warehouse] <= active,
             name=f"bulkification_only_if_active[{warehouse}]",
+        )
+
+    for warehouse in sorted(
+        set(expansion_warehouses) & set(bulkification_warehouses)
+    ):
+        active = _active_warehouse_expr(data, open_candidate, warehouse)
+        model.addConstr(
+            expand_warehouse[warehouse] + bulkify_warehouse[warehouse] <= active,
+            name=f"expansion_bulkification_exclusion[{warehouse}]",
         )
 
 
@@ -814,6 +866,7 @@ def _extract_stochastic_result(
     model_config: ModelConfig,
     solver_config: SolverConfig,
     model: Any,
+    GRB: Any,
     status: str,
     runtime_seconds: float,
     flow_od: Any,
@@ -1003,7 +1056,7 @@ def _extract_stochastic_result(
         objective_value=(
             penalized_cost
             if model_config.objective_policy == "penalty"
-            else expected_emergency_quantity
+            else expected_unmet_quantity
         ),
         solver_backend="gurobipy",
         solver_name=solver_config.solver_name,
@@ -1024,8 +1077,18 @@ def _extract_stochastic_result(
         },
         metadata={
             **metadata,
+            **_lexicographic_stage_diagnostics(
+                model=model,
+                GRB=GRB,
+                objective_policy=model_config.objective_policy,
+                stages=metadata.get("lexicographic_stages", []),
+                primary_objective_value=expected_unmet_quantity,
+            ),
+            "gurobi_objective_value": getattr(model, "ObjVal", None),
+            "gurobi_objective_bound": getattr(model, "ObjBound", None),
             "candidate_capacity_mode": model_config.candidate_capacity_mode,
             "capacity_coupling_policy": model_config.capacity_coupling_policy,
+            "interhub_factor": model_config.interhub_factor,
             "capacity_coupling_daily_factors": {
                 "candidate_reception": model_config.candidate_reception_daily_factor,
                 "candidate_shipping": model_config.candidate_shipping_daily_factor,

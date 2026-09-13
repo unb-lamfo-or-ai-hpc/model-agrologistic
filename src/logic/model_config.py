@@ -22,20 +22,40 @@ from typing import Any, Literal
 # Type aliases
 # ---------------------------------------------------------------------
 
-type SolverBackend = Literal["gurobipy", "pyomo"]
+type SolverBackend = Literal["gurobipy", "pyomo", "pyscipopt"]
 type ModelMode = Literal["det", "sto"]
 type CandidateCapacityMode = Literal["fixed", "scalable"]
 type TerminalInventoryPolicy = Literal["free", "zero", "penalized", "target"]
-type RouteFilterStrategy = Literal["none", "pareto", "top_k"]
+type RouteFilterStrategy = Literal[
+    "none",
+    "pareto",
+    "thesis_pareto",
+    "connectivity_preserving_pareto",
+    "top_k",
+]
+type ConnectivityExportPolicy = Literal[
+    "one_sink_per_product",
+    "all_active_customer_product_pairs",
+]
 type ObjectivePolicy = Literal["penalty", "lexicographic"]
 type CapacityCouplingPolicy = Literal["period_equivalent", "daily_factors"]
 
 
-VALID_SOLVER_BACKENDS = {"gurobipy", "pyomo"}
+VALID_SOLVER_BACKENDS = {"gurobipy", "pyomo", "pyscipopt"}
 VALID_MODEL_MODES = {"det", "sto"}
 VALID_CANDIDATE_CAPACITY_MODES = {"fixed", "scalable"}
 VALID_TERMINAL_INVENTORY_POLICIES = {"free", "zero", "penalized", "target"}
-VALID_ROUTE_FILTER_STRATEGIES = {"none", "pareto", "top_k"}
+VALID_ROUTE_FILTER_STRATEGIES = {
+    "none",
+    "pareto",
+    "thesis_pareto",
+    "connectivity_preserving_pareto",
+    "top_k",
+}
+VALID_CONNECTIVITY_EXPORT_POLICIES = {
+    "one_sink_per_product",
+    "all_active_customer_product_pairs",
+}
 VALID_OBJECTIVE_POLICIES = {"penalty", "lexicographic"}
 VALID_CAPACITY_COUPLING_POLICIES = {"period_equivalent", "daily_factors"}
 
@@ -60,14 +80,16 @@ class SolverConfig:
             time_limit=3600,
         )
 
-    Pyomo with SCIP:
+    Reserved native PySCIPOpt backend:
 
         SolverConfig(
-            backend="pyomo",
+            backend="pyscipopt",
             solver_name="scip",
             mip_gap=0.01,
             time_limit=3600,
         )
+
+    The native PySCIPOpt formulation is intentionally not implemented yet.
     """
 
     backend: SolverBackend = "gurobipy"
@@ -99,6 +121,15 @@ class SolverConfig:
             raise ValueError(
                 "When backend='gurobipy', solver_name must be 'gurobi' "
                 "or 'gurobipy'."
+            )
+
+        if self.backend == "pyscipopt" and self.solver_name.lower() not in {
+            "scip",
+            "pyscipopt",
+        }:
+            raise ValueError(
+                "When backend='pyscipopt', solver_name must be 'scip' "
+                "or 'pyscipopt'."
             )
 
         if self.mip_gap < 0:
@@ -146,10 +177,12 @@ class ModelConfig:
 
     use_direct_origin_customer: bool = False
     use_warehouse_transshipment: bool = True
+    interhub_factor: float = 1.0
 
     route_filter_strategy: RouteFilterStrategy = "none"
     pareto_fraction: float = 0.20
     route_top_k: int | None = None
+    connectivity_export_policy: ConnectivityExportPolicy = "one_sink_per_product"
 
     # -----------------------------------------------------------------
     # Facility location and capacity decisions
@@ -160,10 +193,10 @@ class ModelConfig:
     allow_capacity_expansion: bool = True
     allow_bulkification: bool = True
 
-    # ``period_equivalent`` preserves the established MVP formulation.
-    # ``daily_factors`` reproduces the historical SiloDSS interpretation:
-    # installed capacity also changes daily reception and shipping throughput.
-    capacity_coupling_policy: CapacityCouplingPolicy = "period_equivalent"
+    # The thesis-compatible default converts daily throughput into each
+    # modeled period and couples investment capacity to throughput.
+    # ``period_equivalent`` remains available only for v0.1 evidence replay.
+    capacity_coupling_policy: CapacityCouplingPolicy = "daily_factors"
     candidate_reception_daily_factor: float = 0.20
     candidate_shipping_daily_factor: float = 0.20
     expansion_reception_daily_factor: float = 0.20
@@ -180,14 +213,14 @@ class ModelConfig:
     allow_emergency_static_capacity: bool = True
     allow_emergency_reception_capacity: bool = True
 
-    # If True, static-capacity emergency slack and reception-capacity
-    # emergency slack must be represented as distinct variables.
+    # Stock exceedance and period reception overflow describe separate
+    # mechanisms. Neither slack is a daily rate or installed capacity.
     separate_emergency_capacity_slacks: bool = True
 
     # ``penalty`` preserves the single weighted-cost objective. The optional
-    # ``lexicographic`` policy minimizes emergency capacity first, expected
-    # unmet demand second, and economic cost third. This keeps physical
-    # feasibility slacks as a last resort before maximizing service.
+    # ``lexicographic`` policy minimizes unmet domestic demand first,
+    # emergency capacity second, and economic cost third. This makes domestic
+    # service the primary policy outcome while relaxing selected constraints.
     objective_policy: ObjectivePolicy = "penalty"
 
     # -----------------------------------------------------------------
@@ -222,6 +255,14 @@ class ModelConfig:
                 f"Expected one of {sorted(VALID_MODEL_MODES)}."
             )
 
+        if self.interhub_factor < 0:
+            raise ValueError("interhub_factor must be non-negative.")
+
+        if not self.separate_emergency_capacity_slacks:
+            raise ValueError(
+                "v0.2 requires separate static and reception emergency slacks."
+            )
+
         if self.candidate_capacity_mode not in VALID_CANDIDATE_CAPACITY_MODES:
             raise ValueError(
                 f"Invalid candidate_capacity_mode: "
@@ -241,6 +282,13 @@ class ModelConfig:
                 f"Invalid route_filter_strategy: "
                 f"{self.route_filter_strategy!r}. "
                 f"Expected one of {sorted(VALID_ROUTE_FILTER_STRATEGIES)}."
+            )
+
+        if self.connectivity_export_policy not in VALID_CONNECTIVITY_EXPORT_POLICIES:
+            raise ValueError(
+                "Invalid connectivity_export_policy: "
+                f"{self.connectivity_export_policy!r}. Expected one of "
+                f"{sorted(VALID_CONNECTIVITY_EXPORT_POLICIES)}."
             )
 
         if self.objective_policy not in VALID_OBJECTIVE_POLICIES:
@@ -338,3 +386,4 @@ class RunConfig:
     run_name: str = "default_run"
     output_dir: str = "outputs"
     metadata: dict[str, Any] = field(default_factory=dict)
+

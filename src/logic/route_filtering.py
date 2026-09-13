@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from collections.abc import Callable
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from math import ceil
 
 from src.logic.model_config import ModelConfig
@@ -18,6 +18,23 @@ class SelectedRoutes:
     dc: set[RouteDC]
     dd: set[RouteDD]
     oc: set[RouteOC]
+    repair_od: set[RouteOD] = field(default_factory=set)
+    repair_dc: set[RouteDC] = field(default_factory=set)
+    repair_dd: set[RouteDD] = field(default_factory=set)
+    repair_oc: set[RouteOC] = field(default_factory=set)
+
+
+def route_policy_signature(config: ModelConfig) -> dict:
+    """Identify graph semantics, excluding scenario projection and solver limits."""
+
+    return {
+        name: getattr(config, name)
+        for name in (
+            "route_filter_strategy", "pareto_fraction", "route_top_k",
+            "connectivity_export_policy", "use_direct_origin_customer",
+            "use_warehouse_transshipment",
+        )
+    }
 
 
 def select_routes(data: ModelData, config: ModelConfig) -> SelectedRoutes:
@@ -31,6 +48,25 @@ def select_routes(data: ModelData, config: ModelConfig) -> SelectedRoutes:
     routes are enabled, every origin/product also keeps its nearest domestic
     customer and export exits.
     """
+
+    frozen = data.metadata.get("_frozen_routes")
+    if frozen is not None:
+        contract = data.metadata.get("mathematical_contract", {})
+        if contract.get("route_policy") != route_policy_signature(config):
+            raise ValueError("Frozen route contract differs from the requested policy.")
+        return SelectedRoutes(**{
+            name: {tuple(route) for route in records}
+            for name, records in frozen.items()
+        })
+
+    if config.route_filter_strategy == "thesis_pareto":
+        return _select_thesis_pareto_routes(data, config)
+
+    if config.route_filter_strategy == "connectivity_preserving_pareto":
+        from src.logic.route_connectivity import apply_connectivity_repair
+
+        base_routes = _select_thesis_pareto_routes(data, config)
+        return apply_connectivity_repair(data, config, base_routes)
 
     od = _select(
         data.routes_od,
@@ -74,6 +110,63 @@ def select_routes(data: ModelData, config: ModelConfig) -> SelectedRoutes:
             else set()
         ),
         oc=oc,
+    )
+
+
+def _select_thesis_pareto_routes(
+    data: ModelData,
+    config: ModelConfig,
+) -> SelectedRoutes:
+    """Reproduce the historical 80/20 route construction exactly.
+
+    The historical implementation retained the shortest ceil(0.20 * n)
+    candidates in each source/product group. It did not add routes after
+    filtering to repair network coverage. The configured fraction remains
+    explicit so controlled sensitivity runs can reuse the historical grouping
+    without being mislabeled as the thesis's 20 percent experiment.
+    """
+
+    return SelectedRoutes(
+        od=_select(
+            data.routes_od,
+            config,
+            group=lambda route: (route[0], route[2]),
+            distance=lambda route: data.dist_od.get(
+                (route[0], route[1]), float("inf")
+            ),
+        ),
+        dc=_select(
+            data.routes_dc,
+            config,
+            group=lambda route: (route[0], route[2]),
+            distance=lambda route: data.dist_dc.get(
+                (route[0], route[1]), float("inf")
+            ),
+        ),
+        dd=(
+            _select(
+                data.routes_dd,
+                config,
+                group=lambda route: (route[0], route[2]),
+                distance=lambda route: data.dist_dd.get(
+                    (route[0], route[1]), float("inf")
+                ),
+            )
+            if config.use_warehouse_transshipment
+            else set()
+        ),
+        oc=(
+            _select(
+                data.routes_oc,
+                config,
+                group=lambda route: (route[0], route[2]),
+                distance=lambda route: data.dist_oc.get(
+                    (route[0], route[1]), float("inf")
+                ),
+            )
+            if config.use_direct_origin_customer
+            else set()
+        ),
     )
 
 
@@ -180,3 +273,4 @@ def _nearest_per_group[Route: (RouteOD, RouteDC, RouteDD, RouteOC)](
         min(candidates, key=lambda route: (distance(route), route))
         for candidates in grouped.values()
     }
+

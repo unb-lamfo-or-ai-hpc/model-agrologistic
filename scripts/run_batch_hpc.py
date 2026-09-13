@@ -75,9 +75,9 @@ def main(argv: list[str] | None = None) -> int:
     output_root = args.output_dir.resolve() if args.output_dir else manifest.output_dir
 
     if args.aggregate_only:
-        target = aggregate_experiment_summaries(output_root)
+        target = aggregate_experiment_summaries(output_root, manifest=manifest)
         print(f"Summary written to {target}")
-        comparison_target = aggregate_service_policy_comparisons(output_root)
+        comparison_target = aggregate_service_policy_comparisons(output_root, manifest=manifest)
         if comparison_target is not None:
             print(f"Service-policy comparison written to {comparison_target}")
         return 0
@@ -100,10 +100,12 @@ def main(argv: list[str] | None = None) -> int:
     # A shared CSV is safe when this process owns the complete batch. Slurm
     # array tasks write only their isolated run_summary.json files.
     if index is None:
-        aggregate_experiment_summaries(output_root)
-        aggregate_service_policy_comparisons(output_root)
+        aggregate_experiment_summaries(output_root, manifest=manifest)
+        aggregate_service_policy_comparisons(output_root, manifest=manifest)
 
-    failures = [summary for summary in summaries if summary.status == "error"]
+    failures = [summary for summary in summaries if (
+        summary.status == "error" or summary.independent_validation_status == "rejected"
+    )]
     for summary in summaries:
         print(f"{summary.name}: {summary.status} -> {summary.output_dir}")
     return 1 if failures else 0

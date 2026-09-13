@@ -104,8 +104,18 @@ def build_model_audit(
         solution, solution_findings = _solution_audit(data, config, result)
         audit["solution"] = solution
         findings.extend(solution_findings)
+        audit["independent_validation_status"] = result.metadata.get(
+            "independent_validation_status", "not_performed_legacy_result"
+        )
+        if audit["independent_validation_status"] == "rejected":
+            findings.append(_finding(
+                "error", "INDEPENDENT_VALIDATION_FAILED",
+                "Inspect independent_validation.json before interpreting this solution.",
+                ["local_constraints_or_reconstructed_costs"],
+            ))
 
     audit["summary"] = {
+        "error_count": sum(finding["severity"] == "error" for finding in findings),
         "warning_count": sum(
             finding["severity"] == "warning" for finding in findings
         ),
