@@ -1,5 +1,13 @@
 # Data lineage and artifact boundaries
 
+## License and redistribution
+
+Original project-authored metadata is covered by the root MIT License.
+Inputs, source workbooks and derived road databases are not automatically
+MIT-licensed. Preserve source attribution and redistribution restrictions.
+See [licensing boundaries](../LICENSING.md). Frozen evidence and source hashes
+must not change as a consequence of license documentation updates.
+
 Data are part of the experiment, not interchangeable inputs. The
 [frozen source contract](manifests/mvp_data_contract.json) distinguishes historical
 benchmark assets from the canonical expanded workbook. Preserve these identities

@@ -6,6 +6,15 @@
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
+% Downstream adaptation: bound Pandoc figures to the available text width.
+\newsavebox{\pandocimagebox}
+\providecommand{\pandocbounded}[1]{%
+  \sbox{\pandocimagebox}{#1}%
+  \ifdim\wd\pandocimagebox>\linewidth
+    \resizebox{\linewidth}{!}{\usebox{\pandocimagebox}}%
+  \else
+    \usebox{\pandocimagebox}%
+  \fi}
 \usepackage{booktabs}
 \usepackage{longtable}
 \usepackage{array}

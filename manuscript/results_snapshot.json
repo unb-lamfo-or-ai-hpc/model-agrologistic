@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "as_of": "2026-09-13",
+  "classification": "partial_review_evidence_not_final_comparative_results",
+  "provenance": {
+    "validation": "Maintainer-supplied v020 report-memory128-20260913T171425Z",
+    "implementation_sha256": "c9cfe18e8c1fe19d4e5659139804b4b8dea7b650d4c5e0c3dcb8b5afde4f3042",
+    "routing": "Maintainer-supplied OSRM 215/500 materialization audits, 2026-09-10",
+    "resources": "Maintainer-supplied Slurm and optimizer logs; wall-clock and optimizer time are distinct",
+    "source_commit": "d7081273909cbabc33d1e9c0b819982894420a4e"
+  },
+  "validation": [
+    {"family": "Thesis-method\nDeterministic / 3 scenarios", "accepted": 4, "expected": 4},
+    {"family": "Policy\nDeterministic / 3 scenarios", "accepted": 4, "expected": 4},
+    {"family": "Policy\n9 scenarios", "accepted": 1, "expected": 2}
+  ],
+  "routing": {
+    "215": {"OD": 7955, "DC": 7955, "DD": 46010, "OC": 1369},
+    "500": {"OD": 18500, "DC": 18500, "DD": 249500, "OC": 1369}
+  },
+  "jobs": [
+    {"job": "2088823_1", "configuration": "Direct / 96 GiB", "status": "COMPLETED", "elapsed_seconds": 8895, "max_rss_kib": 48042808, "economic_gap_fraction": null},
+    {"job": "2088823_0", "configuration": "Warehouse / 96 GiB", "status": "FAILED", "elapsed_seconds": 11736, "max_rss_kib": 57416116, "economic_gap_fraction": 0.463716},
+    {"job": "2089838", "configuration": "Warehouse / 192 GiB", "status": "FAILED", "elapsed_seconds": 13003, "max_rss_kib": 116192580, "economic_gap_fraction": 0.463676},
+    {"job": "2091731", "configuration": "Warehouse / dual simplex / 4 threads", "status": "RUNNING", "elapsed_seconds": null, "max_rss_kib": null, "economic_gap_fraction": null}
+  ],
+  "pending_final_job": "2091731",
+  "pending_final_job_outcome": null,
+  "frozen_cost_and_warehouse_exports_available": false
+}

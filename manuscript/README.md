@@ -146,5 +146,19 @@ native author metadata remains available to HTML. The SBC style is unchanged. Se
 [upstream license](vendor/quarto-sbc-LICENSE) and
 [third-party notices](vendor/THIRD_PARTY_NOTICES.md).
 The historical SBC style is not relicensed by the upstream MIT license or the
-host repository's GPL license. Verify venue and redistribution requirements.
+host repository's MIT license. Verify venue and redistribution requirements.
 The HTML is a companion representation, not pixel-identical SBC typesetting.
+
+Original manuscript text and project-authored figures use MIT. This does not
+relicense cited publications, input datasets or vendor files. See ../LICENSING.md.
+
+## Partial results and review figures
+
+Run `python manuscript/build_review_figures.py` before rendering to reproduce
+the four review figures from results_snapshot.json. These figures report
+validation coverage, route preparation and scheduler/solver diagnostics, not
+unavailable economic or warehouse-level estimates. The rendering itself does
+not execute research code or require Gurobi. Missing values stay missing.
+The final warehouse-only nine-scenario retry is job 2091731; its outcome is
+pending. The pending export matrix in the article specifies each remaining
+table/figure and the evidence needed to complete it.
