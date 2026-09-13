@@ -1,22 +1,25 @@
 ---
-title: "Reproducible grain-storage investment planning under uncertainty"
-subtitle: "A mathematical-contract and HPC evidence framework for Model Agrologistic"
+title: "HPC-aware optimization of grain-storage networks under uncertainty"
+subtitle: "A reproducible computational framework with explicit model and validation contracts"
 date: 2026-09-13
 abstract: >-
-  Strategic grain-storage planning links long-lived infrastructure decisions to
-  seasonal production, domestic requirements and export opportunities. This
-  research develops a reproducible mixed-integer optimization demonstrator for
-  warehouse opening, capacity expansion and bulk-handling conversion, with
-  scenario-dependent logistics decisions. We distinguish a bounded reconstruction
-  of a thesis methodology from an expanded policy-oriented model. Materialized
-  road distances, explicit feasibility slacks, independent solution checks and
-  separate computational timings connect model assumptions to auditable evidence.
-  A service-first hierarchy distinguishes domestic fulfillment from capacity-gap
-  diagnostics; scalar stochastic-value metrics retain their own interpretation
-  and numerical bounds. This working manuscript documents the mathematical and
-  experimental framework while the selected nine-scenario HPC validation remains
-  pending. It makes neither a claim of exact numerical thesis replication nor a
-  completed scalability-frontier or investment-benefit estimate.
+  Grain-storage network optimization couples discrete infrastructure decisions
+  with product, period and scenario-dependent flows, creating substantial data,
+  memory and solution-time requirements. Building on Rosa's doctoral research,
+  we develop an HPC-aware computational framework for deterministic and two-stage
+  stochastic mixed-integer models of warehouse opening, expansion and bulk-handling
+  conversion. Investigator-developed components integrate road-distance caching,
+  network screening and connectivity diagnostics, model-size preflight,
+  dimensionally explicit feasibility slacks and independent solution validation.
+  Separate data-reading, model-construction, optimization and post-optimality
+  measurements prevent solver performance from being conflated with workflow cost.
+  Road data have been materialized for 215 and 500 warehouses; the selected
+  215-warehouse nine-scenario models contain approximately 14 million variables.
+  Nine of ten reference executions are accepted at this working draft's cutoff;
+  the remaining HPC acceptance is pending. The contribution concerns auditable
+  computational experimentation, not a new distributed MILP algorithm. Exact
+  historical numerical replication, measured parallel speedup and a complete
+  scalability frontier are not established.
 keywords:
   - grain storage
   - facility location
@@ -34,6 +37,16 @@ evidence from final comparative estimates.
 
 # Introduction
 
+Post-harvest logistics poses a computational problem as well as an agricultural
+planning problem. Adding candidate warehouses enlarges both the discrete
+investment space and the potential interwarehouse network. Products, months and
+uncertainty scenarios then replicate continuous flow and inventory decisions.
+An executable formulation can consequently exceed practical construction,
+memory or optimization budgets long before its mathematical specification
+becomes difficult to write. The relevant research problem is how to construct,
+execute and validate these large models without hiding changes to the network,
+decision criterion or quality of the returned solution.
+
 Grain-storage investment is simultaneously a location problem and a network
 planning problem. A storage facility connects seasonal arrivals to consumption
 and export outlets, while its static capacity and handling throughput constrain
@@ -47,17 +60,29 @@ The literature provides complementary perspectives on these decisions.
 @steiner2017 examine a multi-objective approach to silo location in Paraná.
 The review by @rosa2025 motivates integrating storage-location decisions with
 uncertainty and heterogeneous warehouse and grain characteristics. These works
-support an integrated research question: how can an investment model remain
-useful to public planning while making its data transformations, feasibility
-relaxations and computational limits explicit?
+establish the application context, while computational work on agricultural
+optimization and simulation demonstrates the need to distinguish algorithmic
+decomposition, data preparation and distributed execution [@shastri2011;
+@zhao2012; @knapen2025].
 
-Model Agrologistic addresses that question as a technological research
-demonstrator, not a deployed procurement system. The intended contribution is
-an auditable chain from input data to a qualified planning result. Three
-objectives guide the study: reconstruct a documented thesis-method baseline;
-separate and explain policy extensions; and validate selected deterministic and
-stochastic computations in an HPC environment. The study does not seek to prove
-that a single modeled investment plan is unique or immediately implementable.
+The mathematical and decision-support starting point is the doctoral thesis
+of Artur Guerra Rosa, *Modelagem matemática e sistemas de apoio à decisão para
+a logística de alocação e armazenagem de grãos no Brasil* [@rosa2026thesis].
+We credit that work for the grain-allocation and storage-planning foundation;
+the present study does not introduce the underlying application model as new.
+Its bounded reconstruction is distinguished from policy extensions with separate
+slacks, service priorities and expanded candidate data. The published review
+@rosa2025 and the doctoral thesis are distinct contributions and are cited
+separately.
+
+Model Agrologistic investigates a computational workflow built around this
+foundation. Its objectives are to make model growth and resource consumption
+measurable; preserve the meaning of network and feasibility transformations;
+and independently validate selected deterministic and stochastic results on an
+HPC platform. The unit of evaluation is the complete, versioned experiment,
+not only the final objective value. Public-investment interpretation supplies
+the application motivation, but the principal contribution assessed here is
+the software and experimental method that produces a qualified result.
 
 # Related work and research positioning
 
@@ -207,23 +232,73 @@ interfaces between data preparation, strategic investment and operational
 evaluation. It does not imply that harvest scheduling or crop establishment
 has been implemented in this demonstrator.
 
+## Computational approaches in agricultural systems
+
+@shastri2011 address a large agricultural optimization model through a
+decomposition and distributed-computing approach to BioFeed, a biomass supply
+planning problem. This is direct precedent for treating computational solution
+strategy, rather than the use of a commercial optimizer alone, as a research
+contribution. Our current extensive-form implementation does not reproduce
+their decomposition or establish superiority over it.
+
+@knapen2025 use standard big-data and distributed-computing technologies for
+scalable crop-growth simulations. Their application illustrates a different
+parallelization opportunity: distributing simulation work is not equivalent to
+solving a MILP whose scenarios share first-stage integer decisions. @zhao2012
+study parallelization and optimization of spatial analysis for environmental
+model-data assembly. This distinction supports measuring data preparation
+separately from the numerical solver rather than attributing all elapsed time
+to optimization.
+
+Shared-memory performance also requires explicit measurement. The PaScal Suite
+of @silva2025pascal provides tools for evaluating and profiling parallel
+scalability. Work on parallel dual revised simplex by @huangfu2018 shows that
+parallelism may be organized within and across iterations. These references
+motivate region-level timings and controlled thread-count experiments; they
+do not imply that PaScal is integrated here or identify Gurobi's proprietary
+internal algorithms.
+
+| Computational layer | Published precedent | Present implementation and evidence boundary |
+|:--|:--|:--|
+| Agricultural MILP solution strategy | @shastri2011 | Extensive-form Gurobi baseline; decomposition is future work |
+| Distributed agricultural simulation | @knapen2025 | Slurm experiment scheduling, not a distributed scenario solver |
+| Spatial data preparation | @zhao2012 | Versioned OSRM materialization and pair-cache reuse; no matched speedup benchmark |
+| Shared-memory profiling | @silva2025pascal | Separate workflow timings; controlled thread-scaling study remains open |
+| LP parallel algorithms | @huangfu2018 | Solver method and thread settings recorded, without claims about proprietary internals |
+
+: Computational precedents and the boundaries of the present contribution.
+These studies address different workloads and are not runtime baselines for
+the present instances. {#tbl-computational-literature}
+
 ## Research gap and contribution
 
-The published review by @rosa2025 provides the closest grain-warehouse
-location context. Our contribution is not a claim that storage-location MILPs,
-stochastic programming or emergency penalties are new. Rather, it is the
-combination of a declared deterministic/stochastic formulation with a
-reproducible computational contract: materialized routing data, frozen
-scenario-comparison inputs, separately interpretable feasibility variables,
-independent residual checks and resource-aware evidence reporting.
+The gap addressed here is operational: connecting an agricultural investment
+formulation to a reproducible, resource-bounded experiment whose returned
+solution can be checked independently. The cited literature establishes that
+agricultural optimization, HPC, decomposition and profiling are not new. We do
+not infer from this focused synthesis that no previous system combines these
+ideas. Instead, we evaluate a concrete implementation that connects
+provenance-aware road data, auditable network reduction, explicit mathematical
+contracts, staged solver execution and validation of exported decisions.
 
-Three research questions follow. First, which conclusions remain comparable
-when a thesis-method instance is reconstructed with a new road matrix and
-separate slacks? Second, can domestic service be prioritized without confusing
-nominal capacity inadequacy with an invalid computational result? Third, what
-computational evidence is sufficient to support a bounded HPC demonstrator,
-without asserting a complete scalability frontier? These questions motivate the
-materials, mathematical models and evaluation protocol below.
+Relative to @rosa2026thesis, the proposed extension is therefore computational
+and methodological, with modeling differences declared rather than concealed.
+Its investigator-developed tools expose failure at different layers: invalid
+input data, lost connectivity, inconsistent units, infeasible exported
+decisions, incomplete objective stages and exhausted computational resources.
+Merely moving the historical model to a larger machine would not provide
+these diagnostics. Conversely, their implementation alone does not establish
+an algorithmic speedup; that requires matched comparative experiments.
+
+Three research questions follow. First, how do retained network size and
+scenario replication translate into measurable construction, memory and
+optimization requirements? Second, can computational reductions and feasibility
+relaxations preserve a declared planning contract that an independent validator
+can verify? Third, which selected instances reach the declared solution-quality
+and stage-completion requirements within an HPC resource budget? The current
+evidence addresses selected executions; it does not resolve the complete
+candidate-population frontier or isolate causal performance gains from every
+software component.
 
 # Materials and methods: mathematical framework
 
@@ -235,6 +310,11 @@ before uncertainty is observed and permits scenario-dependent logistics.
 Both formulations below describe the implemented conservation, activation and
 capacity contracts; the separate relaxation and service-first extension are
 identified explicitly.
+
+The allocation and storage structure follows the methodological foundation of
+@rosa2026thesis. Equations below describe the implemented version, including
+its explicitly identified extensions; they are not a claim of literal or
+numerical identity with every historical thesis configuration.
 
 The model represents a multi-product, multi-period distribution network.
 Existing warehouses remain available. Candidate warehouses become available
@@ -783,6 +863,44 @@ cache retrieval nor road-network preprocessing is charged to `model.optimize()`.
 Slurm completion records and process memory accounting supplement, but do not
 replace, application-level timings and independent solution checks.
 
+## Model size, memory and performance measurement
+
+Let $n_W=|W|$ be the number of warehouses and let $\mathcal A_p$ denote the retained
+directed arcs eligible for product $p$. The flow-variable count in an extensive
+form with a common arc set across scenarios is
+$|S||T|\sum_p|\mathcal A_p|$. Inventory adds terms proportional to
+$|S||T||W||P|$; slacks and first-stage investment decisions add their own
+separately counted blocks. These are structural counts, not a polynomial-time
+complexity claim for the MILP. The preflight reports the count for the actual
+instantiated index sets rather than assuming every theoretical arc exists.
+
+Before screening, the directed interwarehouse graph contains at most
+$n_W(n_W-1)$ arcs. Retaining a fixed fraction does not remove this quadratic growth.
+Scenario replication enlarges the continuous relaxation and stored matrix,
+whereas integer facility decisions influence the branch-and-bound search.
+Neither variable count nor warehouse count alone predicts solution time:
+connectivity, coefficient scaling, relaxation strength, degeneracy and the
+objective hierarchy can change the search substantially.
+
+The experimental unit is therefore a frozen input/configuration pair together
+with its resource allocation. Reports separate data reading, backend model
+construction, primary optimization, post-optimality analysis, validation and
+export where available. Missing historical timings remain missing; they are
+not reconstructed by subtracting overlapping clocks. For a service-first run,
+stage-specific objective bounds, gaps and completion states accompany the
+total optimizer time. For scalar EVPI/VSS analysis, auxiliary solves must not
+be counted as a speed penalty of the primary RP solve.
+
+Current jobs solve an extensive-form MILP within one allocated node; Slurm
+arrays distribute independent experiments. This is not a distributed MILP
+solver, and no multi-node speedup is claimed. A future strong-scaling test
+would hold model, objective, stopping rules and hardware fixed while varying
+threads, report repeated trials and compare $T_1/T_p$ and $(T_1/T_p)/p$.
+Region-level profiling, as motivated by @silva2025pascal, can then distinguish
+serial data preparation from solver work. Present memory and elapsed-time
+observations establish resource requirements for selected cases, not parallel
+efficiency estimates.
+
 # Results
 
 ## Reference validation and experimental coverage
@@ -1010,6 +1128,33 @@ confidence intervals, and include first-stage investment once per total.
 
 # Discussion and limitations
 
+## Computational contribution and limits of the evidence
+
+The principal contribution is an inspectable software workflow for large
+agricultural network experiments, rather than an additional application of
+an optimizer to a grain dataset. Model-size preflight, provenance-aware road
+materialization, connectivity diagnostics, independent residual validation
+and stage-level reporting make different failure mechanisms observable.
+Their scientific value is to prevent a faster but changed model, an
+unvalidated incumbent or an incomplete objective hierarchy from being reported
+as an equivalent successful computation.
+
+This position complements, but does not supersede, agricultural decomposition
+research [@shastri2011] and distributed simulation research [@knapen2025].
+The current records demonstrate execution and diagnostic coverage, not a
+matched ablation showing the isolated benefit of each component. In particular,
+pair-cache hits demonstrate reuse, but do not by themselves quantify an
+end-to-end speedup; network screening reduces model size but can alter the
+feasible set. Such reductions must be assessed jointly with connectivity and
+planning outcomes. A stronger computational evaluation would compare these
+components on identical inputs and declared solution-quality budgets.
+
+The bounded reconstruction also depends on intellectual and data provenance.
+The grain-storage formulation and decision-support foundation are attributed
+to @rosa2026thesis. Separate slacks, changed road data and service-first
+priorities belong to the present extension and cannot be retroactively
+described as results of that thesis. Preserving this distinction permits
+methodological comparison while avoiding a claim of exact numerical replication.
 
 The development already establishes why model and data contracts matter.
 Changing the distance authority can change the retained network. Changing
@@ -1190,14 +1335,23 @@ complementary research tasks, not benefits provided automatically by decompositi
 
 # Conclusions
 
-This work organizes strategic grain-storage optimization around explicit
-mathematical contracts and traceable computational evidence. Its key design
-choice is to distinguish service fulfillment, capacity inadequacy and economic
-cost rather than treating a large penalized objective as a single substantive
-result. The current manuscript establishes the framework and publication
-contract. Quantitative findings require matching frozen exports. An
-unsuccessful final retry will be reported as a bounded computational
-limitation, not suppressed or converted into acceptance.
+Building on @rosa2026thesis, this study develops an HPC-aware workflow for
+constructing, executing and independently checking grain-storage investment
+models. Its computational focus is the interaction of network growth,
+scenario replication, memory demand and solution-quality requirements.
+Investigator-developed data, diagnostic and validation tools connect those
+requirements to reproducible evidence rather than relying on solver status
+alone. Service fulfillment, nominal capacity violations and economic cost
+remain separately interpretable outputs.
+
+At the current cutoff, road-data preparation covers 215 and 500 warehouses,
+whereas the selected policy optimization evidence concerns 215 warehouses.
+Nine of ten reference executions are accepted, with the final warehouse-only
+nine-scenario execution unresolved. The manuscript does not yet demonstrate
+a new solution algorithm, parallel speedup or a complete scalability frontier.
+Final comparative tables require matching frozen exports. An unsuccessful
+last retry will be retained as a bounded computational limitation, not
+suppressed or converted into acceptance.
 
 # Reproducibility and availability
 

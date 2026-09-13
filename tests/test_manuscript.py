@@ -27,6 +27,20 @@ def test_draft_integrity(manuscript):
     CHECKER.check()
 
 
+def test_computational_focus_credits_thesis_without_speedup_claims(manuscript):
+    article = (manuscript / "index.qmd").read_text(encoding="utf-8")
+    bibliography = (manuscript / "references.bib").read_text(encoding="utf-8")
+    assert "@phdthesis{rosa2026thesis," in bibliography
+    assert article.count("@rosa2026thesis") >= 4
+    assert "## Model size, memory and performance measurement" in article
+    assert "no multi-node speedup is claimed" in article
+    assert "Slurm\narrays distribute independent experiments" in article
+    assert "@shastri2011" in article and "@knapen2025" in article
+    selection = json.loads((manuscript / "citation_selection.json").read_text())
+    assert len(selection["records"]) == selection["verified_member_count"]
+    assert all(row["membership_verified"] for row in selection["records"])
+
+
 def test_publication_requires_later_review(manuscript):
     with pytest.raises(ValueError, match="Publication blocked"):
         CHECKER.check(publication=True)

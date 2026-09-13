@@ -42,7 +42,7 @@ def check(*, rendered: bool = False, publication: bool = False) -> None:
     )
     if any(row["email"] not in email_lines for row in records):
         raise ValueError("SBC email block omits an author")
-    keys = re.findall(r"@(?:article|incollection|book|misc)\{([^,]+),", bibliography)
+    keys = re.findall(r"@(?:article|incollection|book|misc|phdthesis)\{([^,]+),", bibliography)
     cited = set(re.findall(r"(?<!\w)@([A-Za-z][A-Za-z0-9_-]*)", article))
     cited = {key for key in cited if not key.startswith(("eq-", "tbl-", "fig-", "sec-"))}
     if len(keys) != len(set(keys)) or set(keys) != cited:

@@ -112,6 +112,14 @@ the user's library.
 
 ## Editorial and mathematical development
 
+[computational_positioning_audit.md](computational_positioning_audit.md) records
+the HPC-focused contribution, thesis attribution, six additional citations and
+their evidence boundaries. The 35 cited Zotero records have verified membership
+in the manuscript collection. Rosa's 2026 doctoral thesis is distinct from the
+2025 review; its institutional URL documents the defence, not a full-text deposit.
+An APA-form thesis reference is provided in the audit, while the review PDF
+retains the agreed SBC author-year bibliography style.
+
 [editorial_plan.md](editorial_plan.md) records Computers and Electronics in
 Agriculture as the preferred, not confirmed, journal and an internal target of
 20 body pages plus references. This is not a verified journal page limit. The
