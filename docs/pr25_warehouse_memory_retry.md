@@ -1,5 +1,9 @@
 # PR #25: isolated warehouse-only memory retry
 
+> Historical resource-only attempt: job 2089838 also reached the soft-memory
+> limit. Preserve its outputs and use the [dual/four-thread retry](pr25_warehouse_dual_retry.md).
+> Its reference plan is archived as `v020_validation_reference_memory128.yaml`.
+
 ## Diagnosis and evidence boundary
 
 The supplied log for NPAD job `2088823_0` confirms `Memory limit reached`.

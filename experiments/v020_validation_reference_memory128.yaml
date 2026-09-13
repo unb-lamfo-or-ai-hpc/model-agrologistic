@@ -3,8 +3,7 @@ scope: >-
   Bounded alpha=0.8 thesis-method comparison and 215-warehouse OSRM service-first
   policy references at 20-percent retained arcs. The nine-scenario references
   use explicitly identified 14400-second retries. Only the warehouse-only
-  nine-scenario case uses the dual-simplex/four-thread 128 GB soft-memory retry;
-  nine references remain
+  nine-scenario case uses the 128 GB soft-memory retry; nine references remain
   unchanged from the preceding plan. Not numerical replication of
   all published thesis tables and not the full scalability campaign.
 campaigns:
@@ -24,7 +23,7 @@ campaigns:
     manifest: experiments/v020_policy_nine_scenario_retry.yaml
     indices: [1]
     output_dir: data/results/validation/pr25-final/policy-nine-t14400
-  - profile: policy_service_first_stochastic_nine_dual4
-    manifest: experiments/v020_policy_warehouse_dual_retry.yaml
+  - profile: policy_service_first_stochastic_nine_memory128
+    manifest: experiments/v020_policy_warehouse_memory_retry.yaml
     indices: [0]
-    output_dir: data/results/validation/pr25-final/policy-nine-dual4
+    output_dir: data/results/validation/pr25-final/policy-nine-memory128

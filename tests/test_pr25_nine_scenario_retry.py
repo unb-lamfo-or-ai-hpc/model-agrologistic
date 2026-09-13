@@ -186,7 +186,7 @@ def test_memory_retry_changes_only_memory_and_declared_retry_identity():
 
 def test_memory_reference_plan_preserves_all_nine_accepted_cases():
     old = reference_entries("v020_validation_reference_t14400.yaml")
-    new = reference_entries("v020_validation_reference.yaml")
+    new = reference_entries("v020_validation_reference_memory128.yaml")
     assert len(old) == len(new) == 10
     shared = old.keys() & new.keys()
     assert len(shared) == 9
@@ -241,4 +241,76 @@ def test_memory_launcher_is_single_job_and_preserves_time_and_thread_budget():
     assert b"--array" not in content
     for setting in (b"--mem=192G", b"--cpus-per-task=16", b"--time=06:00:00",
                     b"PYTHONNOUSERSITE=1", b"--memory-retry --index 0"):
+        assert setting in content
+
+
+def test_dual_retry_changes_only_algorithm_threads_and_retry_identity():
+    original = load_experiment_manifest(ROOT / retry.MEMORY_MANIFEST)
+    current = load_experiment_manifest(ROOT / retry.DUAL_MANIFEST)
+    assert len(current.experiments) == 1
+    old, new = original.experiments[0], current.experiments[0]
+    assert new.solver.threads == 4
+    assert new.solver.solver_options == {**old.solver.solver_options, "Method": 1}
+    normalized = replace(new, name=old.name, metadata=old.metadata,
+                         solver=replace(new.solver, threads=old.solver.threads,
+                                        solver_options=old.solver.solver_options))
+    assert asdict(normalized) == asdict(old)
+    assert new.metadata["retry_of"] == old.name
+    assert new.metadata["prior_slurm_job_id"] == "2089838"
+    assert new.metadata["optimization_profile"] == "dual_simplex_four_threads"
+    assert current.output_dir != original.output_dir
+
+
+def test_dual_plan_preserves_nine_accepted_specs_and_paths():
+    old = reference_entries("v020_validation_reference_memory128.yaml")
+    new = reference_entries("v020_validation_reference.yaml")
+    assert len(old) == len(new) == 10
+    shared = old.keys() & new.keys()
+    assert len(shared) == 9
+    assert all(old[name] == new[name] for name in shared)
+    assert old.keys() - new.keys() == {"policy_sto9_p20_warehouse_t14400_mem128"}
+    assert new.keys() - old.keys() == {"policy_sto9_p20_warehouse_t14400_dual4"}
+
+
+def test_dual_profile_dispatch_with_four_allocated_cpus(memory_context, monkeypatch):
+    monkeypatch.setenv("SLURM_CPUS_PER_TASK", "4")
+    assert retry.run_retry(0, dual_retry=True, project_root=memory_context.root) == 0
+    assert memory_context.calls[0][0][0][2] == str(memory_context.root / retry.DUAL_MANIFEST)
+
+
+@pytest.mark.parametrize("memory,cpus", [("98304", "4"), ("196608", "2")])
+def test_dual_profile_rejects_insufficient_allocation(memory_context, monkeypatch, memory, cpus):
+    monkeypatch.setenv("SLURM_MEM_PER_NODE", memory)
+    monkeypatch.setenv("SLURM_CPUS_PER_TASK", cpus)
+    with pytest.raises(ValueError, match="requires --mem=192G"):
+        retry.run_retry(0, dual_retry=True, project_root=memory_context.root)
+    assert not memory_context.calls
+
+
+def test_conflicting_profiles_never_launch(memory_context):
+    with pytest.raises(ValueError, match="exactly one retry profile"):
+        retry.run_retry(0, dual_retry=True, memory_retry=True, project_root=memory_context.root)
+    assert not memory_context.calls
+
+
+def test_dual_profile_preserves_existing_rejected_results(memory_context, monkeypatch):
+    directory = memory_context.output / memory_context.spec.name
+    directory.mkdir(parents=True)
+    marker = directory / "partial.json"
+    marker.write_text("preserved")
+    monkeypatch.setattr(memory_context.validation, "assess_run",
+                        lambda *_: {"status": "rejected"})
+    with pytest.raises(ValueError, match="Existing unaccepted output preserved"):
+        retry.run_retry(0, dual_retry=True, project_root=memory_context.root)
+    assert marker.read_text() == "preserved"
+    assert not memory_context.calls
+
+
+def test_dual_launcher_is_single_job_with_bounded_resources():
+    content = (ROOT / "scripts/run_pr25_warehouse_dual_retry.slurm").read_bytes()
+    assert b"\r" not in content
+    assert b"--array" not in content
+    for setting in (b"--mem=192G", b"--cpus-per-task=4", b"--time=06:00:00",
+                    b"PYTHONNOUSERSITE=1", b"--dual-retry --index 0",
+                    b"OMP_NUM_THREADS=4", b"OPENBLAS_NUM_THREADS=4", b"MKL_NUM_THREADS=4"):
         assert setting in content

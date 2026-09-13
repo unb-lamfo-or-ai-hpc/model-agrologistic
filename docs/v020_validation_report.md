@@ -4,12 +4,35 @@ Status (2026-09-13): **levels 1-3 accepted in the latest supplied NPAD report;
 level 4 remains pending and the overall report is rejected**. Nine references
 are accepted. The warehouse-only nine-scenario retry stopped at Gurobi's
 soft-memory limit; its incomplete objective hierarchy is not accepted.
-Read the [memory retry runbook](pr25_warehouse_memory_retry.md) before submitting
+Read the [dual/four-thread retry runbook](pr25_warehouse_dual_retry.md) before submitting
 anything; do not repeat the nine accepted runs or the licensed quality suite.
 This report supersedes the earlier claim that reception slack needed another
 30-day multiplier. It does not supersede or modify the archived v0.1.0 evidence.
 
 ## Executive conclusion
+
+### Latest result: the larger-memory attempt also stopped
+
+The report `report-memory128-20260913T171425Z/v020_validation_report.json`
+confirms nine accepted references and one rejected warehouse-only nine-scenario
+run. Levels 1–3 are accepted, level 4 is pending, and overall status is rejected.
+Job 2089838 used a 192 GiB allocation but reached Gurobi's 128 decimal GB soft
+limit after 12650.56 optimization seconds; it explored 16 nodes and retained
+economic incumbent 764469455725.4, bound 410003580551.1, gap 46.3676%.
+MaxRSS was 116192580 KiB (approximately 110.8 GiB). The only failed run check
+remains `three_completed_passes`; no local residual, cost, service or provenance
+failure was reported. The allocation itself did not report a Slurm OOM kill.
+
+The next bounded numerical experiment explicitly sets `Method=1` (dual simplex
+for the root relaxation) and `Threads=4`, keeping SoftMemLimit=128, Slurm memory
+192 GiB, 14400 seconds and every mathematical/acceptance setting unchanged.
+This jointly changes algorithm and parallelism, not the mathematical model;
+runtime differences cannot be attributed to one change alone. Neither lower
+memory usage nor successful convergence is presumed. The previous plan and
+both partial runs remain archived. The final plan still preserves exactly nine
+accepted references. No `src/logic` or dependency change is made.
+
+### Historical resource-only attempt (superseded for execution)
 
 The supplied tail of `slurm-pr25-nine-retry-2088823_0.out` explicitly reports
 `Memory limit reached` after 11393.77 optimization seconds. The final displayed
