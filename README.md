@@ -169,8 +169,10 @@ stable data/API contracts; they are not translated opportunistically.
 Follow [CONTRIBUTING.md](CONTRIBUTING.md) for review and provenance requirements.
 Use [CITATION.cff](CITATION.cff) and report the exact commit, input identities,
 solver/runtime versions and experiment configuration. The code is licensed under
-[GPL-3.0-only](LICENSE); third-party data and software retain their own licensing
+[MIT](LICENSE) for original project contributions; third-party data and software retain their own licensing
 and attribution requirements.
+See [licensing and data redistribution boundaries](LICENSING.md) before
+redistributing source datasets, upstream benchmark assets or derived databases.
 
 A Quarto Manuscript based on `cvictorr2508/quarto-sbc` is planned after the
 reference evidence and documentation review. It must distinguish thesis-method
