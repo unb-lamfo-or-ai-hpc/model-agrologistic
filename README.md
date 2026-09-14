@@ -14,12 +14,19 @@ track establishes exact numerical replication of the published thesis tables:
 the historical road-network snapshot and forecasting path have not been
 reconstructed, and separate feasibility slacks change the historical objective.
 
-At the documented PR #25 checkpoint, eight of ten reference executions were
-accepted; the two nine-scenario retries remained in progress. Levels 1–3 of the
-four-level validation were accepted in the isolated NPAD report, while level 4
-remained incomplete. Consult the [validation report](docs/v020_validation_report.md)
-and its timestamped receipts rather than interpreting successful CI as scientific
-acceptance. This documentation branch does not certify those retries.
+The bounded demonstration concluded with nine of ten selected references
+accepted. Mathematical/data contracts, licensed software tests and independent
+solution checks passed. The warehouse-only nine-scenario trial reached its
+14,400-second optimization budget in the capacity pass, with a 100% relative
+gap; the economic pass was not executed. Its domestic-service target and
+independent feasibility checks passed. This is a documented computational limit,
+not evidence of model infeasibility.
+
+The original four-level certificate remains rejected, with level 4 incomplete.
+Development closure does not change that outcome or the configured 1% gap
+target. See the [validation report](docs/v020_validation_report.md) and
+[final evidence](docs/evidence/pr25-final/README.md) for identities and stage
+observations. Successful CI is not a substitute for scientific acceptance.
 
 The archived v0.1.0 package records a maintainer-accepted computational
 demonstration in the relevant NPAD environment under the project's TRL 6
@@ -144,9 +151,10 @@ array, omission selects all experiments.
 
 The [experiment catalogue](experiments/README.md) identifies the reference plan.
 The [script guide](scripts/README.md) separates preprocessing, solving, auditing
-and reporting. For ongoing PR #25 retries, follow only the
-[bounded retry runbook](docs/pr25_nine_scenario_retry.md); do not resubmit them
-or rerun the eight accepted references from this documentation branch.
+and reporting. The [retry runbook](docs/pr25_nine_scenario_retry.md) records the
+completed experimental procedure. Replaying a reference requires its original
+implementation and environment; documentation-only source changes do not
+authorize rewriting the fingerprints of archived results.
 
 ## Repository guide
 
