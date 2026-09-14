@@ -13,13 +13,26 @@ def test_campaign_does_not_change_accepted_configurations(tmp_path):
     source = root / "experiments/v020_policy_mvp.yaml"
     before = source.read_bytes()
     document = campaign(root, tmp_path)
-    assert len(document["experiments"]) == 18
+    assert len(document["experiments"]) == 8
+    assert document["defaults"]["solver"]["time_limit"] == 28800
+    assert {r["metadata"]["warehouse_population"] for r in document["experiments"]} == {
+        215, 300, 400, 500,
+    }
+    assert all(r["metadata"]["optimization_budget_seconds"] == 28800
+               for r in document["experiments"])
     assert document["defaults"]["solver"]["mip_gap"] == 0.10
     assert document["defaults"]["model"]["interhub_strong_connectivity"] is True
     assert all("sto9" not in r["name"] or r["calculate_evpi_vss"] is False
                for r in document["experiments"])
     assert all(r["calculate_evpi_vss"] is False for r in document["experiments"])
     assert source.read_bytes() == before
+
+
+def test_slurm_budget_includes_pipeline_overhead():
+    root = Path(__file__).resolve().parents[1]
+    script = (root / "scripts/run_nine_connectivity.slurm").read_text()
+    assert "#SBATCH --time=12:00:00" in script
+    assert "#SBATCH --qos=qos1" in script
 
 
 def test_acceptance_requires_complete_hierarchy_and_feasibility():

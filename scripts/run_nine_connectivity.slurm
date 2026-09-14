@@ -1,9 +1,10 @@
 #!/bin/bash
 #SBATCH --job-name=nine-connect
 #SBATCH --partition=intel-256
+#SBATCH --qos=qos1
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=192G
-#SBATCH --time=05:00:00
+#SBATCH --time=12:00:00
 #SBATCH --output=slurm-nine-connect-%A_%a.out
 
 # Each array task owns one result directory. Preflight is mandatory before solving.

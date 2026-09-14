@@ -22,7 +22,7 @@ def main():
     parser.add_argument("--population-order", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--populations", nargs="+", type=int,
-                        default=[300, 400, 600, 700, 800, 900, 1000])
+                        default=[300, 400])
     parser.add_argument("--anchor-workbook", type=Path,
                         default=ROOT / "data/templates/model_agrologistic_padrao_ouro.xlsx")
     args = parser.parse_args()

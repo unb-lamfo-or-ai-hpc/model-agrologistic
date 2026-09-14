@@ -11,14 +11,15 @@ from pathlib import Path
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
-POPULATIONS = (215, 300, 400, 500, 600, 700, 800, 900, 1000)
+POPULATIONS = (215, 300, 400, 500)
+OPTIMIZATION_BUDGET_SECONDS = 28800
 
 
 def campaign(root: Path, output: Path, populations=POPULATIONS):
     """Use the existing nine-scenario data policy and an explicit new tolerance."""
     source = yaml.safe_load((root / "experiments/v020_policy_mvp.yaml").read_text())
     defaults = copy.deepcopy(source["defaults"])
-    defaults["solver"].update(mip_gap=0.10, time_limit=14400, threads=4)
+    defaults["solver"].update(mip_gap=0.10, time_limit=OPTIMIZATION_BUDGET_SECONDS, threads=4)
     defaults["solver"]["solver_options"].update(SoftMemLimit=128, NumericFocus=1)
     defaults["model"].update(interhub_strong_connectivity=True)
     # Materialize and inspect first. Large instances require an explicit memory gate.
@@ -36,7 +37,7 @@ def campaign(root: Path, output: Path, populations=POPULATIONS):
                 evidence_profile="nine_scenario_interhub_connectivity_v1",
                 warehouse_population=population,
                 mip_gap_acceptance_fraction=0.10,
-                optimization_budget_seconds=14400,
+                optimization_budget_seconds=OPTIMIZATION_BUDGET_SECONDS,
                 route_policy="nearest_p20_plus_audited_strong_interhub_repair",
                 backend_qualification="Gurobi; SCIP parity validation pending",
             )
@@ -52,7 +53,7 @@ def main():
     args = parser.parse_args()
     populations = tuple(args.populations)
     if tuple(sorted(set(populations))) != populations or not set(populations) <= set(POPULATIONS):
-        parser.error("Use increasing unique populations from 215,300,400,500,...,1000.")
+        parser.error("Use increasing unique populations from 215,300,400,500.")
     destination = args.campaign_root.resolve()
     destination.mkdir(parents=True, exist_ok=False)
     document = campaign(ROOT, destination / "runs", populations)
@@ -65,7 +66,8 @@ def main():
         writer.writerows({"index": i, "name": r["name"],
                           "warehouses": r["metadata"]["warehouse_population"],
                           "direct": r["model"]["use_direct_origin_customer"],
-                          "solver": "gurobi", "mip_gap_target": 0.10, "time_limit": 14400}
+                          "solver": "gurobi", "mip_gap_target": 0.10,
+                          "time_limit": OPTIMIZATION_BUDGET_SECONDS}
                          for i, r in enumerate(document["experiments"]))
     (destination / "campaign_status.json").write_text(json.dumps({
         "status": "awaiting_materialization_and_preflight",

@@ -52,7 +52,8 @@ def main():
     for index, spec in enumerate(manifest.experiments):
         row = {"index": index, "name": spec.name,
                "warehouses": spec.metadata.get("warehouse_population"),
-               "target_gap": 0.10, "time_budget_seconds": 14400}
+               "target_gap": spec.solver.mip_gap,
+               "time_budget_seconds": spec.solver.time_limit}
         run_dir = manifest.output_dir / spec.name
         try:
             if args.preflight:
