@@ -24,3 +24,4 @@ format:
     css: styles.css
   sbc-pdf:
     number-sections: true
+    fig-pos: H

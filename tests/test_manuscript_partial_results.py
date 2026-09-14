@@ -26,6 +26,21 @@ def test_mit_preserves_third_party_boundaries():
     assert "blanket relicensing" in notice
 
 
+def test_manuscript_final_trial_matches_archived_closure():
+    closure = json.loads((ROOT / "docs/evidence/pr25-final/closure.json").read_text())
+    snapshot = json.loads((MANUSCRIPT / "results_snapshot.json").read_text())
+    source = closure["last_trial"]
+    result = next(row for row in snapshot["jobs"] if row["job"] == source["job_id"])
+    assert result["status"] == source["scheduler_status"]
+    for key in ("elapsed_seconds", "max_rss_kib"):
+        assert result[key] == source[key]
+    assert result["capacity_objective"] == source["capacity_stage"]["objective"]
+    assert result["capacity_gap_fraction"] == source["capacity_stage"]["relative_gap"]
+    assert result["service_objective"] == source["service_stage"]["objective"]
+    assert sum(row["accepted"] for row in snapshot["validation"]) == 9
+    assert closure["original_validation_outcome"] == "rejected"
+
+
 def test_review_has_real_figures_and_explicit_missing_exports():
     text = (MANUSCRIPT / "index.qmd").read_text(encoding="utf-8")
     for name in ("validation-coverage", "routing-growth", "retry-resources",
