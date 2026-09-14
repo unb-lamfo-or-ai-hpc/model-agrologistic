@@ -1,0 +1,19 @@
+{
+  "author": [
+    {"name": "Victor Rafael Rezende Celestino", "orcid": "0000-0001-5913-2997", "email": "vrcelestino@unb.br", "affiliations": [{"ref": "unb"}], "institute": "1"},
+    {"name": "Artur Guerra Rosa", "orcid": "0000-0002-5013-4408", "email": "artur.guerra@unb.br", "affiliations": [{"ref": "unb"}], "institute": "1", "row-end": true},
+    {"name": "Andréia Elizabeth Silva Barros", "orcid": "0000-0002-7409-0550", "email": "andreiabarros@tc.df.gov.br", "affiliations": [{"ref": "unb"}], "institute": "1"},
+    {"name": "Gabriela Corsano", "orcid": "0000-0002-0235-4262", "email": "gcorsano@santafe-conicet.gov.ar", "affiliations": [{"ref": "unl"}], "institute": "2", "row-end": true},
+    {"name": "Luis Javier Zeballos", "orcid": "0000-0002-8548-2912", "email": "zeballos@intec.unl.edu.ar", "affiliations": [{"ref": "unl"}], "institute": "2"},
+    {"name": "Rodolfo Dondo", "orcid": "0000-0003-4580-0493", "email": "rdondo@santafe-conicet.gov.ar", "affiliations": [{"ref": "unl"}], "institute": "2", "row-end": true},
+    {"name": "Silvia Araujo dos Reis", "orcid": "0000-0002-1646-4454", "email": "silviareis@unb.br", "affiliations": [{"ref": "unb"}], "institute": "1"}
+  ],
+  "affiliations": [
+    {"id": "unb", "name": "University of Brasilia"},
+    {"id": "unl", "name": "National University of the Littoral"}
+  ],
+  "sbc-affiliations": [
+    {"text": "University of Brasilia", "email-lines": ["vrcelestino@unb.br, artur.guerra@unb.br", "andreiabarros@tc.df.gov.br, silviareis@unb.br"]},
+    {"text": "National University of the Littoral", "email-lines": ["gcorsano@santafe-conicet.gov.ar", "zeballos@intec.unl.edu.ar, rdondo@santafe-conicet.gov.ar"]}
+  ]
+}

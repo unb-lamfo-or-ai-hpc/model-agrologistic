@@ -1,0 +1,256 @@
+{
+  "schema_version": 1,
+  "review_date": "2026-09-13",
+  "scope": "Focused synthesis of published grain-network studies and reviews; metadata and selected abstracts checked against Zotero and publisher records. No new systematic search is claimed.",
+  "collection_name": "Model Agrologistic — Manuscript v0.2",
+  "collection_key": "Q9G99YM3",
+  "collection_created": true,
+  "collection_created_by": "maintainer",
+  "membership_verified": true,
+  "membership_verified_date": "2026-09-13",
+  "verified_member_count": 35,
+  "records": [
+    {
+      "citation_key": "rosa2026thesis",
+      "zotero_item_key": "YKWSRZB7",
+      "url": "https://sigaa.unb.br/sigaa/public/programa/noticias_desc.jsf?id=853&lc=pt_BR&noticia=23891799",
+      "membership_verified": true,
+      "metadata_source": "Author-team thesis metadata and official UnB doctoral defence announcement; URL is not a full-text deposit"
+    },
+    {
+      "citation_key": "shastri2011",
+      "zotero_item_key": "689P9JVF",
+      "doi": "10.1016/j.compag.2011.01.006",
+      "membership_verified": true,
+      "metadata_source": "Existing Zotero item, publisher abstract and University of Illinois bibliographic record"
+    },
+    {
+      "citation_key": "knapen2025",
+      "zotero_item_key": "8LGUCGCN",
+      "doi": "10.1016/j.compag.2025.110392",
+      "membership_verified": true,
+      "metadata_source": "Existing Zotero item, publisher abstract and Wageningen University bibliographic record"
+    },
+    {
+      "citation_key": "zhao2012",
+      "zotero_item_key": "F98ZMAA6",
+      "doi": "10.1016/j.compag.2012.08.007",
+      "membership_verified": true,
+      "metadata_source": "Publisher bibliographic record and abstract; deduplicated before Zotero creation"
+    },
+    {
+      "citation_key": "silva2025pascal",
+      "zotero_item_key": "6ZSAY874",
+      "doi": "10.1109/ACCESS.2025.3639388",
+      "membership_verified": true,
+      "metadata_source": "Existing Zotero item and corresponding author's UFRN publication list"
+    },
+    {
+      "citation_key": "huangfu2018",
+      "zotero_item_key": "PS7AL5DB",
+      "doi": "10.1007/s12532-017-0130-5",
+      "membership_verified": true,
+      "metadata_source": "Existing Zotero item and Springer journal record"
+    },
+    {
+      "citation_key": "rosa2025",
+      "zotero_item_key": "TFD29N7F",
+      "doi": "10.1590/1806-9649-2025v32e4925",
+      "membership_verified": true
+    },
+    {
+      "citation_key": "reis2023",
+      "zotero_item_key": "LTMV44AI",
+      "doi": "10.3390/logistics7030049",
+      "membership_verified": true
+    },
+    {
+      "citation_key": "foulds2005",
+      "zotero_item_key": "J9C5NNLU",
+      "doi": "10.1504/IJOR.2005.007434",
+      "membership_verified": true
+    },
+    {
+      "citation_key": "dubke2011",
+      "zotero_item_key": "SBV9GHVE",
+      "doi": "10.1590/S0101-74382011000100003",
+      "membership_verified": true
+    },
+    {
+      "citation_key": "mardaneh2021",
+      "zotero_item_key": "WCVTJ8N8",
+      "doi": "10.1016/j.knosys.2021.107037",
+      "membership_verified": true
+    },
+    {
+      "citation_key": "steiner2017",
+      "zotero_item_key": "G9SBLRJJ",
+      "doi": "10.1016/j.cie.2017.07.019",
+      "membership_verified": true
+    },
+    {
+      "citation_key": "maiyar2019",
+      "zotero_item_key": "74YMVWBD",
+      "doi": "10.1016/j.ijpe.2018.07.021",
+      "membership_verified": true
+    },
+    {
+      "citation_key": "mogale2020",
+      "zotero_item_key": "7IJYQZRQ",
+      "doi": "10.1007/s10479-020-03664-y",
+      "membership_verified": true,
+      "metadata_source": "Zotero local API; supplied benchmark"
+    },
+    {
+      "citation_key": "mogale2023",
+      "zotero_item_key": "VNEHZQ9J",
+      "doi": "10.1080/00207543.2022.2078746",
+      "membership_verified": true,
+      "metadata_source": "Zotero local API; supplied benchmark"
+    },
+    {
+      "citation_key": "milanez2026",
+      "zotero_item_key": "4HBTP3LC",
+      "doi": "10.15728/bbr.2024.1837.en",
+      "membership_verified": true,
+      "metadata_source": "Zotero local API; supplied benchmark"
+    },
+    {
+      "citation_key": "granillo2019",
+      "zotero_item_key": "J67QX7ML",
+      "doi": "10.15446/dyna.v86n208.72056",
+      "membership_verified": true,
+      "metadata_source": "Zotero local API; supplied benchmark"
+    },
+    {
+      "citation_key": "morais2023",
+      "zotero_item_key": "DKZVI4BT",
+      "doi": "10.3390/su15021063",
+      "membership_verified": true,
+      "metadata_source": "Zotero local API; supplied benchmark"
+    },
+    {
+      "citation_key": "mendoza2021",
+      "zotero_item_key": "7CDHUICA",
+      "doi": "10.1007/978-3-030-86702-7_33",
+      "membership_verified": true,
+      "metadata_source": "Zotero local API; supplied benchmark"
+    },
+    {
+      "citation_key": "vazquez2021",
+      "zotero_item_key": "GU4J33D9",
+      "doi": "10.1016/j.compchemeng.2021.107223",
+      "membership_verified": true,
+      "metadata_source": "Zotero local API; supplied benchmark"
+    },
+    {
+      "citation_key": "anselmino2025",
+      "zotero_item_key": "VYK2IIDQ",
+      "doi": "10.1016/j.biombioe.2025.107686",
+      "membership_verified": true,
+      "metadata_source": "Zotero local API; supplied benchmark"
+    },
+    {
+      "citation_key": "guimaraes2017",
+      "zotero_item_key": "VQ7RQEDW",
+      "doi": "10.19272/201706702006",
+      "membership_verified": true,
+      "metadata_source": "Zotero local API; supplied benchmark",
+      "metadata_correction": "Author order, spelling, volume and pages checked against publisher page; no library record edited."
+    },
+    {
+      "citation_key": "mascarenhas2014",
+      "zotero_item_key": "W2ZIDUDE",
+      "doi": null,
+      "url": "https://www.revistaespacios.com/a14v35n11/14351123.html",
+      "metadata_source": "Publisher full-text page; no matching local Zotero record found",
+      "membership_verified": true
+    },
+    {
+      "citation_key": "essien2018",
+      "zotero_item_key": "VS5EWLFT",
+      "doi": "10.1016/j.compag.2018.02.019",
+      "membership_verified": true,
+      "metadata_source": "Zotero local API; thesis bibliography; publisher metadata"
+    },
+    {
+      "citation_key": "gholamian2017",
+      "zotero_item_key": "2EYVGIXC",
+      "doi": "10.1016/j.compag.2017.05.038",
+      "membership_verified": true,
+      "metadata_source": "Zotero local API; thesis bibliography; publisher metadata"
+    },
+    {
+      "citation_key": "pourmohammadi2020",
+      "zotero_item_key": "F26SSNM3",
+      "doi": "10.5267/j.dsl.2020.8.004",
+      "membership_verified": true,
+      "metadata_source": "Zotero local API; thesis bibliography; publisher metadata"
+    },
+    {
+      "citation_key": "hosseini2020",
+      "zotero_item_key": "Q5KAQBNJ",
+      "doi": "10.1016/j.compag.2019.105095",
+      "membership_verified": true,
+      "metadata_source": "Zotero local API; thesis bibliography; publisher metadata"
+    },
+    {
+      "citation_key": "garima2024",
+      "zotero_item_key": "S9JE7YX5",
+      "doi": "10.3390/su162410816",
+      "membership_verified": true,
+      "metadata_source": "Zotero local API; thesis bibliography; publisher metadata"
+    },
+    {
+      "citation_key": "filippi2022",
+      "zotero_item_key": "5F7VHDJW",
+      "doi": "10.3390/logistics6010009",
+      "membership_verified": true,
+      "metadata_source": "Zotero local API; thesis bibliography; publisher metadata"
+    },
+    {
+      "citation_key": "kussano2012",
+      "zotero_item_key": "G3VSXUZP",
+      "doi": "10.1590/S0104-530X2012000300013",
+      "membership_verified": true,
+      "metadata_source": "Zotero local API; thesis bibliography; publisher metadata"
+    },
+    {
+      "citation_key": "souza2024",
+      "zotero_item_key": "3ZFDKDLC",
+      "doi": "10.1590/1806-9479.2022.268622",
+      "membership_verified": true,
+      "metadata_source": "Zotero local API; thesis bibliography; publisher metadata"
+    },
+    {
+      "citation_key": "wang2024",
+      "zotero_item_key": "HLL2BEND",
+      "doi": "10.1016/j.scitotenv.2024.172434",
+      "membership_verified": true,
+      "metadata_source": "Zotero local API; thesis bibliography; publisher metadata"
+    },
+    {
+      "citation_key": "birge2011",
+      "zotero_item_key": "M8PEW96S",
+      "doi": "10.1007/978-1-4614-0237-4",
+      "membership_verified": true,
+      "metadata_source": "Zotero local API; thesis bibliography; publisher metadata"
+    },
+    {
+      "citation_key": "kaltis2026",
+      "zotero_item_key": "JGA6B4N7",
+      "doi": "10.1080/03155986.2025.2540205",
+      "membership_verified": true,
+      "metadata_source": "Zotero local API; thesis bibliography; publisher metadata"
+    },
+    {
+      "citation_key": "npad2026",
+      "zotero_item_key": "RSG4PUJL",
+      "url": "https://npad.ufrn.br/npad/hardware",
+      "membership_verified": true,
+      "metadata_source": "Official NPAD hardware page"
+    }
+  ],
+  "collection_note": "All 35 cited records verified through the local API on 2026-09-13. Four existing computational references gained collection membership; the thesis and Zhao article were created after deduplication. Other memberships were preserved.",
+  "membership_method": "Zotero Desktop public JavaScript API via official Run JavaScript UI; read-back with local API. Existing metadata and other memberships preserved."
+}

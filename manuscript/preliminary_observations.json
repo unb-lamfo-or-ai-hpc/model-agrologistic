@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "as_of": "2026-09-12",
+  "qualification": "Maintainer-reported preparation and scheduler observations, not frozen comparative optimization results or a final certificate.",
+  "materialized_route_counts": {
+    "215": {"OD": 7955, "DC": 7955, "DD": 46010, "OC": 1369, "total": 63289, "fallback": 0},
+    "500": {"OD": 18500, "DC": 18500, "DD": 249500, "OC": 1369, "total": 287869, "fallback": 0}
+  },
+  "slurm_retries": [
+    {"job_id": "2088823_0", "network": "warehouse_only", "state": "FAILED", "elapsed": "03:15:36", "max_rss_kib": 57416116, "cpus": 16, "requested_memory_gib": 96, "partition": "intel-256"},
+    {"job_id": "2088823_1", "network": "direct_arcs", "state": "COMPLETED", "elapsed": "02:28:15", "max_rss_kib": 48042808, "cpus": 16, "requested_memory_gib": 96, "partition": "intel-256"}
+  ],
+  "primary_optimizer_times_available_here": false,
+  "final_economic_or_investment_comparison": false
+}

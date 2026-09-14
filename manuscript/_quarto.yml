@@ -1,0 +1,27 @@
+project:
+  type: manuscript
+  output-dir: _manuscript
+  render:
+    - index.qmd
+manuscript:
+  article: index.qmd
+  code-links:
+    - text: Source repository
+      icon: github
+      href: https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic
+execute:
+  enabled: false
+  freeze: auto
+lang: en
+metadata-files:
+  - authors.json
+bibliography: references.bib
+format:
+  html:
+    theme: cosmo
+    toc: true
+    number-sections: true
+    css: styles.css
+  sbc-pdf:
+    number-sections: true
+    fig-pos: H

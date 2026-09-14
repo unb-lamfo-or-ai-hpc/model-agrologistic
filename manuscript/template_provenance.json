@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "repository": "https://github.com/cvictorr2508/quarto-sbc",
+  "commit": "88eaa11eeee9f86cd8594466e4644b321c8d7b75",
+  "version": "0.2.0",
+  "quarto_version": "1.10.18",
+  "adaptations": [
+    "Files stored as UTF-8 with LF and a final newline; original contents otherwise retained at initial import.",
+    "Review-figure adapter defines pandocbounded using graphicx to fit images within text width; historical SBC style remains unchanged.",
+    "template.tex additionally loads calc and orcidlink, hides link borders, sets PDF title metadata, wraps author rows and defines an institution wrapper for the SBC address block; original normalized adapter SHA256: 70154f79e2b688a98516dfe765ac56f2aa25da56a7b83972ff35347df13dcdb5. SBC style unchanged.",
+    "The downstream adapter loads float and uses fixed figure placement to prevent float queues from displacing longtable content; the historical SBC style is unchanged."
+  ],
+  "vendored_sha256": {
+    "_extensions/sbc/_extension.yml": "990a1ef787f423b0ef46529b1f78a47f48e137ff39c654b99450e4bd8a265377",
+    "_extensions/sbc/template.tex": "0823163570f23765f226196c742f23c92405d260834e10de1f3e1593df97e996",
+    "_extensions/sbc/sbc-template.sty": "e7b92596b4bb437cf819173990bb1f1b72db90f7ba1f1538e411a0acc154d3d4",
+    "vendor/quarto-sbc-LICENSE": "bd7fa996d713603c27e6686cbdda9f5548fd1704f13eb5c329ae88a33c76dedb",
+    "vendor/THIRD_PARTY_NOTICES.md": "6a4c790f2128a0b12d8d0b51c2263545e87eb2658dbe2add44847769eef62331",
+    "vendor/docs/SBC_TEMPLATE_PROVENANCE.md": "2d4e0adb17fbfbe9bcf72de6d8202969403e1cbc8d55e78fc586483b190e0060"
+  }
+}

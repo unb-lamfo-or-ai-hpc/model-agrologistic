@@ -35,6 +35,11 @@ or certification of v0.2. See the [historical protocol](docs/trl6_reproducibilit
 
 ## Scientific questions
 
+The [scientific manuscript](manuscript/README.md) presents the formulation,
+computational protocol, observed outcomes and limitations. Its Quarto HTML/PDF
+build uses committed observations and does not execute the solver. Journal
+submission and public document deployment are separate from branch integration.
+
 1. How do uncertainty and direct origin-to-customer routes affect first-stage
    investments, domestic service and logistics costs?
 2. Where do nominal storage or reception capacities fail to support the

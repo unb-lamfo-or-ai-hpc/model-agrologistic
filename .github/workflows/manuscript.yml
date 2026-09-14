@@ -1,0 +1,30 @@
+name: Manuscript draft
+on:
+  pull_request:
+    paths: ['manuscript/**', 'scripts/check_manuscript.py', '.github/workflows/manuscript*.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          version: '1.10.18'
+          tinytex: true
+      - run: python scripts/check_manuscript.py
+      - run: quarto render manuscript
+      - run: python scripts/check_manuscript.py --rendered
+      - uses: actions/upload-artifact@v4
+        with:
+          name: manuscript-draft
+          path: manuscript/_manuscript/
+          if-no-files-found: error
+          retention-days: 14
