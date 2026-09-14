@@ -59,13 +59,15 @@ def build() -> None:
     labels = [r["configuration"] + "\n" + r["job"] for r in completed]
     colors = ["#287c8e" if r["status"] == "COMPLETED" else "#bd6841" for r in completed]
     fig, axes = plt.subplots(1, 2, figsize=(7.2, 3.6))
-    axes[0].bar(range(3), [r["elapsed_seconds"] / 3600 for r in completed], color=colors)
+    axes[0].bar(range(len(completed)),
+                [r["elapsed_seconds"] / 3600 for r in completed], color=colors)
     axes[0].set_ylabel("Whole-job elapsed time (hours)")
-    axes[1].bar(range(3), [r["max_rss_kib"] / 1048576 for r in completed], color=colors)
+    axes[1].bar(range(len(completed)),
+                [r["max_rss_kib"] / 1048576 for r in completed], color=colors)
     axes[1].set_ylabel("Maximum resident-set size (GiB)")
     for ax in axes:
-        ax.set_xticks(range(3), labels, rotation=22, ha="right", fontsize=7)
-    fig.suptitle("Blue: completed; orange: failed. Running retry excluded.", fontsize=10)
+        ax.set_xticks(range(len(completed)), labels, rotation=22, ha="right", fontsize=7)
+    fig.suptitle("Blue: completed; orange: failed. All terminal attempts retained.", fontsize=10)
     save(fig, "retry-resources")
 
     failed = [r for r in completed if r["economic_gap_fraction"] is not None]
@@ -81,6 +83,16 @@ def build() -> None:
                 f"{100 * row['economic_gap_fraction']:.2f}%", va="center")
     ax.legend(loc="lower right", fontsize=8)
     save(fig, "incomplete-economic-gaps")
+
+    final = next(row for row in data["jobs"] if row["job"] == "2091731")
+    fig, ax = plt.subplots(figsize=(7.2, 2.8))
+    ax.barh(["Service (optimal)", "Capacity (time limit)"],
+            [final["service_seconds"] / 60, final["capacity_seconds"] / 60],
+            color=["#287c8e", "#bd6841"])
+    ax.set_xlabel("Optimization time per lexicographic pass (minutes)")
+    ax.invert_yaxis()
+    ax.set_title("Economic pass not executed", fontsize=11)
+    save(fig, "final-stage-time")
 
 
 if __name__ == "__main__":

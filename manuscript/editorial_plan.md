@@ -1,83 +1,35 @@
-# Journal-oriented manuscript plan
+# Editorial and submission preparation
 
-## Target and format
+## Scientific scope
 
-The preferred candidate is **Computers and Electronics in Agriculture**
-(Elsevier, ISSN 0168-1699). No journal has been selected definitively and no
-submission has been made. The publisher's subject catalogue confirms the
-journal and its agricultural computing/software remit:
-https://shop.elsevier.com/journals/subjects/life-sciences/agricultural-and-biological-sciences/agricultural-science
+The completed bounded computational study concerns model growth, reproducible
+data preparation, independent validation and resource-limited optimization.
+Nine selected references were accepted; the final warehouse-only nine-scenario
+trial ended in a capacity-pass time limit. This negative outcome is part of the
+Results and Discussion, not a placeholder or a claim of infeasibility.
 
-The research lead's working budget is **approximately 20 body pages plus
-references**, including tables and figures. This is an internal editorial
-target, not a verified journal page limit. The journal-specific guide at
-https://www.sciencedirect.com/journal/computers-and-electronics-in-agriculture/publish/guide-for-authors
-returned HTTP 403 during this review. Recheck article type, length, reference
-style, highlights, declarations and submission files before submission.
+The literature synthesis cites 35 sources, credits Rosa's doctoral thesis and
+distinguishes the present extension from exact historical numerical replication.
+Benders decomposition and larger-network scalability remain future work.
 
-The existing Quarto/SBC PDF remains a review and GitHub Pages companion format,
-not an Elsevier-compliant submission template. Do not silently replace the
-approved template before the journal and submission requirements are settled.
-The contribution should be argued through agricultural decision support,
-auditable computational methods and evidence, rather than a claim that a
-standard MILP or a longer runtime is a new optimization algorithm.
+## Journal preparation
 
-## Body-page budget after validated results are available
+Computers and Electronics in Agriculture is a prospective journal, not a
+confirmed submission destination. The SBC template supports scientific review;
+journal-specific formatting must follow the selected venue's current guide.
+An approximately 20-page body plus references is an editorial target rather
+than a certified publisher limit. Condensation may move detailed notation or
+implementation traceability into supplementary material without omitting
+negative outcomes or their numerical qualifications.
 
-| Component | Approximate pages |
-|:--|--:|
-| Title, abstract and introduction | 2 |
-| Related work and research positioning | 3 |
-| Mathematical formulation: notation, deterministic and two-stage models | 6 |
-| Data lineage, network construction and experimental protocol | 3 |
-| Validated results, tables and scientific figures | 4 |
-| Discussion, conclusions, availability and declarations | 2 |
-| Total, excluding references | 20 |
+## Remaining editorial checks
 
-Do not add blank pages or invented numerical results to meet this budget.
-The current draft develops methods while the warehouse-only nine-scenario
-acceptance remains unresolved. Final results will replace status prose and
-may require moving detailed extraction/validation tables to supplementary files.
+- Obtain coauthor approval, contribution statements and final submission consent.
+- Verify journal-specific reference style, declarations and supplementary files.
+- Preserve evidence identities and third-party data rights.
+- Add any further economic or warehouse-level comparisons only from harmonized,
+  immutable exports; no missing value is to be inferred from acceptance status.
+- Deploy Pages separately from branch integration after publication review.
 
-## Substantive synthesis, not editorial instructions
-
-The 2026-09-12 correction removes references to the working benchmark document
-and writing instructions from the article. That document is an editorial aid,
-not a citable research source. Retain a substantive synthesis of published
-studies, including grain-storage reviews and relevant thesis references.
-Do not claim a newly executed systematic search without its underlying records.
-
-The expanded draft has 29 citations, preliminary preparation/scheduler
-observations, a sourced NPAD environment description, a fuller discussion and
-future Benders work. The Benders documents are not equivalent to the current
-model: see benders_extension_audit.md. Decomposition and optimization above
-500 warehouses remain future work. Final numerical tables/figures still require
-the accepted frozen PR25 package. The current render has 24 pages including
-references; edit toward the approximate body-page target after those tables
-and figures replace the temporary validation-status narrative.
-
-## AI disclosure
-
-The exact research-lead-supplied declaration appears after Reproducibility and
-availability and immediately before References. It names Gurobot, Gemini 3.1
-Pro and ChatGPT Codex models 5.6 Sol and 6.0 Astra. These are author-supplied
-usage statements, not independently reconstructed usage logs. The authors must
-reconfirm the statement, actual review and accountability before submission.
-
-Placement follows the current Elsevier journal policy inspected on 2026-09-12:
-https://www.elsevier.com/about/policies-and-standards/generative-ai-policies-for-journals
-Data plots remain generated from explicit numerical inputs with scientific
-plotting code; no AI-generated synthetic result images are introduced.
-
-## Publication prerequisites
-
-1. Complete PR25 acceptance and retain the exact frozen evidence identities.
-2. Resume PR26 only after that validation, as explicitly requested.
-3. Check substantive extraction attributes against original papers; any future
-   new systematic-search claim also requires reconciled screening records.
-4. Identify the exact thesis bibliographic record and obtain its formulation
-   chapter for a symbol-by-symbol historical crosswalk.
-5. All 29 cited sources are now verified members of Zotero collection Q9G99YM3.
-   Keep bibliography and collection mapping synchronized without duplicate imports.
-6. Import validated tables/figures, finalize author contributions and obtain
-   author approval. Request review before any Ready/merge or Pages publication.
+The generative-AI declaration immediately precedes References. Figures are
+generated from explicit recorded observations rather than synthetic results.

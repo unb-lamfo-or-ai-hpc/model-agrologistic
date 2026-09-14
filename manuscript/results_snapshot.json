@@ -1,30 +1,86 @@
 {
   "schema_version": 1,
   "as_of": "2026-09-13",
-  "classification": "partial_review_evidence_not_final_comparative_results",
+  "classification": "completed_bounded_computational_experiment",
   "provenance": {
-    "validation": "Maintainer-supplied v020 report-memory128-20260913T171425Z",
+    "validation": "docs/evidence/pr25-final/v020_validation_report.json; report-dual4-20260913T234035Z",
     "implementation_sha256": "c9cfe18e8c1fe19d4e5659139804b4b8dea7b650d4c5e0c3dcb8b5afde4f3042",
     "routing": "Maintainer-supplied OSRM 215/500 materialization audits, 2026-09-10",
     "resources": "Maintainer-supplied Slurm and optimizer logs; wall-clock and optimizer time are distinct",
-    "source_commit": "d7081273909cbabc33d1e9c0b819982894420a4e"
+    "source_commit": "1d9a0a0637ff2168b4ef616accaf1eaec895587c"
   },
   "validation": [
-    {"family": "Thesis-method\nDeterministic / 3 scenarios", "accepted": 4, "expected": 4},
-    {"family": "Policy\nDeterministic / 3 scenarios", "accepted": 4, "expected": 4},
-    {"family": "Policy\n9 scenarios", "accepted": 1, "expected": 2}
+    {
+      "family": "Thesis-method\nDeterministic / 3 scenarios",
+      "accepted": 4,
+      "expected": 4
+    },
+    {
+      "family": "Policy\nDeterministic / 3 scenarios",
+      "accepted": 4,
+      "expected": 4
+    },
+    {
+      "family": "Policy\n9 scenarios",
+      "accepted": 1,
+      "expected": 2
+    }
   ],
   "routing": {
-    "215": {"OD": 7955, "DC": 7955, "DD": 46010, "OC": 1369},
-    "500": {"OD": 18500, "DC": 18500, "DD": 249500, "OC": 1369}
+    "215": {
+      "OD": 7955,
+      "DC": 7955,
+      "DD": 46010,
+      "OC": 1369
+    },
+    "500": {
+      "OD": 18500,
+      "DC": 18500,
+      "DD": 249500,
+      "OC": 1369
+    }
   },
   "jobs": [
-    {"job": "2088823_1", "configuration": "Direct / 96 GiB", "status": "COMPLETED", "elapsed_seconds": 8895, "max_rss_kib": 48042808, "economic_gap_fraction": null},
-    {"job": "2088823_0", "configuration": "Warehouse / 96 GiB", "status": "FAILED", "elapsed_seconds": 11736, "max_rss_kib": 57416116, "economic_gap_fraction": 0.463716},
-    {"job": "2089838", "configuration": "Warehouse / 192 GiB", "status": "FAILED", "elapsed_seconds": 13003, "max_rss_kib": 116192580, "economic_gap_fraction": 0.463676},
-    {"job": "2091731", "configuration": "Warehouse / dual simplex / 4 threads", "status": "RUNNING", "elapsed_seconds": null, "max_rss_kib": null, "economic_gap_fraction": null}
+    {
+      "job": "2088823_1",
+      "configuration": "Direct / 96 GiB",
+      "status": "COMPLETED",
+      "elapsed_seconds": 8895,
+      "max_rss_kib": 48042808,
+      "economic_gap_fraction": null
+    },
+    {
+      "job": "2088823_0",
+      "configuration": "Warehouse / 96 GiB",
+      "status": "FAILED",
+      "elapsed_seconds": 11736,
+      "max_rss_kib": 57416116,
+      "economic_gap_fraction": 0.463716
+    },
+    {
+      "job": "2089838",
+      "configuration": "Warehouse / 192 GiB",
+      "status": "FAILED",
+      "elapsed_seconds": 13003,
+      "max_rss_kib": 116192580,
+      "economic_gap_fraction": 0.463676
+    },
+    {
+      "job": "2091731",
+      "configuration": "Warehouse / dual simplex / 4 threads",
+      "status": "FAILED",
+      "elapsed_seconds": 14746,
+      "max_rss_kib": 28572324,
+      "economic_gap_fraction": null,
+      "capacity_gap_fraction": 1,
+      "economic_pass_executed": false,
+      "service_objective": 0,
+      "service_seconds": 484.2625529766083,
+      "capacity_seconds": 13916.597859859467,
+      "capacity_objective": 159075421601.43033,
+      "capacity_bound": 0
+    }
   ],
-  "pending_final_job": "2091731",
-  "pending_final_job_outcome": null,
-  "frozen_cost_and_warehouse_exports_available": false
+  "frozen_cost_and_warehouse_exports_available": false,
+  "final_trial_outcome": "service_attained_capacity_time_limit_economic_not_executed"
 }

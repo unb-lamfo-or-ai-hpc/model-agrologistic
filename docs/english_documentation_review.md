@@ -1,89 +1,64 @@
-# PR #26: English scientific documentation review
+# Scientific documentation and implementation commentary
 
-## Scope and dependency
+## Scope
 
-This draft is stacked on PR #25 at commit
-`177a469c5a55f292062c625bbcc71f7e93d5cd73`. The maintainer authorized parallel
-documentation work while the nine-scenario retries run. It does not modify that
-branch, the NPAD checkout, job resources or the reference-selection plan.
+The documentation presents deterministic and two-stage stochastic grain-storage
+planning, input provenance, numerical interpretation, independent validation and
+HPC execution to an international research audience. Original prose, code comments
+and docstrings use English. Original geographic identifiers, data-schema names,
+bibliographic titles and localization keys retain their operational meaning.
 
-The latest supplied accounting lists jobs `2088823_0` and `2088823_1` as running
-on intel-256, each with 16 CPUs and 96 GiB, at elapsed 01:33:40. This is a reported
-checkpoint, not live monitoring. PR #25 level 4 remains pending until its final
-receipts are reviewed. This draft cannot make that gate pass.
+The bounded NPAD study concluded with nine of ten references accepted. The final
+warehouse-only nine-scenario trial reached the time limit in the capacity pass;
+the economic pass was not executed. The original certificate remains rejected.
+The [validation report](v020_validation_report.md) records this computational
+limit rather than treating development closure as complete reference acceptance.
 
-## Review changes
+## Documentation coverage
 
-- Reorganize the root README around scientific questions, reproducible use and
-  qualified evidence rather than the historical release workflow.
-- Add directory guides for docs, data, source manifests, templates, benchmark,
+- Root README: research questions, model scope, installation, reproducible use
+  and qualified validation outcomes.
+- Directory guides: documentation, data sources, templates, benchmarks,
   experiments, scripts, implementation, localization and tests.
-- Document costs, service, separate slack quantities, handling metrics, timing,
-  numerical bounds and publication requirements in a reader-facing guide.
-- Correct stale current-contract wording about unconditional complete recourse,
-  direct template use, route repairs and the final reference gate.
-- Identify older campaign protocols as historical records. Their archived
-  observations are not silently rewritten as v0.2 validation.
-- Expand English comments/docstrings around stochastic nonanticipativity,
-  feasibility interpretation, routing, value metrics and independent checking.
-- Preserve Portuguese schema names, geographic identifiers and localization
-  keys. They are runtime/data contracts, not untranslated research commentary.
+- Interpretation: costs, service, separate slack quantities, handling metrics,
+  timing, numerical bounds and stochastic value metrics.
+- Source commentary: stochastic nonanticipativity, activation, feasibility,
+  routing provenance, value metrics and independent residual checking.
+- Historical protocols: explicitly distinguished from the current formulation
+  and its final bounded experiment.
 
-## Verification and limitations
+## Verification and provenance
 
-The review inventories Python comments across `src`, `scripts` and `tests` and
-checks changed Python ASTs after removing only docstrings and source-location
-attributes. Executable AST equality is required; comments and docstrings are
-the only intended Python changes. No manifest, solver parameter, dependency,
-data file, test expectation or mathematical expression is changed.
+Python changes in this documentation review are comments and docstrings.
+Executable AST equality, after removing docstrings and source-location
+attributes, was checked against the implementation baseline. This establishes
+the intended scope of the edits, not identical Python text, identical
+`__doc__` values or numerical equivalence with a historical thesis.
 
-AST equality does not assert identical `__doc__` values or byte identities.
-It also does not establish numerical equivalence with a historical thesis.
-Legacy forecasting modules are inspected as text, not imported: their optional
-environment-repair side effects remain outside the reference pipeline.
+The recorded local review inspected 107 Python files; 13 changed files retained
+equal executable ASTs. It checked 101 relative documentation links without
+missing targets. Ruff passed; the local suite reported 296 passed and
+49 licensed tests skipped because the local Gurobi license was expired.
+Wheel and source distribution builds passed. These local checks are distinct
+from the accepted zero-skip licensed NPAD quality receipt.
 
-The root and directory navigation links are checked against existing repository
-paths. Historical external links and unavailable generated HPC files are not
-presented as locally re-executed evidence. Local Ruff, tests and distribution
-build results are recorded in the PR; skipped licensed tests remain explicit.
+Source identity includes Python text, including comments and docstrings.
+Consequently, archived execution receipts retain their original implementation
+and runtime fingerprint; their hashes are not rewritten for this documentation
+revision. Re-execution requires its own compatible environment and quality
+receipt. Optional forecasting modules were inspected without importing their
+environment-repair side effects.
 
-### Local verification receipt (2026-09-12)
+## Research communication
 
-- Python source inventory: 107 files; 13 changed Python files, all with equal
-  executable ASTs after docstring removal. The remaining Python files are unchanged.
-- Relative documentation links: 101 checked, zero missing targets.
-- Ruff: passed. Full suite: 296 passed, 49 skipped, four warnings, 49.19 seconds.
-  The skips are licensed Gurobi tests; the local license expired on 2024-03-03.
-- Source distribution and wheel: built successfully with `build --no-isolation`
-  using the existing local development dependencies.
-- Import-path checks confirm the reviewed documentation checkout supplies the
-  native solver and identity modules. Its local source/runtime fingerprint is
-  `3fc456ed2a411e6a23868ffd672972a25b95942342efb230d194eb318db4d6e2`.
+The final resource-limited case is reported as an independently valid incumbent
+with incomplete objective optimization. It is neither omitted nor described as
+an infeasible mathematical model. The 1% configured relative-gap criterion was
+not relaxed retrospectively. Comparative economic and warehouse-level analyses
+require matching exported decisions and cannot be reconstructed from acceptance
+flags alone.
 
-These checks do not replace the zero-skip NPAD receipt for PR #25. No licensed
-optimization was performed as part of this documentation review.
-
-## Identity and handoff
-
-`run_integrity.implementation_identity()` hashes all Python text in `src/logic`
-after newline normalization. Consequently this comment/docstring review has a
-new identity even though the executable AST is unchanged. This is deliberate
-provenance, not a reason to weaken the guard or rewrite accepted receipts.
-
-Finish PR #25 validation against its original source/runtime. Preserve that
-commit, its workbooks, original receipts and final accepted run selection for
-publication. Do not switch NPAD to this branch while the jobs are active or
-validate old runs under the new comment-only identity. A new execution under
-PR #26 would need its own compatible quality receipt; it is not required merely
-to preserve and publish PR #25's correctly identified evidence.
-
-After PR #25 merges, retarget this draft to `develop`, reconcile any intervening
-changes and request maintainer authorization before Ready for review. The
-existing CI trigger targets `main` and `develop`, so a stacked PR does not
-automatically receive that workflow until retargeted. Do not report absent CI
-as successful. No CI-policy change is bundled into this documentation PR.
-
-The subsequent Quarto Manuscript uses `cvictorr2508/quarto-sbc`. Before writing
-numerical claims, freeze the final evidence package and select compatible
-table/figure inputs explicitly. Publication, repository visibility and a release
-tag remain separate actions. No new NPAD solve is requested by this draft.
+Further computational research includes scenario decomposition, controlled
+algorithm/thread comparisons and larger nested warehouse populations. Original
+contributions are distributed under MIT with explicit third-party licensing and
+data-provenance boundaries.

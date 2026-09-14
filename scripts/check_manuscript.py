@@ -88,8 +88,12 @@ def check(*, rendered: bool = False, publication: bool = False) -> None:
     if evidence["final_four_level_status"] != "accepted":
         if evidence["publication_ready"] or evidence["numeric_results_included"]:
             raise ValueError("Pending evidence cannot be labeled publication-ready")
-        if "Working manuscript" not in article or "pending" not in article:
-            raise ValueError("Pending scientific status must be visible")
+        for required in ("100%", "economic pass was not executed",
+                         "report therefore remains rejected"):
+            if required not in article:
+                raise ValueError("The negative experimental outcome must remain explicit")
+        if evidence.get("running_job") is not None:
+            raise ValueError("Closed evidence must not report a running job")
     if rendered:
         html = (MANUSCRIPT / "_manuscript/index.html").read_text(encoding="utf-8")
         for key in keys:
@@ -104,10 +108,9 @@ def check(*, rendered: bool = False, publication: bool = False) -> None:
         if not pdf.is_file() or not pdf.read_bytes().startswith(b"%PDF-"):
             raise ValueError("SBC PDF output missing or malformed")
     if publication:
-        # An accepted, hash-verified evidence importer is a later reviewed step.
-        # This working-draft PR must never deploy by changing a Boolean alone.
-        raise ValueError("Publication blocked: final evidence import and author review pending")
-    print(f"MANUSCRIPT DRAFT CHECK: accepted ({len(keys)} cited references)")
+        # Repository integration is distinct from author-approved public deployment.
+        raise ValueError("Publication blocked: author approval and deployment review required")
+    print(f"MANUSCRIPT INTEGRITY CHECK: accepted ({len(keys)} cited references)")
 
 
 if __name__ == "__main__":

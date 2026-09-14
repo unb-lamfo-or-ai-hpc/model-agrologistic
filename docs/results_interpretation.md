@@ -98,6 +98,27 @@ scenario spread, not confidence intervals. Inventory-difference heatmaps require
 aligned facilities, products and periods. Cost-composition captions must state
 whether their denominator includes penalties.
 
+## Observed computational boundary
+
+The selected reference study accepted nine of ten configurations. The final
+warehouse-only nine-scenario trial (four threads, dual simplex) reached the
+optimization time limit during its second objective pass. Domestic unmet
+demand was zero and independent validation passed, but the capacity score had
+a 100% incumbent-bound gap and the economic pass was not executed. Maximum
+RSS was approximately 27.25 GiB; this trial did not report a memory termination.
+
+A feasible incumbent is not an optimal infrastructure plan. In particular,
+the capacity score of approximately 1.591e11 is a violation score, not a
+currency value or installed storage requirement. Earlier resource-limited
+trials and this time-limited trial stopped at different stages and used different
+algorithm/thread settings, so their resource differences are not a controlled
+parallel-speedup experiment. The original certificate remains rejected while
+bounded development is closed. See [the final receipt](evidence/pr25-final/README.md).
+
+Further work includes scenario decomposition, controlled solver and thread
+comparisons and larger nested warehouse populations. These extensions do not
+retroactively alter the selected experiments or their acceptance rules.
+
 ## Publication package
 
 Retain table/figure source data, captions, immutable input and implementation

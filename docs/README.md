@@ -9,8 +9,9 @@ development record is not a single invariant specification.
 | Document | Use |
 |---|---|
 | [Mathematical contract](v020_mathematical_contract.md) | Units, constraints, objectives and evidence boundaries |
-| [Four-level validation report](v020_validation_report.md) | Accepted checks and remaining executions |
-| [Nine-scenario retry runbook](pr25_nine_scenario_retry.md) | Bounded completion without overwriting evidence |
+| [Four-level validation report](v020_validation_report.md) | Nine accepted references and the documented final computational limit |
+| [Final NPAD evidence](evidence/pr25-final/README.md) | Original rejected certificate, final-stage observations and bounded closure |
+| [Nine-scenario retry runbook](pr25_nine_scenario_retry.md) | Historical experiment procedure; no further run is required for bounded closure |
 | [Results interpretation](results_interpretation.md) | Costs, service, capacity, timing and EVPI/VSS |
 | [Policy design](v020_policy_experiment_design.md) | Reference factors and deferred experiments |
 | [Connectivity audit](v020_route_connectivity_audit.md) | Grouped edge selection and identified repairs |

@@ -6,14 +6,15 @@ ROOT = Path(__file__).resolve().parents[1]
 MANUSCRIPT = ROOT / "manuscript"
 
 
-def test_running_retry_is_not_a_completed_observation():
+def test_failed_retry_has_observed_resources_but_no_economic_result():
     snapshot = json.loads((MANUSCRIPT / "results_snapshot.json").read_text())
     current = next(row for row in snapshot["jobs"] if row["job"] == "2091731")
-    assert current["status"] == "RUNNING"
-    assert current["elapsed_seconds"] is None
-    assert current["max_rss_kib"] is None
+    assert current["status"] == "FAILED"
+    assert current["elapsed_seconds"] == 14746
+    assert current["max_rss_kib"] == 28572324
     assert current["economic_gap_fraction"] is None
-    assert snapshot["pending_final_job_outcome"] is None
+    assert current["capacity_gap_fraction"] == 1.0
+    assert current["economic_pass_executed"] is False
     assert not snapshot["frozen_cost_and_warehouse_exports_available"]
 
 
@@ -28,9 +29,10 @@ def test_mit_preserves_third_party_boundaries():
 def test_review_has_real_figures_and_explicit_missing_exports():
     text = (MANUSCRIPT / "index.qmd").read_text(encoding="utf-8")
     for name in ("validation-coverage", "routing-growth", "retry-resources",
-                 "incomplete-economic-gaps"):
+                 "incomplete-economic-gaps", "final-stage-time"):
         assert f"figures/{name}.png" in text
         assert (MANUSCRIPT / "figures" / f"{name}.png").is_file()
-    assert "NR means not reported" in text
-    assert "{#tbl-figure-inventory}" in text
-    assert "Reserved final-retry result" in text
+    assert "{#tbl-final-stages}" in text
+    assert "100%" in text
+    assert "Reserved final-retry result" not in text
+    assert "Working manuscript" not in text

@@ -15,8 +15,10 @@ abstract: >-
   measurements prevent solver performance from being conflated with workflow cost.
   Road data have been materialized for 215 and 500 warehouses; the selected
   215-warehouse nine-scenario models contain approximately 14 million variables.
-  Nine of ten reference executions are accepted at this working draft's cutoff;
-  the remaining HPC acceptance is pending. The contribution concerns auditable
+  Nine of ten reference executions satisfied the validation protocol. The final
+  warehouse-only nine-scenario trial achieved zero domestic shortage but reached
+  the 14,400-second optimization limit with a 100% capacity-pass gap; the
+  economic pass was not executed. The contribution concerns auditable
   computational experimentation, not a new distributed MILP algorithm. Exact
   historical numerical replication, measured parallel speedup and a complete
   scalability frontier are not established.
@@ -27,13 +29,6 @@ keywords:
   - reproducibility
   - high-performance computing
 ---
-
-**Working manuscript, not a completed experimental report.** The evidence
-cutoff is 13 September 2026. Nine of ten selected reference executions were
-accepted. The nine-scenario warehouse-only retry passed independent solution
-and service checks but did not complete all three lexicographic passes; final
-HPC acceptance remains pending. Results below distinguish verified intermediate
-evidence from final comparative estimates.
 
 # Introduction
 
@@ -905,11 +900,14 @@ efficiency estimates.
 
 ## Reference validation and experimental coverage
 
-At the stated cutoff, the maintainer-supplied validation report accepts levels
-1-3 and nine selected references. Overall acceptance is rejected because the
-nine-scenario warehouse-only retry lacks three completed lexicographic passes;
-level 4 remains pending. Its independently validated incumbent does not establish
-completion of the objective hierarchy. The nine-scenario direct-arc retry is accepted.
+The validation protocol accepted levels 1–3 and nine of ten selected reference
+executions. The final warehouse-only nine-scenario trial attained the service
+target and passed independent incumbent checks, but exhausted the optimization
+budget during the capacity pass. Its economic pass was not executed. The
+original ten-reference report therefore remains rejected, with level 4 recorded
+as pending by the validator. The experimental campaign was closed with this
+documented computational limitation rather than an amended success criterion.
+The nine-scenario direct-arc reference was accepted.
 This distinction is visible in @tbl-validation: an accepted service incumbent
 and a completed optimization protocol answer different questions. A time-limited
 or interrupted pass can yield useful feasible decisions without providing the
@@ -921,9 +919,9 @@ they optimize a different preference ordering.
 |:--|--:|--:|:--|
 | Bounded thesis-method, deterministic and three scenarios | 4 | 4 | New road snapshot and separate slacks; not numerical replication |
 | Policy, deterministic and three scenarios | 4 | 4 | Interpretation conditional on service-first priorities |
-| Policy, nine scenarios | 2 | 1 | Warehouse-only hierarchy incomplete at the cutoff |
+| Policy, nine scenarios | 2 | 1 | Warehouse-only capacity pass reached the time limit |
 
-: Validation coverage at the stated evidence cutoff, not a ranking of logistics costs. {#tbl-validation}
+: Observed validation coverage, not a ranking of logistics costs. {#tbl-validation}
 
 ## Road-network materialization and scalability preparation
 
@@ -1004,35 +1002,34 @@ larger than the reported stochastic-value difference when Big-M penalties
 dominate the objective. Economic interpretation requires both the component
 decomposition and the bound-based interval in @eq-values.
 
-## Configuration summaries and evidence limits
+## Configuration-level validation outcomes
 
-@tbl-det-review and @tbl-sto-review separate execution acceptance from the
-numerical result inventory. A configured stopping tolerance is not a measured
-gap. Acceptance does not establish uniqueness, exact optimality or historical
-numerical replication. NR means not reported in this review snapshot, never
-zero; these cells require matching frozen cost and investment exports.
+@tbl-det-review and @tbl-sto-review summarize the selected experiments.
+A configured stopping tolerance is not a measured gap. Reference acceptance
+requires the relevant checks; it does not establish a unique investment plan,
+exact optimality or historical numerical replication. Scalar and hierarchical
+criteria remain distinct experimental families.
 
-| Deterministic configuration | Reference status | Criterion | Cost / investment |
-|:--|:--|:--|:--|
-| Thesis-method, warehouse-only, alpha 0.8 | Accepted | Scalar penalties | NR |
-| Thesis-method, direct arcs, alpha 0.8 | Accepted | Scalar penalties | NR |
-| Policy, warehouse-only, 20% selection | Accepted | Three-pass hierarchy | NR |
-| Policy, direct arcs, 20%, 14,400 s | Accepted | Three-pass hierarchy | NR |
+| Deterministic configuration | Reference outcome | Decision criterion |
+|:--|:--|:--|
+| Thesis-method, warehouse-only, alpha 0.8 | Accepted | Scalar penalties |
+| Thesis-method, direct arcs, alpha 0.8 | Accepted | Scalar penalties |
+| Policy, warehouse-only, 20% selection | Accepted | Three-pass hierarchy |
+| Policy, direct arcs, 20%, 14,400 s | Accepted | Three-pass hierarchy |
 
-: Deterministic results inventory. Final columns distinguish investment,
-operations, artificial penalties, opening, expansion and bulk conversion. {#tbl-det-review}
+: Deterministic reference outcomes under the declared validation contract. {#tbl-det-review}
 
-| Stochastic configuration | Scenarios | Status | Cost / investment |
-|:--|--:|:--|:--|
-| Thesis-method, warehouse-only, alpha 0.8 | 3 | Accepted | NR |
-| Thesis-method, direct arcs, alpha 0.8 | 3 | Accepted | NR |
-| Policy, warehouse-only, 20% selection | 3 | Accepted | NR |
-| Policy, direct arcs, 20% selection | 3 | Accepted | NR |
-| Policy, direct arcs, 20%, 14,400 s | 9 | Accepted | NR |
-| Policy, warehouse-only, dual-simplex retry | 9 | Pending | NR |
+| Stochastic configuration | Scenarios | Reference outcome |
+|:--|--:|:--|
+| Thesis-method, warehouse-only, alpha 0.8 | 3 | Accepted |
+| Thesis-method, direct arcs, alpha 0.8 | 3 | Accepted |
+| Policy, warehouse-only, 20% selection | 3 | Accepted |
+| Policy, direct arcs, 20% selection | 3 | Accepted |
+| Policy, direct arcs, 20%, 14,400 s | 9 | Accepted |
+| Policy, warehouse-only, dual-simplex retry | 9 | Rejected: hierarchy incomplete |
 
-: Stochastic results inventory. Hierarchical runs require separate service,
-capacity and economic pass bounds, not one substitute aggregate gap. {#tbl-sto-review}
+: Stochastic reference outcomes. Acceptance of a service incumbent alone does
+not imply completion of the capacity and economic passes. {#tbl-sto-review}
 
 ![Validation coverage by experimental family. The incomplete reference is retained; this does not convert the rejected overall report into an accepted certificate.](figures/validation-coverage.png){#fig-validation-coverage}
 
@@ -1057,74 +1054,59 @@ after observing these runs would not make either satisfy that threshold.
 
 ![Reported economic-pass gaps for failed warehouse-only retries. Neither meets the configured 1% target; 10% is a comparison aid, not the experimental stopping rule. Missing gaps are not plotted as zero.](figures/incomplete-economic-gaps.png){#fig-incomplete-economic-gaps}
 
-The last retry uses dual simplex and four threads, with a 14,400 s
-optimization limit, a 1% gap target, a 192 GiB scheduler allocation and a
-128 GB solver soft-memory setting. Job 2091731 was still running after more
-than three hours at cutoff. Its final status, peak memory, pass objectives
-and bounds remain unknown; it has no point in the terminal-runtime chart.
+The final retry used dual simplex and four threads, with a 14,400 s
+optimization limit, a 1% relative-gap target, a 192 GiB scheduler allocation
+and a 128 GB solver soft-memory setting. Job 2091731 terminated after
+4 h 5 min 46 s with a maximum resident-set size of approximately 27.25 GiB.
+The service pass achieved zero unmet demand. The capacity pass then consumed
+13,916.60 s and terminated at the time limit with an incumbent score of
+$1.5907542160143\times10^{11}$ and a zero lower bound, giving a 100% gap.
+The economic pass was not executed (@tbl-final-stages).
 
-**Reserved final-retry result.** On termination, report scheduler status,
-primary build and optimization times, post-optimality time, peak memory,
-service attainment, independent feasibility checks, each pass incumbent,
-bound and gap, and permitted objective degradation. If the hierarchy remains
-incomplete, retain that outcome and the best independently validated incumbent.
-The bounded demonstrator can be described with this limit; the ten-reference
-certificate must not be relabeled accepted without meeting its checks.
+| Lexicographic pass | Termination | Incumbent | Best bound | Gap | Time (s) |
+|:--|:--|--:|--:|:--|--:|
+| Expected unmet demand | Optimal | 0 | $-2.85\times10^{-9}$ | Not informative at zero | 484.26 |
+| Expected capacity violations | Time limit | $1.59075\times10^{11}$ | 0 | 100% | 13,916.60 |
+| Economic cost | Not executed | — | — | — | — |
 
-## Cost, transport and warehouse-level reporting
+: Final warehouse-only nine-scenario trial. The first objective is in tonnes
+of unmet demand; the second is the declared aggregate capacity-violation score,
+not currency or installed capacity. The tiny negative service bound is numerical
+noise. The raw relative-gap sentinel for that zero-valued pass is not an
+economic or service shortfall. {#tbl-final-stages}
 
-Aggregate acceptance flags cannot populate the comparative analyses in
-@tbl-figure-inventory. This inventory preserves the distinction between a
-reserved panel and an observed result.
+![Optimization time by lexicographic pass in the final warehouse-only retry. The capacity pass exhausted the budget; the economic pass was not executed.](figures/final-stage-time.png){#fig-final-stage-time}
 
-| Analysis | Required frozen evidence | Review status |
-|:--|:--|:--|
-| Deterministic/stochastic cost and decision tables | Costs, investments, timings, pass bounds | Layout ready; numeric exports pending |
-| Cost composition by direct-arc configuration | Investment, operations and penalties under the same criterion | Pending matched exports |
-| Tonne-kilometres by route and scenario | Flow tonnes, directed kilometres, probabilities | Pending flow exports |
-| Operational profiles of active warehouses | Investment, stock, reception, shipping, capacities | Pending warehouse-period exports |
-| Stock-difference heatmaps | Matched warehouse/product/month inventories | Pending inventory exports |
-| Deterministic versus stochastic costs | Matched data, graph and objective policy | Pending harmonized comparison |
-| EVPI/VSS components and intervals | RP, WS, EV, EEV costs and bounds under one scalar criterion | Pending post-optimality exports |
-| Scenario cost robustness | First-stage costs, recourse costs, probabilities | Pending scenario exports |
+The pass times sum to approximately 14,400.86 s. Whole-job elapsed time also
+includes model preparation and reporting and must not be substituted for this
+optimization measurement. The recorded failure is a failure to complete the
+requested hierarchy within the budget, not a proof of infeasibility. Independent
+checks accepted the incumbent's service and model constraints. Conversely,
+a feasible incumbent with a 100% capacity gap is insufficient to support a
+near-optimal capacity score or an economic comparison.
 
-: Reserved comparative tables and figure families. Missing panels are not
-replaced by synthetic curves or estimated warehouse profiles. {#tbl-figure-inventory}
+The final retry used less recorded resident memory than the earlier
+warehouse-only attempts but did not solve the hierarchy. Because solver method,
+thread count and resource settings differed, these observations do not isolate
+a causal memory–runtime trade-off. They identify a reproducible adverse case
+for subsequent algorithmic evaluation. Neither the 100% capacity gap nor the
+earlier approximately 46.37% economic gaps satisfy a 1% or 10% threshold.
 
-Cost panels will separate economic costs from artificial penalties.
-Big-M-dominated percentages can obscure freight, storage and investment
-variation and cannot establish the monetary benefit of eliminating a violation.
-The scalar thesis-method and hierarchical policy cases form separate
-comparison families; objective changes must not be confounded with network
-changes.
+## Scope of comparative interpretation
 
-Transport work is flow multiplied by directed distance, aggregated by route
-and probability-weighted across scenarios. Axes will state tonne-kilometres
-and any billion-unit scaling explicitly. OSRM reports distance along the
-profile's fastest route, not a universal shortest-distance or multimodal
-route. Selection at 20% concerns ranked candidate arcs, not a Pareto frontier
-of competing objectives. Direct arcs and connectivity repair must remain
-separate identifiable network treatments.
+The retained evidence supports comparisons of validation outcomes, network
+size and observed computational resources. It does not supply a harmonized
+set of final cost, transport-work and warehouse-period exports for every
+configuration. Therefore, no cross-configuration investment ranking, estimated
+economic benefit of direct arcs or final warehouse-only nine-scenario economic
+optimum is inferred from the acceptance flags.
 
-Warehouse profiles will distinguish installed static capacity, peak stock,
-handling utilization and investment decisions. Emergency slack is a violation
-diagnostic, not commissioned infrastructure. Expected profiles and scenario
-maxima answer different questions. Stock and throughput quantities will retain
-their own units rather than sharing an unlabeled aggregate axis.
-
-Inventory heatmaps will use matched configurations, warehouses as rows and
-months as columns, with a diverging scale centered at zero and differences in
-tonnes. A common warehouse ordering and colour range will prevent spurious
-visual differences from sorting or rescaling. Missing records are not zero
-stock. Deterministic-versus-expected-stochastic differences must be separated
-from direct-versus-warehouse-only differences.
-
-Scalar EVPI/VSS will show signed investment, operating and penalty components
-with bound-derived intervals. Large penalty contributions diagnose
-under-provisioning without valuing actual shortage costs. Classical scalar
-differences must not subtract objectives from different hierarchy levels.
-Robustness plots will label discrete scenario ranges, not statistical
-confidence intervals, and include first-stage investment once per total.
+Transport work requires flow multiplied by directed road distance, not a count
+of routes. Warehouse utilization requires matching stock, handling and installed
+capacity records. Scalar EVPI/VSS additionally require comparable RP, WS and EEV
+objectives and certified bounds under one frozen penalty vector; values from
+different hierarchy levels are not interchangeable. These distinctions constrain
+the claims that can be drawn from this computational experiment.
 
 # Discussion and limitations
 
@@ -1344,22 +1326,23 @@ requirements to reproducible evidence rather than relying on solver status
 alone. Service fulfillment, nominal capacity violations and economic cost
 remain separately interpretable outputs.
 
-At the current cutoff, road-data preparation covers 215 and 500 warehouses,
-whereas the selected policy optimization evidence concerns 215 warehouses.
-Nine of ten reference executions are accepted, with the final warehouse-only
-nine-scenario execution unresolved. The manuscript does not yet demonstrate
-a new solution algorithm, parallel speedup or a complete scalability frontier.
-Final comparative tables require matching frozen exports. An unsuccessful
-last retry will be retained as a bounded computational limitation, not
-suppressed or converted into acceptance.
+Road-data preparation covered 215 and 500 warehouses, whereas the selected
+policy optimization experiments concerned 215 warehouses. Nine of ten reference
+executions satisfied the protocol. The final warehouse-only nine-scenario trial
+achieved domestic service but reached the optimization time limit with a 100%
+capacity-pass gap and no economic pass. This negative result delineates the
+observed computational boundary without establishing a complete scalability
+frontier. No new solution algorithm or measured parallel speedup is claimed.
+The bounded experiment provides a reproducible baseline for decomposition,
+controlled resource comparisons and larger candidate populations.
 
 # Reproducibility and availability
 
 The source repository is
 [Model Agrologistic](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic).
-At this draft's cutoff the repository is public and GitHub Pages is enabled;
-the maintainer reports GitHub Actions as the publishing source. Configuration
-alone does not establish deployment of this working manuscript.
+The source, experiment definitions and final validation receipt are versioned
+together. The receipt and closure record are available under
+`docs/evidence/pr25-final/`; the original rejected aggregate status is retained.
 The manuscript uses the pinned
 [quarto-sbc template](https://github.com/cvictorr2508/quarto-sbc/tree/88eaa11eeee9f86cd8594466e4644b321c8d7b75).
 Its HTML and SBC PDF builds execute no solver, do not contact Zotero and require
@@ -1367,11 +1350,12 @@ no NPAD credentials. Bibliography metadata is committed; local library notes,
 attachments, licenses and raw HPC working directories are not publication inputs.
 
 The repository includes the mathematical contract, reference manifests,
-independent-validation implementation and publication instructions. Final
-publication requires a reviewed frozen evidence package and final manuscript
-approval. Public data availability and third-party licensing must be checked
-before publishing additional artifacts. Rendering successfully certifies document construction,
-not scientific acceptance.
+independent-validation implementation and document-build instructions.
+The committed manuscript data distinguish final validation outcomes, routing
+counts and scheduler observations from unavailable comparative optimization
+exports. Private runtime credentials and local library attachments are excluded.
+Additional data redistribution remains subject to the rights of the source
+providers. Successful document rendering is independent of scientific acceptance.
 
 Original project code, documentation, manuscript text and project-authored
 figures are offered under MIT, subject to contributor rights. This does not
