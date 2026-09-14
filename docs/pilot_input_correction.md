@@ -12,9 +12,11 @@ Rematerialization reuses the frozen PBF, image, profile, coordinates and persist
 
 Run the updated diagnostic block in [the sprint plan](research_delivery_sprints.md#immediate-npad-action-diagnostics-not-optimization). The actual source path is now known; require `matches_expected_sha256: true`. Previous `qos1` requests failed. Test the observed association QoS `preempt`, including its wall-time limits, before any real submission. A test-only success is not a reservation or protection from preemption.
 
+The report `agrologistic-readiness-20260914T153047Z/scheduler/npad_readiness.json` confirms the expected source hash and successful `preempt` tests for both four and 25 CPUs at 192 GiB and twelve hours. Proceed to Step 2; repeating the complete diagnostic collection is unnecessary unless the environment changes. The immediate pre-submission check in Step 2 remains appropriate because queue state and admission can change.
+
 ## 2. Rematerialize 500 into a new output directory
 
-The block below performs another scheduler test before submitting **one OSRM materialization job**, not an optimization campaign. Run only after reviewing the resource report. It retains the conservative 192-GiB allocation; 25 allocated CPUs satisfy the reported 8,000-MiB-per-CPU arithmetic condition, but actual admission is determined by Slurm. Solver threads remain four in the subsequent comparative campaign; this OSRM job uses its allocated CPUs for preprocessing.
+The block below performs another scheduler test before submitting **one OSRM materialization job**, not an optimization campaign. Run only after reviewing the resource report. It retains the conservative 192-GiB allocation and the tested 25-CPU request for OSRM preprocessing. The scheduler also accepted the four-CPU request: the arithmetic estimate from `MaxMemPerCPU` is therefore not evidence that 25 CPUs are mandatory for every job. Solver threads remain four in the subsequent comparative campaign; this OSRM job uses its allocated CPUs for preprocessing. Record the actual allocation after submission.
 
 The entire block is a subshell, so a failed check stops the block without closing the interactive terminal. No existing directory is overwritten. A repeat requires a new output path, not `--overwrite`.
 

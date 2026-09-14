@@ -20,6 +20,8 @@ SCIP is currently an integration point, not an implemented backend. Installing `
 
 ## Current evidence and blockers
 
+Update from the NPAD report dated 14 September 2026 at 15:30 UTC: all 50 focused tests passed on `ee8a8bd`, the external source workbook matches its expected SHA256, and both four-CPU and 25-CPU requests with `preempt`, 192 GiB and a twelve-hour wall time passed `sbatch --test-only`. No job was submitted by these checks. GitHub Actions run `34862312153` also succeeded. This qualifies the next materialization request, not the resulting distances or optimization campaign. Earlier observations below retain their historical context. See [the readiness receipt](pr29_readiness_evidence.md).
+
 - NPAD targeted regression: 50 tests passed on commit `73ec72c`; a further 30 readiness/campaign tests passed on `fb552d3`.
 - 215-hub preflight: 14,054,654 variables without direct arcs and 14,374,334 with direct arcs. No added repair edges were reported. An active/open network remains distinct from the potential graph.
 - 300/400: required OSRM workbooks absent.
