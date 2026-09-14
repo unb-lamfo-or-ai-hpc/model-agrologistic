@@ -47,6 +47,24 @@ The materializer reports 288,369 cache hits, zero misses, zero writes and zero m
 
 The receipt is under `/home/vrrcelestino/osrm-agrologistic/audits/policy-500-job-2095258/policy-materialization-check.json`. Preserve the historical invalid workbook and the new provenance sidecar. The 500-hub input correction no longer blocks the next input-preparation step. Missing 300/400 inputs, repaired-graph preflight, optimization quality and release rights remain separate checks. Neither a successful materialization nor cached responses establish a successful 500-hub MILP solve.
 
+## Subsequent 300/400-hub materialization results
+
+Both sequential jobs completed successfully, with exit code `0:0` and accepted persisted-distance validation in the user-supplied receipts:
+
+| Population | Real job | Elapsed | Batch MaxRSS (K) | Exported routes | Cache hits | Normalization occurrences |
+|---|---|---|---|---|---|---|
+| 300 | 2095322 | 00:13:54 | 39716484 | 113269 | 113569 | 4 |
+| 400 | 2095324 | 00:14:05 | 39704924 | 190569 | 190969 | 6 |
+
+For 300 hubs, counts are DD 89,700; OD 11,100; DC 11,100; OC 1,369. For 400 hubs, they are DD 159,600; OD 14,800; DC 14,800; OC 1,369. Every exported route is OSRM-sourced. Both materializers report zero fallback, matrix API requests, cache misses and cache writes. The difference between cache hits and exported routes equals the population because DD self-pairs are omitted after matrix retrieval. Normalization counts are processing occurrences, not necessarily distinct cache keys.
+
+The accepted replacement paths under `data/processed/nine_population_osrm_v1` are:
+
+- `warehouses_300/model_input.xlsx`: SHA256 `7761cce77cf93dcba2f617714f0117c1f2ead4de0c3f27149daceba447e0c7d1`.
+- `warehouses_400/model_input.xlsx`: SHA256 `c3085456997714ef5a8bdbf61e2c9a5e578c2636003947427cf58933d21ceb13`.
+
+The corresponding audit directories are `/home/vrrcelestino/osrm-agrologistic/audits/policy-300-job-2095322` and `/home/vrrcelestino/osrm-agrologistic/audits/policy-400-job-2095324`. The former missing-input and invalid-500 issues have now been addressed for these new paths; historical files remain unchanged. All four campaign levels can proceed to a fresh hash-verified eight-instance preflight, retaining the established 215-hub input. Graph/connectivity checks, model-size/resource review, optimization and SCIP parity remain outstanding; these materialization receipts do not establish convergence or a scalability limit.
+
 ## References
 
 - [Slurm submission and test-only semantics](https://slurm.schedmd.com/sbatch.html#OPT_test-only).
