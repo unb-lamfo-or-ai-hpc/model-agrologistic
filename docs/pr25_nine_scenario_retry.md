@@ -1,5 +1,10 @@
 # PR #25: bounded nine-scenario completion
 
+> Historical two-case retry. The direct case is now accepted; warehouse-only
+> stopped at its soft-memory limit. Do not resubmit this array. Follow the
+> [single-case memory retry](pr25_warehouse_memory_retry.md). The old plan is
+> preserved in `experiments/v020_validation_reference_t14400.yaml`.
+
 ## Accepted evidence and remaining failure
 
 The maintainer's 2026-09-12 NPAD report accepts levels 1 (mathematical/data
