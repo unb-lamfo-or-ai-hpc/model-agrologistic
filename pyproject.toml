@@ -9,8 +9,8 @@ version = "0.2.0.dev0"
 description = "TRL 6 research demonstrator for deterministic and stochastic agricultural logistics optimization."
 readme = "README.md"
 requires-python = ">=3.13,<3.14"
-license = "GPL-3.0-only"
-license-files = ["LICENSE"]
+license = "MIT"
+license-files = ["LICENSE", "LICENSING.md"]
 
 authors = [
     { name = "cvictorr2508", email = "cvictorr2508@gmail.com" }

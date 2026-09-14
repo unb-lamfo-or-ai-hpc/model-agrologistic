@@ -1,4 +1,10 @@
-"""Post-solve performance metrics for agricultural storage facilities."""
+"""Post-solve performance metrics for agricultural storage facilities.
+
+Dynamic capacity measures annualized handling, not unique national production.
+Interwarehouse transshipment contributes outbound handling at its source and
+can count the same material at successive facilities. Interpret turnover with
+emergency usage and the nominal-capacity denominator contract.
+"""
 
 from __future__ import annotations
 
@@ -313,4 +319,3 @@ def _expected_scenario_metrics(
             for scenario, value in values.items()
         )
     return expected
-

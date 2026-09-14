@@ -672,7 +672,7 @@ def extract_gap_from_log(log_filepath):
         with open(log_filepath, 'r', encoding='utf-8', errors='ignore') as f:
             content = f.read()
         import re
-        # Look for "Gap da Solução (MIP Gap): X.XXXX%"
+        # Parse the historical Portuguese MIP-gap label without changing its format.
         match = re.search(r"Gap da Solução \(MIP Gap\):\s*([\d\.]+)%", content)
         if match:
             return float(match.group(1))

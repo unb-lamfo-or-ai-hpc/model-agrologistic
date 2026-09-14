@@ -1,4 +1,11 @@
-"""Two-stage stochastic extensive-form model for native gurobipy."""
+"""Two-stage stochastic extensive-form model for native gurobipy.
+
+Investment variables are shared across scenarios, enforcing nonanticipativity
+by construction. Flow, stock and feasibility slacks are scenario-dependent.
+Operating costs and violation scores are probability-weighted; first-stage
+investment is charged once. Scenario projections retain the frozen graph and
+penalty contract rather than selecting a new network for each realization.
+"""
 
 from __future__ import annotations
 

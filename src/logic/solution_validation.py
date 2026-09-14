@@ -3,6 +3,10 @@
 No solver expression, model object, or optimization helper is used here.
 Missing sparse continuous records mean zero; missing first-stage decisions
 do not. Tolerances are local to each constraint, not national total volumes.
+
+Passing these checks supports implementation consistency of the exported
+incumbent. It does not establish global optimality, empirical adequacy of the
+input assumptions, or numerical replication of a historical case study.
 """
 
 from __future__ import annotations

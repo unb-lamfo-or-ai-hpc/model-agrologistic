@@ -1,272 +1,188 @@
 # Model Agrologistic
 
-Research software for deterministic and two-stage stochastic planning of
-agricultural logistics networks.
+Research software for strategic agricultural logistics planning through
+deterministic and two-stage stochastic mixed-integer linear programming (MILP).
+The model evaluates warehouse opening, capacity expansion and bulkification
+under supply and demand uncertainty. Its intended use is reproducible research
+and public-investment analysis, not operational dispatch or a production service.
 
-The project provides a headless mixed-integer linear programming core for
-evaluating long-horizon warehouse opening, capacity expansion, bulkification,
-storage, domestic distribution, transshipment, direct transport, and export
-decisions. Native `gurobipy` is the validated solver backend.
+## Research status and scope
 
-## Research status
+The package is **0.2.0.dev0**. It distinguishes a bounded reconstruction of
+Artur's thesis methodology from an expanded policy-oriented network. Neither
+track establishes exact numerical replication of the published thesis tables:
+the historical road-network snapshot and forecasting path have not been
+reconstructed, and separate feasibility slacks change the historical objective.
 
-Version `0.1.0` is the TRL 6 research demonstrator candidate. It has been
-demonstrated on a Slurm-based HPC environment with controlled deterministic,
-three-scenario, and nine-scenario experiments. TRL 6 is used here as a research
-readiness claim supported by execution in a relevant computational environment;
-it is not an independent certification or a production-readiness claim.
+The bounded demonstration concluded with nine of ten selected references
+accepted. Mathematical/data contracts, licensed software tests and independent
+solution checks passed. The warehouse-only nine-scenario trial reached its
+14,400-second optimization budget in the capacity pass, with a 100% relative
+gap; the economic pass was not executed. Its domestic-service target and
+independent feasibility checks passed. This is a documented computational limit,
+not evidence of model infeasibility.
 
-The code originated from the SiloDSS project and was refactored into a testable,
-interface-independent optimization pipeline:
+The original four-level certificate remains rejected, with level 4 incomplete.
+Development closure does not change that outcome or the configured 1% gap
+target. See the [validation report](docs/v020_validation_report.md) and
+[final evidence](docs/evidence/pr25-final/README.md) for identities and stage
+observations. Successful CI is not a substitute for scientific acceptance.
 
-```text
-Excel workbook
-  -> canonical ModelData
-  -> model validation
-  -> route selection
-  -> deterministic or stochastic MILP
-  -> structured results
-  -> DynCap, Turnover, EVPI, and VSS evidence
-```
+The archived v0.1.0 package records a maintainer-accepted computational
+demonstration in the relevant NPAD environment under the project's TRL 6
+protocol. It is historical development evidence, not independent accreditation
+or certification of v0.2. See the [historical protocol](docs/trl6_reproducibility_protocol.md).
 
-## Implemented scope
+## Scientific questions
 
-- deterministic and two-stage stochastic MILP formulations;
-- one to nine configurable supply-demand scenarios;
-- existing and candidate warehouses;
-- opening, scalable candidate capacity, expansion, and bulkification decisions;
-- origin-warehouse, warehouse-demand, warehouse-warehouse, and optional direct routes;
-- period-specific inventory balance and terminal inventory;
-- domestic and export demand classes;
-- daily reception and shipping rates converted through `days_per_period`;
-- unmet-demand and emergency-capacity slack for complete recourse;
-- structured JSON and CSV outputs, model audits, IIS diagnostics, and HPC preflight;
-- dynamic capacity (`DynCap`) and inventory turnover (`Turnover`);
-- recourse problem, wait-and-see, expected-value, EEV, EVPI, and VSS calculations;
-- reproducibility gates for the controlled Artur benchmark instance.
+1. How do uncertainty and direct origin-to-customer routes affect first-stage
+   investments, domestic service and logistics costs?
+2. Where do nominal storage or reception capacities fail to support the
+   optimized allocation, and how sensitive are these findings to model policy?
+3. What computational effort is required for explicitly defined network and
+   scenario sizes under controlled solver settings and hardware?
 
-## Scientific policy
+The current demonstration prioritizes the 215-warehouse network. Road-distance
+materialization has also been exercised at 500 warehouses; this is not evidence
+that a complete 500-warehouse optimization campaign has been validated.
+Larger populations, a definitive scalability frontier, the complete 15/20/25%
+sensitivity campaign and native SCIP parity are outside the MVP critical path.
 
-The frozen demonstrator follows four policies that are central to interpreting
-its results:
+## Mathematical interpretation
 
-1. Domestic demand is expected to be fully served in the accepted controlled
-   experiments.
-2. Every tonne of supply must be allocated to domestic demand, export flow, or
-   terminal inventory.
-3. Emergency static and reception capacity are feasibility-preserving slack
-   variables. Their use is reported as an infrastructure-gap indicator and is
-   not an automatic rejection criterion.
-4. Big-M penalty values are not observed shortage prices. Monetary conclusions
-   about VSS must therefore use the exported investment, operating, and penalty
-   decomposition.
+- All supply must reach domestic deliveries, exports or warehouse inventory.
+  There is no free disposal or unused-supply decision.
+- Domestic deliveries plus unmet-demand slack equal domestic demand. Export
+  deliveries are bounded above; terminal inventory is free within the balance
+  and capacity constraints.
+- First-stage investment decisions are shared across stochastic scenarios;
+  transport, inventory and feasibility slacks are scenario-dependent recourse.
+- The thesis-method track minimizes scalar cost with dynamic penalties. The
+  policy track prioritizes domestic service, then an emergency-violation score,
+  then economic cost, subject to declared solver tolerances.
+- Emergency variables diagnose relaxed constraints; they are not installed
+  infrastructure or procurement recommendations. They do not guarantee
+  unconditional complete recourse: shipping, connectivity and activation remain
+  hard constraints.
+- Reception overflow is already **tonnes within a period**, after nominal daily
+  throughput has been multiplied by operating days. Do not multiply the slack
+  by 30 again. Static exceedance is a warehouse-period stock quantity; summing
+  it over periods does not yield an installed capacity requirement.
 
-See [Service-level methodology](docs/service_level_methodology.md) and
-[Methodological audit](docs/methodological_audit.md) for the full rationale.
+Read the [mathematical contract](docs/v020_mathematical_contract.md) and the
+[results interpretation guide](docs/results_interpretation.md) before comparing
+costs, service, capacity, timing or EVPI/VSS.
 
-## Data contract and lineage
-
-The canonical input schema is:
-
-```text
-data/templates/model_agrologistic_padrao_ouro.xlsx
-```
-
-The workbook uses Portuguese sheet and column identifiers because those names
-are part of the stable data contract. Documentation and source-code comments are
-written in English.
-
-Required deterministic sheets include:
+## Reproducible workflow
 
 ```text
-Oferta
-Demanda
-Warehouses
-Frete
-Tarifa_Armz
-Custo_Invest
-Parametros_Modelo
+Pinned sources and workbook contracts
+  -> normalized instance and OSRM distance materialization
+  -> route selection, connectivity audit and size preflight
+  -> frozen network/penalties and licensed Gurobi optimization
+  -> independent solution validation and structured artifacts
+  -> reference acceptance, scientific tables and figures
 ```
 
-Stochastic inputs use:
+OSRM supplies distance along the fastest route for its configured driving
+profile. The 20% rule retains a grouped fraction of the shortest materialized
+edges; it is not a Pareto-optimal network or a cumulative-cost 80/20 rule. Policy
+connectivity repairs use existing eligible routes and are reported separately.
+Audited Haversine fallbacks are restricted to declared routing/snap conditions;
+HTTP failures or timeouts must not silently change the distance method.
 
-```text
-Cenarios
-Oferta_Cenarios
-Demanda_Cenarios
-```
+### Installation for a new research environment
 
-Export demand is represented by an explicit rule instead of an infinity token:
+Use Python 3.13 and a valid Gurobi license for optimization. Dependency ranges
+are in [pyproject.toml](pyproject.toml); replay additionally requires the exact
+package versions recorded in the environment receipt.
 
-```text
-Tipo_Demanda = EXPORTACAO
-Regra_Limite = AUTO_OFERTA_TOTAL_PRODUTO_PERIODO
-```
-
-The frozen workbook identity, upstream Artur assets, and transformation rules
-are recorded in `data/manifests/`. See
-[MVP scope and data contract](docs/mvp_scope_and_data_contract.md) and
-[Artur reproduction protocol](docs/artur_reproduction_protocol.md).
-
-## Requirements
-
-- Python 3.13;
-- a platform supported by the declared Python packages;
-- Gurobi 13 for validated optimization runs;
-- a valid Gurobi license for model solution;
-- Slurm only when using the supplied HPC submission script.
-
-The complete dependency declaration is maintained in `pyproject.toml`.
-
-Install the validated core and development tools:
+Run from the repository root. On Linux, for a **new virtual environment**:
 
 ```bash
 python3.13 -m venv .venv
 source .venv/bin/activate
+export PYTHONNOUSERSITE=1
 python -m pip install --upgrade pip
-python -m pip install -e ".[dev]"
+python -m pip install -e '.[dev]'
 ```
 
-Install every declared optional research dependency:
+On Windows, activate `.venv\Scripts\Activate.ps1` and set
+`$env:PYTHONNOUSERSITE = '1'`. The `visualization` extra installs Matplotlib and
+Seaborn without the remaining development tools. The `all` extra includes
+optional forecasting packages and is not required for the reference pipeline.
+Gurobi is the validated native backend; installing the `scip` extra does not
+implement or validate the reserved PySCIPOpt backend. CBC is not a project target.
 
-```bash
-python -m pip install -e ".[all]"
-```
+On NPAD, the existing `venv313` prefix is a **Conda environment**, despite its
+name. Use `conda activate /home/vrrcelestino/venv313`, not a nonexistent
+`bin/activate`. Set `PYTHONNOUSERSITE=1` before starting Python. User-site
+packages can otherwise shadow the approved solver version. Do not reinstall
+packages or switch branches while reference jobs use that checkout.
 
-`Pyomo` and native `PySCIPOpt` are optional post-MVP research dependencies.
-They are not validated alternatives to the Gurobi backend in version `0.1.0`.
-CBC is not a target backend.
+Keep license files outside version control. Set `GRB_LICENSE_FILE` to the
+existing authorized license; never publish its contents. This repository does
+not distribute a Gurobi license.
 
-### NPAD environment
+### Verification and execution
 
-The established NPAD environment is a Conda prefix despite its `venv313` name:
-
-```bash
-conda activate /home/vrrcelestino/venv313
-```
-
-Slurm jobs may invoke its interpreter directly and do not require interactive
-activation. Set a different interpreter when needed:
-
-```bash
-export AGROLOGISTIC_PYTHON=/path/to/python
-```
-
-## Gurobi license
-
-Configure a license without committing credentials:
-
-```bash
-export GRB_LICENSE_FILE=/absolute/path/to/gurobi.lic
-```
-
-WLS access IDs, secrets, license files, and credential values must never be
-stored in manifests, logs, environment snapshots, or release artifacts.
-
-## Quality checks
+For a local development checkout:
 
 ```bash
 python -m ruff check .
-python -m pytest
+python -m pytest -p no:cacheprovider
+python -m build
 ```
 
-Tests that require an operational Gurobi environment are skipped when a license
-is unavailable. The final licensed validation is performed on NPAD.
+Missing or expired licenses can cause analytical solver tests to be skipped.
+That is useful software feedback but cannot satisfy the licensed final quality
+gate. [tests/README.md](tests/README.md) explains the distinction.
 
-## TRL 6 reproducibility protocol
-
-Inspect the ordered protocol without executing it:
+After the specified generated OSRM workbook exists, a solver-free preflight is:
 
 ```bash
-python scripts/run_trl6_protocol.py --print-plan
+python scripts/run_batch_hpc.py experiments/v020_thesis_compatible.yaml --index 0 --dry-run
 ```
 
-Run quality checks, rebuild the controlled Artur input, and execute every
-preflight without solving the models:
+This loads data and estimates size; it neither builds nor optimizes the MILP.
+It still writes preflight artifacts: use a separate output directory to protect
+existing campaigns. Do not omit `--index` in a large campaign: outside a Slurm
+array, omission selects all experiments.
 
-```bash
-python scripts/run_trl6_protocol.py --fetch-artur-assets
-```
+The [experiment catalogue](experiments/README.md) identifies the reference plan.
+The [script guide](scripts/README.md) separates preprocessing, solving, auditing
+and reporting. The [retry runbook](docs/pr25_nine_scenario_retry.md) records the
+completed experimental procedure. Replaying a reference requires its original
+implementation and environment; documentation-only source changes do not
+authorize rewriting the fingerprints of archived results.
 
-Run the complete licensed protocol in a clean checkout:
+## Repository guide
 
-```bash
-python scripts/run_trl6_protocol.py \
-  --fetch-artur-assets \
-  --execute-solver
-```
+| Directory | Purpose |
+|---|---|
+| [docs](docs/README.md) | Current contracts, interpretation and historical protocols |
+| [data](data/README.md) | Source lineage, templates and generated-artifact boundaries |
+| [benchmark](benchmark/README.md) | Historical assets, not a certified generated instance |
+| [experiments](experiments/README.md) | Versioned definitions and reference selection |
+| [scripts](scripts/README.md) | Preprocessing, execution and reporting entry points |
+| [src](src/README.md) | Data, model, solver and independent-validation architecture |
+| [tests](tests/README.md) | Analytical, integration and integrity checks |
 
-The default release output is isolated under:
+Code comments and research documentation are written in English. Portuguese
+workbook columns, geographic identifiers and legacy localization keys remain
+stable data/API contracts; they are not translated opportunistically.
 
-```text
-data/results/releases/trl6-v0.1.0/
-```
+## Sharing and citation
 
-Use a new `--output-dir` for every candidate run. Existing result directories
-are not silently deleted or treated as evidence for a rebuilt workbook. The
-protocol exports an environment snapshot, step manifest, scientific evidence,
-and `SHA256SUMS` without copying Gurobi credentials.
+Follow [CONTRIBUTING.md](CONTRIBUTING.md) for review and provenance requirements.
+Use [CITATION.cff](CITATION.cff) and report the exact commit, input identities,
+solver/runtime versions and experiment configuration. The code is licensed under
+[MIT](LICENSE) for original project contributions; third-party data and software retain their own licensing
+and attribution requirements.
+See [licensing and data redistribution boundaries](LICENSING.md) before
+redistributing source datasets, upstream benchmark assets or derived databases.
 
-See [TRL 6 reproducibility protocol](docs/trl6_reproducibility_protocol.md).
-
-## HPC execution
-
-Run one experiment interactively:
-
-```bash
-python scripts/run_batch_hpc.py experiments/artur_stochastic_extension.yaml --index 0
-```
-
-Submit through Slurm:
-
-```bash
-EXPERIMENT_MANIFEST=experiments/artur_stochastic_extension.yaml \
-EXPERIMENT_INDEX=0 \
-sbatch scripts/run_model_agrologistic.slurm
-```
-
-The supplied Slurm script defaults to `intel-128`, 16 CPUs, and 64 GiB. Adjust
-resource requests to the selected manifest and cluster policy.
-
-## Repository structure
-
-```text
-data/manifests/     frozen data identities and instance specifications
-data/templates/     canonical Excel input schema
-docs/               scientific and execution documentation
-experiments/        versioned deterministic and stochastic manifests
-scripts/            data preparation, execution, audit, and release commands
-src/logic/          canonical data, formulations, metrics, and evidence logic
-tests/              solver-independent and licensed integration tests
-```
-
-Raw source assets, generated instances, solver outputs, and large HPC artifacts
-remain outside version control. The repository hygiene policy classifies them as
-pipeline-required, protected, scientific archive, or safe-generated artifacts.
-
-Historical exploratory benchmarking, forecasting, internationalization, and
-OSRM helper modules are preserved for provenance but are outside the frozen TRL
-6 execution and lint contract. Their exact paths are declared in the Ruff
-exclusion list in `pyproject.toml`; none is invoked by the release protocol.
-
-## Known limitations
-
-- the historical OSRM snapshot used in the thesis was not recovered;
-- the original forecasting path was not reconstructed;
-- the three- and nine-scenario designs are controlled extensions, not recovered
-  historical forecasts;
-- Big-M penalty components are feasibility devices, not observed monetary costs;
-- only the native Gurobi backend is validated for the TRL 6 demonstrator;
-- the software is a research prototype and not an operational public-sector system.
-
-These limitations preserve the distinction between bounded reproduction,
-controlled extension, and direct numerical replication.
-
-## Citation and license
-
-Use the metadata in `CITATION.cff` when citing a tagged release. Release assets
-record the exact source commit and checksums used for the reported results.
-
-The source code is licensed under the GNU General Public License v3.0. See
-`LICENSE`. Dataset provenance and third-party terms remain attached to their
-respective source records and are not replaced by the software license.
+A Quarto Manuscript based on `cvictorr2508/quarto-sbc` is planned after the
+reference evidence and documentation review. It must distinguish thesis-method
+comparison, historical v0.1 evidence and policy extensions. This branch neither
+publishes the article nor changes repository visibility.

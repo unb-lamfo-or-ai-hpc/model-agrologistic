@@ -9,8 +9,10 @@ assume that every physically possible route is operationally realistic.
 
 ## Gate P1: network and uncertainty sensitivity
 
-Use `experiments/v020_policy_mvp.yaml` on the canonical gold workbook. The
-factorial design contains 18 configurations:
+Use `experiments/v020_policy_mvp.yaml` on the OSRM-materialized 215-warehouse
+derivative of the canonical workbook. The design contains 18 configurations;
+the complete factorial is deferred, while selected 20-percent cases define
+the MVP reference evidence:
 
 - formulation: deterministic, coupled three scenarios, or Cartesian nine
   scenarios;
@@ -61,10 +63,12 @@ stage statuses. A later-stage time limit never invalidates a certified
 zero-shortfall first stage, but emergency-capacity and economic values remain
 provisional unless their own passes complete optimally.
 
-The deterministic direct-arc diagnostic at 14,400 seconds is the next
-certification gate. Stochastic policy runs remain blocked until that result
-demonstrates either completion of the secondary and tertiary passes or an
-explicitly reported residual censoring pattern.
+The deterministic 14,400-second direct-arc reference and both three-scenario
+references passed the reported NPAD gate. Two nine-scenario runs exhausted
+their original 3,600-second budget; separately identified 14,400-second retries
+are pending in the current checkpoint. See the
+[validation report](v020_validation_report.md), not the historical progression
+instructions, for the current acceptance boundary.
 
 ## Gate P2: time-to-gap profile
 
@@ -110,7 +114,8 @@ evidence, implement it and pass parity tests for:
 
 - all first- and second-stage variables and constraints;
 - grouped route filtering and direct-arc policies;
-- separate complete-recourse slacks and candidate activation;
+- separate feasibility slacks and candidate activation, without asserting
+  unconditional complete recourse;
 - objective components and dynamic penalties;
 - deterministic and stochastic status and MIP-gap mapping;
 - first-stage fixing and EVPI/VSS decomposition.
