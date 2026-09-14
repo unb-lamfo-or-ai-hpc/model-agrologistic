@@ -65,6 +65,25 @@ The accepted replacement paths under `data/processed/nine_population_osrm_v1` ar
 
 The corresponding audit directories are `/home/vrrcelestino/osrm-agrologistic/audits/policy-300-job-2095322` and `/home/vrrcelestino/osrm-agrologistic/audits/policy-400-job-2095324`. The former missing-input and invalid-500 issues have now been addressed for these new paths; historical files remain unchanged. All four campaign levels can proceed to a fresh hash-verified eight-instance preflight, retaining the established 215-hub input. Graph/connectivity checks, model-size/resource review, optimization and SCIP parity remain outstanding; these materialization receipts do not establish convergence or a scalability limit.
 
+## Eight-instance preflight receipt
+
+The user-supplied report for real job `2095481` records successful completion (`0:0`) after 23 min 24 s, with batch MaxRSS `354860K` and 16 GiB requested. Identifier `2095480` was a test-only estimate. All four workbook checksum checks passed. The campaign is preserved at `/home/vrrcelestino/model-agrologistic/data/results/hpc/nine-connectivity-corrected-20260914T180739Z/campaign.yaml`.
+
+| Population | Warehouse-only variables | Direct-enabled variables | Preflight classification |
+|---|---:|---:|---|
+| 215 | 14,054,654 | 14,374,334 | Ready |
+| 300 | 25,107,544 | 25,427,224 | Resource review required |
+| 400 | 42,106,944 | 42,426,624 | Resource review required |
+| 500 | 63,426,344 | 63,746,024 | Resource review required |
+
+Every instance has nine scenarios and sixty periods, a 28,800 s optimization budget and a relative gap target of 0.10. The route counts in this report are product-indexed model arcs, not distinct geographic distance records. Direct-enabled configurations add 592 OC arcs and 319,680 flow variables. All reported route-repair counts are zero. The per-product connectivity audit remains the authoritative source for component counts and the final retained fraction; connectivity of the potential graph does not establish connectivity of the selected open facilities or operational feasibility.
+
+The larger instances exceed the existing 25-million-variable preventive threshold. This is a resource-review trigger, not evidence of infeasibility and not a decision to exclude 300, 400 or 500 hubs. The 500-hub formulation has approximately 4.5 times as many variables as the corresponding 215-hub formulation, largely because DD arcs grow quadratically. Neither the approximately 0.34 GiB preflight measurement nor OSRM preprocessing memory predicts MILP construction or solution memory.
+
+The next bounded execution is the pair of 215-hub Gurobi cases (indices 0 and 1), with at most one active array task, four solver threads, 192 GiB allocated, a 128 GiB soft solver memory limit, and twelve hours of Slurm wall time. Use the verified `sxdsouza` account and override the script's QoS to `preempt`. The eight-hour optimization budget is distinct from allocation wall time. Before submission, verify the generated graph audit and the absence of existing solution outputs for the selected cases. Record per-stage bounds, gaps, service residuals, independent validation, construction/optimization times and peak memory before revising resource admission for the remaining populations.
+
+These are Gurobi instances only. Native SCIP implementation and equivalence tests remain separate outstanding work. No new optimization completion, scalability frontier, PR acceptance or Zenodo publication follows from this preflight receipt.
+
 ## References
 
 - [Slurm submission and test-only semantics](https://slurm.schedmd.com/sbatch.html#OPT_test-only).
