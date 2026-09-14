@@ -37,6 +37,16 @@ The partition reports `PreemptMode=CANCEL`. Actual preemptability also depends o
 
 The 215-hub workbook is unchanged at SHA256 `40edb66585daca9cc393cab1f86bde6d4528a5f34b6afc57260cc1684396da4e`. The 500-hub workbook in the report still has the known invalid hash `6fa1a28514b920f24e321a484a279d39158a3cb1946be903c783b636621c07eb`; the 300/400 OSRM paths are absent. All four population levels remain in scope.
 
+## Subsequent 500-hub materialization result
+
+User-supplied terminal evidence for real job `2095258` reports `COMPLETED`, exit code `0:0`, elapsed time `00:14:33` and batch MaxRSS `40188112K` (approximately 38.33 GiB), with 192 GiB requested. The preceding identifier `2095257` belonged to the test-only estimate. This is OSRM preprocessing/materialization resource use, not a memory estimate for the nine-scenario MILP.
+
+The persisted-distance validation is accepted. The replacement workbook is `data/processed/nine_population_osrm_v1/warehouses_500/model_input.xlsx`, SHA256 `888fbff42e4f80817d4d5f0101049495c86c6ed4cda75f00813779dadab41515`. It contains 287,869 OSRM-sourced routes: 249,500 DD, 18,500 OD, 18,500 DC and 1,369 OC. No Haversine fallback was used. These are the complete materialized distance candidates, not the nearest-20% graph ultimately admitted to optimization.
+
+The materializer reports 288,369 cache hits, zero misses, zero writes and zero matrix API requests. Cache-hit accounting includes the 500 DD diagonal cells subsequently omitted from exported routes. Six negative-distance normalization occurrences were audited; this is a matrix-processing counter, not proof of six distinct cache records or six new routing failures. Existing normalization is applied on cache reads without rewriting the original cached values. The persisted artifact has passed the finite, nonnegative distance check.
+
+The receipt is under `/home/vrrcelestino/osrm-agrologistic/audits/policy-500-job-2095258/policy-materialization-check.json`. Preserve the historical invalid workbook and the new provenance sidecar. The 500-hub input correction no longer blocks the next input-preparation step. Missing 300/400 inputs, repaired-graph preflight, optimization quality and release rights remain separate checks. Neither a successful materialization nor cached responses establish a successful 500-hub MILP solve.
+
 ## References
 
 - [Slurm submission and test-only semantics](https://slurm.schedmd.com/sbatch.html#OPT_test-only).
