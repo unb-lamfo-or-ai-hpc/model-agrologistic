@@ -10,9 +10,9 @@ set -eu
 
 TARGET_POPULATION="${TARGET_POPULATION:-}"
 case "$TARGET_POPULATION" in
-  215|500) ;;
+  215|500|300|400|600|700|800|900|1000) ;;
   *)
-    printf 'TARGET_POPULATION must be explicitly set to 215 or 500.\n' >&2
+    printf 'TARGET_POPULATION must be an approved level between 215 and 1000.\n' >&2
     false
     ;;
 esac
@@ -35,7 +35,7 @@ EXPECTED_PROFILE_SHA256="9809a111a8fc8c465c2d6ef3208938a2a7c35fab0d3cda407ffa7ff
 OSRM_DATA_VERSION="brazil-260901-osrm-v6.0.0-driving-mld"
 OSRM_DATASET_ID="pbf:brazil-260901@sha256:${EXPECTED_PBF_SHA256};osrm:v6.0.0;oci:sha256:5116c66d814485be70bc7b239be890e4d36f62b1025a2f1c8139c20fa2697309;sif:sha256:${EXPECTED_SIF_SHA256};profile:driving@sha256:${EXPECTED_PROFILE_SHA256};algorithm:MLD"
 
-INPUT_WORKBOOK="$PROJECT_ROOT/data/processed/policy_population_v020/warehouses_${TARGET_POPULATION}/model_input.xlsx"
+INPUT_WORKBOOK="${INPUT_WORKBOOK:-$PROJECT_ROOT/data/processed/policy_population_v020/warehouses_${TARGET_POPULATION}/model_input.xlsx}"
 FINAL_OUTPUT="$PROJECT_ROOT/data/processed/policy_population_v020_osrm/warehouses_${TARGET_POPULATION}"
 AUDIT_DIR="$OSRM_ROOT/audits/policy-${TARGET_POPULATION}-job-${SLURM_JOB_ID}"
 

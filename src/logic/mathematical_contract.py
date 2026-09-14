@@ -51,6 +51,16 @@ def prepare_model_data(data: ModelData, config: ModelConfig) -> ModelData:
         return data
 
     routes = select_routes(data, config)
+    extra_metadata = {}
+    if config.interhub_strong_connectivity:
+        from src.logic.interhub_connectivity import build_interhub_audit
+
+        old_config = replace(config, interhub_strong_connectivity=False)
+        baseline = select_routes(data, replace(old_config, route_filter_strategy="thesis_pareto"))
+        before = select_routes(data, old_config)
+        extra_metadata["interhub_connectivity"] = build_interhub_audit(
+            data, baseline, before, routes, config.pareto_fraction
+        )
     frozen = {
         name: [list(route) for route in sorted(getattr(routes, name))]
         for name in ("od", "dc", "dd", "oc", "repair_od", "repair_dc", "repair_dd", "repair_oc")
@@ -108,5 +118,6 @@ def prepare_model_data(data: ModelData, config: ModelConfig) -> ModelData:
         unmet_demand_penalty=unmet,
         emergency_static_capacity_penalty=static,
         emergency_reception_capacity_penalty=reception,
-        metadata={**data.metadata, "mathematical_contract": contract, "_frozen_routes": frozen},
+        metadata={**data.metadata, **extra_metadata,
+                  "mathematical_contract": contract, "_frozen_routes": frozen},
     )

@@ -183,6 +183,7 @@ class ModelConfig:
     pareto_fraction: float = 0.20
     route_top_k: int | None = None
     connectivity_export_policy: ConnectivityExportPolicy = "one_sink_per_product"
+    interhub_strong_connectivity: bool = False
 
     # -----------------------------------------------------------------
     # Facility location and capacity decisions
@@ -386,4 +387,3 @@ class RunConfig:
     run_name: str = "default_run"
     output_dir: str = "outputs"
     metadata: dict[str, Any] = field(default_factory=dict)
-
