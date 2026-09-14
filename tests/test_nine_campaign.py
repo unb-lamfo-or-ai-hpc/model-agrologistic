@@ -3,9 +3,11 @@
 from copy import deepcopy
 from pathlib import Path
 
+import pytest
+
 from scripts.audit_nine_campaign import classify_stages
 from scripts.inventory_zenodo_data import inventory
-from scripts.prepare_nine_scenario_campaign import campaign
+from scripts.prepare_nine_scenario_campaign import campaign, parse_workbook_overrides
 
 
 def test_campaign_does_not_change_accepted_configurations(tmp_path):
@@ -33,6 +35,47 @@ def test_slurm_budget_includes_pipeline_overhead():
     script = (root / "scripts/run_nine_connectivity.slurm").read_text()
     assert "#SBATCH --time=12:00:00" in script
     assert "#SBATCH --qos=qos1" in script
+
+
+def test_corrected_500_input_does_not_exclude_population_or_change_other_inputs(tmp_path):
+    root = Path(__file__).resolve().parents[1]
+    replacement = tmp_path / "corrected500/model_input.xlsx"
+    overrides = parse_workbook_overrides([f"500={replacement}"], root)
+    baseline = campaign(root, tmp_path)
+    updated = campaign(root, tmp_path, workbook_overrides=overrides)
+    assert len(updated["experiments"]) == 8
+    for old, new in zip(baseline["experiments"], updated["experiments"], strict=True):
+        if new["metadata"]["warehouse_population"] == 500:
+            assert new["workbook"] == str(replacement.resolve())
+            assert new["metadata"]["workbook_selection"] == "explicit_override"
+        else:
+            assert old == new
+    assert not replacement.exists()  # Generation does not fabricate a validated input.
+
+
+@pytest.mark.parametrize("overrides", [
+    ["500"], ["500="], ["hub=file.xlsx"], ["600=file.xlsx"],
+    ["500=one.xlsx", "500=two.xlsx"], ["500=data.csv"],
+])
+def test_invalid_workbook_overrides_are_rejected(tmp_path, overrides):
+    with pytest.raises(ValueError):
+        parse_workbook_overrides(overrides, tmp_path)
+
+
+def test_relative_override_uses_repository_not_current_directory(tmp_path):
+    assert parse_workbook_overrides(["300=inputs/new.xlsx"], tmp_path)[300] == (
+        tmp_path / "inputs/new.xlsx").resolve()
+    with pytest.raises(ValueError):
+        parse_workbook_overrides(["500=input.xlsx"], tmp_path, populations=(215,))
+
+
+def test_materialization_keeps_existing_outputs_protected():
+    root = Path(__file__).resolve().parents[1]
+    script = (root / "scripts/materialize_policy_osrm_population.slurm").read_text()
+    assert 'FINAL_OUTPUT="${FINAL_OUTPUT:-' in script
+    assert 'if [ -e "$FINAL_OUTPUT" ]; then' in script
+    assert '--overwrite' not in script
+    assert '_validate_distance_table(saved_distances, sheets)' in script
 
 
 def test_acceptance_requires_complete_hierarchy_and_feasibility():

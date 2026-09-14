@@ -15,7 +15,27 @@ POPULATIONS = (215, 300, 400, 500)
 OPTIMIZATION_BUDGET_SECONDS = 28800
 
 
-def campaign(root: Path, output: Path, populations=POPULATIONS):
+def parse_workbook_overrides(values, root: Path, populations=POPULATIONS):
+    """Resolve explicit replacement inputs without changing earlier campaigns."""
+    overrides = {}
+    for value in values:
+        population_text, separator, path_text = value.partition("=")
+        if not separator or not path_text.strip():
+            raise ValueError("Use --workbook-override POPULATION=PATH.")
+        try:
+            population = int(population_text)
+        except ValueError as exc:
+            raise ValueError("Workbook override population must be an integer.") from exc
+        if population not in populations or population in overrides:
+            raise ValueError("Workbook overrides must name unique selected populations.")
+        path = Path(path_text)
+        if path.suffix.lower() != ".xlsx":
+            raise ValueError("Workbook override must identify an .xlsx file.")
+        overrides[population] = (path if path.is_absolute() else root / path).resolve()
+    return overrides
+
+
+def campaign(root: Path, output: Path, populations=POPULATIONS, workbook_overrides=None):
     """Use the existing nine-scenario data policy and an explicit new tolerance."""
     source = yaml.safe_load((root / "experiments/v020_policy_mvp.yaml").read_text())
     defaults = copy.deepcopy(source["defaults"])
@@ -24,14 +44,18 @@ def campaign(root: Path, output: Path, populations=POPULATIONS):
     defaults["model"].update(interhub_strong_connectivity=True)
     # Materialize and inspect first. Large instances require an explicit memory gate.
     defaults["max_estimated_variables"] = 25_000_000
+    workbook_overrides = workbook_overrides or {}
+    if not set(workbook_overrides) <= set(populations):
+        raise ValueError("Workbook overrides must refer to selected populations.")
     runs = []
     for population in populations:
         for direct in (False, True):
             name = "policy_sto9_p20_direct" if direct else "policy_sto9_p20_warehouse"
             run = copy.deepcopy(next(r for r in source["experiments"] if r["name"] == name))
             run["name"] = f"nine_h{population}_p20_{'direct' if direct else 'warehouse'}_gurobi"
-            run["workbook"] = str(root / "data/processed/policy_population_v020_osrm"
-                                  / f"warehouses_{population}/model_input.xlsx")
+            run["workbook"] = str(workbook_overrides.get(
+                population, root / "data/processed/policy_population_v020_osrm"
+                / f"warehouses_{population}/model_input.xlsx"))
             run["calculate_evpi_vss"] = False
             run["metadata"].update(
                 evidence_profile="nine_scenario_interhub_connectivity_v1",
@@ -40,6 +64,8 @@ def campaign(root: Path, output: Path, populations=POPULATIONS):
                 optimization_budget_seconds=OPTIMIZATION_BUDGET_SECONDS,
                 route_policy="nearest_p20_plus_audited_strong_interhub_repair",
                 backend_qualification="Gurobi; SCIP parity validation pending",
+                workbook_selection=("explicit_override" if population in workbook_overrides
+                                    else "default_population_path"),
             )
             runs.append(run)
     return {"version": 1, "output_dir": str(output), "continue_on_error": True,
@@ -50,13 +76,21 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--campaign-root", type=Path, required=True)
     parser.add_argument("--populations", nargs="+", type=int, default=POPULATIONS)
+    parser.add_argument("--workbook-override", action="append", default=[],
+                        metavar="POPULATION=PATH",
+                        help="Repeat for new inputs; relative paths use the repository root. "
+                             "This selects a path, not a validation approval.")
     args = parser.parse_args()
     populations = tuple(args.populations)
     if tuple(sorted(set(populations))) != populations or not set(populations) <= set(POPULATIONS):
         parser.error("Use increasing unique populations from 215,300,400,500.")
+    try:
+        overrides = parse_workbook_overrides(args.workbook_override, ROOT, populations)
+    except ValueError as exc:
+        parser.error(str(exc))
     destination = args.campaign_root.resolve()
     destination.mkdir(parents=True, exist_ok=False)
-    document = campaign(ROOT, destination / "runs", populations)
+    document = campaign(ROOT, destination / "runs", populations, overrides)
     (destination / "campaign.yaml").write_text(yaml.safe_dump(document, sort_keys=False),
                                                 encoding="utf-8")
     with (destination / "instance_index.csv").open("w", newline="", encoding="utf-8") as stream:

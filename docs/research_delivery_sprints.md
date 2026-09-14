@@ -20,12 +20,13 @@ SCIP is currently an integration point, not an implemented backend. Installing `
 
 ## Current evidence and blockers
 
-- NPAD targeted regression: 50 tests passed on commit `73ec72c`.
+- NPAD targeted regression: 50 tests passed on commit `73ec72c`; a further 30 readiness/campaign tests passed on `fb552d3`.
 - 215-hub preflight: 14,054,654 variables without direct arcs and 14,374,334 with direct arcs. No added repair edges were reported. An active/open network remains distinct from the potential graph.
 - 300/400: required OSRM workbooks absent.
 - 500: workbook SHA256 `6fa1a28514b920f24e321a484a279d39158a3cb1946be903c783b636621c07eb` fails nonnegative DD-distance validation. Retain the old input as evidence, not as a validated release asset. Use the existing audited OSRM numeric-normalization path; do not replace arbitrary negative distances with zero in Excel.
-- The population registry workbook is not present in the data inventory. Its expected SHA256 is `0d19865ac72eca0706960d10b6dbd1647a4951378a831715e39af8029ecb77f2`.
+- The population registry workbook was located outside the inventoried data tree at `/home/vrrcelestino/model-agrologistic-inputs/Warehouses_Existing_Candidate_All.xlsx`. Its expected SHA256 is `0d19865ac72eca0706960d10b6dbd1647a4951378a831715e39af8029ecb77f2`; existence does not establish hash identity or redistribution rights.
 - Association output reports `sxdsouza` / `preempt`, whereas the proposed job requests `qos1`. Partition `AllowQos=ALL` does not establish user association permission.
+- Both four-CPU and 25-CPU test-only requests with `qos1` failed with `Invalid qos specification`. Test `preempt` explicitly before submission. The observed partition `PreemptMode=CANCEL` must be retained in the resource record; it does not establish when a particular job will be preempted. Interrupted runs must remain identifiable and cannot be reported as completed optimization budgets.
 - The partition reports `MaxMemPerCPU=8000`. At 192 GiB, the simple arithmetic floor is 25 allocated CPUs. This is an advisory calculation, not a prediction of Slurm allocation. Keep solver threads at four during the comparison and report any additional CPU reservation required for memory. Confirm by `sbatch --test-only` and the eventual allocation receipt.
 
 The older unconditional pilot submission example must not be used until these resource checks are resolved. A successful test-only response means the request passed that scheduler check; it does not reserve resources or guarantee eventual availability.
@@ -48,19 +49,18 @@ PYTHON=/home/vrrcelestino/venv313/bin/python
 REPORT_ROOT="/home/vrrcelestino/agrologistic-readiness-$(date -u +%Y%m%dT%H%M%SZ)"
 "$PYTHON" scripts/collect_npad_readiness.py \
   --output-dir "$REPORT_ROOT/scheduler" \
-  --account sxdsouza --partition intel-256 --qos qos1 --test-scheduler \
+  --account sxdsouza --partition intel-256 --qos preempt --test-scheduler \
+  --source-workbook /home/vrrcelestino/model-agrologistic-inputs/Warehouses_Existing_Candidate_All.xlsx \
   --campaign-manifest /home/vrrcelestino/model-agrologistic/data/results/hpc/nine-connectivity-20260914T144027Z/campaign.yaml
 "$PYTHON" scripts/plan_zenodo_deposit.py \
   /home/vrrcelestino/zenodo-agrologistic-inventory-20260914T145244Z/data_inventory.json \
   --output-dir "$REPORT_ROOT/zenodo"
 printf 'Readiness reports: %s\n' "$REPORT_ROOT"
-find /home/vrrcelestino -maxdepth 5 -type f \
-  \( -iname 'Warehouses_Existing_Candidate_All.xlsx' -o -iname 'Warehouses_Existing_Candidates_All.xlsx' \) \
-  -print
+cat "$REPORT_ROOT/scheduler/npad_readiness.json"
 )
 ```
 
-Return `npad_readiness.json`, `zenodo_curation_plan.json` and any source-workbook paths found. If the search is empty, check the original local copy and transfer it only after hash verification. A second readiness call can receive `--source-workbook` with its real path. Do not print license files or environment secrets. The collector reports installed package versions without starting either solver.
+Return `npad_readiness.json`, particularly source-hash matching and test-only responses. Do not print license files or environment secrets. The collector reports installed package versions without starting either solver. PySCIPOpt 6.2.1 is installed on the reported NPAD environment, but the project backend still requires implementation and parity validation.
 
 `collect_npad_readiness.py --test-scheduler` issues only `sbatch --test-only`, comparing four CPUs with the arithmetic memory reservation when that limit is available. It does not submit or execute jobs, change QoS, load modules or alter data. Command failures remain in the report. The script deliberately does not certify all inputs from file existence alone.
 
@@ -69,6 +69,8 @@ Return `npad_readiness.json`, `zenodo_curation_plan.json` and any source-workboo
 The existing draft is https://zenodo.org/uploads/22751909, reserved DOI `10.5281/zenodo.22751909`. It is not a published dataset. The inventory contains 1,378 files and 2,194,452,025 bytes; it is a metadata inventory, not a content or rights audit.
 
 The curation planner proposes packages for canonical inputs, processed inputs, validation evidence, publication outputs, historical releases, negative results and ongoing experiments. All file approvals remain false. Sensitive filenames and regenerable software artifacts are excluded; the known invalid 500-hub input is blocked from publication as a validated input by hash, even if renamed. Duplicates are disclosed rather than deleted, because removing files can invalidate release checksum contracts. Directory names do not prove scientific acceptance.
+
+The 500-hub population remains a required campaign level. The restriction concerns one defective artifact, not the experimental population. Correct it through audited OSRM rematerialization; retain the original and link its replacement by input/output hashes and normalization provenance. The received curation CSV contains 1,378 rows with all upload approvals false; neither this implementation nor source discovery changes those decisions. See [500-hub correction and new input selection](pilot_input_correction.md).
 
 Before uploading, review source rights, private content, input validity and the exact executions supporting the paper. Include failed experiments as labeled evidence; do not place incomplete campaign outputs among final comparative results. MIT applies to project code, not automatically to registry or OSM-derived data. Finalize attribution and per-asset licensing before release.
 
