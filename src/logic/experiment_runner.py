@@ -286,6 +286,10 @@ def run_experiment(
     data = loader(spec.workbook, spec.loader)
     data_read_seconds = perf_counter() - data_read_started_at
     data = prepare_model_data(data, spec.model)
+    if spec.model.interhub_strong_connectivity:
+        from src.logic.interhub_connectivity import write_interhub_audit
+
+        write_interhub_audit(data.metadata["interhub_connectivity"], run_dir)
     _write_json(
         run_dir / "model_audit.json",
         build_model_audit(data, spec.model),
@@ -390,7 +394,11 @@ def run_experiment(
             "emergency_capacity_daily.csv",
             "evpi_vss_decomposition.csv", "storage_by_warehouse.csv", "storage_by_scenario.csv",
         )
-    ] + ([run_dir / "value_analysis_timings.csv"] if evpi_result else []))
+    ] + ([run_dir / "value_analysis_timings.csv"] if evpi_result else [])
+      + ([run_dir / name for name in (
+          "interhub_connectivity_audit.json", "interhub_components.csv",
+          "interhub_repair_edges.csv", "interhub_path_summary.csv",
+      )] if spec.model.interhub_strong_connectivity else []))
     progress(f"[{spec.name}] finished with status={summary.status}")
     return summary
 
@@ -408,6 +416,10 @@ def inspect_experiment(
     progress(f"[{spec.name}] loading {spec.workbook}")
     data = loader(spec.workbook, spec.loader)
     data = prepare_model_data(data, spec.model)
+    if spec.model.interhub_strong_connectivity:
+        from src.logic.interhub_connectivity import write_interhub_audit
+
+        write_interhub_audit(data.metadata["interhub_connectivity"], run_dir)
     _write_json(
         run_dir / "model_audit.json",
         build_model_audit(data, spec.model),
