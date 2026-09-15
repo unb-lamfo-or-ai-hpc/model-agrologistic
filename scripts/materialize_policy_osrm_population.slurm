@@ -36,7 +36,12 @@ OSRM_DATA_VERSION="brazil-260901-osrm-v6.0.0-driving-mld"
 OSRM_DATASET_ID="pbf:brazil-260901@sha256:${EXPECTED_PBF_SHA256};osrm:v6.0.0;oci:sha256:5116c66d814485be70bc7b239be890e4d36f62b1025a2f1c8139c20fa2697309;sif:sha256:${EXPECTED_SIF_SHA256};profile:driving@sha256:${EXPECTED_PROFILE_SHA256};algorithm:MLD"
 
 INPUT_WORKBOOK="${INPUT_WORKBOOK:-$PROJECT_ROOT/data/processed/policy_population_v020/warehouses_${TARGET_POPULATION}/model_input.xlsx}"
-FINAL_OUTPUT="$PROJECT_ROOT/data/processed/policy_population_v020_osrm/warehouses_${TARGET_POPULATION}"
+# A corrected input is a new artifact; existing population outputs stay immutable.
+FINAL_OUTPUT="${FINAL_OUTPUT:-$PROJECT_ROOT/data/processed/policy_population_v020_osrm/warehouses_${TARGET_POPULATION}}"
+case "$INPUT_WORKBOOK:$FINAL_OUTPUT" in
+  /*:/*) ;;
+  *) printf 'INPUT_WORKBOOK and FINAL_OUTPUT must be absolute paths.\n' >&2; false ;;
+esac
 AUDIT_DIR="$OSRM_ROOT/audits/policy-${TARGET_POPULATION}-job-${SLURM_JOB_ID}"
 
 mkdir -p "$AUDIT_DIR" "$(dirname "$OSRM_CACHE_PATH")"
@@ -44,6 +49,7 @@ mkdir -p "$AUDIT_DIR" "$(dirname "$OSRM_CACHE_PATH")"
 printf 'job_id=%s\n' "$SLURM_JOB_ID"
 printf 'host=%s\n' "$(hostname)"
 printf 'target_population=%s\n' "$TARGET_POPULATION"
+printf 'input_workbook=%s\noutput_directory=%s\n' "$INPUT_WORKBOOK" "$FINAL_OUTPUT"
 printf 'source_commit=%s\n' "${SOURCE_COMMIT:-not-recorded}"
 printf 'cpus=%s\n' "$SLURM_CPUS_PER_TASK"
 printf '%s\n' "${SOURCE_COMMIT:-not-recorded}" \
@@ -245,11 +251,14 @@ test -s "$FINAL_OUTPUT/osrm_materialization_audit.json"
   "$OSRM_DATASET_ID" \
   "$OSRM_DATA_VERSION" \
   > "$AUDIT_DIR/policy-materialization-check.json" <<'PY'
+import hashlib
 import json
 import sys
 from pathlib import Path
 
 import pandas as pd
+
+from src.logic.policy_osrm import _validate_distance_table
 
 audit = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
 input_workbook = Path(sys.argv[2])
@@ -290,8 +299,19 @@ assert provenance["route_count"] == sum(expected_counts.values())
 assert set(provenance["route_count_by_source"]) <= accepted_sources
 assert set(provenance["fallback_count_by_reason"]) <= accepted_fallbacks
 
+# Check the persisted artifact, not only in-memory counts or provenance labels.
+output_workbook = Path(sys.argv[1]).parent / audit["output_workbook"]
+with output_workbook.open("rb") as stream:
+    assert hashlib.file_digest(stream, "sha256").hexdigest() == audit["output_workbook_sha256"]
+saved_distances = pd.read_excel(output_workbook, sheet_name="Distancias", engine="openpyxl")
+_validate_distance_table(saved_distances, sheets)
+
 summary = {
     "status": "accepted",
+    "persisted_distance_validation": "accepted",
+    "output_workbook_sha256": audit["output_workbook_sha256"],
+    "osrm_negative_distance_normalization_count": provenance.get(
+        "osrm_negative_distance_normalization_count", 0),
     "target_population": target_population,
     "route_count": provenance["route_count"],
     "route_count_by_arc_type": provenance["route_count_by_arc_type"],
