@@ -84,8 +84,42 @@ The next bounded execution is the pair of 215-hub Gurobi cases (indices 0 and 1)
 
 These are Gurobi instances only. Native SCIP implementation and equivalence tests remain separate outstanding work. No new optimization completion, scalability frontier, PR acceptance or Zenodo publication follows from this preflight receipt.
 
+## Completed 215-hub Gurobi pilot: solver-log evidence
+
+User-supplied logs and Slurm accounting report both tasks in array `2095628` completed with exit code `0:0`. The warehouse-only log identifies the individual Slurm job as `2095629`, while accounting identifies the array task as `2095628_0`; individual job identifiers need not equal array identifiers. This is not evidence of a duplicate execution.
+
+| Observation | Warehouse-only | Direct-enabled |
+|---|---:|---:|
+| Model columns | 14,054,654 | 14,374,334 |
+| Model rows | 661,057 | 661,057 |
+| Binary variables before presolve | 307 | 307 |
+| Capacity-pass relative gap (%) | 0.0255 | 0.8691 |
+| Economic-pass relative gap (%) | 0.0166 | 0.0137 |
+| Economic-pass incumbent | 399,489,474,421.3 | 353,989,073,088.6 |
+| Multi-objective solver elapsed time (s) | 12,318.26 | 9,649.15 |
+| Slurm elapsed time | 03:32:07 | 02:47:47 |
+| Slurm batch MaxRSS (K) | 49,976,084 | 47,492,052 |
+| Approximate batch MaxRSS (GiB) | 47.66 | 45.29 |
+| Final maximum constraint violation reported by solver | 1.9431e-5 | 6.3777e-6 |
+
+The reported capacity and economic gaps are below 1%, despite the configured 10% stopping tolerance. Both runs reached the third objective within the 28,800 s optimization allowance. First-pass unmet-demand incumbents were approximately zero (-3.49e-10 and 1.86e-9); these are first-pass values, not a substitute for checking final service and objective degradation in the exported solution. The economic-pass incumbent is not the scalar objective of the entire lexicographic hierarchy. Capacity-pass incumbents and gaps likewise refer to that pass, not necessarily the final capacity value after economic optimization.
+
+Both logs contain feasibility-tolerance warnings. Preserve and review these warnings against the independent residual checks; neither `optimal` nor exit code zero independently certifies numerical acceptance. Do not enlarge validation tolerances merely to accept these runs. Relative objective gaps and absolute constraint residual tolerances serve different purposes. The reported solver elapsed times also exclude portions of data preparation, construction and artifact export; use structured timings to separate those regions.
+
+These observations establish successful solver termination for the new 215-hub pair, not yet final artifact-level acceptance. They do not identify whether the improvement over earlier attempts was caused by topology, solver method, tolerance, input revision or their combination. No controlled ablation was performed. Graph repair counts remain zero for this pilot. The 300/400/500 instances remain planned resource-reviewed experiments, not solved instances; model size alone cannot certify their memory requirement or convergence time.
+
+### Scoped artifact audit
+
+`scripts/audit_nine_campaign.py` now accepts `--indices 0 1`, `--output-dir NEW_DIRECTORY` and `--require-accepted`. It verifies existing completion identities and artifact hashes, reads the independently validated solutions, and reports the selected pair separately from the six unassessed cases. It does not optimize or rewrite solution files. Explicit report directories must be new and outside the source runs directory. Without index selection, all campaign cases remain in scope.
+
+The output snapshot contains `nine_results.json`, `nine_results.csv`, `nine_stage_gaps.json`, `nine_stage_gaps.csv` when stages are available, and `nine_audit_manifest.json`. The manifest discloses selected and unassessed indices, the source campaign hash and the audit-script hash. A nonzero exit with `--require-accepted` is accompanied by the written diagnostic report. Duplicate stage roles cannot certify a complete hierarchy. The report also exposes independent-validation status, final service, material balance, economic cost, separate emergency quantities, direct flow and structured timing fields when present.
+
+Only reporting scripts, tests and documentation change in this update. The solver, input workbooks, experiment definitions and implementation-identity source files under `src/logic` remain unchanged. Audit existing evidence under the same NPAD Python and dependency versions used for solving; a runtime mismatch must be investigated rather than bypassed.
+
 ## References
 
 - [Slurm submission and test-only semantics](https://slurm.schedmd.com/sbatch.html#OPT_test-only).
 - [Slurm resource-limit hierarchy](https://slurm.schedmd.com/resource_limits.html).
 - [Successful CI run](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/actions/runs/34862312153).
+- [Slurm array and individual job identifiers](https://slurm.schedmd.com/job_array.html).
+- [Gurobi absolute feasibility tolerances and scaling](https://docs.gurobi.com/projects/optimizer/en/current/concepts/numericguide/tolerances_scaling.html).
