@@ -1,5 +1,6 @@
 """Campaign isolation, conservative certification, and data curation checks."""
 
+import json
 from copy import deepcopy
 from pathlib import Path
 
@@ -35,6 +36,44 @@ def test_slurm_budget_includes_pipeline_overhead():
     script = (root / "scripts/run_nine_connectivity.slurm").read_text()
     assert "#SBATCH --time=12:00:00" in script
     assert "#SBATCH --qos=qos1" in script
+
+
+def test_resource_admission_changes_only_preventive_limit(tmp_path):
+    root = Path(__file__).resolve().parents[1]
+    baseline = campaign(root, tmp_path, populations=(300,))
+    reviewed = campaign(root, tmp_path, populations=(300,),
+                        max_estimated_variables=26_000_000,
+                        resource_review_note="215-hub pilot measured below 48 GiB.")
+    assert reviewed["defaults"].pop("max_estimated_variables") == 26_000_000
+    assert baseline["defaults"].pop("max_estimated_variables") == 25_000_000
+    assert reviewed == baseline
+
+
+@pytest.mark.parametrize("limit,note", [(0, "review"), (-1, "review"),
+                                      (26_000_000, None), (26_000_000, "  ")])
+def test_resource_admission_requires_positive_limit_and_review(tmp_path, limit, note):
+    root = Path(__file__).resolve().parents[1]
+    with pytest.raises(ValueError):
+        campaign(root, tmp_path, max_estimated_variables=limit, resource_review_note=note)
+
+
+def test_cli_records_resource_review_without_overwriting(tmp_path, monkeypatch):
+    from scripts.prepare_nine_scenario_campaign import main
+
+    destination = tmp_path / "reviewed300"
+    monkeypatch.setattr("sys.argv", ["prepare", "--campaign-root", str(destination),
+                                     "--populations", "300", "--max-estimated-variables",
+                                     "26000000", "--resource-review-note", "Measured pilot."])
+    main()
+    receipt = json.loads((destination / "campaign_status.json").read_text())
+    assert receipt["experiment_count"] == 2
+    assert receipt["resource_admission"]["max_estimated_variables"] == 26_000_000
+    assert receipt["resource_admission"]["review_note"] == "Measured pilot."
+    assert receipt["resource_admission"]["memory_or_convergence_guaranteed"] is False
+    before = (destination / "campaign.yaml").read_bytes()
+    with pytest.raises(FileExistsError):
+        main()
+    assert (destination / "campaign.yaml").read_bytes() == before
 
 
 def test_corrected_500_input_does_not_exclude_population_or_change_other_inputs(tmp_path):

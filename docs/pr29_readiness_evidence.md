@@ -116,6 +116,26 @@ The output snapshot contains `nine_results.json`, `nine_results.csv`, `nine_stag
 
 Only reporting scripts, tests and documentation change in this update. The solver, input workbooks, experiment definitions and implementation-identity source files under `src/logic` remain unchanged. Audit existing evidence under the same NPAD Python and dependency versions used for solving; a runtime mismatch must be investigated rather than bypassed.
 
+## Accepted 215-hub artifact audit and 300-hub admission
+
+The supplied audit receipt for job `2096691` reports `accepted` for indices 0 and 1 only, with six campaign cases explicitly unassessed. Slurm records completion in three seconds with exit code `0:0`. Identifier `2096690` was a test-only estimate, not the actual job. The receipt is in `pilot-audit-20260915T144851Z` under the frozen campaign root. Its campaign SHA256 is `348c4c08c2c9e906cbd3a28df7753577ebed3cac30702aae30dfb8ce2ad25694`; its audit-script SHA256 is `0c10983d695c04cb44953bc508699c82849d30942eeb7f5fd0763d644b728bf6`.
+
+Both exported solutions have accepted independent validation, valid material balance, a complete three-stage hierarchy and service certified as zero shortfall within tolerance. Expected unmet demand is 9.98546056507621e-7 for warehouse-only and 1.0007579476223327e-6 for direct-enabled. The current pilot service check allows up to 1.01e-6; it is not a strict assertion that every recorded value is at most 1e-6. Both cases retain material emergency capacity, classified as `emergency_capacity_required`, rather than nominal physical adequacy.
+
+Structured timings distinguish construction (239.55/243.51 s), optimization (12,324.93/9,655.85 s), result extraction (47.08/49.45 s), and end-to-end execution (12,672.86/10,009.85 s), respectively. Postoptimality time is zero because EVPI/VSS were not requested in this campaign. These timing fields need not sum by simple addition: solve-sequence and end-to-end fields enclose other measured regions.
+
+### Numerical acceptance and hierarchical interpretation
+
+The solver already predominantly uses double-precision floating-point arithmetic. A conversion from single to double precision is therefore not a remedy for the reported warnings. Moreover, 1e-6 is smaller than both warning residuals. Acceptance follows the previously implemented independent local constraint check, not a retrospective change to tolerances. In `solution_validation.py`, the threshold is `1e-5 + rounding_budget + 1e-8 * max(abs(lhs), abs(rhs))`, with the rounding term used where explicitly supplied for sparse cost reconstruction. The local row scale, rather than a national aggregate, determines the relative term. Solver feasibility tolerance, final service tolerance and objective gap remain distinct contracts. Preserve the solver warnings and report satisfaction within the declared validation tolerances, not exact arithmetic feasibility.
+
+The capacity-pass gaps were 0.0255% and 0.8691%, but economic optimization subsequently changed capacity objective values to 453,385,082.52726114 and 338,530,504.94464815. Compared with their capacity-pass lower bounds of 412,158,705.65288234 and 307,509,914.19981754, the final-value relative distances are approximately 9.0930% and 9.1633%. This is permitted by the configured MIP hierarchy and is not floating-point noise. Consequently, do not describe every objective of the final solution as certified within 1%. The economic-pass gaps remain approximately 0.0166% and 0.0137%. Service at a near-zero objective must be assessed using absolute residuals and bounds, not the warehouse first-pass relative-gap sentinel of 1e100.
+
+### Next isolated experiment
+
+Admit only the two 300-hub cases to a new campaign, retaining all mathematical and solver settings: nine scenarios, nearest-20% graph plus audited repair, 28,800 s total optimization budget, relative MIP gap 0.10, four threads, 128 GiB solver soft memory limit and a 192 GiB Slurm allocation with twelve-hour wall time. The two estimates are 25,107,544 and 25,427,224 variables. Set a finite preventive limit of 26,000,000 for this new campaign only; never edit the accepted eight-case manifest or disable the limit globally. The generator records the explicit resource-review rationale in `campaign_status.json` and refuses an increased limit without that rationale.
+
+The observed approximately 48 GiB pilot peak supports a bounded 300-hub trial with headroom, not a memory guarantee or a prediction of convergence. No precision, solver feasibility tolerance or independent-validation threshold is changed. Keep array concurrency at one. The new two-case campaign uses local indices 0/1 for 300 hubs; these correspond to indices 2/3 of the earlier eight-case campaign. Do not confuse their indices or output directories. Admission of 400/500 hubs and native SCIP parity remain separate work.
+
 ## References
 
 - [Slurm submission and test-only semantics](https://slurm.schedmd.com/sbatch.html#OPT_test-only).

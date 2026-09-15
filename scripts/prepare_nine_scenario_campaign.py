@@ -13,6 +13,7 @@ import yaml
 ROOT = Path(__file__).resolve().parents[1]
 POPULATIONS = (215, 300, 400, 500)
 OPTIMIZATION_BUDGET_SECONDS = 28800
+DEFAULT_SIZE_LIMIT = 25_000_000
 
 
 def parse_workbook_overrides(values, root: Path, populations=POPULATIONS):
@@ -35,15 +36,21 @@ def parse_workbook_overrides(values, root: Path, populations=POPULATIONS):
     return overrides
 
 
-def campaign(root: Path, output: Path, populations=POPULATIONS, workbook_overrides=None):
+def campaign(root: Path, output: Path, populations=POPULATIONS, workbook_overrides=None,
+             *, max_estimated_variables=DEFAULT_SIZE_LIMIT, resource_review_note=None):
     """Use the existing nine-scenario data policy and an explicit new tolerance."""
+    if not isinstance(max_estimated_variables, int) or max_estimated_variables <= 0:
+        raise ValueError("The preventive variable limit must be a positive integer.")
+    if max_estimated_variables > DEFAULT_SIZE_LIMIT and not (
+            resource_review_note and resource_review_note.strip()):
+        raise ValueError("Raising the preventive limit requires a resource-review note.")
     source = yaml.safe_load((root / "experiments/v020_policy_mvp.yaml").read_text())
     defaults = copy.deepcopy(source["defaults"])
     defaults["solver"].update(mip_gap=0.10, time_limit=OPTIMIZATION_BUDGET_SECONDS, threads=4)
     defaults["solver"]["solver_options"].update(SoftMemLimit=128, NumericFocus=1)
     defaults["model"].update(interhub_strong_connectivity=True)
     # Materialize and inspect first. Large instances require an explicit memory gate.
-    defaults["max_estimated_variables"] = 25_000_000
+    defaults["max_estimated_variables"] = max_estimated_variables
     workbook_overrides = workbook_overrides or {}
     if not set(workbook_overrides) <= set(populations):
         raise ValueError("Workbook overrides must refer to selected populations.")
@@ -76,6 +83,10 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--campaign-root", type=Path, required=True)
     parser.add_argument("--populations", nargs="+", type=int, default=POPULATIONS)
+    parser.add_argument("--max-estimated-variables", type=int, default=DEFAULT_SIZE_LIMIT,
+                        help="Explicit preventive size admission for this new campaign only.")
+    parser.add_argument("--resource-review-note",
+                        help="Required justification when raising the default size limit.")
     parser.add_argument("--workbook-override", action="append", default=[],
                         metavar="POPULATION=PATH",
                         help="Repeat for new inputs; relative paths use the repository root. "
@@ -89,8 +100,15 @@ def main():
     except ValueError as exc:
         parser.error(str(exc))
     destination = args.campaign_root.resolve()
+    try:
+        document = campaign(
+            ROOT, destination / "runs", populations, overrides,
+            max_estimated_variables=args.max_estimated_variables,
+            resource_review_note=args.resource_review_note,
+        )
+    except ValueError as exc:
+        parser.error(str(exc))
     destination.mkdir(parents=True, exist_ok=False)
-    document = campaign(ROOT, destination / "runs", populations, overrides)
     (destination / "campaign.yaml").write_text(yaml.safe_dump(document, sort_keys=False),
                                                 encoding="utf-8")
     with (destination / "instance_index.csv").open("w", newline="", encoding="utf-8") as stream:
@@ -108,6 +126,12 @@ def main():
         "experiment_count": len(document["experiments"]),
         "scip_status": "not_implemented_not_submitted",
         "previous_evidence_modified": False,
+        "resource_admission": {
+            "default_max_estimated_variables": DEFAULT_SIZE_LIMIT,
+            "max_estimated_variables": args.max_estimated_variables,
+            "review_note": args.resource_review_note,
+            "memory_or_convergence_guaranteed": False,
+        },
     }, indent=2) + "\n", encoding="utf-8")
     print(destination / "campaign.yaml")
 
