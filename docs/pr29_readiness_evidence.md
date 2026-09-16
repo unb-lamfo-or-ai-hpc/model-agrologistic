@@ -136,6 +136,33 @@ Admit only the two 300-hub cases to a new campaign, retaining all mathematical a
 
 The observed approximately 48 GiB pilot peak supports a bounded 300-hub trial with headroom, not a memory guarantee or a prediction of convergence. No precision, solver feasibility tolerance or independent-validation threshold is changed. Keep array concurrency at one. The new two-case campaign uses local indices 0/1 for 300 hubs; these correspond to indices 2/3 of the earlier eight-case campaign. Do not confuse their indices or output directories. Admission of 400/500 hubs and native SCIP parity remain separate work.
 
+## Completed 300-hub pilot: mixed computational outcomes
+
+The logs supplied on 16 September 2026 and Slurm accounting for array `2096697` establish two completed pipeline executions, not two accepted optimization outcomes. The preserved campaign is `/home/vrrcelestino/model-agrologistic/data/results/hpc/nine-connectivity-h300-20260915T150139Z/campaign.yaml`. Its local indices 0 and 1 identify warehouse-only and direct-enabled configurations, respectively. Both used nine scenarios, four threads, a 28,800 s optimization budget and a 0.10 relative MIP gap target. No acceptance tolerance was revised after observing the outcomes.
+
+| Solver-log observation | Warehouse-only | Direct-enabled |
+|---|---:|---:|
+| Model columns | 25,107,544 | 25,427,224 |
+| Model rows | 890,642 | 890,642 |
+| Nonzero coefficients | 94,635,126 | 95,274,486 |
+| Capacity-pass incumbent | 328,096,645.5456 | 281,604,454.6498 |
+| Capacity-pass lower bound | 327,520,771.9455 | 277,978,996.9905 |
+| Capacity-pass relative gap (%) | 0.1755 | 1.2874 |
+| Economic-pass incumbent | 799,870,484,734.7 | 354,888,907,616.3 |
+| Economic-pass lower bound | 395,773,844,767.0 | 354,648,705,079.4 |
+| Economic-pass relative gap (%) | 50.5203 | 0.0677 |
+| Final solver status | TIME_LIMIT | OPTIMAL |
+| Multi-objective solver elapsed time (s) | 28,821.43 | 26,395.35 |
+| Slurm elapsed time | 08:12:54 | 07:34:18 |
+| Slurm batch MaxRSS (K) | 83,978,372 | 84,880,348 |
+| Approximate batch MaxRSS (GiB) | 80.09 | 80.95 |
+
+The warehouse-only economic pass did not meet the 10% gap target. A feasible incumbent was exported; this is neither proof of infeasibility nor an out-of-memory termination. Slurm exit code `0:0` indicates that the pipeline completed normally, including reporting the solver time limit. Gurobi may exceed its time limit slightly while finalizing solution attributes; Slurm elapsed time additionally includes construction and other pipeline work. The direct-enabled case met the configured relative-gap criterion in both capacity and economic passes, although its capacity-pass gap exceeds 1%. Final artifact acceptance still requires completion-identity verification, independent validation, final service checks and permitted degradation of higher-priority objectives.
+
+First-pass unmet-demand incumbents were approximately zero in both logs. They do not replace final service validation. Capacity-pass gaps describe the pass solution, not necessarily the final capacity objective after economic optimization. Economic root relaxations consumed approximately 14,223 s and 15,259 s, respectively, with one explored node reported for each economic pass. These observations motivate future controlled algorithm experiments but do not establish a causal explanation, a universal scalability limit, or performance at 400/500 hubs. The approximately 81 GiB observed peak is a measurement for these runs, not a guarantee for larger models.
+
+The next operation is a read-only artifact audit of local indices 0 and 1 into a new timestamped report directory. Preserve both solution folders and the original manifest. The expected mixed campaign outcome must remain visible: do not relax the 10% criterion, overwrite the time-limited run, or describe the two-case campaign as fully accepted. No additional optimization, larger-population admission, native SCIP comparison or Zenodo publication is implied by this receipt.
+
 ## References
 
 - [Slurm submission and test-only semantics](https://slurm.schedmd.com/sbatch.html#OPT_test-only).
@@ -143,3 +170,4 @@ The observed approximately 48 GiB pilot peak supports a bounded 300-hub trial wi
 - [Successful CI run](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/actions/runs/34862312153).
 - [Slurm array and individual job identifiers](https://slurm.schedmd.com/job_array.html).
 - [Gurobi absolute feasibility tolerances and scaling](https://docs.gurobi.com/projects/optimizer/en/current/concepts/numericguide/tolerances_scaling.html).
+- [Gurobi optimization time limit and termination overhead](https://docs.gurobi.com/projects/optimizer/en/current/reference/parameters.html#parameter.TimeLimit).
