@@ -38,13 +38,14 @@ def test_slurm_budget_includes_pipeline_overhead():
     assert "#SBATCH --qos=qos1" in script
 
 
-def test_resource_admission_changes_only_preventive_limit(tmp_path):
+@pytest.mark.parametrize("population,limit", [(300, 26_000_000), (400, 43_000_000)])
+def test_resource_admission_changes_only_preventive_limit(tmp_path, population, limit):
     root = Path(__file__).resolve().parents[1]
-    baseline = campaign(root, tmp_path, populations=(300,))
-    reviewed = campaign(root, tmp_path, populations=(300,),
-                        max_estimated_variables=26_000_000,
-                        resource_review_note="215-hub pilot measured below 48 GiB.")
-    assert reviewed["defaults"].pop("max_estimated_variables") == 26_000_000
+    baseline = campaign(root, tmp_path, populations=(population,))
+    reviewed = campaign(root, tmp_path, populations=(population,),
+                        max_estimated_variables=limit,
+                        resource_review_note="Bounded pilot with unchanged memory limits.")
+    assert reviewed["defaults"].pop("max_estimated_variables") == limit
     assert baseline["defaults"].pop("max_estimated_variables") == 25_000_000
     assert reviewed == baseline
 

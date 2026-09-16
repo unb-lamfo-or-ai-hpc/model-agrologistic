@@ -163,6 +163,18 @@ First-pass unmet-demand incumbents were approximately zero in both logs. They do
 
 The next operation is a read-only artifact audit of local indices 0 and 1 into a new timestamped report directory. Preserve both solution folders and the original manifest. The expected mixed campaign outcome must remain visible: do not relax the 10% criterion, overwrite the time-limited run, or describe the two-case campaign as fully accepted. No additional optimization, larger-population admission, native SCIP comparison or Zenodo publication is implied by this receipt.
 
+### Independent artifact audit of the 300-hub pair
+
+The user-supplied receipt from audit job `2098357`, created at `2026-09-16T11:59:03.642456+00:00`, covers both local indices with no unassessed cases. Its manifest SHA256 is `35971f2966fa9ede37ef129c421dd3725dcf06dc899fb67f2bb4d93b12fb11a4`; audit-script SHA256 is `0c10983d695c04cb44953bc508699c82849d30942eeb7f5fd0763d644b728bf6`. The snapshot is `pilot-audit-20260916T115856Z` under the 300-hub campaign root.
+
+Both solutions pass independent validation and material balance, certify zero domestic shortfall within the declared tolerance, and require emergency capacity. Final expected unmet demand is 9.98546056507621e-7 (warehouse-only) and 1.000292286335025e-6 (direct-enabled). The warehouse-only status is `gap_target_not_attained`, with a partial hierarchy; the direct-enabled status is `accepted_at_ten_percent`, with a complete hierarchy. Therefore, the aggregate `not_accepted` result correctly describes one accepted case out of two, not two invalid solutions.
+
+The final warehouse-only capacity objective is 328,096,645.5455855, approximately 0.17552% above its lower bound when divided by the final incumbent. The direct-enabled final capacity objective is 306,139,442.4554646, approximately 9.19857% above its capacity-pass lower bound on the same basis. Its increase of 24,534,987.805623055 after the capacity pass is permitted hierarchical degradation, not numerical roundoff. All supplied stage degradation checks pass. The near-zero service relative-gap sentinel `1e100` is not interpreted as meaningful relative service error; service is certified using the absolute contract.
+
+Structured build/optimization/end-to-end times are 419.20/28,833.37/29,476.13 s for warehouse-only and 503.41/26,409.00/27,135.45 s for direct-enabled. Postoptimality is disabled (0 s). Python-process peaks are 82,141.73 and 82,929.70 MiB, respectively; retain these separately from Slurm sampling. The economic objectives are 799,870,484,734.6964 and 354,888,907,616.2792. Their raw difference is not a certified estimate of the economic value of direct arcs: the first has a 50.52% unresolved economic gap, and the configurations optimize different preceding capacity objectives.
+
+The next bounded experiment admits the 400-hub pair without changing the objective hierarchy, graph policy, input distances, tolerance, time allowance or solver memory limit. Raising only the preventive size threshold to 43,000,000 admits the known 42,106,944/42,426,624-variable formulations. A crude proportional extrapolation from the observed 300-hub peak reaches approximately 135 GiB, above the 128 GiB solver soft limit; it is not a prediction because process RSS and solver-accounted memory differ and scaling is nonlinear. Memory-censored runs are therefore plausible and must be retained. Use one active task, 192 GiB allocation, a fresh preflight, and no automatic retries or 500-hub submission. See [the executable runbook](nine_h400_pilot.md).
+
 ## References
 
 - [Slurm submission and test-only semantics](https://slurm.schedmd.com/sbatch.html#OPT_test-only).
