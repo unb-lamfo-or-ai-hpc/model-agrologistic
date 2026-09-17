@@ -106,6 +106,9 @@ class SolverConfig:
     iis_max_items: int = 200
 
     solver_options: dict[str, Any] = field(default_factory=dict)
+    # Opt-in numerical experiments; mathematical priorities remain unchanged.
+    multiobjective_stage_options: dict[str, dict[str, int]] = field(default_factory=dict)
+    collect_solver_diagnostics: bool = False
 
     def __post_init__(self) -> None:
         if self.backend not in VALID_SOLVER_BACKENDS:
@@ -146,6 +149,15 @@ class SolverConfig:
 
         if self.iis_max_items <= 0:
             raise ValueError("iis_max_items must be positive.")
+
+        if not isinstance(self.collect_solver_diagnostics, bool):
+            raise ValueError("collect_solver_diagnostics must be boolean.")
+        from src.logic.solver_diagnostics import validate_stage_options
+
+        validate_stage_options(self.multiobjective_stage_options)
+        if (self.multiobjective_stage_options or self.collect_solver_diagnostics):
+            if self.backend != "gurobipy":
+                raise ValueError("Stage diagnostics require the native Gurobi backend.")
 
 
 # ---------------------------------------------------------------------

@@ -396,6 +396,9 @@ def run_experiment(
         )
     ] + ([run_dir / "value_analysis_timings.csv"] if evpi_result else [])
       + ([run_dir / name for name in (
+          "solver_diagnostics.json", "solver_stage_progress.csv", "solver_presolved_matrix.csv",
+      )] if result.metadata.get("solver_diagnostics") else [])
+      + ([run_dir / name for name in (
           "interhub_connectivity_audit.json", "interhub_components.csv",
           "interhub_repair_edges.csv", "interhub_path_summary.csv",
       )] if spec.model.interhub_strong_connectivity else []))
@@ -928,6 +931,11 @@ def _export_run_artifacts(
         "stochastic_performance": _evpi_payload(evpi_result),
     }
     _write_json(run_dir / "result.json", payload)
+    diagnostics = result.metadata.get("solver_diagnostics")
+    if diagnostics:
+        _write_json(run_dir / "solver_diagnostics.json", diagnostics)
+        _write_csv(run_dir / "solver_stage_progress.csv", diagnostics["progress"])
+        _write_csv(run_dir / "solver_presolved_matrix.csv", diagnostics["matrix_observations"])
     audit = build_model_audit(data, spec.model, result)
     _write_json(run_dir / "model_audit.json", audit)
     _write_csv(run_dir / "warehouse_decisions.csv", result.warehouse_decisions)
