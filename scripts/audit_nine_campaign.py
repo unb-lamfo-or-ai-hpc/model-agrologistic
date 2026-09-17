@@ -48,6 +48,26 @@ def selected_indices(requested, count):
     return indices
 
 
+def stage_termination_details(stages):
+    """Expose reported termination causes without changing acceptance or imputing gaps."""
+    roles = ("unmet_demand", "emergency_capacity", "economic_cost")
+    details = {"reported_stage_count": len(stages)}
+    for role in roles:
+        matches = [stage for stage in stages if stage.get("stage_role") == role]
+        stage = matches[0] if len(matches) == 1 else {}
+        details[f"{role}_stage_status"] = stage.get("status")
+        details[f"{role}_stage_mip_gap"] = stage.get("mip_gap")
+    details["unreported_stage_roles"] = [
+        role for role in roles if not any(s.get("stage_role") == role for s in stages)
+    ]
+    # Absence of a recorded memory event is not proof that memory was unconstrained.
+    details["memory_limit_reported"] = any(
+        stage.get("status") == "MEM_LIMIT" or stage.get("status_code") == 17
+        for stage in stages
+    )
+    return details
+
+
 def main(argv=None):
     from src.logic.experiment_runner import (
         _checkpoint_identity,
@@ -106,6 +126,7 @@ def main(argv=None):
                 row["status"] = classify_stages(
                     stages, independent.get("status")
                 )
+                row.update(stage_termination_details(stages))
                 row.update(metadata.get("timings", {}))
                 row["solver_status"] = result.get("status")
                 row["independent_validation_status"] = independent.get("status")

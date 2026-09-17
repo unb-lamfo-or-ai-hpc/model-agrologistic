@@ -1,10 +1,16 @@
 # Bounded 400-hub Gurobi pilot
 
+## Outcome recorded on 17 September 2026
+
+This protocol has now been executed: preflight 2098383, solve array 2098384, and final audit 2098385. Both cases preserve independently valid, zero-shortfall incumbents but terminate their capacity pass with `MEM_LIMIT`, a 100% capacity gap and no economic pass. Neither case meets the full acceptance contract. The immutable campaign is `data/results/hpc/nine-connectivity-h400-20260916T123635Z`; see the [evidence receipt](pr29_readiness_evidence.md). The submission block below is retained for reproducibility, not an instruction to repeat these jobs or proceed to 500 hubs.
+
+Unit correction: Gurobi `SoftMemLimit=128` is 128 decimal GB (approximately 119.21 GiB), not 128 GiB. This corrects the earlier documentation only; no executed parameter has changed. Slurm allocation and process RSS are separate measurements. An eventual memory or algorithm sensitivity must use a new campaign identity after reviewing solver logs.
+
 ## Experimental contract
 
 The independently audited 300-hub direct-enabled case met the 10% criterion. The warehouse-only solution was independently feasible but retained a 50.5203% economic gap at the time limit. Preserve both outcomes; the next population is not a retry or a retrospective relaxation.
 
-The 400-hub pair contains an estimated 42,106,944 and 42,426,624 variables. Admit it with a finite 43,000,000-variable preventive threshold and an explicit review note. Keep nine scenarios, nearest-20% interhub selection with audited repair, four threads, 28,800 s total optimization time, 0.10 relative gap, 128 GiB solver soft memory, and 192 GiB Slurm allocation. Run at most one array task. The soft limit is not a process-RSS guarantee; a memory-censored outcome is plausible. Do not alter parameters after submission or automatically retry an incomplete run. Do not submit 500-hub cases from this receipt.
+The 400-hub pair contains an estimated 42,106,944 and 42,426,624 variables. Admit it with a finite 43,000,000-variable preventive threshold and an explicit review note. Keep nine scenarios, nearest-20% interhub selection with audited repair, four threads, 28,800 s total optimization time, 0.10 relative gap, 128 GB (decimal) solver soft memory, and 192 GiB Slurm allocation. Run at most one array task. The soft limit is not a process-RSS guarantee; a memory-censored outcome is plausible. Do not alter parameters after submission or automatically retry an incomplete run. Do not submit 500-hub cases from this receipt.
 
 The existing OSRM workbook is reused without rematerialization. The generator and optimizer implementation remain unchanged. Preflight is mandatory but does not predict solving memory or convergence. This pilot includes no SCIP or EVPI/VSS calculation.
 
@@ -35,7 +41,7 @@ export H400_CAMPAIGN="$PWD/data/results/hpc/nine-connectivity-h400-$(date -u +%Y
   --populations 400 \
   --workbook-override "400=$H400_INPUT" \
   --max-estimated-variables 43000000 \
-  --resource-review-note "300-hub cases reached approximately 81 GiB RSS; 400-hub scaling may exceed the unchanged 128 GiB solver soft limit. Admit one active task at 192 GiB allocation, retain all censored outcomes, no automatic retry."
+  --resource-review-note "300-hub cases reached approximately 81 GiB RSS; 400-hub scaling may exceed the unchanged 128 GB (decimal) solver soft limit. Admit one active task at 192 GiB allocation, retain all censored outcomes, no automatic retry."
 export NINE_MANIFEST="$H400_CAMPAIGN/campaign.yaml"
 
 H400_PREFLIGHT_JOB="$(sbatch --parsable \

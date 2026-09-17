@@ -80,7 +80,7 @@ Every instance has nine scenarios and sixty periods, a 28,800 s optimization bud
 
 The larger instances exceed the existing 25-million-variable preventive threshold. This is a resource-review trigger, not evidence of infeasibility and not a decision to exclude 300, 400 or 500 hubs. The 500-hub formulation has approximately 4.5 times as many variables as the corresponding 215-hub formulation, largely because DD arcs grow quadratically. Neither the approximately 0.34 GiB preflight measurement nor OSRM preprocessing memory predicts MILP construction or solution memory.
 
-The next bounded execution is the pair of 215-hub Gurobi cases (indices 0 and 1), with at most one active array task, four solver threads, 192 GiB allocated, a 128 GiB soft solver memory limit, and twelve hours of Slurm wall time. Use the verified `sxdsouza` account and override the script's QoS to `preempt`. The eight-hour optimization budget is distinct from allocation wall time. Before submission, verify the generated graph audit and the absence of existing solution outputs for the selected cases. Record per-stage bounds, gaps, service residuals, independent validation, construction/optimization times and peak memory before revising resource admission for the remaining populations.
+The next bounded execution is the pair of 215-hub Gurobi cases (indices 0 and 1), with at most one active array task, four solver threads, 192 GiB allocated, a 128 GB (decimal) soft solver memory limit, and twelve hours of Slurm wall time. Use the verified `sxdsouza` account and override the script's QoS to `preempt`. The eight-hour optimization budget is distinct from allocation wall time. Before submission, verify the generated graph audit and the absence of existing solution outputs for the selected cases. Record per-stage bounds, gaps, service residuals, independent validation, construction/optimization times and peak memory before revising resource admission for the remaining populations.
 
 These are Gurobi instances only. Native SCIP implementation and equivalence tests remain separate outstanding work. No new optimization completion, scalability frontier, PR acceptance or Zenodo publication follows from this preflight receipt.
 
@@ -132,7 +132,7 @@ The capacity-pass gaps were 0.0255% and 0.8691%, but economic optimization subse
 
 ### Next isolated experiment
 
-Admit only the two 300-hub cases to a new campaign, retaining all mathematical and solver settings: nine scenarios, nearest-20% graph plus audited repair, 28,800 s total optimization budget, relative MIP gap 0.10, four threads, 128 GiB solver soft memory limit and a 192 GiB Slurm allocation with twelve-hour wall time. The two estimates are 25,107,544 and 25,427,224 variables. Set a finite preventive limit of 26,000,000 for this new campaign only; never edit the accepted eight-case manifest or disable the limit globally. The generator records the explicit resource-review rationale in `campaign_status.json` and refuses an increased limit without that rationale.
+Admit only the two 300-hub cases to a new campaign, retaining all mathematical and solver settings: nine scenarios, nearest-20% graph plus audited repair, 28,800 s total optimization budget, relative MIP gap 0.10, four threads, 128 GB (decimal) solver soft memory limit and a 192 GiB Slurm allocation with twelve-hour wall time. The two estimates are 25,107,544 and 25,427,224 variables. Set a finite preventive limit of 26,000,000 for this new campaign only; never edit the accepted eight-case manifest or disable the limit globally. The generator records the explicit resource-review rationale in `campaign_status.json` and refuses an increased limit without that rationale.
 
 The observed approximately 48 GiB pilot peak supports a bounded 300-hub trial with headroom, not a memory guarantee or a prediction of convergence. No precision, solver feasibility tolerance or independent-validation threshold is changed. Keep array concurrency at one. The new two-case campaign uses local indices 0/1 for 300 hubs; these correspond to indices 2/3 of the earlier eight-case campaign. Do not confuse their indices or output directories. Admission of 400/500 hubs and native SCIP parity remain separate work.
 
@@ -173,7 +173,48 @@ The final warehouse-only capacity objective is 328,096,645.5455855, approximatel
 
 Structured build/optimization/end-to-end times are 419.20/28,833.37/29,476.13 s for warehouse-only and 503.41/26,409.00/27,135.45 s for direct-enabled. Postoptimality is disabled (0 s). Python-process peaks are 82,141.73 and 82,929.70 MiB, respectively; retain these separately from Slurm sampling. The economic objectives are 799,870,484,734.6964 and 354,888,907,616.2792. Their raw difference is not a certified estimate of the economic value of direct arcs: the first has a 50.52% unresolved economic gap, and the configurations optimize different preceding capacity objectives.
 
-The next bounded experiment admits the 400-hub pair without changing the objective hierarchy, graph policy, input distances, tolerance, time allowance or solver memory limit. Raising only the preventive size threshold to 43,000,000 admits the known 42,106,944/42,426,624-variable formulations. A crude proportional extrapolation from the observed 300-hub peak reaches approximately 135 GiB, above the 128 GiB solver soft limit; it is not a prediction because process RSS and solver-accounted memory differ and scaling is nonlinear. Memory-censored runs are therefore plausible and must be retained. Use one active task, 192 GiB allocation, a fresh preflight, and no automatic retries or 500-hub submission. See [the executable runbook](nine_h400_pilot.md).
+The next bounded experiment admits the 400-hub pair without changing the objective hierarchy, graph policy, input distances, tolerance, time allowance or solver memory limit. Raising only the preventive size threshold to 43,000,000 admits the known 42,106,944/42,426,624-variable formulations. A crude proportional extrapolation from the observed 300-hub peak reaches approximately 135 GiB, above the 128 GB (decimal) solver soft limit; it is not a prediction because process RSS and solver-accounted memory differ and scaling is nonlinear. Memory-censored runs are therefore plausible and must be retained. Use one active task, 192 GiB allocation, a fresh preflight, and no automatic retries or 500-hub submission. See [the executable runbook](nine_h400_pilot.md).
+
+## Completed 400-hub campaign: memory-censored objective hierarchy
+
+User-supplied accounting records preflight `2098383`, solve array `2098384` and audit `2098385` as completed with exit code `0:0`. The campaign is `/home/vrrcelestino/model-agrologistic/data/results/hpc/nine-connectivity-h400-20260916T123635Z/campaign.yaml`, SHA256 `cd12b2caf6e013ebcb6c0008a1d222c8f95951c13c7ccf56bc25df3d0aa45092`. The audit was created at `2026-09-17T05:31:03.523244+00:00` using script SHA256 `0c10983d695c04cb44953bc508699c82849d30942eeb7f5fd0763d644b728bf6`. Both cases were assessed; neither was accepted.
+
+| Observation | Warehouse-only | Direct-enabled |
+|---|---:|---:|
+| Independent solution validation | Accepted | Accepted |
+| Final unmet domestic demand | 0 | 0 |
+| Material balance | Valid | Valid |
+| Service-pass status | OPTIMAL | OPTIMAL |
+| Service-pass time (s) | 2,327.66 | 2,300.17 |
+| Capacity-pass status | MEM_LIMIT | MEM_LIMIT |
+| Capacity-pass time (s) | 26,476.09 | 26,506.48 |
+| Capacity-pass incumbent | 617,761,090,585.8713 | 615,913,736,671.7437 |
+| Capacity-pass lower bound | 0 | 0 |
+| Capacity-pass gap (%) | 100 | 100 |
+| Economic-pass status | Not reported; hierarchy stopped | Not reported; hierarchy stopped |
+| Pipeline classification | incomplete_hierarchy | incomplete_hierarchy |
+| Optimization region (s) | 28,829.25 | 28,837.08 |
+| Model construction (s) | 804.25 | 786.60 |
+| End-to-end time (s) | 30,004.86 | 29,993.88 |
+| Python process peak RSS (MiB) | 128,067.97 | 129,015.07 |
+| Slurm batch peak RSS (K) | 126,810,476 | 127,411,612 |
+| Slurm elapsed time | 08:23:07 | 08:22:55 |
+
+The detailed callback status, not the generic result label `feasible`, identifies the recorded interruption as `MEM_LIMIT` (17). The adapter returns `feasible` for a remaining incumbent when no earlier status mapping applies; the stage observer preserves the symbolic termination code. Inspection shows one `model.optimize` call for the lexicographic solve, not an application-level retry loop. The nearly eight-hour elapsed times do not justify relabeling these stage terminations as solely `TIME_LIMIT`. Raw solver logs are still required to locate the memory-intensive algorithm phase and reconcile terminal messages. A callback iteration count of zero for the interrupted pass is insufficient evidence that no computational work occurred.
+
+The exported solutions have large emergency quantities: static 39,369,846,368.09/39,285,093,439.62 and reception 578,391,244,217.75/576,628,643,232.10 in their respective exported measures. These are values of incumbents whose capacity objectives remain insufficiently optimized, not estimates of minimum infrastructure requirements. Economic costs 732,787,867,907.62/607,489,391,499.18 and penalized totals approximately 2.7800e16/2.7717e16 are evaluations of those incumbents, not completed economic-stage optima. Do not use them to infer investment needs, economic savings from direct arcs, or deterioration caused by adding candidate facilities. Missing economic gaps remain missing rather than zero.
+
+### Memory units and reporting correction
+
+Earlier receipt text incorrectly described `SoftMemLimit=128` as 128 GiB. Gurobi defines this parameter in decimal GB, so the actual configured threshold is 128,000,000,000 bytes (approximately 119.21 GiB). The documentation has been corrected without changing the numeric parameter or any frozen campaign. The 192G Slurm reservation is a distinct allocation, approximately 192 GiB in this workflow; the solver is not authorized by that reservation to ignore its own lower memory limit. Gurobi accounts for memory across its environment and threads, and a soft-limit exit preserves solution information. Process RSS, Slurm sampling and solver-accounted memory are not interchangeable: the observed Python peaks of approximately 125.07/125.99 GiB do not contradict the reported soft-limit event or establish exhaustion of all allocated memory.
+
+The reporting-only update to `audit_nine_campaign.py` adds per-role recorded statuses and gaps, unreported stage roles, the recorded stage count and `memory_limit_reported`. Existing acceptance classifications remain unchanged. An unreported economic pass receives null status/gap; duplicate roles are not silently resolved to an arbitrary stage. Original audit snapshots and all solution artifacts remain immutable, and the optimizer implementation identity is unchanged. Re-auditing, if needed, must use a new report directory and disclose the new audit-script hash.
+
+### Conditional empirical frontier and continuation
+
+Under the tested graph, hierarchy, inputs, time allowance and resource settings, both 215-hub cases meet the criterion; at 300 hubs only direct-enabled meets it, while warehouse-only is economic-gap-censored; both 400-hub cases are memory-censored at the capacity stage. Thus, the largest accepted tested populations are 215 without direct arcs and 300 with direct arcs. This is not a proof that intermediate or larger populations cannot be solved, that time alone would resolve the failure, or that hardware capacity has been exhausted. The 500-hub cases remain unexecuted rather than excluded from the research.
+
+The immediate next step is read-only collection of the final portions of the two existing solver logs. Do not submit 500-hub cases or repeat 400-hub runs unchanged. A subsequent separately identified sensitivity may examine the root algorithm, thread count or solver soft limit, preserving the original run and changing one control at a time. A larger Slurm reservation alone does not raise `SoftMemLimit`, and a node-file setting is not an established remedy for a run reporting only one explored node. Native SCIP comparison requires backend and objective-hierarchy parity first; no cross-solver scalability conclusion is supported yet.
 
 ## References
 
@@ -183,3 +224,5 @@ The next bounded experiment admits the 400-hub pair without changing the objecti
 - [Slurm array and individual job identifiers](https://slurm.schedmd.com/job_array.html).
 - [Gurobi absolute feasibility tolerances and scaling](https://docs.gurobi.com/projects/optimizer/en/current/concepts/numericguide/tolerances_scaling.html).
 - [Gurobi optimization time limit and termination overhead](https://docs.gurobi.com/projects/optimizer/en/current/reference/parameters.html#parameter.TimeLimit).
+- [Gurobi soft memory limit: decimal units and graceful termination](https://docs.gurobi.com/projects/optimizer/en/current/reference/parameters.html#parameter.SoftMemLimit).
+- [Gurobi termination status codes](https://docs.gurobi.com/projects/optimizer/en/current/reference/numericcodes/statuscodes.html).

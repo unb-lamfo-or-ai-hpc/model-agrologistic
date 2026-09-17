@@ -5,7 +5,12 @@ from types import SimpleNamespace
 
 import pytest
 
-from scripts.audit_nine_campaign import classify_stages, main, selected_indices
+from scripts.audit_nine_campaign import (
+    classify_stages,
+    main,
+    selected_indices,
+    stage_termination_details,
+)
 from src.logic.run_integrity import write_completion
 
 
@@ -29,6 +34,35 @@ def stages():
 def test_duplicate_stage_cannot_be_certified():
     rows = stages()
     assert classify_stages(rows + [rows[0]], "accepted") == "incomplete_hierarchy"
+
+
+def test_memory_limited_capacity_pass_preserves_missing_economic_gap():
+    rows = stages()[:2]
+    rows[0].update(status="OPTIMAL", status_code=2)
+    rows[1].update(status="MEM_LIMIT", status_code=17, mip_gap=1.0)
+    before = json.dumps(rows)
+    details = stage_termination_details(rows)
+    assert classify_stages(rows, "accepted") == "incomplete_hierarchy"
+    assert details["memory_limit_reported"] is True
+    assert details["emergency_capacity_stage_status"] == "MEM_LIMIT"
+    assert details["emergency_capacity_stage_mip_gap"] == 1.0
+    assert details["economic_cost_stage_status"] is None
+    assert details["economic_cost_stage_mip_gap"] is None
+    assert details["unreported_stage_roles"] == ["economic_cost"]
+    assert json.dumps(rows) == before
+
+
+def test_termination_details_do_not_invent_missing_or_duplicate_status():
+    assert stage_termination_details([])["reported_stage_count"] == 0
+    rows = stages()
+    rows[2].update(status="TIME_LIMIT", status_code=9, mip_gap=0.5052)
+    details = stage_termination_details(rows)
+    assert details["memory_limit_reported"] is False
+    assert details["economic_cost_stage_status"] == "TIME_LIMIT"
+    assert classify_stages(rows, "accepted") == "gap_target_not_attained"
+    details = stage_termination_details(rows + [rows[2]])
+    assert details["economic_cost_stage_status"] is None
+    assert details["economic_cost_stage_mip_gap"] is None
 
 
 @pytest.fixture
@@ -74,6 +108,9 @@ def test_scoped_snapshot_does_not_modify_source_or_certify_missing_cases(evidenc
     assert rows[0]["material_balance_ok"] is True
     assert rows[0]["economic_cost"] == 123.0
     assert rows[0]["independent_validation_status"] == "accepted"
+    assert rows[0]["reported_stage_count"] == 3
+    assert rows[0]["economic_cost_stage_mip_gap"] == 0.01
+    assert rows[0]["unreported_stage_roles"] == []
     assert before == {path.name: path.read_bytes() for path in run.iterdir()}
     with pytest.raises(SystemExit):
         main([str(manifest), "--output-dir", str(output)])
