@@ -56,6 +56,10 @@ def solve_model_gurobipy(
 
     configure_gurobi_wls_license(solver_config)
 
+    if solver_config.multiobjective_stage_options or solver_config.collect_solver_diagnostics:
+        if model_config.mode != "sto" or model_config.objective_policy != "lexicographic":
+            raise ValueError("Stagewise research options require stochastic lexicographic mode.")
+
     if model_config.mode == "sto":
         from src.logic.optimization_gurobipy_stochastic import (
             solve_stochastic_model_gurobipy,
@@ -961,6 +965,8 @@ def _optimize_with_stage_observer(
     objective_policy: str,
     objective_names: tuple[str, ...],
     objective_roles: tuple[str, ...] | None = None,
+    solver_config: SolverConfig | None = None,
+    diagnostics: dict[str, Any] | None = None,
 ) -> list[dict[str, Any]]:
     """Optimize and capture the terminal state of each lexicographic pass."""
 
@@ -997,7 +1003,19 @@ def _optimize_with_stage_observer(
     if len(stage_roles) != len(objective_names):
         raise ValueError("Objective names and roles must have equal length.")
 
+    telemetry = None
+    if solver_config is not None:
+        from src.logic.solver_diagnostics import SolverDiagnostics, configure_stages
+
+        options = solver_config.multiobjective_stage_options
+        if options:
+            configure_stages(model, options, stage_roles)
+        if solver_config.collect_solver_diagnostics:
+            telemetry = SolverDiagnostics(model, callback, options)
+
     def observe_stage(callback_model: Any, where: int) -> None:
+        if telemetry is not None:
+            telemetry.observe(callback_model, where)
         if where != callback.MULTIOBJ:
             return
 
@@ -1053,6 +1071,8 @@ def _optimize_with_stage_observer(
         )
 
     model.optimize(observe_stage)
+    if telemetry is not None and diagnostics is not None:
+        diagnostics.update(telemetry.finish(model))
     return stages
 
 

@@ -1,5 +1,10 @@
 # Controlled dual-simplex sensitivity at 400 hubs
 
+> **Suspended, 17 September 2026.** Do not submit the commands below. The
+> unsuccessful PR25 dual experiment motivates the replacement stagewise
+> protocol in `stagewise_root_protocol.md`. Retained for design provenance;
+> no new Method=1 execution is authorized by that protocol.
+
 ## Rationale and scope
 
 The original 400-hub cases have independently valid zero-shortfall incumbents but stop in the capacity-stage root relaxation with `MEM_LIMIT`, a zero bound and 100% gap. The logs explicitly identify deterministic concurrent LP optimization. The supplied manifest does not explicitly set `Method`; the observed algorithm must not be confused with a user-configured Method=4.

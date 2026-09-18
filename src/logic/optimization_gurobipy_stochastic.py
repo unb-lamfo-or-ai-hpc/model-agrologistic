@@ -312,6 +312,7 @@ def solve_stochastic_model_gurobipy(
 
     model_build_seconds = perf_counter() - started_at
     optimization_started_at = perf_counter()
+    solver_diagnostics = {}
     lexicographic_stages = _optimize_with_stage_observer(
         model=model,
         GRB=GRB,
@@ -326,12 +327,15 @@ def solve_stochastic_model_gurobipy(
             "emergency_capacity",
             "economic_cost",
         ),
+        solver_config=solver_config,
+        diagnostics=solver_diagnostics,
     )
     optimization_seconds = perf_counter() - optimization_started_at
     runtime_seconds = perf_counter() - started_at
     status = _map_gurobi_status(model, GRB)
 
     common_metadata = {
+        **({"solver_diagnostics": solver_diagnostics} if solver_diagnostics else {}),
         "mathematical_contract": data.metadata.get("mathematical_contract", {}),
         "gurobi_status_code": model.Status,
         "gurobi_status_name": _gurobi_status_name(model, GRB),
