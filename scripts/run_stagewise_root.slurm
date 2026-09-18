@@ -7,7 +7,7 @@
 #SBATCH --time=12:00:00
 #SBATCH --output=slurm-stagewise-root-%j.out
 
-# One reviewed case only; a completed process is not numerical acceptance.
+# Sprint A: one all-barrier case only; process completion is not acceptance.
 set -euo pipefail
 PROJECT_ROOT="${PROJECT_ROOT:-/home/vrrcelestino/model-agrologistic}"
 PYTHON="${PYTHON:-/home/vrrcelestino/venv313/bin/python}"
@@ -22,7 +22,8 @@ export GRB_LICENSE_FILE="$PROJECT_ROOT/secrets/gurobi.lic"
 printf 'job=%s partition=%s cpus=%s memory_mib=%s\n' \
   "$SLURM_JOB_ID" "$SLURM_JOB_PARTITION" "$SLURM_CPUS_PER_TASK" "${SLURM_MEM_PER_NODE:-unknown}"
 printf 'source_commit=%s\n' "$STAGEWISE_SOURCE_COMMIT"
-"$PYTHON" scripts/prepare_stagewise_campaign.py --check-manifest "$STAGEWISE_MANIFEST"
+"$PYTHON" scripts/prepare_stagewise_campaign.py --check-manifest "$STAGEWISE_MANIFEST" \
+  --require-profile all-barrier
 "$PYTHON" scripts/run_batch_hpc.py "$STAGEWISE_MANIFEST" --index 0 --dry-run
 "$PYTHON" scripts/run_batch_hpc.py "$STAGEWISE_MANIFEST" --index 0
 "$PYTHON" scripts/audit_nine_campaign.py "$STAGEWISE_MANIFEST" \

@@ -14,16 +14,19 @@ from src.logic.model_config import ModelConfig, SolverConfig
 from src.logic.solver_diagnostics import SolverDiagnostics, configure_stages
 
 
+@pytest.mark.parametrize("profile", ["barrier", "all-barrier"])
 @pytest.mark.parametrize("case", preparation.CASES)
-def test_preparer_preserves_science_and_selects_only_unresolved_cases(tmp_path, monkeypatch, case):
+def test_preparer_preserves_science_and_selects_only_unresolved_cases(
+    tmp_path, monkeypatch, case, profile
+):
     baseline, workbook, original = fixture_campaign(tmp_path, monkeypatch, case)
     target = tmp_path / "new"
-    output = preparation.prepare(baseline, target, case)
+    output = preparation.prepare(baseline, target, case, profile)
     observed = yaml.safe_load(output.read_text())
     _, index, role = preparation.CASES[case]
-    assert observed["defaults"]["solver"].pop("multiobjective_stage_options") == {
-        role: {"Method": 2}
-    }
+    roles = preparation.STAGES if profile == "all-barrier" else (role,)
+    changes = {stage: {"Method": 2} for stage in roles}
+    assert observed["defaults"]["solver"].pop("multiobjective_stage_options") == changes
     assert observed["defaults"]["solver"].pop("collect_solver_diagnostics") is True
     # The generator has no overrides for time, gap, threads, tolerances or equations.
     observed["experiments"][0]["name"] = original["experiments"][index]["name"]
@@ -32,7 +35,8 @@ def test_preparer_preserves_science_and_selects_only_unresolved_cases(tmp_path, 
     assert observed == original
     assert preparation.sha256(workbook) == preparation.BASELINES[preparation.CASES[case][0]][1]
     receipt = json.loads((target / "stagewise_contract.json").read_text())
-    assert receipt["target_stage"] == role
+    assert receipt["target_stages"] == list(roles)
+    assert receipt["stage_solver_changes"] == changes
     assert receipt["manifest_sha256"] == preparation.sha256(output)
     preparation.verify_prepared(output)
     with pytest.raises(FileExistsError):
@@ -176,6 +180,78 @@ def test_environments_change_only_requested_pass():
         configure_stages(model, {}, ("unmet_demand", "economic_cost"))
 
 
+def test_all_barrier_changes_exactly_three_method_parameters():
+    calls = []
+    model = SimpleNamespace(
+        getMultiobjEnv=lambda index: SimpleNamespace(
+            setParam=lambda name, value: calls.append((index, name, value))
+        )
+    )
+    options = preparation.stage_changes("all-barrier", "economic_cost")
+    SolverConfig(multiobjective_stage_options=options)
+    configure_stages(model, options, preparation.STAGES)
+    assert calls == [(0, "Method", 2), (1, "Method", 2), (2, "Method", 2)]
+
+
+@pytest.mark.parametrize("change", ["float", "bool", "primal", "missing", "extra", "budget"])
+def test_service_override_cannot_escape_all_barrier_contract(change):
+    options = preparation.stage_changes("all-barrier", "economic_cost")
+    if change == "missing":
+        del options["economic_cost"]
+    elif change == "extra":
+        options["unmet_demand"]["PreSparsify"] = 2
+    elif change == "budget":
+        options["economic_cost"]["TimeLimit"] = 28800
+    else:
+        options["unmet_demand"]["Method"] = {"float": 2.0, "bool": True, "primal": 0}[change]
+    with pytest.raises(ValueError):
+        SolverConfig(multiobjective_stage_options=options)
+
+
+@pytest.mark.parametrize(
+    "field", ["target_stages", "stage_solver_changes", "global_time_budget_seconds"]
+)
+def test_all_barrier_receipt_rejects_misreported_contract(tmp_path, monkeypatch, field):
+    baseline, _, _ = fixture_campaign(tmp_path, monkeypatch)
+    output = preparation.prepare(baseline, tmp_path / "new", "h400-direct")
+    receipt_path = output.parent / "stagewise_contract.json"
+    receipt = json.loads(receipt_path.read_text())
+    assert receipt["profile"] == "all-barrier"
+    receipt[field] = None
+    receipt_path.write_text(json.dumps(receipt))
+    with pytest.raises(ValueError, match="identity mismatch"):
+        preparation.verify_prepared(output, require_profile="all-barrier")
+
+
+def test_sprint_a_launcher_rejects_historical_profile(tmp_path, monkeypatch):
+    baseline, _, _ = fixture_campaign(tmp_path, monkeypatch)
+    output = preparation.prepare(baseline, tmp_path / "new", "h400-direct", "barrier")
+    with pytest.raises(ValueError, match="different numerical profile"):
+        preparation.verify_prepared(output, require_profile="all-barrier")
+
+
+@pytest.mark.parametrize("fault", [None, "skipped", "failure", "error", "missing", "duplicate"])
+def test_licensed_junit_gate_requires_actual_all_pass_execution(tmp_path, fault):
+    import xml.etree.ElementTree as ET
+
+    root = ET.Element("testsuite")
+    for role in ("emergency_capacity", "economic_cost", "all"):
+        case = ET.SubElement(root, "testcase", name=f"test_licensed_stagewise_parity[{role}]")
+    if fault in ("skipped", "failure", "error"):
+        ET.SubElement(case, fault)
+    elif fault == "missing":
+        root.remove(case)
+    elif fault == "duplicate":
+        ET.SubElement(root, "testcase", name="test_licensed_stagewise_parity[all]")
+    path = tmp_path / "pytest.xml"
+    ET.ElementTree(root).write(path)
+    if fault is None:
+        preparation.verify_licensed_junit(path)
+    else:
+        with pytest.raises(ValueError):
+            preparation.verify_licensed_junit(path)
+
+
 class FakeModel:
     NumConstrs, NumVars, DNumNZs, NumGenConstrs = 10, 100, 500, 2
     MemUsed, MaxMemUsed = 2, 3
@@ -293,7 +369,7 @@ def test_diagnostics_export_is_bound_to_completion_receipt(tmp_path):
         assert receipt["artifacts"][name] == preparation.sha256(run / name)
 
 
-@pytest.mark.parametrize("role", ["emergency_capacity", "economic_cost"])
+@pytest.mark.parametrize("role", ["emergency_capacity", "economic_cost", "all"])
 def test_licensed_stagewise_parity(role):
     from src.logic.optimization import solve_model
     from tests.test_gurobipy_stochastic import two_scenario_data
@@ -306,14 +382,18 @@ def test_licensed_stagewise_parity(role):
     solver = SolverConfig(threads=1, time_limit=30, mip_gap=0, tee=True)
     reference = solve_model(two_scenario_data(), config, solver)
     changed = copy.deepcopy(solver)
-    changed.multiobjective_stage_options = {role: {"Method": 2}}
+    roles = preparation.STAGES if role == "all" else (role,)
+    changed.multiobjective_stage_options = {stage: {"Method": 2} for stage in roles}
     changed.collect_solver_diagnostics = True
     result = solve_model(two_scenario_data(), config, changed)
     assert result.status == reference.status == "optimal"
     assert result.metadata["lexicographic_overall_status"] == "complete"
     diagnostic = result.metadata["solver_diagnostics"]
-    assert diagnostic["effective_stage_parameters"][role]["Method"] == 2
-    assert diagnostic["effective_stage_parameters"]["unmet_demand"]["Method"] == -1
+    for stage in preparation.STAGES:
+        assert diagnostic["effective_stage_parameters"][stage]["Method"] == (
+            2 if stage in roles else -1
+        )
+        assert diagnostic["effective_stage_parameters"][stage]["TimeLimit"] == 30
     terminal = [row for row in diagnostic["progress"] if row["event"] == "MULTIOBJ"]
     assert [row["stage_number"] for row in terminal] == [1, 2, 3]
     assert not diagnostic["unavailable_callback_fields"]

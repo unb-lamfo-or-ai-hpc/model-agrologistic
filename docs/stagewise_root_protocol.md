@@ -1,5 +1,12 @@
 # Stagewise root-relaxation diagnostics: unresolved 300–400-hub cases
 
+> Historical protocol for commit `a5020cc9a585ce126358e7094300d4c1baaf5cf6`
+> and job 2099329. For all new Sprint A submissions, use
+> [the all-barrier continuation](sprint_a_all_barrier.md).
+> The single-pass, sparsification and primal submission instructions below
+> are retained only to describe the earlier protocol. They are not active
+> campaign recommendations; the current launcher rejects those profiles.
+
 ## Scope and experimental rationale
 
 The nine-scenario extensive-form model is retained. This experiment changes

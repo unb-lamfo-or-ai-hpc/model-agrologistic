@@ -6,6 +6,7 @@ import argparse
 import copy
 import hashlib
 import json
+import xml.etree.ElementTree as ET
 from pathlib import Path
 
 import yaml
@@ -26,10 +27,20 @@ CASES = {
     "h400-direct": (400, 1, "emergency_capacity"),
 }
 PROFILES = {
+    "all-barrier": {"Method": 2},
     "barrier": {"Method": 2},
     "barrier-sparse": {"Method": 2, "PreSparsify": 2},
     "primal": {"Method": 0},
 }
+STAGES = ("unmet_demand", "emergency_capacity", "economic_cost")
+
+
+def stage_changes(profile, role):
+    """Keep historical single-pass profiles distinct from the Sprint A intervention."""
+    if profile not in PROFILES:
+        raise ValueError("Unknown numerical profile.")
+    roles = STAGES if profile == "all-barrier" else (role,)
+    return {stage: dict(PROFILES[profile]) for stage in roles}
 
 
 def sha256(path):
@@ -47,6 +58,7 @@ def protocol_source_sha256():
             "run_stagewise_root.slurm",
             "run_batch_hpc.py",
             "audit_nine_campaign.py",
+            "submit_sprint_a_barrier.sh",
         )
     ]
     content = {
@@ -58,8 +70,9 @@ def protocol_source_sha256():
     return hashlib.sha256(json.dumps(content, sort_keys=True).encode()).hexdigest()
 
 
-def prepare(baseline, destination, case, profile="barrier", prior_result=None, note=None):
+def prepare(baseline, destination, case, profile="all-barrier", prior_result=None, note=None):
     population, index, role = CASES[case]
+    changes = stage_changes(profile, role)
     expected_manifest, expected_workbook = BASELINES[population]
     baseline, destination = Path(baseline).resolve(), Path(destination).resolve()
     if destination.exists():
@@ -104,7 +117,7 @@ def prepare(baseline, destination, case, profile="barrier", prior_result=None, n
     if not workbook.is_absolute() or sha256(workbook) != expected_workbook:
         raise ValueError("Frozen workbook checksum mismatch or nonabsolute path.")
     evidence = None
-    if profile != "barrier":
+    if profile not in ("barrier", "all-barrier"):
         if prior_result is None or not note or not note.strip():
             raise ValueError("A conditional profile requires a prior result and diagnostic note.")
         previous = json.loads(Path(prior_result).read_text(encoding="utf-8"))
@@ -125,19 +138,19 @@ def prepare(baseline, destination, case, profile="barrier", prior_result=None, n
     document["experiments"] = [copy.deepcopy(run)]
     document["experiments"][0]["name"] += "_stage_" + profile.replace("-", "_")
     configured = document["defaults"]["solver"]
-    configured["multiobjective_stage_options"] = {role: PROFILES[profile]}
+    configured["multiobjective_stage_options"] = changes
     configured["collect_solver_diagnostics"] = True
     receipt = {
-        "schema_version": "stagewise-root-protocol-v1",
+        "schema_version": "stagewise-root-protocol-v2",
         "status": "prepared_not_executed",
         "case": case,
         "protocol_source_sha256": protocol_source_sha256(),
         "profile": profile,
-        "target_stage": role,
+        "target_stages": list(changes),
         "baseline_manifest": str(baseline),
         "baseline_manifest_sha256": expected_manifest,
         "workbook_sha256": expected_workbook,
-        "stage_solver_changes": {role: PROFILES[profile]},
+        "stage_solver_changes": changes,
         "global_time_budget_seconds": 28800,
         "acceptance_gap_fraction": 0.1,
         "telemetry_enabled": True,
@@ -162,6 +175,20 @@ def prepare(baseline, destination, case, profile="barrier", prior_result=None, n
     return manifest
 
 
+def verify_licensed_junit(path):
+    """Require actual execution of all three miniature numerical parity tests."""
+    cases = list(ET.parse(path).getroot().iter("testcase"))
+    required = {
+        f"test_licensed_stagewise_parity[{role}]"
+        for role in ("emergency_capacity", "economic_cost", "all")
+    }
+    licensed = [case.get("name") for case in cases if case.get("name") in required]
+    if len(licensed) != 3 or set(licensed) != required:
+        raise ValueError("All three licensed parity tests must be collected exactly once.")
+    if any(case.find(tag) is not None for case in cases for tag in ("failure", "error", "skipped")):
+        raise ValueError("The licensed test gate rejects failures, errors and skipped tests.")
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -172,12 +199,18 @@ def main():
     parser.add_argument("--baseline-manifest", type=Path)
     parser.add_argument("--campaign-root", type=Path)
     parser.add_argument("--case", choices=CASES)
-    parser.add_argument("--profile", choices=PROFILES, default="barrier")
+    parser.add_argument("--profile", choices=PROFILES, default="all-barrier")
+    parser.add_argument("--require-profile", choices=PROFILES)
+    parser.add_argument("--check-licensed-junit", type=Path)
     parser.add_argument("--prior-result", type=Path)
     parser.add_argument("--diagnostic-note")
     args = parser.parse_args()
+    if args.check_licensed_junit:
+        verify_licensed_junit(args.check_licensed_junit)
+        print("SPRINT A LICENSED TEST GATE: ACCEPTED")
+        return
     if args.check_manifest:
-        verify_prepared(args.check_manifest)
+        verify_prepared(args.check_manifest, require_profile=args.require_profile)
         print("STAGEWISE INPUT CONTRACT: ACCEPTED")
         return
     if not (args.baseline_manifest and args.campaign_root and args.case):
@@ -194,21 +227,29 @@ def main():
     )
 
 
-def verify_prepared(manifest):
+def verify_prepared(manifest, require_profile=None):
     """Recheck scientific identity and reject accidental reuse of prior outputs."""
     manifest = Path(manifest).resolve()
     receipt = json.loads((manifest.parent / "stagewise_contract.json").read_text(encoding="utf-8"))
     population, index, role = CASES[receipt["case"]]
+    profile = receipt["profile"]
+    changes = stage_changes(profile, role)
+    if require_profile is not None and profile != require_profile:
+        raise ValueError("The launcher requires a different numerical profile.")
     baseline_hash, workbook_hash = BASELINES[population]
     baseline = Path(receipt["baseline_manifest"]).resolve()
     if (
-        receipt["schema_version"] != "stagewise-root-protocol-v1"
+        receipt["schema_version"] != "stagewise-root-protocol-v2"
         or receipt["protocol_source_sha256"] != protocol_source_sha256()
         or sha256(manifest) != receipt["manifest_sha256"]
         or sha256(baseline) != baseline_hash
         or receipt["baseline_manifest_sha256"] != baseline_hash
         or receipt["workbook_sha256"] != workbook_hash
-        or receipt["target_stage"] != role
+        or receipt["target_stages"] != list(changes)
+        or receipt["stage_solver_changes"] != changes
+        or receipt["global_time_budget_seconds"] != 28800
+        or receipt["acceptance_gap_fraction"] != 0.1
+        or receipt["telemetry_enabled"] is not True
     ):
         raise ValueError("Prepared campaign identity mismatch.")
     if manifest.parent.is_relative_to(baseline.parent):
@@ -217,21 +258,22 @@ def verify_prepared(manifest):
     selected = source["experiments"][index]
     if sha256(selected["workbook"]) != workbook_hash:
         raise ValueError("Prepared workbook checksum mismatch.")
-    profile = receipt["profile"]
     source["experiments"] = [selected]
     selected["name"] += "_stage_" + profile.replace("-", "_")
     source["output_dir"] = str(manifest.parent / "runs")
     source["defaults"]["solver"].update(
-        multiobjective_stage_options={role: PROFILES[profile]}, collect_solver_diagnostics=True
+        multiobjective_stage_options=changes, collect_solver_diagnostics=True
     )
     if yaml.safe_load(manifest.read_text(encoding="utf-8")) != source:
         raise ValueError("Prepared campaign differs from the controlled numerical contract.")
     if Path(source["output_dir"]).exists():
         raise ValueError("Output directory already exists; prepare a new campaign instead.")
-    if profile != "barrier":
+    if profile not in ("barrier", "all-barrier"):
         prior = receipt["prior_diagnostic"]
         if not prior["diagnostic_note"].strip() or sha256(prior["path"]) != prior["sha256"]:
             raise ValueError("Conditional diagnostic evidence changed.")
+    elif receipt["prior_diagnostic"] is not None:
+        raise ValueError("Unexpected conditional evidence for an unconditional profile.")
 
 
 if __name__ == "__main__":

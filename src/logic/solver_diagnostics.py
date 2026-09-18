@@ -18,12 +18,17 @@ PHASE = re.compile(r"Multi-objectives: optimize objective (\d+)\b")
 
 
 def validate_stage_options(options):
-    """Reject tolerance, budget, priority, service-pass and dual-only overrides."""
+    """Allow service overrides only in the exact, three-pass all-barrier profile."""
     if not isinstance(options, dict):
         raise ValueError("multiobjective_stage_options must be a mapping.")
+    all_barrier = options == {role: {"Method": 2} for role in ROLES}
     for role, settings in options.items():
-        if role not in ROLES[1:] or not isinstance(settings, dict) or not settings:
-            raise ValueError("Only capacity/economic stage option mappings are supported.")
+        if (
+            role not in (ROLES if all_barrier else ROLES[1:])
+            or not isinstance(settings, dict)
+            or not settings
+        ):
+            raise ValueError("Service overrides require the exact three-pass all-barrier profile.")
         for name, value in settings.items():
             if name not in ALLOWED or type(value) is not int or value not in ALLOWED[name]:
                 raise ValueError(f"Unsupported stage parameter: {name}={value!r}.")
