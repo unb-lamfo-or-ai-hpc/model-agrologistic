@@ -30,7 +30,7 @@ def inspect_runtime(import_module=importlib.import_module, package_version=versi
         "machine": platform.machine(),
         "user_site_disabled": bool(sys.flags.no_user_site),
         "optimization_executed": False,
-        "agrologistic_backend_status": "not_implemented",
+        "agrologistic_backend_status": "implemented_stochastic_qualification_pending",
         "large_instance_submission_allowed": False,
         "lp_backend": None,
         "lp_backend_verification": "pending_build_provenance_review",

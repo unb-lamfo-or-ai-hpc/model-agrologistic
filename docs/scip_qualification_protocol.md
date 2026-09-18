@@ -22,10 +22,12 @@ Python environment while any of these Gurobi jobs are queued or running.
 
 ## Immediate remaining Sprint A submissions
 
-The current all-barrier 400-hub direct-enabled job is **2105903**. The supplied
-status was RUNNING at 06:13:55, not a final optimization outcome.
-The remaining cases are `h400-warehouse` and `h300-warehouse`. They are independent
-experiments and may now be submitted before the first result is available.
+The all-barrier 400-hub direct-enabled job is **2105903**, with supplied status
+RUNNING at 06:45:39. Jobs **2106399** (400-warehouse) and **2106401**
+(300-warehouse) were also reported RUNNING. Their preceding test-only estimates
+2106398 and 2106400 are not additional submitted jobs. Both new submissions
+passed 87 licensed/focused tests and the input contract gate. No final
+optimization outcome has been reported. These experiments are independent.
 The scheduler controls concurrent resource allocation; each requests four CPUs
 and 192 GiB, with the existing 12-hour scheduler limit and 28,800-second global
 optimization budget. Do not submit another `h400-direct` job.
@@ -37,15 +39,101 @@ result from the running job is assumed by submitting the remaining cases.
 
 ## Status of SCIP implementation
 
-The current native `pyscipopt` dispatch explicitly raises
-`OptimizationBackendNotImplementedError`. The optional dependency in
-`pyproject.toml` is not an implemented agricultural logistics solver.
+The native `pyscipopt` dispatch now builds the stochastic extensive form and
+supports scalar penalties and sequential lexicographic objectives. Deterministic
+SCIP dispatch, EVPI/VSS, IIS export and Gurobi-specific options remain explicitly
+unsupported. Native implementation does not by itself qualify a 215-hub run.
+The runtime probe remains read-only and cannot certify mathematical parity.
 
-This first Sprint C increment supplies a qualification contract and a read-only
-runtime probe. It does **not** enable that dispatch, solve a production model,
-or qualify a 215-hub submission. `runtime_available` reports only that a SCIP
-model can be instantiated and its version/parameter defaults inspected. Missing
-LP-build provenance remains explicit; SoPlex is not inferred from package presence.
+Local qualification uses Python 3.13.15, PySCIPOpt 6.2.1, SCIP 10.0.2 and a
+native banner identifying SoPlex 8.0.2 on Windows. This does not establish the
+LP build on NPAD. The local Gurobi license is expired; licensed parity must be
+qualified separately on NPAD. Linux CI executes native SCIP analytical tests
+and archives the native build banner without treating that scope as parity.
+
+### Implemented equivalence ledger
+
+| Family | SCIP realization | Qualification |
+|---|---|---|
+| Shared investments | One set of candidate/expansion/bulkification variables | Probability-weighted analytical optimum; nine-scenario fixture |
+| Activation and exclusion | Shared algebraic constraints; native binary variables | Fixed/scalable candidates and bulkification tests |
+| Supply, inventory, demand, exports | Native linear rows on the frozen graph | Independent residual reconstruction, carry-over and export tests |
+| Direct and multi-hop routing | Selected OD/DC/DD/OC adjacency | Disabled/enabled direct-route regression |
+| Stock and reception slacks | Separate nonnegative recourse variables | 28/30/31-day dimensional tests |
+| Closed-candidate slacks | Native indicators: closed implies nonnegative slack <= 0 | Closed/open candidate tests; no artificial capacity Big-M |
+| Objective costs | Shared algebraic coefficient helpers, native SCIP expressions | Analytical components and independent cost reconstruction |
+| Priorities | Sequential solves with explicit inherited bounds | Global-budget/resource-stop tests and final-limit reconstruction |
+| Artifacts | Common experiment runner and completion receipt | Actual SCIP solve, export, independent validation and hash verification |
+
+No Gurobi model or environment is instantiated by the SCIP backend. Algebraic
+helpers remain in historically named modules; the independent validator does
+not reuse those helpers. This distinction avoids conflating shared mathematics
+with solver-backed execution.
+
+### Numerical and lifecycle contract
+
+For a minimization pass with incumbent U and lower bound L, the next objective
+inherits `max(U, L + abs(U)*target_gap, L + 1e-10) + priority_absolute_tolerance`.
+This reproduces the existing MIP priority-budget convention, not exact zero-drift
+lexicography. Bounds achieved by different solvers can produce different budgets.
+SCIP's native gap is retained alongside the common incumbent-denominator gap.
+Near-zero service uses an absolute certificate. An uncertified pass stops the
+sequence; economic optimization cannot be reported as completed merely because
+an incumbent exists. One wall-time budget covers all passes and transitions.
+
+The internal SCIP feasibility tolerance is `min(1e-9, priority_tolerance/100)`;
+the independent validator retains its existing tolerances. A direct-route
+analytical regression exposed an incorrect economic optimum with the default
+SCIP tolerance and near-zero priority rows. The stricter setting recovered the
+known optimum and is explicitly recorded, not presented as identical to Gurobi's
+internal tolerance. Numerical settings must accompany benchmark comparisons.
+`optimize()` remains the sequential SCIP driver; thread settings are ceilings,
+not proof of parallel search or a multithreaded LP implementation. Terminal
+transformed sizes and SCIP-owned memory are not peak RSS or a presolved root
+matrix. Those telemetry scopes must not be conflated.
+
+## NPAD: isolated analytical and licensed qualification
+
+Do not switch, pull or install packages in the active Sprint A checkout or venv.
+Use a fresh detached worktree and a separate venv. Run the following in a
+subshell; failure does not close the interactive terminal. `PR31_SHA` must be
+the full reviewed PR31 commit supplied with the handoff, not an estimate.
+
+```bash
+(
+  set -euo pipefail
+  cd /home/vrrcelestino/model-agrologistic
+  : "${PR31_SHA:?Set the full PR31 commit from the handoff}"
+  git fetch origin research/scip-qualification
+  test "$(git rev-parse origin/research/scip-qualification)" = "$PR31_SHA"
+  SCIP_ROOT="$(mktemp -d /home/vrrcelestino/agrologistic-scip-pr31-XXXXXX)"
+  export SCIP_CHECKOUT="$SCIP_ROOT/source"
+  git worktree add --detach "$SCIP_CHECKOUT" "$PR31_SHA"
+  /home/vrrcelestino/venv313/bin/python -m venv "$SCIP_ROOT/venv"
+  export SCIP_PYTHON="$SCIP_ROOT/venv/bin/python"
+  export PYTHONNOUSERSITE=1 PYTHONDONTWRITEBYTECODE=1
+  GUROBI_VERSION="$(/home/vrrcelestino/venv313/bin/python -c 'import importlib.metadata; print(importlib.metadata.version("gurobipy"))')"
+  "$SCIP_PYTHON" -m pip install -e "$SCIP_CHECKOUT[dev,scip]" \
+    "pyscipopt==6.2.1" "gurobipy==$GUROBI_VERSION"
+  export SCIP_SOURCE_COMMIT="$PR31_SHA"
+  export SCIP_REPORT_DIR="$SCIP_ROOT/qualification"
+  export GRB_LICENSE_FILE=/home/vrrcelestino/model-agrologistic/secrets/gurobi.lic
+  test -r "$GRB_LICENSE_FILE"
+  test "$(git -C "$SCIP_CHECKOUT" rev-parse HEAD)" = "$PR31_SHA"
+  test -z "$(git -C "$SCIP_CHECKOUT" status --porcelain --untracked-files=no)"
+  SCIP_JOB="$(sbatch --parsable --account=sxdsouza --export=ALL \
+    --chdir="$SCIP_CHECKOUT" --output="$SCIP_ROOT/qualification-%j.out" \
+    "$SCIP_CHECKOUT/scripts/run_scip_qualification.slurm")"
+  printf 'SCIP qualification job: %s\nRoot: %s\nReport: %s\n' \
+    "$SCIP_JOB" "$SCIP_ROOT" "$SCIP_REPORT_DIR/qualification_report.json"
+)
+```
+
+Return `qualification_report.json`, `native_build.log` and the pytest summary.
+Acceptance requires zero skipped tests, including the licensed parity check.
+The job requests only 8 GiB/20 minutes and never loads population workbooks or
+submits another job. A failed qualification must be diagnosed before any
+215-hub pilot. Keep the isolated worktree and environment for provenance.
 
 Do not install or upgrade PySCIPOpt in the active Gurobi environment. Use an
 isolated SCIP environment after dependency and LP-library identification, with

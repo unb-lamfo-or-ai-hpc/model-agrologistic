@@ -43,7 +43,7 @@ def test_available_runtime_does_not_qualify_backend():
     assert report["observed_parameter_defaults"]["lp/threads"] is None
     assert report["optimization_executed"] is False
     assert report["large_instance_submission_allowed"] is False
-    assert report["agrologistic_backend_status"] == "not_implemented"
+    assert report["agrologistic_backend_status"] == "implemented_stochastic_qualification_pending"
     assert report["lp_backend"] is None
     assert model.freed
 
