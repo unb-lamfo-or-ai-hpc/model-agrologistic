@@ -33,8 +33,12 @@ def prepared(inputs, monkeypatch):
     return plan
 
 
-def test_four_resource_only_cases(prepared):
-    assert memory.CASES == ((215, False), (215, True), (300, False), (300, True))
+def test_two_300_hub_resource_only_cases(prepared):
+    assert memory.CASES == ((300, False), (300, True))
+    plan = json.loads(prepared.read_text())
+    assert set(plan["inputs"]) == {"300"}
+    assert plan["baseline_jobs"] == ["2107114_1", "2107114_2"]
+    assert len(plan["cases"]) == 2
     for index, (population, direct) in enumerate(memory.CASES):
         folder, _, _ = memory.check(prepared, index)
         spec = load_experiment_manifest(folder / "campaign.yaml").experiments[0]
@@ -50,9 +54,9 @@ def test_four_resource_only_cases(prepared):
         assert not (folder / "runs").exists()
 
 
-@pytest.mark.parametrize("index", [-1, 4])
+@pytest.mark.parametrize("index", [-1, 2, 3, 4])
 def test_unreviewed_case_rejected(prepared, index):
-    with pytest.raises(ValueError, match="four"):
+    with pytest.raises(ValueError, match="two"):
         memory.check(prepared, index)
 
 
@@ -60,6 +64,8 @@ def test_unreviewed_case_rejected(prepared, index):
     ("scip_memory_limit_mb", 512000), ("max_concurrent_repeats", 4),
     ("baseline_jobs", []), ("partition", "intel-256"),
     ("implementation_identity", {}), ("tools", {}),
+    ("schema_version", "scip-memory-repeat-v1"),
+    ("baseline_jobs", ["2107034", "2107114"]),
 ])
 def test_changed_contract_rejected(prepared, field, value):
     data = json.loads(prepared.read_text())
@@ -85,7 +91,7 @@ def test_changed_workbook_rejected(prepared):
     item = json.loads(prepared.read_text())["inputs"]["300"]
     Path(item["path"]).write_bytes(b"changed")
     with pytest.raises(ValueError, match="workbook changed"):
-        memory.check(prepared, 2)
+        memory.check(prepared, 0)
 
 
 @pytest.mark.parametrize("node,partition,allocation,valid", [
@@ -104,7 +110,7 @@ def test_scheduler_resources(node, partition, allocation, valid):
             memory.validate_resources(node, partition, allocation)
 
 
-@pytest.mark.parametrize("index", range(4))
+@pytest.mark.parametrize("index", range(2))
 def test_preflight(prepared, index):
     _, _, digest = memory.check(prepared, index)
     population, direct = memory.CASES[index]
@@ -125,7 +131,7 @@ def test_native_scip_accepts_extended_parameter():
     model.freeProb()
 
 
-@pytest.mark.parametrize("state", ["RUNNING", "COMPLETED", "UNKNOWN"])
+@pytest.mark.parametrize("state", ["RUNNING", "COMPLETED", "FAILED", "UNKNOWN"])
 def test_bash_dependencies_all_memory_and_duplicate_guard(tmp_path, state):
     """Use fake Slurm commands; never submit to a real scheduler."""
     bash = "C:/Program Files/Git/bin/bash.exe" if sys.platform == "win32" else shutil.which("bash")
@@ -144,7 +150,8 @@ def test_bash_dependencies_all_memory_and_duplicate_guard(tmp_path, state):
     scripts = {
         "git": 'if [ "$1" = rev-parse ]; then echo frozen; fi\n',
         "python": 'exit 0\n',
-        "sacct": 'printf "%s|\\n" "$FAKE_STATE"\n',
+        "sacct": 'printf "%s " "$@" >> "$FAKE_QUERIES"\nprintf "\\n" >> "$FAKE_QUERIES"\n'
+                 'printf "%s|\\n" "$FAKE_STATE"\n',
         "sbatch": 'test -z "${SBATCH_QOS:-}"\n'
                   'printf "%s " "$@" >> "$FAKE_CALLS"\nprintf "\\n" >> "$FAKE_CALLS"\n'
                   'if [ "$1" = --parsable ]; then echo 901; fi\n',
@@ -157,7 +164,8 @@ def test_bash_dependencies_all_memory_and_duplicate_guard(tmp_path, state):
     calls = tmp_path / "calls.txt"
     env.update(SCIP_MEMORY_CHECKOUT=shell_path(tmp_path), SCIP_MEMORY_ROOT=shell_path(root),
                SCIP_MEMORY_SOURCE="frozen", SCIP_PYTHON=shell_path(fake / "python"),
-               FAKE_STATE=state, FAKE_CALLS=shell_path(calls), SBATCH_QOS="invalid-qos")
+               FAKE_STATE=state, FAKE_CALLS=shell_path(calls), SBATCH_QOS="invalid-qos",
+               FAKE_QUERIES=shell_path(tmp_path / "queries.txt"))
     source = Path(memory.__file__).parent / "submit_scip_memory_campaign.sh"
     command = [bash, "-c", 'export PATH="$1:/usr/bin:/bin:$PATH"; exec bash "$2"', "_",
                shell_path(fake), shell_path(source)]
@@ -169,8 +177,11 @@ def test_bash_dependencies_all_memory_and_duplicate_guard(tmp_path, state):
     text = calls.read_text()
     assert text.count("--parsable") == 1
     assert "--mem=0" in text and "--exclusive" in text
-    assert "--partition=intel-512" in text and "--array=0-3%2" in text
-    assert ("--dependency=afterany:2107034:2107114" in text) == (state == "RUNNING")
+    assert "--partition=intel-512" in text and "--array=0-1%2" in text
+    assert ("--dependency=afterany:2107114_1:2107114_2" in text) == (state == "RUNNING")
+    queries = (tmp_path / "queries.txt").read_text()
+    assert "2107034" not in queries and "2107114_0" not in queries
+    assert "-j 2107114_1 " in queries and "-j 2107114_2 " in queries
     assert "MEMORY_JOB=901" in (root / "submission.txt").read_text()
     again = subprocess.run(command, env=env, text=True, capture_output=True, timeout=60)
     assert again.returncode != 0

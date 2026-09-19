@@ -1,10 +1,16 @@
-# SCIP memory-sensitivity repeat
+# Selective 300-hub SCIP memory-sensitivity repeat
+
+This revision replaces the four-case repeat at commit `e5a2334`. Only the two
+unsuccessful 300-hub variants are resubmitted. The running 215-hub experiments
+are neither modified nor dependencies of these new jobs. Any independently
+accepted original-budget results remain valid evidence and need not be repeated.
+Do not submit both revisions for the same intended experiment.
 
 ## Research rationale
 
 The 131072 MB value was an experimental configuration of `limits/memory`, not an
-intrinsic maximum supported by SCIP. The 300-hub warehouse-only baseline stopped
-during the first service pass with `MEM_LIMIT`, without an incumbent. It therefore
+intrinsic maximum supported by SCIP. Both 300-hub baselines stopped
+during the first service pass with `MEM_LIMIT`, without an incumbent. Each therefore
 establishes a failure under that resource budget, not mathematical infeasibility
 or an unconditional scalability limit of SCIP. Increasing a Slurm allocation alone
 does not change this separately configured solver parameter.
@@ -20,8 +26,10 @@ The repeated experiment requests all allocatable memory on one `intel-512` node
 using `--exclusive --mem=0`. The supplied NPAD configuration reports
 `RealMemory=512000` MiB, equivalent to 500 GiB of scheduler-configured memory,
 not an application budget of 512 GiB. The new internal SCIP limit is **393216 MB**,
-three times the previous value. On a binary-unit interpretation this leaves
-approximately 116 GiB between that threshold and scheduler-configured memory.
+three times the previous value. The versioned
+[SCIP stopping check](https://github.com/scipopt/scip/blob/v10.0.2/src/scip/solve.c#L181-L182)
+multiplies this parameter by1048576 bytes:393216 corresponds to384 GiB, leaving
+116 GiB between that threshold and scheduler-configured memory.
 SCIP-accounted memory, process RSS, and scheduler memory are distinct measurements;
 this arithmetic is not a guarantee of safety or of usable physical memory.
 
@@ -35,7 +43,7 @@ In particular, `--mem=0` means all node memory in **Slurm**; setting
 
 | Factor | Original campaign | Memory repeat |
 | --- | --- | --- |
-| Populations | 215 and 300 warehouses | Identical frozen workbooks |
+| Populations | 215 and 300 warehouses | Only 300; identical frozen 300-hub workbook |
 | Route variants | Warehouse-only and direct-enabled | Both variants retained |
 | Scenarios and horizon | Nine scenarios, 60 periods | Unchanged |
 | Interhub network | Nearest 20% with audited connectivity repair | Unchanged |
@@ -59,20 +67,20 @@ environment. The preparation helper verifies the original pilot admission,
 qualification hashes, implementation identity, workbook hashes, and regenerated
 manifests. Existing jobs, their outputs, and their checkouts remain untouched.
 
-Four array elements are admitted:
+Two array elements are admitted under `scip-memory-repeat-v2`:
 
 | Array index | Warehouses | Direct origin-to-customer arcs |
 | --- | --- | --- |
-| 0 | 215 | Disabled |
-| 1 | 215 | Enabled |
-| 2 | 300 | Disabled |
-| 3 | 300 | Enabled |
+| 0 | 300 | Disabled |
+| 1 | 300 | Enabled |
 
 At most two repeated instances may run simultaneously. The submission helper checks
-accounting for baseline jobs `2107034` and `2107114`. Active baselines become
-`afterany` dependencies, so repeats start only after all original experiments
-terminate, whether successful or unsuccessful. Already terminal baselines require
-no dependency. Unknown or absent accounting states stop submission for review.
+accounting for the two baseline array elements `2107114_1` and `2107114_2` only.
+If either is still active, it becomes an `afterany` dependency; already terminal
+baselines require no dependency. Unknown or absent accounting states stop
+submission for review. Neither `2107034` nor `2107114_0` is queried or awaited.
+The repeat may therefore run concurrently with the original 215-hub jobs on
+other nodes, subject to scheduler admission and account resource limits.
 The helper does not cancel jobs. An inherited `SBATCH_QOS` is cleared; no explicit
 QoS is requested. A scheduler `--test-only` check precedes real submission, but
 does not guarantee start time or future resource availability.
@@ -110,7 +118,7 @@ terminal. They fetch a ref but do not switch or pull any running checkout.
   cd "$SCIP_MEMORY_CHECKOUT"
   "$SCIP_PYTHON" -m ruff check .
   "$SCIP_PYTHON" -m pytest tests/test_scip_memory_campaign.py tests/test_scip_pilot.py -q
-  export SCIP_MEMORY_ROOT="$REPO/data/results/hpc/scip-memory-$(date -u +%Y%m%dT%H%M%SZ)"
+  export SCIP_MEMORY_ROOT="$REPO/data/results/hpc/scip-h300-memory-$(date -u +%Y%m%dT%H%M%SZ)"
   "$SCIP_PYTHON" scripts/prepare_scip_memory_campaign.py \
     --campaign-root "$SCIP_MEMORY_ROOT" \
     --data-root "$REPO/data/processed" \
@@ -125,6 +133,10 @@ Return `memory_plan.json`, `submission.txt`, the scheduler accounting table,
 and each case's `audit` directory, `lexicographic_stages.csv`, native log,
 `independent_validation.json`, `run_summary.json`, and completion manifest.
 Preserve original unsuccessful runs alongside these resource-amended results.
+The per-case native log is `case-N/scip.log`. The audit products are
+`case-N/audit/nine_audit_manifest.json`, `nine_results.json`, and
+`nine_stage_gaps.json`; `N` is0 or1. The native memory limit and Slurm allocation
+must accompany both accepted and unsuccessful results in comparative tables.
 
 Acceptance still requires a valid incumbent, successful independent validation,
 service certification, and completion of all required lexicographic stages within

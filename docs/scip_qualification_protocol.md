@@ -361,8 +361,11 @@ performance.
 
 The [SCIP memory-sensitivity repeat](scip_memory_repeat.md) supersedes the plan to
 close the SCIP campaign immediately after the original jobs terminate. It admits
-four new 215/300-hub cases on full-memory `intel-512` allocations, with an internal
+two new 300-hub cases on full-memory `intel-512` allocations, with an internal
 SCIP limit of393216 MB and unchanged mathematical/time/gap settings. The original
 131072 MB threshold is a campaign parameter, not an intrinsic SCIP maximum.
-Baseline jobs remain untouched; the new array waits for their termination and
-uses at most two simultaneous nodes. The400-hub cases remain unsubmitted.
+Baseline jobs remain untouched; the new array checks only the termination of the
+two earlier300-hub attempts and uses at most two simultaneous nodes. Original
+215-hub jobs are neither repeated nor awaited; accepted results at their smaller
+budget remain valid. The400-hub cases remain unsubmitted. The revised two-case
+protocol supersedes the four-case preparation at `e5a2334`.

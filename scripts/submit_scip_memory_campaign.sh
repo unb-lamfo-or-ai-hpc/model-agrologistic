@@ -1,5 +1,5 @@
 #!/bin/bash
-# All baseline jobs must terminate before any repeated instance starts.
+# Only the two 300-hub baselines are dependencies; 215-hub jobs stay untouched.
 set -euo pipefail
 : "${SCIP_MEMORY_CHECKOUT:?Set the new detached checkout}"
 : "${SCIP_MEMORY_ROOT:?Set the new campaign root}"
@@ -9,7 +9,7 @@ cd "$SCIP_MEMORY_CHECKOUT"
 test "$(git rev-parse HEAD)" = "$SCIP_MEMORY_SOURCE"
 test -z "$(git status --porcelain --untracked-files=no)"
 export PYTHONNOUSERSITE=1 PYTHONDONTWRITEBYTECODE=1
-for index in 0 1 2 3; do
+for index in 0 1; do
   "$SCIP_PYTHON" scripts/prepare_scip_memory_campaign.py \
     --plan "$SCIP_MEMORY_ROOT/memory_plan.json" --index "$index"
 done
@@ -17,7 +17,7 @@ done
 # not remain in the controller; accounting must confirm its terminal status.
 dependencies=()
 mkdir "$SCIP_MEMORY_ROOT/.submission-check-claimed"
-for baseline_job in 2107034 2107114; do
+for baseline_job in 2107114_1 2107114_2; do
   states="$(sacct -X -n -P -j "$baseline_job" --format=State%40)"
   test -n "$states"
   printf '%s\n' "$states" > "$SCIP_MEMORY_ROOT/baseline-${baseline_job}-states.txt"
@@ -29,8 +29,8 @@ for baseline_job in 2107034 2107114; do
   fi
 done
 options=(--account=sxdsouza --partition=intel-512 --nodes=1 --ntasks=1
-  --cpus-per-task=4 --exclusive --mem=0 --time=12:00:00 --array=0-3%2
-  --job-name=scip-memory --export=ALL --chdir="$SCIP_MEMORY_CHECKOUT"
+  --cpus-per-task=4 --exclusive --mem=0 --time=12:00:00 --array=0-1%2
+  --job-name=scip-h300-mem --export=ALL --chdir="$SCIP_MEMORY_CHECKOUT"
   --output="$SCIP_MEMORY_ROOT/slurm-%A_%a.out")
 if [ "${#dependencies[@]}" -gt 0 ]; then
   dependency_text="$(IFS=:; printf '%s' "${dependencies[*]}")"

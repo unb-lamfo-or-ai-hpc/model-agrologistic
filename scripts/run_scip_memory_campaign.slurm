@@ -5,8 +5,8 @@ set -euo pipefail
 : "${SCIP_MEMORY_ROOT:?Set the new campaign root}"
 : "${SCIP_MEMORY_SOURCE:?Set its exact commit}"
 : "${SCIP_PYTHON:?Set the read-only qualified Python}"
-: "${SLURM_ARRAY_TASK_ID:?Submit the reviewed four-case array}"
-case "$SLURM_ARRAY_TASK_ID" in 0|1|2|3) ;; *) false ;; esac
+: "${SLURM_ARRAY_TASK_ID:?Submit the reviewed two-case 300-hub array}"
+case "$SLURM_ARRAY_TASK_ID" in 0|1) ;; *) false ;; esac
 test "${SLURM_JOB_NUM_NODES:-0}" -eq 1
 test "${SLURM_CPUS_PER_TASK:-0}" -ge 4
 cd "$SCIP_MEMORY_CHECKOUT"

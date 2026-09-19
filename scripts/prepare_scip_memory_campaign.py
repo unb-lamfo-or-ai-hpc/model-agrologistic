@@ -1,4 +1,4 @@
-"""Admit a four-case SCIP memory-sensitivity repeat without changing baseline runs."""
+"""Admit two 300-hub SCIP memory repeats without resubmitting 215-hub cases."""
 
 from __future__ import annotations
 
@@ -17,7 +17,10 @@ from scripts import prepare_scip_expansion as baseline  # noqa: E402
 from scripts.prepare_nine_scenario_campaign import campaign  # noqa: E402
 from src.logic.run_integrity import file_sha256, implementation_identity  # noqa: E402
 
-CASES = ((215, False), (215, True), (300, False), (300, True))
+CASES = ((300, False), (300, True))
+BASELINE_JOBS = ["2107114_1", "2107114_2"]
+SCHEMA = "scip-memory-repeat-v2"
+SCOPE = "repeat_300_both_route_variants;215_preserved;400_not_admitted"
 MEMORY_MB = 393216
 MIN_NODE_MEMORY_MIB = 500000
 TOOLS = (*baseline.TOOLS, "scripts/prepare_scip_memory_campaign.py",
@@ -65,9 +68,9 @@ def prepare(destination, data_root, reference):
     if ROOT.resolve() == (Path(evidence["qualification_directory"]).parent / "source").resolve():
         raise ValueError("Use a new detached source worktree.")
     inputs = {}
-    for population in (215, 300):
+    for population in (300,):
         workbook = (data_root / baseline.INPUT_PATHS[population]).resolve()
-        digest = evidence["workbook_sha256"] if population == 215 else baseline.FROZEN_HASHES[300]
+        digest = baseline.FROZEN_HASHES[population]
         if file_sha256(workbook) != digest:
             raise ValueError("Frozen workbook changed.")
         inputs[str(population)] = {"path": str(workbook), "sha256": digest}
@@ -83,13 +86,13 @@ def prepare(destination, data_root, reference):
         cases.append({"population": population, "direct": direct,
                       "manifest_sha256": file_sha256(manifest)})
     plan = {
-        "schema_version": "scip-memory-repeat-v1", "reference_manifest": str(reference),
+        "schema_version": SCHEMA, "reference_manifest": str(reference),
         "implementation_identity": implementation_identity(), "tools": tools_identity(),
         "qualification_sha256": evidence["qualification_report_sha256"],
         "inputs": inputs, "cases": cases, "scip_memory_limit_mb": MEMORY_MB,
         "scheduler_memory_request": "all_node_memory", "partition": "intel-512",
-        "max_concurrent_repeats": 2, "baseline_jobs": ["2107034", "2107114"],
-        "scope": "repeat_215_300_both_route_variants;400_not_admitted",
+        "max_concurrent_repeats": 2, "baseline_jobs": BASELINE_JOBS,
+        "scope": SCOPE,
     }
     path = destination / "memory_plan.json"
     path.write_text(json.dumps(plan, indent=2) + "\n", encoding="utf-8")
@@ -98,26 +101,27 @@ def prepare(destination, data_root, reference):
 
 def check(path, index):
     baseline.check_import_root()
-    if index not in range(4):
-        raise ValueError("Only the four 215/300-hub cases are admitted.")
+    if index not in range(len(CASES)):
+        raise ValueError("Only the two 300-hub cases are admitted.")
     plan = json.loads(path.read_text())
     evidence = baseline.reference_evidence(Path(plan["reference_manifest"]))
     if ROOT.resolve() == (Path(evidence["qualification_directory"]).parent / "source").resolve():
         raise ValueError("Use a new detached source worktree.")
     expected = {
-        "schema_version": "scip-memory-repeat-v1",
+        "schema_version": SCHEMA,
         "implementation_identity": implementation_identity(),
         "tools": tools_identity(), "qualification_sha256": evidence["qualification_report_sha256"],
         "scip_memory_limit_mb": MEMORY_MB, "scheduler_memory_request": "all_node_memory",
         "partition": "intel-512", "max_concurrent_repeats": 2,
-        "baseline_jobs": ["2107034", "2107114"],
-        "scope": "repeat_215_300_both_route_variants;400_not_admitted",
+        "baseline_jobs": BASELINE_JOBS,
+        "scope": SCOPE,
     }
-    if any(plan.get(k) != v for k, v in expected.items()) or len(plan["cases"]) != 4:
+    if (any(plan.get(k) != v for k, v in expected.items())
+            or len(plan["cases"]) != len(CASES) or set(plan["inputs"]) != {"300"}):
         raise ValueError("Memory campaign contract changed.")
     population, direct = CASES[index]
     item = plan["inputs"][str(population)]
-    digest = evidence["workbook_sha256"] if population == 215 else baseline.FROZEN_HASHES[300]
+    digest = baseline.FROZEN_HASHES[population]
     if item["sha256"] != digest or file_sha256(Path(item["path"])) != digest:
         raise ValueError("Frozen workbook changed.")
     folder = path.parent / f"case-{index}"
