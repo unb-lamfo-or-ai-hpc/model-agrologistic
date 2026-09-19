@@ -10,8 +10,8 @@ case "$SLURM_ARRAY_TASK_ID" in 0|1) ;; *) false ;; esac
 test "${SLURM_JOB_NUM_NODES:-0}" -eq 1
 test "${SLURM_CPUS_PER_TASK:-0}" -ge 4
 cd "$SCIP_MEMORY_CHECKOUT"
-test "$(git rev-parse HEAD)" = "$SCIP_MEMORY_SOURCE"
-test -z "$(git status --porcelain --untracked-files=no)"
+# Git HEAD/cleanliness are checked on the submission host. Compute nodes need
+# only Python: the contract check below rehashes sources, tools and inputs.
 export PYTHONNOUSERSITE=1 PYTHONDONTWRITEBYTECODE=1
 export AGROLOGISTIC_SOURCE_COMMIT="$SCIP_MEMORY_SOURCE"
 export OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1

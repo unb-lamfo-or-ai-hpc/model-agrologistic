@@ -67,6 +67,20 @@ environment. The preparation helper verifies the original pilot admission,
 qualification hashes, implementation identity, workbook hashes, and regenerated
 manifests. Existing jobs, their outputs, and their checkouts remain untouched.
 
+Git is required only on the submission host for the detached checkout and its
+HEAD/cleanliness check. The compute worker does not execute Git. It verifies the
+qualified numerical implementation, runtime versions, orchestration and solver/audit
+entry-point hashes, frozen inputs, and exact campaign contract using Python before
+preflight or optimization. The declared commit is exported for provenance; it is
+not substituted for the compute-side content checks.
+
+The first selective submission, array `2107697`, terminated before Python or SCIP
+started because Git was unavailable on the compute nodes. Both elements exited
+in less than the accounting display resolution. This is a launcher portability
+failure, not a memory or solver outcome. Preserve its campaign and logs, then use
+a new detached worktree, regenerated plan, and new output directory for the corrected
+worker. Do not requeue the old job or edit its hash-bound plan in place.
+
 Two array elements are admitted under `scip-memory-repeat-v2`:
 
 | Array index | Warehouses | Direct origin-to-customer arcs |

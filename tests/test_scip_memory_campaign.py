@@ -39,6 +39,7 @@ def test_two_300_hub_resource_only_cases(prepared):
     assert set(plan["inputs"]) == {"300"}
     assert plan["baseline_jobs"] == ["2107114_1", "2107114_2"]
     assert len(plan["cases"]) == 2
+    assert {"scripts/run_batch_hpc.py", "scripts/audit_nine_campaign.py"} <= set(plan["tools"])
     for index, (population, direct) in enumerate(memory.CASES):
         folder, _, _ = memory.check(prepared, index)
         spec = load_experiment_manifest(folder / "campaign.yaml").experiments[0]
@@ -186,3 +187,60 @@ def test_bash_dependencies_all_memory_and_duplicate_guard(tmp_path, state):
     again = subprocess.run(command, env=env, text=True, capture_output=True, timeout=60)
     assert again.returncode != 0
     assert calls.read_text() == text
+
+
+@pytest.mark.parametrize("reject_contract", [False, True])
+def test_compute_worker_without_git(tmp_path, reject_contract):
+    """Exercise the real worker with a failing Git executable and fake HPC tools."""
+    bash = "C:/Program Files/Git/bin/bash.exe" if sys.platform == "win32" else shutil.which("bash")
+    if not bash or not Path(bash).is_file():
+        pytest.skip("Bash unavailable")
+
+    def shell_path(path):
+        if sys.platform == "win32":
+            return f"/{path.drive[0].lower()}{path.as_posix()[2:]}"
+        return str(path)
+
+    fake = tmp_path / "bin"
+    fake.mkdir()
+    root = tmp_path / "campaign"
+    folder = root / "case-0"
+    folder.mkdir(parents=True)
+    scripts = {
+        "git": 'echo called > "$FAKE_GIT_CALLED"\nexit 127\n',
+        "python": 'printf "%s " "$@" >> "$FAKE_CALLS"\nprintf "\\n" >> "$FAKE_CALLS"\n'
+                  'if [ "$1" = - ]; then cat >/dev/null; fi\n'
+                  'if [ "$REJECT_CONTRACT" = 1 ] && '
+                  '[ "$1" = scripts/prepare_scip_memory_campaign.py ]; then exit 72; fi\n',
+        "scontrol": 'echo "NodeName=fake RealMemory=512000"\n',
+        "hostname": 'echo fake-compute-node\n',
+    }
+    for name, body in scripts.items():
+        path = fake / name
+        path.write_text("#!/bin/bash\nset -eu\n" + body, newline="\n")
+        path.chmod(0o755)
+    calls = tmp_path / "calls.txt"
+    git_marker = tmp_path / "git-called.txt"
+    env = dict(os.environ)
+    env.update(SCIP_MEMORY_CHECKOUT=shell_path(tmp_path), SCIP_MEMORY_ROOT=shell_path(root),
+               SCIP_MEMORY_SOURCE="frozen", SCIP_PYTHON=shell_path(fake / "python"),
+               SLURM_ARRAY_TASK_ID="0", SLURM_JOB_NUM_NODES="1", SLURM_CPUS_PER_TASK="4",
+               SLURM_JOB_ID="901", SLURMD_NODENAME="fake", SLURM_JOB_PARTITION="intel-512",
+               SLURM_MEM_PER_NODE="0", FAKE_CALLS=shell_path(calls),
+               FAKE_GIT_CALLED=shell_path(git_marker), REJECT_CONTRACT=str(int(reject_contract)))
+    source = Path(memory.__file__).parent / "run_scip_memory_campaign.slurm"
+    command = [bash, "-c", 'export PATH="$1:/usr/bin:/bin:$PATH"; exec bash "$2"', "_",
+               shell_path(fake), shell_path(source)]
+    run = subprocess.run(command, env=env, text=True, capture_output=True, timeout=60)
+    assert not git_marker.exists(), run.stdout + run.stderr
+    assert (run.returncode == 0) == (not reject_contract), run.stdout + run.stderr
+    text = calls.read_text()
+    if reject_contract:
+        assert "scripts/run_batch_hpc.py" not in text
+        assert not (folder / ".execution-claimed").exists()
+    else:
+        assert "--dry-run" in text and "--preflight" in text
+        assert text.count("scripts/run_batch_hpc.py") == 2
+        assert "scripts/audit_nine_campaign.py" in text
+        assert "solve_exit_code=0 audit_exit_code=0" in run.stdout
+        assert (folder / "scheduler_node.txt").exists()

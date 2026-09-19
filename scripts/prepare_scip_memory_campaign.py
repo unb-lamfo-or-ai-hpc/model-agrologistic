@@ -24,7 +24,8 @@ SCOPE = "repeat_300_both_route_variants;215_preserved;400_not_admitted"
 MEMORY_MB = 393216
 MIN_NODE_MEMORY_MIB = 500000
 TOOLS = (*baseline.TOOLS, "scripts/prepare_scip_memory_campaign.py",
-         "scripts/run_scip_memory_campaign.slurm", "scripts/submit_scip_memory_campaign.sh")
+         "scripts/run_scip_memory_campaign.slurm", "scripts/submit_scip_memory_campaign.sh",
+         "scripts/run_batch_hpc.py", "scripts/audit_nine_campaign.py")
 
 
 def tools_identity():
