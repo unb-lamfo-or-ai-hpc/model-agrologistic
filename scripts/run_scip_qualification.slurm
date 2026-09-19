@@ -2,7 +2,6 @@
 # Small analytical/parity tests only; no population campaign is submitted.
 #SBATCH --job-name=scip-pr31-check
 #SBATCH --partition=intel-256
-#SBATCH --qos=qos1
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=8G
 #SBATCH --time=00:20:00

@@ -20,22 +20,26 @@ The running Sprint A job must continue on the frozen source
 a separate branch and checkout. Do not update the active NPAD checkout or its
 Python environment while any of these Gurobi jobs are queued or running.
 
-## Immediate remaining Sprint A submissions
+## Sprint A terminal execution status
 
-The all-barrier 400-hub direct-enabled job is **2105903**, with supplied status
-RUNNING at 06:45:39. Jobs **2106399** (400-warehouse) and **2106401**
-(300-warehouse) were also reported RUNNING. Their preceding test-only estimates
-2106398 and 2106400 are not additional submitted jobs. Both new submissions
-passed 87 licensed/focused tests and the input contract gate. No final
-optimization outcome has been reported. These experiments are independent.
-The scheduler controls concurrent resource allocation; each requests four CPUs
-and 192 GiB, with the existing 12-hour scheduler limit and 28,800-second global
-optimization budget. Do not submit another `h400-direct` job.
+Operator-supplied accounting on 19 September 2026 reports the following frozen
+all-barrier executions. All three processes completed with exit code `0:0`;
+their numerical acceptance remains subject to the campaign audits.
 
-Use the existing `submit_sprint_a_barrier.sh` at the frozen commit, not a newer
-checkout. Run each helper once, preserve its submission receipt, and inspect
-existing receipts before retrying after an interrupted shell. No successful
-result from the running job is assumed by submitting the remaining cases.
+| Job | Configuration | Scheduler elapsed | Batch MaxRSS (K) |
+|---|---|---|---|
+| 2105903 | 400 hubs, direct enabled | 08:22:32 | 100906084 |
+| 2106399 | 400 hubs, warehouse only | 08:21:35 | 113176020 |
+| 2106401 | 300 hubs, warehouse only | 05:52:02 | 60936308 |
+
+Each requested four CPUs and 192 GiB, with a 12-hour scheduler limit and a
+28,800-second global optimization budget. Scheduler elapsed includes work
+outside optimization and is not the solve time. Do not resubmit these cases.
+For each campaign, review `audit/nine_audit_manifest.json`,
+`audit/nine_results.json` and `audit/nine_stage_gaps.json`. Preserve the per-run
+`solver_diagnostics.json`, `independent_validation.json` and
+`run_completion.json` for diagnostic and provenance checks. A completed process
+does not certify the three-stage hierarchy or the 10% gap target.
 
 ## Status of SCIP implementation
 
@@ -121,6 +125,7 @@ the full reviewed PR31 commit supplied with the handoff, not an estimate.
   test -r "$GRB_LICENSE_FILE"
   test "$(git -C "$SCIP_CHECKOUT" rev-parse HEAD)" = "$PR31_SHA"
   test -z "$(git -C "$SCIP_CHECKOUT" status --porcelain --untracked-files=no)"
+  unset SBATCH_QOS
   SCIP_JOB="$(sbatch --parsable --account=sxdsouza --export=ALL \
     --chdir="$SCIP_CHECKOUT" --output="$SCIP_ROOT/qualification-%j.out" \
     "$SCIP_CHECKOUT/scripts/run_scip_qualification.slurm")"
@@ -128,6 +133,22 @@ the full reviewed PR31 commit supplied with the handoff, not an estimate.
     "$SCIP_JOB" "$SCIP_ROOT" "$SCIP_REPORT_DIR/qualification_report.json"
 )
 ```
+
+The qualification worker deliberately contains no QoS directive. The explicit
+`qos1` submission was rejected by NPAD before a job was created; a QoS appearing
+in the cluster-wide inventory does not establish access for this association.
+Use the account's default QoS and clear inherited `SBATCH_QOS` in the submission
+subshell. This does not change the account or cluster configuration. The frozen
+Sprint A scripts and their historical scheduling settings remain unchanged.
+
+After this specific submission rejection, reuse the existing isolated source
+and venv rather than reinstalling packages. Fetch the corrected PR31 commit,
+verify tracked cleanliness in the isolated source, switch that detached source
+to the exact handoff SHA, re-export the worker variables and submit once with a
+new report directory. If multiple isolated checkouts exist, select the intended
+one explicitly; never silently select the most recent directory. Preserve the
+original Gurobi checkout and evidence. Save the returned job ID before retrying
+any subsequent failure.
 
 Return `qualification_report.json`, `native_build.log` and the pytest summary.
 Acceptance requires zero skipped tests, including the licensed parity check.
