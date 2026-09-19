@@ -54,7 +54,7 @@ def implementation_identity() -> dict:
         for path in sorted(root.glob("*.py"))
     }
     packages = {}
-    for name in ("gurobipy", "numpy", "pandas", "openpyxl"):
+    for name in ("gurobipy", "pyscipopt", "numpy", "pandas", "openpyxl"):
         try:
             packages[name] = version(name)
         except PackageNotFoundError:

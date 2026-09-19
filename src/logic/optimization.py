@@ -6,7 +6,7 @@ It dispatches the optimization run to the selected backend:
 
 - gurobipy: native Gurobi implementation;
 - pyomo: solver-neutral implementation;
-- pyscipopt: reserved native SCIP integration point.
+- pyscipopt: native stochastic SCIP implementation (qualification gated).
 
 The facade is responsible for:
 - validating ModelData before solving;
@@ -256,10 +256,9 @@ def solve_model(
         )
 
     if solver_config.backend == "pyscipopt":
-        raise OptimizationBackendNotImplementedError(
-            "The native PySCIPOpt backend is provisioned but not implemented. "
-            "Use the validated gurobipy backend for v0.2 evidence."
-        )
+        from src.logic.optimization_scip import solve_model_scip
+
+        return solve_model_scip(data, model_config, solver_config)
 
     raise ValueError(f"Unknown solver backend: {solver_config.backend!r}")
 
