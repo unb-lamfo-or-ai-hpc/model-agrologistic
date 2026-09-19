@@ -255,3 +255,94 @@ record. Freeze and verify the shareable artifacts before publication. The first
 package does not claim the 500--1000-hub frontier or completion of a Benders
 implementation. After collaborator review, decide whether to resume Sprint B
 with larger populations, additional algorithms or a dedicated Benders protocol.
+
+## Reviewed NPAD qualification and first population pilot
+
+NPAD job 2106964 completed on 19 September 2026 at source
+`42200df78c36e2fc2dd216ef46a4f7f84139c156`. The supplied qualification report
+records 42 tests, zero skips, accepted analytical and licensed parity, and an
+unchanged implementation identity. The native banner identifies SCIP 10.0.2,
+8-byte floating-point precision and **SoPlex 8.0.2** as the LP solver on Linux
+x86_64 with Python 3.13.15 and PySCIPOpt 6.2.1. This is not a Gurobi-backed LP
+comparison. The banner does not establish effective multicore LP execution.
+
+The runtime probe intentionally predates this review: its null LP-backend field
+and pending qualification text are not solver failures. Preserve both historical
+reports unchanged. The new `pilot_admission.json` is a separate, narrowly scoped
+decision after verification of all six hashed qualification artifacts and the
+current implementation/environment identity. Changes to the mathematical sources
+or dependencies invalidate reuse of that qualification.
+
+Only **one warehouse-only 215-hub, nine-scenario pilot** is admitted. The direct
+variant and larger populations await review of its output. This is conditional
+experimental admission, not advance certification of a large-instance result.
+
+| Resource or contract | Pilot setting |
+|---|---|
+| Input | Existing OSRM-authoritative 215-hub workbook; hash frozen at preparation |
+| Routing | Unchanged nearest-20% baseline plus audited strong interhub repair |
+| Optimization | Sequential service, capacity and economic passes; global 28,800 s |
+| Quality | Common incumbent-denominator gap <=10%; absolute service certificate |
+| Scheduler | intel-256, account sxdsouza, four CPUs, 192 GiB, 12 h; default QoS |
+| Native memory | `limits/memory=131072` MB of SCIP accounting, not process RSS |
+| Thread settings | Four-thread ceilings; sequential `optimize()`, not concurrent SCIP |
+| LP method | Native SoPlex defaults; no translation of Gurobi barrier parameters |
+| Preventive size | At most 16 million shared-formulation estimated variables |
+| Excluded analyses | EVPI/VSS and IIS; no automatic additional instances |
+
+SCIP warns that its reported memory can be lower than actual memory usage;
+the parameter is not a guarantee against Python or solver process OOM. Native
+indicator/transformation variables are not included in the shared-formulation
+estimate. Preserve scheduler RSS, pipeline RSS and terminal SCIP-owned memory
+as distinct measurements. See the official
+[SCIP parameter reference](https://scipopt.org/scip/doc/html/PARAMETERS.php) and
+[concurrent-solving documentation](https://www.scipopt.org/doc/html/CONCSCIP.php).
+Listing TinyCThread or setting `parallel/maxnthreads` does not mean that this
+sequential driver invokes concurrent optimization.
+
+After fetching the exact handoff commit and switching only the clean isolated
+checkout, run the following with its existing qualified Python. No dependency
+installation or OSRM materialization is required. Set `SCIP_SOURCE_COMMIT` to
+that exact commit, not the historical qualification commit.
+
+```bash
+(
+  set -euo pipefail
+  : "${SCIP_SOURCE_COMMIT:?Set the exact current PR31 handoff SHA}"
+  export SCIP_CHECKOUT=/home/vrrcelestino/agrologistic-scip-pr31-4N2wGy/source
+  export SCIP_PYTHON=/home/vrrcelestino/agrologistic-scip-pr31-4N2wGy/venv/bin/python
+  export PYTHONNOUSERSITE=1 PYTHONDONTWRITEBYTECODE=1
+  cd "$SCIP_CHECKOUT"
+  test "$(git rev-parse HEAD)" = "$SCIP_SOURCE_COMMIT"
+  test -z "$(git status --porcelain --untracked-files=no)"
+  "$SCIP_PYTHON" -m pytest tests/test_scip_pilot.py -q
+  PILOT_ROOT="/home/vrrcelestino/model-agrologistic/data/results/hpc/scip-h215-warehouse-$(date -u +%Y%m%dT%H%M%SZ)"
+  "$SCIP_PYTHON" scripts/prepare_scip_pilot.py \
+    --campaign-root "$PILOT_ROOT" \
+    --qualification-dir /home/vrrcelestino/agrologistic-scip-pr31-4N2wGy/qualification-20260919T121956Z \
+    --workbook /home/vrrcelestino/model-agrologistic/data/processed/policy_population_v020_osrm/warehouses_215/model_input.xlsx
+  export SCIP_MANIFEST="$PILOT_ROOT/campaign.yaml"
+  unset SBATCH_QOS
+  PILOT_JOB="$(sbatch --parsable --account=sxdsouza --export=ALL \
+    --chdir="$SCIP_CHECKOUT" --output="$PILOT_ROOT/slurm-%j.out" \
+    "$SCIP_CHECKOUT/scripts/run_scip_pilot.slurm")"
+  printf '%s\n' "$PILOT_JOB" > "$PILOT_ROOT/submission.txt"
+  printf 'SCIP pilot job: %s\nCampaign: %s\n' "$PILOT_JOB" "$PILOT_ROOT"
+)
+```
+
+The worker verifies qualification/input/source hashes, claims the new campaign
+directory atomically and performs preflight on the compute node before building
+the model. A claim is retained after failure: diagnose it and use a separately
+reviewed new campaign instead of deleting the marker or overwriting evidence.
+The mathematical size/population gate is enforced again after preflight. Ordinary
+solver exceptions are followed by an audit attempt; an external kill/OOM may
+prevent that final audit. Missing audit files therefore require the Slurm log.
+
+Return `pilot_admission.json`, `audit/nine_audit_manifest.json`,
+`audit/nine_results.json`, `audit/nine_stage_gaps.json` when available, and the
+scheduler status. Keep `scip.log` and the per-run `preflight.json`,
+`independent_validation.json`, `run_summary.json`, `lexicographic_stages.csv`
+and completion receipt for follow-up. A completed scheduler job does not certify
+the full hierarchy; early-stage feasible incumbents remain reportable negative
+outcomes. Do not submit 300/400 hubs or the second 215-hub variant automatically.
