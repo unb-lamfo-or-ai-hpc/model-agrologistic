@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import re
 import sys
 from pathlib import Path
 
@@ -22,10 +21,10 @@ BASELINE_JOBS = ["2107114_1", "2107114_2"]
 SCHEMA = "scip-memory-repeat-v2"
 SCOPE = "repeat_300_both_route_variants;215_preserved;400_not_admitted"
 MEMORY_MB = 393216
-MIN_NODE_MEMORY_MIB = 500000
 TOOLS = (*baseline.TOOLS, "scripts/prepare_scip_memory_campaign.py",
          "scripts/run_scip_memory_campaign.slurm", "scripts/submit_scip_memory_campaign.sh",
-         "scripts/run_batch_hpc.py", "scripts/audit_nine_campaign.py")
+         "scripts/run_batch_hpc.py", "scripts/audit_nine_campaign.py",
+         "scripts/validate_scip_memory_resources.py")
 
 
 def tools_identity():
@@ -52,15 +51,6 @@ def document(index, folder, workbook, qualification_hash):
         memory_comparison_scope="not an equal-memory comparison with the 192-GiB baseline",
     )
     return doc
-
-
-def validate_resources(node_text, partition, memory_per_node):
-    """Validate scheduler-reported capacity; this does not guarantee future RSS fit."""
-    match = re.search(r"\bRealMemory=(\d+)\b", node_text)
-    if (partition != "intel-512" or match is None
-            or int(match[1]) < MIN_NODE_MEMORY_MIB
-            or not (memory_per_node == 0 or memory_per_node >= MIN_NODE_MEMORY_MIB)):
-        raise ValueError("Require intel-512 with all-node memory and at least 500000 MiB.")
 
 
 def prepare(destination, data_root, reference):

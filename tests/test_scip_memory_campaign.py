@@ -12,6 +12,7 @@ import yaml
 
 from scripts import prepare_scip_memory_campaign as memory
 from scripts import prepare_scip_pilot as pilot
+from scripts import validate_scip_memory_resources as resources
 from src.logic.experiment_runner import load_experiment_manifest
 from src.logic.run_integrity import file_sha256
 from tests.test_scip_pilot import inputs as inputs
@@ -95,20 +96,53 @@ def test_changed_workbook_rejected(prepared):
         memory.check(prepared, 0)
 
 
-@pytest.mark.parametrize("node,partition,allocation,valid", [
-    ("RealMemory=512000", "intel-512", 0, True),
-    ("RealMemory=512000", "intel-512", 512000, True),
-    ("RealMemory=512000", "intel-512", 196608, False),
-    ("RealMemory=256000", "intel-256", 0, False),
-    ("RealMemory=256000", "intel-512", 0, False),
-    ("RealMemory=unknown", "intel-512", 0, False),
+JOB_RECORD = """JobId=2107702 ArrayJobId=2107702 ArrayTaskId=1
+   JobState=RUNNING Partition=intel-512 QOS=preempt
+   NodeList=r1i3n16 BatchHost=r1i3n16 NumNodes=1 NumCPUs=64 CPUs/Task=4
+   TRES=cpu=64,mem=500G,node=1,billing=64
+   MinMemoryNode=0 OverSubscribe=NO
+"""
+OTHER_JOB = JOB_RECORD.replace("JobId=2107702 ArrayJobId", "JobId=2107703 ArrayJobId").replace(
+    "ArrayTaskId=1", "ArrayTaskId=0").replace("r1i3n16", "r1i3n14")
+NODE_RECORD = "NodeName=r1i3n16 RealMemory=512000 AllocMem=512000 FreeMem=254360"
+
+
+def validate_allocation(job=JOB_RECORD, node=NODE_RECORD):
+    return resources.validate_resources(job, node, job_id="2107702", array_id="2107702",
+                                        task_id="1", node_name="r1i3n16")
+
+
+def test_actual_npad_array_record_selection():
+    for text in (JOB_RECORD, OTHER_JOB + JOB_RECORD, JOB_RECORD + OTHER_JOB):
+        result = validate_allocation(text)
+        assert result["allocated_memory_mib"] == 512000
+        assert result["nominal_headroom_mib"] == 118784
+        assert result["node"] == "r1i3n16"
+    assert validate_allocation(JOB_RECORD.replace("TRES=", "AllocTRES="))["status"] == "accepted"
+
+
+@pytest.mark.parametrize("old,new", [
+    ("mem=500G", "mem=192G"), ("mem=500G", "mem=unknown"),
+    ("mem=500G", "mem=500G,mem=500G"), ("TRES=", "ReqTRES="),
+    ("Partition=intel-512", "Partition=intel-256"), ("NumNodes=1", "NumNodes=2"),
+    ("CPUs/Task=4", "CPUs/Task=1"), ("OverSubscribe=NO", "OverSubscribe=YES"),
+    ("MinMemoryNode=0", "MinMemoryNode=196608"), ("JobState=RUNNING", "JobState=PENDING"),
+    ("NodeList=r1i3n16", "NodeList=r1i3n14"), ("ArrayTaskId=1", "ArrayTaskId=0"),
 ])
-def test_scheduler_resources(node, partition, allocation, valid):
-    if valid:
-        memory.validate_resources(node, partition, allocation)
-    else:
-        with pytest.raises(ValueError, match="Require"):
-            memory.validate_resources(node, partition, allocation)
+def test_bad_allocation_rejected(old, new):
+    with pytest.raises(ValueError):
+        validate_allocation(JOB_RECORD.replace(old, new))
+
+
+def test_ambiguous_or_missing_records_rejected():
+    for text in ("", OTHER_JOB, JOB_RECORD + JOB_RECORD,
+                 JOB_RECORD + " AllocTRES=cpu=64,mem=192G,node=1"):
+        with pytest.raises(ValueError):
+            validate_allocation(text)
+    for text in ("", NODE_RECORD + "\n" + NODE_RECORD,
+                 NODE_RECORD.replace("512000", "256000")):
+        with pytest.raises(ValueError):
+            validate_allocation(node=text)
 
 
 @pytest.mark.parametrize("index", range(2))
@@ -189,9 +223,10 @@ def test_bash_dependencies_all_memory_and_duplicate_guard(tmp_path, state):
     assert calls.read_text() == text
 
 
-@pytest.mark.parametrize("reject_contract", [False, True])
-def test_compute_worker_without_git(tmp_path, reject_contract):
-    """Exercise the real worker with a failing Git executable and fake HPC tools."""
+@pytest.mark.parametrize("reject_contract,bad_allocation", [(False, False), (True, False),
+                                                          (False, True)])
+def test_compute_worker_without_git(tmp_path, reject_contract, bad_allocation):
+    """Run real Bash AND resource-check Python; mock only scheduler and solver calls."""
     bash = "C:/Program Files/Git/bin/bash.exe" if sys.platform == "win32" else shutil.which("bash")
     if not bash or not Path(bash).is_file():
         pytest.skip("Bash unavailable")
@@ -204,15 +239,17 @@ def test_compute_worker_without_git(tmp_path, reject_contract):
     fake = tmp_path / "bin"
     fake.mkdir()
     root = tmp_path / "campaign"
-    folder = root / "case-0"
+    folder = root / "case-1"
     folder.mkdir(parents=True)
     scripts = {
         "git": 'echo called > "$FAKE_GIT_CALLED"\nexit 127\n',
         "python": 'printf "%s " "$@" >> "$FAKE_CALLS"\nprintf "\\n" >> "$FAKE_CALLS"\n'
-                  'if [ "$1" = - ]; then cat >/dev/null; fi\n'
+                  'if [ "$1" = scripts/validate_scip_memory_resources.py ]; then '
+                  'exec "$REAL_PYTHON" "$@"; fi\n'
                   'if [ "$REJECT_CONTRACT" = 1 ] && '
                   '[ "$1" = scripts/prepare_scip_memory_campaign.py ]; then exit 72; fi\n',
-        "scontrol": 'echo "NodeName=fake RealMemory=512000"\n',
+        "scontrol": 'if [ "$2" = job ]; then cat "$JOB_FIXTURE"; '
+                    'else cat "$NODE_FIXTURE"; fi\n',
         "hostname": 'echo fake-compute-node\n',
     }
     for name, body in scripts.items():
@@ -221,26 +258,41 @@ def test_compute_worker_without_git(tmp_path, reject_contract):
         path.chmod(0o755)
     calls = tmp_path / "calls.txt"
     git_marker = tmp_path / "git-called.txt"
+    job_fixture = tmp_path / "job.txt"
+    job_fixture.write_text(OTHER_JOB + JOB_RECORD.replace("mem=500G", "mem=192G")
+                           if bad_allocation else OTHER_JOB + JOB_RECORD)
+    node_fixture = tmp_path / "node.txt"
+    node_fixture.write_text(NODE_RECORD)
     env = dict(os.environ)
-    env.update(SCIP_MEMORY_CHECKOUT=shell_path(tmp_path), SCIP_MEMORY_ROOT=shell_path(root),
+    env.pop("SLURM_MEM_PER_NODE", None)
+    env.update(SCIP_MEMORY_CHECKOUT=shell_path(memory.ROOT), SCIP_MEMORY_ROOT=shell_path(root),
                SCIP_MEMORY_SOURCE="frozen", SCIP_PYTHON=shell_path(fake / "python"),
-               SLURM_ARRAY_TASK_ID="0", SLURM_JOB_NUM_NODES="1", SLURM_CPUS_PER_TASK="4",
-               SLURM_JOB_ID="901", SLURMD_NODENAME="fake", SLURM_JOB_PARTITION="intel-512",
-               SLURM_MEM_PER_NODE="0", FAKE_CALLS=shell_path(calls),
+               SLURM_ARRAY_TASK_ID="1", SLURM_ARRAY_JOB_ID="2107702",
+               SLURM_JOB_NUM_NODES="1", SLURM_CPUS_PER_TASK="4",
+               SLURM_JOB_ID="2107702", SLURMD_NODENAME="r1i3n16",
+               SLURM_JOB_PARTITION="intel-512", FAKE_CALLS=shell_path(calls),
+               REAL_PYTHON=shell_path(Path(sys.executable)),
+               JOB_FIXTURE=shell_path(job_fixture), NODE_FIXTURE=shell_path(node_fixture),
                FAKE_GIT_CALLED=shell_path(git_marker), REJECT_CONTRACT=str(int(reject_contract)))
     source = Path(memory.__file__).parent / "run_scip_memory_campaign.slurm"
     command = [bash, "-c", 'export PATH="$1:/usr/bin:/bin:$PATH"; exec bash "$2"', "_",
                shell_path(fake), shell_path(source)]
     run = subprocess.run(command, env=env, text=True, capture_output=True, timeout=60)
     assert not git_marker.exists(), run.stdout + run.stderr
-    assert (run.returncode == 0) == (not reject_contract), run.stdout + run.stderr
+    expected_success = not reject_contract and not bad_allocation
+    assert (run.returncode == 0) == expected_success, run.stdout + run.stderr
     text = calls.read_text()
-    if reject_contract:
+    if reject_contract or bad_allocation:
         assert "scripts/run_batch_hpc.py" not in text
-        assert not (folder / ".execution-claimed").exists()
+        assert (folder / ".execution-claimed").exists() == (not reject_contract)
+        assert not (folder / "scheduler_resource_audit.json").exists()
     else:
         assert "--dry-run" in text and "--preflight" in text
         assert text.count("scripts/run_batch_hpc.py") == 2
         assert "scripts/audit_nine_campaign.py" in text
         assert "solve_exit_code=0 audit_exit_code=0" in run.stdout
         assert (folder / "scheduler_node.txt").exists()
+        assert "memory_env=unset" in run.stdout
+        assert "SCIP FULL-NODE RESOURCE CONTRACT: ACCEPTED" in run.stdout
+        assert json.loads((folder / "scheduler_resource_audit.json").read_text())[
+            "allocated_memory_mib"] == 512000

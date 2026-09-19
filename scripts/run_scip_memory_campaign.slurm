@@ -22,18 +22,14 @@ MANIFEST="$CASE_DIR/campaign.yaml"
 mkdir "$CASE_DIR/.execution-claimed"
 scontrol show job "$SLURM_JOB_ID" > "$CASE_DIR/scheduler_job.txt"
 scontrol show node "${SLURMD_NODENAME:?Missing compute node name}" -o > "$CASE_DIR/scheduler_node.txt"
-"$SCIP_PYTHON" - "$CASE_DIR/scheduler_node.txt" <<'PY'
-import os
-import sys
-from pathlib import Path
-from scripts.prepare_scip_memory_campaign import validate_resources
-validate_resources(Path(sys.argv[1]).read_text(), os.environ['SLURM_JOB_PARTITION'],
-                   int(os.environ['SLURM_MEM_PER_NODE']))
-print('SCIP FULL-NODE RESOURCE CONTRACT: ACCEPTED')
-PY
-printf 'job=%s index=%s source=%s host=%s requested_cpus=%s memory_mib=%s scip_limit_mb=393216\n' \
+"$SCIP_PYTHON" scripts/validate_scip_memory_resources.py \
+  --job-file "$CASE_DIR/scheduler_job.txt" --node-file "$CASE_DIR/scheduler_node.txt" \
+  --job-id "$SLURM_JOB_ID" --array-id "${SLURM_ARRAY_JOB_ID:?Missing array job ID}" \
+  --task-id "$SLURM_ARRAY_TASK_ID" --node-name "$SLURMD_NODENAME" \
+  --output "$CASE_DIR/scheduler_resource_audit.json"
+printf 'job=%s index=%s source=%s host=%s requested_cpus=%s memory_env=%s scip_limit_mb=393216\n' \
   "$SLURM_JOB_ID" "$SLURM_ARRAY_TASK_ID" "$SCIP_MEMORY_SOURCE" \
-  "$(hostname)" "$SLURM_CPUS_PER_TASK" "$SLURM_MEM_PER_NODE"
+  "$(hostname)" "$SLURM_CPUS_PER_TASK" "${SLURM_MEM_PER_NODE:-unset}"
 "$SCIP_PYTHON" scripts/run_batch_hpc.py "$MANIFEST" --index 0 --dry-run
 "$SCIP_PYTHON" scripts/prepare_scip_memory_campaign.py \
   --plan "$PLAN" --index "$SLURM_ARRAY_TASK_ID" --preflight

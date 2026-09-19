@@ -61,6 +61,31 @@ is introduced. The 400-hub inputs remain preflight-only and are not admitted her
 
 ## Isolation and execution
 
+### Allocation-record correction after array 2107702
+
+Array `2107702` stopped before preflight because `SLURM_MEM_PER_NODE` was absent
+under the observed NPAD all-memory allocation. Its captured Slurm 22.05.11 job
+records nevertheless confirm `TRES=cpu=64,mem=500G,node=1,billing=64`,
+`MinMemoryNode=0`, and `OverSubscribe=NO`. This is a second launcher defect,
+not a solver memory-limit result. No model or solver parameter is changed to
+correct it. Preserve both failed launch campaigns and create a fresh retry.
+
+The corrected worker reads the captured job allocation rather than requiring
+that environment variable. It selects exactly one record matching the concrete
+job ID, array ID, and task ID, then verifies the node, partition, exclusive
+single-node allocation, requested CPUs and allocated memory. This matters because
+the case-1 controller response contained both array elements. Node capacity alone
+is insufficient evidence of job allocation. Missing, conflicting, insufficient
+or ambiguous records stop execution before preflight or optimization.
+
+The new `case-N/scheduler_resource_audit.json` records allocated memory in MiB,
+the separate SCIP limit, nominal headroom, CPU allocation, and effective QoS.
+The worker logs an absent memory environment variable as `unset`; it never treats
+absence as evidence of an all-memory allocation. Resource regressions execute
+the real Python validator through the real Bash worker with no Git, no memory
+environment variable, and multiple job records. Slurm and expensive solve calls
+are simulated in these tests; they do not certify a new NPAD solver run.
+
 Use a new detached worktree at the exact reviewed commit and a new output directory.
 Reuse the qualified Python executable without installing packages or modifying its
 environment. The preparation helper verifies the original pilot admission,
@@ -143,7 +168,8 @@ terminal. They fetch a ref but do not switch or pull any running checkout.
 
 ## Evidence and acceptance
 
-Return `memory_plan.json`, `submission.txt`, the scheduler accounting table,
+Return `memory_plan.json`, `submission.txt`, `case-N/scheduler_resource_audit.json`,
+the scheduler accounting table,
 and each case's `audit` directory, `lexicographic_stages.csv`, native log,
 `independent_validation.json`, `run_summary.json`, and completion manifest.
 Preserve original unsuccessful runs alongside these resource-amended results.
