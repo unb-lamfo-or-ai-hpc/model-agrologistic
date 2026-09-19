@@ -346,3 +346,13 @@ scheduler status. Keep `scip.log` and the per-run `preflight.json`,
 and completion receipt for follow-up. A completed scheduler job does not certify
 the full hierarchy; early-stage feasible incumbents remain reportable negative
 outcomes. Do not submit 300/400 hubs or the second 215-hub variant automatically.
+
+### Subsequent bounded expansion
+
+The separately authorized [isolated expansion protocol](scip_expansion_protocol.md)
+prepares the direct-enabled215-hub case and both300/400-hub variants in a new
+worktree. It admits only the first three solves, with two new solves at most in
+parallel;400-hub cases remain preflight-only. The running pilot and this original
+single-case admission remain unchanged. This explicit resource experiment does
+not imply that the original pilot has completed or certified population-scale
+performance.
