@@ -356,3 +356,13 @@ parallel;400-hub cases remain preflight-only. The running pilot and this origina
 single-case admission remain unchanged. This explicit resource experiment does
 not imply that the original pilot has completed or certified population-scale
 performance.
+
+### Resource-amended repeat after the first memory stop
+
+The [SCIP memory-sensitivity repeat](scip_memory_repeat.md) supersedes the plan to
+close the SCIP campaign immediately after the original jobs terminate. It admits
+four new 215/300-hub cases on full-memory `intel-512` allocations, with an internal
+SCIP limit of393216 MB and unchanged mathematical/time/gap settings. The original
+131072 MB threshold is a campaign parameter, not an intrinsic SCIP maximum.
+Baseline jobs remain untouched; the new array waits for their termination and
+uses at most two simultaneous nodes. The400-hub cases remain unsubmitted.
