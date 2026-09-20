@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from collections.abc import Callable
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from math import ceil
 
 from src.logic.model_config import ModelConfig
@@ -27,7 +27,7 @@ class SelectedRoutes:
 def route_policy_signature(config: ModelConfig) -> dict:
     """Identify graph semantics, excluding scenario projection and solver limits."""
 
-    return {
+    signature = {
         name: getattr(config, name)
         for name in (
             "route_filter_strategy", "pareto_fraction", "route_top_k",
@@ -35,6 +35,9 @@ def route_policy_signature(config: ModelConfig) -> dict:
             "use_warehouse_transshipment",
         )
     }
+    if config.interhub_strong_connectivity:
+        signature["interhub_strong_connectivity"] = "rooted_trees_v1"
+    return signature
 
 
 def select_routes(data: ModelData, config: ModelConfig) -> SelectedRoutes:
@@ -58,6 +61,17 @@ def select_routes(data: ModelData, config: ModelConfig) -> SelectedRoutes:
             name: {tuple(route) for route in records}
             for name, records in frozen.items()
         })
+
+    if config.interhub_strong_connectivity:
+        from src.logic.interhub_connectivity import repair_interhub
+
+        if (config.mode != "sto" or len(data.scenarios) != 9
+                or config.route_filter_strategy != "connectivity_preserving_pareto"
+                or not config.use_warehouse_transshipment):
+            raise ValueError("Strong interhub repair requires the nine-scenario policy campaign.")
+        return repair_interhub(
+            data, select_routes(data, replace(config, interhub_strong_connectivity=False))
+        )
 
     if config.route_filter_strategy == "thesis_pareto":
         return _select_thesis_pareto_routes(data, config)
@@ -273,4 +287,3 @@ def _nearest_per_group[Route: (RouteOD, RouteDC, RouteDD, RouteOC)](
         min(candidates, key=lambda route: (distance(route), route))
         for candidates in grouped.values()
     }
-
