@@ -1,0 +1,17 @@
+{
+  "schema_version": "manuscript-comparison-v1",
+  "attempt_count": 13,
+  "quality_certified_count": 4,
+  "scip_incumbent_count": 0,
+  "sources": {
+    "comparison_cases.json": "2505039cc207bc405a52b85c8515b56d5d20c3ebcc7a7748d9e593639aab969e",
+    "comparison_stages.json": "45e160683ae3fcbf058d75856b6b5eb3b1545395de3440a38bde6ae3c2e237bb",
+    "runtime_memory_comparison.png": "8988c9f7eaf9a0462f28a83c90860f40574e8dda25bef64717fd63d221be4e13"
+  },
+  "generated": {
+    "comparison_results.qmd": "10ee2b50ea3dfe9be939587478c5b2c05d69e0f203e19118980b7c692aec9da2",
+    "figures/solver-comparison.png": "8988c9f7eaf9a0462f28a83c90860f40574e8dda25bef64717fd63d221be4e13",
+    "figures/pipeline.png": "4db8898e347bdcd90d1847eb31080b49de4f690e9bc8cfd5a3ccf9cf654f6359"
+  },
+  "scope": "frozen exported records; no new optimization or full solution revalidation"
+}

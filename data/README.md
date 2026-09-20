@@ -19,7 +19,7 @@ through normalization, scenario construction and road-distance materialization.
 | [templates](templates/README.md) | Canonical input workbook | Version controlled; preserve baseline |
 | `raw/` | Acquired source assets and registry copies | Local, ignored; verify source rights and hashes |
 | `processed/` | Normalized instances and OSRM solver workbooks | Generated, ignored; retain transformation audits |
-| `results/` | Runs, validation receipts and presentation outputs | Generated, ignored; archive accepted evidence |
+| `results/` | Runs, validation receipts and presentation outputs | Generated, ignored; archive successful and unsuccessful evidence |
 | `osrm/` | Optional local routing artifacts | Ignored; use approved storage and quota limits |
 
 Acquisition does not prove equivalence with a published generated instance.
@@ -41,3 +41,16 @@ or a guarantee that every possible route will be allowed by the MILP.
 Use [repository hygiene](../docs/repository_hygiene.md) for reversible quarantine.
 Do not delete source data, accepted releases, active-run outputs or checkpoints
 needed by the selected pipeline. Compressed files still consume storage quota.
+
+The [final comparison evidence](../docs/evidence/sprint_c_final_20260920/comparison_summary.md)
+is a curated exported-record collection, not a replacement for source workbooks
+or full solution archives. Source hashes, output hashes and run identities have
+different roles; a matching reported workbook hash does not verify absent bytes.
+The [artifact dictionary](../docs/artifact_dictionary.md) specifies these boundaries.
+
+Keep new intermediate material in named project-owned subdirectories. Existing
+virtual environments remain in place. Any later home-directory consolidation
+starts with a read-only inventory and active-reference check. Failed solver
+attempts remain scientific evidence; obsolete launch copies may be compressed
+only after their provenance and replacement are identified. No automatic move,
+deletion, environment relocation or Zenodo publication is implied by this policy.

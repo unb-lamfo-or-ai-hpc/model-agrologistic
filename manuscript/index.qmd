@@ -1,7 +1,7 @@
 ---
 title: "HPC-aware optimization of grain-storage networks under uncertainty"
 subtitle: "A reproducible computational framework with explicit model and validation contracts"
-date: 2026-09-13
+date: 2026-09-20
 abstract: >-
   Grain-storage network optimization couples discrete infrastructure decisions
   with product, period and scenario-dependent flows, creating substantial data,
@@ -13,15 +13,17 @@ abstract: >-
   dimensionally explicit feasibility slacks and independent solution validation.
   Separate data-reading, model-construction, optimization and post-optimality
   measurements prevent solver performance from being conflated with workflow cost.
-  Road data have been materialized for 215 and 500 warehouses; the selected
-  215-warehouse nine-scenario models contain approximately 14 million variables.
-  Nine of ten reference executions satisfied the validation protocol. The final
-  warehouse-only nine-scenario trial achieved zero domestic shortage but reached
-  the 14,400-second optimization limit with a 100% capacity-pass gap; the
-  economic pass was not executed. The contribution concerns auditable
-  computational experimentation, not a new distributed MILP algorithm. Exact
-  historical numerical replication, measured parallel speedup and a complete
-  scalability frontier are not established.
+  A nine-scenario experiment compares seven Gurobi and six SCIP/SoPlex attempts
+  with 215--400 warehouses, a nominal 28,800-second optimization budget and a
+  10% stage-gap target. Gurobi completed the hierarchy with independently
+  validated decisions at 215 and 300 warehouses; the accepted 300-warehouse
+  runs attained economic gaps of 0.0831% and 0.0677%, without and with direct
+  arcs, respectively. At 400 warehouses, valid incumbents remained uncertified
+  within the budget. SCIP produced no incumbent at 215 or 300 warehouses;
+  enlarged-memory repeats replaced early memory stops with time-limit outcomes.
+  These observations establish a resource-qualified computational baseline
+  for the revised planning model, rather than a hardware-independent solver
+  ranking or a universal maximum network size.
 keywords:
   - grain storage
   - facility location
@@ -63,10 +65,11 @@ decomposition, data preparation and distributed execution [@shastri2011;
 The mathematical and decision-support starting point is the doctoral thesis
 of Artur Guerra Rosa, *Modelagem matemática e sistemas de apoio à decisão para
 a logística de alocação e armazenagem de grãos no Brasil* [@rosa2026thesis].
-We credit that work for the grain-allocation and storage-planning foundation;
-the present study does not introduce the underlying application model as new.
-Its bounded reconstruction is distinguished from policy extensions with separate
-slacks, service priorities and expanded candidate data. The published review
+The present model is inspired by that grain-allocation and storage-planning
+foundation and revises its feasibility relaxation, decision priorities and
+network construction for resource-bounded HPC experiments. A bounded
+thesis-method reconstruction is distinguished from the extended policy model
+with separate slacks, service priorities and expanded candidate data. The published review
 @rosa2025 and the doctoral thesis are distinct contributions and are cited
 separately.
 
@@ -255,7 +258,7 @@ internal algorithms.
 
 | Computational layer | Published precedent | Present implementation and evidence boundary |
 |:--|:--|:--|
-| Agricultural MILP solution strategy | @shastri2011 | Extensive-form Gurobi baseline; decomposition is future work |
+| Agricultural MILP solution strategy | @shastri2011 | Native Gurobi and SCIP extensive forms; decomposition is future work |
 | Distributed agricultural simulation | @knapen2025 | Slurm experiment scheduling, not a distributed scenario solver |
 | Spatial data preparation | @zhao2012 | Versioned OSRM materialization and pair-cache reuse; no matched speedup benchmark |
 | Shared-memory profiling | @silva2025pascal | Separate workflow timings; controlled thread-scaling study remains open |
@@ -267,7 +270,7 @@ the present instances. {#tbl-computational-literature}
 
 ## Research gap and contribution
 
-The gap addressed here is operational: connecting an agricultural investment
+The gap addressed here concerns connecting an agricultural investment
 formulation to a reproducible, resource-bounded experiment whose returned
 solution can be checked independently. The cited literature establishes that
 agricultural optimization, HPC, decomposition and profiling are not new. We do
@@ -751,8 +754,9 @@ instance, and an expanded canonical workbook. Duplicate-key normalization
 preserves material totals; candidate translation distinguishes registry
 placeholders from genuine investment costs. The policy reference contains 215
 warehouses, comprising 146 existing facilities and 69 candidates. A nested
-500-warehouse input was also materialized, but that fact is **not evidence of
-a successfully optimized 500-warehouse instance**.
+sequence contains 300, 400 and 500 warehouses, with 146 existing facilities
+preserved in each population. Optimization was evaluated at 215, 300 and 400;
+materialization at 500 is not evidence of an optimized 500-warehouse instance.
 
 OSRM v6.0.0, the driving profile, MLD preprocessing and the dated
 `brazil-260901` extract define the road-distance authority. Distances are
@@ -762,7 +766,7 @@ route, which is not necessarily the shortest-distance road path. Ordered
 coordinate pairs, dataset/profile identity and query policy identify cached
 entries. Routing failures do not silently become straight-line distances.
 Only declared no-route or excessive-snap cases admit audited Haversine fallback.
-The two materialized policy populations were reported to require no fallback.
+The materialized 215, 300, 400 and 500 populations required no fallback.
 
 The historical grouped rule retains the nearest ceiling 20 percent of eligible
 edges per sending-node/product group. It is a sparsification rule, not a proof
@@ -776,6 +780,33 @@ The present OSM snapshot and the unreconstructed forecasting path differ from
 the thesis inputs. Accordingly, the correct claim is a bounded **thesis-method
 comparison with separate slacks**, followed by a policy extension. Exact
 replication of published thesis cost tables is not an acceptance criterion.
+
+## Multi-hop interwarehouse connectivity and computational pipeline
+
+For each sending warehouse and product, the baseline retains the nearest
+$\lceil0.2(|W|-1)\rceil$ eligible directed interwarehouse arcs. The algorithm
+then audits strong connectivity and, where necessary, adds explicitly recorded
+eligible repair edges. The final retained fraction includes both rounding and
+repairs. Multi-hop paths need not be direct edges, and a strongly connected
+candidate graph does not guarantee that the subset of opened warehouses has
+sufficient capacity. Both distinctions are checked separately from road routing.
+
+The retained fractions in the tested networks were 20.093458%, 20.066890% and
+20.050125% for 215, 300 and 400 warehouses, respectively, for each product.
+The recorded repair counts were zero. The excess over 20% therefore reflects
+integer rounding rather than undocumented additional routes. The connectivity
+audit, component membership, repair-edge list and path summary preserve the
+network-construction evidence.
+
+![Computational pipeline. Input preparation and routing precede the solver; solution validation and reporting follow it. The current experiment contains no trained prediction or solver-guidance module.](figures/pipeline.png){#fig-pipeline}
+
+The phases in @fig-pipeline produce, respectively, source/population manifests;
+OSRM workbooks, cache and provenance audits; scenario, size and connectivity
+reports; native logs and stage bounds; independent constraint and cost checks;
+and versioned tables and figures. An immutable experiment definition links the
+phases. Scenario construction is an experimental input transformation, not
+offline machine-learning training. Predictive accuracy, forecast calibration
+and learned solver guidance are outside the evaluated pipeline.
 
 # Materials and methods: experimental and validation protocol
 
@@ -796,12 +827,40 @@ defined in separate versioned manifests; their design is not an empirical
 probability forecast. Three versus nine scenarios therefore compares specified
 experimental distributions, not a statistical convergence guarantee.
 
-Gurobi is the reference backend. SCIP is a reserved extension, not an implemented
-alternative in this study. Selected nine-scenario retries permit 14,400 seconds
-of optimization. The objective is to establish a bounded functional
-demonstration, not a definitive complexity threshold. Larger warehouse
-populations, a complete 15/20/25-percent sensitivity campaign and solver
-comparisons are outside the current critical path.
+The initial references provide a historical validation baseline. The subsequent
+nine-scenario experiment evaluates native Gurobi and SCIP/SoPlex implementations
+under a nominal 28,800-second global optimization budget and a 10% relative-gap
+target for the capacity and economic passes. The service target uses an absolute
+zero-within-tolerance certificate; a relative gap at a zero objective is not
+informative. All three priorities must finish, and an independent incumbent
+validation must pass, before an attempt is classified as quality-certified.
+
+The comparison contains seven Gurobi attempts at 215, 300 and 400 warehouses
+and six SCIP attempts at 215 and 300. Each population has warehouse-only and
+direct-enabled treatments. A separately identified Gurobi warehouse-300
+all-barrier repeat and two SCIP enlarged-memory repeats are retained alongside
+their predecessors. These are treatment attempts, not statistical replicates.
+The 400-warehouse SCIP cases reached input preflight only and are excluded from
+the solve denominator. No 500-warehouse optimization is reported.
+
+The nine scenarios are the Cartesian product of three supply and three demand
+levels, with two products and 60 periods. First-stage investment decisions
+are shared. Network settings, the 30-day capacity convention and scenario
+summaries were reconciled between solver records. Native SCIP support covers
+the stochastic hierarchy; deterministic SCIP, SCIP EVPI/VSS and SCIP IIS are
+not evaluated. Small analytical and licensed parity tests establish a separate
+software-qualification layer, not a guarantee of large-instance convergence.
+
+Gurobi uses its hierarchical objectives and pass-specific environments.
+The historical automatic profile leaves the root method at its default;
+the all-barrier profile explicitly selects barrier for all priorities.
+SCIP/SoPlex executes sequential objectives with explicit inherited-priority
+constraints and a shared remaining-time budget. The recorded build does not
+implement the Gurobi all-barrier profile. Both backends report native and
+common bound conventions rather than assuming identically named gaps have
+identical definitions. Relative MIP tolerance also enters Gurobi's inherited
+base value: zero explicit objective-relative tolerance alone does not imply
+that a later pass cannot degrade the previous incumbent.
 
 Validation has four levels: mathematical/data contracts; software and licensed
 analytical tests; independent solution validation; and the selected HPC
@@ -846,9 +905,21 @@ under Slurm. The official infrastructure description lists Intel nodes with
 two 16-core Xeon E5-2698 v3 processors at 2.3 GHz, DDR4 memory and InfiniBand
 interconnects; the Intel partitions distinguish 128, 256 and 512 GB node-memory
 classes [@npad2026]. Node specifications are distinct from the resources
-allocated to an individual job. The selected nine-scenario retries requested
-16 CPUs and 96 GiB per job in the `intel-256` partition. Gurobi optimization
-used CPUs; no GPU acceleration is claimed.
+allocated to an individual job. The later comparison configured four solver
+threads and used CPU execution; no GPU acceleration is claimed. Gurobi 13.0.3
+ran in the 256 GB node class with 192 GiB requested from Slurm and a 128 GB
+internal soft-memory setting. Native SCIP 10.0.2 with SoPlex 8.0.2 and
+PySCIPOpt 6.2.1 used a 131072 MB internal limit initially. Its enlarged-memory
+300-warehouse repeats used 393216 MB and exclusive 512 GB-class nodes,
+with 512000 MiB (500 GiB) reported scheduler allocation. These configured
+internal limits are not process RSS ceilings or intrinsic solver maxima.
+
+Scheduler accounting assigned 24 CPUs to the original SCIP jobs and 64 to
+the enlarged-memory jobs, despite four configured solver threads. Allocated
+CPU counts therefore do not establish the degree of solver parallelism.
+Python 3.13.15 was used; the archived Gurobi and SCIP environments also differ
+in NumPy version (2.5.2 and 2.5.3). The comparison is descriptive, not a
+hardware- and runtime-controlled speedup benchmark.
 
 The runtime and package versions, source identity, workbook hashes, experiment
 parameters and license-dependent test outcomes are captured with each evidence
@@ -898,217 +969,144 @@ efficiency estimates.
 
 # Results
 
-## Reference validation and experimental coverage
+## Historical reference experiment
 
-The validation protocol accepted levels 1–3 and nine of ten selected reference
-executions. The final warehouse-only nine-scenario trial attained the service
-target and passed independent incumbent checks, but exhausted the optimization
-budget during the capacity pass. Its economic pass was not executed. The
-original ten-reference report therefore remains rejected, with level 4 recorded
-as pending by the validator. The experimental campaign was closed with this
-documented computational limitation rather than an amended success criterion.
-The nine-scenario direct-arc reference was accepted.
-This distinction is visible in @tbl-validation: an accepted service incumbent
-and a completed optimization protocol answer different questions. A time-limited
-or interrupted pass can yield useful feasible decisions without providing the
-full comparative evidence required by the selected hierarchy. Earlier scalar
-experiments cannot substitute for a missing service-first reference because
-they optimize a different preference ordering.
+The initial deterministic and three-scenario validation established the
+mathematical, software and independent-solution checks for eight selected
+configurations. One of two nine-scenario references also completed the original
+protocol. The final warehouse-only retry attained zero domestic shortage but
+reached the 14,400-second budget with a 100% capacity gap; its economic pass was
+not executed. The original ten-reference report therefore remains rejected.
+This earlier experiment motivated, but is not pooled with, the enlarged
+28,800-second, 10%-gap comparison below. Its detailed stage tables and resource
+figures are retained in the historical reference supplement.
 
-| Evidence family | Selected executions | Accepted references | Remaining qualification |
-|:--|--:|--:|:--|
-| Bounded thesis-method, deterministic and three scenarios | 4 | 4 | New road snapshot and separate slacks; not numerical replication |
-| Policy, deterministic and three scenarios | 4 | 4 | Interpretation conditional on service-first priorities |
-| Policy, nine scenarios | 2 | 1 | Warehouse-only capacity pass reached the time limit |
+## Network size and road-data preparation
 
-: Observed validation coverage, not a ranking of logistics costs. {#tbl-validation}
+The road inventory contains 63,289, 113,269, 190,569 and 287,869 ordered records
+for 215, 300, 400 and 500 warehouses. These are pre-filter route records,
+not the arcs retained by the MILP. Every reported record uses OSRM, with no
+Haversine fallback. Coordinate-pair reuse reduces routing work without merging
+distinct facilities. The integrity checks normalize small negative routing
+artifacts under the documented numerical policy and preserve their audit counts.
 
-## Road-network materialization and scalability preparation
+![Road-data preparation before product expansion and sparsification. Materialization at 500 warehouses does not establish optimization at that population.](figures/routing-growth.png){#fig-routing-growth}
 
-The policy data preparation produced 63,289 ordered route records for 215
-warehouses and 287,869 for 500 warehouses. In both materialization audits,
-all records originated from OSRM and no Haversine fallback was reported.
-These are pre-filter route records, not the arcs retained by the MILP.
-The 500-warehouse build reused cached coordinate-pair results and added new
-ones, demonstrating incremental distance preparation without demonstrating
-optimization at that scale.
+With nine scenarios and 60 periods, warehouse-only extensive forms contain
+14,054,654, 25,107,544 and 42,106,944 estimated variables at 215, 300 and 400
+warehouses. Enabling direct arcs adds 319,680 variables in each case.
+The increase from 215 to 400 nearly triples model size despite retaining only
+about one fifth of interwarehouse edges. Strong connectivity preserves paths,
+but does not remove the quadratic arc-growth term.
 
-| Ordered route family | 215 warehouses | 500 warehouses |
-|:--|--:|--:|
-| Origin to warehouse (OD) | 7,955 | 18,500 |
-| Warehouse to customer (DC) | 7,955 | 18,500 |
-| Interwarehouse (DD) | 46,010 | 249,500 |
-| Direct origin to customer (OC) | 1,369 | 1,369 |
-| Total | 63,289 | 287,869 |
+## Solver outcomes and resource requirements
 
-: Materialized route records before product expansion and sparsification. {#tbl-routing}
+{{< include comparison_results.qmd >}}
 
-The increase is dominated by DD: its count follows $|W|(|W|-1)$ for $|W|$
-warehouses. The retained graph subsequently depends on the per-group distance
-rule and any connectivity repairs. Materialization success therefore removes
-one data-engineering obstacle while leaving model size and solution quality
-as separate experimental questions. Co-located facilities can share coordinate
-cache entries without being the same investment candidate.
+Four of seven Gurobi attempts completed the three-pass hierarchy at the
+declared quality target. Both 215-warehouse route variants were accepted.
+At 300 warehouses, the historical warehouse-only attempt reached an economic
+gap of 50.520259%, whereas its separately identified all-barrier repeat
+completed with 0.083114%. The direct-enabled attempt completed with a
+0.067684% economic gap. Its capacity gap was 1.287429%: acceptable under the
+10% campaign rule, but not under a hypothetical 1% rule. A configured tolerance
+must not be substituted for the attained gap.
 
-The numerical-integrity audit also identified small negative routing outputs
-for nearly coincident coordinates. Such values are invalid distances, regardless
-of their small magnitude. The subsequent integrity gate accepted the corrected
-materialization. This episode establishes the need to validate cached and newly
-queried values consistently; successful HTTP responses alone are insufficient
-evidence of valid optimization coefficients.
+At 400 warehouses, both all-barrier runs returned independently valid
+incumbents but remained time-limited. The warehouse-only case stopped in
+the capacity pass at 100%, without an economic pass. The direct-enabled case
+completed capacity at 0.064253% but stopped in economics at 99.999813%.
+These final all-barrier outcomes are time limits, not the memory limits
+observed during earlier mixed-method diagnostics. Reaching a feasible network
+and certifying all objective priorities are different computational tasks.
 
-## Domestic service and nominal capacity adequacy
+All six SCIP attempts terminated without an incumbent. The 215-warehouse
+cases exhausted the optimization budget in the first-stage solve. At 300,
+the original 131072 MB internal-memory profile stopped during presolve.
+Repeats with 393216 MB, larger node allocations and otherwise identified
+inputs reached the time limit instead. Their peak application RSS was
+approximately 154--155 GiB, below the enlarged configured budget.
+The additional memory removed the early observed stop but did not yield a
+solution. Because allocation and hardware also changed, this is not an isolated
+estimate of the causal effect of memory.
 
-The accepted service-first references establish the feasibility of their
-domestic-service target within the stated numerical tolerances. They do not
-establish adequacy of installed capacity. The conservation contract allocates
-all modeled supply among domestic consumption, exports and final inventory;
-capacity slacks identify where those allocations exceed nominal limits.
-Consequently, a zero domestic-shortage score may coexist with a positive
-capacity-violation score. Reporting only service fulfillment would conceal
-this distinction, whereas rejecting every solution with capacity slack would
-discard an intended diagnostic output.
+The presolved first service-pass SCIP problem at 215 warehouses retained
+approximately 12.45 million continuous variables and 394 thousand constraints
+in the warehouse-only case. Removing discrete variables in that transformed
+pass did not make its large LP inexpensive; nor does it imply that the
+original investment hierarchy is a continuous optimization problem.
+The later hierarchy still has to preserve investment and priority semantics.
 
-Two quantities must remain separate: the best capacity score at the end of
-the second pass and the score of the final economic solution. The hierarchy
-allows only declared degradation of the former. A final increase within that
-allowance is not additional installed capacity, and a pass-end objective is
-not automatically the value of the final reported decisions. Independent
-recomputation of both components, at warehouse-period resolution, is essential
-to interpret this trade-off.
+## Service, capacity and economic interpretation
 
-## Economic and computational interpretation
+All quality-certified Gurobi cases attained domestic service within the
+absolute certificate, including scenario-wise checks. Their positive capacity
+violations show that service fulfillment is not a claim of nominal
+infrastructure adequacy. The static score accumulates stock exceedance over
+warehouse-periods; reception overflow measures material above period handling
+limits. Neither their sum nor a large penalty total is an installed-capacity
+recommendation.
 
-Final cross-configuration cost and investment estimates require the matching
-frozen result exports, not merely a completed scheduler job. The available acceptance outcomes
-support the functioning of the validation architecture, not a numerical claim
-that direct arcs, stochastic investment or a specific facility plan is cheaper.
-In particular, comparing a scalar penalty run against a lexicographic run
-would confound the network treatment with the decision criterion.
+The accepted economic costs in @tbl-economic-observations are conditional
+model outputs, not observed expenditures. Within the accepted pairs, the
+direct-enabled values are lower than the warehouse-only values, but the
+capacity-priority limits inherited by their economic passes are not identical.
+Consequently, their difference is not an identified benefit attributable solely
+to direct arcs. It would require a controlled common-priority comparison,
+followed by sensitivity to freight and investment assumptions, to interpret
+a policy effect.
 
-For the reported nine-scenario retry pair, Slurm recorded 2 h 28 min 15 s and
-successful completion for the direct-arc job, compared with 3 h 15 min 36 s and
-failure for the warehouse-only job. Their maximum resident-set measurements
-were approximately 45.8 and 54.8 GiB, respectively. These are observed
-whole-job diagnostics, not primary optimization times or proof that direct
-arcs generally reduce runtime. The failed execution is retained as incomplete
-evidence rather than assigned an artificial runtime equal to the time limit.
+The distinction between pass and final scores is material. For the accepted
+300-warehouse, warehouse-only all-barrier run, the capacity-pass score was
+328,334,362.50, while the final economic solution used 360,354,208.20 within
+the recorded inherited limit. This is permitted degradation under the chosen
+hierarchy, not evidence that the capacity objective was minimized exactly.
+Stage-level gaps and final decisions must therefore be read together.
 
-The decomposition of execution time is important because EVPI and VSS require
-additional solves. A comparison using end-to-end runtime would otherwise
-penalize a configuration merely for requesting more post-optimality analysis.
-Likewise, a small relative MIP gap can leave an absolute uncertainty interval
-larger than the reported stochastic-value difference when Big-M penalties
-dominate the objective. Economic interpretation requires both the component
-decomposition and the bound-based interval in @eq-values.
+## Evidence coverage and predictive scope
 
-## Configuration-level validation outcomes
+The comparative record reconciles eleven audit-declared campaign identities
+and 81 supplied completion-bound artifact hashes. Eight cross-solver pairings
+match exported workbook identifiers, model and loader settings, scenario
+summaries, route counts and connectivity audits. This establishes agreement
+of the supplied input records, not a new comparison of absent workbook bytes,
+full coefficient matrices or complete solution vectors. The independent
+feasibility results are the original archived validations.
 
-@tbl-det-review and @tbl-sto-review summarize the selected experiments.
-A configured stopping tolerance is not a measured gap. Reference acceptance
-requires the relevant checks; it does not establish a unique investment plan,
-exact optimality or historical numerical replication. Scalar and hierarchical
-criteria remain distinct experimental families.
-
-| Deterministic configuration | Reference outcome | Decision criterion |
-|:--|:--|:--|
-| Thesis-method, warehouse-only, alpha 0.8 | Accepted | Scalar penalties |
-| Thesis-method, direct arcs, alpha 0.8 | Accepted | Scalar penalties |
-| Policy, warehouse-only, 20% selection | Accepted | Three-pass hierarchy |
-| Policy, direct arcs, 20%, 14,400 s | Accepted | Three-pass hierarchy |
-
-: Deterministic reference outcomes under the declared validation contract. {#tbl-det-review}
-
-| Stochastic configuration | Scenarios | Reference outcome |
-|:--|--:|:--|
-| Thesis-method, warehouse-only, alpha 0.8 | 3 | Accepted |
-| Thesis-method, direct arcs, alpha 0.8 | 3 | Accepted |
-| Policy, warehouse-only, 20% selection | 3 | Accepted |
-| Policy, direct arcs, 20% selection | 3 | Accepted |
-| Policy, direct arcs, 20%, 14,400 s | 9 | Accepted |
-| Policy, warehouse-only, dual-simplex retry | 9 | Rejected: hierarchy incomplete |
-
-: Stochastic reference outcomes. Acceptance of a service incumbent alone does
-not imply completion of the capacity and economic passes. {#tbl-sto-review}
-
-![Validation coverage by experimental family. The incomplete reference is retained; this does not convert the rejected overall report into an accepted certificate.](figures/validation-coverage.png){#fig-validation-coverage}
-
-![Road-data preparation before sparsification. DD denotes interwarehouse routes; OD, DC and OC denote origin–warehouse, warehouse–customer and direct origin–customer pairs. Counts are not tonne-kilometres.](figures/routing-growth.png){#fig-routing-growth}
-
-The 500-warehouse route inventory is about 4.55 times the 215-warehouse
-inventory, although the warehouse count rises by about 2.33 times.
-Interwarehouse pairs explain the superlinear increase. This does not estimate
-solve-time growth: product support, retained arcs, scenario count, presolve
-and branching intervene. No 500-warehouse optimization result is asserted.
-
-## Resource-limited nine-scenario evidence
-
-The warehouse-only configuration provides a useful negative result.
-Earlier attempts yielded usable incumbents but did not complete the required
-hierarchy. Increasing the resource allowance did not by itself close the
-economic-pass gap. Observed gaps of approximately 46.37% exceed both the
-configured 1% target and a hypothetical 10% threshold. Changing a threshold
-after observing these runs would not make either satisfy that threshold.
-
-![Whole-job elapsed time and Slurm maximum resident-set size for terminal retries. Failed jobs are observed interrupted computations, not successful solves at the plotted times. Scheduler allocation and solver memory limits are distinct.](figures/retry-resources.png){#fig-retry-resources}
-
-![Reported economic-pass gaps for failed warehouse-only retries. Neither meets the configured 1% target; 10% is a comparison aid, not the experimental stopping rule. Missing gaps are not plotted as zero.](figures/incomplete-economic-gaps.png){#fig-incomplete-economic-gaps}
-
-The final retry used dual simplex and four threads, with a 14,400 s
-optimization limit, a 1% relative-gap target, a 192 GiB scheduler allocation
-and a 128 GB solver soft-memory setting. Job 2091731 terminated after
-4 h 5 min 46 s with a maximum resident-set size of approximately 27.25 GiB.
-The service pass achieved zero unmet demand. The capacity pass then consumed
-13,916.60 s and terminated at the time limit with an incumbent score of
-$1.5907542160143\times10^{11}$ and a zero lower bound, giving a 100% gap.
-The economic pass was not executed (@tbl-final-stages).
-
-| Lexicographic pass | Termination | Incumbent | Best bound | Gap | Time (s) |
-|:--|:--|--:|--:|:--|--:|
-| Expected unmet demand | Optimal | 0 | $-2.85\times10^{-9}$ | Not informative at zero | 484.26 |
-| Expected capacity violations | Time limit | $1.59075\times10^{11}$ | 0 | 100% | 13,916.60 |
-| Economic cost | Not executed | — | — | — | — |
-
-: Final warehouse-only nine-scenario trial. The first objective is in tonnes
-of unmet demand; the second is the declared aggregate capacity-violation score,
-not currency or installed capacity. The tiny negative service bound is numerical
-noise. The raw relative-gap sentinel for that zero-valued pass is not an
-economic or service shortfall. {#tbl-final-stages}
-
-![Optimization time by lexicographic pass in the final warehouse-only retry. The capacity pass exhausted the budget; the economic pass was not executed.](figures/final-stage-time.png){#fig-final-stage-time}
-
-The pass times sum to approximately 14,400.86 s. Whole-job elapsed time also
-includes model preparation and reporting and must not be substituted for this
-optimization measurement. The recorded failure is a failure to complete the
-requested hierarchy within the budget, not a proof of infeasibility. Independent
-checks accepted the incumbent's service and model constraints. Conversely,
-a feasible incumbent with a 100% capacity gap is insufficient to support a
-near-optimal capacity score or an economic comparison.
-
-The final retry used less recorded resident memory than the earlier
-warehouse-only attempts but did not solve the hierarchy. Because solver method,
-thread count and resource settings differed, these observations do not isolate
-a causal memory–runtime trade-off. They identify a reproducible adverse case
-for subsequent algorithmic evaluation. Neither the 100% capacity gap nor the
-earlier approximately 46.37% economic gaps satisfy a 1% or 10% threshold.
-
-## Scope of comparative interpretation
-
-The retained evidence supports comparisons of validation outcomes, network
-size and observed computational resources. It does not supply a harmonized
-set of final cost, transport-work and warehouse-period exports for every
-configuration. Therefore, no cross-configuration investment ranking, estimated
-economic benefit of direct arcs or final warehouse-only nine-scenario economic
-optimum is inferred from the acceptance flags.
-
-Transport work requires flow multiplied by directed road distance, not a count
-of routes. Warehouse utilization requires matching stock, handling and installed
-capacity records. Scalar EVPI/VSS additionally require comparable RP, WS and EEV
-objectives and certified bounds under one frozen penalty vector; values from
-different hierarchy levels are not interchangeable. These distinctions constrain
-the claims that can be drawn from this computational experiment.
+No SCIP cost, service attainment or finite optimality gap is imputed when an
+incumbent is absent. In particular, default service fields are not interpreted
+as successful fulfillment. No predictive experiment is included: the scenario
+levels are controlled realizations, not validated forecasts. Accordingly,
+forecast accuracy, calibration gains and learned-policy benefits remain
+unmeasured rather than being inferred from optimization outcomes.
 
 # Discussion and limitations
+
+## Observed computational boundary
+
+The largest tested population with complete, quality-certified Gurobi results
+is 300 warehouses. At 400, valid incumbents exist but the hierarchy is incomplete
+or insufficiently bounded within the eight-hour optimization budget. This is
+an observed boundary of the evaluated profiles, not a proof that no alternative
+method could solve 400 or that every smaller instance is easy. The absence of
+SCIP incumbents at 215 and 300 likewise identifies an unresolved region rather
+than locating a smaller certified SCIP frontier.
+
+The accepted warehouse-300 all-barrier attempt and the unsuccessful automatic
+attempt demonstrate sensitivity to the solution profile. Without repeated,
+hardware-matched runs, they do not establish a general algorithmic speedup.
+At 400, the bottleneck can move from capacity to economics even after the
+service objective is solved. This motivates reporting each pass rather than
+using service fulfillment or a scheduler exit code as the overall success
+criterion. Scalar penalty totals do not replace the missing economic certificate.
+
+The SCIP outcomes show a second mechanism: a large transformed LP can consume
+the available time before producing any incumbent. Raising a memory budget
+does not resolve that mechanism automatically. A useful solver comparison
+therefore separates time-limited no-incumbent outcomes, memory-limited presolve,
+valid but uncertified solutions and complete quality-certified hierarchies.
+Cost ratios against missing SCIP solutions and average speedups across these
+heterogeneous outcomes would be misleading.
 
 ## Computational contribution and limits of the evidence
 
@@ -1300,7 +1298,8 @@ The longer-term experiment would enlarge nested candidate populations beyond
 500 toward the available registry ceiling of approximately 18,000 sites,
 stopping when declared memory, construction-time or solution-quality limits
 are reached. This is a search for a practical frontier, not a commitment to
-solve the largest population. A 14,400-second optimization budget, separate
+solve the largest population. A preregistered optimization budget, initially
+28,800 seconds to match the present comparison, separate
 preprocessing/build/post-optimality clocks, incumbent feasibility and global
 bound gaps should define the comparison.
 
@@ -1326,15 +1325,16 @@ requirements to reproducible evidence rather than relying on solver status
 alone. Service fulfillment, nominal capacity violations and economic cost
 remain separately interpretable outputs.
 
-Road-data preparation covered 215 and 500 warehouses, whereas the selected
-policy optimization experiments concerned 215 warehouses. Nine of ten reference
-executions satisfied the protocol. The final warehouse-only nine-scenario trial
-achieved domestic service but reached the optimization time limit with a 100%
-capacity-pass gap and no economic pass. This negative result delineates the
-observed computational boundary without establishing a complete scalability
-frontier. No new solution algorithm or measured parallel speedup is claimed.
-The bounded experiment provides a reproducible baseline for decomposition,
-controlled resource comparisons and larger candidate populations.
+The nine-scenario comparison retained thirteen attempts, including unsuccessful
+configurations and their identified repeats. Four Gurobi attempts at 215 and
+300 warehouses completed the hierarchy under the 10% criterion; the accepted
+300-warehouse economic gaps were below 0.1%. Both 400-warehouse attempts produced
+valid incumbents without complete quality certification. SCIP produced no
+incumbent at 215 or 300, including the enlarged-memory repeats. Thus, 300 is
+the largest quality-certified population tested with Gurobi, not a universal
+network-size limit. The evidence motivates controlled root-LP experiments,
+hierarchy-preserving decomposition and progressively enlarged networks while
+retaining independent feasibility and bound-based reporting.
 
 # Reproducibility and availability
 
@@ -1343,6 +1343,11 @@ The source repository is
 The source, experiment definitions and final validation receipt are versioned
 together. The receipt and closure record are available under
 `docs/evidence/pr25-final/`; the original rejected aggregate status is retained.
+The subsequent thirteen-attempt comparison, normalized case and stage records,
+input reconciliation and artifact inventory are archived separately under
+`docs/evidence/sprint_c_final_20260920/`. Manuscript tables are generated from
+those frozen records; hashes bind each generated comparison to its sources.
+Raw historical certificates are not rewritten by the editorial update.
 The manuscript uses the pinned
 [quarto-sbc template](https://github.com/cvictorr2508/quarto-sbc/tree/88eaa11eeee9f86cd8594466e4644b321c8d7b75).
 Its HTML and SBC PDF builds execute no solver, do not contact Zotero and require
@@ -1351,9 +1356,11 @@ attachments, licenses and raw HPC working directories are not publication inputs
 
 The repository includes the mathematical contract, reference manifests,
 independent-validation implementation and document-build instructions.
-The committed manuscript data distinguish final validation outcomes, routing
-counts and scheduler observations from unavailable comparative optimization
-exports. Private runtime credentials and local library attachments are excluded.
+The committed manuscript data contain stage-level results, conditional economic
+summaries, routing counts and scheduler observations. Full solution vectors and
+original workbook bytes are not included in the comparison evidence archive;
+exported identities do not substitute for independently revalidating those files.
+Private runtime credentials and local library attachments are excluded.
 Additional data redistribution remains subject to the rights of the source
 providers. Successful document rendering is independent of scientific acceptance.
 

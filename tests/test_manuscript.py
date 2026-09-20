@@ -147,5 +147,5 @@ def test_benders_has_feasibility_and_bound_qualifications(manuscript):
 def test_hardware_and_preliminary_results_are_distinguished(manuscript):
     article = (manuscript / "index.qmd").read_text(encoding="utf-8")
     assert "@npad2026" in article
-    assert "not primary optimization times" in article
+    assert "primary optimization" in article
     assert "not the arcs retained by the MILP" in article

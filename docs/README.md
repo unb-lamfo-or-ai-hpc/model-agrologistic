@@ -15,6 +15,7 @@ its 10% gap target and 28,800-second budget do not rewrite the older certificate
 | [Paired-input reconciliation](evidence/sprint_c_final_20260920/paired_input_reconciliation.json) | Eight matching exported-input contracts; not a controlled speedup experiment |
 | [Original evidence inventory](evidence/sprint_c_final_20260920/evidence_inventory.json) | Archive, manifest and supplied completion-artifact hashes |
 | [Sprint D documentation](sprint_d_documentation.md) | Current documentation scope and manuscript handoff |
+| [Artifact and measurement dictionary](artifact_dictionary.md) | Phase outputs, units, clocks and distinct acceptance decisions |
 | [SCIP qualification](scip_qualification_protocol.md) | Native stochastic backend, analytical and licensed parity gates |
 | [Sprint B closure](sprint_b_closure_sprint_c_comparison.md) | Terminal SCIP outcomes and historical resource context |
 

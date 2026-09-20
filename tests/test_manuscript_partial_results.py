@@ -42,7 +42,7 @@ def test_manuscript_final_trial_matches_archived_closure():
 
 
 def test_review_has_real_figures_and_explicit_missing_exports():
-    text = (MANUSCRIPT / "index.qmd").read_text(encoding="utf-8")
+    text = (MANUSCRIPT / "historical_reference_results.md").read_text(encoding="utf-8")
     for name in ("validation-coverage", "routing-growth", "retry-resources",
                  "incomplete-economic-gaps", "final-stage-time"):
         assert f"figures/{name}.png" in text
@@ -51,3 +51,6 @@ def test_review_has_real_figures_and_explicit_missing_exports():
     assert "100%" in text
     assert "Reserved final-retry result" not in text
     assert "Working manuscript" not in text
+    current = (MANUSCRIPT / "index.qmd").read_text(encoding="utf-8")
+    assert "{{< include comparison_results.qmd >}}" in current
+    assert "original ten-reference report therefore remains rejected" in current

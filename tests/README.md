@@ -8,6 +8,7 @@ validation or agreement with a published numerical result.
 | Input contracts | Workbook schema, duplicate normalization, source lineage and candidate activation |
 | Routing | OSRM failure/fallback/cache rules, numerical integrity, selected edges and connectivity |
 | Analytical MILPs | Small licensed Gurobi cases for costs, balances, capacities and scenarios |
+| Native SCIP | Stochastic analytical cases and separately licensed miniature cross-backend parity |
 | Independent validation | Deliberately invalid sparse outputs, local residuals and cost reconstruction |
 | Value analysis | Frozen RP/WS/EV/EEV contracts, first-stage fixing and bound-based certification |
 | Execution integrity | Receipts, completion markers, stale-output rejection and safe retries |
@@ -33,3 +34,15 @@ Reference executions require independently validated artifacts and complete
 lexicographic stages as specified by the final validation plan. Time limits,
 incomplete hierarchies and skipped tests remain visible rather than being
 reclassified to obtain a green report.
+
+The original four-level reference gate and the later nine-scenario campaign are
+separate protocols. In the latter, input admission only permits an attempt;
+independent feasibility validates an incumbent; quality acceptance additionally
+requires all three priorities and their declared bounds. A no-incumbent run
+cannot establish service success through default-valued reporting fields.
+
+Solver-free manuscript checks verify bibliography, author metadata, generated
+table/source hashes, figure integrity and rendered outputs. They neither rerun
+an optimizer nor promote an unsuccessful experiment. See
+[the manuscript build](../manuscript/README.md) and
+[the measurement dictionary](../docs/artifact_dictionary.md).
