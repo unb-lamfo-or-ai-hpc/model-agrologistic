@@ -80,7 +80,7 @@ class SolverConfig:
             time_limit=3600,
         )
 
-    Reserved native PySCIPOpt backend:
+    Native stochastic PySCIPOpt backend:
 
         SolverConfig(
             backend="pyscipopt",
@@ -89,7 +89,8 @@ class SolverConfig:
             time_limit=3600,
         )
 
-    The native PySCIPOpt formulation is intentionally not implemented yet.
+    Native SCIP currently supports the stochastic extensive form. Large-network
+    qualification is independent of installation and small analytical tests.
     """
 
     backend: SolverBackend = "gurobipy"

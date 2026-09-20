@@ -1,0 +1,134 @@
+{
+  "schema_version": "solver-comparison-inventory-v1",
+  "scope": "supplied_audit_archives_only; not full run-artifact revalidation",
+  "script_sha256": "a8f431d0467b1a7974e1b991fa13701b46f099e4244d29a3e02e2c15f7cdf25f",
+  "archives": [
+    {
+      "archive": "scip-evidence.tar.gz",
+      "sha256": "6e205d591c9b49a8736da1395711bbc8a5b655404678e4556e83f97affa0ef33",
+      "members": {
+        "scheduler_accounting.txt": "74381b4ecdd6eaae12573e2a650c93aa8804a78f683168087c7a85f6c0f4575c",
+        "scip-expansion-20260919T134716Z/case-0/audit/nine_audit_manifest.json": "17f23fe12d73c9398d26d4d0bfc386059a7013fff5869ac6ccfae2349dcf641e",
+        "scip-expansion-20260919T134716Z/case-0/audit/nine_results.csv": "7e1923a12031114fb3dbb2958caa62d461e54f0dedbb3d4fb2429a0e7b98c882",
+        "scip-expansion-20260919T134716Z/case-0/audit/nine_results.json": "964df031d6b331bba4b2a0310675fc7755100ebc895ecbc26ee5d6694c571a48",
+        "scip-expansion-20260919T134716Z/case-0/audit/nine_stage_gaps.csv": "87c87f1117c5fca6efd443e77a526a472b78322e71594c938f1636ad11029908",
+        "scip-expansion-20260919T134716Z/case-0/audit/nine_stage_gaps.json": "13fac71067cbe6454884c14f46b665fbecb1463ce35bf7de8ce7cb0b66d3e526",
+        "scip-expansion-20260919T134716Z/case-0/campaign.yaml": "d0e79ffe3630da215db9a1c7e754c9fd6bc4e26620c8f3ac990ff35b6b642cb7",
+        "scip-expansion-20260919T134716Z/case-1/audit/nine_audit_manifest.json": "e632a35f1077aaf70bb976ad28d6b7261bcc88aa25961bcbdf0a80cc84abe43c",
+        "scip-expansion-20260919T134716Z/case-1/audit/nine_results.csv": "d52fb291f66bd930ad954bfb8cb35e40e2a0ed570831023e7ebeaf0f358b20dd",
+        "scip-expansion-20260919T134716Z/case-1/audit/nine_results.json": "9be679c2b83398f5dcfa79c5415d5c4d14a43bb9210c8274ff989c6535a9cbff",
+        "scip-expansion-20260919T134716Z/case-1/audit/nine_stage_gaps.csv": "3efc659b270fac96feb82f2de8c395240a7df7152d2293f0d4a57e052689cca7",
+        "scip-expansion-20260919T134716Z/case-1/audit/nine_stage_gaps.json": "573f2fe9551cc34a615f1dfa1e466324289ca09e9180eca02f3e42f83bdb1073",
+        "scip-expansion-20260919T134716Z/case-1/campaign.yaml": "54184abb6467c76f05e60cb392952e5a8d3b68a0d52932022f35d6f812f83ebd",
+        "scip-expansion-20260919T134716Z/case-2/audit/nine_audit_manifest.json": "fdea4c223baedaa7bc56104958e41717c325078ba3b361cf6c470e63deed103b",
+        "scip-expansion-20260919T134716Z/case-2/audit/nine_results.csv": "55c927332382aa1125ed0cc48196686ef4d2747a130c5e581ac0d58a363a18da",
+        "scip-expansion-20260919T134716Z/case-2/audit/nine_results.json": "e808b3ff4924cbeefc913a8cd502f2208725bd9beb8ac7832187c71d03d46bd0",
+        "scip-expansion-20260919T134716Z/case-2/audit/nine_stage_gaps.csv": "e7d01260ffc22613b3960ed7c813ddade9a6c3708a4c076755569997abc6ab48",
+        "scip-expansion-20260919T134716Z/case-2/audit/nine_stage_gaps.json": "ffb41517aec6f0d760e45d087b135ceff4820ed487f75f79d00552dc43017198",
+        "scip-expansion-20260919T134716Z/case-2/campaign.yaml": "92c7f0ec4965e64fe04d41f3ee05b6ac27b4fe58b7c2f6146e74ae27b8191896",
+        "scip-h215-warehouse-20260919T131233Z/audit/nine_audit_manifest.json": "64fc59d8bfb326d7b8cfd4f7fcfc13d4405c19c80eae97df91ae251cb2e4ad51",
+        "scip-h215-warehouse-20260919T131233Z/audit/nine_results.csv": "15f44640f29934236393738c95768e4debdad49945de1f11201e55c4e6bcd39a",
+        "scip-h215-warehouse-20260919T131233Z/audit/nine_results.json": "90e5116ec657db27028facac3bc8d82c469039337be5f833cfd304880055fe23",
+        "scip-h215-warehouse-20260919T131233Z/audit/nine_stage_gaps.csv": "1aeb7bcb3a1b3c87275e1211ab919d8a82e70b42d19f97f3ee53e1ad8bb019ae",
+        "scip-h215-warehouse-20260919T131233Z/audit/nine_stage_gaps.json": "3f1dcc44099b8b96df6a5851b5e4dfc80cb5518a4382ca6b320f8631f61c99a5",
+        "scip-h215-warehouse-20260919T131233Z/campaign.yaml": "f705a9d3da9cd887f8c41d3011d172d0671bb12fd8a26d79f46dfc75445ca1b1",
+        "scip-h300-memory-allocation-20260919T193631Z/case-0/audit/nine_audit_manifest.json": "7a642e7bc4abdc778c2067be367085684099268154d4bff7b07a0cbb55e019fe",
+        "scip-h300-memory-allocation-20260919T193631Z/case-0/audit/nine_results.csv": "980a68e89a337a070e1d6796ef8d411e7a06ef6cca0c70597b68852aa54d0af2",
+        "scip-h300-memory-allocation-20260919T193631Z/case-0/audit/nine_results.json": "adf0796050802a43743e836a6a4d3bfa526aee6ed8bec3083077a31dd59c5421",
+        "scip-h300-memory-allocation-20260919T193631Z/case-0/audit/nine_stage_gaps.csv": "8182ee420ebccb3a247a622a54c22c615a25d1fa3f4037a29bdd3c2ab4588b71",
+        "scip-h300-memory-allocation-20260919T193631Z/case-0/audit/nine_stage_gaps.json": "1e45e511970070d03eb4d0ec626d15d121ff0ab19be170313bc6fbb12279fce6",
+        "scip-h300-memory-allocation-20260919T193631Z/case-0/campaign.yaml": "7b789759bb0ddcb9d70f7bd121899096fe23213c46a6ac31b54662326ae569d5",
+        "scip-h300-memory-allocation-20260919T193631Z/case-0/scheduler_resource_audit.json": "f8d0a6bb7f9def0ea1fd0b68d5a02049efc422168201c7d474e5d21d3b2d8940",
+        "scip-h300-memory-allocation-20260919T193631Z/case-1/audit/nine_audit_manifest.json": "7005cd8f24b0adb9eff7bce0829a188e20236827f67a050e88728149197bfdd3",
+        "scip-h300-memory-allocation-20260919T193631Z/case-1/audit/nine_results.csv": "88453c9d34417fb326e24376f74726631f44656085752d094b3a00a050f59456",
+        "scip-h300-memory-allocation-20260919T193631Z/case-1/audit/nine_results.json": "2e1a15a549f3cf12134a75f73dda34cea5e620293cd67591718e5a12738dad81",
+        "scip-h300-memory-allocation-20260919T193631Z/case-1/audit/nine_stage_gaps.csv": "f71ab8aaa4f730c242c19165109c718bc7370fab774277bcbaffb18b5ff2058e",
+        "scip-h300-memory-allocation-20260919T193631Z/case-1/audit/nine_stage_gaps.json": "2bfc9225a490e39b43191a5f885ad7e427d7a844b18f3d77634c7b5a79427457",
+        "scip-h300-memory-allocation-20260919T193631Z/case-1/campaign.yaml": "4550e81baabf8d62daa3ee70cdf66c1fe39fd62f6f5a0c49bd1978f68182bc49",
+        "scip-h300-memory-allocation-20260919T193631Z/case-1/scheduler_resource_audit.json": "0a6bece37987191924528ff98d6183318ad6a7fa3310f9e96510c823c286b7a8",
+        "scip-h300-memory-allocation-20260919T193631Z/memory_plan.json": "b4ab7128f63f06b376a7e042cca99b50e0e3539a34dd0a793dcf5e1e3a6307a5"
+      },
+      "campaign_checks": [
+        {
+          "campaign": "scip-expansion-20260919T134716Z/case-0",
+          "manifest_sha256": "d0e79ffe3630da215db9a1c7e754c9fd6bc4e26620c8f3ac990ff35b6b642cb7",
+          "manifest_bytes_verified": true,
+          "qualification": "Audit exports inspected; run files not included."
+        },
+        {
+          "campaign": "scip-expansion-20260919T134716Z/case-1",
+          "manifest_sha256": "54184abb6467c76f05e60cb392952e5a8d3b68a0d52932022f35d6f812f83ebd",
+          "manifest_bytes_verified": true,
+          "qualification": "Audit exports inspected; run files not included."
+        },
+        {
+          "campaign": "scip-expansion-20260919T134716Z/case-2",
+          "manifest_sha256": "92c7f0ec4965e64fe04d41f3ee05b6ac27b4fe58b7c2f6146e74ae27b8191896",
+          "manifest_bytes_verified": true,
+          "qualification": "Audit exports inspected; run files not included."
+        },
+        {
+          "campaign": "scip-h215-warehouse-20260919T131233Z",
+          "manifest_sha256": "f705a9d3da9cd887f8c41d3011d172d0671bb12fd8a26d79f46dfc75445ca1b1",
+          "manifest_bytes_verified": true,
+          "qualification": "Audit exports inspected; run files not included."
+        },
+        {
+          "campaign": "scip-h300-memory-allocation-20260919T193631Z/case-0",
+          "manifest_sha256": "7b789759bb0ddcb9d70f7bd121899096fe23213c46a6ac31b54662326ae569d5",
+          "manifest_bytes_verified": true,
+          "qualification": "Audit exports inspected; run files not included."
+        },
+        {
+          "campaign": "scip-h300-memory-allocation-20260919T193631Z/case-1",
+          "manifest_sha256": "4550e81baabf8d62daa3ee70cdf66c1fe39fd62f6f5a0c49bd1978f68182bc49",
+          "manifest_bytes_verified": true,
+          "qualification": "Audit exports inspected; run files not included."
+        }
+      ]
+    },
+    {
+      "archive": "sprint-a-final-audits-20260919T121646Z.tar.gz",
+      "sha256": "1a8a397baaf9633f2f9bcbaba312183611dc1ddf2045ab353104209df14a47db",
+      "members": {
+        "sprint-a-h300-warehouse-all-barrier-20260918T190519Z/audit/nine_audit_manifest.json": "694617d0c86463c4277a38e41f3b400f2eb407b1c5e942fd67e426bb8bd056ac",
+        "sprint-a-h300-warehouse-all-barrier-20260918T190519Z/audit/nine_results.json": "c0c5880fe9ab97669bf87c5bd193c33ef0761e71360a7aaf2ee703d3ce60da7b",
+        "sprint-a-h300-warehouse-all-barrier-20260918T190519Z/audit/nine_stage_gaps.json": "3de63c65086f6e643aa62b601e5aca3103fce2bafe2ac9edadc9b880cc4b202a",
+        "sprint-a-h400-direct-all-barrier-20260918T122037Z/audit/nine_audit_manifest.json": "8444447515ed5491c910cef6b43144df5a098cb766d04e1f2b031a8b9a6ff8dd",
+        "sprint-a-h400-direct-all-barrier-20260918T122037Z/audit/nine_results.json": "d8066a1f8e300cd1e546cec2bcec35d789fae24e3ec3252fa3606482f73ab567",
+        "sprint-a-h400-direct-all-barrier-20260918T122037Z/audit/nine_stage_gaps.json": "0e936a09b09ed481680a3fcf02b5c545b4175656de3f083222731c4e37c4e6fb",
+        "sprint-a-h400-warehouse-all-barrier-20260918T190507Z/audit/nine_audit_manifest.json": "c1aaafd23e39589961a966a854d1cc0d610c867f8a5b3618916b5f6783d5f32d",
+        "sprint-a-h400-warehouse-all-barrier-20260918T190507Z/audit/nine_results.json": "026548cd632d5a163a38aa32c09495d8af1b92e10644ca465aceaded730bf1de",
+        "sprint-a-h400-warehouse-all-barrier-20260918T190507Z/audit/nine_stage_gaps.json": "4951eb27071985d852245491da15e90ee74b6a87f29f5e434b6f66f49cea7c8f"
+      },
+      "campaign_checks": [
+        {
+          "campaign": "sprint-a-h300-warehouse-all-barrier-20260918T190519Z",
+          "manifest_sha256": "ba44b3cf1b43e2682b415cca3d92486fd918e1abe60fdf767751ae868d5e512d",
+          "manifest_bytes_verified": false,
+          "qualification": "Audit exports inspected; run files not included."
+        },
+        {
+          "campaign": "sprint-a-h400-direct-all-barrier-20260918T122037Z",
+          "manifest_sha256": "a4808f26a2873408ab78c9937e2a42c9cd832e508441514e6b1124a810234785",
+          "manifest_bytes_verified": false,
+          "qualification": "Audit exports inspected; run files not included."
+        },
+        {
+          "campaign": "sprint-a-h400-warehouse-all-barrier-20260918T190507Z",
+          "manifest_sha256": "b3a4b7438758b59cc73300ff9f53eb993907d0d33338c6d7c89133b70bb4ef0e",
+          "manifest_bytes_verified": false,
+          "qualification": "Audit exports inspected; run files not included."
+        }
+      ]
+    }
+  ],
+  "standalone_accounting_matches_archive": true,
+  "scip_campaign_manifest_hashes_verified": 6,
+  "paired_input_equivalence": "pending_original_run_fingerprints",
+  "missing_historical_gurobi_audits": [
+    "215 warehouse",
+    "215 direct",
+    "300 direct"
+  ]
+}

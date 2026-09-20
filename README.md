@@ -8,6 +8,28 @@ and public-investment analysis, not operational dispatch or a production service
 
 ## Research status and scope
 
+The completed nine-scenario comparison contains **13 optimization attempts**:
+seven Gurobi and six native SCIP/SoPlex attempts. Gurobi produced four
+quality-certified attempts at a 10% per-stage gap target and a nominal
+28,800-second optimization budget: both 215-warehouse variants, the historical
+direct-enabled 300-warehouse variant, and the all-barrier warehouse-only
+300-warehouse repeat. Both all-barrier 400-warehouse runs retain independently
+valid incumbents but do not meet the complete hierarchical quality criterion.
+SCIP produced no incumbent in the tested 215/300-warehouse attempts: four
+time limits and two earlier memory limits. These are configuration-specific
+outcomes, not proofs of infeasibility or universal solver-size limits.
+
+See the [comparison report](docs/evidence/sprint_c_final_20260920/comparison_summary.md),
+[paired-input reconciliation](docs/evidence/sprint_c_final_20260920/paired_input_reconciliation.json)
+and [documentation roadmap](docs/sprint_d_documentation.md). Original failures,
+resource amendments and historical method variants remain separate observations.
+SCIP 400-warehouse cases were preflight-only; no 500-warehouse solve is claimed.
+Reported input identities match in eight cross-solver pairings, but hardware,
+memory, runtime versions and algorithms are not all controlled. This is not a
+speedup experiment or a full revalidation of absent raw solution files.
+
+### Historical bounded thesis-method demonstration
+
 The package is **0.2.0.dev0**. It distinguishes a bounded reconstruction of
 Artur's thesis methodology from an expanded policy-oriented network. Neither
 track establishes exact numerical replication of the published thesis tables:
@@ -47,11 +69,13 @@ submission and public document deployment are separate from branch integration.
 3. What computational effort is required for explicitly defined network and
    scenario sizes under controlled solver settings and hardware?
 
-The current demonstration prioritizes the 215-warehouse network. Road-distance
-materialization has also been exercised at 500 warehouses; this is not evidence
-that a complete 500-warehouse optimization campaign has been validated.
-Larger populations, a definitive scalability frontier, the complete 15/20/25%
-sensitivity campaign and native SCIP parity are outside the MVP critical path.
+The completed comparison covers nine-scenario optimization attempts at
+215, 300 and 400 warehouses. Road-distance materialization also reached 500
+warehouses; this is not a certified 500-warehouse optimization. Native SCIP
+analytical and licensed miniature parity qualification passed on NPAD, while
+large SCIP instances did not yield incumbents within the tested budgets.
+Larger populations, a definitive scalability frontier and the complete
+15/20/25% sensitivity campaign remain future work.
 
 ## Mathematical interpretation
 
@@ -84,7 +108,7 @@ costs, service, capacity, timing or EVPI/VSS.
 Pinned sources and workbook contracts
   -> normalized instance and OSRM distance materialization
   -> route selection, connectivity audit and size preflight
-  -> frozen network/penalties and licensed Gurobi optimization
+  -> frozen network/penalties and selected native solver
   -> independent solution validation and structured artifacts
   -> reference acceptance, scientific tables and figures
 ```
@@ -98,7 +122,9 @@ HTTP failures or timeouts must not silently change the distance method.
 
 ### Installation for a new research environment
 
-Use Python 3.13 and a valid Gurobi license for optimization. Dependency ranges
+Use Python 3.13. Gurobi optimization and licensed cross-backend parity tests
+require a valid Gurobi license; native SCIP uses its separately qualified runtime.
+Dependency ranges
 are in [pyproject.toml](pyproject.toml); replay additionally requires the exact
 package versions recorded in the environment receipt.
 
@@ -116,8 +142,14 @@ On Windows, activate `.venv\Scripts\Activate.ps1` and set
 `$env:PYTHONNOUSERSITE = '1'`. The `visualization` extra installs Matplotlib and
 Seaborn without the remaining development tools. The `all` extra includes
 optional forecasting packages and is not required for the reference pipeline.
-Gurobi is the validated native backend; installing the `scip` extra does not
-implement or validate the reserved PySCIPOpt backend. CBC is not a project target.
+Native Gurobi and stochastic PySCIPOpt backends are implemented. The `scip`
+extra supplies the optional dependency; installation alone does not qualify a
+runtime or certify a large solve. See the
+[SCIP qualification protocol](docs/scip_qualification_protocol.md) and
+[completed comparison](docs/evidence/sprint_c_final_20260920/comparison_summary.md).
+Deterministic SCIP, SCIP EVPI/VSS and SCIP IIS are not supported by this backend.
+CBC is not a project target. Do not install or upgrade packages in an environment
+used by an active or archived campaign merely to read the comparison.
 
 On NPAD, the existing `venv313` prefix is a **Conda environment**, despite its
 name. Use `conda activate /home/vrrcelestino/venv313`, not a nonexistent

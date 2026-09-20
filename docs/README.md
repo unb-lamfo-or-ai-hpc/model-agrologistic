@@ -6,6 +6,20 @@ development record is not a single invariant specification.
 
 ## Current v0.2 reference
 
+The nine-scenario campaign below follows the earlier PR25 bounded demonstration;
+its 10% gap target and 28,800-second budget do not rewrite the older certificate.
+
+| Current campaign document | Use |
+|---|---|
+| [Sprint C comparison](evidence/sprint_c_final_20260920/comparison_summary.md) | All 13 supplied attempts, including unsuccessful configurations |
+| [Paired-input reconciliation](evidence/sprint_c_final_20260920/paired_input_reconciliation.json) | Eight matching exported-input contracts; not a controlled speedup experiment |
+| [Original evidence inventory](evidence/sprint_c_final_20260920/evidence_inventory.json) | Archive, manifest and supplied completion-artifact hashes |
+| [Sprint D documentation](sprint_d_documentation.md) | Current documentation scope and manuscript handoff |
+| [SCIP qualification](scip_qualification_protocol.md) | Native stochastic backend, analytical and licensed parity gates |
+| [Sprint B closure](sprint_b_closure_sprint_c_comparison.md) | Terminal SCIP outcomes and historical resource context |
+
+### Earlier bounded demonstration and enduring contracts
+
 | Document | Use |
 |---|---|
 | [Mathematical contract](v020_mathematical_contract.md) | Units, constraints, objectives and evidence boundaries |

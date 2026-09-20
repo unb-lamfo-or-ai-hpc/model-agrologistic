@@ -17,6 +17,8 @@ supports `--help`; inspect its input and output defaults before execution.
 | Final acceptance | `validate_v020_evidence.py` | Assess required references and quality evidence; does not solve |
 | Bounded retries | `run_pr25_nine_scenario_retry.py`, matching `.slurm` | Guard approved identity and isolated outputs for two reference retries |
 | Presentation | `build_mvp_scientific_evidence.py`, `generate_scientific_plots.py`, `generate_scientific_results.py` | Build tables/figures from existing outputs, with historical defaults |
+| Original-evidence comparison | `finalize_solver_comparison.py` | Verify the frozen Sprint C archive, reconcile exported input identities and generate the 13-attempt report; no solver execution |
+| Preliminary comparison | `build_solver_comparison.py` | Reproduce the historical nine-attempt subset from the two earlier archives; not the final Sprint C cohort |
 | Storage hygiene | `audit_repository_hygiene.py`, `quarantine_repository_artifacts.py` | Audit first; move/compress only explicitly reviewed candidates |
 
 `run_batch_hpc.py --aggregate-only` rebuilds summary tables; it cannot create
@@ -25,8 +27,17 @@ for solving or the independent final acceptance checks.
 
 ## Current versus historical execution
 
-Use [the reference catalogue](../experiments/README.md) and the
-[PR #25 retry runbook](../docs/pr25_nine_scenario_retry.md) for current validation.
+Use [the comparison report](../docs/evidence/sprint_c_final_20260920/comparison_summary.md)
+for the completed nine-scenario Gurobi/SCIP campaign. Its original-evidence
+archive can be processed with `finalize_solver_comparison.py --original-archive`
+and `--output-dir`, supplying the existing archive path and a new output directory.
+The report is bound to the documented archive SHA256; a different cohort requires
+an explicit reporting revision. It does not import a solver, rebuild a model,
+or overwrite original audits. Matplotlib is required for figures.
+
+The [reference catalogue](../experiments/README.md) and
+[PR #25 retry runbook](../docs/pr25_nine_scenario_retry.md) preserve the earlier
+bounded validation, not a request to resubmit completed jobs.
 `run_trl6_protocol.py` and its historical document preserve the earlier v0.1
 demonstration; they are not the v0.2 four-level validator.
 
@@ -43,6 +54,9 @@ assumptions must not be inferred from the native validated pipeline.
 - Activate the existing Conda prefix and export `PYTHONNOUSERSITE=1` before Python.
 - Keep credentials outside Git and reuse the authorized license configuration.
 - Use an explicit run index, bounded resource request and separate output root.
+- Keep intermediate reports and submission receipts within project-owned
+  directories, not loose in the home directory. Existing virtual environments
+  remain in place; housekeeping is a separate reviewed operation.
 - Do not switch branches or install packages while jobs use a shared checkout.
 - Inspect the real job ID returned by `sbatch`; angle-bracket placeholders are
   not valid shell arguments to copy literally.

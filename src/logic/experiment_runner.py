@@ -1061,7 +1061,7 @@ def _build_summary(
         ),
         objective_value=result.objective_value,
         objective_bound=_optional_float(
-            result.metadata.get("gurobi_objective_bound")
+            result.metadata.get("objective_bound", result.metadata.get("gurobi_objective_bound"))
         ),
         economic_cost=_optional_float(objective_values.get("economic_cost")),
         penalized_cost=_optional_float(objective_values.get("penalized_cost")),
@@ -1224,7 +1224,9 @@ def _result_payload(result: OptimizationResult) -> dict[str, Any]:
     return {
         "status": result.status,
         "objective_value": result.objective_value,
-        "objective_bound": result.metadata.get("gurobi_objective_bound"),
+        "objective_bound": result.metadata.get(
+            "objective_bound", result.metadata.get("gurobi_objective_bound")
+        ),
         "solver_backend": result.solver_backend,
         "solver_name": result.solver_name,
         "model_mode": result.model_mode,
