@@ -1,5 +1,10 @@
 # Selective 300-hub SCIP memory-sensitivity repeat
 
+> Campaign closed on 20 September 2026. Both 300-hub enlarged-memory runs
+> ended at the solver time limit without an incumbent. The instructions below
+> are historical provenance, not a request to resubmit. See the
+> [Sprint B closure and Sprint C comparison](sprint_b_closure_sprint_c_comparison.md).
+
 This revision replaces the four-case repeat at commit `e5a2334`. Only the two
 unsuccessful 300-hub variants are resubmitted. The running 215-hub experiments
 are neither modified nor dependencies of these new jobs. Any independently
