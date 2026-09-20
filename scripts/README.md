@@ -15,6 +15,7 @@ supports `--help`; inspect its input and output defaults before execution.
 | Existing-run audit | `audit_existing_run.py` | Rebuild model audit after identity checks; does not optimize |
 | Quality receipt | `run_validation_suite.py` | Run Ruff, pytest and build; record environment-bound receipt |
 | Final acceptance | `validate_v020_evidence.py` | Assess required references and quality evidence; does not solve |
+| Manuscript comparison | `build_manuscript_comparison.py`, `check_manuscript.py` | Generate/check frozen tables and figures; no solver execution |
 | Bounded retries | `run_pr25_nine_scenario_retry.py`, matching `.slurm` | Guard approved identity and isolated outputs for two reference retries |
 | Presentation | `build_mvp_scientific_evidence.py`, `generate_scientific_plots.py`, `generate_scientific_results.py` | Build tables/figures from existing outputs, with historical defaults |
 | Original-evidence comparison | `finalize_solver_comparison.py` | Verify the frozen Sprint C archive, reconcile exported input identities and generate the 13-attempt report; no solver execution |

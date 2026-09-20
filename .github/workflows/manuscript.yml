@@ -1,7 +1,7 @@
 name: Manuscript draft
 on:
   pull_request:
-    paths: ['manuscript/**', 'scripts/check_manuscript.py', '.github/workflows/manuscript*.yml']
+    paths: ['manuscript/**', 'scripts/*manuscript*.py', 'docs/evidence/sprint_c_final_20260920/**', '.github/workflows/manuscript*.yml']
   workflow_dispatch:
 permissions:
   contents: read
@@ -19,9 +19,11 @@ jobs:
         with:
           version: '1.10.18'
           tinytex: true
+      - run: python scripts/build_manuscript_comparison.py --check
       - run: python scripts/check_manuscript.py
       - run: quarto render manuscript
       - run: python scripts/check_manuscript.py --rendered
+      - run: python scripts/package_manuscript.py --output manuscript/_manuscript/coauthor-latex.zip
       - uses: actions/upload-artifact@v4
         with:
           name: manuscript-draft

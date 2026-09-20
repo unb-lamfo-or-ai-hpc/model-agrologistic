@@ -11,17 +11,43 @@ From the repository root, use Quarto 1.10.18 and TinyTeX:
 
 ```bash
 python scripts/check_manuscript.py
+python scripts/build_manuscript_comparison.py --check
 quarto render manuscript
 python scripts/check_manuscript.py --rendered
 ```
 
 Outputs are `manuscript/_manuscript/index.html` and
 `manuscript/_manuscript/index.pdf`. CI retains the rendered artifact.
+Create a portable coauthor project after rendering:
+
+```bash
+python scripts/package_manuscript.py --output manuscript/_manuscript/coauthor-latex.zip
+```
+
+The ZIP contains `main.tex`, the PDF, bibliography, figures, rights notices and
+checksums. Compile with pdfLaTeX, BibTeX and two further pdfLaTeX passes. Use a
+new output filename for each review: the packager does not overwrite archives.
+
 To regenerate the five data-driven figures, install the project visualization
 dependencies and run `python manuscript/build_review_figures.py`.
-No Gurobi license is required for document or figure generation.
+Run `python scripts/build_manuscript_comparison.py` to regenerate the current
+thirteen-attempt tables, pipeline figure and comparison figure. Their source
+and generated hashes are recorded in `comparison_provenance.json`.
+No solver license is required for document or figure generation.
 
 ## Evidence boundary
+
+The current Results section uses the
+[final solver comparison](../docs/evidence/sprint_c_final_20260920/comparison_summary.md):
+seven Gurobi and six SCIP attempts. Gurobi has four quality-certified results at
+215/300 hubs and three valid uncertified incumbents. All SCIP attempts at 215/300
+have no incumbent. SCIP 400 is preflight-only; no 500 solve is reported.
+`comparison_results.qmd` is generated, not manually transcribed. Conditional
+economic observations do not establish a causal direct-arc benefit.
+
+The [historical reference supplement](historical_reference_results.md) retains
+the original ten-reference tables and figures. Its status is not the status of
+the later thirteen-attempt cohort described above.
 
 [results_snapshot.json](results_snapshot.json) records the plotted measurements.
 The final validation receipt is archived in

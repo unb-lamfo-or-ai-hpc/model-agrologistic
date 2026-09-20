@@ -19,8 +19,26 @@ executions from four manifests. It is a validation plan, not a solver manifest.
 The original 3600-second selection remains in
 [v020_validation_reference_t3600.yaml](v020_validation_reference_t3600.yaml).
 Retries use fresh names and output directories; do not overwrite earlier runs.
-Eight accepted references are retained. The two retries are pending in the
-latest maintainer-supplied checkpoint, not accepted by this documentation.
+The historical selection closed with nine accepted references and one incomplete
+warehouse-only nine-scenario hierarchy. The original aggregate certificate remains
+rejected. The later comparison below has a different time/gap/network contract
+and does not retroactively change that certificate.
+
+## Completed nine-scenario solver comparison
+
+The [frozen comparison](../docs/evidence/sprint_c_final_20260920/comparison_summary.md)
+contains seven Gurobi and six SCIP attempts at 215--400 warehouses, including
+unsuccessful configurations and identified repeats. Its nominal optimization
+budget is 28800 seconds, with a 10% capacity/economic pass-gap target and a
+separate absolute service certificate. Four Gurobi attempts at 215/300 are
+quality-certified; three have valid but uncertified incumbents. All six SCIP
+attempts at 215/300 ended without incumbents. SCIP 400 is preflight-only.
+
+Historical launch protocols document actual configurations and failure handling;
+they are not pending submissions. No new NPAD run is required to reproduce the
+comparison or manuscript. Use the [artifact dictionary](../docs/artifact_dictionary.md)
+to distinguish input readiness, independent feasibility and solution quality.
+Raw manifests remain frozen; a new solve requires a new output identity.
 
 Thesis index 6 is stochastic because indices 0–5 contain the six deterministic
 configurations. Thesis index 1 is the deterministic direct-arc case, not the

@@ -14,6 +14,9 @@ MANUSCRIPT = ROOT / "manuscript"
 def check(*, rendered: bool = False, publication: bool = False) -> None:
     """Fail on unresolved citations, changed vendor files or unsafe publication."""
     article = (MANUSCRIPT / "index.qmd").read_text(encoding="utf-8")
+    for included in re.findall(r"\{\{< include ([A-Za-z0-9_-]+\.qmd) >\}\}", article):
+        article = article.replace("{{< include " + included + " >}}",
+                                  (MANUSCRIPT / included).read_text(encoding="utf-8"))
     bibliography = (MANUSCRIPT / "references.bib").read_text(encoding="utf-8")
     selection = json.loads((MANUSCRIPT / "citation_selection.json").read_text())
     evidence = json.loads((MANUSCRIPT / "evidence_status.json").read_text())
@@ -88,12 +91,20 @@ def check(*, rendered: bool = False, publication: bool = False) -> None:
     if evidence["final_four_level_status"] != "accepted":
         if evidence["publication_ready"] or evidence["numeric_results_included"]:
             raise ValueError("Pending evidence cannot be labeled publication-ready")
+        normalized_article = " ".join(article.split())
         for required in ("100%", "economic pass was not executed",
                          "report therefore remains rejected"):
-            if required not in article:
+            if required not in normalized_article:
                 raise ValueError("The negative experimental outcome must remain explicit")
         if evidence.get("running_job") is not None:
             raise ValueError("Closed evidence must not report a running job")
+    comparison = json.loads((MANUSCRIPT / "comparison_provenance.json").read_text())
+    if (comparison["attempt_count"], comparison["quality_certified_count"],
+            comparison["scip_incumbent_count"]) != (13, 4, 0):
+        raise ValueError("Changed manuscript cohort requires editorial review")
+    for relative, digest in comparison["generated"].items():
+        if hashlib.sha256((MANUSCRIPT / relative).read_bytes()).hexdigest() != digest:
+            raise ValueError(f"Generated comparison checksum mismatch: {relative}")
     if rendered:
         html = (MANUSCRIPT / "_manuscript/index.html").read_text(encoding="utf-8")
         for key in keys:

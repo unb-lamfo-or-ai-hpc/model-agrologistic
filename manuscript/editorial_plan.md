@@ -4,9 +4,11 @@
 
 The completed bounded computational study concerns model growth, reproducible
 data preparation, independent validation and resource-limited optimization.
-Nine selected references were accepted; the final warehouse-only nine-scenario
-trial ended in a capacity-pass time limit. This negative outcome is part of the
-Results and Discussion, not a placeholder or a claim of infeasibility.
+The original ten-reference experiment remains a separately identified historical
+baseline. The current comparison reports thirteen attempts: four quality-certified
+Gurobi results, three valid uncertified Gurobi incumbents and six SCIP attempts
+without incumbents. All outcomes enter the descriptive comparison; neither a
+universal network limit nor a controlled solver speedup is inferred.
 
 The literature synthesis cites 35 sources, credits Rosa's doctoral thesis and
 distinguishes the present extension from exact historical numerical replication.
@@ -33,3 +35,17 @@ negative outcomes or their numerical qualifications.
 
 The generative-AI declaration immediately precedes References. Figures are
 generated from explicit recorded observations rather than synthetic results.
+
+## Coauthor review sequence
+
+The documentation and manuscript implementation streams are complete when their
+integrity checks, PDF/HTML rendering and portable-source build pass. They do not
+replace coauthor approval. The next editorial sequence is: scientific review of
+model assumptions and conditional costs; reconciliation of coauthor edits into
+Quarto; journal choice and current-guide verification; rights/declarations check;
+then separately authorized integration, public deployment and submission.
+
+Preserve the substantive introduction and 35-reference synthesis. No predictive
+results are added without an evaluated forecasting or learning experiment.
+Controlled root-LP studies, larger populations and hierarchy-preserving Benders
+remain future work rather than prerequisites for describing the completed cohort.

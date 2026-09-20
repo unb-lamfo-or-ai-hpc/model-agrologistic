@@ -35,22 +35,23 @@ No numerical source comments or docstrings are changed in this documentation
 increment: those edits change the implementation identity even when semantics
 are unchanged. Preserve the original campaign source/runtime for replay.
 
-## Remaining Sprint D review
+## Completed Sprint D integration
 
-1. Reconcile the experiment, test and data catalogues with the completed campaign,
+1. Reconciled the experiment, test and data catalogues with the completed campaign,
    recording which gates establish software qualification, input readiness,
    independent feasibility and hierarchical solution quality.
-2. Review reader-facing examples so historical launch commands cannot be mistaken
+2. Reviewed reader-facing examples so historical launch commands cannot be mistaken
    for pending execution. Keep original parameter choices and failures available
    in clearly dated protocols; do not rewrite frozen manifests.
-3. Audit links, units and objective terminology. Distinguish scenario-weighted
+3. Added an artifact dictionary covering outputs, units and objective terminology.
+   It distinguishes scenario-weighted
    violation quantities from installed capacity, solver internal memory limits
    from process RSS, and configured threads from scheduler CPU allocations.
-4. Prepare the manuscript handoff from the machine-readable comparison. Report
-   missing evidence and unmatched measurement scopes as limitations rather than
-   manufacturing common metrics.
+4. Generated the manuscript comparison directly from frozen machine-readable
+   records. Missing evidence and unmatched measurement scopes remain limitations;
+   unobserved economic outcomes are not replaced by default zero values.
 
-## Sprint E handoff
+## Sprint E implementation and editorial handoff
 
 Preserve and refine the introduction and related-work coverage. Update methods,
 experimental design, results, discussion and future work using the final table,
@@ -70,3 +71,30 @@ inherited objective limits and exported-summary rather than full matrix identity
 Larger networks, further algorithmic tuning and Benders decomposition belong to
 future experiments; they are not demonstrated benefits. Dataset publication
 remains subject to curation, source rights and an explicit release decision.
+
+The revised English manuscript preserves the seven authors, the substantive
+introduction, 35 cited references and deterministic/two-stage formulations.
+Methods and results now contain the thirteen-attempt comparison, per-stage gaps
+and times, conditional costs, resource settings and a diagram of the implemented
+pipeline. Historical reference results remain in a separate Markdown supplement.
+
+`scripts/build_manuscript_comparison.py --check` verifies the committed tables
+and figure identities against the frozen comparison. Quarto renders HTML/PDF
+without executing optimization. `scripts/package_manuscript.py` creates a
+portable LaTeX project with bibliography, figures, rights notices and checksums;
+it refuses to overwrite an existing review ZIP.
+
+Remaining decisions are editorial: coauthor review, venue selection, formatting,
+rights and release authorization. Implementation completion does not imply
+journal submission, public deployment or acceptance of the historical rejected
+validation certificate. No new NPAD campaign is required for this increment.
+
+## Deferred NPAD housekeeping
+
+No files are moved or deleted in this increment. A later read-only inventory
+must distinguish active checkouts, environments, canonical inputs, accepted and
+unsuccessful evidence, caches and superseded staging files. Preserve virtual
+environments in place. Plan compression only for identified superseded material,
+with hashes and an index; verify space for the archive before any operation.
+Keep evidence paths traceable and obtain a reviewed target list before moving
+material into a small number of project-owned archive or quarantine directories.

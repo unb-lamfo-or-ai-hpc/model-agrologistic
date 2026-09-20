@@ -31,5 +31,11 @@ replication remain unclaimed. Separate capacity slacks are a declared change
 from the historical shared slack, and the policy hierarchy is another change.
 
 Reviewers should check the rendered equations, not infer correctness from a
-successful LaTeX build. The independent NPAD evidence and its unresolved tenth
-reference remain the authority for scientific acceptance.
+successful LaTeX build. The original NPAD reference certificate remains unchanged.
+The later nine-scenario evidence is separately recorded in
+`docs/evidence/sprint_c_final_20260920/`. The native stochastic SCIP backend
+implements the shared investment and scenario recourse contract using sequential
+priorities and explicit inherited limits. Small-instance parity and exported-input
+reconciliation do not establish full matrix identity for every large run.
+The manuscript distinguishes this solver extension from the historical reference
+fingerprint above; no numerical source is changed by the editorial revision.
