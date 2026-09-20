@@ -10,12 +10,12 @@ independent output validation.
 | Historical input lineage | `artur_benchmark`, `artur_instance`, `artur_normalization`, `artur_adapter` |
 | Real population extension | `warehouse_population`, `warehouse_workbook` |
 | Road-distance authority | `osrm`, `policy_osrm` |
-| Selected graph | `route_filtering`, `route_coverage`, `route_connectivity` |
+| Selected graph | `route_filtering`, `route_coverage`, `route_connectivity`, `interhub_connectivity` |
 | Frozen mathematical semantics | `mathematical_contract`, `capacity_bounds` |
-| Solver facade and native models | `optimization`, `optimization_gurobipy`, `optimization_gurobipy_stochastic` |
+| Solver facade and native models | `optimization`, `optimization_gurobipy`, `optimization_gurobipy_stochastic`, `optimization_scip` |
 | Value-of-information analysis | `stochastic_analysis_gurobipy` |
 | Independent checks and identities | `solution_validation`, `run_integrity`, `v020_validation` |
-| Execution and diagnostics | `experiment_runner`, `model_audit`, `objective_diagnostics` |
+| Execution and diagnostics | `experiment_runner`, `model_audit`, `objective_diagnostics`, `solver_diagnostics` |
 | Metrics and presentation | `metrics`, `scientific_evidence`, `scientific_plots`, `scientific_results` |
 
 First-stage investments are common to scenarios in the extensive form. Flow,
@@ -35,7 +35,15 @@ against their original checkout/runtime; never rewrite a hash to admit evidence.
 ## Legacy and optional modules
 
 `optimization_pyomo` is not a parity-certified alternative to the native model.
-The native SCIP facade is a reserved, explicitly unimplemented path. `prediction`
+The native SCIP stochastic backend implements shared first-stage decisions and
+scenario-dependent recourse with sequential service/capacity/economic passes.
+Analytical and licensed miniature cross-backend qualification passed on NPAD.
+That qualification does not imply large-instance convergence: the completed
+215/300-warehouse SCIP/SoPlex attempts yielded no incumbent within their budgets.
+Deterministic SCIP, EVPI/VSS and IIS are explicitly unsupported. See the
+[comparison report](../docs/evidence/sprint_c_final_20260920/comparison_summary.md).
+
+`prediction`
 retains exploratory forecasting code outside the reference campaign; importing
 it can invoke historical environment-repair logic, so it is not an import-only
 documentation probe. No forecasting reconstruction is claimed for the thesis.
