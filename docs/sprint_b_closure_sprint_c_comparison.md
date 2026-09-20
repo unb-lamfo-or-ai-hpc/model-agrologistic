@@ -1,5 +1,18 @@
 # SCIP experimental closure and initial cross-solver comparison
 
+## Final comparative assessment
+
+The subsequent original-evidence package closes Sprint C for the supplied
+13-attempt cohort. The [final report](evidence/sprint_c_final_20260920/comparison_summary.md)
+supersedes the preliminary nine-attempt subset below. Historical 215-hub and
+300-hub Gurobi audits are now included, together with exported-input identity
+reconciliation and verification of supplied completion-bound artifacts. Raw
+workbooks and complete solution files were not transferred; full revalidation
+and hardware-neutral solver comparisons are not claimed. Sprint D has started
+with the [documentation revision](sprint_d_documentation.md). The following
+sections preserve the chronology of the preliminary assessment, including its
+then-missing evidence; they are not additional execution instructions.
+
 ## Scope and research question
 
 The SCIP experimental campaign (Sprint B) is closed as of 20 September 2026.
