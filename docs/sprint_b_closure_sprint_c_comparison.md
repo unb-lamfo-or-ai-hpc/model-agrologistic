@@ -135,6 +135,45 @@ established universal maximum network size from these experiments.
 
 ### Remaining Sprint C deliverables
 
+The original SCIP evidence archive has now been inspected. Its SHA-256 is
+`6e205d591c9b49a8736da1395711bbc8a5b655404678e4556e83f97affa0ef33`.
+All six included campaign YAML files match their audit-declared hashes, and
+the separately supplied scheduler accounting is byte-identical to the archived
+copy. These checks verify the supplied package, not absent underlying solution
+or workbook files. The six SCIP stage exports confirm zero solutions in all
+attempts: four time limits and two original memory limits.
+
+The derived comparison deliberately suppresses scenario service extrema of
+`1.0` exported for no-incumbent runs. These defaults are not evidence of full
+service. Original audit files remain unchanged; the derived JSON records both
+the suppressed values and an explicit unavailable value. The broad original
+`independent_validation_not_accepted` label is retained alongside the more
+informative native termination and incumbent status.
+
+`scripts/build_solver_comparison.py` creates an initial reproducible nine-case
+subset (six SCIP attempts and three all-barrier Gurobi attempts), per-stage JSON,
+archive/member hash inventory, Markdown summary, timing/memory PNG, and output
+hash manifest. It reads archives without extraction and refuses ambiguous archive
+members, manifest hash mismatches, or contradictory case/stage evidence. Ten
+regression tests cover no-incumbent handling, retained valid incumbents, identity
+checks, manifest tampering, and unsafe archive paths.
+
+Run locally with the two supplied archives and scheduler accounting:
+
+```bash
+python scripts/build_solver_comparison.py \
+  --scip-archive /path/to/scip-evidence.tar.gz \
+  --gurobi-archive /path/to/sprint-a-final-audits-20260919T121646Z.tar.gz \
+  --accounting /path/to/scheduler_accounting.txt \
+  --output-dir data/results/validation/sprint-c-comparison-new
+```
+
+Use an explicit existing input path and a new output directory; the example
+input paths are placeholders, not NPAD endpoints. No optimization is executed.
+Original historical Gurobi 215-hub and direct-300 audit packages and original
+run fingerprints remain necessary for the complete paired comparison. They are
+not fabricated from remembered aggregate values or counted as failed runs.
+
 - Consolidate original audit JSON, run summaries, stage tables, manifests,
   resource receipts and source/input hashes in a comparison inventory.
 - Produce a machine-readable case table and a separate per-stage table, with
@@ -145,10 +184,9 @@ established universal maximum network size from these experiments.
 - Reconcile original quality gates with the paired-input and inherited-priority
   review. No new large optimization is necessary to perform this analysis.
 
-The supplied native log excerpts establish terminal stop reasons and absence
-of incumbents. They do not replace the original exported audit files or their
-hash verification. Sprint B execution is closed; Sprint C evidence packaging
-and the final paired comparison remain in progress.
+The supplied logs and original audit exports agree on terminal stop reasons and
+absence of incumbents. Sprint B is closed; the initial Sprint C subset is
+generated, while the full paired comparison remains in progress.
 
 ## Subsequent deliverables
 
@@ -163,18 +201,19 @@ algorithmic alternatives and Benders remain future work, not completed results.
 ## Deferred NPAD home-directory consolidation
 
 The final housekeeping phase begins with a read-only inventory of directory
-sizes, Git worktrees, virtual environments, symbolic links, active jobs, and
-absolute-path references. A possible compact layout retains the existing
-repository and OSRM store and adds one `agrologistic-work` parent containing
-worktrees, environments, evidence, logs and exports. Existing input, scientific
+sizes, Git worktrees, symbolic links, active jobs, and absolute-path references.
+The qualified virtual environment remains in its current location and must not
+be moved or recreated for housekeeping. New intermediate artifacts belong in
+explicit project-owned output directories, not loose in the home-directory root.
+A possible compact layout retains the existing repository, virtual environment
+and OSRM store and consolidates eligible evidence, logs and exports. Existing input, scientific
 archive and quarantine directories must be inventoried before deciding whether
 they can be consolidated or already contain duplicates.
 
 No deletion or relocation is authorized by this document. Preserve historical
 manifests and checksums; record old-to-new paths in a separate relocation map.
-Git worktrees require Git-aware relocation. Virtual environments and embedded
-absolute paths must not be assumed portable: recreate and requalify an environment
-when necessary, and retain the original until the replacement is verified.
+Git worktrees require Git-aware relocation if separately approved later. Embedded
+absolute paths must be inventoried; no virtual-environment relocation is planned.
 Move or archive only explicit reviewed targets after all relevant jobs finish,
 with checksum verification and a recovery copy. The home directory itself is
 never a recursive move or deletion target.
