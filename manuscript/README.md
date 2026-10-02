@@ -72,7 +72,11 @@ controlled parallel-speedup experiments remain outside the observed evidence.
 [evidence_status.json](evidence_status.json) distinguishes the experimental
 outcome from publication approval. A merge into develop does not deploy Pages
 or imply author approval for journal submission. The separate Pages workflow is
-restricted to main and requires a reviewed publication gate. This separation
+restricted to main/develop and requires a hash-bound public-review approval,
+an explicit manual-dispatch acknowledgement and the repository enable variable.
+The owner authorized publication of this coauthor-review snapshot on 2 October
+2026; `pages_approval.json` records its source identities without credentials.
+This separation
 does not require changing the rejected certificate into a successful one.
 
 ## Sources, authorship and mathematical traceability
@@ -115,4 +119,5 @@ date and alternative-source counts require reconciliation. Zenodo record
 22751909 remains an unpublished draft, not a released dataset or public DOI.
 Dataset rights, funding, competing interests, CRediT roles and coauthor approval
 must be resolved before submission. Integration into GitHub does not authorize
-journal submission, arXiv upload or public Pages deployment.
+journal submission, arXiv upload or dataset publication. The separate owner
+authorization covers only the reviewed GitHub Pages snapshot.
