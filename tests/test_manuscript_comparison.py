@@ -31,6 +31,20 @@ def test_every_attempt_retained_and_missing_economics_not_zero():
     assert text.count("Memory limit") == 2
     assert text.count("Time limit") == 4
     assert text.count("| Certified |") == 4
+    assert "Capacity-stage optimality gap (%)" in text
+    assert "not a physical capacity shortfall" in text
+
+
+def test_coauthor_research_questions_do_not_imply_unexecuted_comparisons():
+    text = (MODULE.MANUSCRIPT / "index.qmd").read_text(encoding="utf-8")
+    abstract = text.split("abstract: >-", 1)[1].split("keywords:", 1)[0]
+    assert "rosa2026thesis" not in abstract
+    assert "Artur" not in abstract
+    assert "within eight hours on a single node" in text
+    assert "holds the scenario count at nine" in text
+    assert "An additional experiment should determine" in text
+    assert "capacity-stage optimality gap" in text
+    assert "bulk-handling" in text
 
 
 def test_new_incumbent_requires_explicit_scientific_revision():
