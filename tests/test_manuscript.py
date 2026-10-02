@@ -42,7 +42,31 @@ def test_computational_focus_credits_thesis_without_speedup_claims(manuscript):
 
 
 def test_publication_requires_later_review(manuscript):
+    (manuscript / "pages_approval.json").unlink(missing_ok=True)
     with pytest.raises(ValueError, match="Publication blocked"):
+        CHECKER.check(publication=True)
+
+
+def test_pages_approval_does_not_certify_scientific_results(manuscript):
+    CHECKER.check(publication=True)
+    evidence = json.loads((manuscript / "evidence_status.json").read_text())
+    assert evidence["publication_ready"] is False
+    assert evidence["final_four_level_status"] == "rejected"
+
+
+def test_pages_approval_rejects_changed_sources(manuscript):
+    path = manuscript / "index.qmd"
+    path.write_bytes(path.read_bytes() + b"\n")
+    with pytest.raises(ValueError, match="approved source changed"):
+        CHECKER.check(publication=True)
+
+
+def test_pages_approval_cannot_authorize_submission(manuscript):
+    path = manuscript / "pages_approval.json"
+    approval = json.loads(path.read_text())
+    approval["journal_submission_authorized"] = True
+    path.write_text(json.dumps(approval))
+    with pytest.raises(ValueError, match="out-of-scope approval"):
         CHECKER.check(publication=True)
 
 
