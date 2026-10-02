@@ -33,7 +33,7 @@ jobs:
           tex_bin="$HOME/.TinyTeX/bin/x86_64-linux"
           test -x "$tex_bin/tlmgr"
           echo "$tex_bin" >> "$GITHUB_PATH"
-          "$tex_bin/tlmgr" install orcidlink pgf caption bookmark xurl footnotehyper microtype lmodern amsfonts geometry natbib etoolbox booktabs tools babel-english parskip xcolor
+          "$tex_bin/tlmgr" install orcidlink pgf caption bookmark xurl footnotehyper microtype lm amsfonts geometry natbib etoolbox booktabs tools babel-english parskip xcolor
       - run: quarto render manuscript
       - run: quarto render manuscript/supplement
       - run: python scripts/assemble_manuscript_outputs.py
