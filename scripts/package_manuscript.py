@@ -1,4 +1,4 @@
-"""Export a rendered Quarto manuscript as a portable, checksummed LaTeX ZIP."""
+"""Export an editable, flat Elsevier submission/review package with checksums."""
 from __future__ import annotations
 
 import argparse
@@ -11,18 +11,25 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def package(output: Path, *, root: Path = ROOT) -> None:
-    """Include only explicit publication assets, never runtime or library files."""
+    """Allowlist publication assets; preserve prior distributed ZIP files."""
     manuscript = root / "manuscript"
     rendered = manuscript / "_manuscript"
     tex = rendered / "_tex"
+    supplement = manuscript / "supplement"
     files = {
         "main.tex": tex / "index.tex",
         "main.pdf": rendered / "index.pdf",
         "references.bib": tex / "references.bib",
-        "sbc-template.sty": tex / "sbc-template.sty",
+        "elsarticle.cls": manuscript / "_extensions/elsevier/elsarticle.cls",
+        "elsarticle-harv.bst": manuscript / "_extensions/elsevier/bib/elsarticle-harv.bst",
+        "supplement.tex": supplement / "index.tex",
+        "supplement.pdf": supplement / "_supplement/index.pdf",
+        "review-methods.bib": manuscript / "review-methods.bib",
+        "highlights.txt": manuscript / "highlights.txt",
         "LICENSE": root / "LICENSE",
-        "THIRD_PARTY_NOTICES.md": manuscript / "vendor/THIRD_PARTY_NOTICES.md",
-        "quarto-sbc-LICENSE": manuscript / "vendor/quarto-sbc-LICENSE",
+        "ELSEVIER_TEMPLATE_NOTICES.md": manuscript / "vendor/ELSEVIER_TEMPLATE_NOTICES.md",
+        "quarto-elsevier-LICENSE": manuscript / "vendor/quarto-elsevier-LICENSE",
+        "elsevier_provenance.json": manuscript / "elsevier_provenance.json",
         "comparison_provenance.json": manuscript / "comparison_provenance.json",
         "evidence_status.json": manuscript / "evidence_status.json",
     }
@@ -30,27 +37,33 @@ def package(output: Path, *, root: Path = ROOT) -> None:
         raise FileNotFoundError("Render the manuscript before packaging its figures")
     for figure in sorted((tex / "figures").iterdir()):
         if figure.is_file() and figure.suffix.lower() in {".png", ".pdf", ".jpg", ".svg"}:
-            files[f"figures/{figure.name}"] = figure
+            files[figure.name] = figure
     payload = {name: path.read_bytes() for name, path in files.items()}
+    # Editorial Manager expects a single file level, not figure subdirectories.
+    main = payload["main.tex"].decode("utf-8").replace("figures/", "")
+    payload["main.tex"] = main.encode("utf-8")
     payload["README.md"] = (
-        b"# Coauthor LaTeX project\n\n"
+        b"# Editable Elsevier review project\n\n"
         b"Open main.tex in a TeX distribution or upload this ZIP to Overleaf.\n"
         b"Build with pdflatex main, bibtex main, then pdflatex main twice.\n"
-        b"The included main.pdf is the reviewed Quarto rendering of this source.\n"
-        b"Standard packages include natbib, orcidlink, longtable, calc and float.\n\n"
-        b"Quarto manuscript/index.qmd in the source repository remains authoritative;\n"
-        b"return annotated edits to the authors for reconciliation. This package\n"
-        b"does not execute optimization and does not contain raw datasets, solver\n"
-        b"credentials or local bibliography-library attachments. Original project\n"
-        b"content is MIT; third-party rights are described in the included notices.\n\n"
-        b"Source repository: https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic\n"
-        b"Publication and journal submission require separate author approval.\n"
+        b"Build the separate appendix with pdflatex supplement twice; its\n"
+        b"reference list is already typeset in the generated source.\n"
+        b"All files occupy one level for Editorial Manager compatibility.\n"
+        b"The PDFs accompany their editable sources; PDF alone is not a submission.\n\n"
+        b"Quarto manuscript/index.qmd and manuscript/supplement/index.qmd remain\n"
+        b"the authoritative sources. Return edits for reconciliation there.\n"
+        b"This archive contains no solver credentials, raw workbooks or private\n"
+        b"library attachments. It does not certify scientific or submission readiness.\n"
+        b"The appendix's search chronology and alternative-source counts require\n"
+        b"author reconciliation; the Zenodo dataset is not yet a published deposit.\n\n"
+        b"Original contributions are MIT. The publisher class and bibliography\n"
+        b"styles retain their own license terms, detailed in the included notices.\n"
+        b"Journal/preprint submission requires approval of all authors.\n"
     )
     payload["SHA256SUMS.json"] = (json.dumps({
         name: hashlib.sha256(content).hexdigest() for name, content in payload.items()
     }, indent=2) + "\n").encode()
     output.parent.mkdir(parents=True, exist_ok=True)
-    # Exclusive creation protects previously distributed review packages.
     with zipfile.ZipFile(output, "x", compression=zipfile.ZIP_DEFLATED) as archive:
         for name, content in payload.items():
             archive.writestr(name, content)

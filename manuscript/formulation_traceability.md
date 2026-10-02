@@ -10,7 +10,7 @@ No optimizer or experimental configuration is changed by this manuscript commit.
 |:--|:--|
 | eq-candidate, eq-investment | optimization_gurobipy.py candidate/expansion/bulkification constraints; stochastic _add_first_stage_constraints |
 | eq-nominal | _effective_static_capacity_expr, _effective_reception_capacity_expr, _effective_shipping_capacity_expr under daily_factors |
-| eq-freight | Four _unit_cost helpers; receiving transshipment cost appears on OD and DD only |
+| eq-operating-cost | Four _unit_cost helpers are expanded explicitly; receiving transshipment cost appears on OD and DD only |
 | eq-investment-cost, eq-operating-cost, eq-penalty, eq-det-objective | Deterministic cost expressions and stochastic _build_investment_costs/_build_scenario_costs |
 | eq-supply, eq-inout, eq-inventory | supply_balance and inventory_balance |
 | eq-service, eq-export | domestic_demand equality and export_upper_bound |
@@ -22,7 +22,7 @@ No optimizer or experimental configuration is changed by this manuscript commit.
 
 Notation deliberately uses a single shared investment vector. Symbols outside
 eligible investment sets equal zero. The scalable candidate case is written
-in full; fixed-size behavior is qualified in the adjacent text. Domain,
+in full; fixed-size behavior remains a separate archived configuration. Domain,
 activation, exclusivity, initial-stock and terminal-stock rules are explicit.
 
 The complete historical formulation chapter was not in the supplied thesis

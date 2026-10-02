@@ -1,0 +1,25 @@
+project:
+  type: default
+  output-dir: _supplement
+  render:
+    - index.qmd
+metadata-files:
+  - ../authors.json
+lang: en
+execute:
+  enabled: false
+format:
+  html:
+    embed-resources: true
+    number-sections: true
+  pdf:
+    documentclass: article
+    fontsize: 11pt
+    papersize: a4
+    pdf-engine: pdflatex
+    latex-auto-install: false
+    keep-tex: true
+    number-sections: true
+    cite-method: citeproc
+    geometry:
+      - margin=25mm

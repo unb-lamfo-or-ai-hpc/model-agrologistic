@@ -11,6 +11,34 @@ ROOT = Path(__file__).resolve().parents[1]
 MANUSCRIPT = ROOT / "manuscript"
 
 
+def check_public_review_approval() -> None:
+    """Authorize only the reviewed Pages snapshot, not journal submission."""
+    path = MANUSCRIPT / "pages_approval.json"
+    if not path.is_file():
+        raise ValueError("Publication blocked: Pages approval receipt missing")
+    approval = json.loads(path.read_text(encoding="utf-8"))
+    if (approval.get("schema_version") != "manuscript-pages-approval-v1"
+            or approval.get("repository") != "unb-lamfo-or-ai-hpc/model-agrologistic"
+            or approval.get("scope") != "public_coauthor_review"
+            or approval.get("authorized_by") != "repository_owner"
+            or approval.get("approved") is not True
+            or approval.get("journal_submission_authorized") is not False
+            or approval.get("dataset_publication_authorized") is not False):
+        raise ValueError("Publication blocked: invalid or out-of-scope approval")
+    digests = approval.get("source_sha256", {})
+    required = {"index.qmd", "authors.json", "references.bib", "review-methods.bib",
+                "supplement/index.qmd", "comparison_results.qmd",
+                "historical_reference_results.md", "evidence_status.json"}
+    if not required <= digests.keys():
+        raise ValueError("Publication blocked: incomplete source approval")
+    for relative, digest in digests.items():
+        target = (MANUSCRIPT / relative).resolve()
+        if not target.is_relative_to(MANUSCRIPT.resolve()) or not target.is_file():
+            raise ValueError("Publication blocked: invalid approved source path")
+        if hashlib.sha256(target.read_bytes()).hexdigest() != digest:
+            raise ValueError(f"Publication blocked: approved source changed: {relative}")
+
+
 def check(*, rendered: bool = False, publication: bool = False) -> None:
     """Fail on unresolved citations, changed vendor files or unsafe publication."""
     article = (MANUSCRIPT / "index.qmd").read_text(encoding="utf-8")
@@ -73,7 +101,7 @@ def check(*, rendered: bool = False, publication: bool = False) -> None:
         if prohibited.casefold() in article.casefold():
             raise ValueError("Editorial instructions must not appear as research content")
     for required in ("## HPC experimental environment", "# Future work:",
-                     "{#eq-benders-feasibility}", "@kaltis2026", "@npad2026"):
+                     "feasibility cuts", "@kaltis2026", "@npad2026"):
         if required not in article:
             raise ValueError(f"Missing scientific context: {required}")
     labels = re.findall(r"\{#((?:eq|tbl|fig|sec)-[A-Za-z0-9_-]+)\}", article)
@@ -88,6 +116,31 @@ def check(*, rendered: bool = False, publication: bool = False) -> None:
         observed = hashlib.sha256((MANUSCRIPT / relative).read_bytes()).hexdigest()
         if observed != digest:
             raise ValueError(f"Vendored template checksum mismatch: {relative}")
+    current_template = json.loads((MANUSCRIPT / "elsevier_provenance.json").read_text())
+    for relative, digest in current_template["vendored_sha256"].items():
+        if hashlib.sha256((MANUSCRIPT / relative).read_bytes()).hexdigest() != digest:
+            raise ValueError(f"Elsevier template checksum mismatch: {relative}")
+    abstract = re.search(r"abstract: >-\n(.*?)\nkeywords:", article, re.DOTALL)
+    if not abstract or len(abstract.group(1).split()) > 250:
+        raise ValueError("The abstract must contain at most 250 words")
+    highlights = [
+        line[2:] for line in (MANUSCRIPT / "highlights.txt").read_text().splitlines()
+        if line.startswith("- ")
+    ]
+    if not 3 <= len(highlights) <= 5 or any(len(line) > 85 for line in highlights):
+        raise ValueError("Highlights require 3–5 statements of at most 85 characters")
+    supplement = (MANUSCRIPT / "supplement/index.qmd").read_text(encoding="utf-8")
+    review_bib = bibliography + (MANUSCRIPT / "review-methods.bib").read_text(encoding="utf-8")
+    review_keys = set(re.findall(r"@(?:article|incollection|book|misc|phdthesis)\{([^,]+),",
+                                review_bib))
+    review_cited = {
+        key for key in re.findall(r"(?<!\w)@([A-Za-z][A-Za-z0-9_-]*)", supplement)
+        if not key.startswith(("eq-", "tbl-", "fig-", "sec-"))
+    }
+    if review_cited - review_keys:
+        raise ValueError("Unresolved supplementary citation")
+    if "[NAME OF TOOL" in supplement or "[REASON]" in supplement:
+        raise ValueError("Unresolved supplementary declaration placeholder")
     if evidence["final_four_level_status"] != "accepted":
         if evidence["publication_ready"] or evidence["numeric_results_included"]:
             raise ValueError("Pending evidence cannot be labeled publication-ready")
@@ -117,10 +170,21 @@ def check(*, rendered: bool = False, publication: bool = False) -> None:
                 raise ValueError(f"Missing rendered author metadata: {row['name']}")
         pdf = MANUSCRIPT / "_manuscript/index.pdf"
         if not pdf.is_file() or not pdf.read_bytes().startswith(b"%PDF-"):
-            raise ValueError("SBC PDF output missing or malformed")
+            raise ValueError("Elsevier PDF output missing or malformed")
+        supplement_pdf = MANUSCRIPT / "_manuscript/supplementary-review.pdf"
+        if not supplement_pdf.is_file() or not supplement_pdf.read_bytes().startswith(b"%PDF-"):
+            raise ValueError("Supplementary PDF output missing or malformed")
+        supplement_html = (MANUSCRIPT / "_manuscript/supplementary-review.html").read_text(
+            encoding="utf-8")
+        supplement_content = re.sub(r"<(script|style)\b[^>]*>.*?</\1>", "",
+                                    supplement_html, flags=re.DOTALL | re.IGNORECASE)
+        if "citation-not-found" in supplement_content or "?@" in supplement_content:
+            raise ValueError("Unresolved rendered supplementary reference")
+        for key in review_cited:
+            if f'id="ref-{key}"' not in supplement_html:
+                raise ValueError(f"Missing rendered supplementary citation: {key}")
     if publication:
-        # Repository integration is distinct from author-approved public deployment.
-        raise ValueError("Publication blocked: author approval and deployment review required")
+        check_public_review_approval()
     print(f"MANUSCRIPT INTEGRITY CHECK: accepted ({len(keys)} cited references)")
 
 

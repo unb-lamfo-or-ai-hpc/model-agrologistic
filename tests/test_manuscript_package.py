@@ -24,8 +24,14 @@ def test_allowlisted_portable_package_and_checksums(tmp_path):
     paths = [
         "LICENSE", "manuscript/_manuscript/_tex/index.tex",
         "manuscript/_manuscript/index.pdf", "manuscript/_manuscript/_tex/references.bib",
-        "manuscript/_manuscript/_tex/sbc-template.sty",
-        "manuscript/vendor/THIRD_PARTY_NOTICES.md", "manuscript/vendor/quarto-sbc-LICENSE",
+        "manuscript/_extensions/elsevier/elsarticle.cls",
+        "manuscript/_extensions/elsevier/bib/elsarticle-harv.bst",
+        "manuscript/vendor/ELSEVIER_TEMPLATE_NOTICES.md",
+        "manuscript/vendor/quarto-elsevier-LICENSE",
+        "manuscript/supplement/index.tex",
+        "manuscript/supplement/_supplement/index.pdf",
+        "manuscript/review-methods.bib", "manuscript/highlights.txt",
+        "manuscript/elsevier_provenance.json",
         "manuscript/comparison_provenance.json", "manuscript/evidence_status.json",
         "manuscript/_manuscript/_tex/figures/pipeline.png",
         "manuscript/_manuscript/_tex/figures/private.log",
@@ -39,7 +45,9 @@ def test_allowlisted_portable_package_and_checksums(tmp_path):
     MODULE.package(output, root=tmp_path)
     with zipfile.ZipFile(output) as archive:
         names = archive.namelist()
-        assert "main.tex" in names and "figures/pipeline.png" in names
+        assert "main.tex" in names and "pipeline.png" in names
+        assert "elsarticle.cls" in names and "supplement.tex" in names
+        assert all("/" not in name for name in names)
         assert not any("private" in name or "credentials" in name for name in names)
         hashes = json.loads(archive.read("SHA256SUMS.json"))
         assert set(hashes) == set(names) - {"SHA256SUMS.json"}

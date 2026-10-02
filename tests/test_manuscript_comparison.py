@@ -26,8 +26,8 @@ def test_committed_comparison_matches_sources():
 def test_every_attempt_retained_and_missing_economics_not_zero():
     cases, stages = cohort()
     text = MODULE.render_tables(cases, stages)
-    assert "50.5203" in text and "99.9998" in text
-    assert "400 / W / B | Uncertified | 100.0000 | —" in text
+    assert "50.52" in text and "100.00" in text
+    assert "400 / W / B | Uncertified | 100.00 | —" in text
     assert text.count("Memory limit") == 2
     assert text.count("Time limit") == 4
     assert text.count("| Certified |") == 4
@@ -60,7 +60,7 @@ def test_literature_and_authorship_retained():
     manuscript = ROOT / "manuscript"
     text = (manuscript / "index.qmd").read_text(encoding="utf-8")
     assert "# Related work and research positioning" in text
-    assert "# Future work: Benders decomposition" in text
+    assert "# Future work: computational scaling and decomposition" in text
     assert "no trained prediction or solver-guidance module" in text
     assert "SCIP is a reserved extension" not in text
     authors = json.loads((manuscript / "authors.json").read_text(encoding="utf-8"))

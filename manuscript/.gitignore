@@ -9,6 +9,12 @@
 *.tex
 *.pdf
 !_extensions/sbc/template.tex
+!_extensions/elsevier/partials/*.tex
+!figures/*.pdf
 /sbc-template.sty
+/elsarticle.cls
+/elsarticle-harv.bst
+/*.spl
+/site_libs/
 
 **/*.quarto_ipynb

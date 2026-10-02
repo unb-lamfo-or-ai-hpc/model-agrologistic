@@ -19,9 +19,17 @@ jobs:
         with:
           version: '1.10.18'
           tinytex: true
+      - name: Install declared document dependencies
+        run: |
+          tex_bin="$HOME/.TinyTeX/bin/x86_64-linux"
+          test -x "$tex_bin/tlmgr"
+          echo "$tex_bin" >> "$GITHUB_PATH"
+          "$tex_bin/tlmgr" install orcidlink pgf caption bookmark xurl footnotehyper microtype lm amsfonts geometry natbib etoolbox booktabs tools babel-english parskip xcolor
       - run: python scripts/build_manuscript_comparison.py --check
       - run: python scripts/check_manuscript.py
       - run: quarto render manuscript
+      - run: quarto render manuscript/supplement
+      - run: python scripts/assemble_manuscript_outputs.py
       - run: python scripts/check_manuscript.py --rendered
       - run: python scripts/package_manuscript.py --output manuscript/_manuscript/coauthor-latex.zip
       - uses: actions/upload-artifact@v4
