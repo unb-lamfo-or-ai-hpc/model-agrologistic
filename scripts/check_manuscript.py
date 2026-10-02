@@ -11,6 +11,34 @@ ROOT = Path(__file__).resolve().parents[1]
 MANUSCRIPT = ROOT / "manuscript"
 
 
+def check_public_review_approval() -> None:
+    """Authorize only the reviewed Pages snapshot, not journal submission."""
+    path = MANUSCRIPT / "pages_approval.json"
+    if not path.is_file():
+        raise ValueError("Publication blocked: Pages approval receipt missing")
+    approval = json.loads(path.read_text(encoding="utf-8"))
+    if (approval.get("schema_version") != "manuscript-pages-approval-v1"
+            or approval.get("repository") != "unb-lamfo-or-ai-hpc/model-agrologistic"
+            or approval.get("scope") != "public_coauthor_review"
+            or approval.get("authorized_by") != "repository_owner"
+            or approval.get("approved") is not True
+            or approval.get("journal_submission_authorized") is not False
+            or approval.get("dataset_publication_authorized") is not False):
+        raise ValueError("Publication blocked: invalid or out-of-scope approval")
+    digests = approval.get("source_sha256", {})
+    required = {"index.qmd", "authors.json", "references.bib", "review-methods.bib",
+                "supplement/index.qmd", "comparison_results.qmd",
+                "historical_reference_results.md", "evidence_status.json"}
+    if not required <= digests.keys():
+        raise ValueError("Publication blocked: incomplete source approval")
+    for relative, digest in digests.items():
+        target = (MANUSCRIPT / relative).resolve()
+        if not target.is_relative_to(MANUSCRIPT.resolve()) or not target.is_file():
+            raise ValueError("Publication blocked: invalid approved source path")
+        if hashlib.sha256(target.read_bytes()).hexdigest() != digest:
+            raise ValueError(f"Publication blocked: approved source changed: {relative}")
+
+
 def check(*, rendered: bool = False, publication: bool = False) -> None:
     """Fail on unresolved citations, changed vendor files or unsafe publication."""
     article = (MANUSCRIPT / "index.qmd").read_text(encoding="utf-8")
@@ -156,8 +184,7 @@ def check(*, rendered: bool = False, publication: bool = False) -> None:
             if f'id="ref-{key}"' not in supplement_html:
                 raise ValueError(f"Missing rendered supplementary citation: {key}")
     if publication:
-        # Repository integration is distinct from author-approved public deployment.
-        raise ValueError("Publication blocked: author approval and deployment review required")
+        check_public_review_approval()
     print(f"MANUSCRIPT INTEGRITY CHECK: accepted ({len(keys)} cited references)")
 
 
