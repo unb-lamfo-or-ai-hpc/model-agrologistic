@@ -22,6 +22,21 @@ format:
     toc: true
     number-sections: true
     css: styles.css
-  sbc-pdf:
+  elsevier-pdf:
+    filters:
+      - vector-figures.lua
+    pdf-engine: pdflatex
+    latex-auto-install: false
+    keep-tex: true
+    fontsize: 11pt
+    papersize: a4
+    geometry:
+      - margin=25mm
     number-sections: true
-    fig-pos: H
+    journal:
+      name: Computers and Electronics in Agriculture
+      formatting: preprint
+      cite-style: authoryear
+    include-in-header:
+      text: |
+        \usepackage{orcidlink}

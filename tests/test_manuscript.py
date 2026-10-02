@@ -138,10 +138,31 @@ def test_editorial_source_is_not_manuscript_content(manuscript):
 
 def test_benders_has_feasibility_and_bound_qualifications(manuscript):
     article = (manuscript / "index.qmd").read_text(encoding="utf-8")
-    assert "{#eq-benders-feasibility}" in article
+    assert "feasibility cuts" in article
     assert "A time-limited master incumbent is not a" in article
     assert "not an implemented component" in article
     assert "does not remove all network" in article
+
+
+def test_elsevier_template_and_supplement_are_checked(manuscript):
+    path = manuscript / "_extensions/elsevier/partials/before-body.tex"
+    path.write_text("changed")
+    with pytest.raises(ValueError, match="Elsevier template checksum mismatch"):
+        CHECKER.check()
+
+
+def test_overlong_highlight_is_rejected(manuscript):
+    path = manuscript / "highlights.txt"
+    path.write_text("- " + "x" * 86 + "\n- second\n- third\n")
+    with pytest.raises(ValueError, match="Highlights"):
+        CHECKER.check()
+
+
+def test_review_counts_are_not_silently_corrected(manuscript):
+    text = (manuscript / "supplement/index.qmd").read_text(encoding="utf-8")
+    assert "subtracting two duplicates from 20 gives 18" in text
+    assert "ISO interpretation remains" in text
+    assert "[NAME OF TOOL" not in text
 
 
 def test_hardware_and_preliminary_results_are_distinguished(manuscript):

@@ -1,0 +1,322 @@
+---
+title: "Appendix A. Systematic literature review of agricultural facility-location models"
+date: 2026-10-02
+crossref:
+  tbl-prefix: Table A.
+  tbl-title: Table A.
+bibliography:
+  - ../references.bib
+  - ../review-methods.bib
+abstract: >-
+  This appendix presents the search protocol and structural synthesis of
+  nine mixed-integer agricultural facility-location and network-design studies.
+  The comparison distinguishes network representation, physical and economic
+  parameters, investment and operating decisions, objectives and constraints.
+  It supports the positioning of the grain-storage planning framework without
+  treating models with different commodity, uncertainty or capacity semantics
+  as directly comparable numerical benchmarks.
+keywords:
+  - agricultural logistics
+  - facility location
+  - systematic literature review
+  - mixed-integer programming
+---
+
+
+# Review objective and eligibility
+
+The review asks: which mixed-integer linear programming formulations address
+facility and hub location in grain and related agricultural logistics?
+It emphasizes Latin American settings and compares deterministic and
+uncertainty-aware models. Reporting follows the structure of PRISMA 2020
+[@page2021]. Eligible publications are peer-reviewed journal articles or
+conference papers presenting an explicit mixed-integer linear formulation
+for agricultural supply-chain nodes, without a publication-year restriction.
+Mixed-integer nonlinear formulations, studies without facility-location
+decisions and unrelated commodities are excluded from the core sample.
+Broader reviews and complementary planning studies inform the synthesis but
+are not counted as core location formulations.
+
+## Information sources and search strategy
+
+The search covered Scopus, SciELO, Semantic Scholar and Web of Science.
+Search concepts combined storage facilities, agricultural commodities,
+location or allocation, mathematical programming and Latin American geography.
+English, Spanish and Brazilian Portuguese strings were adapted to the syntax
+of each database. @tbl-search-strings records the search concepts.
+The complete strings are given below to preserve reproducibility.
+
+| Concept | English terms | Spanish and Portuguese examples |
+|:--|:--|:--|
+| Facility | warehouse, silo, storage, facility, hub | almacén, almacenaje; armazém, armazenagem |
+| Commodity | grain, soy, rice, corn, wheat, crop | grano, soja, maíz, trigo; grão, milho, safra |
+| Location | location, localization, siting, allocation | localización, ubicación; localização, alocação |
+| Formulation | MILP, MIP, ILP, mixed integer, mathematical programming | programación entera; programação inteira |
+| Geography | Latin/South America and named countries | América Latina, Brasil, Argentina and neighboring countries |
+
+: Search concepts. {#tbl-search-strings}
+
+English:
+
+> (warehouse* OR silo* OR storage OR facilit* OR hub*) AND (grain* OR soy*
+> OR rice OR corn OR wheat OR crop* OR "agricultural commodit*") AND (locat*
+> OR localiz* OR siting OR site OR sites OR allocat*) AND (MILP OR MIP OR ILP
+> OR MINLP OR "mixed integer" OR "mixed-integer" OR "integer programming"
+> OR "mathematical programming" OR "optimization model*") AND ("Latin America*"
+> OR "South America*" OR Brazil* OR Brasil* OR Argentina OR Mexico OR Colombia
+> OR Chile OR Peru OR Uruguay OR Paraguay)
+
+Spanish:
+
+> (almacen* OR almacén* OR silo* OR almacenamiento OR instalacion* OR
+> instalación* OR hub*) AND (grano* OR soja OR soya OR arroz OR maiz OR maíz
+> OR trigo OR cosecha* OR cultiv* OR "commodit* agricola*" OR "productos
+> agricola*") AND (localizac* OR localizació* OR ubicac* OR ubicación*
+> OR asignac* OR asignació* OR emplazamiento) AND (MILP OR MIP OR ILP
+> OR "entera mixta" OR "mixto-entera" OR "programacion entera" OR
+> "programación entera" OR "lineal entera") AND ("América Latina"
+> OR Sudamérica OR Centroamérica OR Brasil OR Argentina OR México
+> OR Colombia OR Chile OR Perú OR Uruguay OR Paraguay)
+
+Brazilian Portuguese:
+
+> (armazem OR armazéns OR silo* OR armazenagem OR armazenamento OR instalac*
+> OR instalaç* OR hub*) AND (grao* OR grão* OR soja OR arroz OR milho OR trigo
+> OR safra* OR cultiv* OR "commodit* agricola*") AND (localizac* OR localizaç*
+> OR alocac* OR alocaç* OR posicionamento) AND (MILP OR MIP OR ILP OR
+> "inteira mista" OR "misto-inteira" OR "programac* inteira" OR
+> "programaç* inteira" OR "linear inteira") AND ("América Latina"
+> OR "América do Sul" OR Brasil OR Argentina OR Colômbia OR Chile OR México
+> OR Peru OR Uruguai OR Paraguai)
+
+The search log reports the date as “04-10-2026”. Its ISO interpretation remains
+unconfirmed. The review record supplied for this synthesis does not include
+database exports or the item-level screening ledger. These limitations affect
+the reproducibility of selection, rather than the arithmetic of the database
+branch or the identification of the nine studies discussed below.
+
+## Selection record
+
+@tbl-review-flow distinguishes the two selection branches. Database searches
+identified 478 records: 432 from Semantic Scholar, 24 from Scopus, 17 from Web
+of Science and five from SciELO. Removing 59 duplicates left 419 records.
+Title and abstract screening excluded 404, leaving 15 reports sought for
+retrieval. One was unavailable. Of 14 assessed reports, seven were excluded
+for commodity scope and one for a nonlinear formulation. Six studies remained.
+
+The alternative-source branch identified 20 records, including 11 reviews and
+nine author-recommended studies. Its reported duplicate and retrieval counts
+are inconsistent: subtracting two duplicates from 20 gives 18, whereas
+19 reports are listed as sought. The subsequent record lists one unavailable
+report, 18 assessed reports and 15 exclusions: six nonlinear formulations,
+six without facility location, one outside commodity scope, one review and
+one goal-programming model. Three studies were included. The counts are
+reported without assigning the discrepancy to an unverified screening step.
+
+| Selection step | Database branch | Alternative-source branch |
+|:--|--:|--:|
+| Identified records | 478 | 20 |
+| Duplicate records reported | 59 | 2 |
+| Screened records | 419 | Not separately reported |
+| Title/abstract exclusions | 404 | Not separately reported |
+| Reports sought | 15 | 19 |
+| Reports not retrieved | 1 | 1 |
+| Reports assessed | 14 | 18 |
+| Full-text exclusions | 8 | 15 |
+| Included studies | 6 | 3 |
+
+: Reported selection counts. The alternative-source duplicate-to-retrieval
+transition requires reconciliation before final submission. {#tbl-review-flow}
+
+The resulting synthesis comprises nine studies. They are compared by
+modeling structure rather than pooled effect sizes. A temporal classification
+in the supplied extraction labels Foulds's formulation single-period, while
+its title and discussion describe a dynamic network. The synthesis therefore
+retains the dynamic interpretation without assigning an unsupported period
+count [@foulds2005]. Counts of origins or candidate sites are treated as
+instance dimensions, not integer decision variables.
+
+# Structural synthesis
+
+## Network representation, time and uncertainty
+
+Agricultural networks begin with farms, producing regions or procurement
+centers and terminate at domestic demand, processing facilities or export
+ports. Intermediate nodes may carry inventory, transfer freight or transform
+products. These functions are not interchangeable. @tbl-review-networks
+summarizes the nine network structures.
+
+| Study | Origins and intermediate nodes | Destinations and operational scope |
+|:--|:--|:--|
+| @foulds2005 | Supply nodes and candidate grain silos | Demand nodes; dynamic network flows |
+| @mascarenhas2014 | Producing microregions and warehouses | Export ports; road and road–rail connections |
+| @guimaraes2017 | Production zones and logistics integration centers | Demand zones; multimodal origin–destination flows |
+| @granillo2019 | Farmers and candidate barley hubs | Malt producers; optimization coupled to uncertainty simulation |
+| @mogale2020 | Procurement centers, base/field silos and regional warehouses | Destination warehouses; multiple periods, transport resources and losses |
+| @mendoza2021 | Sweet/industrial crop producers and facilities | Processors and distributors; yield scenarios |
+| @vazquez2021 | Farms, irrigation districts and processing facilities | Bio-product customers; adoption scenarios and sustainability |
+| @morais2023 | Soybean-producing cities and candidate terminals | Export allocation; road access and rail/waterway preferences |
+| @milanez2026 | Producing areas and collection/transshipment hubs | Soybean export network; capacity and interhub operations |
+
+: Network representations in the core studies. {#tbl-review-networks}
+
+Most formulations represent a single intermediate facility layer. The
+multi-echelon structure in @mogale2020 creates sequential links among
+procurement, silo and warehouse stages. Several Brazilian studies aggregate
+origins into producing regions, while farm-level applications retain more
+granular supplier identities [@granillo2019; @vazquez2021].
+Origin–destination preservation in @guimaraes2017 is distinct from the
+fungible-product allocation used in the present grain-storage model.
+
+Uncertainty is also heterogeneous. Simulation-derived uncertainty costs in
+@granillo2019, crop-yield scenarios in @mendoza2021 and adoption-rate scenarios
+in @vazquez2021 represent different information structures. Risk coefficients
+in an objective do not necessarily define a stochastic recourse model.
+Multi-period inventory likewise does not, by itself, imply multistage
+uncertainty revelation.
+
+## Parameters and physical interpretation
+
+@tbl-review-parameters compares economic coefficients with physical
+restrictions and broader impact measures. Transport costs form a common
+economic core, but additional components differ substantially.
+
+| Study | Economic inputs | Physical and broader inputs |
+|:--|:--|:--|
+| @foulds2005 | Silo construction and transportation | Supply, demand and silo capacity |
+| @mascarenhas2014 | Road/rail freight, port charges and warehouse operations | Export production, storage sizes and port requirements |
+| @guimaraes2017 | Direct/inbound/outbound freight, modal transfer and center processing | Origin–destination volumes, modal availability and center capacity bounds |
+| @granillo2019 | Freight, hub opening and simulation-derived uncertainty cost | Supply, hub storage, malt demand and direct receiving limits |
+| @mogale2020 | Establishment, freight, inventory, risk, emission and loss costs | Facility/vehicle capacities, fleet limits, storage and transit losses |
+| @mendoza2021 | Production, freight, opening and vehicle preparation | Producer capacity, crop yields, demand, facility count and vehicle capacity |
+| @vazquez2021 | Capital, harvesting, handling, processing and distribution | Irrigation, water, conversion, capacity, emissions and work-hour measures |
+| @morais2023 | Terminal implementation and weighted location criteria | Distances, occupancy, permanence, harvest duration and modal preferences |
+| @milanez2026 | Freight, establishment and storage | Available/demanded flow, hub sizes and route operations |
+
+: Parameter families. {#tbl-review-parameters}
+
+Capacity comparisons require distinguishing inventory stocks, period
+throughput and vehicle loads. Terminal occupancy and grain permanence in
+@morais2023 convert seasonal allocation into capacity requirements.
+Inventory and loss parameters in @mogale2020 address a different operational
+mechanism. Treating either as an unqualified “warehouse capacity” can obscure
+the physical meaning of a constraint.
+
+Public agricultural statistics, freight systems, mapping services and
+private field observations support the reviewed case studies. Their
+geographic detail, price basis and handling assumptions limit direct numerical
+transfer. Emission coefficients, work-hour benefits and loss fractions appear
+only where the corresponding impacts are explicitly modeled.
+
+## Investment and operating decisions
+
+@tbl-review-variables distinguishes location decisions from continuous
+operation and genuine resource-count decisions.
+
+| Study | Discrete decisions | Continuous decisions |
+|:--|:--|:--|
+| @foulds2005 | Silo construction | Shipments and silo capacity |
+| @mascarenhas2014 | Warehouse installation at a selected size | Road/intermodal shipments and port arrivals |
+| @guimaraes2017 | Integration-center opening | Direct and center-mediated flows with origin–destination identity |
+| @granillo2019 | Hub opening and uncertainty-cost selection | Farmer–hub–malt shipment quantities |
+| @mogale2020 | Silo/assignment activation and numbers of vehicles or rakes | Shipment, inventory and loss quantities |
+| @mendoza2021 | Facility opening and distributor/processor assignments | Scenario-dependent crop flows |
+| @vazquez2021 | Processing-facility installation | Facility capacity and scenario-dependent biomass/bio-product flows |
+| @morais2023 | City–terminal assignment and terminal type | No separate continuous-flow family in the reported assignment formulation |
+| @milanez2026 | Hub opening at a capacity level | Collection, interhub, distribution and storage flows |
+
+: Decision-variable families. {#tbl-review-variables}
+
+Binary investment decisions commonly activate continuous operating
+quantities. Integer transport counts in @mogale2020 additionally represent
+indivisible resources. The number of locations in an instance is not an
+integer decision unless selected by the optimization. Scalable investment
+quantities also differ from selecting one predefined capacity level.
+
+## Objectives and decision criteria
+
+@tbl-review-objectives compares objective boundaries rather than assuming
+that every cost minimum measures the same economic outcome.
+
+| Study | Principal criterion | Additional components or preferences |
+|:--|:--|:--|
+| @foulds2005 | Construction and transport cost | Dynamic allocation |
+| @mascarenhas2014 | Freight, port and warehouse-operation cost | Export-chain accounting |
+| @guimaraes2017 | Transport, transfer and processing cost | Multimodal integration |
+| @granillo2019 | Freight and hub-opening cost | Simulation-derived uncertainty impact |
+| @mogale2020 | Integrated network cost | Inventory, risk, losses and emission cost |
+| @mendoza2021 | Expected production and logistics cost | Yield probabilities and vehicle preparation |
+| @vazquez2021 | Economic, environmental and social objectives | Emissions reduction and workforce benefits |
+| @morais2023 | Weighted terminal-location criteria | Modal preference and road-distance/emission proxy |
+| @milanez2026 | Collection, transfer, distribution, holding and establishment cost | Hub economies and additional operating costs |
+
+: Objective-function scope. {#tbl-review-objectives}
+
+Most studies minimize an economic aggregate. Sustainability enters through
+costs, weighted preferences, explicit bounds or separate objectives, each
+with different interpretation. The multiobjective formulation of
+@vazquez2021 explicitly considers emissions and social benefits.
+Shorter routes or a numerical capacity relaxation cannot substitute for
+such impact accounting.
+
+## Constraints and feasibility
+
+@tbl-review-constraints summarizes the mechanisms that connect facility
+choices to feasible logistics.
+
+| Study | Material and demand restrictions | Activation and distinctive restrictions |
+|:--|:--|:--|
+| @foulds2005 | Supply, demand and silo flow balance | Construction–capacity linking |
+| @mascarenhas2014 | Supply, port requirements and warehouse transfer balance | Installed-size capacity; no intermediate stock accumulation |
+| @guimaraes2017 | Exact origin–destination demand and center conservation | Opening-dependent capacity bounds; preservation of shipment identity |
+| @granillo2019 | Hub balance, supply/demand and direct receiving capacity | Flow restricted to open hubs; simulation-related objective restriction |
+| @mogale2020 | Interperiod inventory with losses, demand and fleet capacities | Facility/assignment linking; vehicle counts and size selection |
+| @mendoza2021 | Yield-dependent supply and assigned customer quantities | Opening/assignment logic and facility-count limit |
+| @vazquez2021 | Biomass conversion, demand, water and facility capacity | Facility activation; environmental/social bounds |
+| @morais2023 | Total export allocation and seasonally adjusted terminal capacity | Distance limit, terminal type and installation-dependent assignment |
+| @milanez2026 | Inventory, demand and hub flows | Capacity-level opening and penalized port-capacity exceedance |
+
+: Constraint families. {#tbl-review-constraints}
+
+Intermediate flow balance is not always an inventory equation:
+transfer facilities can require zero accumulation, whereas storage networks
+link periods through carried stock. Conversion and loss terms further change
+the conservation system. Assignment models can impose exclusive city–terminal
+relationships rather than continuous product routing. Logical linking is
+essential to prevent operation through facilities that have not been
+installed.
+
+The comparison supports three requirements for the present framework:
+explicit stock-versus-throughput units, declared uncertainty information
+structure and independent checks of every indexed balance and activation
+restriction. These requirements connect modeling interpretation to
+computational validation; they do not establish performance superiority
+over the reviewed studies.
+
+# Complementary literature and synthesis limitations
+
+Harvest and production planning reviews identify the importance of uncertainty
+and perishability [@taskiner2021], while grain-location reviews emphasize
+disruption and sustainability gaps [@rosa2025]. Silo-location planning in
+@steiner2017, social sustainability in @mogale2023, disruption-aware intermodal
+transport in @maiyar2019 and integrated crop/harvest planning in @anselmino2025
+extend the application context beyond the core sample.
+
+The synthesis emphasizes structural comparability. It does not pool optimal
+costs, infer a common runtime benchmark or independently reconstruct each
+published implementation. The unresolved search chronology, alternative-source
+counts and absent screening exports must be reconciled before the selection
+record is represented as fully reproducible. The supplied studies and their
+substantive distinctions remain explicit in the tables.
+
+# Declaration of generative AI and AI-assisted technologies {-}
+
+ChatGPT Codex assisted with restructuring, language refinement and conversion
+of the literature-review material into editable Quarto tables. The authors
+are responsible for verifying the study extraction, selection record and
+final scholarly interpretation.
+
+# References
+
+::: {#refs}
+:::

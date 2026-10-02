@@ -1,29 +1,31 @@
 ---
-title: "HPC-aware optimization of grain-storage networks under uncertainty"
-subtitle: "A reproducible computational framework with explicit model and validation contracts"
-date: 2026-09-20
+title: "High-performance optimization of grain-storage networks under uncertainty"
+date: 2026-10-02
 abstract: >-
-  Grain-storage network optimization couples discrete infrastructure decisions
-  with product, period and scenario-dependent flows, creating substantial data,
-  memory and solution-time requirements. Building on Rosa's doctoral research,
-  we develop an HPC-aware computational framework for deterministic and two-stage
-  stochastic mixed-integer models of warehouse opening, expansion and bulk-handling
-  conversion. Investigator-developed components integrate road-distance caching,
-  network screening and connectivity diagnostics, model-size preflight,
-  dimensionally explicit feasibility slacks and independent solution validation.
-  Separate data-reading, model-construction, optimization and post-optimality
-  measurements prevent solver performance from being conflated with workflow cost.
-  A nine-scenario experiment compares seven Gurobi and six SCIP/SoPlex attempts
-  with 215--400 warehouses, a nominal 28,800-second optimization budget and a
-  10% stage-gap target. Gurobi completed the hierarchy with independently
-  validated decisions at 215 and 300 warehouses; the accepted 300-warehouse
-  runs attained economic gaps of 0.0831% and 0.0677%, without and with direct
-  arcs, respectively. At 400 warehouses, valid incumbents remained uncertified
-  within the budget. SCIP produced no incumbent at 215 or 300 warehouses;
-  enlarged-memory repeats replaced early memory stops with time-limit outcomes.
-  These observations establish a resource-qualified computational baseline
-  for the revised planning model, rather than a hardware-independent solver
-  ranking or a universal maximum network size.
+  Grain-storage planning couples infrastructure investment with product,
+  period and scenario-dependent logistics, creating large optimization
+  problems whose practical scale depends on memory and solution quality.
+  This study develops a deterministic and two-stage stochastic planning
+  framework for warehouse installation, expansion and bulk-handling
+  conversion, with a service-first hierarchy and separately quantified
+  stock and reception violations. The computational pipeline combines
+  versioned road-distance caching, nearest-20% interwarehouse selection
+  with audited connectivity repair, model-size assessment and independent
+  validation of exported decisions. A nine-scenario experiment evaluates
+  seven Gurobi and six SCIP/SoPlex attempts with 215–400 warehouses, an
+  eight-hour optimization budget and a 10% optimality-gap target for
+  each nonzero objective pass. Gurobi completed all three priorities
+  with independently validated solutions at 215 and 300 warehouses.
+  The certified 300-warehouse cases attained economic gaps of 0.08%
+  and 0.07%, without and with direct transport, respectively. At
+  400 warehouses, feasible solutions were obtained but the objective
+  hierarchy remained uncertified within the budget. SCIP produced
+  no incumbent in the evaluated 215- and 300-warehouse configurations;
+  larger memory allocations removed early memory interruptions without
+  resolving the time limitation. The results identify a tested,
+  resource-qualified scale of the planning framework and distinguish
+  feasible agricultural plans from computations that also establish
+  their declared solution quality.
 keywords:
   - grain storage
   - facility location
@@ -36,7 +38,7 @@ keywords:
 
 Post-harvest logistics poses a computational problem as well as an agricultural
 planning problem. Adding candidate warehouses enlarges both the discrete
-investment space and the potential interwarehouse network. Products, months and
+investment space and the potential interwarehouse network. Products, periods and
 uncertainty scenarios then replicate continuous flow and inventory decisions.
 An executable formulation can consequently exceed practical construction,
 memory or optimization budgets long before its mathematical specification
@@ -93,7 +95,8 @@ risk, infrastructure, stakeholders and solution methods. Together, these
 perspectives show why adding sites to a location model is insufficient: a
 strategic design must connect storage, seasonal handling and access to markets.
 The following synthesis compares published approaches along these substantive
-dimensions; it does not claim a new independently executed systematic search.
+dimensions. Appendix A provides the search strategy, selection record and
+structured extraction for nine agricultural network-design studies.
 
 Integrated wheat-network design in @gholamian2017 links infrastructure choices
 to the organization of the supply chain. Scenario-based wheat planning in
@@ -142,7 +145,10 @@ the present OSRM road matrix does not implement a multimodal assignment model.
 A port destination is an export outlet, not an explicit maritime voyage; a
 road segment near a railway does not create a rail arc.
 
-| Study | Network and decision emphasis | Benchmark implication |
+@tbl-literature summarizes the selected studies and the modeling distinctions
+that determine whether their results are comparable.
+
+| Study | Network and decision emphasis | Comparison implication |
 |:--|:--|:--|
 | @foulds2005 | Dynamic grain-silo location and flow | Separate network size, capacity decisions and temporal flow |
 | @mascarenhas2014 | Mato Grosso soybean warehouses and export connections | Distinguish throughput facilities from stock-carrying warehouses |
@@ -256,6 +262,10 @@ motivate region-level timings and controlled thread-count experiments; they
 do not imply that PaScal is integrated here or identify Gurobi's proprietary
 internal algorithms.
 
+@tbl-computational-literature relates the agricultural planning problem to
+computational approaches at the optimization, simulation and data-processing
+levels.
+
 | Computational layer | Published precedent | Present implementation and evidence boundary |
 |:--|:--|:--|
 | Agricultural MILP solution strategy | @shastri2011 | Native Gurobi and SCIP extensive forms; decomposition is future work |
@@ -270,23 +280,22 @@ the present instances. {#tbl-computational-literature}
 
 ## Research gap and contribution
 
-The gap addressed here concerns connecting an agricultural investment
-formulation to a reproducible, resource-bounded experiment whose returned
-solution can be checked independently. The cited literature establishes that
-agricultural optimization, HPC, decomposition and profiling are not new. We do
-not infer from this focused synthesis that no previous system combines these
-ideas. Instead, we evaluate a concrete implementation that connects
-provenance-aware road data, auditable network reduction, explicit mathematical
-contracts, staged solver execution and validation of exported decisions.
+The research gap concerns the computational scale at which a strategically
+meaningful grain-storage network can be solved and its solution quality
+verified. Agricultural location models establish the planning foundations,
+whereas decomposition, distributed simulation and profiling studies identify
+different computational opportunities. Connecting these perspectives requires
+preserving the investment and service decisions while making network reduction,
+scenario growth and resource limits measurable.
 
-Relative to @rosa2026thesis, the proposed extension is therefore computational
-and methodological, with modeling differences declared rather than concealed.
-Its investigator-developed tools expose failure at different layers: invalid
-input data, lost connectivity, inconsistent units, infeasible exported
-decisions, incomplete objective stages and exhausted computational resources.
-Merely moving the historical model to a larger machine would not provide
-these diagnostics. Conversely, their implementation alone does not establish
-an algorithmic speedup; that requires matched comparative experiments.
+Building on @rosa2026thesis, the proposed model revises capacity relaxation
+and decision priorities and is coupled to a high-performance implementation.
+Its contributions are a dimensionally explicit service-first formulation;
+a road-based, connectivity-preserving network-construction procedure; and an
+experimental pipeline that separates workflow phases and validates decisions
+independently of the optimizer. Their combined evaluation addresses the
+interaction of model size, computational resources and certified planning
+outcomes rather than treating a solver's termination status as the sole result.
 
 Three research questions follow. First, how do retained network size and
 scenario replication translate into measurable construction, memory and
@@ -298,387 +307,289 @@ evidence addresses selected executions; it does not resolve the complete
 candidate-population frontier or isolate causal performance gains from every
 software component.
 
-# Materials and methods: mathematical framework
+# Materials and methods
 
-## Planning assumptions and notation
+## Planning problem and notation
 
-The deterministic formulation represents investment and operation under one
-realization of supply and demand. The two-stage extension fixes infrastructure
-before uncertainty is observed and permits scenario-dependent logistics.
-Both formulations below describe the implemented conservation, activation and
-capacity contracts; the separate relaxation and service-first extension are
-identified explicitly.
+The network links grain-producing regions to domestic customers and export
+outlets through existing and candidate warehouses. Strategic decisions concern
+candidate installation, storage expansion and conversion to bulk handling.
+Operational decisions allocate each product across transport routes and time,
+subject to stock, reception and shipping limits. Existing facilities are
+available throughout the planning horizon; candidate availability depends on
+investment. Export outlets absorb supply up to their declared limits.
 
-The allocation and storage structure follows the methodological foundation of
-@rosa2026thesis. Equations below describe the implemented version, including
-its explicitly identified extensions; they are not a claim of literal or
-numerical identity with every historical thesis configuration.
+The formulation builds on the allocation and storage structure of
+@rosa2026thesis and introduces separate capacity-violation variables, an
+explicit service-first objective hierarchy and connectivity-preserving network
+selection. Supply is exogenous and must be allocated. Products are fungible
+within their respective balances, but cannot substitute for one another.
+Transport occurs within a planning period. Production scheduling, shipment
+lead times, quality deterioration and fleet assignment are outside the model.
 
-The model represents a multi-product, multi-period distribution network.
-Existing warehouses remain available. Candidate warehouses become available
-through investment. Domestic customer roles are distinct from export roles,
-including when both refer to the same municipality. There is no production
-decision: the supplied quantity is exogenous and must be allocated. Storage
-losses, quality deterioration, product conversion, fleet scheduling and
-transport lead times are outside this formulation. A shipment enters and
-leaves its incident nodes within the same modeled period.
-
-### Indices and sets
+@tbl-sets defines the indices and eligible sets. Each arc set is
+product-specific and fixed before optimization; a missing arc has no variable.
+Domestic and export roles are distinct even when they share a municipality.
+Direct transport is disabled by setting $A^{OC}=\varnothing$.
 
 | Symbol | Definition |
 |:--|:--|
 | $o\in O$ | Supply origins |
-| $w,v\in W$ | Warehouses; $w$ and $v$ distinguish sending and receiving sites |
+| $w,v\in W$ | Sending and receiving warehouses |
 | $W^E,W^N$ | Existing and candidate sites; a disjoint partition of $W$ |
-| $W^X,W^B$ | Sites eligible for expansion and bulkification, respectively |
-| $c\in C=C^D\cup C^X$ | Distinct domestic and export customer roles |
+| $W^X,W^B$ | Sites eligible for expansion and bulk-handling conversion |
+| $c\in C^D,C^X$ | Domestic and export customer roles |
 | $p\in P$ | Products |
-| $t\in T=\{1,\ldots,H\}$ | Ordered monthly periods; $H$ is the horizon length |
-| $s\in S$ | Scenarios in the stochastic model |
-| $A^{OD},A^{DC},A^{DD},A^{OC}$ | Allowed origin-warehouse, warehouse-customer, interwarehouse and direct arcs, each indexed by product |
-| $\mathcal A$ | Union of the four typed arc sets |
+| $t\in T=\{1,\ldots,H\}$ | Ordered planning periods |
+| $s\in S$ | Uncertainty scenarios |
+| $A^{OD},A^{DC},A^{DD},A^{OC}$ | Origin–warehouse, warehouse–customer, interwarehouse and direct arcs |
 
-: Indices and sets. Arc sets are selected before optimization and remain frozen
-across RP, WS, EV and EEV calculations. {#tbl-sets}
+: Indices and sets. {#tbl-sets}
 
-All sums over an arc are restricted to its allowed product-specific set.
-An absent arc has no decision variable; it is not assigned an artificial
-transport cost. Direct arcs disabled means $A^{OC}=\varnothing$. The
-interwarehouse set excludes self-arcs. Expansion and bulkification eligibility
-come from input data and feature flags, not from the notation alone.
+@tbl-parameters gives the coefficients and their physical dimensions. The
+experiments use monthly periods, with $d_t=30$ operating days per period.
+Candidate base capacities are zero. Bulk-handling conversion increases
+throughput rather than stock capacity. Monetary coefficients share the input
+currency basis; the objective is undiscounted.
 
-### Parameters and physical dimensions
-
-| Symbol | Meaning and unit |
+| Symbol | Definition and unit |
 |:--|:--|
-| $a_{opt},D_{cpt},\overline E_{cpt}$ | Supply, domestic demand and export upper bound; tonnes per period |
+| $a_{opt},D_{cpt},\overline E_{cpt}$ | Supply, domestic demand and export limit; tonnes per period |
 | $I^0_{wp}$ | Initial inventory; tonnes |
 | $K^0_w$ | Existing static capacity; tonnes |
 | $R^0_w,H^0_w$ | Existing reception and shipping rates; tonnes/day |
-| $d_t$ | Operating days in period $t$; days |
-| $\overline k_w,\overline e_w,\overline b_w$ | Upper bounds on candidate, expansion and bulkification investments; tonnes on their declared investment basis |
-| $\rho^N,\rho^X,\rho^B$ | Reception gains per investment tonne; day$^{-1}$ |
-| $\eta^N,\eta^X,\eta^B$ | Shipping gains per investment tonne; day$^{-1}$ |
-| $\ell^{OD}_{ow},\ell^{DC}_{wc},\ell^{DD}_{wv},\ell^{OC}_{oc}$ | Materialized directed distances; km |
+| $d_t$ | Operating days in period $t$ |
+| $\overline k_w,\overline e_w,\overline b_w$ | Candidate, expansion and handling-investment bounds; tonnes on the declared investment basis |
+| $\rho^N,\rho^X,\rho^B;\ \eta^N,\eta^X,\eta^B$ | Reception and shipping gains per investment tonne; day$^{-1}$ |
+| $\ell^{OD}_{ow},\ell^{DC}_{wc},\ell^{DD}_{wv},\ell^{OC}_{oc}$ | Directed road distances; km |
 | $f^O_o,f^W_w$ | Origin and warehouse freight rates; currency/(tonne km) |
-| $\tau_w,h_{wp}$ | Receiving transshipment charge, currency/tonne; period inventory charge, currency/(tonne period) |
-| $\alpha$ | Dimensionless interwarehouse freight multiplier |
-| $F^N_w,F^X_w,F^B_w$ | Fixed opening, expansion and bulkification costs; currency |
+| $\tau_w,h_{wp}$ | Receiving handling charge, currency/tonne; inventory charge, currency/(tonne period) |
+| $\alpha$ | Interwarehouse freight multiplier |
+| $F^N_w,F^X_w,F^B_w$ | Fixed installation, expansion and handling-conversion costs; currency |
 | $c^N_w,c^X_w,c^B_w$ | Variable investment costs; currency/investment tonne |
-| $\lambda^D_{cp},\lambda^K_w,\lambda^R_w$ | Shortage and separate capacity-violation penalty rates on the corresponding constraint units |
-| $\pi_s$ | Scenario probability; positive and summing to one |
+| $\lambda^D_{cp},\lambda^K_w,\lambda^R_w$ | Shortage and separate capacity-violation penalty rates; currency per corresponding tonne-based constraint quantity |
+| $\pi_s$ | Scenario probability; positive, with $\sum_s\pi_s=1$ |
 
-: Parameters. Currency units must match the input price basis; the equations do
-not introduce a new price year, inflation adjustment or discount rate. {#tbl-parameters}
+: Model parameters. {#tbl-parameters}
 
-For candidates, $K^0_w=R^0_w=H^0_w=0$ in the canonical translation.
-The factors $\rho$ and $\eta$ are explicit configuration parameters; a
-historical coefficient equal to one still has units day$^{-1}$.
-Bulkification is a handling investment expressed on a tonne-based costing
-basis, not extra static storage. The daily-factor formulation below excludes
-the archived period-equivalent interpretation.
+The decision variables are summarized in @tbl-variables. For compact notation,
+variables outside their eligibility sets equal zero. Warehouse availability is
+the expression $A_w=1$ for $w\in W^E$ and $A_w=y_w$ for $w\in W^N$.
+Let $X=(y,z,g,k,e,b)$ denote investment and $Y$ denote operational decisions.
 
-### Decision variables
-
-| Symbol | Domain and role |
+| Symbol | Definition and domain |
 |:--|:--|
-| $y_w,\ w\in W^N$ | Binary candidate opening |
+| $y_w,\ w\in W^N$ | Binary candidate installation |
 | $z_w,\ w\in W^X$ | Binary expansion activation |
-| $g_w,\ w\in W^B$ | Binary bulkification activation |
-| $k_w,e_w,b_w$ | Nonnegative candidate, expansion and bulkification investment quantities; tonnes |
-| $x^{OD}_{owpt},x^{DC}_{wcpt}$ | Nonnegative origin-warehouse and warehouse-customer flow; tonnes in period $t$ |
-| $x^{DD}_{wvpt},x^{OC}_{ocpt}$ | Nonnegative interwarehouse and direct flow; tonnes in period $t$ |
+| $g_w,\ w\in W^B$ | Binary bulk-handling conversion |
+| $k_w,e_w,b_w$ | Nonnegative investment quantities; tonnes on the declared costing basis |
+| $x^{OD}_{owpt},x^{DC}_{wcpt},x^{DD}_{wvpt},x^{OC}_{ocpt}$ | Nonnegative flows on eligible arcs; tonnes per period |
 | $I_{wpt}$ | Nonnegative end-of-period inventory; tonnes |
-| $u_{cpt},\ c\in C^D$ | Nonnegative unmet domestic demand; tonnes in period $t$ |
-| $q^K_{wt}$ | Nonnegative static-capacity exceedance; tonnes of stock in period $t$ |
-| $q^R_{wt}$ | Nonnegative reception overflow; tonnes handled during period $t$ |
+| $u_{cpt},\ c\in C^D$ | Nonnegative unmet domestic demand; tonnes |
+| $q^K_{wt}$ | Nonnegative stock-capacity exceedance; tonnes |
+| $q^R_{wt}$ | Nonnegative reception overflow; tonnes handled in a period |
 
-: Deterministic variables. Under uncertainty, only flow, inventory and slack
-variables acquire a scenario index; all investment variables are shared. {#tbl-variables}
-
-For compact equations, investment variables outside their eligible sets are
-defined as zero. Define availability $A_w=1$ for $w\in W^E$ and $A_w=y_w$
-for $w\in W^N$. Availability is an expression, not another free binary.
-Let $X=(y,z,g,k,e,b)$ collect investment decisions and $Y$ collect operations.
+: Deterministic decision variables. {#tbl-variables}
 
 ## Deterministic model
 
-### Investment activation and nominal capacities
-
-Candidate capacity is scalable in the selected reference experiments:
-
-$$
-0\le k_w\le\overline k_w y_w\quad(w\in W^N).
-$$ {#eq-candidate}
-
-Expansion and bulkification require both eligibility and activation:
+The deterministic model minimizes infrastructure, transportation, handling,
+inventory and feasibility-penalty costs:
 
 $$
-\begin{aligned}
-0\le e_w&\le\overline e_w z_w,\quad z_w\le A_w &&(w\in W^X),\\
-0\le b_w&\le\overline b_w g_w,\quad g_w\le A_w &&(w\in W^B),\\
-z_w+g_w&\le A_w &&(w\in W^X\cap W^B).
-\end{aligned}
-$$ {#eq-investment}
-
-The last inequality makes expansion and bulkification mutually exclusive at
-a site eligible for both. Existing facilities are not charged an opening cost.
-The fixed-size candidate option, when explicitly selected, replaces
-@eq-candidate by $k_w=\overline k_w y_w$; it is not silently mixed into the
-scalable experiment. No positive lower investment quantity is imposed, so
-a zero-cost activation binary can be one with zero installed capacity.
-Counts of binary decisions must therefore be interpreted alongside quantities.
-
-Nominal stock and daily handling capacity are affine expressions:
-
-$$
-\begin{aligned}
-K_w(X)&=K^0_w+k_w+e_w,\\
-R_w(X)&=R^0_w+\rho^N k_w+\rho^X e_w+\rho^B b_w,\\
-H_w(X)&=H^0_w+\eta^N k_w+\eta^X e_w+\eta^B b_w .
-\end{aligned}
-$$ {#eq-nominal}
-
-@eq-nominal makes explicit why bulkification cannot be counted as
-additional static capacity. Operating days convert the two handling rates,
-but never the stock expression, into period quantities.
-
-### Objective function and cost accounting
-
-Unit transport costs include the charge at the receiving warehouse only
-where a receiving-warehouse operation exists:
-
-$$
-\begin{aligned}
-c^{OD}_{owp}&=f^O_o\ell^{OD}_{ow}+\tau_w, &
-c^{DC}_{wcp}&=f^W_w\ell^{DC}_{wc},\\
-c^{DD}_{wvp}&=\alpha f^W_w\ell^{DD}_{wv}+\tau_v, &
-c^{OC}_{ocp}&=f^O_o\ell^{OC}_{oc}.
-\end{aligned}
-$$ {#eq-freight}
-
-The current rates do not vary by product, although the flow variables do.
-The interhub multiplier applies to freight, not to the receiving handling
-charge. Direct transport is charged at the origin rate. These definitions
-must be held fixed when comparing route policies.
-
-The investment component is
+\min_{X,Y}\quad Z_D=C^{inv}(X)+C^{op}(Y)+P(Y).
+$$ {#eq-det-objective}
 
 $$
 \begin{aligned}
 C^{inv}(X)={}&\sum_{w\in W^N}(F^N_wy_w+c^N_wk_w)\\
-&+\sum_{w\in W^X}(F^X_wz_w+c^X_we_w)\\
-&+\sum_{w\in W^B}(F^B_wg_w+c^B_wb_w).
+&+\sum_{w\in W^X}(F^X_wz_w+c^X_we_w)
++\sum_{w\in W^B}(F^B_wg_w+c^B_wb_w).
 \end{aligned}
 $$ {#eq-investment-cost}
 
-For the fixed-size candidate option, its prescribed cost representation must
-be used; the backend omits the candidate variable-cost term in that mode.
-@eq-investment-cost describes the scalable reference used here.
-Investment is paid once, not once per month. The model currently uses
-undiscounted input costs rather than a net-present-value objective.
-
-Writing $a$ for a typed product arc and $x_{at}$ for its corresponding flow,
-
 $$
-C^{op}(Y)=\sum_{t\in T}\sum_{a\in\mathcal A}c_a x_{at}
-          +\sum_{w\in W}\sum_{p\in P}\sum_{t\in T}h_{wp}I_{wpt}.
+\begin{aligned}
+C^{op}(Y)={}&\sum_{t\in T}\sum_{(o,w,p)\in A^{OD}}
+(f^O_o\ell^{OD}_{ow}+\tau_w)x^{OD}_{owpt}\\
+&+\sum_{t\in T}\sum_{(w,c,p)\in A^{DC}}
+f^W_w\ell^{DC}_{wc}x^{DC}_{wcpt}\\
+&+\sum_{t\in T}\sum_{(w,v,p)\in A^{DD}}
+(\alpha f^W_w\ell^{DD}_{wv}+\tau_v)x^{DD}_{wvpt}\\
+&+\sum_{t\in T}\sum_{(o,c,p)\in A^{OC}}
+f^O_o\ell^{OC}_{oc}x^{OC}_{ocpt}
++\sum_{w,p,t}h_{wp}I_{wpt}.
+\end{aligned}
 $$ {#eq-operating-cost}
 
-The feasibility-penalty component is
+$$
+P(Y)=\sum_{c\in C^D,p,t}\lambda^D_{cp}u_{cpt}
++\sum_{w,t}(\lambda^K_wq^K_{wt}+\lambda^R_wq^R_{wt}).
+$$ {#eq-penalty}
+
+The model is subject to investment activation, material balance, service and
+warehouse-capacity restrictions:
+
+$$
+0\le k_w\le\overline k_w y_w
+\qquad \forall w\in W^N.
+$$ {#eq-candidate}
 
 $$
 \begin{aligned}
-P(Y)={}&\sum_{c\in C^D}\sum_{p\in P}\sum_{t\in T}\lambda^D_{cp}u_{cpt}\\
-&+\sum_{w\in W}\sum_{t\in T}
-  \left(\lambda^K_wq^K_{wt}+\lambda^R_wq^R_{wt}\right).
+0\le e_w&\le\overline e_wz_w,\quad z_w\le A_w
+&&\forall w\in W^X,\\
+0\le b_w&\le\overline b_wg_w,\quad g_w\le A_w
+&&\forall w\in W^B,\\
+z_w+g_w&\le A_w &&\forall w\in W^X\cap W^B.
 \end{aligned}
-$$ {#eq-penalty}
-
-The scalar deterministic MILP minimizes
+$$ {#eq-investment}
 
 $$
-Z_D=\min_{X,Y}\left\{C^{inv}(X)+C^{op}(Y)+P(Y)\right\}.
-$$ {#eq-det-objective}
-
-The penalty coefficients are feasibility devices, not observed social
-shortage costs. In the thesis-derived dynamic rule, capacity rates are based
-on fifty times the largest reference expansion or storage rate, with a floor;
-customer shortage rates use one hundred times the largest applicable selected
-route, expansion or storage rate. The implementation freezes the resulting
-vector before stochastic projection. Such cross-component Big-M calibration
-is heuristic and does not turn the penalty total into a financial estimate.
-
-### Supply, demand and inventory constraints
-
-All supplied grain leaves each origin through allowed arcs:
+\begin{aligned}
+K_w(X)&=K^0_w+k_w+e_w,\\
+R_w(X)&=R^0_w+\rho^Nk_w+\rho^Xe_w+\rho^Bb_w,\\
+H_w(X)&=H^0_w+\eta^Nk_w+\eta^Xe_w+\eta^Bb_w
+\qquad \forall w\in W.
+\end{aligned}
+$$ {#eq-nominal}
 
 $$
 \sum_{w:(o,w,p)\in A^{OD}}x^{OD}_{owpt}
 +\sum_{c:(o,c,p)\in A^{OC}}x^{OC}_{ocpt}=a_{opt}
-\quad(o\in O,p\in P,t\in T).
+\qquad \forall o,p,t.
 $$ {#eq-supply}
-
-This equality also applies to zero supply. There is no disposal variable and
-no permission to leave excess production unallocated at its origin.
-
-Define product-specific inflow and outflow at a warehouse by
 
 $$
 \begin{aligned}
 B^{in}_{wpt}&=\sum_{o:(o,w,p)\in A^{OD}}x^{OD}_{owpt}
-             +\sum_{v:(v,w,p)\in A^{DD}}x^{DD}_{vwpt},\\
++\sum_{v:(v,w,p)\in A^{DD}}x^{DD}_{vwpt},\\
 B^{out}_{wpt}&=\sum_{c:(w,c,p)\in A^{DC}}x^{DC}_{wcpt}
-              +\sum_{v:(w,v,p)\in A^{DD}}x^{DD}_{wvpt}.
++\sum_{v:(w,v,p)\in A^{DD}}x^{DD}_{wvpt}
+\qquad \forall w,p,t.
 \end{aligned}
 $$ {#eq-inout}
 
-These are expressions, not additional inventory or capacity decisions.
-Conservation at each warehouse is
-
 $$
 I_{wpt}=I_{wp,t-1}+B^{in}_{wpt}-B^{out}_{wpt},
-\quad I_{wp,0}=I^0_{wp}\qquad(w,p,t).
+\quad I_{wp,0}=I^0_{wp}
+\qquad \forall w,p,t.
 $$ {#eq-inventory}
-
-The first modeled period uses the supplied initial stock. Subsequent periods
-use the previous end-of-period stock. Product balance does not permit soybean
-to satisfy corn demand or convert a reception overflow into material.
-
-Domestic demand must be met by deliveries plus explicitly reported shortage:
 
 $$
 \sum_{w:(w,c,p)\in A^{DC}}x^{DC}_{wcpt}
 +\sum_{o:(o,c,p)\in A^{OC}}x^{OC}_{ocpt}+u_{cpt}=D_{cpt}
-\quad(c\in C^D,p,t).
+\qquad \forall c\in C^D,p,t.
 $$ {#eq-service}
-
-Exports are optional outlets with upper bounds:
 
 $$
 \sum_{w:(w,c,p)\in A^{DC}}x^{DC}_{wcpt}
 +\sum_{o:(o,c,p)\in A^{OC}}x^{OC}_{ocpt}\le\overline E_{cpt}
-\quad(c\in C^X,p,t).
+\qquad \forall c\in C^X,p,t.
 $$ {#eq-export}
 
-An explicitly unbounded export role has no restrictive finite export ceiling.
-There is no export-revenue maximization in @eq-det-objective. The model chooses
-between feasible storage and export outlets through costs and constraints, not
-through a selling-price forecast.
-
-### Static, reception and shipping capacities
-
-Shared warehouse capacity applies across products:
-
 $$
-\sum_{p\in P}I_{wpt}\le K_w(X)+q^K_{wt}\qquad(w,t).
+\sum_{p\in P}I_{wpt}\le K_w(X)+q^K_{wt}
+\qquad \forall w,t.
 $$ {#eq-static}
 
 $$
-\sum_{p\in P}B^{in}_{wpt}\le d_tR_w(X)+q^R_{wt}\qquad(w,t).
+\sum_{p\in P}B^{in}_{wpt}\le d_tR_w(X)+q^R_{wt}
+\qquad \forall w,t.
 $$ {#eq-reception}
 
 $$
-\sum_{p\in P}B^{out}_{wpt}\le d_tH_w(X)\qquad(w,t).
+\sum_{p\in P}B^{out}_{wpt}\le d_tH_w(X)
+\qquad \forall w,t.
 $$ {#eq-shipping}
-
-Reception slack in @eq-reception is added **after** daily capacity has been
-converted into a period quantity. It is consequently measured in tonnes,
-not tonnes/day. A daily overflow equivalent is $q^R_{wt}/d_t$.
-Multiplying the slack by 30 in the objective would perform an unsupported
-second conversion. Shipping has no emergency slack in this implementation.
-
-Closed candidates cannot use either emergency variable:
 
 $$
 y_w=0\ \Longrightarrow\ q^K_{wt}=q^R_{wt}=0
-\qquad(w\in W^N,t\in T).
+\qquad \forall w\in W^N,t\in T.
 $$ {#eq-indicator}
 
-These are indicator constraints, not arbitrary finite upper bounds on
-emergency quantities at an active facility. Combined with zero candidate base
-capacities and the activation restrictions, they prevent an unopened site
-from acting as an uncharged warehouse.
-
-The variable domains in @tbl-variables complete the MILP. Terminal stock
-$I_{wpH}$ is free within the balance and capacity constraints; it is not forced
-to zero or to its initial value. No terminal salvage or additional terminal
-penalty is implemented in the selected contract.
-
-### Feasibility and interpretation
-
-Summing the supply and inventory equations cancels internal transfers and gives
-
 $$
-\sum_{o,p,t}a_{opt}+\sum_{w,p}I^0_{wp}
-=\sum_{c,p,t}\left(\sum_w x^{DC}_{wcpt}+\sum_o x^{OC}_{ocpt}\right)
- +\sum_{w,p}I_{wpH}.
-$$ {#eq-balance}
+y_w,z_w,g_w\in\{0,1\},\qquad k_w,e_w,b_w,x,I,u,q^K,q^R\ge0
+\quad \text{on their respective eligible index sets}.
+$$ {#eq-domains}
 
-This identity includes both domestic and export deliveries. Unmet demand is
-not a material outlet and must not appear on its right-hand side.
-An aggregate residual near zero is necessary, but local product-period errors
-could cancel. The independent validator consequently checks each underlying
-equality as well as the aggregate.
+@eq-investment-cost charges each investment once. The four transport terms
+in @eq-operating-cost distinguish origin–warehouse, warehouse–customer,
+interwarehouse and direct movements. Receiving handling is charged at the
+destination warehouse; $\alpha$ discounts or increases interwarehouse freight,
+not handling. Inventory costs apply to each period's ending stock.
+@eq-penalty exposes violations in the scalar reference model. Its
+thesis-derived penalty calibration is a feasibility device rather than an
+estimate of social damage.
 
-The three slacks do not prove complete recourse for arbitrary data.
-An isolated positive-supply origin, an impossible shipping requirement or an
-incompatible activation structure can still make the model infeasible.
-Emergency use is admissible as a capacity-gap diagnosis; it is not proof that
-a corresponding real warehouse project can be built at the penalized cost.
+@eq-candidate and @eq-investment link quantities to activation and prevent
+simultaneous expansion and bulk-handling conversion where both options exist.
+@eq-nominal distinguishes stock capacity from daily handling rates.
+@eq-supply allocates all production, while @eq-inventory conserves grain
+separately at every warehouse, product and period using the expressions in
+@eq-inout. @eq-service accounts for domestic shortage; @eq-export treats
+exports as bounded outlets rather than mandatory demand or sales revenue.
+
+@eq-static–@eq-shipping impose capacities shared across products.
+Reception overflow is added after converting daily reception into a period
+quantity. Consequently, $q^R_{wt}$ is measured in tonnes and its daily
+equivalent is $q^R_{wt}/d_t$; multiplying it by $d_t$ again would be
+dimensionally inappropriate. Shipping remains a hard restriction.
+@eq-indicator prevents unopened candidates from using emergency capacity.
+The implementation uses native indicator constraints; an equivalent
+big-$M$ inequality would require a separately derived valid upper bound,
+rather than an arbitrary constant. The domains in @eq-domains complete the
+formulation. Terminal inventory remains free within the balance and capacity
+constraints, with no salvage value.
+
+Independent validation evaluates every indexed balance and capacity
+restriction, including activation and reconstructed costs. An aggregate
+material balance is an additional diagnostic, not a substitute for local
+checks, because positive and negative residuals could cancel.
 
 ## Two-stage stochastic model
 
-### Information structure and scenario parameters
+Infrastructure $X$ is selected before uncertainty is observed. After scenario
+$s$ is realized, its entire supply and demand trajectory becomes available to
+the operational recourse decisions
+$Y^s=(x^s,I^s,u^s,q^{K,s},q^{R,s})$. This information structure is
+two-stage: investments are common across scenarios, while operations can
+respond to the realized trajectory. It does not model progressive revelation
+within the planning horizon.
 
-Investment $X$ is chosen before the uncertain supply and demand trajectory is
-known. Scenario $s$ specifies $a^s_{opt}$, $D^s_{cpt}$ and, where applicable,
-$\overline E^s_{cpt}$. Routes, distances, investment costs, operating-day
-conventions and the penalty vector remain common. Initial inventory is also
-common to all scenarios. Each recourse variable receives an index $s$:
-$x^{OD,s},x^{DC,s},x^{DD,s},x^{OC,s},I^s,u^s,q^{K,s},q^{R,s}$.
-
-This is two-stage, not multistage, planning: after the scenario is realized,
-the entire operating trajectory is available to that scenario's recourse
-problem. It does not enforce progressive monthly revelation of information.
-A multistage scenario tree with history-dependent nonanticipativity would
-be a different formulation.
-
-The deterministic equivalent is
+The deterministic equivalent minimizes first-stage investment and expected
+operating and feasibility-penalty costs:
 
 $$
-Z_{RP}=\min_{X,\{Y^s\}_{s\in S}}
- C^{inv}(X)+\sum_{s\in S}\pi_s\left[C^{op}(Y^s)+P(Y^s)\right].
+\min_{X,\{Y^s\}_{s\in S}}\quad
+Z_{RP}=C^{inv}(X)+\sum_{s\in S}\pi_s[C^{op}(Y^s)+P(Y^s)].
 $$ {#eq-rp}
 
-The first-stage feasible set is exactly @eq-candidate and @eq-investment
-with the same binary domains. It is imposed once, and investment cost is
-counted once. Using a common $X$ implements nonanticipativity directly.
-If replicated variables $X^s$ were used instead, one would need
-$X^s=X^{s'}$ for every scenario pair; the implementation avoids that replication.
-
-### Scenario-indexed constraints
-
-For every $s\in S$, the operational constraints are
+Investment restrictions @eq-candidate–@eq-nominal and the binary domains
+apply once. For every scenario, the operational system is
 
 $$
-\sum_w x^{OD,s}_{owpt}+\sum_c x^{OC,s}_{ocpt}=a^s_{opt}
-\qquad(o,p,t,s),
+\sum_{w:(o,w,p)\in A^{OD}}x^{OD,s}_{owpt}
++\sum_{c:(o,c,p)\in A^{OC}}x^{OC,s}_{ocpt}=a^s_{opt}
+\qquad \forall o,p,t,s.
 $$ {#eq-sto-supply}
 
 $$
 I^s_{wpt}=I^s_{wp,t-1}+B^{in,s}_{wpt}-B^{out,s}_{wpt},
-\quad I^s_{wp,0}=I^0_{wp}\qquad(w,p,t,s),
+\quad I^s_{wp,0}=I^0_{wp}
+\qquad \forall w,p,t,s.
 $$ {#eq-sto-inventory}
 
 $$
-\sum_w x^{DC,s}_{wcpt}+\sum_o x^{OC,s}_{ocpt}+u^s_{cpt}
-=D^s_{cpt}\qquad(c\in C^D,p,t,s),
+\sum_{w:(w,c,p)\in A^{DC}}x^{DC,s}_{wcpt}
++\sum_{o:(o,c,p)\in A^{OC}}x^{OC,s}_{ocpt}+u^s_{cpt}=D^s_{cpt}
+\qquad \forall c\in C^D,p,t,s.
 $$ {#eq-sto-domestic}
 
 $$
-\sum_w x^{DC,s}_{wcpt}+\sum_o x^{OC,s}_{ocpt}
-\le\overline E^s_{cpt}\qquad(c\in C^X,p,t,s),
+\sum_{w:(w,c,p)\in A^{DC}}x^{DC,s}_{wcpt}
++\sum_{o:(o,c,p)\in A^{OC}}x^{OC,s}_{ocpt}\le\overline E^s_{cpt}
+\qquad \forall c\in C^X,p,t,s.
 $$ {#eq-sto-export}
 
 $$
@@ -686,33 +597,34 @@ $$
 \sum_p I^s_{wpt}&\le K_w(X)+q^{K,s}_{wt},\\
 \sum_p B^{in,s}_{wpt}&\le d_tR_w(X)+q^{R,s}_{wt},\\
 \sum_p B^{out,s}_{wpt}&\le d_tH_w(X)
-\qquad(w,t,s).
+\qquad \forall w,t,s.
 \end{aligned}
 $$ {#eq-sto-capacity}
 
-All arc sums retain the restrictions of @eq-inout. Each candidate indicator
-also holds for every $t,s$, and every recourse variable is nonnegative.
-There is no probability multiplier in a physical balance or capacity
-constraint: probabilities weight the objective and reported expectations,
-not the tonnes available within one scenario.
+$$
+y_w=0\ \Longrightarrow\ q^{K,s}_{wt}=q^{R,s}_{wt}=0
+\qquad \forall w\in W^N,t,s;\qquad Y^s\ge0\quad\forall s.
+$$ {#eq-sto-domains}
 
-Equivalently, define $Q(X,\xi_s)$ as the minimum operating-plus-penalty cost
-subject to this scenario system. Then
-$Z_{RP}=\min_{X\in\mathcal X}\{C^{inv}(X)+\sum_s\pi_sQ(X,\xi_s)\}$.
-This recourse representation clarifies that scenario-specific operation
-cannot repair an investment decision by independently opening a new site.
+The inflow and outflow expressions retain the eligible arc restrictions of
+@eq-inout with scenario-indexed flows. Common investments enforce
+nonanticipativity without replicated investment variables. Probabilities
+weight costs, not physical constraints. Initial inventory, route selection,
+road distances and investment coefficients remain common across scenarios.
+Missing paths, closed facilities or restrictive shipping can still make
+recourse infeasible; separate slacks do not imply complete recourse for
+arbitrary data.
 
-## Separate slacks and service-first policy extension
+## Service-first planning policy
 
-The historical shared-capacity slack and the current separate slacks are not
-economically equivalent. For fixed exceedances $a,b\ge0$ and a common positive
-penalty rate $\lambda$, a shared variable incurs $\lambda\max(a,b)$.
-Independent variables incur $\lambda(a+b)$. The present reproduction therefore
-retains thesis-method elements while explicitly changing the relaxation.
-Numerical equality with historical objective values is not asserted.
+A capacity relaxation based on one shared variable is different from separate
+variables: under a common penalty $\lambda$, fixed exceedances $a,b\ge0$
+produce $\lambda\max(a,b)$ with a shared slack and $\lambda(a+b)$ with separate
+slacks. The present formulation therefore revises the relaxation inherited
+from @rosa2026thesis rather than reproducing its objective numerically.
 
-The policy extension preserves the constraints but changes the objective
-ordering. Let the expected shortage and capacity-violation score be
+For the policy experiments, the physical constraints are retained and scalar
+penalization is replaced by a three-priority hierarchy:
 
 $$
 U=\sum_s\pi_s\sum_{c\in C^D,p,t}u^s_{cpt},
@@ -720,34 +632,26 @@ U=\sum_s\pi_s\sum_{c\in C^D,p,t}u^s_{cpt},
 V=\sum_s\pi_s\sum_{w,t}(q^{K,s}_{wt}+q^{R,s}_{wt}).
 $$ {#eq-policy-scores}
 
-It solves
-
 $$
-\operatorname{lexmin}\left(U,\ V,\ C^{inv}(X)+
-                                      \sum_s\pi_sC^{op}(Y^s)\right).
+\operatorname{lexmin}\left(
+U,\ V,\ C^{inv}(X)+\sum_s\pi_s C^{op}(Y^s)\right).
 $$ {#eq-hierarchy}
 
-The deterministic policy is the singleton-scenario specialization.
-The ordering first seeks zero unmet domestic demand, then reduces nominal
-capacity violations, and finally minimizes economic cost. A zero first-stage
-shortage objective is feasible evidence of service fulfillment, but a complete
-hierarchy additionally requires the remaining two passes to finish.
+The first pass minimizes domestic shortage, the second minimizes a
+capacity-violation score, and the third minimizes economic cost. The
+deterministic specialization has a single scenario. Although both components
+of $V$ are tonne-based constraint quantities, one sums stock exceedances
+over periods and the other sums throughput exceedances. Their equal-weight
+aggregation expresses a policy preference, not installed capacity. Component
+totals and daily reception equivalents are therefore reported separately.
 
-Although both components of $V$ use tonne-based constraint quantities, their
-aggregation has a chosen meaning: static exceedance summed over periods is a
-stock-violation measure, while reception overflow sums handled material.
-Their equal-weight sum is a **violation score**, not installed storage
-capacity or a uniquely justified social preference. We separately report
-component sums, warehouse-period peaks and reception daily equivalents.
-A future change in weights would be a policy experiment, not a units correction.
+The hierarchy is implemented with declared optimality and priority-degradation
+tolerances. Final decisions may increase an earlier pass's objective within
+its inherited allowance. Pass-end scores, final scores, bounds and attained
+gaps are retained together. Completion requires all three passes and
+independent feasibility validation; service attainment alone is insufficient.
 
-Priority preservation is tolerance-qualified. Relative and absolute MIP gaps
-and objective-degradation tolerances may permit a later pass to worsen an
-earlier objective within a declared allowance. Pass-end values, final values,
-bounds and statuses must be reported together. Classical scalar EVPI/VSS,
-defined below, cannot be attached automatically to this vector objective.
-
-# Materials and methods: data lineage and network construction
+## Data lineage and network construction
 
 The study separates the historical benchmark source pool, a normalized bounded
 instance, and an expanded canonical workbook. Duplicate-key normalization
@@ -791,12 +695,14 @@ repairs. Multi-hop paths need not be direct edges, and a strongly connected
 candidate graph does not guarantee that the subset of opened warehouses has
 sufficient capacity. Both distinctions are checked separately from road routing.
 
-The retained fractions in the tested networks were 20.093458%, 20.066890% and
-20.050125% for 215, 300 and 400 warehouses, respectively, for each product.
+The retained fractions in the tested networks were approximately 20.09%, 20.07%
+and 20.05% for 215, 300 and 400 warehouses, respectively, for each product.
 The recorded repair counts were zero. The excess over 20% therefore reflects
 integer rounding rather than undocumented additional routes. The connectivity
 audit, component membership, repair-edge list and path summary preserve the
 network-construction evidence.
+
+@fig-pipeline separates preparation from optimization and subsequent validation.
 
 ![Computational pipeline. Input preparation and routing precede the solver; solution validation and reporting follow it. The current experiment contains no trained prediction or solver-guidance module.](figures/pipeline.png){#fig-pipeline}
 
@@ -808,7 +714,7 @@ phases. Scenario construction is an experimental input transformation, not
 offline machine-learning training. Predictive accuracy, forecast calibration
 and learned solver guidance are outside the evaluated pipeline.
 
-# Materials and methods: experimental and validation protocol
+## Experimental and validation protocol
 
 The selected reference design is deliberately smaller than the available
 factorial configuration space. @tbl-design describes the comparison
@@ -990,7 +896,10 @@ Haversine fallback. Coordinate-pair reuse reduces routing work without merging
 distinct facilities. The integrity checks normalize small negative routing
 artifacts under the documented numerical policy and preserve their audit counts.
 
-![Road-data preparation before product expansion and sparsification. Materialization at 500 warehouses does not establish optimization at that population.](figures/routing-growth.png){#fig-routing-growth}
+@fig-routing-growth distinguishes the routing inventory from the optimization
+experiment.
+
+![Road-data preparation before product expansion and sparsification. Materialization at 500 warehouses does not establish optimization at that population.](figures/routing-current.png){#fig-routing-growth}
 
 With nine scenarios and 60 periods, warehouse-only extensive forms contain
 14,054,654, 25,107,544 and 42,106,944 estimated variables at 215, 300 and 400
@@ -1006,16 +915,16 @@ but does not remove the quadratic arc-growth term.
 Four of seven Gurobi attempts completed the three-pass hierarchy at the
 declared quality target. Both 215-warehouse route variants were accepted.
 At 300 warehouses, the historical warehouse-only attempt reached an economic
-gap of 50.520259%, whereas its separately identified all-barrier repeat
-completed with 0.083114%. The direct-enabled attempt completed with a
-0.067684% economic gap. Its capacity gap was 1.287429%: acceptable under the
+gap of 50.52%, whereas its separately identified all-barrier repeat
+completed with 0.08%. The direct-enabled attempt completed with a
+0.07% economic gap. Its capacity gap was 1.29%: acceptable under the
 10% campaign rule, but not under a hypothetical 1% rule. A configured tolerance
 must not be substituted for the attained gap.
 
 At 400 warehouses, both all-barrier runs returned independently valid
 incumbents but remained time-limited. The warehouse-only case stopped in
 the capacity pass at 100%, without an economic pass. The direct-enabled case
-completed capacity at 0.064253% but stopped in economics at 99.999813%.
+completed capacity at 0.06% but stopped in economics at approximately 100%.
 These final all-barrier outcomes are time limits, not the memory limits
 observed during earlier mixed-method diagnostics. Reaching a feasible network
 and certifying all objective priorities are different computational tasks.
@@ -1082,237 +991,130 @@ unmeasured rather than being inferred from optimization outcomes.
 
 # Discussion and limitations
 
-## Observed computational boundary
+## Computational scale and solution quality
 
-The largest tested population with complete, quality-certified Gurobi results
-is 300 warehouses. At 400, valid incumbents exist but the hierarchy is incomplete
-or insufficiently bounded within the eight-hour optimization budget. This is
-an observed boundary of the evaluated profiles, not a proof that no alternative
-method could solve 400 or that every smaller instance is easy. The absence of
-SCIP incumbents at 215 and 300 likewise identifies an unresolved region rather
-than locating a smaller certified SCIP frontier.
+The experiments answer the computational-scale question at two levels:
+Gurobi produced independently feasible plans for all tested populations,
+but completed the declared objective hierarchy only at 215 and 300 warehouses.
+Thus, 300 is the largest quality-certified population tested under the
+evaluated resource profiles. The 400-warehouse outcomes establish that
+feasibility can remain attainable after economic certification becomes
+computationally difficult. They locate an unresolved region of the
+experiment, rather than a universal upper bound on network size.
 
-The accepted warehouse-300 all-barrier attempt and the unsuccessful automatic
-attempt demonstrate sensitivity to the solution profile. Without repeated,
-hardware-matched runs, they do not establish a general algorithmic speedup.
-At 400, the bottleneck can move from capacity to economics even after the
-service objective is solved. This motivates reporting each pass rather than
-using service fulfillment or a scheduler exit code as the overall success
-criterion. Scalar penalty totals do not replace the missing economic certificate.
+Solver configuration affected which priority became limiting. At 300
+warehouses, the all-barrier warehouse-only repeat completed the hierarchy,
+whereas the earlier automatic-profile attempt remained uncertified.
+At 400, the direct-enabled case completed the capacity pass but exhausted
+the economic budget. These observations support stage-specific diagnostics:
+a single elapsed time or service score would obscure the distinction.
+The descriptive comparison does not identify a general barrier speedup,
+because hardware-matched statistical repetitions were not performed.
 
-The SCIP outcomes show a second mechanism: a large transformed LP can consume
-the available time before producing any incumbent. Raising a memory budget
-does not resolve that mechanism automatically. A useful solver comparison
-therefore separates time-limited no-incumbent outcomes, memory-limited presolve,
-valid but uncertified solutions and complete quality-certified hierarchies.
-Cost ratios against missing SCIP solutions and average speedups across these
-heterogeneous outcomes would be misleading.
+SCIP's enlarged-memory repeats changed early presolve memory interruptions
+into time-limit outcomes without producing incumbents. The 215-warehouse
+service pass also retained a large continuous relaxation after presolve.
+The practical obstacle therefore included solving a high-dimensional LP,
+not only exploring integer facility choices. Additional memory addressed
+one observed interruption mechanism but did not ensure progress through
+the planning hierarchy. Missing incumbents prevent economic or service
+comparisons with Gurobi; they do not demonstrate mathematical infeasibility.
 
-## Computational contribution and limits of the evidence
+## Modeling and agricultural interpretation
 
-The principal contribution is an inspectable software workflow for large
-agricultural network experiments, rather than an additional application of
-an optimizer to a grain dataset. Model-size preflight, provenance-aware road
-materialization, connectivity diagnostics, independent residual validation
-and stage-level reporting make different failure mechanisms observable.
-Their scientific value is to prevent a faster but changed model, an
-unvalidated incumbent or an incomplete objective hierarchy from being reported
-as an equivalent successful computation.
+The revised model connects a service-first investment criterion to explicit
+stock and throughput diagnostics. Building on @rosa2026thesis, separate
+capacity variables and hierarchical priorities change the planning
+formulation, while audited network construction changes the operational
+alternatives available to it. The contribution is consequently a revised
+planning model and an independently inspectable computational implementation,
+not merely relocation of an unchanged program to a larger machine.
 
-This position complements, but does not supersede, agricultural decomposition
-research [@shastri2011] and distributed simulation research [@knapen2025].
-The current records demonstrate execution and diagnostic coverage, not a
-matched ablation showing the isolated benefit of each component. In particular,
-pair-cache hits demonstrate reuse, but do not by themselves quantify an
-end-to-end speedup; network screening reduces model size but can alter the
-feasible set. Such reductions must be assessed jointly with connectivity and
-planning outcomes. A stronger computational evaluation would compare these
-components on identical inputs and declared solution-quality budgets.
+Positive emergency quantities in otherwise service-complete solutions
+identify pressure on nominal infrastructure. Their interpretation must
+respect time and activity: static exceedance accumulated across periods
+is not an installed-capacity requirement, and reception overflow is not
+daily throughput until divided by operating days. Candidate saturation,
+peak location-period requirements and feasible alternative outlets should
+inform engineering appraisal. This interpretation complements the
+stakeholder and governance perspectives of @essien2018 and @filippi2022.
 
-The bounded reconstruction also depends on intellectual and data provenance.
-The grain-storage formulation and decision-support foundation are attributed
-to @rosa2026thesis. Separate slacks, changed road data and service-first
-priorities belong to the present extension and cannot be retroactively
-described as results of that thesis. Preserving this distinction permits
-methodological comparison while avoiding a claim of exact numerical replication.
+The capacity score and priority tolerances embody policy preferences.
+They make the ordering of service, violations and economic cost explicit,
+but affect the final infrastructure plan. Conditional cost differences
+between direct-enabled and warehouse-only solutions consequently require
+a common-priority sensitivity analysis before they can be attributed to
+direct transport alone. Similar care applies to environmental and social
+interpretation: freight reductions are not estimates of avoided emissions,
+employment or welfare [@vazquez2021; @mogale2023; @wang2024].
 
-The development already establishes why model and data contracts matter.
-Changing the distance authority can change the retained network. Changing
-shared to separate slacks can change penalties even for fixed physical
-violations. Replacing scalar penalization with a hierarchy changes the decision
-criterion, not merely the solver configuration. These are substantive modeling
-choices and should not be disguised as implementation details.
+## Scope of inference and data limitations
 
-For public administration, emergency quantities identify where the modeled
-system struggles under the available investment options. They are conditional
-diagnostics, influenced by candidate limits, selected routes, operating days,
-penalties or hierarchy weights and scenario design. Translating them into
-capital projects requires engineering, budget and regional feasibility work.
-The model does not establish causal welfare gains, resolve unmodeled rail or
-waterway connectivity, or justify arbitrary fixed investment charges.
+Nearest-distance screening reduces the feasible network. Strong-connectivity
+repair preserves multi-hop paths but cannot restore every discarded route,
+nor guarantee a connected, capacity-sufficient set of opened facilities.
+OSRM's fastest driving route is a reproducible road-distance authority,
+not a complete freight model. Heavy-vehicle restrictions, rail and
+waterway services, congestion, contracts and seasonal tariffs require
+additional representation [@kussano2012; @morais2023].
 
-## Service priorities and public investment
+The scenario levels are controlled experimental realizations rather than
+validated forecasts. Out-of-sample prediction, correlated shocks and
+progressive information revelation remain outside the current evidence.
+Scenario-wise service checks reduce the risk of concealing adverse
+realizations behind an expectation, but do not establish reliability under
+all agricultural uncertainty. Likewise, independent validation checks
+the encoded model and exported decisions, not the realism of every
+coefficient or the uniqueness of investments.
 
-A service-first policy makes a normative choice explicit: domestic fulfillment
-precedes reductions in nominal capacity violations, which precede economic
-cost. It avoids interpreting an arbitrary shortage penalty as society's
-willingness to pay, but does not eliminate judgment. The capacity score still
-aggregates different physical activities, and its weights and tolerance budgets
-affect the final investment plan. The separate static and reception reports
-must therefore accompany the aggregate score. Engineering interventions should
-be linked to peak location-period requirements, not to a sum over all months.
+The historical road snapshot and forecasting path were not reconstructed;
+thesis-method comparison is therefore bounded rather than exact numerical
+replication. The cohort uses selected, identified profiles, without a
+matched ablation of every pipeline component. Cache reuse and model-size
+reduction demonstrate operational capabilities, not isolated causal
+speedups [@shastri2011; @knapen2025]. These limitations define the next
+controlled experiments without diminishing the distinction between
+feasible plans, certified solutions and no-incumbent outcomes.
 
-This interpretation connects the optimization model to the stakeholder and
-governance concerns of @essien2018 and @filippi2022. A candidate saturated at
-its upper bound indicates pressure within the available option set; it does
-not prove that the same facility should be expanded without limit. A public
-authority could instead investigate a new site, handling equipment, improved
-outlet access or a different operating calendar. These alternatives require
-new engineering data and a transparent policy experiment, not a silent change
-in the original validation instance.
+# Future work: computational scaling and decomposition
 
-## Network and economic validity
+The next experiments should establish a controlled frontier rather than
+assume that a single population threshold applies to every solver profile.
+Nested intermediate populations, followed by networks above 500 warehouses,
+would be evaluated with fixed scenario design, resource budgets, feasibility
+criteria and attained gaps. Hardware-matched repeats and component ablations
+would separate effects of network reduction, solver configuration and
+data-cache reuse. Sensitivity to connectivity repair and retained edge
+fractions is needed because strong connectivity guarantees paths, not
+equivalence to the unrestricted network.
 
-Retaining a fraction of the lowest-distance arcs is a computational restriction
-on the feasible set. Connectivity repair addresses missing paths, but does not
-recover every operational alternative excluded by sparsification. In addition,
-OSRM's fastest driving route need not minimize freight expenditure. The cost
-boundary emphasized by @kussano2012 and the modal-location concerns of
-@morais2023 explain why a physically connected road network can still be a
-limited description of grain logistics. Road restrictions for heavy vehicles,
-rail and waterway schedules, seasonal congestion and contractual routing are
-not resolved by increasing the number of candidate warehouses alone.
+Benders decomposition is a candidate approach for separating shared
+infrastructure decisions from scenario-specific continuous logistics
+[@birge2011; @kaltis2026]. A master problem would choose investments and
+scenario subproblems would evaluate their operating implications. The method
+is not an implemented component of the present framework. Initial tests
+should demonstrate agreement with the extensive formulation on small instances,
+including feasibility cuts for obstructed recourse and valid linking
+restrictions for candidate activation. A later extension would preserve
+the service, capacity and economic priorities and their declared tolerances.
+A time-limited master incumbent is not a lower bound; termination requires
+a valid global bound and independently feasible recourse.
 
-Investment estimates are also conditional on the candidate-cost translation.
-Observed cost per tonne can support a parsimonious capacity-proportional term,
-but does not identify a unique fixed/variable split. Registry zero placeholders
-must not become free construction. Nor should the model infer regional welfare,
-employment or carbon effects from logistics cost changes: those outcomes
-require additional accounting, as illustrated by the broader sustainability
-scope of @vazquez2021, @mogale2023 and @wang2024.
+Decomposition does not remove all network growth. With a fixed retained
+fraction, the number of potential interwarehouse arcs still grows
+quadratically. Scenario parallelism may lower elapsed time while increasing
+aggregate memory. Worker allocation, communication, cut accumulation and
+subproblem memory should therefore accompany performance results. Expansion
+toward the registry's approximately 18,000 sites is a long-term feasibility
+question, not an extrapolation of the current certified 300-warehouse result.
 
-## Uncertainty, validation and external validity
-
-Three and nine scenarios encode finite experimental distributions. They do
-not exhaust climate variability, demand shocks or correlated infrastructure
-disruptions. Equal or specified experimental weights are not estimated event
-frequencies. Future out-of-sample evaluation would need independently justified
-scenario generation, including correlation and extreme events. It would also
-need to distinguish service reliability from expected service: an average near
-one can conceal an adverse scenario unless scenario-wise results are inspected.
-
-The bounded experimental design limits generalization. A successful solver
-run does not establish data realism, a unique investment plan or performance
-on every larger network. Independent checks validate a reported solution
-against the encoded contract, not the truth of that contract. The new OSM
-snapshot, incomplete historical forecasting reconstruction and changed slack
-semantics preclude claiming exact numerical thesis replication. Historical
-cost tables remain contextual comparators, not interchangeable observations.
-Similarly, the previously accepted v0.1 demonstrator package is a development
-milestone, not an external TRL accreditation or certification of this changed
-v0.2 formulation.
-
-# Future work: Benders decomposition and larger networks
-
-## Investment master and scenario recourse
-
-Benders decomposition is a candidate solution approach for the two-stage
-structure, not an implemented component of the present demonstrator. Its
-motivation is to retain infrastructure decisions in a master problem and solve
-continuous operating problems by scenario, instead of constructing all recourse
-blocks in one extensive-form MILP. Recent work by @kaltis2026 reviews cut
-selection and proposes a multiple-cut generation scheme, making cut quality
-and accumulation relevant design questions. It does not establish a speedup
-for this grain network. Scenario decomposition follows the recourse structure
-described by @birge2011.
-
-For the scalar formulation, let $X$ contain all first-stage binary and
-continuous investment decisions. In a canonical inequality representation,
-the unweighted scenario recourse problem is
-
-$$
-Q_s(X)=\min_{y_s\ge0}\{q_s^\top y_s:W_sy_s\ge h_s-T_sX\}.
-$$ {#eq-benders-subproblem}
-
-Here $y_s$ includes flows, inventory and permitted slacks; equalities can be
-represented by paired inequalities. With a feasible bounded recourse LP and
-dual feasible $\mu_s\ge0$, $W_s^\top\mu_s\le q_s$, an optimal dual solution
-at a trial investment produces the supporting cut
-
-$$
-\theta_s\ge\mu_s^\top(h_s-T_sX).
-$$ {#eq-benders-cut}
-
-The master minimizes
-
-$$
-\min_{X\in\mathcal X,\theta}
-C^{inv}(X)+\sum_s\pi_s\theta_s
-\quad\text{subject to accumulated valid cuts}.
-$$ {#eq-benders-master}
-
-Each $\theta_s$ needs a valid initial lower bound; zero is valid only when
-the corresponding recourse cost is nonnegative. Scenario probabilities are
-applied once in the master, not also inside an already weighted $Q_s$.
-Keeping distinct cuts per scenario is a natural multicut baseline. Cut
-selection, stabilization and alternative aggregation strategies would then be
-evaluated against that baseline rather than assumed to improve it.
-
-## Feasibility and hierarchy preservation
-
-Separate slacks do not guarantee complete recourse under every investment
-plan: shipping limits, closed facilities or missing paths may still obstruct
-allocation of all supply. If a subproblem is infeasible, a valid Farkas ray
-$r_s\ge0$, $W_s^\top r_s\le0$, gives a feasibility cut
-
-$$
-r_s^\top(h_s-T_sX)\le0.
-$$ {#eq-benders-feasibility}
-
-This branch must be implemented alongside optimality cuts. Ignoring it, or
-quietly making supply optional, would change the planning problem. Candidate
-activation must also admit a globally valid linking formulation before dual
-cuts are generated; switching constraints on and off at a trial solution is
-not sufficient to establish cut validity for other investments. If integer
-operational decisions are introduced later, classical LP-dual cuts alone will
-not represent the resulting recourse function exactly.
-
-The service-first extension requires additional care. A decomposition must
-preserve all three objective priorities and their explicit degradation
-budgets. Expected-score budgets can couple scenarios in later passes. Thus,
-independent scalar cost subproblems cannot simply be reused without a reformulation
-that preserves these couplings. The initial verification target should be the
-frozen scalar model; a separately tested staged decomposition can follow.
-
-At every iteration, the master best bound supplies a lower bound, whereas a
-validated investment and feasible recourse in every positive-probability
-scenario supply an upper bound. A time-limited master incumbent is not a
-lower bound. Termination should use the global bound gap, not merely changes
-between successive incumbents. Tests should establish cut validity, balance
-preservation and agreement with the extensive form on small instances before
-evaluating performance on the policy network.
-
-## Resource-bounded expansion beyond 500 warehouses
-
-The longer-term experiment would enlarge nested candidate populations beyond
-500 toward the available registry ceiling of approximately 18,000 sites,
-stopping when declared memory, construction-time or solution-quality limits
-are reached. This is a search for a practical frontier, not a commitment to
-solve the largest population. A preregistered optimization budget, initially
-28,800 seconds to match the present comparison, separate
-preprocessing/build/post-optimality clocks, incumbent feasibility and global
-bound gaps should define the comparison.
-
-Benders primarily separates scenario blocks; it does not remove all network
-growth. With a fixed retained fraction, interwarehouse arcs still grow
-quadratically with the number of hubs, and every scenario subproblem retains
-its product-period flow dimensions. Scenario parallelism can reduce elapsed
-time while increasing aggregate memory demand. Node allocation, worker counts,
-cut counts, cache reuse and communication overhead must therefore accompany
-runtime results. An adaptive sequence of intermediate population sizes is more
-informative than jumping directly from 500 to 18,000 and reporting only failure.
-Multimodal routing, candidate suitability and calibrated investment costs remain
-complementary research tasks, not benefits provided automatically by decomposition.
+The planning framework also requires economic and agricultural extensions:
+updated freight and investment evidence, multimodal access, engineering
+suitability, correlated scenarios and out-of-sample validation. Forecasting,
+if incorporated, should be evaluated offline on held-out observations before
+its predictions enter the solver. Predictive accuracy and downstream planning
+performance would then be reported separately. A versioned repository deposit
+of licensed inputs and key outputs would support these comparisons.
 
 # Conclusions
 
@@ -1348,9 +1150,11 @@ input reconciliation and artifact inventory are archived separately under
 `docs/evidence/sprint_c_final_20260920/`. Manuscript tables are generated from
 those frozen records; hashes bind each generated comparison to its sources.
 Raw historical certificates are not rewritten by the editorial update.
-The manuscript uses the pinned
-[quarto-sbc template](https://github.com/cvictorr2508/quarto-sbc/tree/88eaa11eeee9f86cd8594466e4644b321c8d7b75).
-Its HTML and SBC PDF builds execute no solver, do not contact Zotero and require
+The manuscript uses Quarto with a pinned
+[Elsevier extension](https://github.com/quarto-journals/elsevier/tree/b766702f8a0b625eefa78c23c5137c37ff84a43c)
+based on the publisher's editable LaTeX class. The extension is a community
+implementation rather than a journal-specific endorsement.
+Its HTML and Elsevier PDF builds execute no solver, do not contact Zotero and require
 no NPAD credentials. Bibliography metadata is committed; local library notes,
 attachments, licenses and raw HPC working directories are not publication inputs.
 
@@ -1361,12 +1165,26 @@ summaries, routing counts and scheduler observations. Full solution vectors and
 original workbook bytes are not included in the comparison evidence archive;
 exported identities do not substitute for independently revalidating those files.
 Private runtime credentials and local library attachments are excluded.
+The structured literature-review supplement is distributed as Appendix A
+([HTML](supplementary-review.html), [PDF](supplementary-review.pdf)).
 Additional data redistribution remains subject to the rights of the source
-providers. Successful document rendering is independent of scientific acceptance.
+providers.
+
+## Data availability
+
+The machine-readable comparative results and their provenance records are
+publicly available in the source repository. The complete input workbooks and
+full historical solution vectors are not included in that archive.
+A Zenodo dataset has been prepared as an unpublished draft
+(record 22751909); it does not yet provide a released dataset or citable DOI.
+Repository deposition of the licensed input data and principal result
+artifacts is required before journal submission. Restrictions affecting
+third-party data must be stated in the deposited metadata and final
+data-availability statement.
 
 Original project code, documentation, manuscript text and project-authored
 figures are offered under MIT, subject to contributor rights. This does not
-relicense third-party inputs, cited articles or the historical SBC style.
+relicense third-party inputs, cited articles or publisher template assets.
 OpenStreetMap-derived databases retain applicable ODbL obligations; upstream
 benchmark assets and external workbooks retain their own terms. The repository
 licensing notice records these redistribution boundaries.

@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "repository": "https://github.com/quarto-journals/elsevier",
+  "commit": "b766702f8a0b625eefa78c23c5137c37ff84a43c",
+  "version": "0.4.5",
+  "quarto_version": "1.10.18",
+  "publisher_class": "elsarticle",
+  "reviewed_guide_date": "2026-10-02",
+  "journal": "Computers and Electronics in Agriculture",
+  "adaptations": [
+    "The before-body partial adds author ORCID links; other extension resources are retained from the pinned upstream.",
+    "Preprint single-column layout with author-year references; historical SBC resources are retained for earlier review reproducibility.",
+    "This community Quarto extension uses Elsevier's class and is not a journal-endorsed template."
+  ],
+  "vendored_sha256": {
+    "_extensions/elsevier/_extension.yml": "30ac38fe5b169802321da4b79e96b0bc30e6dc533e2cf1be6372c766c764b8a9",
+    "_extensions/elsevier/bib/elsarticle-harv.bst": "000723ab2e12516d28ca9a6857943c9ba3efd8bba2778a7c52ec5ea22ae5122c",
+    "_extensions/elsevier/bib/elsarticle-num-names.bst": "db48a4f76e2320634fcccbb918cfbe1e6935819a2a3120cd05bb24ad39953c2a",
+    "_extensions/elsevier/bib/elsarticle-num.bst": "08d06d24a533fbe0c6e29d5bd5e7134781ab41a3c6640d73ad63112d4851b301",
+    "_extensions/elsevier/bib/elsevier-harvard.csl": "dc0566d3a028d659387650faa85026caf76733505579ebb06c8367922d394e2d",
+    "_extensions/elsevier/elsarticle.cls": "2dfb54cf9536cdb47faf3f10a44a6b427e0d50fffe807ee1bf017fde8e00e011",
+    "_extensions/elsevier/elsevier.lua": "5efc688b70308a322da3a8f96e70b8a5999381237e2323e3b4036e520cf9c2a8",
+    "_extensions/elsevier/partials/_two-column-longtable.tex": "147d4affbdc0bd6cd1cac60bfc028a2d2ed4a97c9d65e055b2accf67599517f3",
+    "_extensions/elsevier/partials/before-body.tex": "f2d00328f967652c655ead31f367193b1a694607b34e55daa39c851ab5b4c85c",
+    "_extensions/elsevier/partials/title.tex": "14ce98d5cb90acb2839c4faa411b5d4f39d5b6b71218b3434b5a6a524936fe3a",
+    "_extensions/elsevier/styles/elsevier.scss": "a887fedbb823a6dd998f375c60415f6a6329a1a881f6699705d259b8e3512e72",
+    "vendor/quarto-elsevier-LICENSE": "b8e2ce166ce471c7be2aba2bd0117ba5e6923a400c4f999abccb2c28ba528b93"
+  }
+}

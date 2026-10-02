@@ -265,7 +265,7 @@ def reconcile_pairs(records):
     return pairs
 
 
-def figure(records, destination):
+def figure(records, destination, formats=("png", "svg")):
     import matplotlib
 
     matplotlib.use("Agg")
@@ -329,7 +329,7 @@ def figure(records, destination):
         fontsize=9,
     )
     fig.tight_layout(rect=(0, 0.10, 1, 0.96))
-    for extension in ("png", "svg"):
+    for extension in formats:
         fig.savefig(destination / f"runtime_memory_comparison.{extension}", dpi=160)
     plt.close(fig)
 

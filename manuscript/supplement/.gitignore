@@ -1,0 +1,10 @@
+/.quarto/
+/_supplement/
+*.tex
+*.aux
+*.log
+*.out
+*.pdf
+*.bbl
+*.blg
+**/*.quarto_ipynb
