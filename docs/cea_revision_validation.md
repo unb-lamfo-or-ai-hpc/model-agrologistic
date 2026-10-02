@@ -39,3 +39,12 @@ solver frontier, published dataset, author roles, funding or conflict statements
 Coauthor approval, factual reconciliation and a licensed dataset deposit remain
 required before submission. No merge, preprint upload or Pages deployment was
 performed as part of this revision.
+
+## Subsequent public-review authorization
+
+On 2 October the repository owner subsequently authorized PR integration and
+GitHub Pages publication of the reviewed snapshot. Thirty focused tests and
+repository Ruff passed after adding a source-bound deployment receipt; the
+rendered publication check also passed locally. The earlier historical
+scientific certificate remains unchanged. See `cea_pages_release.md` for the
+separate deployment boundary and pending submission requirements.
