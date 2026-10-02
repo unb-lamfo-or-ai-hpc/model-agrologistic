@@ -890,8 +890,8 @@ mathematical, software and independent-solution checks for eight selected
 configurations. One of two nine-scenario references also completed the original
 protocol. The final warehouse-only retry attained zero domestic shortage but
 reached the 14,400-second budget with a 100% capacity-stage optimality gap;
-its economic pass was not executed. The original ten-reference report
-therefore remains rejected.
+its economic pass was not executed.
+The original ten-reference report therefore remains rejected.
 This earlier experiment motivated, but is not pooled with, the enlarged
 28,800-second, 10%-gap comparison below. Its detailed stage tables and resource
 figures are retained in the historical reference supplement.
