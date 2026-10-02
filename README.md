@@ -2,6 +2,11 @@
 
 Research project developed through international cooperation between the University of Brasilia (UnB) and the National University of the Littoral, Argentina.
 
+Public manuscript: [article](https://unb-lamfo-or-ai-hpc.github.io/model-agrologistic/),
+[Appendix A](https://unb-lamfo-or-ai-hpc.github.io/model-agrologistic/supplementary-review.html)
+and [Appendix A PDF](https://unb-lamfo-or-ai-hpc.github.io/model-agrologistic/supplementary-review.pdf).
+The [dataset DOI](https://doi.org/10.5281/zenodo.22751909) is reserved; the deposit
+remains unpublished pending file and redistribution-rights review.
 
 Research software for strategic agricultural logistics planning through
 deterministic and two-stage stochastic mixed-integer linear programming (MILP).
@@ -33,7 +38,7 @@ speedup experiment or a full revalidation of absent raw solution files.
 
 ### Historical bounded thesis-method demonstration
 
-The package is **0.2.0.dev0**. It distinguishes a bounded reconstruction of
+The package is **0.2.0**. It distinguishes a bounded reconstruction of
 Artur's thesis methodology from an expanded policy-oriented network. Neither
 track establishes exact numerical replication of the published thesis tables:
 the historical road-network snapshot and forecasting path have not been
@@ -222,7 +227,7 @@ and attribution requirements.
 See [licensing and data redistribution boundaries](LICENSING.md) before
 redistributing source datasets, upstream benchmark assets or derived databases.
 
-A Quarto Manuscript based on `cvictorr2508/quarto-sbc` is planned after the
-reference evidence and documentation review. It must distinguish thesis-method
-comparison, historical v0.1 evidence and policy extensions. This branch neither
-publishes the article nor changes repository visibility.
+The public Quarto Manuscript uses an Elsevier-compatible format and distinguishes
+thesis-method comparison, historical v0.1 evidence and policy extensions.
+Its public availability supports coauthor review; it does not constitute journal
+submission or publication of the dataset.
