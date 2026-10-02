@@ -1,5 +1,8 @@
 # Model Agrologistic
 
+Research project developed through international cooperation between the University of Brasilia (UnB) and the National University of the Littoral, Argentina.
+
+
 Research software for strategic agricultural logistics planning through
 deterministic and two-stage stochastic mixed-integer linear programming (MILP).
 The model evaluates warehouse opening, capacity expansion and bulkification
