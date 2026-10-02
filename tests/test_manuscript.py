@@ -27,6 +27,24 @@ def test_draft_integrity(manuscript):
     CHECKER.check()
 
 
+def test_relative_appendix_link_is_rejected(manuscript):
+    path = manuscript / "index.qmd"
+    text = path.read_text(encoding="utf-8").replace(
+        CHECKER.PUBLIC_SITE + "supplementary-review.pdf", "supplementary-review.pdf")
+    path.write_text(text, encoding="utf-8")
+    with pytest.raises(ValueError, match="absolute public HTTPS"):
+        CHECKER.check()
+
+
+def test_reserved_doi_is_not_a_publication_claim(manuscript):
+    path = manuscript / "index.qmd"
+    text = path.read_text(encoding="utf-8").replace(
+        "The deposit remains unpublished", "The deposit is published")
+    path.write_text(text, encoding="utf-8")
+    with pytest.raises(ValueError, match="reserved Zenodo DOI"):
+        CHECKER.check()
+
+
 def test_computational_focus_credits_thesis_without_speedup_claims(manuscript):
     article = (manuscript / "index.qmd").read_text(encoding="utf-8")
     bibliography = (manuscript / "references.bib").read_text(encoding="utf-8")

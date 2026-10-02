@@ -9,6 +9,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 MANUSCRIPT = ROOT / "manuscript"
+PUBLIC_SITE = "https://unb-lamfo-or-ai-hpc.github.io/model-agrologistic/"
 
 
 def check_public_review_approval() -> None:
@@ -42,6 +43,16 @@ def check_public_review_approval() -> None:
 def check(*, rendered: bool = False, publication: bool = False) -> None:
     """Fail on unresolved citations, changed vendor files or unsafe publication."""
     article = (MANUSCRIPT / "index.qmd").read_text(encoding="utf-8")
+    for extension in ("html", "pdf"):
+        destination = PUBLIC_SITE + f"supplementary-review.{extension}"
+        if destination not in article:
+            raise ValueError("Appendix links must use absolute public HTTPS URLs")
+    if re.search(r"\]\(supplementary-review\.(?:html|pdf)\)", article):
+        raise ValueError("Relative appendix links are not portable in downloaded PDFs")
+    if "https://doi.org/10.5281/zenodo.22751909" not in article:
+        raise ValueError("Reserved dataset DOI and its unpublished status must be disclosed")
+    if "The deposit remains unpublished" not in article:
+        raise ValueError("Do not label a reserved Zenodo DOI as a released dataset")
     for included in re.findall(r"\{\{< include ([A-Za-z0-9_-]+\.qmd) >\}\}", article):
         article = article.replace("{{< include " + included + " >}}",
                                   (MANUSCRIPT / included).read_text(encoding="utf-8"))
@@ -160,6 +171,9 @@ def check(*, rendered: bool = False, publication: bool = False) -> None:
             raise ValueError(f"Generated comparison checksum mismatch: {relative}")
     if rendered:
         html = (MANUSCRIPT / "_manuscript/index.html").read_text(encoding="utf-8")
+        for extension in ("html", "pdf"):
+            if PUBLIC_SITE + f"supplementary-review.{extension}" not in html:
+                raise ValueError("Rendered manuscript omits the public appendix URL")
         for key in keys:
             if f'id="ref-{key}"' not in html:
                 raise ValueError(f"Missing rendered reference: {key}")

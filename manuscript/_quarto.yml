@@ -9,6 +9,12 @@ manuscript:
     - text: Source repository
       icon: github
       href: https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic
+    - text: Appendix A (HTML)
+      href: https://unb-lamfo-or-ai-hpc.github.io/model-agrologistic/supplementary-review.html
+    - text: Appendix A (PDF)
+      href: https://unb-lamfo-or-ai-hpc.github.io/model-agrologistic/supplementary-review.pdf
+    - text: Editable LaTeX project (ZIP)
+      href: https://unb-lamfo-or-ai-hpc.github.io/model-agrologistic/coauthor-latex.zip
 execute:
   enabled: false
   freeze: auto
