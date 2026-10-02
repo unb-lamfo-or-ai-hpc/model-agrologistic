@@ -95,7 +95,8 @@ risk, infrastructure, stakeholders and solution methods. Together, these
 perspectives show why adding sites to a location model is insufficient: a
 strategic design must connect storage, seasonal handling and access to markets.
 The following synthesis compares published approaches along these substantive
-dimensions. Appendix A provides the search strategy, selection record and
+dimensions. [Appendix A](https://unb-lamfo-or-ai-hpc.github.io/model-agrologistic/supplementary-review.html)
+provides the search strategy, selection record and
 structured extraction for nine agricultural network-design studies.
 
 Integrated wheat-network design in @gholamian2017 links infrastructure choices
@@ -1166,7 +1167,8 @@ original workbook bytes are not included in the comparison evidence archive;
 exported identities do not substitute for independently revalidating those files.
 Private runtime credentials and local library attachments are excluded.
 The structured literature-review supplement is distributed as Appendix A
-([HTML](supplementary-review.html), [PDF](supplementary-review.pdf)).
+([HTML](https://unb-lamfo-or-ai-hpc.github.io/model-agrologistic/supplementary-review.html),
+[PDF](https://unb-lamfo-or-ai-hpc.github.io/model-agrologistic/supplementary-review.pdf)).
 Additional data redistribution remains subject to the rights of the source
 providers.
 
@@ -1175,8 +1177,11 @@ providers.
 The machine-readable comparative results and their provenance records are
 publicly available in the source repository. The complete input workbooks and
 full historical solution vectors are not included in that archive.
-A Zenodo dataset has been prepared as an unpublished draft
-(record 22751909); it does not yet provide a released dataset or citable DOI.
+A Zenodo dataset deposit has been prepared with reserved DOI
+[10.5281/zenodo.22751909](https://doi.org/10.5281/zenodo.22751909).
+The deposit remains unpublished; this identifier is reserved and does not yet
+resolve to a publicly available dataset. The comparative evidence is presently
+available through the source repository, not through a released Zenodo record.
 Repository deposition of the licensed input data and principal result
 artifacts is required before journal submission. Restrictions affecting
 third-party data must be stated in the deposited metadata and final
