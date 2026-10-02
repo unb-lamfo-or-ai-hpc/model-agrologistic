@@ -1,0 +1,7 @@
+/* Accessible scholarly companion; SBC page geometry belongs to the PDF. */
+:root { --bs-link-color: #165c74; }
+body { color: #182b35; }
+#title-block-header { border-bottom: 3px solid #165c74; padding-bottom: 1rem; }
+.abstract { background: #f3f7f8; padding: 1.2rem; }
+table { font-variant-numeric: tabular-nums; }
+caption { text-align: left; }

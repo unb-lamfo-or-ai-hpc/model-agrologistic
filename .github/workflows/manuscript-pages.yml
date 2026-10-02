@@ -19,8 +19,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          # Publish the reviewed develop merge without relaxing Pages branch protection.
-          ref: 30b88bd7a4a32575a8956d1f9b66db8d14670a57
           persist-credentials: false
       - uses: actions/setup-python@v5
         with:

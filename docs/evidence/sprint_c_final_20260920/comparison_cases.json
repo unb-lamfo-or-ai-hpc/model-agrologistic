@@ -1,0 +1,3127 @@
+[
+  {
+    "name": "nine_h215_p20_warehouse_gurobi",
+    "backend": "Gurobi",
+    "warehouses": 215,
+    "direct_arcs": false,
+    "outcome": "quality_certified",
+    "native_terminal_status": "OPTIMAL",
+    "raw_audit_status": "accepted_at_ten_percent",
+    "independent_validation_status": "accepted",
+    "incumbent_available": true,
+    "gap_representation": "per_stage; zero-service relative-gap sentinel is not a quality metric",
+    "time_budget_seconds": 28800,
+    "target_gap": 0.1,
+    "reported_stage_count": 3,
+    "data_read_seconds": 10.220621417276561,
+    "model_build_seconds": 239.54633367806673,
+    "optimization_seconds": 12324.930229958147,
+    "solver_reported_runtime_seconds": 12318.315038919449,
+    "end_to_end_seconds": 12672.855335283093,
+    "peak_rss_mb": 48815.796875,
+    "postoptimality_seconds": 0.0,
+    "result_extraction_seconds": 47.08406576095149,
+    "artifact_export_seconds": 4.835060694254935,
+    "application_peak_rss_gib": 47.67167663574219,
+    "economic_cost": 399489474421.3235,
+    "domestic_service_level": 0.9999999999999986,
+    "minimum_scenario_service_level": 0.9999999999999875,
+    "maximum_scenario_service_level": 1.0,
+    "total_unmet_demand": 9.98546056507621e-07,
+    "material_balance_ok": true,
+    "emergency_static_capacity": 382948533.7157262,
+    "emergency_reception_capacity": 70436548.81153123,
+    "suppressed_unsubstantiated_metrics": {},
+    "stage_gaps": {
+      "unmet_demand": null,
+      "emergency_capacity": 0.0002548443466154674,
+      "economic_cost": 0.00016569261429424383
+    },
+    "source_member": "nine-connectivity-corrected-20260914T180739Z/pilot-audit-20260915T144851Z/nine_results.json",
+    "campaign": "nine-connectivity-corrected-20260914T180739Z",
+    "method_profile": "Gurobi historical automatic",
+    "run_integrity": {
+      "run_identity": "7a45ab7f5b7eded8767a32bd523c227bc7f86378c42aedbb80ba44ec8483e060",
+      "verified_members": [
+        "run_summary.json",
+        "independent_validation.json",
+        "model_audit.json",
+        "lexicographic_stages.csv",
+        "preflight.json",
+        "interhub_connectivity_audit.json"
+      ],
+      "not_supplied_members": [
+        "result.json",
+        "flows.csv",
+        "inventories.csv",
+        "warehouse_decisions.csv",
+        "unmet_demand.csv",
+        "emergency_capacity.csv",
+        "scenario_performance.csv",
+        "material_balance_by_scenario.csv",
+        "capacity_gap_by_scenario.csv",
+        "investment_saturation.csv",
+        "emergency_capacity_daily.csv",
+        "evpi_vss_decomposition.csv",
+        "storage_by_warehouse.csv",
+        "storage_by_scenario.csv",
+        "interhub_components.csv",
+        "interhub_repair_edges.csv",
+        "interhub_path_summary.csv"
+      ],
+      "scope": "supplied_members_only; not a full solution revalidation"
+    },
+    "workbook_sha256": "40edb66585daca9cc393cab1f86bde6d4528a5f34b6afc57260cc1684396da4e",
+    "model_config": {
+      "objective_policy": "lexicographic",
+      "interhub_factor": 1.0,
+      "use_warehouse_transshipment": true,
+      "route_filter_strategy": "connectivity_preserving_pareto",
+      "connectivity_export_policy": "one_sink_per_product",
+      "candidate_capacity_mode": "scalable",
+      "terminal_inventory_policy": "free",
+      "capacity_coupling_policy": "daily_factors",
+      "days_per_period": 30,
+      "allow_capacity_expansion": true,
+      "allow_bulkification": true,
+      "separate_emergency_capacity_slacks": true,
+      "interhub_strong_connectivity": true,
+      "mode": "sto",
+      "pareto_fraction": 0.2,
+      "use_direct_origin_customer": false
+    },
+    "loader_config": {
+      "compute_haversine_distances": false,
+      "use_workbook_distances": true,
+      "required_distance_source": "osrm_primary",
+      "include_export_routes": true,
+      "include_transshipment_routes": true,
+      "include_direct_origin_customer_routes": true,
+      "candidate_cost_policy": "variable_from_total",
+      "penalty_policy": "thesis_dynamic",
+      "include_stochastic_scenarios": true,
+      "scenario_generation_mode": "cartesian",
+      "stochastic_supply_levels": [
+        "baixo",
+        "base",
+        "alto"
+      ],
+      "stochastic_demand_levels": [
+        "baixo",
+        "base",
+        "alto"
+      ]
+    },
+    "solver_config": {
+      "backend": "gurobipy",
+      "solver_name": "gurobi",
+      "mip_gap": 0.1,
+      "time_limit": 28800,
+      "threads": 4,
+      "seed": 42,
+      "tee": true,
+      "compute_iis": true,
+      "iis_max_items": 200,
+      "solver_options": {
+        "SoftMemLimit": 128,
+        "NumericFocus": 1
+      }
+    },
+    "execution": {
+      "hostname": "r1i3n5.npad.internal",
+      "memory_measurement_scope": "process_lifetime_high_water_mark",
+      "package_versions": {
+        "PyYAML": "6.0.3",
+        "gurobipy": "13.0.3",
+        "model-agrologistic": "0.2.0.dev0",
+        "numpy": "2.5.2",
+        "openpyxl": "3.1.5",
+        "pandas": "2.3.3"
+      },
+      "platform": "Linux-4.18.0-477.10.1.el8_8.x86_64-x86_64-with-glibc2.28",
+      "python_executable": "/home/vrrcelestino/venv313/bin/python",
+      "python_no_user_site": "1",
+      "python_prefix": "/home/vrrcelestino/venv313",
+      "python_version": "3.13.15 | packaged by conda-forge | (main, Aug 10 2026, 13:05:01) [GCC 14.4.0]",
+      "slurm_array_job_id": "2095628",
+      "slurm_array_task_id": "0",
+      "slurm_cpus_per_task": "4",
+      "slurm_job_id": "2095629",
+      "slurm_mem_per_node_mb": "196608",
+      "slurm_partition": "intel-256",
+      "source_commit_authority": "submission_environment_not_independently_verified",
+      "source_commit_declared": null,
+      "user_site_enabled": false
+    },
+    "estimated_variables": 14054654,
+    "route_counts": {
+      "routes_od": 3182,
+      "routes_dc": 3440,
+      "routes_dd": 18490,
+      "routes_oc": 0
+    },
+    "connectivity": {
+      "schema_version": "interhub-connectivity-v1",
+      "scope": "potential_warehouse_graph_by_product",
+      "algorithm": "nearest_fraction_plus_rooted_bidirectional_tree_repair",
+      "active_network_connectivity_guaranteed": false,
+      "throughput_feasibility_guaranteed": false,
+      "status": "accepted",
+      "products": [
+        {
+          "product": "Milho",
+          "warehouses": 215,
+          "eligible_edges": 46010,
+          "baseline_edges": 9245,
+          "customer_repair_edges": 0,
+          "interhub_repair_edges": 0,
+          "final_edges": 9245,
+          "requested_fraction": 0.2,
+          "baseline_fraction": 0.20093457943925233,
+          "final_fraction": 0.20093457943925233,
+          "component_counts": {
+            "nearest_fraction": 1,
+            "customer_repaired": 1,
+            "interhub_repaired": 1
+          },
+          "strongly_connected": true
+        },
+        {
+          "product": "Soja",
+          "warehouses": 215,
+          "eligible_edges": 46010,
+          "baseline_edges": 9245,
+          "customer_repair_edges": 0,
+          "interhub_repair_edges": 0,
+          "final_edges": 9245,
+          "requested_fraction": 0.2,
+          "baseline_fraction": 0.20093457943925233,
+          "final_fraction": 0.20093457943925233,
+          "component_counts": {
+            "nearest_fraction": 1,
+            "customer_repaired": 1,
+            "interhub_repaired": 1
+          },
+          "strongly_connected": true
+        }
+      ]
+    },
+    "input_fingerprints": {
+      "workbook_sha256": "40edb66585daca9cc393cab1f86bde6d4528a5f34b6afc57260cc1684396da4e",
+      "model_config": "596a79618618347de132dd4c20708bc4298417bfdb2a37c2aa2fb8894720247a",
+      "loader_config": "f40c3aa6b075dc43d574cc7da7d7c2ea869f29bf82e995b7cdfcacf3ed63fe19",
+      "data_signature": "cf2d80e9d5dcc1c3a80392eb6d59a231da69ee27ccdb536404c9c3a89cb575e2",
+      "input_audit": "a717f50fb2062d5636bf792ca7a11c3aa8582c6c76aade2fbc2d2b2ed177f240",
+      "interhub_audit": "a5a22b38657dbba6ad6de5333115f45324b5cdb0ac44e627b16329f8c0b41956",
+      "size_and_routes": "22d8a5f77c6e81a3954cd7da6866960fc35e8a75a8e7dd50db406c9a0142e7ec"
+    },
+    "priority_limits": [
+      {
+        "stage_role": "unmet_demand",
+        "objective_value": 0.0,
+        "final_objective_value": 9.98546056507621e-07,
+        "objective_bound": -2.852175384759903e-09,
+        "mip_inherited_base": 0.0,
+        "mip_next_pass_limit": 1e-06,
+        "within_mip_degradation_limit": true
+      },
+      {
+        "stage_role": "emergency_capacity",
+        "objective_value": 412263768.74366105,
+        "final_objective_value": 453385082.52726114,
+        "objective_bound": 412158705.65288234,
+        "mip_inherited_base": 453385082.52724844,
+        "mip_next_pass_limit": 453385082.52724946,
+        "within_mip_degradation_limit": true
+      },
+      {
+        "stage_role": "economic_cost",
+        "objective_value": 399489474421.3225,
+        "final_objective_value": 399489474421.3235,
+        "objective_bound": 399423281965.92236,
+        "mip_inherited_base": 439372229408.0546,
+        "mip_next_pass_limit": 439372229408.0546,
+        "within_mip_degradation_limit": true
+      }
+    ]
+  },
+  {
+    "name": "nine_h215_p20_warehouse_scip_pilot",
+    "backend": "SCIP",
+    "warehouses": 215,
+    "direct_arcs": false,
+    "outcome": "time_limit_without_incumbent",
+    "native_terminal_status": "TIME_LIMIT",
+    "raw_audit_status": "independent_validation_not_accepted",
+    "independent_validation_status": "rejected",
+    "incumbent_available": false,
+    "gap_representation": "unavailable_without_incumbent",
+    "time_budget_seconds": 28800,
+    "target_gap": 0.1,
+    "reported_stage_count": 1,
+    "data_read_seconds": 10.749629651196301,
+    "model_build_seconds": 229.18505464494228,
+    "optimization_seconds": 28813.49855625909,
+    "solver_reported_runtime_seconds": 28812.310791,
+    "end_to_end_seconds": 29312.015154903755,
+    "peak_rss_mb": 99448.2578125,
+    "postoptimality_seconds": 0.0,
+    "result_extraction_seconds": null,
+    "artifact_export_seconds": 0.20332937501370907,
+    "application_peak_rss_gib": 97.11743927001953,
+    "economic_cost": null,
+    "domestic_service_level": null,
+    "minimum_scenario_service_level": null,
+    "maximum_scenario_service_level": null,
+    "total_unmet_demand": null,
+    "material_balance_ok": null,
+    "emergency_static_capacity": null,
+    "emergency_reception_capacity": null,
+    "suppressed_unsubstantiated_metrics": {
+      "minimum_scenario_service_level": 1.0,
+      "maximum_scenario_service_level": 1.0
+    },
+    "stage_gaps": {
+      "unmet_demand": null
+    },
+    "source_member": "scip-h215-warehouse-20260919T131233Z/audit/nine_results.json",
+    "campaign": "scip-h215-warehouse-20260919T131233Z",
+    "method_profile": "SCIP/SoPlex sequential",
+    "run_integrity": {
+      "run_identity": "91c7f5ff6a355a80f3ec72590753dc4ced3b0e1061d0a9a74ad832da81ed1eb0",
+      "verified_members": [
+        "run_summary.json",
+        "independent_validation.json",
+        "model_audit.json",
+        "lexicographic_stages.csv",
+        "preflight.json",
+        "interhub_connectivity_audit.json"
+      ],
+      "not_supplied_members": [
+        "result.json",
+        "flows.csv",
+        "inventories.csv",
+        "warehouse_decisions.csv",
+        "unmet_demand.csv",
+        "emergency_capacity.csv",
+        "scenario_performance.csv",
+        "material_balance_by_scenario.csv",
+        "capacity_gap_by_scenario.csv",
+        "investment_saturation.csv",
+        "emergency_capacity_daily.csv",
+        "evpi_vss_decomposition.csv",
+        "storage_by_warehouse.csv",
+        "storage_by_scenario.csv",
+        "interhub_components.csv",
+        "interhub_repair_edges.csv",
+        "interhub_path_summary.csv"
+      ],
+      "scope": "supplied_members_only; not a full solution revalidation"
+    },
+    "workbook_sha256": "40edb66585daca9cc393cab1f86bde6d4528a5f34b6afc57260cc1684396da4e",
+    "model_config": {
+      "objective_policy": "lexicographic",
+      "interhub_factor": 1.0,
+      "use_warehouse_transshipment": true,
+      "route_filter_strategy": "connectivity_preserving_pareto",
+      "connectivity_export_policy": "one_sink_per_product",
+      "candidate_capacity_mode": "scalable",
+      "terminal_inventory_policy": "free",
+      "capacity_coupling_policy": "daily_factors",
+      "days_per_period": 30,
+      "allow_capacity_expansion": true,
+      "allow_bulkification": true,
+      "separate_emergency_capacity_slacks": true,
+      "interhub_strong_connectivity": true,
+      "mode": "sto",
+      "pareto_fraction": 0.2,
+      "use_direct_origin_customer": false
+    },
+    "loader_config": {
+      "compute_haversine_distances": false,
+      "use_workbook_distances": true,
+      "required_distance_source": "osrm_primary",
+      "include_export_routes": true,
+      "include_transshipment_routes": true,
+      "include_direct_origin_customer_routes": true,
+      "candidate_cost_policy": "variable_from_total",
+      "penalty_policy": "thesis_dynamic",
+      "include_stochastic_scenarios": true,
+      "scenario_generation_mode": "cartesian",
+      "stochastic_supply_levels": [
+        "baixo",
+        "base",
+        "alto"
+      ],
+      "stochastic_demand_levels": [
+        "baixo",
+        "base",
+        "alto"
+      ]
+    },
+    "solver_config": {
+      "backend": "pyscipopt",
+      "solver_name": "scip",
+      "mip_gap": 0.1,
+      "time_limit": 28800,
+      "threads": 4,
+      "seed": 42,
+      "tee": true,
+      "compute_iis": false,
+      "solver_options": {
+        "limits/memory": 131072
+      },
+      "log_file": "/home/vrrcelestino/model-agrologistic/data/results/hpc/scip-h215-warehouse-20260919T131233Z/scip.log"
+    },
+    "execution": {
+      "hostname": "r1i3n5.npad.internal",
+      "memory_measurement_scope": "process_lifetime_high_water_mark",
+      "package_versions": {
+        "PyYAML": "6.0.3",
+        "gurobipy": "13.0.3",
+        "model-agrologistic": "0.2.0.dev0",
+        "numpy": "2.5.3",
+        "openpyxl": "3.1.5",
+        "pandas": "2.3.3"
+      },
+      "platform": "Linux-4.18.0-477.10.1.el8_8.x86_64-x86_64-with-glibc2.28",
+      "python_executable": "/home/vrrcelestino/agrologistic-scip-pr31-4N2wGy/venv/bin/python",
+      "python_no_user_site": "1",
+      "python_prefix": "/home/vrrcelestino/agrologistic-scip-pr31-4N2wGy/venv",
+      "python_version": "3.13.15 | packaged by conda-forge | (main, Aug 10 2026, 13:05:01) [GCC 14.4.0]",
+      "slurm_array_job_id": null,
+      "slurm_array_task_id": null,
+      "slurm_cpus_per_task": "4",
+      "slurm_job_id": "2107034",
+      "slurm_mem_per_node_mb": "196608",
+      "slurm_partition": "intel-256",
+      "source_commit_authority": "submission_environment_not_independently_verified",
+      "source_commit_declared": null,
+      "user_site_enabled": false
+    },
+    "estimated_variables": 14054654,
+    "route_counts": {
+      "routes_od": 3182,
+      "routes_dc": 3440,
+      "routes_dd": 18490,
+      "routes_oc": 0
+    },
+    "connectivity": {
+      "schema_version": "interhub-connectivity-v1",
+      "scope": "potential_warehouse_graph_by_product",
+      "algorithm": "nearest_fraction_plus_rooted_bidirectional_tree_repair",
+      "active_network_connectivity_guaranteed": false,
+      "throughput_feasibility_guaranteed": false,
+      "status": "accepted",
+      "products": [
+        {
+          "product": "Milho",
+          "warehouses": 215,
+          "eligible_edges": 46010,
+          "baseline_edges": 9245,
+          "customer_repair_edges": 0,
+          "interhub_repair_edges": 0,
+          "final_edges": 9245,
+          "requested_fraction": 0.2,
+          "baseline_fraction": 0.20093457943925233,
+          "final_fraction": 0.20093457943925233,
+          "component_counts": {
+            "nearest_fraction": 1,
+            "customer_repaired": 1,
+            "interhub_repaired": 1
+          },
+          "strongly_connected": true
+        },
+        {
+          "product": "Soja",
+          "warehouses": 215,
+          "eligible_edges": 46010,
+          "baseline_edges": 9245,
+          "customer_repair_edges": 0,
+          "interhub_repair_edges": 0,
+          "final_edges": 9245,
+          "requested_fraction": 0.2,
+          "baseline_fraction": 0.20093457943925233,
+          "final_fraction": 0.20093457943925233,
+          "component_counts": {
+            "nearest_fraction": 1,
+            "customer_repaired": 1,
+            "interhub_repaired": 1
+          },
+          "strongly_connected": true
+        }
+      ]
+    },
+    "input_fingerprints": {
+      "workbook_sha256": "40edb66585daca9cc393cab1f86bde6d4528a5f34b6afc57260cc1684396da4e",
+      "model_config": "596a79618618347de132dd4c20708bc4298417bfdb2a37c2aa2fb8894720247a",
+      "loader_config": "f40c3aa6b075dc43d574cc7da7d7c2ea869f29bf82e995b7cdfcacf3ed63fe19",
+      "data_signature": "cf2d80e9d5dcc1c3a80392eb6d59a231da69ee27ccdb536404c9c3a89cb575e2",
+      "input_audit": "a717f50fb2062d5636bf792ca7a11c3aa8582c6c76aade2fbc2d2b2ed177f240",
+      "interhub_audit": "a5a22b38657dbba6ad6de5333115f45324b5cdb0ac44e627b16329f8c0b41956",
+      "size_and_routes": "22d8a5f77c6e81a3954cd7da6866960fc35e8a75a8e7dd50db406c9a0142e7ec"
+    },
+    "priority_limits": [
+      {
+        "stage_role": "unmet_demand",
+        "objective_value": null,
+        "final_objective_value": null,
+        "objective_bound": -19657246633.375004,
+        "mip_inherited_base": null,
+        "mip_next_pass_limit": null,
+        "within_mip_degradation_limit": null
+      }
+    ]
+  },
+  {
+    "name": "nine_h215_p20_direct_gurobi",
+    "backend": "Gurobi",
+    "warehouses": 215,
+    "direct_arcs": true,
+    "outcome": "quality_certified",
+    "native_terminal_status": "OPTIMAL",
+    "raw_audit_status": "accepted_at_ten_percent",
+    "independent_validation_status": "accepted",
+    "incumbent_available": true,
+    "gap_representation": "per_stage; zero-service relative-gap sentinel is not a quality metric",
+    "time_budget_seconds": 28800,
+    "target_gap": 0.1,
+    "reported_stage_count": 3,
+    "data_read_seconds": 10.448204895015806,
+    "model_build_seconds": 243.51061413995922,
+    "optimization_seconds": 9655.848982152995,
+    "solver_reported_runtime_seconds": 9649.209743022919,
+    "end_to_end_seconds": 10009.850534089841,
+    "peak_rss_mb": 46375.80859375,
+    "postoptimality_seconds": 0.0,
+    "result_extraction_seconds": 49.45195730123669,
+    "artifact_export_seconds": 3.6940879598259926,
+    "application_peak_rss_gib": 45.288875579833984,
+    "economic_cost": 353989073088.5942,
+    "domestic_service_level": 0.9999999999999986,
+    "minimum_scenario_service_level": 0.9999999999999872,
+    "maximum_scenario_service_level": 1.0,
+    "total_unmet_demand": 1.0007579476223327e-06,
+    "material_balance_ok": true,
+    "emergency_static_capacity": 338527739.74730897,
+    "emergency_reception_capacity": 2765.1973345791416,
+    "suppressed_unsubstantiated_metrics": {},
+    "stage_gaps": {
+      "unmet_demand": null,
+      "emergency_capacity": 0.008690979712622546,
+      "economic_cost": 0.00013725640159347377
+    },
+    "source_member": "nine-connectivity-corrected-20260914T180739Z/pilot-audit-20260915T144851Z/nine_results.json",
+    "campaign": "nine-connectivity-corrected-20260914T180739Z",
+    "method_profile": "Gurobi historical automatic",
+    "run_integrity": {
+      "run_identity": "2660676b32044593c16563c2d0e6269b4b5e27023ac68d632c389a289572c9bc",
+      "verified_members": [
+        "run_summary.json",
+        "independent_validation.json",
+        "model_audit.json",
+        "lexicographic_stages.csv",
+        "preflight.json",
+        "interhub_connectivity_audit.json"
+      ],
+      "not_supplied_members": [
+        "result.json",
+        "flows.csv",
+        "inventories.csv",
+        "warehouse_decisions.csv",
+        "unmet_demand.csv",
+        "emergency_capacity.csv",
+        "scenario_performance.csv",
+        "material_balance_by_scenario.csv",
+        "capacity_gap_by_scenario.csv",
+        "investment_saturation.csv",
+        "emergency_capacity_daily.csv",
+        "evpi_vss_decomposition.csv",
+        "storage_by_warehouse.csv",
+        "storage_by_scenario.csv",
+        "interhub_components.csv",
+        "interhub_repair_edges.csv",
+        "interhub_path_summary.csv"
+      ],
+      "scope": "supplied_members_only; not a full solution revalidation"
+    },
+    "workbook_sha256": "40edb66585daca9cc393cab1f86bde6d4528a5f34b6afc57260cc1684396da4e",
+    "model_config": {
+      "objective_policy": "lexicographic",
+      "interhub_factor": 1.0,
+      "use_warehouse_transshipment": true,
+      "route_filter_strategy": "connectivity_preserving_pareto",
+      "connectivity_export_policy": "one_sink_per_product",
+      "candidate_capacity_mode": "scalable",
+      "terminal_inventory_policy": "free",
+      "capacity_coupling_policy": "daily_factors",
+      "days_per_period": 30,
+      "allow_capacity_expansion": true,
+      "allow_bulkification": true,
+      "separate_emergency_capacity_slacks": true,
+      "interhub_strong_connectivity": true,
+      "mode": "sto",
+      "pareto_fraction": 0.2,
+      "use_direct_origin_customer": true
+    },
+    "loader_config": {
+      "compute_haversine_distances": false,
+      "use_workbook_distances": true,
+      "required_distance_source": "osrm_primary",
+      "include_export_routes": true,
+      "include_transshipment_routes": true,
+      "include_direct_origin_customer_routes": true,
+      "candidate_cost_policy": "variable_from_total",
+      "penalty_policy": "thesis_dynamic",
+      "include_stochastic_scenarios": true,
+      "scenario_generation_mode": "cartesian",
+      "stochastic_supply_levels": [
+        "baixo",
+        "base",
+        "alto"
+      ],
+      "stochastic_demand_levels": [
+        "baixo",
+        "base",
+        "alto"
+      ]
+    },
+    "solver_config": {
+      "backend": "gurobipy",
+      "solver_name": "gurobi",
+      "mip_gap": 0.1,
+      "time_limit": 28800,
+      "threads": 4,
+      "seed": 42,
+      "tee": true,
+      "compute_iis": true,
+      "iis_max_items": 200,
+      "solver_options": {
+        "SoftMemLimit": 128,
+        "NumericFocus": 1
+      }
+    },
+    "execution": {
+      "hostname": "r1i3n5.npad.internal",
+      "memory_measurement_scope": "process_lifetime_high_water_mark",
+      "package_versions": {
+        "PyYAML": "6.0.3",
+        "gurobipy": "13.0.3",
+        "model-agrologistic": "0.2.0.dev0",
+        "numpy": "2.5.2",
+        "openpyxl": "3.1.5",
+        "pandas": "2.3.3"
+      },
+      "platform": "Linux-4.18.0-477.10.1.el8_8.x86_64-x86_64-with-glibc2.28",
+      "python_executable": "/home/vrrcelestino/venv313/bin/python",
+      "python_no_user_site": "1",
+      "python_prefix": "/home/vrrcelestino/venv313",
+      "python_version": "3.13.15 | packaged by conda-forge | (main, Aug 10 2026, 13:05:01) [GCC 14.4.0]",
+      "slurm_array_job_id": "2095628",
+      "slurm_array_task_id": "1",
+      "slurm_cpus_per_task": "4",
+      "slurm_job_id": "2095628",
+      "slurm_mem_per_node_mb": "196608",
+      "slurm_partition": "intel-256",
+      "source_commit_authority": "submission_environment_not_independently_verified",
+      "source_commit_declared": null,
+      "user_site_enabled": false
+    },
+    "estimated_variables": 14374334,
+    "route_counts": {
+      "routes_od": 3182,
+      "routes_dc": 3440,
+      "routes_dd": 18490,
+      "routes_oc": 592
+    },
+    "connectivity": {
+      "schema_version": "interhub-connectivity-v1",
+      "scope": "potential_warehouse_graph_by_product",
+      "algorithm": "nearest_fraction_plus_rooted_bidirectional_tree_repair",
+      "active_network_connectivity_guaranteed": false,
+      "throughput_feasibility_guaranteed": false,
+      "status": "accepted",
+      "products": [
+        {
+          "product": "Milho",
+          "warehouses": 215,
+          "eligible_edges": 46010,
+          "baseline_edges": 9245,
+          "customer_repair_edges": 0,
+          "interhub_repair_edges": 0,
+          "final_edges": 9245,
+          "requested_fraction": 0.2,
+          "baseline_fraction": 0.20093457943925233,
+          "final_fraction": 0.20093457943925233,
+          "component_counts": {
+            "nearest_fraction": 1,
+            "customer_repaired": 1,
+            "interhub_repaired": 1
+          },
+          "strongly_connected": true
+        },
+        {
+          "product": "Soja",
+          "warehouses": 215,
+          "eligible_edges": 46010,
+          "baseline_edges": 9245,
+          "customer_repair_edges": 0,
+          "interhub_repair_edges": 0,
+          "final_edges": 9245,
+          "requested_fraction": 0.2,
+          "baseline_fraction": 0.20093457943925233,
+          "final_fraction": 0.20093457943925233,
+          "component_counts": {
+            "nearest_fraction": 1,
+            "customer_repaired": 1,
+            "interhub_repaired": 1
+          },
+          "strongly_connected": true
+        }
+      ]
+    },
+    "input_fingerprints": {
+      "workbook_sha256": "40edb66585daca9cc393cab1f86bde6d4528a5f34b6afc57260cc1684396da4e",
+      "model_config": "1a03ec747c898d1943397de1779039a5e1ee5368e75a6e49a4792d8eb03a7e78",
+      "loader_config": "f40c3aa6b075dc43d574cc7da7d7c2ea869f29bf82e995b7cdfcacf3ed63fe19",
+      "data_signature": "cf2d80e9d5dcc1c3a80392eb6d59a231da69ee27ccdb536404c9c3a89cb575e2",
+      "input_audit": "a717f50fb2062d5636bf792ca7a11c3aa8582c6c76aade2fbc2d2b2ed177f240",
+      "interhub_audit": "a5a22b38657dbba6ad6de5333115f45324b5cdb0ac44e627b16329f8c0b41956",
+      "size_and_routes": "0b13e94fd09f9b86929c5deb23c86637d625ab78586c9ecd1dd05eee20c5a341"
+    },
+    "priority_limits": [
+      {
+        "stage_role": "unmet_demand",
+        "objective_value": 0.0,
+        "final_objective_value": 1.0007579476223327e-06,
+        "objective_bound": 2.1245796233415604e-09,
+        "mip_inherited_base": 2.2245796233415604e-09,
+        "mip_next_pass_limit": 1.0022245796233415e-06,
+        "within_mip_degradation_limit": true
+      },
+      {
+        "stage_role": "emergency_capacity",
+        "objective_value": 310205907.4481854,
+        "final_objective_value": 338530504.94464815,
+        "objective_bound": 307509914.19981754,
+        "mip_inherited_base": 338530504.9446361,
+        "mip_next_pass_limit": 338530504.9446371,
+        "within_mip_degradation_limit": true
+      },
+      {
+        "stage_role": "economic_cost",
+        "objective_value": 353989073088.5918,
+        "final_objective_value": 353989073088.5942,
+        "objective_bound": 353940485822.21643,
+        "mip_inherited_base": 389339393131.0756,
+        "mip_next_pass_limit": 389339393131.0756,
+        "within_mip_degradation_limit": true
+      }
+    ]
+  },
+  {
+    "name": "nine_h215_p20_direct_scip_expansion",
+    "backend": "SCIP",
+    "warehouses": 215,
+    "direct_arcs": true,
+    "outcome": "time_limit_without_incumbent",
+    "native_terminal_status": "TIME_LIMIT",
+    "raw_audit_status": "independent_validation_not_accepted",
+    "independent_validation_status": "rejected",
+    "incumbent_available": false,
+    "gap_representation": "unavailable_without_incumbent",
+    "time_budget_seconds": 28800,
+    "target_gap": 0.1,
+    "reported_stage_count": 1,
+    "data_read_seconds": 11.352355408947915,
+    "model_build_seconds": 234.01573852496222,
+    "optimization_seconds": 28820.569288874976,
+    "solver_reported_runtime_seconds": 28819.443025,
+    "end_to_end_seconds": 29344.319581792224,
+    "peak_rss_mb": 97254.85546875,
+    "postoptimality_seconds": 0.0,
+    "result_extraction_seconds": null,
+    "artifact_export_seconds": 0.25542772887274623,
+    "application_peak_rss_gib": 94.97544479370117,
+    "economic_cost": null,
+    "domestic_service_level": null,
+    "minimum_scenario_service_level": null,
+    "maximum_scenario_service_level": null,
+    "total_unmet_demand": null,
+    "material_balance_ok": null,
+    "emergency_static_capacity": null,
+    "emergency_reception_capacity": null,
+    "suppressed_unsubstantiated_metrics": {
+      "minimum_scenario_service_level": 1.0,
+      "maximum_scenario_service_level": 1.0
+    },
+    "stage_gaps": {
+      "unmet_demand": null
+    },
+    "source_member": "scip-expansion-20260919T134716Z/case-0/audit/nine_results.json",
+    "campaign": "scip-expansion-20260919T134716Z/case-0",
+    "method_profile": "SCIP/SoPlex sequential",
+    "run_integrity": {
+      "run_identity": "d861ac427c678139feb9009b52f4a94a66f05e27932da97da5ef7c0fd1638e92",
+      "verified_members": [
+        "run_summary.json",
+        "independent_validation.json",
+        "model_audit.json",
+        "lexicographic_stages.csv",
+        "preflight.json",
+        "interhub_connectivity_audit.json"
+      ],
+      "not_supplied_members": [
+        "result.json",
+        "flows.csv",
+        "inventories.csv",
+        "warehouse_decisions.csv",
+        "unmet_demand.csv",
+        "emergency_capacity.csv",
+        "scenario_performance.csv",
+        "material_balance_by_scenario.csv",
+        "capacity_gap_by_scenario.csv",
+        "investment_saturation.csv",
+        "emergency_capacity_daily.csv",
+        "evpi_vss_decomposition.csv",
+        "storage_by_warehouse.csv",
+        "storage_by_scenario.csv",
+        "interhub_components.csv",
+        "interhub_repair_edges.csv",
+        "interhub_path_summary.csv"
+      ],
+      "scope": "supplied_members_only; not a full solution revalidation"
+    },
+    "workbook_sha256": "40edb66585daca9cc393cab1f86bde6d4528a5f34b6afc57260cc1684396da4e",
+    "model_config": {
+      "objective_policy": "lexicographic",
+      "interhub_factor": 1.0,
+      "use_warehouse_transshipment": true,
+      "route_filter_strategy": "connectivity_preserving_pareto",
+      "connectivity_export_policy": "one_sink_per_product",
+      "candidate_capacity_mode": "scalable",
+      "terminal_inventory_policy": "free",
+      "capacity_coupling_policy": "daily_factors",
+      "days_per_period": 30,
+      "allow_capacity_expansion": true,
+      "allow_bulkification": true,
+      "separate_emergency_capacity_slacks": true,
+      "interhub_strong_connectivity": true,
+      "mode": "sto",
+      "pareto_fraction": 0.2,
+      "use_direct_origin_customer": true
+    },
+    "loader_config": {
+      "compute_haversine_distances": false,
+      "use_workbook_distances": true,
+      "required_distance_source": "osrm_primary",
+      "include_export_routes": true,
+      "include_transshipment_routes": true,
+      "include_direct_origin_customer_routes": true,
+      "candidate_cost_policy": "variable_from_total",
+      "penalty_policy": "thesis_dynamic",
+      "include_stochastic_scenarios": true,
+      "scenario_generation_mode": "cartesian",
+      "stochastic_supply_levels": [
+        "baixo",
+        "base",
+        "alto"
+      ],
+      "stochastic_demand_levels": [
+        "baixo",
+        "base",
+        "alto"
+      ]
+    },
+    "solver_config": {
+      "backend": "pyscipopt",
+      "solver_name": "scip",
+      "mip_gap": 0.1,
+      "time_limit": 28800,
+      "threads": 4,
+      "seed": 42,
+      "tee": true,
+      "compute_iis": false,
+      "solver_options": {
+        "limits/memory": 131072
+      },
+      "log_file": "/home/vrrcelestino/model-agrologistic/data/results/hpc/scip-expansion-20260919T134716Z/case-0/scip.log"
+    },
+    "execution": {
+      "hostname": "r1i3n7.npad.internal",
+      "memory_measurement_scope": "process_lifetime_high_water_mark",
+      "package_versions": {
+        "PyYAML": "6.0.3",
+        "gurobipy": "13.0.3",
+        "model-agrologistic": "0.2.0.dev0",
+        "numpy": "2.5.3",
+        "openpyxl": "3.1.5",
+        "pandas": "2.3.3"
+      },
+      "platform": "Linux-4.18.0-477.10.1.el8_8.x86_64-x86_64-with-glibc2.28",
+      "python_executable": "/home/vrrcelestino/agrologistic-scip-pr31-4N2wGy/venv/bin/python",
+      "python_no_user_site": "1",
+      "python_prefix": "/home/vrrcelestino/agrologistic-scip-pr31-4N2wGy/venv",
+      "python_version": "3.13.15 | packaged by conda-forge | (main, Aug 10 2026, 13:05:01) [GCC 14.4.0]",
+      "slurm_array_job_id": "2107114",
+      "slurm_array_task_id": "0",
+      "slurm_cpus_per_task": "4",
+      "slurm_job_id": "2107115",
+      "slurm_mem_per_node_mb": "196608",
+      "slurm_partition": "intel-256",
+      "source_commit_authority": "submission_environment_not_independently_verified",
+      "source_commit_declared": "6c45be9c3cdd6f6c8b49ee317e5f03b8208c72a1",
+      "user_site_enabled": false
+    },
+    "estimated_variables": 14374334,
+    "route_counts": {
+      "routes_od": 3182,
+      "routes_dc": 3440,
+      "routes_dd": 18490,
+      "routes_oc": 592
+    },
+    "connectivity": {
+      "schema_version": "interhub-connectivity-v1",
+      "scope": "potential_warehouse_graph_by_product",
+      "algorithm": "nearest_fraction_plus_rooted_bidirectional_tree_repair",
+      "active_network_connectivity_guaranteed": false,
+      "throughput_feasibility_guaranteed": false,
+      "status": "accepted",
+      "products": [
+        {
+          "product": "Milho",
+          "warehouses": 215,
+          "eligible_edges": 46010,
+          "baseline_edges": 9245,
+          "customer_repair_edges": 0,
+          "interhub_repair_edges": 0,
+          "final_edges": 9245,
+          "requested_fraction": 0.2,
+          "baseline_fraction": 0.20093457943925233,
+          "final_fraction": 0.20093457943925233,
+          "component_counts": {
+            "nearest_fraction": 1,
+            "customer_repaired": 1,
+            "interhub_repaired": 1
+          },
+          "strongly_connected": true
+        },
+        {
+          "product": "Soja",
+          "warehouses": 215,
+          "eligible_edges": 46010,
+          "baseline_edges": 9245,
+          "customer_repair_edges": 0,
+          "interhub_repair_edges": 0,
+          "final_edges": 9245,
+          "requested_fraction": 0.2,
+          "baseline_fraction": 0.20093457943925233,
+          "final_fraction": 0.20093457943925233,
+          "component_counts": {
+            "nearest_fraction": 1,
+            "customer_repaired": 1,
+            "interhub_repaired": 1
+          },
+          "strongly_connected": true
+        }
+      ]
+    },
+    "input_fingerprints": {
+      "workbook_sha256": "40edb66585daca9cc393cab1f86bde6d4528a5f34b6afc57260cc1684396da4e",
+      "model_config": "1a03ec747c898d1943397de1779039a5e1ee5368e75a6e49a4792d8eb03a7e78",
+      "loader_config": "f40c3aa6b075dc43d574cc7da7d7c2ea869f29bf82e995b7cdfcacf3ed63fe19",
+      "data_signature": "cf2d80e9d5dcc1c3a80392eb6d59a231da69ee27ccdb536404c9c3a89cb575e2",
+      "input_audit": "a717f50fb2062d5636bf792ca7a11c3aa8582c6c76aade2fbc2d2b2ed177f240",
+      "interhub_audit": "a5a22b38657dbba6ad6de5333115f45324b5cdb0ac44e627b16329f8c0b41956",
+      "size_and_routes": "0b13e94fd09f9b86929c5deb23c86637d625ab78586c9ecd1dd05eee20c5a341"
+    },
+    "priority_limits": [
+      {
+        "stage_role": "unmet_demand",
+        "objective_value": null,
+        "final_objective_value": null,
+        "objective_bound": -21109845145.964947,
+        "mip_inherited_base": null,
+        "mip_next_pass_limit": null,
+        "within_mip_degradation_limit": null
+      }
+    ]
+  },
+  {
+    "name": "nine_h300_p20_warehouse_gurobi",
+    "backend": "Gurobi",
+    "warehouses": 300,
+    "direct_arcs": false,
+    "outcome": "valid_incumbent_not_certified",
+    "native_terminal_status": "TIME_LIMIT",
+    "raw_audit_status": "gap_target_not_attained",
+    "independent_validation_status": "accepted",
+    "incumbent_available": true,
+    "gap_representation": "per_stage; zero-service relative-gap sentinel is not a quality metric",
+    "time_budget_seconds": 28800,
+    "target_gap": 0.1,
+    "reported_stage_count": 3,
+    "data_read_seconds": 16.909052253700793,
+    "model_build_seconds": 419.19515456072986,
+    "optimization_seconds": 28833.373087813146,
+    "solver_reported_runtime_seconds": 28821.54598593712,
+    "end_to_end_seconds": 29476.133800797164,
+    "peak_rss_mb": 82141.7265625,
+    "postoptimality_seconds": 0.0,
+    "result_extraction_seconds": 104.96953760320321,
+    "artifact_export_seconds": 8.160195854026824,
+    "application_peak_rss_gib": 80.2165298461914,
+    "economic_cost": 799870484734.6964,
+    "domestic_service_level": 0.9999999999999986,
+    "minimum_scenario_service_level": 0.9999999999999875,
+    "maximum_scenario_service_level": 1.0,
+    "total_unmet_demand": 9.98546056507621e-07,
+    "material_balance_ok": true,
+    "emergency_static_capacity": 294258868.35649127,
+    "emergency_reception_capacity": 33837777.18909495,
+    "suppressed_unsubstantiated_metrics": {},
+    "stage_gaps": {
+      "unmet_demand": null,
+      "emergency_capacity": 0.001755195025278046,
+      "economic_cost": 0.5052025892688232
+    },
+    "source_member": "nine-connectivity-h300-20260915T150139Z/pilot-audit-20260916T115856Z/nine_results.json",
+    "campaign": "nine-connectivity-h300-20260915T150139Z",
+    "method_profile": "Gurobi historical automatic",
+    "run_integrity": {
+      "run_identity": "c909d6c82899fff1b2838107f316bf4ac2580313ecd2009f00b0dcdf7f502bd4",
+      "verified_members": [
+        "run_summary.json",
+        "independent_validation.json",
+        "model_audit.json",
+        "lexicographic_stages.csv",
+        "preflight.json",
+        "interhub_connectivity_audit.json"
+      ],
+      "not_supplied_members": [
+        "result.json",
+        "flows.csv",
+        "inventories.csv",
+        "warehouse_decisions.csv",
+        "unmet_demand.csv",
+        "emergency_capacity.csv",
+        "scenario_performance.csv",
+        "material_balance_by_scenario.csv",
+        "capacity_gap_by_scenario.csv",
+        "investment_saturation.csv",
+        "emergency_capacity_daily.csv",
+        "evpi_vss_decomposition.csv",
+        "storage_by_warehouse.csv",
+        "storage_by_scenario.csv",
+        "interhub_components.csv",
+        "interhub_repair_edges.csv",
+        "interhub_path_summary.csv"
+      ],
+      "scope": "supplied_members_only; not a full solution revalidation"
+    },
+    "workbook_sha256": "7761cce77cf93dcba2f617714f0117c1f2ead4de0c3f27149daceba447e0c7d1",
+    "model_config": {
+      "objective_policy": "lexicographic",
+      "interhub_factor": 1.0,
+      "use_warehouse_transshipment": true,
+      "route_filter_strategy": "connectivity_preserving_pareto",
+      "connectivity_export_policy": "one_sink_per_product",
+      "candidate_capacity_mode": "scalable",
+      "terminal_inventory_policy": "free",
+      "capacity_coupling_policy": "daily_factors",
+      "days_per_period": 30,
+      "allow_capacity_expansion": true,
+      "allow_bulkification": true,
+      "separate_emergency_capacity_slacks": true,
+      "interhub_strong_connectivity": true,
+      "mode": "sto",
+      "pareto_fraction": 0.2,
+      "use_direct_origin_customer": false
+    },
+    "loader_config": {
+      "compute_haversine_distances": false,
+      "use_workbook_distances": true,
+      "required_distance_source": "osrm_primary",
+      "include_export_routes": true,
+      "include_transshipment_routes": true,
+      "include_direct_origin_customer_routes": true,
+      "candidate_cost_policy": "variable_from_total",
+      "penalty_policy": "thesis_dynamic",
+      "include_stochastic_scenarios": true,
+      "scenario_generation_mode": "cartesian",
+      "stochastic_supply_levels": [
+        "baixo",
+        "base",
+        "alto"
+      ],
+      "stochastic_demand_levels": [
+        "baixo",
+        "base",
+        "alto"
+      ]
+    },
+    "solver_config": {
+      "backend": "gurobipy",
+      "solver_name": "gurobi",
+      "mip_gap": 0.1,
+      "time_limit": 28800,
+      "threads": 4,
+      "seed": 42,
+      "tee": true,
+      "compute_iis": true,
+      "iis_max_items": 200,
+      "solver_options": {
+        "SoftMemLimit": 128,
+        "NumericFocus": 1
+      }
+    },
+    "execution": {
+      "hostname": "r1i3n5.npad.internal",
+      "memory_measurement_scope": "process_lifetime_high_water_mark",
+      "package_versions": {
+        "PyYAML": "6.0.3",
+        "gurobipy": "13.0.3",
+        "model-agrologistic": "0.2.0.dev0",
+        "numpy": "2.5.2",
+        "openpyxl": "3.1.5",
+        "pandas": "2.3.3"
+      },
+      "platform": "Linux-4.18.0-477.10.1.el8_8.x86_64-x86_64-with-glibc2.28",
+      "python_executable": "/home/vrrcelestino/venv313/bin/python",
+      "python_no_user_site": "1",
+      "python_prefix": "/home/vrrcelestino/venv313",
+      "python_version": "3.13.15 | packaged by conda-forge | (main, Aug 10 2026, 13:05:01) [GCC 14.4.0]",
+      "slurm_array_job_id": "2096697",
+      "slurm_array_task_id": "0",
+      "slurm_cpus_per_task": "4",
+      "slurm_job_id": "2096698",
+      "slurm_mem_per_node_mb": "196608",
+      "slurm_partition": "intel-256",
+      "source_commit_authority": "submission_environment_not_independently_verified",
+      "source_commit_declared": null,
+      "user_site_enabled": false
+    },
+    "estimated_variables": 25107544,
+    "route_counts": {
+      "routes_od": 4440,
+      "routes_dc": 4800,
+      "routes_dd": 36000,
+      "routes_oc": 0
+    },
+    "connectivity": {
+      "schema_version": "interhub-connectivity-v1",
+      "scope": "potential_warehouse_graph_by_product",
+      "algorithm": "nearest_fraction_plus_rooted_bidirectional_tree_repair",
+      "active_network_connectivity_guaranteed": false,
+      "throughput_feasibility_guaranteed": false,
+      "status": "accepted",
+      "products": [
+        {
+          "product": "Milho",
+          "warehouses": 300,
+          "eligible_edges": 89700,
+          "baseline_edges": 18000,
+          "customer_repair_edges": 0,
+          "interhub_repair_edges": 0,
+          "final_edges": 18000,
+          "requested_fraction": 0.2,
+          "baseline_fraction": 0.20066889632107024,
+          "final_fraction": 0.20066889632107024,
+          "component_counts": {
+            "nearest_fraction": 1,
+            "customer_repaired": 1,
+            "interhub_repaired": 1
+          },
+          "strongly_connected": true
+        },
+        {
+          "product": "Soja",
+          "warehouses": 300,
+          "eligible_edges": 89700,
+          "baseline_edges": 18000,
+          "customer_repair_edges": 0,
+          "interhub_repair_edges": 0,
+          "final_edges": 18000,
+          "requested_fraction": 0.2,
+          "baseline_fraction": 0.20066889632107024,
+          "final_fraction": 0.20066889632107024,
+          "component_counts": {
+            "nearest_fraction": 1,
+            "customer_repaired": 1,
+            "interhub_repaired": 1
+          },
+          "strongly_connected": true
+        }
+      ]
+    },
+    "input_fingerprints": {
+      "workbook_sha256": "7761cce77cf93dcba2f617714f0117c1f2ead4de0c3f27149daceba447e0c7d1",
+      "model_config": "596a79618618347de132dd4c20708bc4298417bfdb2a37c2aa2fb8894720247a",
+      "loader_config": "f40c3aa6b075dc43d574cc7da7d7c2ea869f29bf82e995b7cdfcacf3ed63fe19",
+      "data_signature": "3d494f1c2e894facd08c6db0c68c827dbafae209d196c52f1df5f324ec2ffab4",
+      "input_audit": "2aa5624eccc32ee9189f93bd8e387d30651ea676dff38c9424654e4245f4962b",
+      "interhub_audit": "b165e61cbc6cb9411ab5372799922c23bc5f583b52c43aa8962be5c4864d0ea8",
+      "size_and_routes": "5a3c543a2b4a69ef9bd15e3635d1eed8d74b582f33b3bde5353d5aae80224261"
+    },
+    "priority_limits": [
+      {
+        "stage_role": "unmet_demand",
+        "objective_value": 0.0,
+        "final_objective_value": 9.98546056507621e-07,
+        "objective_bound": -5.326000973582268e-09,
+        "mip_inherited_base": 0.0,
+        "mip_next_pass_limit": 1e-06,
+        "within_mip_degradation_limit": true
+      },
+      {
+        "stage_role": "emergency_capacity",
+        "objective_value": 328096645.54558563,
+        "final_objective_value": 328096645.5455855,
+        "objective_bound": 327520771.9455136,
+        "mip_inherited_base": 360330436.5000722,
+        "mip_next_pass_limit": 360330436.5000732,
+        "within_mip_degradation_limit": true
+      },
+      {
+        "stage_role": "economic_cost",
+        "objective_value": 799870484734.6891,
+        "final_objective_value": 799870484734.6964,
+        "objective_bound": 395773844767.0154,
+        "mip_inherited_base": 799870484734.6891,
+        "mip_next_pass_limit": 799870484734.6891,
+        "within_mip_degradation_limit": true
+      }
+    ]
+  },
+  {
+    "name": "nine_h300_p20_warehouse_gurobi_stage_all_barrier",
+    "backend": "Gurobi",
+    "warehouses": 300,
+    "direct_arcs": false,
+    "outcome": "quality_certified",
+    "native_terminal_status": "OPTIMAL",
+    "raw_audit_status": "accepted_at_ten_percent",
+    "independent_validation_status": "accepted",
+    "incumbent_available": true,
+    "gap_representation": "per_stage; zero-service relative-gap sentinel is not a quality metric",
+    "time_budget_seconds": 28800,
+    "target_gap": 0.1,
+    "reported_stage_count": 3,
+    "data_read_seconds": 17.140255726873875,
+    "model_build_seconds": 422.2289985897951,
+    "optimization_seconds": 20382.04745707987,
+    "solver_reported_runtime_seconds": 20370.168676137924,
+    "end_to_end_seconds": 21019.24985342892,
+    "peak_rss_mb": 61209.19921875,
+    "postoptimality_seconds": 0.0,
+    "result_extraction_seconds": 100.20279301097617,
+    "artifact_export_seconds": 5.52634044829756,
+    "application_peak_rss_gib": 59.77460861206055,
+    "economic_cost": 396098981252.4231,
+    "domestic_service_level": 0.9999999999999986,
+    "minimum_scenario_service_level": 0.9999999999999875,
+    "maximum_scenario_service_level": 1.0,
+    "total_unmet_demand": 9.98546056507621e-07,
+    "material_balance_ok": true,
+    "emergency_static_capacity": 321520043.6615825,
+    "emergency_reception_capacity": 38834164.53398114,
+    "suppressed_unsubstantiated_metrics": {},
+    "stage_gaps": {
+      "unmet_demand": null,
+      "emergency_capacity": 0.0024779330093281627,
+      "economic_cost": 0.0008311377712910015
+    },
+    "source_member": "sprint-a-h300-warehouse-all-barrier-20260918T190519Z/audit/nine_results.json",
+    "campaign": "sprint-a-h300-warehouse-all-barrier-20260918T190519Z",
+    "method_profile": "Gurobi all-barrier",
+    "run_integrity": {
+      "run_identity": "f173225e1df1e9b1fe62e845295180c5d30a6882efb7d0ecd0a8acc464d1fa4e",
+      "verified_members": [
+        "run_summary.json",
+        "independent_validation.json",
+        "model_audit.json",
+        "lexicographic_stages.csv",
+        "preflight.json",
+        "solver_presolved_matrix.csv",
+        "interhub_connectivity_audit.json"
+      ],
+      "not_supplied_members": [
+        "result.json",
+        "flows.csv",
+        "inventories.csv",
+        "warehouse_decisions.csv",
+        "unmet_demand.csv",
+        "emergency_capacity.csv",
+        "scenario_performance.csv",
+        "material_balance_by_scenario.csv",
+        "capacity_gap_by_scenario.csv",
+        "investment_saturation.csv",
+        "emergency_capacity_daily.csv",
+        "evpi_vss_decomposition.csv",
+        "storage_by_warehouse.csv",
+        "storage_by_scenario.csv",
+        "solver_diagnostics.json",
+        "solver_stage_progress.csv",
+        "interhub_components.csv",
+        "interhub_repair_edges.csv",
+        "interhub_path_summary.csv"
+      ],
+      "scope": "supplied_members_only; not a full solution revalidation"
+    },
+    "workbook_sha256": "7761cce77cf93dcba2f617714f0117c1f2ead4de0c3f27149daceba447e0c7d1",
+    "model_config": {
+      "objective_policy": "lexicographic",
+      "interhub_factor": 1.0,
+      "use_warehouse_transshipment": true,
+      "route_filter_strategy": "connectivity_preserving_pareto",
+      "connectivity_export_policy": "one_sink_per_product",
+      "candidate_capacity_mode": "scalable",
+      "terminal_inventory_policy": "free",
+      "capacity_coupling_policy": "daily_factors",
+      "days_per_period": 30,
+      "allow_capacity_expansion": true,
+      "allow_bulkification": true,
+      "separate_emergency_capacity_slacks": true,
+      "interhub_strong_connectivity": true,
+      "mode": "sto",
+      "pareto_fraction": 0.2,
+      "use_direct_origin_customer": false
+    },
+    "loader_config": {
+      "compute_haversine_distances": false,
+      "use_workbook_distances": true,
+      "required_distance_source": "osrm_primary",
+      "include_export_routes": true,
+      "include_transshipment_routes": true,
+      "include_direct_origin_customer_routes": true,
+      "candidate_cost_policy": "variable_from_total",
+      "penalty_policy": "thesis_dynamic",
+      "include_stochastic_scenarios": true,
+      "scenario_generation_mode": "cartesian",
+      "stochastic_supply_levels": [
+        "baixo",
+        "base",
+        "alto"
+      ],
+      "stochastic_demand_levels": [
+        "baixo",
+        "base",
+        "alto"
+      ]
+    },
+    "solver_config": {
+      "backend": "gurobipy",
+      "solver_name": "gurobi",
+      "mip_gap": 0.1,
+      "time_limit": 28800,
+      "threads": 4,
+      "seed": 42,
+      "tee": true,
+      "compute_iis": true,
+      "iis_max_items": 200,
+      "solver_options": {
+        "SoftMemLimit": 128,
+        "NumericFocus": 1
+      },
+      "multiobjective_stage_options": {
+        "unmet_demand": {
+          "Method": 2
+        },
+        "emergency_capacity": {
+          "Method": 2
+        },
+        "economic_cost": {
+          "Method": 2
+        }
+      },
+      "collect_solver_diagnostics": true
+    },
+    "execution": {
+      "hostname": "r1i3n5.npad.internal",
+      "memory_measurement_scope": "process_lifetime_high_water_mark",
+      "package_versions": {
+        "PyYAML": "6.0.3",
+        "gurobipy": "13.0.3",
+        "model-agrologistic": "0.2.0.dev0",
+        "numpy": "2.5.2",
+        "openpyxl": "3.1.5",
+        "pandas": "2.3.3"
+      },
+      "platform": "Linux-4.18.0-477.10.1.el8_8.x86_64-x86_64-with-glibc2.28",
+      "python_executable": "/home/vrrcelestino/venv313/bin/python",
+      "python_no_user_site": "1",
+      "python_prefix": "/home/vrrcelestino/venv313",
+      "python_version": "3.13.15 | packaged by conda-forge | (main, Aug 10 2026, 13:05:01) [GCC 14.4.0]",
+      "slurm_array_job_id": null,
+      "slurm_array_task_id": null,
+      "slurm_cpus_per_task": "4",
+      "slurm_job_id": "2106401",
+      "slurm_mem_per_node_mb": "196608",
+      "slurm_partition": "intel-256",
+      "source_commit_authority": "submission_environment_not_independently_verified",
+      "source_commit_declared": null,
+      "user_site_enabled": false
+    },
+    "estimated_variables": 25107544,
+    "route_counts": {
+      "routes_od": 4440,
+      "routes_dc": 4800,
+      "routes_dd": 36000,
+      "routes_oc": 0
+    },
+    "connectivity": {
+      "schema_version": "interhub-connectivity-v1",
+      "scope": "potential_warehouse_graph_by_product",
+      "algorithm": "nearest_fraction_plus_rooted_bidirectional_tree_repair",
+      "active_network_connectivity_guaranteed": false,
+      "throughput_feasibility_guaranteed": false,
+      "status": "accepted",
+      "products": [
+        {
+          "product": "Milho",
+          "warehouses": 300,
+          "eligible_edges": 89700,
+          "baseline_edges": 18000,
+          "customer_repair_edges": 0,
+          "interhub_repair_edges": 0,
+          "final_edges": 18000,
+          "requested_fraction": 0.2,
+          "baseline_fraction": 0.20066889632107024,
+          "final_fraction": 0.20066889632107024,
+          "component_counts": {
+            "nearest_fraction": 1,
+            "customer_repaired": 1,
+            "interhub_repaired": 1
+          },
+          "strongly_connected": true
+        },
+        {
+          "product": "Soja",
+          "warehouses": 300,
+          "eligible_edges": 89700,
+          "baseline_edges": 18000,
+          "customer_repair_edges": 0,
+          "interhub_repair_edges": 0,
+          "final_edges": 18000,
+          "requested_fraction": 0.2,
+          "baseline_fraction": 0.20066889632107024,
+          "final_fraction": 0.20066889632107024,
+          "component_counts": {
+            "nearest_fraction": 1,
+            "customer_repaired": 1,
+            "interhub_repaired": 1
+          },
+          "strongly_connected": true
+        }
+      ]
+    },
+    "input_fingerprints": {
+      "workbook_sha256": "7761cce77cf93dcba2f617714f0117c1f2ead4de0c3f27149daceba447e0c7d1",
+      "model_config": "596a79618618347de132dd4c20708bc4298417bfdb2a37c2aa2fb8894720247a",
+      "loader_config": "f40c3aa6b075dc43d574cc7da7d7c2ea869f29bf82e995b7cdfcacf3ed63fe19",
+      "data_signature": "3d494f1c2e894facd08c6db0c68c827dbafae209d196c52f1df5f324ec2ffab4",
+      "input_audit": "2aa5624eccc32ee9189f93bd8e387d30651ea676dff38c9424654e4245f4962b",
+      "interhub_audit": "b165e61cbc6cb9411ab5372799922c23bc5f583b52c43aa8962be5c4864d0ea8",
+      "size_and_routes": "5a3c543a2b4a69ef9bd15e3635d1eed8d74b582f33b3bde5353d5aae80224261"
+    },
+    "priority_limits": [
+      {
+        "stage_role": "unmet_demand",
+        "objective_value": 0.0,
+        "final_objective_value": 9.98546056507621e-07,
+        "objective_bound": -5.384208634495735e-09,
+        "mip_inherited_base": 0.0,
+        "mip_next_pass_limit": 1e-06,
+        "within_mip_degradation_limit": true
+      },
+      {
+        "stage_role": "emergency_capacity",
+        "objective_value": 328334362.5004516,
+        "final_objective_value": 360354208.19556177,
+        "objective_bound": 327520771.945515,
+        "mip_inherited_base": 360354208.19556016,
+        "mip_next_pass_limit": 360354208.1955612,
+        "within_mip_degradation_limit": true
+      },
+      {
+        "stage_role": "economic_cost",
+        "objective_value": 396098981252.41626,
+        "final_objective_value": 396098981252.4231,
+        "objective_bound": 395769768427.9276,
+        "mip_inherited_base": 435379666553.16925,
+        "mip_next_pass_limit": 435379666553.16925,
+        "within_mip_degradation_limit": true
+      }
+    ]
+  },
+  {
+    "name": "nine_h300_p20_warehouse_scip_expansion",
+    "backend": "SCIP",
+    "warehouses": 300,
+    "direct_arcs": false,
+    "outcome": "mem_limit_without_incumbent",
+    "native_terminal_status": "MEM_LIMIT",
+    "raw_audit_status": "independent_validation_not_accepted",
+    "independent_validation_status": "rejected",
+    "incumbent_available": false,
+    "gap_representation": "unavailable_without_incumbent",
+    "time_budget_seconds": 28800,
+    "target_gap": 0.1,
+    "reported_stage_count": 1,
+    "data_read_seconds": 17.21435191715136,
+    "model_build_seconds": 414.04943533893675,
+    "optimization_seconds": 711.1336212288588,
+    "solver_reported_runtime_seconds": 709.440998,
+    "end_to_end_seconds": 1632.5591837610118,
+    "peak_rss_mb": 130109.3671875,
+    "postoptimality_seconds": 0.0,
+    "result_extraction_seconds": null,
+    "artifact_export_seconds": 0.1399929109029472,
+    "application_peak_rss_gib": 127.05992889404297,
+    "economic_cost": null,
+    "domestic_service_level": null,
+    "minimum_scenario_service_level": null,
+    "maximum_scenario_service_level": null,
+    "total_unmet_demand": null,
+    "material_balance_ok": null,
+    "emergency_static_capacity": null,
+    "emergency_reception_capacity": null,
+    "suppressed_unsubstantiated_metrics": {
+      "minimum_scenario_service_level": 1.0,
+      "maximum_scenario_service_level": 1.0
+    },
+    "stage_gaps": {
+      "unmet_demand": null
+    },
+    "source_member": "scip-expansion-20260919T134716Z/case-1/audit/nine_results.json",
+    "campaign": "scip-expansion-20260919T134716Z/case-1",
+    "method_profile": "SCIP/SoPlex sequential",
+    "run_integrity": {
+      "run_identity": "778b70c1726ac98c9c5183408f2e114303305a46f749c4662a85be8622b63841",
+      "verified_members": [
+        "run_summary.json",
+        "independent_validation.json",
+        "model_audit.json",
+        "lexicographic_stages.csv",
+        "preflight.json",
+        "interhub_connectivity_audit.json"
+      ],
+      "not_supplied_members": [
+        "result.json",
+        "flows.csv",
+        "inventories.csv",
+        "warehouse_decisions.csv",
+        "unmet_demand.csv",
+        "emergency_capacity.csv",
+        "scenario_performance.csv",
+        "material_balance_by_scenario.csv",
+        "capacity_gap_by_scenario.csv",
+        "investment_saturation.csv",
+        "emergency_capacity_daily.csv",
+        "evpi_vss_decomposition.csv",
+        "storage_by_warehouse.csv",
+        "storage_by_scenario.csv",
+        "interhub_components.csv",
+        "interhub_repair_edges.csv",
+        "interhub_path_summary.csv"
+      ],
+      "scope": "supplied_members_only; not a full solution revalidation"
+    },
+    "workbook_sha256": "7761cce77cf93dcba2f617714f0117c1f2ead4de0c3f27149daceba447e0c7d1",
+    "model_config": {
+      "objective_policy": "lexicographic",
+      "interhub_factor": 1.0,
+      "use_warehouse_transshipment": true,
+      "route_filter_strategy": "connectivity_preserving_pareto",
+      "connectivity_export_policy": "one_sink_per_product",
+      "candidate_capacity_mode": "scalable",
+      "terminal_inventory_policy": "free",
+      "capacity_coupling_policy": "daily_factors",
+      "days_per_period": 30,
+      "allow_capacity_expansion": true,
+      "allow_bulkification": true,
+      "separate_emergency_capacity_slacks": true,
+      "interhub_strong_connectivity": true,
+      "mode": "sto",
+      "pareto_fraction": 0.2,
+      "use_direct_origin_customer": false
+    },
+    "loader_config": {
+      "compute_haversine_distances": false,
+      "use_workbook_distances": true,
+      "required_distance_source": "osrm_primary",
+      "include_export_routes": true,
+      "include_transshipment_routes": true,
+      "include_direct_origin_customer_routes": true,
+      "candidate_cost_policy": "variable_from_total",
+      "penalty_policy": "thesis_dynamic",
+      "include_stochastic_scenarios": true,
+      "scenario_generation_mode": "cartesian",
+      "stochastic_supply_levels": [
+        "baixo",
+        "base",
+        "alto"
+      ],
+      "stochastic_demand_levels": [
+        "baixo",
+        "base",
+        "alto"
+      ]
+    },
+    "solver_config": {
+      "backend": "pyscipopt",
+      "solver_name": "scip",
+      "mip_gap": 0.1,
+      "time_limit": 28800,
+      "threads": 4,
+      "seed": 42,
+      "tee": true,
+      "compute_iis": false,
+      "solver_options": {
+        "limits/memory": 131072
+      },
+      "log_file": "/home/vrrcelestino/model-agrologistic/data/results/hpc/scip-expansion-20260919T134716Z/case-1/scip.log"
+    },
+    "execution": {
+      "hostname": "r1i3n9.npad.internal",
+      "memory_measurement_scope": "process_lifetime_high_water_mark",
+      "package_versions": {
+        "PyYAML": "6.0.3",
+        "gurobipy": "13.0.3",
+        "model-agrologistic": "0.2.0.dev0",
+        "numpy": "2.5.3",
+        "openpyxl": "3.1.5",
+        "pandas": "2.3.3"
+      },
+      "platform": "Linux-4.18.0-477.10.1.el8_8.x86_64-x86_64-with-glibc2.28",
+      "python_executable": "/home/vrrcelestino/agrologistic-scip-pr31-4N2wGy/venv/bin/python",
+      "python_no_user_site": "1",
+      "python_prefix": "/home/vrrcelestino/agrologistic-scip-pr31-4N2wGy/venv",
+      "python_version": "3.13.15 | packaged by conda-forge | (main, Aug 10 2026, 13:05:01) [GCC 14.4.0]",
+      "slurm_array_job_id": "2107114",
+      "slurm_array_task_id": "1",
+      "slurm_cpus_per_task": "4",
+      "slurm_job_id": "2107116",
+      "slurm_mem_per_node_mb": "196608",
+      "slurm_partition": "intel-256",
+      "source_commit_authority": "submission_environment_not_independently_verified",
+      "source_commit_declared": "6c45be9c3cdd6f6c8b49ee317e5f03b8208c72a1",
+      "user_site_enabled": false
+    },
+    "estimated_variables": 25107544,
+    "route_counts": {
+      "routes_od": 4440,
+      "routes_dc": 4800,
+      "routes_dd": 36000,
+      "routes_oc": 0
+    },
+    "connectivity": {
+      "schema_version": "interhub-connectivity-v1",
+      "scope": "potential_warehouse_graph_by_product",
+      "algorithm": "nearest_fraction_plus_rooted_bidirectional_tree_repair",
+      "active_network_connectivity_guaranteed": false,
+      "throughput_feasibility_guaranteed": false,
+      "status": "accepted",
+      "products": [
+        {
+          "product": "Milho",
+          "warehouses": 300,
+          "eligible_edges": 89700,
+          "baseline_edges": 18000,
+          "customer_repair_edges": 0,
+          "interhub_repair_edges": 0,
+          "final_edges": 18000,
+          "requested_fraction": 0.2,
+          "baseline_fraction": 0.20066889632107024,
+          "final_fraction": 0.20066889632107024,
+          "component_counts": {
+            "nearest_fraction": 1,
+            "customer_repaired": 1,
+            "interhub_repaired": 1
+          },
+          "strongly_connected": true
+        },
+        {
+          "product": "Soja",
+          "warehouses": 300,
+          "eligible_edges": 89700,
+          "baseline_edges": 18000,
+          "customer_repair_edges": 0,
+          "interhub_repair_edges": 0,
+          "final_edges": 18000,
+          "requested_fraction": 0.2,
+          "baseline_fraction": 0.20066889632107024,
+          "final_fraction": 0.20066889632107024,
+          "component_counts": {
+            "nearest_fraction": 1,
+            "customer_repaired": 1,
+            "interhub_repaired": 1
+          },
+          "strongly_connected": true
+        }
+      ]
+    },
+    "input_fingerprints": {
+      "workbook_sha256": "7761cce77cf93dcba2f617714f0117c1f2ead4de0c3f27149daceba447e0c7d1",
+      "model_config": "596a79618618347de132dd4c20708bc4298417bfdb2a37c2aa2fb8894720247a",
+      "loader_config": "f40c3aa6b075dc43d574cc7da7d7c2ea869f29bf82e995b7cdfcacf3ed63fe19",
+      "data_signature": "3d494f1c2e894facd08c6db0c68c827dbafae209d196c52f1df5f324ec2ffab4",
+      "input_audit": "2aa5624eccc32ee9189f93bd8e387d30651ea676dff38c9424654e4245f4962b",
+      "interhub_audit": "b165e61cbc6cb9411ab5372799922c23bc5f583b52c43aa8962be5c4864d0ea8",
+      "size_and_routes": "5a3c543a2b4a69ef9bd15e3635d1eed8d74b582f33b3bde5353d5aae80224261"
+    },
+    "priority_limits": [
+      {
+        "stage_role": "unmet_demand",
+        "objective_value": null,
+        "final_objective_value": null,
+        "objective_bound": null,
+        "mip_inherited_base": null,
+        "mip_next_pass_limit": null,
+        "within_mip_degradation_limit": null
+      }
+    ]
+  },
+  {
+    "name": "nine_h300_p20_warehouse_scip_mem393216",
+    "backend": "SCIP",
+    "warehouses": 300,
+    "direct_arcs": false,
+    "outcome": "time_limit_without_incumbent",
+    "native_terminal_status": "TIME_LIMIT",
+    "raw_audit_status": "independent_validation_not_accepted",
+    "independent_validation_status": "rejected",
+    "incumbent_available": false,
+    "gap_representation": "unavailable_without_incumbent",
+    "time_budget_seconds": 28800,
+    "target_gap": 0.1,
+    "reported_stage_count": 1,
+    "data_read_seconds": 17.72377367084846,
+    "model_build_seconds": 452.6420119102113,
+    "optimization_seconds": 28823.086892064195,
+    "solver_reported_runtime_seconds": 28820.956741,
+    "end_to_end_seconds": 29990.890338561963,
+    "peak_rss_mb": 157674.1640625,
+    "postoptimality_seconds": 0.0,
+    "result_extraction_seconds": null,
+    "artifact_export_seconds": 0.20154602825641632,
+    "application_peak_rss_gib": 153.97867584228516,
+    "economic_cost": null,
+    "domestic_service_level": null,
+    "minimum_scenario_service_level": null,
+    "maximum_scenario_service_level": null,
+    "total_unmet_demand": null,
+    "material_balance_ok": null,
+    "emergency_static_capacity": null,
+    "emergency_reception_capacity": null,
+    "suppressed_unsubstantiated_metrics": {
+      "minimum_scenario_service_level": 1.0,
+      "maximum_scenario_service_level": 1.0
+    },
+    "stage_gaps": {
+      "unmet_demand": null
+    },
+    "source_member": "scip-h300-memory-allocation-20260919T193631Z/case-0/audit/nine_results.json",
+    "campaign": "scip-h300-memory-allocation-20260919T193631Z/case-0",
+    "method_profile": "SCIP/SoPlex sequential",
+    "run_integrity": {
+      "run_identity": "366b03e5505f3cee9c09c019d4565d4228dc4a221149a39844b66b0d943cb9b0",
+      "verified_members": [
+        "run_summary.json",
+        "independent_validation.json",
+        "model_audit.json",
+        "lexicographic_stages.csv",
+        "preflight.json",
+        "interhub_connectivity_audit.json"
+      ],
+      "not_supplied_members": [
+        "result.json",
+        "flows.csv",
+        "inventories.csv",
+        "warehouse_decisions.csv",
+        "unmet_demand.csv",
+        "emergency_capacity.csv",
+        "scenario_performance.csv",
+        "material_balance_by_scenario.csv",
+        "capacity_gap_by_scenario.csv",
+        "investment_saturation.csv",
+        "emergency_capacity_daily.csv",
+        "evpi_vss_decomposition.csv",
+        "storage_by_warehouse.csv",
+        "storage_by_scenario.csv",
+        "interhub_components.csv",
+        "interhub_repair_edges.csv",
+        "interhub_path_summary.csv"
+      ],
+      "scope": "supplied_members_only; not a full solution revalidation"
+    },
+    "workbook_sha256": "7761cce77cf93dcba2f617714f0117c1f2ead4de0c3f27149daceba447e0c7d1",
+    "model_config": {
+      "objective_policy": "lexicographic",
+      "interhub_factor": 1.0,
+      "use_warehouse_transshipment": true,
+      "route_filter_strategy": "connectivity_preserving_pareto",
+      "connectivity_export_policy": "one_sink_per_product",
+      "candidate_capacity_mode": "scalable",
+      "terminal_inventory_policy": "free",
+      "capacity_coupling_policy": "daily_factors",
+      "days_per_period": 30,
+      "allow_capacity_expansion": true,
+      "allow_bulkification": true,
+      "separate_emergency_capacity_slacks": true,
+      "interhub_strong_connectivity": true,
+      "mode": "sto",
+      "pareto_fraction": 0.2,
+      "use_direct_origin_customer": false
+    },
+    "loader_config": {
+      "compute_haversine_distances": false,
+      "use_workbook_distances": true,
+      "required_distance_source": "osrm_primary",
+      "include_export_routes": true,
+      "include_transshipment_routes": true,
+      "include_direct_origin_customer_routes": true,
+      "candidate_cost_policy": "variable_from_total",
+      "penalty_policy": "thesis_dynamic",
+      "include_stochastic_scenarios": true,
+      "scenario_generation_mode": "cartesian",
+      "stochastic_supply_levels": [
+        "baixo",
+        "base",
+        "alto"
+      ],
+      "stochastic_demand_levels": [
+        "baixo",
+        "base",
+        "alto"
+      ]
+    },
+    "solver_config": {
+      "backend": "pyscipopt",
+      "solver_name": "scip",
+      "mip_gap": 0.1,
+      "time_limit": 28800,
+      "threads": 4,
+      "seed": 42,
+      "tee": true,
+      "compute_iis": false,
+      "solver_options": {
+        "limits/memory": 393216
+      },
+      "log_file": "/home/vrrcelestino/model-agrologistic/data/results/hpc/scip-h300-memory-allocation-20260919T193631Z/case-0/scip.log"
+    },
+    "execution": {
+      "hostname": "r1i3n14.npad.internal",
+      "memory_measurement_scope": "process_lifetime_high_water_mark",
+      "package_versions": {
+        "PyYAML": "6.0.3",
+        "gurobipy": "13.0.3",
+        "model-agrologistic": "0.2.0.dev0",
+        "numpy": "2.5.3",
+        "openpyxl": "3.1.5",
+        "pandas": "2.3.3"
+      },
+      "platform": "Linux-4.18.0-477.10.1.el8_8.x86_64-x86_64-with-glibc2.28",
+      "python_executable": "/home/vrrcelestino/agrologistic-scip-pr31-4N2wGy/venv/bin/python",
+      "python_no_user_site": "1",
+      "python_prefix": "/home/vrrcelestino/agrologistic-scip-pr31-4N2wGy/venv",
+      "python_version": "3.13.15 | packaged by conda-forge | (main, Aug 10 2026, 13:05:01) [GCC 14.4.0]",
+      "slurm_array_job_id": "2107719",
+      "slurm_array_task_id": "0",
+      "slurm_cpus_per_task": "4",
+      "slurm_job_id": "2107720",
+      "slurm_mem_per_node_mb": null,
+      "slurm_partition": "intel-512",
+      "source_commit_authority": "submission_environment_not_independently_verified",
+      "source_commit_declared": "c4985e3adadb83243237fb6b09cdfc09200c7258",
+      "user_site_enabled": false
+    },
+    "estimated_variables": 25107544,
+    "route_counts": {
+      "routes_od": 4440,
+      "routes_dc": 4800,
+      "routes_dd": 36000,
+      "routes_oc": 0
+    },
+    "connectivity": {
+      "schema_version": "interhub-connectivity-v1",
+      "scope": "potential_warehouse_graph_by_product",
+      "algorithm": "nearest_fraction_plus_rooted_bidirectional_tree_repair",
+      "active_network_connectivity_guaranteed": false,
+      "throughput_feasibility_guaranteed": false,
+      "status": "accepted",
+      "products": [
+        {
+          "product": "Milho",
+          "warehouses": 300,
+          "eligible_edges": 89700,
+          "baseline_edges": 18000,
+          "customer_repair_edges": 0,
+          "interhub_repair_edges": 0,
+          "final_edges": 18000,
+          "requested_fraction": 0.2,
+          "baseline_fraction": 0.20066889632107024,
+          "final_fraction": 0.20066889632107024,
+          "component_counts": {
+            "nearest_fraction": 1,
+            "customer_repaired": 1,
+            "interhub_repaired": 1
+          },
+          "strongly_connected": true
+        },
+        {
+          "product": "Soja",
+          "warehouses": 300,
+          "eligible_edges": 89700,
+          "baseline_edges": 18000,
+          "customer_repair_edges": 0,
+          "interhub_repair_edges": 0,
+          "final_edges": 18000,
+          "requested_fraction": 0.2,
+          "baseline_fraction": 0.20066889632107024,
+          "final_fraction": 0.20066889632107024,
+          "component_counts": {
+            "nearest_fraction": 1,
+            "customer_repaired": 1,
+            "interhub_repaired": 1
+          },
+          "strongly_connected": true
+        }
+      ]
+    },
+    "input_fingerprints": {
+      "workbook_sha256": "7761cce77cf93dcba2f617714f0117c1f2ead4de0c3f27149daceba447e0c7d1",
+      "model_config": "596a79618618347de132dd4c20708bc4298417bfdb2a37c2aa2fb8894720247a",
+      "loader_config": "f40c3aa6b075dc43d574cc7da7d7c2ea869f29bf82e995b7cdfcacf3ed63fe19",
+      "data_signature": "3d494f1c2e894facd08c6db0c68c827dbafae209d196c52f1df5f324ec2ffab4",
+      "input_audit": "2aa5624eccc32ee9189f93bd8e387d30651ea676dff38c9424654e4245f4962b",
+      "interhub_audit": "b165e61cbc6cb9411ab5372799922c23bc5f583b52c43aa8962be5c4864d0ea8",
+      "size_and_routes": "5a3c543a2b4a69ef9bd15e3635d1eed8d74b582f33b3bde5353d5aae80224261"
+    },
+    "priority_limits": [
+      {
+        "stage_role": "unmet_demand",
+        "objective_value": null,
+        "final_objective_value": null,
+        "objective_bound": -22692386394.907322,
+        "mip_inherited_base": null,
+        "mip_next_pass_limit": null,
+        "within_mip_degradation_limit": null
+      }
+    ]
+  },
+  {
+    "name": "nine_h300_p20_direct_gurobi",
+    "backend": "Gurobi",
+    "warehouses": 300,
+    "direct_arcs": true,
+    "outcome": "quality_certified",
+    "native_terminal_status": "OPTIMAL",
+    "raw_audit_status": "accepted_at_ten_percent",
+    "independent_validation_status": "accepted",
+    "incumbent_available": true,
+    "gap_representation": "per_stage; zero-service relative-gap sentinel is not a quality metric",
+    "time_budget_seconds": 28800,
+    "target_gap": 0.1,
+    "reported_stage_count": 3,
+    "data_read_seconds": 19.203824328258634,
+    "model_build_seconds": 503.41322753066197,
+    "optimization_seconds": 26409.00135056628,
+    "solver_reported_runtime_seconds": 26395.484815835953,
+    "end_to_end_seconds": 27135.445016822312,
+    "peak_rss_mb": 82929.69921875,
+    "postoptimality_seconds": 0.0,
+    "result_extraction_seconds": 90.28251082496718,
+    "artifact_export_seconds": 4.30722326785326,
+    "application_peak_rss_gib": 80.98603439331055,
+    "economic_cost": 354888907616.2792,
+    "domestic_service_level": 0.9999999999999986,
+    "minimum_scenario_service_level": 0.9999999999999872,
+    "maximum_scenario_service_level": 1.0,
+    "total_unmet_demand": 1.000292286335025e-06,
+    "material_balance_ok": true,
+    "emergency_static_capacity": 306124733.79390055,
+    "emergency_reception_capacity": 14708.661559599077,
+    "suppressed_unsubstantiated_metrics": {},
+    "stage_gaps": {
+      "unmet_demand": null,
+      "emergency_capacity": 0.012874290869706328,
+      "economic_cost": 0.0006768386718101373
+    },
+    "source_member": "nine-connectivity-h300-20260915T150139Z/pilot-audit-20260916T115856Z/nine_results.json",
+    "campaign": "nine-connectivity-h300-20260915T150139Z",
+    "method_profile": "Gurobi historical automatic",
+    "run_integrity": {
+      "run_identity": "2c34923da65a19a3763e29af76ed10b41fb5bd8cab1b5873568b68023f695d08",
+      "verified_members": [
+        "run_summary.json",
+        "independent_validation.json",
+        "model_audit.json",
+        "lexicographic_stages.csv",
+        "preflight.json",
+        "interhub_connectivity_audit.json"
+      ],
+      "not_supplied_members": [
+        "result.json",
+        "flows.csv",
+        "inventories.csv",
+        "warehouse_decisions.csv",
+        "unmet_demand.csv",
+        "emergency_capacity.csv",
+        "scenario_performance.csv",
+        "material_balance_by_scenario.csv",
+        "capacity_gap_by_scenario.csv",
+        "investment_saturation.csv",
+        "emergency_capacity_daily.csv",
+        "evpi_vss_decomposition.csv",
+        "storage_by_warehouse.csv",
+        "storage_by_scenario.csv",
+        "interhub_components.csv",
+        "interhub_repair_edges.csv",
+        "interhub_path_summary.csv"
+      ],
+      "scope": "supplied_members_only; not a full solution revalidation"
+    },
+    "workbook_sha256": "7761cce77cf93dcba2f617714f0117c1f2ead4de0c3f27149daceba447e0c7d1",
+    "model_config": {
+      "objective_policy": "lexicographic",
+      "interhub_factor": 1.0,
+      "use_warehouse_transshipment": true,
+      "route_filter_strategy": "connectivity_preserving_pareto",
+      "connectivity_export_policy": "one_sink_per_product",
+      "candidate_capacity_mode": "scalable",
+      "terminal_inventory_policy": "free",
+      "capacity_coupling_policy": "daily_factors",
+      "days_per_period": 30,
+      "allow_capacity_expansion": true,
+      "allow_bulkification": true,
+      "separate_emergency_capacity_slacks": true,
+      "interhub_strong_connectivity": true,
+      "mode": "sto",
+      "pareto_fraction": 0.2,
+      "use_direct_origin_customer": true
+    },
+    "loader_config": {
+      "compute_haversine_distances": false,
+      "use_workbook_distances": true,
+      "required_distance_source": "osrm_primary",
+      "include_export_routes": true,
+      "include_transshipment_routes": true,
+      "include_direct_origin_customer_routes": true,
+      "candidate_cost_policy": "variable_from_total",
+      "penalty_policy": "thesis_dynamic",
+      "include_stochastic_scenarios": true,
+      "scenario_generation_mode": "cartesian",
+      "stochastic_supply_levels": [
+        "baixo",
+        "base",
+        "alto"
+      ],
+      "stochastic_demand_levels": [
+        "baixo",
+        "base",
+        "alto"
+      ]
+    },
+    "solver_config": {
+      "backend": "gurobipy",
+      "solver_name": "gurobi",
+      "mip_gap": 0.1,
+      "time_limit": 28800,
+      "threads": 4,
+      "seed": 42,
+      "tee": true,
+      "compute_iis": true,
+      "iis_max_items": 200,
+      "solver_options": {
+        "SoftMemLimit": 128,
+        "NumericFocus": 1
+      }
+    },
+    "execution": {
+      "hostname": "r1i3n5.npad.internal",
+      "memory_measurement_scope": "process_lifetime_high_water_mark",
+      "package_versions": {
+        "PyYAML": "6.0.3",
+        "gurobipy": "13.0.3",
+        "model-agrologistic": "0.2.0.dev0",
+        "numpy": "2.5.2",
+        "openpyxl": "3.1.5",
+        "pandas": "2.3.3"
+      },
+      "platform": "Linux-4.18.0-477.10.1.el8_8.x86_64-x86_64-with-glibc2.28",
+      "python_executable": "/home/vrrcelestino/venv313/bin/python",
+      "python_no_user_site": "1",
+      "python_prefix": "/home/vrrcelestino/venv313",
+      "python_version": "3.13.15 | packaged by conda-forge | (main, Aug 10 2026, 13:05:01) [GCC 14.4.0]",
+      "slurm_array_job_id": "2096697",
+      "slurm_array_task_id": "1",
+      "slurm_cpus_per_task": "4",
+      "slurm_job_id": "2096697",
+      "slurm_mem_per_node_mb": "196608",
+      "slurm_partition": "intel-256",
+      "source_commit_authority": "submission_environment_not_independently_verified",
+      "source_commit_declared": null,
+      "user_site_enabled": false
+    },
+    "estimated_variables": 25427224,
+    "route_counts": {
+      "routes_od": 4440,
+      "routes_dc": 4800,
+      "routes_dd": 36000,
+      "routes_oc": 592
+    },
+    "connectivity": {
+      "schema_version": "interhub-connectivity-v1",
+      "scope": "potential_warehouse_graph_by_product",
+      "algorithm": "nearest_fraction_plus_rooted_bidirectional_tree_repair",
+      "active_network_connectivity_guaranteed": false,
+      "throughput_feasibility_guaranteed": false,
+      "status": "accepted",
+      "products": [
+        {
+          "product": "Milho",
+          "warehouses": 300,
+          "eligible_edges": 89700,
+          "baseline_edges": 18000,
+          "customer_repair_edges": 0,
+          "interhub_repair_edges": 0,
+          "final_edges": 18000,
+          "requested_fraction": 0.2,
+          "baseline_fraction": 0.20066889632107024,
+          "final_fraction": 0.20066889632107024,
+          "component_counts": {
+            "nearest_fraction": 1,
+            "customer_repaired": 1,
+            "interhub_repaired": 1
+          },
+          "strongly_connected": true
+        },
+        {
+          "product": "Soja",
+          "warehouses": 300,
+          "eligible_edges": 89700,
+          "baseline_edges": 18000,
+          "customer_repair_edges": 0,
+          "interhub_repair_edges": 0,
+          "final_edges": 18000,
+          "requested_fraction": 0.2,
+          "baseline_fraction": 0.20066889632107024,
+          "final_fraction": 0.20066889632107024,
+          "component_counts": {
+            "nearest_fraction": 1,
+            "customer_repaired": 1,
+            "interhub_repaired": 1
+          },
+          "strongly_connected": true
+        }
+      ]
+    },
+    "input_fingerprints": {
+      "workbook_sha256": "7761cce77cf93dcba2f617714f0117c1f2ead4de0c3f27149daceba447e0c7d1",
+      "model_config": "1a03ec747c898d1943397de1779039a5e1ee5368e75a6e49a4792d8eb03a7e78",
+      "loader_config": "f40c3aa6b075dc43d574cc7da7d7c2ea869f29bf82e995b7cdfcacf3ed63fe19",
+      "data_signature": "3d494f1c2e894facd08c6db0c68c827dbafae209d196c52f1df5f324ec2ffab4",
+      "input_audit": "2aa5624eccc32ee9189f93bd8e387d30651ea676dff38c9424654e4245f4962b",
+      "interhub_audit": "b165e61cbc6cb9411ab5372799922c23bc5f583b52c43aa8962be5c4864d0ea8",
+      "size_and_routes": "9d4bfdfbf39291aa2f192d42f845ca5987259cd601188ae33a91e3b08091c6be"
+    },
+    "priority_limits": [
+      {
+        "stage_role": "unmet_demand",
+        "objective_value": 0.0,
+        "final_objective_value": 1.000292286335025e-06,
+        "objective_bound": 3.4924596548080444e-10,
+        "mip_inherited_base": 4.4924596548080446e-10,
+        "mip_next_pass_limit": 1.0004492459654808e-06,
+        "within_mip_degradation_limit": true
+      },
+      {
+        "stage_role": "emergency_capacity",
+        "objective_value": 281604454.64984155,
+        "final_objective_value": 306139442.4554646,
+        "objective_bound": 277978996.99047446,
+        "mip_inherited_base": 306139442.45545864,
+        "mip_next_pass_limit": 306139442.45545965,
+        "within_mip_degradation_limit": true
+      },
+      {
+        "stage_role": "economic_cost",
+        "objective_value": 354888907616.2814,
+        "final_objective_value": 354888907616.2792,
+        "objective_bound": 354648705079.41077,
+        "mip_inherited_base": 390137595841.0389,
+        "mip_next_pass_limit": 390137595841.0389,
+        "within_mip_degradation_limit": true
+      }
+    ]
+  },
+  {
+    "name": "nine_h300_p20_direct_scip_expansion",
+    "backend": "SCIP",
+    "warehouses": 300,
+    "direct_arcs": true,
+    "outcome": "mem_limit_without_incumbent",
+    "native_terminal_status": "MEM_LIMIT",
+    "raw_audit_status": "independent_validation_not_accepted",
+    "independent_validation_status": "rejected",
+    "incumbent_available": false,
+    "gap_representation": "unavailable_without_incumbent",
+    "time_budget_seconds": 28800,
+    "target_gap": 0.1,
+    "reported_stage_count": 1,
+    "data_read_seconds": 17.778857454191893,
+    "model_build_seconds": 417.2025806759484,
+    "optimization_seconds": 660.6928438902833,
+    "solver_reported_runtime_seconds": 658.980136,
+    "end_to_end_seconds": 1576.0373201803304,
+    "peak_rss_mb": 131260.0,
+    "postoptimality_seconds": 0.0,
+    "result_extraction_seconds": null,
+    "artifact_export_seconds": 0.06213287869468331,
+    "application_peak_rss_gib": 128.18359375,
+    "economic_cost": null,
+    "domestic_service_level": null,
+    "minimum_scenario_service_level": null,
+    "maximum_scenario_service_level": null,
+    "total_unmet_demand": null,
+    "material_balance_ok": null,
+    "emergency_static_capacity": null,
+    "emergency_reception_capacity": null,
+    "suppressed_unsubstantiated_metrics": {
+      "minimum_scenario_service_level": 1.0,
+      "maximum_scenario_service_level": 1.0
+    },
+    "stage_gaps": {
+      "unmet_demand": null
+    },
+    "source_member": "scip-expansion-20260919T134716Z/case-2/audit/nine_results.json",
+    "campaign": "scip-expansion-20260919T134716Z/case-2",
+    "method_profile": "SCIP/SoPlex sequential",
+    "run_integrity": {
+      "run_identity": "3f65b9554e311619afb157fa79834ca9289a1df185ee9a0bf667d679d245ea82",
+      "verified_members": [
+        "run_summary.json",
+        "independent_validation.json",
+        "model_audit.json",
+        "lexicographic_stages.csv",
+        "preflight.json",
+        "interhub_connectivity_audit.json"
+      ],
+      "not_supplied_members": [
+        "result.json",
+        "flows.csv",
+        "inventories.csv",
+        "warehouse_decisions.csv",
+        "unmet_demand.csv",
+        "emergency_capacity.csv",
+        "scenario_performance.csv",
+        "material_balance_by_scenario.csv",
+        "capacity_gap_by_scenario.csv",
+        "investment_saturation.csv",
+        "emergency_capacity_daily.csv",
+        "evpi_vss_decomposition.csv",
+        "storage_by_warehouse.csv",
+        "storage_by_scenario.csv",
+        "interhub_components.csv",
+        "interhub_repair_edges.csv",
+        "interhub_path_summary.csv"
+      ],
+      "scope": "supplied_members_only; not a full solution revalidation"
+    },
+    "workbook_sha256": "7761cce77cf93dcba2f617714f0117c1f2ead4de0c3f27149daceba447e0c7d1",
+    "model_config": {
+      "objective_policy": "lexicographic",
+      "interhub_factor": 1.0,
+      "use_warehouse_transshipment": true,
+      "route_filter_strategy": "connectivity_preserving_pareto",
+      "connectivity_export_policy": "one_sink_per_product",
+      "candidate_capacity_mode": "scalable",
+      "terminal_inventory_policy": "free",
+      "capacity_coupling_policy": "daily_factors",
+      "days_per_period": 30,
+      "allow_capacity_expansion": true,
+      "allow_bulkification": true,
+      "separate_emergency_capacity_slacks": true,
+      "interhub_strong_connectivity": true,
+      "mode": "sto",
+      "pareto_fraction": 0.2,
+      "use_direct_origin_customer": true
+    },
+    "loader_config": {
+      "compute_haversine_distances": false,
+      "use_workbook_distances": true,
+      "required_distance_source": "osrm_primary",
+      "include_export_routes": true,
+      "include_transshipment_routes": true,
+      "include_direct_origin_customer_routes": true,
+      "candidate_cost_policy": "variable_from_total",
+      "penalty_policy": "thesis_dynamic",
+      "include_stochastic_scenarios": true,
+      "scenario_generation_mode": "cartesian",
+      "stochastic_supply_levels": [
+        "baixo",
+        "base",
+        "alto"
+      ],
+      "stochastic_demand_levels": [
+        "baixo",
+        "base",
+        "alto"
+      ]
+    },
+    "solver_config": {
+      "backend": "pyscipopt",
+      "solver_name": "scip",
+      "mip_gap": 0.1,
+      "time_limit": 28800,
+      "threads": 4,
+      "seed": 42,
+      "tee": true,
+      "compute_iis": false,
+      "solver_options": {
+        "limits/memory": 131072
+      },
+      "log_file": "/home/vrrcelestino/model-agrologistic/data/results/hpc/scip-expansion-20260919T134716Z/case-2/scip.log"
+    },
+    "execution": {
+      "hostname": "r1i3n6.npad.internal",
+      "memory_measurement_scope": "process_lifetime_high_water_mark",
+      "package_versions": {
+        "PyYAML": "6.0.3",
+        "gurobipy": "13.0.3",
+        "model-agrologistic": "0.2.0.dev0",
+        "numpy": "2.5.3",
+        "openpyxl": "3.1.5",
+        "pandas": "2.3.3"
+      },
+      "platform": "Linux-4.18.0-477.10.1.el8_8.x86_64-x86_64-with-glibc2.28",
+      "python_executable": "/home/vrrcelestino/agrologistic-scip-pr31-4N2wGy/venv/bin/python",
+      "python_no_user_site": "1",
+      "python_prefix": "/home/vrrcelestino/agrologistic-scip-pr31-4N2wGy/venv",
+      "python_version": "3.13.15 | packaged by conda-forge | (main, Aug 10 2026, 13:05:01) [GCC 14.4.0]",
+      "slurm_array_job_id": "2107114",
+      "slurm_array_task_id": "2",
+      "slurm_cpus_per_task": "4",
+      "slurm_job_id": "2107114",
+      "slurm_mem_per_node_mb": "196608",
+      "slurm_partition": "intel-256",
+      "source_commit_authority": "submission_environment_not_independently_verified",
+      "source_commit_declared": "6c45be9c3cdd6f6c8b49ee317e5f03b8208c72a1",
+      "user_site_enabled": false
+    },
+    "estimated_variables": 25427224,
+    "route_counts": {
+      "routes_od": 4440,
+      "routes_dc": 4800,
+      "routes_dd": 36000,
+      "routes_oc": 592
+    },
+    "connectivity": {
+      "schema_version": "interhub-connectivity-v1",
+      "scope": "potential_warehouse_graph_by_product",
+      "algorithm": "nearest_fraction_plus_rooted_bidirectional_tree_repair",
+      "active_network_connectivity_guaranteed": false,
+      "throughput_feasibility_guaranteed": false,
+      "status": "accepted",
+      "products": [
+        {
+          "product": "Milho",
+          "warehouses": 300,
+          "eligible_edges": 89700,
+          "baseline_edges": 18000,
+          "customer_repair_edges": 0,
+          "interhub_repair_edges": 0,
+          "final_edges": 18000,
+          "requested_fraction": 0.2,
+          "baseline_fraction": 0.20066889632107024,
+          "final_fraction": 0.20066889632107024,
+          "component_counts": {
+            "nearest_fraction": 1,
+            "customer_repaired": 1,
+            "interhub_repaired": 1
+          },
+          "strongly_connected": true
+        },
+        {
+          "product": "Soja",
+          "warehouses": 300,
+          "eligible_edges": 89700,
+          "baseline_edges": 18000,
+          "customer_repair_edges": 0,
+          "interhub_repair_edges": 0,
+          "final_edges": 18000,
+          "requested_fraction": 0.2,
+          "baseline_fraction": 0.20066889632107024,
+          "final_fraction": 0.20066889632107024,
+          "component_counts": {
+            "nearest_fraction": 1,
+            "customer_repaired": 1,
+            "interhub_repaired": 1
+          },
+          "strongly_connected": true
+        }
+      ]
+    },
+    "input_fingerprints": {
+      "workbook_sha256": "7761cce77cf93dcba2f617714f0117c1f2ead4de0c3f27149daceba447e0c7d1",
+      "model_config": "1a03ec747c898d1943397de1779039a5e1ee5368e75a6e49a4792d8eb03a7e78",
+      "loader_config": "f40c3aa6b075dc43d574cc7da7d7c2ea869f29bf82e995b7cdfcacf3ed63fe19",
+      "data_signature": "3d494f1c2e894facd08c6db0c68c827dbafae209d196c52f1df5f324ec2ffab4",
+      "input_audit": "2aa5624eccc32ee9189f93bd8e387d30651ea676dff38c9424654e4245f4962b",
+      "interhub_audit": "b165e61cbc6cb9411ab5372799922c23bc5f583b52c43aa8962be5c4864d0ea8",
+      "size_and_routes": "9d4bfdfbf39291aa2f192d42f845ca5987259cd601188ae33a91e3b08091c6be"
+    },
+    "priority_limits": [
+      {
+        "stage_role": "unmet_demand",
+        "objective_value": null,
+        "final_objective_value": null,
+        "objective_bound": null,
+        "mip_inherited_base": null,
+        "mip_next_pass_limit": null,
+        "within_mip_degradation_limit": null
+      }
+    ]
+  },
+  {
+    "name": "nine_h300_p20_direct_scip_mem393216",
+    "backend": "SCIP",
+    "warehouses": 300,
+    "direct_arcs": true,
+    "outcome": "time_limit_without_incumbent",
+    "native_terminal_status": "TIME_LIMIT",
+    "raw_audit_status": "independent_validation_not_accepted",
+    "independent_validation_status": "rejected",
+    "incumbent_available": false,
+    "gap_representation": "unavailable_without_incumbent",
+    "time_budget_seconds": 28800,
+    "target_gap": 0.1,
+    "reported_stage_count": 1,
+    "data_read_seconds": 18.39428155706264,
+    "model_build_seconds": 495.7559487980325,
+    "optimization_seconds": 28820.44637502008,
+    "solver_reported_runtime_seconds": 28818.23678,
+    "end_to_end_seconds": 30047.740091356914,
+    "peak_rss_mb": 158782.96484375,
+    "postoptimality_seconds": 0.0,
+    "result_extraction_seconds": null,
+    "artifact_export_seconds": 0.24355468689464033,
+    "application_peak_rss_gib": 155.0614891052246,
+    "economic_cost": null,
+    "domestic_service_level": null,
+    "minimum_scenario_service_level": null,
+    "maximum_scenario_service_level": null,
+    "total_unmet_demand": null,
+    "material_balance_ok": null,
+    "emergency_static_capacity": null,
+    "emergency_reception_capacity": null,
+    "suppressed_unsubstantiated_metrics": {
+      "minimum_scenario_service_level": 1.0,
+      "maximum_scenario_service_level": 1.0
+    },
+    "stage_gaps": {
+      "unmet_demand": null
+    },
+    "source_member": "scip-h300-memory-allocation-20260919T193631Z/case-1/audit/nine_results.json",
+    "campaign": "scip-h300-memory-allocation-20260919T193631Z/case-1",
+    "method_profile": "SCIP/SoPlex sequential",
+    "run_integrity": {
+      "run_identity": "bd6f1cddb5c0074ff5f9ae0cd4fff6ebd2dcfa4beaba53b438dc46d7a689677b",
+      "verified_members": [
+        "run_summary.json",
+        "independent_validation.json",
+        "model_audit.json",
+        "lexicographic_stages.csv",
+        "preflight.json",
+        "interhub_connectivity_audit.json"
+      ],
+      "not_supplied_members": [
+        "result.json",
+        "flows.csv",
+        "inventories.csv",
+        "warehouse_decisions.csv",
+        "unmet_demand.csv",
+        "emergency_capacity.csv",
+        "scenario_performance.csv",
+        "material_balance_by_scenario.csv",
+        "capacity_gap_by_scenario.csv",
+        "investment_saturation.csv",
+        "emergency_capacity_daily.csv",
+        "evpi_vss_decomposition.csv",
+        "storage_by_warehouse.csv",
+        "storage_by_scenario.csv",
+        "interhub_components.csv",
+        "interhub_repair_edges.csv",
+        "interhub_path_summary.csv"
+      ],
+      "scope": "supplied_members_only; not a full solution revalidation"
+    },
+    "workbook_sha256": "7761cce77cf93dcba2f617714f0117c1f2ead4de0c3f27149daceba447e0c7d1",
+    "model_config": {
+      "objective_policy": "lexicographic",
+      "interhub_factor": 1.0,
+      "use_warehouse_transshipment": true,
+      "route_filter_strategy": "connectivity_preserving_pareto",
+      "connectivity_export_policy": "one_sink_per_product",
+      "candidate_capacity_mode": "scalable",
+      "terminal_inventory_policy": "free",
+      "capacity_coupling_policy": "daily_factors",
+      "days_per_period": 30,
+      "allow_capacity_expansion": true,
+      "allow_bulkification": true,
+      "separate_emergency_capacity_slacks": true,
+      "interhub_strong_connectivity": true,
+      "mode": "sto",
+      "pareto_fraction": 0.2,
+      "use_direct_origin_customer": true
+    },
+    "loader_config": {
+      "compute_haversine_distances": false,
+      "use_workbook_distances": true,
+      "required_distance_source": "osrm_primary",
+      "include_export_routes": true,
+      "include_transshipment_routes": true,
+      "include_direct_origin_customer_routes": true,
+      "candidate_cost_policy": "variable_from_total",
+      "penalty_policy": "thesis_dynamic",
+      "include_stochastic_scenarios": true,
+      "scenario_generation_mode": "cartesian",
+      "stochastic_supply_levels": [
+        "baixo",
+        "base",
+        "alto"
+      ],
+      "stochastic_demand_levels": [
+        "baixo",
+        "base",
+        "alto"
+      ]
+    },
+    "solver_config": {
+      "backend": "pyscipopt",
+      "solver_name": "scip",
+      "mip_gap": 0.1,
+      "time_limit": 28800,
+      "threads": 4,
+      "seed": 42,
+      "tee": true,
+      "compute_iis": false,
+      "solver_options": {
+        "limits/memory": 393216
+      },
+      "log_file": "/home/vrrcelestino/model-agrologistic/data/results/hpc/scip-h300-memory-allocation-20260919T193631Z/case-1/scip.log"
+    },
+    "execution": {
+      "hostname": "r1i3n16.npad.internal",
+      "memory_measurement_scope": "process_lifetime_high_water_mark",
+      "package_versions": {
+        "PyYAML": "6.0.3",
+        "gurobipy": "13.0.3",
+        "model-agrologistic": "0.2.0.dev0",
+        "numpy": "2.5.3",
+        "openpyxl": "3.1.5",
+        "pandas": "2.3.3"
+      },
+      "platform": "Linux-4.18.0-477.10.1.el8_8.x86_64-x86_64-with-glibc2.28",
+      "python_executable": "/home/vrrcelestino/agrologistic-scip-pr31-4N2wGy/venv/bin/python",
+      "python_no_user_site": "1",
+      "python_prefix": "/home/vrrcelestino/agrologistic-scip-pr31-4N2wGy/venv",
+      "python_version": "3.13.15 | packaged by conda-forge | (main, Aug 10 2026, 13:05:01) [GCC 14.4.0]",
+      "slurm_array_job_id": "2107719",
+      "slurm_array_task_id": "1",
+      "slurm_cpus_per_task": "4",
+      "slurm_job_id": "2107719",
+      "slurm_mem_per_node_mb": null,
+      "slurm_partition": "intel-512",
+      "source_commit_authority": "submission_environment_not_independently_verified",
+      "source_commit_declared": "c4985e3adadb83243237fb6b09cdfc09200c7258",
+      "user_site_enabled": false
+    },
+    "estimated_variables": 25427224,
+    "route_counts": {
+      "routes_od": 4440,
+      "routes_dc": 4800,
+      "routes_dd": 36000,
+      "routes_oc": 592
+    },
+    "connectivity": {
+      "schema_version": "interhub-connectivity-v1",
+      "scope": "potential_warehouse_graph_by_product",
+      "algorithm": "nearest_fraction_plus_rooted_bidirectional_tree_repair",
+      "active_network_connectivity_guaranteed": false,
+      "throughput_feasibility_guaranteed": false,
+      "status": "accepted",
+      "products": [
+        {
+          "product": "Milho",
+          "warehouses": 300,
+          "eligible_edges": 89700,
+          "baseline_edges": 18000,
+          "customer_repair_edges": 0,
+          "interhub_repair_edges": 0,
+          "final_edges": 18000,
+          "requested_fraction": 0.2,
+          "baseline_fraction": 0.20066889632107024,
+          "final_fraction": 0.20066889632107024,
+          "component_counts": {
+            "nearest_fraction": 1,
+            "customer_repaired": 1,
+            "interhub_repaired": 1
+          },
+          "strongly_connected": true
+        },
+        {
+          "product": "Soja",
+          "warehouses": 300,
+          "eligible_edges": 89700,
+          "baseline_edges": 18000,
+          "customer_repair_edges": 0,
+          "interhub_repair_edges": 0,
+          "final_edges": 18000,
+          "requested_fraction": 0.2,
+          "baseline_fraction": 0.20066889632107024,
+          "final_fraction": 0.20066889632107024,
+          "component_counts": {
+            "nearest_fraction": 1,
+            "customer_repaired": 1,
+            "interhub_repaired": 1
+          },
+          "strongly_connected": true
+        }
+      ]
+    },
+    "input_fingerprints": {
+      "workbook_sha256": "7761cce77cf93dcba2f617714f0117c1f2ead4de0c3f27149daceba447e0c7d1",
+      "model_config": "1a03ec747c898d1943397de1779039a5e1ee5368e75a6e49a4792d8eb03a7e78",
+      "loader_config": "f40c3aa6b075dc43d574cc7da7d7c2ea869f29bf82e995b7cdfcacf3ed63fe19",
+      "data_signature": "3d494f1c2e894facd08c6db0c68c827dbafae209d196c52f1df5f324ec2ffab4",
+      "input_audit": "2aa5624eccc32ee9189f93bd8e387d30651ea676dff38c9424654e4245f4962b",
+      "interhub_audit": "b165e61cbc6cb9411ab5372799922c23bc5f583b52c43aa8962be5c4864d0ea8",
+      "size_and_routes": "9d4bfdfbf39291aa2f192d42f845ca5987259cd601188ae33a91e3b08091c6be"
+    },
+    "priority_limits": [
+      {
+        "stage_role": "unmet_demand",
+        "objective_value": null,
+        "final_objective_value": null,
+        "objective_bound": -24144984907.49263,
+        "mip_inherited_base": null,
+        "mip_next_pass_limit": null,
+        "within_mip_degradation_limit": null
+      }
+    ]
+  },
+  {
+    "name": "nine_h400_p20_warehouse_gurobi_stage_all_barrier",
+    "backend": "Gurobi",
+    "warehouses": 400,
+    "direct_arcs": false,
+    "outcome": "valid_incumbent_not_certified",
+    "native_terminal_status": "TIME_LIMIT",
+    "raw_audit_status": "incomplete_hierarchy",
+    "independent_validation_status": "accepted",
+    "incumbent_available": true,
+    "gap_representation": "per_stage; zero-service relative-gap sentinel is not a quality metric",
+    "time_budget_seconds": 28800,
+    "target_gap": 0.1,
+    "reported_stage_count": 2,
+    "data_read_seconds": 29.598545901942998,
+    "model_build_seconds": 726.3342779949307,
+    "optimization_seconds": 28826.894462122116,
+    "solver_reported_runtime_seconds": 28805.80866098404,
+    "end_to_end_seconds": 29912.878244537394,
+    "peak_rss_mb": 114441.671875,
+    "postoptimality_seconds": 0.0,
+    "result_extraction_seconds": 154.84721444407478,
+    "artifact_export_seconds": 10.338704687077552,
+    "application_peak_rss_gib": 111.75944519042969,
+    "economic_cost": 736533809612.7832,
+    "domestic_service_level": 1.0,
+    "minimum_scenario_service_level": 1.0,
+    "maximum_scenario_service_level": 1.0,
+    "total_unmet_demand": 0.0,
+    "material_balance_ok": true,
+    "emergency_static_capacity": 39314598248.6432,
+    "emergency_reception_capacity": 578392314217.861,
+    "suppressed_unsubstantiated_metrics": {},
+    "stage_gaps": {
+      "unmet_demand": null,
+      "emergency_capacity": 1.0
+    },
+    "source_member": "sprint-a-h400-warehouse-all-barrier-20260918T190507Z/audit/nine_results.json",
+    "campaign": "sprint-a-h400-warehouse-all-barrier-20260918T190507Z",
+    "method_profile": "Gurobi all-barrier",
+    "run_integrity": {
+      "run_identity": "f8cd6b597d62c68026a1c07b42ad7b75681e41c45b1d04f3071935938c202b98",
+      "verified_members": [
+        "run_summary.json",
+        "independent_validation.json",
+        "model_audit.json",
+        "lexicographic_stages.csv",
+        "preflight.json",
+        "solver_presolved_matrix.csv",
+        "interhub_connectivity_audit.json"
+      ],
+      "not_supplied_members": [
+        "result.json",
+        "flows.csv",
+        "inventories.csv",
+        "warehouse_decisions.csv",
+        "unmet_demand.csv",
+        "emergency_capacity.csv",
+        "scenario_performance.csv",
+        "material_balance_by_scenario.csv",
+        "capacity_gap_by_scenario.csv",
+        "investment_saturation.csv",
+        "emergency_capacity_daily.csv",
+        "evpi_vss_decomposition.csv",
+        "storage_by_warehouse.csv",
+        "storage_by_scenario.csv",
+        "solver_diagnostics.json",
+        "solver_stage_progress.csv",
+        "interhub_components.csv",
+        "interhub_repair_edges.csv",
+        "interhub_path_summary.csv"
+      ],
+      "scope": "supplied_members_only; not a full solution revalidation"
+    },
+    "workbook_sha256": "c3085456997714ef5a8bdbf61e2c9a5e578c2636003947427cf58933d21ceb13",
+    "model_config": {
+      "objective_policy": "lexicographic",
+      "interhub_factor": 1.0,
+      "use_warehouse_transshipment": true,
+      "route_filter_strategy": "connectivity_preserving_pareto",
+      "connectivity_export_policy": "one_sink_per_product",
+      "candidate_capacity_mode": "scalable",
+      "terminal_inventory_policy": "free",
+      "capacity_coupling_policy": "daily_factors",
+      "days_per_period": 30,
+      "allow_capacity_expansion": true,
+      "allow_bulkification": true,
+      "separate_emergency_capacity_slacks": true,
+      "interhub_strong_connectivity": true,
+      "mode": "sto",
+      "pareto_fraction": 0.2,
+      "use_direct_origin_customer": false
+    },
+    "loader_config": {
+      "compute_haversine_distances": false,
+      "use_workbook_distances": true,
+      "required_distance_source": "osrm_primary",
+      "include_export_routes": true,
+      "include_transshipment_routes": true,
+      "include_direct_origin_customer_routes": true,
+      "candidate_cost_policy": "variable_from_total",
+      "penalty_policy": "thesis_dynamic",
+      "include_stochastic_scenarios": true,
+      "scenario_generation_mode": "cartesian",
+      "stochastic_supply_levels": [
+        "baixo",
+        "base",
+        "alto"
+      ],
+      "stochastic_demand_levels": [
+        "baixo",
+        "base",
+        "alto"
+      ]
+    },
+    "solver_config": {
+      "backend": "gurobipy",
+      "solver_name": "gurobi",
+      "mip_gap": 0.1,
+      "time_limit": 28800,
+      "threads": 4,
+      "seed": 42,
+      "tee": true,
+      "compute_iis": true,
+      "iis_max_items": 200,
+      "solver_options": {
+        "SoftMemLimit": 128,
+        "NumericFocus": 1
+      },
+      "multiobjective_stage_options": {
+        "unmet_demand": {
+          "Method": 2
+        },
+        "emergency_capacity": {
+          "Method": 2
+        },
+        "economic_cost": {
+          "Method": 2
+        }
+      },
+      "collect_solver_diagnostics": true
+    },
+    "execution": {
+      "hostname": "r1i3n3.npad.internal",
+      "memory_measurement_scope": "process_lifetime_high_water_mark",
+      "package_versions": {
+        "PyYAML": "6.0.3",
+        "gurobipy": "13.0.3",
+        "model-agrologistic": "0.2.0.dev0",
+        "numpy": "2.5.2",
+        "openpyxl": "3.1.5",
+        "pandas": "2.3.3"
+      },
+      "platform": "Linux-4.18.0-477.10.1.el8_8.x86_64-x86_64-with-glibc2.28",
+      "python_executable": "/home/vrrcelestino/venv313/bin/python",
+      "python_no_user_site": "1",
+      "python_prefix": "/home/vrrcelestino/venv313",
+      "python_version": "3.13.15 | packaged by conda-forge | (main, Aug 10 2026, 13:05:01) [GCC 14.4.0]",
+      "slurm_array_job_id": null,
+      "slurm_array_task_id": null,
+      "slurm_cpus_per_task": "4",
+      "slurm_job_id": "2106399",
+      "slurm_mem_per_node_mb": "196608",
+      "slurm_partition": "intel-256",
+      "source_commit_authority": "submission_environment_not_independently_verified",
+      "source_commit_declared": null,
+      "user_site_enabled": false
+    },
+    "estimated_variables": 42106944,
+    "route_counts": {
+      "routes_od": 5920,
+      "routes_dc": 6400,
+      "routes_dd": 64000,
+      "routes_oc": 0
+    },
+    "connectivity": {
+      "schema_version": "interhub-connectivity-v1",
+      "scope": "potential_warehouse_graph_by_product",
+      "algorithm": "nearest_fraction_plus_rooted_bidirectional_tree_repair",
+      "active_network_connectivity_guaranteed": false,
+      "throughput_feasibility_guaranteed": false,
+      "status": "accepted",
+      "products": [
+        {
+          "product": "Milho",
+          "warehouses": 400,
+          "eligible_edges": 159600,
+          "baseline_edges": 32000,
+          "customer_repair_edges": 0,
+          "interhub_repair_edges": 0,
+          "final_edges": 32000,
+          "requested_fraction": 0.2,
+          "baseline_fraction": 0.20050125313283207,
+          "final_fraction": 0.20050125313283207,
+          "component_counts": {
+            "nearest_fraction": 1,
+            "customer_repaired": 1,
+            "interhub_repaired": 1
+          },
+          "strongly_connected": true
+        },
+        {
+          "product": "Soja",
+          "warehouses": 400,
+          "eligible_edges": 159600,
+          "baseline_edges": 32000,
+          "customer_repair_edges": 0,
+          "interhub_repair_edges": 0,
+          "final_edges": 32000,
+          "requested_fraction": 0.2,
+          "baseline_fraction": 0.20050125313283207,
+          "final_fraction": 0.20050125313283207,
+          "component_counts": {
+            "nearest_fraction": 1,
+            "customer_repaired": 1,
+            "interhub_repaired": 1
+          },
+          "strongly_connected": true
+        }
+      ]
+    },
+    "input_fingerprints": {
+      "workbook_sha256": "c3085456997714ef5a8bdbf61e2c9a5e578c2636003947427cf58933d21ceb13",
+      "model_config": "596a79618618347de132dd4c20708bc4298417bfdb2a37c2aa2fb8894720247a",
+      "loader_config": "f40c3aa6b075dc43d574cc7da7d7c2ea869f29bf82e995b7cdfcacf3ed63fe19",
+      "data_signature": "edd20146ad452c090a65f3a9eb1dec15f4d05e7bc38034feaeaabdefdeab3602",
+      "input_audit": "eda4596a316f330143722d5d58762b3774f59ab8093b78963a9b75a697102885",
+      "interhub_audit": "2466f9ccf8ec76f3a83b8a9543c69cc5b469c8220d4958240c24462fecf5fd0a",
+      "size_and_routes": "eca56efeb1bb6fe018ad8ecaf9b13c47b175a44786aa7e893c88e31171365d4b"
+    },
+    "priority_limits": [
+      {
+        "stage_role": "unmet_demand",
+        "objective_value": 0.0,
+        "final_objective_value": 0,
+        "objective_bound": -4.918547347187996e-09,
+        "mip_inherited_base": 0.0,
+        "mip_next_pass_limit": 1e-06,
+        "within_mip_degradation_limit": true
+      },
+      {
+        "stage_role": "emergency_capacity",
+        "objective_value": 617706912466.5381,
+        "final_objective_value": 617706912466.5375,
+        "objective_bound": 0.0,
+        "mip_inherited_base": 617706912466.5381,
+        "mip_next_pass_limit": 617706912466.5381,
+        "within_mip_degradation_limit": true
+      }
+    ]
+  },
+  {
+    "name": "nine_h400_p20_direct_gurobi_stage_all_barrier",
+    "backend": "Gurobi",
+    "warehouses": 400,
+    "direct_arcs": true,
+    "outcome": "valid_incumbent_not_certified",
+    "native_terminal_status": "TIME_LIMIT",
+    "raw_audit_status": "gap_target_not_attained",
+    "independent_validation_status": "accepted",
+    "incumbent_available": true,
+    "gap_representation": "per_stage; zero-service relative-gap sentinel is not a quality metric",
+    "time_budget_seconds": 28800,
+    "target_gap": 0.1,
+    "reported_stage_count": 3,
+    "data_read_seconds": 27.472715379670262,
+    "model_build_seconds": 769.8406933401711,
+    "optimization_seconds": 28840.959332548082,
+    "solver_reported_runtime_seconds": 28817.762336969376,
+    "end_to_end_seconds": 29970.469207874965,
+    "peak_rss_mb": 98538.02734375,
+    "postoptimality_seconds": 0.0,
+    "result_extraction_seconds": 149.78972214786336,
+    "artifact_export_seconds": 8.775112147908658,
+    "application_peak_rss_gib": 96.22854232788086,
+    "economic_cost": 680283805821.2128,
+    "domestic_service_level": 0.9999999999999986,
+    "minimum_scenario_service_level": 0.9999999999999872,
+    "maximum_scenario_service_level": 1.0,
+    "total_unmet_demand": 1.000292286335025e-06,
+    "material_balance_ok": true,
+    "emergency_static_capacity": 253405210.02926305,
+    "emergency_reception_capacity": 0.0,
+    "suppressed_unsubstantiated_metrics": {},
+    "stage_gaps": {
+      "unmet_demand": null,
+      "emergency_capacity": 0.0006425263244101413,
+      "economic_cost": 0.9999981298411239
+    },
+    "source_member": "sprint-a-h400-direct-all-barrier-20260918T122037Z/audit/nine_results.json",
+    "campaign": "sprint-a-h400-direct-all-barrier-20260918T122037Z",
+    "method_profile": "Gurobi all-barrier",
+    "run_integrity": {
+      "run_identity": "7497db86c85055423338d2d022b8c3d72448c8d34083beca5039486d62b911bd",
+      "verified_members": [
+        "run_summary.json",
+        "independent_validation.json",
+        "model_audit.json",
+        "lexicographic_stages.csv",
+        "preflight.json",
+        "solver_presolved_matrix.csv",
+        "interhub_connectivity_audit.json"
+      ],
+      "not_supplied_members": [
+        "result.json",
+        "flows.csv",
+        "inventories.csv",
+        "warehouse_decisions.csv",
+        "unmet_demand.csv",
+        "emergency_capacity.csv",
+        "scenario_performance.csv",
+        "material_balance_by_scenario.csv",
+        "capacity_gap_by_scenario.csv",
+        "investment_saturation.csv",
+        "emergency_capacity_daily.csv",
+        "evpi_vss_decomposition.csv",
+        "storage_by_warehouse.csv",
+        "storage_by_scenario.csv",
+        "solver_diagnostics.json",
+        "solver_stage_progress.csv",
+        "interhub_components.csv",
+        "interhub_repair_edges.csv",
+        "interhub_path_summary.csv"
+      ],
+      "scope": "supplied_members_only; not a full solution revalidation"
+    },
+    "workbook_sha256": "c3085456997714ef5a8bdbf61e2c9a5e578c2636003947427cf58933d21ceb13",
+    "model_config": {
+      "objective_policy": "lexicographic",
+      "interhub_factor": 1.0,
+      "use_warehouse_transshipment": true,
+      "route_filter_strategy": "connectivity_preserving_pareto",
+      "connectivity_export_policy": "one_sink_per_product",
+      "candidate_capacity_mode": "scalable",
+      "terminal_inventory_policy": "free",
+      "capacity_coupling_policy": "daily_factors",
+      "days_per_period": 30,
+      "allow_capacity_expansion": true,
+      "allow_bulkification": true,
+      "separate_emergency_capacity_slacks": true,
+      "interhub_strong_connectivity": true,
+      "mode": "sto",
+      "pareto_fraction": 0.2,
+      "use_direct_origin_customer": true
+    },
+    "loader_config": {
+      "compute_haversine_distances": false,
+      "use_workbook_distances": true,
+      "required_distance_source": "osrm_primary",
+      "include_export_routes": true,
+      "include_transshipment_routes": true,
+      "include_direct_origin_customer_routes": true,
+      "candidate_cost_policy": "variable_from_total",
+      "penalty_policy": "thesis_dynamic",
+      "include_stochastic_scenarios": true,
+      "scenario_generation_mode": "cartesian",
+      "stochastic_supply_levels": [
+        "baixo",
+        "base",
+        "alto"
+      ],
+      "stochastic_demand_levels": [
+        "baixo",
+        "base",
+        "alto"
+      ]
+    },
+    "solver_config": {
+      "backend": "gurobipy",
+      "solver_name": "gurobi",
+      "mip_gap": 0.1,
+      "time_limit": 28800,
+      "threads": 4,
+      "seed": 42,
+      "tee": true,
+      "compute_iis": true,
+      "iis_max_items": 200,
+      "solver_options": {
+        "SoftMemLimit": 128,
+        "NumericFocus": 1
+      },
+      "multiobjective_stage_options": {
+        "unmet_demand": {
+          "Method": 2
+        },
+        "emergency_capacity": {
+          "Method": 2
+        },
+        "economic_cost": {
+          "Method": 2
+        }
+      },
+      "collect_solver_diagnostics": true
+    },
+    "execution": {
+      "hostname": "r1i3n7.npad.internal",
+      "memory_measurement_scope": "process_lifetime_high_water_mark",
+      "package_versions": {
+        "PyYAML": "6.0.3",
+        "gurobipy": "13.0.3",
+        "model-agrologistic": "0.2.0.dev0",
+        "numpy": "2.5.2",
+        "openpyxl": "3.1.5",
+        "pandas": "2.3.3"
+      },
+      "platform": "Linux-4.18.0-477.10.1.el8_8.x86_64-x86_64-with-glibc2.28",
+      "python_executable": "/home/vrrcelestino/venv313/bin/python",
+      "python_no_user_site": "1",
+      "python_prefix": "/home/vrrcelestino/venv313",
+      "python_version": "3.13.15 | packaged by conda-forge | (main, Aug 10 2026, 13:05:01) [GCC 14.4.0]",
+      "slurm_array_job_id": null,
+      "slurm_array_task_id": null,
+      "slurm_cpus_per_task": "4",
+      "slurm_job_id": "2105903",
+      "slurm_mem_per_node_mb": "196608",
+      "slurm_partition": "intel-256",
+      "source_commit_authority": "submission_environment_not_independently_verified",
+      "source_commit_declared": null,
+      "user_site_enabled": false
+    },
+    "estimated_variables": 42426624,
+    "route_counts": {
+      "routes_od": 5920,
+      "routes_dc": 6400,
+      "routes_dd": 64000,
+      "routes_oc": 592
+    },
+    "connectivity": {
+      "schema_version": "interhub-connectivity-v1",
+      "scope": "potential_warehouse_graph_by_product",
+      "algorithm": "nearest_fraction_plus_rooted_bidirectional_tree_repair",
+      "active_network_connectivity_guaranteed": false,
+      "throughput_feasibility_guaranteed": false,
+      "status": "accepted",
+      "products": [
+        {
+          "product": "Milho",
+          "warehouses": 400,
+          "eligible_edges": 159600,
+          "baseline_edges": 32000,
+          "customer_repair_edges": 0,
+          "interhub_repair_edges": 0,
+          "final_edges": 32000,
+          "requested_fraction": 0.2,
+          "baseline_fraction": 0.20050125313283207,
+          "final_fraction": 0.20050125313283207,
+          "component_counts": {
+            "nearest_fraction": 1,
+            "customer_repaired": 1,
+            "interhub_repaired": 1
+          },
+          "strongly_connected": true
+        },
+        {
+          "product": "Soja",
+          "warehouses": 400,
+          "eligible_edges": 159600,
+          "baseline_edges": 32000,
+          "customer_repair_edges": 0,
+          "interhub_repair_edges": 0,
+          "final_edges": 32000,
+          "requested_fraction": 0.2,
+          "baseline_fraction": 0.20050125313283207,
+          "final_fraction": 0.20050125313283207,
+          "component_counts": {
+            "nearest_fraction": 1,
+            "customer_repaired": 1,
+            "interhub_repaired": 1
+          },
+          "strongly_connected": true
+        }
+      ]
+    },
+    "input_fingerprints": {
+      "workbook_sha256": "c3085456997714ef5a8bdbf61e2c9a5e578c2636003947427cf58933d21ceb13",
+      "model_config": "1a03ec747c898d1943397de1779039a5e1ee5368e75a6e49a4792d8eb03a7e78",
+      "loader_config": "f40c3aa6b075dc43d574cc7da7d7c2ea869f29bf82e995b7cdfcacf3ed63fe19",
+      "data_signature": "edd20146ad452c090a65f3a9eb1dec15f4d05e7bc38034feaeaabdefdeab3602",
+      "input_audit": "eda4596a316f330143722d5d58762b3774f59ab8093b78963a9b75a697102885",
+      "interhub_audit": "2466f9ccf8ec76f3a83b8a9543c69cc5b469c8220d4958240c24462fecf5fd0a",
+      "size_and_routes": "6a5804a86841c59b81cad2d0c5897a757f0ede09dcdc8beb9721d41d9a77a191"
+    },
+    "priority_limits": [
+      {
+        "stage_role": "unmet_demand",
+        "objective_value": 0.0,
+        "final_objective_value": 1.000292286335025e-06,
+        "objective_bound": 5.093170329928398e-10,
+        "mip_inherited_base": 6.093170329928398e-10,
+        "mip_next_pass_limit": 1.0006093170329928e-06,
+        "within_mip_degradation_limit": true
+      },
+      {
+        "stage_role": "emergency_capacity",
+        "objective_value": 253405210.02925926,
+        "final_objective_value": 253405210.02925906,
+        "objective_bound": 253242390.51107278,
+        "mip_inherited_base": 278582911.5139987,
+        "mip_next_pass_limit": 278582911.5139997,
+        "within_mip_degradation_limit": true
+      },
+      {
+        "stage_role": "economic_cost",
+        "objective_value": 680283805821.2224,
+        "final_objective_value": 680283805821.2128,
+        "objective_bound": 1272238.7977528342,
+        "mip_inherited_base": 680283805821.2224,
+        "mip_next_pass_limit": 680283805821.2224,
+        "within_mip_degradation_limit": true
+      }
+    ]
+  }
+]

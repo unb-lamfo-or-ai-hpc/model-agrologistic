@@ -1,0 +1,7 @@
+Highlights
+
+- A service-first model links grain-storage investment and uncertain logistics.
+- Audited network screening preserves multi-hop interwarehouse connectivity.
+- Independent checks distinguish feasible plans from certified solver outcomes.
+- Gurobi certified 300-warehouse cases within an eight-hour optimization budget.
+- Stage-level records expose the resource bottlenecks of larger network models.

@@ -844,3 +844,63 @@ def test_loader_accepts_an_explicit_user_selected_scenario_subset(tmp_path):
     )
     assert validation.is_valid, [issue.message for issue in validation.errors]
 
+
+def test_osrm_primary_requirement_needs_frozen_workbook_distances():
+    with pytest.raises(ValueError, match="requires use_workbook_distances"):
+        ExcelLoaderConfig(required_distance_source="osrm_primary")
+
+
+def test_loader_enforces_audited_osrm_primary_provenance(tmp_path):
+    path = tmp_path / "osrm_primary_distances.xlsx"
+    build_tiny_golden_excel(path)
+    sheets = pd.read_excel(path, sheet_name=None, engine="openpyxl")
+
+    routes: list[dict[str, object]] = []
+    data = load_model_data_from_excel(path)
+    pairs_by_arc = {
+        "OD": {(origin, warehouse) for origin, warehouse, _ in data.routes_od},
+        "DC": {(warehouse, customer) for warehouse, customer, _ in data.routes_dc},
+        "DD": set(),
+        "OC": set(),
+    }
+    for arc_type, pairs in pairs_by_arc.items():
+        for index, (origin, destination) in enumerate(sorted(pairs), start=1):
+            routes.append(
+                {
+                    "Tipo_Arco": arc_type,
+                    "Origem": origin,
+                    "Destino": destination,
+                    "Distancia_km": 100.0 + index,
+                    "Duracao_s": 3600.0,
+                    "Fonte_Distancia": "osrm",
+                    "Motivo_Fallback": None,
+                }
+            )
+
+    routes[0]["Fonte_Distancia"] = "haversine_fallback"
+    sheets["Distancias"] = pd.DataFrame(routes)
+    with pd.ExcelWriter(path, engine="openpyxl") as writer:
+        for sheet_name, frame in sheets.items():
+            frame.to_excel(writer, sheet_name=sheet_name, index=False)
+
+    config = ExcelLoaderConfig(
+        compute_haversine_distances=False,
+        use_workbook_distances=True,
+        required_distance_source="osrm_primary",
+    )
+    with pytest.raises(ValueError, match="requires Motivo_Fallback"):
+        load_model_data_from_excel(path, config)
+
+    routes[0]["Motivo_Fallback"] = "osrm_no_route"
+    sheets["Distancias"] = pd.DataFrame(routes)
+    with pd.ExcelWriter(path, engine="openpyxl") as writer:
+        for sheet_name, frame in sheets.items():
+            frame.to_excel(writer, sheet_name=sheet_name, index=False)
+
+    loaded = load_model_data_from_excel(path, config)
+    provenance = loaded.metadata["distance_provenance"]
+    assert provenance["source_counts"] == {
+        "osrm": len(routes) - 1,
+        "haversine_fallback": 1,
+    }
+    assert provenance["fallback_reason_counts"] == {"osrm_no_route": 1}

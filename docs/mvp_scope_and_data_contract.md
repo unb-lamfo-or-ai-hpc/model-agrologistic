@@ -1,5 +1,11 @@
 # MVP scope and frozen data contract
 
+> Version boundary: source lineage and the canonical workbook below remain
+> reference inputs. The Sprint 1/2 gates describe the earlier development
+> sequence. Current v0.2 acceptance uses the ten selected runs in
+> [the reference plan](../experiments/v020_validation_reference.yaml), not a
+> numerical replication of all thesis tables or the complete scalability study.
+
 ## Research objective
 
 The MVP is a research prototype intended to demonstrate TRL 6 evidence in the

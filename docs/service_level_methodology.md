@@ -1,6 +1,14 @@
 # Methodological decision on domestic service level
 
-## Current evidence
+> Historical development record. Results and commands below refer to their named
+> earlier campaigns, not automatic v0.2 acceptance. Use the
+> [current mathematical contract](v020_mathematical_contract.md),
+> [validation report](v020_validation_report.md) and
+> [results interpretation](results_interpretation.md) for current claims.
+> In particular, old objective ordering, slack-unit labels and complete-recourse
+> language must not be transferred to new evidence without checking the contract.
+
+## Historical evidence and superseded priority ordering
 
 The calibrated deterministic network (`top_k=10`, direct routes, and 30 days
 per period) serves approximately 79.34% of domestic demand. A diagnostic with
@@ -54,7 +62,8 @@ investment decisions, service levels, and costs can change materially.
 
 Introduce origin inventory balance, initial inventory, holding cost, and
 possibly origin storage capacity. Unshipped supply could then move to a later
-period instead of disappearing at the end of the current period.
+period instead of requiring immediate allocation from the origin. The existing
+supply equality does not permit supply to disappear or remain unused.
 
 Consequence: this is a structural model extension. It may improve service under
 seasonal mismatch, but it adds variables and requires defensible storage data

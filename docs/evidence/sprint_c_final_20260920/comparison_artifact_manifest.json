@@ -1,0 +1,9 @@
+{
+  "comparison_cases.json": "2505039cc207bc405a52b85c8515b56d5d20c3ebcc7a7748d9e593639aab969e",
+  "comparison_stages.json": "45e160683ae3fcbf058d75856b6b5eb3b1545395de3440a38bde6ae3c2e237bb",
+  "comparison_summary.md": "acf32c6dbb3936a815e8182a544549065729d35d1112013fefcdbfdee30fe9f4",
+  "evidence_inventory.json": "4457f7c66ed9868f459d380e9966dcdcaaa6363311842127d2ce6b98580d2148",
+  "paired_input_reconciliation.json": "1ecec862c548e744beb21f78835290d4f8c9ebcc979fcdb21c675a6cb1f4f5d8",
+  "runtime_memory_comparison.png": "8988c9f7eaf9a0462f28a83c90860f40574e8dda25bef64717fd63d221be4e13",
+  "runtime_memory_comparison.svg": "fc2611cdff5f8b974b377870de0b4bc1299aaae86d62f89f6d8ea3c150a14860"
+}

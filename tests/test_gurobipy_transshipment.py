@@ -127,12 +127,17 @@ def base_transshipment_data(
     )
 
 
-def solve_transshipment_data(data: ModelData):
+def solve_transshipment_data(
+    data: ModelData,
+    *,
+    interhub_factor: float = 1.0,
+):
     return solve_model(
         data=data,
         model_config=ModelConfig(
             mode="det",
             candidate_capacity_mode="scalable",
+            interhub_factor=interhub_factor,
             days_per_period=1.0,
             allow_unmet_domestic_demand=True,
             allow_emergency_static_capacity=True,
@@ -269,9 +274,7 @@ def test_transshipment_cost_uses_origin_freight_factor_and_destination_handling(
     data.freight_warehouse["W1"] = 3.0
     data.freight_warehouse["W2"] = 99.0
     data.transshipment_cost["W2"] = 5.0
-    data.metadata["interhub_factor"] = 0.5
-
-    result = solve_transshipment_data(data)
+    result = solve_transshipment_data(data, interhub_factor=0.5)
 
     expected_unit_cost = 0.5 * 4.0 * 3.0 + 5.0
 
@@ -319,9 +322,7 @@ def test_excel_loaded_cost_contract_drives_transshipment_solver(tmp_path):
     data.static_capacity = {"W1": 500.0, "W2": 500.0}
     data.reception_capacity = {"W1": 500.0, "W2": 500.0}
     data.shipping_capacity = {"W1": 500.0, "W2": 500.0}
-    data.metadata["interhub_factor"] = 0.5
-
-    result = solve_transshipment_data(data)
+    result = solve_transshipment_data(data, interhub_factor=0.5)
 
     expected_unit_cost = (
         0.5

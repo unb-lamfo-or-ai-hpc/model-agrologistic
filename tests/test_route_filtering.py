@@ -153,3 +153,25 @@ def test_filtered_direct_network_keeps_exits_for_every_origin():
         assert (origin, "C1", "soy") in routes.oc
         assert (origin, "EXP", "soy") in routes.oc
 
+
+
+def test_thesis_pareto_uses_historical_groups_without_coverage_augmentation():
+    data = route_data()
+    routes = select_routes(
+        data,
+        ModelConfig(
+            route_filter_strategy="thesis_pareto",
+            pareto_fraction=0.20,
+            use_warehouse_transshipment=True,
+            use_direct_origin_customer=True,
+        ),
+    )
+
+    assert routes.od == {("O1", "W2", "soy")}
+    assert routes.dc == {
+        ("W1", "C1", "soy"),
+        ("W2", "C1", "soy"),
+        ("W3", "C1", "soy"),
+    }
+    assert len(routes.dd) == 3
+    assert routes.oc == {("O1", "C1", "soy")}

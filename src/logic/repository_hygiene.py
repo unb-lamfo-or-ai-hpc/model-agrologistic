@@ -19,6 +19,9 @@ AUDIT_SCHEMA_VERSION = 1
 QUARANTINE_SCHEMA_VERSION = 1
 
 SAFE_GENERATED = "SAFE_GENERATED"
+FAILED_PROTOCOL_RUN = "FAILED_PROTOCOL_RUN"
+FAILED_SLURM_LOG = "FAILED_SLURM_LOG"
+RELEASE_EVIDENCE = "RELEASE_EVIDENCE"
 DUPLICATE_LOG = "DUPLICATE_LOG"
 PIPELINE_REQUIRED = "PIPELINE_REQUIRED"
 SCIENTIFIC_ARCHIVE = "SCIENTIFIC_ARCHIVE"
@@ -49,6 +52,7 @@ _PROTECTED_PREFIXES = (
     Path("tests"),
 )
 _QUARANTINE_RUN_PATTERN = re.compile(r"\d{8}T\d{6}Z")
+_RELEASES_ROOT = Path("data/results/releases")
 
 
 class RepositoryHygieneError(RuntimeError):
@@ -153,6 +157,36 @@ def _find_hpc_run_root(repo_root: Path, path: Path) -> Path:
     return path
 
 
+def _find_release_run_root(path: Path) -> Path | None:
+    """Return the top-level release run containing a repository-relative path."""
+
+    if not _starts_with(path, _RELEASES_ROOT):
+        return None
+    minimum_parts = len(_RELEASES_ROOT.parts) + 1
+    if len(path.parts) < minimum_parts:
+        return None
+    return Path(*path.parts[:minimum_parts])
+
+
+def _protocol_status(repo_root: Path, run_root: Path) -> str | None:
+    manifest_path = repo_root / run_root / "protocol_manifest.json"
+    if not manifest_path.is_file():
+        return None
+    try:
+        payload = json.loads(manifest_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return None
+    status = payload.get("overall_status")
+    return str(status) if status is not None else None
+
+
+def _matches_job_id(path: Path, job_ids: set[str]) -> bool:
+    return any(
+        re.search(rf"(?<!\d){re.escape(job_id)}(?!\d)", path.name)
+        for job_id in job_ids
+    )
+
+
 def _sha256_file(path: Path) -> str:
     digest = hashlib.sha256()
     with path.open("rb") as stream:
@@ -177,6 +211,7 @@ def classify_relative_path(
     relative_path: Path,
     *,
     duplicate_log_hashes: set[str] | None = None,
+    failed_slurm_job_ids: set[str] | None = None,
 ) -> tuple[Path, str, str, str]:
     """Classify a path and return its atomic unit, category, action, and reason."""
 
@@ -199,6 +234,30 @@ def classify_relative_path(
             "EVPI/VSS checkpoints are retained for pipeline recovery and verification.",
         )
 
+    release_run_root = _find_release_run_root(relative_path)
+    if release_run_root is not None:
+        protocol_status = _protocol_status(repo_root, release_run_root)
+        if protocol_status == "accepted":
+            return (
+                release_run_root,
+                RELEASE_EVIDENCE,
+                KEEP,
+                "Accepted release evidence is immutable and retained.",
+            )
+        if protocol_status == "rejected":
+            return (
+                release_run_root,
+                FAILED_PROTOCOL_RUN,
+                REVIEW,
+                "Rejected protocol run may be quarantined after explicit review.",
+            )
+        return (
+            release_run_root,
+            SCIENTIFIC_ARCHIVE,
+            KEEP,
+            "Incomplete or unclassified release run requires scientific review.",
+        )
+
     for prefix in _PROTECTED_PREFIXES:
         if _starts_with(relative_path, prefix):
             return (
@@ -210,6 +269,14 @@ def classify_relative_path(
 
     absolute_path = repo_root / relative_path
     if relative_path.name.startswith("slurm-") and relative_path.suffix == ".out":
+        failed_job_ids = failed_slurm_job_ids or set()
+        if _matches_job_id(relative_path, failed_job_ids):
+            return (
+                relative_path,
+                FAILED_SLURM_LOG,
+                REVIEW,
+                "Slurm log belongs to an explicitly identified failed job.",
+            )
         hashes = duplicate_log_hashes or set()
         if absolute_path.is_file() and _sha256_file(absolute_path) in hashes:
             return (
@@ -262,11 +329,16 @@ def _artifact_files(repo_root: Path, unit: Path, members: Iterable[Path]) -> lis
     return files
 
 
-def audit_repository(repo_root: Path) -> list[AuditEntry]:
+def audit_repository(
+    repo_root: Path,
+    *,
+    failed_slurm_job_ids: Iterable[str] = (),
+) -> list[AuditEntry]:
     """Audit untracked artifacts and aggregate files into atomic quarantine units."""
 
     repo_root = repo_root.resolve()
     duplicate_hashes = _duplicate_log_hashes(repo_root)
+    failed_job_ids = {str(job_id) for job_id in failed_slurm_job_ids}
     groups: dict[Path, dict[str, object]] = {}
 
     for relative_path in collect_untracked_paths(repo_root):
@@ -277,6 +349,7 @@ def audit_repository(repo_root: Path) -> list[AuditEntry]:
             repo_root,
             relative_path,
             duplicate_log_hashes=duplicate_hashes,
+            failed_slurm_job_ids=failed_job_ids,
         )
         record = groups.setdefault(
             unit,
@@ -336,10 +409,21 @@ def _tree_sha256(path: Path) -> str:
 def build_quarantine_plan(
     repo_root: Path,
     entries: Iterable[AuditEntry],
+    *,
+    include_failed_protocol_runs: bool = False,
+    failed_slurm_job_ids: Iterable[str] = (),
 ) -> dict[str, object]:
     """Build a reviewable plan without moving repository artifacts."""
 
     allowed = {SAFE_GENERATED}
+    reviewed_categories: set[str] = set()
+    failed_job_ids = {str(job_id) for job_id in failed_slurm_job_ids}
+    if include_failed_protocol_runs:
+        allowed.add(FAILED_PROTOCOL_RUN)
+        reviewed_categories.add(FAILED_PROTOCOL_RUN)
+    if failed_job_ids:
+        allowed.add(FAILED_SLURM_LOG)
+        reviewed_categories.add(FAILED_SLURM_LOG)
 
     repo_root = repo_root.resolve()
     planned = []
@@ -360,6 +444,8 @@ def build_quarantine_plan(
         "schema_version": QUARANTINE_SCHEMA_VERSION,
         "created_at_utc": datetime.now(UTC).isoformat(),
         "repo_root": str(repo_root),
+        "reviewed_categories": sorted(reviewed_categories),
+        "failed_slurm_job_ids": sorted(failed_job_ids),
         "entries": planned,
     }
 
@@ -499,7 +585,7 @@ def _verify_quarantine_archive(archive_path: Path, run_name: str) -> None:
         with tarfile.open(archive_path, mode="r:gz") as archive:
             members = archive.getmembers()
             _validate_archive_members(members, run_name)
-            archive.extractall(verification_root, members=members)
+            archive.extractall(verification_root, members=members, filter="data")
         extracted_root = verification_root / run_name
         manifest_path = extracted_root / "quarantine_manifest.json"
         if not manifest_path.is_file():
@@ -581,7 +667,7 @@ def restore_quarantine_archive(repo_root: Path, archive_path: Path) -> None:
     with tarfile.open(archive_path, mode="r:gz") as archive:
         members = archive.getmembers()
         _validate_archive_members(members, run_name)
-        archive.extractall(archive_path.parent, members=members)
+        archive.extractall(archive_path.parent, members=members, filter="data")
     restore_quarantine_manifest(
         repo_root,
         run_root / "quarantine_manifest.json",
@@ -614,6 +700,17 @@ def apply_quarantine_plan(
             "The quarantine plan belongs to another repository."
         )
 
+    reviewed_categories = set(payload.get("reviewed_categories", []))
+    permitted_reviewed_categories = {FAILED_PROTOCOL_RUN, FAILED_SLURM_LOG}
+    if not reviewed_categories <= permitted_reviewed_categories:
+        raise RepositoryHygieneError(
+            "The quarantine plan declares an unsupported reviewed category."
+        )
+    allowed_categories = {SAFE_GENERATED} | reviewed_categories
+    failed_slurm_job_ids = {
+        str(job_id) for job_id in payload.get("failed_slurm_job_ids", [])
+    }
+
     timestamp = datetime.now(UTC).strftime("%Y%m%dT%H%M%SZ")
     run_root = quarantine_root / timestamp
     run_root.mkdir(parents=True, exist_ok=False)
@@ -628,7 +725,8 @@ def apply_quarantine_plan(
     _write_json_atomically(manifest_path, manifest)
 
     for planned in payload.get("entries", []):
-        if planned.get("category") != SAFE_GENERATED:
+        planned_category = planned.get("category")
+        if planned_category not in allowed_categories:
             raise RepositoryHygieneError(
                 "The quarantine plan contains a category that cannot be moved."
             )
@@ -640,6 +738,16 @@ def apply_quarantine_plan(
             )
         if not source.exists() or source.is_symlink():
             raise RepositoryHygieneError(f"Unsafe or missing source: {relative_path}")
+        _, current_category, _, _ = classify_relative_path(
+            repo_root,
+            relative_path,
+            duplicate_log_hashes=_duplicate_log_hashes(repo_root),
+            failed_slurm_job_ids=failed_slurm_job_ids,
+        )
+        if current_category != planned_category:
+            raise RepositoryHygieneError(
+                f"Artifact classification changed after planning: {relative_path}"
+            )
         tracked = _tracked_files_in_unit(repo_root, relative_path)
         if tracked:
             raise RepositoryHygieneError(

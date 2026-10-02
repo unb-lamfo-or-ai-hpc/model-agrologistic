@@ -1,0 +1,40 @@
+name: Manuscript draft
+on:
+  pull_request:
+    paths: ['manuscript/**', 'scripts/*manuscript*.py', 'docs/evidence/sprint_c_final_20260920/**', '.github/workflows/manuscript*.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          version: '1.10.18'
+          tinytex: true
+      - name: Install declared document dependencies
+        run: |
+          tex_bin="$HOME/.TinyTeX/bin/x86_64-linux"
+          test -x "$tex_bin/tlmgr"
+          echo "$tex_bin" >> "$GITHUB_PATH"
+          "$tex_bin/tlmgr" install orcidlink pgf caption bookmark xurl footnotehyper microtype lm amsfonts geometry natbib etoolbox booktabs tools babel-english parskip xcolor
+      - run: python scripts/build_manuscript_comparison.py --check
+      - run: python scripts/check_manuscript.py
+      - run: quarto render manuscript
+      - run: quarto render manuscript/supplement
+      - run: python scripts/assemble_manuscript_outputs.py
+      - run: python scripts/check_manuscript.py --rendered
+      - run: python scripts/package_manuscript.py --output manuscript/_manuscript/coauthor-latex.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: manuscript-draft
+          path: manuscript/_manuscript/
+          if-no-files-found: error
+          retention-days: 14

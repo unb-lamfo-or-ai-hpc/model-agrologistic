@@ -1,0 +1,130 @@
+[
+  {
+    "gurobi": "nine_h215_p20_warehouse_gurobi",
+    "scip": "nine_h215_p20_warehouse_scip_pilot",
+    "field_matches": {
+      "workbook_sha256": true,
+      "model_config": true,
+      "loader_config": true,
+      "data_signature": true,
+      "input_audit": true,
+      "interhub_audit": true,
+      "size_and_routes": true
+    },
+    "status": "exported_input_contract_match",
+    "controlled_speed_comparison": false,
+    "qualification": "Different methods, runtime versions and possibly hardware/memory. No SCIP incumbent; no cost ratio or speedup is computed."
+  },
+  {
+    "gurobi": "nine_h215_p20_direct_gurobi",
+    "scip": "nine_h215_p20_direct_scip_expansion",
+    "field_matches": {
+      "workbook_sha256": true,
+      "model_config": true,
+      "loader_config": true,
+      "data_signature": true,
+      "input_audit": true,
+      "interhub_audit": true,
+      "size_and_routes": true
+    },
+    "status": "exported_input_contract_match",
+    "controlled_speed_comparison": false,
+    "qualification": "Different methods, runtime versions and possibly hardware/memory. No SCIP incumbent; no cost ratio or speedup is computed."
+  },
+  {
+    "gurobi": "nine_h300_p20_warehouse_gurobi",
+    "scip": "nine_h300_p20_warehouse_scip_expansion",
+    "field_matches": {
+      "workbook_sha256": true,
+      "model_config": true,
+      "loader_config": true,
+      "data_signature": true,
+      "input_audit": true,
+      "interhub_audit": true,
+      "size_and_routes": true
+    },
+    "status": "exported_input_contract_match",
+    "controlled_speed_comparison": false,
+    "qualification": "Different methods, runtime versions and possibly hardware/memory. No SCIP incumbent; no cost ratio or speedup is computed."
+  },
+  {
+    "gurobi": "nine_h300_p20_warehouse_gurobi_stage_all_barrier",
+    "scip": "nine_h300_p20_warehouse_scip_expansion",
+    "field_matches": {
+      "workbook_sha256": true,
+      "model_config": true,
+      "loader_config": true,
+      "data_signature": true,
+      "input_audit": true,
+      "interhub_audit": true,
+      "size_and_routes": true
+    },
+    "status": "exported_input_contract_match",
+    "controlled_speed_comparison": false,
+    "qualification": "Different methods, runtime versions and possibly hardware/memory. No SCIP incumbent; no cost ratio or speedup is computed."
+  },
+  {
+    "gurobi": "nine_h300_p20_warehouse_gurobi",
+    "scip": "nine_h300_p20_warehouse_scip_mem393216",
+    "field_matches": {
+      "workbook_sha256": true,
+      "model_config": true,
+      "loader_config": true,
+      "data_signature": true,
+      "input_audit": true,
+      "interhub_audit": true,
+      "size_and_routes": true
+    },
+    "status": "exported_input_contract_match",
+    "controlled_speed_comparison": false,
+    "qualification": "Different methods, runtime versions and possibly hardware/memory. No SCIP incumbent; no cost ratio or speedup is computed."
+  },
+  {
+    "gurobi": "nine_h300_p20_warehouse_gurobi_stage_all_barrier",
+    "scip": "nine_h300_p20_warehouse_scip_mem393216",
+    "field_matches": {
+      "workbook_sha256": true,
+      "model_config": true,
+      "loader_config": true,
+      "data_signature": true,
+      "input_audit": true,
+      "interhub_audit": true,
+      "size_and_routes": true
+    },
+    "status": "exported_input_contract_match",
+    "controlled_speed_comparison": false,
+    "qualification": "Different methods, runtime versions and possibly hardware/memory. No SCIP incumbent; no cost ratio or speedup is computed."
+  },
+  {
+    "gurobi": "nine_h300_p20_direct_gurobi",
+    "scip": "nine_h300_p20_direct_scip_expansion",
+    "field_matches": {
+      "workbook_sha256": true,
+      "model_config": true,
+      "loader_config": true,
+      "data_signature": true,
+      "input_audit": true,
+      "interhub_audit": true,
+      "size_and_routes": true
+    },
+    "status": "exported_input_contract_match",
+    "controlled_speed_comparison": false,
+    "qualification": "Different methods, runtime versions and possibly hardware/memory. No SCIP incumbent; no cost ratio or speedup is computed."
+  },
+  {
+    "gurobi": "nine_h300_p20_direct_gurobi",
+    "scip": "nine_h300_p20_direct_scip_mem393216",
+    "field_matches": {
+      "workbook_sha256": true,
+      "model_config": true,
+      "loader_config": true,
+      "data_signature": true,
+      "input_audit": true,
+      "interhub_audit": true,
+      "size_and_routes": true
+    },
+    "status": "exported_input_contract_match",
+    "controlled_speed_comparison": false,
+    "qualification": "Different methods, runtime versions and possibly hardware/memory. No SCIP incumbent; no cost ratio or speedup is computed."
+  }
+]

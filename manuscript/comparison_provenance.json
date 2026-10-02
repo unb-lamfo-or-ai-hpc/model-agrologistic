@@ -1,0 +1,22 @@
+{
+  "schema_version": "manuscript-comparison-v1",
+  "attempt_count": 13,
+  "quality_certified_count": 4,
+  "scip_incumbent_count": 0,
+  "sources": {
+    "comparison_cases.json": "2505039cc207bc405a52b85c8515b56d5d20c3ebcc7a7748d9e593639aab969e",
+    "comparison_stages.json": "45e160683ae3fcbf058d75856b6b5eb3b1545395de3440a38bde6ae3c2e237bb",
+    "runtime_memory_comparison.png": "8988c9f7eaf9a0462f28a83c90860f40574e8dda25bef64717fd63d221be4e13",
+    "../../pr29_readiness_evidence.md": "45e645f1a5085da21ce726659e8d096dfe6319b0170a11fc007baae1058424f7"
+  },
+  "generated": {
+    "comparison_results.qmd": "37e05614a5c0d64372a926bbaaec342bb28ce8bf53d39b9468655fa498e99533",
+    "figures/solver-comparison.png": "8988c9f7eaf9a0462f28a83c90860f40574e8dda25bef64717fd63d221be4e13",
+    "figures/pipeline.png": "4db8898e347bdcd90d1847eb31080b49de4f690e9bc8cfd5a3ccf9cf654f6359",
+    "figures/pipeline.pdf": "a696bdd0da3b183ffb1371d9e2fc44de6b210a3082382d740ae507be560a0c50",
+    "figures/runtime_memory_comparison.pdf": "771317edad5752c43fa5429c6ae8bdbfb23530f813a02b35ed285b821b8f45aa",
+    "figures/routing-current.pdf": "c51ed6cf03b5e261268994e0bfc0ff206a5b5f8108b65545ff87787608fbc72c",
+    "figures/routing-current.png": "dbeed8cceb2f2291c41ae00717e9559042d395100b1dd340a7adfc61fbf820ae"
+  },
+  "scope": "frozen exported records; no new optimization or full solution revalidation"
+}

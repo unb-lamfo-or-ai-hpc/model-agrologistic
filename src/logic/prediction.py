@@ -1,3 +1,11 @@
+"""Legacy exploratory forecasting, outside the validated reference pipeline.
+
+This module retains optional heavy dependencies and historical environment
+repair at import time. Do not import it merely to inspect documentation in a
+frozen environment. Its presence does not reconstruct the thesis forecasting
+path.
+"""
+
 import io
 import json
 import warnings

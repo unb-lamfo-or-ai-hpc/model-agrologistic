@@ -1,0 +1,18 @@
+schema_version: 1
+scope: >-
+  Historical final-reference plan before the two nine-scenario retries. Keep
+  this plan to reproduce the partial 3600-second assessment; do not relabel
+  those time-limited outputs as accepted 14400-second references.
+campaigns:
+  - profile: thesis_method_with_separate_slacks
+    manifest: experiments/v020_thesis_compatible.yaml
+    indices: [0, 1, 6, 7]
+    output_dir: data/results/validation/pr25-final/thesis
+  - profile: policy_service_first_deterministic
+    manifest: experiments/v020_policy_service_feasibility.yaml
+    indices: [0, 2]
+    output_dir: data/results/validation/pr25-final/service
+  - profile: policy_service_first_stochastic
+    manifest: experiments/v020_policy_mvp.yaml
+    indices: [8, 9, 14, 15]
+    output_dir: data/results/validation/pr25-final/policy

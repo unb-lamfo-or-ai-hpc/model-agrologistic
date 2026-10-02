@@ -1,0 +1,52 @@
+{
+  "schema_version": "v020-bounded-mvp-closure-v1",
+  "date": "2026-09-13",
+  "development_outcome": "bounded_mvp_closed_with_documented_computational_limit",
+  "original_validation_outcome": "rejected",
+  "level_statuses": ["accepted", "accepted", "accepted", "pending"],
+  "accepted_reference_count": 9,
+  "selected_reference_count": 10,
+  "implementation_sha256": "c9cfe18e8c1fe19d4e5659139804b4b8dea7b650d4c5e0c3dcb8b5afde4f3042",
+  "report_file": "v020_validation_report.json",
+  "last_trial": {
+    "job_id": "2091731",
+    "run_name": "policy_sto9_p20_warehouse_t14400_dual4",
+    "run_identity": "e0ad6fb40947a7f5d14ec5ceaf8d45860365e04eee153e37816a7af59f87f107",
+    "scheduler_status": "FAILED",
+    "exit_code": "1:0",
+    "partition": "intel-256",
+    "allocated_cpus": 4,
+    "allocated_memory_gib": 192,
+    "elapsed_seconds": 14746,
+    "max_rss_kib": 28572324,
+    "solver_time_limit_seconds": 14400,
+    "configured_mip_gap": 0.01,
+    "configured_mip_gap_abs": 1e-10,
+    "solver_method": 1,
+    "soft_memory_limit_decimal_gb": 128,
+    "service_stage": {
+      "status": "OPTIMAL",
+      "objective": 0.0,
+      "bound": -2.852175384759903e-09,
+      "reported_relative_gap": 1e100,
+      "relative_gap_interpretation": "not_informative_at_zero_objective",
+      "runtime_seconds": 484.2625529766083
+    },
+    "capacity_stage": {
+      "status": "TIME_LIMIT",
+      "objective": 159075421601.43033,
+      "bound": 0.0,
+      "relative_gap": 1.0,
+      "runtime_seconds": 13916.597859859467,
+      "final_objective": 159075421601.43027
+    },
+    "economic_stage": {"status": "NOT_EXECUTED", "objective": null, "relative_gap": null},
+    "independent_solution_valid": true,
+    "service_target_certified": true,
+    "three_completed_passes": false,
+    "acceptance_status": "rejected"
+  },
+  "interpretation": "A service-feasible, independently checked incumbent was returned; capacity optimality and completion of the economic stage were not established. No infeasibility or out-of-memory diagnosis follows from this time-limited trial.",
+  "future_work": ["Scenario decomposition", "Controlled algorithm and thread-count comparisons", "Larger nested warehouse populations", "Scalability-frontier assessment"],
+  "source": "NPAD report-dual4-20260913T234035Z, Slurm accounting and lexicographic stage export"
+}

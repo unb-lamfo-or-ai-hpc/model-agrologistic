@@ -109,6 +109,7 @@ def solve_tiny(data: ModelData, model_config: ModelConfig | None = None):
         model_config = ModelConfig(
             mode="det",
             candidate_capacity_mode="scalable",
+            capacity_coupling_policy="period_equivalent",
             days_per_period=1.0,
         )
 

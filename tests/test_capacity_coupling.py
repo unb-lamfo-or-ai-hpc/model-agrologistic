@@ -24,7 +24,10 @@ def capacity_data():
 
 def test_period_equivalent_policy_preserves_existing_mvp_semantics():
     data = capacity_data()
-    config = ModelConfig(days_per_period=30.0)
+    config = ModelConfig(
+        capacity_coupling_policy="period_equivalent",
+        days_per_period=30.0,
+    )
     candidate = {"C1": 50.0}
     expansion = {"W1": 20.0}
     bulkification = {"W1": 5.0}

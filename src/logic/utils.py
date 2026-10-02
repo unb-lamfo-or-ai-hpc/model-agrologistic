@@ -1,3 +1,9 @@
+"""Legacy interface parsing helpers, not the canonical workbook validator.
+
+Localized messages and Portuguese fields are retained runtime contracts. New
+scientific input validation belongs in excel_loader and model_validation.
+"""
+
 import io
 import pandas as pd
 from src.logic.i18n import translate

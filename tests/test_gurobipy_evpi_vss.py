@@ -7,8 +7,12 @@ from src.logic.model_data import ModelData
 from src.logic.optimization import OptimizationResult, calculate_evpi_vss
 from src.logic.optimization_gurobipy import _gurobi_status_name
 from src.logic.stochastic_analysis_gurobipy import (
+    _classify_nonnegative_interval,
+    _difference_interval,
     _expected_value_data,
     _single_scenario_data,
+    _solver_objective_interval,
+    _weighted_solver_objective_interval,
 )
 from tests.test_gurobipy_transshipment import require_gurobi_available
 
@@ -296,3 +300,75 @@ def test_evpi_vss_resume_rejects_a_different_experiment(tmp_path):
             resume=True,
             total_steps=5,
         )
+
+
+def test_solver_bound_intervals_certify_or_flag_value_metrics():
+    rp = OptimizationResult(
+        status="optimal",
+        objective_value=100.0,
+        metadata={
+            "gurobi_objective_value": 100.0,
+            "gurobi_objective_bound": 90.0,
+        },
+    )
+    eev = OptimizationResult(
+        status="optimal",
+        objective_value=105.0,
+        metadata={
+            "gurobi_objective_value": 105.0,
+            "gurobi_objective_bound": 105.0,
+        },
+    )
+    ws_low = OptimizationResult(
+        status="optimal",
+        objective_value=80.0,
+        metadata={
+            "gurobi_objective_value": 80.0,
+            "gurobi_objective_bound": 75.0,
+        },
+    )
+    ws_high = OptimizationResult(
+        status="optimal",
+        objective_value=90.0,
+        metadata={
+            "gurobi_objective_value": 90.0,
+            "gurobi_objective_bound": 80.0,
+        },
+    )
+
+    rp_interval = _solver_objective_interval(rp)
+    eev_interval = _solver_objective_interval(eev)
+    ws_interval = _weighted_solver_objective_interval(
+        {"low": ws_low, "high": ws_high},
+        {"low": 0.5, "high": 0.5},
+    )
+    vss_interval = _difference_interval(eev_interval, rp_interval)
+    evpi_interval = _difference_interval(rp_interval, ws_interval)
+
+    assert rp_interval == {"lower_bound": 90.0, "upper_bound": 100.0}
+    assert ws_interval == {"lower_bound": 77.5, "upper_bound": 85.0}
+    assert vss_interval == {"lower_bound": 5.0, "upper_bound": 15.0}
+    assert evpi_interval == {"lower_bound": 5.0, "upper_bound": 22.5}
+    assert _classify_nonnegative_interval(vss_interval, 1e-6) == (
+        "certified_positive"
+    )
+    assert _classify_nonnegative_interval(
+        {"lower_bound": -2.0, "upper_bound": 3.0},
+        1e-6,
+    ) == "numerically_indeterminate"
+    assert _classify_nonnegative_interval(
+        {"lower_bound": -3.0, "upper_bound": -2.0},
+        1e-6,
+    ) == "inconsistent_negative"
+
+
+def test_solver_bound_interval_is_unavailable_without_solver_metadata():
+    result = OptimizationResult(status="optimal", objective_value=10.0)
+
+    assert _solver_objective_interval(result) is None
+    assert _weighted_solver_objective_interval(
+        {"scenario": result},
+        {"scenario": 1.0},
+    ) is None
+    assert _difference_interval(None, None) is None
+    assert _classify_nonnegative_interval(None, 1e-6) == "unavailable"

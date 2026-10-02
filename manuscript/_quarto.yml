@@ -1,0 +1,42 @@
+project:
+  type: manuscript
+  output-dir: _manuscript
+  render:
+    - index.qmd
+manuscript:
+  article: index.qmd
+  code-links:
+    - text: Source repository
+      icon: github
+      href: https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic
+execute:
+  enabled: false
+  freeze: auto
+lang: en
+metadata-files:
+  - authors.json
+bibliography: references.bib
+format:
+  html:
+    theme: cosmo
+    toc: true
+    number-sections: true
+    css: styles.css
+  elsevier-pdf:
+    filters:
+      - vector-figures.lua
+    pdf-engine: pdflatex
+    latex-auto-install: false
+    keep-tex: true
+    fontsize: 11pt
+    papersize: a4
+    geometry:
+      - margin=25mm
+    number-sections: true
+    journal:
+      name: Computers and Electronics in Agriculture
+      formatting: preprint
+      cite-style: authoryear
+    include-in-header:
+      text: |
+        \usepackage{orcidlink}

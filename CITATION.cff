@@ -9,7 +9,7 @@ authors:
     alias: "cvictorr2508"
 repository-code: "https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic"
 url: "https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic"
-license: GPL-3.0-only
+license: MIT
 keywords:
   - agricultural logistics
   - mixed-integer linear programming

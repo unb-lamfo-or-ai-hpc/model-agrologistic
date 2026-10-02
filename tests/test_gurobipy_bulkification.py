@@ -63,6 +63,7 @@ def solve_bulkification_data(data: ModelData, *, enabled: bool = True):
         data=data,
         model_config=ModelConfig(
             mode="det",
+            capacity_coupling_policy="period_equivalent",
             allow_capacity_expansion=False,
             allow_bulkification=enabled,
             days_per_period=1.0,

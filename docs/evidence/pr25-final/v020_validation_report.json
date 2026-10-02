@@ -1,0 +1,392 @@
+{
+  "schema_version": "v020-four-level-validation-v1",
+  "implementation": {
+    "schema_version": 1,
+    "sources": {
+      "artur_adapter.py": "3f94344ca1ba9f8082663d381ffc0a58933df8694c088416a520a6395d743b2a",
+      "artur_benchmark.py": "2f21fedf032d89ef3e9f895ee5cb1752d2d1486249ed0d63d81ca325424033d2",
+      "artur_instance.py": "1dbc78b63e0caecf6ba9d52c46080a8c8360d6a86871bc94c697f3da3c7de2a2",
+      "artur_normalization.py": "925e6dc536df4ec4371fcc2254570b93d0710df91744bab312d7d7cd1187686f",
+      "capacity_bounds.py": "3d7c44b98eb6d8df40a4e0bcf86174eb70c60c6e8228ebf23920a9f9e39954a6",
+      "excel_loader.py": "ce66612bd061a9b6724410867dfaeeb2c17d70c674866a43fd8e78e1d9884124",
+      "experiment_runner.py": "b16c0eef03198155b6e05e7278e420f4b036738ee0aea97460a86169bfa7f4b5",
+      "i18n.py": "873946591386d15c1f930c3897afe76f0da5c2ca8e594ca269a4bcfb0e40410b",
+      "mathematical_contract.py": "0c963e8b71f26dc34c2b05a16a213536565852e8aab130fa8779fff2a0b5c6ee",
+      "metrics.py": "d44204f574745cabbf24d4c66bd012936ba45bb7497e8e9653af2cd6ab519f23",
+      "model_audit.py": "b829fd867bf91c4791fe75894e613ba6db2bb93927fd2979f8e5e5218913a4ce",
+      "model_config.py": "df901647e7f7c9b6f61a5cdd623143ad3c0d36458d0bf7796fb8384ef2c27bff",
+      "model_data.py": "0c833e67e9e47e4809865b655fd24289acabcd37d38a59a720f430d15f2db975",
+      "model_validation.py": "b388bbc5c604f5c2ed3d42aae1a9f51b30be72915639c1fd25a6b444f669fbaf",
+      "objective_diagnostics.py": "9c5514386c90ddc5e2d2c1d42166f793a78f07d5153fcf798e1a602cca857ce7",
+      "optimization.py": "a56c6447e5593fe802b214bd7e28c0a49d93080998271372ded86ec42703d311",
+      "optimization_gurobipy.py": "4c29a637ab44f7ed2174730e165d1b84c020485de4cad4820b22bb76fd9286e5",
+      "optimization_gurobipy_stochastic.py": "5c5cd1196aba524014887ff94050736a1f1b7566adfb4f6d5782d3df7f4572a8",
+      "optimization_pyomo.py": "61a7ba7da354ddb440108d8114805b8b47ae8294b37d380de95afb17dd452381",
+      "osrm.py": "344a26cf08397cbedcc0b66e0ceb76cf97199abce0d2744a9fb74f00c5ff2c56",
+      "policy_osrm.py": "d0d4087381ecc68b786fda77fa0f1855418892119a68a8215e8a58456c9689c9",
+      "prediction.py": "691ae9319b7d931a5c10e1fe5dc3d9bc384a6366c365c824d8276857c1a9d934",
+      "repository_hygiene.py": "32a1843e0b10410a2dfcbc2e2f6e659b8e1a5581e28f72db298fa4546ff511ea",
+      "route_connectivity.py": "cd32abb5695afdf80ba9abf14d18b6529ef56a32d046ca9e9a1d2143f3a3c4de",
+      "route_coverage.py": "71ddc7207c24613496162100a53fe8c86948763b98b4a91441dcbe023472a933",
+      "route_filtering.py": "f8b4a388adef79eb29aee7493c8883655c2a9b294bdb2dab343e282cff73e1a9",
+      "run_integrity.py": "10ddbbba0b43425aa55e219b317f62654970605c0f8080f05905e98ff21c5191",
+      "scientific_evidence.py": "4f9b32ea5b1fb888d9d73dabda9c4fe202a5fdd6fb90580338dbefffc918f944",
+      "scientific_plots.py": "b4f50df807959ace514dbf33d9a69052af605e0a3134941cc75ddaedb6bfa3ea",
+      "scientific_results.py": "ab49160025b2fb80458344e0e45338936c51e0ab4accc34ecf79af9aaf7b2c43",
+      "solution_validation.py": "faedd554dbdce2686b848834dbbc42c8dd08b0a27579cd632a500730eb8ab88c",
+      "stochastic_analysis_gurobipy.py": "07354997253a9771d4418c4d7f3eded7dd86d1406a2491266b8d114b920e0230",
+      "trl6_protocol.py": "99e8925fd427a140be04ccd96e9ff4dbce0585ae2844f00d7a6f7dfb13894da6",
+      "utils.py": "e848ef3d4ce7a87acb7d2103fb06a108d89a22a30ae127e6153256c1df22193b",
+      "v020_validation.py": "e35f6d983d2755a966d6422dcb75eb84835e4e4239041d0f402df5f2888193df",
+      "warehouse_population.py": "3580f16ebff8bdf797101de4fe4d19f199f2847cbc5403723f82d6b35ba6721b",
+      "warehouse_workbook.py": "13db7eb1fe02517e72e007cc3a39aba5886475e55ebc1480a405dc20457cb85d"
+    },
+    "packages": {
+      "gurobipy": "13.0.3",
+      "numpy": "2.5.2",
+      "pandas": "2.3.3",
+      "openpyxl": "3.1.5"
+    },
+    "python": "3.13.15",
+    "sha256": "c9cfe18e8c1fe19d4e5659139804b4b8dea7b650d4c5e0c3dcb8b5afde4f3042"
+  },
+  "overall_status": "rejected",
+  "levels": [
+    {
+      "level": 1,
+      "name": "mathematical_and_data_contract",
+      "status": "accepted"
+    },
+    {
+      "level": 2,
+      "name": "software_and_licensed_analytical_tests",
+      "status": "accepted"
+    },
+    {
+      "level": 3,
+      "name": "independent_solution_validation",
+      "status": "accepted"
+    },
+    {
+      "level": 4,
+      "name": "hpc_reference_demonstration",
+      "status": "pending"
+    }
+  ],
+  "runs": [
+    {
+      "name": "thesis_det_alpha_0_8_warehouse",
+      "status": "accepted",
+      "checks": {
+        "current_mathematical_contract": true,
+        "independent_local_residuals_and_costs": true,
+        "selected_network_and_penalties_match": true,
+        "usable_incumbent": true,
+        "phase_timing_complete": true,
+        "hpc_execution_identified": true
+      },
+      "objective_policy": "penalty",
+      "scenario_count": 1,
+      "run_identity": "d4656330a36c1376914bfe54213c436fbd9a9df7387ff92c60f8e660689d2f43",
+      "value_metric_interpretation": "Report indeterminate intervals without a sign claim.",
+      "emergency_capacity_is_rejection_condition": false,
+      "profile": "thesis_method_with_separate_slacks"
+    },
+    {
+      "name": "thesis_det_alpha_0_8_direct",
+      "status": "accepted",
+      "checks": {
+        "current_mathematical_contract": true,
+        "independent_local_residuals_and_costs": true,
+        "selected_network_and_penalties_match": true,
+        "usable_incumbent": true,
+        "phase_timing_complete": true,
+        "hpc_execution_identified": true
+      },
+      "objective_policy": "penalty",
+      "scenario_count": 1,
+      "run_identity": "ce3d62f380b1c421648e75cffdcdee732839bacf8844d5412a4bd38d44488416",
+      "value_metric_interpretation": "Report indeterminate intervals without a sign claim.",
+      "emergency_capacity_is_rejection_condition": false,
+      "profile": "thesis_method_with_separate_slacks"
+    },
+    {
+      "name": "thesis_sto_alpha_0_8_warehouse",
+      "status": "accepted",
+      "checks": {
+        "current_mathematical_contract": true,
+        "independent_local_residuals_and_costs": true,
+        "selected_network_and_penalties_match": true,
+        "usable_incumbent": true,
+        "value_metric_intervals": true,
+        "eev_first_stage_fixed": true,
+        "all_reference_solutions_validated": true,
+        "phase_timing_complete": true,
+        "hpc_execution_identified": true
+      },
+      "objective_policy": "penalty",
+      "scenario_count": 3,
+      "run_identity": "62c153740e1906af9ea5f406568b9f1ea9aad313e637ff57dd7af12f11a51cb4",
+      "value_metric_interpretation": "Report indeterminate intervals without a sign claim.",
+      "emergency_capacity_is_rejection_condition": false,
+      "profile": "thesis_method_with_separate_slacks"
+    },
+    {
+      "name": "thesis_sto_alpha_0_8_direct",
+      "status": "accepted",
+      "checks": {
+        "current_mathematical_contract": true,
+        "independent_local_residuals_and_costs": true,
+        "selected_network_and_penalties_match": true,
+        "usable_incumbent": true,
+        "value_metric_intervals": true,
+        "eev_first_stage_fixed": true,
+        "all_reference_solutions_validated": true,
+        "phase_timing_complete": true,
+        "hpc_execution_identified": true
+      },
+      "objective_policy": "penalty",
+      "scenario_count": 3,
+      "run_identity": "6fee8f2f3bd8cde89b38db4a8d8c52cd11d4c4d29a02b9ae6428885e78d9fa0d",
+      "value_metric_interpretation": "Report indeterminate intervals without a sign claim.",
+      "emergency_capacity_is_rejection_condition": false,
+      "profile": "thesis_method_with_separate_slacks"
+    },
+    {
+      "name": "policy_service_feasibility_p20_warehouse",
+      "status": "accepted",
+      "checks": {
+        "current_mathematical_contract": true,
+        "independent_local_residuals_and_costs": true,
+        "selected_network_and_penalties_match": true,
+        "usable_incumbent": true,
+        "domestic_service_by_scenario": true,
+        "three_completed_passes": true,
+        "service_target_certified": true,
+        "stage_final_values_reported": true,
+        "phase_timing_complete": true,
+        "hpc_execution_identified": true
+      },
+      "objective_policy": "lexicographic",
+      "scenario_count": 1,
+      "run_identity": "5ea8f7133c0e1e1d5247b048adc631db8b0e38115e5d6f827fdfb4a3ae9d8d2b",
+      "value_metric_interpretation": "Report indeterminate intervals without a sign claim.",
+      "emergency_capacity_is_rejection_condition": false,
+      "profile": "policy_service_first_deterministic"
+    },
+    {
+      "name": "policy_service_feasibility_p20_direct_t14400",
+      "status": "accepted",
+      "checks": {
+        "current_mathematical_contract": true,
+        "independent_local_residuals_and_costs": true,
+        "selected_network_and_penalties_match": true,
+        "usable_incumbent": true,
+        "domestic_service_by_scenario": true,
+        "three_completed_passes": true,
+        "service_target_certified": true,
+        "stage_final_values_reported": true,
+        "phase_timing_complete": true,
+        "hpc_execution_identified": true
+      },
+      "objective_policy": "lexicographic",
+      "scenario_count": 1,
+      "run_identity": "561d55955e31ce4d657bac46a5c316457f3febbbdba99fe4983bf429d90ac767",
+      "value_metric_interpretation": "Report indeterminate intervals without a sign claim.",
+      "emergency_capacity_is_rejection_condition": false,
+      "profile": "policy_service_first_deterministic"
+    },
+    {
+      "name": "policy_sto3_p20_warehouse",
+      "status": "accepted",
+      "checks": {
+        "current_mathematical_contract": true,
+        "independent_local_residuals_and_costs": true,
+        "selected_network_and_penalties_match": true,
+        "usable_incumbent": true,
+        "domestic_service_by_scenario": true,
+        "three_completed_passes": true,
+        "service_target_certified": true,
+        "stage_final_values_reported": true,
+        "phase_timing_complete": true,
+        "hpc_execution_identified": true
+      },
+      "objective_policy": "lexicographic",
+      "scenario_count": 3,
+      "run_identity": "3b5e45784c6e932483962344e83949314afa2181a85e770dc63339c671e0eb5d",
+      "value_metric_interpretation": "Report indeterminate intervals without a sign claim.",
+      "emergency_capacity_is_rejection_condition": false,
+      "profile": "policy_service_first_stochastic"
+    },
+    {
+      "name": "policy_sto3_p20_direct",
+      "status": "accepted",
+      "checks": {
+        "current_mathematical_contract": true,
+        "independent_local_residuals_and_costs": true,
+        "selected_network_and_penalties_match": true,
+        "usable_incumbent": true,
+        "domestic_service_by_scenario": true,
+        "three_completed_passes": true,
+        "service_target_certified": true,
+        "stage_final_values_reported": true,
+        "phase_timing_complete": true,
+        "hpc_execution_identified": true
+      },
+      "objective_policy": "lexicographic",
+      "scenario_count": 3,
+      "run_identity": "96e4f5952c52945ce7290a0f90b8a544ef7a9057699111be3c0ad2c20a66836d",
+      "value_metric_interpretation": "Report indeterminate intervals without a sign claim.",
+      "emergency_capacity_is_rejection_condition": false,
+      "profile": "policy_service_first_stochastic"
+    },
+    {
+      "name": "policy_sto9_p20_direct_t14400",
+      "status": "accepted",
+      "checks": {
+        "current_mathematical_contract": true,
+        "independent_local_residuals_and_costs": true,
+        "selected_network_and_penalties_match": true,
+        "usable_incumbent": true,
+        "domestic_service_by_scenario": true,
+        "three_completed_passes": true,
+        "service_target_certified": true,
+        "stage_final_values_reported": true,
+        "phase_timing_complete": true,
+        "hpc_execution_identified": true
+      },
+      "objective_policy": "lexicographic",
+      "scenario_count": 9,
+      "run_identity": "bca662eec85c695722aeed4e7d215442e56ddffbe6173b6caad888d74b6e1ea8",
+      "value_metric_interpretation": "Report indeterminate intervals without a sign claim.",
+      "emergency_capacity_is_rejection_condition": false,
+      "profile": "policy_service_first_stochastic_nine_t14400"
+    },
+    {
+      "name": "policy_sto9_p20_warehouse_t14400_dual4",
+      "status": "rejected",
+      "checks": {
+        "current_mathematical_contract": true,
+        "independent_local_residuals_and_costs": true,
+        "selected_network_and_penalties_match": true,
+        "usable_incumbent": true,
+        "domestic_service_by_scenario": true,
+        "three_completed_passes": false,
+        "service_target_certified": true,
+        "stage_final_values_reported": false,
+        "phase_timing_complete": true,
+        "hpc_execution_identified": true
+      },
+      "objective_policy": "lexicographic",
+      "scenario_count": 9,
+      "run_identity": "e0ad6fb40947a7f5d14ec5ceaf8d45860365e04eee153e37816a7af59f87f107",
+      "value_metric_interpretation": "Report indeterminate intervals without a sign claim.",
+      "emergency_capacity_is_rejection_condition": false,
+      "profile": "policy_service_first_stochastic_nine_dual4"
+    }
+  ],
+  "quality": {
+    "schema_version": 1,
+    "created_at_utc": "2026-09-11T22:33:58.077451+00:00",
+    "implementation_sha256": "c9cfe18e8c1fe19d4e5659139804b4b8dea7b650d4c5e0c3dcb8b5afde4f3042",
+    "status": "accepted",
+    "skipped_tests": 0,
+    "steps": [
+      {
+        "name": "ruff",
+        "return_code": 0,
+        "command": [
+          "/home/vrrcelestino/venv313/bin/python",
+          "-m",
+          "ruff",
+          "check",
+          "."
+        ]
+      },
+      {
+        "name": "pytest",
+        "return_code": 0,
+        "command": [
+          "/home/vrrcelestino/venv313/bin/python",
+          "-m",
+          "pytest",
+          "--junitxml",
+          "/home/vrrcelestino/model-agrologistic/data/results/validation/pr25-final/quality/pytest.xml"
+        ]
+      },
+      {
+        "name": "build",
+        "return_code": 0,
+        "command": [
+          "/home/vrrcelestino/venv313/bin/python",
+          "-m",
+          "build",
+          "--outdir",
+          "/home/vrrcelestino/model-agrologistic/data/results/validation/pr25-final/quality/dist"
+        ]
+      }
+    ],
+    "junit_sha256": "10161939d2462afaead9f14ffa4f0cedcde0dcfa80caa8b3e0f275e62a0487ae",
+    "qualification": "Skipped licensed tests prevent final four-level acceptance."
+  },
+  "scope": "Bounded alpha=0.8 thesis-method comparison and 215-warehouse OSRM service-first policy references at 20-percent retained arcs. The nine-scenario references use explicitly identified 14400-second retries. Only the warehouse-only nine-scenario case uses the dual-simplex/four-thread 128 GB soft-memory retry; nine references remain unchanged from the preceding plan. Not numerical replication of all published thesis tables and not the full scalability campaign.",
+  "plan": {
+    "schema_version": 1,
+    "scope": "Bounded alpha=0.8 thesis-method comparison and 215-warehouse OSRM service-first policy references at 20-percent retained arcs. The nine-scenario references use explicitly identified 14400-second retries. Only the warehouse-only nine-scenario case uses the dual-simplex/four-thread 128 GB soft-memory retry; nine references remain unchanged from the preceding plan. Not numerical replication of all published thesis tables and not the full scalability campaign.",
+    "campaigns": [
+      {
+        "profile": "thesis_method_with_separate_slacks",
+        "manifest": "experiments/v020_thesis_compatible.yaml",
+        "indices": [
+          0,
+          1,
+          6,
+          7
+        ],
+        "output_dir": "data/results/validation/pr25-final/thesis"
+      },
+      {
+        "profile": "policy_service_first_deterministic",
+        "manifest": "experiments/v020_policy_service_feasibility.yaml",
+        "indices": [
+          0,
+          2
+        ],
+        "output_dir": "data/results/validation/pr25-final/service"
+      },
+      {
+        "profile": "policy_service_first_stochastic",
+        "manifest": "experiments/v020_policy_mvp.yaml",
+        "indices": [
+          8,
+          9
+        ],
+        "output_dir": "data/results/validation/pr25-final/policy"
+      },
+      {
+        "profile": "policy_service_first_stochastic_nine_t14400",
+        "manifest": "experiments/v020_policy_nine_scenario_retry.yaml",
+        "indices": [
+          1
+        ],
+        "output_dir": "data/results/validation/pr25-final/policy-nine-t14400"
+      },
+      {
+        "profile": "policy_service_first_stochastic_nine_dual4",
+        "manifest": "experiments/v020_policy_warehouse_dual_retry.yaml",
+        "indices": [
+          0
+        ],
+        "output_dir": "data/results/validation/pr25-final/policy-nine-dual4"
+      }
+    ]
+  },
+  "historical_numerical_replication": "not_established",
+  "limitations": [
+    "Separate slacks are not equivalent to the historical shared-slack penalty.",
+    "The historical OSM snapshot and forecasting path are not reconstructed.",
+    "Acceptance covers selected runs, not all configurations or unique investments.",
+    "Emergency quantities diagnose violations, not installed capacity recommendations.",
+    "No automatic certification of manuscript, TRL or the full scalability frontier."
+  ]
+}

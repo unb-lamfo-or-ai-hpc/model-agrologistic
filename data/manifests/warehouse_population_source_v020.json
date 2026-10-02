@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "source_file": "Warehouses_Existing_Candidate_All.xlsx",
+  "source_sheet": "Sheet1",
+  "source_sha256": "0d19865ac72eca0706960d10b6dbd1647a4951378a831715e39af8029ecb77f2",
+  "source_size_bytes": 1660348,
+  "source_description": "Research input derived from the Brazilian SICARM/CONAB warehouse registry.",
+  "observed_counts": {
+    "warehouse_rows": 18086,
+    "unique_cda_identifiers": 18086,
+    "existing_warehouses": 146,
+    "candidate_warehouses": 17940,
+    "eligible_candidates": 17939,
+    "excluded_nonpositive_capacity_candidates": 1
+  },
+  "canonical_anchor": {
+    "workbook": "data/templates/model_agrologistic_padrao_ouro.xlsx",
+    "sheet": "Warehouses",
+    "existing_warehouses": 146,
+    "candidate_warehouses": 69,
+    "total_warehouses": 215
+  },
+  "distribution_policy": "The source workbook is not embedded in the repository until source licensing and redistribution terms are recorded. Verify the external file against source_sha256 before use."
+}
+
