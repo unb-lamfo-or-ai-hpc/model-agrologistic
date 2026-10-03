@@ -10,6 +10,8 @@ from __future__ import annotations
 import math
 from time import perf_counter
 
+from src.logic.resource_telemetry import event, observed_matrix, phase
+
 ABSOLUTE_GAP = 1e-10
 
 
@@ -49,7 +51,10 @@ def solve_stages(model, objectives, config, tolerance, *, clock=perf_counter):
         if remaining is not None:
             model.setParam("limits/time", before_solver + remaining)
         pass_started = clock()
+        phase(f"optimization_stage_{index + 1}")
+        event("stage_start", stage_number=index + 1, stage_role=role)
         model.optimize()
+        observed_matrix(model, "pyscipopt", "terminal_transformed")
         native_status = str(model.getStatus())
         has_solution = model.getNSols() > 0
         incumbent = float(model.getObjVal()) if has_solution else None
@@ -101,6 +106,10 @@ def solve_stages(model, objectives, config, tolerance, *, clock=perf_counter):
             "terminal_scip_memory_bytes": model.getMemUsed(),
         }
         records.append(record)
+        event("stage_terminal", stage_number=index + 1, stage_role=role, status=status,
+              incumbent=incumbent, bound=bound, mip_gap=gap,
+              iterations=record["iteration_count"], nodes=record["node_count"],
+              solver_memory_bytes=record["terminal_scip_memory_bytes"])
         if not certified or index == len(objectives) - 1:
             break
         limit = inherited_limit(incumbent, bound, config.mip_gap, tolerance)

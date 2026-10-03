@@ -64,6 +64,7 @@ VALID_CAPACITY_COUPLING_POLICIES = {"period_equivalent", "daily_factors"}
 # Solver configuration
 # ---------------------------------------------------------------------
 
+
 @dataclass(slots=True)
 class SolverConfig:
     """
@@ -110,6 +111,10 @@ class SolverConfig:
     # Opt-in numerical experiments; mathematical priorities remain unchanged.
     multiobjective_stage_options: dict[str, dict[str, int]] = field(default_factory=dict)
     collect_solver_diagnostics: bool = False
+    collect_resource_diagnostics: bool = False
+    resource_sample_seconds: float = 5.0
+    resource_max_samples: int = 4096
+    compact_python_indices: bool = False
 
     def __post_init__(self) -> None:
         if self.backend not in VALID_SOLVER_BACKENDS:
@@ -122,19 +127,13 @@ class SolverConfig:
             "gurobi",
             "gurobipy",
         }:
-            raise ValueError(
-                "When backend='gurobipy', solver_name must be 'gurobi' "
-                "or 'gurobipy'."
-            )
+            raise ValueError("When backend='gurobipy', solver_name must be 'gurobi' or 'gurobipy'.")
 
         if self.backend == "pyscipopt" and self.solver_name.lower() not in {
             "scip",
             "pyscipopt",
         }:
-            raise ValueError(
-                "When backend='pyscipopt', solver_name must be 'scip' "
-                "or 'pyscipopt'."
-            )
+            raise ValueError("When backend='pyscipopt', solver_name must be 'scip' or 'pyscipopt'.")
 
         if self.mip_gap < 0:
             raise ValueError("mip_gap must be non-negative.")
@@ -153,10 +152,27 @@ class SolverConfig:
 
         if not isinstance(self.collect_solver_diagnostics, bool):
             raise ValueError("collect_solver_diagnostics must be boolean.")
+        from math import isfinite
+
+        if not isinstance(self.collect_resource_diagnostics, bool):
+            raise ValueError("collect_resource_diagnostics must be boolean.")
+        if not isinstance(self.compact_python_indices, bool):
+            raise ValueError("compact_python_indices must be boolean.")
+        if not isfinite(self.resource_sample_seconds) or self.resource_sample_seconds < 0.1:
+            raise ValueError("resource_sample_seconds must be finite and at least 0.1.")
+        if (
+            type(self.resource_max_samples) is not int
+            or not 1 <= self.resource_max_samples <= 100000
+        ):
+            raise ValueError("resource_max_samples must be an integer in [1, 100000].")
+        if self.compact_python_indices and self.backend != "gurobipy":
+            raise ValueError("Index compaction currently requires native Gurobi.")
+        if self.collect_resource_diagnostics and self.backend == "pyomo":
+            raise ValueError("Resource diagnostics are qualified only for native backends.")
         from src.logic.solver_diagnostics import validate_stage_options
 
         validate_stage_options(self.multiobjective_stage_options)
-        if (self.multiobjective_stage_options or self.collect_solver_diagnostics):
+        if self.multiobjective_stage_options or self.collect_solver_diagnostics:
             if self.backend != "gurobipy":
                 raise ValueError("Stage diagnostics require the native Gurobi backend.")
 
@@ -164,6 +180,7 @@ class SolverConfig:
 # ---------------------------------------------------------------------
 # Mathematical model configuration
 # ---------------------------------------------------------------------
+
 
 @dataclass(slots=True)
 class ModelConfig:
@@ -265,17 +282,14 @@ class ModelConfig:
     def __post_init__(self) -> None:
         if self.mode not in VALID_MODEL_MODES:
             raise ValueError(
-                f"Invalid model mode: {self.mode!r}. "
-                f"Expected one of {sorted(VALID_MODEL_MODES)}."
+                f"Invalid model mode: {self.mode!r}. Expected one of {sorted(VALID_MODEL_MODES)}."
             )
 
         if self.interhub_factor < 0:
             raise ValueError("interhub_factor must be non-negative.")
 
         if not self.separate_emergency_capacity_slacks:
-            raise ValueError(
-                "v0.2 requires separate static and reception emergency slacks."
-            )
+            raise ValueError("v0.2 requires separate static and reception emergency slacks.")
 
         if self.candidate_capacity_mode not in VALID_CANDIDATE_CAPACITY_MODES:
             raise ValueError(
@@ -323,20 +337,15 @@ class ModelConfig:
             "candidate_shipping_daily_factor": self.candidate_shipping_daily_factor,
             "expansion_reception_daily_factor": self.expansion_reception_daily_factor,
             "expansion_shipping_daily_factor": self.expansion_shipping_daily_factor,
-            "bulkification_reception_daily_factor": (
-                self.bulkification_reception_daily_factor
-            ),
-            "bulkification_shipping_daily_factor": (
-                self.bulkification_shipping_daily_factor
-            ),
+            "bulkification_reception_daily_factor": (self.bulkification_reception_daily_factor),
+            "bulkification_shipping_daily_factor": (self.bulkification_shipping_daily_factor),
         }
         invalid_capacity_factors = {
             name: value for name, value in capacity_factors.items() if value < 0
         }
         if invalid_capacity_factors:
             raise ValueError(
-                "Capacity coupling factors must be non-negative: "
-                f"{invalid_capacity_factors}."
+                f"Capacity coupling factors must be non-negative: {invalid_capacity_factors}."
             )
 
         if not 0 < self.pareto_fraction <= 1:
@@ -346,9 +355,7 @@ class ModelConfig:
             raise ValueError("route_top_k must be positive or None.")
 
         if self.route_filter_strategy == "top_k" and self.route_top_k is None:
-            raise ValueError(
-                "route_top_k is required when route_filter_strategy='top_k'."
-            )
+            raise ValueError("route_top_k is required when route_filter_strategy='top_k'.")
 
         if self.terminal_inventory_penalty < 0:
             raise ValueError("terminal_inventory_penalty must be non-negative.")
@@ -357,14 +364,11 @@ class ModelConfig:
             raise ValueError("days_per_period must be positive.")
 
         invalid_period_days = {
-            period: days
-            for period, days in self.days_per_period_by_period.items()
-            if days <= 0
+            period: days for period, days in self.days_per_period_by_period.items() if days <= 0
         }
         if invalid_period_days:
             raise ValueError(
-                "days_per_period_by_period values must be positive: "
-                f"{invalid_period_days}."
+                f"days_per_period_by_period values must be positive: {invalid_period_days}."
             )
 
         if self.feasibility_tolerance <= 0:
@@ -382,6 +386,7 @@ class ModelConfig:
 # ---------------------------------------------------------------------
 # Combined run configuration
 # ---------------------------------------------------------------------
+
 
 @dataclass(slots=True)
 class RunConfig:
