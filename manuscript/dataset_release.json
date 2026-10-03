@@ -1,0 +1,79 @@
+{
+  "schema_version": "zenodo-published-record-v1",
+  "record_id": 22751909,
+  "doi": "10.5281/zenodo.22751909",
+  "state": "done",
+  "submitted": true,
+  "version": "0.2.0",
+  "title": "Model Agrologistic: Brazilian Grain Logistics Data and Computational Evidence",
+  "publication_date": "2026-10-02",
+  "verified_on": "2026-10-03",
+  "source_url": "https://zenodo.org/api/records/22751909",
+  "creator": {
+    "name": "Celestino, Victor Rafael Rezende",
+    "orcid": "0000-0001-5913-2997"
+  },
+  "qualification": "Frozen public API metadata; not an independent per-asset redistribution-rights determination. Zenodo MD5 file checksums are distinct from archive SHA-256 manifests.",
+  "files": [
+    {
+      "name": "README.md",
+      "size": 3361,
+      "checksum": "md5:df64ac782cba1422122df1961311d243"
+    },
+    {
+      "name": "metadata-review.json",
+      "size": 1589,
+      "checksum": "md5:60a6627b16221fa5ccef2e0f4e0f8838"
+    },
+    {
+      "name": "agrologistic-v020-comparative-evidence.zip",
+      "size": 197328,
+      "checksum": "md5:50f649644b9705bafba0005a1679516a"
+    },
+    {
+      "name": "download_manifest.json",
+      "size": 678254,
+      "checksum": "md5:f5fc5a2185829e539f3ec518b924a824"
+    },
+    {
+      "name": "agrologistic-v020-run-artifacts.zip",
+      "size": 64233474,
+      "checksum": "md5:7f0d0e0012894510896104f356e59606"
+    },
+    {
+      "name": "agrologistic-v020-osrm-audits.zip",
+      "size": 48752,
+      "checksum": "md5:a064afa47e2c3060b3645f60ebcd1fcb"
+    },
+    {
+      "name": "agrologistic-v020-inventory-reports.zip",
+      "size": 359736,
+      "checksum": "md5:bb03bdf827341ec064eae92479798d63"
+    },
+    {
+      "name": "SHA256SUMS.txt",
+      "size": 762,
+      "checksum": "md5:6d2c0cb5e455e4630b8da954d178efbf"
+    },
+    {
+      "name": "agrologistic-v020-reference-evidence.zip",
+      "size": 2680657,
+      "checksum": "md5:d970c5f7c34eaaf49dafbb0fce21c727"
+    },
+    {
+      "name": "agrologistic-v020-inputs.zip",
+      "size": 30996131,
+      "checksum": "md5:79f85dfe638df1c2dfa5cca9cf343d88"
+    },
+    {
+      "name": "LICENSES-REVIEW.txt",
+      "size": 544,
+      "checksum": "md5:6a707f1a594a2dd8a75947e9c595a584"
+    },
+    {
+      "name": "README.txt",
+      "size": 632,
+      "checksum": "md5:9bec400cbb3a99726d70b271a663bac8"
+    }
+  ]
+}

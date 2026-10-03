@@ -3,18 +3,20 @@
   "repository": "unb-lamfo-or-ai-hpc/model-agrologistic",
   "approved": true,
   "authorized_by": "repository_owner",
-  "authorized_on": "2026-10-02",
+  "authorized_on": "2026-10-03",
   "scope": "public_coauthor_review",
   "journal_submission_authorized": false,
   "dataset_publication_authorized": false,
   "source_sha256": {
-    "index.qmd": "22579a7375a85b31e5a35288efc88855c71126b056eb3feec86dc95d54868966",
+    "index.qmd": "da6fcab9accb9df28e21957b7d9fc7318f9bd852405fa7fa87a133518b73618f",
     "authors.json": "bfab03b2c167e0ea9b8226adac69f5b05e2f7a222af9562e1eca3108b8c1f2cb",
-    "references.bib": "e7967394ee5f2bdc436226c5413051e6df2fc636a7f7e23266814ca59950b858",
+    "references.bib": "18056850535a85180da6ee77656037ce2e4d4a07b25a764c9c1041e7d050606e",
     "review-methods.bib": "e5966ee489c5c193c7f60fe86a1d070361ecad8f027ebf248142b51e9343f7c1",
     "supplement/index.qmd": "716c4b445023b595e6b1919de1d237ef2d88d1845e69ecdcbe928da60172ade0",
-    "comparison_results.qmd": "37e05614a5c0d64372a926bbaaec342bb28ce8bf53d39b9468655fa498e99533",
-    "historical_reference_results.md": "d824371b73b453380044bc6a29f957294126dff2ac9227f3647acbb605fdfe6d",
-    "evidence_status.json": "ea301287eb1e61d54100c557f2cc8c0b519d94bb7136316c8d70e23c2e495884"
+    "comparison_results.qmd": "66cab64e7631aadc2f3f7bf868a10e8613cc5d21553191ed19046d91e7ce1477",
+    "historical_reference_results.md": "e9372b9b32743adf9020fc1b3aa86a97bee470c40c8fd6a88ff3929d4f79c075",
+    "evidence_status.json": "ea301287eb1e61d54100c557f2cc8c0b519d94bb7136316c8d70e23c2e495884",
+    "dataset_release.json": "dd2eac2c612233244654ec019adeab4efac88d5d5260cc3be71b8e67d0dd358c",
+    "citation_selection.json": "b0a7492122d74612f5b444178b4aa8f882853346eae105f102a6194a2bf13fc5"
   }
 }

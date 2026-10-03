@@ -1,6 +1,6 @@
 ---
 title: "High-performance optimization of grain-storage networks under uncertainty"
-date: 2026-10-02
+date: 2026-10-03
 abstract: >-
   Grain-storage planning couples infrastructure investment with product,
   period and scenario-dependent logistics, creating large optimization
@@ -1162,13 +1162,13 @@ The structured literature-review supplement is distributed as Appendix A
 
 ## Data availability
 
-Machine-readable comparative results and provenance are available in the source
-repository. The Zenodo deposit contains selected input workbooks, population
-records, road-materialization audits, run artifacts, reference evidence,
-inventories and checksums, under reserved DOI
+The research dataset is publicly available in Zenodo, version 0.2.0
+[@celestino2026dataset], at DOI
 [10.5281/zenodo.22751909](https://doi.org/10.5281/zenodo.22751909).
-The deposit remains unpublished at the time of this version; comparative
-results remain publicly accessible through the source repository.
+It contains selected input workbooks, warehouse-population records,
+road-materialization audits, preserved run artifacts, reference evidence,
+inventories and checksums. Machine-readable comparative results and their
+provenance are also available in the source repository.
 Project-authored material is distributed under the MIT License.
 OpenStreetMap-derived databases are subject to the Open Database License
 (ODbL); external inputs retain their source-specific terms.
