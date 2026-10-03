@@ -40,6 +40,7 @@ from src.logic.optimization import (
     calculate_evpi_vss,
     solve_model,
 )
+from src.logic.resource_telemetry import CURRENT, PRODUCTS, phase, resource_run
 from src.logic.route_filtering import select_routes
 from src.logic.run_integrity import implementation_identity, verify_completion, write_completion
 from src.logic.solution_validation import validate_solution
@@ -263,6 +264,7 @@ def load_experiment_manifest(path: str | Path) -> ExperimentManifest:
     )
 
 
+@resource_run
 def run_experiment(
     spec: ExperimentSpec,
     output_root: str | Path,
@@ -282,6 +284,7 @@ def run_experiment(
     _write_json(run_dir / "run_completion.json", {"status": "running", "run_identity": identity})
 
     progress(f"[{spec.name}] loading {spec.workbook}")
+    phase("data_read")
     data_read_started_at = perf_counter()
     data = loader(spec.workbook, spec.loader)
     data_read_seconds = perf_counter() - data_read_started_at
@@ -341,6 +344,7 @@ def run_experiment(
     )
 
     validation_started = perf_counter()
+    phase("independent_validation")
     independent = validate_solution(data, spec.model, result)
     timings["independent_validation_seconds"] = perf_counter() - validation_started
     result.metadata["independent_validation_status"] = independent["status"]
@@ -353,6 +357,7 @@ def run_experiment(
     finished = datetime.now(UTC)
     progress(f"[{spec.name}] exporting structured artifacts")
     export_started = perf_counter()
+    phase("artifact_export")
     audit = _export_run_artifacts(
         spec=spec,
         data=data,
@@ -384,6 +389,8 @@ def run_experiment(
     summary.end_to_end_seconds = timings["end_to_end_seconds"]
     summary.postoptimality_seconds = timings["postoptimality_seconds"]
     _write_json(run_dir / "run_summary.json", asdict(summary))
+    if (resource_session := CURRENT.get()) is not None:
+        resource_session.finish(summary.status)
     write_completion(run_dir, identity, [
         run_dir / name for name in (
             "result.json", "run_summary.json", "independent_validation.json",
@@ -395,6 +402,8 @@ def run_experiment(
             "evpi_vss_decomposition.csv", "storage_by_warehouse.csv", "storage_by_scenario.csv",
         )
     ] + ([run_dir / "value_analysis_timings.csv"] if evpi_result else [])
+      + ([run_dir / "resources" / name for name in PRODUCTS]
+         if spec.solver.collect_resource_diagnostics else [])
       + ([run_dir / name for name in (
           "solver_diagnostics.json", "solver_stage_progress.csv", "solver_presolved_matrix.csv",
       )] if result.metadata.get("solver_diagnostics") else [])
