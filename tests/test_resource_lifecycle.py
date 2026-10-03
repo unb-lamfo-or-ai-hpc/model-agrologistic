@@ -334,3 +334,122 @@ def test_licensed_gurobi_native_explicit_parity():
         )
         assert result["status"] == "complete"
         assert result["final_values"] == pytest.approx(reference, abs=1e-5)
+
+
+@pytest.mark.parametrize("mode", ["reuse", "rebuild"])
+@pytest.mark.parametrize("initial_objectives", [1, 3])
+def test_licensed_gurobi_multiobjective_factory_returns_to_single_objective(
+    mode, initial_objectives
+):
+    qualified_backend("gurobipy")
+    created = []
+    roles = ["unmet_demand", "emergency_capacity", "economic_cost"]
+
+    def factory():
+        bundle = stage_factory("gurobipy", created)
+        # Even one setObjectiveN call activates native multiobjective mode.
+        for index, role in enumerate(roles[:initial_objectives]):
+            bundle.model.setObjectiveN(bundle.objectives[role], index, priority=3 - index)
+        bundle.model.update()
+        assert bundle.model.IsMultiObj
+        original_extract = bundle.extract
+
+        def extract():
+            assert not bundle.model.IsMultiObj
+            assert bundle.model.ModelSense == 1
+            # Read the actual solver bound, not an incumbent-derived substitute.
+            assert bundle.model.ObjBound <= bundle.model.ObjVal + 1e-7
+            return original_extract()
+
+        bundle.extract = extract
+        return bundle
+
+    report = compare_lifecycle(
+        factory,
+        "gurobipy",
+        SolverConfig(mip_gap=0, threads=1, time_limit=60),
+        roles,
+        1e-6,
+        mode=mode,
+    )
+    assert report["status"] == "complete"
+    assert len(created) == (1 if mode == "reuse" else 3)
+    assert report["final_values"]["x"] <= 3 + 1e-6 + 1e-8
+
+
+@pytest.mark.parametrize("mode", ["reuse", "rebuild"])
+@pytest.mark.parametrize("refuses_conversion", [False, True])
+def test_single_objective_conversion_order_and_failure_cleanup(mode, refuses_conversion):
+    """A license-independent regression for the precise native API transition."""
+    created = []
+
+    class NativeStub:
+        NumVars, NumIntVars, SolCount, Status, ObjVal = 2, 1, 1, 2, 3.0
+
+        def __init__(self):
+            self.Params = SimpleNamespace()
+            self.calls = []
+            self.IsMultiObj = True
+            self.disposed = False
+            self._num_obj = 3
+
+        @property
+        def NumObj(self):
+            return self._num_obj
+
+        @NumObj.setter
+        def NumObj(self, value):
+            self.calls.append(("NumObj", value))
+            self._num_obj = value
+
+        @property
+        def ObjBound(self):
+            assert not self.IsMultiObj
+            return 3.0
+
+        def update(self):
+            self.calls.append("update")
+            if self._num_obj == 0 and not refuses_conversion:
+                self.IsMultiObj = False
+
+        def setObjective(self, expression, *, sense):
+            assert self.calls[-2:] == [("NumObj", 0), "update"] or not self.IsMultiObj
+            assert sense == 1
+            self.calls.append("setObjective")
+
+        def optimize(self):
+            assert not self.IsMultiObj
+            assert self.calls[-2:] == ["setObjective", "update"]
+            self.calls.append("optimize")
+
+        def addConstr(self, *args, **kwargs):
+            pass
+
+        def dispose(self):
+            self.disposed = True
+
+    def factory():
+        model = NativeStub()
+        created.append(model)
+        return StageBundle(
+            model, {"emergency_capacity": 3.0, "economic_cost": 3.0}, "fixed", lambda: {"x": 3}
+        )
+
+    def run():
+        return compare_lifecycle(
+            factory,
+            "gurobipy",
+            SolverConfig(mip_gap=0, threads=1, time_limit=60),
+            ["emergency_capacity", "economic_cost"],
+            1e-6,
+            mode=mode,
+        )
+
+    if refuses_conversion:
+        with pytest.raises(ValueError, match="single-objective mode"):
+            run()
+        assert all("optimize" not in model.calls for model in created)
+    else:
+        assert run()["status"] == "complete"
+        assert len(created) == (1 if mode == "reuse" else 2)
+    assert all(model.disposed for model in created)
