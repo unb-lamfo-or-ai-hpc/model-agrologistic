@@ -47,9 +47,22 @@ uninstrumented or differently configured run.
 
 ## Qualification and preparation gates
 
-The first PR #42 NPAD qualification failed in the miniature objective-mode
-transition. A new corrected licensed report is required. An analytical-only
-report or successful package installation is insufficient.
+The corrected PR #42 source was qualified on NPAD in job 2143922 on 3 October
+2026. The accepted report binds commit
+`f9aa74abecfe416bac9f505b55c4eeacf4b111be` and implementation identity
+`b4de41ade0b3c55f8f20a66480cffa275421f8157444b1db3000a9eb50f2d351`.
+Ruff and pytest returned zero; all 138 tests ran without skips. Twelve miniature
+control/instrumented observations across Gurobi and SCIP were optimal and
+independently accepted. This supersedes the rejected objective-mode
+qualification, whose original evidence remains preserved.
+
+Acceptance covers small-instance instrumentation and lifecycle parity, not
+large-instance admission or a demonstrated memory benefit. The campaign
+preparer must still recheck the original artifact hashes and current numerical
+runtime. An analytical-only report or successful package installation is
+insufficient. Native solver memory, process RSS and scheduler measurements
+remain distinct; the short qualification job is not a large-model memory
+benchmark.
 
 `scripts/prepare_mvp2_resource_contrasts.py`:
 
