@@ -25,7 +25,7 @@ they optimize a different preference ordering.
 
 | Evidence family | Selected executions | Accepted references | Remaining qualification |
 |:--|--:|--:|:--|
-| Bounded thesis-method, deterministic and three scenarios | 4 | 4 | New road snapshot and separate slacks; not numerical replication |
+| Bounded method reconstruction, deterministic and three scenarios | 4 | 4 | New road snapshot and separate slacks; not numerical replication |
 | Policy, deterministic and three scenarios | 4 | 4 | Interpretation conditional on service-first priorities |
 | Policy, nine scenarios | 2 | 1 | Warehouse-only capacity pass reached the time limit |
 
