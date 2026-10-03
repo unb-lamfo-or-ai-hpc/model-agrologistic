@@ -17,12 +17,14 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from scripts import preflight_mvp2_resource_pair as inputs  # noqa: E402
+from scripts.probe_npad_gurobi_license import LICENSE_FILE, PROBE_SIZE  # noqa: E402
 from scripts.validate_scip_memory_resources import fields, memory_mib  # noqa: E402
 from src.logic.run_integrity import file_sha256  # noqa: E402
 
 TOOLS = (*inputs.TOOLS, "scripts/admit_mvp2_resource_pair.py",
          "scripts/submit_mvp2_resource_pair.sh", "scripts/run_mvp2_resource_pair.slurm",
-         "scripts/run_batch_hpc.py", "scripts/audit_nine_campaign.py")
+         "scripts/run_batch_hpc.py", "scripts/audit_nine_campaign.py",
+         "scripts/probe_npad_gurobi_license.py")
 
 
 def identity(value):
@@ -193,16 +195,51 @@ def execute(path, resource, submitted_tools, source_commit, *, runner=subprocess
             "runs", "logs", "comparison", "solve_admission.json", "pair_execution.json")):
         raise ValueError("Execution already started; preserve it and prepare a new pair.")
     (destination / "logs").mkdir()
-    admission = {"schema_version": "mvp2-pair-solve-admission-v1", "status": "admitted",
+    env = dict(os.environ, PYTHONNOUSERSITE="1", PYTHONDONTWRITEBYTECODE="1",
+               AGROLOGISTIC_SOURCE_COMMIT=source_commit, GRB_LICENSE_FILE=LICENSE_FILE)
+    env.pop("SCIPOPTDIR", None)
+    env.pop("SLURM_ARRAY_TASK_ID", None)
+    license_report = destination / "license_capability.json"
+    try:
+        license_process = runner(
+            [sys.executable, str(ROOT / "scripts/probe_npad_gurobi_license.py"),
+             "--output", str(license_report)], cwd=ROOT, env=env,
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=False, timeout=60,
+        )
+        capability = read(license_report)
+        license_ok = (license_process.returncode == 0
+                      and capability.get("schema_version") == "npad-gurobi-license-capability-v1"
+                      and capability.get("status") == "accepted"
+                      and capability.get("license_file") == LICENSE_FILE
+                      and capability.get("large_model_construction_allowed") is True
+                      and capability.get("probe_variable_count") == PROBE_SIZE
+                      and capability.get("probe_constraint_count") == PROBE_SIZE
+                      and capability.get("solver_status_code") == 2
+                      and abs(capability.get("objective_value", float("inf")) - PROBE_SIZE) <= 1e-6)
+    except (OSError, ValueError, TypeError, subprocess.TimeoutExpired):
+        license_ok = False
+    check_execution(path)
+    admission = {"schema_version": "mvp2-pair-solve-admission-v1",
+                 "status": "admitted" if license_ok else "license_capability_rejected",
                  "created_at_utc": datetime.now(UTC).isoformat(),
                  "solve_plan_sha256": file_sha256(path), "source_commit": source_commit,
                  "allocation": resource, "tools": submitted_tools,
-                 "arm_order": [0, 1], "scope": "one_h215_warehouse_serial_pair"}
+                 "arm_order": [0, 1], "scope": "one_h215_warehouse_serial_pair",
+                 "license_file": LICENSE_FILE, "license_capability_accepted": license_ok,
+                 "license_capability_sha256": (file_sha256(license_report)
+                                               if license_report.is_file() else None)}
     write(destination / "solve_admission.json", admission)
-    env = dict(os.environ, PYTHONNOUSERSITE="1", PYTHONDONTWRITEBYTECODE="1",
-               AGROLOGISTIC_SOURCE_COMMIT=source_commit)
-    env.pop("SCIPOPTDIR", None)
-    env.pop("SLURM_ARRAY_TASK_ID", None)
+    if not license_ok:
+        write(destination / "pair_execution.json", {
+            "schema_version": "mvp2-pair-execution-v1", "status": "license_capability_rejected",
+            "optimization_attempted": False, "arm_processes": [],
+            "source_commit": source_commit, "allocation": resource,
+            "solve_plan_sha256": file_sha256(path),
+            "qualification": "No large model constructed; license capability was not established.",
+        })
+        print("STOP: NPAD license capability rejected; no large model constructed.")
+        return 1
+    print("NPAD GUROBI LICENSE CAPABILITY: ACCEPTED", flush=True)
     observations = []
     campaign = destination / "campaign.yaml"
     for index in record["arm_order"]:

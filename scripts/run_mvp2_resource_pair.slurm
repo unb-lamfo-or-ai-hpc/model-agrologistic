@@ -8,6 +8,7 @@ set -euo pipefail
 MVP2_SOLVE_PYTHON="${MVP2_SOLVE_PYTHON:-/home/vrrcelestino/venv313/bin/python}"
 cd "$MVP2_SOLVE_CHECKOUT"
 export PYTHONNOUSERSITE=1 PYTHONDONTWRITEBYTECODE=1
+export GRB_LICENSE_FILE=/home/vrrcelestino/model-agrologistic/secrets/gurobi.lic
 unset SCIPOPTDIR
 MVP2_SOLVE_DIRECTORY="$(dirname "$MVP2_SOLVE_PLAN")"
 mkdir "$MVP2_SOLVE_DIRECTORY/scheduler"

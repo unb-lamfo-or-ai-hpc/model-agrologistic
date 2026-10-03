@@ -14,7 +14,9 @@ if [ -n "$tracked_status" ]; then
   stop "Tracked source changed; preserve changes and do not bypass admission."
 fi
 export PYTHONNOUSERSITE=1 PYTHONDONTWRITEBYTECODE=1
+export GRB_LICENSE_FILE=/home/vrrcelestino/model-agrologistic/secrets/gurobi.lic
 unset SCIPOPTDIR SBATCH_QOS
+"$MVP2_SOLVE_PYTHON" scripts/probe_npad_gurobi_license.py --check-file
 export MVP2_SOLVE_CHECKOUT MVP2_SOLVE_PLAN MVP2_SOLVE_PYTHON
 MVP2_SOLVE_SOURCE="$(git rev-parse HEAD)"
 export MVP2_SOLVE_SOURCE
