@@ -40,6 +40,19 @@ def execution(tmp_path):
     return destination / "solve_plan.json"
 
 
+def accept_probe(args):
+    if "--output" not in args:
+        return False
+    solve.write(Path(args[-1]), {
+        "schema_version": "npad-gurobi-license-capability-v1",
+        "status": "accepted", "license_file": solve.LICENSE_FILE,
+        "large_model_construction_allowed": True,
+        "probe_variable_count": 2001, "probe_constraint_count": 2001,
+        "solver_status_code": 2, "objective_value": 2001.0,
+    })
+    return True
+
+
 def test_original_inputs_and_new_destination_only(tmp_path):
     plan, receipt, reviewed = evidence(tmp_path)
     before = {p: file_sha256(p) for p in tmp_path.rglob("*") if p.is_file()}
@@ -176,6 +189,8 @@ def test_two_fresh_processes_continue_after_reported_failure(tmp_path, first_exi
 
     def runner(args, **kwargs):
         calls.append((args, kwargs))
+        if accept_probe(args):
+            return SimpleNamespace(returncode=0)
         if "--index" in args:
             index = int(args[-1])
             return SimpleNamespace(returncode=first_exit if index == 0 else 0)
@@ -184,17 +199,21 @@ def test_two_fresh_processes_continue_after_reported_failure(tmp_path, first_exi
     resource = solve.allocation(SOLVE_JOB, NODE, job_id="123", node_name="r1i3n3")
     result = solve.execute(path, resource, solve.tool_identity(), "a" * 40, runner=runner)
     assert result == int(first_exit != 0 or audit_exit != 0)
-    assert len(calls) == 3 and calls[0][0][-2:] == ["--index", "0"]
-    assert calls[1][0][-2:] == ["--index", "1"]
-    assert calls[2][0][-1] == "--require-accepted"
+    assert len(calls) == 4 and calls[1][0][-2:] == ["--index", "0"]
+    assert calls[2][0][-2:] == ["--index", "1"]
+    assert calls[3][0][-1] == "--require-accepted"
     assert all(c[0][0] == sys.executable for c in calls)
     assert all(c[1]["env"]["AGROLOGISTIC_SOURCE_COMMIT"] == "a" * 40 for c in calls)
     assert all("SCIPOPTDIR" not in c[1]["env"] for c in calls)
+    assert all(c[1]["env"]["GRB_LICENSE_FILE"] == solve.LICENSE_FILE for c in calls)
+    assert calls[0][1]["stdout"] == subprocess.DEVNULL
+    assert calls[0][1]["stderr"] == subprocess.DEVNULL
+    assert calls[0][1]["timeout"] == 60
     assert solve.read(path.parent / "pair_execution.json")["status"] == "both_processes_returned"
     assert "accepted" not in solve.read(path.parent / "pair_execution.json")
     with pytest.raises(ValueError):
         solve.execute(path, resource, solve.tool_identity(), "a" * 40, runner=runner)
-    assert len(calls) == 3
+    assert len(calls) == 4
 
 
 def test_source_drift_between_arms_stops_before_second_solve(tmp_path):
@@ -203,13 +222,15 @@ def test_source_drift_between_arms_stops_before_second_solve(tmp_path):
 
     def runner(args, **kwargs):
         calls.append(args)
+        if accept_probe(args):
+            return SimpleNamespace(returncode=0)
         Path(solve.read(path)["input_receipt"]).write_text("{}")
         return SimpleNamespace(returncode=0)
 
     resource = solve.allocation(SOLVE_JOB, NODE, job_id="123", node_name="r1i3n3")
     with pytest.raises(ValueError):
         solve.execute(path, resource, solve.tool_identity(), "a" * 40, runner=runner)
-    assert len(calls) == 1
+    assert len(calls) == 2
     assert (path.parent / "logs/arm-0-exit.json").exists()
     assert not (path.parent / "pair_execution.json").exists()
 
@@ -230,7 +251,9 @@ def test_worker_has_no_compute_git_or_memory_environment_dependency(tmp_path):
     for name, body in {
         "git": 'echo bad > "$BAD"; exit 127\n',
         "scontrol": 'if [ "$2" = job ]; then echo "$JOB"; else echo "$NODE"; fi\n',
-        "python": 'printf "%s\\n" "$@" > "$CALLS"\n',
+        "python": ('test "$GRB_LICENSE_FILE" = '
+                   '/home/vrrcelestino/model-agrologistic/secrets/gurobi.lic\n'
+                   'printf "%s\\n" "$@" > "$CALLS"\n'),
     }.items():
         p = fake / name
         p.write_text("#!/bin/bash\nset -eu\n" + body, newline="\n")
@@ -275,7 +298,9 @@ def test_submitter_test_only_first_and_no_duplicate(tmp_path, failure):
                 ' if [ "$FAILURE" = git ]; then exit 77; fi\n'
                 ' if [ "$FAILURE" = dirty ]; then echo " M file"; fi\n'
                 'else echo pinned; fi\n'),
-        "python": 'if [ "$4" = --tool-identity ]; then echo "{}"; fi\n',
+        "python": ('test "$GRB_LICENSE_FILE" = '
+                   '/home/vrrcelestino/model-agrologistic/secrets/gurobi.lic\n'
+                   'if [ "${4:-}" = --tool-identity ]; then echo "{}"; fi\n'),
         "sbatch": ('test -z "${SBATCH_QOS:-}"\n'
                    'printf "%s\\n" "$*" >> "$CALLS"\n'
                    'if [ "$FAILURE" = scheduler ]; then exit 78; fi\n'
@@ -307,3 +332,40 @@ def test_submitter_test_only_first_and_no_duplicate(tmp_path, failure):
         assert "MVP2_PAIR_SOLVE_JOB=901" in (destination / "submission.txt").read_text()
         again = subprocess.run(command, env=env, capture_output=True, text=True, timeout=30)
         assert again.returncode != 0 and calls.read_text().splitlines() == requests
+
+
+@pytest.mark.parametrize("failure", ["restricted", "missing_report", "timeout",
+                                     "wrong_path", "wrong_size", "wrong_objective"])
+def test_license_rejection_stops_before_large_build(tmp_path, monkeypatch, failure):
+    path = execution(tmp_path)
+    monkeypatch.setenv("GRB_LICENSE_FILE", "ssh://wrong/inherited/license")
+    calls = []
+
+    def runner(args, **kwargs):
+        calls.append(args)
+        assert kwargs["env"]["GRB_LICENSE_FILE"] == solve.LICENSE_FILE
+        if failure == "timeout":
+            raise subprocess.TimeoutExpired(args, 60)
+        if failure != "missing_report":
+            accept_probe(args)
+            report = Path(args[-1])
+            value = solve.read(report)
+            if failure == "restricted":
+                value.update(status="rejected", large_model_construction_allowed=False)
+            elif failure == "wrong_path":
+                value["license_file"] = "wrong"
+            elif failure == "wrong_size":
+                value["probe_variable_count"] = 2
+            elif failure == "wrong_objective":
+                value["objective_value"] = 0
+            report.write_text(json.dumps(value))
+        return SimpleNamespace(returncode=int(failure == "restricted"))
+
+    resource = solve.allocation(SOLVE_JOB, NODE, job_id="123", node_name="r1i3n3")
+    assert solve.execute(path, resource, solve.tool_identity(), "a" * 40, runner=runner) == 1
+    assert len(calls) == 1
+    assert not (path.parent / "runs").exists()
+    assert not (path.parent / "comparison").exists()
+    admission = solve.read(path.parent / "solve_admission.json")
+    assert admission["status"] == "license_capability_rejected"
+    assert solve.read(path.parent / "pair_execution.json")["optimization_attempted"] is False
