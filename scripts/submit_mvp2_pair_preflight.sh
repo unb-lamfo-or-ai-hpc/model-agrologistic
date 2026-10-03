@@ -6,9 +6,16 @@ set -euo pipefail
 : "${MVP2_PAIR_AUDIT:?Set an existing empty audit parent}"
 MVP2_PAIR_PYTHON="${MVP2_PAIR_PYTHON:-/home/vrrcelestino/venv313/bin/python}"
 cd "$MVP2_PAIR_CHECKOUT"
-test -d "$MVP2_PAIR_AUDIT"
-test -z "$(ls -A "$MVP2_PAIR_AUDIT")"
-test -z "$(git status --porcelain --untracked-files=no)"
+stop() { printf 'STOP: %s\n' "$*" >&2; exit 1; }
+test -d "$MVP2_PAIR_AUDIT" || stop "Audit parent does not exist: $MVP2_PAIR_AUDIT"
+test -z "$(ls -A "$MVP2_PAIR_AUDIT")" || stop "Audit parent is not empty: $MVP2_PAIR_AUDIT"
+if ! tracked_status="$(git status --porcelain --untracked-files=no)"; then
+  stop "Cannot inspect tracked checkout status; no job was submitted."
+fi
+if [ -n "$tracked_status" ]; then
+  printf '%s\n' "$tracked_status" >&2
+  stop "Tracked checkout differs from its pinned commit; no job was submitted. Preserve changes; do not bypass this gate."
+fi
 export PYTHONNOUSERSITE=1 PYTHONDONTWRITEBYTECODE=1
 unset SCIPOPTDIR SBATCH_QOS
 export MVP2_PAIR_CHECKOUT MVP2_PAIR_PLAN MVP2_PAIR_AUDIT MVP2_PAIR_PYTHON
