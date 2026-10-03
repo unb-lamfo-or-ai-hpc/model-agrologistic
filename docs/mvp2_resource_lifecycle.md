@@ -14,6 +14,17 @@ qualification remain exit gates, not completed results. Production extensive-for
 solvers continue using their existing hierarchical drivers. The experimental
 explicit driver rejects original LPs and models above 100000 variables.
 
+The first licensed NPAD qualification (job 2143416) collected 130 tests:
+128 passed and two failed while reading `ObjBound` in the miniature Gurobi
+driver. This was an objective-mode error, not evidence of insufficient memory
+or an unavailable license. The driver now clears `NumObj` to zero, updates the
+model, installs a minimization objective and verifies `IsMultiObj == 0`
+before optimization. It reads the native bound without substitution.
+Regression tests cover one- and three-objective factories, both lifecycle
+modes, the API transition order and cleanup on rejected conversion.
+The corrected implementation still requires a new licensed NPAD report.
+Preserve the failed checkout and its receipts; do not rerun into that directory.
+
 ## Resource evidence
 
 Set these fields in a new experiment manifest, never an archived campaign:
@@ -163,4 +174,5 @@ Do not launch large jobs solely because the miniature tests passed.
 - [Gurobi tupledict](https://docs.gurobi.com/projects/optimizer/en/current/reference/python/tupledict.html): selection indices can be cleaned independently of variable definitions.
 - [Gurobi model lifecycle](https://docs.gurobi.com/projects/optimizer/en/current/reference/python/model.html): native model disposal is distinct from environment ownership.
 - [Gurobi multiple objectives](https://docs.gurobi.com/projects/optimizer/en/current/features/multiobjective.html): MIP priority allowances differ from continuous reduced-cost degradation.
+- [Gurobi single-objective conversion](https://support.gurobi.com/hc/en-us/articles/360037051812-How-do-I-return-to-single-objective-mode-from-multi-objective-optimization): clear `NumObj`, update, install a primary objective and verify the optimization mode.
 - [PySCIPOpt model API](https://pyscipopt.readthedocs.io/en/latest/api/model.html): original/transformed models, native events and problem release.
