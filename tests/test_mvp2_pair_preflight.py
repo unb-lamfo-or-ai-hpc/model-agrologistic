@@ -238,3 +238,90 @@ def test_compute_worker_needs_neither_git_nor_memory_environment(tmp_path):
     assert "--job-id\n123" in args
     assert "run_batch_hpc" not in args
     assert not (audit / "preflight/pair_preflight.json").exists()
+
+
+def test_supplement_ignore_is_lf_normalized():
+    """An inherited eol=lf attribute must not dirty a freshly cloned checkout."""
+    source = gate.ROOT / "manuscript/supplement/.gitignore"
+    assert b"\r" not in source.read_bytes()
+
+
+@pytest.mark.parametrize("failure", ["none", "dirty", "git", "nonempty", "scheduler"])
+def test_login_submitter_reports_guards_and_preserves_exact_request(tmp_path, failure):
+    """Run the real submitter with simulated Git/Python/Slurm, never real sbatch."""
+    bash = "C:/Program Files/Git/bin/bash.exe" if sys.platform == "win32" else shutil.which("bash")
+    if not bash:
+        pytest.skip("Bash unavailable")
+
+    def shell_path(path):
+        if sys.platform == "win32":
+            return f"/{path.drive[0].lower()}{path.as_posix()[2:]}"
+        return str(path)
+
+    fake = tmp_path / "bin"
+    fake.mkdir()
+    audit = tmp_path / "audit"
+    audit.mkdir()
+    calls = tmp_path / "sbatch-calls.txt"
+    if failure == "nonempty":
+        (audit / "preserved.txt").write_text("Do not overwrite.")
+    bodies = {
+        "git": (
+            'if [ "$1" = status ]; then\n'
+            '  if [ "$FAILURE" = git ]; then echo "Git failed" >&2; exit 77; fi\n'
+            '  if [ "$FAILURE" = dirty ]; then echo " M manuscript/supplement/.gitignore"; fi\n'
+            'elif [ "$1" = rev-parse ]; then echo pinned; fi\n'
+        ),
+        "python": 'if [ "$4" = --tool-identity ]; then echo "{}"; fi\n',
+        "sbatch": (
+            'test -z "${SBATCH_QOS:-}"\n'
+            'printf "%s\\n" "$*" >> "$CALLS"\n'
+            'if [ "$FAILURE" = scheduler ]; then echo "Scheduler rejected" >&2; exit 78; fi\n'
+            'if [ "$1" = --parsable ]; then echo 901; fi\n'
+        ),
+    }
+    for name, body in bodies.items():
+        path = fake / name
+        path.write_text("#!/bin/bash\nset -eu\n" + body, newline="\n")
+        path.chmod(0o755)
+    env = dict(os.environ)
+    env.update(
+        MVP2_PAIR_CHECKOUT=shell_path(gate.ROOT), MVP2_PAIR_PLAN="original-plan.json",
+        MVP2_PAIR_AUDIT=shell_path(audit), MVP2_PAIR_PYTHON=shell_path(fake / "python"),
+        FAILURE=failure, CALLS=shell_path(calls), SBATCH_QOS="invalid-inherited-value",
+    )
+    script = gate.ROOT / "scripts/submit_mvp2_pair_preflight.sh"
+    command = [bash, "-c", 'export PATH="$1:/usr/bin:/bin:$PATH"; exec bash "$2"', "_",
+               shell_path(fake), shell_path(script)]
+    run = subprocess.run(command, env=env, capture_output=True, text=True, timeout=30)
+    assert (run.returncode == 0) == (failure == "none"), run.stdout + run.stderr
+    if failure in ("dirty", "git", "nonempty"):
+        assert "STOP:" in run.stderr
+        assert not calls.exists()
+        assert not (audit / ".submission-claimed").exists()
+        assert not (audit / "submission.txt").exists()
+        if failure == "dirty":
+            assert "manuscript/supplement/.gitignore" in run.stderr
+            assert "no job was submitted" in run.stderr
+        return
+    if failure == "scheduler":
+        assert calls.read_text().count("--test-only") == 1
+        assert "--parsable" not in calls.read_text()
+        assert not (audit / ".submission-claimed").exists()
+        return
+    requests = calls.read_text().splitlines()
+    assert len(requests) == 2
+    assert requests[0].startswith("--test-only ")
+    assert requests[1].startswith("--parsable ")
+    for request in requests:
+        assert "--partition=intel-256" in request and "--account=sxdsouza" in request
+        assert "--mem=16G" in request and "--cpus-per-task=4" in request
+        assert "--time=00:30:00" in request
+        assert "--qos" not in request and "--array" not in request
+        assert request.endswith("scripts/run_mvp2_pair_preflight.slurm")
+    assert "MVP2_PAIR_PREFLIGHT_JOB=901" in (audit / "submission.txt").read_text()
+    assert json.loads((audit / "tool_hashes.json").read_text()) == {}
+    assert (audit / "source_commit.txt").read_text().strip() == "pinned"
+    again = subprocess.run(command, env=env, capture_output=True, text=True, timeout=30)
+    assert again.returncode != 0
+    assert calls.read_text().splitlines() == requests
