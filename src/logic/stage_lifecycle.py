@@ -76,7 +76,11 @@ def compare_lifecycle(factory, backend, config, roles, tolerance, *, mode, clock
                 if backend == "gurobipy":
                     model.update()
                     size, integers = model.NumVars, model.NumIntVars
-                    model.NumObj = 1
+                    # NumObj=1 can retain multiobjective mode, in which ObjBound
+                    # is unavailable. Clear all native objectives before installing
+                    # the explicit single-objective minimization stage.
+                    model.NumObj = 0
+                    model.update()
                 else:
                     size = model.getNVars()
                     integers = model.getNBinVars() + model.getNIntVars() + model.getNImplVars()
@@ -109,7 +113,10 @@ def compare_lifecycle(factory, backend, config, roles, tolerance, *, mode, clock
             phase(f"explicit_optimization_stage_{index}")
             expression = bundle.objectives[role]
             if backend == "gurobipy":
-                model.setObjective(expression)
+                model.setObjective(expression, sense=1)  # GRB.MINIMIZE
+                model.update()
+                if model.IsMultiObj:
+                    raise ValueError("Explicit stages require Gurobi single-objective mode.")
                 model.Params.MIPGap = config.mip_gap
                 model.Params.MIPGapAbs = ABSOLUTE_GAP
                 if remaining is not None:
