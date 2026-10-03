@@ -113,7 +113,7 @@ class SolverConfig:
     collect_solver_diagnostics: bool = False
     collect_resource_diagnostics: bool = False
     resource_sample_seconds: float = 5.0
-    resource_max_samples: int = 4096
+    resource_max_samples: int = 8192
     compact_python_indices: bool = False
 
     def __post_init__(self) -> None:

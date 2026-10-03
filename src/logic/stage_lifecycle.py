@@ -37,6 +37,8 @@ def compare_lifecycle(factory, backend, config, roles, tolerance, *, mode, clock
         raise ValueError("Unsupported stage lifecycle or native backend.")
     if not roles or len(set(roles)) != len(roles):
         raise ValueError("Stage roles must be nonempty and unique.")
+    if config.solver_options or config.multiobjective_stage_options:
+        raise ValueError("Solver profiles are not qualified by this miniature driver.")
     started = clock()
     bundle, fingerprint = None, None
     locks, records, outcome = {}, [], None
@@ -82,6 +84,12 @@ def compare_lifecycle(factory, backend, config, roles, tolerance, *, mode, clock
                     raise ValueError("Production-size explicit lifecycle is not yet qualified.")
                 if integers == 0:
                     raise ValueError("Qualification requires an original MIP, not LP degradation.")
+                if backend == "gurobipy":
+                    model.Params.Threads = config.threads or 0
+                    model.Params.Seed = config.seed or 0
+                else:
+                    model.setParam("lp/threads", config.threads or 0)
+                    model.setParam("randomization/randomseedshift", config.seed or 0)
                 for prior, limit in locks.items():
                     if backend == "gurobipy":
                         model.addConstr(
