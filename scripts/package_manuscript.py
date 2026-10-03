@@ -32,6 +32,7 @@ def package(output: Path, *, root: Path = ROOT) -> None:
         "elsevier_provenance.json": manuscript / "elsevier_provenance.json",
         "comparison_provenance.json": manuscript / "comparison_provenance.json",
         "evidence_status.json": manuscript / "evidence_status.json",
+        "dataset_release.json": manuscript / "dataset_release.json",
     }
     if not (tex / "figures").is_dir():
         raise FileNotFoundError("Render the manuscript before packaging its figures")
@@ -55,7 +56,9 @@ def package(output: Path, *, root: Path = ROOT) -> None:
         b"This archive contains no solver credentials, raw workbooks or private\n"
         b"library attachments. It does not certify scientific or submission readiness.\n"
         b"The appendix's search chronology and alternative-source counts require\n"
-        b"author reconciliation; the Zenodo dataset is not yet a published deposit.\n\n"
+        b"author reconciliation. The dataset is published as version 0.2.0:\n"
+        b"https://doi.org/10.5281/zenodo.22751909\n"
+        b"dataset_release.json records the public metadata and file inventory.\n\n"
         b"Original contributions are MIT. The publisher class and bibliography\n"
         b"styles retain their own license terms, detailed in the included notices.\n"
         b"Journal/preprint submission requires approval of all authors.\n"

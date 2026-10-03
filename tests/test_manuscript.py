@@ -45,12 +45,41 @@ def test_relative_appendix_link_is_rejected(manuscript):
         CHECKER.check()
 
 
-def test_reserved_doi_is_not_a_publication_claim(manuscript):
+def test_stale_unpublished_statement_is_rejected(manuscript):
     path = manuscript / "index.qmd"
     text = path.read_text(encoding="utf-8").replace(
-        "The deposit remains unpublished", "The deposit is published")
+        "The research dataset is publicly available", "The research dataset remains unpublished")
     path.write_text(text, encoding="utf-8")
-    with pytest.raises(ValueError, match="reserved Zenodo DOI"):
+    with pytest.raises(ValueError, match="published dataset receipt"):
+        CHECKER.check()
+
+
+@pytest.mark.parametrize("field,value", [("state", "draft"), ("submitted", False),
+                                        ("doi", "10.5281/zenodo.00000000")])
+def test_invalid_dataset_publication_receipt_is_rejected(manuscript, field, value):
+    path = manuscript / "dataset_release.json"
+    receipt = json.loads(path.read_text())
+    receipt[field] = value
+    path.write_text(json.dumps(receipt))
+    with pytest.raises(ValueError, match="Invalid published dataset receipt"):
+        CHECKER.check()
+
+
+def test_incomplete_dataset_inventory_is_rejected(manuscript):
+    path = manuscript / "dataset_release.json"
+    receipt = json.loads(path.read_text())
+    receipt["files"].pop()
+    path.write_text(json.dumps(receipt))
+    with pytest.raises(ValueError, match="dataset inventory"):
+        CHECKER.check()
+
+
+def test_external_dataset_citation_does_not_claim_zotero_membership(manuscript):
+    path = manuscript / "citation_selection.json"
+    selection = json.loads(path.read_text())
+    selection["external_records"][0]["membership_verified"] = True
+    path.write_text(json.dumps(selection))
+    with pytest.raises(ValueError, match="Zotero membership"):
         CHECKER.check()
 
 

@@ -5,8 +5,11 @@ Research project developed through international cooperation between the Univers
 Public manuscript: [article](https://unb-lamfo-or-ai-hpc.github.io/model-agrologistic/),
 [Appendix A](https://unb-lamfo-or-ai-hpc.github.io/model-agrologistic/supplementary-review.html)
 and [Appendix A PDF](https://unb-lamfo-or-ai-hpc.github.io/model-agrologistic/supplementary-review.pdf).
-The [dataset DOI](https://doi.org/10.5281/zenodo.22751909) is reserved; the deposit
-remains unpublished pending file and redistribution-rights review.
+The research dataset, version 0.2.0, is published in
+[Zenodo](https://doi.org/10.5281/zenodo.22751909). Its inventories and file-level
+notices document provenance and applicable reuse conditions.
+The [MVP 1.0 release protocol](docs/mvp1_release.md) separates the frozen
+baseline from the [MVP 2.0 HPC research plan](docs/mvp2_hpc_roadmap.md).
 
 Research software for strategic agricultural logistics planning through
 deterministic and two-stage stochastic mixed-integer linear programming (MILP).
@@ -230,4 +233,4 @@ redistributing source datasets, upstream benchmark assets or derived databases.
 The public Quarto Manuscript uses an Elsevier-compatible format and distinguishes
 thesis-method comparison, historical v0.1 evidence and policy extensions.
 Its public availability supports coauthor review; it does not constitute journal
-submission or publication of the dataset.
+submission. The separately published dataset has its own DOI and file-level notices.
