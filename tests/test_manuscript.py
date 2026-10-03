@@ -187,11 +187,12 @@ def test_editorial_source_is_not_manuscript_content(manuscript):
         CHECKER.check()
 
 
-def test_benders_has_feasibility_and_bound_qualifications(manuscript):
+def test_benders_is_future_work_with_feasibility_and_bound_checks(manuscript):
     article = (manuscript / "index.qmd").read_text(encoding="utf-8")
     assert "feasibility cuts" in article
-    assert "A time-limited master incumbent is not a" in article
-    assert "not an implemented component" in article
+    future = article.split("Future work follows four priorities:", 1)[1]
+    assert "Develop hierarchy-preserving Benders decomposition" in future
+    assert "valid global bound and independently feasible recourse" in future
     assert "does not remove all network" in article
 
 

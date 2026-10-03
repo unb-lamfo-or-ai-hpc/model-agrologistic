@@ -111,7 +111,8 @@ def check(*, rendered: bool = False, publication: bool = False) -> None:
                        "conventional presentation sequence", "Questions for extracting"):
         if prohibited.casefold() in article.casefold():
             raise ValueError("Editorial instructions must not appear as research content")
-    for required in ("## HPC experimental environment", "# Future work:",
+    for required in ("## HPC experimental environment",
+                     "# Final considerations, limitations and future work",
                      "feasibility cuts", "@kaltis2026", "@npad2026"):
         if required not in article:
             raise ValueError(f"Missing scientific context: {required}")

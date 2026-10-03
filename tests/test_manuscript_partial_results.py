@@ -53,4 +53,6 @@ def test_review_has_real_figures_and_explicit_missing_exports():
     assert "Working manuscript" not in text
     current = (MANUSCRIPT / "index.qmd").read_text(encoding="utf-8")
     assert "{{< include comparison_results.qmd >}}" in current
-    assert "original ten-reference report therefore remains rejected" in current
+    final = current.split("# Final considerations, limitations and future work", 1)[1]
+    assert "ten-reference campaign" in final
+    assert "aggregate report therefore remains rejected" in final
