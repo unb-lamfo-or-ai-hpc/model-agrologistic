@@ -32,7 +32,8 @@ def render_tables(cases: list[dict], stages: list[dict]) -> str:
         "",
         "@tbl-gurobi-comparison reports attained pass-level gaps and resource use.",
         "",
-        "| Hubs / arcs / profile | Outcome | Capacity gap (%) | Economic gap (%) | "
+        "| Hubs / arcs / profile | Outcome | Capacity-stage optimality gap (%) | "
+        "Economic gap (%) | "
         "Optimization (h) | RSS (GiB) |",
         "|:--|:--|--:|--:|--:|--:|",
     ]
@@ -56,7 +57,8 @@ def render_tables(cases: list[dict], stages: list[dict]) -> str:
     lines += [
         "",
         ": Gurobi attempts. W: warehouse-only; D: direct-enabled; A: historical",
-        "automatic profile; B: all-barrier. Gaps belong to the respective passes.",
+        "automatic profile; B: all-barrier. Gaps belong to the respective passes;",
+        "the capacity-stage optimality gap is not a physical capacity shortfall.",
         "An em dash denotes an unexecuted economic pass. All seven incumbents",
         "passed their original independent validation. RSS is the application",
         "process high-water mark, not the configured memory limit. {#tbl-gurobi-comparison}",

@@ -252,5 +252,15 @@
     }
   ],
   "collection_note": "All 35 cited records verified through the local API on 2026-09-13. Four existing computational references gained collection membership; the thesis and Zhao article were created after deduplication. Other memberships were preserved.",
-  "membership_method": "Zotero Desktop public JavaScript API via official Run JavaScript UI; read-back with local API. Existing metadata and other memberships preserved."
+  "membership_method": "Zotero Desktop public JavaScript API via official Run JavaScript UI; read-back with local API. Existing metadata and other memberships preserved.",
+  "external_records": [
+    {
+      "citation_key": "celestino2026dataset",
+      "doi": "10.5281/zenodo.22751909",
+      "metadata_source": "Zenodo published record API",
+      "source_url": "https://zenodo.org/api/records/22751909",
+      "verified_on": "2026-10-03",
+      "publication_receipt": "dataset_release.json"
+    }
+  ]
 }

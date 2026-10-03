@@ -29,7 +29,8 @@ def check_public_review_approval() -> None:
     digests = approval.get("source_sha256", {})
     required = {"index.qmd", "authors.json", "references.bib", "review-methods.bib",
                 "supplement/index.qmd", "comparison_results.qmd",
-                "historical_reference_results.md", "evidence_status.json"}
+                "historical_reference_results.md", "evidence_status.json",
+                "dataset_release.json", "citation_selection.json"}
     if not required <= digests.keys():
         raise ValueError("Publication blocked: incomplete source approval")
     for relative, digest in digests.items():
@@ -38,6 +39,32 @@ def check_public_review_approval() -> None:
             raise ValueError("Publication blocked: invalid approved source path")
         if hashlib.sha256(target.read_bytes()).hexdigest() != digest:
             raise ValueError(f"Publication blocked: approved source changed: {relative}")
+
+
+def check_dataset_release(article: str) -> None:
+    """Check the frozen public deposition receipt, not redistribution clearance."""
+    receipt = json.loads((MANUSCRIPT / "dataset_release.json").read_text(encoding="utf-8"))
+    if (receipt.get("schema_version") != "zenodo-published-record-v1"
+            or receipt.get("record_id") != 22751909
+            or receipt.get("doi") != "10.5281/zenodo.22751909"
+            or receipt.get("state") != "done"
+            or receipt.get("submitted") is not True
+            or receipt.get("version") != "0.2.0"
+            or receipt.get("source_url") != "https://zenodo.org/api/records/22751909"):
+        raise ValueError("Invalid published dataset receipt")
+    files = receipt.get("files", [])
+    if (len(files) != 12 or len({row.get("name") for row in files}) != 12
+            or any(not row.get("name") or not isinstance(row.get("size"), int)
+                   or row["size"] <= 0
+                   or not re.fullmatch(r"md5:[a-f0-9]{32}", row.get("checksum", ""))
+                   for row in files)):
+        raise ValueError("Incomplete published dataset inventory")
+    availability = article.split("## Data availability", 1)[-1].split("\n# ", 1)[0]
+    if ("https://doi.org/10.5281/zenodo.22751909" not in availability
+            or "@celestino2026dataset" not in availability
+            or "publicly available" not in availability
+            or re.search(r"\b(?:unpublished|reserved)\b", availability, re.IGNORECASE)):
+        raise ValueError("Data availability must match the published dataset receipt")
 
 
 def check(*, rendered: bool = False, publication: bool = False) -> None:
@@ -49,10 +76,7 @@ def check(*, rendered: bool = False, publication: bool = False) -> None:
             raise ValueError("Appendix links must use absolute public HTTPS URLs")
     if re.search(r"\]\(supplementary-review\.(?:html|pdf)\)", article):
         raise ValueError("Relative appendix links are not portable in downloaded PDFs")
-    if "https://doi.org/10.5281/zenodo.22751909" not in article:
-        raise ValueError("Reserved dataset DOI and its unpublished status must be disclosed")
-    if "The deposit remains unpublished" not in article:
-        raise ValueError("Do not label a reserved Zenodo DOI as a released dataset")
+    check_dataset_release(article)
     for included in re.findall(r"\{\{< include ([A-Za-z0-9_-]+\.qmd) >\}\}", article):
         article = article.replace("{{< include " + included + " >}}",
                                   (MANUSCRIPT / included).read_text(encoding="utf-8"))
@@ -89,9 +113,20 @@ def check(*, rendered: bool = False, publication: bool = False) -> None:
     cited = {key for key in cited if not key.startswith(("eq-", "tbl-", "fig-", "sec-"))}
     if len(keys) != len(set(keys)) or set(keys) != cited:
         raise ValueError(f"Bibliography/citation mismatch: {set(keys) ^ cited}")
-    if {row["citation_key"] for row in selection["records"]} != cited:
-        raise ValueError("Zotero selection must map exactly the cited records")
-    for row in selection["records"]:
+    external = selection.get("external_records", [])
+    if (len(external) != 1
+            or external[0].get("citation_key") != "celestino2026dataset"
+            or external[0].get("doi") != "10.5281/zenodo.22751909"
+            or external[0].get("source_url") != "https://zenodo.org/api/records/22751909"
+            or external[0].get("publication_receipt") != "dataset_release.json"
+            or "zotero_item_key" in external[0]
+            or "membership_verified" in external[0]):
+        raise ValueError("Dataset citation provenance must not imply Zotero membership")
+    selected = selection["records"] + external
+    if (len(selected) != len(cited)
+            or {row["citation_key"] for row in selected} != cited):
+        raise ValueError("Citation provenance must map exactly the cited records")
+    for row in selected:
         identifier = row.get("doi") or row.get("url")
         if not identifier or identifier not in bibliography:
             raise ValueError(f"Missing bibliographic identifier for {row['citation_key']}")
@@ -111,7 +146,8 @@ def check(*, rendered: bool = False, publication: bool = False) -> None:
                        "conventional presentation sequence", "Questions for extracting"):
         if prohibited.casefold() in article.casefold():
             raise ValueError("Editorial instructions must not appear as research content")
-    for required in ("## HPC experimental environment", "# Future work:",
+    for required in ("## HPC experimental environment",
+                     "# Final considerations, limitations and future work",
                      "feasibility cuts", "@kaltis2026", "@npad2026"):
         if required not in article:
             raise ValueError(f"Missing scientific context: {required}")

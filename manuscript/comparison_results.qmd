@@ -2,7 +2,7 @@
 
 @tbl-gurobi-comparison reports attained pass-level gaps and resource use.
 
-| Hubs / arcs / profile | Outcome | Capacity gap (%) | Economic gap (%) | Optimization (h) | RSS (GiB) |
+| Hubs / arcs / profile | Outcome | Capacity-stage optimality gap (%) | Economic gap (%) | Optimization (h) | RSS (GiB) |
 |:--|:--|--:|--:|--:|--:|
 | 215 / W / A | Certified | 0.03 | 0.02 | 3.42 | 47.67 |
 | 215 / D / A | Certified | 0.87 | 0.01 | 2.68 | 45.29 |
@@ -13,7 +13,8 @@
 | 400 / D / B | Uncertified | 0.06 | 100.00 | 8.01 | 96.23 |
 
 : Gurobi attempts. W: warehouse-only; D: direct-enabled; A: historical
-automatic profile; B: all-barrier. Gaps belong to the respective passes.
+automatic profile; B: all-barrier. Gaps belong to the respective passes;
+the capacity-stage optimality gap is not a physical capacity shortfall.
 An em dash denotes an unexecuted economic pass. All seven incumbents
 passed their original independent validation. RSS is the application
 process high-water mark, not the configured memory limit. {#tbl-gurobi-comparison}

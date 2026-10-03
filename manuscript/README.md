@@ -72,17 +72,19 @@ controlled parallel-speedup experiments remain outside the observed evidence.
 [evidence_status.json](evidence_status.json) distinguishes the experimental
 outcome from publication approval. A merge into develop does not deploy Pages
 or imply author approval for journal submission. The separate Pages workflow is
-restricted to main/develop and requires a hash-bound public-review approval,
+restricted to main and requires a hash-bound public-review approval,
 an explicit manual-dispatch acknowledgement and the repository enable variable.
-The owner authorized publication of this coauthor-review snapshot on 2 October
+The owner renewed publication approval for this coauthor-review snapshot on 3 October
 2026; `pages_approval.json` records its source identities without credentials.
 This separation
 does not require changing the rejected certificate into a successful one.
 
 ## Sources, authorship and mathematical traceability
 
-The 35 main references are mapped to verified Zotero collection membership in
-[citation_selection.json](citation_selection.json). The related-work synthesis
+Thirty-five references are mapped to verified Zotero collection membership in
+[citation_selection.json](citation_selection.json). A separate dataset citation,
+verified from the published Zenodo API, brings the main bibliography to 36
+records without claiming additional Zotero membership. The related-work synthesis
 does not claim a newly executed systematic literature search. Appendix A
 incorporates the supplied nine-study synthesis. Its two additional methods
 references in `review-methods.bib` are not represented as verified collection
@@ -115,9 +117,10 @@ See the [journal checklist](../docs/cea_submission_checklist.md),
 [coauthor response matrix](../docs/cea_coauthor_revision.md) and
 [Elsevier rights notices](vendor/ELSEVIER_TEMPLATE_NOTICES.md).
 The community extension is not a journal endorsement. The systematic-review
-date and alternative-source counts require reconciliation. Zenodo record
-22751909 remains an unpublished draft, not a released dataset or public DOI.
-Dataset rights, funding, competing interests, CRediT roles and coauthor approval
+date and alternative-source counts require reconciliation. Dataset version 0.2.0
+is published at [DOI 10.5281/zenodo.22751909](https://doi.org/10.5281/zenodo.22751909);
+[dataset_release.json](dataset_release.json) preserves its public metadata receipt.
+File-level reuse conditions, funding, competing interests, CRediT roles and coauthor approval
 must be resolved before submission. Integration into GitHub does not authorize
 journal submission, arXiv upload or dataset publication. The separate owner
 authorization covers only the reviewed GitHub Pages snapshot.

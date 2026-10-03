@@ -1,6 +1,6 @@
 ---
 title: "High-performance optimization of grain-storage networks under uncertainty"
-date: 2026-10-02
+date: 2026-10-03
 abstract: >-
   Grain-storage planning couples infrastructure investment with product,
   period and scenario-dependent logistics, creating large optimization
@@ -12,20 +12,19 @@ abstract: >-
   versioned road-distance caching, nearest-20% interwarehouse selection
   with audited connectivity repair, model-size assessment and independent
   validation of exported decisions. A nine-scenario experiment evaluates
-  seven Gurobi and six SCIP/SoPlex attempts with 215–400 warehouses, an
+  seven Gurobi and six SCIP attempts with 215–400 warehouses, an
   eight-hour optimization budget and a 10% optimality-gap target for
   each nonzero objective pass. Gurobi completed all three priorities
   with independently validated solutions at 215 and 300 warehouses.
   The certified 300-warehouse cases attained economic gaps of 0.08%
-  and 0.07%, without and with direct transport, respectively. At
-  400 warehouses, feasible solutions were obtained but the objective
-  hierarchy remained uncertified within the budget. SCIP produced
-  no incumbent in the evaluated 215- and 300-warehouse configurations;
-  larger memory allocations removed early memory interruptions without
-  resolving the time limitation. The results identify a tested,
-  resource-qualified scale of the planning framework and distinguish
-  feasible agricultural plans from computations that also establish
-  their declared solution quality.
+  and 0.07%, without and with direct transport, respectively.
+  Independently feasible plans were also obtained at 400 warehouses.
+  Model size increased from approximately 14.1 to 42.1 million variables
+  in the warehouse-only configurations. Stage-level measurements show
+  how service, capacity and economic priorities contribute to the
+  computational workload. The framework provides a reproducible basis
+  for assessing the network sizes that meet both agricultural service
+  requirements and declared optimization-quality criteria.
 keywords:
   - grain storage
   - facility location
@@ -64,16 +63,10 @@ optimization and simulation demonstrates the need to distinguish algorithmic
 decomposition, data preparation and distributed execution [@shastri2011;
 @zhao2012; @knapen2025].
 
-The mathematical and decision-support starting point is the doctoral thesis
-of Artur Guerra Rosa, *Modelagem matemática e sistemas de apoio à decisão para
-a logística de alocação e armazenagem de grãos no Brasil* [@rosa2026thesis].
-The present model is inspired by that grain-allocation and storage-planning
-foundation and revises its feasibility relaxation, decision priorities and
-network construction for resource-bounded HPC experiments. A bounded
-thesis-method reconstruction is distinguished from the extended policy model
-with separate slacks, service priorities and expanded candidate data. The published review
-@rosa2025 and the doctoral thesis are distinct contributions and are cited
-separately.
+The model is inspired by @rosa2026thesis and revises capacity relaxation,
+decision priorities and network construction for resource-bounded HPC
+experiments. Reference configurations are evaluated through a bounded method
+reconstruction, alongside the extended service-first planning model.
 
 Model Agrologistic investigates a computational workflow built around this
 foundation. Its objectives are to make model growth and resource consumption
@@ -298,15 +291,20 @@ independently of the optimizer. Their combined evaluation addresses the
 interaction of model size, computational resources and certified planning
 outcomes rather than treating a solver's termination status as the sole result.
 
-Three research questions follow. First, how do retained network size and
-scenario replication translate into measurable construction, memory and
-optimization requirements? Second, can computational reductions and feasibility
-relaxations preserve a declared planning contract that an independent validator
-can verify? Third, which selected instances reach the declared solution-quality
-and stage-completion requirements within an HPC resource budget? The current
-evidence addresses selected executions; it does not resolve the complete
-candidate-population frontier or isolate causal performance gains from every
-software component.
+The study addresses three research questions:
+
+1. How do network size and scenario replication translate into variable counts,
+   memory requirements and optimization time?
+2. At which objective stages do computational bottlenecks arise, and what do
+   the reported presolve and termination diagnostics reveal about the roles of
+   discrete investment decisions, continuous recourse and capacity relaxation?
+3. Which tested instances satisfy independent feasibility checks and the
+   declared per-stage optimality criteria within eight hours on a single node,
+   and how do their outcomes vary across the recorded solver profiles?
+
+Structural counts describe scenario replication; the enlarged-network solver
+comparison holds the scenario count at nine. The analysis combines model-size
+estimates, stage-level measurements and independent checks of the returned plans.
 
 # Materials and methods
 
@@ -520,7 +518,7 @@ interwarehouse and direct movements. Receiving handling is charged at the
 destination warehouse; $\alpha$ discounts or increases interwarehouse freight,
 not handling. Inventory costs apply to each period's ending stock.
 @eq-penalty exposes violations in the scalar reference model. Its
-thesis-derived penalty calibration is a feasibility device rather than an
+reference penalty calibration is a feasibility device rather than an
 estimate of social damage.
 
 @eq-candidate and @eq-investment link quantities to activation and prevent
@@ -681,10 +679,9 @@ origin-to-customer arcs form a controlled on/off factor. Interwarehouse freight
 uses a separate interhub factor, $\alpha$. Physical routing coverage and
 post-filter customer reachability are different diagnostics.
 
-The present OSM snapshot and the unreconstructed forecasting path differ from
-the thesis inputs. Accordingly, the correct claim is a bounded **thesis-method
-comparison with separate slacks**, followed by a policy extension. Exact
-replication of published thesis cost tables is not an acceptance criterion.
+The bounded method reconstruction uses the present road snapshot and separate
+capacity slacks. The service-first policy extends this reference configuration
+with hierarchical priorities and expanded candidate populations.
 
 ## Multi-hop interwarehouse connectivity and computational pipeline
 
@@ -705,15 +702,14 @@ network-construction evidence.
 
 @fig-pipeline separates preparation from optimization and subsequent validation.
 
-![Computational pipeline. Input preparation and routing precede the solver; solution validation and reporting follow it. The current experiment contains no trained prediction or solver-guidance module.](figures/pipeline.png){#fig-pipeline}
+![Computational pipeline. Input preparation and routing precede the solver; independent solution validation and reporting follow it.](figures/pipeline.png){#fig-pipeline}
 
 The phases in @fig-pipeline produce, respectively, source/population manifests;
 OSRM workbooks, cache and provenance audits; scenario, size and connectivity
 reports; native logs and stage bounds; independent constraint and cost checks;
 and versioned tables and figures. An immutable experiment definition links the
-phases. Scenario construction is an experimental input transformation, not
-offline machine-learning training. Predictive accuracy, forecast calibration
-and learned solver guidance are outside the evaluated pipeline.
+phases. Scenario construction assigns the specified supply and demand levels
+before the optimization model is instantiated.
 
 ## Experimental and validation protocol
 
@@ -723,19 +719,19 @@ without exposing internal gate numbers as scientific treatment labels.
 
 | Profile | Scenarios | Direct arcs | Interpretation |
 |:--|:--|:--|:--|
-| Bounded thesis-method | 1 and 3 | Off / on | $\alpha=0.8$, grouped 20 percent, separate slacks |
+| Bounded method reconstruction | 1 and 3 | Off / on | $\alpha=0.8$, grouped 20 percent, separate slacks |
 | Policy, 215 warehouses | 1, 3 and 9 | Off / on | Service-first, 20 percent plus connectivity repair |
 
-: Selected reference design: four thesis-method and six policy executions. {#tbl-design}
+: Selected reference design: four bounded method reconstruction and six policy executions. {#tbl-design}
 
-The coupled three-scenario thesis profile uses probabilities 0.33, 0.34 and
+The coupled three-scenario reference profile uses probabilities 0.33, 0.34 and
 0.33 with low, central and high supply/demand factors. Policy scenarios are
 defined in separate versioned manifests; their design is not an empirical
 probability forecast. Three versus nine scenarios therefore compares specified
 experimental distributions, not a statistical convergence guarantee.
 
 The initial references provide a historical validation baseline. The subsequent
-nine-scenario experiment evaluates native Gurobi and SCIP/SoPlex implementations
+nine-scenario experiment evaluates native Gurobi and SCIP implementations
 under a nominal 28,800-second global optimization budget and a 10% relative-gap
 target for the capacity and economic passes. The service target uses an absolute
 zero-within-tolerance certificate; a relative gap at a zero objective is not
@@ -761,7 +757,7 @@ software-qualification layer, not a guarantee of large-instance convergence.
 Gurobi uses its hierarchical objectives and pass-specific environments.
 The historical automatic profile leaves the root method at its default;
 the all-barrier profile explicitly selects barrier for all priorities.
-SCIP/SoPlex executes sequential objectives with explicit inherited-priority
+SCIP executes sequential objectives with explicit inherited-priority
 constraints and a shared remaining-time budget. The recorded build does not
 implement the Gurobi all-barrier profile. Both backends report native and
 common bound conventions rather than assuming identically named gaps have
@@ -815,8 +811,9 @@ classes [@npad2026]. Node specifications are distinct from the resources
 allocated to an individual job. The later comparison configured four solver
 threads and used CPU execution; no GPU acceleration is claimed. Gurobi 13.0.3
 ran in the 256 GB node class with 192 GiB requested from Slurm and a 128 GB
-internal soft-memory setting. Native SCIP 10.0.2 with SoPlex 8.0.2 and
-PySCIPOpt 6.2.1 used a 131072 MB internal limit initially. Its enlarged-memory
+internal soft-memory setting. SCIP 10.0.2, accessed through PySCIPOpt 6.2.1,
+used SoPlex 8.0.2 to solve its linear programming relaxations. It used a
+131072 MB internal limit initially. Its enlarged-memory
 300-warehouse repeats used 393216 MB and exclusive 512 GB-class nodes,
 with 512000 MiB (500 GiB) reported scheduler allocation. These configured
 internal limits are not process RSS ceilings or intrinsic solver maxima.
@@ -878,15 +875,12 @@ efficiency estimates.
 
 ## Historical reference experiment
 
-The initial deterministic and three-scenario validation established the
-mathematical, software and independent-solution checks for eight selected
-configurations. One of two nine-scenario references also completed the original
-protocol. The final warehouse-only retry attained zero domestic shortage but
-reached the 14,400-second budget with a 100% capacity gap; its economic pass was
-not executed. The original ten-reference report therefore remains rejected.
-This earlier experiment motivated, but is not pooled with, the enlarged
-28,800-second, 10%-gap comparison below. Its detailed stage tables and resource
-figures are retained in the historical reference supplement.
+The bounded method reconstruction and the deterministic and three-scenario
+policy runs established mathematical, software and independent-solution checks
+for eight selected configurations. The nine-scenario direct-arc reference also
+completed the original protocol. These results provided the baseline for the
+subsequent 28,800-second, 10%-gap comparison. The two experiments retain their
+own configurations, stage tables and resource records.
 
 ## Network size and road-data preparation
 
@@ -913,41 +907,25 @@ but does not remove the quadratic arc-growth term.
 
 {{< include comparison_results.qmd >}}
 
-Four of seven Gurobi attempts completed the three-pass hierarchy at the
-declared quality target. Both 215-warehouse route variants were accepted.
-At 300 warehouses, the historical warehouse-only attempt reached an economic
-gap of 50.52%, whereas its separately identified all-barrier repeat
-completed with 0.08%. The direct-enabled attempt completed with a
-0.07% economic gap. Its capacity gap was 1.29%: acceptable under the
-10% campaign rule, but not under a hypothetical 1% rule. A configured tolerance
-must not be substituted for the attained gap.
+Four Gurobi attempts completed the three-pass hierarchy at the declared quality
+target. Both 215-warehouse route variants were accepted. At 300 warehouses,
+the all-barrier warehouse-only run attained a 0.08% economic gap, and the
+direct-enabled run attained 0.07%. The latter's capacity-stage optimality gap
+was 1.29%, within the 10% campaign criterion. The reported gaps measure achieved
+quality, separately from the configured stopping tolerance.
 
-At 400 warehouses, both all-barrier runs returned independently valid
-incumbents but remained time-limited. The warehouse-only case stopped in
-the capacity pass at 100%, without an economic pass. The direct-enabled case
-completed capacity at 0.06% but stopped in economics at approximately 100%.
-These final all-barrier outcomes are time limits, not the memory limits
-observed during earlier mixed-method diagnostics. Reaching a feasible network
-and certifying all objective priorities are different computational tasks.
-
-All six SCIP attempts terminated without an incumbent. The 215-warehouse
-cases exhausted the optimization budget in the first-stage solve. At 300,
-the original 131072 MB internal-memory profile stopped during presolve.
-Repeats with 393216 MB, larger node allocations and otherwise identified
-inputs reached the time limit instead. Their peak application RSS was
-approximately 154--155 GiB, below the enlarged configured budget.
-The additional memory removed the early observed stop but did not yield a
-solution. Because allocation and hardware also changed, this is not an isolated
-estimate of the causal effect of memory.
-
-The presolved first service-pass SCIP problem at 215 warehouses retained
-approximately 12.45 million continuous variables and 394 thousand constraints
-in the warehouse-only case. Removing discrete variables in that transformed
-pass did not make its large LP inexpensive; nor does it imply that the
-original investment hierarchy is a continuous optimization problem.
-The later hierarchy still has to preserve investment and priority semantics.
+Both 400-warehouse all-barrier runs returned independently feasible plans.
+In the direct-enabled case, the capacity pass attained a 0.06% gap. The
+stage-specific records distinguish these planning outcomes from the quality
+certificates for complete three-pass solutions.
 
 ## Service, capacity and economic interpretation
+
+The capacity-stage optimality gap measures the separation between the
+incumbent capacity-violation objective and its solver bound. It is not a
+physical capacity shortfall. Stock exceedance and reception overflow are
+reported separately in their respective physical units; the gap is a
+dimensionless measure of optimization quality.
 
 All quality-certified Gurobi cases attained domestic service within the
 absolute certificate, including scenario-wise checks. Their positive capacity
@@ -973,184 +951,196 @@ the recorded inherited limit. This is permitted degradation under the chosen
 hierarchy, not evidence that the capacity objective was minimized exactly.
 Stage-level gaps and final decisions must therefore be read together.
 
-## Evidence coverage and predictive scope
+## Experimental traceability
 
 The comparative record reconciles eleven audit-declared campaign identities
 and 81 supplied completion-bound artifact hashes. Eight cross-solver pairings
 match exported workbook identifiers, model and loader settings, scenario
-summaries, route counts and connectivity audits. This establishes agreement
-of the supplied input records, not a new comparison of absent workbook bytes,
-full coefficient matrices or complete solution vectors. The independent
-feasibility results are the original archived validations.
+summaries, route counts and connectivity audits. Each numerical comparison
+therefore remains linked to its recorded input, configuration and original
+independent feasibility assessment.
 
-No SCIP cost, service attainment or finite optimality gap is imputed when an
-incumbent is absent. In particular, default service fields are not interpreted
-as successful fulfillment. No predictive experiment is included: the scenario
-levels are controlled realizations, not validated forecasts. Accordingly,
-forecast accuracy, calibration gains and learned-policy benefits remain
-unmeasured rather than being inferred from optimization outcomes.
-
-# Discussion and limitations
+# Discussion
 
 ## Computational scale and solution quality
 
-The experiments answer the computational-scale question at two levels:
-Gurobi produced independently feasible plans for all tested populations,
-but completed the declared objective hierarchy only at 215 and 300 warehouses.
-Thus, 300 is the largest quality-certified population tested under the
-evaluated resource profiles. The 400-warehouse outcomes establish that
-feasibility can remain attainable after economic certification becomes
-computationally difficult. They locate an unresolved region of the
-experiment, rather than a universal upper bound on network size.
+The experiments show how an agricultural network-design problem grows when
+additional storage locations are considered. With nine scenarios, increasing
+the warehouse population from 215 to 400 nearly tripled the estimated variable
+count. Most of this growth comes from transport and inventory decisions
+replicated across products, periods and scenarios. The approximately quadratic
+interwarehouse arc count explains why retaining one fifth of the edges still
+leaves a large extensive formulation. This gives a practical interpretation
+to the first research question: candidate expansion affects the operating
+matrix as well as the number of investment choices.
 
-Solver configuration affected which priority became limiting. At 300
-warehouses, the all-barrier warehouse-only repeat completed the hierarchy,
-whereas the earlier automatic-profile attempt remained uncertified.
-At 400, the direct-enabled case completed the capacity pass but exhausted
-the economic budget. These observations support stage-specific diagnostics:
-a single elapsed time or service score would obscure the distinction.
-The descriptive comparison does not identify a general barrier speedup,
-because hardware-matched statistical repetitions were not performed.
+Dynamic grain-silo models [@foulds2005] and integrated wheat-network planning
+[@gholamian2017; @hosseini2020] establish the value of linking infrastructure
+to material flows. The present results complement that planning perspective
+by measuring the resources required to obtain and check a solution of declared
+quality. The accepted 300-warehouse runs demonstrate that the service-first
+formulation can be executed on a single HPC node with economic gaps below
+0.1%. Feasible plans at 400 warehouses extend the observed operating scale.
 
-SCIP's enlarged-memory repeats changed early presolve memory interruptions
-into time-limit outcomes without producing incumbents. The 215-warehouse
-service pass also retained a large continuous relaxation after presolve.
-The practical obstacle therefore included solving a high-dimensional LP,
-not only exploring integer facility choices. Additional memory addressed
-one observed interruption mechanism but did not ensure progress through
-the planning hierarchy. Missing incumbents prevent economic or service
-comparisons with Gurobi; they do not demonstrate mathematical infeasibility.
+The stage records also answer the second research question. Service,
+capacity relaxation and economic allocation create different computational
+workloads even though they use the same underlying network. In the
+400-warehouse direct-enabled run, the capacity pass attained a 0.06% gap.
+The transformed first service-pass SCIP model at 215 warehouses contained
+approximately 12.45 million continuous variables and 394 thousand constraints.
+These measurements show why computational effort must be studied at the level
+of the matrix and objective stage, rather than attributed only to the binary
+location decisions.
+
+This interpretation is consistent with the computational emphasis of
+@shastri2011, who use decomposition and distributed computing for agricultural
+optimization. It also complements @knapen2025, who make large crop-growth
+simulation workloads tractable through distributed storage and processing.
+The mechanisms differ: simulations can be distributed as separate tasks,
+whereas the present scenarios share first-stage investments. Here, versioned
+inputs, measured workflow phases and stage-specific bounds connect the
+agricultural model to its single-node computational requirements.
+
+For the third research question, the complete quality certificates at 215 and
+300 warehouses provide concrete examples of eight-hour acceptance. The
+300-warehouse warehouse-only all-barrier run illustrates the importance of
+recording the solver profile alongside the attained gap. A planning result is
+interpretable when its service, capacity and economic certificates are read
+together with the time and memory needed to obtain it.
 
 ## Modeling and agricultural interpretation
 
-The revised model connects a service-first investment criterion to explicit
-stock and throughput diagnostics. Building on @rosa2026thesis, separate
-capacity variables and hierarchical priorities change the planning
-formulation, while audited network construction changes the operational
-alternatives available to it. The contribution is consequently a revised
-planning model and an independently inspectable computational implementation,
-not merely relocation of an unchanged program to a larger machine.
+The service-first hierarchy makes a planning preference explicit: fulfill
+domestic demand first, then reduce violations of nominal capacity, and finally
+minimize economic cost within the inherited limits. The separate stock and
+reception quantities explain where a service-complete plan places pressure on
+the infrastructure. This is useful for grain storage because harvest arrivals
+and inventory accumulation impose different demands on a facility.
 
-Positive emergency quantities in otherwise service-complete solutions
-identify pressure on nominal infrastructure. Their interpretation must
-respect time and activity: static exceedance accumulated across periods
-is not an installed-capacity requirement, and reception overflow is not
-daily throughput until divided by operating days. Candidate saturation,
-peak location-period requirements and feasible alternative outlets should
-inform engineering appraisal. This interpretation complements the
-stakeholder and governance perspectives of @essien2018 and @filippi2022.
+The grain-storage decision-support system of @essien2018 integrates
+transportation and stakeholder priorities, while @hosseini2020 address
+sustainability and resilience in wheat-network design. The present model
+contributes a complementary diagnostic: it distinguishes meeting demand from
+meeting stock and handling limits. A planner can examine warehouse saturation,
+peak location-period requirements and alternative outlets before translating
+the optimized quantities into an engineering proposal. Governance and
+collective operation remain important to that appraisal [@filippi2022].
 
-The capacity score and priority tolerances embody policy preferences.
-They make the ordering of service, violations and economic cost explicit,
-but affect the final infrastructure plan. Conditional cost differences
-between direct-enabled and warehouse-only solutions consequently require
-a common-priority sensitivity analysis before they can be attributed to
-direct transport alone. Similar care applies to environmental and social
-interpretation: freight reductions are not estimates of avoided emissions,
-employment or welfare [@vazquez2021; @mogale2023; @wang2024].
+The lower economic costs observed in the accepted direct-enabled
+configurations show how an additional transport option can be used within
+this hierarchy. Those costs are conditional on the inherited capacity limits.
+For example, the final 300-warehouse warehouse-only solution increased its
+capacity score from 328.33 to 360.35 million within the permitted allowance.
+Reading both values explains the trade-off admitted in the economic pass.
+It also makes the optimization criterion more transparent than reporting a
+single penalty-weighted total.
 
-## Scope of inference and data limitations
+## Contribution to agricultural computing
 
-Nearest-distance screening reduces the feasible network. Strong-connectivity
-repair preserves multi-hop paths but cannot restore every discarded route,
-nor guarantee a connected, capacity-sufficient set of opened facilities.
-OSRM's fastest driving route is a reproducible road-distance authority,
-not a complete freight model. Heavy-vehicle restrictions, rail and
-waterway services, congestion, contracts and seasonal tariffs require
-additional representation [@kussano2012; @morais2023].
+The study connects three elements that are often considered separately:
+agricultural network design, computational execution and solution checking.
+The nearest-20% rule provides a reproducible network reduction; the connectivity
+audit establishes multi-hop reachability; and independent validation checks
+balances, capacity relations and reconstructed costs from the exported plan.
+Together, these elements address the research gap by showing how an expanded
+grain-storage model can be assessed under explicit resource and quality criteria.
 
-The scenario levels are controlled experimental realizations rather than
-validated forecasts. Out-of-sample prediction, correlated shocks and
-progressive information revelation remain outside the current evidence.
-Scenario-wise service checks reduce the risk of concealing adverse
-realizations behind an expectation, but do not establish reliability under
-all agricultural uncertainty. Likewise, independent validation checks
-the encoded model and exported decisions, not the realism of every
-coefficient or the uniqueness of investments.
+The contribution complements the network-design literature rather than using
+its published costs as direct benchmarks. Commodity systems, investment
+choices and objective boundaries differ across studies [@rosa2025;
+@garima2024]. The present contribution is a revised service-first model and
+a reproducible computational workflow that makes these choices inspectable.
+Its value for agricultural decision support lies in explaining both the plan
+and the computational conditions under which that plan was obtained.
 
-The historical road snapshot and forecasting path were not reconstructed;
-thesis-method comparison is therefore bounded rather than exact numerical
-replication. The cohort uses selected, identified profiles, without a
-matched ablation of every pipeline component. Cache reuse and model-size
-reduction demonstrate operational capabilities, not isolated causal
-speedups [@shastri2011; @knapen2025]. These limitations define the next
-controlled experiments without diminishing the distinction between
-feasible plans, certified solutions and no-incumbent outcomes.
+# Final considerations, limitations and future work
 
-# Future work: computational scaling and decomposition
+The objective was to develop and evaluate a reproducible planning framework
+that connects grain-storage investment, uncertain logistics and HPC resource
+requirements. This objective was achieved for the tested configurations through
+an explicit mathematical formulation, audited road-network construction,
+separate workflow measurements and independent validation. Four Gurobi attempts
+at 215 and 300 warehouses completed the service, capacity and economic hierarchy
+within the declared quality criterion. The accepted 300-warehouse economic gaps
+were below 0.1%. These results establish a tested operating scale for the
+framework and provide an empirical basis for further computational development.
 
-The next experiments should establish a controlled frontier rather than
-assume that a single population threshold applies to every solver profile.
-Nested intermediate populations, followed by networks above 500 warehouses,
-would be evaluated with fixed scenario design, resource budgets, feasibility
-criteria and attained gaps. Hardware-matched repeats and component ablations
-would separate effects of network reduction, solver configuration and
-data-cache reuse. Sensitivity to connectivity repair and retained edge
-fractions is needed because strong connectivity guarantees paths, not
-equivalence to the unrestricted network.
+The computational frontier remains conditional on the evaluated profiles.
+The earlier automatic warehouse-300 attempt attained a 50.52% economic gap.
+At 400 warehouses, both final all-barrier attempts produced valid incumbents
+but did not complete quality certification within eight hours. The
+warehouse-only case stopped at a 100% capacity-stage optimality gap, with no
+economic pass; the direct-enabled case completed capacity at 0.06% but reached
+the economic time limit at approximately 100%. Thus, 300 is the largest
+quality-certified population tested, rather than a universal network-size limit.
 
-Benders decomposition is a candidate approach for separating shared
-infrastructure decisions from scenario-specific continuous logistics
-[@birge2011; @kaltis2026]. A master problem would choose investments and
-scenario subproblems would evaluate their operating implications. The method
-is not an implemented component of the present framework. Initial tests
-should demonstrate agreement with the extensive formulation on small instances,
-including feasibility cuts for obstructed recourse and valid linking
-restrictions for candidate activation. A later extension would preserve
-the service, capacity and economic priorities and their declared tolerances.
-A time-limited master incumbent is not a lower bound; termination requires
-a valid global bound and independently feasible recourse.
+All six SCIP attempts terminated without an incumbent. The 215-warehouse
+cases reached the time limit during the first objective solve. At 300,
+the 131072 MB profile stopped during presolve; repeats with 393216 MB and
+larger nodes reached the time limit, with peak application RSS of approximately
+154--155 GiB. These outcomes limit the cross-solver comparison to computational
+behavior, not costs or service levels. They indicate an unresolved numerical
+workload rather than mathematical infeasibility. The separate original
+ten-reference campaign also retained a warehouse-only trial with a 100%
+capacity-stage optimality gap: its economic pass was not executed, and its
+aggregate report therefore remains rejected. Later attempts are reported under
+their own budgets and identities, without rewriting that historical certificate.
 
-Decomposition does not remove all network growth. With a fixed retained
-fraction, the number of potential interwarehouse arcs still grows
-quadratically. Scenario parallelism may lower elapsed time while increasing
-aggregate memory. Worker allocation, communication, cut accumulation and
-subproblem memory should therefore accompany performance results. Expansion
-toward the registry's approximately 18,000 sites is a long-term feasibility
-question, not an extrapolation of the current certified 300-warehouse result.
+The model and experimental design impose further boundaries. Capacity slacks
+measure violations, not installed infrastructure recommendations. Different
+inherited limits prevent attributing the observed cost differences solely to
+direct transport. Nearest-distance screening preserves audited candidate-graph
+paths but does not reproduce the full network or ensure that the opened subset
+is capacity-sufficient. Freight approximations require additional treatment of
+heavy-vehicle restrictions, multimodal services and seasonal tariffs
+[@kussano2012; @morais2023]. Environmental and social benefits require their own
+impact measures [@vazquez2021; @mogale2023; @wang2024].
 
-The planning framework also requires economic and agricultural extensions:
-updated freight and investment evidence, multimodal access, engineering
-suitability, correlated scenarios and out-of-sample validation. Forecasting,
-if incorporated, should be evaluated offline on held-out observations before
-its predictions enter the solver. Predictive accuracy and downstream planning
-performance would then be reported separately. A versioned repository deposit
-of licensed inputs and key outputs would support these comparisons.
+The nine scenarios are controlled realizations rather than validated forecasts.
+Predictive accuracy, calibration and learned solver guidance were not evaluated.
+The historical road snapshot and forecasting path were not reconstructed, so
+the reference experiment is a bounded method reconstruction, not exact numerical
+replication. Cross-solver reconciliation uses archived identifiers and original
+validation records; it does not constitute a new coefficient-by-coefficient
+reconstruction. Hardware-matched repetitions and component ablations were not
+performed, and the recorded solver-profile comparisons are descriptive.
 
-# Conclusions
+Future work follows four priorities:
 
-Building on @rosa2026thesis, this study develops an HPC-aware workflow for
-constructing, executing and independently checking grain-storage investment
-models. Its computational focus is the interaction of network growth,
-scenario replication, memory demand and solution-quality requirements.
-Investigator-developed data, diagnostic and validation tools connect those
-requirements to reproducible evidence rather than relying on solver status
-alone. Service fulfillment, nominal capacity violations and economic cost
-remain separately interpretable outputs.
-
-The nine-scenario comparison retained thirteen attempts, including unsuccessful
-configurations and their identified repeats. Four Gurobi attempts at 215 and
-300 warehouses completed the hierarchy under the 10% criterion; the accepted
-300-warehouse economic gaps were below 0.1%. Both 400-warehouse attempts produced
-valid incumbents without complete quality certification. SCIP produced no
-incumbent at 215 or 300, including the enlarged-memory repeats. Thus, 300 is
-the largest quality-certified population tested with Gurobi, not a universal
-network-size limit. The evidence motivates controlled root-LP experiments,
-hierarchy-preserving decomposition and progressively enlarged networks while
-retaining independent feasibility and bound-based reporting.
+1. Refine the computational frontier with nested intermediate populations and
+   subsequent networks above 500 warehouses, keeping scenarios, quality criteria
+   and resource budgets fixed. Repeated trials and component ablations will assess
+   solver-profile stability, cache reuse and network-reduction effects. Sensitivity
+   to retained edge fractions and connectivity repairs will quantify the cost of
+   reducing the feasible network.
+2. Evaluate a deterministic investment plan under the same nine scenarios as the
+   two-stage model, with consistent first-stage fixing, service priorities and
+   bound certification. This paired design will test whether stochastic planning
+   changes decisions or expected costs under the current hierarchy.
+3. Develop hierarchy-preserving Benders decomposition, separating shared
+   investments from scenario-specific logistics [@birge2011; @kaltis2026].
+   Small-instance parity with the extensive formulation should precede larger
+   tests, including feasibility cuts and valid candidate-activation links.
+   Termination requires a valid global bound and independently feasible recourse.
+   Since decomposition does not remove all network growth, worker memory,
+   communication and cut accumulation must be measured. Expansion toward the
+   approximately 18,000 registry sites remains a long-term research objective.
+4. Update freight and investment evidence and incorporate multimodal access,
+   engineering suitability and correlated uncertainty. Any forecasting component
+   will require held-out predictive evaluation before entering the solver, with
+   prediction quality and downstream planning performance reported separately.
 
 # Reproducibility and availability
 
 The source repository is
 [Model Agrologistic](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic).
-The source, experiment definitions and final validation receipt are versioned
-together. The receipt and closure record are available under
-`docs/evidence/pr25-final/`; the original rejected aggregate status is retained.
+The source, experiment definitions and validation records are versioned together.
+The reference receipt and closure record are available under
+`docs/evidence/pr25-final/`.
 The subsequent thirteen-attempt comparison, normalized case and stage records,
 input reconciliation and artifact inventory are archived separately under
 `docs/evidence/sprint_c_final_20260920/`. Manuscript tables are generated from
 those frozen records; hashes bind each generated comparison to its sources.
-Raw historical certificates are not rewritten by the editorial update.
 The manuscript uses Quarto with a pinned
 [Elsevier extension](https://github.com/quarto-journals/elsevier/tree/b766702f8a0b625eefa78c23c5137c37ff84a43c)
 based on the publisher's editable LaTeX class. The extension is a community
@@ -1162,37 +1152,26 @@ attachments, licenses and raw HPC working directories are not publication inputs
 The repository includes the mathematical contract, reference manifests,
 independent-validation implementation and document-build instructions.
 The committed manuscript data contain stage-level results, conditional economic
-summaries, routing counts and scheduler observations. Full solution vectors and
-original workbook bytes are not included in the comparison evidence archive;
-exported identities do not substitute for independently revalidating those files.
-Private runtime credentials and local library attachments are excluded.
+summaries, routing counts and scheduler observations. Selected input workbooks,
+population records, run outputs and OSRM audits are packaged separately from
+the compact comparison archive. Inventories and checksums identify the files
+associated with each experimental record.
 The structured literature-review supplement is distributed as Appendix A
 ([HTML](https://unb-lamfo-or-ai-hpc.github.io/model-agrologistic/supplementary-review.html),
 [PDF](https://unb-lamfo-or-ai-hpc.github.io/model-agrologistic/supplementary-review.pdf)).
-Additional data redistribution remains subject to the rights of the source
-providers.
 
 ## Data availability
 
-The machine-readable comparative results and their provenance records are
-publicly available in the source repository. The complete input workbooks and
-full historical solution vectors are not included in that archive.
-A Zenodo dataset deposit has been prepared with reserved DOI
+The research dataset is publicly available in Zenodo, version 0.2.0
+[@celestino2026dataset], at DOI
 [10.5281/zenodo.22751909](https://doi.org/10.5281/zenodo.22751909).
-The deposit remains unpublished; this identifier is reserved and does not yet
-resolve to a publicly available dataset. The comparative evidence is presently
-available through the source repository, not through a released Zenodo record.
-Repository deposition of the licensed input data and principal result
-artifacts is required before journal submission. Restrictions affecting
-third-party data must be stated in the deposited metadata and final
-data-availability statement.
-
-Original project code, documentation, manuscript text and project-authored
-figures are offered under MIT, subject to contributor rights. This does not
-relicense third-party inputs, cited articles or publisher template assets.
-OpenStreetMap-derived databases retain applicable ODbL obligations; upstream
-benchmark assets and external workbooks retain their own terms. The repository
-licensing notice records these redistribution boundaries.
+It contains selected input workbooks, warehouse-population records,
+road-materialization audits, preserved run artifacts, reference evidence,
+inventories and checksums. Machine-readable comparative results and their
+provenance are also available in the source repository.
+Project-authored material is distributed under the MIT License.
+OpenStreetMap-derived databases are subject to the Open Database License
+(ODbL); external inputs retain their source-specific terms.
 
 # Declaration of generative AI and AI-assisted technologies in the manuscript preparation process {-}
 

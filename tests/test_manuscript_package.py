@@ -20,6 +20,27 @@ def test_missing_render_does_not_create_archive(tmp_path):
     assert not output.exists()
 
 
+def test_renamed_appendix_links_to_its_own_pdf(tmp_path):
+    spec = importlib.util.spec_from_file_location(
+        "assemble", ROOT / "scripts/assemble_manuscript_outputs.py")
+    assembler = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(assembler)
+    source = tmp_path / "manuscript/supplement/_supplement"
+    source.mkdir(parents=True)
+    target = tmp_path / "manuscript/_manuscript"
+    target.mkdir()
+    (source / "index.pdf").write_bytes(b"%PDF-appendix")
+    (source / "index.html").write_text(
+        '<a href="index.pdf">PDF</a><a href="#ref-example">Reference</a>',
+        encoding="utf-8")
+    assembler.assemble(tmp_path)
+    html = (target / "supplementary-review.html").read_text(encoding="utf-8")
+    assert 'href="supplementary-review.pdf"' in html
+    assert 'href="index.pdf"' not in html
+    assert 'href="#ref-example"' in html
+    assert (target / "supplementary-review.pdf").read_bytes() == b"%PDF-appendix"
+
+
 def test_allowlisted_portable_package_and_checksums(tmp_path):
     paths = [
         "LICENSE", "manuscript/_manuscript/_tex/index.tex",
@@ -33,6 +54,7 @@ def test_allowlisted_portable_package_and_checksums(tmp_path):
         "manuscript/review-methods.bib", "manuscript/highlights.txt",
         "manuscript/elsevier_provenance.json",
         "manuscript/comparison_provenance.json", "manuscript/evidence_status.json",
+        "manuscript/dataset_release.json",
         "manuscript/_manuscript/_tex/figures/pipeline.png",
         "manuscript/_manuscript/_tex/figures/private.log",
         "manuscript/_manuscript/credentials.txt",

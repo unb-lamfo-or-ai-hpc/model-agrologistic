@@ -25,7 +25,7 @@ they optimize a different preference ordering.
 
 | Evidence family | Selected executions | Accepted references | Remaining qualification |
 |:--|--:|--:|:--|
-| Bounded thesis-method, deterministic and three scenarios | 4 | 4 | New road snapshot and separate slacks; not numerical replication |
+| Bounded method reconstruction, deterministic and three scenarios | 4 | 4 | New road snapshot and separate slacks; not numerical replication |
 | Policy, deterministic and three scenarios | 4 | 4 | Interpretation conditional on service-first priorities |
 | Policy, nine scenarios | 2 | 1 | Warehouse-only capacity pass reached the time limit |
 
@@ -190,14 +190,14 @@ includes model preparation and reporting and must not be substituted for this
 optimization measurement. The recorded failure is a failure to complete the
 requested hierarchy within the budget, not a proof of infeasibility. Independent
 checks accepted the incumbent's service and model constraints. Conversely,
-a feasible incumbent with a 100% capacity gap is insufficient to support a
+a feasible incumbent with a 100% capacity-stage optimality gap is insufficient to support a
 near-optimal capacity score or an economic comparison.
 
 The final retry used less recorded resident memory than the earlier
 warehouse-only attempts but did not solve the hierarchy. Because solver method,
 thread count and resource settings differed, these observations do not isolate
 a causal memory–runtime trade-off. They identify a reproducible adverse case
-for subsequent algorithmic evaluation. Neither the 100% capacity gap nor the
+for subsequent algorithmic evaluation. Neither the 100% capacity-stage optimality gap nor the
 earlier approximately 46.37% economic gaps satisfy a 1% or 10% threshold.
 
 ## Scope of comparative interpretation
