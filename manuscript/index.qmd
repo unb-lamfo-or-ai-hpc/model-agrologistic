@@ -298,15 +298,22 @@ independently of the optimizer. Their combined evaluation addresses the
 interaction of model size, computational resources and certified planning
 outcomes rather than treating a solver's termination status as the sole result.
 
-Three research questions follow. First, how do retained network size and
-scenario replication translate into measurable construction, memory and
-optimization requirements? Second, can computational reductions and feasibility
-relaxations preserve a declared planning contract that an independent validator
-can verify? Third, which selected instances reach the declared solution-quality
-and stage-completion requirements within an HPC resource budget? The current
-evidence addresses selected executions; it does not resolve the complete
-candidate-population frontier or isolate causal performance gains from every
-software component.
+The study addresses three research questions:
+
+1. How do network size and scenario replication translate into variable counts,
+   memory requirements and optimization time?
+2. At which objective stages do computational bottlenecks arise, and what do
+   the reported presolve and termination diagnostics reveal about the roles of
+   discrete investment decisions, continuous recourse and capacity relaxation?
+3. Which tested instances satisfy independent feasibility checks and the
+   declared per-stage optimality criteria within eight hours on a single node,
+   and how do their outcomes vary across the recorded solver profiles?
+
+Structural counts describe scenario replication; the enlarged-network solver
+comparison holds the scenario count at nine. Profile comparisons are
+descriptive rather than repeated-trial estimates of stability or causal
+performance effects. The evidence does not resolve the complete population
+frontier or isolate the contribution of each formulation component.
 
 # Materials and methods
 
@@ -882,8 +889,9 @@ The initial deterministic and three-scenario validation established the
 mathematical, software and independent-solution checks for eight selected
 configurations. One of two nine-scenario references also completed the original
 protocol. The final warehouse-only retry attained zero domestic shortage but
-reached the 14,400-second budget with a 100% capacity gap; its economic pass was
-not executed. The original ten-reference report therefore remains rejected.
+reached the 14,400-second budget with a 100% capacity-stage optimality gap;
+its economic pass was not executed.
+The original ten-reference report therefore remains rejected.
 This earlier experiment motivated, but is not pooled with, the enlarged
 28,800-second, 10%-gap comparison below. Its detailed stage tables and resource
 figures are retained in the historical reference supplement.
@@ -918,8 +926,8 @@ declared quality target. Both 215-warehouse route variants were accepted.
 At 300 warehouses, the historical warehouse-only attempt reached an economic
 gap of 50.52%, whereas its separately identified all-barrier repeat
 completed with 0.08%. The direct-enabled attempt completed with a
-0.07% economic gap. Its capacity gap was 1.29%: acceptable under the
-10% campaign rule, but not under a hypothetical 1% rule. A configured tolerance
+0.07% economic gap. Its capacity-stage optimality gap was 1.29%: acceptable
+under the 10% campaign rule, but not under a hypothetical 1% rule. A configured tolerance
 must not be substituted for the attained gap.
 
 At 400 warehouses, both all-barrier runs returned independently valid
@@ -948,6 +956,12 @@ original investment hierarchy is a continuous optimization problem.
 The later hierarchy still has to preserve investment and priority semantics.
 
 ## Service, capacity and economic interpretation
+
+The capacity-stage optimality gap measures the separation between the
+incumbent capacity-violation objective and its solver bound. It is not a
+physical capacity shortfall. Stock exceedance and reception overflow are
+reported separately in their respective physical units; the gap is a
+dimensionless measure of optimization quality.
 
 All quality-certified Gurobi cases attained domestic service within the
 absolute certificate, including scenario-wise checks. Their positive capacity
@@ -1108,6 +1122,14 @@ aggregate memory. Worker allocation, communication, cut accumulation and
 subproblem memory should therefore accompany performance results. Expansion
 toward the registry's approximately 18,000 sites is a long-term feasibility
 question, not an extrapolation of the current certified 300-warehouse result.
+
+An additional experiment should determine whether the two-stage model yields
+different investment decisions or expected costs from a deterministic plan
+evaluated under the same nine scenarios. It requires paired inputs, consistent
+first-stage fixing, identical service and capacity priorities, and comparable
+bound certification. The existing historical scalar value-of-information
+results and separate policy runs do not establish that comparison for the
+current service-first hierarchy.
 
 The planning framework also requires economic and agricultural extensions:
 updated freight and investment evidence, multimodal access, engineering

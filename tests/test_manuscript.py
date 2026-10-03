@@ -1,4 +1,5 @@
 """Document-quality checks must not be confused with scientific acceptance."""
+import hashlib
 import importlib.util
 import json
 import shutil
@@ -19,6 +20,14 @@ def manuscript(tmp_path, monkeypatch):
     destination = tmp_path / "manuscript"
     shutil.copytree(ROOT / "manuscript", destination,
                     ignore=shutil.ignore_patterns("_manuscript", ".quarto"))
+    # Construct a reviewed test snapshot, not a production publication approval.
+    approval_path = destination / "pages_approval.json"
+    approval = json.loads(approval_path.read_text())
+    approval["source_sha256"] = {
+        name: hashlib.sha256((destination / name).read_bytes()).hexdigest()
+        for name in approval["source_sha256"]
+    }
+    approval_path.write_text(json.dumps(approval), encoding="utf-8")
     monkeypatch.setattr(CHECKER, "MANUSCRIPT", destination)
     return destination
 

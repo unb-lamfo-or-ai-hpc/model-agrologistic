@@ -190,14 +190,14 @@ includes model preparation and reporting and must not be substituted for this
 optimization measurement. The recorded failure is a failure to complete the
 requested hierarchy within the budget, not a proof of infeasibility. Independent
 checks accepted the incumbent's service and model constraints. Conversely,
-a feasible incumbent with a 100% capacity gap is insufficient to support a
+a feasible incumbent with a 100% capacity-stage optimality gap is insufficient to support a
 near-optimal capacity score or an economic comparison.
 
 The final retry used less recorded resident memory than the earlier
 warehouse-only attempts but did not solve the hierarchy. Because solver method,
 thread count and resource settings differed, these observations do not isolate
 a causal memory–runtime trade-off. They identify a reproducible adverse case
-for subsequent algorithmic evaluation. Neither the 100% capacity gap nor the
+for subsequent algorithmic evaluation. Neither the 100% capacity-stage optimality gap nor the
 earlier approximately 46.37% economic gaps satisfy a 1% or 10% threshold.
 
 ## Scope of comparative interpretation
