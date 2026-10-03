@@ -1,0 +1,26 @@
+name: Resource and lifecycle analytical qualification
+on:
+  pull_request:
+  push:
+    branches: [research/mvp2-resource-lifecycle]
+permissions:
+  contents: read
+jobs:
+  analytical:
+    runs-on: ubuntu-latest
+    env:
+      PYTHONNOUSERSITE: '1'
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - run: python -m pip install -e '.[dev,scip]' 'pyscipopt==6.2.1'
+      - run: bash -n scripts/run_mvp2_qualification.slurm scripts/submit_mvp2_qualification.sh
+      - run: python scripts/qualify_mvp2_resources.py --analytical-only --output-dir /tmp/mvp2-resource-qualification
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mvp2-resource-analytical-qualification
+          path: /tmp/mvp2-resource-qualification
