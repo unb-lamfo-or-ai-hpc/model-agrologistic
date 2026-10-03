@@ -194,9 +194,38 @@ hashes, independent validation and the three-stage quality criteria. A
 or a memory benefit. Scheduler interruption may leave partial logs without this
 closure record. Preserve those records and use a new directory for any retry.
 
-The new orchestration is tested with synthetic evidence and simulated scheduler
-commands. Its first real NPAD paired execution remains an experimental pilot.
-No changes to the qualified optimizer or numerical dependencies are required.
+The first serial pilot (job 2151211) returned errors in both arms because Gurobi
+selected its bundled size-limited license. Both run summaries explicitly report
+`Model too large for size-limited license`. The observed failure precedes native
+optimization and does not identify a memory or time frontier. The original
+execution, logs and unsuccessful audit remain preserved. Miniature analytical
+qualification alone does not demonstrate unrestricted-license capability.
+
+The submitter, worker and every child process now select
+`GRB_LICENSE_FILE=/home/vrrcelestino/model-agrologistic/secrets/gurobi.lic`.
+The SSH FS URI identifies the same file in the desktop interface; it is not a
+valid local license filename for a process on NPAD. The submitter checks file
+availability without reading or hashing its contents. The compute worker runs
+a separate 2001-variable, 2001-constraint LP before constructing either large
+model. This exceeds the bundled license's 2000-variable/constraint limit and
+checks an optimal objective of 2001. Native startup output is suppressed before
+environment initialization; error strings and credential contents are not
+exported. A 60-second process timeout bounds license initialization and the
+probe; its own optimization allowance is ten seconds.
+
+`license_capability.json` records the designated path, safe status/error codes,
+probe size and outcome. `solve_admission.json` binds that report by SHA-256.
+Failure stops both large builds and records `optimization_attempted=false` in
+`pair_execution.json`; it does not weaken input or solution acceptance. The
+probe runs separately from measured optimization, and its success is capability
+evidence at that time, not a guarantee of continuing license-service availability.
+The original input preflight remains reusable because its four tools, inputs and
+qualified numerical core are unchanged. A retry requires a new immutable source,
+solve plan and execution directory, not reuse of the failed submission.
+
+The orchestration is tested with synthetic evidence and simulated scheduler
+commands. No changes to the qualified optimizer or numerical dependencies are
+required. License contents must never be uploaded, logged or copied into reports.
 
 Gurobi SoftMemLimit 128 is decimal GB, not 128 GiB. Slurm request units and
 native accounting are distinct. Report native solver memory, process-tree RSS,
