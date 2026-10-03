@@ -54,6 +54,7 @@ def test_allowlisted_portable_package_and_checksums(tmp_path):
         "manuscript/review-methods.bib", "manuscript/highlights.txt",
         "manuscript/elsevier_provenance.json",
         "manuscript/comparison_provenance.json", "manuscript/evidence_status.json",
+        "manuscript/dataset_release.json",
         "manuscript/_manuscript/_tex/figures/pipeline.png",
         "manuscript/_manuscript/_tex/figures/private.log",
         "manuscript/_manuscript/credentials.txt",
