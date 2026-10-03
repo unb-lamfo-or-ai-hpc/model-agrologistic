@@ -12,10 +12,9 @@ reuse/rebuild remains a miniature qualification harness; this protocol does not
 enable it for large instances. The frozen MVP 1.0 release, thirteen-attempt
 comparison, published manuscript and dataset remain unchanged.
 
-This draft depends on PR #42 and targets develop. Its branch includes that
-unmerged prerequisite to allow testing; merge PR #42 first, after licensed
-qualification and maintainer approval. No feature merge or large submission is
-authorized by preparing a pair.
+This draft targets develop. The licensed PR #42 prerequisite has been merged
+into main and synchronized into develop. No feature merge or large submission
+is authorized by preparing a pair.
 
 ## Experimental order
 
@@ -100,6 +99,50 @@ The paths and checksum must come from preserved NPAD evidence, not this example.
 Preparation runs no optimizer and contains no sbatch call. No 300/400 launch is
 requested until the positive-control observations and pair admission are reviewed.
 
+## Paired input preflight
+
+The initial 215-warehouse pair was prepared on NPAD from the reviewed manifest
+and licensed qualification. Preparation accepted the evidence identities and
+created two new definitions; it did not inspect the worksheet data.
+
+The next gate uses `scripts/preflight_mvp2_resource_pair.py` and the production
+input-inspection path. It reconstructs both definitions from the reference,
+checks all qualification artifacts and verifies the workbook checksum. It
+loads each arm separately without constructing or optimizing a MIP. It requires
+215 warehouses, nine scenarios, 60 periods, the inherited model-size guard,
+accepted connectivity and identical input snapshots and audit products.
+Execution-context fields are excluded from the paired input comparison.
+
+Each arm exports:
+
+- `preflight.json`
+- `model_audit.json`
+- `interhub_connectivity_audit.json`
+- `interhub_components.csv`
+- `interhub_repair_edges.csv`
+- `interhub_path_summary.csv`
+
+The aggregate `pair_preflight.json` binds these twelve products, the immutable
+prepared plan, campaign, workbook, core/runtime identity and four preflight
+tools. It records the exact scheduler allocation. Partial products remain
+available for diagnosis if a check fails; no accepted receipt is emitted.
+Existing output directories and historical evidence destinations are rejected.
+Source and evidence identities are checked again after loading.
+
+`scripts/submit_mvp2_pair_preflight.sh` submits only a standalone input job:
+intel-256, account sxdsouza, one node, four requested CPUs, 16 GiB and a
+30-minute scheduler budget. QoS is inherited rather than hardcoded. The worker
+captures exact `scontrol show job` and node records and verifies allocated TRES
+memory, including scheduler-expanded CPU allocations. It does not require Git
+on compute nodes or `SLURM_MEM_PER_NODE`. The login submitter binds a clean,
+detached checkout and tool hashes before submission and rejects duplicate audit
+destinations. Use the existing venv313 and a new project audit directory.
+
+An accepted input preflight is not optimization acceptance. Both large-instance
+submission and production explicit-stage lifecycle remain closed. The next
+step is review of the paired input receipt and implementation/qualification of
+the production solve allocation and admission gate.
+
 ## Scheduler and execution protocol to qualify next
 
 Run one arm per process on the same node class, with identical job memory and
@@ -107,8 +150,8 @@ CPU requests. Retain exact scontrol job/node records, CPU affinity, scheduler
 accounting, source commit and numerical-runtime identity for each arm.
 Use the existing venv313 and isolated immutable checkouts. Do not hardcode QoS,
 require Git on compute nodes, rely on SLURM_MEM_PER_NODE, or modify an active
-checkout. The production allocation gate and submitter are the next implementation
-step after the corrected miniature qualification; this draft has no large worker.
+checkout. The production solve allocation gate and submitter remain to be
+qualified after paired input preflight; this draft has no large solve worker.
 
 Gurobi SoftMemLimit 128 is decimal GB, not 128 GiB. Slurm request units and
 native accounting are distinct. Report native solver memory, process-tree RSS,
