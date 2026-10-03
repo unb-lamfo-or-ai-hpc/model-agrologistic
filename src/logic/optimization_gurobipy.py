@@ -35,10 +35,12 @@ from typing import Any
 from src.logic.mathematical_contract import prepare_model_data
 from src.logic.model_config import ModelConfig, SolverConfig
 from src.logic.model_data import ModelData
+from src.logic.model_lifecycle import managed_model_solve, own_model
 from src.logic.optimization import (
     OptimizationResult,
     configure_gurobi_wls_license,
 )
+from src.logic.resource_telemetry import CURRENT, event, gurobi_message, observed_matrix, phase
 from src.logic.route_filtering import select_routes
 
 DEFAULT_PENALTY = 1_000_000.0
@@ -78,6 +80,7 @@ def solve_model_gurobipy(
     )
 
 
+@managed_model_solve
 def _solve_deterministic_core(
     data: ModelData,
     model_config: ModelConfig,
@@ -89,7 +92,7 @@ def _solve_deterministic_core(
 
     data = prepare_model_data(data, model_config)
 
-    model = gp.Model("model_agrologistic_deterministic")
+    model = own_model(gp.Model("model_agrologistic_deterministic"), "gurobipy")
     _apply_solver_parameters(model, solver_config)
 
     # ------------------------------------------------------------------
@@ -970,8 +973,14 @@ def _optimize_with_stage_observer(
 ) -> list[dict[str, Any]]:
     """Optimize and capture the terminal state of each lexicographic pass."""
 
+    observed_matrix(model, "gurobipy")
+    phase("optimization")
+
     if objective_policy != "lexicographic":
-        model.optimize()
+        if (session := CURRENT.get()) is None:
+            model.optimize()
+        else:
+            model.optimize(lambda m, w: gurobi_message(m, w, GRB.Callback, session))
         return []
 
     callback = getattr(GRB, "Callback", None)
@@ -1013,7 +1022,9 @@ def _optimize_with_stage_observer(
         if solver_config.collect_solver_diagnostics:
             telemetry = SolverDiagnostics(model, callback, options)
 
+    resource_session = CURRENT.get()
     def observe_stage(callback_model: Any, where: int) -> None:
+        gurobi_message(callback_model, where, callback, resource_session)
         if telemetry is not None:
             telemetry.observe(callback_model, where)
         if where != callback.MULTIOBJ:
@@ -1069,6 +1080,14 @@ def _optimize_with_stage_observer(
                 ),
             }
         )
+
+        event("stage_terminal", **{
+            "stage_number": stages[-1]["stage_number"],
+            "stage_role": stages[-1]["stage_role"], "status": stages[-1]["status"],
+            "incumbent": stages[-1]["objective_value"], "bound": stages[-1]["objective_bound"],
+            "mip_gap": stages[-1]["mip_gap"], "iterations": stages[-1]["iteration_count"],
+            "nodes": stages[-1]["node_count"],
+        })
 
     model.optimize(observe_stage)
     if telemetry is not None and diagnostics is not None:

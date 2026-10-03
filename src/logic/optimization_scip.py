@@ -13,6 +13,7 @@ from time import perf_counter
 from types import SimpleNamespace
 
 from src.logic.mathematical_contract import prepare_model_data
+from src.logic.model_lifecycle import managed_model_solve, own_model
 from src.logic.optimization import OptimizationBackendNotImplementedError, OptimizationResult
 from src.logic.optimization_gurobipy import (
     VALUE_TOL,
@@ -26,6 +27,7 @@ from src.logic.optimization_gurobipy_stochastic import (
     _build_scenario_costs,
     _extract_warehouse_decisions,
 )
+from src.logic.resource_telemetry import install_scip_events, observed_matrix, phase
 from src.logic.route_filtering import select_routes
 from src.logic.scip_lexicographic import ABSOLUTE_GAP, solve_stages
 
@@ -58,6 +60,7 @@ def _configure(model, config, priority_tolerance):
         model.setParam(name, value)
 
 
+@managed_model_solve
 def solve_model_scip(data, model_config, solver_config):
     """Solve stochastic recourse only; deterministic/EVPI dispatch stays explicit."""
     cfg = model_config
@@ -69,8 +72,9 @@ def solve_model_scip(data, model_config, solver_config):
 
     started = perf_counter()
     data = prepare_model_data(data, cfg)
-    model = scip.Model("agrologistic_stochastic")
+    model = own_model(scip.Model("agrologistic_stochastic"), "pyscipopt")
     _configure(model, solver_config, cfg.feasibility_tolerance)
+    install_scip_events(model)
     q = scip.quicksum
     routes = select_routes(data, cfg)
     candidates = list(data.candidate_warehouses)
@@ -280,6 +284,7 @@ def solve_model_scip(data, model_config, solver_config):
             ("economic_cost", economic),
         ]
     )
+    observed_matrix(model, "pyscipopt")
     build_seconds = perf_counter() - started
     stages, optimization_seconds = solve_stages(
         model, objectives, solver_config, cfg.feasibility_tolerance
@@ -354,9 +359,9 @@ def solve_model_scip(data, model_config, solver_config):
         metadata=metadata,
     )
     if not has_solution:
-        model.freeProb()
         return result
     extraction_started = perf_counter()
+    phase("result_extraction")
     sol = model.getBestSol()
 
     def value(expression):
@@ -448,5 +453,4 @@ def solve_model_scip(data, model_config, solver_config):
             else "not_certified",
         )
     metadata["timings"]["result_extraction_seconds"] = perf_counter() - extraction_started
-    model.freeProb()
     return result

@@ -15,6 +15,7 @@ from typing import Any
 from src.logic.mathematical_contract import prepare_model_data
 from src.logic.model_config import ModelConfig, SolverConfig
 from src.logic.model_data import ModelData
+from src.logic.model_lifecycle import managed_model_solve, own_model
 from src.logic.optimization import OptimizationResult
 from src.logic.optimization_gurobipy import (
     DEFAULT_PENALTY,
@@ -38,9 +39,11 @@ from src.logic.optimization_gurobipy import (
     _warehouse_to_customer_unit_cost,
     _warehouse_to_warehouse_unit_cost,
 )
+from src.logic.resource_telemetry import event, phase
 from src.logic.route_filtering import select_routes
 
 
+@managed_model_solve
 def solve_stochastic_model_gurobipy(
     data: ModelData,
     model_config: ModelConfig,
@@ -55,7 +58,7 @@ def solve_stochastic_model_gurobipy(
 
     data = prepare_model_data(data, model_config)
 
-    model = gp.Model("model_agrologistic_stochastic_extensive_form")
+    model = own_model(gp.Model("model_agrologistic_stochastic_extensive_form"), "gurobipy")
     _apply_solver_parameters(model, solver_config)
 
     scenarios = list(data.scenarios)
@@ -123,9 +126,7 @@ def solve_stochastic_model_gurobipy(
     ]
 
     # First-stage variables: one decision shared by every scenario.
-    open_candidate = model.addVars(
-        candidate_warehouses, vtype=GRB.BINARY, name="open_candidate"
-    )
+    open_candidate = model.addVars(candidate_warehouses, vtype=GRB.BINARY, name="open_candidate")
     candidate_capacity = model.addVars(
         candidate_warehouses,
         lb=0.0,
@@ -156,9 +157,7 @@ def solve_stochastic_model_gurobipy(
     flow_dc = model.addVars(dc_keys, lb=0.0, vtype=GRB.CONTINUOUS, name="flow_dc")
     flow_oc = model.addVars(oc_keys, lb=0.0, vtype=GRB.CONTINUOUS, name="flow_oc")
     flow_dd = model.addVars(dd_keys, lb=0.0, vtype=GRB.CONTINUOUS, name="flow_dd")
-    inventory = model.addVars(
-        inventory_keys, lb=0.0, vtype=GRB.CONTINUOUS, name="inventory"
-    )
+    inventory = model.addVars(inventory_keys, lb=0.0, vtype=GRB.CONTINUOUS, name="inventory")
     unmet_demand = model.addVars(
         unmet_keys,
         lb=0.0,
@@ -169,22 +168,14 @@ def solve_stochastic_model_gurobipy(
     emergency_static_capacity = model.addVars(
         emergency_keys,
         lb=0.0,
-        ub=(
-            GRB.INFINITY
-            if model_config.allow_emergency_static_capacity
-            else 0.0
-        ),
+        ub=(GRB.INFINITY if model_config.allow_emergency_static_capacity else 0.0),
         vtype=GRB.CONTINUOUS,
         name="emergency_static_capacity",
     )
     emergency_reception_capacity = model.addVars(
         emergency_keys,
         lb=0.0,
-        ub=(
-            GRB.INFINITY
-            if model_config.allow_emergency_reception_capacity
-            else 0.0
-        ),
+        ub=(GRB.INFINITY if model_config.allow_emergency_reception_capacity else 0.0),
         vtype=GRB.CONTINUOUS,
         name="emergency_reception_capacity",
     )
@@ -234,22 +225,15 @@ def solve_stochastic_model_gurobipy(
     economic_cost = gp.quicksum(investment_costs.values()) + gp.quicksum(
         expression
         for component, expression in expected_costs.items()
-        if component
-        not in {"unmet_demand", "emergency_static", "emergency_reception"}
+        if component not in {"unmet_demand", "emergency_static", "emergency_reception"}
     )
-    penalized_cost = gp.quicksum(investment_costs.values()) + gp.quicksum(
-        expected_costs.values()
-    )
+    penalized_cost = gp.quicksum(investment_costs.values()) + gp.quicksum(expected_costs.values())
     expected_unmet_quantity = gp.quicksum(
-        data.scenario_prob[key[0]] * unmet_demand[key]
-        for key in unmet_keys
+        data.scenario_prob[key[0]] * unmet_demand[key] for key in unmet_keys
     )
     expected_emergency_quantity = gp.quicksum(
         data.scenario_prob[key[0]]
-        * (
-            emergency_static_capacity[key]
-            + emergency_reception_capacity[key]
-        )
+        * (emergency_static_capacity[key] + emergency_reception_capacity[key])
         for key in emergency_keys
     )
     _set_objective_policy(
@@ -309,6 +293,35 @@ def solve_stochastic_model_gurobipy(
             expand_capacity=expand_capacity,
             bulk_capacity=bulk_capacity,
         )
+
+    if solver_config.compact_python_indices:
+        phase("python_index_compaction")
+        released_entries = sum(
+            len(keys)
+            for keys in (
+                od_keys,
+                dc_keys,
+                oc_keys,
+                dd_keys,
+                inventory_keys,
+                unmet_keys,
+                emergency_keys,
+            )
+        )
+        del od_keys, dc_keys, oc_keys, dd_keys, inventory_keys, unmet_keys, emergency_keys
+        for mapping in (
+            flow_od,
+            flow_dc,
+            flow_oc,
+            flow_dd,
+            inventory,
+            unmet_demand,
+            emergency_static_capacity,
+            emergency_reception_capacity,
+        ):
+            mapping.clean()
+        event("python_index_compaction", python_index_entries=released_entries)
+        phase("model_build_complete")
 
     model_build_seconds = perf_counter() - started_at
     optimization_started_at = perf_counter()
@@ -385,6 +398,7 @@ def solve_stochastic_model_gurobipy(
         )
 
     extraction_started = perf_counter()
+    phase("result_extraction")
     result = _extract_stochastic_result(
         data=data,
         model_config=model_config,
@@ -434,8 +448,7 @@ def _build_investment_costs(
 ) -> dict[str, Any]:
     return {
         "opening": gp.quicksum(
-            open_candidate[w] * data.opening_fixed_cost.get(w, 0.0)
-            for w in candidate_warehouses
+            open_candidate[w] * data.opening_fixed_cost.get(w, 0.0) for w in candidate_warehouses
         ),
         "candidate_capacity": (
             gp.quicksum(
@@ -446,20 +459,17 @@ def _build_investment_costs(
             else 0.0
         ),
         "expansion_fixed": gp.quicksum(
-            expand_warehouse[w] * data.expand_fixed_cost.get(w, 0.0)
-            for w in expansion_warehouses
+            expand_warehouse[w] * data.expand_fixed_cost.get(w, 0.0) for w in expansion_warehouses
         ),
         "expansion_variable": gp.quicksum(
-            expand_capacity[w] * data.expand_variable_cost.get(w, 0.0)
-            for w in expansion_warehouses
+            expand_capacity[w] * data.expand_variable_cost.get(w, 0.0) for w in expansion_warehouses
         ),
         "bulkification_fixed": gp.quicksum(
             bulkify_warehouse[w] * data.bulk_fixed_cost.get(w, 0.0)
             for w in bulkification_warehouses
         ),
         "bulkification_variable": gp.quicksum(
-            bulk_capacity[w] * data.bulk_variable_cost.get(w, 0.0)
-            for w in bulkification_warehouses
+            bulk_capacity[w] * data.bulk_variable_cost.get(w, 0.0) for w in bulkification_warehouses
         ),
     }
 
@@ -490,20 +500,17 @@ def _build_scenario_costs(
     for scenario in scenarios:
         result[scenario] = {
             "transport_od": gp.quicksum(
-                flow_od[key]
-                * _origin_to_warehouse_unit_cost(data, key[1], key[2], key[3])
+                flow_od[key] * _origin_to_warehouse_unit_cost(data, key[1], key[2], key[3])
                 for key in od_keys
                 if key[0] == scenario
             ),
             "transport_dc": gp.quicksum(
-                flow_dc[key]
-                * _warehouse_to_customer_unit_cost(data, key[1], key[2], key[3])
+                flow_dc[key] * _warehouse_to_customer_unit_cost(data, key[1], key[2], key[3])
                 for key in dc_keys
                 if key[0] == scenario
             ),
             "transport_oc": gp.quicksum(
-                flow_oc[key]
-                * _origin_to_customer_unit_cost(data, key[1], key[2], key[3])
+                flow_oc[key] * _origin_to_customer_unit_cost(data, key[1], key[2], key[3])
                 for key in oc_keys
                 if key[0] == scenario
             ),
@@ -525,8 +532,7 @@ def _build_scenario_costs(
                 if key[0] == scenario
             ),
             "unmet_demand": gp.quicksum(
-                unmet_demand[key]
-                * data.unmet_demand_penalty.get((key[1], key[2]), DEFAULT_PENALTY)
+                unmet_demand[key] * data.unmet_demand_penalty.get((key[1], key[2]), DEFAULT_PENALTY)
                 for key in unmet_keys
                 if key[0] == scenario
             ),
@@ -538,9 +544,7 @@ def _build_scenario_costs(
             ),
             "emergency_reception": gp.quicksum(
                 emergency_reception_capacity[key]
-                * data.emergency_reception_capacity_penalty.get(
-                    key[1], DEFAULT_PENALTY
-                )
+                * data.emergency_reception_capacity_penalty.get(key[1], DEFAULT_PENALTY)
                 for key in emergency_keys
                 if key[0] == scenario
             ),
@@ -600,9 +604,7 @@ def _add_first_stage_constraints(
             name=f"bulkification_only_if_active[{warehouse}]",
         )
 
-    for warehouse in sorted(
-        set(expansion_warehouses) & set(bulkification_warehouses)
-    ):
+    for warehouse in sorted(set(expansion_warehouses) & set(bulkification_warehouses)):
         active = _active_warehouse_expr(data, open_candidate, warehouse)
         model.addConstr(
             expand_warehouse[warehouse] + bulkify_warehouse[warehouse] <= active,
@@ -625,10 +627,7 @@ def _fix_first_stage_decisions(
     by_warehouse = {decision["warehouse"]: decision for decision in decisions}
     missing = sorted(set(data.warehouses) - set(by_warehouse))
     if missing:
-        raise ValueError(
-            "Fixed first-stage decisions are missing warehouses: "
-            f"{missing}."
-        )
+        raise ValueError(f"Fixed first-stage decisions are missing warehouses: {missing}.")
 
     for warehouse in data.candidate_warehouses:
         decision = by_warehouse[warehouse]
@@ -637,8 +636,7 @@ def _fix_first_stage_decisions(
             name=f"fix_open_candidate[{warehouse}]",
         )
         model.addConstr(
-            candidate_capacity[warehouse]
-            == float(decision["candidate_capacity"]),
+            candidate_capacity[warehouse] == float(decision["candidate_capacity"]),
             name=f"fix_candidate_capacity[{warehouse}]",
         )
 
@@ -649,8 +647,7 @@ def _fix_first_stage_decisions(
             name=f"fix_expand_warehouse[{warehouse}]",
         )
         model.addConstr(
-            expand_capacity[warehouse]
-            == float(decision["expansion_capacity"]),
+            expand_capacity[warehouse] == float(decision["expansion_capacity"]),
             name=f"fix_expand_capacity[{warehouse}]",
         )
 
@@ -709,17 +706,14 @@ def _add_scenario_constraints(
                         data.periods[period_index - 1],
                     ]
                 )
-                inflow = (
-                    flow_od.sum(scenario, "*", warehouse, product, period)
-                    + flow_dd.sum(scenario, "*", warehouse, product, period)
+                inflow = flow_od.sum(scenario, "*", warehouse, product, period) + flow_dd.sum(
+                    scenario, "*", warehouse, product, period
                 )
-                outflow = (
-                    flow_dc.sum(scenario, warehouse, "*", product, period)
-                    + flow_dd.sum(scenario, warehouse, "*", product, period)
+                outflow = flow_dc.sum(scenario, warehouse, "*", product, period) + flow_dd.sum(
+                    scenario, warehouse, "*", product, period
                 )
                 model.addConstr(
-                    inventory[scenario, warehouse, product, period]
-                    == previous + inflow - outflow,
+                    inventory[scenario, warehouse, product, period] == previous + inflow - outflow,
                     name=f"inventory_balance[{scenario},{warehouse},{product},{period}]",
                 )
 
@@ -756,11 +750,9 @@ def _add_scenario_constraints(
             )
             model.addConstr(
                 gp.quicksum(
-                    inventory[scenario, warehouse, product, period]
-                    for product in data.products
+                    inventory[scenario, warehouse, product, period] for product in data.products
                 )
-                <= static_capacity
-                + emergency_static_capacity[scenario, warehouse, period],
+                <= static_capacity + emergency_static_capacity[scenario, warehouse, period],
                 name=f"static_capacity[{scenario},{warehouse},{period}]",
             )
 
@@ -779,8 +771,7 @@ def _add_scenario_constraints(
                     + flow_dd.sum(scenario, "*", warehouse, product, period)
                     for product in data.products
                 )
-                <= reception_capacity
-                + emergency_reception_capacity[scenario, warehouse, period],
+                <= reception_capacity + emergency_reception_capacity[scenario, warehouse, period],
                 name=f"reception_capacity[{scenario},{warehouse},{period}]",
             )
 
@@ -808,22 +799,13 @@ def _add_scenario_constraints(
                     open_candidate[warehouse],
                     False,
                     emergency_static_capacity[scenario, warehouse, period] == 0.0,
-                    name=(
-                        "emergency_static_only_if_active"
-                        f"[{scenario},{warehouse},{period}]"
-                    ),
+                    name=(f"emergency_static_only_if_active[{scenario},{warehouse},{period}]"),
                 )
                 model.addGenConstrIndicator(
                     open_candidate[warehouse],
                     False,
-                    emergency_reception_capacity[
-                        scenario, warehouse, period
-                    ]
-                    == 0.0,
-                    name=(
-                        "emergency_reception_only_if_active"
-                        f"[{scenario},{warehouse},{period}]"
-                    ),
+                    emergency_reception_capacity[scenario, warehouse, period] == 0.0,
+                    name=(f"emergency_reception_only_if_active[{scenario},{warehouse},{period}]"),
                 )
 
 
@@ -952,9 +934,7 @@ def _extract_stochastic_result(
                 }
             )
     for scenario, warehouse_from, warehouse_to, product, period in flow_dd.keys():
-        value = _value(
-            flow_dd[scenario, warehouse_from, warehouse_to, product, period]
-        )
+        value = _value(flow_dd[scenario, warehouse_from, warehouse_to, product, period])
         if value > VALUE_TOL:
             flows.append(
                 {
@@ -1013,46 +993,34 @@ def _extract_stochastic_result(
         scenario_metrics[scenario] = {
             "probability": data.scenario_prob[scenario],
             "operating_cost": sum(
-                _expression_value(expr)
-                for expr in scenario_costs[scenario].values()
+                _expression_value(expr) for expr in scenario_costs[scenario].values()
             ),
             "total_flow": sum(
-                record["value"]
-                for record in flows
-                if record["scenario"] == scenario
+                record["value"] for record in flows if record["scenario"] == scenario
             ),
             "total_unmet_demand": sum(
-                record["value"]
-                for record in unmet_records
-                if record["scenario"] == scenario
+                record["value"] for record in unmet_records if record["scenario"] == scenario
             ),
             "total_emergency_capacity": sum(
-                record["value"]
-                for record in emergency_records
-                if record["scenario"] == scenario
+                record["value"] for record in emergency_records if record["scenario"] == scenario
             ),
         }
     expected_operating_cost = sum(
         data.scenario_prob[scenario] * values["operating_cost"]
         for scenario, values in scenario_metrics.items()
     )
-    investment_cost = sum(
-        _expression_value(expression) for expression in investment_costs.values()
-    )
+    investment_cost = sum(_expression_value(expression) for expression in investment_costs.values())
     expected_unmet_quantity = sum(
-        data.scenario_prob[record["scenario"]] * record["value"]
-        for record in unmet_records
+        data.scenario_prob[record["scenario"]] * record["value"] for record in unmet_records
     )
     expected_emergency_quantity = sum(
-        data.scenario_prob[record["scenario"]] * record["value"]
-        for record in emergency_records
+        data.scenario_prob[record["scenario"]] * record["value"] for record in emergency_records
     )
     economic_cost = investment_cost + sum(
         value
         for name, value in cost_breakdown.items()
         if name not in investment_costs
-        and name
-        not in {"unmet_demand", "emergency_static", "emergency_reception"}
+        and name not in {"unmet_demand", "emergency_static", "emergency_reception"}
     )
     penalized_cost = sum(cost_breakdown.values())
     objective_values = {
@@ -1105,12 +1073,8 @@ def _extract_stochastic_result(
                 "candidate_shipping": model_config.candidate_shipping_daily_factor,
                 "expansion_reception": model_config.expansion_reception_daily_factor,
                 "expansion_shipping": model_config.expansion_shipping_daily_factor,
-                "bulkification_reception": (
-                    model_config.bulkification_reception_daily_factor
-                ),
-                "bulkification_shipping": (
-                    model_config.bulkification_shipping_daily_factor
-                ),
+                "bulkification_reception": (model_config.bulkification_reception_daily_factor),
+                "bulkification_shipping": (model_config.bulkification_shipping_daily_factor),
             },
             "second_stage_decisions": [
                 "flow_od",
@@ -1157,18 +1121,12 @@ def _extract_warehouse_decisions(
         else:
             open_value = 1.0 if warehouse in data.existing_warehouses else 0.0
             candidate_value = 0.0
-        expand_value = (
-            _value(expand_warehouse[warehouse]) if warehouse in expand_capacity else 0.0
-        )
+        expand_value = _value(expand_warehouse[warehouse]) if warehouse in expand_capacity else 0.0
         expansion_value = (
             _value(expand_capacity[warehouse]) if warehouse in expand_capacity else 0.0
         )
-        bulkify_value = (
-            _value(bulkify_warehouse[warehouse]) if warehouse in bulk_capacity else 0.0
-        )
-        bulk_value = (
-            _value(bulk_capacity[warehouse]) if warehouse in bulk_capacity else 0.0
-        )
+        bulkify_value = _value(bulkify_warehouse[warehouse]) if warehouse in bulk_capacity else 0.0
+        bulk_value = _value(bulk_capacity[warehouse]) if warehouse in bulk_capacity else 0.0
         decisions.append(
             {
                 "warehouse": warehouse,
@@ -1187,8 +1145,7 @@ def _extract_warehouse_decisions(
                     + expansion_value
                     + (
                         bulk_value
-                        if model_config.capacity_coupling_policy
-                        == "period_equivalent"
+                        if model_config.capacity_coupling_policy == "period_equivalent"
                         else 0.0
                     )
                 ),
