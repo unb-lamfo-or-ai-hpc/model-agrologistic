@@ -138,20 +138,65 @@ on compute nodes or `SLURM_MEM_PER_NODE`. The login submitter binds a clean,
 detached checkout and tool hashes before submission and rejects duplicate audit
 destinations. Use the existing venv313 and a new project audit directory.
 
-An accepted input preflight is not optimization acceptance. Both large-instance
-submission and production explicit-stage lifecycle remain closed. The next
-step is review of the paired input receipt and implementation/qualification of
-the production solve allocation and admission gate.
+NPAD job 2151158 completed this preflight on 3 October 2026 (107 seconds;
+scheduler MaxRSS 165688 KiB). Both arms loaded 215 warehouses, nine scenarios,
+60 periods and 14,054,654 estimated variables, with identical input products.
+The receipt retained the qualified core/runtime identity and the reviewed
+workbook and campaign hashes. Its canonical JSON content identity is
+`849200c1394bff4ea8cd302ef8779a4291755cec9d8cfc1f586995e7a0001a10`.
+Canonical hashing permits whitespace differences in a transferred JSON file;
+it does not permit changed contents. Original artifact byte hashes are still
+verified on NPAD. This input job neither built nor optimized the large model;
+its memory consumption is not a solve-memory estimate.
+
+Input acceptance is not optimization acceptance. The prepared input plan and
+receipt remain closed historical records. A separate execution plan can admit
+only one new 215-warehouse observation pair after allocation verification.
+Production explicit-stage lifecycle and 300/400-warehouse admission remain closed.
 
 ## Scheduler and execution protocol to qualify next
 
-Run one arm per process on the same node class, with identical job memory and
-CPU requests. Retain exact scontrol job/node records, CPU affinity, scheduler
-accounting, source commit and numerical-runtime identity for each arm.
+Run one arm per fresh process sequentially on the same allocated node, with
+identical memory and solver CPU settings. Retain exact scontrol job/node records,
+CPU affinity, scheduler accounting, source commit and numerical-runtime identity.
 Use the existing venv313 and isolated immutable checkouts. Do not hardcode QoS,
 require Git on compute nodes, rely on SLURM_MEM_PER_NODE, or modify an active
-checkout. The production solve allocation gate and submitter remain to be
-qualified after paired input preflight; this draft has no large solve worker.
+checkout. The paired worker does not use Git on compute nodes and does not
+depend on memory environment variables. No job is submitted by preparation.
+
+`scripts/admit_mvp2_resource_pair.py` rechecks the reviewed receipt content,
+all twelve original preflight products, captured input-job allocation records,
+the qualification and the full current tool/core/runtime identities. It writes
+`campaign.yaml` and `solve_plan.json` in a new execution directory; the only
+manifest change is its output directory. Original evidence is never overwritten.
+The solve submitter rejects modified tracked source and duplicate submissions.
+It uses a scheduler test-only request before claiming or submitting the pair.
+
+The standalone job requests account sxdsouza, intel-256, one node, four CPUs,
+192 GiB and 18 hours of scheduler time. The scheduler allowance covers two
+nominal eight-hour optimization budgets plus data loading, construction and
+export; it does not increase either optimization budget. QoS is inherited and
+reported, not forced. The worker requires exact RUNNING job/node records and
+196608 MiB allocated TRES memory before writing `solve_admission.json`.
+Scheduler-expanded CPU allocations do not change the four solver threads.
+Concurrent jobs on a shared node remain a possible performance confounder;
+the first pair supports observation and protocol review, not a speedup claim.
+
+Control executes first, followed by compact, each through the unmodified
+production batch runner in a fresh Python process. Separate logs and exit records
+are retained. A reported arm failure does not silently skip the second arm;
+changed evidence does stop further execution. The existing campaign auditor
+then exports `comparison/nine_results.json`, `comparison/nine_results.csv`,
+`comparison/nine_stage_gaps.json`, `comparison/nine_stage_gaps.csv` when stages
+are present, and `comparison/nine_audit_manifest.json`. It verifies completion
+hashes, independent validation and the three-stage quality criteria. A
+`pair_execution.json` records process closure only; it cannot certify a solution
+or a memory benefit. Scheduler interruption may leave partial logs without this
+closure record. Preserve those records and use a new directory for any retry.
+
+The new orchestration is tested with synthetic evidence and simulated scheduler
+commands. Its first real NPAD paired execution remains an experimental pilot.
+No changes to the qualified optimizer or numerical dependencies are required.
 
 Gurobi SoftMemLimit 128 is decimal GB, not 128 GiB. Slurm request units and
 native accounting are distinct. Report native solver memory, process-tree RSS,
