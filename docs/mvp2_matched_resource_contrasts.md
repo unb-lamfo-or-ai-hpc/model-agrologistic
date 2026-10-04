@@ -182,9 +182,15 @@ Scheduler-expanded CPU allocations do not change the four solver threads.
 Concurrent jobs on a shared node remain a possible performance confounder;
 the first pair supports observation and protocol review, not a speedup claim.
 
-Control executes first, followed by compact, each through the unmodified
-production batch runner in a fresh Python process. Separate logs and exit records
-are retained. A reported arm failure does not silently skip the second arm;
+Preparation defaults to control followed by compact. The preparation-only option
+`--arm-order compact,control` reverses execution without changing canonical
+experiment indices (control 0, compact 1), input definitions or solver settings.
+Only the permutations `[0,1]` and `[1,0]` are accepted. The solve plan, admission
+and closure record the order; execution cannot override it. The prepared plan's
+byte identity is rechecked after the license probe, before each arm and around
+the scientific audit. Each arm uses the unmodified production batch runner in a
+fresh Python process. Separate logs and exit records are retained.
+A reported arm failure does not silently skip the second arm;
 changed evidence does stop further execution. The existing campaign auditor
 then exports `comparison/nine_results.json`, `comparison/nine_results.csv`,
 `comparison/nine_stage_gaps.json`, `comparison/nine_stage_gaps.csv` when stages
@@ -233,8 +239,18 @@ cgroup usage and scheduler MaxRSS separately. Native thread counts and CPU
 ceilings do not establish effective parallel speedup. A memory cap is a campaign
 condition, not an intrinsic limit of the solver.
 
-Initially alternate arm order across matched repeats and retain at least three
-pairs before estimating variability. Keep seed 42 fixed for that comparison;
+The licensed retry, job 2151415, completed both arms and the scientific auditor
+accepted two of two results. Its transferred resource archive was subsequently
+inspected without running new optimizations. See
+[the h215 pilot evidence report](mvp2_h215_resource_pilot.md) for hash coverage,
+phase measurements, native hierarchy semantics and sampling limitations.
+
+Count that accepted control-first pilot as pair 1. Prepare pair 2 compact-first
+and, after reviewing its complete evidence, pair 3 control-first. Do not launch
+both repeats or the 300/400 cases as one unreviewed campaign. Three pairs provide
+an initial descriptive variability check, not a balanced design or a causal
+performance estimate; a fourth opposite-order pair may later improve balance.
+Keep seed 42 fixed for that comparison;
 seed variation and the 1/2/4/8/16-thread factorial belong to a later, separate
 protocol. An initial observation run is a pilot, not a speedup conclusion.
 
