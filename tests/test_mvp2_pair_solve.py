@@ -142,7 +142,7 @@ def test_recheck_execution_contract(tmp_path, change):
     elif change == "tools":
         value["tools"] = {}
     elif change == "order":
-        value["arm_order"] = [1, 0]
+        value["arm_order"] = [1, 1]
     elif change == "explicit":
         value["production_explicit_lifecycle_allowed"] = True
     else:
@@ -180,6 +180,114 @@ def test_scheduler_expansion_retains_four_solver_threads():
                              job_id="123", node_name="r1i3n3")
     assert value["allocated_cpus"] == 24 and value["cpus_per_task"] == 4
     assert value["allocated_memory_mib"] == 196608
+
+
+@pytest.mark.parametrize("order", [(0, 1), (1, 0)])
+@pytest.mark.parametrize("first_exit", [0, 1])
+def test_serial_order_is_preserved_in_admission_processes_and_closure(tmp_path, order, first_exit):
+    plan, receipt, reviewed = evidence(tmp_path)
+    destination = tmp_path / "ordered"
+    solve.prepare(plan, receipt, reviewed, destination, arm_order=order)
+    path = destination / "solve_plan.json"
+    record, _ = solve.check_execution(path)
+    assert record["arm_order"] == list(order)
+    calls = []
+
+    def runner(args, **kwargs):
+        if accept_probe(args):
+            return SimpleNamespace(returncode=0)
+        if "--index" in args:
+            calls.append(int(args[-1]))
+            return SimpleNamespace(returncode=first_exit if len(calls) == 1 else 0)
+        return SimpleNamespace(returncode=first_exit)
+
+    resource = solve.allocation(SOLVE_JOB, NODE, job_id="123", node_name="r1i3n3")
+    assert solve.execute(path, resource, solve.tool_identity(), "a" * 40,
+                         runner=runner) == first_exit
+    assert calls == list(order)
+    assert solve.read(destination / "solve_admission.json")["arm_order"] == list(order)
+    closure = solve.read(destination / "pair_execution.json")
+    assert closure["arm_order"] == list(order)
+    assert [arm["index"] for arm in closure["arm_processes"]] == list(order)
+    before = len(calls)
+    with pytest.raises(ValueError):
+        solve.execute(path, resource, solve.tool_identity(), "a" * 40, runner=runner)
+    assert len(calls) == before
+
+
+@pytest.mark.parametrize("order", [None, [], [0], [0, 0], [1, 1], [0, 2], [0, 1, 0],
+                                  [False, True], [0.0, 1.0], "0,1"])
+def test_invalid_order_rejected_before_destination_creation(tmp_path, order):
+    destination = tmp_path / "invalid"
+    with pytest.raises(ValueError, match="Arm order"):
+        solve.prepare(tmp_path / "absent-plan", tmp_path / "absent-receipt", "reviewed",
+                      destination, arm_order=order)
+    assert not destination.exists()
+
+
+def test_execution_cli_cannot_override_prepared_order(tmp_path, monkeypatch):
+    monkeypatch.setattr(sys, "argv", ["admit", "--solve-plan", str(tmp_path / "absent"),
+                                     "--arm-order", "compact,control", "--check"])
+    with pytest.raises(SystemExit) as stop:
+        solve.main()
+    assert stop.value.code == 2
+
+
+@pytest.mark.parametrize("order,expected", [("control,compact", [0, 1]),
+                                          ("compact,control", [1, 0])])
+def test_preparation_cli_records_requested_order(tmp_path, monkeypatch, order, expected):
+    plan, receipt, reviewed = evidence(tmp_path)
+    destination = tmp_path / "cli-execution"
+    monkeypatch.setattr(sys, "argv", ["admit", "--input-plan", str(plan),
+                                     "--input-receipt", str(receipt),
+                                     "--reviewed-receipt-identity", reviewed,
+                                     "--output-dir", str(destination), "--arm-order", order])
+    assert solve.main() == 0
+    record, _ = solve.check_execution(destination / "solve_plan.json")
+    assert record["arm_order"] == expected
+
+
+def test_reversed_order_stops_after_evidence_drift(tmp_path):
+    plan, receipt, reviewed = evidence(tmp_path)
+    destination = tmp_path / "ordered"
+    solve.prepare(plan, receipt, reviewed, destination, arm_order=(1, 0))
+    calls = []
+
+    def runner(args, **kwargs):
+        if accept_probe(args):
+            return SimpleNamespace(returncode=0)
+        calls.append(int(args[-1]))
+        receipt.write_text("{}")
+        return SimpleNamespace(returncode=0)
+
+    resource = solve.allocation(SOLVE_JOB, NODE, job_id="123", node_name="r1i3n3")
+    with pytest.raises(ValueError):
+        solve.execute(destination / "solve_plan.json", resource, solve.tool_identity(),
+                      "a" * 40, runner=runner)
+    assert calls == [1]
+    assert (destination / "logs/arm-1-exit.json").exists()
+    assert not (destination / "logs/arm-0.out").exists()
+
+
+@pytest.mark.parametrize("phase", ["probe", "first_arm"])
+def test_valid_order_change_during_execution_is_rejected(tmp_path, phase):
+    path = execution(tmp_path)
+    calls = []
+
+    def runner(args, **kwargs):
+        calls.append(args)
+        probe = accept_probe(args)
+        if (probe and phase == "probe") or (not probe and phase == "first_arm"):
+            value = solve.read(path)
+            value["arm_order"] = [1, 0]
+            path.write_text(json.dumps(value))
+        return SimpleNamespace(returncode=0)
+
+    resource = solve.allocation(SOLVE_JOB, NODE, job_id="123", node_name="r1i3n3")
+    with pytest.raises(ValueError, match="solve plan changed"):
+        solve.execute(path, resource, solve.tool_identity(), "a" * 40, runner=runner)
+    assert len(calls) == (1 if phase == "probe" else 2)
+    assert not (path.parent / "logs/arm-1.out").exists()
 
 
 @pytest.mark.parametrize("first_exit,audit_exit", [(0, 0), (1, 1), (0, 1)])
