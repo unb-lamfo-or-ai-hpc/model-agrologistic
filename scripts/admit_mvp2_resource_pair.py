@@ -99,7 +99,17 @@ def check_inputs(plan_path, receipt_path, reviewed_identity):
     return plan, manifest, receipt
 
 
-def prepare(plan_path, receipt_path, reviewed_identity, destination):
+def validate_arm_order(order):
+    """Keep arm indices canonical while admitting either serial execution order."""
+    if (not isinstance(order, (list, tuple)) or len(order) != 2
+            or any(type(index) is not int for index in order)
+            or set(order) != {0, 1}):
+        raise ValueError("Arm order must contain each canonical index (0 and 1) once.")
+    return list(order)
+
+
+def prepare(plan_path, receipt_path, reviewed_identity, destination, *, arm_order=(0, 1)):
+    arm_order = validate_arm_order(arm_order)
     plan_path, receipt_path = Path(plan_path).resolve(), Path(receipt_path).resolve()
     plan, _, _ = check_inputs(plan_path, receipt_path, reviewed_identity)
     destination = Path(destination).resolve()
@@ -123,7 +133,7 @@ def prepare(plan_path, receipt_path, reviewed_identity, destination):
         "input_receipt": str(receipt_path), "input_receipt_sha256": file_sha256(receipt_path),
         "reviewed_receipt_identity": reviewed_identity,
         "campaign_sha256": file_sha256(campaign), "tools": tool_identity(),
-        "arm_order": [0, 1], "production_explicit_lifecycle_allowed": False,
+        "arm_order": arm_order, "production_explicit_lifecycle_allowed": False,
         "allocation_profile": {"partition": "intel-256", "memory_mib": 196608,
                                "solver_threads": 4, "optimization_seconds_per_arm": 28800},
         "qualification": "One serial observation pair; no performance benefit asserted.",
@@ -135,10 +145,10 @@ def prepare(plan_path, receipt_path, reviewed_identity, destination):
 def check_execution(path):
     path = Path(path).resolve()
     record = read(path)
+    validate_arm_order(record.get("arm_order"))
     if (record.get("schema_version") != "mvp2-pair-solve-plan-v1"
             or record.get("status") != "ready_for_single_pair_submission"
             or record.get("tools") != tool_identity()
-            or record.get("arm_order") != [0, 1]
             or record.get("production_explicit_lifecycle_allowed") is not False
             or record.get("allocation_profile") != {
                 "partition": "intel-256", "memory_mib": 196608,
@@ -183,6 +193,13 @@ def execute(path, resource, submitted_tools, source_commit, *, runner=subprocess
     """Fresh sequential processes; scientific acceptance is delegated to the existing audit."""
     path = Path(path).resolve()
     record, _ = check_execution(path)
+    plan_sha256 = file_sha256(path)
+
+    def recheck():
+        if file_sha256(path) != plan_sha256:
+            raise ValueError("Prepared solve plan changed during execution.")
+        check_execution(path)
+
     if submitted_tools != tool_identity():
         raise ValueError("Tools changed after scheduler submission.")
     if (not source_commit or len(source_commit) != 40
@@ -218,13 +235,13 @@ def execute(path, resource, submitted_tools, source_commit, *, runner=subprocess
                       and abs(capability.get("objective_value", float("inf")) - PROBE_SIZE) <= 1e-6)
     except (OSError, ValueError, TypeError, subprocess.TimeoutExpired):
         license_ok = False
-    check_execution(path)
+    recheck()
     admission = {"schema_version": "mvp2-pair-solve-admission-v1",
                  "status": "admitted" if license_ok else "license_capability_rejected",
                  "created_at_utc": datetime.now(UTC).isoformat(),
                  "solve_plan_sha256": file_sha256(path), "source_commit": source_commit,
                  "allocation": resource, "tools": submitted_tools,
-                 "arm_order": [0, 1], "scope": "one_h215_warehouse_serial_pair",
+                 "arm_order": record["arm_order"], "scope": "one_h215_warehouse_serial_pair",
                  "license_file": LICENSE_FILE, "license_capability_accepted": license_ok,
                  "license_capability_sha256": (file_sha256(license_report)
                                                if license_report.is_file() else None)}
@@ -233,6 +250,7 @@ def execute(path, resource, submitted_tools, source_commit, *, runner=subprocess
         write(destination / "pair_execution.json", {
             "schema_version": "mvp2-pair-execution-v1", "status": "license_capability_rejected",
             "optimization_attempted": False, "arm_processes": [],
+            "arm_order": record["arm_order"],
             "source_commit": source_commit, "allocation": resource,
             "solve_plan_sha256": file_sha256(path),
             "qualification": "No large model constructed; license capability was not established.",
@@ -243,23 +261,24 @@ def execute(path, resource, submitted_tools, source_commit, *, runner=subprocess
     observations = []
     campaign = destination / "campaign.yaml"
     for index in record["arm_order"]:
-        check_execution(path)
+        recheck()
         with (destination / "logs" / f"arm-{index}.out").open("x", encoding="utf-8") as log:
             process = runner([sys.executable, str(ROOT / "scripts/run_batch_hpc.py"),
                               str(campaign), "--index", str(index)],
                              cwd=ROOT, env=env, stdout=log, stderr=subprocess.STDOUT, check=False)
         observations.append({"index": index, "return_code": process.returncode})
         write(destination / "logs" / f"arm-{index}-exit.json", observations[-1])
-    check_execution(path)
+    recheck()
     with (destination / "logs/audit.out").open("x", encoding="utf-8") as log:
         audit = runner([sys.executable, str(ROOT / "scripts/audit_nine_campaign.py"),
                         str(campaign), "--output-dir", str(destination / "comparison"),
                         "--require-accepted"], cwd=ROOT, env=env, stdout=log,
                        stderr=subprocess.STDOUT, check=False)
-    check_execution(path)
+    recheck()
     result = {"schema_version": "mvp2-pair-execution-v1",
               "status": "both_processes_returned", "optimization_attempted": True,
               "arm_processes": observations, "audit_return_code": audit.returncode,
+              "arm_order": record["arm_order"],
               "source_commit": source_commit, "allocation": resource,
               "solve_plan_sha256": file_sha256(path),
               "qualification": "Execution closure is not scientific or performance acceptance."}
@@ -273,6 +292,8 @@ def main():
     parser.add_argument("--input-receipt", type=Path)
     parser.add_argument("--reviewed-receipt-identity")
     parser.add_argument("--output-dir", type=Path)
+    parser.add_argument("--arm-order", choices=("control,compact", "compact,control"),
+                        help="Preparation only; default control,compact. Arm indices stay fixed.")
     parser.add_argument("--solve-plan", type=Path)
     parser.add_argument("--check", action="store_true")
     parser.add_argument("--tool-identity", action="store_true")
@@ -286,10 +307,13 @@ def main():
                                   args.reviewed_receipt_identity, args.output_dir)):
             parser.error("Preparation requires reviewed input evidence and a new output directory.")
         prepare(args.input_plan, args.input_receipt,
-                args.reviewed_receipt_identity, args.output_dir)
+                args.reviewed_receipt_identity, args.output_dir,
+                arm_order=(1, 0) if args.arm_order == "compact,control" else (0, 1))
         print(args.output_dir / "solve_plan.json")
         print("MVP2 SINGLE PAIR: PREPARED; ALLOCATION GATE STILL REQUIRED")
         return 0
+    if args.arm_order is not None:
+        parser.error("Execution order is read from the prepared solve plan; do not override it.")
     check_execution(args.solve_plan)
     if args.tool_identity:
         print(json.dumps(tool_identity()))
