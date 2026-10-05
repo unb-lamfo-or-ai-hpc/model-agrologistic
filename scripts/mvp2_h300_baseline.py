@@ -244,13 +244,18 @@ def check_execution(path):
 def allocation(job_text, node_text, *, job_id, node_name, cgroup):
     resource = pair.allocation(job_text, node_text, job_id=job_id, node_name=node_name)
     require(resource["cpus_per_task"] == 4, "Require four CPUs per task.")
+    job = pair.fields(job_text)
+    require(
+        job.get("NumTasks") == "1" and job.get("TimeLimit") == "12:00:00",
+        "Require one task and the reviewed 12-hour job wall time.",
+    )
     require(
         cgroup.get("error") is None
         and type(cgroup.get("limit_bytes")) is int
         and cgroup["limit_bytes"] >= policy()["allocation_profile"]["minimum_cgroup_limit_bytes"],
         "Actual finite cgroup memory cap is missing or below 192 GiB.",
     )
-    return {**resource, "cgroup": cgroup}
+    return {**resource, "tasks": 1, "walltime_seconds": 43200, "cgroup": cgroup}
 
 
 def execute(path, resource, submitted_tools, source, *, runner=subprocess.run):
