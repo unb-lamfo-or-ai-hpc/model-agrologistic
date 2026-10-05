@@ -85,7 +85,7 @@ def test_wrong_submission_and_existing_output_are_preserved(tmp_path):
 
 
 @pytest.mark.parametrize("change", [
-    None, "missing_review", "review_hash", "plan", "snapshot", "audit_hash",
+    None, "missing_review", "missing_size_checks", "review_hash", "plan", "snapshot", "audit_hash",
     "missing_arm", "review_id", "optimization", "within_limit", "excess", "scope",
 ])
 def test_collector_closes_reviewed_size_evidence_only_when_bound(tmp_path, change):
@@ -117,6 +117,8 @@ def test_collector_closes_reviewed_size_evidence_only_when_bound(tmp_path, chang
     size = receipt["size_checks"]["mvp2_h300_warehouse_compact"]
     if change == "missing_review":
         review_path.unlink()
+    elif change == "missing_size_checks":
+        receipt.pop("size_checks")
     elif change == "review_hash":
         review_path.write_text("{}")
     elif change == "plan":
@@ -146,3 +148,25 @@ def test_collector_closes_reviewed_size_evidence_only_when_bound(tmp_path, chang
         run, tmp_path / "collection", "123", accounting_text="123|COMPLETED|0:0\n"
     )
     assert summary["status"] == ("accepted" if change is None else "receipt_rejected")
+
+
+@pytest.mark.parametrize("change", ["missing", "limit", "size", "scope"])
+def test_h300_receipt_requires_two_consistent_size_checks(tmp_path, change):
+    run = run_fixture(tmp_path, accepted=True)
+    path = run / "audit/preflight/pair_preflight.json"
+    receipt = json.loads(path.read_text())
+    if change == "missing":
+        receipt.pop("size_checks")
+    else:
+        check = receipt["size_checks"]["mvp2_h300_warehouse_control"]
+        if change == "limit":
+            check["reference_limit"] = 1
+        elif change == "size":
+            check["total_variables"] += 1
+        else:
+            check["scope"] = "solve"
+    path.write_text(json.dumps(receipt))
+    summary, _, _ = collector.collect(
+        run, tmp_path / "collection", "123", accounting_text="123|COMPLETED|0:0\n"
+    )
+    assert summary["status"] == "receipt_rejected"
