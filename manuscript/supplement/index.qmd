@@ -4,6 +4,8 @@ date: 2026-10-02
 crossref:
   tbl-prefix: Table A.
   tbl-title: Table A.
+  fig-prefix: Fig. A.
+  fig-title: Fig. A.
 bibliography:
   - ../references.bib
   - ../review-methods.bib
@@ -23,118 +25,32 @@ keywords:
 ---
 
 
-# Review objective and eligibility
+# Systematic literature review
 
-The review asks: which mixed-integer linear programming formulations address
-facility and hub location in grain and related agricultural logistics?
-It emphasizes Latin American settings and compares deterministic and
-uncertainty-aware models. Reporting follows the structure of PRISMA 2020
-[@page2021]. Eligible publications are peer-reviewed journal articles or
-conference papers presenting an explicit mixed-integer linear formulation
-for agricultural supply-chain nodes, without a publication-year restriction.
-Mixed-integer nonlinear formulations, studies without facility-location
-decisions and unrelated commodities are excluded from the core sample.
-Broader reviews and complementary planning studies inform the synthesis but
-are not counted as core location formulations.
+This SLR synthesizes research on MILP models designed to optimize facility and hub location problems for grain warehouses, silos, and agricultural facilities with similar logistics. The review follows the PRISMA protocol [@page2021].
 
-## Information sources and search strategy
+The objective is to analyze the structural formulation of these models, including assumptions, decision variables, objective functions, and constraints, to establish a benchmark for MILP location models in agriculture and facilitate model comparison. The analysis emphasizes models addressing Latin American scenarios due to regional logistical and infrastructural challenges. It evaluates both deterministic and stochastic formulations to determine how uncertainty is integrated into these frameworks.
 
-The search covered Scopus, SciELO, Semantic Scholar and Web of Science.
-Search concepts combined storage facilities, agricultural commodities,
-location or allocation, mathematical programming and Latin American geography.
-English, Spanish and Brazilian Portuguese strings were adapted to the syntax
-of each database. @tbl-search-strings records the search concepts.
-The complete strings are given below to preserve reproducibility.
+The primary research question is: “What are the MILP models for facility and hub location problems in grain and agricultural product logistics?” Inclusion criteria required peer-reviewed journal articles or conference papers proposing deterministic or stochastic MILP formulations for agricultural supply chain nodes, with no restriction on publication year. The search string was translated into English, Spanish, and Brazilian Portuguese. The search covered Scopus, SciELO, Semantic Scholar, and Web of Science (WoS), with syntax adjusted for each platform. @tbl-search-strings details the search strings, criteria, and dates.
 
-| Concept | English terms | Spanish and Portuguese examples |
-|:--|:--|:--|
-| Facility | warehouse, silo, storage, facility, hub | almacén, almacenaje; armazém, armazenagem |
-| Commodity | grain, soy, rice, corn, wheat, crop | grano, soja, maíz, trigo; grão, milho, safra |
-| Location | location, localization, siting, allocation | localización, ubicación; localização, alocação |
-| Formulation | MILP, MIP, ILP, mixed integer, mathematical programming | programación entera; programação inteira |
-| Geography | Latin/South America and named countries | América Latina, Brasil, Argentina and neighboring countries |
+| Databases | Search dates | Language | Search strings |
+|:---|:---|:---|:---|
+| Scopus, SciELO, Semantic Scholar, Web of Science | 04-10-2026 | English | (warehouse* OR silo* OR storage OR facilit* OR hub*) AND (grain* OR soy* OR rice OR corn OR wheat OR crop* OR "agricultural commodit*") AND (locat* OR localiz* OR siting OR site OR sites OR allocat*) AND (MILP OR MIP OR ILP OR MINLP OR "mixed integer" OR "mixed-integer" OR "integer programming" OR "mathematical programming" OR "optimization model*") AND ("Latin America*" OR "South America*" OR Brazil* OR Brasil* OR Argentina OR Mexico OR Colombia OR Chile OR Peru OR Uruguay OR Paraguay) |
+| | | Spanish | (almacen* OR almacén* OR silo* OR almacenamiento OR instalacion* OR instalación* OR hub*) AND (grano* OR soja OR soya OR arroz OR maiz OR maíz OR trigo OR cosecha* OR cultiv* OR "commodit* agricola*" OR "productos agricola*") AND (localizac* OR localizació* OR ubicac* OR ubicación* OR asignac* OR asignació* OR emplazamiento) AND (MILP OR MIP OR ILP OR "entera mixta" OR "mixto-entera" OR "programacion entera" OR "programación entera" OR "lineal entera") AND ("América Latina" OR Sudamérica OR Centroamérica OR Brasil OR Argentina OR México OR Colombia OR Chile OR Perú OR Uruguay OR Paraguay) |
+| | | Portuguese Brazil | (armazem OR armazéns OR silo* OR armazenagem OR armazenamento OR instalac* OR instalaç* OR hub* ) AND ( grao* OR grão* OR soja OR arroz OR milho OR trigo OR safra* OR cultiv* OR "commodit* agricola*" ) AND ( localizac* OR localizaç* OR alocac* OR alocaç* OR posicionamento ) AND ( MILP OR MIP OR ILP OR "inteira mista" OR "misto-inteira" OR "programac* inteira" OR "programaç* inteira" OR "linear inteira" ) AND ( "América Latina" OR "América do Sul" OR Brasil OR Argentina OR Colômbia OR Chile OR México OR Peru OR Uruguai OR Paraguai) |
 
-: Search concepts. {#tbl-search-strings}
+: Databases, search dates, and search strings. {#tbl-search-strings}
 
-English:
+@fig-prisma presents the PRISMA flow diagram for new systematic reviews, which included searches of databases, registers, and other sources, mapping the selection process across the identification, screening, and inclusion phases.
 
-> (warehouse* OR silo* OR storage OR facilit* OR hub*) AND (grain* OR soy*
-> OR rice OR corn OR wheat OR crop* OR "agricultural commodit*") AND (locat*
-> OR localiz* OR siting OR site OR sites OR allocat*) AND (MILP OR MIP OR ILP
-> OR MINLP OR "mixed integer" OR "mixed-integer" OR "integer programming"
-> OR "mathematical programming" OR "optimization model*") AND ("Latin America*"
-> OR "South America*" OR Brazil* OR Brasil* OR Argentina OR Mexico OR Colombia
-> OR Chile OR Peru OR Uruguay OR Paraguay)
+![PRISMA flow diagram. Source: adapted by the authors (2025) according to @page2021.](figures/prisma-flow.png){#fig-prisma}
 
-Spanish:
+In the database search, identification yielded 478 records, including 432 from Semantic Scholar, 24 from Scopus, 17 from Web of Science, and 5 from SciELO. The removal of 59 duplicate records left 419 records for screening. Title and abstract screening resulted in the exclusion of 404 records. Of the remaining 15 reports, 1 could not be retrieved, leaving 14 for eligibility assessment. Full text evaluation excluded 8 reports because 7 did not focus on grains or products with similar modeling logic and 1 was a mixed integer nonlinear programming (MINLP) model, resulting in 6 selected studies.
 
-> (almacen* OR almacén* OR silo* OR almacenamiento OR instalacion* OR
-> instalación* OR hub*) AND (grano* OR soja OR soya OR arroz OR maiz OR maíz
-> OR trigo OR cosecha* OR cultiv* OR "commodit* agricola*" OR "productos
-> agricola*") AND (localizac* OR localizació* OR ubicac* OR ubicación*
-> OR asignac* OR asignació* OR emplazamiento) AND (MILP OR MIP OR ILP
-> OR "entera mixta" OR "mixto-entera" OR "programacion entera" OR
-> "programación entera" OR "lineal entera") AND ("América Latina"
-> OR Sudamérica OR Centroamérica OR Brasil OR Argentina OR México
-> OR Colombia OR Chile OR Perú OR Uruguay OR Paraguay)
+For alternative sources, identification yielded 20 records, consisting of 11 systematic literature reviews and 9 author-recommended studies. The removal of 2 duplicate records left 19 reports for retrieval, of which 1 could not be retrieved. The remaining 18 reports underwent eligibility assessment, resulting in 15 exclusions: 6 were MINLP models, 6 did not address facility location problems, 1 did not optimize grains or products with similar modeling logic, 1 was a systematic literature review, and 1 used a goal programming model, resulting in 3 selected studies.
 
-Brazilian Portuguese:
+The final review includes 9 studies, comprising 6 from the database search and 3 from alternative sources.
 
-> (armazem OR armazéns OR silo* OR armazenagem OR armazenamento OR instalac*
-> OR instalaç* OR hub*) AND (grao* OR grão* OR soja OR arroz OR milho OR trigo
-> OR safra* OR cultiv* OR "commodit* agricola*") AND (localizac* OR localizaç*
-> OR alocac* OR alocaç* OR posicionamento) AND (MILP OR MIP OR ILP OR
-> "inteira mista" OR "misto-inteira" OR "programac* inteira" OR
-> "programaç* inteira" OR "linear inteira") AND ("América Latina"
-> OR "América do Sul" OR Brasil OR Argentina OR Colômbia OR Chile OR México
-> OR Peru OR Uruguai OR Paraguai)
-
-The search log reports the date as “04-10-2026”. Its ISO interpretation remains
-unconfirmed. The review record supplied for this synthesis does not include
-database exports or the item-level screening ledger. These limitations affect
-the reproducibility of selection, rather than the arithmetic of the database
-branch or the identification of the nine studies discussed below.
-
-## Selection record
-
-@tbl-review-flow distinguishes the two selection branches. Database searches
-identified 478 records: 432 from Semantic Scholar, 24 from Scopus, 17 from Web
-of Science and five from SciELO. Removing 59 duplicates left 419 records.
-Title and abstract screening excluded 404, leaving 15 reports sought for
-retrieval. One was unavailable. Of 14 assessed reports, seven were excluded
-for commodity scope and one for a nonlinear formulation. Six studies remained.
-
-The alternative-source branch identified 20 records, including 11 reviews and
-nine author-recommended studies. Its reported duplicate and retrieval counts
-are inconsistent: subtracting two duplicates from 20 gives 18, whereas
-19 reports are listed as sought. The subsequent record lists one unavailable
-report, 18 assessed reports and 15 exclusions: six nonlinear formulations,
-six without facility location, one outside commodity scope, one review and
-one goal-programming model. Three studies were included. The counts are
-reported without assigning the discrepancy to an unverified screening step.
-
-| Selection step | Database branch | Alternative-source branch |
-|:--|--:|--:|
-| Identified records | 478 | 20 |
-| Duplicate records reported | 59 | 2 |
-| Screened records | 419 | Not separately reported |
-| Title/abstract exclusions | 404 | Not separately reported |
-| Reports sought | 15 | 19 |
-| Reports not retrieved | 1 | 1 |
-| Reports assessed | 14 | 18 |
-| Full-text exclusions | 8 | 15 |
-| Included studies | 6 | 3 |
-
-: Reported selection counts. The alternative-source duplicate-to-retrieval
-transition requires reconciliation before final submission. {#tbl-review-flow}
-
-The resulting synthesis comprises nine studies. They are compared by
-modeling structure rather than pooled effect sizes. A temporal classification
-in the supplied extraction labels Foulds's formulation single-period, while
-its title and discussion describe a dynamic network. The synthesis therefore
-retains the dynamic interpretation without assigning an unsupported period
-count [@foulds2005]. Counts of origins or candidate sites are treated as
-instance dimensions, not integer decision variables.
 
 # Structural synthesis
 
