@@ -1,6 +1,6 @@
 # Model Agrologistic
 
-Research project developed through international cooperation between the University of Brasilia (UnB) and the National University of the Littoral, Argentina.
+Research project developed through international cooperation between the University of Brasilia (UnB) and the National University of the Litoral, Argentina.
 
 Public manuscript: [article](https://unb-lamfo-or-ai-hpc.github.io/model-agrologistic/),
 [Appendix A](https://unb-lamfo-or-ai-hpc.github.io/model-agrologistic/supplementary-review.html)
