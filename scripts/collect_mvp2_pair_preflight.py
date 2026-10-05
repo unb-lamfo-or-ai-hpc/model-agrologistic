@@ -90,6 +90,22 @@ def receipt_errors(assets, job_id):
             if not valid:
                 errors.append(label)
         size_checks = receipt.get("size_checks", {})
+        if plan["case"] == "h300-warehouse":
+            required_arms = {f"mvp2_h300_warehouse_{arm}" for arm in ("control", "compact")}
+            if (set(size_checks) != required_arms or any(
+                type(check.get("total_variables")) is not int
+                or type(check.get("reference_limit")) is not int
+                or check["total_variables"] <= 0 or check["reference_limit"] <= 0
+                or check["total_variables"] != receipt["model_size"]["total_variables"]
+                or check.get("within_reference_limit") is not
+                (check["total_variables"] <= check["reference_limit"])
+                or (check["total_variables"] > check["reference_limit"]
+                    and not check.get("input_size_review"))
+                or check.get("scope") != "input_inspection_only"
+                or check.get("optimization_allowed") is not False
+                for check in size_checks.values()
+            )):
+                errors.append("two complete input-only size checks")
         if any(check.get("input_size_review") for check in size_checks.values()):
             review_bytes = assets["audit/input_size_review.json"]
             review = json.loads(review_bytes)
