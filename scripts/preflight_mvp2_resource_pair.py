@@ -119,37 +119,68 @@ def allocation(job_text, node_text, *, job_id, node_name):
             "cpus_per_task": int(job["CPUs/Task"]), "effective_qos": job.get("QOS")}
 
 
-def preflight(path, destination, resource_record, *, inspector=inspect_experiment):
-    """Export new input snapshots and a closed receipt; no optimizer is called."""
-    path, destination = Path(path).resolve(), Path(destination).resolve()
-    plan, manifest = check_plan(path)
-    submitted_tools = tool_identity()
-    protected = (path.parent, Path(plan["reference_manifest"]).resolve().parent,
-                 Path(plan["qualification_report"]).resolve().parent)
-    if destination.exists() or any(destination.is_relative_to(p) for p in protected):
-        raise ValueError("Choose a new preflight directory outside preserved evidence.")
-    destination.mkdir(parents=True, exist_ok=False)
+class InputContractError(ValueError):
+    """Keep the observed and required values when input inspection rejects a gate."""
+
+    def __init__(self, violations):
+        self.violations = violations
+        super().__init__(
+            "Population, scenario, size or connectivity preflight failed: "
+            + json.dumps(violations, sort_keys=True)
+        )
+
+
+def check_snapshot(plan, spec, snapshot, connectivity):
+    """Report individual input failures without relaxing the reference size guard."""
+    counts = snapshot.get("data_signature", {}).get("counts", {})
+    expected = {
+        "warehouses": (counts.get("warehouses"), PREFLIGHT_CASES[plan["case"]]),
+        "scenarios": (counts.get("scenarios"), 9),
+        "periods": (counts.get("periods"), 60),
+        "scenario_count": (snapshot.get("scenario_count"), 9),
+        "period_count": (snapshot.get("period_count"), 60),
+        **{key: (snapshot.get(key), 0) for key in (
+            "routes_oc", "base_routes_oc", "repair_routes_oc"
+        )},
+        "workbook_sha256": (snapshot.get("workbook_sha256"), plan["workbook_sha256"]),
+        "connectivity_status": (connectivity.get("status"), "accepted"),
+    }
+    violations = [
+        {"field": key, "observed": actual, "required": required}
+        for key, (actual, required) in expected.items() if actual != required
+    ]
+    size, limit = snapshot.get("total_variables"), spec.max_estimated_variables
+    if type(size) is not int or size <= 0:
+        violations.append({"field": "total_variables", "observed": size,
+                           "required": "positive integer"})
+    if limit is None or (type(size) is int and size > limit):
+        violations.append({"field": "max_estimated_variables", "observed": size,
+                           "reference_limit": limit,
+                           "excess_variables": size - limit if type(size) is int
+                           and limit is not None else None})
+    if violations:
+        raise InputContractError(violations)
+    return {"total_variables": size, "reference_limit": limit,
+            "within_reference_limit": True}
+
+
+def _inspect_pair(path, destination, resource_record, plan, manifest, submitted_tools,
+                  diagnostics, inspector):
+    """Close input evidence only after both arms and their audit products agree."""
     snapshots = []
     for spec in manifest.experiments:
+        diagnostics.update(phase="input_loading", arm=spec.name)
         inspector(spec, destination)
+        diagnostics["phase"] = "snapshot_validation"
         folder = destination / spec.name
         snapshot = json.loads((folder / "preflight.json").read_text(encoding="utf-8"))
         snapshot.pop("execution", None)
-        counts = snapshot["data_signature"]["counts"]
         connectivity = json.loads((folder / "interhub_connectivity_audit.json").read_text())
-        if (counts["warehouses"] != PREFLIGHT_CASES[plan["case"]]
-                or counts["scenarios"] != 9
-                or counts["periods"] != 60 or snapshot["scenario_count"] != 9
-                or snapshot["period_count"] != 60
-                or any(snapshot[key] != 0 for key in (
-                    "routes_oc", "base_routes_oc", "repair_routes_oc"
-                ))
-                or snapshot["workbook_sha256"] != plan["workbook_sha256"]
-                or spec.max_estimated_variables is None
-                or not 0 < snapshot["total_variables"] <= spec.max_estimated_variables
-                or connectivity.get("status") != "accepted"):
-            raise ValueError("Population, scenario, size or connectivity preflight failed.")
+        diagnostics["size_checks"][spec.name] = check_snapshot(
+            plan, spec, snapshot, connectivity
+        )
         snapshots.append(snapshot)
+    diagnostics.update(phase="arm_parity", arm=None)
     if snapshots[0] != snapshots[1]:
         raise ValueError("The two arms loaded different model data or dimensions.")
     for name in PRODUCTS[1:]:
@@ -157,6 +188,7 @@ def preflight(path, destination, resource_record, *, inspector=inspect_experimen
                 for spec in manifest.experiments}) != 1:
             raise ValueError(f"The arms differ in {name}.")
     # Recheck source/data/evidence after loading, before closing the snapshot.
+    diagnostics["phase"] = "identity_recheck"
     check_plan(path)
     if tool_identity() != submitted_tools:
         raise ValueError("Preflight tools changed during input inspection.")
@@ -175,6 +207,43 @@ def preflight(path, destination, resource_record, *, inspector=inspect_experimen
             "Input preflight only; solve allocation and paired admission remain required."
         ),
     }
+    return result
+
+
+def preflight(path, destination, resource_record, *, inspector=inspect_experiment):
+    """Preserve partial diagnostics on rejection; emit acceptance only on success."""
+    path, destination = Path(path).resolve(), Path(destination).resolve()
+    plan, manifest = check_plan(path)
+    submitted_tools = tool_identity()
+    protected = (path.parent, Path(plan["reference_manifest"]).resolve().parent,
+                 Path(plan["qualification_report"]).resolve().parent)
+    if destination.exists() or any(destination.is_relative_to(p) for p in protected):
+        raise ValueError("Choose a new preflight directory outside preserved evidence.")
+    destination.mkdir(parents=True, exist_ok=False)
+    diagnostics = {
+        "schema_version": "mvp2-resource-pair-preflight-diagnostics-v1",
+        "status": "running", "case": plan["case"], "allocation": resource_record,
+        "optimization_executed": False, "large_instance_submission_allowed": False,
+        "size_checks": {}, "phase": "input_loading", "arm": None,
+    }
+    try:
+        result = _inspect_pair(path, destination, resource_record, plan, manifest,
+                               submitted_tools, diagnostics, inspector)
+    except Exception as error:
+        diagnostics.update(
+            status="failed", error_type=type(error).__name__, error_message=str(error),
+            violations=getattr(error, "violations", []),
+            created_at_utc=datetime.now(UTC).isoformat(),
+        )
+        (destination / "pair_preflight_diagnostics.json").write_text(
+            json.dumps(diagnostics, indent=2) + "\n"
+        )
+        raise
+    diagnostics.update(status="accepted", phase="complete", arm=None,
+                       created_at_utc=datetime.now(UTC).isoformat())
+    (destination / "pair_preflight_diagnostics.json").write_text(
+        json.dumps(diagnostics, indent=2) + "\n"
+    )
     (destination / "pair_preflight.json").write_text(json.dumps(result, indent=2) + "\n")
     return result
 
