@@ -21,10 +21,10 @@ JOB = ("JobId=123 JobState=RUNNING Partition=intel-256 NumNodes=1 "
 NODE = "NodeName=r1i3n3 RealMemory=256000"
 
 
-def prepared(tmp_path):
-    reference, qualification = fixture(tmp_path, "h215-warehouse")
+def prepared(tmp_path, case="h215-warehouse"):
+    reference, qualification = fixture(tmp_path, case)
     contrasts.prepare(reference, file_sha256(reference), 0, qualification,
-                      tmp_path / "pair", "h215-warehouse")
+                      tmp_path / "pair", case)
     return tmp_path / "pair/resource_contrast_plan.json"
 
 
@@ -36,8 +36,12 @@ def inspector(spec, output):
         (folder / name).write_text("identical-input\n")
     (folder / "preflight.json").write_text(json.dumps({
         "scenario_count": 9, "period_count": 60, "total_variables": 14054654,
+        "routes_oc": 0, "base_routes_oc": 0, "repair_routes_oc": 0,
         "workbook_sha256": file_sha256(spec.workbook),
-        "data_signature": {"counts": {"warehouses": 215, "scenarios": 9, "periods": 60}},
+        "data_signature": {"counts": {
+            "warehouses": spec.metadata["warehouse_population"],
+            "scenarios": 9, "periods": 60,
+        }},
         "execution": {"run": spec.name},
     }))
     (folder / "interhub_connectivity_audit.json").write_text('{"status":"accepted"}')
@@ -57,6 +61,49 @@ def test_closed_pair_exports_inputs_and_preserves_evidence(tmp_path):
         assert file_sha256(destination / name) == digest
     assert json.loads((destination / "pair_preflight.json").read_text()) == result
     assert all(file_sha256(p) == digest for p, digest in before.items())
+
+
+def test_h300_warehouse_only_preflight_is_input_only(tmp_path):
+    plan = prepared(tmp_path, "h300-warehouse")
+    destination = tmp_path / "audit"
+    result = gate.preflight(plan, destination, {"fixture": True}, inspector=inspector)
+    assert result["case"] == "h300-warehouse"
+    assert result["model_size"]["data_signature"]["counts"]["warehouses"] == 300
+    assert result["model_size"]["routes_oc"] == 0
+    assert result["optimization_executed"] is False
+    assert result["large_instance_submission_allowed"] is False
+    assert len(result["artifacts"]) == 12
+
+
+def test_h300_case_cannot_be_relabelled_from_h215(tmp_path):
+    plan = prepared(tmp_path)
+    record = json.loads(plan.read_text())
+    record["case"] = "h300-warehouse"
+    plan.write_text(json.dumps(record))
+    with pytest.raises(ValueError, match="Reference population"):
+        gate.check_plan(plan)
+
+
+@pytest.mark.parametrize("change", ["population", "direct_routes", "size"])
+def test_h300_preflight_rejects_population_routes_and_size(tmp_path, change):
+    plan = prepared(tmp_path, "h300-warehouse")
+
+    def changed(spec, output):
+        inspector(spec, output)
+        path = output / spec.name / "preflight.json"
+        record = json.loads(path.read_text())
+        if change == "population":
+            record["data_signature"]["counts"]["warehouses"] = 215
+        elif change == "direct_routes":
+            record["routes_oc"] = 1
+        else:
+            record["total_variables"] = 43000001
+        path.write_text(json.dumps(record))
+
+    destination = tmp_path / "audit"
+    with pytest.raises(ValueError, match="Population, scenario, size or connectivity"):
+        gate.preflight(plan, destination, {}, inspector=changed)
+    assert not (destination / "pair_preflight.json").exists()
 
 
 @pytest.mark.parametrize("field,value", [
