@@ -23,11 +23,13 @@ TOOLS = (
     "scripts/preflight_mvp2_resource_pair.py",
     "scripts/submit_mvp2_pair_preflight.sh",
     "scripts/run_mvp2_pair_preflight.slurm",
+    "docs/mvp2_h300_input_size_review.json",
 )
 PRODUCTS = (
     "preflight.json", "model_audit.json", "interhub_connectivity_audit.json",
     "interhub_components.csv", "interhub_repair_edges.csv", "interhub_path_summary.csv",
 )
+PREFLIGHT_CASES = {"h215-warehouse": 215, "h300-warehouse": 300}
 
 
 def tool_identity():
@@ -41,14 +43,15 @@ def check_plan(path):
     if (
         plan.get("schema_version") != "mvp2-resource-contrast-plan-v1"
         or plan.get("status") != "prepared_not_admitted"
-        or plan.get("case") != "h215-warehouse"
+        or plan.get("case") not in PREFLIGHT_CASES
         or plan.get("contrast") != "compact_python_indices"
         or plan.get("large_instance_submission_allowed") is not False
         or plan.get("production_explicit_lifecycle_allowed") is not False
         or plan.get("implementation") != implementation_identity()
         or plan.get("preparer_sha256") != file_sha256(ROOT / TOOLS[0])
     ):
-        raise ValueError("Require the unchanged qualified 215-warehouse positive-control plan.")
+        raise ValueError("Require a qualified warehouse-only h215 or h300 input plan.")
+    population = PREFLIGHT_CASES[plan["case"]]
     qualification = Path(plan["qualification_report"]).resolve()
     reference = Path(plan["reference_manifest"]).resolve()
     campaign = path.parent / "campaign.yaml"
@@ -65,8 +68,9 @@ def check_plan(path):
     if type(index) is not int or not 0 <= index < len(baseline.experiments):
         raise ValueError("Invalid reference index.")
     spec = baseline.experiments[index]
-    if spec.metadata.get("warehouse_population") != 215 or spec.model.use_direct_origin_customer:
-        raise ValueError("Reference is not the reviewed positive control.")
+    if (spec.metadata.get("warehouse_population") != population
+            or spec.model.use_direct_origin_customer):
+        raise ValueError("Reference population or warehouse-only policy changed.")
     if file_sha256(spec.workbook) != plan["workbook_sha256"]:
         raise ValueError("Workbook checksum mismatch.")
     manifest = load_experiment_manifest(campaign)
@@ -77,7 +81,7 @@ def check_plan(path):
     for actual, arm, compact in zip(manifest.experiments, ("control", "compact"),
                                     (False, True), strict=True):
         expected = asdict(spec)
-        expected["name"] = f"mvp2_h215_warehouse_{arm}"
+        expected["name"] = f"mvp2_{plan['case'].replace('-', '_')}_{arm}"
         expected["solver"].update(
             collect_resource_diagnostics=True, resource_sample_seconds=5.0,
             resource_max_samples=8192, collect_solver_diagnostics=True,
@@ -116,8 +120,124 @@ def allocation(job_text, node_text, *, job_id, node_name):
             "cpus_per_task": int(job["CPUs/Task"]), "effective_qos": job.get("QOS")}
 
 
+class InputContractError(ValueError):
+    """Keep the observed and required values when input inspection rejects a gate."""
+
+    def __init__(self, violations):
+        self.violations = violations
+        super().__init__(
+            "Population, scenario, size or connectivity preflight failed: "
+            + json.dumps(violations, sort_keys=True)
+        )
+
+
+def reviewed_input_size(plan, spec, snapshot, audit_hashes):
+    """Recognize one reviewed input profile, never a general solve-limit override."""
+    review = json.loads((ROOT / TOOLS[-1]).read_text(encoding="utf-8"))
+    if (review.get("schema_version") != "mvp2-input-size-review-v1"
+            or review.get("scope") != "input_inspection_only"
+            or review.get("optimization_allowed") is not False
+            or plan.get("case") != "h300-warehouse"
+            or spec.max_estimated_variables != review["reference_limit"]
+            or any(plan.get(key) != value for key, value in review["plan_fields"].items())
+            or any(snapshot.get(key) != value
+                   for key, value in review["snapshot_fields"].items())
+            or snapshot.get("data_signature", {}).get("counts") != review["counts"]
+            or audit_hashes != review["audit_sha256"]):
+        return None
+    return review["review_id"]
+
+
+def check_snapshot(plan, spec, snapshot, connectivity, *, audit_hashes=None):
+    """Separate reviewed input dimensions from the unchanged solver size guard."""
+    counts = snapshot.get("data_signature", {}).get("counts", {})
+    expected = {
+        "warehouses": (counts.get("warehouses"), PREFLIGHT_CASES[plan["case"]]),
+        "scenarios": (counts.get("scenarios"), 9),
+        "periods": (counts.get("periods"), 60),
+        "scenario_count": (snapshot.get("scenario_count"), 9),
+        "period_count": (snapshot.get("period_count"), 60),
+        **{key: (snapshot.get(key), 0) for key in (
+            "routes_oc", "base_routes_oc", "repair_routes_oc"
+        )},
+        "workbook_sha256": (snapshot.get("workbook_sha256"), plan["workbook_sha256"]),
+        "connectivity_status": (connectivity.get("status"), "accepted"),
+    }
+    violations = [
+        {"field": key, "observed": actual, "required": required}
+        for key, (actual, required) in expected.items() if actual != required
+    ]
+    size, limit = snapshot.get("total_variables"), spec.max_estimated_variables
+    if type(size) is not int or size <= 0:
+        violations.append({"field": "total_variables", "observed": size,
+                           "required": "positive integer"})
+    review_id = None
+    if type(size) is int and limit is not None and size > limit:
+        review_id = reviewed_input_size(plan, spec, snapshot, audit_hashes)
+    if limit is None or (type(size) is int and size > limit and review_id is None):
+        violations.append({"field": "max_estimated_variables", "observed": size,
+                           "reference_limit": limit,
+                           "excess_variables": size - limit if type(size) is int
+                           and limit is not None else None})
+    if violations:
+        raise InputContractError(violations)
+    return {"total_variables": size, "reference_limit": limit,
+            "within_reference_limit": size <= limit,
+            "excess_variables": max(0, size - limit),
+            "input_size_review": review_id, "scope": "input_inspection_only",
+            "optimization_allowed": False}
+
+
+def _inspect_pair(path, destination, resource_record, plan, manifest, submitted_tools,
+                  diagnostics, inspector):
+    """Close input evidence only after both arms and their audit products agree."""
+    snapshots = []
+    for spec in manifest.experiments:
+        diagnostics.update(phase="input_loading", arm=spec.name)
+        inspector(spec, destination)
+        diagnostics["phase"] = "snapshot_validation"
+        folder = destination / spec.name
+        snapshot = json.loads((folder / "preflight.json").read_text(encoding="utf-8"))
+        snapshot.pop("execution", None)
+        connectivity = json.loads((folder / "interhub_connectivity_audit.json").read_text())
+        diagnostics["size_checks"][spec.name] = check_snapshot(
+            plan, spec, snapshot, connectivity,
+            audit_hashes={name: file_sha256(folder / name) for name in PRODUCTS[1:]},
+        )
+        snapshots.append(snapshot)
+    diagnostics.update(phase="arm_parity", arm=None)
+    if snapshots[0] != snapshots[1]:
+        raise ValueError("The two arms loaded different model data or dimensions.")
+    for name in PRODUCTS[1:]:
+        if len({file_sha256(destination / spec.name / name)
+                for spec in manifest.experiments}) != 1:
+            raise ValueError(f"The arms differ in {name}.")
+    # Recheck source/data/evidence after loading, before closing the snapshot.
+    diagnostics["phase"] = "identity_recheck"
+    check_plan(path)
+    if tool_identity() != submitted_tools:
+        raise ValueError("Preflight tools changed during input inspection.")
+    artifacts = {f"{spec.name}/{name}": file_sha256(destination / spec.name / name)
+                 for spec in manifest.experiments for name in PRODUCTS}
+    result = {
+        "schema_version": "mvp2-resource-pair-preflight-v1",
+        "status": "accepted", "case": plan["case"],
+        "created_at_utc": datetime.now(UTC).isoformat(),
+        "plan_sha256": file_sha256(path), "campaign_sha256": plan["campaign_sha256"],
+        "workbook_sha256": plan["workbook_sha256"], "implementation": implementation_identity(),
+        "tools": tool_identity(), "allocation": resource_record,
+        "model_size": snapshots[0], "artifacts": artifacts,
+        "size_checks": diagnostics["size_checks"],
+        "optimization_executed": False, "large_instance_submission_allowed": False,
+        "qualification": (
+            "Input preflight only; solve allocation and paired admission remain required."
+        ),
+    }
+    return result
+
+
 def preflight(path, destination, resource_record, *, inspector=inspect_experiment):
-    """Export new input snapshots and a closed receipt; no optimizer is called."""
+    """Preserve partial diagnostics on rejection; emit acceptance only on success."""
     path, destination = Path(path).resolve(), Path(destination).resolve()
     plan, manifest = check_plan(path)
     submitted_tools = tool_identity()
@@ -126,47 +246,30 @@ def preflight(path, destination, resource_record, *, inspector=inspect_experimen
     if destination.exists() or any(destination.is_relative_to(p) for p in protected):
         raise ValueError("Choose a new preflight directory outside preserved evidence.")
     destination.mkdir(parents=True, exist_ok=False)
-    snapshots = []
-    for spec in manifest.experiments:
-        inspector(spec, destination)
-        folder = destination / spec.name
-        snapshot = json.loads((folder / "preflight.json").read_text(encoding="utf-8"))
-        snapshot.pop("execution", None)
-        counts = snapshot["data_signature"]["counts"]
-        connectivity = json.loads((folder / "interhub_connectivity_audit.json").read_text())
-        if (counts["warehouses"] != 215 or counts["scenarios"] != 9
-                or counts["periods"] != 60 or snapshot["scenario_count"] != 9
-                or snapshot["period_count"] != 60
-                or snapshot["workbook_sha256"] != plan["workbook_sha256"]
-                or spec.max_estimated_variables is None
-                or not 0 < snapshot["total_variables"] <= spec.max_estimated_variables
-                or connectivity.get("status") != "accepted"):
-            raise ValueError("Population, scenario, size or connectivity preflight failed.")
-        snapshots.append(snapshot)
-    if snapshots[0] != snapshots[1]:
-        raise ValueError("The two arms loaded different model data or dimensions.")
-    for name in PRODUCTS[1:]:
-        if len({file_sha256(destination / spec.name / name)
-                for spec in manifest.experiments}) != 1:
-            raise ValueError(f"The arms differ in {name}.")
-    # Recheck source/data/evidence after loading, before closing the snapshot.
-    check_plan(path)
-    if tool_identity() != submitted_tools:
-        raise ValueError("Preflight tools changed during input inspection.")
-    artifacts = {f"{spec.name}/{name}": file_sha256(destination / spec.name / name)
-                 for spec in manifest.experiments for name in PRODUCTS}
-    result = {
-        "schema_version": "mvp2-resource-pair-preflight-v1",
-        "status": "accepted", "created_at_utc": datetime.now(UTC).isoformat(),
-        "plan_sha256": file_sha256(path), "campaign_sha256": plan["campaign_sha256"],
-        "workbook_sha256": plan["workbook_sha256"], "implementation": implementation_identity(),
-        "tools": tool_identity(), "allocation": resource_record,
-        "model_size": snapshots[0], "artifacts": artifacts,
+    diagnostics = {
+        "schema_version": "mvp2-resource-pair-preflight-diagnostics-v1",
+        "status": "running", "case": plan["case"], "allocation": resource_record,
         "optimization_executed": False, "large_instance_submission_allowed": False,
-        "qualification": (
-            "Input preflight only; solve allocation and paired admission remain required."
-        ),
+        "size_checks": {}, "phase": "input_loading", "arm": None,
     }
+    try:
+        result = _inspect_pair(path, destination, resource_record, plan, manifest,
+                               submitted_tools, diagnostics, inspector)
+    except Exception as error:
+        diagnostics.update(
+            status="failed", error_type=type(error).__name__, error_message=str(error),
+            violations=getattr(error, "violations", []),
+            created_at_utc=datetime.now(UTC).isoformat(),
+        )
+        (destination / "pair_preflight_diagnostics.json").write_text(
+            json.dumps(diagnostics, indent=2) + "\n"
+        )
+        raise
+    diagnostics.update(status="accepted", phase="complete", arm=None,
+                       created_at_utc=datetime.now(UTC).isoformat())
+    (destination / "pair_preflight_diagnostics.json").write_text(
+        json.dumps(diagnostics, indent=2) + "\n"
+    )
     (destination / "pair_preflight.json").write_text(json.dumps(result, indent=2) + "\n")
     return result
 

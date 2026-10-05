@@ -71,6 +71,23 @@ def test_original_inputs_and_new_destination_only(tmp_path):
         solve.prepare(plan, receipt, reviewed, destination)
 
 
+def test_h300_input_receipt_cannot_admit_a_solve(tmp_path):
+    plan = prepared(tmp_path, "h300-warehouse")
+    root = tmp_path / "input-audit"
+    root.mkdir()
+    scheduler = root / "scheduler"
+    scheduler.mkdir()
+    (scheduler / "job.txt").write_text(JOB)
+    (scheduler / "node.txt").write_text(NODE)
+    resource = inputs.allocation(JOB, NODE, job_id="123", node_name="r1i3n3")
+    receipt = inputs.preflight(plan, root / "preflight", resource, inspector=inspector)
+    destination = tmp_path / "execution"
+    with pytest.raises(ValueError, match="only for h215-warehouse"):
+        solve.prepare(plan, root / "preflight/pair_preflight.json",
+                      solve.identity(receipt), destination)
+    assert not destination.exists()
+
+
 @pytest.mark.parametrize("change", [
     "review", "receipt_status", "receipt_allocation", "products", "missing_product",
     "plan", "scheduler", "tools", "implementation", "dimensions",

@@ -1,0 +1,48 @@
+{
+  "schema_version": "mvp2-input-size-review-v1",
+  "review_id": "h300-warehouse-input-only-20261005",
+  "scope": "input_inspection_only",
+  "optimization_allowed": false,
+  "failed_job": "2198038",
+  "evidence_archive_sha256": "538f02f71d9194e22d964a1d18271258488ee20173ee24f1452490147a93eb36",
+  "historical_comparison": "docs/evidence/sprint_c_final_20260920/comparison_cases.json",
+  "historical_case": "nine_h300_p20_warehouse_gurobi",
+  "plan_fields": {
+    "case": "h300-warehouse",
+    "reference_index": 2,
+    "reference_manifest_sha256": "348c4c08c2c9e906cbd3a28df7753577ebed3cac30702aae30dfb8ce2ad25694",
+    "workbook_sha256": "7761cce77cf93dcba2f617714f0117c1f2ead4de0c3f27149daceba447e0c7d1"
+  },
+  "reference_limit": 25000000,
+  "snapshot_fields": {
+    "total_variables": 25107544,
+    "flow_variables": 24429600,
+    "inventory_variables": 324000,
+    "emergency_capacity_variables": 324000,
+    "investment_variables": 784,
+    "unmet_demand_variables": 29160,
+    "routes_od": 4440,
+    "routes_dc": 4800,
+    "routes_dd": 36000,
+    "routes_oc": 0
+  },
+  "counts": {
+    "warehouses": 300,
+    "existing_warehouses": 146,
+    "candidate_warehouses": 154,
+    "origins": 37,
+    "domestic_customers": 27,
+    "export_customers": 10,
+    "products": 2,
+    "scenarios": 9,
+    "periods": 60
+  },
+  "audit_sha256": {
+    "model_audit.json": "012493bd8595b1f4d620d0c60831ee54781a3d126c49634646946e87f00e80a5",
+    "interhub_connectivity_audit.json": "4a30103586abe8e17e49d16e3cacae5f38fd0f335497d255538cf4acf0bba55e",
+    "interhub_components.csv": "68858eb5e1f7669c16ba71494b3d22b9730597b36261e7ea0f9e5b6614f3bc19",
+    "interhub_repair_edges.csv": "cd3662e19358d759605a7006754899163aa8160ee24674eacf093f27da4c4467",
+    "interhub_path_summary.csv": "2d6d7c1eca17ce0227cc9978d3f26982089afe8ab13d279e86f35cde174b6c53"
+  },
+  "decision": "Accept this exact input profile for inspection of both arms only. Preserve the campaign's solver size guard unchanged; h300 solve admission remains closed."
+}

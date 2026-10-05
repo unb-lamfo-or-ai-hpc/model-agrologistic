@@ -33,6 +33,7 @@ sbatch --test-only "${options[@]}" scripts/run_mvp2_pair_preflight.slurm
 mkdir "$MVP2_PAIR_AUDIT/.submission-claimed"
 printf '%s\n' "$MVP2_PAIR_SOURCE" > "$MVP2_PAIR_AUDIT/source_commit.txt"
 printf '%s\n' "$MVP2_PAIR_TOOLS" > "$MVP2_PAIR_AUDIT/tool_hashes.json"
+cp docs/mvp2_h300_input_size_review.json "$MVP2_PAIR_AUDIT/input_size_review.json"
 job="$(sbatch --parsable "${options[@]}" scripts/run_mvp2_pair_preflight.slurm)"
 printf 'MVP2_PAIR_PREFLIGHT_JOB=%s\n' "$job" | tee "$MVP2_PAIR_AUDIT/submission.txt"
 printf 'Report: %s/preflight/pair_preflight.json\n' "$MVP2_PAIR_AUDIT"
