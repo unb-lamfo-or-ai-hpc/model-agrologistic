@@ -152,7 +152,13 @@ its memory consumption is not a solve-memory estimate.
 Input acceptance is not optimization acceptance. The prepared input plan and
 receipt remain closed historical records. A separate execution plan can admit
 only one new 215-warehouse observation pair after allocation verification.
-Production explicit-stage lifecycle and 300/400-warehouse admission remain closed.
+Production explicit-stage lifecycle and 300/400-warehouse solve admission remain closed.
+
+The subsequent [h300 warehouse-only input-preflight extension](mvp2_h300_input_preflight.md)
+qualifies the data-loading gate for 300 warehouses without direct routes. It
+retains the same source and evidence checks, verifies zero origin-to-customer
+routes in the size estimate and emits an input-only receipt. The solve admitter
+continues to require h215; h300 optimization needs a separate admission review.
 
 ## Scheduler and execution protocol to qualify next
 
