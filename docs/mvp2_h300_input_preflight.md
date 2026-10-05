@@ -158,6 +158,27 @@ acceptance additionally requires matching plan, campaign, tools, job, case and
 all twelve input product hashes, plus the bound size review if used. Use a new collection directory to preserve
 previous archives. Supply the exact run directory and submitted job ID.
 
+## Accepted NPAD input gate
+
+Job **2198085**, submitted from
+`3957f84ff49ac500eecf25b85e6b710b4b3b1010`, completed `0:0` in **00:03:13**.
+The transferred archive SHA-256 is
+`97395d29b802e558d3ac88db8c8e74cf3447d165782530a9c8d7cafd59f106fb`.
+All 24 transfer hashes, twelve input-product hashes, five submitted tool hashes
+and 44 core-source hashes match. Both arms satisfy the exact reviewed size
+profile; all six corresponding input products are byte-identical. The campaign
+and normalized input profile remain unchanged from the failed attempt, except
+for the new output directory and execution metadata.
+
+This closes the paired **input-only** gate. No new input submission or CLI
+action is needed to finish PR #47. Keep both execution directories and receipts
+unchanged. The retry sequence above is a historical operational record, not
+an instruction to submit again. The solver guard remains 25M, the h300 solve
+admitter remains closed, and no compaction or solve performance was measured.
+See [the accepted input audit](mvp2_h300_input_acceptance.md) for terminal
+accounting, provenance, loader-warning limitations and the separate baseline
+admission development plan.
+
 ## Verification and remaining work
 
 Local regression tests cover accepted h215 and h300 input receipts, h300
