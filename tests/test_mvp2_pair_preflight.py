@@ -6,6 +6,7 @@ import shutil
 import subprocess
 import sys
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 import yaml
@@ -148,6 +149,86 @@ def test_input_loader_failure_preserves_phase_and_exception(tmp_path):
     assert diagnostic["error_type"] == "RuntimeError"
     assert diagnostic["large_instance_submission_allowed"] is False
     assert not (destination / "pair_preflight.json").exists()
+
+
+def reviewed_profile():
+    review = json.loads((gate.ROOT / gate.TOOLS[-1]).read_text())
+    snapshot = dict(review["snapshot_fields"], scenario_count=9, period_count=60,
+                    base_routes_oc=0, repair_routes_oc=0,
+                    workbook_sha256=review["plan_fields"]["workbook_sha256"],
+                    data_signature={"counts": dict(review["counts"])})
+    return (dict(review["plan_fields"]),
+            SimpleNamespace(max_estimated_variables=review["reference_limit"]),
+            snapshot, dict(review["audit_sha256"]))
+
+
+def test_exact_h300_input_review_preserves_failed_solver_guard():
+    plan, spec, snapshot, audits = reviewed_profile()
+    result = gate.check_snapshot(plan, spec, snapshot, {"status": "accepted"},
+                                 audit_hashes=audits)
+    assert result["within_reference_limit"] is False
+    assert result["excess_variables"] == 107544
+    assert result["input_size_review"] == "h300-warehouse-input-only-20261005"
+    assert result["optimization_allowed"] is False
+    assert spec.max_estimated_variables == 25000000
+
+
+def test_h300_size_review_agrees_with_frozen_historical_comparison():
+    review = json.loads((gate.ROOT / gate.TOOLS[-1]).read_text())
+    cases = json.loads((gate.ROOT / review["historical_comparison"]).read_text())
+    case = next(case for case in cases if case["name"] == review["historical_case"])
+    assert case["warehouses"] == 300 and case["direct_arcs"] is False
+    assert case["estimated_variables"] == review["snapshot_fields"]["total_variables"]
+    assert all(case["route_counts"][key] == review["snapshot_fields"][key]
+               for key in ("routes_od", "routes_dc", "routes_dd", "routes_oc"))
+    assert sum(review["snapshot_fields"][key] for key in (
+        "flow_variables", "inventory_variables", "emergency_capacity_variables",
+        "investment_variables", "unmet_demand_variables",
+    )) == review["snapshot_fields"]["total_variables"]
+
+
+@pytest.mark.parametrize("change", [
+    "case", "reference_index", "reference_manifest_sha256", "workbook_sha256",
+    "total_variables", "flow_variables", "routes_dd", "counts", "audit", "limit",
+    "missing_audits", "direct_routes", "connectivity",
+])
+def test_input_size_review_is_not_a_generic_guard_bypass(change):
+    plan, spec, snapshot, audits = reviewed_profile()
+    connectivity = {"status": "accepted"}
+    if change in plan:
+        plan[change] = "changed"
+        if change == "case":
+            plan[change] = "h215-warehouse"
+    elif change == "counts":
+        snapshot["data_signature"]["counts"]["origins"] += 1
+    elif change == "audit":
+        audits["model_audit.json"] = "changed"
+    elif change == "limit":
+        spec.max_estimated_variables = 24999999
+    elif change == "missing_audits":
+        audits = None
+    elif change == "direct_routes":
+        snapshot["repair_routes_oc"] = 1
+    elif change == "connectivity":
+        connectivity["status"] = "rejected"
+    else:
+        snapshot[change] += 1
+    with pytest.raises(gate.InputContractError):
+        gate.check_snapshot(plan, spec, snapshot, connectivity, audit_hashes=audits)
+
+
+def test_review_decision_cannot_change_optimization_scope(monkeypatch):
+    plan, spec, snapshot, audits = reviewed_profile()
+    original = gate.json.loads
+
+    def changed(data):
+        value = original(data)
+        value["optimization_allowed"] = True
+        return value
+
+    monkeypatch.setattr(gate.json, "loads", changed)
+    with pytest.raises(gate.InputContractError, match="107544"):
+        gate.check_snapshot(plan, spec, snapshot, {"status": "accepted"}, audit_hashes=audits)
 
 
 @pytest.mark.parametrize("field,value", [

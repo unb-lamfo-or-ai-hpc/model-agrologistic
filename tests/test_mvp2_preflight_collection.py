@@ -82,3 +82,67 @@ def test_wrong_submission_and_existing_output_are_preserved(tmp_path):
     with pytest.raises(ValueError, match="new collection"):
         collector.collect(run, output, "123", accounting_text="123|FAILED|1:0")
     assert sentinel.read_text() == "preserve"
+
+
+@pytest.mark.parametrize("change", [
+    None, "missing_review", "review_hash", "plan", "snapshot", "audit_hash",
+    "missing_arm", "review_id", "optimization", "within_limit", "excess", "scope",
+])
+def test_collector_closes_reviewed_size_evidence_only_when_bound(tmp_path, change):
+    run = run_fixture(tmp_path, accepted=True)
+    receipt_path = run / "audit/preflight/pair_preflight.json"
+    receipt = json.loads(receipt_path.read_text())
+    plan = json.loads((run / "prepared/resource_contrast_plan.json").read_text())
+    review = {
+        "schema_version": "mvp2-input-size-review-v1", "review_id": "test-only-review",
+        "scope": "input_inspection_only", "optimization_allowed": False,
+        "plan_fields": {key: plan[key] for key in (
+            "case", "reference_index", "reference_manifest_sha256", "workbook_sha256")},
+        "reference_limit": 14000000,
+        "snapshot_fields": {"total_variables": 14054654},
+        "counts": receipt["model_size"]["data_signature"]["counts"],
+        "audit_sha256": {name: receipt["artifacts"][f"mvp2_h300_warehouse_control/{name}"]
+                         for name in gate.PRODUCTS[1:]},
+    }
+    review_path = run / "audit/input_size_review.json"
+    review_path.write_text(json.dumps(review))
+    receipt["tools"]["docs/mvp2_h300_input_size_review.json"] = file_sha256(review_path)
+    (run / "audit/tool_hashes.json").write_text(json.dumps(receipt["tools"]))
+    receipt["size_checks"] = {f"mvp2_h300_warehouse_{arm}": {
+        "total_variables": 14054654, "reference_limit": 14000000,
+        "excess_variables": 54654, "within_reference_limit": False,
+        "input_size_review": "test-only-review", "optimization_allowed": False,
+        "scope": "input_inspection_only",
+    } for arm in ("control", "compact")}
+    size = receipt["size_checks"]["mvp2_h300_warehouse_compact"]
+    if change == "missing_review":
+        review_path.unlink()
+    elif change == "review_hash":
+        review_path.write_text("{}")
+    elif change == "plan":
+        review["plan_fields"]["reference_index"] = 99
+    elif change == "snapshot":
+        receipt["model_size"]["total_variables"] += 1
+    elif change == "audit_hash":
+        review["audit_sha256"]["model_audit.json"] = "changed"
+    elif change == "missing_arm":
+        receipt["size_checks"].pop("mvp2_h300_warehouse_compact")
+    elif change == "review_id":
+        size["input_size_review"] = "changed"
+    elif change == "optimization":
+        size["optimization_allowed"] = True
+    elif change == "within_limit":
+        size["within_reference_limit"] = True
+    elif change == "excess":
+        size["excess_variables"] = 0
+    elif change == "scope":
+        size["scope"] = "solve"
+    if change in ("plan", "audit_hash"):
+        review_path.write_text(json.dumps(review))
+        receipt["tools"]["docs/mvp2_h300_input_size_review.json"] = file_sha256(review_path)
+        (run / "audit/tool_hashes.json").write_text(json.dumps(receipt["tools"]))
+    receipt_path.write_text(json.dumps(receipt))
+    summary, _, _ = collector.collect(
+        run, tmp_path / "collection", "123", accounting_text="123|COMPLETED|0:0\n"
+    )
+    assert summary["status"] == ("accepted" if change is None else "receipt_rejected")
