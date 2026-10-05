@@ -28,6 +28,7 @@ PRODUCTS = (
     "preflight.json", "model_audit.json", "interhub_connectivity_audit.json",
     "interhub_components.csv", "interhub_repair_edges.csv", "interhub_path_summary.csv",
 )
+PREFLIGHT_CASES = {"h215-warehouse": 215, "h300-warehouse": 300}
 
 
 def tool_identity():
@@ -41,14 +42,15 @@ def check_plan(path):
     if (
         plan.get("schema_version") != "mvp2-resource-contrast-plan-v1"
         or plan.get("status") != "prepared_not_admitted"
-        or plan.get("case") != "h215-warehouse"
+        or plan.get("case") not in PREFLIGHT_CASES
         or plan.get("contrast") != "compact_python_indices"
         or plan.get("large_instance_submission_allowed") is not False
         or plan.get("production_explicit_lifecycle_allowed") is not False
         or plan.get("implementation") != implementation_identity()
         or plan.get("preparer_sha256") != file_sha256(ROOT / TOOLS[0])
     ):
-        raise ValueError("Require the unchanged qualified 215-warehouse positive-control plan.")
+        raise ValueError("Require a qualified warehouse-only h215 or h300 input plan.")
+    population = PREFLIGHT_CASES[plan["case"]]
     qualification = Path(plan["qualification_report"]).resolve()
     reference = Path(plan["reference_manifest"]).resolve()
     campaign = path.parent / "campaign.yaml"
@@ -65,8 +67,9 @@ def check_plan(path):
     if type(index) is not int or not 0 <= index < len(baseline.experiments):
         raise ValueError("Invalid reference index.")
     spec = baseline.experiments[index]
-    if spec.metadata.get("warehouse_population") != 215 or spec.model.use_direct_origin_customer:
-        raise ValueError("Reference is not the reviewed positive control.")
+    if (spec.metadata.get("warehouse_population") != population
+            or spec.model.use_direct_origin_customer):
+        raise ValueError("Reference population or warehouse-only policy changed.")
     if file_sha256(spec.workbook) != plan["workbook_sha256"]:
         raise ValueError("Workbook checksum mismatch.")
     manifest = load_experiment_manifest(campaign)
@@ -77,7 +80,7 @@ def check_plan(path):
     for actual, arm, compact in zip(manifest.experiments, ("control", "compact"),
                                     (False, True), strict=True):
         expected = asdict(spec)
-        expected["name"] = f"mvp2_h215_warehouse_{arm}"
+        expected["name"] = f"mvp2_{plan['case'].replace('-', '_')}_{arm}"
         expected["solver"].update(
             collect_resource_diagnostics=True, resource_sample_seconds=5.0,
             resource_max_samples=8192, collect_solver_diagnostics=True,
@@ -134,9 +137,13 @@ def preflight(path, destination, resource_record, *, inspector=inspect_experimen
         snapshot.pop("execution", None)
         counts = snapshot["data_signature"]["counts"]
         connectivity = json.loads((folder / "interhub_connectivity_audit.json").read_text())
-        if (counts["warehouses"] != 215 or counts["scenarios"] != 9
+        if (counts["warehouses"] != PREFLIGHT_CASES[plan["case"]]
+                or counts["scenarios"] != 9
                 or counts["periods"] != 60 or snapshot["scenario_count"] != 9
                 or snapshot["period_count"] != 60
+                or any(snapshot[key] != 0 for key in (
+                    "routes_oc", "base_routes_oc", "repair_routes_oc"
+                ))
                 or snapshot["workbook_sha256"] != plan["workbook_sha256"]
                 or spec.max_estimated_variables is None
                 or not 0 < snapshot["total_variables"] <= spec.max_estimated_variables
@@ -157,7 +164,8 @@ def preflight(path, destination, resource_record, *, inspector=inspect_experimen
                  for spec in manifest.experiments for name in PRODUCTS}
     result = {
         "schema_version": "mvp2-resource-pair-preflight-v1",
-        "status": "accepted", "created_at_utc": datetime.now(UTC).isoformat(),
+        "status": "accepted", "case": plan["case"],
+        "created_at_utc": datetime.now(UTC).isoformat(),
         "plan_sha256": file_sha256(path), "campaign_sha256": plan["campaign_sha256"],
         "workbook_sha256": plan["workbook_sha256"], "implementation": implementation_identity(),
         "tools": tool_identity(), "allocation": resource_record,

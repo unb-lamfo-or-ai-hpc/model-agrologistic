@@ -51,11 +51,14 @@ def check_inputs(plan_path, receipt_path, reviewed_identity):
     """Verify original NPAD products, rather than trusting a pasted acceptance label."""
     plan_path, receipt_path = Path(plan_path).resolve(), Path(receipt_path).resolve()
     plan, manifest = inputs.check_plan(plan_path)
+    if plan["case"] != "h215-warehouse":
+        raise ValueError("Solve admission is qualified only for h215-warehouse.")
     receipt = read(receipt_path)
     if identity(receipt) != reviewed_identity:
         raise ValueError("Input receipt differs from the reviewed JSON identity.")
     if (receipt.get("schema_version") != "mvp2-resource-pair-preflight-v1"
             or receipt.get("status") != "accepted"
+            or receipt.get("case", "h215-warehouse") != "h215-warehouse"
             or receipt.get("optimization_executed") is not False
             or receipt.get("large_instance_submission_allowed") is not False
             or receipt.get("implementation") != plan["implementation"]
