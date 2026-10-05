@@ -46,6 +46,7 @@ def evidence_snapshot(run, job_id):
         "prepared/campaign.yaml", "prepared/resource_contrast_plan.json",
         "audit/source_commit.txt", "audit/tool_hashes.json", "audit/submission.txt",
         "audit/scheduler/job.txt", "audit/scheduler/node.txt", "audit/worker_status.json",
+        "audit/input_size_review.json",
         f"audit/slurm-{job_id}.out", "audit/preflight/pair_preflight.json",
         "audit/preflight/pair_preflight_diagnostics.json",
     ]
@@ -88,6 +89,35 @@ def receipt_errors(assets, job_id):
         ):
             if not valid:
                 errors.append(label)
+        size_checks = receipt.get("size_checks", {})
+        if any(check.get("input_size_review") for check in size_checks.values()):
+            review_bytes = assets["audit/input_size_review.json"]
+            review = json.loads(review_bytes)
+            expected_arms = {f"mvp2_h300_warehouse_{arm}" for arm in ("control", "compact")}
+            if (plan["case"] != "h300-warehouse"
+                    or digest(review_bytes) != tools["docs/mvp2_h300_input_size_review.json"]
+                    or review.get("schema_version") != "mvp2-input-size-review-v1"
+                    or review.get("scope") != "input_inspection_only"
+                    or review.get("optimization_allowed") is not False
+                    or any(plan.get(key) != value for key, value in review["plan_fields"].items())
+                    or any(receipt["model_size"].get(key) != value
+                           for key, value in review["snapshot_fields"].items())
+                    or receipt["model_size"]["data_signature"]["counts"] != review["counts"]
+                    or any(receipt["artifacts"].get(f"{arm}/{name}") != value
+                           for arm in expected_arms
+                           for name, value in review["audit_sha256"].items())
+                    or set(size_checks) != expected_arms
+                    or any(check.get("input_size_review") != review["review_id"]
+                           or check.get("total_variables")
+                           != review["snapshot_fields"]["total_variables"]
+                           or check.get("reference_limit") != review["reference_limit"]
+                           or check.get("excess_variables") != check["total_variables"]
+                           - check["reference_limit"] or check["excess_variables"] <= 0
+                           or check.get("scope") != "input_inspection_only"
+                           or check.get("within_reference_limit") is not False
+                           or check.get("optimization_allowed") is not False
+                           for check in size_checks.values())):
+                errors.append("reviewed input-only size profile")
         expected = {
             f"mvp2_{plan['case'].replace('-', '_')}_{arm}/{product}"
             for arm in ("control", "compact") for product in PRODUCTS

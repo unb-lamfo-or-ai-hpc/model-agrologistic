@@ -23,6 +23,7 @@ TOOLS = (
     "scripts/preflight_mvp2_resource_pair.py",
     "scripts/submit_mvp2_pair_preflight.sh",
     "scripts/run_mvp2_pair_preflight.slurm",
+    "docs/mvp2_h300_input_size_review.json",
 )
 PRODUCTS = (
     "preflight.json", "model_audit.json", "interhub_connectivity_audit.json",
@@ -130,8 +131,25 @@ class InputContractError(ValueError):
         )
 
 
-def check_snapshot(plan, spec, snapshot, connectivity):
-    """Report individual input failures without relaxing the reference size guard."""
+def reviewed_input_size(plan, spec, snapshot, audit_hashes):
+    """Recognize one reviewed input profile, never a general solve-limit override."""
+    review = json.loads((ROOT / TOOLS[-1]).read_text(encoding="utf-8"))
+    if (review.get("schema_version") != "mvp2-input-size-review-v1"
+            or review.get("scope") != "input_inspection_only"
+            or review.get("optimization_allowed") is not False
+            or plan.get("case") != "h300-warehouse"
+            or spec.max_estimated_variables != review["reference_limit"]
+            or any(plan.get(key) != value for key, value in review["plan_fields"].items())
+            or any(snapshot.get(key) != value
+                   for key, value in review["snapshot_fields"].items())
+            or snapshot.get("data_signature", {}).get("counts") != review["counts"]
+            or audit_hashes != review["audit_sha256"]):
+        return None
+    return review["review_id"]
+
+
+def check_snapshot(plan, spec, snapshot, connectivity, *, audit_hashes=None):
+    """Separate reviewed input dimensions from the unchanged solver size guard."""
     counts = snapshot.get("data_signature", {}).get("counts", {})
     expected = {
         "warehouses": (counts.get("warehouses"), PREFLIGHT_CASES[plan["case"]]),
@@ -153,7 +171,10 @@ def check_snapshot(plan, spec, snapshot, connectivity):
     if type(size) is not int or size <= 0:
         violations.append({"field": "total_variables", "observed": size,
                            "required": "positive integer"})
-    if limit is None or (type(size) is int and size > limit):
+    review_id = None
+    if type(size) is int and limit is not None and size > limit:
+        review_id = reviewed_input_size(plan, spec, snapshot, audit_hashes)
+    if limit is None or (type(size) is int and size > limit and review_id is None):
         violations.append({"field": "max_estimated_variables", "observed": size,
                            "reference_limit": limit,
                            "excess_variables": size - limit if type(size) is int
@@ -161,7 +182,10 @@ def check_snapshot(plan, spec, snapshot, connectivity):
     if violations:
         raise InputContractError(violations)
     return {"total_variables": size, "reference_limit": limit,
-            "within_reference_limit": True}
+            "within_reference_limit": size <= limit,
+            "excess_variables": max(0, size - limit),
+            "input_size_review": review_id, "scope": "input_inspection_only",
+            "optimization_allowed": False}
 
 
 def _inspect_pair(path, destination, resource_record, plan, manifest, submitted_tools,
@@ -177,7 +201,8 @@ def _inspect_pair(path, destination, resource_record, plan, manifest, submitted_
         snapshot.pop("execution", None)
         connectivity = json.loads((folder / "interhub_connectivity_audit.json").read_text())
         diagnostics["size_checks"][spec.name] = check_snapshot(
-            plan, spec, snapshot, connectivity
+            plan, spec, snapshot, connectivity,
+            audit_hashes={name: file_sha256(folder / name) for name in PRODUCTS[1:]},
         )
         snapshots.append(snapshot)
     diagnostics.update(phase="arm_parity", arm=None)
@@ -202,6 +227,7 @@ def _inspect_pair(path, destination, resource_record, plan, manifest, submitted_
         "workbook_sha256": plan["workbook_sha256"], "implementation": implementation_identity(),
         "tools": tool_identity(), "allocation": resource_record,
         "model_size": snapshots[0], "artifacts": artifacts,
+        "size_checks": diagnostics["size_checks"],
         "optimization_executed": False, "large_instance_submission_allowed": False,
         "qualification": (
             "Input preflight only; solve allocation and paired admission remain required."
