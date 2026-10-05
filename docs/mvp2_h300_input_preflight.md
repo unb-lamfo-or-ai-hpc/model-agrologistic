@@ -59,16 +59,52 @@ required; historical evidence stays in place.
    The submitter binds source/tool hashes and rejects dirty checkouts or
    duplicate audit destinations. The worker captures scheduler records, loads
    both arms and writes the preflight receipt. No solver optimization runs.
-5. After terminal accounting, transfer a checksummed evidence archive containing
+5. After terminal accounting, use `scripts/collect_mvp2_pair_preflight.py` to
+   preserve either successful or failed job evidence. Transfer its checksummed archive containing
    the plan, campaign, original scheduler records, receipt and all twelve
    input products. Review population, route counts, dimensions, hashes and
-   parity before designing a separate baseline solve gate.
+   parity before designing a separate baseline solve gate. A collection status
+   of `terminal_failure` or `receipt_rejected` is diagnostic evidence, not input
+   acceptance. The collector never submits jobs and includes only named input
+   audit files, not the checkout, workbook or license files.
 
 The final NPAD command package must be tied to the PR's final reviewed commit
 and to the actual reference index; do not run a command assembled from an
 unverified historical path or a moving branch. Preserve the failed or partial
 directory if any gate stops. Do not submit a new input job by rerunning the
 same claimed audit directory.
+
+## First NPAD attempt and diagnostic refactor
+
+The maintainer reported job **2198038** on 5 October 2026, prepared from source
+`940815c92120a14254edbe0f68d9f9f8c3c91254` and reference index **2**. The prepared
+plan and submission gates passed. Slurm reported `FAILED`, exit `1:0`, elapsed
+`00:01:42`, and batch MaxRSS `206460K`. The preserved run is
+`/home/vrrcelestino/model-agrologistic-hygiene-audit/mvp2-h300-input-pr47-6NXUAa9t`.
+This accounting alone does not identify the Python exception. Collect the
+existing worker log and partial products before any retry; do not rerun the
+original submission instructions.
+
+A concrete regression now covers the historical h300 estimate of **25,107,544**
+variables against a **25,000,000** reference guard: rejection must report the
+observed size, reference limit and **107,544** excess variables. This is a
+candidate explanation until the job's stderr and actual prepared limit are
+reviewed. The refactor retains the reference size guard; changing that contract
+requires an explicit evidence-based size review rather than a silent limit increase.
+
+For subsequent attempts, `pair_preflight_diagnostics.json` records the phase,
+arm, exception and individual observed/required values after input inspection
+starts. The Slurm worker writes `worker_status.json` when it exits, preserving
+the original scheduler or Python failure code. An accepted input receipt is
+still emitted only after all gates pass. Older failed jobs can be collected
+even though they lack these new diagnostic files.
+
+The standalone collector captures terminal `sacct` rows and hashes each named
+file into a frozen archive. It distinguishes terminal failure, invalid/missing
+receipt and accepted input evidence. Successful accounting alone is insufficient;
+acceptance additionally requires matching plan, campaign, tools, job, case and
+all twelve input product hashes. Use a new collection directory to preserve
+previous archives. Supply the exact run directory and submitted job ID.
 
 ## Verification and remaining work
 
