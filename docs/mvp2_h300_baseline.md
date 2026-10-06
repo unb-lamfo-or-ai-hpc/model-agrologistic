@@ -15,7 +15,10 @@ The next experiment is **one uncompacted control**, not a control/compact pair.
 It measures whether the existing numerical formulation can build, solve,
 export and validate the accepted 300-hub instance within a declared envelope.
 Software tests qualify the admission machinery, not the large solve.
-This PR remains Draft until its terminal NPAD evidence is independently reviewed.
+Terminal job 2198528 has now been independently reviewed; see the
+[accepted retrospective audit](mvp2_h300_baseline_acceptance.md). The original
+collector rejection is preserved and its lifecycle bug corrected. This PR
+remains Draft until the corrected exact head passes software/diff review.
 Only after completion and Ready for review will a new merge authorization be requested.
 
 No h400 solve, thread sweep, additional h215 pair, campaign expansion, dependency
@@ -126,7 +129,8 @@ The collector classifies a non-successful terminal job as `terminal_failure`,
 a successful job with incomplete/inconsistent evidence as `evidence_rejected`,
 and only a fully closed verified baseline as `accepted`. It verifies the fresh
 admission, source/tools/plan, actual resources, worker completion, all **33**
-named completion products, unchanged normalized inputs and input-audit bytes,
+named completion products, unchanged normalized inputs and full input-audit
+mapping (the final model audit is legitimately enriched), unchanged connectivity bytes,
 independent validation and the existing three-stage quality audit. It never
 treats Slurm `COMPLETED` or a tarball alone as scientific acceptance.
 
