@@ -122,6 +122,25 @@ def validate_assets(assets, job):
         == input_policy["input_source_commit"],
         "Original accepted input evidence differs.",
     )
+    input_allocation = pair.baseline.inputs.allocation(
+        original["audit/scheduler/job.txt"].decode(),
+        original["audit/scheduler/node.txt"].decode(),
+        job_id=input_policy["input_job_id"],
+        node_name=receipt["allocation"]["node"],
+    )
+    input_worker = json.loads(original["audit/worker_status.json"])
+    pair.require(
+        input_allocation == receipt["allocation"]
+        and receipt["tools"] == pair.baseline.inputs.tool_identity()
+        and digest(original["audit/input_size_review.json"]) == input_policy["input_review_sha256"]
+        and original["audit/submission.txt"].decode().strip()
+        == f"MVP2_PAIR_PREFLIGHT_JOB={input_policy['input_job_id']}"
+        and input_worker["status"] == "completed"
+        and input_worker["exit_code"] == 0
+        and input_worker["job_id"] == input_policy["input_job_id"]
+        and input_worker["optimization_executed"] is False,
+        "Original input allocation, worker, size review or tools differ.",
+    )
     plan, admission, closure = (
         read(n) for n in ("pair_plan.json", "pair_admission.json", "pair_execution.json")
     )
@@ -144,7 +163,7 @@ def validate_assets(assets, job):
         )
         == {"job_id": input_policy["input_job_id"], "state": "COMPLETED", "exit_code": "0:0"}
         and plan["scope"] == policy["scope"]
-        and plan["arm_order"] == policy["arm_order"]
+        and pair.baseline.pair.validate_arm_order(plan["arm_order"]) == policy["arm_order"]
         and plan["allocation_profile"] == policy["allocation_profile"]
         and plan["production_explicit_lifecycle_allowed"] is False
         and plan["automatic_repeats_allowed"] is False,
