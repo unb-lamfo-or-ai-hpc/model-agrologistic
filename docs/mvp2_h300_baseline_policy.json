@@ -1,0 +1,26 @@
+{
+  "schema_version": "mvp2-h300-baseline-policy-v1",
+  "review_id": "h300-warehouse-single-control-20261005",
+  "scope": "one_h300_warehouse_control_baseline",
+  "input_job_id": "2198085",
+  "input_source_commit": "3957f84ff49ac500eecf25b85e6b710b4b3b1010",
+  "input_archive_sha256": "97395d29b802e558d3ac88db8c8e74cf3447d165782530a9c8d7cafd59f106fb",
+  "input_plan_sha256": "ec66d3748ef1114b6d8c241289cf382650886c98863fb0bcd2d8189087834c0e",
+  "input_receipt_sha256": "e3d449f9093fb38e236d10494de40bdfa866cab250ef3e1d0f0e54234069e689",
+  "input_review_sha256": "359ff3eae86b6ee410f66400b2a490c46b5a4064a67640052fe231c51a1a4a75",
+  "implementation_sha256": "b4de41ade0b3c55f8f20a66480cffa275421f8157444b1db3000a9eb50f2d351",
+  "reference_limit": 25000000,
+  "execution_limit": 25107544,
+  "experiment_name": "mvp2_h300_warehouse_baseline",
+  "allocation_profile": {
+    "partition": "intel-256",
+    "memory_mib": 196608,
+    "solver_threads": 4,
+    "optimization_seconds": 28800,
+    "walltime_seconds": 43200,
+    "minimum_cgroup_limit_bytes": 206158430208
+  },
+  "compact_python_indices": false,
+  "production_explicit_lifecycle_allowed": false,
+  "qualification": "Exact derived single-run size review, not an input-only exception, generic ceiling increase, compaction pair or performance claim. Fresh allocation and license capability are required before construction. Historical 25M manifests remain unchanged."
+}
