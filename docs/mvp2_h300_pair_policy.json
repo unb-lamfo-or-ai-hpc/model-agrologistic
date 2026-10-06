@@ -1,0 +1,18 @@
+{
+  "schema_version": "mvp2-h300-pair-policy-v1",
+  "review_id": "h300-warehouse-descriptive-pair-s1a",
+  "scope": "one_fresh_h300_warehouse_control_compact_pair",
+  "input_policy_sha256": "3bfb70aff858eaba124d08967d7de39e2d774f224908ac8db65d37310500a0c0",
+  "arm_order": [1, 0],
+  "allocation_profile": {
+    "partition": "intel-256",
+    "memory_mib": 196608,
+    "solver_threads": 4,
+    "optimization_seconds_per_arm": 28800,
+    "walltime_seconds": 64800,
+    "minimum_cgroup_limit_bytes": 206158430208
+  },
+  "production_explicit_lifecycle_allowed": false,
+  "automatic_repeats_allowed": false,
+  "decision_rule": "One descriptive transfer screen. Keep compaction optional. A repeat requires a separately reviewed operational or scientific question and an order-controlled design; this pair cannot establish a causal effect or runtime variability. Small or null benefit closes the screen without automatic repeats."
+}
