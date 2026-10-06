@@ -408,6 +408,48 @@ def execute(path, resource, submitted_tools, source, *, runner=subprocess.run):
     return int(process.returncode != 0 or audit.returncode != 0)
 
 
+def check_solved_model_audit(original, solved):
+    """Input parity is semantic; solution enrichment is mandatory, not byte drift.
+
+    experiment_runner replaces the input-only audit with build_model_audit(...,
+    result). Keep the entire input mapping and original findings, while checking
+    the final audit independently. Closure hashes still protect the full file.
+    """
+    require(
+        original.get("schema_version") == solved.get("schema_version") == 3
+        and isinstance(original.get("input"), dict)
+        and bool(original["input"])
+        and solved.get("input") == original["input"],
+        "Solved model audit input/schema differs from accepted h300.",
+    )
+    for audit in (original, solved):
+        findings = audit.get("findings")
+        require(isinstance(findings, list), "Model audit findings are missing.")
+        require(
+            all(
+                isinstance(f, dict) and f.get("severity") in ("error", "warning", "info")
+                for f in findings
+            ),
+            "Malformed model audit findings.",
+        )
+        require(
+            audit.get("summary")
+            == {
+                f"{severity}_count": sum(f["severity"] == severity for f in findings)
+                for severity in ("error", "warning", "info")
+            }
+            and not any(f["severity"] == "error" for f in findings),
+            "Model audit errors or inconsistent severity summary.",
+        )
+    require(
+        solved["findings"][: len(original["findings"])] == original["findings"]
+        and isinstance(solved.get("solution"), dict)
+        and bool(solved["solution"])
+        and solved.get("independent_validation_status") == "accepted",
+        "Solved model audit lacks retained findings or accepted solution enrichment.",
+    )
+
+
 def completion(path):
     """Verify every closed product and the existing independent/hierarchy audit."""
     path = Path(path).resolve()
@@ -421,6 +463,17 @@ def completion(path):
     observed.pop("execution", None)
     require(observed == original["model_size"], "Solved input snapshot differs from accepted h300.")
     for name in inputs.PRODUCTS[1:]:
+        if name == "model_audit.json":
+            input_path = (
+                Path(record["input_run"]) / "audit/preflight/mvp2_h300_warehouse_control" / name
+            )
+            require(
+                file_sha256(input_path)
+                == original["artifacts"][f"mvp2_h300_warehouse_control/{name}"],
+                "Original input model audit hash changed.",
+            )
+            check_solved_model_audit(pair.read(input_path), pair.read(folder / name))
+            continue
         require(
             file_sha256(folder / name)
             == original["artifacts"][f"mvp2_h300_warehouse_control/{name}"],
