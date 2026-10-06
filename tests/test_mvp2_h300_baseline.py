@@ -1,6 +1,7 @@
 """Single-baseline safety using synthetic evidence and mocked external processes."""
 
 import copy
+import io
 import json
 import os
 import subprocess
@@ -13,7 +14,9 @@ import yaml
 
 from scripts import collect_mvp2_h300_baseline as collector
 from scripts import mvp2_h300_baseline as baseline
+from scripts import review_mvp2_h300_baseline as retrospective
 from src.logic.run_integrity import file_sha256, write_completion
+from tests import test_mvp2_preflight_collection as input_fixtures
 from tests.test_mvp2_h300_retry_driver import bash_path, shell_path
 from tests.test_mvp2_pair_preflight import JOB, NODE
 from tests.test_mvp2_pair_solve import accept_probe
@@ -32,6 +35,22 @@ CGROUP = {
 @pytest.fixture
 def evidence(tmp_path, monkeypatch):
     """No private workbook, real license or HPC execution is used by these tests."""
+    original_inspector = input_fixtures.inspector
+
+    def realistic_input_audit(spec, output):
+        original_inspector(spec, output)
+        (output / spec.name / "model_audit.json").write_text(
+            json.dumps(
+                {
+                    "schema_version": 3,
+                    "input": {"warehouses": 300},
+                    "findings": [],
+                    "summary": {"error_count": 0, "warning_count": 0, "info_count": 0},
+                }
+            )
+        )
+
+    monkeypatch.setattr(input_fixtures, "inspector", realistic_input_audit)
     run = run_fixture(tmp_path, accepted=True)
     receipt_path = run / "audit/preflight/pair_preflight.json"
     receipt = baseline.pair.read(receipt_path)
@@ -314,6 +333,14 @@ def fake_closed(evidence):
         (folder / name).write_bytes(
             (evidence[0] / f"audit/preflight/mvp2_h300_warehouse_control/{name}").read_bytes()
         )
+    audit = baseline.pair.read(folder / "model_audit.json")
+    audit.update(
+        solution={"capacity_adequacy_status": "emergency_capacity_required"},
+        independent_validation_status="accepted",
+        findings=[{"code": "EMERGENCY_CAPACITY_REQUIRED", "severity": "warning"}],
+        summary={"error_count": 0, "warning_count": 1, "info_count": 0},
+    )
+    (folder / "model_audit.json").write_text(json.dumps(audit))
     write_completion(
         folder, baseline._checkpoint_identity(spec), [folder / name for name in collector.PRODUCTS]
     )
@@ -547,6 +574,107 @@ def test_self_rehashed_closure_cannot_requalify_license_or_changed_inputs(eviden
             [folder / name for name in collector.PRODUCTS],
         )
     assert collector.acceptance_errors(execution, "123")
+
+
+@pytest.mark.parametrize(
+    "change",
+    [
+        "input",
+        "schema",
+        "solution",
+        "validation",
+        "error",
+        "summary",
+        "findings",
+    ],
+)
+def test_rehashed_enriched_audit_does_not_bypass_semantic_gate(evidence, change):
+    execution = fake_closed(evidence)
+    _, manifest = baseline.check_execution(execution / "baseline_plan.json")
+    spec = manifest.experiments[0]
+    folder = manifest.output_dir / spec.name
+    audit = baseline.pair.read(folder / "model_audit.json")
+    if change == "input":
+        audit["input"]["warehouses"] = 301
+    elif change == "schema":
+        audit["schema_version"] = 4
+    elif change == "solution":
+        audit.pop("solution")
+    elif change == "validation":
+        audit["independent_validation_status"] = "rejected"
+    elif change == "error":
+        audit["findings"].append({"severity": "error"})
+        audit["summary"]["error_count"] = 1
+    elif change == "summary":
+        audit["summary"]["warning_count"] = 0
+    else:
+        audit["findings"] = None
+    (folder / "model_audit.json").write_text(json.dumps(audit))
+    (folder / "run_completion.json").unlink()
+    write_completion(
+        folder, baseline._checkpoint_identity(spec), [folder / name for name in collector.PRODUCTS]
+    )
+    assert collector.acceptance_errors(execution, "123")
+
+
+def test_input_findings_are_retained_not_silenced():
+    original = {
+        "schema_version": 3,
+        "input": {"warehouses": 300},
+        "findings": [{"code": "INPUT_WARNING", "severity": "warning"}],
+        "summary": {"error_count": 0, "warning_count": 1, "info_count": 0},
+    }
+    solved = {
+        **copy.deepcopy(original),
+        "solution": {"service": 1},
+        "independent_validation_status": "accepted",
+    }
+    baseline.check_solved_model_audit(original, solved)
+    solved["findings"] = []
+    solved["summary"]["warning_count"] = 0
+    with pytest.raises(ValueError, match="retained findings"):
+        baseline.check_solved_model_audit(original, solved)
+
+
+@pytest.mark.parametrize(
+    "name", ["../escape", "/absolute", "a/../escape", "a\\b", "C:drive", "a//b"]
+)
+def test_retrospective_review_rejects_unsafe_archives(tmp_path, name):
+    archive = tmp_path / "unsafe.tar.gz"
+    with tarfile.open(archive, "w:gz") as package:
+        member = tarfile.TarInfo(name)
+        member.size = 2
+        package.addfile(member, io.BytesIO(b"{}"))
+    with pytest.raises(ValueError, match="Unsafe"):
+        retrospective.safe_assets(archive, file_sha256(archive))
+
+
+@pytest.mark.parametrize("change", ["duplicate", "symlink", "checksum"])
+def test_retrospective_review_rejects_ambiguous_members_or_checksum(tmp_path, change):
+    archive = tmp_path / "ambiguous.tar.gz"
+    with tarfile.open(archive, "w:gz") as package:
+        for _ in range(2 if change == "duplicate" else 1):
+            member = tarfile.TarInfo("report.json")
+            if change == "symlink":
+                member.type = tarfile.SYMTYPE
+                member.linkname = "target"
+                package.addfile(member)
+            else:
+                member.size = 2
+                package.addfile(member, io.BytesIO(b"{}"))
+    with pytest.raises(ValueError):
+        retrospective.safe_assets(
+            archive, "0" * 64 if change == "checksum" else file_sha256(archive)
+        )
+
+
+def test_retrospective_catalog_rejects_missing_or_changed_assets():
+    assets = {"report.json": b"{}"}
+    catalog = {"report.json": baseline.transfer.digest(b"{}")}
+    retrospective.hash_catalog(assets, catalog)
+    for invalid in ({}, {"report.json": b"changed"}):
+        with pytest.raises(ValueError, match="hash mismatch"):
+            retrospective.hash_catalog(invalid, catalog)
 
 
 @pytest.mark.parametrize("git_status", ["clean", "dirty", "error"])
