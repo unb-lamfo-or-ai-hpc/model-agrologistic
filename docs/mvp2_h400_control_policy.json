@@ -1,0 +1,27 @@
+{
+  "schema_version": "mvp2-h400-control-policy-v1",
+  "scope": "one_instrumented_h400_direct_control",
+  "input_job_id": "2200298",
+  "input_source_commit": "de8c9a138526f63883cc2672077fbee4d38c8c60",
+  "input_archive_sha256": "d668f35cff87dcfd7f90c03a14d7b332571e581821ee5a90b80b2ab52e67b8e3",
+  "input_plan_sha256": "bbb2baa21d164198bf460f56ba5109ec8ac83b5f712596b7e2eb7d6f33347fcf",
+  "input_receipt_sha256": "2c9767c4218e0e47dba45191788a0302d35915f2c47c422194ff765b62693877",
+  "implementation_sha256": "b4de41ade0b3c55f8f20a66480cffa275421f8157444b1db3000a9eb50f2d351",
+  "reference_limit": 25000000,
+  "execution_limit": 42426624,
+  "experiment_name": "mvp2_h400_direct_control",
+  "allocation_profile": {
+    "partition": "intel-256",
+    "memory_mib": 196608,
+    "cgroup_limit_bytes": 206158430208,
+    "cpus_per_task": 4,
+    "tasks": 1,
+    "walltime_seconds": 43200,
+    "optimization_seconds": 28800,
+    "control_process_timeout_seconds": 32400,
+    "audit_timeout_seconds": 900
+  },
+  "automatic_repeats_allowed": false,
+  "production_explicit_lifecycle_allowed": false,
+  "compaction_allowed": false
+}
