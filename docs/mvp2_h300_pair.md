@@ -149,3 +149,15 @@ This scope becomes experimentally complete after the terminal NPAD transfer is
 reviewed and its descriptive findings are documented. Keep the PR draft until
 that review; request merge only after completion, passing checks and Ready status.
 The next separate Sprint 1 scope is gated h400 direct-enabled diagnosis.
+
+## Terminal disposition — 7 October 2026
+
+The single admitted pair, job **2199525**, is accepted after checksum, complete
+portable integrity review, both original independent validators and all three
+hierarchy certificates. See the [terminal acceptance and metric interpretation](
+mvp2_h300_pair_acceptance.md), including sampling limitations and the distinction
+between intermediate capacity gap and final-capacity quality. S1-A is complete;
+compaction stays opt-in, without automatic repeats or reduced allocation.
+The commands above are a historical execution protocol, not authorization for
+another pair. Preserve the original run and claim. Sprint 1 still requires its
+separate S1-B and S1-C gates.
