@@ -99,6 +99,38 @@ method, seed, solver and frontier changes stay separate conditional questions.
 
 ## NPAD execution and all follow-up steps
 
+### Login-license bootstrap correction and one bounded recovery
+
+The first attempt at `0360c25c2486daf99c223ca18f6bf80cb2af8238`, run
+`mvp2-threads-s2-GXnpz4Ln`, passed raw-byte verification and all 56 Linux
+focused tests, then stopped at the login-node license-file selector check.
+The driver had not exported `GRB_LICENSE_FILE`; this is a bootstrap defect,
+not evidence of an expired NPAD license or a solver failure. The designated
+path remains `/home/vrrcelestino/model-agrologistic/secrets/gurobi.lic`.
+The fixed driver exports it on login as well as in the worker, overriding an
+absent or incorrect inherited selector without reading license contents.
+
+For this exact failed attempt only, use `recover-login FULL_FIXED_SHA`, not
+`start`, from the immutable recovery runbook in the PR comment. Before a fresh
+isolated bootstrap, the recovery checks the original claim/run/source, every
+tracked raw HEAD byte, the original 56-test receipt and bound plan/runtime.
+It requires qualification to contain only `plan.json`, no other run-level
+products, no active original bootstrap/process and no active S2 queue entry.
+An unavailable/ambiguous check stops; it never treats a missing job receipt as
+proof that submission did not happen. Any submission marker, scheduler files,
+Slurm output or execution evidence blocks recovery. No `sbatch` can be reached
+through this path unless all pre-submission checks pass.
+
+The original run and `.mvp2-threads-qualification-s2` claim remain untouched.
+A separate `.mvp2-threads-qualification-s2-login-recovery` one-shot claim binds
+the fixed source and fresh run. A hashed `login-recovery.json` receipt records
+original identities and negative pre-submission checks, is bound into the new
+plan and transfers in the allowlisted archive. This is a recovery of a failed
+software bootstrap, not a repeat of an optimization. The thread/model/resource
+policy is unchanged. Repeating the exact `recover-login` command collects only
+its existing job; an incomplete or ambiguous recovery claim stops, never retries.
+The correction remains Draft until original licensed miniature evidence is audited.
+
 The PR comment provides the **verified immutable head SHA**, driver SHA256 and
 copy-and-paste bootstrap. Do not replace that SHA with develop or a branch name.
 Download `scripts/npad_mvp2_threads.sh` from that exact commit, check its SHA256,
