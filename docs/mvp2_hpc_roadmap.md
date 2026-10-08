@@ -112,6 +112,14 @@ Split live implementation/admission and resulting evidence/decision from that
 solver-free gate. Only a subsequent qualified, separately admitted bounded block
 can inform any selected full-budget or replicated block. This split replaces the
 earlier combined "second PR" boundary; it is not an extra experimental campaign.
+After PR #54 integration at `31c6dd8b0462af14d74997773e30bdda099e4b22`,
+the [runtime component gate](mvp2_h300_runtime_controls.md) implements parent
+watchdogs, immutable claims, post-cleanup parent closure and portable partial
+review. It does not qualify a native production worker, live allocation/cgroup
+containment, fresh license/homogeneity, production telemetry or source/cohort
+admission. Those remain a closed integration/qualification step before any
+separately authorized diagnostic block. No optimization or repeat is admitted;
+component completion does not close S2 or establish thread performance.
 Compare equal completed work, stage latency, time-to-bound,
 time-to-incumbent, effective CPU use, core-hours and memory. Speedup T1/Tp and
 efficiency (T1/Tp)/p require comparable completed work; censored runs are not
