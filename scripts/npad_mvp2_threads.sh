@@ -5,15 +5,119 @@ BASE=/home/vrrcelestino/model-agrologistic-hygiene-audit
 S2_PYTHON=/home/vrrcelestino/venv313/bin/python
 CLAIM="$BASE/.mvp2-threads-qualification-s2"
 stop() { printf 'STOP: %s\n' "$*" >&2; exit 1; }
-[[ ${1:-} == start && ${2:-} =~ ^[0-9a-f]{40}$ && $# == 2 ]] || \
-  stop 'Usage: bash npad_mvp2_threads.sh start FULL_REVIEWED_SHA'
+[[ ${1:-} =~ ^(start|recover-login)$ && ${2:-} =~ ^[0-9a-f]{40}$ && $# == 2 ]] || \
+  stop 'Usage: bash npad_mvp2_threads.sh {start|recover-login} FULL_REVIEWED_SHA'
 SOURCE_SHA=$2
 export PYTHONNOUSERSITE=1 PYTHONDONTWRITEBYTECODE=1
+export GRB_LICENSE_FILE=/home/vrrcelestino/model-agrologistic/secrets/gurobi.lic
 unset SCIPOPTDIR SBATCH_QOS
+RECOVERY_RECEIPT=''
+if [[ $1 == recover-login ]]; then
+  ORIGINAL_SHA=0360c25c2486daf99c223ca18f6bf80cb2af8238
+  [[ "$SOURCE_SHA" != "$ORIGINAL_SHA" ]] || stop 'Recovery requires the reviewed fixed source'
+  CLAIM="$BASE/.mvp2-threads-qualification-s2-login-recovery"
+  if [[ ! -e "$CLAIM" ]]; then
+    RECOVERY_RECEIPT=$("$S2_PYTHON" - "$BASE" "$ORIGINAL_SHA" <<'PY_RECOVERY'
+import hashlib
+import json
+import os
+import subprocess
+import sys
+import xml.etree.ElementTree as ET
+from pathlib import Path
+
+
+def recovery_gate(base, original_sha, command=subprocess.check_output):
+    claim = base / ".mvp2-threads-qualification-s2"
+    original = base / "mvp2-threads-s2-GXnpz4Ln"
+    def stop(message):
+        raise ValueError(message)
+    if (claim.is_symlink() or original.is_symlink() or
+            any((claim / name).is_symlink() for name in ("run.txt", "source.txt"))):
+        stop("Symlinked original claim/run")
+    if {p.name for p in claim.iterdir()} != {"run.txt", "source.txt"}:
+        stop("Unexpected original claim products")
+    if Path((claim / "run.txt").read_text().strip()).resolve() != original.resolve():
+        stop("Original run identity differs")
+    if (claim / "source.txt").read_text().strip() != original_sha:
+        stop("Original source identity differs")
+    if {p.name for p in original.iterdir()} != {"source", "qualification", "focused-tests.xml"}:
+        stop("Unexpected original bootstrap/submission products")
+    output = original / "qualification"
+    if output.is_symlink() or {p.name for p in output.iterdir()} != {"plan.json"}:
+        stop("Submission/execution or ambiguous qualification products exist")
+    source = original / "source"
+    if source.is_symlink() or (output / "plan.json").is_symlink() or (
+            original / "focused-tests.xml").is_symlink():
+        stop("Linked original evidence")
+    def git(*args):
+        return command(["git", "-C", str(source), *args]).strip()
+    if git("rev-parse", "HEAD").decode() != original_sha or git(
+            "status", "--porcelain", "--untracked-files=no"):
+        stop("Original checkout identity/status differs")
+    for record in filter(None, git("ls-files", "-s", "-z").split(b"\0")):
+        metadata, name = record.split(b"\t", 1)
+        mode, expected, stage = metadata.split()
+        path = source / name.decode()
+        if stage != b"0" or mode not in (b"100644", b"100755") or path.is_symlink():
+            stop("Unsupported original tracked entry")
+        observed = command(["git", "hash-object", "--no-filters", "--stdin"],
+                           input=path.read_bytes()).strip()
+        if observed != expected:
+            stop("Original raw HEAD bytes differ")
+    suites = list(ET.parse(original / "focused-tests.xml").getroot().iter("testsuite"))
+    counts = {k: sum(int(s.get(k, "0")) for s in suites)
+              for k in ("tests", "failures", "errors", "skipped")}
+    if counts != {"tests": 56, "failures": 0, "errors": 0, "skipped": 0}:
+        stop("Original regression receipt differs")
+    processes = command(["ps", "-eo", "pid=,ppid=,args="]).decode().splitlines()
+    rows = [row.strip().split(None, 2) for row in processes if row.strip()]
+    ancestors = {os.getpid()}
+    while True:
+        parents = {int(row[1]) for row in rows if len(row) == 3 and int(row[0]) in ancestors}
+        if parents <= ancestors:
+            break
+        ancestors |= parents
+    for row in rows:
+        if len(row) != 3:
+            stop("Ambiguous process observation")
+        if int(row[0]) not in ancestors and (str(original) in row[2] or
+                                           "npad_mvp2_threads.sh start" in row[2]):
+            stop("Original bootstrap/process is still active")
+    queue = command(["squeue", "--me", "--noheader", "--format=%i|%j|%T|%Z"]).decode()
+    for row in queue.splitlines():
+        fields = row.split("|")
+        if len(fields) != 4 or "mvp2-threads" in fields[1] or str(original) in fields[3]:
+            stop("Active or ambiguous S2 scheduler observation")
+    # Import only after every tracked byte in the immutable old source was checked.
+    sys.path.insert(0, str(source))
+    from scripts import mvp2_threads as previous
+    plan = previous.check(output)
+    if plan["source_commit"] != original_sha:
+        stop("Original plan source differs")
+    return {"schema_version": "s2-login-recovery-v1", "status": "pre_submission_only",
+            "original_run": str(original), "original_source": original_sha,
+            "original_tests": counts, "active_original_processes": False,
+            "active_s2_jobs": False, "original_submission_products": False,
+            "original_plan_sha256": hashlib.sha256((output / "plan.json").read_bytes()).hexdigest(),
+            "original_tests_sha256": hashlib.sha256(
+                (original / "focused-tests.xml").read_bytes()).hexdigest()}
+
+
+if __name__ == "__main__":
+    print(json.dumps(recovery_gate(Path(sys.argv[1]), sys.argv[2]), sort_keys=True))
+PY_RECOVERY
+    )
+  fi
+fi
 if mkdir "$CLAIM" 2>/dev/null; then
   RUN=$(mktemp -d "$BASE/mvp2-threads-s2-XXXXXXXX")
   printf '%s\n' "$RUN" > "$CLAIM/run.txt"
   printf '%s\n' "$SOURCE_SHA" > "$CLAIM/source.txt"
+  if [[ -n "$RECOVERY_RECEIPT" ]]; then
+    printf '%s\n' "$RECOVERY_RECEIPT" > "$RUN/login-recovery.json"
+    printf 'Original attempt preserved; verified pre-submission recovery only.\n'
+  fi
   printf 'PRESERVE_RUN=%s\n' "$RUN"
   git clone --no-checkout https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic.git "$RUN/source"
   git -C "$RUN/source" config core.autocrlf false

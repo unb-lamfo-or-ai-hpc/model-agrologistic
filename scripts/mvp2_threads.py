@@ -119,10 +119,17 @@ def prepare(output, source):
         "schema_version": "mvp2-threads-plan-v1", "source_commit": source,
         "policy": policy(), "tools": tools(), "implementation": implementation_identity(),
         "fixture_sha256": scientific_identity(fixture_data()),
+        "login_recovery_sha256": recovery_identity(output),
         "large_instance_submission_allowed": False,
     }
     pair.write(output / "plan.json", record)
     return record
+
+
+def recovery_identity(output):
+    path = Path(output).parent / "login-recovery.json"
+    require(not path.is_symlink(), "Reject linked bootstrap recovery evidence.")
+    return file_sha256(path) if path.is_file() else None
 
 
 def check(output):
@@ -132,6 +139,7 @@ def check(output):
             and record.get("policy") == policy() and record.get("tools") == tools()
             and record.get("implementation") == implementation_identity()
             and record.get("fixture_sha256") == scientific_identity(fixture_data())
+            and record.get("login_recovery_sha256") == recovery_identity(output)
             and record.get("large_instance_submission_allowed") is False,
             "Source/runtime/tool/policy qualification changed.")
     return record
@@ -287,6 +295,9 @@ def collect(output, accounting, destination):
         errors.append(type(error).__name__)
     destination.mkdir(parents=True, exist_ok=False)
     assets = {"accounting.txt": accounting.encode()}
+    if plan.get("login_recovery_sha256") is not None:
+        assets["bootstrap/login-recovery.json"] = (
+            output.parent / "login-recovery.json").read_bytes()
     names = ["plan.json", "submission.json", "allocation.json", "license.json",
              "qualification.json", "worker_status.json", "scheduler/job.txt", "scheduler/node.txt"]
     names += [f"arm-{threads}.json" for threads in policy()["order"]]
