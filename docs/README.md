@@ -15,6 +15,7 @@ not rewrite its unsuccessful outcomes. S1-C is documentary, not a new campaign.
 | [Reconciled HPC roadmap](mvp2_hpc_roadmap.md) | S2 threads next; solvers/frontier conditional; decomposition future work only; editorial changes S6 |
 | [S2 thread qualification](mvp2_thread_qualification.md) | Licensed miniature gate, immutable one-shot collection and proposed h300 diagnostic window; production closed |
 | [S2 accepted miniature evidence](mvp2_thread_qualification_evidence.md) | Job 2202239, portable hash/runtime audit and fresh public-fixture residual revalidation; no speedup or production admission |
+| [S2 h300 diagnostic design](mvp2_h300_thread_design.md) | Homogeneous environment, global window/watchdog arithmetic, partial observations and resource units; execution/repeats closed |
 | [Resource lifecycle](mvp2_resource_lifecycle.md) | Qualified miniature scope, native ownership and bounded telemetry limitations |
 | [h215 consolidation](mvp2_h215_resource_consolidation.md) | Three pairs, observed parity and no causal performance claim |
 | [h300 pair acceptance](mvp2_h300_pair_acceptance.md) | One descriptive pair, not a replication campaign |
