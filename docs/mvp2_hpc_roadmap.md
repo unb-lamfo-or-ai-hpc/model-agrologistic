@@ -97,8 +97,9 @@ No extra pair or h400 compact arm is automatically admitted.
 
 First PR: [qualify thread parameters and one-shot collection](mvp2_thread_qualification.md)
 on five licensed analytical miniatures, 1/2/4/8/16 threads, seed 42 and all-barrier.
-CI verifies software only; fresh allocation/license and original residual/hierarchy
-audit are required on NPAD before closure. Production remains closed. Select
+Accepted [job 2202239 and portable residual/integrity audit](mvp2_thread_qualification_evidence.md)
+close this first gate only. CI software checks remain distinct from original
+NPAD scientific evidence. Production remains closed. Select
 h300 warehouse-only uncompacted control as the proposed production reference,
 with a common 1800-second diagnostic optimization window, original memory and
 method, fixed node class and at least 16 CPUs/task. The miniature envelope is

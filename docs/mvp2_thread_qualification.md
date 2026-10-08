@@ -24,6 +24,10 @@ This operational qualification is not a production performance experiment.
 Gurobi accepting a setting does not establish actual parallel utilization,
 large-model fit, determinism, speedup or scientific equality of all future runs.
 
+The first gate has passed: [original job 2202239 and portable audit](mvp2_thread_qualification_evidence.md).
+Five licensed observations and fresh public-fixture residual revalidation are
+accepted. This closes the miniature gate only; production and repeats stay closed.
+
 ## Miniature contract
 
 The [machine-readable policy](mvp2_threads_policy.json) fixes grid 1/2/4/8/16,
