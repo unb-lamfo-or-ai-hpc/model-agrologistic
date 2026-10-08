@@ -514,6 +514,7 @@ def seal_control(directory, control, expected_anchor):
 
 def terminal(text, job_id):
     """Exact root row in JobIDRaw|State|ExitCode; accounting is supplied, never queried here."""
+    design.require(isinstance(text, str) and len(text.encode()) <= 65536, "Unbounded accounting.")
     design.require(isinstance(job_id, str) and re.fullmatch(r"[0-9]+", job_id), "Bad job ID.")
     rows = [r.split("|") for r in text.splitlines() if r.strip()]
     roots = [r for r in rows if r[0].strip() == job_id]
@@ -582,6 +583,9 @@ def collect(directory, destination, accounting, job_id, data, config, expected_a
     assets["accounting.txt"] = accounting.encode()
     record["artifacts"]["accounting.txt"] = sha(assets["accounting.txt"])
     assets["transfer.json"] = controls.encoded(record)
+    design.require(
+        sum(map(len, assets.values())) <= LIMIT, "Products plus receipts exceed transfer limit."
+    )
     destination.mkdir(parents=True, exist_ok=False)
     archive = destination / "partial-component-evidence.tar.gz"
     with tarfile.open(archive, "x:gz") as stream:
