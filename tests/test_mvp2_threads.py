@@ -3,6 +3,7 @@
 import json
 import os
 import subprocess
+import sys
 import tarfile
 from dataclasses import asdict
 from types import SimpleNamespace
@@ -289,3 +290,142 @@ def test_terminal_collector_rechecks_worker_and_product_hashes(monkeypatch, tmp_
 def test_linux_driver_and_worker_bash_syntax():
     for name in ("npad_mvp2_threads.sh", "run_mvp2_threads.slurm"):
         subprocess.run(["bash", "-n", str(screen.ROOT / "scripts" / name)], check=True)
+
+
+def recovery_fixture(monkeypatch, tmp_path):
+    driver = (screen.ROOT / "scripts/npad_mvp2_threads.sh").read_text()
+    embedded = driver.split("<<'PY_RECOVERY'\n", 1)[1].split("\nPY_RECOVERY", 1)[0]
+    namespace = {"__name__": "recovery_test"}
+    exec(compile(embedded, "npad_mvp2_threads.sh:PY_RECOVERY", "exec"), namespace)
+    old_sha = "0360c25c2486daf99c223ca18f6bf80cb2af8238"
+    old = tmp_path / "mvp2-threads-s2-GXnpz4Ln"
+    (old / "source").mkdir(parents=True)
+    (old / "source/tracked.py").write_text("immutable source")
+    (old / "qualification").mkdir()
+    (old / "qualification/plan.json").write_text(json.dumps({"source_commit": old_sha}))
+    (old / "focused-tests.xml").write_text(
+        '<testsuites><testsuite tests="56" failures="0" errors="0" skipped="0"/></testsuites>')
+    claim = tmp_path / ".mvp2-threads-qualification-s2"
+    claim.mkdir()
+    (claim / "run.txt").write_text(str(old))
+    (claim / "source.txt").write_text(old_sha)
+    monkeypatch.setattr(sys, "path", list(sys.path))
+    monkeypatch.setattr(screen, "check", lambda _: {"source_commit": old_sha})
+    def command(args, **kwargs):
+        if args[0] == "git":
+            if "rev-parse" in args:
+                return old_sha.encode()
+            if "status" in args:
+                return b""
+            if "ls-files" in args:
+                return b"100644 abc 0\ttracked.py\0"
+            if "hash-object" in args:
+                assert kwargs["input"] == b"immutable source"
+                return b"abc"
+        if args[0] == "ps":
+            return f"{os.getpid()} 0 python gate\n".encode()
+        if args[0] == "squeue":
+            return b""
+        raise AssertionError(args)
+    return namespace["recovery_gate"], old, claim, old_sha, command
+
+
+def test_recovery_preserves_original_and_has_no_mutating_commands(monkeypatch, tmp_path):
+    gate, old, claim, sha, command = recovery_fixture(monkeypatch, tmp_path)
+    before = {p: p.read_bytes() for root in (old, claim) for p in root.rglob("*") if p.is_file()}
+    receipt = gate(tmp_path, sha, command)
+    assert receipt["status"] == "pre_submission_only"
+    assert receipt["original_submission_products"] is False
+    assert receipt["active_s2_jobs"] is False
+    assert all(p.read_bytes() == content for p, content in before.items())
+
+
+@pytest.mark.parametrize("product", [
+    ".submission-claimed", "submission.json", ".execution-claimed", "scheduler",
+    "allocation.json", "license.json", "worker_status.json", "miniatures",
+])
+def test_any_submission_or_execution_evidence_blocks_recovery(monkeypatch, tmp_path, product):
+    gate, old, _, sha, command = recovery_fixture(monkeypatch, tmp_path)
+    (old / "qualification" / product).touch()
+    with pytest.raises(ValueError, match="Submission/execution"):
+        gate(tmp_path, sha, command)
+
+
+@pytest.mark.parametrize("drift", [
+    "source", "run", "tests", "slurm", "raw", "dirty", "process", "queue",
+])
+def test_ambiguous_original_identity_or_activity_blocks_recovery(monkeypatch, tmp_path, drift):
+    gate, old, claim, sha, command = recovery_fixture(monkeypatch, tmp_path)
+    if drift == "source":
+        (claim / "source.txt").write_text(SOURCE)
+    elif drift == "run":
+        (claim / "run.txt").write_text(str(tmp_path / "other"))
+    elif drift == "tests":
+        (old / "focused-tests.xml").write_text('<testsuite tests="56" skipped="1"/>')
+    elif drift == "slurm":
+        (old / "slurm-123.out").touch()
+    def changed(args, **kwargs):
+        if drift == "raw" and "hash-object" in args:
+            return b"changed"
+        if drift == "dirty" and "status" in args:
+            return b" M tracked.py"
+        if drift == "process" and args[0] == "ps":
+            return command(args) + f"999999 0 bash {old}/driver\n".encode()
+        if drift == "queue" and args[0] == "squeue":
+            return b"123|mvp2-threads-mini|RUNNING|/somewhere\n"
+        return command(args, **kwargs)
+    with pytest.raises(ValueError):
+        gate(tmp_path, sha, changed)
+
+
+def test_recovery_receipt_is_bound_and_portable(tmp_path):
+    (tmp_path / "login-recovery.json").write_text('{"status":"pre_submission_only"}')
+    output = tmp_path / "qualification"
+    plan = screen.prepare(output, SOURCE)
+    assert plan["login_recovery_sha256"] == screen.file_sha256(tmp_path / "login-recovery.json")
+    screen.pair.write(output / "submission.json", {"job_id": "123", "source_commit": SOURCE})
+    destination = tmp_path / "collection"
+    assert screen.collect(output, "123|FAILED|1:0|00:00:01|\n", destination) == 1
+    with tarfile.open(destination / "threads-qualification-evidence-123.tar.gz") as archive:
+        assert "bootstrap/login-recovery.json" in archive.getnames()
+    (tmp_path / "login-recovery.json").write_text("changed")
+    with pytest.raises(ValueError, match="changed"):
+        screen.check(output)
+
+
+@pytest.mark.skipif(os.name == "nt", reason="Real Bash driver gate runs on Linux CI and NPAD")
+@pytest.mark.parametrize("action", ["start", "recover-login"])
+def test_actual_driver_exports_license_and_never_retries_incomplete_claim(tmp_path, action):
+    claim_name = ".mvp2-threads-qualification-s2" + (
+        "-login-recovery" if action == "recover-login" else "")
+    claim = tmp_path / claim_name
+    claim.mkdir()
+    run = tmp_path / "mvp2-threads-s2-preserved"
+    (run / "source").mkdir(parents=True)
+    (claim / "run.txt").write_text(str(run))
+    (claim / "source.txt").write_text(SOURCE)
+    bin_dir = tmp_path / "bin"
+    bin_dir.mkdir()
+    git = bin_dir / "git"
+    git.write_text('#!/bin/bash\n'
+                   'printf "%s" "$GRB_LICENSE_FILE" > "$S2_TEST_LICENSE"\n'
+                   'if [[ "$*" == *rev-parse* ]]; then printf "%s" "$S2_TEST_SHA"; fi\n')
+    git.chmod(0o755)
+    submit = bin_dir / "sbatch"
+    submit.write_text('#!/bin/bash\ntouch "$S2_TEST_SUBMITTED"\nexit 99\n')
+    submit.chmod(0o755)
+    text = (screen.ROOT / "scripts/npad_mvp2_threads.sh").read_text()
+    text = text.replace("BASE=/home/vrrcelestino/model-agrologistic-hygiene-audit",
+                        f'BASE="{tmp_path}"')
+    driver = tmp_path / "driver.sh"
+    driver.write_text(text)
+    env = dict(os.environ, PATH=f"{bin_dir}:{os.environ['PATH']}", GRB_LICENSE_FILE="wrong",
+               S2_TEST_LICENSE=str(tmp_path / "license-path.txt"), S2_TEST_SHA=SOURCE,
+               S2_TEST_SUBMITTED=str(tmp_path / "submitted"))
+    result = subprocess.run(["bash", str(driver), action, SOURCE], env=env,
+                            capture_output=True, text=True, timeout=10)
+    assert result.returncode == 1 and "No submission receipt" in result.stderr
+    assert (tmp_path / "license-path.txt").read_text() == screen.pair.LICENSE_FILE
+    assert not (tmp_path / "submitted").exists()
+    assert (claim / "run.txt").read_text() == str(run)
+    assert not (run / "login-recovery.json").exists()
