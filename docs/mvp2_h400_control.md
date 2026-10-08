@@ -1,5 +1,17 @@
 # S1-B: one instrumented h400 direct-enabled control
 
+## Terminal disposition (8 October 2026)
+
+The admitted single control job **2200384** is complete and accepted by the
+original NPAD collector/reviewer and separate local portable certificate replay.
+See the [acceptance report](mvp2_h400_control_acceptance.md) and
+[portable review](mvp2_h400_control_review_2200384.json). The source remains
+`e2fdc6eead8349fb40008be38858fa0160ac74c8`; this documentary update is not a
+new execution. The preparation/collection instructions below describe the
+historical one-shot contract, not permission for another submission. No repeat
+or further campaign is admitted. Final documentation-head checks and separate
+merge authorization are required; S1-C exit reconciliation follows integration.
+
 PR #50 integrated accepted h400 input inspection into develop at
 `2ddcc62f4e1bc82fa407d988645ce002ac9c0841` (7 October 2026). Input job 2200298
 was accepted, but did not construct a model or optimize. Its ~265 MiB input RSS

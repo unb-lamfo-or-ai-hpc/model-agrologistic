@@ -1,0 +1,311 @@
+{
+  "schema_version": "mvp2-h400-control-review-v1",
+  "job_id": "2200384",
+  "archive_sha256": "08b60d687227e5e21fe18594ee2bdfe050c57cb5ebf1cc1351ca78632f8b4b3a",
+  "original_collection_status": "accepted",
+  "status": "accepted",
+  "source_commit": "e2fdc6eead8349fb40008be38858fa0160ac74c8",
+  "run_identity": "e956d1d5b7769776081b4aa7094c743322108cb9918d4fa278f163ce94e5d08d",
+  "summary": {
+    "campaign_gate": null,
+    "capacity_adequacy_status": "emergency_capacity_required",
+    "capacity_stage_status": "OPTIMAL",
+    "comparison_group": null,
+    "data_read_seconds": 29.046917878091335,
+    "domestic_service_level": 0.9999999999999986,
+    "dyn_cap": 128306996.51495153,
+    "economic_cost": 355905011542.10223,
+    "economic_stage_status": "OPTIMAL",
+    "emergency_reception_capacity": 6670.119308018822,
+    "emergency_static_capacity": 278576241.3946946,
+    "end_to_end_seconds": 29003.807670159265,
+    "error_message": null,
+    "error_type": null,
+    "evpi": null,
+    "evpi_certification_status": null,
+    "evpi_lower_bound": null,
+    "evpi_upper_bound": null,
+    "finished_at_utc": "2026-10-07T22:59:53.638988+00:00",
+    "independent_validation_status": "accepted",
+    "lexicographic_completed_stage_count": 3,
+    "lexicographic_overall_status": "complete",
+    "material_balance_ok": true,
+    "maximum_scenario_service_level": 1.0,
+    "minimum_scenario_service_level": 0.9999999999999872,
+    "mip_gap": null,
+    "model_build_seconds": 733.1367829889059,
+    "name": "mvp2_h400_direct_control",
+    "objective_bound": null,
+    "objective_policy": "lexicographic",
+    "objective_value": 1.000292286335025e-06,
+    "optimization_seconds": 27925.288722374476,
+    "output_dir": "/home/vrrcelestino/model-agrologistic-hygiene-audit/mvp2-h400-s1b-qn9oDOTR/execution/runs/mvp2_h400_direct_control",
+    "peak_rss_mb": 103537.30859375,
+    "penalized_cost": 12892136029672.201,
+    "penalty_cost_share": 0.9723936351025959,
+    "postoptimality_seconds": 0.0,
+    "runtime_seconds": 28658.425507779233,
+    "scenario_count": 9,
+    "served_domestic_demand": 677712425.6517521,
+    "service_certification_status": "certified_zero_within_tolerance",
+    "service_stage_status": "OPTIMAL",
+    "service_target_status": "attained",
+    "slurm_array_task_id": null,
+    "slurm_job_id": "2200384",
+    "started_at_utc": "2026-10-07T14:56:29.831310+00:00",
+    "status": "optimal",
+    "total_direct_flow": 1017017776.1047907,
+    "total_domestic_demand": 677712425.6517531,
+    "total_emergency_capacity": 278582911.5140026,
+    "total_unmet_demand": 1.000292286335025e-06,
+    "turnover": 10.664352430144064,
+    "vss": null,
+    "vss_certification_status": null,
+    "vss_lower_bound": null,
+    "vss_upper_bound": null
+  },
+  "stages": [
+    {
+      "configured_mip_gap": 0.1,
+      "configured_mip_gap_abs": 1e-10,
+      "final_minus_pass_objective": 1.000292286335025e-06,
+      "final_objective_value": 1.000292286335025e-06,
+      "iteration_count": 3899413.0,
+      "mip_gap": 1e+100,
+      "mip_inherited_base": 6.093170329928398e-10,
+      "mip_next_pass_limit": 1.0006093170329928e-06,
+      "node_count": 1.0,
+      "nodes_remaining": 1.0,
+      "objective_absolute_tolerance": 1e-06,
+      "objective_bound": 5.093170329928398e-10,
+      "objective_name": "expected_unmet_demand",
+      "objective_relative_tolerance": 0.0,
+      "objective_value": 0.0,
+      "runtime_seconds": 3012.2171790599823,
+      "solution_count": 2.0,
+      "stage_number": 1,
+      "stage_role": "unmet_demand",
+      "status": "OPTIMAL",
+      "status_code": 2,
+      "within_mip_degradation_limit": true,
+      "work_units": 1955.4218814171402
+    },
+    {
+      "configured_mip_gap": 0.1,
+      "configured_mip_gap_abs": 1e-10,
+      "final_minus_pass_objective": 25177701.48474282,
+      "final_objective_value": 278582911.5140021,
+      "iteration_count": 36892315.0,
+      "mip_gap": 0.0006425263244101413,
+      "mip_inherited_base": 278582911.5139987,
+      "mip_next_pass_limit": 278582911.5139997,
+      "node_count": 1.0,
+      "nodes_remaining": 1.0,
+      "objective_absolute_tolerance": 1e-06,
+      "objective_bound": 253242390.51107278,
+      "objective_name": "expected_emergency_capacity",
+      "objective_relative_tolerance": 0.0,
+      "objective_value": 253405210.02925926,
+      "runtime_seconds": 13750.52623295784,
+      "solution_count": 5.0,
+      "stage_number": 2,
+      "stage_role": "emergency_capacity",
+      "status": "OPTIMAL",
+      "status_code": 2,
+      "within_mip_degradation_limit": true,
+      "work_units": 8402.432580194829
+    },
+    {
+      "configured_mip_gap": 0.1,
+      "configured_mip_gap_abs": 1e-10,
+      "final_minus_pass_objective": 0.0006103515625,
+      "final_objective_value": 355905011542.10223,
+      "iteration_count": 8227138.0,
+      "mip_gap": 3.7046965512408174e-05,
+      "mip_inherited_base": 391482327495.62305,
+      "mip_next_pass_limit": 391482327495.62305,
+      "node_count": 1.0,
+      "nodes_remaining": 1.0,
+      "objective_absolute_tolerance": 1e-06,
+      "objective_bound": 355891826341.4129,
+      "objective_name": "economic_cost",
+      "objective_relative_tolerance": 0.0,
+      "objective_value": 355905011542.1016,
+      "runtime_seconds": 11131.58445096016,
+      "solution_count": 7.0,
+      "stage_number": 3,
+      "stage_role": "economic_cost",
+      "status": "OPTIMAL",
+      "status_code": 2,
+      "within_mip_degradation_limit": true,
+      "work_units": 8161.592644436227
+    }
+  ],
+  "validation_families": 32,
+  "model_findings": [
+    {
+      "affected_count": 1,
+      "affected_sample": [
+        "emergency_static"
+      ],
+      "code": "DOMINANT_OBJECTIVE_COMPONENT",
+      "message": "A single component represents at least 90% of the penalized cost total; verify the intended economic or service interpretation.",
+      "severity": "warning"
+    },
+    {
+      "affected_count": 9,
+      "affected_sample": [
+        "oferta_baixo__demanda_baixo",
+        "oferta_baixo__demanda_base",
+        "oferta_baixo__demanda_alto",
+        "oferta_base__demanda_baixo",
+        "oferta_base__demanda_base",
+        "oferta_base__demanda_alto",
+        "oferta_alto__demanda_baixo",
+        "oferta_alto__demanda_base",
+        "oferta_alto__demanda_alto"
+      ],
+      "code": "EMERGENCY_CAPACITY_REQUIRED",
+      "message": "Domestic service is preserved through emergency capacity. Treat the physical gap as an infrastructure finding and the Big-M contribution as a penalty-dependent value, not an observed monetary cost.",
+      "severity": "warning"
+    },
+    {
+      "affected_count": 1,
+      "affected_sample": [
+        "candidate_capacity"
+      ],
+      "code": "INVESTMENT_CAPACITY_SATURATED",
+      "message": "Every eligible facility reaches its configured upper bound for at least one investment type. Residual emergency capacity therefore identifies a gap outside the current decision set.",
+      "severity": "info"
+    }
+  ],
+  "matrix": {
+    "schema_version": "resource-matrix-v1",
+    "observations": [
+      {
+        "scope": "original",
+        "phase": "model_build",
+        "backend": "gurobipy",
+        "variables": 42426624.0,
+        "binary_variables": 492.0,
+        "integer_variables": 492.0,
+        "constraints": 1160742.0,
+        "nonzeros": 161336486.0,
+        "general_constraints": 274320.0,
+        "coefficient_min": 1.0,
+        "coefficient_max": 307079.0,
+        "integer_count_semantics": "includes_binary"
+      },
+      {
+        "scope": "presolved_log",
+        "phase": "optimization",
+        "backend": "gurobipy",
+        "constraints": 1127633,
+        "variables": 39923841,
+        "nonzeros": 153940594
+      },
+      {
+        "scope": "presolved_log",
+        "phase": "optimization_stage_1",
+        "backend": "gurobipy",
+        "constraints": 73963,
+        "variables": 4003952,
+        "nonzeros": 11846322
+      },
+      {
+        "scope": "presolved_log",
+        "phase": "optimization_stage_2",
+        "backend": "gurobipy",
+        "constraints": 1099282,
+        "variables": 37884092,
+        "nonzeros": 145578903
+      },
+      {
+        "scope": "presolved_log",
+        "phase": "optimization_stage_3",
+        "backend": "gurobipy",
+        "constraints": 1102701,
+        "variables": 38152931,
+        "nonzeros": 147564296
+      }
+    ],
+    "qualification": "Missing fields are unavailable; no presolved model copy is created."
+  },
+  "phase_peaks": {
+    "initialization": {
+      "samples": 1,
+      "tree_rss_gib": 0.07114028930664062,
+      "cgroup_gib": 0.1129150390625
+    },
+    "data_read": {
+      "samples": 9,
+      "tree_rss_gib": 0.2582893371582031,
+      "cgroup_gib": 0.2969779968261719
+    },
+    "model_build": {
+      "samples": 14,
+      "tree_rss_gib": 34.19147491455078,
+      "cgroup_gib": 34.2880859375
+    },
+    "optimization": {
+      "samples": 169,
+      "tree_rss_gib": 71.71068572998047,
+      "cgroup_gib": 71.87991714477539
+    },
+    "optimization_stage_1": {
+      "samples": 430,
+      "tree_rss_gib": 69.3926773071289,
+      "cgroup_gib": 69.5556755065918
+    },
+    "optimization_stage_2": {
+      "samples": 2720,
+      "tree_rss_gib": 94.99830627441406,
+      "cgroup_gib": 95.20744323730469
+    },
+    "optimization_stage_3": {
+      "samples": 2206,
+      "tree_rss_gib": 99.25973129272461,
+      "cgroup_gib": 99.49013900756836
+    },
+    "result_extraction": {
+      "samples": 3,
+      "tree_rss_gib": 45.954917907714844,
+      "cgroup_gib": 46.0816650390625
+    },
+    "native_model_disposal": {
+      "samples": 3,
+      "tree_rss_gib": 29.281394958496094,
+      "cgroup_gib": 29.417579650878906
+    },
+    "independent_validation": {
+      "samples": 1,
+      "tree_rss_gib": 5.13714599609375,
+      "cgroup_gib": 5.197330474853516
+    },
+    "artifact_export": {
+      "samples": 4,
+      "tree_rss_gib": 5.192974090576172,
+      "cgroup_gib": 5.446266174316406
+    }
+  },
+  "termination": {
+    "schema_version": "resource-termination-v1",
+    "execution_status": "optimal",
+    "exception_type": null,
+    "elapsed_seconds": 29006.113277802244,
+    "sampler_work_seconds": 1258.6622490277514,
+    "samples": {
+      "resource": 5560,
+      "progress": 141
+    },
+    "dropped_samples": {
+      "resource": 0,
+      "progress": 0
+    },
+    "inspection_errors": [],
+    "quality_acceptance": "requires_independent_validation_and_stage_certificates"
+  },
+  "peak_reported_native_memory_gib": 68.42982617765665,
+  "maximum_sampling_gap_seconds": 277.8353807637468,
+  "qualification": "Original NPAD solution validation and hierarchy certificates replayed; no private workbook reload, new residual computation or causal performance claim."
+}
