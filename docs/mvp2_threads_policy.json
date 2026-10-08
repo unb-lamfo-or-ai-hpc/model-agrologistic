@@ -1,0 +1,26 @@
+{
+  "schema_version": "mvp2-threads-qualification-policy-v1",
+  "grid": [1, 2, 4, 8, 16],
+  "order": [4, 1, 8, 2, 16],
+  "seed": 42,
+  "miniature_seconds": 60,
+  "miniature_soft_memory_gb": 1,
+  "miniature_allocation_mib": 16384,
+  "miniature_cpus_per_task": 16,
+  "miniature_walltime_seconds": 1800,
+  "large_instance_submission_allowed": false,
+  "automatic_repeats_allowed": false,
+  "proposed_reference": {
+    "case": "h300-warehouse-control",
+    "input_job": "2198085",
+    "input_archive_sha256": "97395d29b802e558d3ac88db8c8e74cf3447d165782530a9c8d7cafd59f106fb",
+    "pair_job": "2199525",
+    "pair_archive_sha256": "5e52e56887dcb57b9c6209fb884129bf85cc322779fc17c2279c589519d4c1d9",
+    "seed": 42,
+    "soft_memory_gb": 128,
+    "allocation_mib": 196608,
+    "diagnostic_optimization_seconds_per_arm": 1800,
+    "compact_python_indices": false,
+    "status": "proposal_not_admitted"
+  }
+}

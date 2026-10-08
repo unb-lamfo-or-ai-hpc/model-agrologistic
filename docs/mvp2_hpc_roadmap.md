@@ -77,12 +77,13 @@ archived. Instrumentation and native ownership are implemented. Large-run causal
 sampler overhead and continuous five-second coverage are not established; those
 limitations are explicit, not silently marked satisfied.
 
-## S1 — lifecycle and bounded memory study: closure submitted in S1-C
+## S1 — lifecycle and bounded memory study: integrated bounded closure
 
 S1-A: accepted h300 warehouse-only input, baseline and descriptive compact-first
 pair. S1-B: accepted h400 direct input and one instrumented control. S1-C:
 consolidate those with three h215 pairs, record exit decisions and reconcile
-this roadmap. Integration of the documentary S1-C PR closes the bounded scope.
+this roadmap. Documentary PR #52 merged at
+`9d302406e2aae0958ff61084f750fa4cf1730eac`, closing the adopted bounded scope.
 
 Compaction stays optional/default-off. Paired application RSS was lower, runtime
 effects varied and native solver memory was essentially unchanged. No causal
@@ -94,15 +95,19 @@ No extra pair or h400 compact arm is automatically admitted.
 
 ## S2 — next: separately qualified Gurobi thread screening
 
-First PR: qualify protocol, admission and one-shot collection for a bounded,
-homogeneous thread contrast. Select exact reference case and diagnostic windows
-from S1 evidence before issuing NPAD commands. Candidate grid: 1/2/4/8/16 solver
-threads, seed 42, unchanged model, all-barrier method, memory cap/allocation,
-compaction setting and node class. Require fresh allocation/license admission
-and no-duplicate-submission claims. This roadmap admits no grid or new job.
+First PR: [qualify thread parameters and one-shot collection](mvp2_thread_qualification.md)
+on five licensed analytical miniatures, 1/2/4/8/16 threads, seed 42 and all-barrier.
+Accepted [job 2202239 and portable residual/integrity audit](mvp2_thread_qualification_evidence.md)
+close this first gate only. CI software checks remain distinct from original
+NPAD scientific evidence. Production remains closed. Select
+h300 warehouse-only uncompacted control as the proposed production reference,
+with a common 1800-second diagnostic optimization window, original memory and
+method, fixed node class and at least 16 CPUs/task. The miniature envelope is
+separate from production and provides no production speedup or utilization claim.
 
-Second PR: audit admitted observations and justify any selected full-budget or
-replicated block. Compare equal completed work, stage latency, time-to-bound,
+Second PR: after miniature evidence review, qualify production censoring/admission,
+execute one bounded block, audit observations and justify any selected full-budget
+or replicated block. Compare equal completed work, stage latency, time-to-bound,
 time-to-incumbent, effective CPU use, core-hours and memory. Speedup T1/Tp and
 efficiency (T1/Tp)/p require comparable completed work; censored runs are not
 ordinary complete timings. Disclose shared-node/order effects. Balanced repeats
