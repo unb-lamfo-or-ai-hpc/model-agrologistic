@@ -28,6 +28,11 @@ The first gate has passed: [original job 2202239 and portable audit](mvp2_thread
 Five licensed observations and fresh public-fixture residual revalidation are
 accepted. This closes the miniature gate only; production and repeats stay closed.
 
+PR #53 is integrated at `1181eb1d03de1990f5e02d99bda0ef0a93563a47`.
+The next [h300 design qualification](mvp2_h300_thread_design.md) separates
+solver-free policy/classifier tests from a future live implementation/admission PR.
+The historical execution runbooks below are retained, not new instructions to resubmit.
+
 ## Miniature contract
 
 The [machine-readable policy](mvp2_threads_policy.json) fixes grid 1/2/4/8/16,

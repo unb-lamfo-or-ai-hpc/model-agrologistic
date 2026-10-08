@@ -105,9 +105,14 @@ with a common 1800-second diagnostic optimization window, original memory and
 method, fixed node class and at least 16 CPUs/task. The miniature envelope is
 separate from production and provides no production speedup or utilization claim.
 
-Second PR: after miniature evidence review, qualify production censoring/admission,
-execute one bounded block, audit observations and justify any selected full-budget
-or replicated block. Compare equal completed work, stage latency, time-to-bound,
+After PR #53 integration, the [h300 design gate](mvp2_h300_thread_design.md)
+qualifies homogeneous environment, diagnostic/watchdog arithmetic, partial
+observations and resource metrics without admitting execution or repeats.
+Split live implementation/admission and resulting evidence/decision from that
+solver-free gate. Only a subsequent qualified, separately admitted bounded block
+can inform any selected full-budget or replicated block. This split replaces the
+earlier combined "second PR" boundary; it is not an extra experimental campaign.
+Compare equal completed work, stage latency, time-to-bound,
 time-to-incumbent, effective CPU use, core-hours and memory. Speedup T1/Tp and
 efficiency (T1/Tp)/p require comparable completed work; censored runs are not
 ordinary complete timings. Disclose shared-node/order effects. Balanced repeats
