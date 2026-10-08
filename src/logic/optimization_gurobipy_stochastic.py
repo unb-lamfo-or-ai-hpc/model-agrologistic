@@ -50,6 +50,7 @@ def solve_stochastic_model_gurobipy(
     solver_config: SolverConfig,
     *,
     fixed_first_stage: list[dict[str, Any]] | None = None,
+    native_phase_hook: Any = None,
 ) -> OptimizationResult:
     """Solve the risk-neutral two-stage extensive form."""
 
@@ -342,6 +343,7 @@ def solve_stochastic_model_gurobipy(
         ),
         solver_config=solver_config,
         diagnostics=solver_diagnostics,
+        native_phase_hook=native_phase_hook,
     )
     optimization_seconds = perf_counter() - optimization_started_at
     runtime_seconds = perf_counter() - started_at

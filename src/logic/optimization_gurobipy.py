@@ -970,6 +970,7 @@ def _optimize_with_stage_observer(
     objective_roles: tuple[str, ...] | None = None,
     solver_config: SolverConfig | None = None,
     diagnostics: dict[str, Any] | None = None,
+    native_phase_hook: Any = None,
 ) -> list[dict[str, Any]]:
     """Optimize and capture the terminal state of each lexicographic pass."""
 
@@ -982,6 +983,11 @@ def _optimize_with_stage_observer(
         else:
             model.optimize(lambda m, w: gurobi_message(m, w, GRB.Callback, session))
         return []
+
+    # Optional worker observer: check effective globals before copying per-pass
+    # environments. Existing callers retain their original behavior.
+    if native_phase_hook is not None:
+        native_phase_hook("native_ready", model, GRB)
 
     callback = getattr(GRB, "Callback", None)
     required_codes = (
@@ -1089,7 +1095,12 @@ def _optimize_with_stage_observer(
             "nodes": stages[-1]["node_count"],
         })
 
+    if native_phase_hook is not None:
+        native_phase_hook("optimization", model, GRB)
     model.optimize(observe_stage)
+    # Publish this seam before diagnostics, count checks or sparse extraction.
+    if native_phase_hook is not None:
+        native_phase_hook("export_validation", model, GRB)
     if telemetry is not None and diagnostics is not None:
         diagnostics.update(telemetry.finish(model))
     return stages
