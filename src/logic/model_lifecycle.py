@@ -27,6 +27,8 @@ def managed_model_solve(function):
 
     @wraps(function)
     def wrapped(*args, **kwargs):
+        # Private worker seam: publication errors cannot prevent native disposal.
+        on_failure_cleanup = kwargs.pop("_on_failure_cleanup", None)
         owners, records = [], []
         token = OWNED.set(owners)
         result, failure = None, None
@@ -37,31 +39,57 @@ def managed_model_solve(function):
             failure = exc
             raise
         finally:
-            phase("native_model_disposal")
             cleanup_errors = []
-            for model, backend in reversed(owners):
-                started = perf_counter()
+            cleanup_interrupts = []
+            observation_errors = []
+            try:
+                if failure is not None and on_failure_cleanup is not None:
+                    try:
+                        on_failure_cleanup()
+                    except BaseException as exc:
+                        observation_errors.append(exc)
                 try:
-                    if backend == "gurobipy":
-                        model.dispose()
-                    else:
-                        model.freeProb()
-                    status = "disposed"
-                except Exception as exc:
-                    status = type(exc).__name__
-                    cleanup_errors.append(status)
-                records.append(
-                    {
-                        "backend": backend,
-                        "status": status,
-                        "disposal_seconds": perf_counter() - started,
-                    }
-                )
-                event("model_disposal", status=status)
-            OWNED.reset(token)
+                    phase("native_model_disposal")
+                except BaseException as exc:
+                    observation_errors.append(exc)
+                for model, backend in reversed(owners):
+                    started = perf_counter()
+                    try:
+                        if backend == "gurobipy":
+                            model.dispose()
+                        else:
+                            model.freeProb()
+                        status = "disposed"
+                    except BaseException as exc:
+                        status = type(exc).__name__
+                        cleanup_errors.append(status)
+                        if not isinstance(exc, Exception):
+                            cleanup_interrupts.append(exc)
+                    records.append(
+                        {
+                            "backend": backend,
+                            "status": status,
+                            "disposal_seconds": perf_counter() - started,
+                        }
+                    )
+                    try:
+                        event("model_disposal", status=status)
+                    except BaseException as exc:
+                        observation_errors.append(exc)
+            finally:
+                OWNED.reset(token)
             if result is not None:
                 result.metadata["native_model_lifecycle"] = records
+            if cleanup_interrupts and failure is None:
+                raise cleanup_interrupts[0]
             if cleanup_errors and failure is None:
                 raise RuntimeError(f"Native model disposal failed: {cleanup_errors}")
+            if observation_errors and failure is None:
+                raise observation_errors[0]
+            if failure is not None:
+                for status in cleanup_errors:
+                    failure.add_note(f"Secondary native disposal error: {status}")
+                for error in observation_errors:
+                    failure.add_note(f"Secondary cleanup observation error: {type(error).__name__}")
 
     return wrapped
