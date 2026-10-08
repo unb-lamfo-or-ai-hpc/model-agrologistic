@@ -120,6 +120,15 @@ containment, fresh license/homogeneity, production telemetry or source/cohort
 admission. Those remain a closed integration/qualification step before any
 separately authorized diagnostic block. No optimization or repeat is admitted;
 component completion does not close S2 or establish thread performance.
+After PR #55 integration at `af7271962d314d5c1e26f1c7745147ea071c4c7f`,
+the [closed native-worker gate](mvp2_h300_native_worker.md) connects strict
+native-call seams, effective global limits and native count snapshots to partial
+export. Fake native APIs qualify software paths, not licensed parity or h300
+resource sufficiency. Its changed implementation must receive a new source/cohort
+qualification; historical design hashes and accepted archives are not rewritten.
+Full worker-evidence transfer, live sampling and allocation-wide closure remain
+closed qualification steps before a separately authorized miniature protocol.
+No job, optimization block or repeat is admitted by this integration.
 Compare equal completed work, stage latency, time-to-bound,
 time-to-incumbent, effective CPU use, core-hours and memory. Speedup T1/Tp and
 efficiency (T1/Tp)/p require comparable completed work; censored runs are not
