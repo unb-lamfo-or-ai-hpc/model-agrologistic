@@ -273,14 +273,37 @@ qualification obligations. No synthetic, licensed miniature, h300 or repeat is
 admitted by component regression or merge. Finish the actual bounded batch
 adapter and its explicit synthetic-only protocol before requesting NPAD CLI.
 
+PR #60 merged at `4472c8429a2aa99d10a716d827f1f6bfa0ec022a`.
+The [closed real batch adapter](mvp2_s2_batch_adapter.md) integrates POSIX pipes,
+kernel-peer IPC, raw source/runtime/allocation checks, actual numeric-step binding,
+controller events/resources and terminal partial/adverse collection. Its public
+CLIs stay denied; offline regression cannot promote any admission flag. Next is
+the separately frozen installed runtime/tool envelope and synthetic-only
+admission/terminal protocol, including interruption, unknown client/remote
+cleanup and strict installed command grammar. No NPAD command is admitted yet.
+
 ## S2 closure — deferred protected-main reconciliation
 
 Maintainer decision on 9 October: synchronize only at the end of the current S2,
 not inside intermediate containment or diagnostic PRs. GitHub's develop view at
 `a4ce020` reports 111 commits ahead of main and 1 behind; this dated UI observation
 must be recomputed at closure. It is not a conflict assessment or authorization
-to overwrite main-only work. The maintainer reports adding protection to main;
-its exact rules and permitted merge actors have not been independently audited.
+to overwrite main-only work. The attached PDF and read-only live settings review
+on 9 October now document the ruleset below; prior unaudited-rule wording is
+superseded for this dated snapshot, not for later effective-rule changes.
+
+Ruleset `model-agrologistic-main-protect`, ID 24804465, is Active and targets
+`refs/heads/main` only. Restrict creations, updates and deletions are selected;
+required status check is `check-branch`, Any source. Organization admin has an
+Always allow bypass. Require-PR, linear history, up-to-date-before-merge and
+block-force-push are not selected. PDF SHA-256:
+`b2860c7cfc51bca4387a03e8dd92fc1a4232caf633fea435543080b9c3d25866`.
+These settings restrict ordinary writers but do not make main immutable against
+an exempt admin. They do not establish this assistant/account's bypass role.
+No rule, actor, permission or workflow is changed here. At closure recheck the
+effective rule set and the implementation/provenance of `check-branch`; a missing
+or failing required check is a blocker, not authorization to bypass it. Review
+PRs remain our workflow even though this ruleset does not itself require them.
 
 At closure, inspect exact main/develop heads, both ancestry directions, exclusive
 commits and affected files. If main has exclusive history, first prepare a scoped
