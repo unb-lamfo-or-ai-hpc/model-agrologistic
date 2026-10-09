@@ -1,0 +1,20 @@
+{
+  "config_query_succeeded": true,
+  "declared_configuration": {
+    "JobAcctGatherType": "jobacct_gather/linux",
+    "KillWait": "300 sec",
+    "ProctrackType": "proctrack/cgroup",
+    "SelectType": "select/cons_tres",
+    "SelectTypeParameters": "CR_CPU_MEMORY",
+    "TaskPlugin": "task/affinity,task/cgroup",
+    "TaskPluginParam": "threads",
+    "UnkillableStepTimeout": "60 sec"
+  },
+  "live_isolation_proven": false,
+  "native_miniature_admitted": false,
+  "production_admitted": false,
+  "repeats_admitted": false,
+  "schema_version": "s2-slurm-declared-config-v1",
+  "scontrol_client_version": "slurm 22.05.11",
+  "srun_client_version": "slurm 22.05.11"
+}
