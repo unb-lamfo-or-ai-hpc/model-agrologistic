@@ -564,6 +564,19 @@ def test_real_partial_archive_plus_operation_sidecar(real_adapter, tmp_path, mon
         o.audit_normal_collection(*bad)
 
 
+def test_latched_stop_reaches_real_exact_step_controller(real_adapter):
+    real_adapter.launch()
+    real_adapter.handshake()
+    real_adapter.test_clock[0] = 1
+    with pytest.raises(ValueError):
+        real_adapter.tick(force_fault="true")
+    assert real_adapter.transport.signals == []
+    assert real_adapter.tick(force_fault=True) == "TERM_exact_step"
+    assert real_adapter.transport.signals == [("7", "TERM")]
+    assert (real_adapter.root / "term-intent.json").exists()
+    assert real_adapter.preserve()["live_containment_qualified"] is False
+
+
 @pytest.mark.parametrize(
     "field,value",
     [
