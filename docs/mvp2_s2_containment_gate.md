@@ -149,10 +149,11 @@ override or automatic promotion from these observations to native execution.
 
 ## Software qualification (not NPAD capability evidence)
 
-Local Python 3.13 qualification: 73 new solver-free tests pass. Combined with
+Local Python 3.13 qualification: 73 new solver-free tests pass; one new Linux-only
+Bash syntax test skips on Windows. Combined with
 the six existing S2 contract/control/partial/native/evidence/resource suites,
-449 tests pass and five platform-specific tests skip on Windows (two POSIX
-process-group cases, two symlink fixtures and one Linux `/proc` case). These
+449 tests pass and six platform-specific tests skip on Windows (two POSIX
+process-group cases, two symlink fixtures, one Linux `/proc` case and Bash syntax). These
 skips must not be presented as live NPAD containment qualification. The inherited
 Linux CI is reviewed at the final published head before Ready.
 
