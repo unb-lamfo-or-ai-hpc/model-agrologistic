@@ -20,7 +20,8 @@ not remaining calculations; remove the manuscript section only in S6.
 ## What is prepared, and what is not
 
 The versioned driver submits at most one **input-only** observation allocation:
-one node, one task/CPU, 1024 MiB, 120 seconds, partition `intel-256`. It only runs
+one node, one task/CPU, 1024 MiB, 120 seconds, partition `intel-256`, using the
+existing project account `sxdsouza` and the pinned checkout as working directory. It only runs
 the standard-library probe. It does not import Gurobi/SCIP, access a license,
 construct a model, solve a miniature, create/migrate/kill cgroups, invoke a
 native worker, alter Slurm/systemd settings or retry a job. The user executes
