@@ -5,6 +5,7 @@ import gzip
 import io
 import json
 import subprocess
+import sys
 import tarfile
 from pathlib import Path
 
@@ -557,3 +558,21 @@ def test_frozen_protocol_and_no_native_launcher():
     slurm = (root / "scripts/run_mvp2_s2_containment.slurm").read_text()
     assert "-m scripts.mvp2_s2_containment_probe" in slurm
     assert "native_worker" not in slurm and "GRB_LICENSE_FILE" not in slurm
+
+
+@pytest.mark.skipif(
+    sys.platform != "linux", reason="Linux CI qualifies Bash syntax without submitting"
+)
+def test_entry_scripts_parse_on_linux():
+    root = Path(__file__).resolve().parents[1]
+    subprocess.run(
+        [
+            "bash",
+            "-n",
+            "scripts/npad_mvp2_s2_containment.sh",
+            "scripts/run_mvp2_s2_containment.slurm",
+        ],
+        cwd=root,
+        check=True,
+        timeout=10,
+    )
