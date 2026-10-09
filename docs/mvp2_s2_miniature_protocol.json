@@ -1,0 +1,33 @@
+{
+  "schema_version": "s2-native-miniature-prerequisites-v1",
+  "stage": "containment_capability_observation_only",
+  "native_miniature_admitted": false,
+  "production_admitted": false,
+  "repeats_admitted": false,
+  "input_allocation": {
+    "partition": "intel-256",
+    "nodes": 1,
+    "tasks": 1,
+    "cpus": 1,
+    "memory_mib": 1024,
+    "wall_seconds": 120,
+    "maximum_submissions_per_claim": 1,
+    "native_solver_imports": false,
+    "license_access": false,
+    "host_configuration_changes": false,
+    "cgroup_writes": false
+  },
+  "next_implementation_requirements": [
+    "Review actual compute-node hierarchy, visible memory ceiling and delegation observations",
+    "Choose a supported dedicated worker scope; reject whole-allocation or PID-only containment",
+    "Enforce placement before native import and retain supervisor outside the worker scope",
+    "Bound startup, build, solve, export, teardown and total elapsed monotonic time",
+    "Prove scoped TERM/KILL cleanup with nested and session-detached synthetic descendants",
+    "Verify cgroup emptiness, process reaping and no late worker evidence after closure",
+    "Preserve original failure and export bounded partial evidence on every supported failure path",
+    "Qualify a separately versioned miniature profile on the analytical fixture, preserving mathematical semantics",
+    "Independently validate miniature solutions and replay source, resource and cleanup evidence",
+    "Review miniature evidence before a separate fresh h300 allocation and license admission"
+  ],
+  "unsupported_environment_policy": "Record blocking evidence; do not retry, change permissions, weaken isolation or invoke the native worker"
+}
