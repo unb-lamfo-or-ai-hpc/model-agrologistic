@@ -264,6 +264,46 @@ it is not a guarantee of termination. A separate bounded synthetic integration
 and live audit must precede licensed miniatures. This does not require upgrading
 the cluster or change the research scope, tolerances or blocked h300 campaign.
 
+After #59 merged at `a4ce020d01298a292ab10819d21355775a562b85`, the v1
+observer/step contract is software-qualified. The next gate implements
+[closed synthetic launcher/controller and partial-evidence components](mvp2_s2_synthetic_controller.md)
+using injected transports, not a live job driver. Actual step ownership, finite
+enforcement, complete descendant cleanup/reaping and no late writes remain live
+qualification obligations. No synthetic, licensed miniature, h300 or repeat is
+admitted by component regression or merge. Finish the actual bounded batch
+adapter and its explicit synthetic-only protocol before requesting NPAD CLI.
+
+## S2 closure — deferred protected-main reconciliation
+
+Maintainer decision on 9 October: synchronize only at the end of the current S2,
+not inside intermediate containment or diagnostic PRs. GitHub's develop view at
+`a4ce020` reports 111 commits ahead of main and 1 behind; this dated UI observation
+must be recomputed at closure. It is not a conflict assessment or authorization
+to overwrite main-only work. The maintainer reports adding protection to main;
+its exact rules and permitted merge actors have not been independently audited.
+
+At closure, inspect exact main/develop heads, both ancestry directions, exclusive
+commits and affected files. If main has exclusive history, first prepare a scoped
+main-to-develop reconciliation PR, resolve conflicts explicitly without dropping
+either side, qualify exact-head CI and request approval only when Ready. Then
+prepare the develop-to-main promotion PR for the integrated S2 snapshot, with
+evidence ledger, scope/diff and checks. No force-push, history reset, protection
+bypass or rule weakening. A blocked protected-main merge is handed to the
+maintainer through normal review/merge controls.
+
+Prefer an allowed ancestry-preserving integration strategy. If promotion creates
+a new merge commit on main, develop can become one commit behind despite equal
+code trees: finish with a reviewed main-to-develop back-merge, if necessary, and
+verify main is an ancestor of develop and the integrated code trees match at
+handoff. If the rules require squash/rebase, inspect the resulting graph rather
+than assuming synchronization from equal files. One PR may not satisfy both
+directions; the sequence depends on the actual protected-branch rules and graph.
+
+Protection governs permitted mutations; it does not make history universally
+immutable against actors allowed by those rules. Release/tag/deposit and public
+manuscript deployment remain separate decisions. No promotion, reconciliation,
+rule change or merge authorization is exercised by the current software PR.
+
 GitHub main stays stable, develop integrates scoped PRs. Qualify exact-head CI
 and mark Ready before requesting merge. The assistant prepares scoped code/docs;
 NPAD CLI is executed by the user and merge needs separate authorization. This
