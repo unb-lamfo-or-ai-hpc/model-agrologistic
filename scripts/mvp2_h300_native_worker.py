@@ -99,7 +99,9 @@ class NativeHooks:
         return _gurobi_status_name(model, grb)
 
 
-def _integrate_native(directory, data, config, expected_anchor, *, solver=None):
+def _integrate_native(
+    directory, data, config, expected_anchor, *, solver=None, worker_binding=None, source_root=None
+):
     """Private integration seam; NOT an admitted worker or production entry point.
 
     The only public execution function denies. Tests replace the backend before
@@ -128,6 +130,14 @@ def _integrate_native(directory, data, config, expected_anchor, *, solver=None):
         threads=threads,
     )
     design.require(recomputed == expected_anchor, "External scientific anchor drift.")
+    if worker_binding is not None:
+        from scripts import mvp2_h300_worker_evidence as evidence
+
+        design.require(source_root is not None, "Missing actual worker source root.")
+        design.require(worker_binding["anchor"] == expected_anchor, "Worker binding anchor drift.")
+        evidence.verify_current_provenance(source_root, worker_binding)
+    else:
+        design.require(source_root is None, "Source root without worker binding.")
     journal = controls.PhaseJournal(directory, design.digest(expected_anchor))
     hooks = NativeHooks(journal, solver)
     cleanup_started = False
@@ -144,6 +154,17 @@ def _integrate_native(directory, data, config, expected_anchor, *, solver=None):
         cleanup_started = True
 
     try:
+        if worker_binding is not None:
+            controls.write_once(journal.directory / "binding.json", worker_binding)
+            controls.write_once(
+                journal.directory / "worker-origin.json",
+                {
+                    "binding_sha256": design.digest(worker_binding),
+                    "anchor_sha256": journal.identity,
+                    "production_admitted": False,
+                    "repeats_admitted": False,
+                },
+            )
         journal.enter("build")
         from src.logic.optimization_gurobipy_stochastic import solve_stochastic_model_gurobipy
 
@@ -205,5 +226,16 @@ def _integrate_native(directory, data, config, expected_anchor, *, solver=None):
             begin_cleanup()
         except BaseException as secondary:
             if failure is None:
+                failure = secondary
                 raise
             failure.add_note(f"Cleanup receipt publication failed: {type(secondary).__name__}")
+        finally:
+            if worker_binding is not None:
+                try:
+                    evidence.seal_worker_catalog(journal.directory, worker_binding)
+                except BaseException as secondary:
+                    if failure is None:
+                        raise
+                    failure.add_note(
+                        f"Worker catalogue publication failed: {type(secondary).__name__}"
+                    )

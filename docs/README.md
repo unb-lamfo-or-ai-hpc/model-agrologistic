@@ -12,12 +12,13 @@ not rewrite its unsuccessful outcomes. S1-C is documentary, not a new campaign.
 | Document | Use |
 | --- | --- |
 | [Sprint 1 evidence and exit ledger](mvp2_sprint1_closure.md) | h215/h300/h400 provenance, accepted/limited/deferred outcomes and closure boundary |
-| [Reconciled HPC roadmap](mvp2_hpc_roadmap.md) | S2 threads next; solvers/frontier conditional; decomposition future work only; editorial changes S6 |
+| [Reconciled HPC roadmap](mvp2_hpc_roadmap.md) | Close S2; old S3/S4 cancelled; bounded SCIP h215 requalification then h500; computational/HPC synthesis at S6 |
 | [S2 thread qualification](mvp2_thread_qualification.md) | Licensed miniature gate, immutable one-shot collection and proposed h300 diagnostic window; production closed |
 | [S2 accepted miniature evidence](mvp2_thread_qualification_evidence.md) | Job 2202239, portable hash/runtime audit and fresh public-fixture residual revalidation; no speedup or production admission |
 | [S2 h300 diagnostic design](mvp2_h300_thread_design.md) | Homogeneous environment, global window/watchdog arithmetic, partial observations and resource units; execution/repeats closed |
 | [S2 h300 runtime components](mvp2_h300_runtime_controls.md) | Parent watchdogs, one-shot lifecycle, two-level closure and fresh partial-evidence review; native integration/admission and repeats closed |
 | [S2 closed native worker](mvp2_h300_native_worker.md) | Native seams/global window, terminal count snapshot and failure-safe ownership; software tests only, licensed qualification/admission and repeats closed |
+| [S2 whole-worker evidence/resource gate](mvp2_h300_worker_evidence.md) | Failed/partial portable envelope, actual byte/runtime/cohort binding and read-only resource/containment observation; execution closed |
 | [Resource lifecycle](mvp2_resource_lifecycle.md) | Qualified miniature scope, native ownership and bounded telemetry limitations |
 | [h215 consolidation](mvp2_h215_resource_consolidation.md) | Three pairs, observed parity and no causal performance claim |
 | [h300 pair acceptance](mvp2_h300_pair_acceptance.md) | One descriptive pair, not a replication campaign |
