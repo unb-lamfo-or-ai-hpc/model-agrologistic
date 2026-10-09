@@ -6,6 +6,16 @@ development record is not a single invariant specification.
 
 ## Current MVP2 evidence and planning
 
+### Portable research memory
+
+The [research context](research_context.md) explains the separate documentation
+proposal and manual handoff. The [dated status](current_status.md),
+[experimental protocol](experiment_protocol.md), [article plan](article_plan.md)
+and root [agent agreement](../AGENTS.md) provide compact entry points for a new
+discussion. They derive from [PROJECT_STATE.md](../PROJECT_STATE.md), the roadmap
+and original evidence below; they neither replace certificates nor admit jobs.
+Integration into develop/main remains an explicit destination decision.
+
 The frozen MVP1 cohort below remains historical. New accepted observations do
 not rewrite its unsuccessful outcomes. S1-C is documentary, not a new campaign.
 
