@@ -465,9 +465,14 @@ def test_driver_once_and_resume_no_resubmission(tmp_path, monkeypatch):
     assert d.start(tmp_path, SHA, "/python") == 0
     submitted = [c for c in calls if c[0] == "sbatch"]
     assert len(submitted) == 1
-    assert {"--mem=1024M", "--time=00:02:00", "--cpus-per-task=1", "--export=NONE"} <= set(
-        submitted[0]
-    )
+    assert {
+        "--account=sxdsouza",
+        "--job-name=mvp2-s2-containment",
+        "--mem=1024M",
+        "--time=00:02:00",
+        "--cpus-per-task=1",
+        "--export=NONE",
+    } <= set(submitted[0])
 
 
 def test_uncertain_submission_preserved_never_retried(tmp_path, monkeypatch):
