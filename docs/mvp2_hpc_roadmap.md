@@ -253,6 +253,17 @@ solver-free input allocation establishes facts before implementing effective
 worker containment. This does not complete miniature qualification, admit h300
 or add a research campaign; missing delegation cannot be silently bypassed.
 
+After #58, job 2202795 input evidence replay is accepted but its capability
+outcome is blocked_environment (cgroup v1, existing path requires v2). The
+subsequent read-only site inventory supports investigating Slurm-owned numeric
+worker steps, not claiming effective containment. The justified next split is a
+[closed step contract and read-only v1 observer](mvp2_s2_slurm_step_gate.md), with
+no launcher or job admission. The proposed 390-second cleanup observation budget
+accounts for declared KillWait 300 s and UnkillableStepTimeout 60 s plus margin;
+it is not a guarantee of termination. A separate bounded synthetic integration
+and live audit must precede licensed miniatures. This does not require upgrading
+the cluster or change the research scope, tolerances or blocked h300 campaign.
+
 GitHub main stays stable, develop integrates scoped PRs. Qualify exact-head CI
 and mark Ready before requesting merge. The assistant prepares scoped code/docs;
 NPAD CLI is executed by the user and merge needs separate authorization. This

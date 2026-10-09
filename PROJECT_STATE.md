@@ -12,12 +12,20 @@ not private evidence, credentials, local host paths or execution authority.
   miniatures are accepted, but the h300 thread block has not been executed.
 - Whole-worker evidence/source/runtime/cohort binding is software-qualified;
   effective live containment is not yet established.
-- Current PR scope: a one-shot, solver-free NPAD containment-capability preflight
-  and frozen native-miniature prerequisites. Only a user-run input observation
-  allocation is prepared (1 CPU, 1024 MiB, 120 s). No native miniature, h300
-  optimization or repeat is admitted. S2 is not complete.
-- Next gates: audit actual containment capabilities; separately qualified licensed miniature integration with enforced
-  containment; fresh h300 admission; one diagnostic block and evidence/decision.
+- PR #58 merged at `9bf4160b20b6909a594e931f4da14d576f840776`.
+  Input-only job 2202795 evidence is independently accepted (SHA-256
+  `68604864018944b1afe7d546207a1a8881a5a473fed5a49896f389d0fcef325e`),
+  but the probe is blocked_environment: observed cgroup v1, not the required v2.
+  Collection success is not effective containment or S2 closure.
+- The subsequent read-only inventory declares Slurm cgroup tracking/task plugins,
+  linux accounting, KillWait 300 s and UnkillableStepTimeout 60 s; both observed
+  client versions are 22.05.11. It proves neither daemon versions nor live limits.
+- Current PR scope: closed numeric-worker-step design and read-only cgroup-v1
+  observer with offline negative fixtures. No launcher or execution admission.
+  No NPAD CLI, native miniature, h300 optimization or repeat is admitted.
+- Next gates: separately reviewed bounded synthetic launcher and actual live
+  containment qualification; licensed miniature integration; fresh h300
+  admission; one diagnostic block and evidence/decision. S2 is not complete.
   A limited window cannot establish full-budget speedup from censored timings.
 - Maintainer scope decision: cancel former S3 (new solvers) and S4
   (decomposition). No HiGHS/CPLEX/decomposition implementation is required.
@@ -35,4 +43,6 @@ See [authoritative roadmap](docs/mvp2_hpc_roadmap.md),
 [closed native integration](docs/mvp2_h300_native_worker.md) and
 [whole-worker evidence/resource gate](docs/mvp2_h300_worker_evidence.md) and
 [containment prerequisite and operational runbook](docs/mvp2_s2_containment_gate.md).
+The completed input-only gate is followed by the
+[closed Slurm-step design and v1 observation gate](docs/mvp2_s2_slurm_step_gate.md).
 Merge requires maintainer approval after exact-head qualification and Ready.
