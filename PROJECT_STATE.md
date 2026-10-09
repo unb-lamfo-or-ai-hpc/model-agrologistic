@@ -20,11 +20,15 @@ not private evidence, credentials, local host paths or execution authority.
 - The subsequent read-only inventory declares Slurm cgroup tracking/task plugins,
   linux accounting, KillWait 300 s and UnkillableStepTimeout 60 s; both observed
   client versions are 22.05.11. It proves neither daemon versions nor live limits.
-- Current PR scope: closed numeric-worker-step design and read-only cgroup-v1
-  observer with offline negative fixtures. No launcher or execution admission.
+- PR #59 merged at `a4ce020d01298a292ab10819d21355775a562b85`: closed
+  numeric-step contract and read-only cgroup-v1 observer are software-qualified.
+- Current PR scope: closed synthetic launcher/controller components through
+  injected transports, strict process/scope barrier checks, fixed synthetic
+  phases and portable partial/adverse evidence replay. No live batch adapter,
+  admitted worker CLI or execution admission. No real fork tree runs in fixtures.
   No NPAD CLI, native miniature, h300 optimization or repeat is admitted.
-- Next gates: separately reviewed bounded synthetic launcher and actual live
-  containment qualification; licensed miniature integration; fresh h300
+- Next gates: actual bounded batch adapter and explicit synthetic-only gate,
+  then live containment audit; licensed miniature integration; fresh h300
   admission; one diagnostic block and evidence/decision. S2 is not complete.
   A limited window cannot establish full-budget speedup from censored timings.
 - Maintainer scope decision: cancel former S3 (new solvers) and S4
@@ -37,6 +41,14 @@ not private evidence, credentials, local host paths or execution authority.
   coauthor reconciliation and reproducibility packaging. Remove section 3.8 and
   EVPI/VSS then; those calculations are not remaining work. Article/presentation
   remain unchanged before S6. Release/deposit/submission require later decisions.
+- Maintainer requested main/develop reconciliation only at S2 closure. On
+  9 October, GitHub at develop `a4ce020` reports 111 commits ahead / 1 behind main;
+  this is a dated UI observation, not a frozen final comparison. Recheck both
+  exact heads at closure, incorporate main-only history into develop by reviewed
+  PR if needed, then propose develop into protected main. Verify main ancestry
+  and equal integrated trees; do not force-push, bypass or weaken protection.
+  A merge commit on main can require a final main-to-develop back-merge to leave
+  develop literally not behind main. No synchronization is performed now.
 
 See [authoritative roadmap](docs/mvp2_hpc_roadmap.md),
 [S1 evidence ledger](docs/mvp2_sprint1_closure.md),
@@ -45,4 +57,6 @@ See [authoritative roadmap](docs/mvp2_hpc_roadmap.md),
 [containment prerequisite and operational runbook](docs/mvp2_s2_containment_gate.md).
 The completed input-only gate is followed by the
 [closed Slurm-step design and v1 observation gate](docs/mvp2_s2_slurm_step_gate.md).
+The next software layer is the
+[closed synthetic controller and collection](docs/mvp2_s2_synthetic_controller.md).
 Merge requires maintainer approval after exact-head qualification and Ready.
