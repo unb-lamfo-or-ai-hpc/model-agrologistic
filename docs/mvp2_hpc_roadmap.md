@@ -282,6 +282,18 @@ the separately frozen installed runtime/tool envelope and synthetic-only
 admission/terminal protocol, including interruption, unknown client/remote
 cleanup and strict installed command grammar. No NPAD command is admitted yet.
 
+PR #61 merged at `dd68588a5bdfe1f6536e357dab049509678659e4`.
+The [operational protocol gate](mvp2_s2_operational_protocol.md) now qualifies
+the closed first-normal one-attempt proposal, interruption/unknown-effect
+dispositions and externally checksum-bound partial collection sidecar. Only
+the installed-envelope read-only probe becomes executable after merge: no
+allocation, step, synthetic exercise, solver/license or repeat. Actual installed
+binary identities/configuration are a concrete missing input; do not fabricate
+them or equate declaration with live containment. Independently audit the probe
+before separately qualifying the first-normal live wrapper/installed grammar.
+Then audit that one normal attempt before any adverse synthetic case, licensed
+miniature or fresh h300 admission. This is not S2 closure or a performance result.
+
 ## S2 closure — deferred protected-main reconciliation
 
 Maintainer decision on 9 October: synchronize only at the end of the current S2,
