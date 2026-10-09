@@ -246,6 +246,13 @@ existing-SCIP requalification precedes h500; S6 editorial synthesis stays separa
 from packaging. Do not launch follow-on fronts inside the closed integration PR.
 Do not schedule speculative campaigns to fill sprint numbers.
 
+After #57, closed integration evidence/resource replay is software-qualified.
+The licensed miniature integration has one justified prerequisite split:
+[compute-node containment capabilities](mvp2_s2_containment_gate.md). A read-only,
+solver-free input allocation establishes facts before implementing effective
+worker containment. This does not complete miniature qualification, admit h300
+or add a research campaign; missing delegation cannot be silently bypassed.
+
 GitHub main stays stable, develop integrates scoped PRs. Qualify exact-head CI
 and mark Ready before requesting merge. The assistant prepares scoped code/docs;
 NPAD CLI is executed by the user and merge needs separate authorization. This
