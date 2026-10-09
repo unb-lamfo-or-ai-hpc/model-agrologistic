@@ -22,12 +22,15 @@ not private evidence, credentials, local host paths or execution authority.
   client versions are 22.05.11. It proves neither daemon versions nor live limits.
 - PR #59 merged at `a4ce020d01298a292ab10819d21355775a562b85`: closed
   numeric-step contract and read-only cgroup-v1 observer are software-qualified.
-- Current PR scope: closed synthetic launcher/controller components through
-  injected transports, strict process/scope barrier checks, fixed synthetic
-  phases and portable partial/adverse evidence replay. No live batch adapter,
-  admitted worker CLI or execution admission. No real fork tree runs in fixtures.
-  No NPAD CLI, native miniature, h300 optimization or repeat is admitted.
-- Next gates: actual bounded batch adapter and explicit synthetic-only gate,
+- PR #60 merged at `4472c8429a2aa99d10a716d827f1f6bfa0ec022a`: closed
+  synthetic controller/launcher and portable evidence components are integrated.
+- Current PR scope: real bounded POSIX transport, kernel-peer IPC bridge,
+  raw HEAD/runtime/allocation preflight, actual-step binding, durable controller
+  integration and terminal partial/adverse collection. Public batch/worker CLIs
+  remain closed. Offline software evidence is not installed NPAD containment.
+  No NPAD CLI, real synthetic tree, native miniature, h300 or repeat is admitted.
+- Next gates: freeze/qualify the installed envelope and synthetic-only admission
+  wrappers/terminal protocol (including interruption and unknown cleanup),
   then live containment audit; licensed miniature integration; fresh h300
   admission; one diagnostic block and evidence/decision. S2 is not complete.
   A limited window cannot establish full-budget speedup from censored timings.
@@ -49,6 +52,16 @@ not private evidence, credentials, local host paths or execution authority.
   and equal integrated trees; do not force-push, bypass or weaken protection.
   A merge commit on main can require a final main-to-develop back-merge to leave
   develop literally not behind main. No synchronization is performed now.
+- Main ruleset `model-agrologistic-main-protect` (24804465) is Active, targeting
+  only main. PDF snapshot SHA-256
+  `b2860c7cfc51bca4387a03e8dd92fc1a4232caf633fea435543080b9c3d25866`
+  and read-only live settings review on 9 October confirm restrict creations,
+  updates and deletions; required status check `check-branch` (Any source);
+  Organization admin has Always allow bypass. Require-PR, linear-history,
+  up-to-date-before-merge and block-force-push boxes are not selected. This is
+  not immutability or proof of a particular actor's admin/bypass role. Recheck
+  all effective rules/check provenance at S2 closure; no rule is changed or
+  bypassed. The check's implementation/provenance is not yet audited here.
 
 See [authoritative roadmap](docs/mvp2_hpc_roadmap.md),
 [S1 evidence ledger](docs/mvp2_sprint1_closure.md),
@@ -59,4 +72,6 @@ The completed input-only gate is followed by the
 [closed Slurm-step design and v1 observation gate](docs/mvp2_s2_slurm_step_gate.md).
 The next software layer is the
 [closed synthetic controller and collection](docs/mvp2_s2_synthetic_controller.md).
+The current integration gate is the
+[closed real batch adapter](docs/mvp2_s2_batch_adapter.md).
 Merge requires maintainer approval after exact-head qualification and Ready.
