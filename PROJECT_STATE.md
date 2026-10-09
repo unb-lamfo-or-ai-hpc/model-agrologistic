@@ -7,13 +7,16 @@ not private evidence, credentials, local host paths or execution authority.
 - S1 accepted evidence includes h215 pairs, h300 warehouse-only baseline/pair
   and one h400 direct control. Compaction remains optional/default-off; causal
   acceleration and smaller resource allocations are not established.
-- S2 PRs #53--#56 are integrated. PR #56 merged into develop at
-  `0443b1c23fc98b147f73618a5db50131dc2de70e`. Licensed analytical thread
+- S2 PRs #53--#57 are integrated. PR #57 merged into develop at
+  `cac69ba0e86958b39d85e48ec8513f65bc2dd5e1`. Licensed analytical thread
   miniatures are accepted, but the h300 thread block has not been executed.
-- Current PR scope: closed whole-worker evidence/source/runtime/cohort binding
-  and read-only resource/containment observation. No production, new licensed
-  optimization, scheduler submission or repeat is admitted. S2 is not complete.
-- Next gates: separately qualified licensed miniature integration with enforced
+- Whole-worker evidence/source/runtime/cohort binding is software-qualified;
+  effective live containment is not yet established.
+- Current PR scope: a one-shot, solver-free NPAD containment-capability preflight
+  and frozen native-miniature prerequisites. Only a user-run input observation
+  allocation is prepared (1 CPU, 1024 MiB, 120 s). No native miniature, h300
+  optimization or repeat is admitted. S2 is not complete.
+- Next gates: audit actual containment capabilities; separately qualified licensed miniature integration with enforced
   containment; fresh h300 admission; one diagnostic block and evidence/decision.
   A limited window cannot establish full-budget speedup from censored timings.
 - Maintainer scope decision: cancel former S3 (new solvers) and S4
@@ -30,5 +33,6 @@ not private evidence, credentials, local host paths or execution authority.
 See [authoritative roadmap](docs/mvp2_hpc_roadmap.md),
 [S1 evidence ledger](docs/mvp2_sprint1_closure.md),
 [closed native integration](docs/mvp2_h300_native_worker.md) and
-[whole-worker evidence/resource gate](docs/mvp2_h300_worker_evidence.md).
+[whole-worker evidence/resource gate](docs/mvp2_h300_worker_evidence.md) and
+[containment prerequisite and operational runbook](docs/mvp2_s2_containment_gate.md).
 Merge requires maintainer approval after exact-head qualification and Ready.
