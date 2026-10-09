@@ -909,11 +909,20 @@ class BatchAdapter:
         )
         self.transport.signal(self.contract["binding"], name)
 
-    def tick(self):
+    def tick(self, *, force_fault=False):
+        s.require(type(force_fault) is bool, "Explicit stop flag required.")
         s.require(
             self.controller is not None and len(self.samples) < MAX_SAMPLES, "Sample state/bound."
         )
-        fault, snap, pids, rows, writes, products, reaped = False, None, None, {}, None, {}, False
+        fault, snap, pids, rows, writes, products, reaped = (
+            force_fault,
+            None,
+            None,
+            {},
+            None,
+            {},
+            False,
+        )
         try:
             self.handle.pump(deadline=min(self.started + 660, self._now() + 0.5))
             reaped = self.handle.process.poll() is not None

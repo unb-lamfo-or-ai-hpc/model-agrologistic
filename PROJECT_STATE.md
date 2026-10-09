@@ -24,13 +24,19 @@ not private evidence, credentials, local host paths or execution authority.
   numeric-step contract and read-only cgroup-v1 observer are software-qualified.
 - PR #60 merged at `4472c8429a2aa99d10a716d827f1f6bfa0ec022a`: closed
   synthetic controller/launcher and portable evidence components are integrated.
-- Current PR scope: real bounded POSIX transport, kernel-peer IPC bridge,
+- PR #61 merged at `dd68588a5bdfe1f6536e357dab049509678659e4`:
+  real bounded POSIX transport, kernel-peer IPC bridge,
   raw HEAD/runtime/allocation preflight, actual-step binding, durable controller
   integration and terminal partial/adverse collection. Public batch/worker CLIs
   remain closed. Offline software evidence is not installed NPAD containment.
-  No NPAD CLI, real synthetic tree, native miniature, h300 or repeat is admitted.
-- Next gates: freeze/qualify the installed envelope and synthetic-only admission
-  wrappers/terminal protocol (including interruption and unknown cleanup),
+  No real synthetic tree, native miniature, h300 or repeat is admitted.
+- Current gate: closed first-normal operational/admission proposal, campaign-wide
+  one-shot claim, latched interruption, owned local client cleanup and externally
+  checksum-bound partial sidecar. Only a pinned read-only installed-envelope
+  probe is executable after merge; no submission/batch/worker release exists.
+  Its portable receipt is not installed grammar or effective containment proof.
+- Next gates: independently audit that installed envelope, qualify the bounded
+  first-normal live wrapper and installed command grammar,
   then live containment audit; licensed miniature integration; fresh h300
   admission; one diagnostic block and evidence/decision. S2 is not complete.
   A limited window cannot establish full-budget speedup from censored timings.
@@ -74,4 +80,6 @@ The next software layer is the
 [closed synthetic controller and collection](docs/mvp2_s2_synthetic_controller.md).
 The current integration gate is the
 [closed real batch adapter](docs/mvp2_s2_batch_adapter.md).
+The following gate is the
+[closed operational proposal and read-only envelope](docs/mvp2_s2_operational_protocol.md).
 Merge requires maintainer approval after exact-head qualification and Ready.
