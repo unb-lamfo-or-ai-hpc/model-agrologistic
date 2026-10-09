@@ -111,6 +111,9 @@ def start(root, sha, python):
             [
                 "sbatch",
                 "--parsable",
+                "--account=sxdsouza",
+                "--job-name=mvp2-s2-containment",
+                f"--chdir={root}",
                 "--partition=intel-256",
                 "--nodes=1",
                 "--ntasks=1",
