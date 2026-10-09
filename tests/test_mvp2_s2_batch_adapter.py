@@ -8,6 +8,7 @@ import struct
 import subprocess
 import sys
 import tarfile
+import tempfile
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -663,27 +664,51 @@ def test_real_local_seqpacket_handshake_kernel_peer_credentials(tmp_path):
     import socket
     import threading
 
-    server = a.BarrierServer(tmp_path / "ipc.sock")
-    results = []
+    # Reproduce the NPAD long-home-path failure before exercising a short fixture.
+    # Production's 100-encoded-byte guard must remain unchanged and fail closed.
+    oversized = tmp_path / ("x" * 101) / "ipc.sock"
+    with pytest.raises(ValueError, match="IPC path bound/exists"):
+        a.BarrierServer(oversized)
+    assert not oversized.exists()
+    # Do not derive a Unix socket from pytest's arbitrarily long --basetemp.
+    # This directory contains ONLY disposable local test IPC, never run evidence.
+    with tempfile.TemporaryDirectory(prefix="s2i-", dir="/tmp") as directory:
+        path = Path(directory) / "ipc.sock"
+        assert len(os.fsencode(path)) <= 100
+        server = a.BarrierServer(path)
+        results, errors = [], []
 
-    def client():
-        with socket.socket(socket.AF_UNIX, socket.SOCK_SEQPACKET) as connection:
-            connection.settimeout(2)
-            connection.connect(str(tmp_path / "ipc.sock"))
-            connection.send(c.encoded({"nonce": "a" * 64}))
-            results.append(c.decode_json(connection.recv(4096)))
+        def client():
+            try:
+                with socket.socket(socket.AF_UNIX, socket.SOCK_SEQPACKET) as connection:
+                    connection.settimeout(2)
+                    connection.connect(str(path))
+                    connection.send(c.encoded({"nonce": "a" * 64}))
+                    results.append(c.decode_json(connection.recv(4096)))
+            except BaseException as error:
+                errors.append(type(error).__name__)
 
-    thread = threading.Thread(target=client)
-    thread.start()
-    try:
-        hello, peer = server.accept(2)
-        assert hello == {"nonce": "a" * 64}
-        assert peer == {"pid": os.getpid(), "uid": os.getuid()}
-        server.release({"released": False}, 2)
-        thread.join(timeout=3)
-        assert not thread.is_alive() and results == [{"released": False}]
-    finally:
-        server.close()
+        thread = threading.Thread(target=client)
+        thread.start()
+        try:
+            hello, peer = server.accept(2)
+            assert hello == {"nonce": "a" * 64}
+            assert peer == {"pid": os.getpid(), "uid": os.getuid()}
+            server.release({"released": False}, 2)
+        finally:
+            server.close()
+            thread.join(timeout=3)
+        assert not thread.is_alive() and not errors and results == [{"released": False}]
+
+
+@pytest.mark.parametrize("basename", ["x" * 101, "é" * 60])
+def test_ipc_encoded_path_guard_rejects_before_socket_creation(tmp_path, monkeypatch, basename):
+    monkeypatch.setattr(sys, "platform", "linux")
+    monkeypatch.setattr(a.socket, "socket", lambda *_: pytest.fail("Oversized IPC reached socket"))
+    path = tmp_path / basename / "ipc.sock"
+    with pytest.raises(ValueError, match="IPC path bound/exists"):
+        a.BarrierServer(path)
+    assert not path.exists()
 
 
 def test_late_write_changes_fingerprint_and_restarts_quiet_period(adapter):
