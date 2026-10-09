@@ -2,8 +2,8 @@
 
 ## Authority and scope
 
-Reconciled 8 October 2026 in S1-C, after PRs #44, #47, #48, #49, #50 and
-#51 were integrated into develop. This plan supersedes the earlier roadmap's
+Reconciled 9 October 2026 after PR #56 integration and the maintainer's revised
+scope. S1-C followed PRs #44, #47, #48, #49, #50 and #51. This plan supersedes the earlier roadmap's
 mandatory solver campaign, decomposition implementation and calendar estimates.
 It does not rewrite archived results. The [S1 closure](mvp2_sprint1_closure.md)
 defines original receipts, adopted exit criteria and explicit limitations.
@@ -24,7 +24,10 @@ release, model, data and historical results remain unchanged.
 Coauthor agreements were supplied on 7 October 2026; the meeting date was not
 provided. Their scope changes are recorded here, not applied to the article.
 No Benders or other decomposition implementation belongs to this study.
-Additional production solvers and frontier expansion are conditional decisions.
+The former S3 new-solver scope and S4 decomposition scope are cancelled. Revisit
+the existing SCIP backend at h215 after S2; then assess one h500 Gurobi frontier.
+This is not an admission for any execution. Do not seek adverse results: success,
+partial progress and failure are all informative only with adequate evidence.
 Sprint numbering is retained to keep historical references intelligible.
 
 ## Evidence baseline and experimental invariants
@@ -129,6 +132,13 @@ qualification; historical design hashes and accepted archives are not rewritten.
 Full worker-evidence transfer, live sampling and allocation-wide closure remain
 closed qualification steps before a separately authorized miniature protocol.
 No job, optimization block or repeat is admitted by this integration.
+PR #56 was integrated at `0443b1c23fc98b147f73618a5db50131dc2de70e`.
+The next [worker evidence/resource gate](mvp2_h300_worker_evidence.md) implements
+a separate whole-worker envelope, actual byte/runtime binding and read-only
+Linux resource/containment observations. The public entries remain denied.
+Existing process-group controls are not allocation containment; delegated cgroup
+setup, race-free worker placement, enforced teardown and licensed integration
+still need a separately qualified miniature protocol before h300 admission.
 Compare equal completed work, stage latency, time-to-bound,
 time-to-incumbent, effective CPU use, core-hours and memory. Speedup T1/Tp and
 efficiency (T1/Tp)/p require comparable completed work; censored runs are not
@@ -143,17 +153,13 @@ rationale/qualification. Node files are not assumed to fix root-LP factorization
 Exit: audited response including no-benefit/failure profiles, explicit comparison
 limits and justified next-profile decision. Speedup is not required for success.
 
-## S3 — alternative solver scope: conditional
+## S3 — new alternative solvers: cancelled
 
-Decide scientific value before a production solver PR. Preserve historical
-CBC/SCIP limitations and current analytical SCIP regression. HiGHS was suggested;
-CPLEX was discussed; neither is selected for the principal study. Parameter
-availability does not prove a qualified LP backend or concurrent execution.
-If justified, qualify build/version/license, objective semantics, original-unit
-residuals and miniature parity before one bounded positive control. No large
-SCIP/HiGHS/CPLEX campaign is mandatory; a documented no-extension decision is valid.
+Maintainer decision of 9 October: no HiGHS, CPLEX or additional solver campaign.
+Preserve historical numbering and evidence; cancellation is not completion of
+an experiment. The existing SCIP backend has the separate bounded scope below.
 
-## S4 — decomposition: outside this study's implementation scope
+## S4 — decomposition: cancelled
 
 The earlier Benders/multi-worker prototype plan is superseded. Do not implement
 decomposition to finish MVP2. Mention it only briefly as future research in the
@@ -161,13 +167,39 @@ conclusions at S6, not a dedicated subsection implying an unfulfilled requiremen
 A later method would need new mathematics, valid global bounds, miniature
 validation and smaller instances under that same method before comparisons.
 
-## S5 — empirical frontier: conditional expansion
+## Existing SCIP h215 requalification — bounded, after S2
 
-Use accepted h400 and S2 evidence to decide whether another population is
-informative/resource-admissible. 500, 600 and up to 1000 are candidates, not
-commitments. Separate each admitted size's input-only qualification from bounded
-baseline/results; admit repeats only for justified scientific value. Difficulty
-need not increase monotonically with population.
+Audit the original LP-root bottleneck before parameter screening: both historical
+h215 variants timed out without an incumbent during the first root LP, with
+about 12.5 million transformed continuous variables. This is not mathematical
+infeasibility or a universal SCIP inability. Preserve SCIP/SoPlex build, LP method,
+numerics, presolve, resource and stage-clock provenance. First investigate the
+existing pinned stack, not a silent dependency upgrade or new commercial LP.
+
+Form a small evidence-led set of supported LP/presolve hypotheses; qualify on
+analytical fixtures and a smaller positive control before a bounded h215
+warehouse-only screen. At most one justified candidate receives a separately
+admitted full-budget attempt; no parameter sweep or automatic retry. Do not
+loosen numerical/priority tolerances to obtain apparent success, substitute a
+weighted objective, seed with a Gurobi solution without a separate warm-start
+experiment, or claim parameter availability proves LP/thread capability.
+
+Record construction, root LP completion, independently valid incumbent and full
+hierarchy acceptance separately. A smaller solved control does not meet h215.
+Negative closure describes tested profiles and resources, not "nothing else can
+work". Planning estimate: two or three scoped PRs, not a solver campaign quota.
+
+## S5 — h500 empirical frontier, after S2/SCIP review
+
+Prioritize h500 with direct arcs to preserve the accepted S1-B h400 policy;
+verify nested population and all other input/model identities. Separate input-only
+and construction/resource qualification from one admitted bounded baseline and
+evidence review. Initially retain the h400 four-thread profile and eight-hour
+optimization budget if resource-admissible; h300 thread screening does not
+automatically transfer its best setting to h500. Do not change time, memory and
+threads together or globally relax size guards. No h600--h1000 commitment.
+Difficulty need not increase monotonically with population. Planning estimate:
+two or three scoped PRs; original negative outcomes remain preserved.
 
 Distinguish construction-admitted, independently feasible-incumbent and complete
 hierarchy-certified frontiers per method/resource/time profile. The largest
@@ -177,7 +209,12 @@ documented sufficiency decision may close S5 without every candidate size.
 
 ## S6 — editorial synthesis and reproducibility package
 
-Current article/presentation stay unchanged until the editorial gate. Identify
+Current article/presentation stay unchanged until the editorial gate. Deepen the
+computational/HPC discussion around dimensions/nonzeros, phase-specific LP/MIP
+bottlenecks, effective parallelism versus allocated CPUs, scope-specific memory,
+quality versus runtime/core-hour cost, adverse outcomes and reproducibility.
+Keep agricultural strategic decision support central. Empirical difficulty is
+not an asymptotic complexity proof or universal solver ranking. Identify
 the exact manuscript linked in the last email to coauthors: URL/version not yet
 provided; Pages/local copies are not assumed authoritative. Respect the review
 freeze and check applicability of older comments before integration.
@@ -202,9 +239,11 @@ Release, deposit, preprint and submission require their own later decisions.
 
 ## PR and execution boundaries
 
-Counts are scope boundaries, not quotas/dates: S2 protocol plus evidence/decision,
-extra memory work only if justified; S3 evidence-dependent; S4 no implementation
-PR; S5 separately admitted sizes; S6 editorial synthesis separate from packaging.
+Counts are scope boundaries, not quotas/dates: after #56, S2 has an estimated
+four gates (closed integration, licensed miniatures, h300 admission, evidence/
+decision), with narrower splits only when justified. S3/S4 are cancelled; bounded
+existing-SCIP requalification precedes h500; S6 editorial synthesis stays separate
+from packaging. Do not launch follow-on fronts inside the closed integration PR.
 Do not schedule speculative campaigns to fill sprint numbers.
 
 GitHub main stays stable, develop integrates scoped PRs. Qualify exact-head CI
