@@ -306,7 +306,9 @@ def emit_error(role, phase, error):
     return record
 
 
-def batch_components(claim, release, commit, release_digest, allocation_started):
+def batch_components(
+    claim, release, commit, release_digest, allocation_started, *, transport_factory=None
+):
     """Internal composition only; public execution stays denied pending a fresh driver."""
     phase = "host"
     try:
@@ -353,9 +355,8 @@ def batch_components(claim, release, commit, release_digest, allocation_started)
             {"run": spec["run"]},
             allocation_started,
             plan_loader=load,
-            transport_factory=lambda spec, **kw: ComputeTransport(
-                spec, release_digest=release_digest, **kw
-            ),
+            transport_factory=transport_factory
+            or (lambda spec, **kw: ComputeTransport(spec, release_digest=release_digest, **kw)),
             adapter_factory=ComputeAdapter,
             runtime_verifier=lambda _env: identity.verify_compute_runtime(spec, "batch"),
             source_verifier=lambda actual, _command: identity.verify_compute_source(
@@ -442,8 +443,37 @@ def collect_entry_log(path):
 
 def review_compute_collection(records, spec, contract, release_digest, expected_source):
     """New carrier semantics; legacy runtime receipts are never promoted."""
-    q._hash(release_digest)
     spec = a.validate_spec(spec)
+    return review_portable_collection(
+        records,
+        s.digest(spec),
+        identity.expected_compute_runtime(spec, "batch"),
+        identity.expected_compute_runtime(spec, "worker"),
+        contract,
+        release_digest,
+        expected_source,
+        spec["source_commit"],
+        spec["job_id"],
+    )
+
+
+def review_portable_collection(
+    records,
+    specification_digest,
+    batch_runtime,
+    worker_runtime,
+    contract,
+    release_digest,
+    expected_source,
+    commit,
+    job,
+):
+    """Replay against public digests; never reconstruct or export private paths."""
+    q._hash(release_digest)
+    q._hash(specification_digest)
+    q._hash(commit, 40)
+    identity.review_compute_runtime(batch_runtime)
+    identity.review_compute_runtime(worker_runtime, "worker")
     q._keys(
         records,
         {
@@ -463,9 +493,9 @@ def review_compute_collection(records, spec, contract, release_digest, expected_
         for key, row in rows.items()
     )
     s.require(
-        a.accounting(text, spec["job_id"]) == rows
-        and spec["job_id"] in rows
-        and spec["job_id"] + ".batch" in rows
+        a.accounting(text, job) == rows
+        and job in rows
+        and job + ".batch" in rows
         and all(row["state"] in a.TERMINAL for row in rows.values()),
         "Terminal accounting required.",
     )
@@ -474,7 +504,7 @@ def review_compute_collection(records, spec, contract, release_digest, expected_
         q._keys(wrapper, {"schema_version", "status", "source_commit", "diagnostic", *n.FUTURE})
         s.require(
             wrapper["schema_version"] == "s2-first-normal-batch-v2"
-            and wrapper["source_commit"] == spec["source_commit"]
+            and wrapper["source_commit"] == commit
             and wrapper["status"]
             in {"blocked_before_launch", "attempt_preserved", "incomplete_attempt_preserved"}
             and all(wrapper[k] is False for k in n.FUTURE),
@@ -518,14 +548,16 @@ def review_compute_collection(records, spec, contract, release_digest, expected_
     s.require((batch is None) == (operation is None), "Incomplete operational carrier.")
     replay = None
     if batch is not None:
-        replay = a.review_bundle(batch, spec, contract, spec["job_id"], compute=True)
+        replay = a.review_portable_bundle(
+            batch, specification_digest, batch_runtime, contract, job, compute=True
+        )
         s.require(
             batch["review.json"] == replay and batch["accounting.json"] == rows,
             "Compute replay drift.",
         )
         source = batch["adapter.json"]["attempt"]["source"]
         s.require(source is None or source == expected_source, "Compute source drift.")
-        o.review_operation_digest(operation, s.digest(spec))
+        o.review_operation_digest(operation, specification_digest)
     else:
         s.require(
             contract is None and (wrapper is None or wrapper["status"] != "attempt_preserved"),
@@ -538,9 +570,9 @@ def review_compute_collection(records, spec, contract, release_digest, expected_
             == {
                 "schema_version": "s2-compute-worker-identity-v1",
                 "source": expected_source,
-                "runtime": identity.expected_compute_runtime(spec, "worker"),
+                "runtime": worker_runtime,
                 "release_sha256": release_digest,
-                "specification_sha256": s.digest(spec),
+                "specification_sha256": specification_digest,
                 **n.FUTURE,
             },
             "Worker identity drift.",
