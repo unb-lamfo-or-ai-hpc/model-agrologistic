@@ -1,6 +1,6 @@
 # Model Agrologistic — MVP 2.0 checkpoint
 
-Updated 9 October 2026. This public checkpoint contains scope and provenance,
+Updated 10 October 2026. This public checkpoint contains scope and provenance,
 not private evidence, credentials, local host paths or execution authority.
 
 - MVP1 `v0.2.0-mvp1` stays frozen. S0 and adopted S1 scope are closed.
@@ -40,26 +40,48 @@ not private evidence, credentials, local host paths or execution authority.
   exclusive short test socket, retains the production byte-length guard, adds
   negative boundary coverage and a versioned location-aware read-only driver.
   Corrected source must be merged and pinned before observing the envelope.
-- Current gate: closed first-normal operational/admission proposal, campaign-wide
-  one-shot claim, latched interruption, owned local client cleanup and externally
-  checksum-bound partial sidecar. Only a pinned read-only installed-envelope
-  probe is executable after merge; no submission/batch/worker release exists.
-  Its portable receipt is not installed grammar or effective containment proof.
-- Next gates: independently audit that installed envelope, qualify the bounded
-  first-normal live wrapper and installed command grammar,
-  then live containment audit; licensed miniature integration; fresh h300
-  admission; one diagnostic block and evidence/decision. S2 is not complete.
-  A limited window cannot establish full-budget speedup from censored timings.
+- PR #63 merged at `0dccbfd5d25c4db97a74baf5da3766d7433c82a1`.
+  The independently audited read-only archive at source
+  `7532beea7ffa429ba9f34bfd091bd60069efc4f8` has SHA-256
+  `e86c703eb59336230ed9c3af6efc4fd602f9acf2b702ddbbb4553c650346b45a`.
+  Outcome observed_not_admitted; Python/tool identities and declared Slurm
+  settings recorded, not live job/step grammar or effective containment.
+  [Public original records](docs/evidence/s2-envelope-pr63/README.md) retain
+  the old source identity. Maintainer reports 169 passed, one intentional skip,
+  exit zero and preserved run; XML/private envelope were not transferred.
+- Current S2-P1: qualify the [first-normal wrapper](docs/mvp2_s2_first_normal.md),
+  fixed descriptors and strict live pre-release grammar checks, campaign-wide
+  one-shot claim, latched interruptions and public partial/negative replay.
+  The only intended new release after qualified merge and human CLI is one
+  bounded normal stdlib synthetic attempt, not adverse cases, native or h300.
+  No NPAD command is executed while preparing this software PR. Generic CLIs
+  remain closed. The original private envelope/claims are not exported/reused.
+- S2 remains FULLY planned and open: P2 normal audit/adverse qualification;
+  P3 adverse containment audit/licensed native integration; P4 licensed audit
+  and fresh h300 admission; P5 diagnostic 1/2/4/8/16-thread block audit,
+  resource/quality interpretation and configuration decision. Missing evidence
+  may justify scoped corrections, never bypass. No repeat is automatically
+  admitted; limited/censored windows do not establish full-budget speedup.
 - Maintainer scope decision: cancel former S3 (new solvers) and S4
   (decomposition). No HiGHS/CPLEX/decomposition implementation is required.
-- After S2, requalify the existing SCIP/SoPlex h215 root-LP bottleneck with a
-  small justified hypothesis set and positive controls; no universal inability
-  claim or indiscriminate tuning campaign. Then assess h500 Gurobi, preferably
-  direct-enabled to preserve the accepted h400 policy, through separate gates.
-- S6: substantive computational/HPC discussion, full adverse-result provenance,
-  coauthor reconciliation and reproducibility packaging. Remove section 3.8 and
-  EVPI/VSS then; those calculations are not remaining work. Article/presentation
-  remain unchanged before S6. Release/deposit/submission require later decisions.
+- Approved 10 October: after S2 select a candidate h400 computational profile
+  from actual resource/quality evidence, then separately admit one new validated
+  attempt. The accepted S1 h400 control stays accepted and is not rewritten.
+  Requalify existing SCIP/SoPlex h215 with an explicit root-LP hypothesis,
+  smaller positive controls and one bounded justified execution; no universal
+  inability claim or indiscriminate tuning. Keep h500 planned, conditional on
+  the new h400 success/resource gate, not on SCIP success. No new solver.
+- S6-A consolidates MVP2 results and HPC interpretation; MVP1 is historical
+  context only where needed. S6-B prepares the MVP2-focused manuscript,
+  figures/supplement and reproducibility package. Preserve the authoritative
+  coauthor revision and original certificates. Remove section 3.8/EVPI/VSS
+  at S6, not now. Release/deposit/submission need later decisions.
+  December 2026 is a target, not a commitment: the base planning window is
+  January 2027 if sequential containment/experimental reviews slip. Do not
+  reduce approved experiments to claim the editorial target was met.
+- PR #64 remains independent on `docs/agrologistic-research-memory`, head
+  `dbf7262966f848f395a51f009dfc03efa5feb18b`, pending destination decision.
+  It is not incorporated into this gate or authorized for merge.
 - Maintainer requested main/develop reconciliation only at S2 closure. On
   9 October, GitHub at develop `a4ce020` reports 111 commits ahead / 1 behind main;
   this is a dated UI observation, not a frozen final comparison. Recheck both
