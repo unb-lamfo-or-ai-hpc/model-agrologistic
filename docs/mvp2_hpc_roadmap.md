@@ -294,6 +294,19 @@ before separately qualifying the first-normal live wrapper/installed grammar.
 Then audit that one normal attempt before any adverse synthetic case, licensed
 miniature or fresh h300 admission. This is not S2 closure or a performance result.
 
+PR #62 merged at `01016fbbbdfdc6dd7cf005488105b4d3181f671d`.
+The first read-only bootstrap stopped before the probe: the Linux kernel-peer
+test inherited a pytest path exceeding the unchanged 100-byte IPC guard.
+The maintainer reported 166 passed, one failure, one intentional skip and no
+job submission. This is a fixture portability defect, not an observed Slurm,
+license, native-worker or containment failure. The reported directory existed
+during the traceback; its present location is unverified, not recreated.
+The [scoped recovery correction](mvp2_s2_envelope_recovery.md) preserves that
+attempt, fixes only the disposable test endpoint and versions the read-only
+driver with phase/location receipts. It does not add a research campaign or
+admit synthetic/native/h300 execution. S2 remains open; the next scientific
+decision still requires independently audited installed-envelope evidence.
+
 ## S2 closure — deferred protected-main reconciliation
 
 Maintainer decision on 9 October: synchronize only at the end of the current S2,

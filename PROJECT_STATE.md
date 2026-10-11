@@ -30,6 +30,16 @@ not private evidence, credentials, local host paths or execution authority.
   integration and terminal partial/adverse collection. Public batch/worker CLIs
   remain closed. Offline software evidence is not installed NPAD containment.
   No real synthetic tree, native miniature, h300 or repeat is admitted.
+- PR #62 merged at `01016fbbbdfdc6dd7cf005488105b4d3181f671d`.
+  Its read-only bootstrap stopped in regression before the envelope probe:
+  maintainer reports 166 passed, one failed, one intentional skip, exit 1 and
+  no submitted job. The real local IPC fixture used an oversized pytest socket
+  path; this is not a solver, license or live-containment result. The reported
+  run directory's present location is unresolved; preserve any original files.
+  The [envelope recovery correction](docs/mvp2_s2_envelope_recovery.md) uses an
+  exclusive short test socket, retains the production byte-length guard, adds
+  negative boundary coverage and a versioned location-aware read-only driver.
+  Corrected source must be merged and pinned before observing the envelope.
 - Current gate: closed first-normal operational/admission proposal, campaign-wide
   one-shot claim, latched interruption, owned local client cleanup and externally
   checksum-bound partial sidecar. Only a pinned read-only installed-envelope
