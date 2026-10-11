@@ -2,7 +2,7 @@
 
 ## Authority and scope
 
-Reconciled 11 October 2026 after PR #64/#65 integration and the negative normal
+Reconciled 11 October 2026 after PR #66 integration and the negative normal
 observation; preserve the maintainer's revised full experimental
 scope. S1-C followed PRs #44, #47, #48, #49, #50 and #51. This plan supersedes the earlier roadmap's
 mandatory solver campaign, decomposition implementation and calendar estimates.
@@ -153,6 +153,17 @@ deliverables. Seed sensitivity, warm starts and LP changes likewise need separat
 rationale/qualification. Node files are not assumed to fix root-LP factorization.
 Exit: audited response including no-benefit/failure profiles, explicit comparison
 limits and justified next-profile decision. Speedup is not required for success.
+
+PR #66's diagnostic correction is integrated. The failed normal job 2207167
+remains negative, with unknown cause and no live qualification. The next
+[normal continuation gate](mvp2_s2_normal_recovery.md) prepares one separately
+qualified observation with fresh source/claim and read-only binding to the
+preserved original. It retains the same limits and all future admission blocks.
+After offline qualification and authorized merge, the maintainer executes only
+that normal CLI; independent evidence review precedes any adverse-case gate.
+Native miniature, h300 diagnostics and selected/repeated thread blocks still
+require their later gates. This does not reduce the full 1/2/4/8/16 scope, close
+S2, synchronize branches or admit subsequent h400/SCIP/h500 work.
 
 ## S3 — new alternative solvers: cancelled
 
