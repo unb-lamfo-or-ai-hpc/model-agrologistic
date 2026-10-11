@@ -237,6 +237,84 @@ def test_oversized_seal_is_not_a_truncated_claim(release, monkeypatch):
         x.validate_release(release, "a" * 40, s.digest(release))
 
 
+@pytest.mark.parametrize("drift", [None, "job", "intent", "archive"])
+def test_login_history_seal_replays_fixed_archives_and_binds_receipts(release, monkeypatch, drift):
+    objects, manifests, calls = {}, {}, []
+    for index, entry in enumerate(release["history"]):
+        claim = Path(o.BASE) / x.CLAIMS[index]
+        spec = entry["specification"]
+        env = {
+            **release["envelope"],
+            "source_commit": spec["source_commit"],
+            "checkout": spec["checkout"],
+        }
+        plan = o.normal_plan(
+            env,
+            s.digest(env),
+            spec["source_commit"],
+            run=o.BASE + f"/s2n-{index:08d}",
+            nonce=spec["nonce"],
+            job_id=spec["job_id"],
+        )
+        spec = plan["specification"]
+        review = {"specification_sha256": s.digest(spec)}
+        outer = review if index == 0 else {"normal": review}
+        for name, obj in {
+            "private-envelope.json": env,
+            "normal-plan.json": plan,
+            "job.json": {
+                "source_commit": spec["source_commit"],
+                "job_id": spec["job_id"],
+                "specification_sha256": s.digest(spec),
+            },
+            "intent.json": {
+                "source_commit": spec["source_commit"],
+                "envelope_sha256": s.digest(env),
+                "run": spec["run"],
+                "nonce": spec["nonce"],
+            },
+            "collection.json": {
+                "download": entry["archive"],
+                "sha256": entry["identity"]["archive_sha256"],
+                "review": outer,
+            },
+        }.items():
+            objects[str(claim / name)] = obj
+        manifests[spec["source_commit"]] = entry["manifest"]
+    first = str(Path(o.BASE) / x.CLAIMS[0])
+    if drift == "job":
+        objects[str(Path(first) / "job.json")]["job_id"] = "999"
+    elif drift == "intent":
+        objects[str(Path(first) / "intent.json")]["run"] = "/other/run"
+    elif drift == "archive":
+        objects[str(Path(first) / "collection.json")]["sha256"] = "0" * 64
+    monkeypatch.setattr(n, "read_json", lambda path, *args: copy.deepcopy(objects[str(path)]))
+    monkeypatch.setattr(n, "checked_baseline", lambda _: None)
+    monkeypatch.setattr(n, "recheck", lambda env: calls.append(("login", env["source_commit"])))
+    monkeypatch.setattr(a, "sha_file", lambda *args: "b" * 64)
+    for index, module in enumerate((n, x.r)):
+
+        def audit(path, sha, commit, job, index=index):
+            calls.append(("audit", commit, job, sha))
+            expected = x.HISTORY[index]
+            assert (commit, job, sha) == tuple(
+                expected[k] for k in ("source_commit", "job_id", "archive_sha256")
+            )
+            return objects[str(Path(o.BASE) / x.CLAIMS[index] / "collection.json")]["review"]
+
+        monkeypatch.setattr(module, "audit", audit)
+    monkeypatch.setattr(
+        identity, "seal_login_source", lambda spec, command: manifests[spec["source_commit"]]
+    )
+    if drift:
+        with pytest.raises(ValueError):
+            x.seal_history()
+    else:
+        result = x.seal_history()
+        assert [entry["identity"] for entry in result] == list(x.HISTORY)
+        assert len(calls) == 4
+
+
 @pytest.mark.parametrize("role", ["batch", "worker"])
 @pytest.mark.parametrize(
     "error", [FileNotFoundError("PRIVATE/path"), KeyError("SECRET"), KeyboardInterrupt()]
