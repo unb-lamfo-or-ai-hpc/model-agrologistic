@@ -141,20 +141,55 @@ def verify_compute_source(checkout, manifest, commit, expected_digest):
     return inspect_tree(checkout, item["files"])
 
 
-def verify_compute_runtime(spec):
+def expected_compute_runtime(spec, role="batch"):
+    item = a.validate_spec(spec)
+    s.require(role in {"batch", "worker"} and type(role) is str, "Compute role drift.")
+    keys = COMPUTE_TOOLS if role == "batch" else ()
+    return {
+        "schema_version": "s2-compute-runtime-v1",
+        "role": role,
+        "python_sha256": item["python_sha256"],
+        "verified_tools_sha256": {key: item["tools_sha256"][key] for key in keys},
+        "login_only_tools": ["git", "sbatch"],
+        "execution_admitted": False,
+    }
+
+
+def review_compute_runtime(item, role="batch"):
+    q._keys(
+        item,
+        {
+            "schema_version",
+            "role",
+            "python_sha256",
+            "verified_tools_sha256",
+            "login_only_tools",
+            "execution_admitted",
+        },
+    )
+    s.require(role in {"batch", "worker"} and type(role) is str, "Compute role drift.")
+    s.require(
+        item["schema_version"] == "s2-compute-runtime-v1"
+        and item["role"] == role
+        and item["login_only_tools"] == ["git", "sbatch"]
+        and item["execution_admitted"] is False,
+        "Compute runtime schema drift.",
+    )
+    q._hash(item["python_sha256"])
+    q._keys(item["verified_tools_sha256"], COMPUTE_TOOLS if role == "batch" else ())
+    for value in item["verified_tools_sha256"].values():
+        q._hash(value)
+    return copy.deepcopy(item)
+
+
+def verify_compute_runtime(spec, role="batch"):
     """Retain exact expected hashes; absence/drift of an actually used tool blocks."""
     item = a.validate_spec(spec)
     s.require(a.sha_file(item["python"]) == item["python_sha256"], "Compute Python byte drift.")
-    for key in COMPUTE_TOOLS:
+    expected = expected_compute_runtime(item, role)
+    for key in expected["verified_tools_sha256"]:
         s.require(
             a.sha_file(item["tools"][key]) == item["tools_sha256"][key],
             "Compute tool byte drift.",
         )
-    return {
-        "schema_version": "s2-compute-runtime-v1",
-        "role": "batch",
-        "python_sha256": item["python_sha256"],
-        "verified_tools_sha256": {key: item["tools_sha256"][key] for key in COMPUTE_TOOLS},
-        "login_only_tools": ["git", "sbatch"],
-        "execution_admitted": False,
-    }
+    return expected
