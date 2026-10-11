@@ -109,6 +109,7 @@ def predecessor(tmp_path, monkeypatch, envelope, spec):
         (old / name).write_bytes(c.encoded(value))
     (old / "batch.sh").write_bytes(script)
     monkeypatch.setattr(a, "verify_checkout", lambda *_: envelope["source"])
+    monkeypatch.setattr(n, "recheck", lambda _: None)
     return old
 
 
@@ -150,6 +151,13 @@ def test_predecessor_tampering_blocks(predecessor, name):
 
 def test_predecessor_source_drift_blocks(predecessor, monkeypatch):
     monkeypatch.setattr(a, "verify_checkout", lambda *_: {})
+    with pytest.raises(ValueError):
+        r.verify_predecessor()
+
+
+def test_predecessor_runtime_drift_blocks_before_git(predecessor, monkeypatch):
+    monkeypatch.setattr(n, "recheck", lambda _: (_ for _ in ()).throw(ValueError("drift")))
+    monkeypatch.setattr(a, "verify_checkout", lambda *_: pytest.fail("Unverified Git executable"))
     with pytest.raises(ValueError):
         r.verify_predecessor()
 
