@@ -77,6 +77,23 @@ def seal_history():
         )
         spec = plan["specification"]
         s.require(spec["job_id"] == expected["job_id"], "Historical job drift.")
+        s.require(
+            n.read_json(claim / "job.json")
+            == {
+                "source_commit": expected["source_commit"],
+                "job_id": expected["job_id"],
+                "specification_sha256": s.digest(spec),
+            },
+            "Historical job receipt drift.",
+        )
+        intent = n.read_json(claim / "intent.json")
+        s.require(
+            intent.get("source_commit") == expected["source_commit"]
+            and intent.get("envelope_sha256") == s.digest(envelope)
+            and intent.get("run") == spec["run"]
+            and intent.get("nonce") == spec["nonce"],
+            "Historical intent drift.",
+        )
         saved = n.read_json(claim / "collection.json")
         archive = Path(saved["download"])
         s.require(
