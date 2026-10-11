@@ -79,6 +79,19 @@ not private evidence, credentials, local host paths or execution authority.
   normal-only observation with the same resource limits. No root cause or live
   qualification is assumed. Human CLI is deferred until this gate is qualified,
   Ready, reviewed and merged; no adverse/native/h300/repeat is released.
+- PR #67 merged at `fe56d465720d396ebfb2c7f202fb0482db0d91ad`.
+  Recovery job 2207181 at `c74f316e30a1b034368ce15b4877d03f31c5d09b`
+  failed 1:0 in two seconds. Independently verified recovery archive SHA-256:
+  `264037fafd7ef52a74e3854b35213228a257d2f3f98f8f55e5ec29fc4eab8b8f`.
+  [Audited records and supplemental diagnosis](docs/evidence/s2-normal-recovery-2207181/README.md)
+  retain missing_terminal_batch_receipt, unknown worker and no live qualification.
+  Maintainer-supplied stderr identifies missing `/usr/bin/git` while rechecking
+  predecessor login tools on the batch host, outside shared diagnostics. This
+  is not proof of the original 2207167 cause or a solver/license failure.
+  The [closed compute identity correction](docs/mvp2_s2_compute_identity.md)
+  separates login raw-Git provenance from compute file/runtime checks and covers
+  early entry failures. Successor protocol/evidence integration is still required;
+  no retry or new normal job is admitted. Preserve both consumed attempts.
 - S2 remains FULLY planned and open: P2 normal audit/adverse qualification;
   P3 adverse containment audit/licensed native integration; P4 licensed audit
   and fresh h300 admission; P5 diagnostic 1/2/4/8/16-thread block audit,
@@ -106,9 +119,10 @@ not private evidence, credentials, local host paths or execution authority.
   above. Earlier independent/HOLD wording describes its initial proposal only.
   Its files are now part of develop and any later reviewed main promotion unless
   an explicit scope decision changes that promotion. No main merge is authorized
-  by this checkpoint. Next owners: agent qualifies the normal recovery gate;
-  maintainer reviews/authorizes merge and subsequently executes only its pinned
-  normal-only CLI. Independent terminal audit precedes every later admission.
+  by this checkpoint. Next owners: agent qualifies the closed compute identity
+  correction, then a complete successor integration/admission; maintainer reviews
+  merge only after Ready. No NPAD execution is requested by this correction.
+  Independent terminal audit precedes every later admission.
 - Maintainer requested main/develop reconciliation only at S2 closure. On
   9 October, GitHub at develop `a4ce020` reports 111 commits ahead / 1 behind main;
   this is a dated UI observation, not a frozen final comparison. Recheck both
