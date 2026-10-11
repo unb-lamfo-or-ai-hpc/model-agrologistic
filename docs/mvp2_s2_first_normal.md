@@ -145,5 +145,45 @@ native integration; S2-P4 reviews that gate and proposes fresh h300 admission;
 S2-P5 audits the 1/2/4/8/16-thread diagnostic block and records selection/limits.
 Production/repeats remain blocked until their own decisions. Main/develop
 reconciliation waits for full S2 closure and separately approved Ready PRs.
-PR #64 remains independent. No article, formulation, scientific parameter,
+PR #64 was independently reviewed and then merged after PR #65 on 11 October
+with explicit maintainer authorization. No article, formulation, scientific parameter,
 dependency, dataset, protection rule or main change belongs to S2-P1.
+
+## Negative observation and scoped diagnostics correction — 11 October
+
+Job 2207167 at original source `12691638cd85d5218725bf704dc6b9452b1ca90c`
+failed at root/batch, exit 2:0 in two seconds. SHA-256 of the original archive:
+`03ee4d87bf69994fc4f0401e206a67109539ad2dfe0770cd3246b7415e952007`.
+The [semantic four-member records](evidence/s2-first-normal-2207167/records.json)
+were decoded only after independent checksum and strict portable audit; they
+are JSON-semantic copies, not the original archive bytes or a new certificate.
+The original v1 review is reproduced without modification. It records
+blocked_before_launch, not_replayed controller, unknown worker outcome, null
+contract and no inner bundle. No solver observation or normal qualification.
+The maintainer reports empty stderr and generic-status stdout; raw logs and
+regression XML are not independently transferred evidence. The exception's
+original cause remains unknown; no Slurm grammar relaxation is justified.
+
+The scoped correction emits `s2-first-normal-batch-v2` with exactly one
+`diagnostic` object: fixed `phase`, fixed `error_kind`, and optional `site`
+containing an allowlisted repository module and bounded one-based line number.
+The innermost reviewed traceback frame other than generic `require()` identifies
+the relevant code at that new source, not at the historical SHA. Exception
+messages/arguments, arbitrary class/function names, paths, subprocess output,
+PIDs and raw tracebacks are never exported. Unknown external frames remain null.
+The caught error set, guards, controller, campaign and execution limits are
+unchanged. Failures before claim validation/exclusive batch claim still follow
+the original uncaught failure path; this is not crash-proof durable telemetry.
+
+New receipt replay returns `s2-first-normal-review-v2` with `batch_diagnostic`.
+Strict v1 review remains v1, with no fabricated diagnostic; cached original
+collections are never rewritten. Both versions retain integrity-only status and
+all future admission/containment flags false. Missing receipts cannot invent a
+v2 diagnostic. CLI output adds fixed phase/error/site only when present.
+
+This software/checkpoint correction admits **no new job or retry**, even after
+merge. Do not rerun `batch.sh`, patch the preserved NPAD source, remove a claim,
+or replace its original SHA with this PR's SHA. The old driver and claim remain
+unchanged. A separate fresh-attempt gate must define reviewed source/runtime,
+an independent claim, predecessor preservation and bounded normal-only admission;
+no fresh command is supplied here. Adverse/native/h300/repeats remain blocked.

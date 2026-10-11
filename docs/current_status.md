@@ -1,11 +1,11 @@
-# Dated research status: 9 October 2026
+# Dated research status: 11 October 2026
 
 This is a derived handoff snapshot, not a new certificate. Reviewed integration
-base: develop `01016fbbbdfdc6dd7cf005488105b4d3181f671d` (PR #62).
+base: develop `60c43d7a52389eee2822a08701801792a9b79548` (PR #64 after #65).
 Read [PROJECT_STATE.md](../PROJECT_STATE.md), the [roadmap](mvp2_hpc_roadmap.md)
 and linked evidence for full history. Refresh live PR state before continuing;
-open PR content is not integrated code. This document's branch is a separate
-[portable-memory proposal](research_context.md), not an execution gate.
+open PR content is not integrated code. The [portable memory](research_context.md)
+was integrated with explicit authorization; it is not an execution gate.
 
 ## What is established
 
@@ -37,30 +37,30 @@ capacity-pass gap; acceptance retains the inherited hierarchical allowances.
 
 ## Current open work: S2
 
-PRs #53–#62 successively qualify thread parameters, diagnostic design, runtime
+PRs #53–#65 successively qualify thread parameters, diagnostic design, runtime
 controls, native-worker/evidence seams, containment observations, numeric Slurm
 step contracts, controller, batch adapter and operational protocol. Software
 component coverage is not live operational qualification. S2 remains OPEN.
 
-[PR #63](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/63)
-is open/Ready at `7532beea7ffa429ba9f34bfd091bd60069efc4f8` as inspected on
-9 October. It repairs a long-path IPC test fixture and versions a read-only
-envelope-recovery driver; the production adapter is unchanged. Its audit retains
-an initial timing-sensitive legacy-control CI failure and a successful same-head
-rerun. Neither is evidence of NPAD containment. The maintainer reports that the
-PR63 command has not been executed. Do not infer a merge or an envelope result.
+PR #63 is integrated; its read-only envelope was independently audited as
+observed_not_admitted. PR #65 and then #64 merged on 11 October with authorization;
+both develop push Quality runs passed. Job 2207167 at PR65 source
+`12691638cd85d5218725bf704dc6b9452b1ca90c` failed 2:0 after two seconds.
+Its [audited semantic records](evidence/s2-first-normal-2207167/records.json)
+retain blocked_before_launch, not_replayed controller and unknown worker outcome.
+Integrity replay passed, not normal/live containment qualification. Maintainer
+log inspection also reports no captured error detail; the root cause is unknown.
 
 | Next dependency | Owner | Required decision/evidence |
 | --- | --- | --- |
-| PR63 integration | Maintainer | Separate merge authorization after review; verify live state |
-| Read-only installed-envelope observation | Maintainer executes CLI | Only the exact merged-source-pinned PR63 handoff; preserve failure/location receipts |
-| Envelope evidence review | Agent prepares audit; maintainer decides | Actual portable receipt and checksum, including any blocked outcome |
-| Limited first-normal synthetic qualification | Later scoped PR | Installed grammar, exact-step ownership/cleanup and live containment must be qualified before release |
+| Diagnostic/checkpoint correction | Agent prepares; maintainer reviews merge | Bounded message-free phase/error/code-location receipts; v1 replay unchanged; offline tests and exact-head CI |
+| Fresh normal-only attempt protocol | Later scoped gate | Preserve failed claim/source; explicitly qualify separate admission before any new submission |
+| Normal evidence and adverse release | Later scoped PR | Independently audit actual normal outcome first; current failure does not release adverse cases |
 | Native miniature and h300 diagnostic block | Later independent gates | Fresh admission and original evidence; not authorized by this table |
 
-No new CLI is introduced by the memory package. Synthetic jobs, native miniature,
-h300 optimization and repeats remain CLOSED. Do not rerun the PR62 bootstrap or
-skip regressions because PR63 has not yet been executed. Remaining PR count is
+No new CLI is introduced by this diagnostic correction. New synthetic jobs,
+native miniature, h300 optimization and repeats remain CLOSED. Do not rerun or
+patch the consumed PR65 attempt. Remaining PR count is
 conditional on actual live evidence, not a fixed campaign quota.
 
 ## Subsequent scope and pending decisions
@@ -74,7 +74,7 @@ conditional on actual live evidence, not a fixed campaign quota.
 | S5 h500 | Conditional input/build/resource gates and bounded empirical frontier; not yet optimized or admitted |
 | S6 | Computational/HPC synthesis, coauthor reconciliation and separate reproducibility packaging |
 | Main synchronization | Deferred to S2 closure; inspect both ancestry directions and effective protection/checks |
-| Portable-memory integration | Keep separate branch/PR until destination decided; merging to develop normally includes these files in a later main promotion |
+| Portable-memory integration | PR64 merged with authorization; its files belong to develop and a later reviewed promotion unless explicitly scoped otherwise |
 
 EVPI/VSS and section 3.8 are to be excluded at S6; these calculations are no
 longer remaining experiment work. The article and presentation are unchanged now.

@@ -44,6 +44,99 @@ FUTURE = {
     "repeats_admitted": False,
     "live_containment_qualified": False,
 }
+DIAGNOSTIC_PHASES = frozenset(
+    {
+        "await_job_receipt",
+        "load_plan",
+        "verify_release",
+        "verify_runtime",
+        "verify_source",
+        "create_adapter",
+        "preflight",
+        "supervise",
+        "verify_operation",
+        "complete",
+    }
+)
+DIAGNOSTIC_ERRORS = frozenset(
+    {"none", "os_error", "value_error", "timeout", "interrupted", "unicode_error"}
+)
+DIAGNOSTIC_MODULES = frozenset(
+    {
+        "mvp2_s2_first_normal",
+        "mvp2_s2_batch_adapter",
+        "mvp2_s2_operational",
+        "mvp2_s2_slurm_step",
+        "mvp2_s2_slurm_synthetic",
+        "mvp2_h300_controls",
+        "mvp2_h300_worker_evidence",
+    }
+)
+
+
+def batch_diagnostic(phase, error=None):
+    """Export fixed categories and a reviewed code location, never exception text."""
+    kind, site = "none", None
+    if error is not None:
+        # Test subclass relationships before OSError/ValueError base classes.
+        kind = next(
+            (
+                name
+                for cls, name in (
+                    (TimeoutError, "timeout"),
+                    (KeyboardInterrupt, "interrupted"),
+                    (UnicodeError, "unicode_error"),
+                    (OSError, "os_error"),
+                    (ValueError, "value_error"),
+                )
+                if isinstance(error, cls)
+            ),
+            None,
+        )
+        s.require(kind is not None, "Unreviewed diagnostic exception category.")
+        root = Path(__file__).resolve().parent
+        trace = error.__traceback__
+        # Innermost reviewed frame, except the generic require() helper: its
+        # caller identifies the failed guard without exporting its message.
+        while trace is not None:
+            filename = Path(trace.tb_frame.f_code.co_filename)
+            if (
+                filename.stem in DIAGNOSTIC_MODULES
+                and filename.resolve() == root / (filename.stem + ".py")
+                and trace.tb_frame.f_code.co_name != "require"
+                and 1 <= trace.tb_lineno <= 20000
+            ):
+                site = {"module": filename.stem, "line": trace.tb_lineno}
+            trace = trace.tb_next
+    return review_batch_diagnostic({"phase": phase, "error_kind": kind, "site": site})
+
+
+def review_batch_diagnostic(item):
+    q._keys(item, {"phase", "error_kind", "site"})
+    s.require(
+        type(item["phase"]) is str
+        and item["phase"] in DIAGNOSTIC_PHASES
+        and type(item["error_kind"]) is str
+        and item["error_kind"] in DIAGNOSTIC_ERRORS,
+        "Batch diagnostic category drift.",
+    )
+    site = item["site"]
+    if site is not None:
+        q._keys(site, {"module", "line"})
+        s.require(
+            type(site["module"]) is str
+            and site["module"] in DIAGNOSTIC_MODULES
+            and type(site["line"]) is int
+            and 1 <= site["line"] <= 20000,
+            "Batch diagnostic site drift.",
+        )
+    s.require(
+        (item["error_kind"] != "none" or site is None)
+        and (item["error_kind"] != "none" or item["phase"] == "complete")
+        and (item["phase"] != "complete" or item["error_kind"] == "none"),
+        "Batch diagnostic disposition drift.",
+    )
+    return copy.deepcopy(item)
 
 
 def require_host():
@@ -338,6 +431,7 @@ def batch(commit):
     claim, envelope, _intent = load_claim(commit)
     (claim / "batch-claim").mkdir(mode=0o700, exist_ok=False)
     outcome = "blocked_before_launch"
+    phase, failure = "await_job_receipt", None
     with o.StopLatch().installed() as latch:
         try:
             deadline = time.monotonic() + 30
@@ -349,21 +443,27 @@ def batch(commit):
                     "No acknowledged job release.",
                 )
                 time.sleep(0.2)
+            phase = "load_plan"
             claim, envelope, spec = load_plan(commit)
+            phase = "verify_release"
             s.require(
                 os.environ.get("SLURM_JOB_ID") == spec["job_id"]
                 and not (claim / "stop.json").exists()
                 and latch.reason is None,
                 "Batch release stopped/mismatched.",
             )
+            phase = "verify_runtime"
             recheck(envelope)
             transport = NormalTransport(spec, preflight_deadline=allocation_started + 120)
+            phase = "verify_source"
             source = a.verify_checkout(spec, transport.source_command)
             s.require(source == envelope["source"], "Fresh batch source drift.")
+            phase = "create_adapter"
             adapter = NormalAdapter(
                 spec, transport=transport, allocation_started=allocation_started
             )
             # Strict installed job/listpids grammar is checked BEFORE worker spawn.
+            phase = "preflight"
             adapter.preflight(
                 uid=os.getuid(),
                 pid=os.getpid(),
@@ -372,21 +472,26 @@ def batch(commit):
                 tool_sha256=spec["tools_sha256"],
                 python_sha256=spec["python_sha256"],
             )
+            phase = "supervise"
             result = o.supervise_normal_components(adapter, latch)
             outcome = "attempt_preserved" if adapter.claimed else "blocked_before_launch"
+            phase = "verify_operation"
             s.require(
                 result["operation"]["remote_cleanup_proven"] is False, "No containment promotion."
             )
-        except (OSError, ValueError, TimeoutError, KeyboardInterrupt, UnicodeError):
+            phase = "complete"
+        except (OSError, ValueError, TimeoutError, KeyboardInterrupt, UnicodeError) as error:
+            failure = batch_diagnostic(phase, error)
             outcome = (
                 "blocked_before_launch"
                 if not Path(_intent["run"]).exists()
                 else "incomplete_attempt_preserved"
             )
     report = {
-        "schema_version": "s2-first-normal-batch-v1",
+        "schema_version": "s2-first-normal-batch-v2",
         "status": outcome,
         "source_commit": commit,
+        "diagnostic": failure if failure is not None else batch_diagnostic(phase),
         **FUTURE,
     }
     c.write_once(claim / "batch-outcome.json", report)
@@ -501,9 +606,13 @@ def review_records(records, expected_commit, expected_job):
         "Missing terminal cohort.",
     )
     wrapper = c.decode_json(records["wrapper.json"])
-    q._keys(wrapper, {"schema_version", "status", "source_commit", *FUTURE})
+    s.require(type(wrapper) is dict, "Batch outcome object required.")
+    version = wrapper.get("schema_version")
+    diagnostic_keys = {"diagnostic"} if version == "s2-first-normal-batch-v2" else set()
+    q._keys(wrapper, {"schema_version", "status", "source_commit", *FUTURE, *diagnostic_keys})
     s.require(
-        wrapper["schema_version"] == "s2-first-normal-batch-v1"
+        type(version) is str
+        and version in {"s2-first-normal-batch-v1", "s2-first-normal-batch-v2"}
         and wrapper["source_commit"] == expected_commit
         and wrapper["status"]
         in {
@@ -515,6 +624,15 @@ def review_records(records, expected_commit, expected_job):
         and all(wrapper[k] is False for k in FUTURE),
         "Batch outcome drift.",
     )
+    diagnostic = {}
+    if diagnostic_keys:
+        s.require(wrapper["status"] != "missing_terminal_batch_receipt", "Invented diagnostic.")
+        diagnostic = {"batch_diagnostic": review_batch_diagnostic(wrapper["diagnostic"])}
+        s.require(
+            wrapper["status"] != "attempt_preserved"
+            or diagnostic["batch_diagnostic"]["error_kind"] == "none",
+            "Preserved attempt cannot hide a caught batch exception.",
+        )
     state, worker_outcome = "not_replayed", "unknown"
     if "batch-evidence.tar.gz" in records:
         inner = read_tar(records["batch-evidence.tar.gz"], q.LIMIT, set(a.BUNDLE_FILES))
@@ -559,7 +677,9 @@ def review_records(records, expected_commit, expected_job):
             "Source count bound.",
         )
     return {
-        "schema_version": "s2-first-normal-review-v1",
+        "schema_version": "s2-first-normal-review-v2"
+        if diagnostic
+        else "s2-first-normal-review-v1",
         "status": "integrity_replayed_not_live_qualified",
         "source_commit": expected_commit,
         "job_id": expected_job,
@@ -567,6 +687,7 @@ def review_records(records, expected_commit, expected_job):
         "worker_outcome": worker_outcome,
         "batch_status": wrapper["status"],
         "specification_sha256": item["specification_sha256"],
+        **diagnostic,
         **FUTURE,
     }
 
@@ -720,6 +841,14 @@ def main():
     else:
         result = {"start": start, "collect": collect, "batch": batch}[args.action](args.source_sha)
     print("NORMAL_STATUS=" + result["status"])
+    diagnostic = result.get("diagnostic", result.get("review", result).get("batch_diagnostic"))
+    if diagnostic is not None:
+        print("BATCH_PHASE=" + diagnostic["phase"])
+        print("BATCH_ERROR_KIND=" + diagnostic["error_kind"])
+        site = diagnostic["site"]
+        print(
+            "BATCH_ERROR_SITE=" + (site["module"] + ":" + str(site["line"]) if site else "unknown")
+        )
     if args.action != "audit":
         print("PRESERVE_CLAIM=" + str(claim_path()))
         if (claim_path() / "intent.json").exists():
