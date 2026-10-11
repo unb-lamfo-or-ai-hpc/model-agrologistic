@@ -364,7 +364,7 @@ def test_recovery_uses_shared_batch_with_fixed_factories(tmp_path, monkeypatch, 
         "transport_factory": r.RecoveryTransport,
         "adapter_factory": r.RecoveryAdapter,
     }
-    with pytest.raises(FileExistsError):
+    with pytest.raises(SystemExit, match="2"):
         r.batch("a" * 40)
     assert len(calls) == 1
 
