@@ -100,6 +100,15 @@ not private evidence, credentials, local host paths or execution authority.
   This is offline software qualification, not installed NPAD qualification.
   A fresh immutable one-shot driver and its CLI wiring remain a separate gate;
   the new public entry denies execution and no claim/job/retry is admitted.
+- PR #69 merged into develop at `d6ab499c634bd03432f968c76df61d5cc521b862`.
+  The [one-shot normal operational gate](docs/mvp2_s2_compute_normal.md) now
+  supplies the fresh driver, immutable pre-effect proposal/job-release binding,
+  actual Git-free batch/worker routes and portable terminal collection.
+  This proposed gate permits only one normal synthetic observation after its
+  own qualification, authorized merge and maintainer CLI execution. No new job
+  is reported here. Unknown effects consume the new claim; both earlier attempts
+  remain read-only. Independent terminal review still precedes adverse cases,
+  native miniature, h300 or repeats; no live-containment or S2-closure claim.
 - S2 remains FULLY planned and open: P2 normal audit/adverse qualification;
   P3 adverse containment audit/licensed native integration; P4 licensed audit
   and fresh h300 admission; P5 diagnostic 1/2/4/8/16-thread block audit,
@@ -127,9 +136,9 @@ not private evidence, credentials, local host paths or execution authority.
   above. Earlier independent/HOLD wording describes its initial proposal only.
   Its files are now part of develop and any later reviewed main promotion unless
   an explicit scope decision changes that promotion. No main merge is authorized
-  by this checkpoint. Next owners: agent qualifies the closed compute integration,
-  then the fresh normal-only driver/admission; maintainer reviews merge only
-  after Ready. No NPAD execution is requested by this integration gate.
+  by this checkpoint. Next owners: agent qualifies the fresh normal-only
+  operational driver; maintainer reviews merge only after Ready, then executes
+  the separately frozen CLI. Do not run a branch-head script before that handoff.
   Independent terminal audit precedes every later admission.
 - Maintainer requested main/develop reconciliation only at S2 closure. On
   9 October, GitHub at develop `a4ce020` reports 111 commits ahead / 1 behind main;
