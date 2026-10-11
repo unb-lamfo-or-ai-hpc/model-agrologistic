@@ -43,7 +43,7 @@ jobs:
           python - <<'PY'
           import xml.etree.ElementTree as ET
           cases = ET.parse('/tmp/s2-normal-recovery.xml').getroot().findall('.//testcase')
-          assert len(cases) == 65
+          assert len(cases) == 66
           assert not any(x.find(k) is not None for x in cases for k in ('failure', 'error', 'skipped'))
           PY
       - uses: actions/upload-artifact@v4
