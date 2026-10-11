@@ -1,5 +1,12 @@
 # S2-P1 — first-normal synthetic wrapper
 
+Job 2207167 consumed this original claim and failed before launch. Preserve its
+source and original archive; do not run this driver for a new submission.
+PR #66's diagnostics do not establish the cause or a successful fix. The
+[separate normal continuation gate](mvp2_s2_normal_recovery.md) documents the
+next independently qualified claim, after review, authorized merge and human CLI.
+The original protocol below remains historical; it is not a fresh admission.
+
 ## Scope and exit
 
 The independently audited [PR63 read-only envelope](evidence/s2-envelope-pr63/README.md)
