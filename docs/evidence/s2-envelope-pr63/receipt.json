@@ -1,0 +1,55 @@
+{
+  "batch_execution_admitted": false,
+  "client_versions": {
+    "sacct": "slurm 22.05.11",
+    "sbatch": "slurm 22.05.11",
+    "scancel": "slurm 22.05.11",
+    "scontrol": "slurm 22.05.11",
+    "srun": "slurm 22.05.11"
+  },
+  "envelope_sha256": "3eaffd5c19b53b1ac8361bf85be1a63e191267da490d956a0df94e3e69e63049",
+  "failure_code": null,
+  "inventory": {
+    "config_query_succeeded": true,
+    "declared_configuration": {
+      "JobAcctGatherType": "jobacct_gather/linux",
+      "KillWait": "300 sec",
+      "ProctrackType": "proctrack/cgroup",
+      "SelectType": "select/cons_tres",
+      "SelectTypeParameters": "CR_CPU_MEMORY",
+      "TaskPlugin": "task/affinity,task/cgroup",
+      "TaskPluginParam": "threads",
+      "UnkillableStepTimeout": "60 sec"
+    },
+    "live_isolation_proven": false,
+    "native_miniature_admitted": false,
+    "production_admitted": false,
+    "repeats_admitted": false,
+    "schema_version": "s2-slurm-declared-config-v1",
+    "scontrol_client_version": "slurm 22.05.11",
+    "srun_client_version": "slurm 22.05.11"
+  },
+  "live_isolation_proven": false,
+  "native_miniature_admitted": false,
+  "normal_execution_admitted": false,
+  "production_admitted": false,
+  "python_sha256": "3fbc618126899d87282c1c87a0015a536cb8bb5afd87578f14fafead3d6ca253",
+  "repeats_admitted": false,
+  "schema_version": "s2-envelope-receipt-v1",
+  "source": {
+    "source_sha256": "065adcef0b1c8a6838e9fd16fec96ce3ec4ace36eff1a4314c495c2cb48a9a5f",
+    "tracked_count": 468,
+    "worker_sha256": "e97d15965fd16936d7e5d5a1bc0abb1fe38fb82dedb8ae599c42cfe9136c4bfe"
+  },
+  "source_commit": "7532beea7ffa429ba9f34bfd091bd60069efc4f8",
+  "status": "observed_not_admitted",
+  "synthetic_execution_admitted": false,
+  "tool_sha256": {
+    "git": "7a7b726b3975599df7b5d835d3ff4decd8b00a9bf44e1420f1a7223305eca7b1",
+    "sacct": "eff45b73a404bec1ff1619a9039ac54e0b16984280517006235cdc27e9d98f14",
+    "sbatch": "3705d8097d3957ca071019436fc8e78b0ea72ba612fb47e3f89f54c44b601073",
+    "scancel": "a48923f797567fdd42e722f139087343e2d0c9e5c0021e33d32521d9b61d43b6",
+    "scontrol": "ed1c90aee3eaae427e5c2da3ca6cc69769410ed527c152c7d06fa1002c33c8db",
+    "srun": "08ce1b429a831d08064ba198ac680efb38cf269779a03f43e050ef71584fd114"
+  }
+}
