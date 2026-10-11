@@ -154,7 +154,15 @@ rationale/qualification. Node files are not assumed to fix root-LP factorization
 Exit: audited response including no-benefit/failure profiles, explicit comparison
 limits and justified next-profile decision. Speedup is not required for success.
 
-PR #66's diagnostic correction is integrated. The failed normal job 2207167
+PR #67 is integrated at `fe56d465720d396ebfb2c7f202fb0482db0d91ad`.
+Recovery 2207181 failed before shared diagnostics; supplemental stderr identifies
+absent login Git on the batch node. The [closed identity correction](mvp2_s2_compute_identity.md)
+qualifies byte-preserving login/compute separation and early error coverage.
+Complete successor claim/runtime/evidence integration is still required before
+new normal admission. Both consumed attempts remain immutable. This does not
+cancel or release any scientific contrast; S2 remains open.
+
+Historical PR66/67 sequence: PR #66's diagnostic correction is integrated. The failed normal job 2207167
 remains negative, with unknown cause and no live qualification. The next
 [normal continuation gate](mvp2_s2_normal_recovery.md) prepares one separately
 qualified observation with fresh source/claim and read-only binding to the
