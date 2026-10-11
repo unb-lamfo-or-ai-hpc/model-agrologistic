@@ -1,7 +1,7 @@
 # Dated research status: 11 October 2026
 
 This is a derived handoff snapshot, not a new certificate. Reviewed integration
-base: develop `60c43d7a52389eee2822a08701801792a9b79548` (PR #64 after #65).
+base: develop `f51688b9692058e2d0a639125b65fb5f1ff805ac` (PR #66 merged).
 Read [PROJECT_STATE.md](../PROJECT_STATE.md), the [roadmap](mvp2_hpc_roadmap.md)
 and linked evidence for full history. Refresh live PR state before continuing;
 open PR content is not integrated code. The [portable memory](research_context.md)
@@ -37,7 +37,7 @@ capacity-pass gap; acceptance retains the inherited hierarchical allowances.
 
 ## Current open work: S2
 
-PRs #53–#65 successively qualify thread parameters, diagnostic design, runtime
+PRs #53–#66 successively qualify thread parameters, diagnostic design, runtime
 controls, native-worker/evidence seams, containment observations, numeric Slurm
 step contracts, controller, batch adapter and operational protocol. Software
 component coverage is not live operational qualification. S2 remains OPEN.
@@ -50,16 +50,18 @@ Its [audited semantic records](evidence/s2-first-normal-2207167/records.json)
 retain blocked_before_launch, not_replayed controller and unknown worker outcome.
 Integrity replay passed, not normal/live containment qualification. Maintainer
 log inspection also reports no captured error detail; the root cause is unknown.
+PR #66's bounded phase/error/code-location diagnostics are integrated, not a
+demonstrated repair or live qualification. The [normal continuation gate](mvp2_s2_normal_recovery.md)
+prepares one fresh independently claimed observation, preserving the old attempt.
 
 | Next dependency | Owner | Required decision/evidence |
 | --- | --- | --- |
-| Diagnostic/checkpoint correction | Agent prepares; maintainer reviews merge | Bounded message-free phase/error/code-location receipts; v1 replay unchanged; offline tests and exact-head CI |
-| Fresh normal-only attempt protocol | Later scoped gate | Preserve failed claim/source; explicitly qualify separate admission before any new submission |
+| Fresh normal-only attempt protocol | Agent qualifies PR; maintainer reviews merge and executes CLI | Separate immutable claim/source and predecessor binding; offline tests, exact-head CI and explicit admission before one new observation |
 | Normal evidence and adverse release | Later scoped PR | Independently audit actual normal outcome first; current failure does not release adverse cases |
 | Native miniature and h300 diagnostic block | Later independent gates | Fresh admission and original evidence; not authorized by this table |
 
-No new CLI is introduced by this diagnostic correction. New synthetic jobs,
-native miniature, h300 optimization and repeats remain CLOSED. Do not rerun or
+Until the continuation gate is qualified, authorized and merged, its CLI is not
+admitted. Adverse cases, native miniature, h300 optimization and repeats remain CLOSED. Do not rerun or
 patch the consumed PR65 attempt. Remaining PR count is
 conditional on actual live evidence, not a fixed campaign quota.
 

@@ -18,7 +18,9 @@ jobs:
           python-version: '3.13'
       - run: python -m pip install -e '.[dev]'
       - name: Syntax without executing the NPAD driver
-        run: bash -n scripts/npad_s2_first_normal.sh
+        run: |
+          bash -n scripts/npad_s2_first_normal.sh
+          bash -n scripts/npad_s2_normal_recovery.sh
       - name: Fake-effect and local portable qualification only
         run: |
           python -m pytest -p no:cacheprovider tests/test_mvp2_s2_first_normal.py tests/test_mvp2_s2_batch_adapter.py tests/test_mvp2_s2_operational.py -q --junitxml=/tmp/s2-normal-regression.xml
@@ -35,6 +37,15 @@ jobs:
           PY
       - name: Bounded diagnostics and historical v1 replay, no scheduler effects
         run: python -m pytest -p no:cacheprovider tests/test_mvp2_s2_normal_diagnostics.py -q --junitxml=/tmp/s2-normal-diagnostics.xml
+      - name: Separate normal recovery lineage and one-shot effects, offline only
+        run: |
+          python -m pytest -p no:cacheprovider tests/test_mvp2_s2_normal_recovery.py -q --junitxml=/tmp/s2-normal-recovery.xml
+          python - <<'PY'
+          import xml.etree.ElementTree as ET
+          cases = ET.parse('/tmp/s2-normal-recovery.xml').getroot().findall('.//testcase')
+          assert len(cases) == 66
+          assert not any(x.find(k) is not None for x in cases for k in ('failure', 'error', 'skipped'))
+          PY
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -42,3 +53,4 @@ jobs:
           path: |
             /tmp/s2-normal-regression.xml
             /tmp/s2-normal-diagnostics.xml
+            /tmp/s2-normal-recovery.xml

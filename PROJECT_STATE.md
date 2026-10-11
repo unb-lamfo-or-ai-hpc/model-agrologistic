@@ -66,14 +66,19 @@ not private evidence, credentials, local host paths or execution authority.
   stderr, stdout with only the blocked status, and the expected frozen batch
   command. Those raw logs were not transferred or committed independently.
   The swallowed pre-launch exception's cause/phase cannot be reconstructed.
-- Current scoped correction: versioned [normal batch diagnostics](docs/mvp2_s2_first_normal.md)
+- PR #66 merged into develop at `f51688b9692058e2d0a639125b65fb5f1ff805ac`.
+  Its exact-head four checks passed; local qualification reported 507 passed
+  and five Windows capability/platform skips. Versioned [normal batch diagnostics](docs/mvp2_s2_first_normal.md)
   record fixed phases/error categories and allowlisted module/line locations,
   never exception messages or raw scheduler responses. Legacy v1 replay stays
   unchanged; no historical receipt is upgraded or given an invented diagnosis.
-  Qualify offline privacy, phase, replay and negative-scope tests plus exact-head
-  CI before Ready. This correction does not admit a new submission or retry.
+  The diagnostic correction does not admit a new submission or retry.
   Preserve original source, run, claim and collection; do not patch the consumed
-  NPAD checkout. A separately reviewed fresh-attempt protocol is still needed.
+  NPAD checkout. The next scoped [normal recovery gate](docs/mvp2_s2_normal_recovery.md)
+  qualifies one independent claim, immutable predecessor binding and one bounded
+  normal-only observation with the same resource limits. No root cause or live
+  qualification is assumed. Human CLI is deferred until this gate is qualified,
+  Ready, reviewed and merged; no adverse/native/h300/repeat is released.
 - S2 remains FULLY planned and open: P2 normal audit/adverse qualification;
   P3 adverse containment audit/licensed native integration; P4 licensed audit
   and fresh h300 admission; P5 diagnostic 1/2/4/8/16-thread block audit,
@@ -101,8 +106,9 @@ not private evidence, credentials, local host paths or execution authority.
   above. Earlier independent/HOLD wording describes its initial proposal only.
   Its files are now part of develop and any later reviewed main promotion unless
   an explicit scope decision changes that promotion. No main merge is authorized
-  by this checkpoint. Next owners: agent qualifies diagnostics/checkpoint PR;
-  maintainer reviews/authorizes merge; fresh NPAD admission remains a later gate.
+  by this checkpoint. Next owners: agent qualifies the normal recovery gate;
+  maintainer reviews/authorizes merge and subsequently executes only its pinned
+  normal-only CLI. Independent terminal audit precedes every later admission.
 - Maintainer requested main/develop reconciliation only at S2 closure. On
   9 October, GitHub at develop `a4ce020` reports 111 commits ahead / 1 behind main;
   this is a dated UI observation, not a frozen final comparison. Recheck both
