@@ -2,7 +2,8 @@
 
 ## Authority and scope
 
-Reconciled 10 October 2026 after PR #63 integration and the maintainer's revised
+Reconciled 11 October 2026 after PR #64/#65 integration and the negative normal
+observation; preserve the maintainer's revised full experimental
 scope. S1-C followed PRs #44, #47, #48, #49, #50 and #51. This plan supersedes the earlier roadmap's
 mandatory solver campaign, decomposition implementation and calendar estimates.
 It does not rewrite archived results. The [S1 closure](mvp2_sprint1_closure.md)
@@ -346,11 +347,23 @@ decision still requires independently audited installed-envelope evidence.
 PR #63 merged at `0dccbfd5d25c4db97a74baf5da3766d7433c82a1`.
 Its [read-only envelope evidence](evidence/s2-envelope-pr63/README.md) is now
 independently audited: observed_not_admitted, not effective live containment.
-The [S2-P1 first-normal wrapper](mvp2_s2_first_normal.md) is the next bounded
-software release. Live strict job/step checks precede phase release;
+The [S2-P1 first-normal wrapper](mvp2_s2_first_normal.md) was integrated in PR #65
+at `b7506e0efbc520411d80d2394d8b7d06a27d3dc9`; PR #64 followed at
+`60c43d7a52389eee2822a08701801792a9b79548` with maintainer authorization.
+Live strict job/step checks precede phase release;
 unknown responses block rather than widen the grammar. One normal observation
-must be independently reviewed before adverse release. PR #64 stays independent
-and has no merge authorization. Manuscript/coauthor certificates remain frozen.
+must be independently reviewed before adverse release. Job 2207167 at frozen
+source `12691638cd85d5218725bf704dc6b9452b1ca90c` failed before launch, 2:0
+after two seconds. [Audited public v1 records](evidence/s2-first-normal-2207167/records.json)
+preserve an unknown worker outcome and no replayed controller. Integrity replay
+does not qualify the normal gate. Original logs, as reported by the maintainer,
+also lack the caught exception. The next scoped correction qualifies bounded,
+message-free phase/error/code-location diagnostics and unchanged legacy replay;
+it neither diagnoses that original exception nor admits another attempt.
+Preserve the consumed original claim, checkout and archive. A fresh one-shot
+normal protocol must be separately reviewed before further CLI execution;
+P2 adverse release remains blocked. No extra scientific campaign is introduced.
+Manuscript/coauthor certificates remain frozen and the full S2 grid is retained.
 
 ### Dated scheduling assessment, not an execution calendar
 
