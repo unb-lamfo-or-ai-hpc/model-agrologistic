@@ -129,6 +129,7 @@ def verify_predecessor():
         "Preserved negative predecessor drift.",
     )
     # Old checkout is inspected through the existing raw-byte Git reader, never executed.
+    n.recheck(envelope)
     transport = a.RealTransport(spec)
     s.require(
         a.verify_checkout(spec, transport.source_command) == envelope["source"],
