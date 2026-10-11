@@ -92,14 +92,14 @@ PHASE=regression
 import sys
 import xml.etree.ElementTree as ET
 cases = ET.parse(sys.argv[1]).getroot().findall('.//testcase')
-assert len(cases) == 344, 'Pinned regression count changed; preserve, do not bypass.'
+assert len(cases) == 345, 'Pinned regression count changed; preserve, do not bypass.'
 assert not any(x.find('failure') is not None or x.find('error') is not None for x in cases)
 skips = [x for x in cases if x.find('skipped') is not None]
 assert len(skips) == 2 and {x.get('name') for x in skips} == {
     'test_probe_cli_platform_failure_still_packages_negative_evidence',
     'test_real_non_linux_start_has_no_effect',
 }, 'Unexpected skip; no submission admitted.'
-print('NPAD_NORMAL_RECOVERY_REGRESSION=342 passed; two intentional non-Linux-only CLI skips')
+print('NPAD_NORMAL_RECOVERY_REGRESSION=343 passed; two intentional non-Linux-only CLI skips')
 PY
 test -z "$(git -C "$SRC" status --porcelain --untracked-files=all)"
 PHASE=normal_recovery_only
