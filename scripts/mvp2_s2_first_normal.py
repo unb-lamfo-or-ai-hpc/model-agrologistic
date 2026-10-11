@@ -458,6 +458,8 @@ def batch_components(
     plan_loader=None,
     transport_factory=None,
     adapter_factory=None,
+    runtime_verifier=None,
+    source_verifier=None,
 ):
     """Shared normal loop; only reviewed wrappers supply fixed internal seams."""
     outcome = "blocked_before_launch"
@@ -483,12 +485,12 @@ def batch_components(
                 "Batch release stopped/mismatched.",
             )
             phase = "verify_runtime"
-            recheck(envelope)
+            (runtime_verifier or recheck)(envelope)
             transport = (transport_factory or NormalTransport)(
                 spec, preflight_deadline=allocation_started + 120
             )
             phase = "verify_source"
-            source = a.verify_checkout(spec, transport.source_command)
+            source = (source_verifier or a.verify_checkout)(spec, transport.source_command)
             s.require(source == envelope["source"], "Fresh batch source drift.")
             phase = "create_adapter"
             adapter = (adapter_factory or NormalAdapter)(

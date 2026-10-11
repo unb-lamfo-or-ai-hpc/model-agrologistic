@@ -1,7 +1,7 @@
 # Dated research status: 11 October 2026
 
 This is a derived handoff snapshot, not a new certificate. Reviewed integration
-base: develop `fe56d465720d396ebfb2c7f202fb0482db0d91ad` (PR #67 merged).
+base: develop `a2501f81cd4c45916b09227a378fe1505e97e190` (PR #68 merged).
 Read [PROJECT_STATE.md](../PROJECT_STATE.md), the [roadmap](mvp2_hpc_roadmap.md)
 and linked evidence for full history. Refresh live PR state before continuing;
 open PR content is not integrated code. The [portable memory](research_context.md)
@@ -37,7 +37,7 @@ capacity-pass gap; acceptance retains the inherited hierarchical allowances.
 
 ## Current open work: S2
 
-PRs #53–#67 successively qualify thread parameters, diagnostic design, runtime
+PRs #53–#68 successively qualify thread parameters, diagnostic design, runtime
 controls, native-worker/evidence seams, containment observations, numeric Slurm
 step contracts, controller, batch adapter and operational protocol. Software
 component coverage is not live operational qualification. S2 remains OPEN.
@@ -58,11 +58,14 @@ That recovery, job 2207181, failed 1:0 after two seconds. Its independently
 batch receipt. Supplemental stderr identifies absent `/usr/bin/git` during the
 batch predecessor recheck. The [compute identity correction](mvp2_s2_compute_identity.md)
 qualifies login/compute separation and early diagnostics as closed components;
-successor runtime/evidence/claim integration remains mandatory before another job.
+the [successor closed integration](mvp2_s2_compute_integration.md) wires batch,
+worker, preserved history, adapter runtime and versioned collection. Its public
+CLI is still denied: a frozen fresh normal-only driver and actual CLI qualification
+remain necessary before another job. No live repair or containment is claimed.
 
 | Next dependency | Owner | Required decision/evidence |
 | --- | --- | --- |
-| Compute identity correction, then successor integration | Agent qualifies code/CI; maintainer reviews merge | Git-free compute byte verification, role-specific runtime/evidence, preserved predecessors, new admission only after complete integration |
+| Closed compute integration, then fresh normal driver | Agent qualifies code/CI; maintainer reviews merge | Role-specific batch/worker/history verification and collection; separate immutable CLI/admission gate, no retry of consumed claims |
 | Normal evidence and adverse release | Later scoped PR | Independently audit actual normal outcome first; current failure does not release adverse cases |
 | Native miniature and h300 diagnostic block | Later independent gates | Fresh admission and original evidence; not authorized by this table |
 

@@ -666,7 +666,7 @@ class BatchAdapter:
             type(source["tracked_count"]) is int and 1 <= source["tracked_count"] <= 1024,
             "Source count.",
         )
-        self.runtime = verify_binaries(self.item, tool_sha256, python_sha256)
+        self.runtime = self.verify_runtime(tool_sha256, python_sha256)
         s.require(sys.version_info[:2] == (3, 13), "Supervisor Python version.")
         for tool in ("srun", "scontrol", "sacct", "scancel"):
             s.require(
@@ -717,6 +717,13 @@ class BatchAdapter:
         )
         self.node, self.uid, self.source = node, uid, copy.deepcopy(source)
         s.binding(batch_binding)
+
+    def verify_runtime(self, tool_sha256, python_sha256):
+        """Legacy default; a fixed compute subclass has an explicit v2 report."""
+        return verify_binaries(self.item, tool_sha256, python_sha256)
+
+    def attempt_schema(self):
+        return "s2-batch-attempt-v1"
 
     def launch(self):
         s.require(
@@ -1042,7 +1049,7 @@ class BatchAdapter:
             self.handle.close_pipes()
         s.require(failure_code in {None, "adapter_failure_preserved"}, "Unknown failure code.")
         report = {
-            "schema_version": "s2-batch-attempt-v1",
+            "schema_version": self.attempt_schema(),
             "specification_sha256": s.digest(self.item),
             "status": self.controller.state if self.controller else "blocked_unbound",
             "source": self.source,
@@ -1165,24 +1172,36 @@ BUNDLE_FILES = (
 )
 
 
-def review_bundle(records, expected_spec, expected_contract, expected_job_id):
+def review_bundle(records, expected_spec, expected_contract, expected_job_id, *, compute=False):
     """Integrity replay, never installed-containment attestation or admission."""
     expected_spec = validate_spec(expected_spec)
     s.require(expected_job_id == expected_spec["job_id"], "External job/spec mismatch.")
+    runtime = {
+        "python_sha256": expected_spec["python_sha256"],
+        "tools_sha256": expected_spec["tools_sha256"],
+    }
+    if compute:
+        from scripts.mvp2_s2_compute_identity import expected_compute_runtime
+
+        runtime = expected_compute_runtime(expected_spec)
     return review_portable_bundle(
         records,
         s.digest(expected_spec),
-        {
-            "python_sha256": expected_spec["python_sha256"],
-            "tools_sha256": expected_spec["tools_sha256"],
-        },
+        runtime,
         expected_contract,
         expected_job_id,
+        compute=compute,
     )
 
 
 def review_portable_bundle(
-    records, expected_spec_sha256, expected_runtime, expected_contract, expected_job_id
+    records,
+    expected_spec_sha256,
+    expected_runtime,
+    expected_contract,
+    expected_job_id,
+    *,
+    compute=False,
 ):
     """Same replay with external digest/runtime anchors, without exporting private paths.
 
@@ -1191,11 +1210,17 @@ def review_portable_bundle(
     """
     q._keys(records, BUNDLE_FILES)
     q._hash(expected_spec_sha256)
-    q._keys(expected_runtime, {"python_sha256", "tools_sha256"})
-    q._hash(expected_runtime["python_sha256"])
-    q._keys(expected_runtime["tools_sha256"], TOOLS)
-    for value in expected_runtime["tools_sha256"].values():
-        q._hash(value)
+    s.require(type(compute) is bool, "Runtime scope selector.")
+    if compute:
+        from scripts.mvp2_s2_compute_identity import review_compute_runtime
+
+        review_compute_runtime(expected_runtime)
+    else:
+        q._keys(expected_runtime, {"python_sha256", "tools_sha256"})
+        q._hash(expected_runtime["python_sha256"])
+        q._keys(expected_runtime["tools_sha256"], TOOLS)
+        for value in expected_runtime["tools_sha256"].values():
+            q._hash(value)
     s.require(
         type(expected_job_id) is str and re.fullmatch(r"[1-9][0-9]{0,19}", expected_job_id),
         "External job required.",
@@ -1218,7 +1243,7 @@ def review_portable_bundle(
         },
     )
     s.require(
-        report["schema_version"] == "s2-batch-attempt-v1"
+        report["schema_version"] == ("s2-batch-attempt-v2" if compute else "s2-batch-attempt-v1")
         and report["specification_sha256"] == expected_spec_sha256
         and all(report[k] is False for k in FLAGS)
         and report["live_containment_qualified"] is False
@@ -1242,11 +1267,14 @@ def review_portable_bundle(
             "Source count drift.",
         )
     if report["runtime"] is not None:
-        q._keys(report["runtime"], {"python_sha256", "tools_sha256"})
-        q._hash(report["runtime"]["python_sha256"])
-        q._keys(report["runtime"]["tools_sha256"], TOOLS)
-        for value in report["runtime"]["tools_sha256"].values():
-            q._hash(value)
+        if compute:
+            review_compute_runtime(report["runtime"])
+        else:
+            q._keys(report["runtime"], {"python_sha256", "tools_sha256"})
+            q._hash(report["runtime"]["python_sha256"])
+            q._keys(report["runtime"]["tools_sha256"], TOOLS)
+            for value in report["runtime"]["tools_sha256"].values():
+                q._hash(value)
         s.require(
             report["runtime"] == expected_runtime,
             "External runtime envelope mismatch.",
@@ -1331,7 +1359,7 @@ def review_portable_bundle(
             "Missing bound step accounting.",
         )
     return {
-        "schema_version": "s2-batch-bundle-review-v1",
+        "schema_version": "s2-batch-bundle-review-v2" if compute else "s2-batch-bundle-review-v1",
         "status": "integrity_replayed_not_live_qualified",
         "controller_state": state,
         "worker": worker,
@@ -1342,7 +1370,9 @@ def review_portable_bundle(
     }
 
 
-def collect_terminal_components(run, destination, expected_spec, expected_contract, terminal_text):
+def collect_terminal_components(
+    run, destination, expected_spec, expected_contract, terminal_text, *, compute=False
+):
     """Read-only original run + exclusive collection; no query, signal or retry."""
     spec = validate_spec(expected_spec)
     root = Path(run)
@@ -1378,13 +1408,19 @@ def collect_terminal_components(run, destination, expected_spec, expected_contra
         "accounting.json": accounting(terminal_text, spec["job_id"]),
         "review.json": None,
     }
-    review = review_bundle(records, spec, expected_contract, spec["job_id"])
+    review = review_bundle(records, spec, expected_contract, spec["job_id"], compute=compute)
     records["review.json"] = review
-    return pack_bundle(destination, records, spec, expected_contract, spec["job_id"])
+    return pack_bundle(
+        destination, records, spec, expected_contract, spec["job_id"], compute=compute
+    )
 
 
-def pack_bundle(destination, records, expected_spec, expected_contract, expected_job_id):
-    review = review_bundle(records, expected_spec, expected_contract, expected_job_id)
+def pack_bundle(
+    destination, records, expected_spec, expected_contract, expected_job_id, *, compute=False
+):
+    review = review_bundle(
+        records, expected_spec, expected_contract, expected_job_id, compute=compute
+    )
     s.require(records["review.json"] == review, "Unrecomputed review.")
     payloads = {key: c.encoded(records[key]) for key in BUNDLE_FILES}
     s.require(sum(map(len, payloads.values())) <= q.LIMIT - 16384, "Bundle size bound.")

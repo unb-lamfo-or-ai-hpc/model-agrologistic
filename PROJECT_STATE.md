@@ -92,6 +92,14 @@ not private evidence, credentials, local host paths or execution authority.
   separates login raw-Git provenance from compute file/runtime checks and covers
   early entry failures. Successor protocol/evidence integration is still required;
   no retry or new normal job is admitted. Preserve both consumed attempts.
+- PR #68 merged into develop at `a2501f81cd4c45916b09227a378fe1505e97e190`.
+  The [successor closed integration](docs/mvp2_s2_compute_integration.md) connects
+  sealed login provenance and both immutable predecessors to Git-free batch,
+  worker and adapter checks, role-specific v2 attempt/collection semantics and
+  bounded early-log collection. Historical readers/certificates stay unchanged.
+  This is offline software qualification, not installed NPAD qualification.
+  A fresh immutable one-shot driver and its CLI wiring remain a separate gate;
+  the new public entry denies execution and no claim/job/retry is admitted.
 - S2 remains FULLY planned and open: P2 normal audit/adverse qualification;
   P3 adverse containment audit/licensed native integration; P4 licensed audit
   and fresh h300 admission; P5 diagnostic 1/2/4/8/16-thread block audit,
@@ -119,9 +127,9 @@ not private evidence, credentials, local host paths or execution authority.
   above. Earlier independent/HOLD wording describes its initial proposal only.
   Its files are now part of develop and any later reviewed main promotion unless
   an explicit scope decision changes that promotion. No main merge is authorized
-  by this checkpoint. Next owners: agent qualifies the closed compute identity
-  correction, then a complete successor integration/admission; maintainer reviews
-  merge only after Ready. No NPAD execution is requested by this correction.
+  by this checkpoint. Next owners: agent qualifies the closed compute integration,
+  then the fresh normal-only driver/admission; maintainer reviews merge only
+  after Ready. No NPAD execution is requested by this integration gate.
   Independent terminal audit precedes every later admission.
 - Maintainer requested main/develop reconciliation only at S2 closure. On
   9 October, GitHub at develop `a4ce020` reports 111 commits ahead / 1 behind main;

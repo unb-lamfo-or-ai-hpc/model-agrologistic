@@ -43,14 +43,17 @@ Module-import/interpreter failures and abrupt termination can still lack this
 record. Preserve scheduler stdout/stderr in the next bounded collection design.
 Existing v1/v2 archive replay and the consumed PR67 driver remain unchanged.
 
-## Offline qualification and explicit unfinished integration
+## Offline qualification and successor integration
 
 Tests include actual isolated-Python missing-file failure, source tampering and
 shadow files, runtime absence/drift, no-command compute verification, redaction,
 exclusive claim failure, and a Linux disposable real-Git seal followed by
 Git-free compute verification. These do not exercise Slurm or prove containment.
 
-The next scoped integration must, before any fresh normal admission:
+The [successor closed integration](mvp2_s2_compute_integration.md) connects
+the following component boundaries. A fresh driver/CLI and admission remain
+separate; the existing consumed recovery wrapper is not upgraded in place.
+The complete path must, before any fresh normal admission:
 
 1. bind both preserved predecessors and the sealed manifest to a new immutable
    claim and source; never run altered code against consumed claims;
