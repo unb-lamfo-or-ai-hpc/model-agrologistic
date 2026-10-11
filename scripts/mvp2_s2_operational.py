@@ -631,14 +631,17 @@ def review_operation_digest(item, expected_spec_digest):
     return copy.deepcopy(item)
 
 
-def collect_normal_components(run, destination, spec, contract, terminal_text):
+def collect_normal_components(run, destination, spec, contract, terminal_text, *, compute=False):
     """Terminal read-only collection; sidecar binds interruption evidence to archive hash."""
     spec = a.validate_spec(spec)
     s.require(str(run) == spec["run"] and spec["case"] == "normal", "Collection run drift.")
     operation = review_operation(c.decode_json(a._file(Path(run) / "operation.json", 4096)), spec)
-    result = a.collect_terminal_components(run, destination, spec, contract, terminal_text)
+    options = {"compute": True} if compute else {}
+    result = a.collect_terminal_components(
+        run, destination, spec, contract, terminal_text, **options
+    )
     sidecar = {
-        "schema_version": "s2-normal-collection-v1",
+        "schema_version": "s2-normal-collection-v2" if compute else "s2-normal-collection-v1",
         "batch_sha256": result["sha256"],
         "operation": operation,
         **FLAGS,
