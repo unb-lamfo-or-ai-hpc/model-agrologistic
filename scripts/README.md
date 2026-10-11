@@ -52,6 +52,12 @@ assumptions must not be inferred from the native validated pipeline.
 
 ## HPC execution discipline
 
+The [S2-P1 first-normal runbook](../docs/mvp2_s2_first_normal.md) documents
+`npad_s2_first_normal.sh` and the narrowly scoped `mvp2_s2_first_normal.py`.
+After qualified merge, the maintainer may start one fixed normal stdlib case
+and collect it without resubmission. The generic S2 execution CLIs remain closed;
+there is no adverse/native/h300/repeat admission or license access here.
+
 - Activate the existing Conda prefix and export `PYTHONNOUSERSITE=1` before Python.
 - Keep credentials outside Git and reuse the authorized license configuration.
 - Use an explicit run index, bounded resource request and separate output root.

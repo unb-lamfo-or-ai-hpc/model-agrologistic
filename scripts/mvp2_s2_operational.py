@@ -584,6 +584,13 @@ def worker_dispatch_components(spec, expected_spec_digest, plan_path):
 
 def review_operation(item, spec):
     spec = a.validate_spec(spec)
+    s.require(spec["case"] == "normal", "Normal operation only.")
+    return review_operation_digest(item, s.digest(spec))
+
+
+def review_operation_digest(item, expected_spec_digest):
+    """Portable replay relative to an externally retained normal-spec digest."""
+    q._hash(expected_spec_digest)
     q._keys(
         item,
         {
@@ -596,9 +603,8 @@ def review_operation(item, spec):
         },
     )
     s.require(
-        spec["case"] == "normal"
-        and item["schema_version"] == "s2-normal-operation-v1"
-        and item["specification_sha256"] == s.digest(spec)
+        item["schema_version"] == "s2-normal-operation-v1"
+        and item["specification_sha256"] == expected_spec_digest
         and item["reason"]
         in {
             None,

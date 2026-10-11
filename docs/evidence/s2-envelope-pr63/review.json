@@ -1,0 +1,15 @@
+{
+  "batch_execution_admitted": false,
+  "live_isolation_proven": false,
+  "live_output_grammar_qualified": false,
+  "native_miniature_admitted": false,
+  "normal_execution_admitted": false,
+  "normal_job_released": false,
+  "production_admitted": false,
+  "receipt_sha256": "b81b4490a74cd1bcc7695dbd5c7e70ffa72fbccc30f5ddebbf3655bda2cde751",
+  "repeats_admitted": false,
+  "schema_version": "s2-envelope-review-v1",
+  "source_commit": "7532beea7ffa429ba9f34bfd091bd60069efc4f8",
+  "status": "observed_not_admitted",
+  "synthetic_execution_admitted": false
+}

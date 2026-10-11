@@ -745,9 +745,13 @@ class BatchAdapter:
         self.server = self.server_factory(self.root / "ipc.sock")
         c.write_once(
             self.root / "launch-intent.json",
-            {"argv": worker_argv(self.item), "specification_sha256": s.digest(self.item), **FLAGS},
+            {"argv": self.worker_command(), "specification_sha256": s.digest(self.item), **FLAGS},
         )
-        self.handle = self.transport.spawn(worker_argv(self.item))
+        self.handle = self.transport.spawn(self.worker_command())
+
+    def worker_command(self):
+        """Closed default; a separately scoped wrapper supplies its fixed leaf."""
+        return worker_argv(self.item)
 
     def _members(self):
         pids = q.parse_listpids(
@@ -1163,10 +1167,35 @@ BUNDLE_FILES = (
 
 def review_bundle(records, expected_spec, expected_contract, expected_job_id):
     """Integrity replay, never installed-containment attestation or admission."""
-    q._keys(records, BUNDLE_FILES)
     expected_spec = validate_spec(expected_spec)
-    expected_spec_sha256 = s.digest(expected_spec)
     s.require(expected_job_id == expected_spec["job_id"], "External job/spec mismatch.")
+    return review_portable_bundle(
+        records,
+        s.digest(expected_spec),
+        {
+            "python_sha256": expected_spec["python_sha256"],
+            "tools_sha256": expected_spec["tools_sha256"],
+        },
+        expected_contract,
+        expected_job_id,
+    )
+
+
+def review_portable_bundle(
+    records, expected_spec_sha256, expected_runtime, expected_contract, expected_job_id
+):
+    """Same replay with external digest/runtime anchors, without exporting private paths.
+
+    Anchors must come from the independently retained submission receipt. This
+    proves integrity relative to those anchors, not authenticity or live isolation.
+    """
+    q._keys(records, BUNDLE_FILES)
+    q._hash(expected_spec_sha256)
+    q._keys(expected_runtime, {"python_sha256", "tools_sha256"})
+    q._hash(expected_runtime["python_sha256"])
+    q._keys(expected_runtime["tools_sha256"], TOOLS)
+    for value in expected_runtime["tools_sha256"].values():
+        q._hash(value)
     s.require(
         type(expected_job_id) is str and re.fullmatch(r"[1-9][0-9]{0,19}", expected_job_id),
         "External job required.",
@@ -1219,11 +1248,7 @@ def review_bundle(records, expected_spec, expected_contract, expected_job_id):
         for value in report["runtime"]["tools_sha256"].values():
             q._hash(value)
         s.require(
-            report["runtime"]
-            == {
-                "python_sha256": expected_spec["python_sha256"],
-                "tools_sha256": expected_spec["tools_sha256"],
-            },
+            report["runtime"] == expected_runtime,
             "External runtime envelope mismatch.",
         )
     if expected_contract is None:
@@ -1448,6 +1473,14 @@ def validate_portable_snapshot(value):
 
 
 def audit_bundle(path, expected_sha256, expected_spec, expected_contract, expected_job_id):
+    records = read_bundle(path, expected_sha256)
+    review = review_bundle(records, expected_spec, expected_contract, expected_job_id)
+    s.require(records["review.json"] == review, "Bundle review drift.")
+    return review
+
+
+def read_bundle(path, expected_sha256):
+    """Strict bounded portable reader; no extraction and no execution."""
     q._hash(expected_sha256)
     raw = _file(path, q.LIMIT)
     s.require(hashlib.sha256(raw).hexdigest() == expected_sha256, "Bundle checksum drift.")
@@ -1468,9 +1501,8 @@ def audit_bundle(path, expected_sha256, expected_spec, expected_contract, expect
             records[member.name] = c.decode_json(archive.extractfile(member).read())
             end = member.offset_data + ((member.size + 511) // 512) * 512
     s.require(not any(unpacked[end:]), "Bundle trailing data.")
-    review = review_bundle(records, expected_spec, expected_contract, expected_job_id)
-    s.require(records["review.json"] == review, "Bundle review drift.")
-    return review
+    q._keys(records, BUNDLE_FILES)
+    return records
 
 
 if __name__ == "__main__":

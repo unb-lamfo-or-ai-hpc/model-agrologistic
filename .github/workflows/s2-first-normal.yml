@@ -1,0 +1,40 @@
+name: S2 first-normal offline qualification
+on:
+  pull_request:
+    branches: [develop]
+permissions:
+  contents: read
+jobs:
+  normal-wrapper:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      PYTHONNOUSERSITE: '1'
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - run: python -m pip install -e '.[dev]'
+      - name: Syntax without executing the NPAD driver
+        run: bash -n scripts/npad_s2_first_normal.sh
+      - name: Fake-effect and local portable qualification only
+        run: |
+          python -m pytest -p no:cacheprovider tests/test_mvp2_s2_first_normal.py tests/test_mvp2_s2_batch_adapter.py tests/test_mvp2_s2_operational.py -q --junitxml=/tmp/s2-normal-regression.xml
+          python - <<'PY'
+          import xml.etree.ElementTree as ET
+          cases = ET.parse('/tmp/s2-normal-regression.xml').getroot().findall('.//testcase')
+          assert len(cases) == 243
+          assert not any(x.find('failure') is not None or x.find('error') is not None for x in cases)
+          skips = [x for x in cases if x.find('skipped') is not None]
+          assert len(skips) == 2 and {x.get('name') for x in skips} == {
+              'test_probe_cli_platform_failure_still_packages_negative_evidence',
+              'test_real_non_linux_start_has_no_effect',
+          }
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: s2-first-normal-offline-regression
+          path: /tmp/s2-normal-regression.xml
