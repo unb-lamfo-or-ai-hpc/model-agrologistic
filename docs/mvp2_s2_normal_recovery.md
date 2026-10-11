@@ -1,5 +1,12 @@
 # S2-P1 continuation — separately qualified normal observation
 
+**Consumed protocol:** PR #67 merged and job 2207181 failed before shared batch
+entry. [Audited evidence and supplemental stderr](evidence/s2-normal-recovery-2207181/README.md)
+identify absent login Git on the batch host. The start instructions below are
+historical, not a new admission. Preserve both claims; do not substitute a newer
+source. [Closed identity correction](mvp2_s2_compute_identity.md) and complete
+successor integration are required before another separately admitted attempt.
+
 ## Why this gate exists
 
 PR #66 merged into develop at `f51688b9692058e2d0a639125b65fb5f1ff805ac`.

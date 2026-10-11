@@ -7,6 +7,7 @@ import copy
 import gzip
 import hashlib
 import io
+import json
 import secrets
 import sys
 import tarfile
@@ -313,10 +314,36 @@ class RecoveryAdapter(n.NormalAdapter):
 
 
 def batch(commit):
-    n.require_host()
     started = time.monotonic()
-    claim, envelope, intent = load_claim(commit)
-    (claim / "batch-claim").mkdir(mode=0o700, exist_ok=False)
+    phase = "require_host"
+    try:
+        n.require_host()
+        phase = "load_claim"
+        claim, envelope, intent = load_claim(commit)
+        phase = "claim_batch"
+        (claim / "batch-claim").mkdir(mode=0o700, exist_ok=False)
+    except (Exception, KeyboardInterrupt) as error:
+        # No trusted claim exists yet. Emit a bounded stderr observation, not a
+        # fabricated terminal receipt or a write to an unvalidated claim path.
+        known = isinstance(error, (OSError, ValueError, KeyboardInterrupt))
+        detail = n.batch_diagnostic("preflight", error) if known else None
+        print(
+            "S2_RECOVERY_ENTRY_DIAGNOSTIC="
+            + json.dumps(
+                {
+                    "schema_version": "s2-recovery-entry-diagnostic-v1",
+                    "phase": phase,
+                    "error_kind": detail["error_kind"] if detail else "unexpected_error",
+                    "site": detail["site"] if detail else None,
+                    "status": "blocked_before_shared_batch",
+                    **n.FUTURE,
+                },
+                sort_keys=True,
+            ),
+            file=sys.stderr,
+            flush=True,
+        )
+        raise SystemExit(2) from None
     return n.batch_components(
         commit,
         claim,

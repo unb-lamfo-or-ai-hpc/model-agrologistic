@@ -46,6 +46,8 @@ jobs:
           assert len(cases) == 66
           assert not any(x.find(k) is not None for x in cases for k in ('failure', 'error', 'skipped'))
           PY
+      - name: Closed compute identity and early-entry failures, no scheduler effects
+        run: python -m pytest -p no:cacheprovider tests/test_mvp2_s2_compute_identity.py -q --junitxml=/tmp/s2-compute-identity.xml
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -54,3 +56,4 @@ jobs:
             /tmp/s2-normal-regression.xml
             /tmp/s2-normal-diagnostics.xml
             /tmp/s2-normal-recovery.xml
+            /tmp/s2-compute-identity.xml

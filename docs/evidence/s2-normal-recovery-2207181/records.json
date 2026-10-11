@@ -1,0 +1,142 @@
+{
+  "lineage.json": {
+    "adverse_execution_admitted": false,
+    "job_id": "2207181",
+    "live_containment_qualified": false,
+    "native_miniature_admitted": false,
+    "normal_archive_sha256": "0f5da97c69a742d4392911dc7238d127e12ca7be4e746d456ac417f6efb6a1ed",
+    "predecessor": {
+      "archive_sha256": "03ee4d87bf69994fc4f0401e206a67109539ad2dfe0770cd3246b7415e952007",
+      "job_id": "2207167",
+      "source_commit": "12691638cd85d5218725bf704dc6b9452b1ca90c"
+    },
+    "production_admitted": false,
+    "repeats_admitted": false,
+    "schema_version": "s2-normal-recovery-lineage-v1",
+    "scope": "normal_recovery_only",
+    "source_commit": "c74f316e30a1b034368ce15b4877d03f31c5d09b"
+  },
+  "normal_records": {
+    "accounting.json": {
+      "2207181": {
+        "elapsed_seconds": 2,
+        "exit_code": "1:0",
+        "state": "FAILED"
+      },
+      "2207181.batch": {
+        "elapsed_seconds": 2,
+        "exit_code": "1:0",
+        "state": "FAILED"
+      },
+      "2207181.extern": {
+        "elapsed_seconds": 2,
+        "exit_code": "0:0",
+        "state": "COMPLETED"
+      }
+    },
+    "anchor.json": {
+      "adverse_execution_admitted": false,
+      "baseline_archive_sha256": "e86c703eb59336230ed9c3af6efc4fd602f9acf2b702ddbbb4553c650346b45a",
+      "campaign": {
+        "account": "sxdsouza",
+        "allocated_cpu_seconds_budget": 1440,
+        "allocation_cpus": 2,
+        "allocation_memory_mib": 2048,
+        "allocation_wall_seconds": 720,
+        "automatic_retry": false,
+        "case": "normal",
+        "maximum_attempts": 1,
+        "maximum_jobs": 1,
+        "maximum_worker_steps": 1,
+        "parent_stop_seconds": 660,
+        "partition": "intel-256",
+        "requeue": false,
+        "subsequent_cases_admitted": false
+      },
+      "contract": null,
+      "envelope_sha256": "fb24977b796ef37436711743d6660ac59fca384553471440605e20b51b2f4e13",
+      "job_id": "2207181",
+      "live_containment_qualified": false,
+      "native_miniature_admitted": false,
+      "production_admitted": false,
+      "repeats_admitted": false,
+      "runtime": {
+        "python_sha256": "3fbc618126899d87282c1c87a0015a536cb8bb5afd87578f14fafead3d6ca253",
+        "tools_sha256": {
+          "git": "7a7b726b3975599df7b5d835d3ff4decd8b00a9bf44e1420f1a7223305eca7b1",
+          "sacct": "eff45b73a404bec1ff1619a9039ac54e0b16984280517006235cdc27e9d98f14",
+          "scancel": "a48923f797567fdd42e722f139087343e2d0c9e5c0021e33d32521d9b61d43b6",
+          "scontrol": "ed1c90aee3eaae427e5c2da3ca6cc69769410ed527c152c7d06fa1002c33c8db",
+          "srun": "08ce1b429a831d08064ba198ac680efb38cf269779a03f43e050ef71584fd114"
+        }
+      },
+      "sbatch_sha256": "3705d8097d3957ca071019436fc8e78b0ea72ba612fb47e3f89f54c44b601073",
+      "schema_version": "s2-first-normal-anchor-v1",
+      "scope": "first_normal_only",
+      "source": {
+        "source_sha256": "97fdfd4a67e12bc9174d5fc1dc53d8f672934316bc041616888d18271aece868",
+        "tracked_count": 487,
+        "worker_sha256": "e97d15965fd16936d7e5d5a1bc0abb1fe38fb82dedb8ae599c42cfe9136c4bfe"
+      },
+      "source_commit": "c74f316e30a1b034368ce15b4877d03f31c5d09b",
+      "specification_sha256": "33e152e16824f8e3b6f8b44b7879cfa35cca02b3bc2888716443d58379b37598"
+    },
+    "review.json": {
+      "adverse_execution_admitted": false,
+      "batch_status": "missing_terminal_batch_receipt",
+      "controller_state": "not_replayed",
+      "job_id": "2207181",
+      "live_containment_qualified": false,
+      "native_miniature_admitted": false,
+      "production_admitted": false,
+      "repeats_admitted": false,
+      "schema_version": "s2-first-normal-review-v1",
+      "source_commit": "c74f316e30a1b034368ce15b4877d03f31c5d09b",
+      "specification_sha256": "33e152e16824f8e3b6f8b44b7879cfa35cca02b3bc2888716443d58379b37598",
+      "status": "integrity_replayed_not_live_qualified",
+      "worker_outcome": "unknown"
+    },
+    "wrapper.json": {
+      "adverse_execution_admitted": false,
+      "live_containment_qualified": false,
+      "native_miniature_admitted": false,
+      "production_admitted": false,
+      "repeats_admitted": false,
+      "schema_version": "s2-first-normal-batch-v1",
+      "source_commit": "c74f316e30a1b034368ce15b4877d03f31c5d09b",
+      "status": "missing_terminal_batch_receipt"
+    }
+  },
+  "review.json": {
+    "adverse_execution_admitted": false,
+    "job_id": "2207181",
+    "live_containment_qualified": false,
+    "native_miniature_admitted": false,
+    "normal": {
+      "adverse_execution_admitted": false,
+      "batch_status": "missing_terminal_batch_receipt",
+      "controller_state": "not_replayed",
+      "job_id": "2207181",
+      "live_containment_qualified": false,
+      "native_miniature_admitted": false,
+      "production_admitted": false,
+      "repeats_admitted": false,
+      "schema_version": "s2-first-normal-review-v1",
+      "source_commit": "c74f316e30a1b034368ce15b4877d03f31c5d09b",
+      "specification_sha256": "33e152e16824f8e3b6f8b44b7879cfa35cca02b3bc2888716443d58379b37598",
+      "status": "integrity_replayed_not_live_qualified",
+      "worker_outcome": "unknown"
+    },
+    "predecessor": {
+      "archive_sha256": "03ee4d87bf69994fc4f0401e206a67109539ad2dfe0770cd3246b7415e952007",
+      "job_id": "2207167",
+      "source_commit": "12691638cd85d5218725bf704dc6b9452b1ca90c"
+    },
+    "production_admitted": false,
+    "repeats_admitted": false,
+    "schema_version": "s2-normal-recovery-review-v1",
+    "scope": "normal_recovery_only",
+    "source_commit": "c74f316e30a1b034368ce15b4877d03f31c5d09b",
+    "status": "integrity_replayed_not_live_qualified"
+  }
+}
