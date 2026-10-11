@@ -54,7 +54,7 @@ jobs:
           python - <<'PY'
           import xml.etree.ElementTree as ET
           cases = ET.parse('/tmp/s2-compute-integration.xml').getroot().findall('.//testcase')
-          assert len(cases) == 51
+          assert len(cases) == 55
           assert not any(x.find(k) is not None for x in cases for k in ('failure', 'error', 'skipped'))
           PY
       - uses: actions/upload-artifact@v4
