@@ -1,6 +1,6 @@
 # Model Agrologistic — MVP 2.0 checkpoint
 
-Updated 10 October 2026. This public checkpoint contains scope and provenance,
+Updated 11 October 2026. This public checkpoint contains scope and provenance,
 not private evidence, credentials, local host paths or execution authority.
 
 - MVP1 `v0.2.0-mvp1` stays frozen. S0 and adopted S1 scope are closed.
@@ -49,13 +49,31 @@ not private evidence, credentials, local host paths or execution authority.
   [Public original records](docs/evidence/s2-envelope-pr63/README.md) retain
   the old source identity. Maintainer reports 169 passed, one intentional skip,
   exit zero and preserved run; XML/private envelope were not transferred.
-- Current S2-P1: qualify the [first-normal wrapper](docs/mvp2_s2_first_normal.md),
-  fixed descriptors and strict live pre-release grammar checks, campaign-wide
-  one-shot claim, latched interruptions and public partial/negative replay.
-  The only intended new release after qualified merge and human CLI is one
-  bounded normal stdlib synthetic attempt, not adverse cases, native or h300.
-  No NPAD command is executed while preparing this software PR. Generic CLIs
-  remain closed. The original private envelope/claims are not exported/reused.
+- PR #65 merged first at `b7506e0efbc520411d80d2394d8b7d06a27d3dc9`,
+  then PR #64 at `60c43d7a52389eee2822a08701801792a9b79548`, following
+  explicit maintainer authorization. Both develop push Quality runs passed.
+  Frozen first-normal source remains `12691638cd85d5218725bf704dc6b9452b1ca90c`.
+- First-normal synthetic job 2207167 failed, root/batch exit 2:0 after two seconds.
+  Independently verified archive SHA-256:
+  `03ee4d87bf69994fc4f0401e206a67109539ad2dfe0770cd3246b7415e952007`.
+  [Public semantic records](docs/evidence/s2-first-normal-2207167/records.json)
+  reproduce the original v1 review: integrity_replayed_not_live_qualified,
+  batch blocked_before_launch, controller not_replayed, worker outcome unknown,
+  null worker contract and no inner worker bundle. This is accepted integrity
+  of a negative operational observation, not a qualified normal test.
+  Reported NPAD regression: 241 passed/two intentional platform skips; XML
+  not transferred. Subsequent maintainer-supplied log inspection reports empty
+  stderr, stdout with only the blocked status, and the expected frozen batch
+  command. Those raw logs were not transferred or committed independently.
+  The swallowed pre-launch exception's cause/phase cannot be reconstructed.
+- Current scoped correction: versioned [normal batch diagnostics](docs/mvp2_s2_first_normal.md)
+  record fixed phases/error categories and allowlisted module/line locations,
+  never exception messages or raw scheduler responses. Legacy v1 replay stays
+  unchanged; no historical receipt is upgraded or given an invented diagnosis.
+  Qualify offline privacy, phase, replay and negative-scope tests plus exact-head
+  CI before Ready. This correction does not admit a new submission or retry.
+  Preserve original source, run, claim and collection; do not patch the consumed
+  NPAD checkout. A separately reviewed fresh-attempt protocol is still needed.
 - S2 remains FULLY planned and open: P2 normal audit/adverse qualification;
   P3 adverse containment audit/licensed native integration; P4 licensed audit
   and fresh h300 admission; P5 diagnostic 1/2/4/8/16-thread block audit,
@@ -79,9 +97,12 @@ not private evidence, credentials, local host paths or execution authority.
   December 2026 is a target, not a commitment: the base planning window is
   January 2027 if sequential containment/experimental reviews slip. Do not
   reduce approved experiments to claim the editorial target was met.
-- PR #64 remains independent on `docs/agrologistic-research-memory`, head
-  `dbf7262966f848f395a51f009dfc03efa5feb18b`, pending destination decision.
-  It is not incorporated into this gate or authorized for merge.
+- PR #64 portable memory is integrated into develop by the authorized merge
+  above. Earlier independent/HOLD wording describes its initial proposal only.
+  Its files are now part of develop and any later reviewed main promotion unless
+  an explicit scope decision changes that promotion. No main merge is authorized
+  by this checkpoint. Next owners: agent qualifies diagnostics/checkpoint PR;
+  maintainer reviews/authorizes merge; fresh NPAD admission remains a later gate.
 - Maintainer requested main/develop reconciliation only at S2 closure. On
   9 October, GitHub at develop `a4ce020` reports 111 commits ahead / 1 behind main;
   this is a dated UI observation, not a frozen final comparison. Recheck both
