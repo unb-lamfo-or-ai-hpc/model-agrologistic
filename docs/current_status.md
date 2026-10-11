@@ -1,7 +1,7 @@
 # Dated research status: 11 October 2026
 
 This is a derived handoff snapshot, not a new certificate. Reviewed integration
-base: develop `f51688b9692058e2d0a639125b65fb5f1ff805ac` (PR #66 merged).
+base: develop `fe56d465720d396ebfb2c7f202fb0482db0d91ad` (PR #67 merged).
 Read [PROJECT_STATE.md](../PROJECT_STATE.md), the [roadmap](mvp2_hpc_roadmap.md)
 and linked evidence for full history. Refresh live PR state before continuing;
 open PR content is not integrated code. The [portable memory](research_context.md)
@@ -37,7 +37,7 @@ capacity-pass gap; acceptance retains the inherited hierarchical allowances.
 
 ## Current open work: S2
 
-PRs #53–#66 successively qualify thread parameters, diagnostic design, runtime
+PRs #53–#67 successively qualify thread parameters, diagnostic design, runtime
 controls, native-worker/evidence seams, containment observations, numeric Slurm
 step contracts, controller, batch adapter and operational protocol. Software
 component coverage is not live operational qualification. S2 remains OPEN.
@@ -52,17 +52,23 @@ Integrity replay passed, not normal/live containment qualification. Maintainer
 log inspection also reports no captured error detail; the root cause is unknown.
 PR #66's bounded phase/error/code-location diagnostics are integrated, not a
 demonstrated repair or live qualification. The [normal continuation gate](mvp2_s2_normal_recovery.md)
-prepares one fresh independently claimed observation, preserving the old attempt.
+admitted one fresh independently claimed observation, preserving the old attempt.
+That recovery, job 2207181, failed 1:0 after two seconds. Its independently
+[audited carrier](evidence/s2-normal-recovery-2207181/README.md) retains a missing
+batch receipt. Supplemental stderr identifies absent `/usr/bin/git` during the
+batch predecessor recheck. The [compute identity correction](mvp2_s2_compute_identity.md)
+qualifies login/compute separation and early diagnostics as closed components;
+successor runtime/evidence/claim integration remains mandatory before another job.
 
 | Next dependency | Owner | Required decision/evidence |
 | --- | --- | --- |
-| Fresh normal-only attempt protocol | Agent qualifies PR; maintainer reviews merge and executes CLI | Separate immutable claim/source and predecessor binding; offline tests, exact-head CI and explicit admission before one new observation |
+| Compute identity correction, then successor integration | Agent qualifies code/CI; maintainer reviews merge | Git-free compute byte verification, role-specific runtime/evidence, preserved predecessors, new admission only after complete integration |
 | Normal evidence and adverse release | Later scoped PR | Independently audit actual normal outcome first; current failure does not release adverse cases |
 | Native miniature and h300 diagnostic block | Later independent gates | Fresh admission and original evidence; not authorized by this table |
 
-Until the continuation gate is qualified, authorized and merged, its CLI is not
-admitted. Adverse cases, native miniature, h300 optimization and repeats remain CLOSED. Do not rerun or
-patch the consumed PR65 attempt. Remaining PR count is
+The PR67 claim is consumed. No fresh normal CLI is admitted by the correction.
+Adverse cases, native miniature, h300 optimization and repeats remain CLOSED.
+Do not rerun or patch either consumed PR65/PR67 attempt. Remaining PR count is
 conditional on actual live evidence, not a fixed campaign quota.
 
 ## Subsequent scope and pending decisions
