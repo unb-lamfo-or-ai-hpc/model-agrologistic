@@ -2,7 +2,7 @@
 
 ## Authority and scope
 
-Reconciled 9 October 2026 after PR #56 integration and the maintainer's revised
+Reconciled 10 October 2026 after PR #63 integration and the maintainer's revised
 scope. S1-C followed PRs #44, #47, #48, #49, #50 and #51. This plan supersedes the earlier roadmap's
 mandatory solver campaign, decomposition implementation and calendar estimates.
 It does not rewrite archived results. The [S1 closure](mvp2_sprint1_closure.md)
@@ -189,13 +189,35 @@ hierarchy acceptance separately. A smaller solved control does not meet h215.
 Negative closure describes tested profiles and resources, not "nothing else can
 work". Planning estimate: two or three scoped PRs, not a solver campaign quota.
 
-## S5 — h500 empirical frontier, after S2/SCIP review
+## Post-S2 h400 selection — one separately qualified attempt
+
+The maintainer retains the full S2 h300 thread experiment. Its bounded results
+can identify a candidate, not prove that h300 rankings transfer to direct-enabled
+h400. Compare observed completed hierarchy work, incumbent/bound progress,
+validation, time, memory, CPU use and allocated cost; disclose censoring and
+shared-node/order effects. Do not rank missing incumbents as poor objective
+values or censored windows as completed-work speedups. Keep the accepted S1
+h400 control as a separate reference. Freeze one justified profile before a
+new attempt; mathematical/tolerance or scientific acceptance changes require
+authorization. No new h400 execution is admitted by this plan.
+
+Predefine h500 admission from the new h400 gate: independent original-unit
+validation, completed hierarchy within its declared quality/resource/time
+contract, complete/adverse evidence audit and a separately justified h500
+input/build/headroom decision. A feasible incumbent alone or scheduler exit
+zero does not satisfy that success gate. If h400 fails, preserve the outcome
+and propose an explicit resource/hypothesis decision; do not silently drop or
+admit h500. SCIP success is not an h500 prerequisite. These criteria are a
+planning proposal for later researcher approval, not a changed scientific gate.
+
+## S5 — h500 empirical frontier, conditional on h400/resources
 
 Prioritize h500 with direct arcs to preserve the accepted S1-B h400 policy;
 verify nested population and all other input/model identities. Separate input-only
 and construction/resource qualification from one admitted bounded baseline and
-evidence review. Initially retain the h400 four-thread profile and eight-hour
-optimization budget if resource-admissible; h300 thread screening does not
+evidence review. Use the selected/audited post-S2 h400 profile as a candidate;
+the four-thread S1 control is not an automatically selected new winner.
+Preserve the approved budget unless separately authorized; h300 screening does not
 automatically transfer its best setting to h500. Do not change time, memory and
 threads together or globally relax size guards. No h600--h1000 commitment.
 Difficulty need not increase monotonically with population. Planning estimate:
@@ -207,7 +229,16 @@ accepted instance is not a universal solver/model limit. Retain timeout, partial
 hierarchy, OOM and no-incumbent outcomes without imputing costs/service. A
 documented sufficiency decision may close S5 without every candidate size.
 
-## S6 — editorial synthesis and reproducibility package
+## S6-A — scientific consolidation of MVP2
+
+MVP2 is the primary experimental cohort. Integrate its complete, partial and
+negative results, original validations, comparison limitations and resource
+interpretation. Use MVP1 only where needed for historical context/complementary
+evidence, never as a substitute for unperformed MVP2 work. Scientific success
+does not require every solver/size to succeed; it requires predeclared questions,
+adequate traces and defensible interpretations.
+
+## S6-B — MVP2 manuscript and reproducibility package
 
 Current article/presentation stay unchanged until the editorial gate. Deepen the
 computational/HPC discussion around dimensions/nonzeros, phase-specific LP/MIP
@@ -239,11 +270,16 @@ Release, deposit, preprint and submission require their own later decisions.
 
 ## PR and execution boundaries
 
-Counts are scope boundaries, not quotas/dates: after #56, S2 has an estimated
-four gates (closed integration, licensed miniatures, h300 admission, evidence/
-decision), with narrower splits only when justified. S3/S4 are cancelled; bounded
-existing-SCIP requalification precedes h500; S6 editorial synthesis stays separate
-from packaging. Do not launch follow-on fronts inside the closed integration PR.
+Counts are scope boundaries, not quotas/dates. The earlier after-#56 four-gate
+estimate is superseded by observed installed-containment prerequisites.
+After #63, retain five planned S2 PR boundaries: P1 first-normal wrapper/grammar;
+P2 normal audit/adverse qualification; P3 adverse audit/licensed native integration;
+P4 licensed audit/fresh h300 admission; P5 diagnostic evidence/configuration decision.
+Scoped corrections are possible when actual evidence requires them. No gate
+automatically admits another experiment or repetition. S3/S4 remain cancelled;
+new h400 selection, bounded existing-SCIP h215 and conditional h500 remain planned.
+S6-A scientific synthesis and S6-B editorial/packaging are distinct deliverables.
+Do not launch follow-on fronts inside the first-normal software PR.
 Do not schedule speculative campaigns to fill sprint numbers.
 
 After #57, closed integration evidence/resource replay is software-qualified.
@@ -306,6 +342,34 @@ attempt, fixes only the disposable test endpoint and versions the read-only
 driver with phase/location receipts. It does not add a research campaign or
 admit synthetic/native/h300 execution. S2 remains open; the next scientific
 decision still requires independently audited installed-envelope evidence.
+
+PR #63 merged at `0dccbfd5d25c4db97a74baf5da3766d7433c82a1`.
+Its [read-only envelope evidence](evidence/s2-envelope-pr63/README.md) is now
+independently audited: observed_not_admitted, not effective live containment.
+The [S2-P1 first-normal wrapper](mvp2_s2_first_normal.md) is the next bounded
+software release. Live strict job/step checks precede phase release;
+unknown responses block rather than widen the grammar. One normal observation
+must be independently reviewed before adverse release. PR #64 stays independent
+and has no merge authorization. Manuscript/coauthor certificates remain frozen.
+
+### Dated scheduling assessment, not an execution calendar
+
+Using 10 October as reference, allow approximately 2--3 weeks for remaining
+S2 operational gates/diagnostic audit, 1--2 weeks for the new h400 gate and
+2--3 weeks for evidence-led SCIP qualification/attempt/review. h500 needs roughly
+1--2 weeks after h400 success/resource admission, and can overlap SCIP if
+resources and review capacity permit. These are engineering/review allowances,
+not queue-delay or success predictions. S6-A evidence inventory and S6-B
+structure/coauthor-version identification can proceed in parallel without
+editing the frozen article before its editorial gate. Final synthesis/review/
+packaging needs approximately 3--4 weeks after decisive evidence is available.
+
+An accelerated December submission remains possible if gates and human reviews
+complete promptly. The base forecast is January 2027 (approximately 18--29
+January), with further slippage possible after adverse results or constraints.
+Reassess from observed dates, not by removing approved activities. Only P1's
+0.4 allocated core-hour synthetic ceiling is currently actionable; larger
+resource forecasts require the respective qualified manifests/headroom.
 
 ## S2 closure — deferred protected-main reconciliation
 

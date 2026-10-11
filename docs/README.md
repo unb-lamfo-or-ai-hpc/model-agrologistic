@@ -57,6 +57,11 @@ its 10% gap target and 28,800-second budget do not rewrite the older certificate
 
 ## Historical development and reporting tools
 
+Current S2-P1: [first-normal wrapper and maintainer runbook](mvp2_s2_first_normal.md),
+with [audited PR63 read-only envelope](evidence/s2-envelope-pr63/README.md).
+Only one separately released normal synthetic attempt is proposed; no native,
+production, adverse case or repeat follows automatically. PR #64 stays separate.
+
 The following documents retain earlier experiments and decisions. Observations
 belong to their original configurations, not automatically to v0.2. The earlier
 emergency-first hierarchy differs from the current service-first policy.
