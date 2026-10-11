@@ -72,6 +72,10 @@ It must not reuse either consumed claim or run altered code in an old checkout.
 Only after review, authorized merge and explicit human CLI may a fresh normal
 observation run. Independent terminal audit precedes adverse/native/h300 gates.
 
+Successor: [one-shot normal operational gate](mvp2_s2_compute_normal.md).
+The integration itself remains a closed component. The successor supplies the
+separately reviewed public driver; old standalone entry points are not reopened.
+
 No scientific parameter, model, manifest, solver, license or resource request
 changes here. S2 remains open, including the h300 1/2/4/8/16-thread contrast.
 S3/S4 remain cancelled. h400, existing SCIP/h215, conditional h500 and S6 retain

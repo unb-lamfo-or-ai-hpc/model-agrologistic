@@ -166,6 +166,16 @@ authorized merge remain required before new normal admission. Its public entry
 still denies execution. Both consumed attempts remain immutable. This does not
 cancel or release any scientific contrast; S2 remains open.
 
+PR #69 merged at `d6ab499c634bd03432f968c76df61d5cc521b862`.
+The next [one-shot normal operational gate](mvp2_s2_compute_normal.md) implements
+that actual driver and its portable evidence handoff. It binds a pre-submission
+proposal to the acknowledged job, checks source/history without Git on compute,
+and resumes collection without resubmission. After its own qualified/authorized
+merge, only the maintainer's frozen normal-only CLI is admitted. No successful
+normal result is assumed and no adverse/native/h300 or repeat is released.
+The full S2 scientific scope, later experiments and editorial priorities remain
+unchanged; this is an operational prerequisite, not a new experimental campaign.
+
 Historical PR66/67 sequence: PR #66's diagnostic correction is integrated. The failed normal job 2207167
 remains negative, with unknown cause and no live qualification. The next
 [normal continuation gate](mvp2_s2_normal_recovery.md) prepares one separately
