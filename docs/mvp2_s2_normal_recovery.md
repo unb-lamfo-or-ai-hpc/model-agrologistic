@@ -26,7 +26,8 @@ The consumed `.mvp2-s2-first-normal-v1` is never edited, deleted, reset or run
 again. Before creating a new claim, the wrapper reads its eight bounded immutable
 records, binds its original source/job/archive to committed public semantic
 records, independently replays the old archive, and checks the old checkout's
-raw HEAD bytes. It hashes the eight records before/after observation. Missing
+raw HEAD bytes, rechecking executable hashes before invoking that Git reader.
+It hashes the eight records before/after observation. Missing
 files, source/runtime-baseline drift or inconsistent lineage stop advancement.
 The old entry is never executed; no old job is queried or cancelled. An absent
 old worker directory is not repaired: that failure occurred before its creation.
@@ -65,7 +66,7 @@ qualification covers one effect, unknown acknowledgement, original-byte
 preservation, lineage/release drift, old-run reuse prevention, worker identity,
 scope denial, bounded diagnostics and malformed nested archives. Linux CI also
 qualifies real local pipe/peer-credential paths, not Slurm containment. The driver
-requires exactly 344 focused cases: 342 passed and two intentional non-Linux-only
+requires exactly 345 focused cases: 343 passed and two intentional non-Linux-only
 negative CLI skips on Linux. Other counts/skips/failures block submission.
 
 ## Maintainer sequence — only after this gate is qualified and merged
