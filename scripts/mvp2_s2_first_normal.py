@@ -64,6 +64,7 @@ DIAGNOSTIC_ERRORS = frozenset(
 DIAGNOSTIC_MODULES = frozenset(
     {
         "mvp2_s2_first_normal",
+        "mvp2_s2_normal_recovery",
         "mvp2_s2_batch_adapter",
         "mvp2_s2_operational",
         "mvp2_s2_slurm_step",
@@ -285,14 +286,25 @@ def recheck(envelope):
     )
 
 
-def submit_components(claim, envelope, commit, intent, latch, submit):
+def submit_components(
+    claim,
+    envelope,
+    commit,
+    intent,
+    latch,
+    submit,
+    *,
+    descriptor=None,
+    script_builder=None,
+    scope="first_normal_only",
+):
     """One callback, durable intent first. Unknown acknowledgement consumes attempt."""
-    script = batch_script(envelope, commit)
+    script = (script_builder or batch_script)(envelope, commit)
     with (claim / "batch.sh").open("xb") as stream:
         stream.write(script)
         stream.flush()
         os.fsync(stream.fileno())
-    argv = submit_argv(envelope, claim)
+    argv = (descriptor or submit_argv)(envelope, claim)
     c.write_once(
         claim / "submission-intent.json",
         {
@@ -300,7 +312,7 @@ def submit_components(claim, envelope, commit, intent, latch, submit):
             "script_sha256": hashlib.sha256(script).hexdigest(),
             "source_commit": commit,
             "envelope_sha256": s.digest(envelope),
-            "scope": "first_normal_only",
+            "scope": scope,
             **FUTURE,
         },
     )
@@ -403,13 +415,16 @@ class NormalTransport(a.RealTransport):
 
     def spawn(self, argv):
         s.require(
-            tuple(argv) == normal_worker_argv(self.item) and not self.launched,
+            tuple(argv) == self.worker_command() and not self.launched,
             "Unreviewed/repeated normal leaf.",
         )
         self._bounded({})
         self.launched = True
         self.preflight_deadline = None
         return self._open(tuple(argv))
+
+    def worker_command(self):
+        return normal_worker_argv(self.item)
 
 
 class NormalAdapter(a.BatchAdapter):
@@ -430,6 +445,21 @@ def batch(commit):
     allocation_started = time.monotonic()
     claim, envelope, _intent = load_claim(commit)
     (claim / "batch-claim").mkdir(mode=0o700, exist_ok=False)
+    return batch_components(commit, claim, envelope, _intent, allocation_started)
+
+
+def batch_components(
+    commit,
+    claim,
+    envelope,
+    intent,
+    allocation_started,
+    *,
+    plan_loader=None,
+    transport_factory=None,
+    adapter_factory=None,
+):
+    """Shared normal loop; only reviewed wrappers supply fixed internal seams."""
     outcome = "blocked_before_launch"
     phase, failure = "await_job_receipt", None
     with o.StopLatch().installed() as latch:
@@ -444,7 +474,7 @@ def batch(commit):
                 )
                 time.sleep(0.2)
             phase = "load_plan"
-            claim, envelope, spec = load_plan(commit)
+            claim, envelope, spec = (plan_loader or load_plan)(commit)
             phase = "verify_release"
             s.require(
                 os.environ.get("SLURM_JOB_ID") == spec["job_id"]
@@ -454,12 +484,14 @@ def batch(commit):
             )
             phase = "verify_runtime"
             recheck(envelope)
-            transport = NormalTransport(spec, preflight_deadline=allocation_started + 120)
+            transport = (transport_factory or NormalTransport)(
+                spec, preflight_deadline=allocation_started + 120
+            )
             phase = "verify_source"
             source = a.verify_checkout(spec, transport.source_command)
             s.require(source == envelope["source"], "Fresh batch source drift.")
             phase = "create_adapter"
-            adapter = NormalAdapter(
+            adapter = (adapter_factory or NormalAdapter)(
                 spec, transport=transport, allocation_started=allocation_started
             )
             # Strict installed job/listpids grammar is checked BEFORE worker spawn.
@@ -484,7 +516,7 @@ def batch(commit):
             failure = batch_diagnostic(phase, error)
             outcome = (
                 "blocked_before_launch"
-                if not Path(_intent["run"]).exists()
+                if not Path(intent["run"]).exists()
                 else "incomplete_attempt_preserved"
             )
     report = {
@@ -763,11 +795,17 @@ def pack(destination, records, commit, job_id):
 def collect(commit):
     require_host()
     claim, envelope, spec = load_plan(commit)  # Unknown/incomplete acknowledgement: no query/retry.
+    return collect_components(commit, claim, envelope, spec)
+
+
+def collect_components(commit, claim, envelope, spec, *, packer=None, auditor=None):
+    """Read-only terminal collection; injected packaging never submits a job."""
     saved = claim / "collection.json"
     if saved.exists():
         result = read_json(saved)
         s.require(
-            audit(result["download"], result["sha256"], commit, spec["job_id"]) == result["review"],
+            (auditor or audit)(result["download"], result["sha256"], commit, spec["job_id"])
+            == result["review"],
             "Prior collection drift.",
         )
         return result
@@ -815,7 +853,7 @@ def collect(commit):
         o.collect_normal_components(run, inner, spec, contract, text)
         records["batch-evidence.tar.gz"] = a._file(inner / "batch-evidence.tar.gz", q.LIMIT)
         records["operation.json"] = a._file(inner / "operation.json", 8192)
-    result = pack(destination, records, commit, spec["job_id"])
+    result = (packer or pack)(destination, records, commit, spec["job_id"])
     c.write_once(saved, result)
     return result
 
