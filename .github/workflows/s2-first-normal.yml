@@ -100,6 +100,24 @@ jobs:
           identity.inspect_tree(base / 'source', json.loads((base / 'source-files.json').read_text()))
           print('59 diagnostic passes; zero skips; physical source closure preserved')
           PY
+      - name: Observed NPAD node identity regression (no scheduler effects)
+        run: |
+          cd "$S2_ROOT/source"
+          python -B -I -m pytest -p no:cacheprovider tests/test_mvp2_s2_node_identity.py \
+            -q --basetemp="$S2_ROOT/node-tests" --junitxml="$S2_ROOT/node.xml"
+          python -B -I - "$S2_ROOT" <<'PY'
+          import json
+          import pathlib
+          import sys
+          import xml.etree.ElementTree as ET
+          base = pathlib.Path(sys.argv[1])
+          cases = ET.parse(base / 'node.xml').getroot().findall('.//testcase')
+          assert len(cases) == 44 and not any(c.find(k) is not None for c in cases for k in ('failure', 'error', 'skipped'))
+          sys.path.insert(0, str(base / 'source'))
+          from scripts import mvp2_s2_compute_identity as identity
+          identity.inspect_tree(base / 'source', json.loads((base / 'source-files.json').read_text()))
+          print('44 node identity passes; zero skips; physical source closure preserved')
+          PY
       - name: Real clean login source seal (local Git only)
         run: |
           git -c core.autocrlf=false clone --no-checkout . "$S2_ROOT/login-source"
@@ -122,3 +140,4 @@ jobs:
             ${{ env.S2_ROOT }}/regression.xml
             ${{ env.S2_ROOT }}/source-files.json
             ${{ env.S2_ROOT }}/diagnostic.xml
+            ${{ env.S2_ROOT }}/node.xml
