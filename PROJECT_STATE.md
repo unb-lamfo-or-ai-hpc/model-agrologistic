@@ -5,6 +5,28 @@ not private evidence, credentials, local host paths or execution authority.
 
 ## Latest operational checkpoint — allocation diagnosis
 
+PR #74 remains separate from develop. Its diagnostic job 2208438 at source
+`1c33692f9affdf3ec5dece387a9425cf5b2fd671` completed 0:0 in three seconds.
+Archive SHA-256 `7042a46430a2bac242080306e86a5a81f6c165949ca537abba4c5d329980157e`
+independently replays `observed_mismatch_or_query_failure`. The query succeeded;
+seven comparisons matched. Only NodeList and BatchHost failed: Slurm short node
+`r1i3n5` versus local FQDN `r1i3n5.npad.internal`. No memory/CPU/time mismatch
+was observed. [Evidence and bounded correction](docs/mvp2_s2_node_identity_evidence.md)
+retain the original negative diagnostic, plan/source identities and limitations.
+Reported NPAD tests: 59 passed, zero failures/errors/skips; XML not transferred.
+
+The same PR now qualifies the observed rack-FQDN mapping only for `.npad.internal`,
+retains both exact allocation node checks and carries that scheduler identity
+into the worker handshake. Other domains are not shortened. Resource, membership,
+peer, source/runtime, controller and scientific checks remain unchanged.
+This is software correction, not live normal/containment acceptance. All old
+claims remain consumed; no normal retry or diagnostic repeat is admitted.
+Next owner: agent completes exact-head CI and Ready; maintainer decides merge.
+A fresh normal-only execution gate must subsequently bind corrected merged source
+and a distinct immutable claim. Earlier next-action statements below are historical.
+
+### Prior diagnostic planning (preserved)
+
 PR #73 merged into develop at `478d5ee513994a20e8788f1f504b195a7f67f346`.
 Job 2208339, frozen source `f96d9729f2a3bf7a8310094aa8a675b224b203d1`,
 failed 2:0 in four seconds. The independently replayed archive SHA-256 is
