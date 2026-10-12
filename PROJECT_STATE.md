@@ -3,6 +3,38 @@
 Updated 12 October 2026. This public checkpoint contains scope and provenance,
 not private evidence, credentials, local host paths or execution authority.
 
+## Latest operational checkpoint — allocation diagnosis
+
+PR #73 merged into develop at `478d5ee513994a20e8788f1f504b195a7f67f346`.
+Job 2208339, frozen source `f96d9729f2a3bf7a8310094aa8a675b224b203d1`,
+failed 2:0 in four seconds. The independently replayed archive SHA-256 is
+`b10d4e4c2930a4dce0ea685b8aa0af4a1effff815da878e652c50712e4f3cc95`;
+release `baeed8c999179e36f824b9faf9fa2f5caac3885b1099c385c59b3db302f40e46`.
+Outcome remains `no_attempt_receipt`, wrapper `blocked_before_launch`, phase
+preflight, ValueError at original adapter line 485 (`review_allocation`).
+This is later than the supervisor membership guard, not worker acceptance.
+The portable carrier has no raw allocation response and cannot identify the
+failed predicate. Empty stderr is consistent with a handled rejection.
+
+Maintainer-supplied accounting for jobs 2208056/2208339 reports two requested
+and allocated CPUs, 2G memory, one node, twelve minutes. It does not reproduce
+the exact live `scontrol` field representation. The later `scontrol` record was
+unavailable. No resource increase, relaxed identity check or cause is inferred.
+NPAD regression was reported as 595 passed/two intentional skips; source inventory
+was verified. Both consumed claims and all original evidence remain immutable.
+
+The [allocation diagnostic protocol](docs/mvp2_s2_allocation_diagnostic.md)
+supplies one bounded observation-only batch, field-by-field comparison, durable
+claim, terminal/cached collection and portable audit. It does not modify the
+normal adapter or launch a worker. A qualified immutable diagnostic PR head may
+be observed before merge under the maintainer's approved diagnostic scope.
+The same PR remains draft for the observed-data correction and final qualification;
+there is no normal retry or automatic next gate. Next owner: agent qualifies and
+freezes the diagnostic handoff; maintainer executes/returns evidence. Earlier
+"next owner" statements below are historical. S2 remains fully planned and open.
+
+## Preserved history and scientific scope
+
 - MVP1 `v0.2.0-mvp1` stays frozen. S0 and adopted S1 scope are closed.
 - S1 accepted evidence includes h215 pairs, h300 warehouse-only baseline/pair
   and one h400 direct control. Compaction remains optional/default-off; causal
