@@ -112,12 +112,13 @@ PHASE=regression
   tests/test_mvp2_s2_normal_recovery.py tests/test_mvp2_s2_batch_adapter.py \
   tests/test_mvp2_s2_operational.py tests/test_mvp2_s2_compute_identity.py \
   tests/test_mvp2_s2_compute_integration.py tests/test_mvp2_s2_compute_normal.py \
+  tests/test_mvp2_s2_listpids_compatibility.py \
   -q --basetemp="$RUN/tests" --junitxml="$RUN/regression.xml"
 "$PY" -B - "$RUN/regression.xml" <<'PY'
 import sys
 import xml.etree.ElementTree as ET
 cases = ET.parse(sys.argv[1]).getroot().findall('.//testcase')
-assert len(cases) == 494, 'Pinned regression count changed; preserve, do not bypass.'
+assert len(cases) == 524, 'Pinned regression count changed; preserve, do not bypass.'
 assert not any(x.find(k) is not None for x in cases for k in ('failure', 'error'))
 skips = [x for x in cases if x.find('skipped') is not None]
 assert len(skips) == 2 and {x.get('name') for x in skips} == {

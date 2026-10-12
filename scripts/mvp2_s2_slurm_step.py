@@ -116,6 +116,9 @@ def binding(item):
         require(
             type(item[key]) is str and re.fullmatch(pattern, item[key]), "Invalid step identity."
         )
+    # Slurm 22.05 reserves IDs above SLURM_MAX_NORMAL_STEP_ID for batch,
+    # extern, interactive and pending steps. A decimal alias is not a worker.
+    require(int(item["worker_step_id"]) <= 0xFFFFFFF0, "Reserved worker step identity.")
     require(item["supervisor_step_id"] == "batch", "Only an outside batch supervisor is designed.")
     return dict(item)
 

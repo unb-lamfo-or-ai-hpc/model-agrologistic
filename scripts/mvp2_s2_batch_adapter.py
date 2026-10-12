@@ -35,6 +35,10 @@ TOOLS = ("git", "srun", "scontrol", "scancel", "sacct")
 FLAGS = {**q.FLAGS, "batch_execution_admitted": False}
 MAX_RPC = 512
 MAX_SAMPLES = 256
+# slurm-22-05-11-1/slurm/slurm.h: SLURM_BATCH_SCRIPT = 0xfffffffb.
+# listpids parses its input with strtol, but prints this step as 'batch'.
+# This alias is read-only; binding() rejects reserved IDs as worker targets.
+BATCH_QUERY_STEP = str(0xFFFFFFFB)
 TERMINAL = {
     "COMPLETED",
     "FAILED",
@@ -260,11 +264,12 @@ class RealTransport:
             return True
         if argv == (t["scontrol"], "-o", "show", "job", job):
             return True
-        if argv == (t["scontrol"], "listpids", job + ".batch"):
+        if argv == (t["scontrol"], "listpids", job + "." + BATCH_QUERY_STEP):
             return True
         if len(argv) == 5 and argv[:4] == (t["scontrol"], "-o", "show", "step"):
             # Candidate step query is read-only; it is not signal authority.
-            return re.fullmatch(re.escape(job) + r"\.(0|[1-9][0-9]{0,9})", argv[4]) is not None
+            match = re.fullmatch(re.escape(job) + r"\.(0|[1-9][0-9]{0,9})", argv[4])
+            return match is not None and int(match[1]) <= 0xFFFFFFF0
         if step is not None and argv == (t["scontrol"], "listpids", job + "." + step):
             return True
         if argv == (
@@ -681,7 +686,9 @@ class BatchAdapter:
         )
         # Independent caller must compare pid/uid/node with os.getpid/getuid/uname;
         # run_components below does so. Environment variables do not authorize.
-        batch_text = self._query("scontrol", "listpids", self.item["job_id"] + ".batch")
+        batch_text = self._query(
+            "scontrol", "listpids", self.item["job_id"] + "." + BATCH_QUERY_STEP
+        )
         batch_binding = {
             "job_id": self.item["job_id"],
             "worker_step_id": "0",
@@ -702,7 +709,7 @@ class BatchAdapter:
                 len(values) == 5
                 and re.fullmatch(r"[1-9][0-9]{0,9}", values[0])
                 and values[1:3] == [self.item["job_id"], "batch"]
-                and all(re.fullmatch(r"-1|0|[1-9][0-9]{0,9}", x) for x in values[3:])
+                and q.listpids_task_ids(*values[3:])
                 and int(values[0]) not in batch_pids,
                 "Batch member drift.",
             )
