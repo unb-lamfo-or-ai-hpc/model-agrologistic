@@ -2,6 +2,14 @@
 
 ## Authority and scope
 
+12 October post-merge continuation: PR #74 is integrated at
+`4b10f6bb623b7e2a77eaa85979a22d0dbdaa79d1`. The next functional PR qualifies the
+complete [node-normal one-shot lifecycle](mvp2_s2_node_normal.md), retaining the
+negative predecessor and diagnostic, before a pinned human-executed CLI handoff.
+This does not close S2 or admit adverse/native/h300/repeated execution. The
+remaining experimental/editorial scope is unchanged; live results govern the
+next gate, not offline test counts. No main/develop synchronization occurs now.
+
 12 October live diagnostic update: job 2208438 identifies the NPAD local FQDN /
 Slurm short-node mismatch in both allocation node fields; the other seven fields
 matched. [Audited evidence and correction](mvp2_s2_node_identity_evidence.md)

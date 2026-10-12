@@ -1,13 +1,19 @@
 # Dated research status: 12 October 2026
 
 This is a derived handoff snapshot, not a new certificate. Reviewed integration
-base: develop `478d5ee513994a20e8788f1f504b195a7f67f346` (PR #73 merged).
+base: develop `4b10f6bb623b7e2a77eaa85979a22d0dbdaa79d1` (PR #74 merged).
 Read [PROJECT_STATE.md](../PROJECT_STATE.md), the [roadmap](mvp2_hpc_roadmap.md)
 and linked evidence for full history. Refresh live PR state before continuing;
 open PR content is not integrated code. The [portable memory](research_context.md)
 was integrated with explicit authorization; it is not an execution gate.
 
 ## What is established
+
+Latest continuation: [node-normal operational gate](mvp2_s2_node_normal.md)
+prepares one fresh normal-only claim, preserving jobs 2208339/2208438 and all
+earlier certificates. Software qualification/merge are not live acceptance.
+No new job is submitted; no adverse/native/h300/repeat admission is included.
+Current owner: agent finishes qualification/Ready, then maintainer decides merge.
 
 | Cohort/gate | Audited result | Interpretation limit |
 | --- | --- | --- |
