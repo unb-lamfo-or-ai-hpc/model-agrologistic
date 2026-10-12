@@ -142,7 +142,10 @@ def seal_predecessor():
         archive.parent.parent == claim
         and archive.parent.name.startswith("collection-")
         and archive.name == "s2-compute-normal-evidence.tar.gz"
-        and saved["sha256"] == PREDECESSOR["archive_sha256"],
+        and saved["sha256"] == PREDECESSOR["archive_sha256"]
+        and saved["job_id"] == PREDECESSOR["job_id"]
+        and saved["release_sha256"] == PREDECESSOR["release_sha256"]
+        and saved["transfer_checksum"] == str(archive) + ".sha256",
         "Predecessor carrier drift.",
     )
     review = old.audit(
