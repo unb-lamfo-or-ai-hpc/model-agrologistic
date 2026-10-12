@@ -150,6 +150,10 @@ def seal_release(envelope, plan):
 
 
 def validate_release(release, commit, expected_digest):
+    if release.get("schema_version") == "s2-normal-successor-release-v1":
+        from scripts import mvp2_s2_normal_predecessor as successor
+
+        return successor.validate_release(release, commit, expected_digest)
     q._hash(expected_digest)
     s.require(len(c.encoded(release)) <= RELEASE_LIMIT, "Compute release byte bound.")
     q._keys(release, {"schema_version", "envelope", "plan", "manifest", "history", *n.FUTURE})
@@ -210,6 +214,15 @@ def validate_release(release, commit, expected_digest):
             "Historical archive path drift.",
         )
     return copy.deepcopy(release)
+
+
+def release_claim(item):
+    # Called only after full release validation; never a caller-selectable path.
+    return (
+        ".mvp2-s2-normal-successor-v1"
+        if item["schema_version"] == "s2-normal-successor-release-v1"
+        else ".mvp2-s2-compute-integration-v1"
+    )
 
 
 def verify_release(release, commit, expected_digest, *, role, deadline, clock=time.monotonic):
@@ -324,7 +337,7 @@ def batch_components(
         q._safe_path(claim)
         s.require(
             claim.parent == Path(o.BASE)
-            and claim.name == ".mvp2-s2-compute-integration-v1"
+            and claim.name == release_claim(item)
             and n.read_json(claim / "release.json", RELEASE_LIMIT) == item
             and n.read_json(claim / "job.json")
             == {
@@ -596,7 +609,7 @@ def collect_components(claim, destination, release, commit, release_digest, term
     q._safe_path(claim)
     s.require(
         claim.parent == Path(o.BASE)
-        and claim.name == ".mvp2-s2-compute-integration-v1"
+        and claim.name == release_claim(item)
         and n.read_json(claim / "release.json", RELEASE_LIMIT) == item,
         "Collection claim drift.",
     )
