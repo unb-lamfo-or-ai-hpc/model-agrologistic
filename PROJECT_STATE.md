@@ -146,6 +146,17 @@ not private evidence, credentials, local host paths or execution authority.
   qualification and explicit merge/execution approval. No new claim or job is
   admitted by the correction; preserve all three attempts. No live normal,
   adverse, native, h300, repeat or S2-closure acceptance follows from this audit.
+- PR #72 merged with explicit maintainer authorization into develop at
+  `7005b08e596ac47df3d9a9d6af13c2c563f07d64`; four exact-head checks passed.
+  The [successor normal gate](docs/mvp2_s2_normal_successor.md) supplies complete
+  start/batch/worker/collect/audit wiring with a distinct immutable claim and
+  three-history release. The job 2208056 source, proposal, release, receipt,
+  wrapper, logs and checksum-bound archive are read-only prerequisites.
+  The historical reader is retained; current compute verification uses sealed
+  bytes, never historical imports or Git. No new normal observation has run.
+  Next owner: agent qualifies the successor PR; maintainer authorizes merge
+  only after Ready and separately authorizes/executes its frozen normal CLI.
+  All adverse/native/h300/repeat admission flags remain false.
 - S2 remains FULLY planned and open: P2 normal audit/adverse qualification;
   P3 adverse containment audit/licensed native integration; P4 licensed audit
   and fresh h300 admission; P5 diagnostic 1/2/4/8/16-thread block audit,
