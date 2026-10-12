@@ -2,6 +2,26 @@
 
 ## Authority and scope
 
+12 October live diagnostic update: job 2208438 identifies the NPAD local FQDN /
+Slurm short-node mismatch in both allocation node fields; the other seven fields
+matched. [Audited evidence and correction](mvp2_s2_node_identity_evidence.md)
+are incorporated in the same PR #74. Final CI/Ready and explicit merge precede
+any distinct normal-only admission; existing claims are never reset or reused.
+This removes an observed software incompatibility, not the live-containment
+milestone. No extra experimental campaign or change to S2/later scientific scope.
+Older next-action statements below are retained as historical planning.
+
+12 October allocation update: PR #73 is integrated at
+`478d5ee513994a20e8788f1f504b195a7f67f346`; its job 2208339 has a checksum-audited
+negative allocation-preflight result. No normal worker has been qualified.
+The next functional PR first qualifies a [diagnostic-only observation](mvp2_s2_allocation_diagnostic.md),
+then incorporates an observed-data correction if warranted, before final review.
+Do not create another blind normal retry. The dedicated diagnostic may use a
+qualified pinned PR head before merge, but has no route to the normal worker.
+The old launchers' merged-source requirements remain unchanged. All original
+claims/certificates remain frozen. Existing S2/scientific milestones below are
+targets, not a guaranteed number of PRs or attempts; reassess after live evidence.
+
 Latest 12 October checkpoint: PR #72 is merged at
 `7005b08e596ac47df3d9a9d6af13c2c563f07d64`; normal job 2208056 has an
 [independently audited negative preflight result](evidence/s2-compute-normal-2208056/README.md).

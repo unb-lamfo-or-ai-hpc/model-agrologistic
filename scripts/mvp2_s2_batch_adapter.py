@@ -480,7 +480,20 @@ def _uid(value):
     return int(match[1])
 
 
+def scheduler_node(node):
+    """Map only the observed NPAD rack FQDN convention; never strip arbitrary domains.
+
+    Diagnostic job 2208438 observed uname r1i3n5.npad.internal and Slurm
+    NodeList=BatchHost=r1i3n5. PID/UID membership remains independently required.
+    Other names retain exact comparison; no DNS lookup or environment alias.
+    """
+    s.require(type(node) is str and 0 < len(node) <= 255, "Local node name bound.")
+    match = re.fullmatch(r"(r[0-9]+i[0-9]+n[0-9]+)\.npad\.internal", node)
+    return match[1] if match else node
+
+
 def review_allocation(text, job, uid, node):
+    node = scheduler_node(node)
     d = fields(text)
     s.require(
         d.get("JobId") == job
@@ -722,7 +735,9 @@ class BatchAdapter:
             uid,
             node,
         )
-        self.node, self.uid, self.source = node, uid, copy.deepcopy(source)
+        # Bind later step.Nodes to the exact scheduler name checked above, not
+        # the OS FQDN. Do not independently normalize the scheduler's step value.
+        self.node, self.uid, self.source = scheduler_node(node), uid, copy.deepcopy(source)
         s.binding(batch_binding)
 
     def verify_runtime(self, tool_sha256, python_sha256):
