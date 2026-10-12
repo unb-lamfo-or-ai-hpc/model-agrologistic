@@ -32,6 +32,15 @@ acquire a hard kernel timeout from that check. The release is capped at 1 MiB;
 each full source tree retains the PR68 count/file/total bounds. Tests and caches
 must remain outside pinned source trees, with Python bytecode writes disabled.
 
+12 October correction: current executable source still requires complete physical
+closure. Both frozen historical entries now use a distinct tracked-source schema
+and read-only verifier: login retains original Git/HEAD checks, compute rereads
+every sealed tracked file plus bound records/archives without Git. Ignored historical
+caches remain untouched and outside the manifest; historical code is not imported
+or executed. A historical manifest cannot substitute for current admission.
+This is an evidence/execution distinction, not a global cache exemption. See
+[bytecode recovery](mvp2_s2_compute_normal.md#bytecode-recovery--12-october-2026).
+
 ## Evidence semantics
 
 - `s2-compute-runtime-v1` explicitly distinguishes batch from worker. Batch
