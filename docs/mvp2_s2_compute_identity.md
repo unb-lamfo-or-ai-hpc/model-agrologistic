@@ -34,6 +34,16 @@ integrity checks, not protection against a malicious same-UID owner or mutations
 after checking. Existing ownership, bounded startup and source admission remain
 necessary. No hard kernel/filesystem timeout is promised.
 
+12 October correction: the strict table above applies to the current executable
+checkout. Preserved predecessors use separate `seal_historical_source` and
+`verify_historical_source` APIs and `s2-historical-tracked-source-v1`. Original
+raw HEAD/login checks and all tracked-byte/record/archive bindings remain; ignored
+historical extras are outside the manifest, never imported/executed or cleaned.
+Current admission rejects the historical schema. See the
+[confirmed bytecode bootstrap failure](mvp2_s2_compute_normal.md#bytecode-recovery--12-october-2026).
+This distinction changes no original receipt or certificate and does not certify
+historical extras as safe executable content.
+
 Recovery `batch` now covers require_host/load_claim/exclusive batch claim errors
 before entering shared supervision. It emits a bounded message-free JSON line
 to stderr and exits 2; it does not write to an unvalidated claim, fabricate a
