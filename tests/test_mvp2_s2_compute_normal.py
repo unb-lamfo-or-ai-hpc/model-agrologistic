@@ -420,3 +420,68 @@ def test_start_seals_before_reservation_and_one_effect(proposal, claim, monkeypa
     monkeypatch.setattr(a.RealTransport, "_open", open_once)
     assert y.start("a" * 40)["status"] == "submitted_normal_only"
     assert order == ["seal_history_and_current", "login_runtime", "recheck_bytes", "single_sbatch"]
+
+
+def test_real_regression_then_physical_source_gate_is_read_only(tmp_path):
+    """Run actual CLI regressions on a clean copy, then inspect ALL physical files.
+
+    This catches child -I processes ignoring PYTHONDONTWRITEBYTECODE even when
+    the parent uses -B and git status would ignore their __pycache__ output.
+    No live start, scheduler, license or solver command is dispatched.
+    """
+    import hashlib
+    import os
+    import shutil
+
+    root = Path(__file__).resolve().parents[1]
+    checkout = tmp_path / "source"
+    checkout.mkdir()
+    for name in ("scripts", "src", "tests"):
+        shutil.copytree(
+            root / name,
+            checkout / name,
+            ignore=shutil.ignore_patterns("__pycache__", "*.pyc", ".pytest_cache", ".ruff_cache"),
+        )
+    shutil.copyfile(root / "pyproject.toml", checkout / "pyproject.toml")
+    files = {
+        p.relative_to(checkout).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest()
+        for p in checkout.rglob("*")
+        if p.is_file()
+    }
+    before = y.identity.inspect_tree(checkout, files)
+    run = subprocess.run(
+        [
+            sys.executable,
+            "-B",
+            "-I",
+            "-m",
+            "pytest",
+            "-p",
+            "no:cacheprovider",
+            "-q",
+            "--basetemp=" + str(tmp_path / "regression"),
+            "tests/test_mvp2_s2_first_normal.py::test_cli_no_scope_expansion_argument",
+        ],
+        cwd=checkout,
+        env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"},
+        capture_output=True,
+        text=True,
+        timeout=60,
+    )
+    assert run.returncode == 0, run.stdout + run.stderr
+    assert "4 passed" in run.stdout
+    assert y.identity.inspect_tree(checkout, files) == before
+
+
+def test_seal_failure_precedes_claim_and_scheduler(proposal, claim, monkeypatch):
+    monkeypatch.setattr(o, "observe_envelope", lambda *args: proposal["envelope"])
+    monkeypatch.setattr(y.secrets, "token_hex", lambda size: "12345678" if size == 4 else "f" * 64)
+    monkeypatch.setattr(a.RealTransport, "_open", forbidden)
+
+    def fail(*args):
+        raise ValueError("Extra source directory: 'scripts/__pycache__'.")
+
+    monkeypatch.setattr(x, "seal_release", fail)
+    with pytest.raises(ValueError, match="Extra source directory"):
+        y.start("a" * 40)
+    assert not claim.exists()
