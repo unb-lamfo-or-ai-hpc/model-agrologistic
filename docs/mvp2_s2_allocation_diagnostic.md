@@ -1,5 +1,12 @@
 # S2 allocation diagnostic — observe before another normal attempt
 
+Update: diagnostic 2208438 has been independently audited. See the
+[live evidence and bounded node correction](mvp2_s2_node_identity_evidence.md).
+The remainder describes the frozen diagnostic revision, whose code and strict
+comparison are preserved. The same PR now changes the normal adapter's NPAD
+node representation handling, not the original observation or replay semantics.
+The diagnostic claim is consumed; this is no longer an instruction to submit it.
+
 Integration base: develop `478d5ee513994a20e8788f1f504b195a7f67f346`, PR #73.
 Scope approved by the maintainer: a diagnostic PR, not another normal retry.
 No model, data, solver parameter, license, worker, controller or normal parser is

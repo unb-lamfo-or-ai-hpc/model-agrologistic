@@ -2,6 +2,15 @@
 
 ## Authority and scope
 
+12 October live diagnostic update: job 2208438 identifies the NPAD local FQDN /
+Slurm short-node mismatch in both allocation node fields; the other seven fields
+matched. [Audited evidence and correction](mvp2_s2_node_identity_evidence.md)
+are incorporated in the same PR #74. Final CI/Ready and explicit merge precede
+any distinct normal-only admission; existing claims are never reset or reused.
+This removes an observed software incompatibility, not the live-containment
+milestone. No extra experimental campaign or change to S2/later scientific scope.
+Older next-action statements below are retained as historical planning.
+
 12 October allocation update: PR #73 is integrated at
 `478d5ee513994a20e8788f1f504b195a7f67f346`; its job 2208339 has a checksum-audited
 negative allocation-preflight result. No normal worker has been qualified.

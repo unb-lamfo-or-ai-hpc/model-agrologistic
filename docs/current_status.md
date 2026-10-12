@@ -37,6 +37,16 @@ capacity-pass gap; acceptance retains the inherited hierarchical allowances.
 
 ## Current open work: S2
 
+Current audited result: [diagnostic 2208438](mvp2_s2_node_identity_evidence.md)
+completed 0:0 but retained `observed_mismatch_or_query_failure`. Successful query,
+seven matches; NodeList/BatchHost short name differs from local NPAD FQDN.
+PR #74 qualifies a restricted rack-FQDN mapping and exact allocation-to-step node
+continuity. Source, resource and containment requirements are not relaxed.
+The original diagnostic stays negative; no old claim can be reused and no fresh
+normal execution is admitted. Next: final CI/Ready and explicit merge decision,
+then a separately qualified fresh normal-only claim. S2 remains open.
+The following diagnostic-planning and prior observations are historical.
+
 Latest: job 2208339 independently replays `no_attempt_receipt`; allocation
 preflight rejected an unknown field comparison at adapter line 485, before
 worker launch. Reported accounting matches the requested 2 CPU/2G/one-node/
