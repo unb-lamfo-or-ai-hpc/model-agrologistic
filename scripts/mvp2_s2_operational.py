@@ -518,6 +518,7 @@ def supervise_normal_components(adapter, latch, *, sleep=time.sleep):
     """
     s.require(adapter.item["case"] == "normal", "Only the first normal case is scoped.")
     reason = None
+    failure, stage = None, "launch"
     try:
         if latch.reason is not None:
             reason = "interrupted_before_launch"
@@ -526,16 +527,20 @@ def supervise_normal_components(adapter, latch, *, sleep=time.sleep):
             if latch.reason is not None:
                 reason = "interrupted_unbound"
             else:
+                stage = "handshake"
                 adapter.handshake()
+                stage = "observe"
                 while adapter.controller.state not in {"candidate_closed", "blocked"}:
                     adapter.tick(force_fault=latch.reason is not None)
                     if adapter.controller.state not in {"candidate_closed", "blocked"}:
                         sleep(2)
                 if latch.reason is not None:
                     reason = "interrupted_bound"
-    except KeyboardInterrupt:
+    except KeyboardInterrupt as error:
+        failure = error
         reason = "keyboard_interrupt_unknown_effect"
-    except (OSError, ValueError, TimeoutError):
+    except (OSError, ValueError, TimeoutError) as error:
+        failure = error
         reason = "adapter_failure_unknown_effect"
     # No second handshake/launch/signal after an uncertain effect or exception.
     try:
@@ -553,6 +558,22 @@ def supervise_normal_components(adapter, latch, *, sleep=time.sleep):
         **FLAGS,
     }
     if adapter.claimed:
+        if failure is not None:
+            # Reuse the message-free location allowlist, only after cleanup.
+            # Do not change legacy operation/attempt schemas or infer a cause
+            # for historical runs that did not record this optional sidecar.
+            from scripts import mvp2_s2_first_normal as normal
+
+            c.write_once(
+                adapter.root / "operation-diagnostic.json",
+                {
+                    "schema_version": "s2-operation-diagnostic-v1",
+                    "specification_sha256": s.digest(adapter.item),
+                    "stage": stage,
+                    "diagnostic": normal.batch_diagnostic("supervise", failure),
+                    **FLAGS,
+                },
+            )
         c.write_once(adapter.root / "operation.json", operation)
     report = adapter.preserve(failure_code="adapter_failure_preserved" if reason else None)
     return {"attempt": report, "operation": operation}
