@@ -1,7 +1,7 @@
 # Dated research status: 12 October 2026
 
 This is a derived handoff snapshot, not a new certificate. Reviewed integration
-base: develop `1463dcf8b3280e5799edbf017daafc71e49bd70a` (PR #70 merged).
+base: develop `c68b7505c854124ea37df50d6b1d07dd3fa680db` (PR #71 merged).
 Read [PROJECT_STATE.md](../PROJECT_STATE.md), the [roadmap](mvp2_hpc_roadmap.md)
 and linked evidence for full history. Refresh live PR state before continuing;
 open PR content is not integrated code. The [portable memory](research_context.md)
@@ -37,7 +37,17 @@ capacity-pass gap; acceptance retains the inherited hierarchical allowances.
 
 ## Current open work: S2
 
-Latest observation: the authorized PR70 normal bootstrap passed its reported
+Latest audited observation: [job 2208056](evidence/s2-compute-normal-2208056/README.md)
+failed in supervisor batch-membership preflight. Integrity replay succeeds with
+`no_attempt_receipt`; this is not live acceptance. Tagged Slurm 22.05.11 source
+explains the unsupported `.batch` query; installed raw output was not retained.
+The bounded offline correction retains the PID gate, supports descendant display
+markers and prohibits reserved worker/signal IDs. The compute claim is consumed.
+Next owner: agent qualifies this correction and a separately admitted successor
+normal gate; maintainer authorizes merges only when Ready and executes frozen CLI.
+No retry, adverse/native/h300 or repeat is admitted. The text below is historical.
+
+Previous observation: the authorized PR70 normal bootstrap passed its reported
 481 tests/two intentional skips, then failed in current source sealing before
 claim creation/submission. Maintainer read-only follow-up confirms ignored
 `scripts/__pycache__` in current and both historical checkouts; CLAIM_ABSENT.
