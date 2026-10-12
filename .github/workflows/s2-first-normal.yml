@@ -24,6 +24,7 @@ jobs:
           bash -n scripts/npad_s2_normal_recovery.sh
           bash -n scripts/npad_s2_compute_normal.sh
           bash -n scripts/npad_s2_normal_successor.sh
+          bash -n scripts/npad_s2_allocation_diagnostic.sh
       - name: Clean source before the exact driver-selected regression
         run: |
           S2_ROOT=$(mktemp -d "$RUNNER_TEMP/s2-regression-XXXXXXXX")
@@ -81,6 +82,38 @@ jobs:
           identity.inspect_tree(root, files)
           print('595 passed; two intentional platform skips; POST_REGRESSION_PHYSICAL_SOURCE=VERIFIED')
           PY
+      - name: Allocation diagnostic lifecycle (no scheduler effects)
+        run: |
+          cd "$S2_ROOT/source"
+          python -B -I -m pytest -p no:cacheprovider tests/test_mvp2_s2_allocation_diagnostic.py \
+            -q --basetemp="$S2_ROOT/diagnostic-tests" --junitxml="$S2_ROOT/diagnostic.xml"
+          python -B -I - "$S2_ROOT" <<'PY'
+          import json
+          import pathlib
+          import sys
+          import xml.etree.ElementTree as ET
+          base = pathlib.Path(sys.argv[1])
+          cases = ET.parse(base / 'diagnostic.xml').getroot().findall('.//testcase')
+          assert len(cases) == 59 and not any(c.find(k) is not None for c in cases for k in ('failure', 'error', 'skipped'))
+          sys.path.insert(0, str(base / 'source'))
+          from scripts import mvp2_s2_compute_identity as identity
+          identity.inspect_tree(base / 'source', json.loads((base / 'source-files.json').read_text()))
+          print('59 diagnostic passes; zero skips; physical source closure preserved')
+          PY
+      - name: Real clean login source seal (local Git only)
+        run: |
+          git -c core.autocrlf=false clone --no-checkout . "$S2_ROOT/login-source"
+          printf '%s\n' '/manuscript/comparison_provenance.json -text' '/manuscript/figures/runtime_memory_comparison.pdf -text' > "$S2_ROOT/login-source/.git/info/attributes"
+          git -C "$S2_ROOT/login-source" -c core.autocrlf=false checkout --detach "$GITHUB_SHA"
+          python -B -I - "$S2_ROOT/login-source" "$GITHUB_SHA" <<'PY'
+          import pathlib
+          import sys
+          root = pathlib.Path(sys.argv[1])
+          sys.path.insert(0, str(root))
+          from scripts import mvp2_s2_allocation_diagnostic as diagnostic
+          files = diagnostic.source_files(root, sys.argv[2])
+          print(f'DIAGNOSTIC_LOGIN_RAW_HEAD={len(files)} files; no Slurm calls')
+          PY
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -88,3 +121,4 @@ jobs:
           path: |
             ${{ env.S2_ROOT }}/regression.xml
             ${{ env.S2_ROOT }}/source-files.json
+            ${{ env.S2_ROOT }}/diagnostic.xml
