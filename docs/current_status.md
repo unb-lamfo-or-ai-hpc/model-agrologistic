@@ -1,7 +1,7 @@
 # Dated research status: 12 October 2026
 
 This is a derived handoff snapshot, not a new certificate. Reviewed integration
-base: develop `c68b7505c854124ea37df50d6b1d07dd3fa680db` (PR #71 merged).
+base: develop `7005b08e596ac47df3d9a9d6af13c2c563f07d64` (PR #72 merged).
 Read [PROJECT_STATE.md](../PROJECT_STATE.md), the [roadmap](mvp2_hpc_roadmap.md)
 and linked evidence for full history. Refresh live PR state before continuing;
 open PR content is not integrated code. The [portable memory](research_context.md)
@@ -43,8 +43,11 @@ failed in supervisor batch-membership preflight. Integrity replay succeeds with
 explains the unsupported `.batch` query; installed raw output was not retained.
 The bounded offline correction retains the PID gate, supports descendant display
 markers and prohibits reserved worker/signal IDs. The compute claim is consumed.
-Next owner: agent qualifies this correction and a separately admitted successor
-normal gate; maintainer authorizes merges only when Ready and executes frozen CLI.
+PR #72 is merged after explicit authorization and four successful head checks.
+The [successor normal gate](mvp2_s2_normal_successor.md) binds three immutable
+predecessors and a distinct one-shot claim through complete operational wiring.
+Next owner: agent qualifies this successor; maintainer authorizes its merge only
+when Ready and separately authorizes/executes the frozen CLI.
 No retry, adverse/native/h300 or repeat is admitted. The text below is historical.
 
 Previous observation: the authorized PR70 normal bootstrap passed its reported

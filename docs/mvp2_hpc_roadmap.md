@@ -2,12 +2,16 @@
 
 ## Authority and scope
 
-Latest 12 October checkpoint: PR #71 is merged; normal job 2208056 has an
+Latest 12 October checkpoint: PR #72 is merged at
+`7005b08e596ac47df3d9a9d6af13c2c563f07d64`; normal job 2208056 has an
 [independently audited negative preflight result](evidence/s2-compute-normal-2208056/README.md).
 The Slurm client compatibility correction preserves exact membership and signal
 boundaries. Software qualification cannot replace installed normal acceptance.
 The consumed claim cannot be reused; a successor normal-only gate must bind the
-negative predecessor before any separately authorized execution. Remaining S2
+negative predecessor before any separately authorized execution. The complete
+[successor gate](mvp2_s2_normal_successor.md) includes the fixed new claim,
+three-history release, terminal collection and portable independent audit;
+qualification and explicit merge/execution decisions are still required. Remaining S2
 and scientific scope below are unchanged; earlier bootstrap status is historical.
 
 12 October operational update: PR #70 is merged at
