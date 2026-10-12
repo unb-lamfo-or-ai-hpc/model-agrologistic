@@ -1,7 +1,7 @@
 # Dated research status: 12 October 2026
 
 This is a derived handoff snapshot, not a new certificate. Reviewed integration
-base: develop `7005b08e596ac47df3d9a9d6af13c2c563f07d64` (PR #72 merged).
+base: develop `478d5ee513994a20e8788f1f504b195a7f67f346` (PR #73 merged).
 Read [PROJECT_STATE.md](../PROJECT_STATE.md), the [roadmap](mvp2_hpc_roadmap.md)
 and linked evidence for full history. Refresh live PR state before continuing;
 open PR content is not integrated code. The [portable memory](research_context.md)
@@ -36,6 +36,17 @@ a replacement. Final capacity quality must be read separately from the earlier
 capacity-pass gap; acceptance retains the inherited hierarchical allowances.
 
 ## Current open work: S2
+
+Latest: job 2208339 independently replays `no_attempt_receipt`; allocation
+preflight rejected an unknown field comparison at adapter line 485, before
+worker launch. Reported accounting matches the requested 2 CPU/2G/one-node/
+12-minute envelope; it cannot reconstruct live field representation or hostname
+comparison. Preserve this consumed claim and predecessor 2208056. The
+[diagnostic-only gate](mvp2_s2_allocation_diagnostic.md) gathers all relevant
+fields and comparisons without changing the normal gate. The diagnostic PR stays
+draft pending live observation and any evidence-based correction in the same PR.
+No worker, adverse, native, h300 or repeat is admitted. The following entries
+describe earlier observations, not the current next action.
 
 Latest audited observation: [job 2208056](evidence/s2-compute-normal-2208056/README.md)
 failed in supervisor batch-membership preflight. Integrity replay succeeds with
