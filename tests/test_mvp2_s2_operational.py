@@ -402,7 +402,10 @@ def test_closed_execution_cli_and_api():
         o.execute_normal(object())
     for flag in ("--batch", "--worker", "--submit", "normal"):
         result = subprocess.run(
-            [sys.executable, "-I", o.__file__, flag], capture_output=True, timeout=10, check=False
+            [sys.executable, "-B", "-I", o.__file__, flag],
+            capture_output=True,
+            timeout=10,
+            check=False,
         )
         assert result.returncode != 0 and b"dispatch remains closed" in result.stderr
         assert b"ModuleNotFoundError" not in result.stderr
@@ -470,6 +473,7 @@ def test_probe_cli_platform_failure_still_packages_negative_evidence(tmp_path):
     result = subprocess.run(
         [
             sys.executable,
+            "-B",
             "-I",
             o.__file__,
             "probe-envelope",
