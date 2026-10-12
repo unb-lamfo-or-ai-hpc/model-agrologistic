@@ -101,6 +101,14 @@ and release digest as independent inputs to the public `audit` entry.
 
 ## Qualification and remaining gates
 
+Latest status: PR #71's job 2208056 consumed the compute claim and failed before
+worker launch. See the [audited record and Slurm compatibility correction](evidence/s2-compute-normal-2208056/README.md).
+The successor offline regression now has nine suites / 524 cases (Linux 522
+passes and two named skips; Windows 521 passes and three platform skips).
+The original PR71 archive is still audited at its original source. New code is
+not permission to rerun or relabel it; no fresh claim is introduced here. Earlier
+unused-claim and proposed-start wording describes the historical handoff only.
+
 The new suite covers immutable proposal/release derivation, one-shot effects,
 ambiguous acknowledgements, stop timing, bounded fast-batch waiting, changed
 claims, actual CLI route refusal, Git-free dispatch composition, early failure

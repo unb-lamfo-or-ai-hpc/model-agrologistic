@@ -148,6 +148,17 @@ def launch_descriptor(item, python, worker, run):
     }
 
 
+def listpids_task_ids(local, global_id):
+    """Slurm 22.05 descendants have a paired '-' marker, not task indices.
+
+    These display columns never establish process identity or signal authority.
+    Retain the previously supported signed numeric task IDs for legacy readers.
+    """
+    return (local, global_id) == ("-", "-") or all(
+        re.fullmatch(r"-1|0|[1-9][0-9]{0,9}", x) for x in (local, global_id)
+    )
+
+
 def parse_listpids(text, binding):
     """Strict local listpids grammar; no node-name/path inference or env authority."""
     binding = s.binding(binding)
@@ -166,7 +177,7 @@ def parse_listpids(text, binding):
             re.fullmatch(r"[1-9][0-9]{0,9}", pid)
             and job == binding["job_id"]
             and step == binding["worker_step_id"]
-            and all(re.fullmatch(r"-1|0|[1-9][0-9]{0,9}", x) for x in (local, global_id)),
+            and listpids_task_ids(local, global_id),
             "Foreign/ambiguous scheduler member.",
         )
         s.require(int(pid) not in result, "Duplicate scheduler member.")

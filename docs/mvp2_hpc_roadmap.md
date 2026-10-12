@@ -2,6 +2,14 @@
 
 ## Authority and scope
 
+Latest 12 October checkpoint: PR #71 is merged; normal job 2208056 has an
+[independently audited negative preflight result](evidence/s2-compute-normal-2208056/README.md).
+The Slurm client compatibility correction preserves exact membership and signal
+boundaries. Software qualification cannot replace installed normal acceptance.
+The consumed claim cannot be reused; a successor normal-only gate must bind the
+negative predecessor before any separately authorized execution. Remaining S2
+and scientific scope below are unchanged; earlier bootstrap status is historical.
+
 12 October operational update: PR #70 is merged at
 `1463dcf8b3280e5799edbf017daafc71e49bd70a`; its authorized bootstrap failed
 before submission because isolated test subprocesses created ignored bytecode.

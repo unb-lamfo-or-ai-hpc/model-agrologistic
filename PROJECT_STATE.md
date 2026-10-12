@@ -129,6 +129,23 @@ not private evidence, credentials, local host paths or execution authority.
   merge and a separately authorized normal-only CLI. Absence of the unused
   claim does not authorize a retry; any later existing/unknown claim blocks
   substitution. No adverse/native/h300/repeat gate is released.
+- PR #71 merged into develop at `c68b7505c854124ea37df50d6b1d07dd3fa680db`.
+  Its authorized normal job 2208056 at source
+  `7bb3bd60036e504ea3290f077282948a612728da` failed 2:0 in five seconds.
+  [Independent terminal audit and client diagnosis](docs/evidence/s2-compute-normal-2208056/README.md)
+  verify archive `b9efc61243e0adddf2c7f15e9e8f2d89152e038221ca53d82ef207bf1d06d59b`
+  and replay `no_attempt_receipt`. The outer wrapper identifies preflight
+  `Supervisor not in batch step` at original adapter line 711. Empty stderr is
+  consistent with a handled exception. Source review of Slurm 22.05.11 identifies
+  unsupported symbolic `.batch` input and previously unhandled descendant `- -`
+  task IDs. Raw installed query output is unavailable; no live reproduction is
+  claimed. The bounded parser/transport correction keeps membership enforcement,
+  rejects reserved worker/signal aliases and qualifies software paths only.
+  The compute claim is consumed; earlier unused-claim wording is historical.
+  A new one-shot gate bound to this negative predecessor still needs complete
+  qualification and explicit merge/execution approval. No new claim or job is
+  admitted by the correction; preserve all three attempts. No live normal,
+  adverse, native, h300, repeat or S2-closure acceptance follows from this audit.
 - S2 remains FULLY planned and open: P2 normal audit/adverse qualification;
   P3 adverse containment audit/licensed native integration; P4 licensed audit
   and fresh h300 admission; P5 diagnostic 1/2/4/8/16-thread block audit,
