@@ -3,7 +3,24 @@
 Updated 12 October 2026. This public checkpoint contains scope and provenance,
 not private evidence, credentials, local host paths or execution authority.
 
-## Latest operational checkpoint — allocation diagnosis
+## Latest operational checkpoint — node-corrected normal gate
+
+PR #74 merged into develop at `4b10f6bb623b7e2a77eaa85979a22d0dbdaa79d1`.
+The next functional gate is [node-normal](docs/mvp2_s2_node_normal.md): a complete
+bootstrap/start/batch/worker/collect/audit route, a distinct one-shot claim,
+the fixed negative predecessor 2208339 and original diagnostic 2208438.
+The historical readers and certificates are unchanged. Shared containment is
+reused, including the reviewed rack-FQDN correction; no scientific/resource
+change is included. There has been no new submission or live normal acceptance.
+
+Next owner: agent completes exact-head CI and Ready; maintainer decides this
+new PR's merge. Only then publish the immutable human-executed NPAD handoff.
+At most one normal synthetic job is in scope. Collection cannot admit a repeat;
+adverse/native miniature/h300 gates remain closed. S2 remains open, with its
+full thread contrast and end-of-S2 main/develop reconciliation still planned.
+Historical next-action statements below do not override this checkpoint.
+
+### Prior operational checkpoint — allocation diagnosis (preserved)
 
 PR #74 remains separate from develop. Its diagnostic job 2208438 at source
 `1c33692f9affdf3ec5dece387a9425cf5b2fd671` completed 0:0 in three seconds.
