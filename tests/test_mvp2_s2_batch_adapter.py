@@ -22,7 +22,7 @@ from scripts import mvp2_s2_synthetic_worker as w
 
 def test_isolated_cli_denies_before_project_imports():
     result = subprocess.run(
-        [sys.executable, "-I", str(Path(a.__file__).resolve())],
+        [sys.executable, "-B", "-I", str(Path(a.__file__).resolve())],
         capture_output=True,
         timeout=10,
         check=False,
@@ -641,7 +641,7 @@ def test_real_posix_pipe_draining_overflow_timeout_and_reaping():
         ("import time; time.sleep(10)", 0.2, 100, TimeoutError),
     ]:
         process = subprocess.Popen(
-            (sys.executable, "-I", "-c", code),
+            (sys.executable, "-B", "-I", "-c", code),
             stdin=subprocess.DEVNULL,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
