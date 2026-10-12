@@ -38,11 +38,20 @@ def source_summary(files):
 
 
 def validate_manifest(manifest, commit, expected_digest):
+    return _validate_manifest(manifest, commit, expected_digest, "s2-sealed-source-v1")
+
+
+def validate_historical_manifest(manifest, commit, expected_digest):
+    """Historical tracked bytes are evidence, never executable-tree admission."""
+    return _validate_manifest(manifest, commit, expected_digest, "s2-historical-tracked-source-v1")
+
+
+def _validate_manifest(manifest, commit, expected_digest, schema):
     q._hash(commit, 40)
     q._hash(expected_digest)
     q._keys(manifest, {"schema_version", "source_commit", "files", "source"})
     s.require(
-        manifest["schema_version"] == "s2-sealed-source-v1"
+        manifest["schema_version"] == schema
         and manifest["source_commit"] == commit
         and s.digest(manifest) == expected_digest,
         "Sealed source binding drift.",
@@ -72,11 +81,12 @@ def inspect_tree(checkout, files):
             if child == root / ".git":
                 dirs.remove(name)
             else:
-                s.require(child.relative_to(root).as_posix() in parents, "Extra source directory.")
+                relative = child.relative_to(root).as_posix()
+                s.require(relative in parents, f"Extra source directory: {relative!r}.")
         for name in names:
             child = base / name
             relative = child.relative_to(root).as_posix()
-            s.require(relative in files, "Extra source file.")
+            s.require(relative in files, f"Extra source file: {relative!r}.")
             raw = a._file(child, FILE_LIMIT)
             total += len(raw)
             s.require(total <= TREE_LIMIT, "Source tree byte bound.")
@@ -91,6 +101,37 @@ def _walk_error(error):
 
 def seal_login_source(spec, command):
     """Only after login raw-HEAD validation; seal full inventory, not an allowlist."""
+    return _seal_login_source(spec, command, historical=False)
+
+
+def seal_historical_source(spec, command):
+    """Retain original raw-Git proof without executing or cleaning historical trees."""
+    return _seal_login_source(spec, command, historical=True)
+
+
+def inspect_historical_source(checkout, files):
+    """Check every bound tracked byte; untracked history is neither read nor trusted.
+
+    Callers must bind a fixed predecessor and must never execute/import this tree.
+    Original receipts did not certify absence of ignored files. Their caches stay
+    untouched and outside this manifest; current executable trees use inspect_tree.
+    """
+    root = Path(checkout)
+    q._safe_path(root)
+    s.require(root.is_dir(), "Missing historical source root.")
+    observed, total = {}, 0
+    for name in files:
+        path = root / name
+        q._safe_path(path)
+        raw = a._file(path, FILE_LIMIT)
+        total += len(raw)
+        s.require(total <= TREE_LIMIT, "Historical source tree byte bound.")
+        observed[name] = hashlib.sha256(raw).hexdigest()
+    s.require(observed == files, "Missing or changed historical source bytes.")
+    return source_summary(observed)
+
+
+def _seal_login_source(spec, command, *, historical):
     spec = a.validate_spec(spec)
     q._safe_path(Path(spec["checkout"]))
     s.require(
@@ -122,14 +163,17 @@ def seal_login_source(spec, command):
         files[name] = a.sha_file(Path(spec["checkout"]) / name, FILE_LIMIT)
     s.require(REQUIRED <= files.keys(), "Missing sealed closure.")
     s.require(source_summary(files) == verified, "Source changed while sealing.")
-    s.require(inspect_tree(spec["checkout"], files) == verified, "Source inventory drift.")
+    inspect = inspect_historical_source if historical else inspect_tree
+    s.require(inspect(spec["checkout"], files) == verified, "Source inventory drift.")
     s.require(
         command(prefix + ("rev-parse", "HEAD"), timeout_seconds=10, max_output_bytes=65536).strip()
         == spec["source_commit"],
         "HEAD changed while sealing.",
     )
     return {
-        "schema_version": "s2-sealed-source-v1",
+        "schema_version": (
+            "s2-historical-tracked-source-v1" if historical else "s2-sealed-source-v1"
+        ),
         "source_commit": spec["source_commit"],
         "files": files,
         "source": verified,
@@ -139,6 +183,11 @@ def seal_login_source(spec, command):
 def verify_compute_source(checkout, manifest, commit, expected_digest):
     item = validate_manifest(manifest, commit, expected_digest)
     return inspect_tree(checkout, item["files"])
+
+
+def verify_historical_source(checkout, manifest, commit, expected_digest):
+    item = validate_historical_manifest(manifest, commit, expected_digest)
+    return inspect_historical_source(checkout, item["files"])
 
 
 def expected_compute_runtime(spec, role="batch"):
