@@ -3,7 +3,28 @@
 Updated 12 October 2026. This public checkpoint contains scope and provenance,
 not private evidence, credentials, local host paths or execution authority.
 
-## Latest operational checkpoint — node-corrected normal gate
+## Latest operational checkpoint — preserve and recover job 2208459
+
+PR #75 merged into develop at `c5cc384c732f511525fcfdea6b020c29538afb0d`.
+Execution source `9911bd68db480fccea2fd774ac0a969238300ece`: maintainer reports
+782 passes/two intentional skips; job 2208459 root/batch COMPLETED 0:0 in 20 s,
+step 0 CANCELLED with numeric UID attribution, 0:9 in 4 s. Collection rejected
+the legitimate cancellation suffix. Original attempt: `blocked_unbound`, zero
+samples, `adapter_failure_preserved`; operation: `adapter_failure_unknown_effect`,
+local client reaped, remote cleanup not proven. This is not live normal acceptance.
+No independently audited carrier is available yet; preserve the original claim,
+source, run and all receipts. The wrapper's completed preservation is not success.
+
+The [accounting recovery](docs/mvp2_s2_accounting_recovery.md) corrects the strict
+state grammar and qualifies a separate collection-only reader with frozen
+proposal/release binding, raw evidence, optional semantic replay and checksums.
+Future supervisor failures gain message-free stage/location diagnostics without
+altering historical schemas. Next owner: agent qualifies the functional PR and
+provides the pinned reader; maintainer collects/transfers existing evidence.
+No retry, long-running campaign or admission follows from collection or CI.
+Audit before deciding the next normal/adverse/native/h300 gate. S2 remains open.
+
+### Prior operational checkpoint — node-corrected normal gate (preserved)
 
 PR #74 merged into develop at `4b10f6bb623b7e2a77eaa85979a22d0dbdaa79d1`.
 The next functional gate is [node-normal](docs/mvp2_s2_node_normal.md): a complete
