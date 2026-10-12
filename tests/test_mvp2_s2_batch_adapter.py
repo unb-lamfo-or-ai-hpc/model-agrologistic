@@ -102,8 +102,8 @@ class Transport:
         self.calls.append(argv)
         if argv[-1] == "--version":
             return "slurm 22.05.11\n"
-        if argv[1:3] == ("listpids", "500000.batch"):
-            return "PID JOBID STEPID LOCALID GLOBALID\n10 500000 batch 0 0\n"
+        if argv[1:3] == ("listpids", "500000.4294967291"):
+            return "PID JOBID STEPID LOCALID GLOBALID\n10 500000 batch - -\n"
         if argv[1:4] == ("-o", "show", "job"):
             return (
                 "JobId=500000 UserId=user(1000) JobState=RUNNING NumNodes=1 "
