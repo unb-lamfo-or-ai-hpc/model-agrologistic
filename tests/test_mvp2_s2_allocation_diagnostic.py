@@ -390,3 +390,9 @@ def test_private_extra_content_rejected_before_pack(location):
     target["secret"] = "private"
     with pytest.raises(ValueError):
         d.review(data, COMMIT, JOB, SHA)
+
+
+@pytest.mark.parametrize("raw", [b'{"x":1,"x":2}', b'{"x":NaN}', b'{"x":Infinity}'])
+def test_noncanonical_json_rejected(raw):
+    with pytest.raises(ValueError):
+        d.decode(raw)
