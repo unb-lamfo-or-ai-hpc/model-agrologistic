@@ -150,6 +150,10 @@ def seal_release(envelope, plan):
 
 
 def validate_release(release, commit, expected_digest):
+    if release.get("schema_version") == "s2-node-normal-release-v1":
+        from scripts import mvp2_s2_node_predecessor as node
+
+        return node.validate_release(release, commit, expected_digest)
     if release.get("schema_version") == "s2-normal-successor-release-v1":
         from scripts import mvp2_s2_normal_predecessor as successor
 
@@ -218,6 +222,8 @@ def validate_release(release, commit, expected_digest):
 
 def release_claim(item):
     # Called only after full release validation; never a caller-selectable path.
+    if item["schema_version"] == "s2-node-normal-release-v1":
+        return ".mvp2-s2-node-normal-v1"
     return (
         ".mvp2-s2-normal-successor-v1"
         if item["schema_version"] == "s2-normal-successor-release-v1"
@@ -230,6 +236,10 @@ def verify_release(release, commit, expected_digest, *, role, deadline, clock=ti
     item = validate_release(release, commit, expected_digest)
     spec = item["plan"]["specification"]
     s.require(clock() < deadline, "Compute identity deadline.")
+    if item["schema_version"] == "s2-node-normal-release-v1":
+        from scripts import mvp2_s2_node_predecessor as node
+
+        node.verify_diagnostic(item["diagnostic"])
     for entry in item["history"]:
         for path, checksum in entry["records"].items():
             s.require(a.sha_file(path, r.LIMIT) == checksum, "Preserved record byte drift.")
