@@ -56,7 +56,11 @@ def release():
             {
                 "identity": copy.deepcopy(expected),
                 "specification": spec,
-                "manifest": {**manifest, "source_commit": expected["source_commit"]},
+                "manifest": {
+                    **manifest,
+                    "source_commit": expected["source_commit"],
+                    "schema_version": "s2-historical-tracked-source-v1",
+                },
                 "records": {str(claim / name): "b" * 64 for name in names},
                 "archive": str(
                     claim
@@ -104,6 +108,9 @@ def compute(release, monkeypatch):
     monkeypatch.setattr(
         identity, "inspect_tree", lambda root, files: identity.source_summary(files)
     )
+    monkeypatch.setattr(
+        identity, "inspect_historical_source", lambda root, files: identity.source_summary(files)
+    )
     for module, name in (
         (n, "recheck"),
         (a, "verify_checkout"),
@@ -138,6 +145,8 @@ def test_full_history_and_role_path_never_uses_git(release, compute, role):
         "old_source",
         "old_job",
         "manifest",
+        "history_schema",
+        "current_schema",
         "admission",
     ],
 )
@@ -155,6 +164,10 @@ def test_release_mutations_rejected(release, change):
         item["history"][0]["specification"][key] = spec[key]
     elif change == "manifest":
         item["manifest"]["files"][x.ENTRY] = "0" * 64
+    elif change == "history_schema":
+        item["history"][0]["manifest"]["schema_version"] = "s2-sealed-source-v1"
+    elif change == "current_schema":
+        item["manifest"]["schema_version"] = "s2-historical-tracked-source-v1"
     elif change == "admission":
         item["production_admitted"] = True
     with pytest.raises(ValueError):
@@ -304,7 +317,7 @@ def test_login_history_seal_replays_fixed_archives_and_binds_receipts(release, m
 
         monkeypatch.setattr(module, "audit", audit)
     monkeypatch.setattr(
-        identity, "seal_login_source", lambda spec, command: manifests[spec["source_commit"]]
+        identity, "seal_historical_source", lambda spec, command: manifests[spec["source_commit"]]
     )
     if drift:
         with pytest.raises(ValueError):
@@ -444,7 +457,10 @@ def test_adapter_runtime_and_schema(release, monkeypatch):
 
 def test_cli_denies_before_imports():
     result = subprocess.run(
-        [sys.executable, "-I", x.__file__, "worker"], capture_output=True, timeout=10, check=False
+        [sys.executable, "-B", "-I", x.__file__, "worker"],
+        capture_output=True,
+        timeout=10,
+        check=False,
     )
     assert result.returncode != 0 and b"Closed integration" in result.stderr
     assert b"ModuleNotFoundError" not in result.stderr

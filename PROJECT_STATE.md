@@ -1,6 +1,6 @@
 # Model Agrologistic — MVP 2.0 checkpoint
 
-Updated 11 October 2026. This public checkpoint contains scope and provenance,
+Updated 12 October 2026. This public checkpoint contains scope and provenance,
 not private evidence, credentials, local host paths or execution authority.
 
 - MVP1 `v0.2.0-mvp1` stays frozen. S0 and adopted S1 scope are closed.
@@ -109,6 +109,26 @@ not private evidence, credentials, local host paths or execution authority.
   is reported here. Unknown effects consume the new claim; both earlier attempts
   remain read-only. Independent terminal review still precedes adverse cases,
   native miniature, h300 or repeats; no live-containment or S2-closure claim.
+- PR #70 merged into develop at `1463dcf8b3280e5799edbf017daafc71e49bd70a`.
+  The maintainer authorized its one normal observation at frozen source
+  `d83d4e3e569b140da76d65f7b9615f638dba5798`. Reported NPAD regression:
+  481 passed/two intentional skips in 27.07 s. Preparation then failed with
+  `Extra source directory` while sealing current source, before claim creation
+  or sbatch. Read-only follow-up confirms `scripts/__pycache__` in the current
+  checkout and both predecessors, and CLAIM_ABSENT. No new job or terminal
+  archive exists for this bootstrap. These are maintainer-supplied observations,
+  not a newly checksum-audited NPAD carrier; preserve the failed checkout/XML.
+  Local reproduction establishes that isolated regression subprocesses without
+  explicit `-B` ignore PYTHONDONTWRITEBYTECODE and create the cache. The
+  [scoped correction](docs/mvp2_s2_compute_normal.md#bytecode-recovery--12-october-2026)
+  prevents that contamination, checks physical closure before/after regression,
+  and distinguishes strict current execution source from immutable historical
+  tracked-byte evidence. Historical caches are neither deleted, imported nor
+  certified; original archives/receipts retain their identities and semantics.
+  A fresh corrected checkout/source needs exact-head qualification, authorized
+  merge and a separately authorized normal-only CLI. Absence of the unused
+  claim does not authorize a retry; any later existing/unknown claim blocks
+  substitution. No adverse/native/h300/repeat gate is released.
 - S2 remains FULLY planned and open: P2 normal audit/adverse qualification;
   P3 adverse containment audit/licensed native integration; P4 licensed audit
   and fresh h300 admission; P5 diagnostic 1/2/4/8/16-thread block audit,
@@ -132,6 +152,11 @@ not private evidence, credentials, local host paths or execution authority.
   December 2026 is a target, not a commitment: the base planning window is
   January 2027 if sequential containment/experimental reviews slip. Do not
   reduce approved experiments to claim the editorial target was met.
+  The revised 12 October mandate preserves M2 methodological validation on
+  15 November, M3 scientific consolidation on 23 December and M4 submission
+  target on 31 December. These targets do not erase the conservative forecast;
+  reassess after live normal/adverse evidence. Use complete functional PRs and
+  focused/related/final qualification; no general refactor or runtime migration.
 - PR #64 portable memory is integrated into develop by the authorized merge
   above. Earlier independent/HOLD wording describes its initial proposal only.
   Its files are now part of develop and any later reviewed main promotion unless

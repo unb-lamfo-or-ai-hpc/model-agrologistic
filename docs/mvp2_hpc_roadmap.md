@@ -2,6 +2,17 @@
 
 ## Authority and scope
 
+12 October operational update: PR #70 is merged at
+`1463dcf8b3280e5799edbf017daafc71e49bd70a`; its authorized bootstrap failed
+before submission because isolated test subprocesses created ignored bytecode.
+The maintainer confirms caches in all three preserved sources and no new claim.
+The [bounded correction](mvp2_s2_compute_normal.md#bytecode-recovery--12-october-2026)
+combines prevention, historical-data/current-execution separation and end-to-end
+offline qualification. It does not add an experimental campaign, close S2 or
+admit another execution. Revised mandate: functional PRs and staged qualification,
+not component/fixture PR quotas; retain full scientific scope and M2 15 November,
+M3 23 December, M4 31 December targets, with evidence-led schedule reassessment.
+
 Reconciled 11 October 2026 after PR #66 integration and the negative normal
 observation; preserve the maintainer's revised full experimental
 scope. S1-C followed PRs #44, #47, #48, #49, #50 and #51. This plan supersedes the earlier roadmap's

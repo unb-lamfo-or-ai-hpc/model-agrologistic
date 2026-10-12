@@ -370,7 +370,10 @@ def test_partial_bundle_same_full_and_portable_replay(tmp_path, monkeypatch):
 @pytest.mark.parametrize("entry", ["--case", "native", "h300", "retry", "adverse"])
 def test_cli_rejects_scope_before_io(entry):
     result = subprocess.run(
-        [sys.executable, "-I", n.__file__, entry], capture_output=True, timeout=10, check=False
+        [sys.executable, "-B", "-I", n.__file__, entry],
+        capture_output=True,
+        timeout=10,
+        check=False,
     )
     assert result.returncode != 0 and b"first-normal scoped wrapper" in result.stderr
     assert b"ModuleNotFoundError" not in result.stderr
@@ -382,6 +385,7 @@ def test_cli_no_scope_expansion_argument(action):
     result = subprocess.run(
         [
             sys.executable,
+            "-B",
             "-I",
             n.__file__,
             action,
@@ -402,7 +406,7 @@ def test_real_non_linux_start_has_no_effect(tmp_path):
     if sys.platform == "linux":
         pytest.skip("Negative non-Linux-only path; no scheduler lookup")
     result = subprocess.run(
-        [sys.executable, "-I", n.__file__, "start", "--source-sha", "a" * 40],
+        [sys.executable, "-B", "-I", n.__file__, "start", "--source-sha", "a" * 40],
         capture_output=True,
         cwd=tmp_path,
         timeout=10,

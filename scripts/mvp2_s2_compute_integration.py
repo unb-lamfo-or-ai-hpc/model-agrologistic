@@ -111,7 +111,7 @@ def seal_history():
             "History release drift.",
         )
         n.recheck(envelope)  # Deliberately login-only; never called by compute verification.
-        manifest = identity.seal_login_source(spec, a.RealTransport(spec).source_command)
+        manifest = identity.seal_historical_source(spec, a.RealTransport(spec).source_command)
         s.require(manifest["source"] == envelope["source"], "History source drift.")
         s.require(
             records == {path: a.sha_file(path, r.LIMIT) for path in records},
@@ -185,7 +185,7 @@ def validate_release(release, commit, expected_digest):
             and all(spec[k] != old[k] for k in ("source_commit", "job_id", "run", "checkout")),
             "Historical identity/reuse drift.",
         )
-        identity.validate_manifest(
+        identity.validate_historical_manifest(
             entry["manifest"], old["source_commit"], s.digest(entry["manifest"])
         )
         claim = Path(o.BASE) / CLAIMS[index]
@@ -225,7 +225,7 @@ def verify_release(release, commit, expected_digest, *, role, deadline, clock=ti
             "Preserved archive byte drift.",
         )
         old = entry["specification"]
-        identity.verify_compute_source(
+        identity.verify_historical_source(
             old["checkout"], entry["manifest"], old["source_commit"], s.digest(entry["manifest"])
         )
         s.require(clock() < deadline, "Compute identity deadline.")

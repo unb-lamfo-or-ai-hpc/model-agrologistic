@@ -105,7 +105,7 @@ The new suite covers immutable proposal/release derivation, one-shot effects,
 ambiguous acknowledgements, stop timing, bounded fast-batch waiting, changed
 claims, actual CLI route refusal, Git-free dispatch composition, early failure
 diagnostics, portable negative archives and idempotent terminal collection.
-The bootstrap pins 483 cases across eight suites: Linux expects 481 passed
+The PR70 bootstrap pinned 483 cases across eight suites: Linux expected 481 passed
 and two intentional non-Linux-only negative CLI skips. Local Windows qualification
 reported 480 passed and three POSIX/Linux skips (pipes, kernel peer credentials
 and real POSIX checkout); those are different from the two Linux CLI skips.
@@ -118,3 +118,50 @@ homogeneous h300 thread window. Keep partial/negative results. Synchronization
 with main remains a separately reviewed and authorized S2-closure operation.
 S3/S4 stay cancelled; subsequent h400 selection, SCIP/h215, conditional h500
 and MVP2-focused S6-A/S6-B remain on the approved roadmap.
+
+## Bytecode recovery — 12 October 2026
+
+PR #70 is merged at `1463dcf8b3280e5799edbf017daafc71e49bd70a`. The maintainer
+authorized one normal observation from `d83d4e3e569b140da76d65f7b9615f638dba5798`.
+Its reported regression passed 481 cases with two intentional skips, but source
+sealing stopped before the new claim or sbatch. Read-only inspection reports
+ignored `scripts/__pycache__` in all three preserved checkouts and CLAIM_ABSENT.
+No job ID, terminal archive, live normal acceptance or containment is inferred.
+The original bootstrap, regression XML, sources and historical claims stay intact.
+
+The offending negative-CLI tests started Python with `-I` but without `-B`.
+Isolated mode ignores PYTHONDONTWRITEBYTECODE; parent interpreter flags do not
+propagate. Child imports wrote bytecode before argparse rejected an extra option.
+Git status ignored those files, while strict physical source closure rejected them.
+All isolated regression subprocesses now explicitly disable bytecode writes.
+
+Current source remains strict: no ignored/shadow files, extra directories or links.
+The driver checks ignored Git content before project imports and physical closure
+before and after regression. Relative-path diagnostics identify unexpected entries.
+The same eight suites run once in Linux CI in a clean Git-archive copy, with
+test products outside it and complete before/after byte-and-inventory verification.
+The corrected pin is 494 cases: Linux expects 492 passes and the same two named
+skips. Windows expects 491 passes and its three existing platform skips.
+Combining six pytest startups into one and enabling pip cache removes orchestration
+overhead; all existing suites/check names remain. No runtime saving is claimed
+without a measured CI comparison. An actual nested CLI regression also exercises
+the contamination boundary locally without a scheduler or solver.
+
+Historical source is data, not executable admission. Only the two fixed
+HISTORY entries use `s2-historical-tracked-source-v1`: original raw HEAD/login
+checks, every tracked file hash, bounded safe-file reads and original record/archive
+identities are retained. Ignored historical extras are not walked, trusted or
+included in that manifest; caches remain untouched. Historical code is never
+imported, dispatched or put on sys.path. Current source rejects this historical
+schema and retains full physical closure. This avoids imposing a new absence-of-
+ignored-files claim retrospectively on receipts that never certified it.
+
+Recovery requires a new reviewed immutable source in a fresh bootstrap directory.
+Do not patch/clean the failed checkout, delete either predecessor or overwrite
+the PR70 driver. The still-unused reserved claim may be created only by the new
+authorized normal gate; if it exists, source binding/collection rules apply and
+no new submission is permitted. The final PR handoff will give a new checksum
+and download into a new transfer directory, preserving the earlier script.
+No command is admitted by this document before qualification, authorized merge
+and explicit maintainer execution approval. The resource and scientific scope
+is unchanged; independent normal audit still precedes S2-P2 adverse release.

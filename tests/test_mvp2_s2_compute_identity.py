@@ -306,6 +306,85 @@ def test_real_git_seal_then_compute_without_git(source):
         identity.verify_compute_source(root, manifest, spec["source_commit"], s.digest(manifest))
         == manifest["source"]
     )
+    cache = root / "scripts" / "__pycache__"
+    cache.mkdir()
+    bytecode = cache / "mvp2_s2_synthetic_worker.cpython-313.pyc"
+    bytecode.write_bytes(b"historical cache, never executed")
+    (root / ".git" / "info" / "exclude").write_text("__pycache__/\n", encoding="utf-8")
+    historical = identity.seal_historical_source(spec, command)
+    assert historical["source"] == manifest["source"]
+    assert (
+        identity.verify_historical_source(
+            root, historical, spec["source_commit"], s.digest(historical)
+        )
+        == manifest["source"]
+    )
+    assert bytecode.read_bytes() == b"historical cache, never executed"
+    with pytest.raises(ValueError, match="Extra source directory"):
+        identity.seal_login_source(spec, command)
     (root / "asset.pdf").write_bytes(b"drift after preparation")
     with pytest.raises(ValueError, match="changed"):
-        identity.verify_compute_source(root, manifest, spec["source_commit"], s.digest(manifest))
+        identity.verify_historical_source(
+            root, historical, spec["source_commit"], s.digest(historical)
+        )
+    with pytest.raises(ValueError):
+        identity.seal_historical_source(spec, command)
+
+
+def test_history_cache_is_preserved_but_not_current_execution_admission(source, monkeypatch):
+    root, manifest, digest = source
+    cache = root / "scripts" / "__pycache__"
+    cache.mkdir()
+    bytecode = cache / "mvp2_s2_synthetic_worker.cpython-313.pyc"
+    bytecode.write_bytes(b"untrusted historical bytes; never import or execute")
+    historical = {**manifest, "schema_version": "s2-historical-tracked-source-v1"}
+    before = {p.relative_to(root): p.read_bytes() for p in root.rglob("*") if p.is_file()}
+    monkeypatch.setattr(subprocess, "Popen", lambda *a, **kw: pytest.fail("History execution"))
+    assert (
+        identity.verify_historical_source(root, historical, "a" * 40, s.digest(historical))
+        == manifest["source"]
+    )
+    assert before == {p.relative_to(root): p.read_bytes() for p in root.rglob("*") if p.is_file()}
+    with pytest.raises(ValueError, match="Extra source directory.*__pycache__"):
+        identity.verify_compute_source(root, manifest, "a" * 40, digest)
+    with pytest.raises(ValueError, match="binding"):
+        identity.verify_compute_source(root, historical, "a" * 40, s.digest(historical))
+    with pytest.raises(ValueError, match="binding"):
+        identity.verify_historical_source(root, manifest, "a" * 40, digest)
+
+
+@pytest.mark.parametrize("drift", ["changed", "missing", "digest", "commit", "bound"])
+def test_historical_tracked_integrity_cannot_be_bypassed(source, monkeypatch, drift):
+    root, original, _ = source
+    manifest = {**original, "schema_version": "s2-historical-tracked-source-v1"}
+    target = root / next(iter(manifest["files"]))
+    if drift == "changed":
+        target.write_bytes(b"drift")
+    elif drift == "missing":
+        target.unlink()
+    elif drift == "bound":
+        monkeypatch.setattr(identity, "TREE_LIMIT", 1)
+    with pytest.raises((ValueError, OSError)):
+        identity.verify_historical_source(
+            root,
+            manifest,
+            "b" * 40 if drift == "commit" else "a" * 40,
+            "0" * 64 if drift == "digest" else s.digest(manifest),
+        )
+
+
+def test_history_walk_rejects_tracked_link_path_without_reading_it(source, monkeypatch):
+    root, original, _ = source
+    historical = {**original, "schema_version": "s2-historical-tracked-source-v1"}
+    target = root / next(iter(historical["files"]))
+    original_safe = identity.q._safe_path
+
+    def safe(path):
+        if path == target:
+            raise ValueError("Linked path")
+        return original_safe(path)
+
+    monkeypatch.setattr(identity.q, "_safe_path", safe)
+    monkeypatch.setattr(a, "_file", lambda *a, **kw: pytest.fail("Read unsafe history"))
+    with pytest.raises(ValueError, match="Linked"):
+        identity.verify_historical_source(root, historical, "a" * 40, s.digest(historical))
