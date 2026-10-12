@@ -84,7 +84,21 @@ def read(path, limit=LIMIT):
 
 
 def load(path, limit=LIMIT):
-    return json.loads(read(path, limit))
+    return decode(read(path, limit))
+
+
+def decode(raw):
+    def pairs(items):
+        result = {}
+        for key, value in items:
+            require(key not in result, "Duplicate JSON key.")
+            result[key] = value
+        return result
+
+    def constant(value):
+        raise ValueError("Nonfinite JSON value.")
+
+    return json.loads(raw, object_pairs_hook=pairs, parse_constant=constant)
 
 
 def write_new(path, value):
@@ -707,7 +721,7 @@ def audit(path, sha, commit, job, plan_sha):
                 and member.size <= LIMIT,
                 "Unsafe archive.",
             )
-            records[member.name] = json.loads(archive.extractfile(member).read(LIMIT + 1))
+            records[member.name] = decode(archive.extractfile(member).read(LIMIT + 1))
     return review(records, commit, job, plan_sha)
 
 
@@ -726,6 +740,18 @@ def collect(commit):
     receipt = claim_path() / "collection.json"
     if receipt.exists():
         saved = load(receipt)
+        archive = safe(saved["archive"])
+        require(
+            archive.name == "s2-allocation-diagnostic-evidence.tar.gz"
+            and archive.parent.parent == claim_path()
+            and archive.parent.name.startswith("collection-"),
+            "Cached archive location.",
+        )
+        require(
+            read(Path(str(archive) + ".sha256")).decode("ascii")
+            == saved["sha256"] + "  " + archive.name + "\n",
+            "Cached sidecar drift.",
+        )
         outcome = audit(Path(saved["archive"]), saved["sha256"], commit, job, sha)
     else:
         acct = Path(plan["tools"]["sacct"])
@@ -769,7 +795,7 @@ def collect(commit):
         pack(archive, records)
         saved = {"archive": str(archive), "sha256": digest(read(archive, 1024**2))}
         require(audit(archive, saved["sha256"], commit, job, sha) == outcome, "Archive roundtrip.")
-        with Path(str(archive) + ".sha256").open("x", encoding="ascii") as stream:
+        with Path(str(archive) + ".sha256").open("x", encoding="ascii", newline="\n") as stream:
             stream.write(saved["sha256"] + "  " + archive.name + "\n")
         write_new(receipt, saved)
     print("DIAGNOSTIC_STATUS=" + outcome["status"])

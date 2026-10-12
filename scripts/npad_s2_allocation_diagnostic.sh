@@ -55,7 +55,7 @@ if [[ $ACTION == start ]]; then
 import sys
 import xml.etree.ElementTree as ET
 cases = ET.parse(sys.argv[1]).getroot().findall('.//testcase')
-assert len(cases) == 56 and not any(c.find(k) is not None for c in cases for k in ('failure', 'error', 'skipped'))
+assert len(cases) == 59 and not any(c.find(k) is not None for c in cases for k in ('failure', 'error', 'skipped'))
 print(f'NPAD_ALLOCATION_REGRESSION={len(cases)} passed; zero failures/errors/skips')
 PY
 fi
