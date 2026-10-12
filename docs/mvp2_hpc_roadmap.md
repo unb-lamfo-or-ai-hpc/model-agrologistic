@@ -2,6 +2,15 @@
 
 ## Authority and scope
 
+12 October normal update: PR #75 is integrated. Job 2208459 progressed to a
+numeric step but preserved `blocked_unbound` with no samples and unknown remote
+cleanup. A distinct parser defect blocked collection of its attributed CANCELLED
+state. [Collect-only recovery](mvp2_s2_accounting_recovery.md) preserves original
+identities and negative evidence. Audit precedes any next execution. A proposed
+three-job/four-hour pause campaign cannot replace the pending live gates or
+silently change the 1800-second h300 screening design. All experimental scope
+below remains planned, not admitted; no main/develop synchronization now.
+
 12 October post-merge continuation: PR #74 is integrated at
 `4b10f6bb623b7e2a77eaa85979a22d0dbdaa79d1`. The next functional PR qualifies the
 complete [node-normal one-shot lifecycle](mvp2_s2_node_normal.md), retaining the
