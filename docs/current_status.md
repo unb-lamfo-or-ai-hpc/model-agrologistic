@@ -1,7 +1,7 @@
-# Dated research status: 11 October 2026
+# Dated research status: 12 October 2026
 
 This is a derived handoff snapshot, not a new certificate. Reviewed integration
-base: develop `d6ab499c634bd03432f968c76df61d5cc521b862` (PR #69 merged).
+base: develop `1463dcf8b3280e5799edbf017daafc71e49bd70a` (PR #70 merged).
 Read [PROJECT_STATE.md](../PROJECT_STATE.md), the [roadmap](mvp2_hpc_roadmap.md)
 and linked evidence for full history. Refresh live PR state before continuing;
 open PR content is not integrated code. The [portable memory](research_context.md)
@@ -36,6 +36,18 @@ a replacement. Final capacity quality must be read separately from the earlier
 capacity-pass gap; acceptance retains the inherited hierarchical allowances.
 
 ## Current open work: S2
+
+Latest observation: the authorized PR70 normal bootstrap passed its reported
+481 tests/two intentional skips, then failed in current source sealing before
+claim creation/submission. Maintainer read-only follow-up confirms ignored
+`scripts/__pycache__` in current and both historical checkouts; CLAIM_ABSENT.
+The [bytecode correction](mvp2_s2_compute_normal.md#bytecode-recovery--12-october-2026)
+qualifies explicit child `-B`, regression-to-physical-closure composition and
+separate historical tracked-byte verification without cleaning evidence.
+Earlier next-owner/merge wording below describes the prior handoff, not permission
+to rerun it. Next owner: agent qualifies this bounded correction; maintainer
+authorizes its merge and a new frozen normal-only execution separately.
+No new job, live normal acceptance, containment or adverse/native/h300 admission.
 
 PRs #53–#69 successively qualify thread parameters, diagnostic design, runtime
 controls, native-worker/evidence seams, containment observations, numeric Slurm
