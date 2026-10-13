@@ -4,8 +4,11 @@ Planning baseline, 13 October 2026: PR #78 merged into develop at
 `b416c11a42981dbfc6a330a35d3d0bcb4f1e4652`. This campaign consolidates the
 already contracted work; it does not add a new experimental gate, scheduler,
 solver campaign or authorization token. It is **not yet an end-to-end runnable
-campaign**. Only PR #77 has a qualified current normal-only handoff; its new
-terminal evidence has not been supplied. All later releases remain closed.
+campaign**. PR #79 has now merged; PR #80 reconciles this plan with the corrected
+normal-only handoff. The PR #77 start stopped before submission because two
+byte-identical recovery carriers existed. PR #80 retains that same normal slot
+and selects the previously audited carrier explicitly, without deleting either.
+Corrected terminal evidence is not supplied. All later releases remain closed.
 
 The [machine-readable contract](mvp2_s2_closure_campaign.json) and
 [read-only compiler](../scripts/plan_mvp2_s2_closure.py) check the inherited
@@ -168,9 +171,12 @@ viability; do not trade away scientific scope to mask an operational delay.
 
 ## Executable next step now
 
-Use only the [PR #77 pinned start/status/collect instructions](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/77#issuecomment-6135433213).
-Execution source remains `0f627f0779864ec5220d1e94b57e4bb6a6514433`, not this
-planning revision. If already started, collect the existing claim and transfer
+After PR #80 is merged, use only its [pinned start/status/collect instructions](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/80#issuecomment-6146287095).
+Execution source is `9c008eecb93aa4b4a221fced2fafead467d89021`, not this
+planning reconciliation. Driver SHA-256 is
+`3603441668908ecd7132da87b91c75da559e5e63dd68279b647f11417391c0b9`.
+The manifest's merge-required label describes a prerequisite, not a live result.
+If already started, collect the matching existing claim and transfer
 the archive plus SHA-256. Agent audits A before the B release decision. No long
 job can be admitted from the information currently supplied.
 

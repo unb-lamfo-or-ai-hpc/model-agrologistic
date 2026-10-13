@@ -29,8 +29,11 @@ is needed for this pre-reservation failure; no existing claim may be removed.
 
 After exact-head qualification and authorized merge, publish pinned download,
 explicit-path start, status and collect together. Preserve the failed bootstrap
-and both carriers. The campaign PR #79 remains independent and unmerged pending
-this operational correction; its old execution pin must be reconciled later.
+and both carriers. PR #79 is now merged; PR #80 reconciles its campaign with
+qualified execution source `9c008eecb93aa4b4a221fced2fafead467d89021` and
+unchanged driver SHA-256 `3603441668908ecd7132da87b91c75da559e5e63dd68279b647f11417391c0b9`.
+Use the [complete pinned handoff](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/80#issuecomment-6146287095)
+after the authorized merge; the planning reconciliation is not a new runtime pin.
 There is still no adverse/native/h300/repeat admission or resource-policy change.
 
 ## Scope and execution decision
