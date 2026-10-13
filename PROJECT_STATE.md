@@ -3,7 +3,25 @@
 Updated 13 October 2026. This public checkpoint contains scope and provenance,
 not private evidence, credentials, local host paths or execution authority.
 
-## Latest checkpoint — synthetic CPU-contract adjustment approved; execution closed
+## Latest checkpoint — resource contract merged; normal integration stays closed
+
+13 October 2026: PR #82 merged into develop at
+`656537428c5edd8702aff1ed1b865a604b117792` with explicit maintainer authorization
+and six successful checks. The [closed normal integration](docs/mvp2_s2_resource_normal_integration.md)
+connects the approved resource policy to the inherited normal handshake,
+sampling, exact-step cleanup and separate evidence/replay path. Exact cpuset
+IDs and initial affinity are read and bound; shared cpuacct is not worker-only
+usage. Legacy defaults remain strict. Public launch and module execution deny;
+no old driver selects this adapter and no claim or NPAD job is created.
+
+Next owner: agent qualifies this integration and requests merge only after
+Ready. The subsequent normal-only release/driver must bind fresh source/runtime,
+worker entry, terminal accounting and forensic collection before any separately
+admitted execution. No prior claim or certificate is rewritten. Full S2 scope,
+h300, cancelled S3/S4, EVPI/VSS exclusion and post-article branch synchronization
+remain unchanged. This is software qualification, not live containment proof.
+
+### Prior checkpoint — synthetic CPU-contract adjustment approved; execution closed
 
 13 October 2026: PR #81 merged into develop at
 `f6b1cacaae7cf1b751bd3fa7af6cf34ceb7ca6f6`. The maintainer approves a
