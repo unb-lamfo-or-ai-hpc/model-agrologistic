@@ -1,13 +1,25 @@
 # Dated research status: 13 October 2026
 
 This is a derived handoff snapshot, not a new certificate. Reviewed integration
-base: develop `f6b1cacaae7cf1b751bd3fa7af6cf34ceb7ca6f6` (PR #81 merged).
+base: develop `656537428c5edd8702aff1ed1b865a604b117792` (PR #82 merged).
 Read [PROJECT_STATE.md](../PROJECT_STATE.md), the [roadmap](mvp2_hpc_roadmap.md)
 and linked evidence for full history. Refresh live PR state before continuing;
 open PR content is not integrated code. The [portable memory](research_context.md)
 was integrated with explicit authorization; it is not an execution gate.
 
 ## Current handoff
+
+PR #82 is merged with explicit authorization. The
+[normal resource integration](mvp2_s2_resource_normal_integration.md) connects
+the approved v2 policy to the inherited handshake/sample/cleanup path and
+versioned replay. Exact CPU membership and initial affinity are independently
+read; zero post-exit membership is not fabricated into a live observation.
+The new adapter launch and CLI remain closed; historical drivers and claims
+are unchanged. Next: qualify/Ready this integration, request its merge, then
+qualify a fresh normal-only release and complete terminal/forensic collection.
+No NPAD command or live admission follows from this software checkpoint.
+
+### Prior contract handoff
 
 The maintainer approved the synthetic two-logical-CPU hard envelope within the
 same allocation, initial one-CPU affinity and unchanged memory/time, without
