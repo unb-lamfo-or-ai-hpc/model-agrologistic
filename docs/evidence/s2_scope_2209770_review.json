@@ -1,0 +1,58 @@
+{
+  "schema_version": "s2-scope-independent-review-v1",
+  "review_date": "2026-10-13",
+  "job_id": "2209770",
+  "source_commit": "450d10b38d2fcdb8101b38069559103a0098a0a0",
+  "archive_sha256": "f1f19fd0b494526af78e59ea979c5d428089e9f0afda4a7e78040d4df53be18f",
+  "plan_sha256": "de154547f34e184bfc4ee3984565db25e337a032292548bd3ce159a0bd1f2b1b",
+  "archive_member_inventory": ["anchor.json", "observation.json", "accounting.json"],
+  "checksum_verified": true,
+  "schema_and_identity_replay": "observed_not_qualified",
+  "numeric_step_pid_matches_observed_worker": true,
+  "same_uid_and_mountinfo_hash": true,
+  "all_recorded_scheduler_queries_completed_without_error": true,
+  "root_and_batch": {"state": "COMPLETED", "exit_code": "0:0", "elapsed_seconds": 3},
+  "numeric_step": {"state": "COMPLETED", "exit_code": "0:0", "elapsed_seconds": 0},
+  "controller_relations": {
+    "memory": "disjoint",
+    "cpuacct": "equal",
+    "freezer": "disjoint",
+    "cpuset": "disjoint"
+  },
+  "supervisor_limits": {
+    "memory_limit_bytes": 9223372036854771712,
+    "hierarchical_memory_limit_bytes": 2147483648,
+    "cpuset_cpu_count": 2
+  },
+  "worker_limits": {
+    "memory_limit_bytes": 9223372036854771712,
+    "hierarchical_memory_limit_bytes": 268435456,
+    "cpuset_cpu_count": 2,
+    "scheduler_reported_cpus": 1
+  },
+  "saved_affinity_followup": {
+    "provenance": "Maintainer-reported output of the supplied hash-asserting read-only command on preserved private status records; raw records were not transferred or independently rehashed locally.",
+    "reported_date": "2026-10-13",
+    "supervisor_status_sha256": "5105772e2e7a1345f4afaf097592445b86672d3f21f2ceda88dc88d1c6df3888",
+    "worker_status_sha256": "1cc8e293e3512298208f9d3ee08241eac8a44a3af382faa6996f63e2471a17cb",
+    "supervisor_cpus_allowed_list": "0,32",
+    "worker_cpus_allowed_list": "0",
+    "affinity_is_hard_one_cpu_containment_proof": false,
+    "physical_core_or_smt_topology_established": false,
+    "cpu_exclusivity_established": false,
+    "original_archive_modified": false
+  },
+  "remaining_questions": [
+    "Reconcile the scheduler CPU request, observed two-CPU cpuset and one-CPU worker affinity without weakening the hard resource contract.",
+    "Separate enforcement/process-tracking scope requirements from CPU accounting provenance.",
+    "Do not attribute shared cpuacct usage to the worker or infer a one-CPU hard bound from affinity alone."
+  ],
+  "historical_limitation": "This observation diagnoses the current topology; it does not reconstruct missing controller-specific bytes from job 2209138.",
+  "normal_worker_admitted": false,
+  "live_containment_qualified": false,
+  "adverse_execution_admitted": false,
+  "native_miniature_admitted": false,
+  "production_admitted": false,
+  "remote_cleanup_proven": false,
+  "repeats_admitted": false
+}
