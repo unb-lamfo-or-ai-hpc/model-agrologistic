@@ -9,6 +9,17 @@ was integrated with explicit authorization; it is not an execution gate.
 
 ## Current handoff
 
+PR #80 is merged at `5bf509a6db90b09eef8e1e13529f5039d934a9e1`.
+Job `2209138` has independently replayed negative evidence: batch completed,
+numeric step failed, shared/nested controller predicate failed at handshake.
+The normal claim is consumed, not retryable. Follow the
+[scope observation protocol](mvp2_s2_scope_observation.md): a separately qualified
+immutable head, one short observation-only job, then audit of all four controller
+relations. Neither this probe nor its successful collection admits normal,
+adverse, native, h300 or repeat execution. Prior handoff text below is historical.
+
+### Prior campaign and integration handoff
+
 The [S2 closure campaign](mvp2_s2_closure_campaign.md) consolidates the five blocks
 and remaining P2-P5 functional packages. It is a checked plan, not an end-to-end
 runnable release. Its six-hour h300 allocation remains behind normal/adverse/

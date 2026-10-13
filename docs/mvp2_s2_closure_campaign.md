@@ -1,5 +1,19 @@
 # S2 closure campaign: finite scope, staged admission
 
+Latest evidence, 13 October: PR #80 merged and job `2209138` consumed the normal
+slot without live qualification. Its root/batch completed but numeric step failed;
+the diagnostic records a shared/nested controller predicate failure. The
+[scope observation](mvp2_s2_scope_observation.md) is next: one independent
+5-minute, 2-CPU, 2048-MiB observation, not a normal repeat or downstream release.
+The historical A/B/D envelope below remains 7 h 12 min / 98.4 requested CPU-hours;
+this separate diagnostic adds at most 5 requested allocation minutes / 1/6
+requested CPU-hour, not measured usage or a revised whole-campaign budget.
+The machine plan marks the normal claim collection-only. A successor normal
+release, if justified by the observation, requires explicit scope and budget
+reconciliation; it is not silently included in the consumed slot.
+
+## Historical campaign baseline
+
 Planning baseline, 13 October 2026: PR #78 merged into develop at
 `b416c11a42981dbfc6a330a35d3d0bcb4f1e4652`. This campaign consolidates the
 already contracted work; it does not add a new experimental gate, scheduler,

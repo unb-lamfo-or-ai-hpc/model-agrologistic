@@ -2,6 +2,14 @@
 
 ## Authority and scope
 
+13 October evidence update after PR #80 merge: job `2209138` did not qualify
+normal containment; its numeric step failed and the preserved supervisor
+diagnostic identifies a shared/nested controller predicate, not which controller.
+Block A's claim is consumed. The next bounded action is the
+[scope observation](mvp2_s2_scope_observation.md), not another normal attempt or
+long campaign. Full S2 and its P2-P5 passage criteria remain unchanged. Earlier
+normal start instructions below are superseded by collection-only preservation.
+
 13 October integration update: PR #79 is merged; PR #80 reconciles the campaign
 and duplicate-carrier repair. Current normal execution source after its qualified
 merge is `9c008eecb93aa4b4a221fced2fafead467d89021`, with the same one-shot
