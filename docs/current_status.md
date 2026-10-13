@@ -1,13 +1,19 @@
 # Dated research status: 13 October 2026
 
 This is a derived handoff snapshot, not a new certificate. Reviewed integration
-base: develop `feb7b569c88315bff432c709445d07a482271f55` (PR #77 merged).
+base: develop `b416c11a42981dbfc6a330a35d3d0bcb4f1e4652` (PR #78 merged).
 Read [PROJECT_STATE.md](../PROJECT_STATE.md), the [roadmap](mvp2_hpc_roadmap.md)
 and linked evidence for full history. Refresh live PR state before continuing;
 open PR content is not integrated code. The [portable memory](research_context.md)
 was integrated with explicit authorization; it is not an execution gate.
 
 ## Current handoff
+
+The [S2 closure campaign](mvp2_s2_closure_campaign.md) consolidates the five blocks
+and remaining P2-P5 functional packages. It is a checked plan, not an end-to-end
+runnable release. Its six-hour h300 allocation remains behind normal/adverse/
+native admission. The native envelope and therefore total campaign budget are
+not yet frozen. Preparing this campaign does not create another NPAD prerequisite.
 
 PR #77 is integrated. The [step-normal gate](mvp2_s2_step_normal.md) keeps execution
 pin `0f627f0779864ec5220d1e94b57e4bb6a6514433` and the twelve-minute allocation.
