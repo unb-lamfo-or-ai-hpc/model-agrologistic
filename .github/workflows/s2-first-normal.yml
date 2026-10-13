@@ -191,12 +191,12 @@ jobs:
           import xml.etree.ElementTree as ET
           base = pathlib.Path(sys.argv[1])
           cases = ET.parse(base / 'successor.xml').getroot().findall('.//testcase')
-          assert len(cases) == 72
+          assert len(cases) == 86
           assert not any(c.find(k) is not None for c in cases for k in ('failure', 'error', 'skipped'))
           sys.path.insert(0, str(base / 'source'))
           from scripts import mvp2_s2_compute_identity as identity
           identity.inspect_tree(base / 'source', json.loads((base / 'source-files.json').read_text()))
-          print('72 successor passes; no scheduler effects; source closure preserved')
+          print('86 successor passes; no scheduler effects; source closure preserved')
           PY
       - name: Real clean login source seal (local Git only)
         run: |
