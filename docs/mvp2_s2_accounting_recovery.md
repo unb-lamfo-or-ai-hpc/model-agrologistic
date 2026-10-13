@@ -26,8 +26,46 @@ Two distinct problems must not be conflated:
    Attribution to a UID does not identify the triggering software fault or prove
    intentional human cancellation. No OOM/time exhaustion is established.
 
-These are maintainer-supplied excerpts, not an independently audited archive.
-No location-specific cause should be invented from the missing exception.
+The initial diagnosis used maintainer-supplied excerpts. The carrier is now
+independently audited as recorded below. No location-specific historical cause
+should be invented from the missing exception.
+
+## Audited recovery checkpoint, 12 October 2026
+
+The collection-only reader at `17717b7775a4dce44bf9896e372da5a3ac8c9d7d`
+passed 63 NPAD tests without skips and submitted no job. Independently checked:
+
+| Artifact | SHA-256 | Result |
+| --- | --- | --- |
+| `s2-node-accounting-recovery-2208459.tar.gz` | `64617380256e8cf3c5031ef87fb3d71d9526d923e69e100c5140879a60ad34e3` | 19 unique regular members; all 18 manifest member sizes and hashes match |
+| `s2-node-normal-evidence.tar.gz` | `67fd0db5c0087a4aba8693166412946d9b2966d05c9d7c17ea176a03f5bcc0f5` | Byte-identical to nested replay; independent existing audit returns `integrity_replayed_not_live_qualified` |
+
+Execution proposal/release canonical digests match the frozen anchors below.
+The worker identity receipt matches the attempt's source manifest (519 files),
+worker and runtime identities. This proves startup identity verification, not
+successful IPC release or scientific execution. No binding, contract, phase
+completion, terminal worker receipt or telemetry sample was recorded. The local
+client stop intent and negative operation are preserved. Remote cleanup remains
+unproven. Neither carrier contains the original exception or raw step query.
+
+### Source-backed step schema defect and bounded correction
+
+The [Slurm 22.05.11 step formatter](https://github.com/SchedMD/slurm/blob/slurm-22-05-11-1/src/api/job_step_info.c)
+(`slurm_sprint_job_step_info`) emits a numeric `UserId`, `Nodes` as a count,
+and `NodeList` as the host list. The previous reader instead required
+`name(uid)` and compared `Nodes` to the host name; its fixture reproduced those
+incorrect assumptions. This independently establishes a compatibility defect
+on the handshake path. It is not proof of the exact historical failing line:
+the job's missing raw response/exception prevents that attribution.
+
+The reader now requires a bounded numeric step UID matching the owner,
+`Nodes=1`, and exact `NodeList` matching the accepted scheduler node. The
+allocation UID grammar, CPU/task/time limits, peer credentials and cgroup
+checks remain strict. The new step fingerprint includes both count and host;
+old releases and receipts are not rewritten or recertified. Thirty-one new
+offline cases cover the official-format fixture and missing, duplicated,
+mismatched or malformed fields; existing handshake fixtures are corrected.
+This is software qualification only, not an additional live admission.
 
 ## Functional correction and provenance
 
@@ -70,7 +108,15 @@ and TRANSFER_CHECKSUM. Archive status is `captured_not_live_qualified`; preserve
 negative semantic replay as well. Repeating collection can create a new analysis
 directory, but cannot submit or repeat an experiment.
 
-Review the carrier before diagnosing or qualifying another live normal attempt.
+Carrier review is complete and preserves its negative outcome. Complete the
+same PR's step-format qualification and Ready/merge review next. A subsequent
+normal-only gate must pin the corrected source, retain this negative predecessor,
+use a distinct claim, include the new format regression, and qualify its complete
+start/batch/worker/collect/audit route before issuing a new CLI handoff. Do not
+reuse the prior normal driver with a substituted source hash: it is not a new
+admission. Require live binding/contract, completed normal phases, containment
+and terminal evidence before considering adverse or native gates.
+
 Keep investigation in this functional PR where practical; request merge only
 after qualification and Ready. No new normal/adverse/native/h300 job is admitted
 by this PR. A suggestion to run three or more four-hour jobs during the pause
