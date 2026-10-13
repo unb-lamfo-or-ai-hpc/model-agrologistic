@@ -150,6 +150,10 @@ def seal_release(envelope, plan):
 
 
 def validate_release(release, commit, expected_digest):
+    if release.get("schema_version") == "s2-step-normal-release-v1":
+        from scripts import mvp2_s2_step_predecessor as step
+
+        return step.validate_release(release, commit, expected_digest)
     if release.get("schema_version") == "s2-node-normal-release-v1":
         from scripts import mvp2_s2_node_predecessor as node
 
@@ -222,6 +226,8 @@ def validate_release(release, commit, expected_digest):
 
 def release_claim(item):
     # Called only after full release validation; never a caller-selectable path.
+    if item["schema_version"] == "s2-step-normal-release-v1":
+        return ".mvp2-s2-step-normal-v1"
     if item["schema_version"] == "s2-node-normal-release-v1":
         return ".mvp2-s2-node-normal-v1"
     return (
@@ -236,10 +242,19 @@ def verify_release(release, commit, expected_digest, *, role, deadline, clock=ti
     item = validate_release(release, commit, expected_digest)
     spec = item["plan"]["specification"]
     s.require(clock() < deadline, "Compute identity deadline.")
-    if item["schema_version"] == "s2-node-normal-release-v1":
+    if item["schema_version"] in {"s2-node-normal-release-v1", "s2-step-normal-release-v1"}:
         from scripts import mvp2_s2_node_predecessor as node
 
         node.verify_diagnostic(item["diagnostic"])
+    if item["schema_version"] == "s2-step-normal-release-v1":
+        from scripts import mvp2_s2_step_predecessor as step
+
+        old_release = step.verify_reference(item["recovery"])
+        old_spec = old_release["plan"]["specification"]
+        s.require(
+            all(spec[k] != old_spec[k] for k in ("checkout", "run", "job_id", "source_commit")),
+            "Recovered source/run reuse.",
+        )
     for entry in item["history"]:
         for path, checksum in entry["records"].items():
             s.require(a.sha_file(path, r.LIMIT) == checksum, "Preserved record byte drift.")

@@ -7,6 +7,15 @@ and linked evidence for full history. Refresh live PR state before continuing;
 open PR content is not integrated code. The [portable memory](research_context.md)
 was integrated with explicit authorization; it is not an execution gate.
 
+## Current handoff
+
+PR #76 integrated at `0602edf3743cd3253b8253492d4098b65c4a0c9e`.
+The [step-normal gate](mvp2_s2_step_normal.md) prepares a separate, predecessor-bound
+normal-only attempt and complete paused-session handoff. It keeps the twelve-minute
+allocation; long solver jobs remain behind the pending live gates. Next owner:
+agent qualifies the PR, maintainer decides merge and executes pinned CLI.
+No submission or retry has occurred. Earlier statements below are historical.
+
 ## What is established
 
 Latest: job 2208459 has a preserved **negative unbound attempt**, not normal
