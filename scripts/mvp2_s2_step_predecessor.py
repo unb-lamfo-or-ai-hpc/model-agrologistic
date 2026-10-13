@@ -116,10 +116,22 @@ def verify_reference(record):
     return release
 
 
-def discover_reference():
-    candidates = sorted(Path(o.BASE).glob("s2-node-recovery-2208459-*/" + NAME))
-    s.require(len(candidates) == 1, "Expected one preserved recovery carrier; do not guess.")
-    record = {"identity": copy.deepcopy(RECOVERY), "archive": str(candidates[0])}
+def discover_reference(archive=None):
+    """Bind an explicit carrier or require unique discovery; never pick a first match.
+
+    A caller-selected location is not evidence acceptance: location, links, fixed
+    hashes, member inventory, replay and preserved original bytes are still checked.
+    No fallback is allowed when an explicit path is absent or invalid.
+    """
+    if archive is None:
+        candidates = sorted(Path(o.BASE).glob("s2-node-recovery-2208459-*/" + NAME))
+        s.require(
+            len(candidates) == 1,
+            f"Expected one preserved recovery carrier; found {len(candidates)}. "
+            "Preserve all candidates; use --recovery-archive only after read-only inspection.",
+        )
+        archive = candidates[0]
+    record = {"identity": copy.deepcopy(RECOVERY), "archive": str(archive)}
     verify_reference(record)
     return record
 
@@ -148,8 +160,9 @@ def validate_release(release, commit, digest):
     return copy.deepcopy(release)
 
 
-def seal_release(envelope, plan):
+def seal_release(envelope, plan, *, recovery_archive=None):
+    reference = discover_reference(recovery_archive)
     release = node.seal_release(envelope, plan)
     release["schema_version"] = SCHEMA
-    release["recovery"] = discover_reference()
+    release["recovery"] = reference
     return validate_release(release, envelope["source_commit"], s.digest(release))
