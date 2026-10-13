@@ -22,10 +22,10 @@ from scripts import mvp2_s2_slurm_synthetic as synthetic  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = ROOT / "docs/mvp2_s2_closure_campaign.json"
-NORMAL_DRIVER_SHA256 = "c27bb68977d58ab435fc27130cb57d52de2aad640c83b0951324121e68a8bd86"
+NORMAL_DRIVER_SHA256 = "3603441668908ecd7132da87b91c75da559e5e63dd68279b647f11417391c0b9"
 # One committed definition; this canonical digest detects an unreviewed plan
 # edit without duplicating the full graph in code. It is not an authorization.
-MANIFEST_SHA256 = "0ac110510df3f27900d371e33dfda7db526597305d88a6e0db281cdb3b5ae5ae"
+MANIFEST_SHA256 = "4afc19b27fe8c504d3ea17c5631837ab7d624acc1812c2f82fe607555bd0dce2"
 
 
 def canonical(value):
@@ -70,7 +70,7 @@ def compile_campaign(manifest):
         raise ValueError("Synthetic case coverage drift.")
     driver_hash = hashlib.sha256((ROOT / "scripts/npad_s2_step_normal.sh").read_bytes()).hexdigest()
     if driver_hash != NORMAL_DRIVER_SHA256:
-        raise ValueError("Frozen PR77 bootstrap changed; no substitute execution pin.")
+        raise ValueError("Frozen PR80 bootstrap changed; no substitute execution pin.")
     allocation = policy["allocation"]
     synthetic_jobs = 1 + len(adverse)
     synthetic_seconds = synthetic_jobs * profile["allocation_wall_seconds"]
@@ -121,8 +121,8 @@ def compile_campaign(manifest):
             "historical_failed_jobs_included": False,
             "normal_slot_is_existing_pr77_not_a_repeat": True,
         },
-        "current_blocker": "PR77 normal terminal evidence and independent live audit not supplied",
-        "next_human_action": "Use frozen PR77 handoff; collect only if claim already exists",
+        "current_blocker": "Corrected normal terminal evidence and independent live audit missing",
+        "next_human_action": "After PR80 merge use its pin; existing claims are collection-only",
         "execution_admitted": False,
         "repeats_admitted": False,
         "s2_complete": False,
