@@ -540,10 +540,18 @@ def review_allocation(text, job, uid, node):
 def review_step(text, binding, uid, node):
     binding = s.binding(binding)
     d = fields(text)
+    # Slurm 22.05.11 job_step_info.c emits a numeric UID and a node count.
+    # Allocation UserId=name(uid) and step NodeList must not be conflated.
+    step_uid = d.get("UserId", "")
+    s.require(
+        re.fullmatch(r"0|[1-9][0-9]{0,9}", step_uid) is not None and int(step_uid) <= 0xFFFFFFFF,
+        "Step UID grammar.",
+    )
     s.require(
         d.get("StepId") == binding["job_id"] + "." + binding["worker_step_id"]
-        and _uid(d.get("UserId", "")) == uid
-        and d.get("Nodes") == node
+        and int(step_uid) == uid
+        and d.get("Nodes") == "1"
+        and d.get("NodeList") == node
         and d.get("State") == "RUNNING"
         and d.get("CPUs") == "1"
         and d.get("Tasks") == "1"
@@ -551,7 +559,19 @@ def review_step(text, binding, uid, node):
         "Worker step mismatch.",
     )
     return s.digest(
-        {k: d[k] for k in ("StepId", "UserId", "Nodes", "State", "CPUs", "Tasks", "TimeLimit")}
+        {
+            k: d[k]
+            for k in (
+                "StepId",
+                "UserId",
+                "Nodes",
+                "NodeList",
+                "State",
+                "CPUs",
+                "Tasks",
+                "TimeLimit",
+            )
+        }
     )
 
 
