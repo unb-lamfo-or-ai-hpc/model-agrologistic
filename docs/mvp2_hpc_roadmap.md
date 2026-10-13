@@ -2,6 +2,15 @@
 
 ## Authority and scope
 
+12 October recovery audit update: both carrier checksums and all inventory
+members are verified. Worker startup identity is present; live binding/contract,
+phase completion and telemetry are absent. The same functional PR corrects
+source-confirmed Slurm step UID/count/host parsing, not scientific parameters.
+Complete offline qualification/Ready and explicit merge before qualifying a
+distinct normal-only successor. No additional long-duration campaign is admitted.
+Full S2 remains planned: normal, adverse containment, native miniature, homogeneous
+h300 thread contrast and audited closure, followed by branch reconciliation.
+
 12 October normal update: PR #75 is integrated. Job 2208459 progressed to a
 numeric step but preserved `blocked_unbound` with no samples and unknown remote
 cleanup. A distinct parser defect blocked collection of its attributed CANCELLED
