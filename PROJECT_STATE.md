@@ -3,7 +3,26 @@
 Updated 12 October 2026. This public checkpoint contains scope and provenance,
 not private evidence, credentials, local host paths or execution authority.
 
-## Latest operational checkpoint — preserve and recover job 2208459
+## Latest operational checkpoint — PR #76 integrated; one corrected normal gate
+
+PR #76 merged into develop at `0602edf3743cd3253b8253492d4098b65c4a0c9e`.
+The [step-normal successor](docs/mvp2_s2_step_normal.md) prepares the complete
+one-shot lifecycle using the corrected Slurm parser and a distinct claim.
+It binds the audited recovery carrier of 2208459 and rechecks original evidence
+without mutating it. Portable output includes the bounded operation diagnostic.
+The twelve-minute synthetic allocation and all scientific budgets are unchanged.
+The maintainer requests a long run before the pause; this does not make an
+unqualified h300/solver execution scientifically or operationally admissible.
+After the acknowledged short normal submission, the login session may be closed
+and collection resumed after the pause. No need to keep a dummy job running.
+
+Next owner: agent qualifies the functional PR; Ready and explicit merge precede
+the pinned CLI handoff. The maintainer runs the admitted normal-only command.
+No new job has been submitted, no repeat or chained campaign is admitted.
+Live audit, adverse containment, native miniature and h300 qualification remain
+pending. The prior negative checkpoint below remains evidence, not acceptance.
+
+### Prior operational checkpoint — preserve and recover job 2208459
 
 PR #75 merged into develop at `c5cc384c732f511525fcfdea6b020c29538afb0d`.
 Execution source `9911bd68db480fccea2fd774ac0a969238300ece`: maintainer reports
