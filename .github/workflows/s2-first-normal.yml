@@ -158,6 +158,25 @@ jobs:
           identity.inspect_tree(base / 'source', json.loads((base / 'source-files.json').read_text()))
           print('63 recovery passes; no scheduler effects; source closure preserved')
           PY
+      - name: Upstream Slurm step format (no scheduler effects)
+        run: |
+          cd "$S2_ROOT/source"
+          python -B -I -m pytest -p no:cacheprovider tests/test_mvp2_s2_step_identity.py \
+            -q --basetemp="$S2_ROOT/step-tests" --junitxml="$S2_ROOT/step.xml"
+          python -B -I - "$S2_ROOT" <<'PY'
+          import json
+          import pathlib
+          import sys
+          import xml.etree.ElementTree as ET
+          base = pathlib.Path(sys.argv[1])
+          cases = ET.parse(base / 'step.xml').getroot().findall('.//testcase')
+          assert len(cases) == 31
+          assert not any(c.find(k) is not None for c in cases for k in ('failure', 'error', 'skipped'))
+          sys.path.insert(0, str(base / 'source'))
+          from scripts import mvp2_s2_compute_identity as identity
+          identity.inspect_tree(base / 'source', json.loads((base / 'source-files.json').read_text()))
+          print('31 step-format passes; no scheduler effects; source closure preserved')
+          PY
       - name: Real clean login source seal (local Git only)
         run: |
           git -c core.autocrlf=false clone --no-checkout . "$S2_ROOT/login-source"
@@ -183,3 +202,4 @@ jobs:
             ${{ env.S2_ROOT }}/node.xml
             ${{ env.S2_ROOT }}/node-normal.xml
             ${{ env.S2_ROOT }}/accounting.xml
+            ${{ env.S2_ROOT }}/step.xml
