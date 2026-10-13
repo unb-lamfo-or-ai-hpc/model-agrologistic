@@ -3,7 +3,34 @@
 Updated 13 October 2026. This public checkpoint contains scope and provenance,
 not private evidence, credentials, local host paths or execution authority.
 
-## Latest checkpoint — PR #77 integrated; synchronization moved after article review
+## Latest checkpoint — PR #77 blocked by duplicate recovery paths; no job submitted
+
+13 October 2026: PR #78 is integrated into develop at
+`b416c11a42981dbfc6a330a35d3d0bcb4f1e4652`; campaign PR #79 remains unmerged
+at the maintainer's direction. The PR #77 bootstrap passed 948 tests/two
+intentional platform skips and source inventory, then stopped before reservation
+in recovery discovery. The subsequent read-only NPAD inventory reports two
+carriers with the expected SHA-256
+`64617380256e8cf3c5031ef87fb3d71d9526d923e69e100c5140879a60ad34e3`.
+The defect is a path-cardinality assumption, not corrupted bytes or Slurm/solver
+failure. No new job was submitted through this failed start; a printed claim
+path is not proof of its existence. Preserve the bootstrap and both originals.
+
+The [bounded repair](docs/mvp2_s2_step_normal.md) selects an explicit archive
+while retaining all identity/inventory/original-byte validation; no candidate
+deletion or first/newest-path heuristic. Read-only verification precedes costly
+regression. Existing consumed claims remain collection-only and cannot be
+retargeted. Fresh start still reserves at most one normal synthetic job after
+qualification/merge, with unchanged resources and no following gate admission.
+
+Next owner: agent qualifies the focused repair and pinned complete handoff;
+maintainer decides its Ready merge and runs the corrected normal-only command.
+Use the previously audited collection's path, not an arbitrary duplicate.
+Reconcile #79 after this correction; do not merge it or reuse its stale pin now.
+S2 remains open; scientific scope, S3/S4 cancellation, EVPI/VSS exclusion and
+post-article-review main/develop synchronization remain unchanged.
+
+### Prior checkpoint — PR #77 integrated; synchronization moved after article review
 
 PR #77 merged into develop at `feb7b569c88315bff432c709445d07a482271f55`.
 The qualified execution pin remains `0f627f0779864ec5220d1e94b57e4bb6a6514433`;
