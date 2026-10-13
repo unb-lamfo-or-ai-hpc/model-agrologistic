@@ -3,33 +3,36 @@
 Updated 13 October 2026. This public checkpoint contains scope and provenance,
 not private evidence, credentials, local host paths or execution authority.
 
-## Latest checkpoint — PR #77 blocked by duplicate recovery paths; no job submitted
+## Latest checkpoint — PR #79 merged; PR #80 integration and pinned normal repair
 
-13 October 2026: PR #78 is integrated into develop at
-`b416c11a42981dbfc6a330a35d3d0bcb4f1e4652`; campaign PR #79 remains unmerged
-at the maintainer's direction. The PR #77 bootstrap passed 948 tests/two
-intentional platform skips and source inventory, then stopped before reservation
-in recovery discovery. The subsequent read-only NPAD inventory reports two
-carriers with the expected SHA-256
-`64617380256e8cf3c5031ef87fb3d71d9526d923e69e100c5140879a60ad34e3`.
-The defect is a path-cardinality assumption, not corrupted bytes or Slurm/solver
-failure. No new job was submitted through this failed start; a printed claim
-path is not proof of its existence. Preserve the bootstrap and both originals.
+13 October 2026: the maintainer merged PR #79 and authorized PR #80's merge
+after conflict resolution and qualification. Preserve both planning and repair
+history. The campaign now pins the already qualified PR #80 execution source
+`9c008eecb93aa4b4a221fced2fafead467d89021` and driver SHA-256
+`3603441668908ecd7132da87b91c75da559e5e63dd68279b647f11417391c0b9`.
+This reconciliation changes the planner/checkpoint, not the operational driver
+or its [complete CLI handoff](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/80#issuecomment-6146287095).
+Use that handoff after the qualified merge; no new execution pin is required.
 
-The [bounded repair](docs/mvp2_s2_step_normal.md) selects an explicit archive
-while retaining all identity/inventory/original-byte validation; no candidate
-deletion or first/newest-path heuristic. Read-only verification precedes costly
-regression. Existing consumed claims remain collection-only and cannot be
-retargeted. Fresh start still reserves at most one normal synthetic job after
-qualification/merge, with unchanged resources and no following gate admission.
+The failed PR #77 start passed 948 tests/two intentional skips but stopped
+before claim reservation and submission: two recovery paths had the same
+expected SHA-256 `64617380256e8cf3c5031ef87fb3d71d9526d923e69e100c5140879a60ad34e3`.
+The bounded repair selects the previously audited carrier explicitly and
+retains identity/inventory/original-byte validation. Preserve both originals
+and the failed bootstrap. No first/newest selection or candidate deletion.
+Read-only reference verification precedes regression; existing claims cannot
+be retargeted and remain collection-only. A printed claim path is not proof
+that a claim exists. No live normal result has been supplied.
 
-Next owner: agent qualifies the focused repair and pinned complete handoff;
-maintainer decides its Ready merge and runs the corrected normal-only command.
-Use the previously audited collection's path, not an arbitrary duplicate.
-Reconcile #79 after this correction; do not merge it or reuse its stale pin now.
-S2 remains open; scientific scope, S3/S4 cancellation, EVPI/VSS exclusion and
-post-article-review main/develop synchronization remain unchanged.
-## Latest checkpoint — PR #78 integrated; finite S2 closure campaign
+Next owner: agent qualifies the combined head and performs the authorized merge;
+maintainer executes the pinned normal-only command and transfers terminal
+archive/checksum; agent independently audits before any downstream release.
+Same one-shot claim, two CPUs, 2048 MiB, twelve-minute ceiling. No adverse,
+native, h300, repeat or long-job admission. S2 remains open; the four remaining
+functional packages and scientific scope are unchanged. Main/develop sync
+stays after article review; S3/S4 remain cancelled and EVPI/VSS excluded.
+
+### Prior checkpoint — PR #78 integrated; finite S2 closure campaign
 
 PR #78 merged into develop at `b416c11a42981dbfc6a330a35d3d0bcb4f1e4652`.
 The maintainer requests a campaign to complete full S2. The
