@@ -111,7 +111,7 @@ class Transport:
             )
         if argv[1:4] == ("-o", "show", "step"):
             return (
-                "StepId=500000.7 UserId=user(1000) Nodes=node State=RUNNING "
+                "StepId=500000.7 UserId=1000 Nodes=1 NodeList=node State=RUNNING "
                 "CPUs=1 Tasks=1 TimeLimit=00:09:00"
             )
         if argv[1:3] == ("listpids", "500000.7"):
