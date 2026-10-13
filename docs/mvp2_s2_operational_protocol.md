@@ -150,4 +150,5 @@ The [official sbatch](https://slurm.schedmd.com/sbatch.html),
 design choices, not installed 22.05.11 behavior. No performance, effective live
 containment or S2 completion claim is made. S3/S4 stay cancelled; bounded existing
 SCIP h215, h500/S5 and HPC-focused S6 remain the subsequent roadmap. Main/develop
-reconciliation waits until S2 closure; EVPI/VSS removal waits until S6.
+reconciliation waits until final consolidation after article review, not S2
+closure (13 October decision); EVPI/VSS removal waits until S6.

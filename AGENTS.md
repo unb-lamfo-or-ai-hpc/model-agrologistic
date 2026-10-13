@@ -33,9 +33,11 @@ checked-out branch. They do not configure other repositories or ChatGPT projects
   authorize the next execution.
 - Preserve claims, failed attempts, original archives and run directories.
   Never reuse an old claim to imply a fresh admission or overwrite original receipts.
-- Do not weaken branch protection, force-push shared history or synchronize main
-  before the reviewed S2-closure workflow. Release, deposit and submission are
-  separate later decisions.
+- Do not weaken branch protection or force-push shared history. Main/develop
+  reconciliation is deferred to final consolidation after article review, not
+  S2 closure (maintainer decision, 13 October 2026). Qualify separate Ready PRs
+  and obtain explicit merge authorization. Release, deposit and submission remain
+  separate decisions.
 
 ## Scientific and software discipline
 
@@ -66,6 +68,7 @@ with a date, exact source reference, pending decision and next owner. Hand off
 small validated summaries rather than entire chat histories. There is no automatic
 ChatGPT/Codex/HPC synchronization assumed by these documents.
 
-The initial portable-memory PR stays on its own branch pending a destination
-decision. Merging it into develop would include it in a later develop-to-main
-promotion unless an explicit, reviewed scope decision changes that promotion.
+The initial portable-memory proposal was independently integrated as PR #64.
+Its tracked files are part of develop and a later develop-to-main promotion
+unless an explicit, reviewed scope decision changes that promotion. The final
+post-article-review integration gate must inspect that scope; no implicit exclusion.

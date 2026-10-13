@@ -2,6 +2,28 @@
 
 ## Authority and scope
 
+13 October planning decision: PR #77 merged into develop at
+`feb7b569c88315bff432c709445d07a482271f55`; its qualified execution pin remains
+`0f627f0779864ec5220d1e94b57e4bb6a6514433`. No live result has been reported for
+this normal gate. The maintainer cancels synchronization at S2 closure and defers
+main/develop reconciliation to final consolidation **after article review**.
+This supersedes the earlier timing decision, not history preservation or merge
+authorization. The active sequence is:
+
+1. Complete full S2: normal audit, adverse containment, licensed native miniature,
+   homogeneous h300 thread contrast, evidence audit/configuration selection.
+2. Continue h400 and bounded existing-SCIP h215; admit h500 only through its
+   existing h400-success/resource gates. No branch synchronization prerequisite.
+3. Complete S6-A scientific consolidation and S6-B manuscript/reproducibility;
+   preserve and obtain human review of the article revision.
+4. Only then qualify the final protected-main reconciliation/promotion PRs,
+   preserving both histories and requesting each merge only after Ready.
+
+S3/S4 remain cancelled; EVPI/VSS remain excluded. This documentation update
+changes no scientific budget, parameter, execution permission or submission date.
+The [final integration gate](#final-post-article-review-gate--protected-main-reconciliation)
+defines the deferred checks. Earlier next-action statements below are historical.
+
 12 October successor update: PR #76 is merged into develop at
 `0602edf3743cd3253b8253492d4098b65c4a0c9e`. The next functional PR qualifies
 the [step-corrected normal lifecycle](mvp2_s2_step_normal.md), bound to the
@@ -19,7 +41,8 @@ source-confirmed Slurm step UID/count/host parsing, not scientific parameters.
 Complete offline qualification/Ready and explicit merge before qualifying a
 distinct normal-only successor. No additional long-duration campaign is admitted.
 Full S2 remains planned: normal, adverse containment, native miniature, homogeneous
-h300 thread contrast and audited closure, followed by branch reconciliation.
+h300 thread contrast and audited closure. The former end-of-S2 branch
+reconciliation timing is superseded by the 13 October decision above.
 
 12 October normal update: PR #75 is integrated. Job 2208459 progressed to a
 numeric step but preserved `blocked_unbound` with no samples and unknown remote
@@ -496,12 +519,17 @@ Reassess from observed dates, not by removing approved activities. Only P1's
 0.4 allocated core-hour synthetic ceiling is currently actionable; larger
 resource forecasts require the respective qualified manifests/headroom.
 
-## S2 closure — deferred protected-main reconciliation
+## Final post-article-review gate — protected-main reconciliation
 
-Maintainer decision on 9 October: synchronize only at the end of the current S2,
-not inside intermediate containment or diagnostic PRs. GitHub's develop view at
-`a4ce020` reports 111 commits ahead of main and 1 behind; this dated UI observation
-must be recomputed at closure. It is not a conflict assessment or authorization
+Maintainer decision on 13 October cancels the 9 October end-of-S2 timing.
+Synchronize at final consolidation after article review, not at S2 closure or
+inside experimental gates. Admission requires consolidated S6-A evidence, an
+identified human-reviewed S6-B article revision, and a consistent reproducibility
+inventory. Experimental closure does not itself authorize branch promotion.
+
+GitHub's develop view at `a4ce020` on 9 October reported 111 commits ahead of
+main and 1 behind; this historical observation must be recomputed at the final
+gate. It is not a current conflict assessment or authorization
 to overwrite main-only work. The attached PDF and read-only live settings review
 on 9 October now document the ruleset below; prior unaudited-rule wording is
 superseded for this dated snapshot, not for later effective-rule changes.
@@ -514,16 +542,16 @@ block-force-push are not selected. PDF SHA-256:
 `b2860c7cfc51bca4387a03e8dd92fc1a4232caf633fea435543080b9c3d25866`.
 These settings restrict ordinary writers but do not make main immutable against
 an exempt admin. They do not establish this assistant/account's bypass role.
-No rule, actor, permission or workflow is changed here. At closure recheck the
+No rule, actor, permission or workflow is changed here. At the final gate recheck the
 effective rule set and the implementation/provenance of `check-branch`; a missing
 or failing required check is a blocker, not authorization to bypass it. Review
 PRs remain our workflow even though this ruleset does not itself require them.
 
-At closure, inspect exact main/develop heads, both ancestry directions, exclusive
+After article review, inspect exact main/develop heads, both ancestry directions, exclusive
 commits and affected files. If main has exclusive history, first prepare a scoped
 main-to-develop reconciliation PR, resolve conflicts explicitly without dropping
 either side, qualify exact-head CI and request approval only when Ready. Then
-prepare the develop-to-main promotion PR for the integrated S2 snapshot, with
+prepare the develop-to-main promotion PR for the reviewed MVP2 code/article snapshot, with
 evidence ledger, scope/diff and checks. No force-push, history reset, protection
 bypass or rule weakening. A blocked protected-main merge is handed to the
 maintainer through normal review/merge controls.
@@ -539,9 +567,9 @@ directions; the sequence depends on the actual protected-branch rules and graph.
 Protection governs permitted mutations; it does not make history universally
 immutable against actors allowed by those rules. Release/tag/deposit and public
 manuscript deployment remain separate decisions. No promotion, reconciliation,
-rule change or merge authorization is exercised by the current software PR.
+rule change or merge authorization is exercised by this planning update.
 
 GitHub main stays stable, develop integrates scoped PRs. Qualify exact-head CI
 and mark Ready before requesting merge. The assistant prepares scoped code/docs;
 NPAD CLI is executed by the user and merge needs separate authorization. This
-S1-C performs no job, release, deposit or article edit.
+planning update performs no job, release, deposit or article edit.

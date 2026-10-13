@@ -1,9 +1,35 @@
 # Model Agrologistic — MVP 2.0 checkpoint
 
-Updated 12 October 2026. This public checkpoint contains scope and provenance,
+Updated 13 October 2026. This public checkpoint contains scope and provenance,
 not private evidence, credentials, local host paths or execution authority.
 
-## Latest operational checkpoint — PR #76 integrated; one corrected normal gate
+## Latest checkpoint — PR #77 integrated; synchronization moved after article review
+
+PR #77 merged into develop at `feb7b569c88315bff432c709445d07a482271f55`.
+The qualified execution pin remains `0f627f0779864ec5220d1e94b57e4bb6a6514433`;
+the [complete pinned CLI handoff](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/77#issuecomment-6135433213)
+and [step-normal contract](docs/mvp2_s2_step_normal.md) are unchanged. Four CI
+checks passed; this is software qualification, not a live NPAD result. No new
+job identifier or terminal evidence has been reported for this gate at this update.
+
+Maintainer decision, 13 October: cancel main/develop synchronization at S2 closure.
+Defer it to final consolidation **after article review**, following S6-A/S6-B.
+This supersedes the 9 October timing decision, not the requirement to preserve
+exclusive history or obtain separate authorization for each Ready merge PR.
+Reconciliation is neither an S2 exit criterion nor a dependency of h400,
+SCIP/h215, conditional h500 or manuscript work. Recheck exact branch heads,
+effective protection and promotion scope at the final gate, not by assuming
+the dated branch comparison remains current.
+
+Next owner: maintainer executes the already qualified normal-only CLI, or collects
+the existing claim if already started; agent audits the returned evidence before
+proposing the next gate. Keep the twelve-minute ceiling, one claim and immutable
+predecessor. No adverse/native/h300/repeat admission follows this planning change.
+Full S2 remains planned; S3/S4 stay cancelled; h400, existing SCIP/h215, conditional
+h500, S6-A and S6-B remain unchanged. EVPI/VSS remain excluded, with manuscript
+changes deferred to S6. No article, experiment, certificate or protection changed.
+
+### Prior checkpoint — PR #76 integrated; one corrected normal gate
 
 PR #76 merged into develop at `0602edf3743cd3253b8253492d4098b65c4a0c9e`.
 The [step-normal successor](docs/mvp2_s2_step_normal.md) prepares the complete
@@ -68,7 +94,8 @@ Next owner: agent completes exact-head CI and Ready; maintainer decides this
 new PR's merge. Only then publish the immutable human-executed NPAD handoff.
 At most one normal synthetic job is in scope. Collection cannot admit a repeat;
 adverse/native miniature/h300 gates remain closed. S2 remains open, with its
-full thread contrast and end-of-S2 main/develop reconciliation still planned.
+full thread contrast still planned. The then-planned end-of-S2 reconciliation
+was superseded by the 13 October post-article-review decision above.
 Historical next-action statements below do not override this checkpoint.
 
 ### Prior operational checkpoint — allocation diagnosis (preserved)
@@ -315,10 +342,11 @@ freezes the diagnostic handoff; maintainer executes/returns evidence. Earlier
   operational driver; maintainer reviews merge only after Ready, then executes
   the separately frozen CLI. Do not run a branch-head script before that handoff.
   Independent terminal audit precedes every later admission.
-- Maintainer requested main/develop reconciliation only at S2 closure. On
-  9 October, GitHub at develop `a4ce020` reports 111 commits ahead / 1 behind main;
-  this is a dated UI observation, not a frozen final comparison. Recheck both
-  exact heads at closure, incorporate main-only history into develop by reviewed
+- Maintainer moved main/develop reconciliation from S2 closure to final
+  consolidation after article review on 13 October. On 9 October, GitHub at
+  develop `a4ce020` reported 111 commits ahead / 1 behind main; this is historical,
+  not the current branch graph. Recheck both exact heads at the final gate,
+  incorporate main-only history into develop by reviewed
   PR if needed, then propose develop into protected main. Verify main ancestry
   and equal integrated trees; do not force-push, bypass or weaken protection.
   A merge commit on main can require a final main-to-develop back-merge to leave
@@ -331,7 +359,7 @@ freezes the diagnostic handoff; maintainer executes/returns evidence. Earlier
   Organization admin has Always allow bypass. Require-PR, linear-history,
   up-to-date-before-merge and block-force-push boxes are not selected. This is
   not immutability or proof of a particular actor's admin/bypass role. Recheck
-  all effective rules/check provenance at S2 closure; no rule is changed or
+  all effective rules/check provenance at the final post-review gate; no rule is changed or
   bypassed. The check's implementation/provenance is not yet audited here.
 
 See [authoritative roadmap](docs/mvp2_hpc_roadmap.md),

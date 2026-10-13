@@ -1,7 +1,7 @@
-# Dated research status: 12 October 2026
+# Dated research status: 13 October 2026
 
 This is a derived handoff snapshot, not a new certificate. Reviewed integration
-base: develop `c5cc384c732f511525fcfdea6b020c29538afb0d` (PR #75 merged).
+base: develop `feb7b569c88315bff432c709445d07a482271f55` (PR #77 merged).
 Read [PROJECT_STATE.md](../PROJECT_STATE.md), the [roadmap](mvp2_hpc_roadmap.md)
 and linked evidence for full history. Refresh live PR state before continuing;
 open PR content is not integrated code. The [portable memory](research_context.md)
@@ -9,12 +9,17 @@ was integrated with explicit authorization; it is not an execution gate.
 
 ## Current handoff
 
-PR #76 integrated at `0602edf3743cd3253b8253492d4098b65c4a0c9e`.
-The [step-normal gate](mvp2_s2_step_normal.md) prepares a separate, predecessor-bound
-normal-only attempt and complete paused-session handoff. It keeps the twelve-minute
-allocation; long solver jobs remain behind the pending live gates. Next owner:
-agent qualifies the PR, maintainer decides merge and executes pinned CLI.
-No submission or retry has occurred. Earlier statements below are historical.
+PR #77 is integrated. The [step-normal gate](mvp2_s2_step_normal.md) keeps execution
+pin `0f627f0779864ec5220d1e94b57e4bb6a6514433` and the twelve-minute allocation.
+Next owner: maintainer executes the [pinned CLI or collects an existing claim](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/77#issuecomment-6135433213);
+agent audits returned evidence. No new live result has been reported here.
+Long solver jobs and subsequent admissions remain behind their pending gates.
+
+13 October decision: cancel synchronization at S2 closure; defer it to final
+consolidation after article review (S6-A/S6-B), through separately qualified,
+authorized PRs. S2 retains its full experiments and can close without main
+promotion. Later experimental/editorial work has no synchronization dependency.
+Earlier next-action statements below are historical, not current instructions.
 
 ## What is established
 
@@ -158,7 +163,7 @@ conditional on actual live evidence, not a fixed campaign quota.
 | Existing SCIP h215 | After S2: audit root LP, supported bounded hypotheses and a smaller positive control before any admitted large attempt |
 | S5 h500 | Conditional input/build/resource gates and bounded empirical frontier; not yet optimized or admitted |
 | S6 | Computational/HPC synthesis, coauthor reconciliation and separate reproducibility packaging |
-| Main synchronization | Deferred to S2 closure; inspect both ancestry directions and effective protection/checks |
+| Main synchronization | Final consolidation after article review, not S2 closure; inspect both ancestry directions, promotion scope and effective protection/checks; separate Ready/merge approvals |
 | Portable-memory integration | PR64 merged with authorization; its files belong to develop and a later reviewed promotion unless explicitly scoped otherwise |
 
 EVPI/VSS and section 3.8 are to be excluded at S6; these calculations are no

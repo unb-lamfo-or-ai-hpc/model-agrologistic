@@ -151,7 +151,8 @@ adverse synthetic release. S2-P3 audits adverse containment and qualifies licens
 native integration; S2-P4 reviews that gate and proposes fresh h300 admission;
 S2-P5 audits the 1/2/4/8/16-thread diagnostic block and records selection/limits.
 Production/repeats remain blocked until their own decisions. Main/develop
-reconciliation waits for full S2 closure and separately approved Ready PRs.
+reconciliation waits for final consolidation after article review and separately
+approved Ready PRs, not S2 closure (13 October decision).
 PR #64 was independently reviewed and then merged after PR #65 on 11 October
 with explicit maintainer authorization. No article, formulation, scientific parameter,
 dependency, dataset, protection rule or main change belongs to S2-P1.

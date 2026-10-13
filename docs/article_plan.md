@@ -81,6 +81,14 @@ effects, allowed objective degradation and unqualified equivalence visible.
    evidence inventory, route/cache provenance and an exact-code release manifest.
    Preserve the frozen MVP1 artifacts.
 
+Maintainer planning update, 13 October 2026: main/develop synchronization no longer
+belongs to S2 closure. After S6-A consolidation and review of the S6-B article,
+identify the accepted revision and consistent evidence/reproducibility inventory,
+then qualify the [final protected-branch integration](mvp2_hpc_roadmap.md#final-post-article-review-gate--protected-main-reconciliation).
+Inspect exclusive history, exact heads, scope and effective checks; request each
+merge only after its PR is Ready. This does not edit or replace the coauthor-reviewed
+manuscript, freeze a new article version, or authorize any merge now.
+
 Release/tag, final Zenodo deposit, public deployment, preprint and journal
 submission require their own later decisions. This file promises no submission
 date, acceptance, automatically synchronized chat history or experimental outcome.
