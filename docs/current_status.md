@@ -12,7 +12,12 @@ was integrated with explicit authorization; it is not an execution gate.
 Latest: job 2208459 has a preserved **negative unbound attempt**, not normal
 acceptance. Root/batch completed; step 0 was cancelled 0:9. The collection parser
 rejected Slurm's numeric cancellation suffix. See [recovery and limitations](mvp2_s2_accounting_recovery.md).
-The next action is separate-reader collection of existing evidence, not resubmission.
+The recovered carrier is now checksum/inventory audited; worker identity exists,
+but no binding/contract/phases or samples. Negative semantic replay is preserved.
+The same functional PR corrects source-confirmed Slurm step UID/count/host schema
+assumptions, with 31 new offline cases. Exact historical exception remains unknown.
+Next: finish qualification/Ready and obtain merge authorization; then qualify a
+distinct normal-only successor. Collection is complete, not a request to repeat.
 No three-job/four-hour campaign is admitted. The statements below are historical.
 
 Prior continuation: [node-normal operational gate](mvp2_s2_node_normal.md)
