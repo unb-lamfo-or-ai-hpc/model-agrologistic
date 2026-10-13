@@ -53,6 +53,32 @@ def test_old_pr77_execution_pin_cannot_be_restored_silently():
         p.compile_campaign(manifest)
 
 
+def test_completed_observation_does_not_recommend_a_repeat_or_admit_normal():
+    result = p.compile_campaign(p.load_manifest())
+    observation = result["scope_observation"]
+    assert observation == {
+        "job_id": "2209770",
+        "source_commit": "450d10b38d2fcdb8101b38069559103a0098a0a0",
+        "archive_sha256": "f1f19fd0b494526af78e59ea979c5d428089e9f0afda4a7e78040d4df53be18f",
+        "status": "observed_not_qualified",
+        "claim_consumed": True,
+        "reference_only_not_live_audit": True,
+        "execution_admitted": False,
+    }
+    assert "no NPAD command or repeat admitted" in result["next_human_action"]
+    assert "not hard containment" in result["current_blocker"]
+    assert not result["execution_admitted"] and not result["s2_complete"]
+
+
+def test_observation_reference_cannot_be_mutated_into_a_later_admission():
+    manifest = p.load_manifest()
+    result = p.compile_campaign(manifest)
+    result["scope_observation"]["execution_admitted"] = True
+    result["scope_observation"]["status"] = "accepted"
+    assert p.compile_campaign(manifest)["scope_observation"]["execution_admitted"] is False
+    assert p.compile_campaign(manifest)["scope_observation"]["status"] == "observed_not_qualified"
+
+
 @pytest.mark.parametrize(
     "key,value",
     [
