@@ -3,7 +3,29 @@
 Updated 13 October 2026. This public checkpoint contains scope and provenance,
 not private evidence, credentials, local host paths or execution authority.
 
-## Latest checkpoint — job 2209770 observed, not containment-qualified
+## Latest checkpoint — synthetic CPU-contract adjustment approved; execution closed
+
+13 October 2026: PR #81 merged into develop at
+`f6b1cacaae7cf1b751bd3fa7af6cf34ceb7ca6f6`. The maintainer approves a
+synthetic-only hard cpuset envelope of at most two logical CPUs inside the
+unchanged allocation, retaining initial one-CPU affinity and all memory/time
+limits. This approval does not change h300 and does not authorize execution.
+No further SMT configuration test is required by the selected route.
+
+The [versioned resource gate](docs/mvp2_s2_synthetic_resource_contract.md)
+qualifies contract, CPU-ID membership, enforcement/accounting separation,
+barrier/sample validation and redacted replay without scheduler effects.
+Shared cpuacct is scope usage only; worker CPU usage stays unavailable, not zero.
+Legacy runtime/replay remains strict; no historical receipt is upgraded to v2.
+
+Next owner: agent qualifies this closed PR and requests merge only after Ready.
+Subsequent explicit runtime integration must bind kernel/scheduler observations,
+version the normal successor and preserve negative/partial collection before
+any separately admitted CLI. No new job or retry is admitted. S2 remains open;
+full scientific scope, cancelled S3/S4, exclusion of EVPI/VSS and post-article
+branch synchronization remain unchanged. Original claims/archives are preserved.
+
+### Prior checkpoint — job 2209770 observed, not containment-qualified
 
 13 October 2026: scope diagnostic source `450d10b38d2fcdb8101b38069559103a0098a0a0`
 ran once as job `2209770`. The transferred SHA-256
