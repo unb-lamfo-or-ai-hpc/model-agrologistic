@@ -1,13 +1,23 @@
 # Dated research status: 13 October 2026
 
 This is a derived handoff snapshot, not a new certificate. Reviewed integration
-base: develop `b416c11a42981dbfc6a330a35d3d0bcb4f1e4652` (PR #78 merged).
+base: develop `f6b1cacaae7cf1b751bd3fa7af6cf34ceb7ca6f6` (PR #81 merged).
 Read [PROJECT_STATE.md](../PROJECT_STATE.md), the [roadmap](mvp2_hpc_roadmap.md)
 and linked evidence for full history. Refresh live PR state before continuing;
 open PR content is not integrated code. The [portable memory](research_context.md)
 was integrated with explicit authorization; it is not an execution gate.
 
 ## Current handoff
+
+The maintainer approved the synthetic two-logical-CPU hard envelope within the
+same allocation, initial one-CPU affinity and unchanged memory/time, without
+execution authority or h300 changes. The [closed v2 resource gate](mvp2_s2_synthetic_resource_contract.md)
+qualifies membership, enforcement/accounting separation and replay; legacy
+runtime remains unchanged. Next: qualify/Ready this PR, obtain merge approval,
+then integrate the explicit normal successor. No new SMT probe, repeat or job
+is admitted. Earlier pending-decision statements below are historical.
+
+### Prior observation handoff
 
 Latest observation: job `2209770`, source `450d10b38d2fcdb8101b38069559103a0098a0a0`,
 archive SHA-256 `f1f19fd0b494526af78e59ea979c5d428089e9f0afda4a7e78040d4df53be18f`.
