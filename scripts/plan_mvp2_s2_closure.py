@@ -122,11 +122,21 @@ def compile_campaign(manifest):
             "normal_slot_is_existing_pr77_not_a_repeat": True,
         },
         "current_blocker": (
-            "Job 2209138 failed the shared/nested controller predicate; normal claim consumed"
+            "Job 2209770 observed shared cpuacct and a two-CPU cpuset; "
+            "saved worker affinity is one CPU, not hard containment; both claims consumed"
         ),
         "next_human_action": (
-            "Use the separately qualified scope observation; no normal retry or downstream release"
+            "Review the scope audit and CPU-contract repair; no NPAD command or repeat admitted"
         ),
+        "scope_observation": {
+            "job_id": "2209770",
+            "source_commit": "450d10b38d2fcdb8101b38069559103a0098a0a0",
+            "archive_sha256": "f1f19fd0b494526af78e59ea979c5d428089e9f0afda4a7e78040d4df53be18f",
+            "status": "observed_not_qualified",
+            "claim_consumed": True,
+            "reference_only_not_live_audit": True,
+            "execution_admitted": False,
+        },
         "execution_admitted": False,
         "repeats_admitted": False,
         "s2_complete": False,
