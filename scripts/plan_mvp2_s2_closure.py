@@ -25,7 +25,7 @@ MANIFEST = ROOT / "docs/mvp2_s2_closure_campaign.json"
 NORMAL_DRIVER_SHA256 = "3603441668908ecd7132da87b91c75da559e5e63dd68279b647f11417391c0b9"
 # One committed definition; this canonical digest detects an unreviewed plan
 # edit without duplicating the full graph in code. It is not an authorization.
-MANIFEST_SHA256 = "4afc19b27fe8c504d3ea17c5631837ab7d624acc1812c2f82fe607555bd0dce2"
+MANIFEST_SHA256 = "23bced6a6278b288a71a065aea652ef3653d54b1864a6bd79ac653efddfa3740"
 
 
 def canonical(value):
@@ -121,8 +121,12 @@ def compile_campaign(manifest):
             "historical_failed_jobs_included": False,
             "normal_slot_is_existing_pr77_not_a_repeat": True,
         },
-        "current_blocker": "Corrected normal terminal evidence and independent live audit missing",
-        "next_human_action": "After PR80 merge use its pin; existing claims are collection-only",
+        "current_blocker": (
+            "Job 2209138 failed the shared/nested controller predicate; normal claim consumed"
+        ),
+        "next_human_action": (
+            "Use the separately qualified scope observation; no normal retry or downstream release"
+        ),
         "execution_admitted": False,
         "repeats_admitted": False,
         "s2_complete": False,
