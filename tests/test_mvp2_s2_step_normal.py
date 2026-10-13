@@ -502,3 +502,67 @@ def test_seal_failure_precedes_claim_and_scheduler(proposal, claim, monkeypatch)
     with pytest.raises(ValueError, match="Extra source directory"):
         y.start("a" * 40)
     assert not claim.exists()
+
+
+def test_explicit_reference_is_forwarded_before_reservation(proposal, claim, monkeypatch):
+    monkeypatch.setattr(o, "observe_envelope", lambda *args: proposal["envelope"])
+    monkeypatch.setattr(a.RealTransport, "_open", forbidden)
+    selected = Path("/selected")
+
+    def fail(env, plan, *, recovery_archive):
+        assert env == proposal["envelope"] and recovery_archive == selected
+        assert not claim.exists()
+        raise ValueError("Reference rejected")
+
+    monkeypatch.setattr(p, "seal_release", fail)
+    with pytest.raises(ValueError, match="Reference rejected"):
+        y.start("a" * 40, recovery_archive=selected)
+    assert not claim.exists()
+
+
+def test_existing_claim_cannot_be_retargeted(proposal, claim, monkeypatch):
+    publish(proposal)
+    monkeypatch.setattr(y, "collect", forbidden)
+    monkeypatch.setattr(p, "seal_release", forbidden)
+    with pytest.raises(ValueError, match="Existing claim"):
+        y.start("a" * 40, recovery_archive=Path("/other"))
+
+
+def test_reference_cli_is_read_only(monkeypatch, capsys):
+    calls = []
+    monkeypatch.setattr(n, "require_host", lambda: None)
+    monkeypatch.setattr(y, "start", forbidden)
+    monkeypatch.setattr(y, "collect", forbidden)
+    monkeypatch.setattr(a.RealTransport, "_open", forbidden)
+    selected = Path("/selected")
+
+    def reference(path):
+        calls.append(path)
+        return {"archive": str(path), "identity": p.RECOVERY}
+
+    monkeypatch.setattr(p, "discover_reference", reference)
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        ["gate", "reference", "--source-sha", "a" * 40, "--recovery-archive", str(selected)],
+    )
+    assert y.main() == 0 and calls == [selected]
+    assert "NO_CLAIM_CREATED_OR_JOB_SUBMITTED" in capsys.readouterr().out
+
+
+def test_collect_cli_rejects_reference_override(monkeypatch):
+    monkeypatch.setattr(y, "collect", forbidden)
+    monkeypatch.setattr(
+        sys, "argv", ["gate", "collect", "--source-sha", "a" * 40, "--recovery-archive", "/other"]
+    )
+    with pytest.raises(SystemExit) as error:
+        y.main()
+    assert error.value.code == 2
+
+
+def test_driver_preflights_reference_before_regression_and_keeps_selection():
+    driver = (Path(__file__).resolve().parents[1] / y.DRIVER).read_text()
+    assert driver.index("PHASE=recovery_reference_read_only") < driver.index("PHASE=regression")
+    assert driver.count('"${RECOVERY_ARGS[@]}"') == 2
+    assert "PHASE=reference_complete_no_submission" in driver
+    assert "Never retarget a consumed claim" in driver

@@ -15,10 +15,12 @@ runnable release. Its six-hour h300 allocation remains behind normal/adverse/
 native admission. The native envelope and therefore total campaign budget are
 not yet frozen. Preparing this campaign does not create another NPAD prerequisite.
 
-PR #77 is integrated. The [step-normal gate](mvp2_s2_step_normal.md) keeps execution
-pin `0f627f0779864ec5220d1e94b57e4bb6a6514433` and the twelve-minute allocation.
-Next owner: maintainer executes the [pinned CLI or collects an existing claim](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/77#issuecomment-6135433213);
-agent audits returned evidence. No new live result has been reported here.
+PR #79 is merged. PR #80 reconciles its campaign with the duplicate-carrier
+repair: the failed PR #77 start submitted no job. The [step-normal gate](mvp2_s2_step_normal.md)
+now pins `9c008eecb93aa4b4a221fced2fafead467d89021`, retaining the same claim
+and twelve-minute allocation. After PR #80's qualified authorized merge, the
+maintainer uses its [pinned CLI or collects a matching existing claim](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/80#issuecomment-6146287095);
+agent audits returned evidence. No live result has been reported for this repair.
 Long solver jobs and subsequent admissions remain behind their pending gates.
 
 13 October decision: cancel synchronization at S2 closure; defer it to final

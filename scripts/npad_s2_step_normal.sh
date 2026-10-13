@@ -2,12 +2,18 @@
 # Human login-node entry after reviewed merge; at most one normal synthetic job.
 set -euo pipefail
 umask 077
-if [[ $# != 2 || ! $2 =~ ^[0-9a-f]{40}$ || ! $1 =~ ^(start|collect)$ ]]; then
-  printf 'Usage: bash npad_s2_step_normal.sh {start|collect} FULL_REVIEWED_SOURCE_SHA\n' >&2
+if [[ $# -lt 2 || $# -gt 3 || ! $2 =~ ^[0-9a-f]{40}$ || ! $1 =~ ^(start|collect|reference)$ ]]; then
+  printf 'Usage: bash npad_s2_step_normal.sh {start|collect|reference} FULL_REVIEWED_SOURCE_SHA [EXACT_RECOVERY_ARCHIVE]\n' >&2
   exit 64
 fi
 ACTION=$1
 SOURCE_SHA=$2
+RECOVERY_ARGS=()
+if [[ $# == 3 ]]; then
+  test "$ACTION" != collect
+  test -n "$3"
+  RECOVERY_ARGS=(--recovery-archive "$3")
+fi
 BASE=/home/vrrcelestino/model-agrologistic-hygiene-audit
 PY=/home/vrrcelestino/venv313/bin/python
 CLAIM="$BASE/.mvp2-s2-step-normal-v1"
@@ -28,6 +34,8 @@ test "$(id -un)" = vrrcelestino
 export PYTHONNOUSERSITE=1 PYTHONDONTWRITEBYTECODE=1
 "$PY" -B -c 'import sys; assert sys.platform == "linux" and sys.version_info[:2] == (3, 13)'
 if [[ -e $CLAIM || -L $CLAIM ]]; then
+  test ${#RECOVERY_ARGS[@]} -eq 0  # Never retarget a consumed claim.
+  test "$ACTION" != reference
   PHASE=existing_claim_collect_only
   SRC=$("$PY" -B -I - "$CLAIM" "$SOURCE_SHA" <<'PY'
 import json
@@ -49,7 +57,7 @@ PY
 )
   RUN=$(dirname "$SRC")
 else
-  test "$ACTION" = start
+  test "$ACTION" = start -o "$ACTION" = reference
   test -d "$BASE/.mvp2-s2-first-normal-v1"
   test -d "$BASE/.mvp2-s2-normal-recovery-pr67-v1"
   test -d "$BASE/.mvp2-s2-compute-integration-v1"
@@ -107,6 +115,14 @@ if [[ -e $CLAIM ]]; then
   exit 0
 fi
 cd "$SRC"
+PHASE=recovery_reference_read_only
+# Fail on absent/ambiguous/corrupt evidence BEFORE the expensive regression.
+# The selected reference is verified again and sealed by start before reservation.
+"$PY" -B -I "$SRC/scripts/mvp2_s2_step_normal.py" reference --source-sha "$SOURCE_SHA" "${RECOVERY_ARGS[@]}"
+if [[ $ACTION == reference ]]; then
+  PHASE=reference_complete_no_submission
+  exit 0
+fi
 PHASE=regression
 "$PY" -B -m ruff check --no-cache scripts tests
 "$PY" -B -m pytest -p no:cacheprovider \
@@ -125,7 +141,7 @@ PHASE=regression
 import sys
 import xml.etree.ElementTree as ET
 cases = ET.parse(sys.argv[1]).getroot().findall('.//testcase')
-assert len(cases) == 950, 'Pinned regression count changed; preserve, do not bypass.'
+assert len(cases) == 964, 'Pinned regression count changed; preserve, do not bypass.'
 assert not any(x.find(k) is not None for x in cases for k in ('failure', 'error'))
 skips = [x for x in cases if x.find('skipped') is not None]
 assert len(skips) == 2 and {x.get('name') for x in skips} == {
@@ -152,6 +168,6 @@ identity.inspect_tree(root, files)
 print('POST_REGRESSION_SOURCE_INVENTORY=VERIFIED; NO_SUBMISSION_YET')
 PY
 PHASE=one_normal_only
-"$PY" -B -I "$SRC/scripts/mvp2_s2_step_normal.py" start --source-sha "$SOURCE_SHA"
+"$PY" -B -I "$SRC/scripts/mvp2_s2_step_normal.py" start --source-sha "$SOURCE_SHA" "${RECOVERY_ARGS[@]}"
 PHASE=known_job_collect_next
 printf 'Next: bash npad_s2_step_normal.sh collect %s\n' "$SOURCE_SHA"

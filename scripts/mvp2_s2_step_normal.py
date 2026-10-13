@@ -20,7 +20,14 @@ import time
 from pathlib import Path
 
 if __name__ == "__main__":
-    if len(sys.argv) < 2 or sys.argv[1] not in {"start", "collect", "batch", "worker", "audit"}:
+    if len(sys.argv) < 2 or sys.argv[1] not in {
+        "start",
+        "collect",
+        "batch",
+        "worker",
+        "audit",
+        "reference",
+    }:
         raise PermissionError("Normal synthetic entries only.")
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
@@ -196,10 +203,11 @@ def submit_components(proposal, commit, latch, submit):
         return {"status": "unknown_effect_no_retry"}
 
 
-def start(commit):
+def start(commit, *, recovery_archive=None):
     n.require_host()
     q._hash(commit, 40)
     if claim_path().exists():
+        s.require(recovery_archive is None, "Existing claim: collect its sealed reference only.")
         return collect(commit)
     envelope = o.observe_envelope(Path(__file__).resolve().parents[1], commit)
     local_entry(envelope)
@@ -212,7 +220,11 @@ def start(commit):
         job_id="1",
     )
     # All Git checks, historical replay and raw HEAD sealing happen on the login node.
-    proposal = p.seal_release(envelope, plan)
+    proposal = (
+        p.seal_release(envelope, plan)
+        if recovery_archive is None
+        else p.seal_release(envelope, plan, recovery_archive=recovery_archive)
+    )
     transport = a.RealTransport(plan["specification"])
     allowed = submit_argv(envelope, claim_path())
 
@@ -515,9 +527,11 @@ def collect(commit):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     subs = parser.add_subparsers(dest="action", required=True)
-    for action in ("start", "collect", "batch", "worker", "audit"):
+    for action in ("start", "collect", "batch", "worker", "audit", "reference"):
         child = subs.add_parser(action)
         child.add_argument("--source-sha", required=True)
+        if action in {"start", "reference"}:
+            child.add_argument("--recovery-archive", type=Path)
         if action == "batch":
             child.add_argument("--proposal-sha", required=True)
         if action in {"worker", "audit"}:
@@ -528,6 +542,15 @@ def main():
             for name in ("archive", "sha256", "job"):
                 child.add_argument("--" + name, required=True)
     args = parser.parse_args()
+    if args.action == "reference":
+        n.require_host()
+        q._hash(args.source_sha, 40)
+        record = p.discover_reference(args.recovery_archive)
+        print("RECOVERY_REFERENCE=VERIFIED_READ_ONLY")
+        print("RECOVERY_ARCHIVE=" + record["archive"])
+        print("RECOVERY_SHA256=" + record["identity"]["archive_sha256"])
+        print("NO_CLAIM_CREATED_OR_JOB_SUBMITTED; NO_LIVE_GATE_ACCEPTED")
+        return 0
     if args.action == "worker":
         worker(args.source_sha, args.specification_sha, args.release_sha)
         return 0
@@ -535,6 +558,8 @@ def main():
         result = batch(args.source_sha, args.proposal_sha)
     elif args.action == "audit":
         result = audit(args.archive, args.sha256, args.source_sha, args.job, args.release_sha)
+    elif args.action == "start" and args.recovery_archive is not None:
+        result = start(args.source_sha, recovery_archive=args.recovery_archive)
     else:
         result = {"start": start, "collect": collect}[args.action](args.source_sha)
     print("STEP_NORMAL_STATUS=" + result["status"])

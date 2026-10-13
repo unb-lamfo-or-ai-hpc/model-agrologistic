@@ -2,6 +2,13 @@
 
 ## Authority and scope
 
+13 October integration update: PR #79 is merged; PR #80 reconciles the campaign
+and duplicate-carrier repair. Current normal execution source after its qualified
+merge is `9c008eecb93aa4b4a221fced2fafead467d89021`, with the same one-shot
+claim and limits. The PR #77 bootstrap stopped before reservation/submission.
+This supersedes the old normal pin below, not the scientific plan or budgets.
+No normal live result or downstream admission follows from the merge.
+
 13 October campaign update, after PR #78 merge `b416c11a42981dbfc6a330a35d3d0bcb4f1e4652`:
 the [finite S2 closure campaign](mvp2_s2_closure_campaign.md) binds the current
 normal handoff, all five existing adverse cases, pending native envelope and

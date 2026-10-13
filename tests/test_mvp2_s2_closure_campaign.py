@@ -34,6 +34,25 @@ def test_no_implicit_release_or_repeated_normal():
     assert all(not s["execution_admitted_by_this_plan"] for s in result["h300_arms"])
 
 
+def test_reconciled_normal_pin_preserves_existing_slot_and_no_live_result():
+    stage = p.compile_campaign(p.load_manifest())["contract"]["stages"][0]
+    assert stage["source_commit"] == "9c008eecb93aa4b4a221fced2fafead467d89021"
+    assert stage["driver_sha256"] == p.NORMAL_DRIVER_SHA256
+    assert stage["claim"] == ".mvp2-s2-step-normal-v1"
+    assert stage["evidence"] == "pre_submission_blocked_no_live_result"
+    assert stage["release"] == "qualified_pr80_merge_required"
+
+
+def test_old_pr77_execution_pin_cannot_be_restored_silently():
+    manifest = p.load_manifest()
+    manifest["stages"][0]["source_commit"] = "0f627f0779864ec5220d1e94b57e4bb6a6514433"
+    manifest["stages"][0]["driver_sha256"] = (
+        "c27bb68977d58ab435fc27130cb57d52de2aad640c83b0951324121e68a8bd86"
+    )
+    with pytest.raises(ValueError, match="Unreviewed campaign"):
+        p.compile_campaign(manifest)
+
+
 @pytest.mark.parametrize(
     "key,value",
     [
