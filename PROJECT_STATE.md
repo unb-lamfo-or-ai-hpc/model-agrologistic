@@ -12,15 +12,26 @@ step 0 CANCELLED with numeric UID attribution, 0:9 in 4 s. Collection rejected
 the legitimate cancellation suffix. Original attempt: `blocked_unbound`, zero
 samples, `adapter_failure_preserved`; operation: `adapter_failure_unknown_effect`,
 local client reaped, remote cleanup not proven. This is not live normal acceptance.
-No independently audited carrier is available yet; preserve the original claim,
-source, run and all receipts. The wrapper's completed preservation is not success.
+The recovered carrier is now independently audited: SHA-256
+`64617380256e8cf3c5031ef87fb3d71d9526d923e69e100c5140879a60ad34e3`;
+19 unique regular members, all inventory hashes verified. Nested replay matches
+`67fd0db5c0087a4aba8693166412946d9b2966d05c9d7c17ea176a03f5bcc0f5` and
+remains `integrity_replayed_not_live_qualified`. Worker identity was verified,
+but no binding/contract/phases or telemetry were recorded. Preserve the original
+claim, source, run and receipts; wrapper completion is not worker success.
 
 The [accounting recovery](docs/mvp2_s2_accounting_recovery.md) corrects the strict
 state grammar and qualifies a separate collection-only reader with frozen
 proposal/release binding, raw evidence, optional semantic replay and checksums.
 Future supervisor failures gain message-free stage/location diagnostics without
-altering historical schemas. Next owner: agent qualifies the functional PR and
-provides the pinned reader; maintainer collects/transfers existing evidence.
+altering historical schemas. Source inspection also identified incorrect step
+UID/node-count parsing against Slurm 22.05.11; the correction and 31 offline
+regressions remain in the same functional PR. This is a demonstrated schema bug,
+not proof of the historical exception (absent from the carrier). Next owner:
+agent completes qualification/Ready; maintainer decides merge. Then qualify a
+distinct normal-only successor with complete operational handoff, not an old
+driver with a substituted source hash. The collector itself passed 63 NPAD tests
+at analysis source `17717b7775a4dce44bf9896e372da5a3ac8c9d7d`, submitting no job.
 No retry, long-running campaign or admission follows from collection or CI.
 Audit before deciding the next normal/adverse/native/h300 gate. S2 remains open.
 
