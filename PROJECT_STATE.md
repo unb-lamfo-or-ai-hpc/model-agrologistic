@@ -3,7 +3,71 @@
 Updated 13 October 2026. This public checkpoint contains scope and provenance,
 not private evidence, credentials, local host paths or execution authority.
 
-## Latest checkpoint — PR #79 merged; PR #80 integration and pinned normal repair
+## Latest checkpoint — job 2209770 observed, not containment-qualified
+
+13 October 2026: scope diagnostic source `450d10b38d2fcdb8101b38069559103a0098a0a0`
+ran once as job `2209770`. The transferred SHA-256
+`f1f19fd0b494526af78e59ea979c5d428089e9f0afda4a7e78040d4df53be18f`
+matches the sidecar and independent schema/identity replay returned
+`observed_not_qualified`. Root/batch completed 0:0 in 3 seconds; numeric step
+completed 0:0 with an accounting duration rounded to 0 seconds. The worker PID
+matches the numeric-step listpids record; both identities have the same UID and
+mountinfo hash. All three scheduler queries completed without errors.
+
+[Independent review](docs/evidence/s2_scope_2209770_review.json): memory, freezer
+and cpuset scopes are disjoint; cpuacct is equal. This identifies the incompatible
+all-four-controller separation assumption in the observed topology, but cannot
+retroactively recover the missing controller-specific bytes of job `2209138`.
+Reported hierarchical memory ceilings are 256 MiB for the worker and 2 GiB for
+the supervisor, despite the much larger direct leaf limits. Both cpusets contain
+two CPUs although the numeric step reports one allocated CPU. The existing
+normal gate would also reject that cpuset count. On 13 October the maintainer
+returned the hash-asserting saved-status read: supervisor `Cpus_allowed_list=0,32`,
+worker `Cpus_allowed_list=0`. This is a separately attributed follow-up, not an
+addition to the original archive or a local rehash of untransferred raw records.
+The worker's observed affinity was narrower than its cpuset. Physical-core/SMT
+topology, CPU exclusivity and a hard one-CPU bound are not established.
+
+Next owner: agent qualifies a role-aware design separating enforcement from
+accounting and reconciles the CPU contract before proposing a successor. Shared
+cpuacct must not be mislabeled as worker-only CPU usage. A narrow affinity mask
+alone must not be promoted to proof of a one-CPU hard containment boundary.
+Do not merely remove cpuacct from one predicate and retry: reconcile validators,
+resource schemas and CPU metrics together. Preserve both consumed claims and
+all original evidence. Every downstream admission and cleanup flag remains false.
+PR #81 is still open/Ready at the observed head; no merge authorization inferred.
+
+### Prior checkpoint — job 2209138 negative; controller observation next
+
+PR #80 merged into develop at `5bf509a6db90b09eef8e1e13529f5039d934a9e1`.
+The normal source `9c008eecb93aa4b4a221fced2fafead467d89021` ran as job
+`2209138`: root/batch COMPLETED 0:0 in 8 s, numeric step FAILED 2:0 in 4 s.
+The transferred archive SHA-256 is
+`4f0f4bc20337d5bc7b42283afd5de620d0500509d6a7010938b18425214a14a1`.
+Independent replay reproduced `integrity_replayed_not_live_qualified`.
+Source/runtime identity passed in both roles. The preserved diagnostic points
+to `separated_scopes`, line 239 of the frozen source: at least one controller
+was shared or nested. It does not identify which controller or nesting direction.
+No contract, phase samples, isolation or remote-cleanup proof was produced.
+Do not equate batch completion with normal acceptance, or infer a solver failure.
+
+Next: qualify and run the [bounded scope observation](docs/mvp2_s2_scope_observation.md),
+one 5-minute, 2-CPU, 2048-MiB allocation with an idle numeric step; no solver,
+normal workload, adverse case, native miniature, h300 or repeat is admitted.
+The new observation claim is independent; preserve the consumed normal claim,
+original source and evidence. It records all four controller relationships
+without changing the isolation predicate. Raw proc/query records stay private
+on NPAD; the transfer contains allowlisted observations, hashes and accounting.
+Agent qualifies the immutable observation head; maintainer runs/collects it;
+agent audits before proposing any runtime-policy repair. Merge still requires
+explicit approval. Successful observation is not live-containment qualification.
+
+S2 remains open with full scope and P2-P5 remaining after a qualified normal
+outcome. This diagnostic repairs block A's evidence gap, not a new scientific
+experiment. Main/develop synchronization remains after article review, S3/S4
+cancelled and EVPI/VSS excluded. No historical certificate or manuscript changes.
+
+### Prior checkpoint — PR #79 merged; PR #80 integration and pinned normal repair
 
 13 October 2026: the maintainer merged PR #79 and authorized PR #80's merge
 after conflict resolution and qualification. Preserve both planning and repair

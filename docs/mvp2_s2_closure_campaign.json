@@ -9,11 +9,11 @@
     {
       "id": "normal",
       "requires": [],
-      "release": "qualified_pr80_merge_required",
+      "release": "consumed_claim_collection_only",
       "source_commit": "9c008eecb93aa4b4a221fced2fafead467d89021",
       "driver_sha256": "3603441668908ecd7132da87b91c75da559e5e63dd68279b647f11417391c0b9",
       "claim": ".mvp2-s2-step-normal-v1",
-      "evidence": "pre_submission_blocked_no_live_result"
+      "evidence": "job_2209138_integrity_replayed_not_live_qualified"
     },
     {
       "id": "adverse",
