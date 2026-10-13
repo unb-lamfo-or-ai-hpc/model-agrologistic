@@ -932,7 +932,7 @@ class BatchAdapter:
                 "Supervisor moved.",
             )
             receipts.append(
-                q.barrier(
+                self.barrier(
                     self.contract,
                     pids,
                     self.worker["identity"],
@@ -945,7 +945,7 @@ class BatchAdapter:
                 )
             )
         self.initial_snapshot = copy.deepcopy(snap)
-        self.controller = q.Controller(self.contract, self.started)
+        self.controller = self.make_controller()
         self.controller.release(self._now(), *receipts)
         c.write_once(self.root / "contract.json", self.contract)
         c.write_once(
@@ -955,7 +955,7 @@ class BatchAdapter:
         self.server.release(
             {
                 "nonce": self.item["nonce"],
-                "contract_sha256": s.digest(self.contract),
+                "contract_sha256": self.release_digest(),
                 "worker_step_id": binding["worker_step_id"],
             },
             30 - (self._now() - self.started),
@@ -973,7 +973,7 @@ class BatchAdapter:
 
     def _signal(self, name):
         s.require(name not in self.signal_names, "Repeated adapter signal.")
-        q.verify_events(self.contract, self.controller.events)
+        self.verify_events()
         s.require(
             self.controller.events[-1]["payload"]["action"] == name + "_exact_step",
             "No controller intent.",
@@ -1004,7 +1004,7 @@ class BatchAdapter:
             reaped = self.handle.process.poll() is not None
             pids, _records = self._members()
             snap = self.snapshot(self.worker["scopes"])
-            validate_snapshot(snap)
+            self.check_snapshot(snap, pids)
             initial = self.initial_snapshot["counters"]
             s.require(
                 all(
@@ -1105,6 +1105,22 @@ class BatchAdapter:
         if action in {"TERM_exact_step", "KILL_exact_step"}:
             self._signal(action.split("_", 1)[0])
         return action
+
+    def barrier(self, *args):
+        """Strict legacy default; versioned subclasses must publish separate receipts."""
+        return q.barrier(*args)
+
+    def make_controller(self):
+        return q.Controller(self.contract, self.started)
+
+    def release_digest(self):
+        return s.digest(self.contract)
+
+    def verify_events(self):
+        return q.verify_events(self.contract, self.controller.events)
+
+    def check_snapshot(self, snapshot, _pids):
+        return validate_snapshot(snapshot)
 
     def preserve(self, *, failure_code=None):
         """Keep an unbound/partial attempt without guessing signals or rerunning."""
