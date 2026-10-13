@@ -34,13 +34,13 @@ def test_no_implicit_release_or_repeated_normal():
     assert all(not s["execution_admitted_by_this_plan"] for s in result["h300_arms"])
 
 
-def test_reconciled_normal_pin_preserves_existing_slot_and_no_live_result():
+def test_consumed_normal_pin_preserves_negative_evidence_and_blocks_retry():
     stage = p.compile_campaign(p.load_manifest())["contract"]["stages"][0]
     assert stage["source_commit"] == "9c008eecb93aa4b4a221fced2fafead467d89021"
     assert stage["driver_sha256"] == p.NORMAL_DRIVER_SHA256
     assert stage["claim"] == ".mvp2-s2-step-normal-v1"
-    assert stage["evidence"] == "pre_submission_blocked_no_live_result"
-    assert stage["release"] == "qualified_pr80_merge_required"
+    assert stage["evidence"] == "job_2209138_integrity_replayed_not_live_qualified"
+    assert stage["release"] == "consumed_claim_collection_only"
 
 
 def test_old_pr77_execution_pin_cannot_be_restored_silently():
