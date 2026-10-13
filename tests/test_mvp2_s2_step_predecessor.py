@@ -89,8 +89,74 @@ def test_absent_or_ambiguous_reference_is_not_guessed(tmp_path, monkeypatch, cou
         folder.mkdir()
         (folder / p.NAME).write_bytes(b"x")
     monkeypatch.setattr(p, "verify_reference", lambda _: pytest.fail("Must not choose a carrier"))
-    with pytest.raises(ValueError, match="Expected one"):
+    with pytest.raises(ValueError, match=f"found {count}"):
         p.discover_reference()
+
+
+@pytest.mark.parametrize("other_bytes", [b"unrelated", None], ids=["different", "identical"])
+def test_explicit_carrier_disambiguates_without_deleting_or_changing_files(carrier, other_bytes):
+    path, _, _, _ = carrier
+    other = path.parent.parent / "s2-node-recovery-2208459-other" / p.NAME
+    other.parent.mkdir()
+    other.write_bytes(path.read_bytes() if other_bytes is None else other_bytes)
+    before = {candidate: candidate.read_bytes() for candidate in (path, other)}
+    with pytest.raises(ValueError, match="found 2"):
+        p.discover_reference()
+    record = p.discover_reference(path)
+    assert record["archive"] == str(path)
+    assert all(candidate.read_bytes() == raw for candidate, raw in before.items())
+
+
+def test_explicit_missing_carrier_never_falls_back_to_unique_existing_one(carrier):
+    path, _, _, _ = carrier
+    missing = path.parent.parent / "s2-node-recovery-2208459-missing" / p.NAME
+    with pytest.raises(FileNotFoundError):
+        p.discover_reference(missing)
+
+
+def test_explicit_checksum_drift_still_blocks(carrier):
+    path, _, _, _ = carrier
+    path.write_bytes(b"corrupt")
+    with pytest.raises(ValueError, match="checksum"):
+        p.discover_reference(path)
+
+
+@pytest.mark.parametrize("kind", ["outside", "wrong_name", "traversal"])
+def test_explicit_location_remains_bounded(carrier, kind):
+    path, _, _, _ = carrier
+    value = {
+        "outside": path.parent.parent.parent / path.parent.name / p.NAME,
+        "wrong_name": path.with_name("other.tar.gz"),
+        "traversal": path.parent / ".." / path.parent.name / p.NAME,
+    }[kind]
+    with pytest.raises(ValueError, match="location"):
+        p.discover_reference(value)
+
+
+def test_explicit_selection_preserves_safe_path_gate(carrier, monkeypatch):
+    path, _, _, _ = carrier
+
+    def reject_links(selected):
+        assert selected == path
+        raise ValueError("Linked evidence rejected")
+
+    monkeypatch.setattr(p.q, "_safe_path", reject_links)
+    monkeypatch.setattr(p, "read_recovery", lambda *_: pytest.fail("Unsafe read"))
+    with pytest.raises(ValueError, match="Linked"):
+        p.discover_reference(path)
+
+
+def test_reference_failure_precedes_source_seal(monkeypatch):
+    selected = "/selected"
+
+    def reject(value):
+        assert value == selected
+        raise ValueError("Missing reference")
+
+    monkeypatch.setattr(p, "discover_reference", reject)
+    monkeypatch.setattr(p.node, "seal_release", lambda *_: pytest.fail("Unexpected seal"))
+    with pytest.raises(ValueError, match="Missing"):
+        p.seal_release({}, {}, recovery_archive=selected)
 
 
 @pytest.mark.parametrize(
