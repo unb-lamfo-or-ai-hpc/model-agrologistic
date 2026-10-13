@@ -6,6 +6,7 @@ supports `--help`; inspect its input and output defaults before execution.
 
 | Stage | Entry points | Effects |
 |---|---|---|
+| S2 campaign planning | `plan_mvp2_s2_closure.py` | Check frozen campaign scope and existing budget arithmetic; print only, no scheduler/solver/admission or output files |
 | Source lineage | `reconcile_artur_benchmark.py`, `build_artur_instance.py` | Verify/acquire pinned assets and persist a bounded instance |
 | Normalization | `normalize_artur_instance.py`, `build_artur_solver_workbook.py` | Produce audited derived inputs; never silently alter raw evidence |
 | Population | `audit_warehouse_registry.py`, `build_policy_population_workbooks.py` | Select nested real facilities and translate candidate capacities/costs |
