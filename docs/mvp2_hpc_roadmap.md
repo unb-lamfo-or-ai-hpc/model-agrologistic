@@ -2,6 +2,15 @@
 
 ## Authority and scope
 
+13 October CPU-contract decision after PR #81 merge: the maintainer approves
+at most two logical CPUs in the synthetic worker cpuset, within the unchanged
+allocation, with initial one-CPU affinity and unchanged memory/time. This is
+not execution approval or a change to h300. The [closed resource gate](mvp2_s2_synthetic_resource_contract.md)
+qualifies the new schema and replay while preserving strict legacy behavior.
+Explicit runtime integration/normal release remains before live qualification;
+no additional SMT configuration experiment is required. S2 P2-P5 and all later
+scientific scope remain unchanged. No historical claim/certificate is replaced.
+
 13 October scope result: job `2209770` independently replayed as
 `observed_not_qualified`. The [review](evidence/s2_scope_2209770_review.json)
 identifies shared cpuacct, disjoint enforcement/tracking scopes and a separate
