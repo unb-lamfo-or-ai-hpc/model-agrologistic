@@ -1,5 +1,12 @@
 # S2: bounded controller-scope observation after job 2209138
 
+**Subsequent decision, 13 October:** PR #81 is merged; the maintainer approved
+the synthetic-only two-logical-CPU envelope, initial one-CPU affinity and
+unchanged allocation/memory/time, without admitting execution or changing h300.
+See the [versioned resource contract](mvp2_s2_synthetic_resource_contract.md).
+The alternatives and pending approval below retain their historical context.
+No new SMT configuration probe is required by the selected route.
+
 ## Completed observation: job 2209770
 
 The [independent review](evidence/s2_scope_2209770_review.json) binds the exact
