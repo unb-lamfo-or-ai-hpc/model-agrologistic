@@ -2,6 +2,15 @@
 
 ## Authority and scope
 
+13 October campaign update, after PR #78 merge `b416c11a42981dbfc6a330a35d3d0bcb4f1e4652`:
+the [finite S2 closure campaign](mvp2_s2_closure_campaign.md) binds the current
+normal handoff, all five existing adverse cases, pending native envelope and
+one six-hour homogeneous h300 block. It consolidates the existing four remaining
+functional packages P2-P5, not a new live gate. Normal evidence is still missing;
+no downstream execution follows from planning or merge. Known A/B/D requested
+envelopes exclude the unbudgeted native integration; no total cost is invented.
+S2 exit requires evidence/decision, not positive speedup or main synchronization.
+
 13 October planning decision: PR #77 merged into develop at
 `feb7b569c88315bff432c709445d07a482271f55`; its qualified execution pin remains
 `0f627f0779864ec5220d1e94b57e4bb6a6514433`. No live result has been reported for

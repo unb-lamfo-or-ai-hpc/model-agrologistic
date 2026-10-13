@@ -1,0 +1,54 @@
+{
+  "schema_version": "mvp2-s2-closure-campaign-v1",
+  "campaign_id": "s2-closure-20261013",
+  "planning_base": "b416c11a42981dbfc6a330a35d3d0bcb4f1e4652",
+  "execution_admitted": false,
+  "automatic_chaining": false,
+  "automatic_repeats": false,
+  "stages": [
+    {
+      "id": "normal",
+      "requires": [],
+      "release": "merged_pr77",
+      "source_commit": "0f627f0779864ec5220d1e94b57e4bb6a6514433",
+      "driver_sha256": "c27bb68977d58ab435fc27130cb57d52de2aad640c83b0951324121e68a8bd86",
+      "claim": ".mvp2-s2-step-normal-v1",
+      "evidence": "not_supplied"
+    },
+    {
+      "id": "adverse",
+      "requires": ["normal_live_audit"],
+      "release": "pending_qualified_pr",
+      "maximum_jobs": 5,
+      "cases": ["build_failure", "optimization_failure", "export_failure", "disposal_failure", "nested_setsid_term_ignore"]
+    },
+    {
+      "id": "native_miniature",
+      "requires": ["adverse_live_audit"],
+      "release": "pending_qualified_pr",
+      "allocation": null,
+      "maximum_jobs": null,
+      "budget_status": "must_freeze_before_release"
+    },
+    {
+      "id": "h300",
+      "requires": ["native_live_audit", "fresh_h300_admission"],
+      "release": "pending_qualified_pr",
+      "maximum_blocks": 1,
+      "policy": "docs/mvp2_h300_thread_policy.json",
+      "grid": [1, 2, 4, 8, 16],
+      "order": [4, 1, 8, 2, 16]
+    },
+    {
+      "id": "closure",
+      "requires": ["h300_independent_audit"],
+      "release": "reviewed_evidence_decision",
+      "maximum_jobs": 0,
+      "requires_speedup": false,
+      "requires_main_sync": false
+    }
+  ],
+  "main_sync": "after_article_review",
+  "cancelled_sprints": ["S3", "S4"],
+  "calculate_evpi_vss": false
+}

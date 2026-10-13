@@ -6,21 +6,12 @@ development record is not a single invariant specification.
 
 ## Current MVP2 evidence and planning
 
-### Portable research memory
-
-The [research context](research_context.md) explains the separate documentation
-proposal and manual handoff. The [dated status](current_status.md),
-[experimental protocol](experiment_protocol.md), [article plan](article_plan.md)
-and root [agent agreement](../AGENTS.md) provide compact entry points for a new
-discussion. They derive from [PROJECT_STATE.md](../PROJECT_STATE.md), the roadmap
-and original evidence below; they neither replace certificates nor admit jobs.
-Integration into develop/main remains an explicit destination decision.
-
 The frozen MVP1 cohort below remains historical. New accepted observations do
 not rewrite its unsuccessful outcomes. S1-C is documentary, not a new campaign.
 
 | Document | Use |
 | --- | --- |
+| [S2 closure campaign](mvp2_s2_closure_campaign.md) | Finite normal/adverse/native/h300 sequence, inherited budgets, stop criteria and remaining functional PRs; no downstream execution admission |
 | [Sprint 1 evidence and exit ledger](mvp2_sprint1_closure.md) | h215/h300/h400 provenance, accepted/limited/deferred outcomes and closure boundary |
 | [Reconciled HPC roadmap](mvp2_hpc_roadmap.md) | Close S2; old S3/S4 cancelled; bounded SCIP h215 requalification then h500; computational/HPC synthesis at S6 |
 | [S2 thread qualification](mvp2_thread_qualification.md) | Licensed miniature gate, immutable one-shot collection and proposed h300 diagnostic window; production closed |
