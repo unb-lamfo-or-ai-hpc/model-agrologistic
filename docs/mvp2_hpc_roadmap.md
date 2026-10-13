@@ -2,6 +2,16 @@
 
 ## Authority and scope
 
+12 October successor update: PR #76 is merged into develop at
+`0602edf3743cd3253b8253492d4098b65c4a0c9e`. The next functional PR qualifies
+the [step-corrected normal lifecycle](mvp2_s2_step_normal.md), bound to the
+preserved negative recovery of job 2208459. A new one-shot claim, complete
+offline qualification, Ready review and explicit merge precede human NPAD CLI.
+The unchanged allocation ceiling is 12 minutes, not a multi-hour experiment.
+After acknowledged submission, the maintainer can disconnect and collect after
+the pause. No automatic follow-on jobs or additional experiment are admitted.
+The dated entries below retain their historical decision context.
+
 12 October recovery audit update: both carrier checksums and all inventory
 members are verified. Worker startup identity is present; live binding/contract,
 phase completion and telemetry are absent. The same functional PR corrects
