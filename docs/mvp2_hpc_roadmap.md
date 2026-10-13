@@ -2,6 +2,16 @@
 
 ## Authority and scope
 
+13 October scope result: job `2209770` independently replayed as
+`observed_not_qualified`. The [review](evidence/s2_scope_2209770_review.json)
+identifies shared cpuacct, disjoint enforcement/tracking scopes and a separate
+two-CPU cpuset versus one scheduler CPU discrepancy. The observation claim is
+consumed. The maintainer's hash-asserting read of saved status reports supervisor
+affinity `0,32` and worker affinity `0`. This is not proof of a hard one-CPU bound,
+exclusive CPU placement or SMT topology. A combined role-aware repair must
+reconcile this distinction; no new normal, adverse, native or h300 release follows.
+Full S2 scope is unchanged.
+
 13 October evidence update after PR #80 merge: job `2209138` did not qualify
 normal containment; its numeric step failed and the preserved supervisor
 diagnostic identifies a shared/nested controller predicate, not which controller.

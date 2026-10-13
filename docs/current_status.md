@@ -9,6 +9,19 @@ was integrated with explicit authorization; it is not an execution gate.
 
 ## Current handoff
 
+Latest observation: job `2209770`, source `450d10b38d2fcdb8101b38069559103a0098a0a0`,
+archive SHA-256 `f1f19fd0b494526af78e59ea979c5d428089e9f0afda4a7e78040d4df53be18f`.
+Independent replay is `observed_not_qualified`: memory/freezer/cpuset disjoint,
+cpuacct equal, worker hierarchical memory ceiling 256 MiB, worker cpuset two CPUs
+versus one scheduler CPU. The maintainer's hash-asserting saved-status read reports
+supervisor affinity `0,32` and worker affinity `0`; raw records remain private.
+This resolves the saved-affinity question, not hard one-CPU containment, CPU
+exclusivity or physical-core topology. Next qualify the role-aware enforcement/
+accounting design and reconcile the CPU contract. Both normal and observation
+claims are consumed; no repeat or successor is admitted. See the
+[review](evidence/s2_scope_2209770_review.json). Earlier observation-start handoff
+below is historical, not an instruction to submit another job.
+
 PR #80 is merged at `5bf509a6db90b09eef8e1e13529f5039d934a9e1`.
 Job `2209138` has independently replayed negative evidence: batch completed,
 numeric step failed, shared/nested controller predicate failed at handshake.

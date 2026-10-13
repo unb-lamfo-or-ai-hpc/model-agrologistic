@@ -1,6 +1,14 @@
 # S2 closure campaign: finite scope, staged admission
 
-Latest evidence, 13 October: PR #80 merged and job `2209138` consumed the normal
+Latest evidence, 13 October: diagnostic job `2209770` is complete and independently
+replayed as `observed_not_qualified`. Its claim is consumed. Shared cpuacct and a
+two-CPU cpuset with reported one-CPU worker affinity require a combined policy
+repair; they do not qualify normal containment. The compiler now records the
+observation as an inert reference and recommends review, not another NPAD command.
+See the [audit and repair criteria](mvp2_s2_scope_observation.md). The historical
+budget is unchanged; a successor is not automatically included or admitted.
+
+Prior evidence, 13 October: PR #80 merged and job `2209138` consumed the normal
 slot without live qualification. Its root/batch completed but numeric step failed;
 the diagnostic records a shared/nested controller predicate failure. The
 [scope observation](mvp2_s2_scope_observation.md) is next: one independent

@@ -1,5 +1,91 @@
 # S2: bounded controller-scope observation after job 2209138
 
+## Completed observation: job 2209770
+
+The [independent review](evidence/s2_scope_2209770_review.json) binds the exact
+source, plan and archive hashes. Checksum/schema/identity replay passed with
+`observed_not_qualified`, not normal or containment acceptance. Root, batch,
+extern and numeric step all completed 0:0. Root/batch elapsed 3 seconds; the
+step's 0-second accounting value is not a claim of zero CPU work.
+
+Memory, freezer and cpuset scopes were disjoint. Only cpuacct was equal. The
+numeric-step PID matched the worker identity. Observed hierarchical memory
+ceilings were 256 MiB (worker) and 2 GiB (supervisor); direct leaf limits were
+9223372036854771712 bytes for both. The hierarchical limit, not the large leaf
+value alone, matters for interpreting available memory. No stress/OOM test was run.
+
+Both cpusets contained two CPUs; Slurm reported one CPU for the numeric step.
+On 13 October the maintainer returned the hash-asserting read of the preserved
+`Cpus_allowed_list` fields: supervisor `0,32`, worker `0`. The exact status hashes
+and attribution are in the review metadata. Raw records remain on NPAD; these
+fields were reported by the maintainer, not independently rehashed locally or
+inserted into the original archive. No new job was needed for this read.
+
+The worker's observed CPU affinity was narrower than its two-CPU cpuset. A task's
+affinity can be changed subject to its cpuset restriction; this observation does
+not establish a hard one-CPU boundary. See the [Linux cpuset/affinity semantics](https://www.kernel.org/doc/html/latest/admin-guide/cgroup-v1/cpusets.html).
+Do not infer SMT siblings or physical-core count merely from CPU IDs `0,32`.
+Distinct non-nested cgroup paths also do not prove disjoint CPU sets or exclusive
+CPU placement. The worker and supervisor affinity masks overlap at CPU `0`.
+The existing normal validators still require a one-CPU cpuset, so a cpuacct-only
+relaxation would leave an independently observed blocker.
+
+### Bounded repair acceptance criteria (design only)
+
+1. Preserve original evidence and strict legacy replay. Separate controller-path
+   relations from CPU-set overlap, task affinity and resource accounting provenance.
+2. Retain disjoint memory/freezer/cpuset scope checks; classify shared cpuacct
+   explicitly instead of claiming its counter measures worker-only CPU time.
+3. Reconcile both normal validators and exporters with the explicit CPU contract.
+   Do not replace a hard cpuset ceiling with a startup affinity observation or
+   automatically accept two CPUs. If the resource contract needs to change, obtain
+   maintainer approval before admission; otherwise qualify a way to satisfy it.
+4. Cover shared/nested enforcement scopes, shared accounting, overlapping CPU
+   masks, affinity/cpuset mismatch and missing observations with regression tests.
+   No guessed zero resource measurements or stronger cleanup claims are allowed.
+5. Only after software qualification and an explicit successor release, provide
+   a new one-shot normal CLI. Preserve consumed claims; no retry or long-job
+   command is admitted by this design or by the observation's successful exit.
+
+The next design must distinguish enforcement/tracking from resource accounting,
+retain safe disjoint memory/freezer/cpuset validation, and avoid attributing a
+shared cpuacct counter to the worker. Official [Slurm controller roles](https://slurm.schedmd.com/cgroups.html)
+and [Linux hierarchical memory semantics](https://www.kernel.org/doc/html/latest/admin-guide/cgroup-v1/memory.html)
+provide interpretation, not proof of NPAD configuration. The previously reported
+jobacct_gather/linux setting is consistent with this observation; causality or
+a configuration defect is not established. Old normal and observation claims
+remain consumed; every execution/cleanup admission stays false.
+
+### CPU-contract decision before operational integration
+
+The current strict one-logical-CPU cpuset contract remains in force. The available
+evidence cannot establish a Slurm invocation that narrows the kernel cpuset, and
+changing startup affinity alone would not satisfy that contract. There are two
+explicit routes, neither admitted by this PR:
+
+- Retain the one-logical-CPU hard ceiling: obtain an NPAD-supported configuration
+  and qualify the actual kernel boundary before the next normal release. Do not
+  guess that an SMT hint or binding option changes cgroup enforcement.
+- Subject to maintainer approval, define a synthetic-only hard envelope of at
+  most two logical CPUs, within the unchanged two-CPU allocation, with one CPU
+  requested for the numeric step and observed initial worker affinity of one CPU.
+  Record the potential two-CPU envelope honestly; do not call it hard one-CPU
+  containment or exclusive CPU placement. Memory (256 MiB worker / 2 GiB job),
+  walltime and one-shot limits remain unchanged. This is not approval to alter
+  the later h300 scientific thread contrast or its resource admission.
+
+The second route is the proposed practical option, not an applied relaxation.
+Its successor must check CPU-set membership in the allocation (not only counts),
+bound the effective envelope, preserve process ownership and memory/freezer
+separation, and explicitly mark shared cpuacct measurements as non-attributable.
+If worker-specific CPU accounting cannot be established, report it unavailable
+rather than subtracting supervisor usage or silently falling back to zero.
+Legacy schemas/receipts remain strict and immutable. Runtime integration, Linux
+regression, new release identity and independent normal/adverse audits remain
+necessary; CPU-contract approval alone cannot authorize a job.
+
+The historical protocol below records the one completed diagnostic, not a repeat.
+
 ## Evidence and question
 
 PR #80 merged at `5bf509a6db90b09eef8e1e13529f5039d934a9e1`. The maintainer ran
