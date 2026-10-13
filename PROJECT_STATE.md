@@ -3,7 +3,33 @@
 Updated 13 October 2026. This public checkpoint contains scope and provenance,
 not private evidence, credentials, local host paths or execution authority.
 
-## Latest checkpoint — PR #77 integrated; synchronization moved after article review
+## Latest checkpoint — PR #78 integrated; finite S2 closure campaign
+
+PR #78 merged into develop at `b416c11a42981dbfc6a330a35d3d0bcb4f1e4652`.
+The maintainer requests a campaign to complete full S2. The
+[closure campaign](docs/mvp2_s2_closure_campaign.md) consolidates existing normal,
+five adverse cases, native miniature, one homogeneous h300 block and evidence
+closure. It does not add a prerequisite to PR #77 or admit downstream execution.
+The read-only compiler verifies case coverage and inherited budget arithmetic.
+Normal live evidence is still not supplied; no new result is inferred from merge.
+
+Known A/B/D allocation envelopes total 7 h 12 min and 98.4 requested CPU-hours,
+including PR #77 once, excluding native miniature/queue/review and historical
+failures. These are not actual allocated cost or a total campaign budget.
+The native integration must freeze its own envelope and reconcile real Slurm
+cgroup-v1 containment, sampling/export and cleanup budgets before release.
+Do not silently fit its 390-second synthetic cleanup observation into the h300
+300-second cleanup design. No resource or scientific policy is changed here.
+
+Next owner: maintainer uses the existing pinned PR #77 start/collect handoff;
+agent independently audits A, then finishes the complete S2-P2 adverse package.
+The four remaining functional packages are P2 adverse, P3 native integration,
+P4 fresh h300 admission/driver, P5 scientific audit/closure. Related corrections
+stay within their package; the campaign plan is not an extra execution gate.
+No actual long job is admitted yet. S2 closure still excludes branch synchronization;
+main/develop reconciliation remains after article review. No manuscript edit.
+
+### Prior checkpoint — PR #77 integrated; synchronization moved after article review
 
 PR #77 merged into develop at `feb7b569c88315bff432c709445d07a482271f55`.
 The qualified execution pin remains `0f627f0779864ec5220d1e94b57e4bb6a6514433`;
