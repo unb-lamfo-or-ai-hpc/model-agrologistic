@@ -470,7 +470,7 @@ def collect(commit):
             "--noheader",
             "--parsable2",
             "--jobs=" + spec["job_id"],
-            "--format=JobIDRaw,State,ExitCode,ElapsedRaw",
+            "--format=JobIDRaw,State%80,ExitCode,ElapsedRaw",
         )
     )
     rows = a.accounting(text, spec["job_id"])

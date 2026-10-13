@@ -272,13 +272,22 @@ class RealTransport:
             return match is not None and int(match[1]) <= 0xFFFFFFF0
         if step is not None and argv == (t["scontrol"], "listpids", job + "." + step):
             return True
-        if argv == (
-            t["sacct"],
-            "--noheader",
-            "--parsable2",
-            "--jobs=" + job,
-            "--format=JobIDRaw,State,ExitCode,ElapsedRaw",
-        ):
+        if argv in {
+            (
+                t["sacct"],
+                "--noheader",
+                "--parsable2",
+                "--jobs=" + job,
+                "--format=JobIDRaw,State%80,ExitCode,ElapsedRaw",
+            ),
+            (
+                t["sacct"],
+                "--noheader",
+                "--parsable2",
+                "--jobs=" + job,
+                "--format=JobIDRaw,State,ExitCode,ElapsedRaw",
+            ),
+        }:
             return True
         prefix = (t["git"], "--no-optional-locks", "-C", self.item["checkout"])
         if argv[:4] == prefix:
@@ -531,10 +540,18 @@ def review_allocation(text, job, uid, node):
 def review_step(text, binding, uid, node):
     binding = s.binding(binding)
     d = fields(text)
+    # Slurm 22.05.11 job_step_info.c emits a numeric UID and a node count.
+    # Allocation UserId=name(uid) and step NodeList must not be conflated.
+    step_uid = d.get("UserId", "")
+    s.require(
+        re.fullmatch(r"0|[1-9][0-9]{0,9}", step_uid) is not None and int(step_uid) <= 0xFFFFFFFF,
+        "Step UID grammar.",
+    )
     s.require(
         d.get("StepId") == binding["job_id"] + "." + binding["worker_step_id"]
-        and _uid(d.get("UserId", "")) == uid
-        and d.get("Nodes") == node
+        and int(step_uid) == uid
+        and d.get("Nodes") == "1"
+        and d.get("NodeList") == node
         and d.get("State") == "RUNNING"
         and d.get("CPUs") == "1"
         and d.get("Tasks") == "1"
@@ -542,8 +559,36 @@ def review_step(text, binding, uid, node):
         "Worker step mismatch.",
     )
     return s.digest(
-        {k: d[k] for k in ("StepId", "UserId", "Nodes", "State", "CPUs", "Tasks", "TimeLimit")}
+        {
+            k: d[k]
+            for k in (
+                "StepId",
+                "UserId",
+                "Nodes",
+                "NodeList",
+                "State",
+                "CPUs",
+                "Tasks",
+                "TimeLimit",
+            )
+        }
     )
+
+
+def accounting_state(state):
+    """Decode exact sacct states, including Slurm's numeric cancelling UID.
+
+    Slurm 22.05 print.c emits '<state> by %u' for cancelled jobs/steps.
+    This is terminal cancellation, never successful completion. Do not strip
+    arbitrary suffixes or accept the human display's truncated '+' notation.
+    Raw query bytes belong in the collection provenance, not controller state.
+    """
+    s.require(type(state) is str, "Accounting state grammar.")
+    match = re.fullmatch(r"CANCELLED by (0|[1-9][0-9]{0,9})", state)
+    if match and int(match[1]) <= 0xFFFFFFFF:
+        return "CANCELLED"
+    s.require(state in TERMINAL | {"RUNNING", "PENDING", "COMPLETING"}, "Accounting state grammar.")
+    return state
 
 
 def accounting(text, job):
@@ -562,9 +607,7 @@ def accounting(text, job):
             and re.fullmatch(r"[0-9]{1,9}", elapsed),
             "Accounting identity/exit grammar.",
         )
-        s.require(
-            state in TERMINAL | {"RUNNING", "PENDING", "COMPLETING"}, "Accounting state grammar."
-        )
+        state = accounting_state(state)
         result[ident] = {"state": state, "exit_code": code, "elapsed_seconds": int(elapsed)}
     return result
 
@@ -1022,7 +1065,7 @@ class BatchAdapter:
                     "--noheader",
                     "--parsable2",
                     "--jobs=" + self.item["job_id"],
-                    "--format=JobIDRaw,State,ExitCode,ElapsedRaw",
+                    "--format=JobIDRaw,State%80,ExitCode,ElapsedRaw",
                 ),
                 self.item["job_id"],
             )

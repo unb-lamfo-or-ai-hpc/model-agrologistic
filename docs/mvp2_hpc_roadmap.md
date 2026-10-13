@@ -2,6 +2,24 @@
 
 ## Authority and scope
 
+12 October recovery audit update: both carrier checksums and all inventory
+members are verified. Worker startup identity is present; live binding/contract,
+phase completion and telemetry are absent. The same functional PR corrects
+source-confirmed Slurm step UID/count/host parsing, not scientific parameters.
+Complete offline qualification/Ready and explicit merge before qualifying a
+distinct normal-only successor. No additional long-duration campaign is admitted.
+Full S2 remains planned: normal, adverse containment, native miniature, homogeneous
+h300 thread contrast and audited closure, followed by branch reconciliation.
+
+12 October normal update: PR #75 is integrated. Job 2208459 progressed to a
+numeric step but preserved `blocked_unbound` with no samples and unknown remote
+cleanup. A distinct parser defect blocked collection of its attributed CANCELLED
+state. [Collect-only recovery](mvp2_s2_accounting_recovery.md) preserves original
+identities and negative evidence. Audit precedes any next execution. A proposed
+three-job/four-hour pause campaign cannot replace the pending live gates or
+silently change the 1800-second h300 screening design. All experimental scope
+below remains planned, not admitted; no main/develop synchronization now.
+
 12 October post-merge continuation: PR #74 is integrated at
 `4b10f6bb623b7e2a77eaa85979a22d0dbdaa79d1`. The next functional PR qualifies the
 complete [node-normal one-shot lifecycle](mvp2_s2_node_normal.md), retaining the

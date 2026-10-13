@@ -101,7 +101,7 @@ def recheck(item, *, step_node=NODE, batch_pid="10"):
         if argv[1:4] == ("-o", "show", "job"):
             return TEXT
         if argv[1:4] == ("-o", "show", "step"):
-            return text.replace("Nodes=node", "Nodes=" + step_node)
+            return text.replace("NodeList=node", "NodeList=" + step_node)
         if argv[1:3] == ("listpids", "500000.4294967291"):
             return text.replace("10 500000 batch", batch_pid + " 500000 batch")
         return text

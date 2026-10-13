@@ -1,7 +1,7 @@
 # Dated research status: 12 October 2026
 
 This is a derived handoff snapshot, not a new certificate. Reviewed integration
-base: develop `4b10f6bb623b7e2a77eaa85979a22d0dbdaa79d1` (PR #74 merged).
+base: develop `c5cc384c732f511525fcfdea6b020c29538afb0d` (PR #75 merged).
 Read [PROJECT_STATE.md](../PROJECT_STATE.md), the [roadmap](mvp2_hpc_roadmap.md)
 and linked evidence for full history. Refresh live PR state before continuing;
 open PR content is not integrated code. The [portable memory](research_context.md)
@@ -9,7 +9,18 @@ was integrated with explicit authorization; it is not an execution gate.
 
 ## What is established
 
-Latest continuation: [node-normal operational gate](mvp2_s2_node_normal.md)
+Latest: job 2208459 has a preserved **negative unbound attempt**, not normal
+acceptance. Root/batch completed; step 0 was cancelled 0:9. The collection parser
+rejected Slurm's numeric cancellation suffix. See [recovery and limitations](mvp2_s2_accounting_recovery.md).
+The recovered carrier is now checksum/inventory audited; worker identity exists,
+but no binding/contract/phases or samples. Negative semantic replay is preserved.
+The same functional PR corrects source-confirmed Slurm step UID/count/host schema
+assumptions, with 31 new offline cases. Exact historical exception remains unknown.
+Next: finish qualification/Ready and obtain merge authorization; then qualify a
+distinct normal-only successor. Collection is complete, not a request to repeat.
+No three-job/four-hour campaign is admitted. The statements below are historical.
+
+Prior continuation: [node-normal operational gate](mvp2_s2_node_normal.md)
 prepares one fresh normal-only claim, preserving jobs 2208339/2208438 and all
 earlier certificates. Software qualification/merge are not live acceptance.
 No new job is submitted; no adverse/native/h300/repeat admission is included.
