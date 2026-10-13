@@ -2,6 +2,15 @@
 
 ## Authority and scope
 
+13 October integration update: PR #82 merged at
+`656537428c5edd8702aff1ed1b865a604b117792`. The
+[closed normal-adapter integration](mvp2_s2_resource_normal_integration.md)
+qualifies actual CPU/affinity readers, handshake, sampling, finite exact-step
+cleanup and versioned negative/partial replay. Public launch remains denied;
+the next release gate must bind fresh source/runtime and a distinct claim,
+worker entry and terminal/forensic collection. No additional experiment or
+historical evidence reinterpretation is authorized. S2 scope is unchanged.
+
 13 October CPU-contract decision after PR #81 merge: the maintainer approves
 at most two logical CPUs in the synthetic worker cpuset, within the unchanged
 allocation, with initial one-CPU affinity and unchanged memory/time. This is
