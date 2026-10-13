@@ -27,6 +27,7 @@ jobs:
           bash -n scripts/npad_s2_allocation_diagnostic.sh
           bash -n scripts/npad_s2_node_normal.sh
           bash -n scripts/npad_s2_accounting_recovery.sh
+          bash -n scripts/npad_s2_step_normal.sh
       - name: Clean source before the exact driver-selected regression
         run: |
           S2_ROOT=$(mktemp -d "$RUNNER_TEMP/s2-regression-XXXXXXXX")
@@ -177,6 +178,26 @@ jobs:
           identity.inspect_tree(base / 'source', json.loads((base / 'source-files.json').read_text()))
           print('31 step-format passes; no scheduler effects; source closure preserved')
           PY
+      - name: Complete step-corrected successor and recovered negative binding
+        run: |
+          cd "$S2_ROOT/source"
+          python -B -I -m pytest -p no:cacheprovider \
+            tests/test_mvp2_s2_step_normal.py tests/test_mvp2_s2_step_predecessor.py \
+            -q --basetemp="$S2_ROOT/successor-tests" --junitxml="$S2_ROOT/successor.xml"
+          python -B -I - "$S2_ROOT" <<'PY'
+          import json
+          import pathlib
+          import sys
+          import xml.etree.ElementTree as ET
+          base = pathlib.Path(sys.argv[1])
+          cases = ET.parse(base / 'successor.xml').getroot().findall('.//testcase')
+          assert len(cases) == 72
+          assert not any(c.find(k) is not None for c in cases for k in ('failure', 'error', 'skipped'))
+          sys.path.insert(0, str(base / 'source'))
+          from scripts import mvp2_s2_compute_identity as identity
+          identity.inspect_tree(base / 'source', json.loads((base / 'source-files.json').read_text()))
+          print('72 successor passes; no scheduler effects; source closure preserved')
+          PY
       - name: Real clean login source seal (local Git only)
         run: |
           git -c core.autocrlf=false clone --no-checkout . "$S2_ROOT/login-source"
@@ -203,3 +224,4 @@ jobs:
             ${{ env.S2_ROOT }}/node-normal.xml
             ${{ env.S2_ROOT }}/accounting.xml
             ${{ env.S2_ROOT }}/step.xml
+            ${{ env.S2_ROOT }}/successor.xml
