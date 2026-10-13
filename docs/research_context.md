@@ -8,13 +8,14 @@ it does not import private chats or the status of unrelated research projects.
 The [checkpoint](../PROJECT_STATE.md), [roadmap](mvp2_hpc_roadmap.md), mathematical
 contract and original evidence remain authoritative for their respective claims.
 
-This documentation proposal is isolated on `docs/agrologistic-research-memory`,
-based on develop `01016fbbbdfdc6dd7cf005488105b4d3181f671d` (merged PR #62),
-not stacked on PR #63. Its integration destination is unresolved. No merge to
-develop or main is implied. Develop is not a file-exclusion mechanism: once
-these files enter develop, its normal promotion carries them to main. Decide
-that scope explicitly before integration; do not use ignore rules or history
-rewrites to hide tracked content. Main reconciliation remains deferred to S2 closure.
+The initial proposal was isolated on `docs/agrologistic-research-memory`, based
+on develop `01016fbbbdfdc6dd7cf005488105b4d3181f671d`, not stacked on PR #63.
+PR #64 was subsequently independently authorized and integrated into develop.
+Develop is not a file-exclusion mechanism: promotion carries these tracked files
+to main unless a reviewed scope decision changes that promotion. Do not use
+ignore rules or history rewrites to hide tracked content. The 13 October decision
+cancels synchronization at S2 closure: main reconciliation is deferred to final
+consolidation after article review, with separate Ready PRs and merge approvals.
 
 ## Scientific purpose
 

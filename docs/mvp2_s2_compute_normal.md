@@ -123,7 +123,8 @@ without running the driver. No software test submits to Slurm or uses a solver.
 S2 remains open: independently audit this normal result, then qualify/admit
 bounded adverse containment cases, then the native miniature and contracted
 homogeneous h300 thread window. Keep partial/negative results. Synchronization
-with main remains a separately reviewed and authorized S2-closure operation.
+with main is deferred to final consolidation after article review, not S2 closure
+(13 October decision), with separately reviewed and authorized Ready PRs.
 S3/S4 stay cancelled; subsequent h400 selection, SCIP/h215, conditional h500
 and MVP2-focused S6-A/S6-B remain on the approved roadmap.
 

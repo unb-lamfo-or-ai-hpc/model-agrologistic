@@ -161,6 +161,7 @@ homogeneous h300 admission; one bounded thread diagnostic and evidence/decision.
 S2 closes only on a documented result/sufficiency decision, including adverse
 outcomes; censored timings cannot become full-budget speedup.
 
-At S2 closure only, perform the separately reviewed main/develop reconciliation
+After article review at final consolidation, not S2 closure (13 October decision),
+perform the separately reviewed main/develop reconciliation
 in the [roadmap](mvp2_hpc_roadmap.md). No synchronization or protection change is
 part of this gate.

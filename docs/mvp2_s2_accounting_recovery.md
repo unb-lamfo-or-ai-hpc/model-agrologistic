@@ -126,4 +126,5 @@ uses a common 1800-second diagnostic optimization window; changing that to four
 hours is a separately reviewed scientific/budget decision, not a parser repair.
 
 S2 remains open and fully planned. S3/S4 stay cancelled. h400, SCIP/h215, conditional
-h500 and S6 remain on the roadmap; main/develop reconciliation stays at S2 closure.
+h500 and S6 remain on the roadmap. Per the 13 October decision, main/develop
+reconciliation moves to final consolidation after article review, not S2 closure.

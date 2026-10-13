@@ -85,5 +85,6 @@ This is repair of the existing read-only prerequisite, not another experimental
 gate. After its evidence is independently audited, continue the separately
 qualified first-normal wrapper/installed grammar and live containment audit.
 Synthetic jobs, licensed miniatures, h300 and repeats remain closed. S2 remains
-open; main/develop reconciliation stays deferred to S2 closure. Article,
+open; main/develop reconciliation is deferred to final consolidation after article
+review, not S2 closure (13 October decision). Article,
 presentation, model, tolerances, data, license and main protection are unchanged.

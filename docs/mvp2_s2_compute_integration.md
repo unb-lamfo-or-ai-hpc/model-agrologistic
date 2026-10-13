@@ -88,5 +88,6 @@ separately reviewed public driver; old standalone entry points are not reopened.
 No scientific parameter, model, manifest, solver, license or resource request
 changes here. S2 remains open, including the h300 1/2/4/8/16-thread contrast.
 S3/S4 remain cancelled. h400, existing SCIP/h215, conditional h500 and S6 retain
-the [approved roadmap](mvp2_hpc_roadmap.md). Main/develop synchronization stays
-at the separately authorized S2 closure.
+the [approved roadmap](mvp2_hpc_roadmap.md). Per the 13 October decision,
+main/develop synchronization moves from S2 closure to final consolidation after
+article review, with separately qualified Ready PRs and merge authorization.
