@@ -52,3 +52,7 @@ jobs:
         run: |
           python -B -m ruff check --no-cache scripts/mvp2_s2_normal_audit.py tests/test_mvp2_s2_normal_audit.py
           python -B -m pytest -p no:cacheprovider tests/test_mvp2_s2_normal_audit.py -q --basetemp="$RUNNER_TEMP/normal-outcome-audit-tests"
+      - name: Closed diagnostic integration and fast-exit handling
+        run: |
+          python -B -m ruff check --no-cache scripts/mvp2_s2_diagnostic_normal.py tests/test_mvp2_s2_diagnostic_normal.py
+          python -B -m pytest -p no:cacheprovider tests/test_mvp2_s2_diagnostic_normal.py -q --basetemp="$RUNNER_TEMP/normal-diagnostic-integration-tests"
