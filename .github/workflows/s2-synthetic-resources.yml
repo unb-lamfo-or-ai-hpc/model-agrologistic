@@ -20,5 +20,31 @@ jobs:
       - run: python -m pip install -e '.[dev]'
       - name: Versioned resource gate and strict legacy regression
         run: |
-          python -B -m ruff check --no-cache scripts/mvp2_s2_synthetic_resources.py scripts/mvp2_s2_resource_normal.py scripts/mvp2_s2_resource_launcher.py scripts/mvp2_s2_resource_forensics.py tests/test_mvp2_s2_synthetic_resources.py tests/test_mvp2_s2_resource_normal.py tests/test_mvp2_s2_resource_launcher.py
+          python -B -m ruff check --no-cache scripts/mvp2_s2_synthetic_resources.py scripts/mvp2_s2_resource_normal.py scripts/mvp2_s2_resource_launcher.py scripts/mvp2_s2_resource_forensics.py scripts/mvp2_s2_resource_operational.py tests/test_mvp2_s2_synthetic_resources.py tests/test_mvp2_s2_resource_normal.py tests/test_mvp2_s2_resource_launcher.py tests/test_mvp2_s2_resource_operational.py
           python -B -m pytest -p no:cacheprovider tests/test_mvp2_s2_resource_launcher.py tests/test_mvp2_s2_resource_normal.py tests/test_mvp2_s2_synthetic_resources.py tests/test_mvp2_s2_slurm_step.py tests/test_mvp2_s2_slurm_synthetic.py tests/test_mvp2_s2_batch_adapter.py tests/test_mvp2_s2_compute_integration.py tests/test_mvp2_s2_operational.py -q --basetemp="$RUNNER_TEMP/synthetic-resource-tests"
+      - name: Exact operational bootstrap gate and physical source closure
+        run: |
+          bash -n scripts/npad_s2_resource_normal.sh
+          mkdir "$RUNNER_TEMP/operational-source"
+          git archive HEAD | tar -x -C "$RUNNER_TEMP/operational-source"
+          python -B -I - "$RUNNER_TEMP/operational-source" "$RUNNER_TEMP/operational-files.json" <<'PY'
+          import hashlib, json, pathlib, sys
+          root = pathlib.Path(sys.argv[1])
+          files = {p.relative_to(root).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest() for p in root.rglob('*') if p.is_file()}
+          pathlib.Path(sys.argv[2]).write_text(json.dumps(files))
+          sys.path.insert(0, str(root))
+          from scripts.mvp2_s2_compute_identity import inspect_tree
+          inspect_tree(root, files)
+          PY
+          cd "$RUNNER_TEMP/operational-source"
+          python -B -m pytest -p no:cacheprovider tests/test_mvp2_s2_resource_operational.py tests/test_mvp2_s2_resource_launcher.py tests/test_mvp2_s2_resource_normal.py tests/test_mvp2_s2_synthetic_resources.py tests/test_mvp2_s2_compute_identity.py tests/test_mvp2_s2_slurm_step.py -q --basetemp="$RUNNER_TEMP/operational-tests" --junitxml="$RUNNER_TEMP/operational-regression.xml"
+          python -B -I - "$RUNNER_TEMP/operational-source" "$RUNNER_TEMP/operational-files.json" "$RUNNER_TEMP/operational-regression.xml" <<'PY'
+          import json, pathlib, sys, xml.etree.ElementTree as ET
+          sys.path.insert(0, sys.argv[1])
+          from scripts.mvp2_s2_compute_identity import inspect_tree
+          inspect_tree(sys.argv[1], json.loads(pathlib.Path(sys.argv[2]).read_bytes()))
+          cases = ET.parse(sys.argv[3]).getroot().findall('.//testcase')
+          assert len(cases) == 349
+          assert not any(c.find(k) is not None for c in cases for k in ('failure', 'error', 'skipped'))
+          print('NPAD_RESOURCE_NORMAL_REGRESSION=349 passed; source closure verified')
+          PY

@@ -569,14 +569,16 @@ def review_public(value, *, commit, job, release_digest):
     }
 
 
-def collect_components(run, destination, release, terminal_text):
+def collect_components(run, destination, release, terminal_text, *, release_loader=None):
     """Collect after terminal accounting into a fresh derived directory only."""
     meta = anchor(release)
     _rows, ready = terminal_rows(terminal_text, meta["job_id"])
     if not ready:
         return {"status": "nonterminal_or_accounting_pending", **normal.p.FLAGS}
     spec = release["plan"]["specification"]
-    s.require(launcher.load_release() == release, "Collection claim/release drift.")
+    s.require(
+        (release_loader or launcher.load_release)() == release, "Collection claim/release drift."
+    )
     run, destination = Path(run), Path(destination)
     s.require(run == Path(spec["run"]), "Collection run drift.")
     q._safe_path(destination)

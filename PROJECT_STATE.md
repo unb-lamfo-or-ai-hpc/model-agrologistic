@@ -3,7 +3,29 @@
 Updated 14 October 2026. This public checkpoint contains scope and provenance,
 not private evidence, credentials, local host paths or execution authority.
 
-## Latest checkpoint — PR #83 merged; closed launcher and terminal/forensic qualification
+## Latest checkpoint — PR #84 merged; one-normal operational wrapper qualification
+
+14 October 2026: PR #84 was merged into develop with explicit maintainer
+authorization at `f1ab13568cd961d1bf0a61638caa2d3874b9fa8c`, after six
+successful PR checks. The [operational wrapper](docs/mvp2_s2_resource_operational.md)
+now connects the sealed release, normal adapter, fixed worker and terminal/
+forensic collector. It uses the distinct exclusive resource-normal claim,
+current compute-role identity, exact-step controller and immutable collection.
+Repeated start becomes collection only; uncertain acknowledgement never retries.
+All historical claims, runs and evidence remain untouched. No NPAD execution
+or live containment qualification has occurred in this software continuation.
+
+Next owner: agent completes qualification and Ready review, then requests the
+wrapper PR's separate merge authorization. Only after that merge may the
+maintainer use its pinned, checksummed human CLI for one normal synthetic job.
+Transfer terminal archive and checksum for independent audit before any next
+gate. Adverse/native/h300/repeat execution remains closed. The synthetic hard
+envelope remains at most two logical CPUs with initial one-CPU affinity and
+unchanged memory/time. S2 remains open; full scientific scope, S3/S4 cancellation,
+EVPI/VSS exclusion and post-article branch synchronization remain unchanged.
+No manuscript, scientific parameter, dependency or original certificate changes.
+
+## Prior checkpoint — PR #83 merged; closed launcher and terminal/forensic qualification
 
 14 October 2026: work resumes by explicit maintainer request after the
 [PR #83 pause record](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/83#issuecomment-6156532403).
