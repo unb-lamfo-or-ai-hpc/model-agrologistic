@@ -308,6 +308,7 @@ def new_report(commit, job, sha):
         "local_client_returncode": None,
         "error_site": None,
         "initial_sha256": None,
+        "initial": None,
         "samples": [],
         **f.FLAGS,
     }
@@ -350,6 +351,7 @@ def batch(commit, expected):
         private = {"supervisor": scope.capture(os.getpid()), "worker": scope.capture(peer["pid"])}
         d.require(private["worker"]["identity"]["uid"] == peer["uid"], "Peer UID drift.")
         d.write_new(run / "pair-private.json", private)
+        report["initial"] = f.initial_record(private)
         report["phase"] = "initial"
         queries = {}
         for name, args in {
@@ -373,7 +375,7 @@ def batch(commit, expected):
             os.uname().nodename,
         )
         d.write_new(run / "initial-scopes-private.json", {"maps": maps, "identities": identities})
-        report["initial_sha256"] = a.sha_file(run / "pair-private.json", 1024**2)
+        report["initial_sha256"] = a.sha_file(run / "pair-private.json", 4 * 1024**2)
         server.release({"observe_fast_exit": sha}, 5)
         report["phase"] = "exit"
         report["local_client_returncode"] = child.wait(timeout=60)
@@ -443,9 +445,29 @@ def capture_collection(plan, sha, job):
         invalid = None
     except FileNotFoundError:
         report, invalid = None, None
-    except (ValueError, OSError, UnicodeError):
+    except (ValueError, OSError, UnicodeError, TypeError, KeyError, OverflowError, RecursionError):
         report, invalid = None, d.digest(raw) if raw is not None else None
     entry = {"invalid_observation_sha256": invalid}
+
+    def leaf_binding():
+        raw = a._file(run / "leaf-role.json", 4096)
+        role = d.decode(raw)
+        f.keys(role, {"job_id", "step_id", "plan_sha256"})
+        d.require(
+            role["job_id"] == job
+            and role["plan_sha256"] == sha
+            and type(role["step_id"]) is str
+            and re.fullmatch(r"[0-9]{1,10}", role["step_id"])
+            and int(role["step_id"]) < 0xFFFFFFFA,
+            "Forensic leaf binding.",
+        )
+        d.require(
+            report is None or report["step_id"] is None or report["step_id"] == role["step_id"],
+            "Leaf/report binding drift.",
+        )
+        return {"step_id": role["step_id"], "sha256": d.digest(raw)}
+
+    entry["leaf"] = f.channel(leaf_binding)
     for key, suffix in (("stdout", "out"), ("stderr", "err")):
         entry[key] = f.entry_log(claim / f"slurm-{job}.{suffix}")
     return {"observation.json": report, "entry.json": entry}
@@ -498,6 +520,10 @@ def collect(commit, *, status_only=False):
     records = capture_collection(plan, sha, job)
     d.require(records == capture_collection(plan, sha, job), "Collection capture drift.")
     observed = records["observation.json"]
+    leaf = records["entry.json"]["leaf"]
+    if leaf["status"] == "available" and job + "." + leaf["value"]["step_id"] not in rows:
+        print("FAST_EXIT_STATUS=forensic_step_accounting_pending\nJOB_ID=" + job)
+        return 4
     if observed is not None and observed["step_id"] is not None:
         if job + "." + observed["step_id"] not in rows:
             print("FAST_EXIT_STATUS=exact_step_accounting_pending\nJOB_ID=" + job)

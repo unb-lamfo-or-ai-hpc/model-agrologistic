@@ -103,7 +103,7 @@ if [[ ! -e $CLAIM ]]; then
   "$PY" -B -I - "$BOOTSTRAP/regression.xml" <<'PY'
 import sys, xml.etree.ElementTree as ET
 cases = ET.parse(sys.argv[1]).getroot().findall('.//testcase')
-assert len(cases) == 150, 'Pinned regression count changed; preserve, never bypass.'
+assert len(cases) == 153, 'Pinned regression count changed; preserve, never bypass.'
 assert not any(case.find(key) is not None for case in cases for key in ('failure', 'error', 'skipped'))
 print(f'NPAD_FAST_EXIT_REGRESSION={len(cases)} passed; zero failures/errors/skips')
 PY

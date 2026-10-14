@@ -53,7 +53,15 @@ def planned_slots():
 
 def review_inventory(value):
     """Only the closed planning state is supported; live receipt review belongs elsewhere."""
-    f.d.require(value == planned_slots(), "Closed software inventory changed.")
+    f.d.require(
+        type(value) is list
+        and value == planned_slots()
+        and all(
+            all(item[k] is False for k in f.FLAGS) and item["scientific_acceptance"] is False
+            for item in value
+        ),
+        "Closed software inventory changed.",
+    )
     return {"slots": len(value), "executed": 0, "speedup_established": False, **f.FLAGS}
 
 

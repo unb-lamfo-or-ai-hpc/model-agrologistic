@@ -41,7 +41,9 @@ def failure(exc):
         else "denied"
         if isinstance(exc, PermissionError)
         else "invalid"
-        if isinstance(exc, (ValueError, UnicodeError))
+        if isinstance(
+            exc, (ValueError, UnicodeError, TypeError, KeyError, OverflowError, RecursionError)
+        )
         else "unavailable"
     )
 
@@ -107,7 +109,16 @@ def channel(callback):
     """An unavailable channel must not suppress any other channel."""
     try:
         return {"status": "available", "value": callback()}
-    except (OSError, ValueError, TimeoutError, UnicodeError) as exc:
+    except (
+        OSError,
+        ValueError,
+        TimeoutError,
+        UnicodeError,
+        TypeError,
+        KeyError,
+        OverflowError,
+        RecursionError,
+    ) as exc:
         return {"status": failure(exc), "value": None}
 
 
@@ -376,6 +387,35 @@ def validate_products(value):
         validate_channel(item, validate)
 
 
+def initial_record(private):
+    return {"summary": scope.summarize(private), "limits": scope.limits(private)}
+
+
+def validate_initial(value, commit, job, plan_sha):
+    keys(value, {"summary", "limits"})
+    # Reuse the existing path-free scope/limit schema, never its consumed live claim.
+    scope.validate_observation(
+        {
+            "schema_version": "s2-scope-observation-v1",
+            "source_commit": commit,
+            "plan_sha256": plan_sha,
+            "job_id": job,
+            "step_id": None,
+            "status": "incomplete",
+            "phase": "observation",
+            "error_kind": None,
+            "summary": value["summary"],
+            "limits": value["limits"],
+            "queries": {},
+            "local_client_returncode": None,
+            **scope.FLAGS,
+        },
+        commit,
+        plan_sha,
+        job,
+    )
+
+
 def validate_report(report, commit, job, plan_sha):
     keys(
         report,
@@ -390,6 +430,7 @@ def validate_report(report, commit, job, plan_sha):
             "error_kind",
             "error_site",
             "initial_sha256",
+            "initial",
             "local_client_returncode",
             "samples",
             *FLAGS,
@@ -412,6 +453,8 @@ def validate_report(report, commit, job, plan_sha):
     validate_site(report["error_site"])
     if report["initial_sha256"] is not None:
         sha(report["initial_sha256"])
+    if report["initial"] is not None:
+        validate_initial(report["initial"], commit, job, plan_sha)
     step = report["step_id"]
     d.require(
         step is None
@@ -493,6 +536,8 @@ def audit(path, checksum, commit, job, plan_sha):
         "Archive inventory.",
     )
     anchor = d.decode(records["anchor.json"])
+    keys(anchor, {"schema_version", "source_commit", "job_id", "plan_sha256", *FLAGS})
+    d.require(all(anchor[k] is False for k in FLAGS), "Carrier boolean authority.")
     d.require(
         anchor
         == {
@@ -517,7 +562,22 @@ def audit(path, checksum, commit, job, plan_sha):
         "Exact terminal accounting required.",
     )
     entry = d.decode(records["entry.json"])
-    keys(entry, {"stdout", "stderr", "invalid_observation_sha256"})
+    keys(entry, {"stdout", "stderr", "leaf", "invalid_observation_sha256"})
+
+    def validate_leaf(value):
+        keys(value, {"step_id", "sha256"})
+        sha(value["sha256"])
+        d.require(
+            type(value["step_id"]) is str
+            and re.fullmatch(r"[0-9]{1,10}", value["step_id"])
+            and int(value["step_id"]) < 0xFFFFFFFA,
+            "Forensic numeric step.",
+        )
+        if report is not None and report["step_id"] is not None:
+            d.require(value["step_id"] == report["step_id"], "Leaf/report step drift.")
+        d.require(job + "." + value["step_id"] in rows, "Forensic exact-step accounting.")
+
+    validate_channel(entry["leaf"], validate_leaf)
     for key in ("stdout", "stderr"):
 
         def validate_log(value):
