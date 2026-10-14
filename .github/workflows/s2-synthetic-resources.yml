@@ -60,3 +60,7 @@ jobs:
         run: |
           python -B -m ruff check --no-cache scripts/mvp2_s2_diagnostic_gate.py tests/test_mvp2_s2_diagnostic_gate.py
           python -B -m pytest -p no:cacheprovider tests/test_mvp2_s2_diagnostic_gate.py -q --basetemp="$RUNNER_TEMP/normal-diagnostic-gate-tests"
+      - name: Consolidated closed operational and no-attempt forensic qualification
+        run: |
+          python -B -m ruff check --no-cache scripts/mvp2_s2_diagnostic_operational.py scripts/mvp2_s2_diagnostic_forensic.py tests/test_mvp2_s2_diagnostic_operational.py
+          python -B -m pytest -p no:cacheprovider tests/test_mvp2_s2_diagnostic_operational.py -q --basetemp="$RUNNER_TEMP/normal-operational-completion-tests"
