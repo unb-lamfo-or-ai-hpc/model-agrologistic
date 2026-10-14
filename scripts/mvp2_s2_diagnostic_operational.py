@@ -17,6 +17,7 @@ import copy
 import hashlib
 import os
 import shlex
+import sys
 from pathlib import Path
 
 from scripts import mvp2_s2_diagnostic_forensic as forensic
@@ -58,6 +59,16 @@ def verify(value, *, role):
     """Read-only current bytes and role tools; compute never checks login Git."""
     value = validate(value, value["envelope"]["source_commit"])
     return l.verify_release(value, s.digest(value), role=role)
+
+
+def local_entry(value, commit):
+    spec = value["plan"]["specification"]
+    s.require(
+        spec["source_commit"] == commit
+        and Path(__file__).resolve() == Path(spec["checkout"]) / ENTRY
+        and Path(sys.executable).resolve() == Path(spec["python"]),
+        "Frozen diagnostic entry/runtime.",
+    )
 
 
 def readiness(value):
@@ -229,6 +240,7 @@ def role_components(release, *, role, job_id, specification_digest, dispatch):
     s.require(role in {"batch", "worker"} and callable(dispatch), "Explicit role/dispatch.")
     release, source, runtime = verify(release, role=role)
     spec = release["plan"]["specification"]
+    local_entry(release, spec["source_commit"])
     claim = claim_path()
     s.require(
         load(spec["source_commit"]) == release
@@ -315,6 +327,7 @@ class DiagnosticOperationalAdapter(d.DiagnosticNormalAdapter):
     def launch(self):
         value = load(self.item["source_commit"])
         value, source, runtime = verify(value, role="batch")
+        local_entry(value, self.item["source_commit"])
         claim = claim_path()
         s.require(
             value == self.release
