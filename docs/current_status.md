@@ -1,13 +1,26 @@
 # Dated research status: 14 October 2026
 
 This is a derived handoff snapshot, not a new certificate. Reviewed integration
-base: develop `0fab1b4274bca3068bdff29322ada44c28dd7465` (PR #87 merged).
+base: develop `a0c5e7c2859c6fb99b718bfc29b7087996f44eb8` (PR #88 merged).
 Read [PROJECT_STATE.md](../PROJECT_STATE.md), the [roadmap](mvp2_hpc_roadmap.md)
 and linked evidence for full history. Refresh live PR state before continuing;
 open PR content is not integrated code. The [portable memory](research_context.md)
 was integrated with explicit authorization; it is not an execution gate.
 
 ## Current handoff
+
+PR #88 is merged. The [consolidated closed operational package](mvp2_s2_operational_completion.md)
+qualifies source/role/entry, exclusive one-shot claim/acknowledgement, independent
+adapter and resumed terminal/forensic transfer together, including missing run
+binding and early logs. Public execution still denies; no live admission follows.
+Normal A plus P2-P5 remain unfinished, not five guaranteed PRs. Prepare related
+software concurrently, but audit each live predecessor before downstream release.
+The current blocker is installed fast-exit/strict cleanup evidence, not lack of
+another long optimization. Preserve job2210506 and all old claims. Next owner:
+agent finishes Ready/merge qualification; then resolve that bounded observation
+prerequisite and qualify the human operational release. No CLI action now.
+
+### Prior terminal-gate handoff
 
 PR #87 is merged. The [closed operational gate/terminal transfer](mvp2_s2_diagnostic_gate.md)
 binds the sealed normal source/release/specification to a distinct proposed

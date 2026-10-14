@@ -2,6 +2,19 @@
 
 ## Authority and scope
 
+14 October consolidation after PR #88 merge
+`a0c5e7c2859c6fb99b718bfc29b7087996f44eb8`: the maintainer requests a robust
+accelerated S2 strategy. The [complete closed operational qualification](mvp2_s2_operational_completion.md)
+groups source/runtime/entry, claim/acknowledgement, independent adapter and
+terminal/no-bound-attempt forensics in one functional package. No execution or
+cleanup amendment follows. A normal live audit and P2-P5 remain required; package
+count is not a fixed further-PR count. Prepare downstream software/evidence tables
+concurrently, retain serial live acceptance and no cross-block afterok chain.
+Resolve installed fast-exit observations before another normal proposal. Unknown
+scope retention is not a reason to repeat blindly or silently change worker timing.
+The current decision table and limits are in the linked completion plan; S2,
+later scientific scope and final post-article synchronization remain unchanged.
+
 14 October operational-gate continuation: PR #87 merged at
 `0fab1b4274bca3068bdff29322ada44c28dd7465`. The
 [closed gate and terminal transfer](mvp2_s2_diagnostic_gate.md) qualifies a

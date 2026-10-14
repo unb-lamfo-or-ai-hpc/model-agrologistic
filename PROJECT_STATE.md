@@ -3,7 +3,46 @@
 Updated 14 October 2026. This public checkpoint contains scope and provenance,
 not private evidence, credentials, local host paths or execution authority.
 
-## Latest checkpoint — PR #87 merged; closed operational gate and terminal transfer
+## Latest checkpoint — PR #88 merged; consolidated S2 operational qualification
+
+14 October 2026: PR #88 merged into develop at
+`a0c5e7c2859c6fb99b718bfc29b7087996f44eb8`. Its sealed declaration/terminal
+gate is software-qualified, not installed containment or execution admission.
+The maintainer requests an evidence-based S2 closure assessment and acceleration.
+The [consolidated operational package](docs/mvp2_s2_operational_completion.md)
+now groups current source/role checks, fixed descriptors, exclusive diagnostic
+claim, durable acknowledgement, bound worker entry, independent adapter,
+resumable terminal collection and no-bound-attempt forensic preservation in one
+closed qualification PR. Public CLI/execution entries still deny before effects.
+
+Full S2 still needs five functional packages: finish A normal admission/audit;
+P2 all five adverse cases/audits; P3 licensed integrated native miniature;
+P4 homogeneous h300 thread block; P5 scientific comparison/exit decision.
+These are work packages, not a promise of exactly five further PRs. Do not make
+a separate PR per callback or case. A currently lacks an independently accepted
+live cleanup result; job 2210506 remains intact negative evidence. Its installed
+fast-exit exception and post-exit scope retention remain unconfirmed. Resolve
+that bounded observation prerequisite before another normal proposal; if strict
+cleanup is not feasible, present a reviewed protocol decision, not a blind retry
+or silent missing-to-empty/timing amendment. Unrun h300 arms do not close S2.
+
+Accelerate software preparation for P2-P4 and evidence-table design in parallel
+within this chat, reusing existing qualified components; keep live releases
+serial and evidence-dependent. No unapproved subagents or cross-block afterok
+chain. Freeze one complete runbook/CLI/collection/forensic bundle per functional
+release. The five-arm h300 order and six-hour single-allocation envelope remain
+unchanged; native budget and 300/390-second cleanup compatibility still need P3
+qualification. No whole-campaign cost or calendar success is invented.
+
+Next owner: agent completes exact-head qualification/Ready review and requests
+this PR's separate merge authorization. Subsequent operational release must
+resolve installed fast-exit evidence, current host/entry admission and a pinned
+human CLI; no new NPAD action, claim or job is admitted by this package. Original
+claims, archives, worker/controller, scientific parameters and manuscript remain
+unchanged. S2 stays open, S3/S4 cancelled, EVPI/VSS excluded and main promotion
+deferred until final post-article review.
+
+## Prior checkpoint — PR #87 merged; closed operational gate and terminal transfer
 
 14 October 2026: PR #87 merged into develop at
 `0fab1b4274bca3068bdff29322ada44c28dd7465`, preserving the original negative

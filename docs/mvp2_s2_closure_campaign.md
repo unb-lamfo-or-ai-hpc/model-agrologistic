@@ -1,5 +1,16 @@
 # S2 closure campaign: finite scope, staged admission
 
+Current handoff, 14 October after PR #88 merge
+`a0c5e7c2859c6fb99b718bfc29b7087996f44eb8`: see the
+[consolidated completion strategy](mvp2_s2_operational_completion.md).
+Closed source/role/claim/adapter/terminal/no-attempt qualification is grouped
+in one package. Normal A is still not accepted; P2-P5 remain unfinished.
+Installed fast-exit scope observations precede another normal proposal. Prepare
+related downstream software concurrently, but preserve each live evidence gate.
+No historical start instruction below authorizes a fresh job or claim reuse.
+The historical machine-plan arithmetic and source pins remain unchanged; this
+handoff is not a new whole-campaign budget or admission.
+
 Latest evidence, 14 October: normal job `2210506` from the qualified PR #85 pin
 has [intact independently replayed negative evidence](mvp2_s2_normal_2210506_audit.md).
 Initial resource/IPC barriers and four stdlib phases passed, but 186 faulty samples
