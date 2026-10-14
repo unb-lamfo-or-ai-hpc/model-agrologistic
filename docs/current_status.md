@@ -1,13 +1,27 @@
 # Dated research status: 14 October 2026
 
 This is a derived handoff snapshot, not a new certificate. Reviewed integration
-base: develop `8a3f15084400424e07cd3367fa3a76295cc828c8` (PR #85 merged).
+base: develop `99a8294249182cb231994d96dabb92db7e4e8ef8` (PR #86 merged).
 Read [PROJECT_STATE.md](../PROJECT_STATE.md), the [roadmap](mvp2_hpc_roadmap.md)
 and linked evidence for full history. Refresh live PR state before continuing;
 open PR content is not integrated code. The [portable memory](research_context.md)
 was integrated with explicit authorization; it is not an execution gate.
 
 ## Current handoff
+
+PR #86 is merged with explicit authorization. The
+[closed diagnostic integration](mvp2_s2_diagnostic_integration.md) separates
+validated lifecycle/accounting reads from member/resource failure, binds diagnostic
+journals to the unchanged controller and qualifies complete/forensic collection.
+Fast exit with retained empty scopes may satisfy the existing proof; missing
+membership/scope remains blocked. No existing driver selects the new adapter,
+no worker timing/acceptance policy changes, and no new execution is admitted.
+Next: agent finishes Ready review and requests separate merge; then qualifies
+operational release/terminal transfer and the observation prerequisite before
+proposing any normal successor. No NPAD CLI action now. Job 2210506's negative
+review and all consumed claims remain unchanged; S2/scientific scope stays open.
+
+### Prior negative-audit handoff
 
 Job `2210506` has [independently replayed intact negative evidence](mvp2_s2_normal_2210506_audit.md).
 Archive SHA-256 `0239bbec7edd29cf384e7949d441ec6fb3e8474f77c735799978620fc74aa642`.

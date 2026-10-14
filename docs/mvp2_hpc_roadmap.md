@@ -2,6 +2,17 @@
 
 ## Authority and scope
 
+14 October closed integration: authorized PR #86 merge
+`99a8294249182cb231994d96dabb92db7e4e8ef8` preserves the negative normal audit.
+The [diagnostic/fast-exit package](mvp2_s2_diagnostic_integration.md) qualifies
+independent reads, durable sidecars, unchanged strict cleanup projection and
+complete/forensic collection without a driver or execution admission. It does
+not accept missing scopes, change worker timing or identify the unrecorded old
+exception. Finish Ready/merge review, then qualify operational release and
+fast-exit observation prerequisites before any separately reviewed successor.
+No automatic retry or downstream release; full S2 and later scientific scope
+remain unchanged, with old evidence/claims intact.
+
 14 October live normal audit: PR #85 merged at
 `8a3f15084400424e07cd3367fa3a76295cc828c8`; job `2210506` completed at scheduler
 level but [normal containment is not qualified](mvp2_s2_normal_2210506_audit.md).

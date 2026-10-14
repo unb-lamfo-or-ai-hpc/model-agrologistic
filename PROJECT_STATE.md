@@ -3,7 +3,31 @@
 Updated 14 October 2026. This public checkpoint contains scope and provenance,
 not private evidence, credentials, local host paths or execution authority.
 
-## Latest checkpoint — PR #85 merged; normal job 2210506 remains unqualified
+## Latest checkpoint — PR #86 merged; closed diagnostic and fast-exit integration
+
+14 October 2026: PR #86 merged into develop with explicit authorization at
+`99a8294249182cb231994d96dabb92db7e4e8ef8`, after six successful checks.
+The maintainer requests [closed diagnostic/fast-exit integration](docs/mvp2_s2_diagnostic_integration.md)
+with execution still blocked. A separately selected adapter integrates six
+independent validated channels, durable diagnostic sidecars, strict existing
+controller projection, independent replay and bounded complete/forensic collection.
+The current normal driver does not select it; public module/launch remain closed.
+
+Fast exit with retained valid empty scopes can satisfy the original quiet proof
+in offline qualification. Missing membership/scope remains unknown and blocked,
+while separate products/accounting survive for diagnosis. No cleanup predicate,
+worker timing, memory/CPU envelope or scientific parameter is changed. The exact
+installed exception from job 2210506 remains unrecorded; its original negative
+review/archive/claim and all earlier evidence remain unchanged.
+
+Next owner: agent completes software qualification/Ready review and requests
+this integration PR's separate merge authorization. Then qualify an operational
+release/terminal transfer and resolve the fast-exit observation prerequisite
+before proposing a new normal admission with a distinct claim. No new job,
+retry or CLI command is admitted now. S2 stays open; downstream execution,
+scientific/editorial scope and post-article branch synchronization are unchanged.
+
+## Prior checkpoint — PR #85 merged; normal job 2210506 remains unqualified
 
 14 October 2026: PR #85 merged into develop at
 `8a3f15084400424e07cd3367fa3a76295cc828c8`. Job `2210506` used execution source
