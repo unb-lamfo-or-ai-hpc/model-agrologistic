@@ -1,13 +1,31 @@
 # Dated research status: 14 October 2026
 
 This is a derived handoff snapshot, not a new certificate. Reviewed integration
-base: develop `40a55f5270c6921f28349024de0dcce69befcab1` (PR #89 merged).
+base: develop `e2a40c8f1e6d87d82cbe7edbef370e78145f0024` (PR #90 merged).
 Read [PROJECT_STATE.md](../PROJECT_STATE.md), the [roadmap](mvp2_hpc_roadmap.md)
 and linked evidence for full history. Refresh live PR state before continuing;
 open PR content is not integrated code. The [portable memory](research_context.md)
 was integrated with explicit authorization; it is not an execution gate.
 
 ## Current handoff
+
+Job2210952 has [independently replayed fast-exit evidence](mvp2_s2_fast_exit_2210952_audit.md).
+All five samples retain products/accounting and known-leader absence, but
+memory/freezer/cpuset directories are missing; exact membership/step queries
+are unavailable. This answers the observation question, not normal cleanup.
+The observation claim is consumed/collection-only. Missing remains unknown,
+never empty; no repeat or downstream execution is admitted. Original negative
+job2210506 remains unchanged and its exact exception remains unidentified.
+
+Next owner: agent finishes the read-only audit/decision package; maintainer
+separately decides merge and whether to authorize qualification of the proposed
+lifecycle-aware persistent-inventory protocol. That proposal is not implemented
+or adopted here. Alternatively retain the current criterion and seek NPAD
+infrastructure support. No CLI action is needed now. Normal A/P2-P5 remain open;
+eleven downstream software slots remain unrun. Scientific scope and final
+post-article synchronization are unchanged.
+
+### Prior observation-package handoff
 
 PR #89 is merged. The [complete bounded fast-exit observation package](mvp2_s2_fast_exit_observation.md)
 qualifies observer/wrapper/exclusive claim/regression/terminal and forensic

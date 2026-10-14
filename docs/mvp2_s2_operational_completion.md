@@ -1,5 +1,16 @@
 # S2 completion: complete packages, serial evidence gates
 
+Continuation after PR #90 merge `e2a40c8f1e6d87d82cbe7edbef370e78145f0024`:
+the [job2210952 audit](mvp2_s2_fast_exit_2210952_audit.md) confirms the bounded
+observer completed, but relevant step scopes are missing in all five samples.
+The existing retained-scope cleanup predicate is not satisfied. No identical
+normal retry is justified; the observation claim is consumed/collection-only.
+Finish this read-only audit and request a separate decision on qualifying the
+proposed lifecycle-aware persistent inventory, or retaining the criterion and
+seeking NPAD infrastructure. No changed acceptance criterion is implemented or
+adopted here. The table below retains the current contract until such a decision;
+software preparation cannot presume it. Normal A/P2-P5 remain open. No CLI now.
+
 Continuation after PR #89 merge `40a55f5270c6921f28349024de0dcce69befcab1`:
 the [complete observation-only package](mvp2_s2_fast_exit_observation.md) now
 qualifies the previously missing bounded post-fast-exit CLI, one immutable claim,
