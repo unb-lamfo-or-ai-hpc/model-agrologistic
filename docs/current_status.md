@@ -1,13 +1,28 @@
 # Dated research status: 14 October 2026
 
 This is a derived handoff snapshot, not a new certificate. Reviewed integration
-base: develop `c838fd10c911cd2cf2e16c60eb9a46d578cc0269` (PR #91 merged).
+base: develop `9cc579d23f544c3ec6cdd7bbd71d85e6294ba01a` (PR #92 merged).
 Read [PROJECT_STATE.md](../PROJECT_STATE.md), the [roadmap](mvp2_hpc_roadmap.md)
 and linked evidence for full history. Refresh live PR state before continuing;
 open PR content is not integrated code. The [portable memory](research_context.md)
 was integrated with explicit authorization; it is not an execution gate.
 
 ## Current handoff
+
+The maintainer authorized the [independent environment verifier and closed
+operational adapter integration](mvp2_s2_lifecycle_integration.md). Current
+source/runtime, kernel IPC peer, Slurm ownership and actual kernel hierarchy
+reads derive conditional assurances; supplied approval JSON cannot bypass them.
+Conservative namespace/permission/worker-hardening profile compatibility with
+NPAD remains unknown. No host setting or actual hardening mutation occurs here.
+Private bounded frames/negative diagnostics replay independently; all admission
+and cleanup flags stay false. Finish exact-head qualification and Ready/merge
+review, then qualify real worker/release/stop/claim/wrapper/terminal integration
+as one complete closed gate before any proposed live admission. No existing
+launcher selects the adapter. No NPAD CLI now. Preserve all old claims/evidence,
+original budgets, full S2 A/P2-P5, later scientific scope and post-article sync.
+
+### Prior protocol handoff
 
 The maintainer authorized [lifecycle-aware software qualification](mvp2_s2_lifecycle_protocol.md),
 not execution or installed acceptance. The closed package groups the prospective

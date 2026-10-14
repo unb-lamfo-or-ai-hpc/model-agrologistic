@@ -1,5 +1,15 @@
 # S2 completion: complete packages, serial evidence gates
 
+Continuation after PR #92 merge `9cc579d23f544c3ec6cdd7bbd71d85e6294ba01a`:
+the [closed verifier/adapter integration](mvp2_s2_lifecycle_integration.md) qualifies
+independent current environment/source/runtime/IPC/scheduler reads and bounded
+terminal/negative replay. The conservative sufficient profile is not installed
+NPAD proof or protection against hostile administrators. No effectful release,
+worker entry, claim, retry, host change or execution admission is supplied. Finish
+Ready/merge review, then group remaining worker/security/release/stop/claim/wrapper/
+collection qualification as one closed package. No CLI now. Historical table,
+original evidence/budgets, A/P2-P5 and subsequent scientific scope remain intact.
+
 Continuation after PR #91 merge `c838fd10c911cd2cf2e16c60eb9a46d578cc0269`:
 the maintainer authorized [lifecycle software qualification](mvp2_s2_lifecycle_protocol.md).
 The prospective reducer/observer/wrapper/terminal-forensic package remains closed;

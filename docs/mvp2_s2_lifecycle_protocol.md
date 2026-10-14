@@ -1,5 +1,12 @@
 # S2 lifecycle-aware protocol: closed software qualification
 
+Current software integration after PR #92 merge: the separately authorized
+[independent environment verifier and closed operational adapter](mvp2_s2_lifecycle_integration.md)
+implements conditional current read checks for the proof obligations below.
+It does not change this original protocol or historical receipt, admit execution
+or establish installed NPAD compatibility. All public effects stay closed;
+original claims, evidence and budgets are preserved.
+
 14 October 2026. Verified develop base after PR #91 merge:
 `c838fd10c911cd2cf2e16c60eb9a46d578cc0269`. Authority: the maintainer authorized
 **software qualification only**, preserving claims/evidence and blocking execution.
