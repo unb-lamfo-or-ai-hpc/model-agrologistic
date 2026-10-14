@@ -1,13 +1,27 @@
 # Dated research status: 14 October 2026
 
 This is a derived handoff snapshot, not a new certificate. Reviewed integration
-base: develop `f1ab13568cd961d1bf0a61638caa2d3874b9fa8c` (PR #84 merged).
+base: develop `8a3f15084400424e07cd3367fa3a76295cc828c8` (PR #85 merged).
 Read [PROJECT_STATE.md](../PROJECT_STATE.md), the [roadmap](mvp2_hpc_roadmap.md)
 and linked evidence for full history. Refresh live PR state before continuing;
 open PR content is not integrated code. The [portable memory](research_context.md)
 was integrated with explicit authorization; it is not an execution gate.
 
 ## Current handoff
+
+Job `2210506` has [independently replayed intact negative evidence](mvp2_s2_normal_2210506_audit.md).
+Archive SHA-256 `0239bbec7edd29cf384e7949d441ec6fb3e8474f77c735799978620fc74aa642`.
+Initial barriers and four stdlib worker phases passed, but all 186 samples faulted
+and the controller blocked at the cleanup deadline. Completion is not containment
+acceptance. The exact installed exception was not recorded; earlier member-read
+failure suppressing later lifecycle/accounting reads is reproduced offline.
+The resource-normal claim is consumed/collection-only. Next: qualify the read-only
+audit and disconnected independent diagnostics, Ready/merge review, then bounded
+operational integration before any successor admission. No NPAD command is
+required now; no retry, cleanup relaxation or downstream execution is admitted.
+Original evidence and all scientific/editorial decisions remain unchanged.
+
+### Prior operational-wrapper handoff
 
 PR #84 is merged with explicit authorization and six successful checks. The
 [operational normal wrapper](mvp2_s2_resource_operational.md) connects the

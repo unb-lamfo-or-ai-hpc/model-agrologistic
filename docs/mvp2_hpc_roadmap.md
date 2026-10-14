@@ -2,6 +2,17 @@
 
 ## Authority and scope
 
+14 October live normal audit: PR #85 merged at
+`8a3f15084400424e07cd3367fa3a76295cc828c8`; job `2210506` completed at scheduler
+level but [normal containment is not qualified](mvp2_s2_normal_2210506_audit.md).
+Two initial barriers passed and the stdlib worker completed; 186 sampling faults
+prevented quiet-cleanup proof and the controller blocked. Its claim is consumed.
+Qualify read-only outcome audit/disconnected diagnostics, then a bounded
+diagnostic/fast-exit integration before proposing any normal successor. The exact
+installed exception remains unrecorded; do not guess it or relax cleanup.
+No new CLI action, retry or downstream release follows. Full S2 scientific
+scope and later sprints remain unchanged, not replaced by this negative result.
+
 14 October operational continuation: PR #84 merged into develop at
 `f1ab13568cd961d1bf0a61638caa2d3874b9fa8c` with explicit authorization.
 The [normal-only operational wrapper](mvp2_s2_resource_operational.md) completes

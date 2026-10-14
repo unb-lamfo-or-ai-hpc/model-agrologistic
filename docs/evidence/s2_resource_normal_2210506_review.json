@@ -1,0 +1,165 @@
+{
+  "accounting": {
+    "2210506": {
+      "elapsed_seconds": 395,
+      "exit_code": "0:0",
+      "state": "COMPLETED"
+    },
+    "2210506.0": {
+      "elapsed_seconds": 1,
+      "exit_code": "0:0",
+      "state": "COMPLETED"
+    },
+    "2210506.batch": {
+      "elapsed_seconds": 395,
+      "exit_code": "0:0",
+      "state": "COMPLETED"
+    },
+    "2210506.extern": {
+      "elapsed_seconds": 395,
+      "exit_code": "0:0",
+      "state": "COMPLETED"
+    }
+  },
+  "adverse_execution_admitted": false,
+  "archive_sha256": "0239bbec7edd29cf384e7949d441ec6fb3e8474f77c735799978620fc74aa642",
+  "barrier_count": 2,
+  "cleanup_accepted": false,
+  "fault_exception_recorded": false,
+  "fault_sample_count": 186,
+  "first_observation": {
+    "index": 1,
+    "kind": "observation",
+    "payload": {
+      "action": "TERM_exact_step",
+      "inputs": {
+        "all_known_pids_absent": true,
+        "fault": true,
+        "launcher_reaped": true,
+        "members": null,
+        "scope_hash": null,
+        "step_terminal": false,
+        "worker_done": false,
+        "writes_sha256": null
+      },
+      "state": "term"
+    },
+    "previous_sha256": "c5126532fedb4f9902700e15062ad36d6d93f5a638736f28a4b3a59f4bff4b26",
+    "seconds": 0.8493102891370654
+  },
+  "initial_resource_observation": {
+    "adverse_execution_admitted": false,
+    "allocation_cpus": [
+      0,
+      32
+    ],
+    "contract_sha256": "6e7bc60829022fe558f027b37c5a1968caf561552272a93b166b6e9d94fc8800",
+    "cpuacct_relation": "equal",
+    "cpuacct_scope_usage_ns": 56643252059854800,
+    "enforcement_paths_disjoint": true,
+    "exclusive_cpu_placement_proven": false,
+    "identities_sha256": "463137ed8444d46a69b679e707aea3dd16d0176e7ed09a4fb9deea4721c6582d",
+    "initial_affinity": [
+      0
+    ],
+    "live_containment_qualified": false,
+    "live_isolation_proven": false,
+    "native_miniature_admitted": false,
+    "normal_execution_admitted": false,
+    "production_admitted": false,
+    "remote_cleanup_proven": false,
+    "repeats_admitted": false,
+    "schema_version": "s2-synthetic-resources-observation-v2",
+    "scope_sha256": "81add3e15ef40a9ac04c6c33e5c225f4ca7d9a2f27e844aba67b1745ab6598f7",
+    "supervisor_memory_limit_bytes": 2147483648,
+    "synthetic_execution_admitted": false,
+    "synthetic_observation": false,
+    "worker_cpu_attribution": "unavailable",
+    "worker_cpu_usage_ns": null,
+    "worker_cpus": [
+      0,
+      32
+    ],
+    "worker_memory_failcnt": 0,
+    "worker_memory_limit_bytes": 268435456,
+    "worker_memory_peak_bytes": 49479680
+  },
+  "job_id": "2210506",
+  "last_observation": {
+    "index": 186,
+    "kind": "observation",
+    "payload": {
+      "action": "preserve_blocked_attempt",
+      "inputs": {
+        "all_known_pids_absent": true,
+        "fault": true,
+        "launcher_reaped": true,
+        "members": null,
+        "scope_hash": null,
+        "step_terminal": false,
+        "worker_done": false,
+        "writes_sha256": null
+      },
+      "state": "blocked"
+    },
+    "previous_sha256": "564da8837acb061c5260e3585d151ca4bbec82b55cfc73d5f134b9c21cc87f4f",
+    "seconds": 391.5967938704416
+  },
+  "live_containment_qualified": false,
+  "live_isolation_proven": false,
+  "native_miniature_admitted": false,
+  "normal_execution_admitted": false,
+  "outcome": "normal_not_qualified",
+  "portable_review": {
+    "adverse_execution_admitted": false,
+    "carrier_sha256": "01f63fdea2f03518e23c139702141a5f2cbf491ea61b1b2bfcba4ed589c38a3f",
+    "controller_state": "blocked",
+    "disposition": "complete_replayed",
+    "job_id": "2210506",
+    "live_containment_qualified": false,
+    "live_isolation_proven": false,
+    "native_miniature_admitted": false,
+    "normal_execution_admitted": false,
+    "production_admitted": false,
+    "release_sha256": "69bcc4ec244dfbb2225bfd27267328cb270e430cda2dc3e3433c6b995e3b418e",
+    "remote_cleanup_proven": false,
+    "repeats_admitted": false,
+    "schema_version": "s2-resource-launcher-review-v1",
+    "source_commit": "45b4731f40b7be43880dfd04e49899a6a301f70a",
+    "status": "terminal_integrity_replayed_not_live_qualified",
+    "synthetic_execution_admitted": false,
+    "worker_cpu_usage_ns": null
+  },
+  "production_admitted": false,
+  "release_sha256": "69bcc4ec244dfbb2225bfd27267328cb270e430cda2dc3e3433c6b995e3b418e",
+  "remote_cleanup_proven": false,
+  "repeats_admitted": false,
+  "retry_admitted": false,
+  "sample_count": 186,
+  "schema_version": "s2-normal-outcome-audit-v1",
+  "signal_intents": [
+    {
+      "action": "TERM_exact_step",
+      "seconds": 0.8493102891370654
+    },
+    {
+      "action": "KILL_exact_step",
+      "seconds": 7.254928066395223
+    }
+  ],
+  "source": {
+    "source_sha256": "5c50a15f57a34c5b9a33e996e65fc14d5b09f3d517f106ec97d5452d6d4a63f0",
+    "tracked_count": 555,
+    "worker_sha256": "e97d15965fd16936d7e5d5a1bc0abb1fe38fb82dedb8ae599c42cfe9136c4bfe"
+  },
+  "source_commit": "45b4731f40b7be43880dfd04e49899a6a301f70a",
+  "synthetic_execution_admitted": false,
+  "usable_resource_sample_count": 0,
+  "worker_phases": [
+    "build",
+    "optimization",
+    "export",
+    "disposal"
+  ],
+  "worker_terminal_status": "synthetic_complete"
+}

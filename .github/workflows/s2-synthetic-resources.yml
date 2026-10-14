@@ -48,3 +48,7 @@ jobs:
           assert not any(c.find(k) is not None for c in cases for k in ('failure', 'error', 'skipped'))
           print('NPAD_RESOURCE_NORMAL_REGRESSION=349 passed; source closure verified')
           PY
+      - name: Negative normal audit and disconnected channel diagnostics
+        run: |
+          python -B -m ruff check --no-cache scripts/mvp2_s2_normal_audit.py tests/test_mvp2_s2_normal_audit.py
+          python -B -m pytest -p no:cacheprovider tests/test_mvp2_s2_normal_audit.py -q --basetemp="$RUNNER_TEMP/normal-outcome-audit-tests"
