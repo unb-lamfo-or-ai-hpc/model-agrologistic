@@ -26,6 +26,7 @@ from scripts import mvp2_s2_slurm_step as s
 from scripts import mvp2_s2_slurm_synthetic as q
 
 ENTRY = "scripts/mvp2_s2_resource_launcher.py"
+OPERATIONAL_ENTRY = "scripts/mvp2_s2_resource_operational.py"
 COLLECTOR = "scripts/mvp2_s2_resource_forensics.py"
 CLAIM = ".mvp2-s2-resource-normal-v1"
 BASE_COMMIT = "5f4100de9fb9969f0246247947a6050ebf439c2f"
@@ -158,13 +159,22 @@ def submit_argv(value):
     )
 
 
-def batch_script(value):
+def checked_entry(value, entry):
+    s.require(
+        entry == ENTRY or entry == OPERATIONAL_ENTRY and entry in value["manifest"]["files"],
+        "Unreviewed entry/source closure.",
+    )
+    return entry
+
+
+def batch_script(value, *, entry=ENTRY):
+    entry = checked_entry(value, entry)
     env = value["envelope"]
     argv = (
         env["python"],
         "-B",
         "-I",
-        env["checkout"] + "/" + ENTRY,
+        env["checkout"] + "/" + entry,
         "batch",
         "--source-sha",
         env["source_commit"],
@@ -174,11 +184,12 @@ def batch_script(value):
     return ("#!/bin/sh\nexec " + shlex.join(argv) + "\n").encode("ascii")
 
 
-def worker_argv(value):
+def worker_argv(value, *, entry=ENTRY):
+    entry = checked_entry(value, entry)
     spec = value["plan"]["specification"]
     old = first.normal_worker_argv(spec)
     argv = tuple(
-        spec["checkout"] + "/" + ENTRY if arg == spec["checkout"] + "/" + first.ENTRY else arg
+        spec["checkout"] + "/" + entry if arg == spec["checkout"] + "/" + first.ENTRY else arg
         for arg in old
     )
     return argv + ("--release-sha", s.digest(value))
@@ -194,18 +205,18 @@ def acknowledged(proposal, job):
     return validate_release(value, value["envelope"]["source_commit"], s.digest(value))
 
 
-def submission_intent(proposal):
+def submission_intent(proposal, *, entry=ENTRY):
     return {
         "source_commit": proposal["envelope"]["source_commit"],
         "proposal_sha256": s.digest(proposal),
         "argv_sha256": s.digest(submit_argv(proposal)),
-        "script_sha256": hashlib.sha256(batch_script(proposal)).hexdigest(),
-        "scope": "resource_normal_only",
+        "script_sha256": hashlib.sha256(batch_script(proposal, entry=entry)).hexdigest(),
+        "scope": "resource_normal_only" if entry == ENTRY else "resource_operational_normal_only",
         **normal.p.FLAGS,
     }
 
 
-def reserve_components(proposal, latch, *, submit):
+def reserve_components(proposal, latch, *, submit, entry=ENTRY):
     """Injected-effect qualification only; durable one-shot intent precedes callback.
 
     No default callback exists. Unknown acknowledgement, interruption or failed
@@ -220,9 +231,9 @@ def reserve_components(proposal, latch, *, submit):
     claim = claim_path()
     claim.mkdir(mode=0o700, exist_ok=False)
     c.write_once(claim / "proposal.json", proposal)
-    c.write_once(claim / "submission-intent.json", submission_intent(proposal))
+    c.write_once(claim / "submission-intent.json", submission_intent(proposal, entry=entry))
     with (claim / "batch.sh").open("xb") as stream:
-        stream.write(batch_script(proposal))
+        stream.write(batch_script(proposal, entry=entry))
         stream.flush()
         os.fsync(stream.fileno())
     if latch.reason is not None:
@@ -255,15 +266,15 @@ def reserve_components(proposal, latch, *, submit):
         return {"status": "unknown_effect_no_retry", **normal.p.FLAGS}
 
 
-def load_release():
+def load_release(*, entry=ENTRY):
     """Bind pre-effect descriptor and acknowledgement without invoking any tool."""
     claim = claim_path()
     proposal = c.decode_json(a._file(claim / "proposal.json", LIMIT))
     proposal = validate_release(proposal, proposal["envelope"]["source_commit"], s.digest(proposal))
     s.require(
         c.decode_json(a._file(claim / "submission-intent.json", 8192))
-        == submission_intent(proposal)
-        and a._file(claim / "batch.sh", 8192) == batch_script(proposal),
+        == submission_intent(proposal, entry=entry)
+        and a._file(claim / "batch.sh", 8192) == batch_script(proposal, entry=entry),
         "Submission drift.",
     )
     receipt = c.decode_json(a._file(claim / "job.json", 8192))
@@ -284,14 +295,14 @@ def load_release():
     return release
 
 
-def role_components(release, *, role, job_id, specification_digest, dispatch):
+def role_components(release, *, role, job_id, specification_digest, dispatch, entry=ENTRY):
     """One-shot batch/worker binding for injected qualification, never a CLI route."""
     s.require(role in {"batch", "worker"}, "Compute role.")
     release, source, runtime = verify_release(release, s.digest(release), role=role)
     spec = release["plan"]["specification"]
     claim = claim_path()
     s.require(
-        load_release() == release
+        (load_release() if entry == ENTRY else load_release(entry=entry)) == release
         and spec["job_id"] == job_id != "1"
         and specification_digest == s.digest(spec)
         and not (claim / "stop.json").exists()
@@ -318,7 +329,10 @@ def role_components(release, *, role, job_id, specification_digest, dispatch):
             },
         )
     return dispatch(
-        copy.deepcopy(spec), copy.deepcopy(source), copy.deepcopy(runtime), worker_argv(release)
+        copy.deepcopy(spec),
+        copy.deepcopy(source),
+        copy.deepcopy(runtime),
+        worker_argv(release, entry=entry),
     )
 
 
