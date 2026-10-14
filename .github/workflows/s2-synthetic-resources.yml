@@ -92,3 +92,7 @@ jobs:
           d.verify_tree(base / 'source', json.loads((base / 'files.json').read_text()))
           print('NPAD_FAST_EXIT_REGRESSION=153 passed; physical source closure verified; NO_NPAD_EFFECTS')
           PY
+      - name: Read-only fast-exit outcome audit and negative admission boundaries
+        run: |
+          python -B -m ruff check --no-cache scripts/mvp2_s2_fast_exit_audit.py tests/test_mvp2_s2_fast_exit_audit.py
+          python -B -m pytest -p no:cacheprovider tests/test_mvp2_s2_fast_exit_audit.py -q --basetemp="$RUNNER_TEMP/fast-exit-outcome-audit-tests"
