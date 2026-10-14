@@ -1,13 +1,26 @@
 # Dated research status: 14 October 2026
 
 This is a derived handoff snapshot, not a new certificate. Reviewed integration
-base: develop `5f4100de9fb9969f0246247947a6050ebf439c2f` (PR #83 merged).
+base: develop `f1ab13568cd961d1bf0a61638caa2d3874b9fa8c` (PR #84 merged).
 Read [PROJECT_STATE.md](../PROJECT_STATE.md), the [roadmap](mvp2_hpc_roadmap.md)
 and linked evidence for full history. Refresh live PR state before continuing;
 open PR content is not integrated code. The [portable memory](research_context.md)
 was integrated with explicit authorization; it is not an execution gate.
 
 ## Current handoff
+
+PR #84 is merged with explicit authorization and six successful checks. The
+[operational normal wrapper](mvp2_s2_resource_operational.md) connects the
+sealed current source/runtime, exclusive claim, fixed synthetic worker,
+normal resource adapter and immutable terminal/forensic collection. Existing
+start resumes collection, never submission. Qualification is software-only;
+no NPAD execution or live containment result is claimed. Next owner: agent
+finishes Ready review and requests separate merge authorization; then the
+maintainer uses the pinned CLI for one normal synthetic job and transfers
+terminal evidence. All downstream execution remains closed. Historical claims
+and scientific/editorial decisions are unchanged.
+
+### Prior closed-launcher handoff
 
 PR #83 is merged with explicit authorization. The maintainer resumed work on
 14 October and requested the [closed launcher/forensic gate](mvp2_s2_resource_launcher.md).
