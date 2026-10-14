@@ -2,6 +2,18 @@
 
 ## Authority and scope
 
+14 October continuation: PR #83 merged into develop at
+`5f4100de9fb9969f0246247947a6050ebf439c2f`; the maintainer resumes the
+[closed normal launcher qualification](mvp2_s2_resource_launcher.md).
+Source/runtime sealing, a distinct exclusive claim, batch/worker binding and
+terminal/forensic collection are qualified without execution admission.
+Missing/truncated/rejected receipts retain separate negative outcomes and
+original bytes. Next: finish Ready/merge review, then qualify the pinned
+normal-only operational admission wrapper before human NPAD CLI and live audit.
+This completes the same pending software package, not a new experiment. Full
+S2, h400, SCIP/h215, conditional h500 and S6-A/S6-B remain planned; S3/S4 stay
+cancelled, EVPI/VSS excluded and main promotion deferred until article review.
+
 13 October integration update: PR #82 merged at
 `656537428c5edd8702aff1ed1b865a604b117792`. The
 [closed normal-adapter integration](mvp2_s2_resource_normal_integration.md)

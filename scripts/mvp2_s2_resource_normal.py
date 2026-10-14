@@ -422,6 +422,44 @@ class ResourceNormalAdapter(x.ComputeAdapter):
 
 def review(value, spec):
     """Independent bounded replay; partial/negative evidence is never admission."""
+    spec = a.validate_spec(spec)
+    return review_portable(value, portable_binding(spec))
+
+
+def portable_binding(spec):
+    """Export the existing identity without exporting private executable/run paths."""
+    spec = a.validate_spec(spec)
+    return {
+        **{k: copy.deepcopy(spec[k]) for k in ("inventory", "nonce", "source_commit", "job_id")},
+        "specification_sha256": s.digest(spec),
+        "runtime": x.identity.expected_compute_runtime(spec),
+    }
+
+
+def validate_portable_binding(binding):
+    q._keys(
+        binding,
+        {"inventory", "nonce", "source_commit", "job_id", "specification_sha256", "runtime"},
+    )
+    for key in ("nonce", "specification_sha256"):
+        q._hash(binding[key])
+    q._hash(binding["source_commit"], 40)
+    s.require(
+        type(binding["job_id"]) is str
+        and binding["job_id"].isascii()
+        and binding["job_id"].isdecimal()
+        and not binding["job_id"].startswith("0"),
+        "Portable job identity.",
+    )
+    s.review_inventory(binding["inventory"])
+    x.identity.review_compute_runtime(binding["runtime"])
+    return copy.deepcopy(binding)
+
+
+def review_portable(value, binding):
+    """Same replay with an externally bound, path-free identity; no receipt rewrite."""
+    binding = validate_portable_binding(binding)
+    spec = binding
     q._keys(
         value,
         {
@@ -437,7 +475,14 @@ def review(value, spec):
     )
     s.require(
         value["schema_version"] == "s2-resource-normal-evidence-v1"
-        and value["proposal"] == proposal(spec)
+        and value["proposal"]
+        == {
+            "schema_version": "s2-resource-normal-proposal-v1",
+            "specification_sha256": binding["specification_sha256"],
+            "resource_policy": dict(p.POLICY),
+            "profile": dict(q.PROFILE),
+            **p.FLAGS,
+        }
         and all(value[k] is False for k in p.FLAGS),
         "Carrier binding/authority drift.",
     )
@@ -458,7 +503,7 @@ def review(value, spec):
     )
     s.require(
         attempt["schema_version"] == "s2-resource-normal-attempt-v1"
-        and attempt["specification_sha256"] == s.digest(spec)
+        and attempt["specification_sha256"] == binding["specification_sha256"]
         and all(attempt[k] is False for k in (*a.FLAGS, "live_containment_qualified"))
         and type(attempt["sample_count"]) is int
         and 0 <= attempt["sample_count"] <= a.MAX_SAMPLES
@@ -475,7 +520,7 @@ def review(value, spec):
             "Source count.",
         )
     if attempt["runtime"] is not None:
-        s.require(attempt["runtime"] == x.identity.expected_compute_runtime(spec), "Runtime drift.")
+        s.require(attempt["runtime"] == binding["runtime"], "Runtime drift.")
     s.require(
         attempt["source"] is not None and attempt["runtime"] is not None,
         "Claimed normal attempt requires preflight source/runtime.",
