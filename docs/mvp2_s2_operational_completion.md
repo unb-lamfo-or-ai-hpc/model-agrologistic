@@ -1,5 +1,14 @@
 # S2 completion: complete packages, serial evidence gates
 
+Continuation after PR #89 merge `40a55f5270c6921f28349024de0dcce69befcab1`:
+the [complete observation-only package](mvp2_s2_fast_exit_observation.md) now
+qualifies the previously missing bounded post-fast-exit CLI, one immutable claim,
+independent channels, tests and terminal/forensic transfer together. This is a
+separate five-minute diagnostic request, not normal admission, retry or amended
+cleanup. Prepare P2-P4 software from the closed unrun slot inventory while
+evidence is pending, but keep all serial live gates and the passage criteria
+below. No installed observation result or next release is presumed by software.
+
 14 October 2026. Verified develop base after PR #88:
 `a0c5e7c2859c6fb99b718bfc29b7087996f44eb8`.
 Authority: [PROJECT_STATE.md](../PROJECT_STATE.md). Scientific design and passage

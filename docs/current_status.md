@@ -1,13 +1,27 @@
 # Dated research status: 14 October 2026
 
 This is a derived handoff snapshot, not a new certificate. Reviewed integration
-base: develop `a0c5e7c2859c6fb99b718bfc29b7087996f44eb8` (PR #88 merged).
+base: develop `40a55f5270c6921f28349024de0dcce69befcab1` (PR #89 merged).
 Read [PROJECT_STATE.md](../PROJECT_STATE.md), the [roadmap](mvp2_hpc_roadmap.md)
 and linked evidence for full history. Refresh live PR state before continuing;
 open PR content is not integrated code. The [portable memory](research_context.md)
 was integrated with explicit authorization; it is not an execution gate.
 
 ## Current handoff
+
+PR #89 is merged. The [complete bounded fast-exit observation package](mvp2_s2_fast_exit_observation.md)
+qualifies observer/wrapper/exclusive claim/regression/terminal and forensic
+collection together. One proposed five-minute2CPU/2GiB observation slot is
+distinct from normal A; all normal/adverse/native/h300/repeat flags remain false.
+Finish Ready/merge qualification, then maintainer executes only the pinned
+observation CLI and transfers its archive/checksum. Never reuse old claims or
+reinterpret missing membership/scope as empty. Job2210506 remains negative.
+Closed eleven-slot P2-P4 software inventory anticipates integration while
+waiting for evidence; it is neither an executor nor completed experiments.
+Full S2 and later scientific scope remain unchanged. Main sync stays after
+article review. No remote NPAD action was performed here.
+
+### Prior consolidated operational handoff
 
 PR #88 is merged. The [consolidated closed operational package](mvp2_s2_operational_completion.md)
 qualifies source/role/entry, exclusive one-shot claim/acknowledgement, independent

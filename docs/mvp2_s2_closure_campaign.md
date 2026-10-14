@@ -1,5 +1,17 @@
 # S2 closure campaign: finite scope, staged admission
 
+Current handoff after PR #89 merge `40a55f5270c6921f28349024de0dcce69befcab1`:
+the [post-exit observation package](mvp2_s2_fast_exit_observation.md) adds one
+separately disclosed proposed five-minute2CPU/2048MiB observation slot with
+exclusive claim/wrapper/tests/terminal and forensic collection. It does not
+consume/reopen old A or amend its budget/cleanup policy. No normal/adverse/
+native/h300/repeat admission follows; finish Ready/merge qualification before
+the pinned human observation CLI. P2-P4 software preparation uses a closed
+eleven-slot unrun inventory; live releases remain serial and evidence-dependent.
+Original archives/claims and historical pins below stay intact. No afterok chain.
+
+Prior handoff:
+
 Current handoff, 14 October after PR #88 merge
 `a0c5e7c2859c6fb99b718bfc29b7087996f44eb8`: see the
 [consolidated completion strategy](mvp2_s2_operational_completion.md).
