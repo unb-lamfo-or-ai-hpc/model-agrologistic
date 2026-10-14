@@ -1,9 +1,33 @@
 # Model Agrologistic — MVP 2.0 checkpoint
 
-Updated 13 October 2026. This public checkpoint contains scope and provenance,
+Updated 14 October 2026. This public checkpoint contains scope and provenance,
 not private evidence, credentials, local host paths or execution authority.
 
-## Latest checkpoint — resource contract merged; normal integration stays closed
+## Latest checkpoint — PR #83 merged; closed launcher and terminal/forensic qualification
+
+14 October 2026: work resumes by explicit maintainer request after the
+[PR #83 pause record](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/83#issuecomment-6156532403).
+Develop is verified at the authorized merge
+`5f4100de9fb9969f0246247947a6050ebf439c2f`. PR #83 passed six PR checks;
+its local expanded S2 qualification was 1404 passed/eight platform skips.
+These are software results, not live-containment qualification.
+
+The [closed normal launcher gate](docs/mvp2_s2_resource_launcher.md) seals the
+current source/runtime, uses a distinct exclusive one-shot claim and binds
+batch/worker roles and the existing resource adapter. Terminal collection
+preserves complete, missing/truncated and rejected carriers separately, with
+independent redacted replay, original-byte hashes and structured entry logs.
+Historical claims/archives remain unchanged; no scheduler effect or NPAD
+execution is admitted. All execution entry points remain closed.
+
+Next owner: agent qualifies this software PR and requests merge only after
+Ready. Then qualify the pinned normal-only operational admission wrapper and
+human CLI. No NPAD action is needed now. The same two-logical-CPU hard envelope,
+initial one-CPU affinity and memory/time budgets remain; full S2/h300 and later
+scientific scope, S3/S4 cancellation, EVPI/VSS exclusion and post-article branch
+synchronization remain unchanged. No scientific manuscript edits occur here.
+
+## Prior checkpoint — resource contract merged; normal integration stays closed
 
 13 October 2026: PR #82 merged into develop at
 `656537428c5edd8702aff1ed1b865a604b117792` with explicit maintainer authorization
