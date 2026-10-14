@@ -379,7 +379,8 @@ def batch(commit, expected):
         server.release({"observe_fast_exit": sha}, 5)
         report["phase"] = "exit"
         report["local_client_returncode"] = child.wait(timeout=60)
-        d.require(child.returncode == 0, "Leaf/client did not complete normally.")
+        # A nonzero fast exit must not erase post-exit products/scope/accounting.
+        # Observe it independently and preserve an incomplete, never promoted outcome.
         reaped = time.monotonic()
         report["phase"] = "samples"
         query_number = 0
@@ -412,7 +413,10 @@ def batch(commit, expected):
             }
             report["samples"].append(item)
             d.write_new(run / f"sample-{index}.json", item)
-        report.update(status="observed_not_admitted", phase="complete")
+        report.update(
+            status="observed_not_admitted" if child.returncode == 0 else "incomplete",
+            phase="complete",
+        )
     except (OSError, ValueError, TimeoutError, UnicodeError) as exc:
         report["error_kind"] = f.failure(exc)
         report["status"] = "blocked_environment"
@@ -470,6 +474,7 @@ def capture_collection(plan, sha, job):
     entry["leaf"] = f.channel(leaf_binding)
     for key, suffix in (("stdout", "out"), ("stderr", "err")):
         entry[key] = f.entry_log(claim / f"slurm-{job}.{suffix}")
+        entry["client_" + key] = f.entry_log(run / ("srun." + suffix))
     return {"observation.json": report, "entry.json": entry}
 
 

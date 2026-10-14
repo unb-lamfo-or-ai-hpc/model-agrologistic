@@ -562,7 +562,17 @@ def audit(path, checksum, commit, job, plan_sha):
         "Exact terminal accounting required.",
     )
     entry = d.decode(records["entry.json"])
-    keys(entry, {"stdout", "stderr", "leaf", "invalid_observation_sha256"})
+    keys(
+        entry,
+        {
+            "stdout",
+            "stderr",
+            "client_stdout",
+            "client_stderr",
+            "leaf",
+            "invalid_observation_sha256",
+        },
+    )
 
     def validate_leaf(value):
         keys(value, {"step_id", "sha256"})
@@ -578,7 +588,7 @@ def audit(path, checksum, commit, job, plan_sha):
         d.require(job + "." + value["step_id"] in rows, "Forensic exact-step accounting.")
 
     validate_channel(entry["leaf"], validate_leaf)
-    for key in ("stdout", "stderr"):
+    for key in ("stdout", "stderr", "client_stdout", "client_stderr"):
 
         def validate_log(value):
             keys(value, {"bytes", "sha256", "diagnostics"})
