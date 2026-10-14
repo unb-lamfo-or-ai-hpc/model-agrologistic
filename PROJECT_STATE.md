@@ -3,7 +3,34 @@
 Updated 14 October 2026. This public checkpoint contains scope and provenance,
 not private evidence, credentials, local host paths or execution authority.
 
-## Latest checkpoint — PR #86 merged; closed diagnostic and fast-exit integration
+## Latest checkpoint — PR #87 merged; closed operational gate and terminal transfer
+
+14 October 2026: PR #87 merged into develop at
+`0fab1b4274bca3068bdff29322ada44c28dd7465`, preserving the original negative
+job 2210506 evidence. The maintainer requests qualification of the
+[closed operational gate and terminal transfer](docs/mvp2_s2_diagnostic_gate.md).
+The new pure gate binds a sealed source declaration, normal-only policy,
+path-free runtime/specification identity, release digest and a distinct proposed
+claim name. It neither reserves that claim nor submits/launches anything.
+
+Terminal collection requires exact root/batch terminal accounting and, for a
+bound complete attempt, the exact numeric worker step. Complete diagnostic
+semantics and original journal/product metadata are checked independently.
+Missing, truncated or inconsistent finals remain separate forensic outcomes.
+Archives are bounded, checksummed and independently replayed against external
+source/job/release identities. Replay does not establish installed isolation or
+cleanup; all execution/containment admission flags remain false. Historical
+claims, original archives, old drivers and scientific settings are unchanged.
+
+Next owner: agent completes software qualification, marks this PR Ready and
+requests separate merge authorization. After merge, qualify the explicit
+operational wrapper/current-runtime verification and resolve fast-exit
+observation prerequisites before proposing any new normal admission. No NPAD
+CLI action, retry or execution is admitted now. S2 stays open; all downstream
+gates, S3/S4 cancellation, EVPI/VSS exclusion and final post-article branch
+reconciliation remain unchanged.
+
+## Prior checkpoint — PR #86 merged; closed diagnostic and fast-exit integration
 
 14 October 2026: PR #86 merged into develop with explicit authorization at
 `99a8294249182cb231994d96dabb92db7e4e8ef8`, after six successful checks.

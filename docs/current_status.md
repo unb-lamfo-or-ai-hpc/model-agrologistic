@@ -1,13 +1,25 @@
 # Dated research status: 14 October 2026
 
 This is a derived handoff snapshot, not a new certificate. Reviewed integration
-base: develop `99a8294249182cb231994d96dabb92db7e4e8ef8` (PR #86 merged).
+base: develop `0fab1b4274bca3068bdff29322ada44c28dd7465` (PR #87 merged).
 Read [PROJECT_STATE.md](../PROJECT_STATE.md), the [roadmap](mvp2_hpc_roadmap.md)
 and linked evidence for full history. Refresh live PR state before continuing;
 open PR content is not integrated code. The [portable memory](research_context.md)
 was integrated with explicit authorization; it is not an execution gate.
 
 ## Current handoff
+
+PR #87 is merged. The [closed operational gate/terminal transfer](mvp2_s2_diagnostic_gate.md)
+binds the sealed normal source/release/specification to a distinct proposed
+claim identity and independently checks terminal diagnostic archives. No claim
+is reserved and no existing driver selects it. Missing or inconsistent final
+receipts retain forensic metadata; replay never implies live containment.
+Next owner: agent finishes Ready review and requests separate merge authorization;
+then qualifies wrapper/current-runtime and fast-exit prerequisites before any
+new normal admission. No NPAD CLI now. Original evidence, claims and scientific
+scope are unchanged; S2 and downstream execution remain open/blocked respectively.
+
+### Prior diagnostic-integration handoff
 
 PR #86 is merged with explicit authorization. The
 [closed diagnostic integration](mvp2_s2_diagnostic_integration.md) separates

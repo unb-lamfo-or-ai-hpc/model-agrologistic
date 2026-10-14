@@ -213,6 +213,12 @@ class DiagnosticNormalAdapter(n.ResourceNormalAdapter):
 
 def review(value, spec):
     """Replay every channel-to-controller binding, never attest installed cleanup."""
+    return review_portable(value, n.portable_binding(spec))
+
+
+def review_portable(value, binding):
+    """Identical replay with the existing path-free, externally bound identity."""
+    spec = n.validate_portable_binding(binding)
     q._keys(
         value,
         {
@@ -226,11 +232,11 @@ def review(value, spec):
     )
     s.require(
         value["schema_version"] == "s2-normal-diagnostic-evidence-v1"
-        and value["specification_sha256"] == s.digest(spec)
+        and value["specification_sha256"] == spec["specification_sha256"]
         and all(value[k] is False for k in p.FLAGS),
         "Diagnostic carrier binding.",
     )
-    result = n.review(value["base_evidence"], spec)
+    result = n.review_portable(value["base_evidence"], spec)
     f.review_samples(value["samples"], value["base_evidence"])
     samples, records = value["samples"], value["diagnostics"]
     s.require(type(records) is list and len(records) == len(samples), "Diagnostic count.")
@@ -261,7 +267,7 @@ def review(value, spec):
         )
         s.require(
             record["schema_version"] == "s2-normal-diagnostic-sample-v1"
-            and record["specification_sha256"] == s.digest(spec)
+            and record["specification_sha256"] == spec["specification_sha256"]
             and type(record["index"]) is int
             and record["index"] == index
             and record["seconds"] == sample["seconds"]
