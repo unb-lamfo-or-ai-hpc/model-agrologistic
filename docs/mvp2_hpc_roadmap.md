@@ -2,6 +2,17 @@
 
 ## Authority and scope
 
+14 October operational-gate continuation: PR #87 merged at
+`0fab1b4274bca3068bdff29322ada44c28dd7465`. The
+[closed gate and terminal transfer](mvp2_s2_diagnostic_gate.md) qualifies a
+sealed source/release binding, distinct proposed claim identity, exact terminal
+accounting and independent bounded complete/forensic archive replay. It does
+not reserve a claim, expose a runnable worker/launcher or admit execution.
+Finish Ready/merge review; then qualify the explicit operational wrapper and
+current runtime/fast-exit prerequisites before any new normal admission.
+Unknown scopes remain unknown. No worker timing, cleanup predicate, experiment,
+historical certificate or scientific/editorial scope changes. S2 remains open.
+
 14 October closed integration: authorized PR #86 merge
 `99a8294249182cb231994d96dabb92db7e4e8ef8` preserves the negative normal audit.
 The [diagnostic/fast-exit package](mvp2_s2_diagnostic_integration.md) qualifies
