@@ -20,5 +20,5 @@ jobs:
       - run: python -m pip install -e '.[dev]'
       - name: Versioned resource gate and strict legacy regression
         run: |
-          python -B -m ruff check --no-cache scripts/mvp2_s2_synthetic_resources.py scripts/mvp2_s2_resource_normal.py tests/test_mvp2_s2_synthetic_resources.py tests/test_mvp2_s2_resource_normal.py
-          python -B -m pytest -p no:cacheprovider tests/test_mvp2_s2_resource_normal.py tests/test_mvp2_s2_synthetic_resources.py tests/test_mvp2_s2_slurm_step.py tests/test_mvp2_s2_slurm_synthetic.py tests/test_mvp2_s2_batch_adapter.py tests/test_mvp2_s2_compute_integration.py tests/test_mvp2_s2_operational.py -q --basetemp="$RUNNER_TEMP/synthetic-resource-tests"
+          python -B -m ruff check --no-cache scripts/mvp2_s2_synthetic_resources.py scripts/mvp2_s2_resource_normal.py scripts/mvp2_s2_resource_launcher.py scripts/mvp2_s2_resource_forensics.py tests/test_mvp2_s2_synthetic_resources.py tests/test_mvp2_s2_resource_normal.py tests/test_mvp2_s2_resource_launcher.py
+          python -B -m pytest -p no:cacheprovider tests/test_mvp2_s2_resource_launcher.py tests/test_mvp2_s2_resource_normal.py tests/test_mvp2_s2_synthetic_resources.py tests/test_mvp2_s2_slurm_step.py tests/test_mvp2_s2_slurm_synthetic.py tests/test_mvp2_s2_batch_adapter.py tests/test_mvp2_s2_compute_integration.py tests/test_mvp2_s2_operational.py -q --basetemp="$RUNNER_TEMP/synthetic-resource-tests"
