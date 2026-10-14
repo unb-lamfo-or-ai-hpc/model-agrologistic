@@ -64,3 +64,31 @@ jobs:
         run: |
           python -B -m ruff check --no-cache scripts/mvp2_s2_diagnostic_operational.py scripts/mvp2_s2_diagnostic_forensic.py tests/test_mvp2_s2_diagnostic_operational.py
           python -B -m pytest -p no:cacheprovider tests/test_mvp2_s2_diagnostic_operational.py -q --basetemp="$RUNNER_TEMP/normal-operational-completion-tests"
+      - name: Complete bounded fast-exit observation and exact human bootstrap regression
+        run: |
+          bash -n scripts/npad_s2_fast_exit_observation.sh
+          FAST_ROOT=$(mktemp -d "$RUNNER_TEMP/fast-exit-XXXXXXXX")
+          mkdir "$FAST_ROOT/source"
+          git archive HEAD | tar -x -C "$FAST_ROOT/source"
+          python -B -I - "$FAST_ROOT" <<'PY'
+          import hashlib, json, pathlib, sys
+          base = pathlib.Path(sys.argv[1])
+          root = base / 'source'
+          files = {p.relative_to(root).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest()
+                   for p in root.rglob('*') if p.is_file()}
+          (base / 'files.json').write_text(json.dumps(files))
+          PY
+          cd "$FAST_ROOT/source"
+          python -B -m ruff check --no-cache scripts/mvp2_s2_fast_exit.py scripts/mvp2_s2_fast_exit_observation.py scripts/mvp2_s2_followup_inventory.py tests/test_mvp2_s2_fast_exit.py
+          python -B -m pytest -p no:cacheprovider tests/test_mvp2_s2_fast_exit.py tests/test_mvp2_s2_scope_diagnostic.py -q --basetemp="$FAST_ROOT/tests" --junitxml="$FAST_ROOT/regression.xml"
+          python -B -I - "$FAST_ROOT" <<'PY'
+          import json, pathlib, sys, xml.etree.ElementTree as ET
+          base = pathlib.Path(sys.argv[1])
+          cases = ET.parse(base / 'regression.xml').getroot().findall('.//testcase')
+          assert len(cases) == 153
+          assert not any(c.find(k) is not None for c in cases for k in ('failure', 'error', 'skipped'))
+          sys.path.insert(0, str(base / 'source'))
+          from scripts import mvp2_s2_allocation_diagnostic as d
+          d.verify_tree(base / 'source', json.loads((base / 'files.json').read_text()))
+          print('NPAD_FAST_EXIT_REGRESSION=153 passed; physical source closure verified; NO_NPAD_EFFECTS')
+          PY
