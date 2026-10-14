@@ -2,6 +2,17 @@
 
 ## Authority and scope
 
+14 October continuation after PR #89 merge
+`40a55f5270c6921f28349024de0dcce69befcab1`: qualify the
+[complete bounded post-fast-exit observation](mvp2_s2_fast_exit_observation.md),
+including one-shot wrapper/claim, exact regression, terminal/forensic transfer
+and pinned human CLI in one package. Proposed request is five minutes/twoCPUs/
+2048MiB with a fast stdlib leaf, not normal retry or cleanup-policy amendment.
+All downstream flags stay false. Prepare P2-P4 integration from the closed
+eleven-slot software inventory while evidence is pending; preserve serial live
+gates and all original claims. Finish Ready/merge review before human observation,
+then audit evidence before any separate normal proposal. S2 remains open.
+
 14 October consolidation after PR #88 merge
 `a0c5e7c2859c6fb99b718bfc29b7087996f44eb8`: the maintainer requests a robust
 accelerated S2 strategy. The [complete closed operational qualification](mvp2_s2_operational_completion.md)

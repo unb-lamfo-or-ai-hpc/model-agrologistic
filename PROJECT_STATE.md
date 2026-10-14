@@ -3,7 +3,50 @@
 Updated 14 October 2026. This public checkpoint contains scope and provenance,
 not private evidence, credentials, local host paths or execution authority.
 
-## Latest checkpoint — PR #88 merged; consolidated S2 operational qualification
+## Latest checkpoint — PR #89 merged; bounded fast-exit observation package
+
+14 October 2026: PR #89 merged into develop at
+`40a55f5270c6921f28349024de0dcce69befcab1`. The maintainer requests one
+complete [post-exit observation package](docs/mvp2_s2_fast_exit_observation.md):
+observer, exclusive claim, operational wrapper, tests, terminal/forensic transfer
+and pinned human CLI together. Finish software qualification and separate Ready/
+merge review before human execution. This is one new observation-only slot,
+not another normal attempt or an amendment to normal cleanup/timing.
+
+Proposed request: one intel-256 allocation, account sxdsouza, two requested CPUs,
+2048 MiB and five minutes. Its fixed stdlib leaf requests one CPU/256 MiB/two
+minutes, initial affinity one CPU and hard cpuset at most two logical CPUs.
+After kernel-peer/current allocation/step/resource checks it writes the existing
+four stdlib phases and returns immediately; no artificial post-phase linger.
+Five bounded post-client-reaping observations separately preserve controller
+directory/file lifetime, exact listpids, step/accounting, products and known-PID
+absence. Direct scope members/PID absence are not recursive cleanup proof.
+Unknown scopes/queries stay unknown. All live containment, normal, adverse,
+native, h300 and repeat admission flags remain false, regardless of job exit.
+
+The new claim `.mvp2-s2-fast-exit-observation-v1` is not yet reserved. Existing or
+uncertain claims never resubmit. Terminal collection handles absent/invalid
+observation receipts separately, preserves allowlisted entry diagnostics and
+replays bounded archives against external source/job/plan/checksum identities.
+Historical claims, original job2210506 archive SHA256
+`0239bbec7edd29cf384e7949d441ec6fb3e8474f77c735799978620fc74aa642`,
+worker/controller, manuscript and scientific configuration remain unchanged.
+
+Downstream preparation includes a closed software inventory of eleven unrun
+P2-P4 slots: five adverse cases, one integrated native miniature and the five
+serial h300 thread arms (4,1,8,2,16). This is preparation, not implementation
+completion or admission of their operational releases. Reuse existing components
+and prepare their integration while observation evidence is pending; live blocks
+remain serial and predecessor-audited, with no afterok chain or blind retries.
+
+Next owner: agent completes exact-head qualification/Ready and requests this PR's
+separate merge authorization; maintainer then runs only the qualified pinned
+observation CLI. Audit its terminal evidence before proposing normal admission.
+Full S2 A/P2-P5 stays open; later h400, SCIP/h215, conditional h500, S6-A/S6-B
+remain planned. S3/S4 cancelled, EVPI/VSS excluded, final main/develop integration
+after article review. No solver job or remote NPAD action was performed here.
+
+## Prior checkpoint — PR #88 merged; consolidated S2 operational qualification
 
 14 October 2026: PR #88 merged into develop at
 `a0c5e7c2859c6fb99b718bfc29b7087996f44eb8`. Its sealed declaration/terminal
