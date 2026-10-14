@@ -96,3 +96,25 @@ jobs:
         run: |
           python -B -m ruff check --no-cache scripts/mvp2_s2_fast_exit_audit.py tests/test_mvp2_s2_fast_exit_audit.py
           python -B -m pytest -p no:cacheprovider tests/test_mvp2_s2_fast_exit_audit.py -q --basetemp="$RUNNER_TEMP/fast-exit-outcome-audit-tests"
+      - name: Closed lifecycle protocol observer wrapper and terminal forensics
+        run: |
+          python -B -m ruff check --no-cache scripts/mvp2_s2_lifecycle_protocol.py scripts/mvp2_s2_lifecycle_observer.py scripts/mvp2_s2_lifecycle_package.py tests/test_mvp2_s2_lifecycle_protocol.py
+          LIFE_ROOT=$(mktemp -d "$RUNNER_TEMP/lifecycle-XXXXXXXX")
+          mkdir "$LIFE_ROOT/source"
+          git archive HEAD | tar -x -C "$LIFE_ROOT/source"
+          python -B -I - "$LIFE_ROOT" <<'PY'
+          import hashlib, json, pathlib, sys
+          base = pathlib.Path(sys.argv[1])
+          root = base / 'source'
+          (base / 'files.json').write_text(json.dumps({p.relative_to(root).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest() for p in root.rglob('*') if p.is_file()}))
+          PY
+          cd "$LIFE_ROOT/source"
+          python -B -m pytest -p no:cacheprovider tests/test_mvp2_s2_lifecycle_protocol.py -q --basetemp="$LIFE_ROOT/tests"
+          python -B -I - "$LIFE_ROOT" <<'PY'
+          import json, pathlib, sys
+          base = pathlib.Path(sys.argv[1])
+          sys.path.insert(0, str(base / 'source'))
+          from scripts import mvp2_s2_allocation_diagnostic as d
+          d.verify_tree(base / 'source', json.loads((base / 'files.json').read_text()))
+          print('LIFECYCLE_SOFTWARE_SOURCE_CLOSURE=VERIFIED; NO_NPAD_EFFECTS_OR_ADMISSION')
+          PY
