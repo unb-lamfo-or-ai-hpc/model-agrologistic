@@ -2,6 +2,18 @@
 
 ## Authority and scope
 
+14 October continuation after PR #90 merge
+`e2a40c8f1e6d87d82cbe7edbef370e78145f0024`: job2210952's
+[fast-exit audit](mvp2_s2_fast_exit_2210952_audit.md) records five observations
+with missing enforcement scopes and unavailable exact membership after exit.
+Products/accounting survive, but unchanged normal cleanup is not qualified.
+Do not blindly repeat normal or reuse the consumed observation claim. Finish
+the read-only audit PR and obtain a separate protocol decision: qualify the
+proposed lifecycle-aware persistent inventory, or retain current criteria and
+seek NPAD support. The proposal is neither implemented nor adopted by this
+audit. No new CLI action or execution admission follows. A/P2-P5 remain open;
+the eleven downstream slots remain unrun and all scientific scope is preserved.
+
 14 October continuation after PR #89 merge
 `40a55f5270c6921f28349024de0dcce69befcab1`: qualify the
 [complete bounded post-fast-exit observation](mvp2_s2_fast_exit_observation.md),

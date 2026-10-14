@@ -1,5 +1,17 @@
 # S2 closure campaign: finite scope, staged admission
 
+Current handoff after PR #90 merge `e2a40c8f1e6d87d82cbe7edbef370e78145f0024`:
+job2210952's [bounded observation audit](mvp2_s2_fast_exit_2210952_audit.md)
+preserves missing scopes as unknown, not empty. Five reported product/accounting
+observations do not qualify unchanged post-exit cleanup. The observation claim
+is consumed/collection-only; no successor/repeat slot is added. A/P2-P5 remain
+open and all downstream flags remain false. Obtain a separate protocol decision
+before qualifying any new normal release; merging the read-only audit does not
+adopt its proposed persistent-inventory alternative. No CLI action is needed now.
+Original claims, certificates, historical budgets and scientific scope stay intact.
+
+Prior handoff:
+
 Current handoff after PR #89 merge `40a55f5270c6921f28349024de0dcce69befcab1`:
 the [post-exit observation package](mvp2_s2_fast_exit_observation.md) adds one
 separately disclosed proposed five-minute2CPU/2048MiB observation slot with

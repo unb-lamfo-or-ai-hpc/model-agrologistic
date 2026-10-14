@@ -3,7 +3,58 @@
 Updated 14 October 2026. This public checkpoint contains scope and provenance,
 not private evidence, credentials, local host paths or execution authority.
 
-## Latest checkpoint — PR #89 merged; bounded fast-exit observation package
+## Latest checkpoint — PR #90 merged; observed fast-exit lifecycle needs protocol decision
+
+14 October 2026: PR #90 merged into develop at
+`e2a40c8f1e6d87d82cbe7edbef370e78145f0024`. The maintainer transferred the
+observation archive for job2210952, execution source
+`021ba83d99132c5b872873439ae00cc82aec3793`, plan digest
+`bd1b423377bf4aaaacf2fa6e5a03f1c2e6bb0c3cef4d6c044c81e504be720359`.
+Archive and sidecar match SHA256
+`e3c01f0b5db22b99b61b3a214eee42a694d1893d0f52c5b9b370d6a486b7561d`.
+Independent bounded replay agrees with terminal collection. The
+[outcome audit](docs/mvp2_s2_fast_exit_2210952_audit.md) and
+[redacted derived review](docs/evidence/s2_fast_exit_2210952_review.json)
+record observations, not a replacement certificate or normal admission.
+
+Root/batch/extern COMPLETED0:0 at14seconds; bound numeric step.0 COMPLETED0:0
+at one reported second. All five requested post-client-reaping observations
+(0/1/3/6/10seconds) retain accounting, stable available product receipts and known
+leader absence. memory/freezer/cpuset directories are missing in all five;
+listpids and show-step are unavailable. Shared cpuacct remains readable with
+non-worker members, not attributable worker CPU. Initial inherited memory
+ceilings are256MiB(worker)/2048MiB(supervisor), with two-CPU cpusets; direct leaf
+memory counters carry an unlimited sentinel, not the effective inherited limit.
+No full-run memory peak, worker CPU or sustained containment is established.
+
+This successfully observes the requested fast-exit boundary but does not meet
+the unchanged post-exit retained-scope/quiet proof. Missing remains unknown,
+never empty. It does not prove who removed the scopes, the precise RPC failure
+reason, descendant absence or the original job2210506 exception. Original
+negative evidence/claims stay immutable; this observation claim is consumed and
+collection-only. No retry, new claim or normal/adverse/native/h300 job is admitted.
+
+Recommended next decision, NOT APPROVED: qualify a versioned lifecycle-aware
+closure protocol that checks live enforcement during execution and, after exit,
+exact-step terminal evidence plus a pre-bound persistent allocation-level
+recursive inventory, all tracked PID identities, stable products and quiet proof.
+Missing step scopes remain separately unobservable, not converted to empty.
+Persistent-parent identity, no escape/migration, scheduler ownership and complete
+descendant coverage must be demonstrated or the new proposal must block. No
+terminal-only fallback, artificial linger or timing increase is proposed. The
+alternative is retaining the current predicate and seeking NPAD support for
+appropriately persistent isolated scopes; availability is not demonstrated.
+
+Next owner: agent finishes this read-only audit/decision PR's qualification and
+Ready review; maintainer separately decides merge and whether to authorize the
+proposed protocol qualification. Merging this audit does NOT adopt a new criterion
+or admit execution. No new CLI action is needed now. After explicit protocol
+authority, prepare its complete software/wrapper/tests/collection package before
+any separately admitted human normal attempt. A/P2-P5 remain open; eleven P2-P4
+slots stay unrun. Later scientific scope, S3/S4 cancellation, EVPI/VSS exclusion
+and final post-article main/develop reconciliation remain unchanged.
+
+## Prior checkpoint — PR #89 merged; bounded fast-exit observation package
 
 14 October 2026: PR #89 merged into develop at
 `40a55f5270c6921f28349024de0dcce69befcab1`. The maintainer requests one

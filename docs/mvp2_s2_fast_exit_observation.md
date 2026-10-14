@@ -1,5 +1,13 @@
 # S2 bounded post-fast-exit observation: complete operational package
 
+Terminal update, 14 October 2026: PR #90 merged at
+`e2a40c8f1e6d87d82cbe7edbef370e78145f0024`; job2210952's
+[audit and protocol decision](mvp2_s2_fast_exit_2210952_audit.md) are available.
+The observation claim is consumed/collection-only. Historical start instructions
+below do not authorize another job, claim reset or normal retry. Missing scopes
+remain unknown, not empty. No new CLI action is needed before the separate
+protocol decision; all admission flags remain false.
+
 14 October 2026. Integration base after PR #89:
 `40a55f5270c6921f28349024de0dcce69befcab1`.
 Authority: [checkpoint](../PROJECT_STATE.md), [completion plan](mvp2_s2_operational_completion.md).
