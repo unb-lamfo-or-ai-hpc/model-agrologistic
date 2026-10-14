@@ -1,5 +1,14 @@
 # S2 closure campaign: finite scope, staged admission
 
+Latest evidence, 14 October: normal job `2210506` from the qualified PR #85 pin
+has [intact independently replayed negative evidence](mvp2_s2_normal_2210506_audit.md).
+Initial resource/IPC barriers and four stdlib phases passed, but 186 faulty samples
+prevented cleanup qualification; controller `blocked`. The resource-normal claim
+is consumed/collection-only. Block A's exit criterion is not met, so B/C/D stay
+closed. Next qualify audit/disconnected diagnostics and bounded fast-exit
+integration, not an automatic normal repeat. Existing budgets/scope remain
+historical references; no successor is silently added to the consumed A slot.
+
 Latest evidence, 13 October: diagnostic job `2209770` is complete and independently
 replayed as `observed_not_qualified`. Its claim is consumed. Shared cpuacct and a
 two-CPU cpuset with reported one-CPU worker affinity require a combined policy
