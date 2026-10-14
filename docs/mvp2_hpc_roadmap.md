@@ -2,6 +2,15 @@
 
 ## Authority and scope
 
+14 October operational continuation: PR #84 merged into develop at
+`f1ab13568cd961d1bf0a61638caa2d3874b9fa8c` with explicit authorization.
+The [normal-only operational wrapper](mvp2_s2_resource_operational.md) completes
+the pending software wiring and human CLI qualification, not a new scientific
+experiment. Finish Ready/merge review before one pinned human normal execution;
+audit terminal/forensic evidence before downstream admission. All historical
+claims and budgets remain unchanged. This software work does not establish
+live containment, close S2 or release adverse/native/h300/repeat execution.
+
 14 October continuation: PR #83 merged into develop at
 `5f4100de9fb9969f0246247947a6050ebf439c2f`; the maintainer resumes the
 [closed normal launcher qualification](mvp2_s2_resource_launcher.md).
