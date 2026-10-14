@@ -3,7 +3,35 @@
 Updated 14 October 2026. This public checkpoint contains scope and provenance,
 not private evidence, credentials, local host paths or execution authority.
 
-## Latest checkpoint — PR #84 merged; one-normal operational wrapper qualification
+## Latest checkpoint — PR #85 merged; normal job 2210506 remains unqualified
+
+14 October 2026: PR #85 merged into develop at
+`8a3f15084400424e07cd3367fa3a76295cc828c8`. Job `2210506` used execution source
+`45b4731f40b7be43880dfd04e49899a6a301f70a` and the distinct resource-normal
+claim. Transferred archive/sidecar SHA-256
+`0239bbec7edd29cf384e7949d441ec6fb3e8474f77c735799978620fc74aa642`
+matches independent replay: intact complete carrier, controller `blocked`, no
+live containment or cleanup acceptance. See the
+[audit](docs/mvp2_s2_normal_2210506_audit.md) and
+[public review](docs/evidence/s2_resource_normal_2210506_review.json).
+
+Two initial barriers passed the approved CPU/memory envelope; the stdlib worker
+recorded all four phases and `synthetic_complete`. Root/batch completed 0:0 in
+395 seconds; numeric step completed 0:0 in one rounded second. All 186 subsequent
+samples faulted, with no usable resource samples or quiet-cleanup evidence.
+TERM/KILL intents and the cleanup deadline were preserved, not proof of forced
+termination. The sampling read coupling is reproduced offline; the actual thrown
+exception was not recorded and its exact installed cause remains unconfirmed.
+
+Next owner: agent qualifies the read-only audit and disconnected independent
+diagnostic channels, marks Ready and requests separate merge authorization.
+Then qualify bounded diagnostic/fast-exit operational integration before any
+new normal admission. No live diagnostic or retry is admitted here; no NPAD CLI
+action is needed now. Preserve the consumed claim and all original archives.
+Unknown membership/scope never becomes empty/zero. S2 stays open, adverse/native/
+h300/repeat execution remains blocked, and scientific/editorial scope is unchanged.
+
+## Prior checkpoint — PR #84 merged; one-normal operational wrapper qualification
 
 14 October 2026: PR #84 was merged into develop with explicit maintainer
 authorization at `f1ab13568cd961d1bf0a61638caa2d3874b9fa8c`, after six
