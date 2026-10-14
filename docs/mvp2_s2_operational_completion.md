@@ -1,5 +1,16 @@
 # S2 completion: complete packages, serial evidence gates
 
+Continuation after PR #91 merge `c838fd10c911cd2cf2e16c60eb9a46d578cc0269`:
+the maintainer authorized [lifecycle software qualification](mvp2_s2_lifecycle_protocol.md).
+The prospective reducer/observer/wrapper/terminal-forensic package remains closed;
+all cleanup/admission flags stay false, including after a software candidate.
+Environment persistence/ownership/no-escape are mandatory external obligations,
+not proven by the new schema or fakes. The installed verifier and operational
+integration are still pending. The historical table below is not silently amended
+into a new live release. Finish Ready/merge review, then qualify that complete
+integration while preserving original claims/evidence. No NPAD CLI now. A/P2-P5
+and all later scientific scope remain open/unchanged.
+
 Continuation after PR #90 merge `e2a40c8f1e6d87d82cbe7edbef370e78145f0024`:
 the [job2210952 audit](mvp2_s2_fast_exit_2210952_audit.md) confirms the bounded
 observer completed, but relevant step scopes are missing in all five samples.

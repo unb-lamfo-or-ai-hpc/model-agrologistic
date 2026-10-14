@@ -1,13 +1,27 @@
 # Dated research status: 14 October 2026
 
 This is a derived handoff snapshot, not a new certificate. Reviewed integration
-base: develop `e2a40c8f1e6d87d82cbe7edbef370e78145f0024` (PR #90 merged).
+base: develop `c838fd10c911cd2cf2e16c60eb9a46d578cc0269` (PR #91 merged).
 Read [PROJECT_STATE.md](../PROJECT_STATE.md), the [roadmap](mvp2_hpc_roadmap.md)
 and linked evidence for full history. Refresh live PR state before continuing;
 open PR content is not integrated code. The [portable memory](research_context.md)
 was integrated with explicit authorization; it is not an execution gate.
 
 ## Current handoff
+
+The maintainer authorized [lifecycle-aware software qualification](mvp2_s2_lifecycle_protocol.md),
+not execution or installed acceptance. The closed package groups the prospective
+contract/reducer, bounded local reader, explicit callback wrapper, independent
+terminal/forensic replay and tests/CI. It keeps every admission/cleanup flag false.
+Mandatory parent-persistence/ownership/no-escape assurances are external input
+obligations; no live verifier or operational adapter is supplied. Next owner:
+agent completes Ready qualification; maintainer separately authorizes merge.
+Then qualify current environment/IPC/transport integration in one complete closed
+package before any separately reviewed human release. No NPAD CLI now. Preserve
+all old claims/reviews/archive identities. S2 A/P2-P5 remains open, later scope and
+post-article synchronization unchanged.
+
+### Prior fast-exit audit handoff
 
 Job2210952 has [independently replayed fast-exit evidence](mvp2_s2_fast_exit_2210952_audit.md).
 All five samples retain products/accounting and known-leader absence, but

@@ -2,6 +2,17 @@
 
 ## Authority and scope
 
+14 October continuation after PR #91 merge
+`c838fd10c911cd2cf2e16c60eb9a46d578cc0269`: the maintainer authorized the
+[new lifecycle protocol's software qualification](mvp2_s2_lifecycle_protocol.md).
+This closed package supplies prospective contract/reducer/observer/wrapper/replay
+and tests, not execution, claim reservation or an adopted live cleanup criterion.
+Unknown parent persistence/ownership/no-escape remains a blocking external
+obligation; no live verifier is supplied. Finish Ready/merge review, then qualify
+current environment/IPC/transport integration as one complete closed package.
+No NPAD CLI now. All original evidence, A/P2-P5, the unrun downstream slots,
+later scientific scope and final post-article synchronization are preserved.
+
 14 October continuation after PR #90 merge
 `e2a40c8f1e6d87d82cbe7edbef370e78145f0024`: job2210952's
 [fast-exit audit](mvp2_s2_fast_exit_2210952_audit.md) records five observations
