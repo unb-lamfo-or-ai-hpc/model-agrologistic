@@ -118,3 +118,31 @@ jobs:
           d.verify_tree(base / 'source', json.loads((base / 'files.json').read_text()))
           print('LIFECYCLE_SOFTWARE_SOURCE_CLOSURE=VERIFIED; NO_NPAD_EFFECTS_OR_ADMISSION')
           PY
+      - name: Independent environment verifier and closed operational adapter qualification
+        run: |
+          python -B -m ruff check --no-cache scripts/mvp2_s2_environment.py scripts/mvp2_s2_lifecycle_adapter.py tests/test_mvp2_s2_lifecycle_adapter.py
+          VERIFY_ROOT=$(mktemp -d "$RUNNER_TEMP/environment-XXXXXXXX")
+          mkdir "$VERIFY_ROOT/source"
+          git archive HEAD | tar -x -C "$VERIFY_ROOT/source"
+          python -B -I - "$VERIFY_ROOT" <<'PY'
+          import hashlib, json, pathlib, sys
+          base = pathlib.Path(sys.argv[1])
+          root = base / 'source'
+          (base / 'files.json').write_text(json.dumps({p.relative_to(root).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest() for p in root.rglob('*') if p.is_file()}))
+          sys.path.insert(0, str(root))
+          from scripts import mvp2_s2_allocation_diagnostic as d
+          d.verify_tree(root, json.loads((base / 'files.json').read_text()))
+          PY
+          cd "$VERIFY_ROOT/source"
+          python -B -m pytest -p no:cacheprovider tests/test_mvp2_s2_lifecycle_adapter.py tests/test_mvp2_s2_lifecycle_protocol.py tests/test_mvp2_s2_compute_identity.py -q --basetemp="$VERIFY_ROOT/tests" --junitxml="$VERIFY_ROOT/regression.xml"
+          python -B -I - "$VERIFY_ROOT" <<'PY'
+          import json, pathlib, sys, xml.etree.ElementTree as ET
+          base = pathlib.Path(sys.argv[1])
+          cases = ET.parse(base / 'regression.xml').getroot().findall('.//testcase')
+          assert len(cases) >= 218
+          assert not any(c.find(k) is not None for c in cases for k in ('failure', 'error', 'skipped'))
+          sys.path.insert(0, str(base / 'source'))
+          from scripts import mvp2_s2_allocation_diagnostic as d
+          d.verify_tree(base / 'source', json.loads((base / 'files.json').read_text()))
+          print(f'INDEPENDENT_ENVIRONMENT_REGRESSION={len(cases)} passed; physical source closure verified; NO_NPAD_EFFECTS_OR_ADMISSION')
+          PY
