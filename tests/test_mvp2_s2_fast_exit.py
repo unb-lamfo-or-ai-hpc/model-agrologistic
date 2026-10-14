@@ -281,7 +281,7 @@ def records(value=None):
                     "status": "available",
                     "value": {"bytes": 0, "sha256": f.d.digest(b""), "diagnostics": []},
                 }
-                for key in ("stdout", "stderr")
+                for key in ("stdout", "stderr", "client_stdout", "client_stderr")
             },
         },
     }
@@ -656,6 +656,17 @@ def test_terminal_capture_missing_and_invalid_reports_preserved(monkeypatch, tmp
     run.mkdir()
     o.claim_path().mkdir()
     plan = {"source_commit": C, "run": str(run)}
+    diagnostic = {
+        "schema_version": "s2-fast-exit-entry-v1",
+        "role": "leaf",
+        "error_kind": "missing",
+        "site": None,
+        **f.FLAGS,
+    }
+    (run / "srun.err").write_bytes(f.d.encode(diagnostic))
+    assert o.capture_collection(plan, H, J)["entry.json"]["client_stderr"]["value"][
+        "diagnostics"
+    ] == [diagnostic]
     assert o.capture_collection(plan, H, J)["observation.json"] is None
     (run / "observation.json").write_text('{"broken":true}')
     result = o.capture_collection(plan, H, J)
@@ -742,7 +753,7 @@ def test_batch_fake_fast_exit_five_independent_samples(monkeypatch, tmp_path):
 
         def wait(self, timeout):
             assert timeout == 60
-            return 0
+            return self.returncode
 
         def poll(self):
             return 0
@@ -756,3 +767,10 @@ def test_batch_fake_fast_exit_five_independent_samples(monkeypatch, tmp_path):
     assert result["status"] == "observed_not_admitted" and len(result["samples"]) == 5
     assert [sample["elapsed_seconds"] for sample in result["samples"]] == list(f.OFFSETS)
     assert all(result[key] is False for key in f.FLAGS)
+    run = tmp_path / "failed-run"
+    run.mkdir()
+    Child.returncode = 2
+    assert o.batch(C, H) == 2
+    failed = o.d.load(run / "observation.json")
+    assert failed["status"] == "incomplete" and failed["local_client_returncode"] == 2
+    assert len(failed["samples"]) == 5
