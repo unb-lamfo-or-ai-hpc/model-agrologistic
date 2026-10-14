@@ -1,5 +1,17 @@
 # S2 closure campaign: finite scope, staged admission
 
+Current handoff after PR #91 merge `c838fd10c911cd2cf2e16c60eb9a46d578cc0269`:
+the [lifecycle protocol package](mvp2_s2_lifecycle_protocol.md) qualifies software
+only under explicit maintainer authority. No new execution slot, claim or live
+cleanup criterion is adopted. Required persistent-parent/no-escape/ownership
+assurances are not established by this software; the environment verifier and
+operational integration remain pending. Finish Ready/merge review, then qualify
+that closed integration before proposing any separately reviewed human release.
+No NPAD CLI now. Preserve original claims/evidence, normal A/P2-P5, historical
+budgets and scientific scope. Downstream eleven-slot inventory remains unrun.
+
+Prior handoff:
+
 Current handoff after PR #90 merge `e2a40c8f1e6d87d82cbe7edbef370e78145f0024`:
 job2210952's [bounded observation audit](mvp2_s2_fast_exit_2210952_audit.md)
 preserves missing scopes as unknown, not empty. Five reported product/accounting
