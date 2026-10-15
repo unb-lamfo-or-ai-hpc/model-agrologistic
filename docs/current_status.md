@@ -1,13 +1,25 @@
 # Dated research status: 15 October 2026
 
 This is a derived handoff snapshot, not a new certificate. Reviewed integration
-base: develop `37d4b13b4fffdf9566b18075c3b7ab4f9784691f` (PR #96 merged).
+base: develop `adbb835b591558ffc39dd6127b22b86cc92fbf15` (PR #97 merged).
 Read [PROJECT_STATE.md](../PROJECT_STATE.md), the [roadmap](mvp2_hpc_roadmap.md)
 and linked evidence for full history. Refresh live PR state before continuing;
 open PR content is not integrated code. The [portable memory](research_context.md)
 was integrated with explicit authorization; it is not an execution gate.
 
 ## Current handoff
+
+The [observation-only operational gate](mvp2_s2_profile_operational.md) groups
+distinct immutable claim/scope, wrapper, role checks and terminal/forensic/cache
+collection with full pinned human CLI. Finish Ready/exact-head checks and separate
+merge authorization before human observation. No agent NPAD job or downstream
+admission. Original PR95/PR97 entries/claims/certificates stay unchanged.
+Remaining-PR baseline6 including this gate, range6–9 depending on evidence; then
+finish normal A and P2-P5 in complete functional packages. The recorded legacy
+h300 CI failure needs investigation before native/h300 admission, not a test bypass.
+S2/later scope and final post-article synchronization remain unchanged.
+
+### Prior closed prospective observation handoff
 
 The [complete prospective observation v2 package](mvp2_s2_profile_observation_v2.md)
 integrates independent host/primitive diagnostics, exact memory layout, bound
