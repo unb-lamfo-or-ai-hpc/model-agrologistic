@@ -78,14 +78,23 @@ class PhaseJournal:
         self.index += 1
 
     def failure_cleanup(self):
+        # Match phase publication: readers never observe a partly written final
+        # JSON name. Existing evidence/source pins are not rewritten by this fix.
+        target = self.directory / "failure-cleanup.json"
+        temporary = target.with_suffix(".pending")
+        if target.exists():
+            raise FileExistsError(target)
         write_once(
-            self.directory / "failure-cleanup.json",
+            temporary,
             {
                 "identity": self.identity,
                 "after_phase_count": self.index,
                 "phase": "cleanup_after_failure",
             },
         )
+        if target.exists():
+            raise FileExistsError(target)
+        temporary.rename(target)
 
 
 def phase_events(directory, identity):
