@@ -111,6 +111,13 @@ def test_redaction_and_resource_replay():
     assert a.review(p, JOB, changed, accounting())["disposition"] == "evidence_not_accepted"
 
 
+def test_removing_scheduler_fields_cannot_bypass_independent_replay():
+    p = plan()
+    values = records(p)
+    del values["allocation.json"]["scheduler_fields"]
+    assert a.review(p, JOB, values, accounting())["disposition"] == "evidence_not_accepted"
+
+
 def prepare_batch(tmp_path, monkeypatch):
     monkeypatch.setattr(r, "BASE", tmp_path)
     monkeypatch.setattr(os, "getuid", lambda: 1271, raising=False)
