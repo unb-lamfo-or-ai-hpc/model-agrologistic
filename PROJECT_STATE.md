@@ -3,7 +3,33 @@
 Updated 15 October 2026. This public checkpoint contains scope and provenance,
 not private evidence, credentials, local host paths or execution authority.
 
-## Latest checkpoint — minimum academic A/P2/P3 consolidation authorised
+## Latest checkpoint — PR99 merged; A job2212000 rejected before worker launch
+
+15 October 2026. PR #99 merged at develop
+`b6100b8120a60d21d49a5f308a8f929191e2238a`; reviewed source
+`faa7ec6ee2629a34210917f81a34193ad7fc6c6c`. The human ran the qualified normal
+slot:86 regression tests passed; raw619-file source inventory verified. Job2212000
+root/batch FAILED1:0 in4s; extern COMPLETED0:0. Archive
+`52f4e69ad527972f253cd81a1e9cdcc0925ca2fad30b14e2fbf19918c1b4f533`, plan
+`66f911b103a7d62d4016d8e3baf1253399c7009fb108140cb23652efd7411131` independently
+replay evidence_not_accepted with records={} and no recorded numeric step.
+Supplemental human traceback and terminal scontrol output confirm that the new
+reader required absent ReqTRES, whereas NPAD22.05 supplies TRES and separate
+CPUs/Task/MinMemoryNode. Observed terminal request is2CPU/2GiB/12min, not a
+demonstrated resource shortage. This is before srun, not a solver/license failure.
+
+The [complete corrective package](docs/mvp2_s2_academic_2212000_audit.md) qualifies
+legacy/modern requested-versus-allocated parsing, contradictory-field rejection,
+portable early batch diagnostics, independent resource-field replay and distinct
+academic-v2 claims. The v2 normal requires exact negative predecessor replay
+before any new claim or submission. All original claims, source and evidence stay
+unchanged. No budget/scientific parameter/validator/host/package changes.
+Finish Ready/exact-head CI and obtain separate merge authorization, then supply
+new pinned human CLI; no new attempt, P2/P3/h300 or repeat is admitted now.
+Maintain A -> five P2 audits -> complete accepted native P3 -> separate P4/P5.
+S2 remains open; downstream scope and post-article branch synchronization persist.
+
+## Prior checkpoint — minimum academic A/P2/P3 consolidation authorised
 
 15 October 2026. PR #98 merged into develop at
 `219233e2b116ffcc5eac5c462b4b863059eace14`. Job2211851's original source/plan/archive
