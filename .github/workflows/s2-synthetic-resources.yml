@@ -176,3 +176,33 @@ jobs:
           identity.inspect_tree(base / 'source', json.loads((base / 'files.json').read_text()))
           print(f'CLOSED_LIFECYCLE_NORMAL_REGRESSION={len(cases)} passed; physical source closure verified; NO_NPAD_EXECUTION_OR_ADMISSION')
           PY
+      - name: Complete one-shot operational prerequisite observation and forensic collection
+        run: |
+          bash -n scripts/npad_s2_lifecycle_profile.sh
+          python -B -m ruff check --no-cache scripts/mvp2_s2_lifecycle_profile.py scripts/mvp2_s2_lifecycle_profile_driver.py tests/test_mvp2_s2_lifecycle_profile.py
+          PROFILE_ROOT=$(mktemp -d "$RUNNER_TEMP/lifecycle-profile-XXXXXXXX")
+          mkdir "$PROFILE_ROOT/source"
+          git archive HEAD | tar -x -C "$PROFILE_ROOT/source"
+          python -B -I - "$PROFILE_ROOT" <<'PY'
+          import hashlib, json, pathlib, sys
+          base = pathlib.Path(sys.argv[1])
+          root = base / 'source'
+          files = {p.relative_to(root).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest() for p in root.rglob('*') if p.is_file()}
+          (base / 'files.json').write_text(json.dumps(files))
+          sys.path.insert(0, str(root))
+          from scripts import mvp2_s2_compute_identity as identity
+          identity.inspect_tree(root, files)
+          PY
+          cd "$PROFILE_ROOT/source"
+          python -B -m pytest -p no:cacheprovider tests/test_mvp2_s2_lifecycle_profile.py tests/test_mvp2_s2_lifecycle_release.py tests/test_mvp2_s2_lifecycle_adapter.py tests/test_mvp2_s2_lifecycle_protocol.py tests/test_mvp2_s2_compute_identity.py -q --basetemp="$PROFILE_ROOT/tests" --junitxml="$PROFILE_ROOT/regression.xml"
+          python -B -I - "$PROFILE_ROOT" <<'PY'
+          import json, pathlib, sys, xml.etree.ElementTree as ET
+          base = pathlib.Path(sys.argv[1])
+          cases = ET.parse(base / 'regression.xml').getroot().findall('.//testcase')
+          assert len(cases) == 399
+          assert not any(c.find(k) is not None for c in cases for k in ('failure', 'error', 'skipped'))
+          sys.path.insert(0, str(base / 'source'))
+          from scripts import mvp2_s2_compute_identity as identity
+          identity.inspect_tree(base / 'source', json.loads((base / 'files.json').read_text()))
+          print(f'NPAD_LIFECYCLE_PROFILE_REGRESSION={len(cases)} passed; physical source closure verified; NO_REAL_SCHEDULER_OR_WORKER')
+          PY

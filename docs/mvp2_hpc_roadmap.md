@@ -2,6 +2,16 @@
 
 ## Authority and scope
 
+15 October operational continuation after authorized PR #94 merge
+`6344d95a3841016cc5e1723e408d46b84a240b1c`: prepare one
+[complete prerequisite observation/handoff](mvp2_s2_lifecycle_profile.md), not
+another blind normal retry. Measure installed host/hierarchy prerequisites in one
+bounded observation allocation with exclusive claim/status/wait/forensic collection.
+No worker/security change or normal/native/h300/repeat admission. Unsupported
+profile requires evidence-backed review/NPAD support, not automatic host changes.
+Finish Ready/separate merge review; then human CLI only. All original evidence,
+full S2 and subsequent scientific scope/post-article synchronization are preserved.
+
 15 October continuation after PR #93 merge
 `0f98ae96aa4b352883626ff8eb8efa9e4d01c9c6`: qualify the
 [complete closed normal lifecycle package](mvp2_s2_lifecycle_release.md) in one
