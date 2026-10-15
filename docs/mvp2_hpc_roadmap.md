@@ -2,6 +2,14 @@
 
 ## Authority and scope
 
+15 October after PR99 merge: [normal job2212000 and the consolidated resource
+reader/diagnostic correction](mvp2_s2_academic_2212000_audit.md) remain a negative
+installed gate. Complete compatible requested/allocated parsing, early portable
+forensics, raw-field replay and a distinct history-bound v2 namespace before
+another separately reviewed human A slot. Preserve A -> five P2 audits -> accepted
+native P3 -> P4/P5, without a PR per adverse case or a blind retry. S2 is open;
+no scientific/resource-budget change or new execution follows from this repair.
+
 15 October maintainer revision: use the
 [minimum academic A/P2/P3 consolidation](mvp2_s2_academic_consolidated.md) for
 new trusted-code research attempts. Production no-escape, global host namespace/
