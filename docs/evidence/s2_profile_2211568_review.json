@@ -1,0 +1,60 @@
+{
+  "schema_version": "s2-profile-2211568-derived-audit-v1",
+  "source_commit": "0b98e01cfb7b5cc27e6500c5c223ff39b17800bd",
+  "job_id": "2211568",
+  "archive_sha256": "61d9ecf4504619d48238a16f0a6d96a91157704b530d3eea106c6242a204b4ab",
+  "plan_sha256": "140259faf649cf1559df73ee5ecdf4c7d23db32f9263ed4939483dd441cf9b7a",
+  "plan_anchor_provenance": "derived_from_bundle_and_recomputed_not_separately_attested",
+  "original_disposition": "blocked_environment",
+  "original_observation_sha256": "aed15448fa68d5af40fd411486f0820478ed8bde301e58ae548e7ef8fe28054a",
+  "original_accounting_sha256": "00e7bb6b562372e8de889d832ebdc8a3765bc029d78e9aee7ba763178aa7e84a",
+  "original_blockers": [
+    "bounded_capture",
+    "cpuset_whole_hierarchy_readonly",
+    "freezer_whole_hierarchy_readonly",
+    "host_user_namespaces_disabled",
+    "memory_whole_hierarchy_readonly",
+    "observer_namespace_and_identity"
+  ],
+  "timing_diagnosis": {
+    "elapsed_seconds": 0.039763497188687325,
+    "capture_within_budget": true,
+    "deadline_reported_by_channel": false,
+    "channel_evidence_complete": false,
+    "failed_channels": [
+      "cpuset",
+      "freezer",
+      "host",
+      "memory"
+    ]
+  },
+  "observed_batch_layouts": {
+    "memory": "batch_task_0",
+    "freezer": "batch_step",
+    "cpuset": "batch_step"
+  },
+  "host_namespace_limit": {
+    "status": "unavailable_not_proven_unsupported",
+    "value": null
+  },
+  "controller_diagnosis": {
+    "memory": "direct_batch_leaf_assumption_rejects_observed_task_0_before_io",
+    "freezer": "failing_primitive_and_errno_not_recorded",
+    "cpuset": "failing_primitive_and_errno_not_recorded"
+  },
+  "host_diagnosis": "coupled_host_read_failed_primitive_and_errno_not_recorded",
+  "original_certificate_preserved": true,
+  "installed_compatibility": "unresolved",
+  "next_action": "qualify_diagnostic_corrections_in_software_no_repeat_or_live_release",
+  "live_isolation_proven": false,
+  "native_miniature_admitted": false,
+  "production_admitted": false,
+  "repeats_admitted": false,
+  "synthetic_execution_admitted": false,
+  "normal_execution_admitted": false,
+  "adverse_execution_admitted": false,
+  "live_containment_qualified": false,
+  "remote_cleanup_proven": false,
+  "cleanup_accepted": false,
+  "normal_worker_admitted": false
+}
