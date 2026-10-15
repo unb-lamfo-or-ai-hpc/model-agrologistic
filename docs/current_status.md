@@ -1,13 +1,24 @@
 # Dated research status: 15 October 2026
 
 This is a derived handoff snapshot, not a new certificate. Reviewed integration
-base: develop `6344d95a3841016cc5e1723e408d46b84a240b1c` (PR #94 merged).
+base: develop `cdc14591acd6b4743aa925e446070afd5524107d` (PR #95 merged).
 Read [PROJECT_STATE.md](../PROJECT_STATE.md), the [roadmap](mvp2_hpc_roadmap.md)
 and linked evidence for full history. Refresh live PR state before continuing;
 open PR content is not integrated code. The [portable memory](research_context.md)
 was integrated with explicit authorization; it is not an execution gate.
 
 ## Current handoff
+
+Job2211568 observation evidence is checksum-verified and replays
+blocked_environment. The [audit and closed diagnostic correction](mvp2_s2_profile_2211568_audit.md)
+distinguishes unreadable host/hierarchy evidence from proven incompatibility,
+the memory task_0 layout rejected before I/O, and incomplete evidence from a
+timeout. No new execution follows. Finish Ready/separate merge review of the
+closed diagnostic components; then integrate a complete prospective observation
+package before any justified human CLI. Original claims/certificates, all live
+admission blocks, full S2/later science and final post-article sync are preserved.
+
+### Prior operational prerequisite handoff
 
 The [complete operational prerequisite observation](mvp2_s2_lifecycle_profile.md)
 groups the pinned wrapper, exclusive claim, bounded compute probe, status/wait and
