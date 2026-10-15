@@ -41,6 +41,16 @@ checked-out branch. They do not configure other repositories or ChatGPT projects
 
 ## Scientific and software discipline
 
+- Maintainer decision, 15 October 2026: prospective S2 A/P2/P3 uses the
+  [minimum academic profile](docs/mvp2_s2_academic_consolidated.md), not production
+  isolation certification. Trusted fixed code, exact provenance, resource/time
+  bounds, targeted step control, immutable terminal evidence and unchanged
+  independent scientific validation remain required. Global host namespace/
+  hierarchy access, adversarial no-escape and crash-durability certification are
+  no longer academic admission requirements. Do not mutate the host or relabel
+  old failed strong-profile certificates. Human pinned per-stage CLI and
+  predecessor audits still gate execution; software/merge is not live acceptance.
+
 - Preserve model/data/units, objective priorities, tolerances and source/runtime
   identities unless the requested scope explicitly changes and qualifies them.
   Keep compaction optional/default-off; do not combine thread and memory changes.

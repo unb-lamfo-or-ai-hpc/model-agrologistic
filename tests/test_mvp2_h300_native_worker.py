@@ -489,7 +489,7 @@ def test_receipt_errors_do_not_replace_original_interrupt(failed_site, monkeypat
     def broken(path, value):
         name = worker.partial.Path(path).name
         if (name == "failure.json" and failed_site in {"failure_receipt", "both"}) or (
-            name == "failure-cleanup.json" and failed_site in {"cleanup_receipt", "both"}
+            name == "failure-cleanup.pending" and failed_site in {"cleanup_receipt", "both"}
         ):
             raise OSError("full filesystem")
         return original_write(path, value)
