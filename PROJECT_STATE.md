@@ -3,7 +3,34 @@
 Updated 15 October 2026. This public checkpoint contains scope and provenance,
 not private evidence, credentials, local host paths or execution authority.
 
-## Latest checkpoint — PR #96 merged; complete prospective observation v2 closed
+## Latest checkpoint — PR #97 merged; observation-only operational handoff
+
+15 October 2026: PR #97 merged into develop at
+`adbb835b591558ffc39dd6127b22b86cc92fbf15`. The maintainer requests the qualified
+[operational observational gate and complete human CLI](docs/mvp2_s2_profile_operational.md),
+preserving all claims/evidence and estimating remaining S2 PRs. New driver/wrapper
+select only the frozen PR97 read-only observer, with a distinct one-shot namespace,
+sealed scope, source/runtime role checks and terminal/forensic/cached collection.
+PR95/PR97 executables, unused/consumed claims and original archives stay unchanged.
+No NPAD job is submitted by the agent; normal/adverse/native/h300/repeats stay closed.
+
+Proposed human observation only:2logicalCPUs/2048MiB/twelve minutes, same90-second
+cooperative capture; no worker,srun,solver,license or host/security mutation.
+Finish exact-head CI/Ready, obtain this PR's separate merge authorization, then
+use its full-SHA/wrapper-checksum start/status/wait/collect/transfer handoff.
+Merging or scheduler completion does not qualify environment/cleanup or S2.
+Negative results require audit/support/protocol review, not a blind repeat.
+
+Remaining-PR baseline:6 including this gate (5 after merge); working range6–9
+including evidence-driven corrections. Finish A, then consolidated P2,P3,P4,P5;
+do not fragment by adverse case or promise an exact count before installed gates.
+PR97's initial legacy h300 failed-cleanup test failure remains recorded; its one
+same-head CI rerun passed without changing assertions/executables. Precise cause
+is unproven; investigate the source-visible publication/read window before native/
+h300 admission, inside the relevant functional package. This observer does not
+call that supervisor. S2 remains open; scientific scope and post-article sync intact.
+
+## Prior checkpoint — PR #96 merged; complete prospective observation v2 closed
 
 15 October 2026: PR #96 merged into develop at
 `37d4b13b4fffdf9566b18075c3b7ab4f9784691f`. The maintainer authorizes integrating
