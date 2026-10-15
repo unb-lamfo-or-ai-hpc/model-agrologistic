@@ -3,7 +3,57 @@
 Updated 15 October 2026. This public checkpoint contains scope and provenance,
 not private evidence, credentials, local host paths or execution authority.
 
-## Latest checkpoint — PR #97 merged; observation-only operational handoff
+## Latest checkpoint — minimum academic A/P2/P3 consolidation authorised
+
+15 October 2026. PR #98 merged into develop at
+`219233e2b116ffcc5eac5c462b4b863059eace14`. Job2211851's original source/plan/archive
+replay blocked_environment, not solver/model/license failure. Source
+`1e2574605cb1d77987539461514ec391f7bee043`, plan
+`86037921f8f16efa130999ef6f17c4afc753fa8d78dc86563a3dc1a2ef696deb`, archive
+`77655cb3bf4da7521b9564c4985a8923ac0b69aed7a67f70eddb203a989fb9b8`.
+Measured namespace limit1027175 violates the old zero requirement; PID1 and
+controller inventory reads return EACCES13. Whole-hierarchy evidence is invalid,
+without a precise internal cause. No unsafe-host or escape claim follows.
+Original claims, negative predicates and private evidence stay unchanged.
+
+The maintainer explicitly authorizes a minimal alternative for academic
+traceability/repeatability, rather than production certification, and a consolidated
+A+P2+P3 PR. The [revised protocol](docs/mvp2_s2_academic_consolidated.md) and
+[versioned profile](docs/mvp2_s2_academic_profile.json) govern new attempts with
+trusted reviewed fixed code and the site's Slurm. No scientific model/data/
+parameter/tolerance/validator change is authorised.
+
+Retain source/input/runtime/native identities, requested/allocated resource
+records, watchdogs/Slurm limits, exact-step stop, local reap/terminal accounting,
+exclusive claims, bounded immutable evidence and independent residual/hierarchy
+validation. Remove mandatory host-namespace disabling/PID1 access, whole-host
+hierarchy/ACL inspection, adversarial no-escape/persistent-isolation certification,
+crash-durability proof and continuous peak coverage. Those guarantees remain
+unproven, not replaced by successful accounting or approval booleans. No host/
+security/package mutation, administrative privilege or production claim.
+
+One complete prospective software package covers normal A, all five P2 cases,
+real native P3 public-fixture integration, wrapper/status/wait/collection/audit
+and regressions. Live passage stays A accepted -> five B audits -> C accepted ->
+separate P4 admission. New per-stage claims, no automatic chain or repeat.
+Installed C minimum: one complete independently accepted native miniature;
+partial/no-incumbent branches are software-qualified and actual partial/negative
+results retained, without forcing native resource failure solely for coverage.
+
+A/B retain2logicalCPU/2048MiB/12min, with scoped300s cleanup replacing the old390s
+full-isolation obligation. P3 request4CPU/16GiB/40min,120/1800/120/300 phase caps
+and unchanged native solver profile. Unknown/over-budget cleanup stays negative.
+P4's16CPU/192GiB/6h, order4,1,8,2,16 and scientific design are unchanged.
+
+Next owner: agent qualifies the complete PR, records exact-head checks and marks
+Ready before requesting merge. No agent NPAD execution; this checkpoint admits
+no new job. After merge, supply reviewed pinned human per-stage CLI and audit
+A/B/C before P4. Baseline three functional deliveries including this consolidation,
+then P4 and P5, with evidence-driven corrections possible. S2 stays open; later
+h400/SCIP-h215/conditional h500/S6, S3/S4 cancellation, EVPI/VSS exclusion and
+post-article branch sync persist.
+
+## Prior checkpoint — PR #97 merged; observation-only operational handoff
 
 15 October 2026: PR #97 merged into develop at
 `adbb835b591558ffc39dd6127b22b86cc92fbf15`. The maintainer requests the qualified
