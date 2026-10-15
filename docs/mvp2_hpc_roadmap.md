@@ -2,6 +2,17 @@
 
 ## Authority and scope
 
+15 October continuation after PR #96 merge
+`37d4b13b4fffdf9566b18075c3b7ab4f9784691f`: integrate and qualify the
+[complete prospective observation v2 package](mvp2_s2_profile_observation_v2.md)
+as one functional delivery. Versioned independent host/primitive diagnostics,
+bound controller replay, exclusive claim, wrapper and terminal/forensic/cache
+components preserve job2211568 and all old executables. Public start/batch remain
+closed; no CLI or observation is admitted now. Complete Ready/exact-head review
+and obtain this new PR's separate merge authorization, then review explicit
+observation-only admission and pinned human handoff before any new run. No blind
+normal retry, criterion relaxation or scientific scope/branch-timing change.
+
 15 October outcome after PR #95 merge
 `cdc14591acd6b4743aa925e446070afd5524107d`: job2211568's
 [negative audit/closed diagnostic correction](mvp2_s2_profile_2211568_audit.md)
