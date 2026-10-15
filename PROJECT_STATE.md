@@ -3,7 +3,32 @@
 Updated 15 October 2026. This public checkpoint contains scope and provenance,
 not private evidence, credentials, local host paths or execution authority.
 
-## Latest checkpoint — PR #95 merged; job2211568 blocked with incomplete diagnostics
+## Latest checkpoint — PR #96 merged; complete prospective observation v2 closed
+
+15 October 2026: PR #96 merged into develop at
+`37d4b13b4fffdf9566b18075c3b7ab4f9784691f`. The maintainer authorizes integrating
+and qualifying the [complete observational software package](docs/mvp2_s2_profile_observation_v2.md),
+not a new live attempt. Independent host primitives, exact memory task_0 handling,
+stage/errno diagnostics, bound hierarchy/membership replay, exclusive versioned
+claim components, wrapper and terminal/forensic/cache collection are integrated.
+Public Python start/batch and Bash start deny before new host/claim/scheduler I/O.
+No NPAD CLI now. Tests use injected commands/disposable claims, never Slurm.
+
+The job2211568 result remains blocked_environment; its original source, claim,
+archive/sidecar, executable and auditor are unchanged. Unavailable prerequisites
+are not established incompatibility. The new replay distinguishes a measured
+positive limit from an unreadable limit, and deadline from evidence completeness.
+All admission/cleanup flags stay false even when prerequisite screens pass.
+Worker isolation/persistence/quiet cleanup and installed durability remain unproven.
+
+Next owner: agent completes exact-head CI/Ready qualification and requests this
+new PR's separate merge authorization. Then review a single observation-only
+operational admission/pinned human handoff, not a normal retry or automatic chain.
+Preserve every old claim/run/certificate and the new unused namespace. Full S2
+A/P2-P5, later scientific scope, S3/S4 cancellation, EVPI/VSS exclusion and final
+post-article-review branch reconciliation remain unchanged.
+
+## Prior checkpoint — PR #95 merged; job2211568 blocked with incomplete diagnostics
 
 15 October 2026: PR #95 merged into develop at
 `cdc14591acd6b4743aa925e446070afd5524107d`. Job2211568 ran reviewed source

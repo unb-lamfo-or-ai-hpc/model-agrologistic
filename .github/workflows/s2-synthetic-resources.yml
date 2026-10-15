@@ -235,3 +235,33 @@ jobs:
           identity.inspect_tree(base / 'source', json.loads((base / 'files.json').read_text()))
           print(f'CLOSED_PROFILE_DIAGNOSTICS={len(cases)} passed; physical source closure verified; NO_NPAD_EXECUTION_OR_ADMISSION')
           PY
+      - name: Complete closed prospective observation wrapper claim and terminal replay
+        run: |
+          bash -n scripts/npad_s2_profile_observation.sh
+          python -B -m ruff check --no-cache scripts/mvp2_s2_profile_observation.py scripts/mvp2_s2_profile_observation_driver.py tests/test_mvp2_s2_profile_observation.py
+          OBS_ROOT=$(mktemp -d "$RUNNER_TEMP/profile-observation-XXXXXXXX")
+          mkdir "$OBS_ROOT/source"
+          git archive HEAD | tar -x -C "$OBS_ROOT/source"
+          python -B -I - "$OBS_ROOT" <<'PY'
+          import hashlib, json, pathlib, sys
+          base = pathlib.Path(sys.argv[1])
+          root = base / 'source'
+          files = {p.relative_to(root).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest() for p in root.rglob('*') if p.is_file()}
+          (base / 'files.json').write_text(json.dumps(files))
+          sys.path.insert(0, str(root))
+          from scripts import mvp2_s2_compute_identity as identity
+          identity.inspect_tree(root, files)
+          PY
+          cd "$OBS_ROOT/source"
+          python -B -m pytest -p no:cacheprovider tests/test_mvp2_s2_profile_observation.py tests/test_mvp2_s2_profile_diagnostics.py tests/test_mvp2_s2_lifecycle_profile.py tests/test_mvp2_s2_lifecycle_release.py tests/test_mvp2_s2_lifecycle_adapter.py tests/test_mvp2_s2_lifecycle_protocol.py tests/test_mvp2_s2_compute_identity.py -q --basetemp="$OBS_ROOT/tests" --junitxml="$OBS_ROOT/regression.xml"
+          python -B -I - "$OBS_ROOT" <<'PY'
+          import json, pathlib, sys, xml.etree.ElementTree as ET
+          base = pathlib.Path(sys.argv[1])
+          cases = ET.parse(base / 'regression.xml').getroot().findall('.//testcase')
+          assert len(cases) == 608
+          assert not any(c.find(k) is not None for c in cases for k in ('failure', 'error', 'skipped'))
+          sys.path.insert(0, str(base / 'source'))
+          from scripts import mvp2_s2_compute_identity as identity
+          identity.inspect_tree(base / 'source', json.loads((base / 'files.json').read_text()))
+          print(f'CLOSED_PROFILE_OBSERVATION={len(cases)} passed; physical source closure verified; NO_NPAD_EXECUTION_OR_ADMISSION')
+          PY
