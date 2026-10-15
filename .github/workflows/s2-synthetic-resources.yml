@@ -26,7 +26,7 @@ jobs:
           python -B -I - "$RUNNER_TEMP/academic-cohort.xml" <<'PY'
           import sys, xml.etree.ElementTree as ET
           cases = ET.parse(sys.argv[1]).getroot().findall('.//testcase')
-          assert len(cases) == 277
+          assert len(cases) == 278
           assert not any(c.find(k) is not None for c in cases for k in ('failure', 'error', 'skipped'))
           print(f'ACADEMIC_A_P2_P3_SOFTWARE={len(cases)} passed; no NPAD effects or live acceptance')
           PY
