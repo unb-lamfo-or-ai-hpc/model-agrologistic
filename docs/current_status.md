@@ -1,13 +1,27 @@
-# Dated research status: 14 October 2026
+# Dated research status: 15 October 2026
 
 This is a derived handoff snapshot, not a new certificate. Reviewed integration
-base: develop `9cc579d23f544c3ec6cdd7bbd71d85e6294ba01a` (PR #92 merged).
+base: develop `0f98ae96aa4b352883626ff8eb8efa9e4d01c9c6` (PR #93 merged).
 Read [PROJECT_STATE.md](../PROJECT_STATE.md), the [roadmap](mvp2_hpc_roadmap.md)
 and linked evidence for full history. Refresh live PR state before continuing;
 open PR content is not integrated code. The [portable memory](research_context.md)
 was integrated with explicit authorization; it is not an execution gate.
 
 ## Current handoff
+
+The [complete closed normal lifecycle package](mvp2_s2_lifecycle_release.md)
+groups worker/security/peer/token checks, fixed launcher, durable one-shot release
+and exact-step stop, exclusive claim/role wrapper and terminal/forensic archive
+collection with independent canonical replay and cached resume. Unknown effects
+consume attempts; missing/invalid evidence stays negative. Public Python/Bash
+entries still deny and all admission/cleanup flags remain false. Original claims,
+archives, scientific settings, manuscript and historical paths are unchanged.
+NPAD profile/cadence/filesystem support is still unqualified. Finish exact-head
+Ready/merge review, then one operational admission/CLI handoff review against
+those prerequisites; no blind retry or new micro-release. No NPAD CLI now. Full
+S2 A/P2-P5, subsequent science and final post-article synchronization remain intact.
+
+### Prior independent-verifier handoff
 
 The maintainer authorized the [independent environment verifier and closed
 operational adapter integration](mvp2_s2_lifecycle_integration.md). Current

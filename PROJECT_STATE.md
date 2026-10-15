@@ -1,9 +1,60 @@
 # Model Agrologistic — MVP 2.0 checkpoint
 
-Updated 14 October 2026. This public checkpoint contains scope and provenance,
+Updated 15 October 2026. This public checkpoint contains scope and provenance,
 not private evidence, credentials, local host paths or execution authority.
 
-## Latest checkpoint — PR #92 merged; independent verifier and closed adapter integration
+## Latest checkpoint — PR #93 merged; complete closed normal lifecycle package
+
+15 October 2026: PR #93 merged into develop at
+`0f98ae96aa4b352883626ff8eb8efa9e4d01c9c6`, after six successful checks on
+`38ec12d250d17c391fa44b3f6766d1faf7c45993`. The maintainer authorized continuing
+with worker, controlled release/stop, exclusive claim, wrapper and collection.
+The [complete closed normal package](docs/mvp2_s2_lifecycle_release.md) groups
+those components and their end-to-end qualification. This is software work,
+not authorization for a new job, an adopted installed cleanup criterion or
+reuse of an old claim. All public Python/Bash operational entries still deny.
+
+The fixed stdlib normal worker verifies source/runtime, injected-only NoNewPrivs
+SET/GET, one-CPU initial affinity, kernel supervisor peer and exact IPC token before
+phases. It exits immediately without linger or an adverse child. The launcher
+qualifies source/allocation/owned-client ordering. Release, launch and exact-step
+TERM/KILL intents are recorded before effects, with immutable results/unknown
+receipts. Fresh identity/ownership/scope guards precede signals; there is no broad
+job/UID/process-group cancellation. Unknown acknowledgement consumes the attempt,
+never authorizes retry. Original startup/resource/exercise/global and390s cleanup,
+5s escalation/quiet/minimum3samples/5s observation-gap bounds stay fixed.
+
+The new lifecycle-only claim namespace has exclusive reservation, explicit login
+source/binary verification, a separately sealed login-only sbatch identity,
+acknowledgement/release binding, stop latch, collection-only resume and no reset.
+POSIX file/directory fsync is required by the prospective durability components;
+Windows tests use an explicit directory-sync fake, Linux CI uses disposable real
+directories. No actual NPAD path is instantiated or modified by qualification.
+The wrapper has no live default/factory or executable admission toggle.
+
+Terminal/forensic transfer binds an externally supplied release and digest,
+replays source/environment/observation/journal/effect evidence, preserves missing
+or invalid attempts negatively, and audits a bounded fixed-member archive without
+extracting it. Fixed new-claim logs/metadata retain raw bytes/base64/checksums,
+including non-UTF8/truncated material. Cached collection is re-audited and returns
+the same artifact/result without replacement or resubmission. A canonical JSON
+round-trip regression exposed controller read-order dependence in the prospective
+verifier; fixed controller order now makes serialized replay deterministic. No
+original certificate, historical worker/parser or accepted evidence is rewritten.
+
+All admission/cleanup flags remain false, including after a software candidate,
+effect acknowledgement or archive replay. Installed environment compatibility,
+persistent-parent/no-escape support, scan cadence and NPAD filesystem durability
+are still unqualified. No host namespace/permission changes, actual hardening,
+solver/license exercise, NPAD job or scientific parameter change occurs here.
+Next owner: agent finishes exact-head qualification/Ready review; maintainer
+separately authorizes merge. Then review one complete operational admission/CLI
+handoff against the installed-profile prerequisites, not another blind retry.
+Keep execution blocked until that review; no NPAD CLI now. Full S2 A/P2-P5,
+later h400/SCIP-h215/conditional h500/S6, S3/S4 cancellation, EVPI/VSS exclusion
+and final post-article synchronization remain unchanged.
+
+## Prior checkpoint — PR #92 merged; independent verifier and closed adapter integration
 
 14 October 2026: PR #92 merged into develop at
 `9cc579d23f544c3ec6cdd7bbd71d85e6294ba01a`. The maintainer authorized integrating

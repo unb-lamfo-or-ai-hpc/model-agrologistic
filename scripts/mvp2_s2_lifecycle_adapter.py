@@ -17,11 +17,16 @@ from scripts import mvp2_s2_environment as e
 
 lc, q, s, a, package = e.lc, e.q, e.s, e.a, e.package
 ENTRY = "scripts/mvp2_s2_lifecycle_adapter.py"
+WORKER_ENTRY = "scripts/mvp2_s2_lifecycle_session.py"
 CLOSURE = package.CLOSURE | {
     ENTRY,
     "scripts/mvp2_s2_environment.py",
     "scripts/mvp2_s2_compute_identity.py",
     "scripts/mvp2_s2_resource_normal.py",
+    WORKER_ENTRY,
+    "scripts/mvp2_s2_lifecycle_release.py",
+    "scripts/mvp2_s2_lifecycle_transfer.py",
+    "scripts/npad_s2_lifecycle_normal.sh",
 }
 METHODS = {
     "process",
@@ -74,7 +79,7 @@ def worker_arguments(spec, manifest_sha256, item):
         spec["python"],
         "-B",
         "-I",
-        spec["checkout"] + "/" + ENTRY,
+        spec["checkout"] + "/" + WORKER_ENTRY,
         "worker",
         "--manifest-sha",
         manifest_sha256,

@@ -488,7 +488,7 @@ def test_observation_replay_binds_raw_kernel_facts_and_journal(context):
     context.kernel.exited = context.kernel.client_reaped = True
     context.adapter.observe_components(products)
     frame = context.adapter.observations[0]
-    serialized = json.loads(json.dumps(frame))
+    serialized = m.q.c.decode_json(m.q.c.encoded(frame))
     assert (
         m.replay_observation(context.item, context.adapter.original, serialized) == frame["result"]
     )
