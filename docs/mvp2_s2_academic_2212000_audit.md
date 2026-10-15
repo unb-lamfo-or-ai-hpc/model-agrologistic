@@ -84,10 +84,10 @@ namespace/cache semantics. Scheduler/native effects are injected; no installed
 NPAD success is claimed from these tests. Original archive replay remains negative.
 Local platform skips and exact-head Linux CI are reported separately in the PR.
 
-Local focused qualification:277 academic/native/partial/control cases,
-275passed/two explicit POSIX process-group skips, zero failures/errors. The new
-recovery module adds33 cases; the human bootstrap exercises119 academic cases.
-Exact-head Linux CI requires all277 cohort cases without skips. These counts
+Local focused qualification:278 academic/native/partial/control cases,
+276passed/two explicit POSIX process-group skips, zero failures/errors. The new
+recovery module adds34 cases; the human bootstrap exercises120 academic cases.
+Exact-head Linux CI requires all278 cohort cases without skips. These counts
 do not claim a full Windows suite or live NPAD success.
 
 S2 remains open. This is an evidence-driven correction, not a new scientific
