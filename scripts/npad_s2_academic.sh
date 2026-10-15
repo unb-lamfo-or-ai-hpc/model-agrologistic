@@ -16,7 +16,7 @@ case "$STAGE" in
 esac
 BASE=/home/vrrcelestino/model-agrologistic-hygiene-audit
 PY=/home/vrrcelestino/venv313/bin/python
-CLAIM="$BASE/.mvp2-s2-academic-v1-$STAGE"
+CLAIM="$BASE/.mvp2-s2-academic-v2-$STAGE"
 test -d "$BASE"
 test -x "$PY"
 test "$(id -un)" = vrrcelestino
@@ -46,7 +46,7 @@ else
     https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic.git "$SRC"
   printf '%s\n' '/manuscript/comparison_provenance.json -text' \
     '/manuscript/figures/runtime_memory_comparison.pdf -text' > "$SRC/.git/info/attributes"
-  git -C "$SRC" merge-base --is-ancestor 219233e2b116ffcc5eac5c462b4b863059eace14 "$SOURCE_SHA"
+  git -C "$SRC" merge-base --is-ancestor b6100b8120a60d21d49a5f308a8f929191e2238a "$SOURCE_SHA"
   git -C "$SRC" merge-base --is-ancestor "$SOURCE_SHA" origin/develop
   git -C "$SRC" checkout --detach "$SOURCE_SHA"
 fi
@@ -66,8 +66,9 @@ if [[ ! -e $CLAIM ]]; then
   cd "$SRC"
   "$PY" -B -m ruff check --no-cache scripts/mvp2_s2_academic.py \
     scripts/mvp2_s2_academic_runtime.py scripts/mvp2_s2_academic_worker.py \
-    tests/test_mvp2_s2_academic.py
+    tests/test_mvp2_s2_academic.py tests/test_mvp2_s2_academic_recovery.py
   "$PY" -B -m pytest -p no:cacheprovider tests/test_mvp2_s2_academic.py \
+    tests/test_mvp2_s2_academic_recovery.py \
     -q --basetemp="$BOOTSTRAP/tests" --junitxml="$BOOTSTRAP/regression.xml"
   "$PY" -B -I - "$BOOTSTRAP/regression.xml" <<'PY'
 import sys, xml.etree.ElementTree as ET

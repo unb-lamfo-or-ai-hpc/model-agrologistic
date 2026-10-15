@@ -25,6 +25,7 @@ STAGES = (
 LIMIT = 32 * 1024**2
 FILES = {"plan.json", "job.json", "accounting.txt", "records.json", "review.json"}
 RECORDS = {
+    "batch-diagnostic.json",
     "allocation.json",
     "attempt.json",
     "worker-start.json",
@@ -153,11 +154,41 @@ def expected_phases(stage):
     )
 
 
-def allocation(text, job, uid, envelope):
-    """Scheduler allocation observation, explicitly not kernel isolation proof."""
-    pairs = re.findall(r"(?:^|\s)([A-Za-z][A-Za-z0-9_/]*)=(\S*)", text)
+def scheduler_fields(text):
+    """Keep only bounded resource/identity fields; exclude paths and arbitrary metadata."""
+    pairs = re.findall(r"(?:^|\s)([A-Za-z][A-Za-z0-9_/:]*)=(\S*)", text)
     fields = dict(pairs)
     require(len(pairs) == len(fields), "Duplicate scheduler field.")
+    selected = {
+        key: fields[key]
+        for key in (
+            "JobId",
+            "UserId",
+            "JobState",
+            "Partition",
+            "Account",
+            "NumNodes",
+            "NumCPUs",
+            "NumTasks",
+            "CPUs/Task",
+            "NodeList",
+            "BatchHost",
+            "ReqTRES",
+            "TRES",
+            "AllocTRES",
+            "MinMemoryNode",
+            "MinMemoryCPU",
+            "TimeLimit",
+        )
+        if key in fields
+    }
+    require(all(len(v) <= 512 for v in selected.values()), "Scheduler field bound.")
+    return selected
+
+
+def allocation(text, job, uid, envelope):
+    """Scheduler allocation observation, explicitly not kernel isolation proof."""
+    fields = scheduler_fields(text)
     require(
         fields.get("JobId") == job
         and fields.get("JobState") == "RUNNING"
@@ -173,13 +204,49 @@ def allocation(text, job, uid, envelope):
         "Single node.",
     )
     require(int(fields.get("NumCPUs", "0")) >= envelope["cpus"], "Allocated CPU deficit.")
-    tres = dict(x.split("=", 1) for x in fields.get("ReqTRES", "").split(",") if "=" in x)
     from scripts.validate_scip_memory_resources import memory_mib
 
+    def resources(value):
+        entries = [item.split("=", 1) for item in value.split(",")]
+        require(all(len(item) == 2 for item in entries), "Malformed resource TRES.")
+        tres = dict(entries)
+        require(len(entries) == len(tres), "Duplicate resource TRES.")
+        require(re.fullmatch(r"[1-9][0-9]*", tres.get("cpu", "")), "Resource CPU grammar.")
+        require(tres.get("node") == "1", "Resource node scope.")
+        return int(tres["cpu"]), memory_mib(value)
+
+    # Slurm22.05 prints TRES as allocation when running, NOT ReqTRES.
+    # Keep requested CPU/node memory separate from the allocated CPU rounding.
+    if "ReqTRES" in fields:
+        requested_cpu, requested_mem = resources(fields["ReqTRES"])
+        basis = "ReqTRES"
+    else:
+        require(fields.get("NumTasks") == "1", "One requested task required.")
+        require(re.fullmatch(r"[1-9][0-9]*", fields.get("CPUs/Task", "")), "Task CPU grammar.")
+        require("MinMemoryNode" in fields and "MinMemoryCPU" not in fields, "Node memory required.")
+        requested_cpu = int(fields["CPUs/Task"])
+        requested_mem = memory_mib("mem=" + fields["MinMemoryNode"])
+        basis = "CPUs/Task+MinMemoryNode"
     require(
-        int(tres.get("cpu", "0")) == envelope["cpus"]
-        and memory_mib(fields.get("ReqTRES", "")) == envelope["memory_mib"],
+        requested_cpu == envelope["cpus"] and requested_mem == envelope["memory_mib"],
         "Requested resources.",
+    )
+    # Reject contradictory aliases rather than choosing whichever would pass.
+    if "CPUs/Task" in fields:
+        require(fields["CPUs/Task"] == str(requested_cpu), "Requested CPU aliases disagree.")
+    if "NumTasks" in fields:
+        require(fields["NumTasks"] == "1", "Requested task count.")
+    if "MinMemoryNode" in fields:
+        require(
+            memory_mib("mem=" + fields["MinMemoryNode"]) == requested_mem,
+            "Requested memory aliases disagree.",
+        )
+    require("MinMemoryCPU" not in fields, "Per-CPU memory is not this contract.")
+    allocated = [resources(fields[k]) for k in ("TRES", "AllocTRES") if k in fields]
+    require(allocated and len(set(allocated)) == 1, "Missing/contradictory allocated TRES.")
+    require(
+        allocated[0] == (int(fields["NumCPUs"]), envelope["memory_mib"]),
+        "Allocated resources disagree.",
     )
     h, m, sec = map(int, fields.get("TimeLimit", "0:0:0").split(":"))
     require(h * 3600 + m * 60 + sec == envelope["wall_seconds"], "Walltime drift.")
@@ -189,7 +256,9 @@ def allocation(text, job, uid, envelope):
         "node": fields["NodeList"],
         "requested": envelope,
         "allocated_cpus": int(fields["NumCPUs"]),
-        "allocated_tres": fields.get("AllocTRES"),
+        "allocated_tres": fields.get("AllocTRES", fields.get("TRES")),
+        "requested_resource_basis": basis,
+        "scheduler_fields": fields,
         "scheduler_observation_only": True,
     }
 
@@ -282,7 +351,28 @@ def review(p, job, records, accounting):
     )
     alloc = records.get("allocation.json", {})
     envelope = p["profile"]["native" if p["stage"] == "native_miniature" else "synthetic"]
-    checks["allocation_bound"] = alloc.get("job_id") == job and alloc.get("requested") == envelope
+    checks["allocation_bound"] = (
+        alloc.get("job_id") == job
+        and alloc.get("requested") == envelope
+        and "scheduler_fields" in alloc
+    )
+    if "scheduler_fields" in alloc:
+        try:
+            fields = alloc["scheduler_fields"]
+            require(isinstance(fields, dict), "Scheduler field record.")
+            require(
+                all(
+                    isinstance(k, str) and isinstance(v, str) and not re.search(r"\s", k + v)
+                    for k, v in fields.items()
+                ),
+                "Scheduler field grammar.",
+            )
+            rebuilt = allocation(
+                " ".join(f"{k}={v}" for k, v in fields.items()), job, alloc["uid"], envelope
+            )
+            checks["allocation_bound"] = checks["allocation_bound"] and rebuilt == alloc
+        except (KeyError, ValueError, TypeError):
+            checks["allocation_bound"] = False
     checks["uid_bound"] = start.get("uid") == alloc.get("uid") and type(start.get("uid")) is int
     result = records.get("worker-result.json", {})
     checks["result_bound"] = result.get("plan_sha256") == digest(p)

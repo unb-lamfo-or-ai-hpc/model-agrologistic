@@ -52,7 +52,7 @@ def records(p):
             "runtime_sha256": a.digest(p["runtime"]),
             "affinity": [0, 1, 2, 3] if stage == "native_miniature" else [0],
         },
-        "allocation.json": {"job_id": JOB, "requested": r.envelope(p), "uid": 1271},
+        "allocation.json": a.allocation(scheduler_text(p), JOB, 1271, r.envelope(p)),
         "attempt.json": {
             "plan_sha256": h,
             "step_id": JOB + ".0",
@@ -89,6 +89,11 @@ def no_native_or_scheduler(monkeypatch):
     # Default arguments were bound at import; tested effect seams always explicitly inject.
     assert d is r.d
     monkeypatch.setattr(w, "resources", lambda: {"scope": "test_not_measured"})
+    # Submission-unit fixtures inject history; actual negative-history replay is
+    # independently exercised in test_mvp2_s2_academic_recovery.py.
+    monkeypatch.setattr(
+        r, "verify_rejected_normal", lambda: {"disposition": "evidence_not_accepted"}
+    )
 
 
 @pytest.mark.parametrize("stage", a.STAGES)
@@ -177,11 +182,15 @@ def test_nested_requires_each_observation(field):
     )
 
 
-def scheduler_text():
+def scheduler_text(p=None):
+    env = r.envelope(p or plan())
+    cpus, memory = env["cpus"], env["memory_mib"]
+    minutes = env["wall_seconds"] // 60
     return (
         f"JobId={JOB} UserId=researcher(1271) JobState=RUNNING Partition=intel-256 "
-        "Account=sxdsouza NumNodes=1 NumCPUs=2 NodeList=r1i3n5 BatchHost=r1i3n5 "
-        "ReqTRES=cpu=2,mem=2G,node=1 AllocTRES=cpu=2,mem=2G,node=1 TimeLimit=00:12:00"
+        f"Account=sxdsouza NumNodes=1 NumCPUs={cpus} NodeList=r1i3n5 BatchHost=r1i3n5 "
+        f"ReqTRES=cpu={cpus},mem={memory // 1024}G,node=1 "
+        f"AllocTRES=cpu={cpus},mem={memory // 1024}G,node=1 TimeLimit=00:{minutes:02}:00"
     )
 
 

@@ -1,13 +1,24 @@
 # Dated research status: 15 October 2026
 
 This is a derived handoff snapshot, not a new certificate. Reviewed integration
-base: develop `219233e2b116ffcc5eac5c462b4b863059eace14` (PR #98 merged).
+base: develop `b6100b8120a60d21d49a5f308a8f929191e2238a` (PR #99 merged).
 Read [PROJECT_STATE.md](../PROJECT_STATE.md), the [roadmap](mvp2_hpc_roadmap.md)
 and linked evidence for full history. Refresh live PR state before continuing;
 open PR content is not integrated code. The [portable memory](research_context.md)
 was integrated with explicit authorization; it is not an execution gate.
 
-## Current handoff — minimum academic consolidation
+## Current handoff — PR99 merged; normal A failed on Slurm resource field shape
+
+Integrated base: develop `b6100b8120a60d21d49a5f308a8f929191e2238a`.
+The [job2212000 negative audit and complete correction](mvp2_s2_academic_2212000_audit.md)
+preserve source/plan/archive and consumed v1 claim. Canonical replay is rejected;
+the supplemental traceback and terminal resource fields identify ReqTRES absence,
+not a demonstrated2CPU/2GiB deficit. Qualify compatible parsing, redacted early
+diagnostics/replay and a negative-history-bound v2 namespace in one repair.
+Finish exact-head checks/Ready and separate merge review before new pinned CLI.
+A/P2/P3/h300 remain unaccepted; no blind retry. Scientific scope is unchanged.
+
+## Prior handoff — minimum academic consolidation
 
 PR #98 is merged at develop219233e2b116ffcc5eac5c462b4b863059eace14.
 Job2211851's archive/checksum/anchors replay blocked_environment: measured

@@ -2,6 +2,14 @@
 
 ## Authority and preserved evidence
 
+Continuation15 October: PR99 merged at
+`b6100b8120a60d21d49a5f308a8f929191e2238a`; normal job2212000 failed before srun.
+The [negative audit and complete correction](mvp2_s2_academic_2212000_audit.md)
+supersede the prospective transport namespace with academic-v2, preserving the
+consumed v1 claim and its rejection. Compatibility with Slurm22.05 serialization
+does not change the adopted resource/scientific criteria. New execution stays
+blocked pending Ready/separate merge review and newly pinned human CLI.
+
 15 October 2026. Base: develop `219233e2b116ffcc5eac5c462b4b863059eace14`
 (PR #98 merged). The maintainer explicitly requests an alternative minimum
 profile for trusted fixed research code, not production deployment, and one
@@ -119,8 +127,10 @@ The wrapper verifies merged-develop ancestry, its own bytes and raw HEAD invento
 before/after external-output regression. Compute uses sealed source/runtime, not
 Git or sbatch. status/wait/collect never submit; existing start is collection-only.
 Only accounting-pending waits again; corrupt/unknown evidence stops. Ctrl-C during
-wait is safe. Namespaces .mvp2-s2-academic-v1-STAGE are distinct from historical
-claims. No repeated submission, reset, source replacement or old archive rewrite.
+wait is safe. New namespaces .mvp2-s2-academic-v2-STAGE are distinct from historical
+claims, including consumed academic-v1-normal. Normal v2 first replays job2212000's
+exact rejected archive. No repeated submission, reset, source replacement or old
+archive rewrite.
 
 Archive members: plan/job/accounting/records/review. Fixed worker JSON allowlist;
 no raw native logs, private workbooks, environment dumps, license contents/path.
