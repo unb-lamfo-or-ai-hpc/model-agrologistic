@@ -89,6 +89,11 @@ def no_native_or_scheduler(monkeypatch):
     # Default arguments were bound at import; tested effect seams always explicitly inject.
     assert d is r.d
     monkeypatch.setattr(w, "resources", lambda: {"scope": "test_not_measured"})
+    # Submission-unit fixtures inject history; actual negative-history replay is
+    # independently exercised in test_mvp2_s2_academic_recovery.py.
+    monkeypatch.setattr(
+        r, "verify_rejected_normal", lambda: {"disposition": "evidence_not_accepted"}
+    )
 
 
 @pytest.mark.parametrize("stage", a.STAGES)
