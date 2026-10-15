@@ -2,6 +2,18 @@
 
 ## Authority and scope
 
+15 October operational continuation after PR #97 merge
+`adbb835b591558ffc39dd6127b22b86cc92fbf15`: qualify the
+[complete observation-only gate and pinned CLI](mvp2_s2_profile_operational.md).
+Use a distinct claim/source/plan with unchanged2CPU/2048MiB/twelve-minute envelope;
+no historical entry/evidence or scientific criterion changes. Ready/exact-head CI
+and separate merge authorization precede human observation, never an agent job.
+Normal/adverse/native/h300/repeats remain closed. Remaining-PR baseline6 including
+this gate, working range6–9: finish A, then complete P2-P5 packages, with additional
+corrections only when evidence justifies them. Preserve the initial PR97 legacy
+cleanup-test failure/successful single rerun and investigate before native/h300.
+No positive installed result, automatic retry or reduced S2 scope is presumed.
+
 15 October continuation after PR #96 merge
 `37d4b13b4fffdf9566b18075c3b7ab4f9784691f`: integrate and qualify the
 [complete prospective observation v2 package](mvp2_s2_profile_observation_v2.md)
