@@ -1,13 +1,26 @@
 # Dated research status: 15 October 2026
 
 This is a derived handoff snapshot, not a new certificate. Reviewed integration
-base: develop `adbb835b591558ffc39dd6127b22b86cc92fbf15` (PR #97 merged).
+base: develop `219233e2b116ffcc5eac5c462b4b863059eace14` (PR #98 merged).
 Read [PROJECT_STATE.md](../PROJECT_STATE.md), the [roadmap](mvp2_hpc_roadmap.md)
 and linked evidence for full history. Refresh live PR state before continuing;
 open PR content is not integrated code. The [portable memory](research_context.md)
 was integrated with explicit authorization; it is not an execution gate.
 
-## Current handoff
+## Current handoff — minimum academic consolidation
+
+PR #98 is merged at develop219233e2b116ffcc5eac5c462b4b863059eace14.
+Job2211851's archive/checksum/anchors replay blocked_environment: measured
+namespace limit1027175, unavailable PID1/inventory reads, no solver/model failure.
+The maintainer explicitly requests the [minimal academic A/P2/P3 package](mvp2_s2_academic_consolidated.md),
+not production certification. Retain traceability, resource/time bounds, exact-step
+control, immutable terminal evidence and independent scientific validation;
+remove mandatory global host inspection/no-escape/crash-durability qualification.
+Original evidence stays negative and unchanged. Complete software qualification/
+Ready/merge review, then human pinned per-stage CLI; no job or P4 admission now.
+Baseline this consolidation, P4 and P5; full scientific scope remains.
+
+## Prior handoff
 
 The [observation-only operational gate](mvp2_s2_profile_operational.md) groups
 distinct immutable claim/scope, wrapper, role checks and terminal/forensic/cache

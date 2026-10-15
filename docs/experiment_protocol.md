@@ -1,5 +1,13 @@
 # Experimental protocol: portable summary
 
+15 October 2026 amendment: prospective S2 A/P2/P3 uses the explicitly approved
+[minimum academic profile](mvp2_s2_academic_consolidated.md). Trusted fixed code,
+exact source/input/runtime, limits, targeted step stop, terminal evidence and
+unchanged independent scientific validation remain required. Whole-host namespace/
+hierarchy, hostile-worker no-escape and crash-durability certification are no longer
+academic prerequisites. Earlier stronger operational descriptions below remain
+historical; they do not reclassify failed certificates or admit a new execution.
+
 Snapshot: 9 October 2026. This document summarizes the
 [mathematical contract](v020_mathematical_contract.md),
 [S1 ledger](mvp2_sprint1_closure.md), [S2 design](mvp2_h300_thread_design.md)

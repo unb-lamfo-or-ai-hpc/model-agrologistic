@@ -2,6 +2,18 @@
 
 ## Authority and scope
 
+15 October maintainer revision: use the
+[minimum academic A/P2/P3 consolidation](mvp2_s2_academic_consolidated.md) for
+new trusted-code research attempts. Production no-escape, global host namespace/
+hierarchy inspection and crash-durability certification are not required; exact
+provenance, bounded one-shot execution, targeted step stop, terminal evidence and
+unchanged scientific validation remain. Audit job2211851 as originally blocked,
+never reclassify it under the new profile. Group A/P2/P3 software in one PR, retain
+ordered live audits, then P4 and P5; three functional deliveries are a baseline,
+not a guarantee or permission to run. Later scope and article-review branch sync
+are unchanged. Earlier stronger-profile entries below are historical, superseded
+only where explicitly stated by the revised protocol.
+
 15 October operational continuation after PR #97 merge
 `adbb835b591558ffc39dd6127b22b86cc92fbf15`: qualify the
 [complete observation-only gate and pinned CLI](mvp2_s2_profile_operational.md).

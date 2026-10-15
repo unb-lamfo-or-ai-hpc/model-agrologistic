@@ -1,5 +1,25 @@
 # S2 closure campaign: finite scope, staged admission
 
+## Current authority — 15 October minimum academic consolidation
+
+The maintainer authorises the [revised A/P2/P3 academic profile](mvp2_s2_academic_consolidated.md)
+after job2211851 confirmed the old sufficient host profile is unsupported/
+unobservable. For new academic attempts, the linked minimum profile supersedes
+whole-host/no-escape/crash-durability qualification requirements below. Preserve
+exact scientific inputs/parameters/validation, one-shot claims, resource/time
+limits, targeted step control, immutable evidence and ordered independent audits.
+No host/security changes or reinterpretation of original negative certificates.
+One functional software PR groups A/P2/P3; installed C needs one complete accepted
+native miniature, with partial/no-incumbent software qualification and actual
+negative evidence preservation. Live A -> all B -> C -> P4 remains sequential.
+New budgets and scope are explicit in the linked profile; existing h300 six-hour
+design is unchanged and closed. Baseline three functional deliveries including
+this consolidation, P4 and P5; additional evidence-driven fixes remain possible.
+The original campaign JSON and the following chronology remain historical design
+records, not a competing admission authority. No execution follows from this edit.
+
+## Preserved earlier handoffs and stronger-profile planning
+
 Current handoff after PR #93 merge `0f98ae96aa4b352883626ff8eb8efa9e4d01c9c6`:
 the [complete closed worker/release/stop/claim/wrapper/collection package](mvp2_s2_lifecycle_release.md)
 qualifies the functional normal wiring, immutable unknown-effect handling and
