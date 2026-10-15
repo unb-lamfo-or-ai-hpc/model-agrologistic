@@ -2,6 +2,17 @@
 
 ## Authority and scope
 
+15 October outcome after PR #95 merge
+`cdc14591acd6b4743aa925e446070afd5524107d`: job2211568's
+[negative audit/closed diagnostic correction](mvp2_s2_profile_2211568_audit.md)
+preserves the original blocked result, source/claim and evidence. Unavailable
+host/hierarchy readings do not prove installed incompatibility; memory task_0
+and lost primitive/errno detail need qualified diagnostic correction. Capture
+was within90s, not a demonstrated timeout. No retry or new admission. Finish
+Ready/merge review, then integrate one complete prospective observational gate
+before any justified human command. No security/scientific criterion changes.
+Full S2 and later scope/post-article synchronization remain unchanged.
+
 15 October operational continuation after authorized PR #94 merge
 `6344d95a3841016cc5e1723e408d46b84a240b1c`: prepare one
 [complete prerequisite observation/handoff](mvp2_s2_lifecycle_profile.md), not
