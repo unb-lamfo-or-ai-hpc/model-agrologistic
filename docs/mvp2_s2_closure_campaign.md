@@ -1,5 +1,16 @@
 # S2 closure campaign: finite scope, staged admission
 
+Current handoff after PR #93 merge `0f98ae96aa4b352883626ff8eb8efa9e4d01c9c6`:
+the [complete closed worker/release/stop/claim/wrapper/collection package](mvp2_s2_lifecycle_release.md)
+qualifies the functional normal wiring, immutable unknown-effect handling and
+canonical terminal/negative archive replay together. No slot is admitted or
+old claim reused; public execution still denies. Installed profile/cadence and
+NPAD durability remain unknown. Finish Ready/merge review, then one operational
+admission/CLI handoff review against the prerequisites; no blind retry/micro-gate.
+No NPAD CLI now. Preserve all historical budgets/evidence and full S2/later scope.
+
+Prior handoff:
+
 Current handoff after PR #92 merge `9cc579d23f544c3ec6cdd7bbd71d85e6294ba01a`:
 the [independent verifier/closed adapter](mvp2_s2_lifecycle_integration.md) derives
 conditional environment assurances from actual read primitives rather than
