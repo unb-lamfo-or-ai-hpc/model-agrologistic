@@ -2,6 +2,17 @@
 
 ## Authority and scope
 
+14 October continuation after PR #92 merge
+`9cc579d23f544c3ec6cdd7bbd71d85e6294ba01a`: qualify the
+[independent environment verifier and closed adapter](mvp2_s2_lifecycle_integration.md)
+with current kernel/scheduler/source/runtime/IPC observations and terminal replay.
+This supplies observational software, not a runnable release or installed proof.
+Conservative sufficient-profile NPAD support remains unknown; no host changes,
+new claim/job/retry or cleanup/admission follows. Finish Ready/merge review, then
+group worker/security/release/stop/claim/wrapper/collection qualification before
+separate live admission. No CLI now. All original evidence, full S2 A/P2-P5,
+downstream unrun slots, scientific scope and post-article sync remain intact.
+
 14 October continuation after PR #91 merge
 `c838fd10c911cd2cf2e16c60eb9a46d578cc0269`: the maintainer authorized the
 [new lifecycle protocol's software qualification](mvp2_s2_lifecycle_protocol.md).

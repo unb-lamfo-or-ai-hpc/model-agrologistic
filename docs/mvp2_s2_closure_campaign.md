@@ -1,5 +1,16 @@
 # S2 closure campaign: finite scope, staged admission
 
+Current handoff after PR #92 merge `9cc579d23f544c3ec6cdd7bbd71d85e6294ba01a`:
+the [independent verifier/closed adapter](mvp2_s2_lifecycle_integration.md) derives
+conditional environment assurances from actual read primitives rather than
+approved input records. NPAD compatibility remains unknown; all admission and
+cleanup flags are false. No launcher/claim/job/retry/slot is added or changed.
+Finish Ready/merge review, then qualify real worker/security/release/stop/claim/
+wrapper/collection together before proposing live admission. No CLI now; original
+claims/evidence/budgets, full S2 and later science remain unchanged.
+
+Prior handoff:
+
 Current handoff after PR #91 merge `c838fd10c911cd2cf2e16c60eb9a46d578cc0269`:
 the [lifecycle protocol package](mvp2_s2_lifecycle_protocol.md) qualifies software
 only under explicit maintainer authority. No new execution slot, claim or live

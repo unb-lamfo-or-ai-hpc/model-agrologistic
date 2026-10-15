@@ -3,7 +3,52 @@
 Updated 14 October 2026. This public checkpoint contains scope and provenance,
 not private evidence, credentials, local host paths or execution authority.
 
-## Latest checkpoint — PR #91 merged; lifecycle software qualification authorized, execution closed
+## Latest checkpoint — PR #92 merged; independent verifier and closed adapter integration
+
+14 October 2026: PR #92 merged into develop at
+`9cc579d23f544c3ec6cdd7bbd71d85e6294ba01a`. The maintainer authorized integrating
+and qualifying the independent environment verifier and operational adapter,
+preserving claims/evidence and keeping executions blocked. The
+[closed integration package](docs/mvp2_s2_lifecycle_integration.md) derives the
+prospective assurance records from explicit independent kernel, scheduler,
+source/runtime and IPC reads, rather than accepting an approved assurance JSON.
+Existing launchers, workers, stop controllers, scientific settings and certificates
+remain unchanged. No new claim, job, retry or execution slot is supplied.
+
+The conservative sufficient profile checks actual cgroup-v1 filesystem type,
+namespace/mount and process identities, complete visible hierarchy permissions,
+inherited writable cgroup descriptors, unprivileged worker credentials and
+NoNewPrivs. A live non-zombie supervisor anchors each parent, conditional on the
+kernel v1 removal rule and trusted host administration. This is not a hostile-root
+security proof, continuous attestation or evidence that NPAD supports the profile.
+It requires the worker to have NoNewPrivs=1 and the observed host user-namespace
+creation limit to be zero. Neither is changed here; a fixed injected-only worker
+hardening seam has no default effect. Unsupported/unavailable evidence blocks
+with a controlled diagnostic, not an automatic host change or normal retry.
+
+The adapter reuses the existing resource gate, verifies two independent startup
+captures and rechecks parent identities, permissions, membership and resources
+throughout observations. Worker-step paths are actually read after exit; missing
+remains missing/unknown, never empty. Post-exit resources stay unavailable rather
+than being reconstructed. Exact terminal step, identity absence, local-client
+reaping and stable products/writes remain required. Accounting delay cannot count
+as quiet evidence or extend the original 390s cleanup,5s quiet/minimum3samples,
+5s sampling gap or resource/time limits. Bounded private observation frames have
+independent semantic replay, negative pre-barrier/partial forensics and public
+redacted digests. Every admission/cleanup flag remains false after replay.
+
+Next owner: agent completes exact-head qualification and Ready review; maintainer
+separately authorizes merge. Then group the future real worker/security preparation,
+bounded release/stop integration, exclusive claim, wrapper, tests, terminal/forensic
+transfer and pinned human CLI qualification before proposing any live admission.
+This PR is a closed observational adapter, not a runnable normal executor. The
+installed persistent-parent/no-escape profile is unqualified. No NPAD CLI now.
+Full S2 A/P2-P5 and the eleven downstream unrun slots remain open; subsequent
+h400/SCIP-h215/conditional h500/S6, S3/S4 cancellation, EVPI/VSS exclusion and
+final post-article synchronization are preserved. Original archives, historical
+pins and public evidence files remain byte-identical.
+
+## Prior checkpoint — PR #91 merged; lifecycle software qualification authorized, execution closed
 
 14 October 2026: PR #91 merged into develop at
 `c838fd10c911cd2cf2e16c60eb9a46d578cc0269`. The maintainer explicitly authorized
