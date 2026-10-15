@@ -1,5 +1,15 @@
 # S2 completion: complete packages, serial evidence gates
 
+Continuation after PR #93 merge `0f98ae96aa4b352883626ff8eb8efa9e4d01c9c6`:
+the [complete closed normal package](mvp2_s2_lifecycle_release.md) groups worker,
+fixed launcher, durable release/exact-step TERM/KILL, exclusive claim/role wrapper
+and independent terminal/forensic archive collection/resume. Canonical serialized
+replay, unknown effects and missing attempts are qualified together. No public
+execution/admission opens; installed environment/cadence/durability stay unknown.
+Finish Ready/merge review, then one complete admission/CLI handoff review; no blind
+normal retry or another fragmented software release. Original claims, evidence,
+budgets, A/P2-P5 and later science remain unchanged. No NPAD CLI now.
+
 Continuation after PR #92 merge `9cc579d23f544c3ec6cdd7bbd71d85e6294ba01a`:
 the [closed verifier/adapter integration](mvp2_s2_lifecycle_integration.md) qualifies
 independent current environment/source/runtime/IPC/scheduler reads and bounded
