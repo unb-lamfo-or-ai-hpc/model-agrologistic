@@ -206,3 +206,32 @@ jobs:
           identity.inspect_tree(base / 'source', json.loads((base / 'files.json').read_text()))
           print(f'NPAD_LIFECYCLE_PROFILE_REGRESSION={len(cases)} passed; physical source closure verified; NO_REAL_SCHEDULER_OR_WORKER')
           PY
+      - name: Negative observed profile and closed non-lossy diagnostic qualification
+        run: |
+          python -B -m ruff check --no-cache scripts/mvp2_s2_profile_diagnostics.py tests/test_mvp2_s2_profile_diagnostics.py
+          DIAG_ROOT=$(mktemp -d "$RUNNER_TEMP/profile-diagnostics-XXXXXXXX")
+          mkdir "$DIAG_ROOT/source"
+          git archive HEAD | tar -x -C "$DIAG_ROOT/source"
+          python -B -I - "$DIAG_ROOT" <<'PY'
+          import hashlib, json, pathlib, sys
+          base = pathlib.Path(sys.argv[1])
+          root = base / 'source'
+          files = {p.relative_to(root).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest() for p in root.rglob('*') if p.is_file()}
+          (base / 'files.json').write_text(json.dumps(files))
+          sys.path.insert(0, str(root))
+          from scripts import mvp2_s2_compute_identity as identity
+          identity.inspect_tree(root, files)
+          PY
+          cd "$DIAG_ROOT/source"
+          python -B -m pytest -p no:cacheprovider tests/test_mvp2_s2_profile_diagnostics.py tests/test_mvp2_s2_lifecycle_profile.py -q --basetemp="$DIAG_ROOT/tests" --junitxml="$DIAG_ROOT/regression.xml"
+          python -B -I - "$DIAG_ROOT" <<'PY'
+          import json, pathlib, sys, xml.etree.ElementTree as ET
+          base = pathlib.Path(sys.argv[1])
+          cases = ET.parse(base / 'regression.xml').getroot().findall('.//testcase')
+          assert len(cases) == 160
+          assert not any(c.find(k) is not None for c in cases for k in ('failure', 'error', 'skipped'))
+          sys.path.insert(0, str(base / 'source'))
+          from scripts import mvp2_s2_compute_identity as identity
+          identity.inspect_tree(base / 'source', json.loads((base / 'files.json').read_text()))
+          print(f'CLOSED_PROFILE_DIAGNOSTICS={len(cases)} passed; physical source closure verified; NO_NPAD_EXECUTION_OR_ADMISSION')
+          PY
