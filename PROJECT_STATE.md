@@ -3,7 +3,47 @@
 Updated 15 October 2026. This public checkpoint contains scope and provenance,
 not private evidence, credentials, local host paths or execution authority.
 
-## Latest checkpoint — PR #94 merged; complete operational prerequisite handoff
+## Latest checkpoint — PR #95 merged; job2211568 blocked with incomplete diagnostics
+
+15 October 2026: PR #95 merged into develop at
+`cdc14591acd6b4743aa925e446070afd5524107d`. Job2211568 ran reviewed source
+`0b98e01cfb7b5cc27e6500c5c223ff39b17800bd`. The researcher supplied terminal
+COMPLETED/0:0/4s root/batch/extern accounting and the original observation archive.
+Archive/sidecar/reported SHA256 agree:
+`61d9ecf4504619d48238a16f0a6d96a91157704b530d3eea106c6242a204b4ab`.
+The unchanged bounded auditor replays blocked_environment. All599 archived source
+hashes match raw blobs at the executed commit. The plan hash was derived from and
+recomputed against the bundle, not separately attested. See the
+[outcome audit](docs/mvp2_s2_profile_2211568_audit.md) and
+[redacted derived review](docs/evidence/s2_profile_2211568_review.json).
+
+Allocation and batch membership pass. Host/memory/freezer/cpuset channels are
+unavailable. This does NOT establish that max_user_namespaces is nonzero or the
+namespace/hierarchy profile is unsafe/incompatible. Combined host reading lost
+the independent limit and retained no failing primitive/errno. Memory membership
+is step_batch/task_0: the direct-step-only precondition rejected it before any
+controller I/O. Freezer/cpuset have the expected direct batch layout, but their
+later failing primitives are unknown. Capture took0.039763497188687325s, inside90s;
+bounded_capture=false also reflects incomplete channels, not a demonstrated timeout.
+Original negative predicates/certificate are preserved, never reclassified.
+
+The new closed diagnostic qualification groups an exact UID/job/batch/path parser,
+memory-only task_0 handling, independent injected host channels, controlled
+primitive/errno records, deadline/completeness separation and offline redaction.
+It has no live reader/default/dispatcher, new claim, wrapper or execution slot.
+Historical observers/auditors/launchers and the scientific/enforcement contract
+remain byte-identical. No repeated job, security mutation or normal admission.
+
+Next owner: agent finishes Ready/CI and obtains this new PR's separate merge
+authorization. Then integrate diagnostics, observer/wrapper/replay/collection in
+one prospective qualified package before any justified new human observation.
+Unreadable is not unsupported; confirmed unsupported/unobservable prerequisites
+require NPAD support or an explicitly reviewed protocol decision, not a blind
+normal retry or automatic relaxation. No CLI now. Preserve every original claim,
+run, archive and sidecar. Full S2 A/P2-P5/later science, S3/S4 cancellation,
+EVPI/VSS exclusion and final post-article synchronization remain unchanged.
+
+## Prior checkpoint — PR #94 merged; complete operational prerequisite handoff
 
 15 October 2026: explicit maintainer authorization was fulfilled by merging
 PR #94 into develop at `6344d95a3841016cc5e1723e408d46b84a240b1c`, after six
