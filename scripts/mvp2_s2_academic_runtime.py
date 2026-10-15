@@ -26,6 +26,12 @@ from scripts import mvp2_s2_allocation_diagnostic as d  # noqa: E402
 
 BASE = d.BASE
 ENTRY = "scripts/mvp2_s2_academic_runtime.py"
+PREDECESSOR = {
+    "source": "faa7ec6ee2629a34210917f81a34193ad7fc6c6c",
+    "checksum": "52f4e69ad527972f253cd81a1e9cdcc0925ca2fad30b14e2fbf19918c1b4f533",
+    "plan": "66f911b103a7d62d4016d8e3baf1253399c7009fb108140cb23652efd7411131",
+    "job": "2212000",
+}
 
 
 class AccountingPending(ValueError):
@@ -42,7 +48,25 @@ def envelope(p):
 
 def claim_path(stage):
     a.require(stage in a.STAGES, "Unknown stage.")
-    return d.safe(BASE / (".mvp2-s2-academic-v1-" + stage))
+    return d.safe(BASE / (".mvp2-s2-academic-v2-" + stage))
+
+
+def verify_rejected_normal():
+    """Read the consumed v1 evidence; never repair it or reuse its submission slot."""
+    path = BASE / ".mvp2-s2-academic-v1-normal" / "s2-academic-evidence.tar.gz"
+    d.safe(path)
+    prior = a.audit(
+        path,
+        PREDECESSOR["checksum"],
+        PREDECESSOR["source"],
+        PREDECESSOR["plan"],
+        PREDECESSOR["job"],
+    )
+    a.require(
+        prior["stage"] == "normal" and prior["disposition"] == "evidence_not_accepted",
+        "Original rejected normal drift.",
+    )
+    return prior
 
 
 def check_source(p, root):
@@ -52,8 +76,10 @@ def check_source(p, root):
 
 
 def submit(stage, source, predecessors, *, root=a.ROOT, command=d.command):
-    """Prospective one-shot seam; public start remains denied before any effect."""
+    """One reviewed successor slot; negative history is data, not live acceptance."""
     a.prerequisites(stage, predecessors, source)
+    if stage == "normal":
+        verify_rejected_normal()
     files = d.source_files(root, source)
     p = a.plan(stage, source, files, a.runtime())
     target = claim_path(stage)
@@ -232,26 +258,69 @@ def supervise(
 
 
 def batch(target, *, command=d.command, popen=subprocess.Popen):
-    """Private real-transport seam; no public dispatch until an operational release."""
+    """Preserve bounded early diagnostics without private logs or environment dumps."""
+    target = d.safe(target)
+    phase = {"name": "claim", "plan": None, "job": None, "scheduler": None}
+    try:
+        _batch(target, phase, command=command, popen=popen)
+    except BaseException as error:
+        diagnostic = {
+            "schema_version": "s2-academic-batch-diagnostic-v1",
+            "phase": phase["name"],
+            "status": "failed",
+            "error_kind": type(error).__name__,
+            "plan_sha256": phase["plan"],
+            "job_id": phase["job"],
+            "scheduler_fields": phase["scheduler"],
+        }
+        try:
+            d.write_new(target / "batch-diagnostic.json", diagnostic)
+        except (OSError, ValueError):
+            pass  # Preserve the original exception; never replace an existing receipt.
+        raise
+    else:
+        d.write_new(
+            target / "batch-diagnostic.json",
+            {
+                "schema_version": "s2-academic-batch-diagnostic-v1",
+                "phase": "complete",
+                "status": "returned",
+                "error_kind": None,
+                "plan_sha256": phase["plan"],
+                "job_id": phase["job"],
+                "scheduler_fields": phase["scheduler"],
+            },
+        )
+
+
+def _batch(target, phase, *, command, popen):
     target = d.safe(target)
     p = a.validate_plan(a.c.read_json(target / "plan.json"))
+    phase["plan"] = a.digest(p)
     a.require(target == claim_path(p["stage"]), "Claim scope.")
     origin = a.c.read_json(target / "origin.json")
     root = Path(origin["checkout"])
     a.require(root.resolve() == a.ROOT and origin["python"] == sys.executable, "Executing origin.")
+    phase["name"] = "source_runtime"
     check_source(p, root)
+    phase["name"] = "acknowledgement"
     end = time.monotonic() + 30
     while not (target / "job.json").exists():
         a.require(time.monotonic() < end, "Acknowledgement not published.")
         time.sleep(0.05)
     receipt = a.c.read_json(target / "job.json")
     job = receipt["job_id"]
+    phase["job"] = job
     a.require(
         receipt["plan_sha256"] == a.digest(p) and os.environ.get("SLURM_JOB_ID") == job,
         "Batch allocation mismatch.",
     )
+    phase["name"] = "allocation_query"
+    scheduler = query(["scontrol", "-o", "show", "job", job], command=command)
+    phase["name"] = "allocation_validation"
+    phase["scheduler"] = a.scheduler_fields(scheduler)
     observation = a.allocation(
-        query(["scontrol", "-o", "show", "job", job], command=command),
+        scheduler,
         job,
         os.getuid(),
         envelope(p),
@@ -259,6 +328,7 @@ def batch(target, *, command=d.command, popen=subprocess.Popen):
     d.write_new(target / "allocation.json", observation)
     d.write_new(target / "batch-called.json", {"plan_sha256": a.digest(p)})
     requested = 4 if p["stage"] == "native_miniature" else 1
+    phase["name"] = "worker_launch"
     argv = [
         "srun",
         "--exclusive",
@@ -278,6 +348,7 @@ def batch(target, *, command=d.command, popen=subprocess.Popen):
     # Private logs may contain solver/connection diagnostics; they never enter Git/archive.
     with (target / "worker.out").open("xb") as out, (target / "worker.err").open("xb") as err:
         child = popen(argv, stdin=subprocess.DEVNULL, stdout=out, stderr=err, shell=False)
+        phase["name"] = "worker_supervision"
         supervise(target, p, job, child, command=command)
 
 
