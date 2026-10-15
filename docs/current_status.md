@@ -1,13 +1,24 @@
 # Dated research status: 15 October 2026
 
 This is a derived handoff snapshot, not a new certificate. Reviewed integration
-base: develop `cdc14591acd6b4743aa925e446070afd5524107d` (PR #95 merged).
+base: develop `37d4b13b4fffdf9566b18075c3b7ab4f9784691f` (PR #96 merged).
 Read [PROJECT_STATE.md](../PROJECT_STATE.md), the [roadmap](mvp2_hpc_roadmap.md)
 and linked evidence for full history. Refresh live PR state before continuing;
 open PR content is not integrated code. The [portable memory](research_context.md)
 was integrated with explicit authorization; it is not an execution gate.
 
 ## Current handoff
+
+The [complete prospective observation v2 package](mvp2_s2_profile_observation_v2.md)
+integrates independent host/primitive diagnostics, exact memory layout, bound
+hierarchy/member replay, exclusive-claim components, wrapper and forensic/cache
+collection. Public start/batch entries deny before new effects. No NPAD CLI now.
+Finish exact-head CI/Ready and request this new PR's separate merge authorization;
+then review one explicit observation-only admission and pinned human handoff.
+No normal/production/repeat admission. Original evidence remains unchanged;
+S2 and later scientific scope/post-article synchronization remain as contracted.
+
+### Prior closed diagnostic handoff
 
 Job2211568 observation evidence is checksum-verified and replays
 blocked_environment. The [audit and closed diagnostic correction](mvp2_s2_profile_2211568_audit.md)
