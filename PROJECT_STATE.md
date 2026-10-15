@@ -3,7 +3,44 @@
 Updated 15 October 2026. This public checkpoint contains scope and provenance,
 not private evidence, credentials, local host paths or execution authority.
 
-## Latest checkpoint — PR #93 merged; complete closed normal lifecycle package
+## Latest checkpoint — PR #94 merged; complete operational prerequisite handoff
+
+15 October 2026: explicit maintainer authorization was fulfilled by merging
+PR #94 into develop at `6344d95a3841016cc5e1723e408d46b84a240b1c`, after six
+successful checks on `16783f0ad5c8f5565e6a08f048fe52b7add8695c`.
+The maintainer authorized preparing the next operational gate and complete human
+NPAD commands, preserving all claims/evidence. The
+[complete prerequisite observation package](docs/mvp2_s2_lifecycle_profile.md)
+groups wrapper, one-shot exclusive claim, bounded compute observation, status/wait,
+terminal/forensic transfer, independent archive replay and cached collection.
+
+The merged sufficient profile requires max_user_namespaces=0 and complete visible
+non-delegated cgroup-v1 hierarchies. Installed NPAD compatibility is still unknown.
+Do not submit another synthetic normal before observing these prerequisites.
+The new gate requests only an observation batch:2logicalCPUs/2048MiB/12minutes,
+without srun, worker, IPC release, prctl, affinity/cgroup/host change, solver or
+license. Its claim is distinct from every historical claim and the still-unused
+future normal namespace. Unknown submission consumes the claim; no job guessing,
+recovery-carrier discovery, reset, auto-retry or afterok chain.
+
+Independent replay reports prerequisites_observed_not_admitted or blocked_environment,
+never live qualification. Missing/corrupt/truncated attempts retain negative
+forensic bytes and terminal accounting. Cached collection rechecks the same bytes
+and sidecar without a new query/job/replacement. Raw paths/PIDs stay outside Git.
+Fsync success does not prove NPAD/NFS crash durability; worker peer/hardening/
+resources, parent/no-escape support through execution, cadence and quiet cleanup
+remain unproven. Unsupported host prerequisites require review/NPAD support,
+not another loop of normal jobs or automatic criterion/security changes.
+
+Next owner: agent finishes exact-head qualification, Ready PR and complete pinned
+CLI handoff; maintainer separately authorizes this new PR's merge and executes
+the qualified observational commands. No agent NPAD access/job submission.
+Normal/adverse/native/miniature/h300/repeats remain blocked. Full S2 A/P2-P5,
+later h400/SCIP-h215/conditional h500/S6, S3/S4 cancellation, EVPI/VSS exclusion
+and synchronization only after article review are unchanged. Original claims,
+runs, archives and certificates remain untouched.
+
+## Prior checkpoint — PR #93 merged; complete closed normal lifecycle package
 
 15 October 2026: PR #93 merged into develop at
 `0f98ae96aa4b352883626ff8eb8efa9e4d01c9c6`, after six successful checks on
