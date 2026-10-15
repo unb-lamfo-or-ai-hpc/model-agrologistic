@@ -351,7 +351,11 @@ def review(p, job, records, accounting):
     )
     alloc = records.get("allocation.json", {})
     envelope = p["profile"]["native" if p["stage"] == "native_miniature" else "synthetic"]
-    checks["allocation_bound"] = alloc.get("job_id") == job and alloc.get("requested") == envelope
+    checks["allocation_bound"] = (
+        alloc.get("job_id") == job
+        and alloc.get("requested") == envelope
+        and "scheduler_fields" in alloc
+    )
     if "scheduler_fields" in alloc:
         try:
             fields = alloc["scheduler_fields"]
