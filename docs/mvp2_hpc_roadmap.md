@@ -2,6 +2,18 @@
 
 ## Authority and scope
 
+15 October continuation after PR #93 merge
+`0f98ae96aa4b352883626ff8eb8efa9e4d01c9c6`: qualify the
+[complete closed normal lifecycle package](mvp2_s2_lifecycle_release.md) in one
+functional delivery: worker, fixed launcher, durable release/exact-step stop,
+exclusive claim, role wrapper and terminal/forensic transfer/cached resume.
+Unknown effects never authorize repeat; canonical archive replay preserves
+negative/partial evidence. All public entries and execution/cleanup flags stay
+closed. NPAD environment/cadence/durability remain unqualified; no CLI now.
+Finish Ready/merge review, then one complete operational admission/CLI handoff
+review, not a blind retry or another fragmented software release. Original
+claims/evidence, full S2 A/P2-P5, later science and post-article sync are intact.
+
 14 October continuation after PR #92 merge
 `9cc579d23f544c3ec6cdd7bbd71d85e6294ba01a`: qualify the
 [independent environment verifier and closed adapter](mvp2_s2_lifecycle_integration.md)
