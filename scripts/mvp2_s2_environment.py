@@ -188,6 +188,9 @@ class KernelReader:
     def self_pid(self):
         return os.getpid()
 
+    def node(self):
+        return a.scheduler_node(socket.gethostname())
+
     def peer(self, connection):
         s.require(
             sys.platform == "linux"
@@ -695,7 +698,8 @@ def refresh(item, original, kernel, *, running):
         "Supervisor/host anchor unavailable or changed.",
     )
     inventories, wm = {}, kernel.mountinfo(supervisor["identity"]["pid"])
-    for key, descriptor in bound["controllers"].items():
+    for key in lc.CONTROLLERS:
+        descriptor = bound["controllers"][key]
         s.require(
             supervisor["scopes"][key]
             == {"mount": descriptor["mount"], "scope": descriptor["supervisor"]}
