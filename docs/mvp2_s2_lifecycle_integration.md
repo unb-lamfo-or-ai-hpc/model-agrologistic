@@ -1,5 +1,11 @@
 # S2 independent environment verifier and closed operational adapter
 
+Current continuation after PR #93 merge: the separately authorized
+[complete closed normal lifecycle package](mvp2_s2_lifecycle_release.md) integrates
+worker, controlled release/stop, exclusive claim, wrapper and terminal/forensic
+collection. This historical software description and all original evidence remain
+preserved; no installed environment proof or execution admission follows.
+
 ## Authority, base and deliverable
 
 14 October 2026; verified develop base
