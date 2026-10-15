@@ -1,13 +1,24 @@
 # Dated research status: 15 October 2026
 
 This is a derived handoff snapshot, not a new certificate. Reviewed integration
-base: develop `0f98ae96aa4b352883626ff8eb8efa9e4d01c9c6` (PR #93 merged).
+base: develop `6344d95a3841016cc5e1723e408d46b84a240b1c` (PR #94 merged).
 Read [PROJECT_STATE.md](../PROJECT_STATE.md), the [roadmap](mvp2_hpc_roadmap.md)
 and linked evidence for full history. Refresh live PR state before continuing;
 open PR content is not integrated code. The [portable memory](research_context.md)
 was integrated with explicit authorization; it is not an execution gate.
 
 ## Current handoff
+
+The [complete operational prerequisite observation](mvp2_s2_lifecycle_profile.md)
+groups the pinned wrapper, exclusive claim, bounded compute probe, status/wait and
+terminal/forensic replay/cache. Unknown NPAD host/hierarchy prerequisites must be
+measured before another normal attempt. Proposed request:2logicalCPUs/2048MiB/
+12minutes, no worker/srun/security change. Profile compatibility or negative
+evidence never admits normal/native/h300/repeats. Finish Ready/separate merge review,
+then execute only the fully pinned human observation commands. Original claims,
+evidence, full S2/later science and final post-article synchronization stay intact.
+
+### Prior closed-package handoff
 
 The [complete closed normal lifecycle package](mvp2_s2_lifecycle_release.md)
 groups worker/security/peer/token checks, fixed launcher, durable one-shot release
