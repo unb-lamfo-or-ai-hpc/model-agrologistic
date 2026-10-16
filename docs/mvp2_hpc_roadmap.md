@@ -2,6 +2,18 @@
 
 ## Authority and scope
 
+16 October continuation: [native P3 and all A/P2 gates are independently accepted](mvp2_s2_p3_accepted_p4.md).
+Preserve execution source09112881250ceccd06f6ef0d431e8698851724c9 and original
+certificates. Prepare one consolidated P4 functional PR from live developcbdf7be:
+new source/cohort and protected scientific parity, fresh h300 input/allocation/
+license, five cold serial arms4,1,8,2,16 in16CPU/192GiB/6h, bounded exports,
+partial/forensic/unrun collection and honest resource scopes. Current preparation
+remains draft/closed; complete all operational obligations and Linux qualification
+inside this same PR before Ready and separate merge review. No NPAD CLI/job now.
+P5 then audits the full diagnostic grid and S2 exit/configuration or inconclusive
+decision. S2 is open; later scope/cancelled S3/S4/EVPI-VSS exclusion and final
+post-article branch reconciliation remain unchanged. Historical entries follow.
+
 15 October after PR99 merge: [normal job2212000 and the consolidated resource
 reader/diagnostic correction](mvp2_s2_academic_2212000_audit.md) remain a negative
 installed gate. Complete compatible requested/allocated parsing, early portable
