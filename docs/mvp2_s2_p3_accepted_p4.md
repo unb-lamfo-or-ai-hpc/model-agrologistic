@@ -1,10 +1,11 @@
 # Accepted native P3 and consolidated P4 qualification
 
-16 October 2026. This is a **draft P4 preparation**, not an executable release.
-Keep this single functional PR draft while completing its driver, wrapper,
-resource measurements, bounded products, collection and Linux qualification.
-Do not split the pending components into independently mergeable micro-gates.
-No merge or NPAD execution is requested now.
+16 October 2026. PR101 now contains the **complete closed P4 software package**,
+not an admitted experimental release. The driver, native adapter, phase/step
+controller, bounded products, independent review, telemetry, terminal/forensic
+collector and wrapper are qualified together, not as mergeable micro-gates.
+Keep Draft until the final exact-head Linux qualification succeeds. Only then
+mark Ready and request separate merge authorization. No NPAD execution is requested.
 
 ## Installed evidence: A/P2/P3 accepted
 
@@ -65,7 +66,7 @@ The fresh private workbook must match the established digest and exactly300 hubs
 route/connectivity/config identities. Original input certificates remain history,
 not substitutes for current admission. No private workbook goes into Git.
 
-## Required completion inside this same draft PR
+## Implemented obligations; live checks remain mandatory
 
 1. Fresh raw-source/runtime and exact h300 input/dimension checks before a claim;
    fresh running allocation/account/UID/node and native license in the allocation.
@@ -94,10 +95,74 @@ not substitutes for current admission. No private workbook goes into Git.
    source-closure checks and exact-head Linux CI before Ready. Only then request
    separate merge authorization and provide human NPAD CLI. No CLI now.
 
-The new preparation module is solver-free and always denies execute_h300 before
-effects. Its mock-based tests qualify software contracts only. They do not replace
-the remaining operational work or certify a real large-instance execution.
-The module is deliberately not wired into the academic miniature dispatcher.
+The preparation module is solver-free and always denies execute_h300 before
+effects. `pending_obligations` now means **pending live evidence**, not missing
+software components. Public start/batch/worker and direct-file execution deny;
+no acceptance boolean, argument or environment variable unlocks them. Private
+transport/native seams exist for integrated qualification with scheduler/backend
+doubles. They must not be invoked manually to bypass the closed public boundary.
+The old academic miniature dispatcher and all protected modules remain unchanged.
+
+## Package map and operational boundary
+
+| File | Responsibility |
+| --- | --- |
+| [preparation](../scripts/mvp2_s2_h300_academic.py) | Exact P3 anchors, source parity, immutable scientific grid and public denial |
+| [runtime](../scripts/mvp2_s2_h300_runtime.py) | Fresh input/source/runtime, allocation/license, one-shot intent, cold steps, monotonic guards, independent review and terminal collection |
+| [products](../scripts/mvp2_s2_h300_products.py) | Streaming byte preflight, strict residual replay, exclusive product publication and bounded archive verification |
+| [wrapper](../scripts/npad_s2_h300_academic.sh) | Solver-free check, anchored status/wait/collect; start/batch/worker explicitly blocked |
+| [pipeline tests](../tests/test_mvp2_s2_h300_runtime.py) | Complete five-arm and interrupted-block fixtures, failure/overflow/forgery/fast-exit/cache/terminal cases |
+
+The **whole block**, not each arm, retains the256MiB transfer envelope, including
+metadata and conservative tar overhead. Native sparse extraction and the original
+residual evaluator remain in-memory; streaming JSON is not a process RSS cap.
+Exact serialized sizing precedes publication. Over-budget output is a preserved
+export failure: no partial vector is relabelled accepted, no silent truncation,
+and no increase of the inherited limit. Original native/diagnostic products stay
+in the run. Raw logs, private origin paths and workbook are excluded from transfer.
+This finite envelope may be insufficient for an incumbent: its adequacy is a live
+obligation, not inferred from the small fixtures or the prior native miniature.
+
+The running allocation is observed under Slurm22.05 requested/allocated aliases.
+All workers request16logicalCPUs and receive the same recorded affinity pool;
+only the native Threads parameter changes. Actual numeric step UID/node/CPU/task
+identity is checked before release. Unexpected effects stop the block. TERM/KILL
+targets only that bound numeric step; local srun is reaped separately. Unknown
+remote effects never become cleanup proof. No global kernel isolation is claimed.
+
+The fixed900s block-audit allowance is **shared across all arms**, using an isolated
+trusted validation subprocess with a remaining-time timeout, not900s per arm.
+Phase watchdogs retain the original900/1800/900/300s caps and3900s ceiling, with
+scoped teardown inside the remaining budget. This arithmetic remains unmeasured
+on h300. Cold input/source checks, accounting latency or export limits can leave
+unrun arms; there is no automatic retry. Missing batch evidence distinguishes
+unaccounted arms from an actually known unrun suffix, and collection waits for
+terminal accounting before publishing a negative missing-batch receipt.
+
+Resource records retain native Runtime/MaxMemUsed, Linux root pre-exit rusage,
+phase-tagged live-tree samples, errors and initial/final gaps. Cgroup observations
+belong to the batch observer and are not worker-only enforcement certificates.
+Live-tree CPU excludes exited descendants; lifetime tree CPU is null. Root RSS,
+native decimalGB and Slurm MaxRSS are separate scopes and are never summed.
+The full eight-row accounting grammar preserves `CANCELLED by <uid>` as failure,
+not success. A terminal parent does not certify a failed numeric step.
+
+## Qualification and handoff runbook
+
+No execution CLI is published for this closed release. Do not call private
+`_submit`, `_dispatch` or `_native` on NPAD. After software merge, the next human
+admission decision must review the final source, current private input/runtime,
+fresh allocation/license and export budget, then provide a pinned qualified
+operational release. Merge alone does not unlock a campaign or repetition.
+
+T1/T2: Windows relevant suite460passed/3platform skips (463 collected), including
+92P4-specific cases (91passed/1Bash skip); the final Linux workflow requires
+exactly463passed and zero failures/errors/skips from a pristine **PR-head** Git
+archive. It also checks Bash syntax, actual deny/check wrapper behavior and raw
+source closure after tests. No licensed h300 call or cluster access is part of CI.
+Ruff, links/whitespace, protected scientific parity and distributions are checked
+separately. Qualification failures during development remain visible in PR history.
+The exact final commit/check outcomes are recorded in the PR qualification comment.
 
 ## Scientific exit remains P5
 
