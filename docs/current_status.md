@@ -1,6 +1,6 @@
 # Dated research status: 16 October 2026
 
-## Current handoff — A/P2/P3 accepted; P4 draft qualification, jobs closed
+## Current handoff — A/P2/P3 accepted; complete closed P4 software, jobs blocked
 
 Live develop verified at `cbdf7be13d4cb1d1ba2eb7c9b99f05378b302034` (PR100).
 Native P3 job2212446, source09112881250ceccd06f6ef0d431e8698851724c9,
@@ -10,10 +10,12 @@ independently passes14 checks, complete three-priority hierarchy and residual
 validation. License accepted/Gurobi13.0.3. A/P2 certificates and original evidence
 are preserved; miniature success is not h300 memory/performance qualification.
 Read the [complete audit and same-PR P4 obligations](mvp2_s2_p3_accepted_p4.md).
-The consolidated P4 PR remains draft: closed preparation/protected-source contract
-and tests are not a complete execution/collection release. No new NPAD CLI now.
-Finish remaining operational integration and exact-head Linux qualification in
-the same PR, then Ready/separate merge authorization. S2 remains open for P4/P5.
+PR101 now contains the complete closed transport/native/product/control/resource/
+collector/wrapper package. Local relevant regression target460passed/3platform skips;
+exact-head Linux requires463passed/zero skips and post-test raw source closure.
+Keep Draft until final qualification; then Ready/separate merge authorization.
+Public start/batch/worker remain blocked even after merge. No NPAD CLI now.
+P4 live admission and P5 remain pending; S2 is not scientifically closed by software.
 All scientific scope and post-article synchronization decisions remain unchanged.
 
 ## Preserved previous dated snapshot — 15 October 2026
