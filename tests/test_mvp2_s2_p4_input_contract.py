@@ -1,6 +1,7 @@
 """Real public Excel/manifest integration, not a fake ExperimentSpec or private input."""
 
 import json
+import shlex
 import subprocess
 import sys
 import tempfile
@@ -198,10 +199,15 @@ def test_current_transport_hash_and_original_runtime_remain_explicit():
 
 
 @pytest.mark.skipif(sys.platform != "linux", reason="Actual Bash absent-claim diagnostic on Linux")
-def test_actual_wait_status_collect_without_claim_is_explicit_and_effect_free():
+def test_actual_wait_status_collect_without_claim_is_explicit_and_effect_free(tmp_path):
     wrapper = o.ROOT / "scripts/npad_s2_p4_observation.sh"
+    raw = wrapper.read_text()
+    base = "BASE=/home/vrrcelestino/model-agrologistic-hygiene-audit"
+    assert raw.count(base) == 1
+    isolated = tmp_path / "wrapper.sh"
+    isolated.write_text(raw.replace(base, "BASE=" + shlex.quote(str(tmp_path))), encoding="utf-8")
     for action in ("wait", "status", "collect"):
-        result = subprocess.run(["bash", str(wrapper), action, "b" * 40], capture_output=True)
+        result = subprocess.run(["bash", str(isolated), action, "b" * 40], capture_output=True)
         assert result.returncode == 2
         assert b"OBSERVATION_STATUS=not_submitted" in result.stderr
         assert b"NO_JOB_OR_TERMINAL_COLLECTION_AVAILABLE" in result.stderr
