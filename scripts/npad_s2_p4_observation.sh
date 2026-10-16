@@ -12,6 +12,10 @@ shift 2
 BASE=/home/vrrcelestino/model-agrologistic-hygiene-audit
 PY=/home/vrrcelestino/venv313/bin/python
 CLAIM="$BASE/.mvp2-s2-p4-observation-v1"
+if [[ $ACTION != start && ! -e $CLAIM && ! -L $CLAIM ]]; then
+  printf 'OBSERVATION_STATUS=not_submitted; no observation claim exists\nNO_JOB_OR_TERMINAL_COLLECTION_AVAILABLE; preserve the failed bootstrap\nNO_H300_REPEAT_OR_AUTOMATIC_FOLLOW_ON_ADMITTED\n' >&2
+  exit 2
+fi
 test -d "$BASE" && test -x "$PY"
 test "$(id -un)" = vrrcelestino
 export PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1
@@ -38,9 +42,9 @@ verify() {
 verify
 if [[ ! -e $CLAIM ]]; then
   cd "$SRC"
-  "$PY" -B -m ruff check --no-cache scripts/mvp2_s2_p4_observation.py tests/test_mvp2_s2_p4_observation.py
-  "$PY" -B -m pytest -p no:cacheprovider tests/test_mvp2_s2_p4_observation.py tests/test_mvp2_s2_p4_admission.py -q --basetemp="$BOOTSTRAP/tests" --junitxml="$BOOTSTRAP/regression.xml"
-  "$PY" -B -I -c 'import sys,xml.etree.ElementTree as E; c=E.parse(sys.argv[1]).getroot().findall(".//testcase"); assert len(c)==89 and not any(x.find(k) is not None for x in c for k in ("failure","error","skipped")); print("P4_OBSERVATION_REGRESSION="+str(len(c))+" passed; zero failures/errors/skips")' "$BOOTSTRAP/regression.xml"
+  "$PY" -B -m ruff check --no-cache scripts/mvp2_s2_p4_observation.py scripts/mvp2_s2_h300_runtime.py tests/test_mvp2_s2_p4_observation.py tests/test_mvp2_s2_p4_input_contract.py
+  "$PY" -B -m pytest -p no:cacheprovider tests/test_mvp2_s2_p4_observation.py tests/test_mvp2_s2_p4_admission.py tests/test_mvp2_s2_p4_input_contract.py -q --basetemp="$BOOTSTRAP/tests" --junitxml="$BOOTSTRAP/regression.xml"
+  "$PY" -B -I -c 'import sys,xml.etree.ElementTree as E; c=E.parse(sys.argv[1]).getroot().findall(".//testcase"); assert len(c)==107 and not any(x.find(k) is not None for x in c for k in ("failure","error","skipped")); print("P4_OBSERVATION_REGRESSION="+str(len(c))+" passed; zero failures/errors/skips")' "$BOOTSTRAP/regression.xml"
   verify
 fi
 exec "$PY" -B -I -c 'import runpy,sys; sys.dont_write_bytecode=True; r=sys.argv.pop(1); sys.path.insert(0,r); runpy.run_module("scripts.mvp2_s2_p4_observation",run_name="__main__",alter_sys=True)' "$SRC" "$ACTION" "$SOURCE_SHA" "$@"
