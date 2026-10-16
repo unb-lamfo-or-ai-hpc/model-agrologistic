@@ -1,6 +1,19 @@
 # Dated research status: 16 October 2026
 
-## Current handoff — PR102 merged; qualify complete human observational P4 CLI
+## Current handoff — PR103 input-contract failure before any new job
+
+Live PR103 merge: `d0f07fe9de0451e8dba749ab1b56a251588ce67d`. The installed
+b827838 bootstrap passed639 raw-file/89 regression checks but the real preparer
+read nonexistent ExperimentSpec.resume. The actual field is resume_evpi_vss.
+Trace/control flow proves this attempt failed before either new record or sbatch;
+silence from old wait was a nonzero absent-claim guard, not collection. Preserve
+the bootstrap and original evidence. Qualify the [narrow repair and real Excel/
+YAML integration](mvp2_s2_p4_input_contract_repair.md),107 focused/570 related
+Linux cases, then Ready/separate merge approval and new pinned corrected CLI.
+Existing records are refused, never reused/reset. H300/repeats/follow-on remain
+blocked; no agent NPAD job or scientific/source-model change. S2 remains open.
+
+## Preserved prior handoff — PR102 merged; qualify complete human observational P4 CLI
 
 PR102 merged with explicit authorization at
 `279a081a8d100c787b65ca620d2b69ef36e88342`; its qualified head
