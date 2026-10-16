@@ -1,4 +1,24 @@
-# Dated research status: 15 October 2026
+# Dated research status: 16 October 2026
+
+## Current handoff — A/P2/P3 accepted; complete closed P4 software, jobs blocked
+
+Live develop verified at `cbdf7be13d4cb1d1ba2eb7c9b99f05378b302034` (PR100).
+Native P3 job2212446, source09112881250ceccd06f6ef0d431e8698851724c9,
+plan3bcae9a744f2430ea2351e59e8a1d7ddb844f4f25a43f7f5f67f50fa8e820cec,
+archivec08ad57516937dde78142c96ebd28cf03143c4fcf7516adecaf2bb144446fb6d
+independently passes14 checks, complete three-priority hierarchy and residual
+validation. License accepted/Gurobi13.0.3. A/P2 certificates and original evidence
+are preserved; miniature success is not h300 memory/performance qualification.
+Read the [complete audit and same-PR P4 obligations](mvp2_s2_p3_accepted_p4.md).
+PR101 now contains the complete closed transport/native/product/control/resource/
+collector/wrapper package. Local relevant regression target460passed/3platform skips;
+exact-head Linux requires463passed/zero skips and post-test raw source closure.
+Keep Draft until final qualification; then Ready/separate merge authorization.
+Public start/batch/worker remain blocked even after merge. No NPAD CLI now.
+P4 live admission and P5 remain pending; S2 is not scientifically closed by software.
+All scientific scope and post-article synchronization decisions remain unchanged.
+
+## Preserved previous dated snapshot — 15 October 2026
 
 This is a derived handoff snapshot, not a new certificate. Reviewed integration
 base: develop `b6100b8120a60d21d49a5f308a8f929191e2238a` (PR #99 merged).
