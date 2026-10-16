@@ -9,6 +9,7 @@ these private functions on NPAD. Old claims and protocols are never reused.
 from __future__ import annotations
 
 import argparse
+import math
 import os
 import platform
 import re
@@ -18,7 +19,7 @@ import sys
 import tarfile
 import tempfile
 import time
-from dataclasses import asdict
+from dataclasses import asdict, replace
 from pathlib import Path
 
 from scripts import mvp2_h300_controls as c
@@ -37,6 +38,33 @@ ENTRY = "scripts/mvp2_s2_h300_runtime.py"
 CLAIM = ".mvp2-s2-h300-academic-p4-v1"
 REFERENCE = "348c4c08c2c9e906cbd3a28df7753577ebed3cac30702aae30dfb8ce2ad25694"
 ENVIRONMENT = ("OMP_NUM_THREADS", "MKL_NUM_THREADS", "OPENBLAS_NUM_THREADS")
+METADATA_NAN = "__s2_excel_metadata_nan_v1__"
+
+
+def _identity_view(data):
+    """Represent missing annotation values without changing numeric model data.
+
+    Excel parameter provenance may retain blank cells as NaN. Tag those values
+    only in ModelData.metadata, never in coefficients, coordinates or config.
+    The returned copy is used consistently by input, worker and partial review;
+    the original loader object/workbook and historical identities stay intact.
+    Strict scientific_identity still rejects nonfinite values outside metadata.
+    """
+
+    def annotation(value):
+        if isinstance(value, float) and not math.isfinite(value):
+            d.require(math.isnan(value), "Infinite input annotation is not a missing cell.")
+            return {METADATA_NAN: True}
+        if isinstance(value, dict):
+            d.require(METADATA_NAN not in value, "Reserved input annotation marker.")
+            return {key: annotation(item) for key, item in value.items()}
+        if isinstance(value, list):
+            return [annotation(item) for item in value]
+        if isinstance(value, tuple):
+            return tuple(annotation(item) for item in value)
+        return value
+
+    return replace(data, metadata=annotation(data.metadata))
 
 
 def _p3_files(archive):
@@ -108,6 +136,9 @@ def _input(reference):
                     products.sha_file(Path(temporary) / name) == digest,
                     "Fresh connectivity audit drift.",
                 )
+    # Preserve strict numeric hashing and all original audits; only missing
+    # annotation cells gain an explicit, source-versioned JSON representation.
+    data = _identity_view(data)
     identity = {
         "workbook_sha256": d.WORKBOOK,
         "reference_sha256": REFERENCE,
