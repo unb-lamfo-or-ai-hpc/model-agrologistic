@@ -3,7 +3,44 @@
 Updated 16 October 2026. This public checkpoint contains scope and provenance,
 not private evidence, credentials, local host paths or execution authority.
 
-## Latest checkpoint — PR101 complete closed P4 package; qualify before Ready
+## Latest checkpoint — PR101 merged; qualify P4 prerequisites, execution closed
+
+16 October 2026. With explicit maintainer authorization, PR101 was merged into
+develop at `1c8503586c627849b061b7062cc7b78f0c940df3`, preserving its qualified
+head `a958314746ed7ce66d43c88579da14b391d564bb` and all seven successful checks.
+The exact-head Linux P4 gate passed463cases with zero failures/errors/skips;
+local pristine relevant regression460passed/three disclosed platform skips.
+Its629-file source tree,57protected scientific/native hashes, full published
+PR100 checkpoint body and final wheel/sdist were qualified. Merge does not
+authorize h300, repetitions or changes to original claims/certificates.
+
+The next single functional package prepares and qualifies **operational
+prerequisites only**: solver-free input/P3/source/runtime preparation, a bounded
+observer in a future explicitly requested existing allocation, designated small
+license capability, post-observation source closure, canonical metadata review,
+exclusive new record, terminal/forensic archive/checksum, wrapper and tests.
+It pins PR101's four transport modules unchanged and preserves all model/input/
+tolerance/solver/thread/resource decisions. It has no job-submission or
+agricultural-worker path; public start/batch/worker/solve/repeat always deny.
+
+Use only the new `.mvp2-s2-p4-admission-v1` record namespace, never an old claim
+or the future h300 optimization claim. A complete future report remains
+prerequisites_observed_execution_closed, with no automatic follow-on or repeat.
+The256MiB whole-block export cap is unchanged and actual incumbent fit remains
+unestablished. An observer in one allocation cannot admit a different allocation.
+No NPAD command, job, observation, license probe, optimization or repeat has been
+performed in this continuation; tests use local doubles and solver-free checks.
+
+Focused local gate target52cases; related exact-head Linux target515cases with
+zero skips and raw source closure before/after. Keep Draft until final checks
+pass; only then Ready and request the successor's separate merge authorization.
+Human CLI follows its reviewed gate, not this software checkpoint. P4 live
+admission and P5/S2 scientific exit remain pending. Read the
+[complete operational prerequisite protocol](docs/mvp2_s2_p4_admission.md).
+S3/S4, EVPI/VSS, later experiments, coauthor manuscript and final branch-sync
+decisions are unchanged. The published PR101 checkpoint body follows verbatim.
+
+## Prior checkpoint — PR101 complete closed P4 package; qualify before Ready
 
 16 October 2026. PR101 groups the P4 source/input/allocation/license checks,
 cold serial native transport, phase-aware scoped-step control, bounded sparse
