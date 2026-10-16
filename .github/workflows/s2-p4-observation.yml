@@ -18,7 +18,7 @@ jobs:
         with:
           python-version: '3.13'
       - run: python -m pip install -e '.[dev]'
-      - name: Pristine real-input integration and 570-case related qualification
+      - name: Pristine real-input lifecycle and 602-case related qualification
         run: |
           mkdir "$RUNNER_TEMP/observation-source"
           git archive HEAD | tar -xf - -C "$RUNNER_TEMP/observation-source"
@@ -29,15 +29,15 @@ jobs:
           files={p.relative_to(pathlib.Path.cwd()).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in pathlib.Path.cwd().rglob('*') if p.is_file()}
           pathlib.Path(sys.argv[1]).write_text(json.dumps(files,sort_keys=True))
           PY
-          python -B -m ruff check --no-cache scripts/mvp2_s2_p4_observation.py scripts/mvp2_s2_h300_runtime.py tests/test_mvp2_s2_p4_observation.py tests/test_mvp2_s2_p4_input_contract.py
+          python -B -m ruff check --no-cache scripts/mvp2_s2_p4_observation.py scripts/mvp2_s2_h300_runtime.py tests/test_mvp2_s2_p4_observation.py tests/test_mvp2_s2_p4_input_contract.py tests/test_mvp2_s2_p4_metadata_identity.py
           bash -n scripts/npad_s2_p4_observation.sh
-          python -B -m pytest -p no:cacheprovider tests/test_mvp2_s2_p4_input_contract.py tests/test_mvp2_s2_p4_observation.py tests/test_mvp2_s2_p4_admission.py tests/test_mvp2_s2_h300_academic.py tests/test_mvp2_s2_h300_runtime.py tests/test_mvp2_h300_thread_contract.py tests/test_mvp2_h300_partial.py tests/test_mvp2_h300_native_worker.py tests/test_mvp2_h300_controls.py tests/test_mvp2_s2_academic.py tests/test_mvp2_s2_academic_recovery.py -q --basetemp="$RUNNER_TEMP/observation-tests" --junitxml="$RUNNER_TEMP/observation-tests.xml"
+          python -B -m pytest -p no:cacheprovider tests/test_mvp2_s2_p4_metadata_identity.py tests/test_mvp2_s2_p4_input_contract.py tests/test_mvp2_s2_p4_observation.py tests/test_mvp2_s2_p4_admission.py tests/test_mvp2_s2_h300_academic.py tests/test_mvp2_s2_h300_runtime.py tests/test_mvp2_h300_thread_contract.py tests/test_mvp2_h300_partial.py tests/test_mvp2_h300_native_worker.py tests/test_mvp2_h300_controls.py tests/test_mvp2_s2_academic.py tests/test_mvp2_s2_academic_recovery.py -q --basetemp="$RUNNER_TEMP/observation-tests" --junitxml="$RUNNER_TEMP/observation-tests.xml"
           python -B -I - "$RUNNER_TEMP/observation-tests.xml" "$RUNNER_TEMP/observation-files.json" <<'PY'
           import hashlib,json,pathlib,sys,xml.etree.ElementTree as ET
           cases=ET.parse(sys.argv[1]).getroot().findall('.//testcase')
-          assert len(cases)==570
+          assert len(cases)==602
           assert not any(c.find(k) is not None for c in cases for k in ('failure','error','skipped'))
           files={p.relative_to(pathlib.Path.cwd()).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in pathlib.Path.cwd().rglob('*') if p.is_file()}
           assert files==json.loads(pathlib.Path(sys.argv[2]).read_text()),'Post-test source drift'
-          print('OBSERVATION_SOFTWARE=570 passed; REAL_INPUT_CONTRACT; SOURCE_CLOSED; NO_NPAD_OR_H300_EXECUTED')
+          print('OBSERVATION_SOFTWARE=602 passed; REAL_INPUT_LIFECYCLE; SOURCE_CLOSED; NO_NPAD_OR_H300_EXECUTED')
           PY
