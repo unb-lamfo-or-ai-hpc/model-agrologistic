@@ -1,6 +1,27 @@
 # Dated research status: 16 October 2026
 
-## Current handoff — PR103 input-contract failure before any new job
+## Current handoff — PR104 NaN failure; one consolidated lifecycle repair
+
+PR104 merged into develop at `686068b8fd5ea468b57b64a788111a5e0bc785b1`.
+Installed source621f3c42 passed641 raw-file/107-case checks, then strict data
+identity rejected NaN, before either new claim or sbatch. Collect correctly
+reported not_submitted. A blank named parameter annotation in a public Excel
+reproduces the error; the private offending field has not been inspected.
+Preserve the failed bootstrap and all original evidence; no job/archive exists
+from this attempt. Do not repeat/patch the old source or reset a claim.
+
+Qualify the [complete metadata/lifecycle package](mvp2_s2_p4_metadata_identity.md)
+in one PR: strict numeric hashing, explicit metadata-only NaN view, current
+transport pin,32 new integration cases, wrapper,139 focused/602 related Linux
+cases, checkpoint/history/parity/links/package and complete conditional CLI.
+All57 scientific/native files remain unchanged. No numeric imputation, scientific
+criteria/resource change or agent NPAD job. Ready/separate merge approval precedes
+one human prerequisite observation; h300/repeats/follow-on remain blocked.
+P3 is already accepted at2212446/PR101. Current work is P4 preparation, then
+separately admitted P4 release and P5 scientific review. S2 remains open; later
+approved scope and final branch-sync timing remain unchanged.
+
+## Preserved prior handoff — PR103 input-contract failure before any new job
 
 Live PR103 merge: `d0f07fe9de0451e8dba749ab1b56a251588ce67d`. The installed
 b827838 bootstrap passed639 raw-file/89 regression checks but the real preparer

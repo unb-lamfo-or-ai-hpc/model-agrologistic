@@ -3,7 +3,42 @@
 Updated 16 October 2026. This public checkpoint contains scope and provenance,
 not private evidence, credentials, local host paths or execution authority.
 
-## Latest checkpoint — PR103 installed input failure; qualify a narrow repair
+## Latest checkpoint — PR104 installed NaN failure; consolidate real lifecycle qualification
+
+16 October 2026. PR104 merged into develop at
+`686068b8fd5ea468b57b64a788111a5e0bc785b1`; installed source
+`621f3c42f334fa400c98d62efbacbb1b0eb82db0` passed641 raw-file and107 regression
+checks. After the original input audits, strict scientific_identity rejected a
+NaN leaf. The trace does not locate it; the unchanged Excel loader's blank named
+parameter annotation is a reproducible compatible cause, not a confirmed private
+field. This attempt stopped before either claim/sbatch; collect explicitly
+reported not_submitted. Preserve the failed bootstrap and all original evidence.
+
+The [consolidated annotation/lifecycle repair](docs/mvp2_s2_p4_metadata_identity.md)
+keeps shared scientific hashing/JSON strict, represents NaN annotations explicitly
+in a separate metadata-only view, rejects infinities/reserved collisions and leaves
+every numeric/model/config field unchanged. Finite identities stay identical.
+The returned view is bound consistently across fresh input rechecks and unchanged
+partial anchors. No zero/null imputation, workbook edit, tolerance/dependency or
+scientific-source change. All57 P3 protected files, original PR101 pins and other
+three transport modules stay intact; only the current corrected-reader pin changes.
+
+Group reader, pin,32 new integration cases, wrapper, CI, runbook, checkpoint and
+conditional CLI in one functional PR. Real public Excel plus actual plan/prepare/
+recheck/batch/terminal replay exercises normal, pre-claim failure, input drift and
+early batch failure; external runtime/P3 carrier/Slurm/license remain test doubles.
+139 focused/602 related Linux cases, pristine source/parity/history/links/package
+checks precede Ready and separate merge approval. No PR per test case or blind
+retry. No agent NPAD access, job or licensed experiment has occurred.
+
+P3 was already accepted at job2212446/PR101; current failures belong to P4
+preparation, not a reopened P3. Next are one reviewed prerequisite observation,
+a separately qualified P4 operational release and P5 scientific review. H300,
+repetitions and follow-on remain blocked; S2 remains open. Scientific/editorial/
+later-sprint and final post-article-review branch-sync decisions are unchanged.
+The full prior checkpoint content follows unchanged.
+
+## Prior checkpoint — PR103 installed input failure; qualify a narrow repair
 
 16 October 2026. PR103 merged into develop at
 `d0f07fe9de0451e8dba749ab1b56a251588ce67d`; installed source
