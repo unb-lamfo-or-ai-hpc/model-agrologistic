@@ -327,7 +327,7 @@ def collect(commit, *, command=a.r.source.command):
         checksum = transfer["sha256"]
         a.d.require(transfer == {"sha256": checksum, "artifacts": hashes}, "Cached record drift.")
         a.d.require(
-            archive.with_suffix(".gz.sha256").read_bytes()
+            a.p.safe(archive.with_suffix(".gz.sha256")).read_bytes()
             == (checksum + "  " + archive.name + "\n").encode(),
             "Checksum sidecar drift.",
         )
