@@ -71,7 +71,7 @@ def _input(reference):
         and spec.model.objective_policy == "lexicographic"
         and spec.model.use_direct_origin_customer is False
         and spec.calculate_evpi_vss is False
-        and spec.resume is False,
+        and spec.resume_evpi_vss is False,
         "Scientific mode/resume/direct-arc drift.",
     )
     data = prepare_model_data(load_model_data_from_excel(spec.workbook, spec.loader), spec.model)

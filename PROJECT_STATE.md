@@ -3,7 +3,39 @@
 Updated 16 October 2026. This public checkpoint contains scope and provenance,
 not private evidence, credentials, local host paths or execution authority.
 
-## Latest checkpoint — PR102 merged; complete human observational P4 gate
+## Latest checkpoint — PR103 installed input failure; qualify a narrow repair
+
+16 October 2026. PR103 merged into develop at
+`d0f07fe9de0451e8dba749ab1b56a251588ce67d`; installed source
+`b8278381bc7fb8da98833de9d4a222848d04d420` passed639 raw-file and89 regression
+checks. The actual preparer then raised AttributeError at ExperimentSpec.resume.
+The real slotted contract has resume_evpi_vss, not resume. This trace is before
+both new claims, submission intent and sbatch: no job/claim was created by THIS
+attempt. Preserve the failed bootstrap and all existing evidence; no global
+NPAD job/directory state was inferred or inspected by the agent.
+
+The old wait returned silently because its absent-claim guard required start;
+that nonzero exit is not successful collection. No new terminal archive exists
+from this attempt. The coverage gap was replacing the real input pipeline in
+software tests; it is not a license/Slurm/scientific feasibility result.
+
+The [narrow real-input contract repair](docs/mvp2_s2_p4_input_contract_repair.md)
+uses the actual resume_evpi_vss field, preserves both false post-optimality flags,
+updates only the corrected operational reader's current transport pin and retains
+the original PR101 dictionary. All57 scientific/P3 source files, remaining
+transport bytes, hashes, audits, tolerances, resources and science are unchanged.
+New tests read a public synthetic Excel and real YAML/ExperimentSpec end-to-end,
+without solver construction.107 focused/570 related Linux cases, source closure,
+links/history/parity and packaging precede Ready/separate merge approval.
+
+The corrected wrapper explicitly reports absent claim/no submitted job for
+wait/status/collect. Future corrected CLI must use a new pinned source/bootstrap;
+existing v1 records are never overwritten or reset. H300 and repetitions remain
+blocked. No agent NPAD access, optimization, submission or article edit occurred.
+S2/P4/P5 and later approved scope remain open; branch synchronization stays after
+article review. The complete prior checkpoint content follows unchanged.
+
+## Prior checkpoint — PR102 merged; complete human observational P4 gate
 
 16 October 2026. Explicitly authorized PR102 merge into develop:
 `279a081a8d100c787b65ca620d2b69ef36e88342`; qualified head

@@ -2,6 +2,16 @@
 
 ## Authority and scope
 
+16 October after PR103 merge `d0f07fe9de0451e8dba749ab1b56a251588ce67d`:
+the installed real input reader failed at nonexistent ExperimentSpec.resume,
+after639-file/89-case bootstrap but before claims/submission. Preserve that
+negative evidence and the [narrow real-input correction](mvp2_s2_p4_input_contract_repair.md).
+Qualify actual Excel/YAML/ExperimentSpec integration, corrected operational pin,
+explicit absent-claim wait diagnostic and107/570-case Linux gates before Ready/
+separate merge and corrected human CLI. No private source patch, old claim reset,
+new experiment, scientific criterion relaxation or dependency change. H300 and
+repetitions remain blocked; P4/P5 and all later approved scope remain pending.
+
 16 October after explicitly authorized PR102 merge
 `279a081a8d100c787b65ca620d2b69ef36e88342`: qualify the
 [complete human prerequisite observation package](mvp2_s2_p4_observation.md),

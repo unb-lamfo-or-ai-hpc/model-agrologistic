@@ -28,7 +28,7 @@ ROOT = Path(__file__).resolve().parents[1]
 CLAIM = ".mvp2-s2-p4-admission-v1"
 P4_HEAD = "a958314746ed7ce66d43c88579da14b391d564bb"
 P4_MERGE = "1c8503586c627849b061b7062cc7b78f0c940df3"
-TRANSPORT = {
+PR101_TRANSPORT = {
     "scripts/mvp2_s2_h300_academic.py": (
         "b08a581b3568b60956f0b0890c91cc6bfe130699cc0497295f408a865ea13538"
     ),
@@ -40,6 +40,14 @@ TRANSPORT = {
     ),
     "scripts/npad_s2_h300_academic.sh": (
         "03cf513f04361606ea20a43cd5918109c94c813896ae72451297dc743c7e177f"
+    ),
+}
+# Current operational repair is separately source-bound; original PR101 bytes
+# remain named for historical replay with their original qualified source.
+TRANSPORT = {
+    **PR101_TRANSPORT,
+    "scripts/mvp2_s2_h300_runtime.py": (
+        "d26a549a48ecc58e5cd19edbffeea50b951904d68d99e3893e671758a182e59d"
     ),
 }
 FLAGS = {
