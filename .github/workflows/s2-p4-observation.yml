@@ -1,0 +1,43 @@
+name: S2 P4 complete human observation gate
+on:
+  pull_request:
+  push:
+    branches: [develop]
+jobs:
+  observation-cli:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      PYTHONNOUSERSITE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - run: python -m pip install -e '.[dev]'
+      - name: Pristine complete observation and 552-case related qualification
+        run: |
+          mkdir "$RUNNER_TEMP/observation-source"
+          git archive HEAD | tar -xf - -C "$RUNNER_TEMP/observation-source"
+          printf 'QUALIFIED_HEAD=%s\n' "$(git rev-parse HEAD)"
+          cd "$RUNNER_TEMP/observation-source"
+          python -B -I - "$RUNNER_TEMP/observation-files.json" <<'PY'
+          import hashlib,json,pathlib,sys
+          files={p.relative_to(pathlib.Path.cwd()).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in pathlib.Path.cwd().rglob('*') if p.is_file()}
+          pathlib.Path(sys.argv[1]).write_text(json.dumps(files,sort_keys=True))
+          PY
+          python -B -m ruff check --no-cache scripts/mvp2_s2_p4_observation.py tests/test_mvp2_s2_p4_observation.py
+          bash -n scripts/npad_s2_p4_observation.sh
+          python -B -m pytest -p no:cacheprovider tests/test_mvp2_s2_p4_observation.py tests/test_mvp2_s2_p4_admission.py tests/test_mvp2_s2_h300_academic.py tests/test_mvp2_s2_h300_runtime.py tests/test_mvp2_h300_thread_contract.py tests/test_mvp2_h300_partial.py tests/test_mvp2_h300_native_worker.py tests/test_mvp2_h300_controls.py tests/test_mvp2_s2_academic.py tests/test_mvp2_s2_academic_recovery.py -q --basetemp="$RUNNER_TEMP/observation-tests" --junitxml="$RUNNER_TEMP/observation-tests.xml"
+          python -B -I - "$RUNNER_TEMP/observation-tests.xml" "$RUNNER_TEMP/observation-files.json" <<'PY'
+          import hashlib,json,pathlib,sys,xml.etree.ElementTree as ET
+          cases=ET.parse(sys.argv[1]).getroot().findall('.//testcase')
+          assert len(cases)==552
+          assert not any(c.find(k) is not None for c in cases for k in ('failure','error','skipped'))
+          files={p.relative_to(pathlib.Path.cwd()).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in pathlib.Path.cwd().rglob('*') if p.is_file()}
+          assert files==json.loads(pathlib.Path(sys.argv[2]).read_text()),'Post-test source drift'
+          print('OBSERVATION_SOFTWARE=552 passed; SOURCE_CLOSED; NO_NPAD_OR_H300_EXECUTED')
+          PY

@@ -1,6 +1,20 @@
 # Dated research status: 16 October 2026
 
-## Current handoff — PR101 merged; qualify observation-only P4 prerequisites
+## Current handoff — PR102 merged; qualify complete human observational P4 CLI
+
+PR102 merged with explicit authorization at
+`279a081a8d100c787b65ca620d2b69ef36e88342`; its qualified head
+`a519897df9a4bea7c0d60c7e77a5a9ca5d701f59` passed eight checks and515 exact-head
+Linux cases, no skips. Preserve that observer, all scientific bytes and claims.
+The [complete human observation package](mvp2_s2_p4_observation.md) groups
+bootstrap, one-shot batch, bounded observer, terminal/early-failure forensic
+transfer and independent audit. Qualify the89-case bootstrap and552-case Linux
+related suite, then Ready/separate merge approval and pinned human start/status/
+wait/collect. This is a short prerequisite observation, not an h300 optimization;
+h300/repeats/automatic follow-on remain blocked even after a positive report.
+No agent job or NPAD access occurred. S2/P4 live evidence and P5 remain pending.
+
+## Preserved prior handoff — PR101 merged; qualify observation-only P4 prerequisites
 
 PR101 merged with explicit authorization into develop
 `1c8503586c627849b061b7062cc7b78f0c940df3`; qualified source

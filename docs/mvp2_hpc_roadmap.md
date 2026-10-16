@@ -2,6 +2,18 @@
 
 ## Authority and scope
 
+16 October after explicitly authorized PR102 merge
+`279a081a8d100c787b65ca620d2b69ef36e88342`: qualify the
+[complete human prerequisite observation package](mvp2_s2_p4_observation.md),
+including pinned bootstrap, one observational batch, immutable terminal/early-
+failure transfer, independent metadata audit and complete human CLI. Preserve
+PR102's observer, all accepted scientific bytes and old claims.89-case focused/
+552-case exact-head Linux gates precede Ready and separate merge approval.
+The existing allocation envelope is unchanged; observer duration is at most600s,
+not an agricultural campaign. H300/repeats stay blocked; positive prerequisite
+evidence grants no future allocation or agricultural execution permission.
+P4 live evidence/P5 and all later approved scope remain pending; no agent job.
+
 16 October after PR101 merge `1c8503586c627849b061b7062cc7b78f0c940df3`:
 qualify the [complete observation-only P4 prerequisite gate](mvp2_s2_p4_admission.md)
 with unchanged transport/scientific bytes, explicit source/P3/input/runtime and
