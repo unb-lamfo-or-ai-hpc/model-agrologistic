@@ -1,6 +1,21 @@
 # Dated research status: 16 October 2026
 
-## Current handoff — A/P2/P3 accepted; complete closed P4 software, jobs blocked
+## Current handoff — PR101 merged; qualify observation-only P4 prerequisites
+
+PR101 merged with explicit authorization into develop
+`1c8503586c627849b061b7062cc7b78f0c940df3`; qualified source
+`a958314746ed7ce66d43c88579da14b391d564bb`, seven final checks passed,
+463-case exact-head Linux P4 gate with zero skips. Original A/P2/P3 certificates
+and all claims remain preserved. H300 and repetitions are still blocked.
+The next complete [prerequisite observation package](mvp2_s2_p4_admission.md)
+has no scheduler submission or agricultural model path. Its separate exclusive
+record, bounded existing-allocation observation, canonical terminal/forensic
+transfer and wrapper/tests are qualified together. The best future disposition
+is prerequisites_observed_execution_closed, never campaign permission or export-fit
+proof. Keep Draft until exact-head515-case Linux qualification, then Ready and
+separate merge authorization. No human NPAD CLI is needed now. S2 remains open.
+
+## Preserved prior handoff — A/P2/P3 accepted; complete closed P4 software
 
 Live develop verified at `cbdf7be13d4cb1d1ba2eb7c9b99f05378b302034` (PR100).
 Native P3 job2212446, source09112881250ceccd06f6ef0d431e8698851724c9,
