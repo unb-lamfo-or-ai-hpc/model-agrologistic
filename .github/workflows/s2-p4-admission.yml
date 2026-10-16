@@ -1,0 +1,45 @@
+name: S2 P4 observation-only admission
+on:
+  pull_request:
+  push:
+    branches: [develop]
+jobs:
+  admission:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      PYTHONNOUSERSITE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - run: python -m pip install -e '.[dev]'
+      - name: Pristine exact-head admission and full related P4 package
+        run: |
+          mkdir "$RUNNER_TEMP/admission-source"
+          git archive HEAD | tar -xf - -C "$RUNNER_TEMP/admission-source"
+          printf 'QUALIFIED_HEAD=%s\n' "$(git rev-parse HEAD)"
+          cd "$RUNNER_TEMP/admission-source"
+          python -B -I - "$RUNNER_TEMP/admission-files.json" <<'PY'
+          import hashlib,json,pathlib,sys
+          root=pathlib.Path.cwd()
+          files={p.relative_to(root).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in root.rglob('*') if p.is_file()}
+          pathlib.Path(sys.argv[1]).write_text(json.dumps(files,sort_keys=True))
+          PY
+          python -B -m ruff check --no-cache scripts/mvp2_s2_p4_admission.py tests/test_mvp2_s2_p4_admission.py
+          bash -n scripts/npad_s2_p4_admission.sh
+          python -B -m pytest -p no:cacheprovider tests/test_mvp2_s2_p4_admission.py tests/test_mvp2_s2_h300_academic.py tests/test_mvp2_s2_h300_runtime.py tests/test_mvp2_h300_thread_contract.py tests/test_mvp2_h300_partial.py tests/test_mvp2_h300_native_worker.py tests/test_mvp2_h300_controls.py tests/test_mvp2_s2_academic.py tests/test_mvp2_s2_academic_recovery.py -q --basetemp="$RUNNER_TEMP/admission-tests" --junitxml="$RUNNER_TEMP/admission-tests.xml"
+          python -B -I - "$RUNNER_TEMP/admission-tests.xml" "$RUNNER_TEMP/admission-files.json" <<'PY'
+          import hashlib,json,pathlib,sys,xml.etree.ElementTree as ET
+          cases=ET.parse(sys.argv[1]).getroot().findall('.//testcase')
+          assert len(cases)==515
+          assert not any(c.find(k) is not None for c in cases for k in ('failure','error','skipped'))
+          root=pathlib.Path.cwd()
+          files={p.relative_to(root).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in root.rglob('*') if p.is_file()}
+          assert files==json.loads(pathlib.Path(sys.argv[2]).read_text()),'Post-regression source drift'
+          print('ADMISSION_SOFTWARE=515 passed; RAW_SOURCE_CLOSED; NO_NPAD_JOB_OR_H300_ADMITTED')
+          PY
