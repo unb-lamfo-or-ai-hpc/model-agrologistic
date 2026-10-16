@@ -190,7 +190,7 @@ def inventory(root):
     """Only fixed portable records: never logs, origin/private paths or workbook."""
     root = safe(root)
     pattern = (
-        r"(?:plan|job|batch|accounting|review)\.json|"
+        r"(?:plan|job|batch|accounting|scheduler-resources|review)\.json|"
         r"arms/t(?:1|2|4|8|16)/(?:attempt|resources|worker-start|release|ticket|independent)\.json|"
         r"arms/t(?:1|2|4|8|16)/native/(?:root-resources|native-terminal|"
         r"failure|phase-[0-3]|failure-cleanup)\.json|"
