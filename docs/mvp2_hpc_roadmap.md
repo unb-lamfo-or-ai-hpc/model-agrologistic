@@ -2,6 +2,21 @@
 
 ## Authority and scope
 
+16 October after PR104 merge `686068b8fd5ea468b57b64a788111a5e0bc785b1`:
+the installed641-file/107-case bootstrap reached data identity but rejected NaN
+before either new claim/sbatch. The collector correctly reported not_submitted.
+Preserve both pre-submission failures. Consolidate the
+[metadata-only identity and full lifecycle repair](mvp2_s2_p4_metadata_identity.md)
+with32 new cases, real Excel/plan/prepare/recheck/batch/terminal replay, wrapper,
+139/602-case Linux gates, documentation/checkpoint and conditional CLI in one PR.
+Keep strict numeric hashing/validation, protected scientific bytes and historical
+identities; no imputation, workbook/scientific/resource change or blind retry.
+Ready/separate merge approval precedes one reviewed prerequisite observation.
+P3 is already accepted at job2212446/PR101; current work is P4. Then consolidate
+the separately admitted operational P4 release and P5 scientific review as complete
+packages, not one PR per test. H300/repeats remain blocked; all later approved
+scope and final post-article-review branch synchronization stay unchanged.
+
 16 October after PR103 merge `d0f07fe9de0451e8dba749ab1b56a251588ce67d`:
 the installed real input reader failed at nonexistent ExperimentSpec.resume,
 after639-file/89-case bootstrap but before claims/submission. Preserve that
