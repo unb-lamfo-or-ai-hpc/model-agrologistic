@@ -1,8 +1,8 @@
-"""P4 preparation contract; all execution paths stay closed during qualification.
+"""P4 preparation contract; all public execution paths stay closed.
 
 The accepted native fixture is necessary, not sufficient for h300 admission.
 This module authenticates its external certificate and preserves the scientific
-design while exposing the remaining obligations of the consolidated P4 package.
+design while retaining the live obligations of the consolidated P4 package.
 """
 
 from __future__ import annotations
@@ -112,7 +112,7 @@ def preparation(source, runtime_sha256, input_sha256, protected_sha256):
         arms.append(arm)
     return {
         "schema_version": "s2-h300-academic-preparation-v1",
-        "status": "draft_software_qualification_execution_closed",
+        "status": "software_integration_execution_closed",
         "p3_external_anchors": dict(P3),
         "source_commit": source,
         "runtime_sha256": runtime_sha256,
@@ -142,4 +142,4 @@ def validate_preparation(value):
 
 def execute_h300(*_args, **_kwargs):
     """Deny before input access, native import, claim creation or scheduler effects."""
-    raise PermissionError("P4 draft: operational integration and qualification incomplete.")
+    raise PermissionError("P4 live admission incomplete; h300 and repeats remain blocked.")
