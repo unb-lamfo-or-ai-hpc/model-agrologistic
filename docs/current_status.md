@@ -1,6 +1,27 @@
 # Dated research status: 16 October 2026
 
-## Current handoff — PR104 NaN failure; one consolidated lifecycle repair
+## Current handoff — observation2213305 accepted; pause before operational P4
+
+PR105 merge `d70816fdd6c3d99ef05711731a9dda17cd5210dd`; execution source
+`7ff70904d6c690ced0c9e035e003da3d6ce6e4a6`. Archive/sidecar/external hash match,
+and independent canonical replay returns prerequisites_observed_execution_closed.
+Root/batch/extern COMPLETED0:0/102s; observer exit0/reaped/no TERM/KILL/error.
+Fresh recorded source/input/runtime and designated2001-variable capability pass.
+16 logical CPUs are8 observed package/core pairs with SMT, not16 physical cores.
+No agricultural construction/solution/export fit, future allocation or h300/repeat
+admission is inferred. Preserve all original claims/archives and prior failures.
+Read the [review, anchors and next-package plan](mvp2_s2_p4_observed_prerequisites.md).
+
+Pause checkpoint staged on the next P4 release branch; not a standalone PR and
+not yet integrated into develop. On resumption complete that same P4 functional
+package, qualify/Ready and obtain separate merge/admission before human CLI.
+Then P5 independently audits the five-thread block and S2 exit/configuration or
+inconclusive outcome. Two further S2 PRs baseline, conditional on evidence.
+No NPAD command/job now. P3 already accepted; S2/P4/P5 remain open as scoped.
+Later h400, existing-SCIP/h215, conditional h500 and S6-A/B remain planned;
+S3/S4 cancelled, EVPI/VSS excluded, article/main sync unchanged during pause.
+
+## Preserved prior handoff — PR104 NaN failure; one consolidated lifecycle repair
 
 PR104 merged into develop at `686068b8fd5ea468b57b64a788111a5e0bc785b1`.
 Installed source621f3c42 passed641 raw-file/107-case checks, then strict data
