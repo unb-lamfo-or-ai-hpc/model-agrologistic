@@ -1,12 +1,41 @@
-Warning: truncated output (original token count: 24424)
-Total output lines: 1449
-
 # Model Agrologistic — MVP 2.0 checkpoint
 
 Updated 16 October 2026. This public checkpoint contains scope and provenance,
 not private evidence, credentials, local host paths or execution authority.
 
-## Latest checkpoint — native P3 independently accepted; prepare P4, jobs blocked
+## Latest checkpoint — PR101 complete closed P4 package; qualify before Ready
+
+16 October 2026. PR101 groups the P4 source/input/allocation/license checks,
+cold serial native transport, phase-aware scoped-step control, bounded sparse
+products, independent residual review, scope-specific resource observations,
+terminal/forensic/unrun collection, wrapper, tests and runbook. Public execution
+is an unconditional deny: h300 and repeats remain blocked, including after merge.
+Private seams are qualification components, not an alternate authorized CLI.
+
+Scientific bytes/profile remain those accepted in P3; new operational source and
+cohort must be bound independently. Preserve one16CPU/192GiB/6h allocation and
+order4,1,8,2,16, unchanged model/tolerances/solver options except Threads. The
+whole-block transfer cap stays256MiB; streaming does not cap native extraction RSS
+or demonstrate actual h300 export fit. Native time/memory partial observations
+are classified through unchanged residual/priority rules, not acceptance flags.
+Unknown control effects stop the block; terminal accounting distinguishes failed
+steps and unaccounted arms, preserving all prior claims and original products.
+
+Local relevant regression target:460passed/3intentional platform skips (463 collected).
+Final Linux gate requires463passed/zero skips on the exact PR head, pristine raw
+source before/after, Bash syntax and real wrapper denial/check. Ruff, links,
+protected source parity and packaging are separate gates. Keep Draft until all
+final checks pass; then Ready and request explicit merge authorization only.
+No NPAD commands, execution, repeat, merge, article/model/parameter change occurs
+in this continuation. P4 live admission and P5/S2 scientific exit remain pending.
+See [the complete package/runbook](docs/mvp2_s2_p3_accepted_p4.md).
+
+Checkpoint hygiene: removed accidental tool-output truncation headers from the
+draft checkpoint and restored the complete published PR100 base body verbatim
+(apart from its Latest-to-Prior heading), preserving the newer A/P2/P3 additions.
+No original experimental certificate was edited or retroactively requalified.
+
+## Prior checkpoint — native P3 independently accepted; prepare P4, jobs blocked
 
 16 October 2026. Human native_miniature job2212446 completed at unchanged
 source09112881250ceccd06f6ef0d431e8698851724c9. Bootstrap120 passed without
@@ -310,6 +339,9 @@ without changing the pinned experimental source. Remaining functional baseline:
 P4 and P5; evidence-driven corrections may add work. S2 stays open. Later h400,
 bounded existing-SCIP/h215, conditional h500, S6-A/S6-B remain; S3/S4 cancelled,
 EVPI/VSS excluded, main synchronization only after article review.
+
+Updated 15 October 2026. This public checkpoint contains scope and provenance,
+not private evidence, credentials, local host paths or execution authority.
 
 ## Prior checkpoint — PR99 merged; A job2212000 rejected before worker launch
 
