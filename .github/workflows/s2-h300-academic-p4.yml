@@ -24,7 +24,7 @@ jobs:
           python -B -I - "$RUNNER_TEMP/p4-preparation.xml" <<'PY'
           import sys, xml.etree.ElementTree as ET
           cases = ET.parse(sys.argv[1]).getroot().findall('.//testcase')
-          assert len(cases) >= 278
+          assert len(cases) == 400
           assert not any(c.find(k) is not None for c in cases for k in ('failure', 'error', 'skipped'))
           print(f'P4_CLOSED_PREPARATION={len(cases)} passed; NO_NPAD_EFFECTS')
           PY
