@@ -3,7 +3,39 @@
 Updated 16 October 2026. This public checkpoint contains scope and provenance,
 not private evidence, credentials, local host paths or execution authority.
 
-## Latest checkpoint — PR101 merged; qualify P4 prerequisites, execution closed
+## Latest checkpoint — PR102 merged; complete human observational P4 gate
+
+16 October 2026. Explicitly authorized PR102 merge into develop:
+`279a081a8d100c787b65ca620d2b69ef36e88342`; qualified head
+`a519897df9a4bea7c0d60c7e77a5a9ca5d701f59`. All eight checks passed, including
+515 exact-head Linux cases without failures/errors/skips, raw634-file closure,
+57 protected P3 scientific files, four unchanged PR101 transport modules and
+prior checkpoint preservation. No installed gate or agricultural execution
+is inferred from merge or software CI.
+
+The next complete [human observation gate](docs/mvp2_s2_p4_observation.md)
+adds the pinned bootstrap, one explicitly selected prerequisite batch, status/
+wait/terminal forensic collection and independent bounded metadata auditor.
+It preserves PR102's observer and all original claims/certificates, uses separate
+observation and prerequisite namespaces, and never calls an agricultural worker.
+An ambiguous submission consumes the slot; repeated start collects, not submits.
+Early batch failure also has a portable negative-evidence path.
+
+The existing16logicalCPU/192GiB/6h requested envelope is unchanged, but this is
+an at-most600s local observation with early exit, NOT a six-hour optimization.
+Only the existing2001-variable license capability fixture may optimize after
+fresh compute-allocation checks. H300, repetitions and automatic follow-on stay
+blocked; positive evidence means prerequisites_observed_execution_closed only.
+Actual agricultural export fit remains unknown under the256MiB whole-block cap.
+
+Qualify89 focused and552 related Linux cases, raw post-test closure, wrapper,
+links, scientific/transport parity and packaging before Ready; request separate
+merge approval only then. Prepare complete pinned human CLI with conditional
+start/status/wait/collect instructions; no agent cluster access or job occurred.
+S2 remains open. Later scientific/editorial scopes and final post-article branch
+reconciliation are unchanged. Prior checkpoint content is preserved below.
+
+## Prior checkpoint — PR101 merged; qualify P4 prerequisites, execution closed
 
 16 October 2026. With explicit maintainer authorization, PR101 was merged into
 develop at `1c8503586c627849b061b7062cc7b78f0c940df3`, preserving its qualified
