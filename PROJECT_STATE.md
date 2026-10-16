@@ -1,9 +1,317 @@
+Warning: truncated output (original token count: 24424)
+Total output lines: 1449
+
 # Model Agrologistic — MVP 2.0 checkpoint
 
-Updated 15 October 2026. This public checkpoint contains scope and provenance,
+Updated 16 October 2026. This public checkpoint contains scope and provenance,
 not private evidence, credentials, local host paths or execution authority.
 
-## Latest checkpoint — PR99 merged; A job2212000 rejected before worker launch
+## Latest checkpoint — native P3 independently accepted; prepare P4, jobs blocked
+
+16 October 2026. Human native_miniature job2212446 completed at unchanged
+source09112881250ceccd06f6ef0d431e8698851724c9. Bootstrap120 passed without
+failures/errors/skips; raw621-file inventory verified before/after regression.
+
+- Job: `2212446`; stage: `native_miniature`.
+- Source: `09112881250ceccd06f6ef0d431e8698851724c9`.
+- Plan SHA256: `3bcae9a744f2430ea2351e59e8a1d7ddb844f4f25a43f7f5f67f50fa8e820cec`.
+- Archive SHA256: `c08ad57516937dde78142c96ebd28cf03143c4fcf7516adecaf2bb144446fb6d`.
+
+Transferred archive/sidecar/checksum match. Independent canonical replay yields
+academic_stage_accepted, all14 checks true, native complete_accepted_hierarchy,
+certified priority prefix3, products_closed and independently_feasible true.
+Fresh residual validation accepted with zero failed checks; phase sequence and
+native product hashes verified. All621 declared source hashes match qualified
+raw inventory, not a fresh remote disk check. Fresh license accepted/Gurobi13.0.3.
+Root/batch/extern COMPLETED0:0/8s; worker2212446.0 COMPLETED0:0/4s. Allocation
+4logicalCPUs/16GiB/40min; initial affinity[0,1,32,33], local client reaped/return0,
+no stop/TERM/KILL, diagnostic complete/returned without error. Affinity records
+logical CPU IDs, not proof of four physical cores or disabled SMT.
+
+Fixture final unmet demand0, emergency capacity1.0001e-6 and economic cost
+199.99999733306666. All three passes report OPTIMAL/gap0; capacity rises from0
+to1.0001e-6 at the inherited base plus approved absolute tolerance. Do not round
+it to exact zero, change tolerances, or transfer miniature performance/memory
+claims to h300. Root pre-exit RSS117184KiB and Slurm step MaxRSS1240K have
+different scopes; no reconciled common peak or large-instance adequacy claim.
+Production isolation/global cleanup remain unproven; h300_execution_admitted=false.
+
+A/P2/P3 gates are now accepted. Next owner: agent prepares one complete P4
+functional PR with immutable P3 entry anchors, fresh h300 input/source/runtime/
+license/allocation/export-volume qualification, academic scoped lifecycle,
+resource metrics and terminal/partial/forensic collection, tests and runbook.
+Preserve one16CPU/192GiB/6h allocation, five cold serial arms4,1,8,2,16, same
+input/model/solver parameters except Threads, compaction default-off, no warm
+start/repeat. Native source/cohort is new and explicitly bound; historical core
+hashes are references, not the new worker identity. Unrun arms remain explicit
+on interruption. No NPAD command/job follows from P3 acceptance alone. Finish
+P4 Ready/exact-head qualification and obtain its separate merge authorization
+before pinned human CLI. P5 then audits the contrast and records S2 exit and
+configuration/inconclusive decision. S2 remains open; later scope unchanged.
+All claims/original archives are preserved outside Git. Publish this audit on
+PR #100; integrate local checkpoint history with the P4 functional PR.
+
+## Prior checkpoint — P2 complete; six predecessors accepted; native P3 handoff
+
+16 October 2026. Human job2212430 completed the final P2 nested_setsid_term_ignore
+slot at unchanged source09112881250ceccd06f6ef0d431e8698851724c9. Bootstrap120
+tests passed without failures/errors/skips; raw621 files verified before/after.
+
+- Job: `2212430`; stage: `nested_setsid_term_ignore`.
+- Source: `09112881250ceccd06f6ef0d431e8698851724c9`.
+- Plan SHA256: `7144bb60ba03c9a2bfd31796230c6c35d68a935ac0c10232ea98fa9101134f36`.
+- Archive SHA256: `bebf73025a5cf3f296cb22b5dcf84adb45dbc81424780bfc9d0385ba14dbafe7`.
+
+Transferred archive/sidecar/checksum match; independent canonical replay yields
+academic_stage_accepted and all14 checks true. Declared621 source hashes match
+the qualified raw inventory, not a fresh remote disk check. Root/batch/extern
+COMPLETED0:0/14s; numeric worker2212430.0 CANCELLED0:9/8s is planned. Receipt:
+planned_nested_stop, TERM=true, KILL=true, local_client_reaped=true, return137,
+descendants_absent_observed=true for the two tracked PID/start-time identities;
+batch diagnostic complete/returned with no error. Initial affinity one logical
+CPU; observed allocation2logicalCPUs/2GiB/12min. This is scoped trusted-code
+operational evidence, not global cleanup/no-escape or native-model validation.
+
+P2 is complete. All six preserved A/P2 archives were independently reaudited:
+normal2212048, build2212327, optimization2212334, export2212418, disposal2212422,
+nested2212430. Each canonical saved review matches fresh replay/all14 checks;
+sidecars match, all621 declared hashes match the qualified source, and cohort
+runtime identities are equal. The native_miniature six-predecessor gate passes
+in the required order. This does not establish installed native success.
+
+Next owner: human executes one native_miniature P3 slot using all six real
+archive/checksum/source/plan/job tuples at the same immutable source/wrapper.
+Use the integrated public analytical fixture, fresh designated license capability,
+four threads,4logicalCPUs/16GiB/40min and unchanged native solver/validation
+profile. Do not change SoftMemLimit or tolerances to fit the fixture envelope.
+Require complete accepted hierarchy, native products/disposal, residual and
+degradation validation plus independent terminal archive audit; partial/negative
+products are preserved but do not pass P3. No automatic retry/follow-on.
+P4/h300/repeats remain blocked pending a separate qualified release after P3.
+S2 is not closed; P4/P5 remain the functional baseline subject to corrections.
+Publish this audit and complete P3 human CLI on PR #100; integrate this local
+tracked checkpoint with the next functional PR, without changing the execution
+pin or committing raw evidence. All original claims and archives are preserved.
+S3/S4 cancelled; later h400/SCIP-h215/conditional h500/S6 retained, EVPI/VSS
+excluded, main synchronization deferred until after article review.
+
+## Prior checkpoint — P2 disposal failure independently accepted; nested stop next
+
+16 October 2026. Human job2212422 completed P2 disposal_failure at unchanged
+source09112881250ceccd06f6ef0d431e8698851724c9. Bootstrap120 tests passed without
+failures/errors/skips; raw621-file inventory verified before/after regression.
+
+- Job: `2212422`; stage: `disposal_failure`.
+- Source: `09112881250ceccd06f6ef0d431e8698851724c9`.
+- Plan SHA256: `587d7171161cd8a03c7f8d75a9bce16864de728e26906e4fbb3c13b8b18528a3`.
+- Archive SHA256: `2a952fccd08bb475e9805abd8b251f02503ac7c4f1fff9a888c89c950479436e`.
+
+Archive/sidecar/checksum match; independent canonical replay reproduces
+academic_stage_accepted with all14 checks true. All621 declared source hashes
+match the qualified raw inventory, not a fresh remote disk check. Root/batch/
+extern COMPLETED0:0/6s; worker2212422.0 FAILED3:0/2s is deliberate. Outcome
+expected_phase_failure; phases=[build,optimization,export,disposal]; initial
+affinity one logical CPU; captured allocation2logicalCPUs/2GiB/12min. Local
+client reaped/return3, no unplanned stop/TERM/KILL; diagnostic complete/returned,
+no error. Synthetic operational acceptance, not native-model/solver validation.
+Global cleanup proof and continuous resource coverage remain unproven.
+
+A and four of five P2 cases are independently accepted. Preserve all claims,
+original archives and earlier attempts. Next owner: human executes only the
+last P2 nested_setsid_term_ignore slot at the same source/wrapper/budget, using
+A's five external anchors. This accepted disposal review gates the serial human
+workflow, not an extra certificate in the one-predecessor synthetic API.
+The expected numeric step is CANCELLED with0:9 or137:0, not FAILED3:0. Acceptance
+also requires planned_nested_stop, recorded TERM/KILL, local reap and observed
+absence of the tracked nested identities; this is scoped evidence, not global
+no-escape/cleanup certification. Do not cancel the root job manually or advance
+on scheduler completion alone. Audit the transferred nested evidence before
+P3 preparation with all six accepted A/P2 archives. P3/P4/h300/repeats remain
+blocked now; no automatic chain. Publish checkpoint/complete human CLI on PR
+#100; group local tracked-file integration with the next functional PR. No new
+software/model/parameter/budget change. S2 remains open; later scope unchanged.
+
+## Prior checkpoint — P2 export failure independently accepted; disposal next
+
+16 October 2026. Human job2212418 completed P2 export_failure at unchanged
+source09112881250ceccd06f6ef0d431e8698851724c9. Bootstrap120 tests passed without
+failures/errors/skips; raw621-file inventory verified before/after regression.
+
+- Job: `2212418`; stage: `export_failure`.
+- Source: `09112881250ceccd06f6ef0d431e8698851724c9`.
+- Plan SHA256: `6eba07bf687f21f1d12ed8f852d0852c6c28a8d1abe9ad7485cf912a51e203b9`.
+- Archive SHA256: `c882fb97e4175ac067f4154c7183d6796cadbc5157ea8a609765dcf18e13107c`.
+
+Archive/sidecar/checksum match; independent canonical replay reproduces
+academic_stage_accepted and all14 checks true. The plan's621 declared source
+hashes match the qualified raw-source inventory, not a fresh remote disk check.
+Root/batch/extern COMPLETED0:0/6s; worker2212418.0 FAILED3:0/2s is intentional.
+Outcome expected_phase_failure; phases=[build,optimization,export]; initial
+affinity one logical CPU; captured allocation2logicalCPUs/2GiB/12min. Local
+client reaped with return3, no unplanned stop/TERM/KILL; diagnostic returned at
+complete with no error. This is synthetic operational evidence, not native
+solver/model validation; global cleanup and continuous peak coverage unproven.
+
+A and three of five P2 cases are independently accepted. Preserve all distinct
+claims and original archives. Next owner: human executes one disposal_failure
+slot using A's five external anchors and unchanged source/wrapper/budget. The
+serial workflow additionally requires this accepted export review; do not add
+another certificate to the one-predecessor synthetic API. Audit disposal before
+nested_setsid_term_ignore, then prepare P3 only after all six A/P2 certificates
+pass. P4/h300/repeats remain blocked. No automatic follow-on or new software PR
+for this integrated case. Publish audit/complete CLI on PR #100 and group the
+local tracked checkpoint integration with the next functional PR. S2 remains
+open; scientific scope and post-article synchronization remain unchanged.
+
+## Prior checkpoint — P2 optimization failure independently accepted; export next
+
+16 October 2026. Human job2212334 completed P2 optimization_failure at unchanged
+source09112881250ceccd06f6ef0d431e8698851724c9. Bootstrap120 tests passed without
+failures/errors/skips; raw621-file inventory verified before/after regression.
+
+- Job: `2212334`; stage: `optimization_failure`.
+- Source: `09112881250ceccd06f6ef0d431e8698851724c9`.
+- Plan SHA256: `56fbc626b595b53b6eae6499d6af905ac38f3978848c4ccc2c0d37acb39da9f6`.
+- Archive SHA256: `2065c38c4493a709acda53f1dca97e4c6c14fcbea5941a7376a39cf9b6e241e3`.
+
+Archive/sidecar/checksum match; independent canonical replay yields
+academic_stage_accepted and all14 checks true. All621 declared source hashes
+match the qualified raw inventory, not a fresh inspection of the remote disk.
+Root/batch/extern COMPLETED0:0/6s; worker2212334.0 FAILED3:0/2s is expected.
+Worker outcome expected_phase_failure, phases=[build,optimization]; one logical
+CPU initial affinity; captured allocation2logicalCPUs/2GiB/12min. Local client
+reaped with return3, no unplanned stop/TERM/KILL; diagnostic complete/returned,
+no error. No native solver result, production isolation or global cleanup proof.
+
+A and two of five P2 cases are now independently accepted. Preserve their
+distinct claims, archives and all earlier attempts. Next owner: human executes
+one export_failure slot with A's five external anchors and the same pinned
+wrapper/source/budget; the agent audits terminal transferred evidence before
+disposal_failure and nested_setsid_term_ignore. The serial operational prerequisite
+is this accepted optimization review, not an extra certificate argument in the
+one-predecessor synthetic CLI. No automatic chain, repeat, model change or new
+software PR for an integrated case. P3/native requires all six accepted A/P2
+archives; P4/h300 remains separately blocked. Publish audit/complete CLI on
+PR #100; group tracked checkpoint integration with the next functional PR.
+S2 remains open; downstream scope and post-article synchronization are unchanged.
+
+## Prior checkpoint — P2 build failure independently accepted; optimization next
+
+16 October 2026. Human job2212327 completed the first P2 build_failure slot at
+the unchanged qualified source09112881250ceccd06f6ef0d431e8698851724c9.
+Bootstrap120 tests passed without failures/errors/skips; raw621-file inventory
+was verified before and after regression. External anchors:
+
+- Job: `2212327`; stage: `build_failure`.
+- Source: `09112881250ceccd06f6ef0d431e8698851724c9`.
+- Plan SHA256: `f3bb8747ecc52310b6732d920bf8b07c2b30ccf5ef1dfed1f6a4cc033dd74144`.
+- Archive SHA256: `298a50c6666ed9e1900fadef5dc0843bb4aca4fe5b8cdfd543d62fcf74e0c564`.
+
+Transferred archive/sidecar/checksum match. Independent canonical replay yields
+academic_stage_accepted and all14 checks true. The plan's621 declared source
+hashes match the qualified raw-source inventory; this is not a fresh remote disk
+inspection. Root/batch/extern COMPLETED0:0/6s; worker2212327.0 FAILED3:0/2s is
+the expected synthetic failure, not an unexpected failed experiment. Worker
+outcome expected_phase_failure, phases=[build], initial affinity one logical CPU.
+Observed allocation2logicalCPUs/2GiB/12min. Local client reaped with return3;
+no unexpected stop, TERM or KILL; batch diagnostic complete/returned, no error.
+Global cleanup proof/continuous coverage remain unproven; native=null,
+production_isolation_certified=false, h300_execution_admitted=false.
+
+Preserve A, this first P2 archive/claim and every historical attempt. Prepare one
+human optimization_failure slot at the same source and unchanged budget. The
+runtime requires A's five freshly replayed external anchors; the serial human
+workflow additionally records this accepted build_failure review before advancing.
+Do not pass an extra build certificate to the one-predecessor synthetic API.
+Audit optimization_failure before export_failure, disposal_failure and nested
+setsid/TERM-ignore; no automatic chain/repeat. P3 requires all six accepted A/P2
+archives; P4/h300 stays separately blocked. No new software PR or model change
+is needed for this integrated case. Publish audit and complete CLI on PR #100;
+group tracked checkpoint integration with the next functional PR. S2 remains open.
+
+## Prior checkpoint — maintainer resumes P2; first build-failure handoff
+
+16 October 2026. The maintainer explicitly resumes P2. Independent replay of the
+preserved normal A archive again yields academic_stage_accepted, all14 checks
+true, and satisfies the build_failure predecessor gate. The four external A
+anchors below remain unchanged. The qualified wrapper checksum is
+`b68a6d5d315e2380723f77d07801753952800373a8eeaabdd905b20bd770983c`.
+
+Provide the human start/status/wait/collect/transfer instructions for only the
+first P2 build_failure slot at source09112881250ceccd06f6ef0d431e8698851724c9,
+with the original A archive and its checksum/source/plan/job tuple. No new
+software PR is needed for this already integrated case. The agent does not
+access NPAD or submit jobs. Preserve all claims and original evidence; an
+existing stage claim is collection-only, never a resubmission.
+
+The worker's expected build-phase failure is not a scientific-model result.
+Acceptance requires the expected outcome, terminal accounting, bound receipts
+and local-client reap, followed by independent audit of the transferred archive.
+Stop on unexpected or unknown effects. Advance to optimization_failure only
+after that review, then individually audit the remaining three P2 cases.
+P3/native, P4/h300 and repeats remain blocked; no automatic follow-on chain.
+Record this resumption and complete human CLI on PR #100; integrate this local
+tracked checkpoint with the next appropriate functional PR, not a checkpoint-only
+PR and not a change to the frozen A/P2/P3 source. Scope and budgets are unchanged.
+
+## Prior checkpoint — normal A accepted; maintainer pause before P2
+
+15 October 2026. PR #100 merged into develop at
+`cbdf7be13d4cb1d1ba2eb7c9b99f05378b302034`, preserving qualified execution source
+`09112881250ceccd06f6ef0d431e8698851724c9`. The human ran one corrected academic-v2
+normal slot, job2212048. Bootstrap120 tests passed without failures/errors/skips;
+the wrapper reported621 raw tracked files verified. Preserve the consumed v2
+normal claim/run/archive and every historical claim, including rejected job2212000.
+
+External accepted A anchors:
+
+- Source: `09112881250ceccd06f6ef0d431e8698851724c9`.
+- Job: `2212048`.
+- Plan SHA256: `ea07c07dfea707a6e524341990d6037de2499d98d1c73b5f0f0a37ba5e86f674`.
+- Archive SHA256: `241ccf03bbd128896adf28f1133fa189809afe6b30ea9dde53b1f1873a3b8e82`.
+
+The transferred checksum/sidecar match. Independent replay with the qualified
+raw-source auditor reproduces academic_stage_accepted and all14 checks true.
+The plan's621 declared file hashes independently match the qualified raw Git
+inventory. This comparison is not a fresh remote disk inspection after the job.
+Root/batch/extern COMPLETED0:0 in6s; numeric worker step2212048.0 COMPLETED0:0 in2s.
+Captured running allocation confirms2logicalCPUs/2GiB/12min, separate requested
+CPUs/Task/MinMemoryNode and allocated TRES. Worker initial affinity is one logical
+CPU. Four stdlib synthetic phases completed; local srun client reaped, no stop
+reason/TERM/KILL, batch diagnostic complete/returned with no error.
+
+A is an accepted normal operational gate, NOT native Gurobi/scientific-model
+validation, adversarial containment certification or a performance result.
+native=null; production_isolation_certified=false; h300_execution_admitted=false.
+Global cleanup proof and continuous resource coverage remain unproven. Slurm
+step MaxRSS1240K versus root pre-exit getrusage102248KiB have different measurement
+scopes and are not reconciled into a common peak or used as memory-fit evidence.
+No native license capability or adverse cleanup follows from A acceptance.
+
+The maintainer requests a pause. No new NPAD command/submission, P2/P3/h300 slot,
+repeat, merge or automation is admitted by this checkpoint. On explicit resumption:
+
+1. Prepare the first P2 build_failure human command with the five real A anchors.
+   Keep the pinned0911288 source for the A/P2/P3 cohort, not moving develop.
+2. Audit build_failure, optimization_failure, export_failure, disposal_failure and
+   nested_setsid_term_ignore individually, each exclusive v2 claim/job, before
+   advancing. Unexpected/unknown effects stop progression; no afterok/automatic loop.
+3. Only after all six A/P2 certificates pass, prepare native_miniature P3 with
+   all six externally anchored archives at that same source;4CPU/16GiB/40min.
+4. After a complete independently accepted P3, qualify/admit P4 h300 separately;
+   unchanged16CPU/192GiB/6h and serial cold-arm order4,1,8,2,16.
+5. P5 consolidates every contracted arm, solution quality, resources and censoring
+   and records an evidence-based configuration choice or an inconclusive decision.
+
+The installed A/P2/P3 software is already integrated; do not create a PR for
+each case merely to record results. Publish this pause checkpoint on PR #100;
+group its tracked-file integration with the next appropriate functional PR,
+without changing the pinned experimental source. Remaining functional baseline:
+P4 and P5; evidence-driven corrections may add work. S2 stays open. Later h400,
+bounded existing-SCIP/h215, conditional h500, S6-A/S6-B remain; S3/S4 cancelled,
+EVPI/VSS excluded, main synchronization only after article review.
+
+## Prior checkpoint — PR99 merged; A job2212000 rejected before worker launch
 
 15 October 2026. PR #99 merged at develop
 `b6100b8120a60d21d49a5f308a8f929191e2238a`; reviewed source
