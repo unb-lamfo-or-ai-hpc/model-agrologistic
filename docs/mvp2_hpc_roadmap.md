@@ -2,6 +2,17 @@
 
 ## Authority and scope
 
+16 October after PR101 merge `1c8503586c627849b061b7062cc7b78f0c940df3`:
+qualify the [complete observation-only P4 prerequisite gate](mvp2_s2_p4_admission.md)
+with unchanged transport/scientific bytes, explicit source/P3/input/runtime and
+future existing-allocation/license observations, new exclusive record, bounded
+observer, strict terminal archive/auditor and wrapper/tests. No h300 dispatcher,
+job submission or repetition is opened. Ready/exact-head515-case Linux approval
+precedes separate merge authorization; no NPAD CLI now. A future observed
+prerequisite report grants no campaign or future-allocation permission and proves
+neither export fit nor agricultural solution validity. P4 release/admission and
+P5/S2 scientific exit remain pending; subsequent approved scope is unchanged.
+
 16 October continuation: [native P3 and all A/P2 gates are independently accepted](mvp2_s2_p3_accepted_p4.md).
 Preserve execution source09112881250ceccd06f6ef0d431e8698851724c9 and original
 certificates. Prepare one consolidated P4 functional PR from live developcbdf7be:
