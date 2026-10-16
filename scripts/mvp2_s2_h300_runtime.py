@@ -231,6 +231,39 @@ def accounting(text, job, steps, *, terminal=True):
     return rows
 
 
+def resource_accounting(text, expected):
+    """Keep scheduler CPU/RSS strings and scopes; blank is unknown, not zero."""
+    found = {}
+    d.require(type(text) is str and len(text) <= 65536, "Resource accounting bound.")
+    for line in text.strip().splitlines():
+        cells = line.split("|")
+        d.require(
+            len(cells) == 8 and cells[0] in expected and cells[0] not in found,
+            "Resource accounting scope.",
+        )
+        ident, state, code, elapsed, cpu, rss, allocated, requested = cells
+        normalized = scheduler.accounting("|".join(cells[:4]), ident.split(".")[0])[ident]
+        d.require(normalized == expected[ident], "Resource/accounting identity drift.")
+        d.require(not cpu or re.fullmatch(r"(?:[0-9]+-)?[0-9:.]+", cpu), "CPU time grammar.")
+        d.require(not rss or re.fullmatch(r"[0-9]+(?:\.[0-9]+)?[KMGTPE]?", rss), "RSS grammar.")
+        d.require(
+            not allocated or re.fullmatch(r"[1-9][0-9]*", allocated), "Allocated CPU grammar."
+        )
+        d.require(
+            not requested or re.fullmatch(r"[0-9]+(?:\.[0-9]+)?[KMGTPE]?[cn]?", requested),
+            "Requested memory grammar.",
+        )
+        found[ident] = {
+            "scope": "scheduler_job" if "." not in ident else "scheduler_step",
+            "total_cpu_slurm": cpu or None,
+            "max_rss_slurm": rss or None,
+            "allocated_cpus": int(allocated) if allocated else None,
+            "requested_memory_slurm": requested or None,
+        }
+    d.require(set(found) == set(expected), "Incomplete resource accounting.")
+    return found
+
+
 def _submit(target, p, root, reference, *, command=source.command):
     """Private one-shot seam. Public start NEVER invokes it in this release."""
     _validate(p)
@@ -918,6 +951,21 @@ def _collect(target, expected_plan, expected_job, *, command=source.command, rec
         # Publish only AFTER terminal accounting. A running job is not closed
         # by an eager collector; unknown execution is distinct from known unrun.
         products.publish(target / "batch.json", batch)
+    try:
+        resource_text = query(
+            [
+                "sacct",
+                "-j",
+                expected_job,
+                "--noheader",
+                "--parsable2",
+                "--format=JobIDRaw,State%80,ExitCode,ElapsedRaw,TotalCPU,MaxRSS,AllocCPUS,ReqMem",
+            ],
+            command=command,
+        )
+        scheduler_resources = {"rows": resource_accounting(resource_text, rows), "error_kind": None}
+    except Exception as error:
+        scheduler_resources = {"rows": None, "error_kind": type(error).__name__}
     origin = products.read(target / "origin.json")
     validation_error = None
     try:
@@ -983,7 +1031,11 @@ def _collect(target, expected_plan, expected_job, *, command=source.command, rec
         "repeats_admitted": False,
         "production_isolation_certified": False,
     }
-    for name, value in (("accounting.json", {"raw": raw, "rows": rows}), ("review.json", report)):
+    for name, value in (
+        ("accounting.json", {"raw": raw, "rows": rows}),
+        ("scheduler-resources.json", scheduler_resources),
+        ("review.json", report),
+    ):
         path = target / name
         if path.exists():
             d.require(products.read(path) == value, "Immutable collection cache drift.")
