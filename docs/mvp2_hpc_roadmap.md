@@ -2,6 +2,40 @@
 
 ## Authority and scope
 
+17 October resumption: consolidate the checkpoint and the complete
+[P4 human operational release](mvp2_s2_p4_release.md) on the SAME branch.
+One explicit diagnostic block only, no replay of accepted A/P2/P3/observation,
+no automatic repeat/follow-on or S2 closure. Fresh future-allocation checks remain
+mandatory. Ready/exact-head software and separate merge decision precede human
+CLI. Then one P5 actual-evidence/configuration/exit PR, including explicit
+decision on any unrun arms. No approved later scientific scope, resource budget,
+validation criterion or article decision changes. Expedite parallel evidence
+inventory/coauthor-version identification; December remains conditional, not an
+excuse to omit h400/SCIP or an admitted conditional h500. No NPAD job is launched
+by preparing this package.
+
+16 October after PR105 merge `d70816fdd6c3d99ef05711731a9dda17cd5210dd`:
+[job2213305 prerequisite observation is independently accepted](mvp2_s2_p4_observed_prerequisites.md).
+Preserve source7ff70904, external archive/source/job/driver-plan/inner-plan anchors,
+original claims and earlier failed bootstraps. This is not agricultural execution,
+export fit, future-allocation admission or production isolation. H300/repeats/
+follow-on stay blocked. A/P2/P3 remain accepted; S2 is open through P4/P5.
+
+Maintainer pause: save this checkpoint on the next operational-package branch,
+then extend that SAME branch after resumption, avoiding a documentation-only PR.
+Baseline two complete remaining S2 PRs: P4 operational release/worker/controls/
+tests/wrapper/collection/pinned CLI with fresh future-allocation checks, then P5
+scientific grid/resource/censoring/configuration/exit review. Additional repairs
+are conditional on actual findings; do not promise two regardless of evidence.
+No new NPAD job/unlock/merge during this pause checkpoint. Later h4001–2PRs,
+existing-SCIP/h2152–3, conditional h5002–3, S6-A1 and S6-B2 are scope allowances,
+not campaigns or deadlines. h400 and SCIP can overlap after S2 if resources/review
+permit; h500 still depends on approved h400 success/resources, not SCIP success.
+S6 inventory/version identification can run in parallel; final article edits wait
+for their gate. January2027 base forecast and conditional accelerated December
+remain subject to resumption/queue/results/coauthors. S3/S4 cancellation, EVPI/VSS
+exclusion, original scientific criteria and final post-article main sync unchanged.
+
 16 October after PR104 merge `686068b8fd5ea468b57b64a788111a5e0bc785b1`:
 the installed641-file/107-case bootstrap reached data identity but rejected NaN
 before either new claim/sbatch. The collector correctly reported not_submitted.

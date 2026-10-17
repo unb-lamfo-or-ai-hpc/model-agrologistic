@@ -1,9 +1,92 @@
 # Model Agrologistic — MVP 2.0 checkpoint
 
-Updated 16 October 2026. This public checkpoint contains scope and provenance,
+Updated 17 October 2026. This public checkpoint contains scope and provenance,
 not private evidence, credentials, local host paths or execution authority.
 
-## Latest checkpoint — PR104 installed NaN failure; consolidate real lifecycle qualification
+## Latest checkpoint — resumed P4; one consolidated operational release
+
+17 October 2026. Resume the SAME research/s2-p4-release branch from its five-file
+pause checkpoint. The [complete P4 release](docs/mvp2_s2_p4_release.md) adds one
+explicit human-only diagnostic block, exclusive unused agricultural claim,
+new source/release binding, wrapper, controls, terminal/forensic collector,
+portable audit, tests and conditional CLI together. Original P3 and accepted
+job2213305 are audited, not repeated. All57 protected bytes and four transport
+pins, scientific/resource settings and original evidence remain unchanged.
+Old entry points remain closed; new start requires the reviewed one-block flag.
+Existing or ambiguous claims never resubmit. No h400, repeat, automatic follow-on,
+configuration selection, production certification or S2 closure is authorized.
+
+One16logicalCPU/192GiB/6h shared allocation, order4,1,8,2,16 and1800s GLOBAL
+optimization per arm retain the frozen design. Fresh input/runtime/allocation/
+license admission must pass in that future allocation. All phase/audit/terminal
+limits and the WHOLE-block256MiB export cap remain unchanged; actual export fit
+and native extraction RSS remain open risks. Portable integrity replay does not
+mean fresh private-input residual revalidation by the local auditor. Failed/
+partial/unrun and unaccounted outcomes remain explicit. A Ready/merged package
+is not live scientific acceptance; only the maintainer runs pinned NPAD CLI.
+
+Next: exact-head qualification and Ready, separate merge decision, human block,
+then one P5 scientific evidence/exit/configuration review (or explicit decision
+on unrun arms). Two complete remaining S2 packages are the baseline, not a
+guarantee. No NPAD job, merge, article edit or main synchronization occurred in
+preparing this software. Later approved scope and the January2027 base forecast/
+conditional accelerated December objective remain unchanged; expedite evidence
+inventory/version identification in parallel, not by shrinking the experiments.
+All prior checkpoints follow unchanged.
+
+## Prior checkpoint — job2213305 prerequisites accepted; pause before operational P4
+
+16 October 2026. PR105 merged into develop at
+`d70816fdd6c3d99ef05711731a9dda17cd5210dd`; execution source
+`7ff70904d6c690ced0c9e035e003da3d6ce6e4a6`. Job2213305 portable archive/sidecar
+match external SHA256
+`4d52bdd46775f6b7ca1393e6387e125ddd199c59ed9bc77c9dcc2217af32546e`.
+Independent canonical replay with external source/job/driver-plan anchors returns
+prerequisites_observed_execution_closed. Driver plan
+`f177d17c0510c4b18993bbc409a33415744fcdc3f9570d0843ddc0df462b73c2`;
+inner admission plan
+`47e4ea55281a290f7db9c3518d363d16cdaaacf6261de655813f758407575cff`.
+See the [accepted observation and consolidated continuation](docs/mvp2_s2_p4_observed_prerequisites.md)
+and [redacted review ledger](docs/evidence/s2_p4_observation_2213305_review.json).
+
+Root/batch/extern COMPLETED0:0/102s; observer98.69655s, exit0, local reap true,
+no TERM/KILL/error. Recorded fresh input/source/runtime checks and the existing
+2001-variable license capability pass: Python3.13.15/Gurobi13.0.3,300 warehouses,
+9 scenarios,60 periods,2 products, no direct arcs,25107544 estimated variables.
+The643 declared source hashes match published bytes;57 protected scientific
+files are preserved. Portable replay is not a fresh auditor remote-disk inspection.
+Pool16logicalCPUs spans8 observed package/core pairs with SMT, shared node:
+not16 physical cores or exclusive ownership. Supplemental maintainer sacct
+batch MaxRSS239148K=233.54297MiB is outside the portable accounting and is not an
+h300/native memory estimate. Allocated16x102/3600=0.45333CPU-hours is not measured
+CPU consumption. Earlier failed PR103/104 bootstrap evidence remains immutable.
+
+A/P2/P3 remain accepted; this closes the P4 prerequisite observation only.
+No agricultural model/solution or actual export fit was certified. All h300,
+repeat, future-allocation, automatic follow-on and production flags remain false;
+the256MiB whole-block cap and native extraction RSS uncertainty remain unchanged.
+S2 is open through actual P4/P5. No new NPAD job, execution unlock, merge, article
+edit or branch synchronization occurred while saving this pause checkpoint.
+
+To minimize PRs, stage this checkpoint on the next operational package branch,
+not in a standalone bookkeeping PR or direct develop commit. After resumption,
+extend the same branch into one complete P4 release PR: accepted predecessor,
+new source/cohort/claim, worker/controls, full tests, wrapper, collection and
+pinned human CLI. Ready/separate approvals precede any human job; fresh allocation,
+input/runtime/license checks remain necessary in that future allocation. Then
+one P5 evidence/grid/configuration/exit PR. Two further functional S2 PRs are a
+baseline, not a guarantee; no PR per test and no repeat of accepted A/P2/P3.
+
+Later scope remains h400 selection, bounded existing-SCIP/h215, conditional
+S5/h500, S6-A MVP2 synthesis and S6-B manuscript/reproducibility. S3/S4 cancelled;
+EVPI/VSS excluded, section3.8 removal only at S6. Preserve coauthor-reviewed
+manuscript and certificates. January2027 remains the base submission forecast;
+December2026 is conditional/accelerated, not a promise. Reassess from resumption,
+not by shrinking approved work. Main/develop reconciliation stays after article
+review. Pause now; next active work is the complete P4 release PR, not a new job.
+All prior checkpoint content follows unchanged.
+
+## Prior checkpoint — PR104 installed NaN failure; consolidate real lifecycle qualification
 
 16 October 2026. PR104 merged into develop at
 `686068b8fd5ea468b57b64a788111a5e0bc785b1`; installed source
