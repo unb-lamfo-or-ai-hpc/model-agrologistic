@@ -3,7 +3,90 @@
 Updated 17 October 2026. This public checkpoint contains scope and provenance,
 not private evidence, credentials, local host paths or execution authority.
 
-## Latest checkpoint — resumed P4; one consolidated operational release
+## Latest checkpoint — successor to merged PR106; closed diagnostic/handoff package
+
+17 October 2026. The maintainer requested preparation/qualification of PR106,
+which live GitHub confirms is already merged at20f88399. Continue as a new
+successor on research/s2-p4-diagnostics, carrying the existing audit checkpoint
+without another bookkeeping PR. See the
+[complete software scope and prospective decision](docs/mvp2_s2_p4_diagnostic_qualification.md).
+
+New closed components explicitly select/check worker-local license metadata
+after numeric-step binding, preserve bounded redacted positive/negative records,
+delegate safe native milestones to the original hooks and catalogue a strict
+diagnostic prefix. No raw logs/credentials, real license probe, native model,
+claim, Slurm call or new execution occurs. They are NOT yet connected to the
+installed launcher, worker or historical portable allowlist. Public execution
+actions deny. Existing guard, native parameters,57 protected files, four
+transport pins, source/input/validation and old certificates stay unchanged.
+
+Actual unchanged Deadlines is exercised with early/exact/late/absent return and
+export/cleanup bounds. The NON-EXECUTABLE proposal shares the existing900s export
+reserve between native excess above TimeLimit1800s and export, keeping3900s arm/
+21600s block ceilings. It changes external enforcement and needs explicit
+prospective maintainer approval; no zero-extra-native-work guarantee is made.
+The proposal is not admitted by preparation, CI, Ready or merge.
+
+The new90-case suite passed locally under Python3.13.15 after an initial wrong-
+interpreter collection failure; no scientific test ran in that first attempt.
+Combined local suite:723 passed/9 intentional Linux-only skips after routing
+TEMP to an owned workspace directory; the earlier combined attempt failed on
+Windows sandbox TEMP ACLs. Local build frontend is unavailable; no local full
+distribution-build success is claimed. Canonical2214130 replay, four unchanged
+transport hashes,185 relative links, prior checkpoint and repository Ruff pass.
+Exact-head Linux732-case combined qualification and the usual Quality/build
+checks are required before Ready. Next owner: agent finishes qualification and
+publishes the consolidated PR; then maintainer decides merge and the prospective
+enforcement contract. No NPAD CLI is needed now. A later integrated wrapper/
+worker/collection/source/admission package must explicitly qualify any replacement
+and retain the consumed2214130 claim. No repetition or remaining-arm continuation
+is silently admitted. P4/P5 and S2 remain open; later approved sprints, conditional
+December target/base January forecast and all historical checkpoints follow.
+
+## Prior checkpoint — P4 job2214130 preserved; optimization watchdog, grid incomplete
+
+17 October 2026. PR106 merged into develop at
+`20f88399ed323d7c96fe9aa3f94eeb87a758eb3b`; human execution source8d244ed3.
+The [forensic review](docs/mvp2_s2_p4_2214130_forensic_review.md) and
+[redacted ledger](docs/evidence/s2_p4_2214130_review.json) preserve full anchors.
+Outer SHA256a60d826c56cbfb09b975d56295aec3b746c4a0eddb0e745cec0fe3ab066dfe74
+matches; unchanged canonical audit reproduces portable_integrity_replayed_p5_required,
+reported forensic_partial_block. Separate native archive is identical to bundled
+member;650 declared source hashes match published bytes. No fresh private-input
+residual calculation is claimed by the local portable auditor.
+
+Root/batch FAILED2:0/2570s. Only4threads attempted; step CANCELLED0:15/2332s.
+Reason optimization_watchdog; local client reaped/143. Native build/optimization
+were reached; no terminal/export/cleanup/vector record exists. Incumbent existence,
+native status, objectives/gaps and validation remain UNKNOWN, not no-incumbent,
+infeasibility or accepted solution. Null validation_error is not validation here.
+Threads1/8/2/16 remain unrun, and S2/P4 are open. No configuration is selected.
+
+Native TimeLimit and parent hard optimization deadline are both1800s. The parent
+rejects late export before processing its transition; a solver-free boundary
+replay confirms the mechanism. Gurobi permits a later native return, so terminal
+handoff is not guaranteed. Supplied worker-log tails now show cancellation and
+academic WLS startup only; frozen tee=False/OutputFlag=0 explains absent native
+progress. Batch already sets the designated GRB_LICENSE_FILE before accepted
+capability probing and launches srun --export=ALL. No license failure is
+demonstrated, but no independent worker-local path receipt exists. Native subphase
+remains unknown, not recoverable by repeating the same log read. No cause beyond
+the observed watchdog is asserted. Preserve the consumed
+claim, source, logs and archives; no retry/repeat or new allocation is admitted.
+
+459 resource samples, zero observation errors, sampled worker-tree max54.61367GiB;
+Slurm numeric-step MaxRSS53.06733GiB, batch291.328MiB is NOT native memory.
+Cancellation is not an OOM record or proof of memory sufficiency. Next owner:
+agent consolidates terminal-handoff qualification, explicit worker-local license
+selection evidence and bounded noncredential native diagnostics in the next
+functional package. Existing log capture is complete; no further CLI is needed
+now. Nine license-path tests and three simulated batch-to-srun inheritance cases
+pass; these are not live worker proof or a fresh license probe.
+No standalone bookkeeping PR, guard/budget/scientific change, new job, article
+edit, main sync or S2 closure occurs in saving this checkpoint. All prior scope,
+certificates and checkpoints follow unchanged.
+
+## Prior checkpoint — resumed P4; one consolidated operational release
 
 17 October 2026. Resume the SAME research/s2-p4-release branch from its five-file
 pause checkpoint. The [complete P4 release](docs/mvp2_s2_p4_release.md) adds one
