@@ -59,8 +59,48 @@ including required final attribute computations. Consequently, equal native and
 external limits provide no assured terminal handoff. This is a source-supported
 mechanism and design risk, NOT confirmation of the precise native operation in
 this attempt. Presolve, barrier/crossover, a completed objective pass and terminal
-finalization cannot be distinguished without the preserved private worker logs.
+finalization were not distinguished in the carrier. The follow-up below records
+the separately supplied log tails and their remaining limitations.
 No scientific parameter, tolerance, phase budget or guard was changed here.
+
+## Follow-up: supplied log tails and designated license selection
+
+The maintainer supplied bounded existing worker-log tails after this checkpoint.
+Worker stderr reports scheduler cancellation/termination, not a missing/expired/
+restricted license error. Worker stdout contains only the academic WLS startup
+banner. License identifiers and registrant information are deliberately omitted
+from this public review; no license file was read, copied or hashed.
+
+WLS startup messages do not establish a missing license file. Gurobi explicitly
+documents this banner for [a functioning WLS license](https://support.gurobi.com/hc/en-us/articles/13417565229713-How-do-I-test-my-Gurobi-license),
+and [WLS credentials can reside in gurobi.lic](https://support.gurobi.com/hc/en-us/articles/13232844297489-How-do-I-set-up-a-Web-License-Service-WLS-license).
+The executed source already sets GRB_LICENSE_FILE to the fixed
+[probe.LICENSE_FILE](../scripts/probe_npad_gurobi_license.py) inside batch _license(),
+BEFORE capability probing. That probe rejects a different selection or unreadable
+file; archived capability accepted. The subsequent srun uses --export=ALL, with
+the batch process environment inherited by Popen. This is the intended worker
+selection path, not proof that its exact historical value was independently
+recorded inside the worker: that redacted worker-local receipt is missing.
+The optimization phase also follows successful native model construction and
+effective-parameter checks; no size-limited-license exception is reported.
+
+The absence of progress lines has a separate code explanation: frozen
+native.solver_profile(4).tee is false; _apply_solver_parameters sets OutputFlag=0
+AFTER gp.Model initialization. Startup licensing can therefore print while
+optimization progress is disabled. The supplied tails cannot establish whether
+the solver was in presolve, barrier/crossover, an objective pass or finalization.
+They do not confirm a license failure or a native TIME_LIMIT return.
+
+Local diagnostics verified three simulated initial selections (missing, wrong,
+correct) are replaced before a mocked capability probe and inherited at the
+mocked srun call, plus the effective OutputFlag=0. Nine existing license-path
+tests pass. These are source/fixture checks, not a fresh NPAD license probe or
+proof of the past worker environment. No native model, license content or real
+scheduler call was used. The prospective consolidated package should make
+worker-local designated selection explicit and retain bounded noncredential
+native progress/terminal evidence, alongside the terminal-handoff qualification.
+Do not relaunch by exporting a login variable: it cannot repair this ended job,
+and the batch already chooses its designated path after sbatch --export=NONE.
 
 ## Resource interpretation
 
@@ -82,8 +122,10 @@ package/core pairs with SMT, shared node, not16 exclusive physical cores.
 
 ## Next bounded action and decision boundary
 
-1. Human read-only capture of the existing worker.err/worker.out tails; no new
-   Slurm job, probe, license read, package change, clone or resubmission.
+1. Existing worker.err/worker.out tails were supplied; see the follow-up above.
+   No additional CLI, Slurm job, probe, license read or resubmission is needed
+   to interpret that banner. Native subphase remains unknown because logging
+   was disabled, not because further identical tail reads are required.
 2. Fold this forensic review/checkpoint into ONE next evidence-driven functional
    package after the log review, rather than a standalone bookkeeping PR.
 3. Qualify the terminal-handoff behavior with deterministic slow-return/late-
