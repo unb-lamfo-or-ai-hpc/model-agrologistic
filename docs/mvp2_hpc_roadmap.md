@@ -2,6 +2,17 @@
 
 ## Authority and scope
 
+17 October job2214130: [P4 forensic audit](mvp2_s2_p4_2214130_forensic_review.md)
+finds an optimization_watchdog stop on the first4-thread arm; four grid levels
+remain unrun and no native terminal/vector is exported. Integrity replay passes,
+not P4 scientific acceptance. Preserve the consumed claim. Next: read existing
+worker logs, then consolidate the audit and terminal-handoff qualification in
+one evidence-driven package. No repetition, automatic continuation, guard/budget
+or scientific change, configuration selection or S2 closure follows. Any revised
+contract/new allocation needs explicit prospective admission; do not silently
+drop the remaining grid or combine nonhomogeneous allocations. Later scope and
+conditional December/base January forecast remain unchanged pending actual data.
+
 17 October resumption: consolidate the checkpoint and the complete
 [P4 human operational release](mvp2_s2_p4_release.md) on the SAME branch.
 One explicit diagnostic block only, no replay of accepted A/P2/P3/observation,
