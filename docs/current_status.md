@@ -1,6 +1,20 @@
-# Dated research status: 16 October 2026
+# Dated research status: 17 October 2026
 
-## Current handoff — observation2213305 accepted; pause before operational P4
+## Resumed handoff — complete operational P4 package
+
+Extend the existing checkpoint branch with the [single P4 release](mvp2_s2_p4_release.md):
+new source/claim, audited accepted predecessor, wrapper/worker/controls, tests,
+terminal and forensic collection and conditional pinned human CLI. No repeated
+A/P2/P3 or observation. Original scientific bytes/transport/settings and evidence
+remain intact. Ready/exact-head qualification and separate merge authorization
+precede the maintainer's one reviewed diagnostic block; no agent NPAD access.
+Unknown acknowledgement consumes the slot; existing claims collect only.
+P5 still independently reviews the actual five-thread inventory and S2 exit.
+No repeat/follow-on/h400/configuration selection, article edit or main sync now.
+Actual256MiB export fit and partial/unrun outcomes remain live risks. Later
+approved work and conditional December/base January forecast remain unchanged.
+
+## Preserved handoff — observation2213305 accepted; pause before operational P4
 
 PR105 merge `d70816fdd6c3d99ef05711731a9dda17cd5210dd`; execution source
 `7ff70904d6c690ced0c9e035e003da3d6ce6e4a6`. Archive/sidecar/external hash match,
