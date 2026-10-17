@@ -2,6 +2,18 @@
 
 ## Authority and scope
 
+17 October prospective successor: merged PR106 cannot be reopened for this
+repair. The [consolidated diagnostic/handoff software gate](mvp2_s2_p4_diagnostic_qualification.md)
+includes the preserved job2214130 audit, private future worker metadata selection,
+typed native milestones, bounded catalogue, actual strict-deadline comparison,
+tests and exact-head Linux qualification. No installed guard/transport/scientific
+byte changes or new execution. The proposed shared900s return/export reserve
+requires an explicit external-enforcement decision before integration/admission.
+After that decision, bundle integration/source requalification/claim/collection/
+wrapper/pinned CLI in ONE operational package, then actual P4 evidence and P5.
+Do not add another independent bookkeeping PR or reduce approved later scope.
+No NPAD CLI is needed for this closed software qualification.
+
 17 October job2214130: [P4 forensic audit](mvp2_s2_p4_2214130_forensic_review.md)
 finds an optimization_watchdog stop on the first4-thread arm; four grid levels
 remain unrun and no native terminal/vector is exported. Integrity replay passes,
