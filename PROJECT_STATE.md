@@ -25,15 +25,23 @@ Threads1/8/2/16 remain unrun, and S2/P4 are open. No configuration is selected.
 Native TimeLimit and parent hard optimization deadline are both1800s. The parent
 rejects late export before processing its transition; a solver-free boundary
 replay confirms the mechanism. Gurobi permits a later native return, so terminal
-handoff is not guaranteed. Exact native stage still requires existing worker-log
-tails; no cause beyond the observed watchdog is asserted. Preserve the consumed
+handoff is not guaranteed. Supplied worker-log tails now show cancellation and
+academic WLS startup only; frozen tee=False/OutputFlag=0 explains absent native
+progress. Batch already sets the designated GRB_LICENSE_FILE before accepted
+capability probing and launches srun --export=ALL. No license failure is
+demonstrated, but no independent worker-local path receipt exists. Native subphase
+remains unknown, not recoverable by repeating the same log read. No cause beyond
+the observed watchdog is asserted. Preserve the consumed
 claim, source, logs and archives; no retry/repeat or new allocation is admitted.
 
 459 resource samples, zero observation errors, sampled worker-tree max54.61367GiB;
 Slurm numeric-step MaxRSS53.06733GiB, batch291.328MiB is NOT native memory.
 Cancellation is not an OOM record or proof of memory sufficiency. Next owner:
-human performs bounded read-only worker-log capture; agent consolidates the audit
-and evidence-driven handoff qualification on the next functional package branch.
+agent consolidates terminal-handoff qualification, explicit worker-local license
+selection evidence and bounded noncredential native diagnostics in the next
+functional package. Existing log capture is complete; no further CLI is needed
+now. Nine license-path tests and three simulated batch-to-srun inheritance cases
+pass; these are not live worker proof or a fresh license probe.
 No standalone bookkeeping PR, guard/budget/scientific change, new job, article
 edit, main sync or S2 closure occurs in saving this checkpoint. All prior scope,
 certificates and checkpoints follow unchanged.
