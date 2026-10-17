@@ -3,7 +3,42 @@
 Updated 17 October 2026. This public checkpoint contains scope and provenance,
 not private evidence, credentials, local host paths or execution authority.
 
-## Latest checkpoint — P4 job2214130 preserved; optimization watchdog, grid incomplete
+## Latest checkpoint — successor to merged PR106; closed diagnostic/handoff package
+
+17 October 2026. The maintainer requested preparation/qualification of PR106,
+which live GitHub confirms is already merged at20f88399. Continue as a new
+successor on research/s2-p4-diagnostics, carrying the existing audit checkpoint
+without another bookkeeping PR. See the
+[complete software scope and prospective decision](docs/mvp2_s2_p4_diagnostic_qualification.md).
+
+New closed components explicitly select/check worker-local license metadata
+after numeric-step binding, preserve bounded redacted positive/negative records,
+delegate safe native milestones to the original hooks and catalogue a strict
+diagnostic prefix. No raw logs/credentials, real license probe, native model,
+claim, Slurm call or new execution occurs. They are NOT yet connected to the
+installed launcher, worker or historical portable allowlist. Public execution
+actions deny. Existing guard, native parameters,57 protected files, four
+transport pins, source/input/validation and old certificates stay unchanged.
+
+Actual unchanged Deadlines is exercised with early/exact/late/absent return and
+export/cleanup bounds. The NON-EXECUTABLE proposal shares the existing900s export
+reserve between native excess above TimeLimit1800s and export, keeping3900s arm/
+21600s block ceilings. It changes external enforcement and needs explicit
+prospective maintainer approval; no zero-extra-native-work guarantee is made.
+The proposal is not admitted by preparation, CI, Ready or merge.
+
+The new90-case suite passed locally under Python3.13.15 after an initial wrong-
+interpreter collection failure; no scientific test ran in that first attempt.
+Exact-head Linux732-case combined qualification and the usual Quality/build
+checks are required before Ready. Next owner: agent finishes qualification and
+publishes the consolidated PR; then maintainer decides merge and the prospective
+enforcement contract. No NPAD CLI is needed now. A later integrated wrapper/
+worker/collection/source/admission package must explicitly qualify any replacement
+and retain the consumed2214130 claim. No repetition or remaining-arm continuation
+is silently admitted. P4/P5 and S2 remain open; later approved sprints, conditional
+December target/base January forecast and all historical checkpoints follow.
+
+## Prior checkpoint — P4 job2214130 preserved; optimization watchdog, grid incomplete
 
 17 October 2026. PR106 merged into develop at
 `20f88399ed323d7c96fe9aa3f94eeb87a758eb3b`; human execution source8d244ed3.
