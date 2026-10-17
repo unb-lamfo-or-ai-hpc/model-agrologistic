@@ -2,6 +2,18 @@
 
 ## Authority and scope
 
+17 October resumption: consolidate the checkpoint and the complete
+[P4 human operational release](mvp2_s2_p4_release.md) on the SAME branch.
+One explicit diagnostic block only, no replay of accepted A/P2/P3/observation,
+no automatic repeat/follow-on or S2 closure. Fresh future-allocation checks remain
+mandatory. Ready/exact-head software and separate merge decision precede human
+CLI. Then one P5 actual-evidence/configuration/exit PR, including explicit
+decision on any unrun arms. No approved later scientific scope, resource budget,
+validation criterion or article decision changes. Expedite parallel evidence
+inventory/coauthor-version identification; December remains conditional, not an
+excuse to omit h400/SCIP or an admitted conditional h500. No NPAD job is launched
+by preparing this package.
+
 16 October after PR105 merge `d70816fdd6c3d99ef05711731a9dda17cd5210dd`:
 [job2213305 prerequisite observation is independently accepted](mvp2_s2_p4_observed_prerequisites.md).
 Preserve source7ff70904, external archive/source/job/driver-plan/inner-plan anchors,
