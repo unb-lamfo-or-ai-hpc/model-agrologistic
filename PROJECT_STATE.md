@@ -1,9 +1,40 @@
 # Model Agrologistic — MVP 2.0 checkpoint
 
-Updated 16 October 2026. This public checkpoint contains scope and provenance,
+Updated 17 October 2026. This public checkpoint contains scope and provenance,
 not private evidence, credentials, local host paths or execution authority.
 
-## Latest checkpoint — job2213305 prerequisites accepted; pause before operational P4
+## Latest checkpoint — resumed P4; one consolidated operational release
+
+17 October 2026. Resume the SAME research/s2-p4-release branch from its five-file
+pause checkpoint. The [complete P4 release](docs/mvp2_s2_p4_release.md) adds one
+explicit human-only diagnostic block, exclusive unused agricultural claim,
+new source/release binding, wrapper, controls, terminal/forensic collector,
+portable audit, tests and conditional CLI together. Original P3 and accepted
+job2213305 are audited, not repeated. All57 protected bytes and four transport
+pins, scientific/resource settings and original evidence remain unchanged.
+Old entry points remain closed; new start requires the reviewed one-block flag.
+Existing or ambiguous claims never resubmit. No h400, repeat, automatic follow-on,
+configuration selection, production certification or S2 closure is authorized.
+
+One16logicalCPU/192GiB/6h shared allocation, order4,1,8,2,16 and1800s GLOBAL
+optimization per arm retain the frozen design. Fresh input/runtime/allocation/
+license admission must pass in that future allocation. All phase/audit/terminal
+limits and the WHOLE-block256MiB export cap remain unchanged; actual export fit
+and native extraction RSS remain open risks. Portable integrity replay does not
+mean fresh private-input residual revalidation by the local auditor. Failed/
+partial/unrun and unaccounted outcomes remain explicit. A Ready/merged package
+is not live scientific acceptance; only the maintainer runs pinned NPAD CLI.
+
+Next: exact-head qualification and Ready, separate merge decision, human block,
+then one P5 scientific evidence/exit/configuration review (or explicit decision
+on unrun arms). Two complete remaining S2 packages are the baseline, not a
+guarantee. No NPAD job, merge, article edit or main synchronization occurred in
+preparing this software. Later approved scope and the January2027 base forecast/
+conditional accelerated December objective remain unchanged; expedite evidence
+inventory/version identification in parallel, not by shrinking the experiments.
+All prior checkpoints follow unchanged.
+
+## Prior checkpoint — job2213305 prerequisites accepted; pause before operational P4
 
 16 October 2026. PR105 merged into develop at
 `d70816fdd6c3d99ef05711731a9dda17cd5210dd`; execution source
