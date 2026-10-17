@@ -29,6 +29,11 @@ The proposal is not admitted by preparation, CI, Ready or merge.
 
 The new90-case suite passed locally under Python3.13.15 after an initial wrong-
 interpreter collection failure; no scientific test ran in that first attempt.
+Combined local suite:723 passed/9 intentional Linux-only skips after routing
+TEMP to an owned workspace directory; the earlier combined attempt failed on
+Windows sandbox TEMP ACLs. Local build frontend is unavailable; no local full
+distribution-build success is claimed. Canonical2214130 replay, four unchanged
+transport hashes,185 relative links, prior checkpoint and repository Ruff pass.
 Exact-head Linux732-case combined qualification and the usual Quality/build
 checks are required before Ready. Next owner: agent finishes qualification and
 publishes the consolidated PR; then maintainer decides merge and the prospective
