@@ -2,6 +2,19 @@
 
 ## Resumed handoff — complete operational P4 package
 
+17 October update: human job2214130 is a preserved
+[forensic partial block](mvp2_s2_p4_2214130_forensic_review.md), not accepted P4.
+Only4threads reached native optimization; parent optimization_watchdog cancelled
+the step.1/8/2/16 are unrun. No native terminal/vector/solution review exists;
+incumbent/status/quality unknown. Portable archive integrity and650 source hashes
+pass, not scientific grid acceptance. Existing private worker-log tails are the
+next read-only human action. Equal1800s native/parent limits expose a terminal-
+handoff risk; no guard/budget/source/parameter change or repetition is admitted.
+Preserve all claims/evidence. Stage audit/checkpoint on the next functional branch,
+not a standalone bookkeeping PR. S2 remains open; later scope unchanged.
+
+Preserved pre-execution handoff:
+
 Extend the existing checkpoint branch with the [single P4 release](mvp2_s2_p4_release.md):
 new source/claim, audited accepted predecessor, wrapper/worker/controls, tests,
 terminal and forensic collection and conditional pinned human CLI. No repeated
