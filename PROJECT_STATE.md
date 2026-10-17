@@ -3,7 +3,42 @@
 Updated 17 October 2026. This public checkpoint contains scope and provenance,
 not private evidence, credentials, local host paths or execution authority.
 
-## Latest checkpoint — resumed P4; one consolidated operational release
+## Latest checkpoint — P4 job2214130 preserved; optimization watchdog, grid incomplete
+
+17 October 2026. PR106 merged into develop at
+`20f88399ed323d7c96fe9aa3f94eeb87a758eb3b`; human execution source8d244ed3.
+The [forensic review](docs/mvp2_s2_p4_2214130_forensic_review.md) and
+[redacted ledger](docs/evidence/s2_p4_2214130_review.json) preserve full anchors.
+Outer SHA256a60d826c56cbfb09b975d56295aec3b746c4a0eddb0e745cec0fe3ab066dfe74
+matches; unchanged canonical audit reproduces portable_integrity_replayed_p5_required,
+reported forensic_partial_block. Separate native archive is identical to bundled
+member;650 declared source hashes match published bytes. No fresh private-input
+residual calculation is claimed by the local portable auditor.
+
+Root/batch FAILED2:0/2570s. Only4threads attempted; step CANCELLED0:15/2332s.
+Reason optimization_watchdog; local client reaped/143. Native build/optimization
+were reached; no terminal/export/cleanup/vector record exists. Incumbent existence,
+native status, objectives/gaps and validation remain UNKNOWN, not no-incumbent,
+infeasibility or accepted solution. Null validation_error is not validation here.
+Threads1/8/2/16 remain unrun, and S2/P4 are open. No configuration is selected.
+
+Native TimeLimit and parent hard optimization deadline are both1800s. The parent
+rejects late export before processing its transition; a solver-free boundary
+replay confirms the mechanism. Gurobi permits a later native return, so terminal
+handoff is not guaranteed. Exact native stage still requires existing worker-log
+tails; no cause beyond the observed watchdog is asserted. Preserve the consumed
+claim, source, logs and archives; no retry/repeat or new allocation is admitted.
+
+459 resource samples, zero observation errors, sampled worker-tree max54.61367GiB;
+Slurm numeric-step MaxRSS53.06733GiB, batch291.328MiB is NOT native memory.
+Cancellation is not an OOM record or proof of memory sufficiency. Next owner:
+human performs bounded read-only worker-log capture; agent consolidates the audit
+and evidence-driven handoff qualification on the next functional package branch.
+No standalone bookkeeping PR, guard/budget/scientific change, new job, article
+edit, main sync or S2 closure occurs in saving this checkpoint. All prior scope,
+certificates and checkpoints follow unchanged.
+
+## Prior checkpoint — resumed P4; one consolidated operational release
 
 17 October 2026. Resume the SAME research/s2-p4-release branch from its five-file
 pause checkpoint. The [complete P4 release](docs/mvp2_s2_p4_release.md) adds one
