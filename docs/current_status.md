@@ -1,5 +1,22 @@
 # Dated research status: 17 October 2026
 
+## Pause — P4 job2214305 reported RUNNING
+
+PR108 merged into develop at233abebe97b111fea5f5bbe4cdd4c9f527988e72; qualified
+execution source c9b4fa7e783a499596cf31a2c5e31995605c90e2,662 identical files,
+12 successful checks including810 Linux cases and Quality/build. Human snapshot:
+root/batch/extern and step2214305.0 RUNNING; later root12m03s/step8m46s,16 allocated
+CPUs, no reported MaxRSS yet. Running0:0 is not a terminal or scientific result.
+Plan SHA256daf4de2a261eadb2ce8e76663fb1f84e77e3ac25518f350f4224ea984e9b90dc;
+consumed claim .mvp2-s2-p4-terminal-v1. No terminal carrier supplied yet.
+See the [authoritative pause checkpoint](../PROJECT_STATE.md) and
+[pinned status/wait/collect instructions](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/108#issuecomment-6236287696).
+Conversation pause does not cancel the existing five-arm serial block. Preserve
+claims/source/environment; on return collect this SAME job/source, never resubmit.
+Stage checkpoint on the next P5 functional branch, no standalone PR. P4/P5/S2
+stay open; no configuration selection, repeat or automatic next campaign. Later
+scope/manuscript/final-only main sync unchanged. Agent made no NPAD call/job.
+
 ## Current successor — approved one-hour arms in a twelve-hour block
 
 PR107 merge38ebfe256c262d2bd7c02d7ffd821b1e058ec578 is verified. The maintainer
