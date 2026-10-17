@@ -6,7 +6,8 @@
 finds an optimization_watchdog stop on the first4-thread arm; four grid levels
 remain unrun and no native terminal/vector is exported. Integrity replay passes,
 not P4 scientific acceptance. Preserve the consumed claim. Next: read existing
-worker logs, then consolidate the audit and terminal-handoff qualification in
+worker logs (now received; startup-only native output), then consolidate the audit,
+explicit worker license-path evidence and terminal-handoff qualification in
 one evidence-driven package. No repetition, automatic continuation, guard/budget
 or scientific change, configuration selection or S2 closure follows. Any revised
 contract/new allocation needs explicit prospective admission; do not silently
