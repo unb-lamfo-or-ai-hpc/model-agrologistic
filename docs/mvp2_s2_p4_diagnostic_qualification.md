@@ -103,6 +103,16 @@ after testing. General Quality/build and other repository checks remain required
 on the exact PR head. Local Windows results and intentional platform skips are
 recorded independently; they cannot substitute for Linux qualification.
 
+Local Python3.13.15 combined result:723 passed,9 intentional Linux-only skips.
+The first collection used an older default interpreter and failed before tests.
+An initial combined attempt then encountered Windows sandbox TEMP ACL failures
+in unchanged archive extraction; rerouting TEMP to an owned workspace directory
+resolved them. No test was weakened/skipped to hide those failures. The local
+environment lacks the optional build frontend; full Linux Quality/build is
+required instead of claiming an unavailable local build passed. Canonical
+job2214130 replay, four frozen transport hashes, accepted P3/57-file parity,
+185 relative links, full prior checkpoint and repository Ruff pass.
+
 Before Ready, compare all57 P3-protected files and all four frozen transport
 hashes, replay the actual2214130 carrier with external anchors and preserve the
 full historical checkpoint. No proprietary raw archive, workbook, license,
