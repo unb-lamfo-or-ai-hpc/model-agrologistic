@@ -2,6 +2,20 @@
 
 ## Authority and scope
 
+17 October pause: PR108 merged at233abebe97b111fea5f5bbe4cdd4c9f527988e72,
+qualified source c9b4fa7e783a499596cf31a2c5e31995605c90e2. The maintainer reports
+P4 job2214305 RUNNING with the frozen3600s/arm12h serial-block protocol. Save
+the [checkpoint](../PROJECT_STATE.md) on research/s2-p5-evidence-review and extend
+that SAME functional branch after terminal evidence arrives; no bookkeeping PR,
+source mutation, job/repeat or automatic follow-on during pause. Human resumes
+only existing-job status/wait/collect, preserving consumed claim and originals.
+Next P5 audits the actual terminal block, partial/unrun grid, native/observed
+resources, independent validation and configuration/exit criteria. Completion,
+solution quality and S2 closure are not inferred from RUNNING or ExitCode0:0.
+Additional repairs depend on evidence. Later approved work, S3/S4 cancellation,
+EVPI/VSS exclusion, manuscript preservation, final-only main sync and conditional
+December/base January forecast remain unchanged; do not reduce approved scope.
+
 17 October approved successor: PR107 merged at38ebfe256c262d2bd7c02d7ffd821b1e058ec578.
 The maintainer expressly approves global3600s per arm and minimum9h allocation.
 Consolidate the [integrated P4 package](mvp2_s2_p4_terminal_integration.md): new
