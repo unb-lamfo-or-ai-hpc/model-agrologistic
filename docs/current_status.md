@@ -2,6 +2,17 @@
 
 ## Resumed handoff — complete operational P4 package
 
+17 October successor preparation: PR106 is already merged. Consolidate the
+job2214130 audit with the [closed diagnostic/handoff software package](mvp2_s2_p4_diagnostic_qualification.md)
+on research/s2-p4-diagnostics. New typed worker-local metadata receipts and native
+milestones are prospective components, not wired into the unchanged launcher.
+90 new local cases pass; require exact-head Linux732 combined cases and usual
+Quality/build before Ready. No NPAD CLI now. Sharing the existing900s export
+reserve with native return excess is a non-executable proposal requiring explicit
+approval of changed external enforcement. Native1800s/arm3900s/block21600s and
+all science, guards/transport pins, claims and certificates remain unchanged.
+No replacement, repeat, h400/configuration selection or S2 closure is admitted.
+
 17 October update: human job2214130 is a preserved
 [forensic partial block](mvp2_s2_p4_2214130_forensic_review.md), not accepted P4.
 Only4threads reached native optimization; parent optimization_watchdog cancelled
