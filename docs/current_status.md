@@ -7,8 +7,11 @@
 Only4threads reached native optimization; parent optimization_watchdog cancelled
 the step.1/8/2/16 are unrun. No native terminal/vector/solution review exists;
 incumbent/status/quality unknown. Portable archive integrity and650 source hashes
-pass, not scientific grid acceptance. Existing private worker-log tails are the
-next read-only human action. Equal1800s native/parent limits expose a terminal-
+pass, not scientific grid acceptance. Supplied log tails show cancellation and
+academic WLS startup, not a missing-license error. Batch selects the designated
+file before probing and exports ALL to the step; a worker-local path receipt is
+still missing. Frozen OutputFlag=0 explains absent native progress; no more CLI
+is needed to interpret the banner. Equal1800s native/parent limits expose a terminal-
 handoff risk; no guard/budget/source/parameter change or repetition is admitted.
 Preserve all claims/evidence. Stage audit/checkpoint on the next functional branch,
 not a standalone bookkeeping PR. S2 remains open; later scope unchanged.
