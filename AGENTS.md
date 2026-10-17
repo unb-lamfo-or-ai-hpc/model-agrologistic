@@ -41,6 +41,15 @@ checked-out branch. They do not configure other repositories or ChatGPT projects
 
 ## Scientific and software discipline
 
+- Maintainer decision, 17 October 2026: prospective P4 uses global native
+  TimeLimit3600 per thread arm, with one12h/16-logical-CPU/192GiB serial block
+  and a shared900s late-return/export reserve. Follow the versioned
+  [integrated release](docs/mvp2_s2_p4_terminal_integration.md); preserve the
+  historical1800s policies/certificates and consumed claims. No per-priority
+  TimeLimit reset, extra optimization from walltime headroom, repeat, automatic
+  follow-on or implied h400/SCIP admission. Exact-head qualification, explicit
+  merge authorization and pinned human-only one-block acknowledgement remain.
+
 - Maintainer decision, 15 October 2026: prospective S2 A/P2/P3 uses the
   [minimum academic profile](docs/mvp2_s2_academic_consolidated.md), not production
   isolation certification. Trusted fixed code, exact provenance, resource/time

@@ -97,11 +97,21 @@ class NativeSeams:
     remains unknown status/incumbent, never inferred infeasibility.
     """
 
-    def __init__(self, directory, ident, journal, solver, *, clock=time.monotonic):
+    def __init__(
+        self,
+        directory,
+        ident,
+        journal,
+        solver,
+        *,
+        clock=time.monotonic,
+        profile_factory=native.solver_profile,
+        hooks_factory=native.NativeHooks,
+    ):
         self.directory = products.safe(directory)
         self.ident = binding(ident)
         design.require(
-            asdict(solver) == asdict(native.solver_profile(self.ident["threads"])),
+            asdict(solver) == asdict(profile_factory(self.ident["threads"])),
             "Diagnostic solver profile drift.",
         )
         design.require(
@@ -120,7 +130,7 @@ class NativeSeams:
             and journal.index == 1,
             "Native journal binding/build phase.",
         )
-        self.hooks = native.NativeHooks(journal, solver)
+        self.hooks = hooks_factory(journal, solver)
         self.clock = clock
         self.started = self.last = self._now()
         self.index = 0
@@ -161,7 +171,7 @@ class NativeSeams:
         return self.hooks.terminal
 
 
-def catalogue(directory, ident):
+def catalogue(directory, ident, *, profile_factory=native.solver_profile):
     """Strict prospective sidecar inventory; NOT an agricultural evidence audit.
 
     This small catalogue is not added to the historical portable allowlist. A new
@@ -224,7 +234,7 @@ def catalogue(directory, ident):
                 design.require(
                     value["effective_parameters_checked"] is True
                     and value["profile_sha256"]
-                    == design.digest(asdict(native.solver_profile(ident["threads"]))),
+                    == design.digest(asdict(profile_factory(ident["threads"]))),
                     "Diagnostic profile binding.",
                 )
             if index == 3:

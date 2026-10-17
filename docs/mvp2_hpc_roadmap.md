@@ -2,6 +2,20 @@
 
 ## Authority and scope
 
+17 October approved successor: PR107 merged at38ebfe256c262d2bd7c02d7ffd821b1e058ec578.
+The maintainer expressly approves global3600s per arm and minimum9h allocation.
+Consolidate the [integrated P4 package](mvp2_s2_p4_terminal_integration.md): new
+versioned runtime/profile/release, bounded diagnostic sidecar/auditor, exclusive
+claim, wrapper/tests/full pinned CLI together. Request12h/16 logical CPUs/192GiB
+for cold serial4/1/8/2/16; minimum ledger8h30 and no extra optimizer time from
+headroom. Preserve original1800s cohort, all claims/certificates/57 protected
+files/four transport pins. No A/P2/P3 repeats or automatic remaining-arm retry.
+Baseline: integrated Ready P4 PR, authorized merge/human one-block CLI, then P5
+actual-evidence/configuration/exit review. Repairs are conditional on findings.
+No P5/S2 closure from software qualification, scheduler completion or integrity
+replay alone. Later scope and conditional December/base January forecast remain;
+S3/S4 cancelled, EVPI/VSS excluded and post-article-only main sync preserved.
+
 17 October prospective successor: merged PR106 cannot be reopened for this
 repair. The [consolidated diagnostic/handoff software gate](mvp2_s2_p4_diagnostic_qualification.md)
 includes the preserved job2214130 audit, private future worker metadata selection,

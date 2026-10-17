@@ -1,5 +1,20 @@
 # Dated research status: 17 October 2026
 
+## Current successor — approved one-hour arms in a twelve-hour block
+
+PR107 merge38ebfe256c262d2bd7c02d7ffd821b1e058ec578 is verified. The maintainer
+approved global native3600s/arm and at least9h Slurm; request12h for a single
+homogeneous cold4/1/8/2/16-thread block. See the
+[integrated runtime, audit, wrapper and human runbook](mvp2_s2_p4_terminal_integration.md).
+Shared900s late-return/export,5700s arm,8h30 minimum ledger,12h reservation;
+headroom is not optimizer budget. All57 protected files/four old transport pins
+and prior evidence stay intact. Versioned profile changes only TimeLimit.
+New78 cases/focused168/combined810 Linux qualification required before Ready,
+then separate merge approval and human CLI. No agent job/new claim now.
+Original2214130 is separate1800s negative evidence, not a3600s comparator.
+S2/P4/P5 remain open; no repeat/automatic follow-on/configuration selected.
+Later h400/SCIP215/conditional500/S6, manuscript and final-only main sync unchanged.
+
 ## Resumed handoff — complete operational P4 package
 
 17 October successor preparation: PR106 is already merged. Consolidate the

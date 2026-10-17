@@ -3,7 +3,52 @@
 Updated 17 October 2026. This public checkpoint contains scope and provenance,
 not private evidence, credentials, local host paths or execution authority.
 
-## Latest checkpoint — successor to merged PR106; closed diagnostic/handoff package
+## Latest checkpoint — approved 3600s/12h integrated P4 successor
+
+17 October 2026. PR107 is merged at
+38ebfe256c262d2bd7c02d7ffd821b1e058ec578. The maintainer explicitly approved
+global TimeLimit3600 per arm, at least nine hours of Slurm walltime and the
+shared900s late-return/export reserve. The
+[complete integrated package](docs/mvp2_s2_p4_terminal_integration.md) requests
+12h/16 logical CPUs/192GiB for five cold serial arms4/1/8/2/16, each5700s hard
+envelope. Admission600 +5x5700 +review900 +terminal600 =30600s/8h30; remaining
+3h30 covers fresh inter-arm checks/closure, not extra optimizer time or repeats.
+Nominal192 requested CPU-hours is a reservation, not observed consumption.
+
+Versioned runtime/profile/release, worker diagnostics, independent sidecar audit,
+wrapper,168-case focused gate and810-case combined Linux gate are consolidated
+on research/s2-p4-terminal-integration. Native TimeLimit is global across the
+lexicographic run, never reset per priority. Native excess above3600 consumes
+the same900s export reserve. New sample cap1200 covers the95-minute envelope.
+All57 protected scientific/native files and four original transport pins remain
+unchanged; original models/validation, P3, old1800s cohort and consumed2214130
+claim/carriers are preserved. Old data are not pooled as matched3600s evidence.
+
+New exclusive claim .mvp2-s2-p4-terminal-v1 is only prospective. No job, claim,
+license initialization or cluster access occurs in preparation/qualification.
+Existing/unknown acknowledgements never resubmit. Whole-block256MiB cap includes
+bounded safe diagnostics and original predecessor; no raw logs/credentials.
+Control failures retain explicit unrun/unaccounted inventory; missing native
+terminal/incumbent information stays unknown, not infeasibility. Native Runtime
+and observed time/resources remain separate; partial runs do not prove speedup.
+
+Next owner: agent finishes exact-head Linux/Bash/Quality/build qualification,
+marks Ready, then requests merge approval and supplies actual source/wrapper
+pins for complete human start/status/wait/collect commands. Human-only execution
+after merge acknowledges one new matched-budget block, not repeated A/P2/P3,
+automatic follow-on or remaining-arm continuation. P5 still independently
+reviews actual evidence; S2 remains open. Later scope, S3/S4 cancellation,
+EVPI/VSS exclusion, manuscript/coauthor review and final-only main sync remain
+unchanged. December remains conditional, base January2027 forecast unchanged.
+
+Local combined qualification:798 passed/12 intentional Linux/POSIX-only skips;
+focused165 passed/3 Bash skips. Canonical P3/57-file parity, original2214130,
+four transport hashes, full historical checkpoint and Ruff pass. Initial
+development failure in missing-batch repeated collection is fixed/regressed.
+Linux gates and full Quality/build remain required before Ready; no local
+distribution-build success is claimed without the optional frontend.
+
+## Prior checkpoint — successor to merged PR106; closed diagnostic/handoff package
 
 17 October 2026. The maintainer requested preparation/qualification of PR106,
 which live GitHub confirms is already merged at20f88399. Continue as a new
