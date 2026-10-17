@@ -95,6 +95,13 @@ batch receipt; the collector now preserves that unaccounted inventory across
 replay, with a regression. This was a software-double failure, not a new NPAD
 attempt. No dependency upgrade or scientific test weakening was used.
 
+Local combined qualification under the existing Python3.13.15 environment:
+798 passed,12 intentional Linux/POSIX-only skips; focused168-case gate locally
+165 passed/3 Bash skips. These skips do not satisfy Linux qualification. Ruff,
+canonical P3/57-file parity, original2214130 replay, four transport hashes and
+full prior checkpoint preservation pass. The local optional build frontend is
+unavailable; require the actual Linux Quality/distribution build before Ready.
+
 Prepare Draft, require exact published-head CI including Linux Bash and usual
 Quality/build, then mark Ready and request explicit merge authorization. Merge
 is not a live result. Only the maintainer executes the pinned commands after
