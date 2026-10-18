@@ -2,6 +2,26 @@
 
 ## Authority and scope
 
+18 October terminal2214305: [forensic audit](mvp2_s2_p4_2214305_forensic_review.md)
+verifies native return/closed vector and worker accepted residual report, but
+root FAILED2:0/post-worker review null/ValueError;1/8/2/16 unrun. Preserve the
+consumed claim and original cohorts. Supplemental stderr now confirms strict
+whole-validation-report equality mismatch, not the actual differing private fields.
+Public real-validator subprocesses reproduce accepted report transport-budget
+last-bit drift. Consolidate the [existing-vector replay](mvp2_s2_residual_replay.md),
+bounded analytical comparison (all other fields exact), raw reports/witness,
+typed diagnostics, one-shot wrapper/claim and forensic collector in the SAME
+functional P5 branch. Require56 exact-head Linux/810 existing integration/Quality;
+then Ready/authorized merge and human4CPU/16GiB/30min read-only replay.
+No construction/optimization/license probe or original receipt rewrite. Actual
+replay precedes the next consolidated grid integration/admission package, including
+explicit whole-grid export/cap qualification. No automatic new
+optimization/repeat, silent expanded-cap change or cohort mixing. Neither a
+complete scientific thread contrast nor S2 closure is established. After P4
+evidence passes, P5 audits quality/resources/censoring/unrun and explicit S2 exit;
+then prepare MVP2 balance and detailed Project01/chat01.01 coauthor handoff.
+Later approved scope/editorial decisions/final-only main sync remain unchanged.
+
 17 October pause: PR108 merged at233abebe97b111fea5f5bbe4cdd4c9f527988e72,
 qualified source c9b4fa7e783a499596cf31a2c5e31995605c90e2. The maintainer reports
 P4 job2214305 RUNNING with the frozen3600s/arm12h serial-block protocol. Save
