@@ -108,6 +108,13 @@ Eight additional entry-point cases qualify the actual new batch and private
 preflight/worker/review dispatch, including blocked source/preflight, wrong job,
 typed raw-report preservation and exclusive batch-slot consumption. Their public
 fixture explicitly creates the native parent directory before product export.
+At head99d329b, the909-case gate passed, but the separate810-case job reported
+809 passed/one failure: the normal real synthetic child exceeded its150ms
+export-test window. Its trace is preserved in GitHub run39133199090. The final
+test harness grants ONLY the complete-child case2s per phase, retaining the8s
+test bound,150ms negative watchdog cases and deterministic exact-boundary tests.
+No native/NPAD/phase guard or scientific criterion changes, and no failed check
+is hidden by a retry. Require the new exact head to pass every check before Ready.
 
 The final exact-head source/wrapper hashes and complete human setup/start/status/
 wait/collect lines will be posted to PR109 after qualification. Do NOT use the
