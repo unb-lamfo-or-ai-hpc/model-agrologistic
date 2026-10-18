@@ -1,9 +1,58 @@
 # Model Agrologistic — MVP 2.0 checkpoint
 
-Updated 17 October 2026. This public checkpoint contains scope and provenance,
+Updated 18 October 2026. This public checkpoint contains scope and provenance,
 not private evidence, credentials, local host paths or execution authority.
 
-## Latest checkpoint — pause with P4 job2214305 running; collect the existing block
+## Latest checkpoint — terminal P4 job2214305; native return succeeded, independent arm review missing
+
+18 October2026. Resume research/s2-p5-evidence-review, not a new bookkeeping PR.
+The [forensic review](docs/mvp2_s2_p4_2214305_forensic_review.md) and
+[redacted ledger](docs/evidence/s2_p4_2214305_review.json) preserve the terminal
+outcome of merged PR108/sourcec9b4fa7/job2214305. External archive/sidecar SHA256
+27e2a6055463c54333f5368a1452e09af966a91be1034521a7c68db75cba57f0 matches;
+unchanged canonical audit reproduces portable_integrity_replayed_p5_required /
+forensic_partial_block. Separate native matches nested; all662 source blobs,
+worker product hashes/sizes and complete diagnostics bind to the original plan.
+
+Root/batch FAILED2:0/4593s; numeric step COMPLETED0:0/4282s. Worker controls
+returned normally through four phases, no TERM/KILL, stop_reason null. Native
+TIME_LIMIT9/Runtime3604.806986s/SolCount2, closed vector/terminal present. Worker-
+written residual report accepted,0 failures/32 families/2694161 checks; this is
+NOT a completed post-worker independent review or fresh local residual replay.
+Only4threads ran;1/8/2/16 unrun. No economic stage observed. Capacity stage
+reports100% gap; zero service objective has raw gap1e100, retained without
+scientific reinterpretation or relaxed validation. No complete hierarchy,
+scientific configuration selection, speedup or S2 exit is established.
+
+843 resource samples/no observation errors; sampled tree and step MaxRSS55.727798
+GiB. Batch0.469341GiB is not native memory; native allocator47.179366 decimalGB
+is a different scope. Vector81589895bytes; five equal-sized vectors project
+407949475bytes, exceeding the expanded256MiB whole-block cap before overhead.
+No future output-size guarantee; next package must explicitly qualify fit/cap
+policy, not silently raise limits or truncate evidence.
+
+The post-worker review is null/missing; batch records only ValueError. Exact
+failing check remains unknown because private review.err/review.out are absent
+from the carrier. Null portable validation_error is NOT acceptance: that path
+skips null arm reviews. Human requested ONE read-only tail of those two existing
+logs. Do not replace this missing traceback with a new optimization or guess a
+license/source/numerical cause. Preserve consumed claim, logs, original reports,
+all prior cohorts, source and archives. No claim reuse, repeat/follow-on now.
+
+Next owner: human supplies private review traceback; agent integrates the actual
+fix, typed post-worker diagnostics, unchanged independent scientific checks,
+real-size/full-grid export regression, wrapper/collection/source qualification
+as ONE functional package. Qualify existing-vector post-worker replay before
+another native campaign; any derived review is separate, never an overwritten
+receipt or retroactive acceptance. P4/P5/S2 stay open; homogeneous grid/cohort
+requirements and later h400/SCIP215/conditional500/S6 remain. After defensible
+S2 exit, prepare the requested MVP2 balance and detailed prompt for Project01/
+chat01.01 for the coauthor presentation. Do not message another chat or edit the
+article now. S3/S4 cancelled, EVPI/VSS excluded, final-only main sync and
+conditional December/base January2027 forecast unchanged. No NPAD job/merge
+or optimization is performed by the agent in this forensic checkpoint.
+
+## Prior checkpoint — pause with P4 job2214305 running; collect the existing block
 
 17 October 2026. Live GitHub confirms PR108 merged into develop at
 `233abebe97b111fea5f5bbe4cdd4c9f527988e72`. The qualified execution source remains
