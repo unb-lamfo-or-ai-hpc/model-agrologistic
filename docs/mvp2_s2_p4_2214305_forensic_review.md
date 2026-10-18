@@ -1,4 +1,4 @@
-# P4 job2214305: native return and closed products; post-worker review unresolved
+# P4 job2214305: native return; strict validation-report comparison failed
 
 18 October2026. This review extends the SAME P5 functional branch started at the
 pause; it is not S2 closure, admission of a repeat or a new bookkeeping PR.
@@ -23,7 +23,7 @@ residual calculation is performed by this portable review.
 | Native Gurobi | TIME_LIMIT,Runtime3604.806986s,SolCount2 | A terminal status and incumbent were exported, unlike2214130 |
 | Worker controls | Four ordered phases, stop_reason null, client reaped | Shared return/export handling completed for this arm |
 | Worker residual report | accepted,0 failures,32 families/2694161 checks | Preserved worker-written validation, not successful post-worker replay |
-| Post-worker independent report | Missing; batch records only ValueError | Exact failing check is not available in the public carrier |
+| Post-worker independent report | Missing; supplemental stderr identifies strict report equality failure | Actual differing private report fields remain unknown |
 | Grid | Only4threads;1/8/2/16 unrun | No thread configuration selection or complete contrast |
 
 Worker-local designated-license metadata and effective parameters were checked.
@@ -61,23 +61,32 @@ complete operational package must qualify its full-block size policy prospective
 ## Failure localization and next gate
 
 The step/control/terminal/export checks returned normally. The batch's arm review
-is null and no `arms/t4/independent.json` is in the inventory. The code has several
-post-worker checks, while its exception handler records only the exception type.
-The archive excludes private `review.err`/`review.out`; it therefore cannot name
-the exact failing check. A null portable `validation_error` means no later vector
-replay was attempted for a null arm review, NOT independent scientific acceptance.
-Do not assign a cause to solver failure, license, numerical infeasibility, source
-drift, JSON decoding or residual mismatch without the missing traceback.
+is null and no `arms/t4/independent.json` is in the inventory. After the portable
+audit, the maintainer supplied existing private stderr: terminal runtime dispatch
+line335 called products.review; line182 rejected exact equality of the entire
+fresh validation dictionary and worker-written dictionary, with
+`ValueError: Fresh residual validation mismatch.` The fresh dictionary was not
+saved before raising. This confirms the failure site, not which private fields
+differed. A null portable `validation_error` skips null arm reviews; it is NOT
+independent scientific acceptance, proof of feasibility or license failure.
 
-The human was asked for ONE read-only tail of the existing review stderr/stdout.
-No diagnostic optimization or blind replacement submission is warranted to get
-those logs. Then consolidate the actual fix, typed phase/reason diagnostics,
-bounded independent review, real-size product/whole-grid regression, source/claim
-qualification, wrapper and terminal/forensic collection in ONE functional package.
-Use existing exported evidence to qualify the post-worker path before spending
-another native hour. Preserve original reports; fresh successful replay, if
-qualified later, must be a separate derived certificate, never an overwritten
-original or retroactive acceptance of this failed block.
+The original validator accumulates four transport sparse-rounding budgets by
+iterating unordered route sets. A public feasible zero-flow model reproduces
+separate-process reports with accepted/zero-failure residuals and different last
+bits only in the OD budget (approximately0.000285079210000002). That is a
+demonstrated mechanism, not yet a proven explanation of every private difference.
+Isolated Python `-I` ignores PYTHONHASHSEED; forcing that variable is not a repair.
+
+The [complete derived replay package](mvp2_s2_residual_replay.md) reads the existing
+vector and re-runs the UNCHANGED independent validator in a small separate
+allocation. It preserves both raw reports and a finite coefficient witness before
+comparison. Only the four transport-budget diagnostic fields may differ within a
+derived binary64 summation-error bound; all other fields, scientific tolerances,
+counts, residuals and acceptance stay exact. Rejected or otherwise differing fresh
+reports remain blocked with typed phase/error/changed-field diagnostics. No model
+build, optimization, license probe, original receipt replacement or retroactive
+acceptance occurs. Full-grid size policy and later campaign admission remain a
+separate prospective decision after this evidence; do not silently change caps.
 
 The1/2/8/16 comparisons remain required. A future allocation cannot silently be
 combined with the old4-thread arm as one homogeneous block. Any replacement or
