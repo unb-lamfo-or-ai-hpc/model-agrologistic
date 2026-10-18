@@ -1,0 +1,45 @@
+name: S2 existing-vector residual replay gate
+on:
+  pull_request:
+  push:
+    branches: [develop]
+permissions:
+  contents: read
+jobs:
+  residual-replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      PYTHONNOUSERSITE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - run: python -m pip install -e '.[dev]'
+      - name: Exact-head 56 cases; real cross-process validator, no native solve
+        run: |
+          mkdir "$RUNNER_TEMP/replay-source"
+          git archive HEAD | tar -xf - -C "$RUNNER_TEMP/replay-source"
+          printf 'QUALIFIED_HEAD=%s\n' "$(git rev-parse HEAD)"
+          cd "$RUNNER_TEMP/replay-source"
+          python -B -I - "$RUNNER_TEMP/replay-files.json" <<'PY'
+          import hashlib,json,pathlib,sys
+          files={p.relative_to(pathlib.Path.cwd()).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in pathlib.Path.cwd().rglob('*') if p.is_file()}
+          pathlib.Path(sys.argv[1]).write_text(json.dumps(files,sort_keys=True))
+          PY
+          python -B -m ruff check --no-cache scripts/mvp2_s2_residual_replay.py tests/test_mvp2_s2_residual_replay.py tests/s2_residual_fixture.py
+          bash -n scripts/npad_s2_residual_replay.sh
+          python -B -m pytest -p no:cacheprovider tests/test_mvp2_s2_residual_replay.py -q --basetemp="$RUNNER_TEMP/replay-tests" --junitxml="$RUNNER_TEMP/replay-tests.xml"
+          python -B -I - "$RUNNER_TEMP/replay-tests.xml" "$RUNNER_TEMP/replay-files.json" <<'PY'
+          import hashlib,json,pathlib,sys,xml.etree.ElementTree as ET
+          cases=ET.parse(sys.argv[1]).getroot().findall('.//testcase')
+          assert len(cases)==56
+          assert not any(c.find(k) is not None for c in cases for k in ('failure','error','skipped'))
+          files={p.relative_to(pathlib.Path.cwd()).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in pathlib.Path.cwd().rglob('*') if p.is_file()}
+          assert files==json.loads(pathlib.Path(sys.argv[2]).read_text()),'Post-test source drift'
+          print('RESIDUAL_REPLAY_SOFTWARE=56 passed; SOURCE_CLOSED; NO_NPAD_OR_SOLVE')
+          PY
