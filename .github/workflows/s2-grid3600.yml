@@ -20,7 +20,7 @@ jobs:
         with:
           python-version: '3.13'
       - run: python -m pip install -e '.[dev]'
-      - name: Exact-head901-case full package; public backend doubles, no NPAD
+      - name: Exact-head909-case full package; public backend doubles, no NPAD
         run: |
           mkdir "$RUNNER_TEMP/grid-source"
           git archive HEAD | tar -xf - -C "$RUNNER_TEMP/grid-source"
@@ -37,9 +37,9 @@ jobs:
           python -B -I - "$RUNNER_TEMP/grid-tests.xml" "$RUNNER_TEMP/grid-files.json" <<'PY'
           import hashlib,json,pathlib,sys,xml.etree.ElementTree as ET
           cases=ET.parse(sys.argv[1]).getroot().findall('.//testcase')
-          assert len(cases)==901
+          assert len(cases)==909
           assert not any(c.find(k) is not None for c in cases for k in ('failure','error','skipped'))
           files={p.relative_to(pathlib.Path.cwd()).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in pathlib.Path.cwd().rglob('*') if p.is_file()}
           assert files==json.loads(pathlib.Path(sys.argv[2]).read_text()),'Post-test source drift'
-          print('GRID3600_SOFTWARE=901 passed; SOURCE_CLOSED; NO_NPAD_OR_LICENSED_SOLVE')
+          print('GRID3600_SOFTWARE=909 passed; SOURCE_CLOSED; NO_NPAD_OR_LICENSED_SOLVE')
           PY
