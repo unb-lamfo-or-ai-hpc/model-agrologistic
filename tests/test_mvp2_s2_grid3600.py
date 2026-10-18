@@ -91,6 +91,114 @@ def test_no_acknowledgement_before_any_effect(tmp_path, monkeypatch):
     assert not list(tmp_path.iterdir())
 
 
+@pytest.mark.parametrize("mode", ["accepted", "preflight_error", "source_error"])
+def test_real_batch_entry_preserves_positive_and_negative_outcomes(tmp_path, monkeypatch, mode):
+    target, _value, _result, _calls = submit(tmp_path, monkeypatch)
+    monkeypatch.setenv("SLURM_JOB_ID", "456")
+    for key in native.old.ENVIRONMENT:
+        monkeypatch.setenv(key, "before-batch")
+    calls = []
+
+    def verify(*args):
+        if mode == "source_error":
+            raise ValueError("private source detail never exported")
+        calls.append("source")
+
+    monkeypatch.setattr(q, "verify_origin", verify)
+    monkeypatch.setattr(native, "_environment", lambda *a: calls.append("allocation"))
+
+    def execute(folder):
+        calls.append("preflight_and_grid")
+        assert folder == target
+        if mode == "preflight_error":
+            raise ValueError("private preflight detail never exported")
+        return {"stop_reason": None, "arms": [None] * 5, "unrun": []}
+
+    assert q.batch(SOURCE, execute=execute) == (0 if mode == "accepted" else 2)
+    receipt = p.read(target / "driver.json")
+    assert receipt["status"] == ("block_returned" if mode == "accepted" else "blocked_or_partial")
+    assert all(receipt[k] is False for k in q.FLAGS)
+    assert "private" not in (target / "driver.json").read_text()
+    assert calls == (
+        [] if mode == "source_error" else ["source", "allocation", "preflight_and_grid"]
+    )
+    with pytest.raises(FileExistsError):
+        q.batch(SOURCE, execute=lambda *a: pytest.fail("second execution"))
+
+
+@pytest.mark.parametrize("rejected", [False, True])
+def test_real_review_dispatch_uses_new_claim_and_preserves_raw_failure(
+    tmp_path, monkeypatch, rejected
+):
+    target, value, _result, _calls = submit(tmp_path, monkeypatch)
+    monkeypatch.setenv("SLURM_JOB_ID", "456")
+    monkeypatch.setattr(q, "verify_origin", lambda *a: None)
+    result, data, config, _anchor = fixture()
+    monkeypatch.setattr(native, "_recheck", lambda *a: (data, config))
+    arm = target / "arms/t4"
+    arm.mkdir(parents=True)
+    p.publish(arm / "ticket.json", {"threads": 4, "environment": {}, "remaining": p.LIMIT})
+    anchor = native.old.partial.anchor(
+        data,
+        config,
+        source_commit=SOURCE,
+        runtime_sha256=d.digest(value["runtime"]),
+        workbook_sha256=d.WORKBOOK,
+        threads=4,
+    )
+    (arm / "native").mkdir()
+    p.export(arm / "native/products", result, data, config, anchor, remaining=p.LIMIT)
+    if rejected:
+
+        def fail(*args):
+            raise ValueError("public non-derived mismatch")
+
+        monkeypatch.setattr(q.replay, "compare", fail)
+        with pytest.raises(ValueError, match="raw reports preserved"):
+            r.dispatch("review", arm)
+    else:
+        r.dispatch("review", arm)
+    outcome = p.read(arm / "derived-review/outcome.json")
+    assert outcome["status"] == ("blocked" if rejected else "independent_review_returned")
+    assert (arm / "derived-review/fresh-report.json").exists()
+    assert (arm / "independent.json").exists() is not rejected
+
+
+@pytest.mark.parametrize("wrong_job", [False, True])
+def test_worker_dispatch_binds_new_claim_job_and_unchanged_native_executor(
+    tmp_path, monkeypatch, wrong_job
+):
+    target, _value, _result, _calls = submit(tmp_path, monkeypatch)
+    monkeypatch.setenv("SLURM_JOB_ID", "999" if wrong_job else "456")
+    monkeypatch.setattr(q, "verify_origin", lambda *a: None)
+    arm = target / "arms/t4"
+    arm.mkdir(parents=True)
+    p.publish(arm / "ticket.json", {"threads": 4, "environment": {}, "remaining": p.LIMIT})
+    calls = []
+    monkeypatch.setattr(native, "_worker", lambda *a, **k: calls.append((a, k)))
+    if wrong_job:
+        with pytest.raises(ValueError, match="compute identity"):
+            r.dispatch("worker", arm)
+        assert not calls
+    else:
+        r.dispatch("worker", arm)
+        assert calls[0][0][0] == arm and calls[0][0][2:4] == (4, "456")
+        assert calls[0][1]["execute"] is native._native
+
+
+def test_preflight_dispatch_cannot_select_a_native_action(tmp_path, monkeypatch):
+    target, _value, _result, _calls = submit(tmp_path, monkeypatch)
+    monkeypatch.setenv("SLURM_JOB_ID", "456")
+    monkeypatch.setattr(q, "verify_origin", lambda *a: None)
+    folder = target / "prerequisite"
+    folder.mkdir()
+    calls = []
+    monkeypatch.setattr(r, "preflight", lambda path: calls.append(path))
+    monkeypatch.setattr(native, "_worker", lambda *a, **k: pytest.fail("native worker"))
+    r.dispatch("preflight", folder)
+    assert calls == [folder]
+
+
 @pytest.mark.parametrize("reply", ["", "warning\n456\n", "0\n", "456 bad\n"])
 def test_unknown_ack_consumes_new_grid_slot(tmp_path, monkeypatch, reply):
     with pytest.raises(ValueError, match="Unknown acknowledgement"):
