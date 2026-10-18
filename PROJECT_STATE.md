@@ -3,7 +3,7 @@
 Updated 18 October 2026. This public checkpoint contains scope and provenance,
 not private evidence, credentials, local host paths or execution authority.
 
-## Latest checkpoint — terminal P4 job2214305; native return succeeded, independent arm review missing
+## Latest checkpoint — P4 report-comparison failure; qualify existing-vector replay
 
 18 October2026. Resume research/s2-p5-evidence-review, not a new bookkeeping PR.
 The [forensic review](docs/mvp2_s2_p4_2214305_forensic_review.md) and
@@ -31,20 +31,34 @@ is a different scope. Vector81589895bytes; five equal-sized vectors project
 No future output-size guarantee; next package must explicitly qualify fit/cap
 policy, not silently raise limits or truncate evidence.
 
-The post-worker review is null/missing; batch records only ValueError. Exact
-failing check remains unknown because private review.err/review.out are absent
-from the carrier. Null portable validation_error is NOT acceptance: that path
-skips null arm reviews. Human requested ONE read-only tail of those two existing
-logs. Do not replace this missing traceback with a new optimization or guess a
-license/source/numerical cause. Preserve consumed claim, logs, original reports,
-all prior cohorts, source and archives. No claim reuse, repeat/follow-on now.
+The maintainer subsequently supplied private review stderr: products.review
+line182 raises Fresh residual validation mismatch on strict whole-report equality.
+Fresh report was discarded; actual private differing fields remain unknown.
+Public real-validator subprocesses reproduce last-bit transport-budget differences
+with otherwise identical accepted/zero-failure reports. This is a demonstrated
+mechanism, not yet proof that private differences are confined to those fields.
+Null portable validation_error skips null arm reviews; it is NOT acceptance.
+Preserve consumed claim, logs, original reports, cohorts, source and archives.
 
-Next owner: human supplies private review traceback; agent integrates the actual
-fix, typed post-worker diagnostics, unchanged independent scientific checks,
-real-size/full-grid export regression, wrapper/collection/source qualification
-as ONE functional package. Qualify existing-vector post-worker replay before
-another native campaign; any derived review is separate, never an overwritten
-receipt or retroactive acceptance. P4/P5/S2 stay open; homogeneous grid/cohort
+The complete [derived replay package](docs/mvp2_s2_residual_replay.md) supplies
+unchanged independent validator, separately preserved raw reports, analytical
+transport-sum comparison, coefficient witness, one-shot claim, wrapper and
+terminal/forensic collector. Only four transport-budget diagnostic fields can
+differ within binary64 accumulation bounds; every other report field and original
+scientific acceptance/tolerance remains exact. Any other drift/rejection blocks.
+No protected scientific/native file, original certificate or transport pin changes.
+New read-only existing-vector allocation is4logicalCPUs/16GiB/30min, with NO model
+construction/optimization/license probe, old-claim writes or native continuation.
+Current qualification:55 local passes/one actual-Bash-only skip; require56 Linux
+zero-skip cases/source closure, existing810 integration cases and all Quality/CI
+before Ready and a separate authorized merge/pinned human CLI. No NPAD job now.
+
+Next owner: agent finishes this SAME functional PR, then maintainer decides merge
+and runs the existing-vector replay. Actual evidence precedes new grid admission;
+any derived review is separate, never an overwritten receipt or retroactive
+acceptance. Prospectively qualify whole-grid size policy, comparison integration,
+diagnostics and complete wrapper/collection together; no silent cap increase.
+P4/P5/S2 stay open; homogeneous grid/cohort
 requirements and later h400/SCIP215/conditional500/S6 remain. After defensible
 S2 exit, prepare the requested MVP2 balance and detailed prompt for Project01/
 chat01.01 for the coauthor presentation. Do not message another chat or edit the
