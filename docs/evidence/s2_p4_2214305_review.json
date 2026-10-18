@@ -18,7 +18,15 @@
   "root": {"state": "FAILED", "exit_code": "2:0", "elapsed_seconds": 4593},
   "step": {"id": "2214305.0", "state": "COMPLETED", "exit_code": "0:0", "elapsed_seconds": 4282},
   "batch_stop_reason": "ValueError",
-  "exact_post_worker_failure_site": "unknown_pending_private_review_logs",
+  "exact_post_worker_failure_site": "mvp2_s2_h300_products.review_strict_validation_report_equality",
+  "supplemental_evidence": {
+    "source": "maintainer_supplied_private_review_stderr_traceback_2026_10_18",
+    "exception": "ValueError: Fresh residual validation mismatch.",
+    "fresh_private_report_fields_not_preserved_by_original_reviewer": true,
+    "public_cross_process_fixture_reproduces_transport_budget_last_bit_drift": true,
+    "actual_private_differing_fields_not_yet_determined": true,
+    "next_gate": "separate_read_only_existing_vector_replay_no_optimization"
+  },
   "threads_observed": [4],
   "unrun": [1, 8, 2, 16],
   "unaccounted": [],
