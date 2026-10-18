@@ -6,7 +6,7 @@
 into the SAME PR109, not a separate short replay gate/PR. Old-vector preflight
 occurs before any new native probe/build inside ONE12h16CPU192GiB allocation.
 New claim, corrected canonical report/typed evidence, versioned1GiB expanded
-transfer policy (old256MiB untouched),169 focused/901 related Linux tests and
+transfer policy (old256MiB untouched),177 focused/909 related Linux tests and
 complete human CLI together. Smaller Ready/CLI is superseded; keep Draft until
 renewed qualification. Then authorized merge/human one-grid execution, followed
 by P5 evidence/quality/resource/censoring/exit review. Baseline two PRs including
