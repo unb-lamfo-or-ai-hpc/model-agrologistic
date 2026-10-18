@@ -8,7 +8,7 @@ in the SAME PR109. Previous smaller Ready/CLI superseded; Draft while qualifying
 preflight inside its allocation, independent canonical review, new exclusive
 claim, prospective1GiB transfer envelope, wrapper and terminal collection.
 No separate short prerequisite job, scientific/solver-memory change, old-claim
-reuse or automatic second block. Renewed exact-head169 focused/901 related
+reuse or automatic second block. Renewed exact-head177 focused/909 related
 Linux cases/all CI/Quality precede Ready/authorized merge and new pinned CLI.
 
 Job2214305 root FAILED2:0; numeric step COMPLETED0:0. Exact archive/sidecar,
