@@ -2,6 +2,17 @@
 
 ## Authority and scope
 
+18 October maintainer expansion: [consolidate ALL five3600s thread arms](mvp2_s2_grid3600.md)
+into the SAME PR109, not a separate short replay gate/PR. Old-vector preflight
+occurs before any new native probe/build inside ONE12h16CPU192GiB allocation.
+New claim, corrected canonical report/typed evidence, versioned1GiB expanded
+transfer policy (old256MiB untouched),169 focused/901 related Linux tests and
+complete human CLI together. Smaller Ready/CLI is superseded; keep Draft until
+renewed qualification. Then authorized merge/human one-grid execution, followed
+by P5 evidence/quality/resource/censoring/exit review. Baseline two PRs including
+109; repairs remain evidence-dependent. No five-level scope reduction or automatic
+second block. No optimizer/phase/resource budget change or S2 closure now.
+
 18 October terminal2214305: [forensic audit](mvp2_s2_p4_2214305_forensic_review.md)
 verifies native return/closed vector and worker accepted residual report, but
 root FAILED2:0/post-worker review null/ValueError;1/8/2/16 unrun. Preserve the
