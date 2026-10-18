@@ -1,5 +1,11 @@
 # Existing-vector replay after P4 job2214305
 
+18 October scope update: the maintainer requests the complete five-thread3600s
+cohort in this SAME PR. Use the [integrated runbook](mvp2_s2_grid3600.md); the old
+four-CPU replay-only CLI/Ready state is superseded. This module remains the
+analytical comparator and read-only evidence reader used by the integrated
+preflight inside ONE12h allocation. It does not alone admit a native campaign.
+
 18 October2026. Complete software, wrapper, tests and terminal collection on the
 same P5 branch, not a bookkeeping PR. Read the [forensic evidence](mvp2_s2_p4_2214305_forensic_review.md).
 Original source c9b4fa7e783a499596cf31a2c5e31995605c90e2, job2214305, outer SHA256
