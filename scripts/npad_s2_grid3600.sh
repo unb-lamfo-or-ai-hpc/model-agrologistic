@@ -44,7 +44,7 @@ if [[ ! -e $CLAIM ]]; then
   cd "$SRC"
   "$PY" -B -m ruff check --no-cache scripts/mvp2_s2_grid_products.py scripts/mvp2_s2_grid_runtime.py scripts/mvp2_s2_grid_release.py scripts/mvp2_s2_p4_terminal_runtime.py tests/test_mvp2_s2_grid3600.py
   "$PY" -B -m pytest -p no:cacheprovider tests/test_mvp2_s2_grid3600.py tests/test_mvp2_s2_residual_replay.py tests/test_mvp2_s2_p4_terminal.py -q --basetemp="$BOOTSTRAP/tests" --junitxml="$BOOTSTRAP/regression.xml"
-  "$PY" -B -I -c 'import sys,xml.etree.ElementTree as E; c=E.parse(sys.argv[1]).getroot().findall(".//testcase"); assert len(c)==169 and not any(x.find(k) is not None for x in c for k in ("failure","error","skipped")); print("GRID3600_REGRESSION="+str(len(c))+" passed; zero failures/errors/skips")' "$BOOTSTRAP/regression.xml"
+  "$PY" -B -I -c 'import sys,xml.etree.ElementTree as E; c=E.parse(sys.argv[1]).getroot().findall(".//testcase"); assert len(c)==177 and not any(x.find(k) is not None for x in c for k in ("failure","error","skipped")); print("GRID3600_REGRESSION="+str(len(c))+" passed; zero failures/errors/skips")' "$BOOTSTRAP/regression.xml"
   verify
 fi
 exec "$PY" -B -I -c 'import runpy,sys;sys.dont_write_bytecode=True;r=sys.argv.pop(1);sys.path.insert(0,r);runpy.run_module("scripts.mvp2_s2_grid_release",run_name="__main__",alter_sys=True)' "$SRC" "$ACTION" "$SOURCE_SHA" "$@"
