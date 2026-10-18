@@ -1,20 +1,28 @@
 # Dated research status: 18 October 2026
 
-## Current P4 terminal evidence — post-worker review unresolved
+## Current P4 evidence — strict report mismatch; derived replay next
 
 Job2214305 root FAILED2:0; numeric step COMPLETED0:0. Exact archive/sidecar,
 native nested/separate equality,662 execution-source hashes, closed products
 and diagnostics pass. Native TIME_LIMIT/Runtime3604.806986s/SolCount2, worker-
 written residual report accepted/0 failures; no post-worker independent report.
-Batch records ValueError, exact site pending ONE private review-log tail. Only
+Supplemental private stderr confirms products.review strict whole-report equality
+raised Fresh residual validation mismatch; actual differing private fields remain
+unknown. A public cross-process validator reproduces last-bit transport budgets
+with all other accepted residual fields identical. Only
 4threads ran;1/8/2/16 unrun. Capacity100% gap/no economic stage; no scientific
 grid/configuration selection or S2 exit. See the
 [forensic review](mvp2_s2_p4_2214305_forensic_review.md) and
 [authoritative checkpoint](../PROJECT_STATE.md). Preserve claim/source/cohorts.
 55.73GiB step RSS is not batch0.47GiB. Vector81.6MB creates a prospective
 whole-block256MiB expanded-cap risk; do not silently change cap/omit vectors.
-Next: actual post-worker fix and existing-vector qualification, full-size/grid
-tests/wrapper/collector in ONE package, not blind native rerun. After S2 exit,
+Next: [complete read-only replay](mvp2_s2_residual_replay.md), analytical budget-
+order equivalence and raw-report retention, strict other-field rejection, wrapper,
+new exclusive claim and terminal collection.55 local passes/one Bash-only skip;
+56 exact-head Linux plus existing810/Quality required. Ready/authorized merge
+precedes human4CPU/16GiB/30min existing-vector replay, never a native retry.
+Original validator/tolerances/57 protected files/four transport pins unchanged.
+Actual replay then separately qualified full-grid size/admission package. After S2 exit,
 prepare requested MVP2 balance/Project01-chat01.01 prompt. Later scope unchanged.
 
 ## Pause — P4 job2214305 reported RUNNING
