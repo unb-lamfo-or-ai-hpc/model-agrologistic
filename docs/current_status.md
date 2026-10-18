@@ -2,6 +2,15 @@
 
 ## Current P4 evidence — strict report mismatch; derived replay next
 
+Latest maintainer direction: include ALL1/2/4/8/16 optimizations at global3600s
+in the SAME PR109. Previous smaller Ready/CLI superseded; Draft while qualifying
+[one complete12h homogeneous grid](mvp2_s2_grid3600.md), including existing-vector
+preflight inside its allocation, independent canonical review, new exclusive
+claim, prospective1GiB transfer envelope, wrapper and terminal collection.
+No separate short prerequisite job, scientific/solver-memory change, old-claim
+reuse or automatic second block. Renewed exact-head169 focused/901 related
+Linux cases/all CI/Quality precede Ready/authorized merge and new pinned CLI.
+
 Job2214305 root FAILED2:0; numeric step COMPLETED0:0. Exact archive/sidecar,
 native nested/separate equality,662 execution-source hashes, closed products
 and diagnostics pass. Native TIME_LIMIT/Runtime3604.806986s/SolCount2, worker-
