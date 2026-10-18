@@ -16,7 +16,7 @@ five native arms. No extra short prerequisite job, old-claim reuse or automatic
 second block. Native3600/shared900/hard5700 and all scientific criteria unchanged.
 Prospective expanded transfer1GiB (old256MiB cohorts untouched; each new arm still
 uses <=256MiB native products) is explicit for review at merge, not silently
-adopted or a solver-memory change. Require169 focused Linux/901 related cases,
+adopted or a solver-memory change. Require177 focused Linux/909 related cases,
 full observed-size five-vector streaming, actual source closure, all CI/Quality
 before renewed Ready/authorized merge and COMPLETE pinned replacement CLI.
 No new NPAD execution or merge by agent. Baseline remaining functional PRs:
