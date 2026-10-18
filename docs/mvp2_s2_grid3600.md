@@ -88,10 +88,10 @@ exceed the explicit envelope, retain originals and report export failure.
 
 ## Qualification and complete commands
 
-The package includes35 new grid cases,56 existing-vector cases and78 terminal
-integration cases:169 focused Linux tests, zero failures/errors/skips. Existing
+The package includes43 new grid cases,56 existing-vector cases and78 terminal
+integration cases:177 focused Linux tests, zero failures/errors/skips. Existing
 810-case integrated qualification and56-case replay gate also remain; the combined
-related total is901 distinct cases. Actual source closure after tests, Ruff,
+related total is909 distinct cases. Actual source closure after tests, Ruff,
 Bash syntax/closed actions, genuine public residual export/review, 5-arm cold
 backend-double pipeline, failure prefixes, native diagnostics, portable external
 anchors, no-incumbent classification, immutable idempotent collection and
@@ -104,6 +104,10 @@ single-step parser's6-row limit on an8-row full grid. Both are now handled by
 the existing sentinel contract and bounded per-line parsing, not by suppressing
 states, converting no-incumbent to feasibility or relaxing scientific checks.
 No NPAD job was executed to discover those software defects.
+Eight additional entry-point cases qualify the actual new batch and private
+preflight/worker/review dispatch, including blocked source/preflight, wrong job,
+typed raw-report preservation and exclusive batch-slot consumption. Their public
+fixture explicitly creates the native parent directory before product export.
 
 The final exact-head source/wrapper hashes and complete human setup/start/status/
 wait/collect lines will be posted to PR109 after qualification. Do NOT use the
