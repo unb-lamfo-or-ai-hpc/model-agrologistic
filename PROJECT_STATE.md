@@ -1,9 +1,146 @@
 # Model Agrologistic — MVP 2.0 checkpoint
 
-Updated 17 October 2026. This public checkpoint contains scope and provenance,
+Updated 18 October 2026. This public checkpoint contains scope and provenance,
 not private evidence, credentials, local host paths or execution authority.
 
-## Latest checkpoint — approved 3600s/12h integrated P4 successor
+## Latest checkpoint — P4 report-comparison failure; qualify existing-vector replay
+
+18 October scope expansion requested by maintainer: include all1/2/4/8/16-thread
+optimizations again, each global3600s. PR109's smaller Ready state and four-CPU
+replay-only CLI are SUPERSEDED; return the SAME PR to Draft and qualify the
+[integrated five-arm package](docs/mvp2_s2_grid3600.md). One new12h/16logicalCPU/
+192GiB homogeneous cold4/1/8/2/16 cohort, exclusive `.mvp2-s2-grid3600-v1` claim.
+Bounded existing-vector validation runs FIRST inside that same allocation; only
+qualified equivalence releases fresh license/input/allocation admission and the
+five native arms. No extra short prerequisite job, old-claim reuse or automatic
+second block. Native3600/shared900/hard5700 and all scientific criteria unchanged.
+Prospective expanded transfer1GiB (old256MiB cohorts untouched; each new arm still
+uses <=256MiB native products) is explicit for review at merge, not silently
+adopted or a solver-memory change. Require177 focused Linux/909 related cases,
+full observed-size five-vector streaming, actual source closure, all CI/Quality
+before renewed Ready/authorized merge and COMPLETE pinned replacement CLI.
+No new NPAD execution or merge by agent. Baseline remaining functional PRs:
+this consolidated109, actual human evidence, then P5 exit/interpretation; extra
+repairs depend on findings. No S2 closure or scientific configuration selected.
+Earlier smaller-package qualification below is historical, not enlarged-scope CI.
+
+18 October2026. Resume research/s2-p5-evidence-review, not a new bookkeeping PR.
+The [forensic review](docs/mvp2_s2_p4_2214305_forensic_review.md) and
+[redacted ledger](docs/evidence/s2_p4_2214305_review.json) preserve the terminal
+outcome of merged PR108/sourcec9b4fa7/job2214305. External archive/sidecar SHA256
+27e2a6055463c54333f5368a1452e09af966a91be1034521a7c68db75cba57f0 matches;
+unchanged canonical audit reproduces portable_integrity_replayed_p5_required /
+forensic_partial_block. Separate native matches nested; all662 source blobs,
+worker product hashes/sizes and complete diagnostics bind to the original plan.
+
+Root/batch FAILED2:0/4593s; numeric step COMPLETED0:0/4282s. Worker controls
+returned normally through four phases, no TERM/KILL, stop_reason null. Native
+TIME_LIMIT9/Runtime3604.806986s/SolCount2, closed vector/terminal present. Worker-
+written residual report accepted,0 failures/32 families/2694161 checks; this is
+NOT a completed post-worker independent review or fresh local residual replay.
+Only4threads ran;1/8/2/16 unrun. No economic stage observed. Capacity stage
+reports100% gap; zero service objective has raw gap1e100, retained without
+scientific reinterpretation or relaxed validation. No complete hierarchy,
+scientific configuration selection, speedup or S2 exit is established.
+
+843 resource samples/no observation errors; sampled tree and step MaxRSS55.727798
+GiB. Batch0.469341GiB is not native memory; native allocator47.179366 decimalGB
+is a different scope. Vector81589895bytes; five equal-sized vectors project
+407949475bytes, exceeding the expanded256MiB whole-block cap before overhead.
+No future output-size guarantee; next package must explicitly qualify fit/cap
+policy, not silently raise limits or truncate evidence.
+
+The maintainer subsequently supplied private review stderr: products.review
+line182 raises Fresh residual validation mismatch on strict whole-report equality.
+Fresh report was discarded; actual private differing fields remain unknown.
+Public real-validator subprocesses reproduce last-bit transport-budget differences
+with otherwise identical accepted/zero-failure reports. This is a demonstrated
+mechanism, not yet proof that private differences are confined to those fields.
+Null portable validation_error skips null arm reviews; it is NOT acceptance.
+Preserve consumed claim, logs, original reports, cohorts, source and archives.
+
+The smaller, now superseded [derived replay package](docs/mvp2_s2_residual_replay.md) supplies
+unchanged independent validator, separately preserved raw reports, analytical
+transport-sum comparison, coefficient witness, one-shot claim, wrapper and
+terminal/forensic collector. Only four transport-budget diagnostic fields can
+differ within binary64 accumulation bounds; every other report field and original
+scientific acceptance/tolerance remains exact. Any other drift/rejection blocks.
+No protected scientific/native file, original certificate or transport pin changes.
+New read-only existing-vector allocation is4logicalCPUs/16GiB/30min, with NO model
+construction/optimization/license probe, old-claim writes or native continuation.
+Current qualification:55 local passes/one actual-Bash-only skip; require56 Linux
+zero-skip cases/source closure, existing810 integration cases and all Quality/CI
+before Ready and a separate authorized merge/pinned human CLI. No NPAD job now.
+
+Next owner: agent finishes this SAME functional PR, then maintainer decides merge
+and runs the existing-vector replay. Actual evidence precedes new grid admission;
+any derived review is separate, never an overwritten receipt or retroactive
+acceptance. Prospectively qualify whole-grid size policy, comparison integration,
+diagnostics and complete wrapper/collection together; no silent cap increase.
+P4/P5/S2 stay open; homogeneous grid/cohort
+requirements and later h400/SCIP215/conditional500/S6 remain. After defensible
+S2 exit, prepare the requested MVP2 balance and detailed prompt for Project01/
+chat01.01 for the coauthor presentation. Do not message another chat or edit the
+article now. S3/S4 cancelled, EVPI/VSS excluded, final-only main sync and
+conditional December/base January2027 forecast unchanged. No NPAD job/merge
+or optimization is performed by the agent in this forensic checkpoint.
+
+## Prior checkpoint — pause with P4 job2214305 running; collect the existing block
+
+17 October 2026. Live GitHub confirms PR108 merged into develop at
+`233abebe97b111fea5f5bbe4cdd4c9f527988e72`. The qualified execution source remains
+`c9b4fa7e783a499596cf31a2c5e31995605c90e2`, tree
+`582d499b8d39989579ce5dc7415e2fe5e8ca91bb`; do not substitute the later checkpoint
+commit into the running source or reinterpret the merge as another execution.
+All12 checks passed, including810 Linux cases with zero failures/errors/skips,
+physical source closure and Quality/distribution build. All662 source files
+matched;57 protected files/four frozen transport hashes and predecessors passed.
+The [qualified instructions](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/108#issuecomment-6236287696)
+and [integrated protocol](docs/mvp2_s2_p4_terminal_integration.md) remain authoritative.
+
+The maintainer executed the pinned wrapper and supplied this nonterminal snapshot:
+
+- Job2214305, root/batch/extern RUNNING; status raw elapsed719s and numeric
+  step2214305.0 RUNNING522s, ExitCode0:0 while running. A slightly later formatted
+  sacct snapshot reports root12m03s and step8m46s, each AllocCPUs16.
+- RAW_HEAD_BYTES=662 identical; status=accounting_observed. Native plan SHA256
+  `daf4de2a261eadb2ce8e76663fb1f84e77e3ac25518f350f4224ea984e9b90dc`.
+- Consumed exclusive claim basename `.mvp2-s2-p4-terminal-v1`. Preserve source,
+  bootstrap, claim, native files, all previous claims and original2214130 evidence.
+  No terminal archive/checksum or release hash was supplied in this snapshot;
+  obtain them from terminal collection, never guess or recompute from a new plan.
+
+This is user-supplied scheduler evidence, not an agent live NPAD query or scientific
+acceptance. Running ExitCode0:0 is not terminal success. MaxRSS is not yet reported;
+there is no native terminal, incumbent, objective/gap, hierarchy, validated vector
+or performance conclusion to assert. AllocCPUs16 describes the allocated pool,
+not proof that the first Gurobi arm uses16 threads. Planned cold order4/1/8/2/16
+and global TimeLimit3600/arm, shared900s return/export,5700s arm and12h reservation
+are unchanged; the current native subphase is not established by sacct.
+
+Pause the conversation only, not the existing job. No scancel, source/environment
+edit, fresh start, retry, repeat or additional campaign is admitted. The existing
+serial block may advance its five planned arms under its installed controls;
+NO_AUTOMATIC_FOLLOW_ON forbids another block, not that already planned sequence.
+On return, human runs the SAME pinned wrapper with status or wait/collect and
+the SAME execution source. Ctrl-C from wait is safe; never reset the claim.
+Transfer printed DOWNLOAD and TRANSFER_CHECKSUM using MobaXterm, with external
+SHA256, job/source/release/native-plan IDs and full terminal accounting, even if
+partial/failed. Preserve raw logs privately; do not publish license/environment.
+
+Next owner after pause: human supplies terminal carrier/sidecar; agent verifies
+external checksum, replay/inventory/bindings, worker diagnostics and available
+scientific/resource/partial evidence before preparing the SAME P5 functional PR.
+Stage this pause checkpoint on research/s2-p5-evidence-review, not a standalone
+bookkeeping PR and not in the running checkout. P4/P5/S2 remain open; no scientific
+configuration selected, S2 closure, h400/SCIP/h500 admission or repeat follows.
+Later approved h400, bounded existing-SCIP/h215, conditional h500 and S6-A/B remain;
+S3/S4 cancelled, EVPI/VSS excluded, coauthor manuscript and final post-article main
+sync preserved. December conditional/base January2027 forecast is not revised
+from a running-job snapshot. No experiment, merge or cluster access by the agent
+occurs in saving this checkpoint.
+
+## Prior checkpoint — approved 3600s/12h integrated P4 successor
 
 17 October 2026. PR107 is merged at
 38ebfe256c262d2bd7c02d7ffd821b1e058ec578. The maintainer explicitly approved

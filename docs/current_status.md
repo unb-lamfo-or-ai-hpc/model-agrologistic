@@ -1,4 +1,55 @@
-# Dated research status: 17 October 2026
+# Dated research status: 18 October 2026
+
+## Current P4 evidence — strict report mismatch; derived replay next
+
+Latest maintainer direction: include ALL1/2/4/8/16 optimizations at global3600s
+in the SAME PR109. Previous smaller Ready/CLI superseded; Draft while qualifying
+[one complete12h homogeneous grid](mvp2_s2_grid3600.md), including existing-vector
+preflight inside its allocation, independent canonical review, new exclusive
+claim, prospective1GiB transfer envelope, wrapper and terminal collection.
+No separate short prerequisite job, scientific/solver-memory change, old-claim
+reuse or automatic second block. Renewed exact-head177 focused/909 related
+Linux cases/all CI/Quality precede Ready/authorized merge and new pinned CLI.
+
+Job2214305 root FAILED2:0; numeric step COMPLETED0:0. Exact archive/sidecar,
+native nested/separate equality,662 execution-source hashes, closed products
+and diagnostics pass. Native TIME_LIMIT/Runtime3604.806986s/SolCount2, worker-
+written residual report accepted/0 failures; no post-worker independent report.
+Supplemental private stderr confirms products.review strict whole-report equality
+raised Fresh residual validation mismatch; actual differing private fields remain
+unknown. A public cross-process validator reproduces last-bit transport budgets
+with all other accepted residual fields identical. Only
+4threads ran;1/8/2/16 unrun. Capacity100% gap/no economic stage; no scientific
+grid/configuration selection or S2 exit. See the
+[forensic review](mvp2_s2_p4_2214305_forensic_review.md) and
+[authoritative checkpoint](../PROJECT_STATE.md). Preserve claim/source/cohorts.
+55.73GiB step RSS is not batch0.47GiB. Vector81.6MB creates a prospective
+whole-block256MiB expanded-cap risk; do not silently change cap/omit vectors.
+Next: [complete read-only replay](mvp2_s2_residual_replay.md), analytical budget-
+order equivalence and raw-report retention, strict other-field rejection, wrapper,
+new exclusive claim and terminal collection.55 local passes/one Bash-only skip;
+56 exact-head Linux plus existing810/Quality required. Ready/authorized merge
+precedes human4CPU/16GiB/30min existing-vector replay, never a native retry.
+Original validator/tolerances/57 protected files/four transport pins unchanged.
+Actual replay then separately qualified full-grid size/admission package. After S2 exit,
+prepare requested MVP2 balance/Project01-chat01.01 prompt. Later scope unchanged.
+
+## Pause — P4 job2214305 reported RUNNING
+
+PR108 merged into develop at233abebe97b111fea5f5bbe4cdd4c9f527988e72; qualified
+execution source c9b4fa7e783a499596cf31a2c5e31995605c90e2,662 identical files,
+12 successful checks including810 Linux cases and Quality/build. Human snapshot:
+root/batch/extern and step2214305.0 RUNNING; later root12m03s/step8m46s,16 allocated
+CPUs, no reported MaxRSS yet. Running0:0 is not a terminal or scientific result.
+Plan SHA256daf4de2a261eadb2ce8e76663fb1f84e77e3ac25518f350f4224ea984e9b90dc;
+consumed claim .mvp2-s2-p4-terminal-v1. No terminal carrier supplied yet.
+See the [authoritative pause checkpoint](../PROJECT_STATE.md) and
+[pinned status/wait/collect instructions](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/108#issuecomment-6236287696).
+Conversation pause does not cancel the existing five-arm serial block. Preserve
+claims/source/environment; on return collect this SAME job/source, never resubmit.
+Stage checkpoint on the next P5 functional branch, no standalone PR. P4/P5/S2
+stay open; no configuration selection, repeat or automatic next campaign. Later
+scope/manuscript/final-only main sync unchanged. Agent made no NPAD call/job.
 
 ## Current successor — approved one-hour arms in a twelve-hour block
 

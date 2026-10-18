@@ -2,6 +2,51 @@
 
 ## Authority and scope
 
+18 October maintainer expansion: [consolidate ALL five3600s thread arms](mvp2_s2_grid3600.md)
+into the SAME PR109, not a separate short replay gate/PR. Old-vector preflight
+occurs before any new native probe/build inside ONE12h16CPU192GiB allocation.
+New claim, corrected canonical report/typed evidence, versioned1GiB expanded
+transfer policy (old256MiB untouched),177 focused/909 related Linux tests and
+complete human CLI together. Smaller Ready/CLI is superseded; keep Draft until
+renewed qualification. Then authorized merge/human one-grid execution, followed
+by P5 evidence/quality/resource/censoring/exit review. Baseline two PRs including
+109; repairs remain evidence-dependent. No five-level scope reduction or automatic
+second block. No optimizer/phase/resource budget change or S2 closure now.
+
+18 October terminal2214305: [forensic audit](mvp2_s2_p4_2214305_forensic_review.md)
+verifies native return/closed vector and worker accepted residual report, but
+root FAILED2:0/post-worker review null/ValueError;1/8/2/16 unrun. Preserve the
+consumed claim and original cohorts. Supplemental stderr now confirms strict
+whole-validation-report equality mismatch, not the actual differing private fields.
+Public real-validator subprocesses reproduce accepted report transport-budget
+last-bit drift. Consolidate the [existing-vector replay](mvp2_s2_residual_replay.md),
+bounded analytical comparison (all other fields exact), raw reports/witness,
+typed diagnostics, one-shot wrapper/claim and forensic collector in the SAME
+functional P5 branch. Require56 exact-head Linux/810 existing integration/Quality;
+then Ready/authorized merge and human4CPU/16GiB/30min read-only replay.
+No construction/optimization/license probe or original receipt rewrite. Actual
+replay precedes the next consolidated grid integration/admission package, including
+explicit whole-grid export/cap qualification. No automatic new
+optimization/repeat, silent expanded-cap change or cohort mixing. Neither a
+complete scientific thread contrast nor S2 closure is established. After P4
+evidence passes, P5 audits quality/resources/censoring/unrun and explicit S2 exit;
+then prepare MVP2 balance and detailed Project01/chat01.01 coauthor handoff.
+Later approved scope/editorial decisions/final-only main sync remain unchanged.
+
+17 October pause: PR108 merged at233abebe97b111fea5f5bbe4cdd4c9f527988e72,
+qualified source c9b4fa7e783a499596cf31a2c5e31995605c90e2. The maintainer reports
+P4 job2214305 RUNNING with the frozen3600s/arm12h serial-block protocol. Save
+the [checkpoint](../PROJECT_STATE.md) on research/s2-p5-evidence-review and extend
+that SAME functional branch after terminal evidence arrives; no bookkeeping PR,
+source mutation, job/repeat or automatic follow-on during pause. Human resumes
+only existing-job status/wait/collect, preserving consumed claim and originals.
+Next P5 audits the actual terminal block, partial/unrun grid, native/observed
+resources, independent validation and configuration/exit criteria. Completion,
+solution quality and S2 closure are not inferred from RUNNING or ExitCode0:0.
+Additional repairs depend on evidence. Later approved work, S3/S4 cancellation,
+EVPI/VSS exclusion, manuscript preservation, final-only main sync and conditional
+December/base January forecast remain unchanged; do not reduce approved scope.
+
 17 October approved successor: PR107 merged at38ebfe256c262d2bd7c02d7ffd821b1e058ec578.
 The maintainer expressly approves global3600s per arm and minimum9h allocation.
 Consolidate the [integrated P4 package](mvp2_s2_p4_terminal_integration.md): new

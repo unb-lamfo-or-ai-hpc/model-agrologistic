@@ -511,7 +511,9 @@ def _arm(
     popen=subprocess.Popen,
     command=old.source.command,
     supervise=_supervise,
+    dispatch=None,
 ):
+    dispatch = dispatch_argv if dispatch is None else dispatch
     target.mkdir()
     p.publish(
         target / "ticket.json",
@@ -528,18 +530,19 @@ def _arm(
         "--time=01:35:00",
         "--kill-on-bad-exit=1",
         "--export=ALL",
-        *dispatch_argv("worker", target),
+        *dispatch("worker", target),
     ]
     with (target / "worker.out").open("xb") as out, (target / "worker.err").open("xb") as err:
         process = popen(argv, stdin=subprocess.DEVNULL, stdout=out, stderr=err, shell=False)
         return supervise(process, target, plan, threads, job, environment, hard, command=command)
 
 
-def _independent(arm, data, config, anchor, remaining, *, run=subprocess.run):
+def _independent(arm, data, config, anchor, remaining, *, run=subprocess.run, dispatch=None):
+    dispatch = dispatch_argv if dispatch is None else dispatch
     d.require(0 < remaining <= 900, "Total independent review budget.")
     with (arm / "review.out").open("xb") as out, (arm / "review.err").open("xb") as err:
         result = run(
-            dispatch_argv("review", arm),
+            dispatch("review", arm),
             stdout=out,
             stderr=err,
             stdin=subprocess.DEVNULL,
@@ -644,6 +647,8 @@ def _batch(
     independent=_independent,
     command=old.source.command,
     clock=time.monotonic,
+    export_limit=None,
+    allocation_deadline=None,
 ):
     target = p.safe(target)
     plan = validate(p.read(target / "plan.json"))
@@ -656,6 +661,14 @@ def _batch(
     origin = p.read(target / "origin.json")
     started = clock()
     block_end, audit_remaining = started + 43200, 900
+    if allocation_deadline is not None:
+        d.number(allocation_deadline, "Absolute allocation deadline")
+        block_end = min(block_end, allocation_deadline)
+    export_limit = p.LIMIT if export_limit is None else export_limit
+    d.require(
+        type(export_limit) is int and p.LIMIT <= export_limit <= 1024**3,
+        "Prospective transfer envelope.",
+    )
     arms, stopped, env, capability = [], None, None, None
     try:
         d.require(
@@ -675,7 +688,9 @@ def _batch(
             d.require(environment(plan, job, command=command) == env, "Nonhomogeneous allocation.")
             d.require(clock() + 5700 + audit_remaining + 600 <= block_end, "Post-check headroom.")
             path = target / "arms" / f"t{threads}"
-            remaining = p.LIMIT - sum(x.stat().st_size + 1024 for x in target.rglob("*.json"))
+            remaining = min(
+                p.LIMIT, export_limit - sum(x.stat().st_size + 1024 for x in target.rglob("*.json"))
+            )
             arms.append({"threads": threads, "attempt": None, "review": None})
             attempt = run_arm(
                 path,
@@ -761,9 +776,24 @@ def _batch(
     return value
 
 
-def _collect(target, expected_plan, job, *, command=old.source.command, recheck=_recheck):
+def _collect(
+    target,
+    expected_plan,
+    job,
+    *,
+    command=old.source.command,
+    recheck=_recheck,
+    reviewer=None,
+    pack=None,
+    inventory=None,
+    unpack=None,
+):
     """Fresh vector validation on NPAD; immutable portable evidence of all terminal outcomes."""
     target = p.safe(target)
+    reviewer = p.review if reviewer is None else reviewer
+    pack = p.pack if pack is None else pack
+    inventory = p.inventory if inventory is None else inventory
+    unpack = p.unpack_review if unpack is None else unpack
     plan = validate(p.read(target / "plan.json"))
     d.require(
         d.digest(plan) == expected_plan
@@ -870,7 +900,7 @@ def _collect(target, expected_plan, job, *, command=old.source.command, recheck=
                     workbook_sha256=d.WORKBOOK,
                     threads=item["threads"],
                 )
-                report = p.review(path / "native/products", data, config, anchor)
+                report = reviewer(path / "native/products", data, config, anchor)
                 d.require(
                     report == item["review"]
                     and attempt["stop_reason"] is None
@@ -922,13 +952,13 @@ def _collect(target, expected_plan, job, *, command=old.source.command, recheck=
     archive = target / "s2-h300-academic-evidence.tar.gz"
     if archive.exists():
         transfer = p.read(target / "transfer.json")
-        p.unpack_review(archive, transfer["sha256"], transfer["files"])
-        d.require(transfer["files"] == p.inventory(target), "Cached inventory drift.")
+        unpack(archive, transfer["sha256"], transfer["files"])
+        d.require(transfer["files"] == inventory(target), "Cached inventory drift.")
     else:
-        checksum, files = p.pack(target, archive)
+        checksum, files = pack(target, archive)
         p.publish(
             target / "transfer.json",
             {"sha256": checksum, "files": files, "plan_sha256": expected_plan},
         )
-        p.unpack_review(archive, checksum, files)
+        unpack(archive, checksum, files)
     return report

@@ -41,6 +41,15 @@ checked-out branch. They do not configure other repositories or ChatGPT projects
 
 ## Scientific and software discipline
 
+- Maintainer request,18 October2026: consolidate the complete new h300 thread
+  grid (4/1/8/2/16, global3600s/arm) and old-vector preflight in ONE12h allocation
+  in PR109. Follow the [versioned complete runbook](docs/mvp2_s2_grid3600.md).
+  Smaller replay-only Ready/CLI is superseded. Qualify full package before Ready,
+  obtain explicit merge authorization and supply pinned human-only CLI. Prospective
+  whole-cohort transfer1GiB is explicit for merge review, not solver memory or an
+  old-certificate cap change. Preserve256MiB historical transports, all scientific
+  criteria, claims and evidence. No automatic additional block or S2 closure.
+
 - Maintainer decision, 17 October 2026: prospective P4 uses global native
   TimeLimit3600 per thread arm, with one12h/16-logical-CPU/192GiB serial block
   and a shared900s late-return/export reserve. Follow the versioned
