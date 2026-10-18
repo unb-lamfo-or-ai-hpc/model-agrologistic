@@ -5,6 +5,25 @@ not private evidence, credentials, local host paths or execution authority.
 
 ## Latest checkpoint — P4 report-comparison failure; qualify existing-vector replay
 
+18 October scope expansion requested by maintainer: include all1/2/4/8/16-thread
+optimizations again, each global3600s. PR109's smaller Ready state and four-CPU
+replay-only CLI are SUPERSEDED; return the SAME PR to Draft and qualify the
+[integrated five-arm package](docs/mvp2_s2_grid3600.md). One new12h/16logicalCPU/
+192GiB homogeneous cold4/1/8/2/16 cohort, exclusive `.mvp2-s2-grid3600-v1` claim.
+Bounded existing-vector validation runs FIRST inside that same allocation; only
+qualified equivalence releases fresh license/input/allocation admission and the
+five native arms. No extra short prerequisite job, old-claim reuse or automatic
+second block. Native3600/shared900/hard5700 and all scientific criteria unchanged.
+Prospective expanded transfer1GiB (old256MiB cohorts untouched; each new arm still
+uses <=256MiB native products) is explicit for review at merge, not silently
+adopted or a solver-memory change. Require169 focused Linux/901 related cases,
+full observed-size five-vector streaming, actual source closure, all CI/Quality
+before renewed Ready/authorized merge and COMPLETE pinned replacement CLI.
+No new NPAD execution or merge by agent. Baseline remaining functional PRs:
+this consolidated109, actual human evidence, then P5 exit/interpretation; extra
+repairs depend on findings. No S2 closure or scientific configuration selected.
+Earlier smaller-package qualification below is historical, not enlarged-scope CI.
+
 18 October2026. Resume research/s2-p5-evidence-review, not a new bookkeeping PR.
 The [forensic review](docs/mvp2_s2_p4_2214305_forensic_review.md) and
 [redacted ledger](docs/evidence/s2_p4_2214305_review.json) preserve the terminal
@@ -40,7 +59,7 @@ mechanism, not yet proof that private differences are confined to those fields.
 Null portable validation_error skips null arm reviews; it is NOT acceptance.
 Preserve consumed claim, logs, original reports, cohorts, source and archives.
 
-The complete [derived replay package](docs/mvp2_s2_residual_replay.md) supplies
+The smaller, now superseded [derived replay package](docs/mvp2_s2_residual_replay.md) supplies
 unchanged independent validator, separately preserved raw reports, analytical
 transport-sum comparison, coefficient witness, one-shot claim, wrapper and
 terminal/forensic collector. Only four transport-budget diagnostic fields can
