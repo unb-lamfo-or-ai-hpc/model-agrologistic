@@ -107,13 +107,16 @@ def test_pipeline_closes_cleanup_on_export_failure(tmp_path):
 def test_real_short_child_is_reaped(mode, reason, tmp_path):
     journal = tmp_path / "journal"
     process = control.spawn_owned([sys.executable, str(FIXTURE), str(journal), IDENTITY, mode])
-    # Start-up envelope is independent of shortened post-start phase windows.
+    # A successful real child is not a 150ms scheduler-latency benchmark.
+    # Keep the short negative watchdog cases and deterministic exact-boundary
+    # tests unchanged; this CI-only envelope never changes native/NPAD limits.
+    caps = (2, 2, 2, 2) if mode == "complete" else (2, 0.15, 0.15, 0.15)
     report = control.supervise(
         process,
         journal,
         IDENTITY,
         time.monotonic() + 8,
-        caps=(2, 0.15, 0.15, 0.15),
+        caps=caps,
         poll_seconds=0.01,
     )
     assert report["stop_reason"] == reason
