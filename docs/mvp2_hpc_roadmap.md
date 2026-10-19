@@ -2,6 +2,46 @@
 
 ## Authority and scope
 
+19 October P5 consolidation: job2215308 provides all five contracted3600s
+thread arms, original fresh independent residual reports and closed terminal
+evidence. See [P5 decision/exit criteria](mvp2_s2_p5_closure.md) and
+[ledger](evidence/s2_p5_2215308_review.json). This P5 PR proposes bounded S2
+diagnostic closure effective only on qualified, separately authorized merge;
+until then S2 remains open. Old certificates/false admission/closure flags,
+negative outcomes and historical planning below remain unchanged.
+
+All five incumbents are independently feasible but capacity time-censored with
+100% gap/no economic pass. General thread ranking is inconclusive; four threads
+is a conservative h400-review candidate, not an admitted winner. No new repeat,
+solver, model/tolerance change or NPAD job. The complete contracted diagnostic,
+not successful full hierarchy or positive speedup in every arm, is the exit scope.
+The generic zero-service gap/prefix limitation and16-logical-CPU/eight-core SMT
+topology remain explicit. No runtime patch is needed to state this bounded result.
+
+After P5 merge, retain the approved sequence and complete functional packages:
+h400 profile/admission/evidence1--2 PRs; existing-SCIP/h215 root-LP hypothesis/
+qualification/one justified attempt2--3 PRs; conditionalh5002--3 PRs;
+S6-A scientific synthesis1 PR and S6-B editorial/packaging2 PRs. These are scope
+estimates, not quotas/admissions. h400 and SCIP preparation may overlap after S2;
+h500 needs h400-success/input/build/resource approval, not SCIP success. S6
+inventory/version identification may proceed in parallel without editing the
+frozen article before its gate. No requirement is silently cancelled for time.
+
+Planning review from19 October: aim to integrate P5 in the week19--23 October;
+qualify h400/SCIP in late October/early November, conditionalh500 in November,
+then S6 scientific/editorial synthesis. These are proposals, not new agreed
+milestones or queue/success predictions. Preserve M1 31 October, M2 15 November,
+M3 23 December/M4 31 December as targets and the conditional December/base
+18--29 January2027 forecast until subsequent evidence/review. Main/develop sync
+remains **after article review**, not S2 or a20 November calendar entry. External
+portfolio reconciliation needs researcher action; no schedule is changed here.
+S3/S4 cancelled, EVPI/VSS excluded, full review/supplement and human coauthor
+version control retained. The local coauthor-presentation handoff has been
+prepared, not sent or approved. No next execution is admitted by this roadmap.
+
+Historical authority updates follow; their unexecuted statuses and smaller
+budgets are retained chronology, not the active next step after this P5 gate.
+
 18 October maintainer expansion: [consolidate ALL five3600s thread arms](mvp2_s2_grid3600.md)
 into the SAME PR109, not a separate short replay gate/PR. Old-vector preflight
 occurs before any new native probe/build inside ONE12h16CPU192GiB allocation.
