@@ -1,5 +1,15 @@
 # Research context and portable handoff
 
+## Current research question — scalar MVP2
+
+19 October2026: how do increasing warehouse populations affect MILP dimensions,
+resources, performance and scalar solution quality for DET and two-stage STO?
+Use the [approved contract](mvp2_scalar_contract.md) and
+[R1–R5/S6 roadmap](mvp2_scalar_roadmap.md). DET is the probability-one scenario
+case; one investment-plus-expected-operation/penalty objective. No active
+hierarchy or EVPI/VSS. Historical results below retain their original scope.
+S2 is closed historically; no scalar campaign or thread winner is inferred.
+
 ## Scope and authority
 
 Prepared 9 October 2026 for Model Agrologistic only. This small memory package

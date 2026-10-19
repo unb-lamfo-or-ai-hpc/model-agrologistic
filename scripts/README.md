@@ -1,3 +1,19 @@
+# Current scalar software boundary
+
+R1 removes the old hierarchy-specific NPAD launchers, stage/value-analysis
+campaigns and acceptance drivers from the active tree. The catalogue/commands
+below are historical where their executable is retired; use the exact
+[archive](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/tree/5f9daa55b3afb5bbcb3449bc83c970cf10a28ca6/scripts)
+for historical reproduction, never as a new scalar admission shortcut.
+
+`run_batch_hpc.py` now accepts scalar manifest v2 and denies Slurm optimization
+pending R2. `check_scalar_source.py` is read-only software source closure, not an
+execution/quality certificate. Preprocessing remains reusable; historical report
+builders describe their original cohorts, not new scalar performance. R1 supplies
+no NPAD CLI. Read [current contract](../docs/mvp2_scalar_contract.md).
+
+## Historical catalogue
+
 # Pipeline entry points
 
 Run commands from the repository root, not from quarantine or a result folder.

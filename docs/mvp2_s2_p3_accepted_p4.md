@@ -107,11 +107,11 @@ The old academic miniature dispatcher and all protected modules remain unchanged
 
 | File | Responsibility |
 | --- | --- |
-| [preparation](../scripts/mvp2_s2_h300_academic.py) | Exact P3 anchors, source parity, immutable scientific grid and public denial |
-| [runtime](../scripts/mvp2_s2_h300_runtime.py) | Fresh input/source/runtime, allocation/license, one-shot intent, cold steps, monotonic guards, independent review and terminal collection |
-| [products](../scripts/mvp2_s2_h300_products.py) | Streaming byte preflight, strict residual replay, exclusive product publication and bounded archive verification |
-| [wrapper](../scripts/npad_s2_h300_academic.sh) | Solver-free check, anchored status/wait/collect; start/batch/worker explicitly blocked |
-| [pipeline tests](../tests/test_mvp2_s2_h300_runtime.py) | Complete five-arm and interrupted-block fixtures, failure/overflow/forgery/fast-exit/cache/terminal cases |
+| [preparation](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/5f9daa55b3afb5bbcb3449bc83c970cf10a28ca6/scripts/mvp2_s2_h300_academic.py) | Exact P3 anchors, source parity, immutable scientific grid and public denial |
+| [runtime](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/5f9daa55b3afb5bbcb3449bc83c970cf10a28ca6/scripts/mvp2_s2_h300_runtime.py) | Fresh input/source/runtime, allocation/license, one-shot intent, cold steps, monotonic guards, independent review and terminal collection |
+| [products](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/5f9daa55b3afb5bbcb3449bc83c970cf10a28ca6/scripts/mvp2_s2_h300_products.py) | Streaming byte preflight, strict residual replay, exclusive product publication and bounded archive verification |
+| [wrapper](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/5f9daa55b3afb5bbcb3449bc83c970cf10a28ca6/scripts/npad_s2_h300_academic.sh) | Solver-free check, anchored status/wait/collect; start/batch/worker explicitly blocked |
+| [pipeline tests](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/5f9daa55b3afb5bbcb3449bc83c970cf10a28ca6/tests/test_mvp2_s2_h300_runtime.py) | Complete five-arm and interrupted-block fixtures, failure/overflow/forgery/fast-exit/cache/terminal cases |
 
 The **whole block**, not each arm, retains the256MiB transfer envelope, including
 metadata and conservative tar overhead. Native sparse extraction and the original

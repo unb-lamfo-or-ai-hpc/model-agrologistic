@@ -15,7 +15,7 @@ The companion checksum and independently computed hash agree. Original accepted
 collection and execution source are not rewritten/relabelled to a review head.
 Raw HPC outputs stay outside Git.
 
-The [portable reviewer](../scripts/review_mvp2_threads.py) verified **166
+The [portable reviewer](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/5f9daa55b3afb5bbcb3449bc83c970cf10a28ca6/scripts/review_mvp2_threads.py) verified **166
 allowlisted members and 165 transfer hashes**, five completion catalogs with
 29 products each, and five closed six-product resource manifests. It rejects
 checksum changes, links, traversal, duplicates, unlisted members, excessive

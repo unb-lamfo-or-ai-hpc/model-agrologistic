@@ -1,756 +1,67 @@
-"""
-Native gurobipy backend for agricultural logistics optimization.
-
-Current implementation:
-- deterministic MILP core;
-- origin -> warehouse flows;
-- direct origin -> customer flows;
-- warehouse -> domestic/export customer flows;
-- warehouse -> warehouse transshipment flows;
-- inventory balance;
-- existing and candidate warehouse capacities;
-- candidate opening and scalable/fixed candidate capacity;
-- scalable expansion of existing warehouse static capacity;
-- scalable bulkification of eligible warehouse handling capacity;
-- unmet domestic demand;
-- export demand upper bounds;
-- emergency static capacity;
-- emergency reception capacity.
-
-EVPI/VSS analysis is implemented in stochastic_analysis_gurobipy.py.
-
-Feasibility slacks relax stock and reception constraints separately. They do
-not create unconditional complete recourse: shipping and connectivity remain
-hard constraints. Reception overflow is already period tonnes and must not
-receive a second operating-day multiplier. The policy hierarchy is solved
-within declared tolerances; a primary objective value is not money.
-"""
-
 from __future__ import annotations
 
-from math import isfinite
 from time import perf_counter
 from typing import Any
 
-from src.logic.mathematical_contract import prepare_model_data
 from src.logic.model_config import ModelConfig, SolverConfig
 from src.logic.model_data import ModelData
-from src.logic.model_lifecycle import managed_model_solve, own_model
-from src.logic.optimization import (
-    OptimizationResult,
-    configure_gurobi_wls_license,
-)
-from src.logic.resource_telemetry import CURRENT, event, gurobi_message, observed_matrix, phase
-from src.logic.route_filtering import select_routes
 
 DEFAULT_PENALTY = 1_000_000.0
 VALUE_TOL = 1e-7
 
 
-def solve_model_gurobipy(
-    data: ModelData,
-    model_config: ModelConfig,
-    solver_config: SolverConfig,
-) -> OptimizationResult:
-    """
-    Solve the agricultural logistics model using native gurobipy.
-    """
+def _finite_attribute(model, name):
+    from math import isfinite
+
+    try:
+        value = float(getattr(model, name))
+        return value if isfinite(value) else None
+    except (AttributeError, RuntimeError):
+        return None
+
+
+def solve_model_gurobipy(data, model_config, solver_config):
+    """Use one extensive-form builder for DET and STO, with one scalar solve."""
+    from src.logic.mathematical_contract import extensive_form_inputs
+    from src.logic.optimization import configure_gurobi_wls_license, project_deterministic_result
+    from src.logic.optimization_gurobipy_stochastic import solve_stochastic_model_gurobipy
 
     configure_gurobi_wls_license(solver_config)
-
-    if solver_config.multiobjective_stage_options or solver_config.collect_solver_diagnostics:
-        if model_config.mode != "sto" or model_config.objective_policy != "lexicographic":
-            raise ValueError("Stagewise research options require stochastic lexicographic mode.")
-
-    if model_config.mode == "sto":
-        from src.logic.optimization_gurobipy_stochastic import (
-            solve_stochastic_model_gurobipy,
-        )
-
-        return solve_stochastic_model_gurobipy(
-            data=data,
-            model_config=model_config,
-            solver_config=solver_config,
-        )
-
-    return _solve_deterministic_core(
-        data=data,
-        model_config=model_config,
-        solver_config=solver_config,
-    )
-
-
-@managed_model_solve
-def _solve_deterministic_core(
-    data: ModelData,
-    model_config: ModelConfig,
-    solver_config: SolverConfig,
-) -> OptimizationResult:
-    gp, GRB = _import_gurobi()
-
-    started_at = perf_counter()
-
-    data = prepare_model_data(data, model_config)
-
-    model = own_model(gp.Model("model_agrologistic_deterministic"), "gurobipy")
-    _apply_solver_parameters(model, solver_config)
-
-    # ------------------------------------------------------------------
-    # Index sets
-    # ------------------------------------------------------------------
-
-    routes = select_routes(data, model_config)
-
-    od_keys = [
-        (origin, warehouse, product, period)
-        for origin, warehouse, product in sorted(routes.od)
-        for period in data.periods
-    ]
-
-    dc_keys = [
-        (warehouse, customer, product, period)
-        for warehouse, customer, product in sorted(routes.dc)
-        for period in data.periods
-    ]
-
-    oc_keys = [
-        (origin, customer, product, period)
-        for origin, customer, product in sorted(routes.oc)
-        for period in data.periods
-        if model_config.use_direct_origin_customer
-    ]
-
-    dd_keys = [
-        (warehouse_from, warehouse_to, product, period)
-        for warehouse_from, warehouse_to, product in sorted(routes.dd)
-        for period in data.periods
-    ]
-
-    inventory_keys = [
-        (warehouse, product, period)
-        for warehouse in data.warehouses
-        for product in data.products
-        for period in data.periods
-    ]
-
-    unmet_keys = [
-        (customer, product, period)
-        for customer in data.domestic_customers
-        for product in data.products
-        for period in data.periods
-    ]
-
-    emergency_keys = [
-        (warehouse, period)
-        for warehouse in data.warehouses
-        for period in data.periods
-    ]
-
-    candidate_warehouses = list(data.candidate_warehouses)
-    expansion_warehouses = [
-        warehouse
-        for warehouse in data.warehouses
-        if model_config.allow_capacity_expansion
-        and data.max_expand_capacity.get(warehouse, 0.0) > 0.0
-    ]
-    bulkification_warehouses = [
-        warehouse
-        for warehouse in data.bulk_eligible_warehouses
-        if model_config.allow_bulkification
-        and warehouse in data.warehouses
-        and data.max_bulk_capacity.get(warehouse, 0.0) > 0.0
-    ]
-
-    # ------------------------------------------------------------------
-    # Variables
-    # ------------------------------------------------------------------
-
-    flow_od = model.addVars(
-        od_keys,
-        lb=0.0,
-        vtype=GRB.CONTINUOUS,
-        name="flow_od",
-    )
-
-    flow_dc = model.addVars(
-        dc_keys,
-        lb=0.0,
-        vtype=GRB.CONTINUOUS,
-        name="flow_dc",
-    )
-
-    flow_oc = model.addVars(
-        oc_keys,
-        lb=0.0,
-        vtype=GRB.CONTINUOUS,
-        name="flow_oc",
-    )
-
-    flow_dd = model.addVars(
-        dd_keys,
-        lb=0.0,
-        vtype=GRB.CONTINUOUS,
-        name="flow_dd",
-    )
-
-    inventory = model.addVars(
-        inventory_keys,
-        lb=0.0,
-        vtype=GRB.CONTINUOUS,
-        name="inventory",
-    )
-
-    open_candidate = model.addVars(
-        candidate_warehouses,
-        vtype=GRB.BINARY,
-        name="open_candidate",
-    )
-
-    candidate_capacity = model.addVars(
-        candidate_warehouses,
-        lb=0.0,
-        vtype=GRB.CONTINUOUS,
-        name="candidate_capacity",
-    )
-
-    expand_warehouse = model.addVars(
-        expansion_warehouses,
-        vtype=GRB.BINARY,
-        name="expand_warehouse",
-    )
-
-    expand_capacity = model.addVars(
-        expansion_warehouses,
-        lb=0.0,
-        vtype=GRB.CONTINUOUS,
-        name="expand_capacity",
-    )
-
-    bulkify_warehouse = model.addVars(
-        bulkification_warehouses,
-        vtype=GRB.BINARY,
-        name="bulkify_warehouse",
-    )
-
-    bulk_capacity = model.addVars(
-        bulkification_warehouses,
-        lb=0.0,
-        vtype=GRB.CONTINUOUS,
-        name="bulk_capacity",
-    )
-
-    unmet_ub = GRB.INFINITY if model_config.allow_unmet_domestic_demand else 0.0
-
-    unmet_demand = model.addVars(
-        unmet_keys,
-        lb=0.0,
-        ub=unmet_ub,
-        vtype=GRB.CONTINUOUS,
-        name="unmet_demand",
-    )
-
-    emergency_static_ub = (
-        GRB.INFINITY if model_config.allow_emergency_static_capacity else 0.0
-    )
-    emergency_reception_ub = (
-        GRB.INFINITY if model_config.allow_emergency_reception_capacity else 0.0
-    )
-
-    emergency_static_capacity = model.addVars(
-        emergency_keys,
-        lb=0.0,
-        ub=emergency_static_ub,
-        vtype=GRB.CONTINUOUS,
-        name="emergency_static_capacity",
-    )
-
-    emergency_reception_capacity = model.addVars(
-        emergency_keys,
-        lb=0.0,
-        ub=emergency_reception_ub,
-        vtype=GRB.CONTINUOUS,
-        name="emergency_reception_capacity",
-    )
-
-    # ------------------------------------------------------------------
-    # Objective
-    # ------------------------------------------------------------------
-
-    transport_od_cost = gp.quicksum(
-        flow_od[origin, warehouse, product, period]
-        * _origin_to_warehouse_unit_cost(data, origin, warehouse, product)
-        for origin, warehouse, product, period in od_keys
-    )
-
-    transport_dc_cost = gp.quicksum(
-        flow_dc[warehouse, customer, product, period]
-        * _warehouse_to_customer_unit_cost(data, warehouse, customer, product)
-        for warehouse, customer, product, period in dc_keys
-    )
-
-    transport_oc_cost = gp.quicksum(
-        flow_oc[origin, customer, product, period]
-        * _origin_to_customer_unit_cost(data, origin, customer, product)
-        for origin, customer, product, period in oc_keys
-    )
-
-    transport_dd_cost = gp.quicksum(
-        flow_dd[warehouse_from, warehouse_to, product, period]
-        * _warehouse_to_warehouse_unit_cost(
-            data=data,
-            warehouse_from=warehouse_from,
-            warehouse_to=warehouse_to,
-            product=product,
-            model_config=model_config,
-        )
-        for warehouse_from, warehouse_to, product, period in dd_keys
-    )
-
-    storage_cost = gp.quicksum(
-        inventory[warehouse, product, period]
-        * data.storage_tariff.get((warehouse, product), 0.0)
-        for warehouse, product, period in inventory_keys
-    )
-
-    opening_cost = gp.quicksum(
-        open_candidate[warehouse] * data.opening_fixed_cost.get(warehouse, 0.0)
-        for warehouse in candidate_warehouses
-    )
-
-    if model_config.candidate_capacity_mode == "scalable":
-        candidate_capacity_cost = gp.quicksum(
-            candidate_capacity[warehouse]
-            * data.candidate_capacity_cost.get(warehouse, 0.0)
-            for warehouse in candidate_warehouses
-        )
-    else:
-        candidate_capacity_cost = 0.0
-
-    expansion_fixed_cost = gp.quicksum(
-        expand_warehouse[warehouse] * data.expand_fixed_cost.get(warehouse, 0.0)
-        for warehouse in expansion_warehouses
-    )
-
-    expansion_variable_cost = gp.quicksum(
-        expand_capacity[warehouse]
-        * data.expand_variable_cost.get(warehouse, 0.0)
-        for warehouse in expansion_warehouses
-    )
-
-    bulkification_fixed_cost = gp.quicksum(
-        bulkify_warehouse[warehouse]
-        * data.bulk_fixed_cost.get(warehouse, 0.0)
-        for warehouse in bulkification_warehouses
-    )
-
-    bulkification_variable_cost = gp.quicksum(
-        bulk_capacity[warehouse]
-        * data.bulk_variable_cost.get(warehouse, 0.0)
-        for warehouse in bulkification_warehouses
-    )
-
-    unmet_demand_cost = gp.quicksum(
-        unmet_demand[customer, product, period]
-        * data.unmet_demand_penalty.get((customer, product), DEFAULT_PENALTY)
-        for customer, product, period in unmet_keys
-    )
-
-    emergency_static_cost = gp.quicksum(
-        emergency_static_capacity[warehouse, period]
-        * data.emergency_static_capacity_penalty.get(warehouse, DEFAULT_PENALTY)
-        for warehouse, period in emergency_keys
-    )
-
-    emergency_reception_cost = gp.quicksum(
-        emergency_reception_capacity[warehouse, period]
-        * data.emergency_reception_capacity_penalty.get(warehouse, DEFAULT_PENALTY)
-        for warehouse, period in emergency_keys
-    )
-
-    economic_cost = (
-        transport_od_cost
-        + transport_dc_cost
-        + transport_oc_cost
-        + transport_dd_cost
-        + storage_cost
-        + opening_cost
-        + candidate_capacity_cost
-        + expansion_fixed_cost
-        + expansion_variable_cost
-        + bulkification_fixed_cost
-        + bulkification_variable_cost
-    )
-    penalized_cost = (
-        economic_cost
-        + unmet_demand_cost
-        + emergency_static_cost
-        + emergency_reception_cost
-    )
-    unmet_quantity = gp.quicksum(unmet_demand[key] for key in unmet_keys)
-    emergency_quantity = gp.quicksum(
-        emergency_static_capacity[key] + emergency_reception_capacity[key]
-        for key in emergency_keys
-    )
-    _set_objective_policy(
-        model=model,
-        GRB=GRB,
-        config=model_config,
-        penalized_cost=penalized_cost,
-        unmet_quantity=unmet_quantity,
-        emergency_quantity=emergency_quantity,
-        economic_cost=economic_cost,
-    )
-
-    # ------------------------------------------------------------------
-    # Candidate capacity constraints
-    # ------------------------------------------------------------------
-
-    for warehouse in candidate_warehouses:
-        max_capacity = data.max_candidate_capacity.get(warehouse, 0.0)
-
-        if model_config.candidate_capacity_mode == "fixed":
-            model.addConstr(
-                candidate_capacity[warehouse]
-                == max_capacity * open_candidate[warehouse],
-                name=f"candidate_fixed_capacity[{warehouse}]",
-            )
-        else:
-            model.addConstr(
-                candidate_capacity[warehouse]
-                <= max_capacity * open_candidate[warehouse],
-                name=f"candidate_scalable_capacity[{warehouse}]",
-            )
-
-    # ------------------------------------------------------------------
-    # Existing warehouse expansion constraints
-    # ------------------------------------------------------------------
-
-    for warehouse in expansion_warehouses:
-        active = _active_warehouse_expr(
-            data=data,
-            open_candidate=open_candidate,
-            warehouse=warehouse,
-        )
-        model.addConstr(
-            expand_capacity[warehouse]
-            <= data.max_expand_capacity[warehouse] * expand_warehouse[warehouse],
-            name=f"expansion_capacity[{warehouse}]",
-        )
-        model.addConstr(
-            expand_warehouse[warehouse] <= active,
-            name=f"expansion_only_if_active[{warehouse}]",
-        )
-
-    # ------------------------------------------------------------------
-    # Eligible warehouse bulkification constraints
-    # ------------------------------------------------------------------
-
-    for warehouse in bulkification_warehouses:
-        active = _active_warehouse_expr(
-            data=data,
-            open_candidate=open_candidate,
-            warehouse=warehouse,
-        )
-        model.addConstr(
-            bulk_capacity[warehouse]
-            <= data.max_bulk_capacity[warehouse] * bulkify_warehouse[warehouse],
-            name=f"bulkification_capacity[{warehouse}]",
-        )
-        model.addConstr(
-            bulkify_warehouse[warehouse] <= active,
-            name=f"bulkification_only_if_active[{warehouse}]",
-        )
-
-    for warehouse in sorted(
-        set(expansion_warehouses) & set(bulkification_warehouses)
-    ):
-        active = _active_warehouse_expr(
-            data=data,
-            open_candidate=open_candidate,
-            warehouse=warehouse,
-        )
-        model.addConstr(
-            expand_warehouse[warehouse] + bulkify_warehouse[warehouse] <= active,
-            name=f"expansion_bulkification_exclusion[{warehouse}]",
-        )
-
-    # ------------------------------------------------------------------
-    # Supply balance
-    #
-    # Critical rule:
-    # Do not skip zero supply. If supply is zero, the equality forces
-    # outgoing flow to zero.
-    # ------------------------------------------------------------------
-
-    for origin in data.origins:
-        for product in data.products:
-            for period in data.periods:
-                rhs = data.supply.get((origin, product, period), 0.0)
-
-                model.addConstr(
-                    flow_od.sum(origin, "*", product, period)
-                    + flow_oc.sum(origin, "*", product, period)
-                    == rhs,
-                    name=f"supply_balance[{origin},{product},{period}]",
-                )
-
-    # ------------------------------------------------------------------
-    # Inventory balance
-    # ------------------------------------------------------------------
-
-    for warehouse in data.warehouses:
-        for product in data.products:
-            for period_index, period in enumerate(data.periods):
-                previous_inventory = (
-                    data.initial_inventory.get((warehouse, product), 0.0)
-                    if period_index == 0
-                    else inventory[warehouse, product, data.periods[period_index - 1]]
-                )
-
-                inflow = (
-                    flow_od.sum("*", warehouse, product, period)
-                    + flow_dd.sum("*", warehouse, product, period)
-                )
-                outflow = (
-                    flow_dc.sum(warehouse, "*", product, period)
-                    + flow_dd.sum(warehouse, "*", product, period)
-                )
-
-                model.addConstr(
-                    inventory[warehouse, product, period]
-                    == previous_inventory + inflow - outflow,
-                    name=f"inventory_balance[{warehouse},{product},{period}]",
-                )
-
-    # ------------------------------------------------------------------
-    # Domestic demand balance
-    #
-    # Critical rule:
-    # Do not skip zero demand. If demand is zero, the equality forces
-    # incoming flow plus unmet demand to zero.
-    # ------------------------------------------------------------------
-
-    for customer in data.domestic_customers:
-        for product in data.products:
-            for period in data.periods:
-                rhs = data.demand_dom.get((customer, product, period), 0.0)
-
-                model.addConstr(
-                    flow_dc.sum("*", customer, product, period)
-                    + flow_oc.sum("*", customer, product, period)
-                    + unmet_demand[customer, product, period]
-                    == rhs,
-                    name=f"domestic_demand[{customer},{product},{period}]",
-                )
-
-    # ------------------------------------------------------------------
-    # Export demand upper bounds
-    #
-    # Export markets are not mandatory demand nodes. They act as finite,
-    # non-binding upper bounds used to represent an external market.
-    # ------------------------------------------------------------------
-
-    for customer in data.export_customers:
-        for product in data.products:
-            for period in data.periods:
-                rhs = data.demand_exp.get((customer, product, period), 0.0)
-
-                model.addConstr(
-                    flow_dc.sum("*", customer, product, period)
-                    + flow_oc.sum("*", customer, product, period)
-                    <= rhs,
-                    name=f"export_upper_bound[{customer},{product},{period}]",
-                )
-
-    # ------------------------------------------------------------------
-    # Warehouse capacities
-    # ------------------------------------------------------------------
-
-    for warehouse in data.warehouses:
-        for period in data.periods:
-            static_capacity = _effective_static_capacity_expr(
-                data=data,
-                model_config=model_config,
-                candidate_capacity=candidate_capacity,
-                expand_capacity=expand_capacity,
-                bulk_capacity=bulk_capacity,
-                warehouse=warehouse,
-            )
-
-            model.addConstr(
-                gp.quicksum(
-                    inventory[warehouse, product, period]
-                    for product in data.products
-                )
-                <= static_capacity + emergency_static_capacity[warehouse, period],
-                name=f"static_capacity[{warehouse},{period}]",
-            )
-
-            reception_capacity = _effective_reception_capacity_expr(
-                data=data,
-                model_config=model_config,
-                candidate_capacity=candidate_capacity,
-                expand_capacity=expand_capacity,
-                bulk_capacity=bulk_capacity,
-                warehouse=warehouse,
-                period=period,
-            )
-
-            model.addConstr(
-                gp.quicksum(
-                    flow_od.sum("*", warehouse, product, period)
-                    + flow_dd.sum("*", warehouse, product, period)
-                    for product in data.products
-                )
-                <= reception_capacity + emergency_reception_capacity[warehouse, period],
-                name=f"reception_capacity[{warehouse},{period}]",
-            )
-
-            shipping_capacity = _effective_shipping_capacity_expr(
-                data=data,
-                model_config=model_config,
-                candidate_capacity=candidate_capacity,
-                expand_capacity=expand_capacity,
-                bulk_capacity=bulk_capacity,
-                warehouse=warehouse,
-                period=period,
-            )
-
-            model.addConstr(
-                gp.quicksum(
-                    flow_dc.sum(warehouse, "*", product, period)
-                    + flow_dd.sum(warehouse, "*", product, period)
-                    for product in data.products
-                )
-                <= shipping_capacity,
-                name=f"shipping_capacity[{warehouse},{period}]",
-            )
-
-    # ------------------------------------------------------------------
-    # Emergency capacity must be tied to active candidate infrastructure.
-    #
-    # Emergency slacks are unbounded feasibility devices at active facilities.
-    # Indicators prevent closed candidates from acting as ghost warehouses.
-    # ------------------------------------------------------------------
-
-    for warehouse in data.candidate_warehouses:
-        for period in data.periods:
-            model.addGenConstrIndicator(
-                open_candidate[warehouse],
-                False,
-                emergency_static_capacity[warehouse, period] == 0.0,
-                name=f"emergency_static_only_if_active[{warehouse},{period}]",
-            )
-            model.addGenConstrIndicator(
-                open_candidate[warehouse],
-                False,
-                emergency_reception_capacity[warehouse, period] == 0.0,
-                name=f"emergency_reception_only_if_active[{warehouse},{period}]",
-            )
-
-    # ------------------------------------------------------------------
-    # Solve
-    # ------------------------------------------------------------------
-
-    model_build_seconds = perf_counter() - started_at
-    optimization_started_at = perf_counter()
-    lexicographic_stages = _optimize_with_stage_observer(
-        model=model,
-        GRB=GRB,
-        objective_policy=model_config.objective_policy,
-        objective_names=(
-            "unmet_demand",
-            "emergency_capacity",
-            "economic_cost",
-        ),
-    )
-    optimization_seconds = perf_counter() - optimization_started_at
-
-    runtime_seconds = perf_counter() - started_at
-    status = _map_gurobi_status(model, GRB)
-
-    if model.SolCount == 0:
-        infeasibility = _infeasibility_metadata(model, GRB, solver_config)
-        return OptimizationResult(
-            status=status,
-            solver_backend="gurobipy",
-            solver_name=solver_config.solver_name,
-            model_mode=model_config.mode,
-            runtime_seconds=runtime_seconds,
-            metadata={
-                "gurobi_status_code": model.Status,
-                "gurobi_status_name": _gurobi_status_name(model, GRB),
-                "solution_count": model.SolCount,
-                "objective_policy": model_config.objective_policy,
-                **_lexicographic_stage_diagnostics(
-                    model=model,
-                    GRB=GRB,
-                    objective_policy=model_config.objective_policy,
-                    stages=lexicographic_stages,
-                    primary_objective_value=None,
-                ),
-                "timings": {
-                    "model_build_seconds": model_build_seconds,
-                    "optimization_seconds": optimization_seconds,
-                },
-                **infeasibility,
-            },
-        )
-
-    extraction_started = perf_counter()
-    result = _extract_deterministic_result(
-        data=data,
-        model_config=model_config,
-        solver_config=solver_config,
-        model=model,
-        GRB=GRB,
-        status=status,
-        gurobi_status_name=_gurobi_status_name(model, GRB),
-        runtime_seconds=runtime_seconds,
-        model_build_seconds=model_build_seconds,
-        optimization_seconds=optimization_seconds,
-        flow_od=flow_od,
-        flow_dc=flow_dc,
-        flow_oc=flow_oc,
-        flow_dd=flow_dd,
-        inventory=inventory,
-        open_candidate=open_candidate,
-        candidate_capacity=candidate_capacity,
-        expand_warehouse=expand_warehouse,
-        expand_capacity=expand_capacity,
-        bulkify_warehouse=bulkify_warehouse,
-        bulk_capacity=bulk_capacity,
-        unmet_demand=unmet_demand,
-        emergency_static_capacity=emergency_static_capacity,
-        emergency_reception_capacity=emergency_reception_capacity,
-        lexicographic_stages=lexicographic_stages,
-        cost_components={
-            "transport_od": transport_od_cost,
-            "transport_dc": transport_dc_cost,
-            "transport_oc": transport_oc_cost,
-            "transport_dd": transport_dd_cost,
-            "storage": storage_cost,
-            "opening": opening_cost,
-            "candidate_capacity": candidate_capacity_cost,
-            "expansion_fixed": expansion_fixed_cost,
-            "expansion_variable": expansion_variable_cost,
-            "bulkification_fixed": bulkification_fixed_cost,
-            "bulkification_variable": bulkification_variable_cost,
-            "unmet_demand": unmet_demand_cost,
-            "emergency_static": emergency_static_cost,
-            "emergency_reception": emergency_reception_cost,
-        },
-    )
-
-
-    result.metadata["timings"]["result_extraction_seconds"] = perf_counter() - extraction_started
-    result.metadata["timings"]["solver_reported_runtime_seconds"] = float(model.Runtime)
-    return result
-
-
-# ---------------------------------------------------------------------
-# Gurobi utilities
-# ---------------------------------------------------------------------
+    prepared, config = extensive_form_inputs(data, model_config)
+    result = solve_stochastic_model_gurobipy(prepared, config, solver_config)
+    return project_deterministic_result(result) if model_config.mode == "det" else result
+
+
+def _solve_deterministic_core(data, model_config, solver_config):
+    """Compatibility entry point; no second mathematical implementation."""
+    if model_config.mode != "det":
+        raise ValueError("Deterministic entry point requires mode='det'.")
+    return solve_model_gurobipy(data, model_config, solver_config)
+
+
+def _optimize_scalar(model, GRB, *, native_phase_hook=None):
+    """One native call; preserve phase seams and objective-independent telemetry."""
+    from src.logic.resource_telemetry import CURRENT, gurobi_message, observed_matrix, phase
+
+    observed_matrix(model, "gurobipy")
+    if native_phase_hook is not None:
+        native_phase_hook("native_ready", model, GRB)
+    phase("optimization")
+    if native_phase_hook is not None:
+        native_phase_hook("optimization", model, GRB)
+    session = CURRENT.get()
+    started = perf_counter()
+    progress = {"time_to_first_incumbent_seconds": None}
+
+    def observe(native_model, where):
+        if where == GRB.Callback.MIPSOL and progress["time_to_first_incumbent_seconds"] is None:
+            progress["time_to_first_incumbent_seconds"] = perf_counter() - started
+        gurobi_message(native_model, where, GRB.Callback, session)
+
+    model.optimize(observe)
+    if native_phase_hook is not None:
+        native_phase_hook("export_validation", model, GRB)
+    return progress
 
 
 def _import_gurobi() -> tuple[Any, Any]:
@@ -759,8 +70,7 @@ def _import_gurobi() -> tuple[Any, Any]:
         from gurobipy import GRB
     except ImportError as exc:
         raise RuntimeError(
-            "gurobipy is not installed. Install it with: "
-            "pip install 'gurobipy>=13.0.2,<14'"
+            "gurobipy is not installed. Install it with: pip install 'gurobipy>=13.0.2,<14'"
         ) from exc
 
     return gp, GRB
@@ -794,53 +104,6 @@ def _apply_solver_parameters(model: Any, solver_config: SolverConfig) -> None:
         model.setParam(option_name, option_value)
 
 
-def _set_objective_policy(
-    *,
-    model: Any,
-    GRB: Any,
-    config: ModelConfig,
-    penalized_cost: Any,
-    unmet_quantity: Any,
-    emergency_quantity: Any,
-    economic_cost: Any,
-) -> None:
-    """Configure the weighted or hierarchical service objective."""
-
-    if config.objective_policy == "penalty":
-        model.setObjective(penalized_cost, GRB.MINIMIZE)
-        return
-
-    model.ModelSense = GRB.MINIMIZE
-    tolerance = config.feasibility_tolerance
-    model.setObjectiveN(
-        unmet_quantity,
-        index=0,
-        priority=3,
-        weight=1.0,
-        abstol=tolerance,
-        reltol=0.0,
-        name="minimize_unmet_demand",
-    )
-    model.setObjectiveN(
-        emergency_quantity,
-        index=1,
-        priority=2,
-        weight=1.0,
-        abstol=tolerance,
-        reltol=0.0,
-        name="minimize_emergency_capacity",
-    )
-    model.setObjectiveN(
-        economic_cost,
-        index=2,
-        priority=1,
-        weight=1.0,
-        abstol=0.0,
-        reltol=0.0,
-        name="minimize_economic_cost",
-    )
-
-
 def _infeasibility_metadata(
     model: Any,
     GRB: Any,
@@ -855,9 +118,7 @@ def _infeasibility_metadata(
     try:
         model.computeIIS()
         constraint_names = [
-            constraint.ConstrName
-            for constraint in model.getConstrs()
-            if constraint.IISConstr
+            constraint.ConstrName for constraint in model.getConstrs() if constraint.IISConstr
         ]
         bound_names = [
             f"{variable.VarName}:{bound}"
@@ -877,9 +138,7 @@ def _infeasibility_metadata(
             "iis_bound_count": len(bound_names),
             "iis_constraints": constraint_names[:limit],
             "iis_bounds": bound_names[:limit],
-            "iis_truncated": (
-                len(constraint_names) > limit or len(bound_names) > limit
-            ),
+            "iis_truncated": (len(constraint_names) > limit or len(bound_names) > limit),
         }
     except Exception as error:
         return {
@@ -934,261 +193,9 @@ def _gurobi_status_name(model: Any, GRB: Any) -> str:
         "LOCALLY_INFEASIBLE",
     )
     return next(
-        (
-            name
-            for name in names
-            if getattr(GRB, name, object()) == model.Status
-        ),
+        (name for name in names if getattr(GRB, name, object()) == model.Status),
         f"UNKNOWN_{model.Status}",
     )
-
-
-def _gurobi_status_name_from_code(status_code: int, GRB: Any) -> str:
-    """Return a symbolic Gurobi status for a callback-reported code."""
-
-    status_proxy = type("StatusProxy", (), {"Status": status_code})()
-    return _gurobi_status_name(status_proxy, GRB)
-
-
-def _finite_callback_value(model: Any, callback_code: int) -> float | None:
-    """Read a finite numeric callback value, returning None when unavailable."""
-
-    try:
-        value = float(model.cbGet(callback_code))
-    except Exception:  # noqa: BLE001
-        # Gurobi can reject MIP-only fields for presolved continuous passes.
-        return None
-    return value if isfinite(value) else None
-
-
-def _optimize_with_stage_observer(
-    *,
-    model: Any,
-    GRB: Any,
-    objective_policy: str,
-    objective_names: tuple[str, ...],
-    objective_roles: tuple[str, ...] | None = None,
-    solver_config: SolverConfig | None = None,
-    diagnostics: dict[str, Any] | None = None,
-    native_phase_hook: Any = None,
-) -> list[dict[str, Any]]:
-    """Optimize and capture the terminal state of each lexicographic pass."""
-
-    observed_matrix(model, "gurobipy")
-    phase("optimization")
-
-    if objective_policy != "lexicographic":
-        if (session := CURRENT.get()) is None:
-            model.optimize()
-        else:
-            model.optimize(lambda m, w: gurobi_message(m, w, GRB.Callback, session))
-        return []
-
-    # Optional worker observer: check effective globals before copying per-pass
-    # environments. Existing callers retain their original behavior.
-    if native_phase_hook is not None:
-        native_phase_hook("native_ready", model, GRB)
-
-    callback = getattr(GRB, "Callback", None)
-    required_codes = (
-        "MULTIOBJ",
-        "MULTIOBJ_OBJCNT",
-        "MULTIOBJ_STATUS",
-        "MULTIOBJ_OBJBST",
-        "MULTIOBJ_OBJBND",
-        "MULTIOBJ_MIPGAP",
-        "MULTIOBJ_ITRCNT",
-        "MULTIOBJ_NODCNT",
-        "MULTIOBJ_NODLFT",
-        "MULTIOBJ_SOLCNT",
-        "MULTIOBJ_RUNTIME",
-        "MULTIOBJ_WORK",
-    )
-    missing_codes = [
-        code for code in required_codes if callback is None or not hasattr(callback, code)
-    ]
-    if missing_codes:
-        raise RuntimeError(
-            "Lexicographic stage observability requires Gurobi 12 or later; "
-            f"missing callback codes: {', '.join(missing_codes)}."
-        )
-
-    stages: list[dict[str, Any]] = []
-    stage_roles = objective_roles or objective_names
-    if len(stage_roles) != len(objective_names):
-        raise ValueError("Objective names and roles must have equal length.")
-
-    telemetry = None
-    if solver_config is not None:
-        from src.logic.solver_diagnostics import SolverDiagnostics, configure_stages
-
-        options = solver_config.multiobjective_stage_options
-        if options:
-            configure_stages(model, options, stage_roles)
-        if solver_config.collect_solver_diagnostics:
-            telemetry = SolverDiagnostics(model, callback, options)
-
-    resource_session = CURRENT.get()
-    def observe_stage(callback_model: Any, where: int) -> None:
-        gurobi_message(callback_model, where, callback, resource_session)
-        if telemetry is not None:
-            telemetry.observe(callback_model, where)
-        if where != callback.MULTIOBJ:
-            return
-
-        completed_count = int(
-            callback_model.cbGet(callback.MULTIOBJ_OBJCNT)
-        )
-        stage_index = max(0, completed_count - 1)
-        status_code = int(callback_model.cbGet(callback.MULTIOBJ_STATUS))
-        objective_name = (
-            objective_names[stage_index]
-            if stage_index < len(objective_names)
-            else f"objective_{stage_index + 1}"
-        )
-        stages.append(
-            {
-                "stage_number": stage_index + 1,
-                "objective_name": objective_name,
-                "stage_role": (
-                    stage_roles[stage_index]
-                    if stage_index < len(stage_roles)
-                    else f"objective_{stage_index + 1}"
-                ),
-                "status_code": status_code,
-                "status": _gurobi_status_name_from_code(status_code, GRB),
-                "objective_value": _finite_callback_value(
-                    callback_model, callback.MULTIOBJ_OBJBST
-                ),
-                "objective_bound": _finite_callback_value(
-                    callback_model, callback.MULTIOBJ_OBJBND
-                ),
-                "mip_gap": _finite_callback_value(
-                    callback_model, callback.MULTIOBJ_MIPGAP
-                ),
-                "iteration_count": _finite_callback_value(
-                    callback_model, callback.MULTIOBJ_ITRCNT
-                ),
-                "node_count": _finite_callback_value(
-                    callback_model, callback.MULTIOBJ_NODCNT
-                ),
-                "nodes_remaining": _finite_callback_value(
-                    callback_model, callback.MULTIOBJ_NODLFT
-                ),
-                "solution_count": _finite_callback_value(
-                    callback_model, callback.MULTIOBJ_SOLCNT
-                ),
-                "runtime_seconds": _finite_callback_value(
-                    callback_model, callback.MULTIOBJ_RUNTIME
-                ),
-                "work_units": _finite_callback_value(
-                    callback_model, callback.MULTIOBJ_WORK
-                ),
-            }
-        )
-
-        event("stage_terminal", **{
-            "stage_number": stages[-1]["stage_number"],
-            "stage_role": stages[-1]["stage_role"], "status": stages[-1]["status"],
-            "incumbent": stages[-1]["objective_value"], "bound": stages[-1]["objective_bound"],
-            "mip_gap": stages[-1]["mip_gap"], "iterations": stages[-1]["iteration_count"],
-            "nodes": stages[-1]["node_count"],
-        })
-
-    if native_phase_hook is not None:
-        native_phase_hook("optimization", model, GRB)
-    model.optimize(observe_stage)
-    # Publish this seam before diagnostics, count checks or sparse extraction.
-    if native_phase_hook is not None:
-        native_phase_hook("export_validation", model, GRB)
-    if telemetry is not None and diagnostics is not None:
-        diagnostics.update(telemetry.finish(model))
-    return stages
-
-
-def _lexicographic_stage_diagnostics(
-    *,
-    model: Any,
-    GRB: Any,
-    objective_policy: str,
-    stages: list[dict[str, Any]],
-    primary_objective_value: float | None,
-) -> dict[str, Any]:
-    """Classify lexicographic evidence without inferring unfinished passes."""
-
-    if objective_policy != "lexicographic":
-        return {}
-
-    stage_by_name = {
-        stage.get("stage_role", stage["objective_name"]): stage
-        for stage in stages
-    }
-    expected_names = (
-        "unmet_demand",
-        "emergency_capacity",
-        "economic_cost",
-    )
-    completed_count = sum(
-        stage_by_name.get(name, {}).get("status") == "OPTIMAL"
-        for name in expected_names
-    )
-    service_stage = stage_by_name.get("unmet_demand")
-    feasibility_tolerance = max(
-        VALUE_TOL,
-        float(getattr(getattr(model, "Params", None), "FeasibilityTol", 1e-6)),
-    )
-
-    if primary_objective_value is None:
-        service_certification_status = "unavailable"
-        service_target_status = "unavailable"
-    elif primary_objective_value <= feasibility_tolerance + VALUE_TOL:
-        service_certification_status = "certified_zero_within_tolerance"
-        service_target_status = "attained"
-    elif (
-        service_stage
-        and service_stage.get("status") == "OPTIMAL"
-        and service_stage.get("objective_bound") is not None
-        and isfinite(service_stage["objective_bound"])
-        and service_stage["objective_bound"] > feasibility_tolerance + VALUE_TOL
-    ):
-        service_certification_status = "certified_minimum_positive"
-        service_target_status = "not_attainable"
-    else:
-        service_certification_status = "provisional_positive"
-        service_target_status = "not_attained_by_incumbent"
-
-    return {
-        "lexicographic_stages": stages,
-        "lexicographic_expected_stage_count": len(expected_names),
-        "lexicographic_completed_stage_count": completed_count,
-        "lexicographic_overall_status": (
-            "complete"
-            if completed_count == len(expected_names)
-            else "partial"
-            if stages
-            else "unavailable"
-        ),
-        "service_target_status": service_target_status,
-        "service_certification_status": service_certification_status,
-        "service_stage_status": (
-            service_stage.get("status") if service_stage else "NOT_STARTED"
-        ),
-        "capacity_stage_status": (
-            stage_by_name.get("emergency_capacity", {}).get(
-                "status", "NOT_STARTED"
-            )
-        ),
-        "economic_stage_status": (
-            stage_by_name.get("economic_cost", {}).get(
-                "status", "NOT_STARTED"
-            )
-        ),
-    }
-
-
-# ---------------------------------------------------------------------
-# Model expression helpers
-# ---------------------------------------------------------------------
 
 
 def _active_warehouse_expr(
@@ -1221,10 +228,7 @@ def _effective_static_capacity_expr(
     if warehouse in expand_capacity:
         capacity = capacity + expand_capacity[warehouse]
 
-    if (
-        model_config.capacity_coupling_policy == "period_equivalent"
-        and warehouse in bulk_capacity
-    ):
+    if model_config.capacity_coupling_policy == "period_equivalent" and warehouse in bulk_capacity:
         capacity = capacity + bulk_capacity[warehouse]
 
     return capacity
@@ -1239,10 +243,7 @@ def _effective_reception_capacity_expr(
     warehouse: str,
     period: str,
 ) -> Any:
-    capacity = (
-        data.reception_capacity.get(warehouse, 0.0)
-        * model_config.operating_days(period)
-    )
+    capacity = data.reception_capacity.get(warehouse, 0.0) * model_config.operating_days(period)
 
     if model_config.capacity_coupling_policy == "period_equivalent":
         # Preserve the established MVP interpretation for all existing runs.
@@ -1253,21 +254,15 @@ def _effective_reception_capacity_expr(
     days = model_config.operating_days(period)
     if warehouse in data.candidate_warehouses:
         capacity += (
-            candidate_capacity[warehouse]
-            * model_config.candidate_reception_daily_factor
-            * days
+            candidate_capacity[warehouse] * model_config.candidate_reception_daily_factor * days
         )
     if warehouse in expand_capacity:
         capacity += (
-            expand_capacity[warehouse]
-            * model_config.expansion_reception_daily_factor
-            * days
+            expand_capacity[warehouse] * model_config.expansion_reception_daily_factor * days
         )
     if warehouse in bulk_capacity:
         capacity += (
-            bulk_capacity[warehouse]
-            * model_config.bulkification_reception_daily_factor
-            * days
+            bulk_capacity[warehouse] * model_config.bulkification_reception_daily_factor * days
         )
 
     return capacity
@@ -1282,10 +277,7 @@ def _effective_shipping_capacity_expr(
     warehouse: str,
     period: str,
 ) -> Any:
-    capacity = (
-        data.shipping_capacity.get(warehouse, 0.0)
-        * model_config.operating_days(period)
-    )
+    capacity = data.shipping_capacity.get(warehouse, 0.0) * model_config.operating_days(period)
 
     if model_config.capacity_coupling_policy == "period_equivalent":
         # Preserve the established MVP interpretation for all existing runs.
@@ -1296,21 +288,13 @@ def _effective_shipping_capacity_expr(
     days = model_config.operating_days(period)
     if warehouse in data.candidate_warehouses:
         capacity += (
-            candidate_capacity[warehouse]
-            * model_config.candidate_shipping_daily_factor
-            * days
+            candidate_capacity[warehouse] * model_config.candidate_shipping_daily_factor * days
         )
     if warehouse in expand_capacity:
-        capacity += (
-            expand_capacity[warehouse]
-            * model_config.expansion_shipping_daily_factor
-            * days
-        )
+        capacity += expand_capacity[warehouse] * model_config.expansion_shipping_daily_factor * days
     if warehouse in bulk_capacity:
         capacity += (
-            bulk_capacity[warehouse]
-            * model_config.bulkification_shipping_daily_factor
-            * days
+            bulk_capacity[warehouse] * model_config.bulkification_shipping_daily_factor * days
         )
 
     return capacity
@@ -1427,312 +411,6 @@ def _warehouse_to_warehouse_unit_cost(
     receiving_handling_cost = data.transshipment_cost.get(warehouse_to, 0.0)
 
     return interhub_factor * distance * freight + receiving_handling_cost
-
-
-# ---------------------------------------------------------------------
-# Result extraction
-# ---------------------------------------------------------------------
-
-
-def _extract_deterministic_result(
-    data: ModelData,
-    model_config: ModelConfig,
-    solver_config: SolverConfig,
-    model: Any,
-    GRB: Any,
-    status: str,
-    gurobi_status_name: str,
-    runtime_seconds: float,
-    model_build_seconds: float,
-    optimization_seconds: float,
-    flow_od: Any,
-    flow_dc: Any,
-    flow_oc: Any,
-    flow_dd: Any,
-    inventory: Any,
-    open_candidate: Any,
-    candidate_capacity: Any,
-    expand_warehouse: Any,
-    expand_capacity: Any,
-    bulkify_warehouse: Any,
-    bulk_capacity: Any,
-    unmet_demand: Any,
-    emergency_static_capacity: Any,
-    emergency_reception_capacity: Any,
-    lexicographic_stages: list[dict[str, Any]],
-    cost_components: dict[str, Any],
-) -> OptimizationResult:
-    flows: list[dict[str, Any]] = []
-
-    for origin, warehouse, product, period in flow_od.keys():
-        value = _value(flow_od[origin, warehouse, product, period])
-        if value > VALUE_TOL:
-            flows.append(
-                {
-                    "route_type": "OD",
-                    "origin": origin,
-                    "warehouse": warehouse,
-                    "customer": None,
-                    "product": product,
-                    "period": period,
-                    "value": value,
-                }
-            )
-
-    for warehouse, customer, product, period in flow_dc.keys():
-        value = _value(flow_dc[warehouse, customer, product, period])
-        if value > VALUE_TOL:
-            flows.append(
-                {
-                    "route_type": "DC",
-                    "origin": None,
-                    "warehouse": warehouse,
-                    "customer": customer,
-                    "customer_type": (
-                        "export"
-                        if customer in data.export_customers
-                        else "domestic"
-                    ),
-                    "product": product,
-                    "period": period,
-                    "value": value,
-                }
-            )
-
-    for origin, customer, product, period in flow_oc.keys():
-        value = _value(flow_oc[origin, customer, product, period])
-        if value > VALUE_TOL:
-            flows.append(
-                {
-                    "route_type": "OC",
-                    "origin": origin,
-                    "warehouse": None,
-                    "customer": customer,
-                    "customer_type": (
-                        "export"
-                        if customer in data.export_customers
-                        else "domestic"
-                    ),
-                    "product": product,
-                    "period": period,
-                    "value": value,
-                }
-            )
-
-    for warehouse_from, warehouse_to, product, period in flow_dd.keys():
-        value = _value(flow_dd[warehouse_from, warehouse_to, product, period])
-        if value > VALUE_TOL:
-            flows.append(
-                {
-                    "route_type": "DD",
-                    "warehouse_from": warehouse_from,
-                    "warehouse_to": warehouse_to,
-                    "product": product,
-                    "period": period,
-                    "value": value,
-                }
-            )
-
-    inventories: list[dict[str, Any]] = []
-
-    for warehouse, product, period in inventory.keys():
-        value = _value(inventory[warehouse, product, period])
-        if value > VALUE_TOL:
-            inventories.append(
-                {
-                    "warehouse": warehouse,
-                    "product": product,
-                    "period": period,
-                    "value": value,
-                }
-            )
-
-    unmet_records: list[dict[str, Any]] = []
-
-    for customer, product, period in unmet_demand.keys():
-        value = _value(unmet_demand[customer, product, period])
-        if value > VALUE_TOL:
-            unmet_records.append(
-                {
-                    "customer": customer,
-                    "product": product,
-                    "period": period,
-                    "value": value,
-                }
-            )
-
-    emergency_records: list[dict[str, Any]] = []
-
-    for warehouse, period in emergency_static_capacity.keys():
-        value = _value(emergency_static_capacity[warehouse, period])
-        if value > VALUE_TOL:
-            emergency_records.append(
-                {
-                    "warehouse": warehouse,
-                    "period": period,
-                    "capacity_type": "static",
-                    "value": value,
-                }
-            )
-
-    for warehouse, period in emergency_reception_capacity.keys():
-        value = _value(emergency_reception_capacity[warehouse, period])
-        if value > VALUE_TOL:
-            emergency_records.append(
-                {
-                    "warehouse": warehouse,
-                    "period": period,
-                    "capacity_type": "reception",
-                    "value": value,
-                }
-            )
-
-    warehouse_decisions: list[dict[str, Any]] = []
-
-    for warehouse in data.warehouses:
-        if warehouse in data.candidate_warehouses:
-            open_value = _value(open_candidate[warehouse])
-            candidate_capacity_value = _value(candidate_capacity[warehouse])
-        else:
-            open_value = 1.0 if warehouse in data.existing_warehouses else 0.0
-            candidate_capacity_value = 0.0
-
-        if warehouse in expand_capacity:
-            expand_value = _value(expand_warehouse[warehouse])
-            expansion_capacity_value = _value(expand_capacity[warehouse])
-        else:
-            expand_value = 0.0
-            expansion_capacity_value = 0.0
-
-        if warehouse in bulk_capacity:
-            bulkify_value = _value(bulkify_warehouse[warehouse])
-            bulk_capacity_value = _value(bulk_capacity[warehouse])
-        else:
-            bulkify_value = 0.0
-            bulk_capacity_value = 0.0
-
-        warehouse_decisions.append(
-            {
-                "warehouse": warehouse,
-                "is_existing": warehouse in data.existing_warehouses,
-                "is_candidate": warehouse in data.candidate_warehouses,
-                "open": open_value,
-                "candidate_capacity": candidate_capacity_value,
-                "expand": expand_value,
-                "expansion_capacity": expansion_capacity_value,
-                "bulkify": bulkify_value,
-                "bulk_capacity": bulk_capacity_value,
-                "static_capacity": data.static_capacity.get(warehouse, 0.0),
-                "effective_static_capacity": (
-                    data.static_capacity.get(warehouse, 0.0)
-                    + candidate_capacity_value
-                    + expansion_capacity_value
-                    + (
-                        bulk_capacity_value
-                        if model_config.capacity_coupling_policy
-                        == "period_equivalent"
-                        else 0.0
-                    )
-                ),
-            }
-        )
-
-    cost_breakdown = {
-        name: _expression_value(expression)
-        for name, expression in cost_components.items()
-    }
-    economic_cost_value = sum(
-        value
-        for name, value in cost_breakdown.items()
-        if name not in {"unmet_demand", "emergency_static", "emergency_reception"}
-    )
-    penalized_cost_value = sum(cost_breakdown.values())
-    unmet_quantity_value = sum(record["value"] for record in unmet_records)
-    emergency_quantity_value = sum(
-        record["value"] for record in emergency_records
-    )
-    objective_values = {
-        "unmet_demand": unmet_quantity_value,
-        "emergency_capacity": emergency_quantity_value,
-        "economic_cost": economic_cost_value,
-        "penalized_cost": penalized_cost_value,
-    }
-
-    metrics = {
-        "total_flow": sum(record["value"] for record in flows),
-        "total_unmet_demand": unmet_quantity_value,
-        "total_emergency_capacity": emergency_quantity_value,
-        "objective_values": objective_values,
-    }
-
-    mip_gap = getattr(model, "MIPGap", None)
-
-    return OptimizationResult(
-        status=status,
-        objective_value=(
-            penalized_cost_value
-            if model_config.objective_policy == "penalty"
-            else unmet_quantity_value
-        ),
-        solver_backend="gurobipy",
-        solver_name=solver_config.solver_name,
-        model_mode=model_config.mode,
-        runtime_seconds=runtime_seconds,
-        mip_gap=mip_gap,
-        cost_breakdown=cost_breakdown,
-        warehouse_decisions=warehouse_decisions,
-        flows=flows,
-        inventories=inventories,
-        unmet_demand=unmet_records,
-        emergency_capacity=emergency_records,
-        metrics=metrics,
-        metadata={
-            "mathematical_contract": data.metadata.get("mathematical_contract", {}),
-            "gurobi_status_code": model.Status,
-            "gurobi_status_name": gurobi_status_name,
-            "gurobi_objective_value": getattr(model, "ObjVal", None),
-            "gurobi_objective_bound": getattr(model, "ObjBound", None),
-            "solution_count": model.SolCount,
-            "timings": {
-                "model_build_seconds": model_build_seconds,
-                "optimization_seconds": optimization_seconds,
-            },
-            "candidate_capacity_mode": model_config.candidate_capacity_mode,
-            "objective_policy": model_config.objective_policy,
-            **_lexicographic_stage_diagnostics(
-                model=model,
-                GRB=GRB,
-                objective_policy=model_config.objective_policy,
-                stages=lexicographic_stages,
-                primary_objective_value=unmet_quantity_value,
-            ),
-            "objective_priority_order": (
-                ["penalized_cost"]
-                if model_config.objective_policy == "penalty"
-                else [
-                    "unmet_demand",
-                    "emergency_capacity",
-                    "economic_cost",
-                ]
-            ),
-            "allow_capacity_expansion": model_config.allow_capacity_expansion,
-            "allow_bulkification": model_config.allow_bulkification,
-            "capacity_coupling_policy": model_config.capacity_coupling_policy,
-            "interhub_factor": model_config.interhub_factor,
-            "capacity_coupling_daily_factors": {
-                "candidate_reception": model_config.candidate_reception_daily_factor,
-                "candidate_shipping": model_config.candidate_shipping_daily_factor,
-                "expansion_reception": model_config.expansion_reception_daily_factor,
-                "expansion_shipping": model_config.expansion_shipping_daily_factor,
-                "bulkification_reception": (
-                    model_config.bulkification_reception_daily_factor
-                ),
-                "bulkification_shipping": (
-                    model_config.bulkification_shipping_daily_factor
-                ),
-            },
-        },
-    )
 
 
 def _value(variable: Any) -> float:

@@ -48,7 +48,7 @@ are written: observation-only does not mean no filesystem writes anywhere.
 
 ## Actual measurements and unproven conditions
 
-The [observer/replayer](../scripts/mvp2_s2_lifecycle_profile.py) separately captures
+The [observer/replayer](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/5f9daa55b3afb5bbcb3449bc83c970cf10a28ca6/scripts/mvp2_s2_lifecycle_profile.py) separately captures
 host namespaces and the user-namespace limit, its own current process/mapping,
 allocation and batch membership, memory/freezer/cpuset mounts, complete visible
 hierarchy permissions and allocation-parent inventories. Queries are reaped before
@@ -99,7 +99,7 @@ guessed in this tracked document. The wrapper requires the SHA in merged develop
 Do not use branch-tip URLs, shortened SHAs, edited scripts or older checksums.
 No NPAD job is submitted by the agent.
 
-The [wrapper](../scripts/npad_s2_lifecycle_profile.sh) accepts exactly these verbs:
+The [wrapper](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/5f9daa55b3afb5bbcb3449bc83c970cf10a28ca6/scripts/npad_s2_lifecycle_profile.sh) accepts exactly these verbs:
 
 ```text
 bash /absolute/downloaded/npad_s2_lifecycle_profile.sh start FULL_REVIEWED_SOURCE_SHA

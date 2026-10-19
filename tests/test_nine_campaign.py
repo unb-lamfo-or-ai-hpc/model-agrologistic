@@ -31,11 +31,6 @@ def test_campaign_does_not_change_accepted_configurations(tmp_path):
     assert source.read_bytes() == before
 
 
-def test_slurm_budget_includes_pipeline_overhead():
-    root = Path(__file__).resolve().parents[1]
-    script = (root / "scripts/run_nine_connectivity.slurm").read_text()
-    assert "#SBATCH --time=12:00:00" in script
-    assert "#SBATCH --qos=qos1" in script
 
 
 @pytest.mark.parametrize("population,limit", [(300, 26_000_000), (400, 43_000_000)])

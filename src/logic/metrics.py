@@ -73,20 +73,14 @@ def calculate_storage_metrics(
     if not data.periods:
         raise ValueError("Storage metrics require at least one period in ModelData.")
 
-    decisions = {
-        str(decision["warehouse"]): decision
-        for decision in result.warehouse_decisions
-    }
+    decisions = {str(decision["warehouse"]): decision for decision in result.warehouse_decisions}
     missing_decisions = sorted(set(data.warehouses) - set(decisions))
     if missing_decisions:
         raise ValueError(
-            "OptimizationResult.warehouse_decisions is missing warehouses: "
-            f"{missing_decisions}."
+            f"OptimizationResult.warehouse_decisions is missing warehouses: {missing_decisions}."
         )
 
-    scenarios, probabilities, stochastic = _scenario_structure(
-        data, result, config
-    )
+    scenarios, probabilities, stochastic = _scenario_structure(data, result, config)
     outbound = _zero_warehouse_scenario_map(data, scenarios)
     terminal_inventory = _zero_warehouse_scenario_map(data, scenarios)
 
@@ -113,9 +107,7 @@ def calculate_storage_metrics(
     for inventory in result.inventories:
         scenario = _record_scenario(inventory, config, stochastic)
         if scenario not in probabilities:
-            raise ValueError(
-                f"Inventory record contains unknown scenario {scenario!r}."
-            )
+            raise ValueError(f"Inventory record contains unknown scenario {scenario!r}.")
         if str(inventory["period"]) != final_period:
             continue
         terminal_inventory[scenario, str(inventory["warehouse"])] += float(
@@ -140,9 +132,7 @@ def calculate_storage_metrics(
         for scenario in scenarios:
             total_outbound = outbound[scenario, warehouse]
             ending_inventory = terminal_inventory[scenario, warehouse]
-            dynamic_capacity = annualization_factor * (
-                total_outbound + ending_inventory
-            )
+            dynamic_capacity = annualization_factor * (total_outbound + ending_inventory)
             warehouse_metrics.append(
                 {
                     "scenario": scenario,
@@ -179,12 +169,8 @@ def calculate_storage_metrics(
             "period_count": len(data.periods),
             "annualization_months": config.annualization_months,
             "annualization_factor": annualization_factor,
-            "dynamic_capacity_formula": (
-                "(12 / |T|) * (total_outbound + terminal_inventory)"
-            ),
-            "outbound_definition": (
-                "warehouse-to-customer plus warehouse-to-warehouse at source"
-            ),
+            "dynamic_capacity_formula": ("(12 / |T|) * (total_outbound + terminal_inventory)"),
+            "outbound_definition": ("warehouse-to-customer plus warehouse-to-warehouse at source"),
             "effective_static_capacity_formula": (
                 "existing_static_or_opened_candidate_capacity + expansion_capacity"
             ),
@@ -204,9 +190,7 @@ def attach_storage_metrics(
 
     storage_metrics = calculate_storage_metrics(data, result, config)
     result.metrics["storage"] = storage_metrics.to_dict()
-    result.metrics["DynCap"] = storage_metrics.expected_metrics[
-        "dynamic_capacity"
-    ]
+    result.metrics["DynCap"] = storage_metrics.expected_metrics["dynamic_capacity"]
     result.metrics["Turnover"] = storage_metrics.expected_metrics["turnover"]
     return storage_metrics
 
@@ -216,15 +200,12 @@ def _scenario_structure(
     result: OptimizationResult,
     config: StorageMetricsConfig,
 ) -> tuple[list[str], dict[str, float], bool]:
-    stochastic = result.model_mode == "sto" or bool(data.scenarios)
+    stochastic = result.model_mode == "sto" or (result.model_mode is None and bool(data.scenarios))
     if stochastic:
         scenarios = list(data.scenarios)
         if not scenarios:
             raise ValueError("Stochastic metrics require scenarios in ModelData.")
-        probabilities = {
-            scenario: float(data.scenario_prob[scenario])
-            for scenario in scenarios
-        }
+        probabilities = {scenario: float(data.scenario_prob[scenario]) for scenario in scenarios}
         return scenarios, probabilities, True
 
     return (
@@ -248,11 +229,7 @@ def _zero_warehouse_scenario_map(
     data: ModelData,
     scenarios: list[str],
 ) -> dict[tuple[str, str], float]:
-    return {
-        (scenario, warehouse): 0.0
-        for scenario in scenarios
-        for warehouse in data.warehouses
-    }
+    return {(scenario, warehouse): 0.0 for scenario in scenarios for warehouse in data.warehouses}
 
 
 def _thesis_effective_static_capacity(
@@ -266,9 +243,7 @@ def _thesis_effective_static_capacity(
         return float(data.static_capacity.get(warehouse, 0.0)) + expansion_capacity
     if warehouse in data.candidate_warehouses:
         return float(decision.get("candidate_capacity", 0.0)) + expansion_capacity
-    raise ValueError(
-        f"Warehouse {warehouse!r} is neither existing nor candidate."
-    )
+    raise ValueError(f"Warehouse {warehouse!r} is neither existing nor candidate.")
 
 
 def _aggregate_scenario_metrics(
@@ -277,9 +252,7 @@ def _aggregate_scenario_metrics(
     warehouse_metrics: list[dict[str, Any]],
     tolerance: float,
 ) -> dict[str, float | None]:
-    records = [
-        record for record in warehouse_metrics if record["scenario"] == scenario
-    ]
+    records = [record for record in warehouse_metrics if record["scenario"] == scenario]
     effective_static_capacity = sum(
         float(record["effective_static_capacity"]) for record in records
     )
@@ -288,9 +261,7 @@ def _aggregate_scenario_metrics(
     return {
         "effective_static_capacity": effective_static_capacity,
         "total_outbound": sum(float(record["total_outbound"]) for record in records),
-        "terminal_inventory": sum(
-            float(record["terminal_inventory"]) for record in records
-        ),
+        "terminal_inventory": sum(float(record["terminal_inventory"]) for record in records),
         "dynamic_capacity": dynamic_capacity,
         "turnover": (
             dynamic_capacity / effective_static_capacity
@@ -307,15 +278,11 @@ def _expected_scenario_metrics(
     metric_names = next(iter(scenario_metrics.values())).keys()
     expected: dict[str, float | None] = {}
     for metric_name in metric_names:
-        values = {
-            scenario: metrics[metric_name]
-            for scenario, metrics in scenario_metrics.items()
-        }
+        values = {scenario: metrics[metric_name] for scenario, metrics in scenario_metrics.items()}
         if any(value is None for value in values.values()):
             expected[metric_name] = None
             continue
         expected[metric_name] = sum(
-            probabilities[scenario] * float(value)
-            for scenario, value in values.items()
+            probabilities[scenario] * float(value) for scenario, value in values.items()
         )
     return expected

@@ -59,8 +59,8 @@ non-delegation, complete hierarchy coverage or persistence through cleanup.
 
 ## Complete closed software correction package
 
-The [new diagnostic module](../scripts/mvp2_s2_profile_diagnostics.py) and
-[regression](../tests/test_mvp2_s2_profile_diagnostics.py) qualify:
+The [new diagnostic module](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/5f9daa55b3afb5bbcb3449bc83c970cf10a28ca6/scripts/mvp2_s2_profile_diagnostics.py) and
+[regression](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/5f9daa55b3afb5bbcb3449bc83c970cf10a28ca6/tests/test_mvp2_s2_profile_diagnostics.py) qualify:
 
 - Exact UID/job/step ancestry: direct batch leaves for memory/freezer/cpuset and
   the observed memory-only step_batch/task_0 layout. Other tasks, numeric worker

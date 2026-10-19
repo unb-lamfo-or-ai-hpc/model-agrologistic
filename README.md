@@ -1,5 +1,24 @@
 # Model Agrologistic
 
+## Active MVP2 contract — scalar DET/STO
+
+19 October2026: development now targets one economic MILP objective for DET and
+two-stage STO, with DET as one scenario of probability one. Investments are shared
+and charged once; expected transportation/storage costs and the three feasibility
+penalties form the scalar total. There is no active hierarchical or EVPI/VSS path.
+Read the [scientific contract](docs/mvp2_scalar_contract.md),
+[current checkpoint](PROJECT_STATE.md) and [roadmap](docs/mvp2_scalar_roadmap.md).
+
+R1 is software qualification only. No NPAD execution is admitted. New manifests
+use version2; the [small template](experiments/mvp2_scalar_template.yaml) is not a
+large campaign or execution permission. Version1 examples and historical results
+below retain their original meaning and cannot certify the scalar model.
+The full previous code/tests/protocols remain at
+[archived develop](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/tree/5f9daa55b3afb5bbcb3449bc83c970cf10a28ca6).
+The manuscript remains the preserved coauthor-review version until S6.
+
+## Historical project description and results
+
 Research project developed through international cooperation between the University of Brasilia (UnB) and the National University of the Littoral, Argentina.
 
 Public manuscript: [article](https://unb-lamfo-or-ai-hpc.github.io/model-agrologistic/),

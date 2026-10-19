@@ -1,5 +1,16 @@
 # Dated research status: 19 October 2026
 
+## Current scalar R1 — software only, no execution
+
+The approved [scalar contract](mvp2_scalar_contract.md) and
+[roadmap](mvp2_scalar_roadmap.md) replace the unexecuted PR111 h400 hierarchy
+continuation. The historical develop tree is archived immutably at5f9daa55
+on `archive/mvp2-multiobjective-20261019`. S2 remains historically closed, not
+scalar-qualified. DET/STO share one economic MILP; EVPI/VSS are excluded.
+R1 qualification/Ready and explicit merge precede R2 small native qualification
+and new budgets. No NPAD job/probe/retry or old-claim mutation is admitted.
+The dated entries below are historical records, not active scalar instructions.
+
 ## Current P5 decision — complete five-arm diagnostic, closure pending merge
 
 Job2215308 ran all five cold serial4/1/8/2/16-thread arms at global3600s/arm,

@@ -14,7 +14,7 @@ Authority: [checkpoint](../PROJECT_STATE.md) and [operational completion plan](m
 Transferred archive bytes, sidecar and external source/job/plan identities agree.
 The bounded reader verifies exact archive inventory, structured metadata,
 independent channel grammar, exact terminal accounting and false admission flags.
-The [read-only outcome interpreter](../scripts/mvp2_s2_fast_exit_audit.py) rechecks
+The [read-only outcome interpreter](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/5f9daa55b3afb5bbcb3449bc83c970cf10a28ca6/scripts/mvp2_s2_fast_exit_audit.py) rechecks
 the same archive bytes and generates the [redacted public review](evidence/s2_fast_exit_2210952_review.json).
 No archive extraction, original writes, scheduler action, license access, source
 relabeling or remote attestation is involved. CI tests fake carriers and public

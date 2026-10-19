@@ -48,7 +48,7 @@ justify a solver allocation or predict its optimization peak.
 
 ## Safe executable lifecycle
 
-The versioned [driver](../scripts/npad_mvp2_h400_input.sh) uses the existing Conda
+The versioned [driver](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/5f9daa55b3afb5bbcb3449bc83c970cf10a28ca6/scripts/npad_mvp2_h400_input.sh) uses the existing Conda
 Python at `/home/vrrcelestino/venv313/bin/python`; it does not install or upgrade
 dependencies or edit preserved reference data. The PR's maintained comment gives
 the full CI-passed source, exact driver SHA-256 and complete start/collect commands.
@@ -95,7 +95,7 @@ does not become an accepted run by exit zero and never triggers resubmission.
 
 ## Portable review and acceptance boundary
 
-The [collector/reviewer](../scripts/collect_mvp2_h400_input.py) has no submission
+The [collector/reviewer](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/5f9daa55b3afb5bbcb3449bc83c970cf10a28ca6/scripts/collect_mvp2_h400_input.py) has no submission
 API. Review verifies the archive SHA-256, safe regular members, bounded expansion,
 complete allowlisted catalog, source/tool/policy/core identities, exact standalone
 allocation, worker and diagnostics, six input hashes and reconstructed semantic

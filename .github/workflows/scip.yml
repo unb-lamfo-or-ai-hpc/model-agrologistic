@@ -17,7 +17,7 @@ jobs:
         with:
           python-version: '3.13'
       - run: python -m pip install -e '.[dev,scip]' 'pyscipopt==6.2.1'
-      - run: python scripts/qualify_scip_backend.py --without-gurobi-parity --output-dir /tmp/scip-qualification
+      - run: python -m pytest tests/test_scip_backend.py tests/test_scalar_contract.py -p no:cacheprovider --junitxml=/tmp/scip-qualification/results.xml
       - uses: actions/upload-artifact@v4
         if: always()
         with:

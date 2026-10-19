@@ -17,26 +17,87 @@ from src.logic.model_config import ModelConfig
 from src.logic.model_data import ModelData
 from src.logic.route_filtering import route_policy_signature, select_routes
 
-MATHEMATICAL_CONTRACT_VERSION = "v020-separated-slacks-selected-penalties-v1"
+MATHEMATICAL_CONTRACT_VERSION = "mvp2-scalar-economic-det-sto-v1"
+
+
+def deterministic_inputs(data: ModelData) -> ModelData:
+    """Exclude unused uncertain arrays from deterministic preparation and diagnostics."""
+    return replace(
+        data, scenarios=[], scenario_prob={}, supply_s={}, demand_dom_s={}, demand_exp_s={}
+    )
+
+
+def extensive_form_inputs(data: ModelData, config: ModelConfig) -> tuple[ModelData, ModelConfig]:
+    """Embed deterministic base arrays as one scenario, without recalibrating costs."""
+    if config.mode == "sto":
+        return data, config
+    scenario = "deterministic"
+    projected = replace(
+        data,
+        scenarios=[scenario],
+        scenario_prob={scenario: 1.0},
+        supply_s={
+            (scenario, o, p, t): data.supply.get((o, p, t), 0.0)
+            for o in data.origins
+            for p in data.products
+            for t in data.periods
+        },
+        demand_dom_s={
+            (scenario, c, p, t): data.demand_dom.get((c, p, t), 0.0)
+            for c in data.domestic_customers
+            for p in data.products
+            for t in data.periods
+        },
+        demand_exp_s={
+            (scenario, c, p, t): data.demand_exp.get((c, p, t), 0.0)
+            for c in data.export_customers
+            for p in data.products
+            for t in data.periods
+        },
+    )
+    return projected, replace(config, mode="sto")
+
+
+def scenario_projection(data: ModelData, scenario: str) -> ModelData:
+    """Project a named realization to deterministic arrays; preserve graph and penalties."""
+    if scenario not in data.scenarios:
+        raise ValueError("Unknown scenario.")
+
+    def values(mapping):
+        return {k[1:]: v for k, v in mapping.items() if k[0] == scenario}
+
+    return replace(
+        data,
+        scenarios=[],
+        scenario_prob={},
+        supply_s={},
+        demand_dom_s={},
+        demand_exp_s={},
+        supply=values(data.supply_s),
+        demand_dom=values(data.demand_dom_s),
+        demand_exp=values(data.demand_exp_s),
+    )
 
 
 def canonical_hash(payload: Any) -> str:
     """Hash JSON-compatible scientific metadata deterministically."""
 
-    encoded = json.dumps(
-        payload, sort_keys=True, separators=(",", ":"), allow_nan=False
-    ).encode("utf-8")
+    encoded = json.dumps(payload, sort_keys=True, separators=(",", ":"), allow_nan=False).encode(
+        "utf-8"
+    )
     return hashlib.sha256(encoded).hexdigest()
 
 
 def prepare_model_data(data: ModelData, config: ModelConfig) -> ModelData:
     """Return an immutable projection with a frozen network and penalty vector.
 
-    RP, EV, WS, and EEV projections retain this same metadata. Scenario
-    projection must never repair the graph or recalibrate Big-M separately.
+    Scenario projection retains this same metadata. It must never repair
+    the graph or recalibrate Big-M separately.
     Original loader data and historical workbooks are not modified.
     """
 
+    if config.mode == "det" and data.scenarios:
+        data = deterministic_inputs(data)
     if config.terminal_inventory_policy != "free":
         raise ValueError(
             "The native model currently supports only terminal_inventory_policy='free'."
@@ -108,7 +169,7 @@ def prepare_model_data(data: ModelData, config: ModelConfig) -> ModelData:
         "penalty_scope": penalty_scope,
         "emergency_static_unit": "stock_tonnes_at_warehouse_period",
         "emergency_reception_unit": "overflow_tonnes_in_period",
-        "capacity_objective": "equal_weight_sum_of_stock_exceedance_and_reception_overflow",
+        "objective": "investment_once_plus_expected_operation_and_three_penalties",
         "historical_shared_slack_equivalent": False,
         "terminal_inventory_policy": "free",
         "penalty_vector": vector,
@@ -118,6 +179,10 @@ def prepare_model_data(data: ModelData, config: ModelConfig) -> ModelData:
         unmet_demand_penalty=unmet,
         emergency_static_capacity_penalty=static,
         emergency_reception_capacity_penalty=reception,
-        metadata={**data.metadata, **extra_metadata,
-                  "mathematical_contract": contract, "_frozen_routes": frozen},
+        metadata={
+            **data.metadata,
+            **extra_metadata,
+            "mathematical_contract": contract,
+            "_frozen_routes": frozen,
+        },
     )

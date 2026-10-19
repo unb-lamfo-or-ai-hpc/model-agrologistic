@@ -76,7 +76,7 @@ experiment is permitted.
 
 ## One-shot executable workflow
 
-The versioned [driver](../scripts/npad_mvp2_h400_control.sh) uses the existing
+The versioned [driver](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/5f9daa55b3afb5bbcb3449bc83c970cf10a28ca6/scripts/npad_mvp2_h400_control.sh) uses the existing
 qualified Python `/home/vrrcelestino/venv313/bin/python`; it installs nothing.
 The maintained PR comment supplies the full CI-passed source and driver SHA-256.
 Use that immutable handoff, not a moving branch.

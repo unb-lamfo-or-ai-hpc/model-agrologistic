@@ -32,24 +32,18 @@ def checked(data, config):
     return result
 
 
-@pytest.mark.parametrize("policy", ["penalty", "lexicographic"])
+@pytest.mark.parametrize("policy", ["penalty"])
 def test_shared_investment_and_probability_weighted_costs(policy):
     result = checked(two_scenario_data(), configuration(objective_policy=policy))
     assert result.status == "optimal"
     assert result.solver_backend == "pyscipopt"
-    assert result.metrics["investment_cost"] == pytest.approx(130, abs=1e-4)
+    assert result.metrics["investment_cost"] == pytest.approx(130, abs=0.0001)
     assert result.metrics["expected_operating_cost"] == pytest.approx(170, abs=2)
-    assert result.metrics["objective_values"]["economic_cost"] == pytest.approx(300, abs=1e-4)
-    assert result.warehouse_decisions[0]["expansion_capacity"] == pytest.approx(60, abs=1e-4)
+    assert result.metrics["objective_values"]["economic_cost"] == pytest.approx(300, abs=0.0001)
+    assert result.warehouse_decisions[0]["expansion_capacity"] == pytest.approx(60, abs=0.0001)
     assert not any(key.startswith("gurobi_") for key in result.metadata)
-    if policy == "lexicographic":
-        assert result.metadata["lexicographic_overall_status"] == "complete"
-        assert len(result.metadata["lexicographic_stages"]) == 3
-        assert result.mip_gap is None
-        assert result.metadata["service_certification_status"] == "certified_zero_within_tolerance"
-    else:
-        assert result.objective_value == pytest.approx(300)
-        assert result.metadata["objective_bound"] == pytest.approx(300)
+    assert result.objective_value == pytest.approx(300)
+    assert result.metadata["objective_bound"] == pytest.approx(300)
 
 
 def stochastic(data):
@@ -85,7 +79,7 @@ def test_transshipment_and_direct_route_selection(direct):
     data.routes_oc = {("O1", "C1", "soy")}
     data.dist_oc = {("O1", "C1"): 0.1}
     result = checked(
-        data, configuration(use_direct_origin_customer=direct, objective_policy="lexicographic")
+        data, configuration(use_direct_origin_customer=direct, objective_policy="penalty")
     )
     kinds = {r["route_type"] for r in result.flows}
     assert ("OC" in kinds) == direct
@@ -170,9 +164,9 @@ def test_two_period_stock_and_export_upper_bound():
                 sum(
                     r["value"]
                     for r in result.flows
-                    if r.get("customer") == "E" and r["scenario"] == s and r["period"] == t
+                    if r.get("customer") == "E" and r["scenario"] == s and (r["period"] == t)
                 )
-                <= 5 + 1e-6
+                <= 5 + 1e-06
             )
 
 
@@ -202,11 +196,10 @@ def test_nine_scenarios_preserve_the_shared_first_stage():
     data.scenario_prob = dict.fromkeys(data.scenarios, 1 / 9)
     data.supply_s = {(s, "O1", "soy", "t1"): 40 + i * 5 for i, s in enumerate(data.scenarios)}
     data.demand_dom_s = {(s, "C1", "soy", "t1"): 0 for s in data.scenarios}
-    result = checked(data, configuration(objective_policy="lexicographic"))
+    result = checked(data, configuration(objective_policy="penalty"))
     assert len(result.warehouse_decisions) == 1
     assert len(result.metrics["scenario_metrics"]) == 9
-    assert result.warehouse_decisions[0]["expansion_capacity"] == pytest.approx(40, abs=1e-4)
-    assert result.metadata["lexicographic_overall_status"] == "complete"
+    assert result.warehouse_decisions[0]["expansion_capacity"] == pytest.approx(40, abs=0.0001)
 
 
 def test_bulkification_enables_daily_reception_without_creating_static_capacity():
@@ -218,14 +211,14 @@ def test_bulkification_enables_daily_reception_without_creating_static_capacity(
     config = ModelConfig(
         mode="sto",
         days_per_period=1,
-        objective_policy="lexicographic",
+        objective_policy="penalty",
         allow_capacity_expansion=False,
         allow_bulkification=True,
     )
     result = checked(data, config)
     row = next(r for r in result.warehouse_decisions if r["warehouse"] == "W1")
     assert row["bulkify"] == pytest.approx(1)
-    assert row["bulk_capacity"] == pytest.approx(100, abs=1e-4)
+    assert row["bulk_capacity"] == pytest.approx(100, abs=0.0001)
     assert row["effective_static_capacity"] == data.static_capacity["W1"]
 
 
@@ -239,7 +232,7 @@ def test_native_result_passes_pipeline_exports_and_receipt(tmp_path):
     spec = replace(
         experiment("scip_analytical"),
         loader=replace(experiment().loader, include_stochastic_scenarios=True),
-        model=configuration(objective_policy="lexicographic"),
+        model=configuration(objective_policy="penalty"),
         solver=solver(),
     )
     summary = run_experiment(
@@ -251,17 +244,14 @@ def test_native_result_passes_pipeline_exports_and_receipt(tmp_path):
     assert independent["status"] == "accepted"
     result = json.loads((run_dir / "result.json").read_text())["result"]
     assert result["solver_backend"] == "pyscipopt"
-    stages = result["metadata"]["lexicographic_stages"]
-    assert all(r["within_mip_degradation_limit"] for r in stages)
-    assert stages[0]["enforced_next_pass_limit"] == pytest.approx(stages[0]["mip_next_pass_limit"])
-    assert (run_dir / "lexicographic_stages.csv").is_file()
+    assert not (run_dir / "lexicographic_stages.csv").exists()
     assert verify_completion(run_dir, result["metadata"]["run_identity"]) == (
         True,
         "current_complete_run",
     )
 
 
-@pytest.mark.parametrize("policy", ["penalty", "lexicographic"])
+@pytest.mark.parametrize("policy", ["penalty"])
 def test_licensed_gurobi_parity_on_analytical_instance(policy):
     require_gurobi_available()
     data = two_scenario_data()
@@ -276,10 +266,7 @@ def test_licensed_gurobi_parity_on_analytical_instance(policy):
         assert native.cost_breakdown == pytest.approx(gurobi.cost_breakdown)
         assert native.objective_value == pytest.approx(gurobi.objective_value)
     else:
-        # Alternative optima may use different micro-slacks under the explicit
-        # priority allowance; compare physical objectives, not artificial penalties.
         for name in ("expected_unmet_demand", "expected_emergency_capacity", "economic_cost"):
             assert native.metrics["objective_values"][name] == pytest.approx(
-                gurobi.metrics["objective_values"][name], abs=1e-4
+                gurobi.metrics["objective_values"][name], abs=0.0001
             )
-        assert gurobi.metadata["lexicographic_overall_status"] == "complete"

@@ -45,7 +45,7 @@ qualified source, never relabelled under this repair. New source identity binds
 every later prospective plan, even though this observed failed attempt created
 neither new record. Existing records are still refused, never migrated/reset.
 
-The [new integration suite](../tests/test_mvp2_s2_p4_input_contract.py) has18 cases.
+The [new integration suite](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/5f9daa55b3afb5bbcb3449bc83c970cf10a28ca6/tests/test_mvp2_s2_p4_input_contract.py) has18 cases.
 It creates a public tiny Excel fixture with nine synthetic scenarios and interhub
 connectivity, reads a real three-entry YAML manifest/real slotted ExperimentSpec,
 and runs the actual Excel loader, canonical preparation, size/count estimator,

@@ -1,5 +1,15 @@
 # Experimental protocol: portable summary
 
+## Superseding scalar protocol, 19 October2026
+
+Read [scalar contract](mvp2_scalar_contract.md) and [roadmap](mvp2_scalar_roadmap.md).
+One economic objective, independent original-unit feasibility/cost reconstruction,
+native bound/global gap and separate physical slack diagnostics replace priority
+certificates for NEW runs. No inherited budgets/thread selection. R1 is software
+only; R2 and subsequent jobs require separately qualified resources and human
+admission. Keep minimum academic controls and all old claims/evidence. Historical
+hierarchy instructions below do not authorize a scalar execution.
+
 19 October outcome: [P5](mvp2_s2_p5_closure.md) consolidates actual job2215308,
 the five cold1/2/4/8/16-thread arms at global3600s/arm inside one twelve-hour
 allocation. All original residuals accepted; all capacity passes time-censored,

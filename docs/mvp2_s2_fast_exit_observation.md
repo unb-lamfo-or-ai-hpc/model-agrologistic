@@ -49,9 +49,9 @@ justified before this observability question is resolved.
 
 ## What each sample means
 
-The [pure observer](../scripts/mvp2_s2_fast_exit.py) catches channels independently.
-Its [one-shot driver](../scripts/mvp2_s2_fast_exit_observation.py) and
-[Bash wrapper](../scripts/npad_s2_fast_exit_observation.sh) are delivered together.
+The [pure observer](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/5f9daa55b3afb5bbcb3449bc83c970cf10a28ca6/scripts/mvp2_s2_fast_exit.py) catches channels independently.
+Its [one-shot driver](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/5f9daa55b3afb5bbcb3449bc83c970cf10a28ca6/scripts/mvp2_s2_fast_exit_observation.py) and
+[Bash wrapper](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/5f9daa55b3afb5bbcb3449bc83c970cf10a28ca6/scripts/npad_s2_fast_exit_observation.sh) are delivered together.
 
 | Channel | Evidence / interpretation |
 | --- | --- |
@@ -115,7 +115,7 @@ None of these observations alone accepts normal A, closes S2 or admits P2-P4.
 
 ## Parallel software preparation, serial live release
 
-The [closed slot inventory](../scripts/mvp2_s2_followup_inventory.py) enumerates
+The [closed slot inventory](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/5f9daa55b3afb5bbcb3449bc83c970cf10a28ca6/scripts/mvp2_s2_followup_inventory.py) enumerates
 eleven unrun slots and rejects completion/admission changes. It is not an
 executor or authenticated live receipt reviewer. Preparation reuses these
 existing qualified components rather than adding solvers or scientific factors:

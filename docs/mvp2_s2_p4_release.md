@@ -6,7 +6,7 @@ are not repeated. See the [external predecessor anchors](mvp2_s2_p4_observed_pre
 
 ## Authority, source and claim
 
-The new [release](../scripts/mvp2_s2_p4_release.py) binds the externally audited
+The new [release](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/5f9daa55b3afb5bbcb3449bc83c970cf10a28ca6/scripts/mvp2_s2_p4_release.py) binds the externally audited
 observation and original P3 scientific-source parity to a fresh source cohort,
 full input/runtime identities and the previously unused agricultural P4 claim.
 It does not flip old certificate flags. All four qualified transport files and
@@ -55,7 +55,7 @@ or incomplete evidence is preserved in the run; stop and review, never retry.
 
 ## Collection and what acceptance means
 
-The [wrapper](../scripts/npad_s2_p4_release.sh) includes raw-Git source closure
+The [wrapper](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/5f9daa55b3afb5bbcb3449bc83c970cf10a28ca6/scripts/npad_s2_p4_release.sh) includes raw-Git source closure
 before/after regression, fixed source lineage, exact wrapper bytes, exclusive
 claim, status, interruptible wait and terminal/forensic collect. It installs no
 packages and does not access the license on login. Compute uses the preserved

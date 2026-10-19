@@ -1,5 +1,28 @@
 # Model Agrologistic: agent working agreement
 
+## Current mandate — scalar R1 approved 19 October2026
+
+This section supersedes conflicting historical hierarchy instructions below.
+Read `docs/mvp2_scalar_contract.md`, `docs/mvp2_scalar_roadmap.md` and the current
+PROJECT_STATE header. R1 replaces PR111 on an independent branch. The exact
+pre-refactor source `5f9daa55b3afb5bbcb3449bc83c970cf10a28ca6` was archived before
+code changes as `archive/mvp2-multiobjective-20261019`; never modify that branch.
+
+Active DET/STO use one economic objective, DET as one scenario/probability one,
+investment charged once and expected operations/three separate penalties.
+No selectable hierarchy, stage-only solve or EVPI/VSS calculation. Preserve
+penalty rules, physical constraints/units, routes/scenarios, validation tolerances,
+sparse construction and minimum academic lifecycle/provenance. No new solver,
+architecture or production-isolation project. S3/S4 stay cancelled. Preserve
+historical claims/certificates and the coauthor manuscript; article review is S6.
+
+Consolidate code/configuration/validation/tests/docs in the same functional PR.
+T1 focused, T2 related, T3 full exact-head qualification before Ready. A skipped
+native test is not mathematical acceptance. R1 admits no NPAD job/probe/retry.
+New budgets need approval; do not inherit old hierarchy budgets/thread rankings.
+Request explicit merge only after Ready. Main/develop integration follows article
+review, not S2 closure. Historical instructions below apply only when consistent.
+
 These instructions apply to this repository when this file is present in the
 checked-out branch. They do not configure other repositories or ChatGPT projects.
 

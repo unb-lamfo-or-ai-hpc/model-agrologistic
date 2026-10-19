@@ -19,7 +19,6 @@ It must not build solver-specific models directly.
 from __future__ import annotations
 
 import os
-from collections.abc import Callable
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Literal
@@ -75,10 +74,9 @@ def configure_gurobi_wls_license(solver_config: SolverConfig) -> str | None:
         The configured license path, or None if no license file was found.
     """
 
-    explicit_license_file = (
-        solver_config.solver_options.get("GRB_LICENSE_FILE")
-        or solver_config.solver_options.get("license_file")
-    )
+    explicit_license_file = solver_config.solver_options.get(
+        "GRB_LICENSE_FILE"
+    ) or solver_config.solver_options.get("license_file")
 
     if explicit_license_file:
         license_path = str(explicit_license_file)
@@ -111,6 +109,19 @@ class OptimizationBackendNotImplementedError(NotImplementedError):
     """Raised when a selected optimization backend is not implemented yet."""
 
 
+def scalar_mip_gap(incumbent: float | None, bound: float | None) -> float | None:
+    """Incumbent-denominator minimization gap; undefined/missing bounds stay null."""
+    from math import isfinite
+
+    if incumbent is None or bound is None or not all(map(isfinite, (incumbent, bound))):
+        return None
+    if bound > incumbent:
+        return None
+    if incumbent == 0:
+        return 0.0 if bound == 0 else None
+    return (incumbent - bound) / abs(incumbent)
+
+
 @dataclass(slots=True)
 class OptimizationResult:
     """
@@ -138,7 +149,7 @@ class OptimizationResult:
     unmet_demand: list[dict[str, Any]] = field(default_factory=list)
     emergency_capacity: list[dict[str, Any]] = field(default_factory=list)
 
-    # KPIs: DynCap, Turnover, EVPI, VSS, scenario metrics, etc.
+    # Physical and economic KPIs, with penalties distinguished from observed costs.
     metrics: dict[str, Any] = field(default_factory=dict)
 
     # Backend-specific payload. This should not be required by normal users,
@@ -150,26 +161,28 @@ class OptimizationResult:
     @property
     def has_solution(self) -> bool:
         """Return True if the result contains a usable feasible solution."""
-        return self.status in {"optimal", "feasible", "time_limit"}
+        return (
+            self.status in {"optimal", "feasible", "time_limit"}
+            and self.objective_value is not None
+        )
 
 
-@dataclass(slots=True)
-class EVPIVSSResult:
-    """Economic value metrics and the optimization runs used to compute them."""
-
-    recourse_problem: float
-    wait_and_see: float
-    expected_value_problem: float
-    expected_result_of_ev_solution: float
-    evpi: float
-    vss: float
-
-    recourse_problem_result: OptimizationResult
-    wait_and_see_results: dict[str, OptimizationResult]
-    expected_value_problem_result: OptimizationResult
-    expected_result_result: OptimizationResult
-
-    metadata: dict[str, Any] = field(default_factory=dict)
+def project_deterministic_result(result: OptimizationResult) -> OptimizationResult:
+    """Keep the DET output API while using the same single-scenario MILP internally."""
+    result.model_mode = "det"
+    for records in (
+        result.flows,
+        result.inventories,
+        result.unmet_demand,
+        result.emergency_capacity,
+    ):
+        for row in records:
+            row.pop("scenario", None)
+    result.metadata["formulation"] = "deterministic_single_scenario_extensive_form"
+    result.metadata.pop("scenario_probabilities", None)
+    result.metrics.pop("scenario_metrics", None)
+    result.metadata["deterministic_scenario_probability"] = 1.0
+    return result
 
 
 def solve_model(
@@ -211,12 +224,8 @@ def solve_model(
         Common result object independent of backend.
     """
 
-    if run_config is not None and (
-        model_config is not None or solver_config is not None
-    ):
-        raise ValueError(
-            "Provide either run_config or model_config/solver_config, not both."
-        )
+    if run_config is not None and (model_config is not None or solver_config is not None):
+        raise ValueError("Provide either run_config or model_config/solver_config, not both.")
 
     if run_config is not None:
         model_config = run_config.model
@@ -228,6 +237,8 @@ def solve_model(
             solver_config = SolverConfig()
 
     if validate:
+        model_config.__post_init__()
+        solver_config.__post_init__()
         validate_or_raise_model_data(
             data=data,
             config=model_config,
@@ -261,67 +272,3 @@ def solve_model(
         return solve_model_scip(data, model_config, solver_config)
 
     raise ValueError(f"Unknown solver backend: {solver_config.backend!r}")
-
-
-def calculate_evpi_vss(
-    data: ModelData,
-    model_config: ModelConfig | None = None,
-    solver_config: SolverConfig | None = None,
-    *,
-    validate: bool = True,
-    require_distances: bool = True,
-    checkpoint_dir: str | Path | None = None,
-    checkpoint_identity: str | None = None,
-    resume: bool = False,
-    progress: Callable[[str], None] | None = None,
-) -> EVPIVSSResult:
-    """Calculate EVPI and VSS for a two-stage stochastic model.
-
-    Intermediate solutions can be checkpointed and safely restored by
-    providing ``checkpoint_dir``, a stable ``checkpoint_identity``, and
-    ``resume=True`` on the continuation call.
-    """
-
-    if model_config is None:
-        model_config = ModelConfig(mode="sto")
-    if solver_config is None:
-        solver_config = SolverConfig()
-
-    if model_config.mode != "sto":
-        raise ValueError("EVPI/VSS calculation requires ModelConfig(mode='sto').")
-
-    if model_config.objective_policy != "penalty":
-        raise ValueError(
-            "EVPI/VSS calculation currently requires "
-            "objective_policy='penalty' because the reported indicators "
-            "assume one scalar monetary objective."
-        )
-
-    if validate:
-        validate_or_raise_model_data(
-            data=data,
-            config=model_config,
-            require_distances=require_distances,
-        )
-
-    if solver_config.backend != "gurobipy":
-        raise OptimizationBackendNotImplementedError(
-            "EVPI/VSS is currently implemented for the native gurobipy "
-            "backend only."
-        )
-
-    configure_gurobi_wls_license(solver_config)
-
-    from src.logic.stochastic_analysis_gurobipy import (
-        calculate_evpi_vss_gurobipy,
-    )
-
-    return calculate_evpi_vss_gurobipy(
-        data=data,
-        model_config=model_config,
-        solver_config=solver_config,
-        checkpoint_dir=checkpoint_dir,
-        checkpoint_identity=checkpoint_identity,
-        resume=resume,
-        progress=progress,
-    )

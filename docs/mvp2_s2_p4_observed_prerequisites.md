@@ -14,7 +14,7 @@ Driver plan:
 `f177d17c0510c4b18993bbc409a33415744fcdc3f9570d0843ddc0df462b73c2`.
 Inner admission plan:
 `47e4ea55281a290f7db9c3518d363d16cdaaacf6261de655813f758407575cff`.
-The unchanged [qualified independent auditor](../scripts/mvp2_s2_p4_observation.py)
+The unchanged [qualified independent auditor](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/5f9daa55b3afb5bbcb3449bc83c970cf10a28ca6/scripts/mvp2_s2_p4_observation.py)
 replays all five bounded metadata members against external source/plan/job/hash
 anchors and reproduces **prerequisites_observed_execution_closed**. Strict
 archive membership/closure, canonical review, driver/inner-job binding, terminal

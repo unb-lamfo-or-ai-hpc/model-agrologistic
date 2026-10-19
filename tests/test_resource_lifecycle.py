@@ -16,7 +16,6 @@ from src.logic.resource_telemetry import (
     cgroup_memory,
     process_observation,
 )
-from src.logic.stage_lifecycle import StageBundle, compare_lifecycle
 
 
 @pytest.mark.parametrize(
@@ -122,56 +121,6 @@ def test_native_owner_disposes_on_all_paths(fail):
     assert calls == ["dispose"]
 
 
-def stage_factory(backend, created, *, changed=False, continuous=False):
-    """Canonical data fingerprint includes all rows, bounds, types and objectives."""
-    canonical = {
-        "variables": [["x", 0, 10, "C"], ["y", 0, 1, "C" if continuous else "B"]],
-        "constraints": [
-            ["demand", [["x", 1]], ">=", 3],
-            ["activation", [["x", 1], ["y", -10]], "<=", 0],
-        ],
-        "objectives": {
-            "unmet_demand": [],
-            "emergency_capacity": [["x", 1]],
-            "economic_cost": [["x", -1], ["y", 2]],
-        },
-    }
-    digest = hashlib.sha256(json.dumps(canonical, sort_keys=True).encode()).hexdigest()
-    if backend == "pyscipopt":
-        from pyscipopt import Model
-
-        model = Model()
-        model.hideOutput()
-        model.setParam("numerics/feastol", 1e-9)
-        x = model.addVar("x", lb=0, ub=10)
-        y = model.addVar("y", vtype="C" if continuous else "B", lb=0, ub=1)
-        model.addCons(x >= 3)
-        model.addCons(x <= 10 * y)
-
-        def extract():
-            return {"x": model.getVal(x), "y": model.getVal(y)}
-    else:
-        import gurobipy as gp
-
-        model = gp.Model()
-        model.Params.OutputFlag = 0
-        x = model.addVar(name="x", lb=0, ub=10)
-        y = model.addVar(name="y", vtype="C" if continuous else "B", lb=0, ub=1)
-        model.addConstr(x >= 3)
-        model.addConstr(x <= 10 * y)
-
-        def extract():
-            return {"x": x.X, "y": y.X}
-
-    created.append(model)
-    return StageBundle(
-        model,
-        {"unmet_demand": 0 * x, "emergency_capacity": x, "economic_cost": 2 * y - x},
-        digest + ("changed" if changed and len(created) > 1 else ""),
-        extract,
-    )
-
-
 def qualified_backend(backend):
     if backend == "pyscipopt":
         pytest.importorskip("pyscipopt")
@@ -179,59 +128,6 @@ def qualified_backend(backend):
         from tests.test_gurobipy_transshipment import require_gurobi_available
 
         require_gurobi_available()
-
-
-@pytest.mark.parametrize("backend", ["pyscipopt", "gurobipy"])
-def test_reuse_rebuild_priority_lock_parity(backend):
-    qualified_backend(backend)
-    values = []
-    for mode, expected_models in (("reuse", 1), ("rebuild", 3)):
-        created = []
-        config = SolverConfig(
-            backend=backend,
-            solver_name="scip" if backend == "pyscipopt" else "gurobi",
-            time_limit=60,
-            mip_gap=0,
-            threads=1,
-        )
-        report = compare_lifecycle(
-            lambda created=created: stage_factory(backend, created),
-            backend,
-            config,
-            ["unmet_demand", "emergency_capacity", "economic_cost"],
-            1e-6,
-            mode=mode,
-        )
-        assert report["status"] == "complete"
-        assert len(created) == expected_models
-        assert report["final_values"]["x"] <= 3 + 1e-6 + 1e-8
-        assert report["final_values"]["y"] == pytest.approx(1)
-        values.append(report["final_values"])
-    assert values[0] == pytest.approx(values[1], abs=1e-6)
-
-
-def test_rebuild_mismatch_and_lp_are_rejected():
-    qualified_backend("pyscipopt")
-    config = SolverConfig(backend="pyscipopt", solver_name="scip", time_limit=60)
-    created = []
-    with pytest.raises(ValueError, match="fingerprint changed"):
-        compare_lifecycle(
-            lambda: stage_factory("pyscipopt", created, changed=True),
-            "pyscipopt",
-            config,
-            ["emergency_capacity", "economic_cost"],
-            1e-6,
-            mode="rebuild",
-        )
-    with pytest.raises(ValueError, match="original MIP"):
-        compare_lifecycle(
-            lambda: stage_factory("pyscipopt", [], continuous=True),
-            "pyscipopt",
-            config,
-            ["economic_cost"],
-            1e-6,
-            mode="reuse",
-        )
 
 
 def test_native_scip_resource_run_completion(tmp_path):
@@ -245,7 +141,7 @@ def test_native_scip_resource_run_completion(tmp_path):
         "mini",
         tmp_path / "input.xlsx",
         loader=ExcelLoaderConfig(include_stochastic_scenarios=True),
-        model=ModelConfig(mode="sto", objective_policy="lexicographic", days_per_period=1),
+        model=ModelConfig(mode="sto", objective_policy="penalty", days_per_period=1),
         solver=SolverConfig(
             backend="pyscipopt",
             solver_name="scip",
@@ -263,9 +159,9 @@ def test_native_scip_resource_run_completion(tmp_path):
     assert all("resources/" + name in completion["artifacts"] for name in PRODUCTS)
     matrix = json.loads((tmp_path / "mini/resources/matrix_statistics.json").read_text())
     assert any(row["scope"] == "original" for row in matrix["observations"])
-    assert any(row["scope"] == "terminal_transformed" for row in matrix["observations"])
-    progress = list(csv.DictReader((tmp_path / "mini/resources/stage_progress.csv").open()))
-    assert sum(row["event"] == "stage_terminal" for row in progress) == 3
+    assert any(row["scope"] == "original" for row in matrix["observations"])
+    progress = list(csv.DictReader((tmp_path / "mini/resources/solver_progress.csv").open()))
+    assert any(row["event"] == "phase_boundary" for row in progress)
     assert CURRENT.get() is None
 
 
@@ -294,7 +190,7 @@ def test_licensed_gurobi_compaction_parity():
     from tests.test_gurobipy_stochastic import two_scenario_data
 
     data = two_scenario_data()
-    config = ModelConfig(mode="sto", objective_policy="lexicographic", days_per_period=1)
+    config = ModelConfig(mode="sto", objective_policy="penalty", days_per_period=1)
     baseline = solve_model(data, config, SolverConfig(time_limit=60, threads=1, mip_gap=0))
     compact = solve_model(
         data, config, SolverConfig(time_limit=60, threads=1, mip_gap=0, compact_python_indices=True)
@@ -306,150 +202,3 @@ def test_licensed_gurobi_compaction_parity():
         validate_solution(prepare_model_data(data, config), config, compact)["status"] == "accepted"
     )
     assert compact.metadata["native_model_lifecycle"][0]["status"] == "disposed"
-
-
-def test_licensed_gurobi_native_explicit_parity():
-    qualified_backend("gurobipy")
-    roles = ["unmet_demand", "emergency_capacity", "economic_cost"]
-    native = stage_factory("gurobipy", [])
-    try:
-        native.model.Params.MIPGap = 0.1
-        native.model.Params.MIPGapAbs = 1e-10
-        for index, role in enumerate(roles):
-            native.model.setObjectiveN(
-                native.objectives[role], index, priority=3 - index, abstol=1e-6, reltol=0, name=role
-            )
-        native.model.optimize()
-        reference = native.extract()
-    finally:
-        native.model.dispose()
-    for mode in ("reuse", "rebuild"):
-        result = compare_lifecycle(
-            lambda: stage_factory("gurobipy", []),
-            "gurobipy",
-            SolverConfig(mip_gap=0.1, threads=1, time_limit=60),
-            roles,
-            1e-6,
-            mode=mode,
-        )
-        assert result["status"] == "complete"
-        assert result["final_values"] == pytest.approx(reference, abs=1e-5)
-
-
-@pytest.mark.parametrize("mode", ["reuse", "rebuild"])
-@pytest.mark.parametrize("initial_objectives", [1, 3])
-def test_licensed_gurobi_multiobjective_factory_returns_to_single_objective(
-    mode, initial_objectives
-):
-    qualified_backend("gurobipy")
-    created = []
-    roles = ["unmet_demand", "emergency_capacity", "economic_cost"]
-
-    def factory():
-        bundle = stage_factory("gurobipy", created)
-        # Even one setObjectiveN call activates native multiobjective mode.
-        for index, role in enumerate(roles[:initial_objectives]):
-            bundle.model.setObjectiveN(bundle.objectives[role], index, priority=3 - index)
-        bundle.model.update()
-        assert bundle.model.IsMultiObj
-        original_extract = bundle.extract
-
-        def extract():
-            assert not bundle.model.IsMultiObj
-            assert bundle.model.ModelSense == 1
-            # Read the actual solver bound, not an incumbent-derived substitute.
-            assert bundle.model.ObjBound <= bundle.model.ObjVal + 1e-7
-            return original_extract()
-
-        bundle.extract = extract
-        return bundle
-
-    report = compare_lifecycle(
-        factory,
-        "gurobipy",
-        SolverConfig(mip_gap=0, threads=1, time_limit=60),
-        roles,
-        1e-6,
-        mode=mode,
-    )
-    assert report["status"] == "complete"
-    assert len(created) == (1 if mode == "reuse" else 3)
-    assert report["final_values"]["x"] <= 3 + 1e-6 + 1e-8
-
-
-@pytest.mark.parametrize("mode", ["reuse", "rebuild"])
-@pytest.mark.parametrize("refuses_conversion", [False, True])
-def test_single_objective_conversion_order_and_failure_cleanup(mode, refuses_conversion):
-    """A license-independent regression for the precise native API transition."""
-    created = []
-
-    class NativeStub:
-        NumVars, NumIntVars, SolCount, Status, ObjVal = 2, 1, 1, 2, 3.0
-
-        def __init__(self):
-            self.Params = SimpleNamespace()
-            self.calls = []
-            self.IsMultiObj = True
-            self.disposed = False
-            self._num_obj = 3
-
-        @property
-        def NumObj(self):
-            return self._num_obj
-
-        @NumObj.setter
-        def NumObj(self, value):
-            self.calls.append(("NumObj", value))
-            self._num_obj = value
-
-        @property
-        def ObjBound(self):
-            assert not self.IsMultiObj
-            return 3.0
-
-        def update(self):
-            self.calls.append("update")
-            if self._num_obj == 0 and not refuses_conversion:
-                self.IsMultiObj = False
-
-        def setObjective(self, expression, *, sense):
-            assert self.calls[-2:] == [("NumObj", 0), "update"] or not self.IsMultiObj
-            assert sense == 1
-            self.calls.append("setObjective")
-
-        def optimize(self):
-            assert not self.IsMultiObj
-            assert self.calls[-2:] == ["setObjective", "update"]
-            self.calls.append("optimize")
-
-        def addConstr(self, *args, **kwargs):
-            pass
-
-        def dispose(self):
-            self.disposed = True
-
-    def factory():
-        model = NativeStub()
-        created.append(model)
-        return StageBundle(
-            model, {"emergency_capacity": 3.0, "economic_cost": 3.0}, "fixed", lambda: {"x": 3}
-        )
-
-    def run():
-        return compare_lifecycle(
-            factory,
-            "gurobipy",
-            SolverConfig(mip_gap=0, threads=1, time_limit=60),
-            ["emergency_capacity", "economic_cost"],
-            1e-6,
-            mode=mode,
-        )
-
-    if refuses_conversion:
-        with pytest.raises(ValueError, match="single-objective mode"):
-            run()
-        assert all("optimize" not in model.calls for model in created)
-    else:
-        assert run()["status"] == "complete"
-        assert len(created) == (1 if mode == "reuse" else 2)
-    assert all(model.disposed for model in created)

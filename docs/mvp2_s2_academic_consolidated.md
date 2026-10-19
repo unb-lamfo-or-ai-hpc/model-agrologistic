@@ -61,11 +61,11 @@ auditors/certificates are not relaxed or reclassified.
 
 ## Complete package and sequential passage
 
-The package contains [independent replay](../scripts/mvp2_s2_academic.py),
-[fixed worker](../scripts/mvp2_s2_academic_worker.py),
-[transport/collection](../scripts/mvp2_s2_academic_runtime.py),
-[wrapper](../scripts/npad_s2_academic.sh) and
-[regression](../tests/test_mvp2_s2_academic.py).
+The package contains [independent replay](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/5f9daa55b3afb5bbcb3449bc83c970cf10a28ca6/scripts/mvp2_s2_academic.py),
+[fixed worker](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/5f9daa55b3afb5bbcb3449bc83c970cf10a28ca6/scripts/mvp2_s2_academic_worker.py),
+[transport/collection](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/5f9daa55b3afb5bbcb3449bc83c970cf10a28ca6/scripts/mvp2_s2_academic_runtime.py),
+[wrapper](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/5f9daa55b3afb5bbcb3449bc83c970cf10a28ca6/scripts/npad_s2_academic.sh) and
+[regression](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/5f9daa55b3afb5bbcb3449bc83c970cf10a28ca6/tests/test_mvp2_s2_academic.py).
 
 1. A: one normal stdlib worker; exact phases, worker/job/step binding and terminal
    independent acceptance. New academic namespace, no old-claim reset.

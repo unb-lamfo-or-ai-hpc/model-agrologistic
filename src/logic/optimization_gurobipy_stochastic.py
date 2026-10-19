@@ -16,7 +16,7 @@ from src.logic.mathematical_contract import prepare_model_data
 from src.logic.model_config import ModelConfig, SolverConfig
 from src.logic.model_data import ModelData
 from src.logic.model_lifecycle import managed_model_solve, own_model
-from src.logic.optimization import OptimizationResult
+from src.logic.optimization import OptimizationResult, scalar_mip_gap
 from src.logic.optimization_gurobipy import (
     DEFAULT_PENALTY,
     VALUE_TOL,
@@ -26,15 +26,14 @@ from src.logic.optimization_gurobipy import (
     _effective_shipping_capacity_expr,
     _effective_static_capacity_expr,
     _expression_value,
+    _finite_attribute,
     _gurobi_status_name,
     _import_gurobi,
     _infeasibility_metadata,
-    _lexicographic_stage_diagnostics,
     _map_gurobi_status,
-    _optimize_with_stage_observer,
+    _optimize_scalar,
     _origin_to_customer_unit_cost,
     _origin_to_warehouse_unit_cost,
-    _set_objective_policy,
     _value,
     _warehouse_to_customer_unit_cost,
     _warehouse_to_warehouse_unit_cost,
@@ -49,7 +48,6 @@ def solve_stochastic_model_gurobipy(
     model_config: ModelConfig,
     solver_config: SolverConfig,
     *,
-    fixed_first_stage: list[dict[str, Any]] | None = None,
     native_phase_hook: Any = None,
 ) -> OptimizationResult:
     """Solve the risk-neutral two-stage extensive form."""
@@ -223,29 +221,8 @@ def solve_stochastic_model_gurobipy(
         )
         for component in next(iter(scenario_costs.values()))
     }
-    economic_cost = gp.quicksum(investment_costs.values()) + gp.quicksum(
-        expression
-        for component, expression in expected_costs.items()
-        if component not in {"unmet_demand", "emergency_static", "emergency_reception"}
-    )
     penalized_cost = gp.quicksum(investment_costs.values()) + gp.quicksum(expected_costs.values())
-    expected_unmet_quantity = gp.quicksum(
-        data.scenario_prob[key[0]] * unmet_demand[key] for key in unmet_keys
-    )
-    expected_emergency_quantity = gp.quicksum(
-        data.scenario_prob[key[0]]
-        * (emergency_static_capacity[key] + emergency_reception_capacity[key])
-        for key in emergency_keys
-    )
-    _set_objective_policy(
-        model=model,
-        GRB=GRB,
-        config=model_config,
-        penalized_cost=penalized_cost,
-        unmet_quantity=expected_unmet_quantity,
-        emergency_quantity=expected_emergency_quantity,
-        economic_cost=economic_cost,
-    )
+    model.setObjective(penalized_cost, GRB.MINIMIZE)
 
     _add_first_stage_constraints(
         model=model,
@@ -261,18 +238,6 @@ def solve_stochastic_model_gurobipy(
         bulkify_warehouse=bulkify_warehouse,
         bulk_capacity=bulk_capacity,
     )
-    if fixed_first_stage is not None:
-        _fix_first_stage_decisions(
-            model=model,
-            data=data,
-            decisions=fixed_first_stage,
-            open_candidate=open_candidate,
-            candidate_capacity=candidate_capacity,
-            expand_warehouse=expand_warehouse,
-            expand_capacity=expand_capacity,
-            bulkify_warehouse=bulkify_warehouse,
-            bulk_capacity=bulk_capacity,
-        )
 
     for scenario in scenarios:
         _add_scenario_constraints(
@@ -326,35 +291,22 @@ def solve_stochastic_model_gurobipy(
 
     model_build_seconds = perf_counter() - started_at
     optimization_started_at = perf_counter()
-    solver_diagnostics = {}
-    lexicographic_stages = _optimize_with_stage_observer(
-        model=model,
-        GRB=GRB,
-        objective_policy=model_config.objective_policy,
-        objective_names=(
-            "expected_unmet_demand",
-            "expected_emergency_capacity",
-            "economic_cost",
-        ),
-        objective_roles=(
-            "unmet_demand",
-            "emergency_capacity",
-            "economic_cost",
-        ),
-        solver_config=solver_config,
-        diagnostics=solver_diagnostics,
-        native_phase_hook=native_phase_hook,
-    )
+    scalar_progress = _optimize_scalar(model, GRB, native_phase_hook=native_phase_hook)
     optimization_seconds = perf_counter() - optimization_started_at
     runtime_seconds = perf_counter() - started_at
     status = _map_gurobi_status(model, GRB)
 
     common_metadata = {
-        **({"solver_diagnostics": solver_diagnostics} if solver_diagnostics else {}),
         "mathematical_contract": data.metadata.get("mathematical_contract", {}),
         "gurobi_status_code": model.Status,
         "gurobi_status_name": _gurobi_status_name(model, GRB),
         "solution_count": model.SolCount,
+        **scalar_progress,
+        "gurobi_native_gap": _finite_attribute(model, "MIPGap"),
+        "solver_peak_memory_decimal_gb": _finite_attribute(model, "MaxMemUsed"),
+        "work_units": _finite_attribute(model, "Work"),
+        "iteration_count": _finite_attribute(model, "IterCount"),
+        "node_count": _finite_attribute(model, "NodeCount"),
         "timings": {
             "model_build_seconds": model_build_seconds,
             "optimization_seconds": optimization_seconds,
@@ -369,24 +321,14 @@ def solve_stochastic_model_gurobipy(
             "bulkify_warehouse",
             "bulk_capacity",
         ],
-        "first_stage_fixed": fixed_first_stage is not None,
         "objective_policy": model_config.objective_policy,
-        **_lexicographic_stage_diagnostics(
-            model=model,
-            GRB=GRB,
-            objective_policy=model_config.objective_policy,
-            stages=lexicographic_stages,
-            primary_objective_value=None,
-        ),
-        "objective_priority_order": (
-            ["penalized_cost"]
-            if model_config.objective_policy == "penalty"
-            else [
-                "expected_unmet_demand",
-                "expected_emergency_capacity",
-                "economic_cost",
-            ]
-        ),
+        "objective_name": "penalized_cost",
+        "objective_bound": _finite_attribute(model, "ObjBound"),
+        "matrix": {
+            "variables": int(model.NumVars),
+            "constraints": int(model.NumConstrs),
+            "nonzeros": int(model.NumNZs),
+        },
         **_infeasibility_metadata(model, GRB, solver_config),
     }
     if model.SolCount == 0:
@@ -611,57 +553,6 @@ def _add_first_stage_constraints(
         model.addConstr(
             expand_warehouse[warehouse] + bulkify_warehouse[warehouse] <= active,
             name=f"expansion_bulkification_exclusion[{warehouse}]",
-        )
-
-
-def _fix_first_stage_decisions(
-    *,
-    model: Any,
-    data: ModelData,
-    decisions: list[dict[str, Any]],
-    open_candidate: Any,
-    candidate_capacity: Any,
-    expand_warehouse: Any,
-    expand_capacity: Any,
-    bulkify_warehouse: Any,
-    bulk_capacity: Any,
-) -> None:
-    by_warehouse = {decision["warehouse"]: decision for decision in decisions}
-    missing = sorted(set(data.warehouses) - set(by_warehouse))
-    if missing:
-        raise ValueError(f"Fixed first-stage decisions are missing warehouses: {missing}.")
-
-    for warehouse in data.candidate_warehouses:
-        decision = by_warehouse[warehouse]
-        model.addConstr(
-            open_candidate[warehouse] == round(float(decision["open"])),
-            name=f"fix_open_candidate[{warehouse}]",
-        )
-        model.addConstr(
-            candidate_capacity[warehouse] == float(decision["candidate_capacity"]),
-            name=f"fix_candidate_capacity[{warehouse}]",
-        )
-
-    for warehouse in expand_capacity.keys():
-        decision = by_warehouse[warehouse]
-        model.addConstr(
-            expand_warehouse[warehouse] == round(float(decision["expand"])),
-            name=f"fix_expand_warehouse[{warehouse}]",
-        )
-        model.addConstr(
-            expand_capacity[warehouse] == float(decision["expansion_capacity"]),
-            name=f"fix_expand_capacity[{warehouse}]",
-        )
-
-    for warehouse in bulk_capacity.keys():
-        decision = by_warehouse[warehouse]
-        model.addConstr(
-            bulkify_warehouse[warehouse] == round(float(decision["bulkify"])),
-            name=f"fix_bulkify_warehouse[{warehouse}]",
-        )
-        model.addConstr(
-            bulk_capacity[warehouse] == float(decision["bulk_capacity"]),
-            name=f"fix_bulk_capacity[{warehouse}]",
         )
 
 
@@ -1034,16 +925,12 @@ def _extract_stochastic_result(
 
     return OptimizationResult(
         status=status,
-        objective_value=(
-            penalized_cost
-            if model_config.objective_policy == "penalty"
-            else expected_unmet_quantity
-        ),
+        objective_value=float(model.ObjVal),
         solver_backend="gurobipy",
         solver_name=solver_config.solver_name,
         model_mode=model_config.mode,
         runtime_seconds=runtime_seconds,
-        mip_gap=getattr(model, "MIPGap", None),
+        mip_gap=scalar_mip_gap(float(model.ObjVal), metadata.get("objective_bound")),
         cost_breakdown=cost_breakdown,
         warehouse_decisions=warehouse_decisions,
         flows=flows,
@@ -1058,13 +945,6 @@ def _extract_stochastic_result(
         },
         metadata={
             **metadata,
-            **_lexicographic_stage_diagnostics(
-                model=model,
-                GRB=GRB,
-                objective_policy=model_config.objective_policy,
-                stages=metadata.get("lexicographic_stages", []),
-                primary_objective_value=expected_unmet_quantity,
-            ),
             "gurobi_objective_value": getattr(model, "ObjVal", None),
             "gurobi_objective_bound": getattr(model, "ObjBound", None),
             "candidate_capacity_mode": model_config.candidate_capacity_mode,

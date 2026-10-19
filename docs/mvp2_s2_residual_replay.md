@@ -67,7 +67,7 @@ does not submit. Preserve failed bootstrap, origin, claim and source. Ctrl-C
 from wait is safe; repeat wait/collect, not a new bootstrap or claim.
 
 Start/status/wait/collect are supplied together by
-[the wrapper](../scripts/npad_s2_residual_replay.sh); optimize/repeat/worker are
+[the wrapper](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/5f9daa55b3afb5bbcb3449bc83c970cf10a28ca6/scripts/npad_s2_residual_replay.sh); optimize/repeat/worker are
 not wrapper actions. Full pinned CLI with source/wrapper SHA256 will be posted
 after exact-head CI and authorized merge. Until then no NPAD command is needed.
 Do not reuse the old terminal wrapper's start as a diagnostic repair.

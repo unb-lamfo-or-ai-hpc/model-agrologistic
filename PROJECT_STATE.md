@@ -1,5 +1,48 @@
 # Model Agrologistic — MVP 2.0 checkpoint
 
+## R1 — approved scalar refactor; software qualification in progress
+
+19 October2026. The maintainer approved one consolidated R1 replacing PR111:
+DET and two-stage STO with a single economic objective; DET is the one-scenario/
+probability-one case. Read the [current contract](docs/mvp2_scalar_contract.md)
+and [roadmap](docs/mvp2_scalar_roadmap.md). These supersede the unexecuted
+hierarchical h400 continuation, not historical S2 closure or certificates.
+
+Before code changes, remote `archive/mvp2-multiobjective-20261019` was created
+and verified at exact develop HEAD `5f9daa55b3afb5bbcb3449bc83c970cf10a28ca6`.
+Never modify that reference. R1 is independent on
+`research/mvp2-single-objective-refactor` from the same base. PR111/head
+`dffc8b79e8c6c8033be0fb5fbff6d7b6ca1d8f7c` is preserved and superseded, not merged.
+
+Reuse the scalar cost, sparse extensive form, loaders/routes, constraints,
+independent validator, telemetry, ownership and identities. Retire active
+multiobjective/stage-only and EVPI/VSS code and historical launchers/tests/
+workflows into the published archive. Penalty coefficients, units, tolerances,
+original evidence JSON/certificates and coauthor manuscript remain unchanged.
+New scalar quality is not inferred from historical hierarchy or CI.
+
+Qualification is in progress, not Ready/merged. T1 native SCIP scalar analytical
+cases pass locally; Gurobi local license is expired, so local skips do not qualify
+that backend. Related/full regressions, exact-head Linux native tests and packaging
+remain required. No NPAD job/probe/retry, old-claim reset, branch promotion or
+article publication occurred or is admitted. Request merge only after Ready.
+
+Next: R2 small DET/STO qualification and fresh budget proposals; scalar h215/h300/
+h400, complementary existing SCIP/h215, conditional h500 and S6-A/S6-B. No automatic
+reuse of 3600s/28800s hierarchy budgets/thread ranking. S3/S4 stay cancelled and
+EVPI/VSS permanently excluded. December is conditional; January2027 is the base
+planning forecast. Main/develop reconciliation follows article review only.
+
+Maintainer license confirmation,19 October: retain the existing designated NPAD
+WLS configuration and previously established path. The confirmation is NOT an
+instruction to replace a path, license file or environment variable. R2 must
+select that existing authorized license explicitly and obtain a redacted fresh
+capability receipt before native execution. No NPAD access or license/environment
+change in R1. Local Windows expired-license skips are a separate environment
+limitation, not a diagnosis of the existing NPAD WLS license.
+
+## Historical checkpoints below — not current scalar execution instructions
+
 Updated 19 October 2026. This public checkpoint contains scope and provenance,
 not private evidence, credentials, local host paths or execution authority.
 
