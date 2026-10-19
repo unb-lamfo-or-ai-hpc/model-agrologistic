@@ -17,6 +17,10 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           persist-credentials: false
+      - name: Preserve original historical manuscript bytes without normalization
+        run: |
+          printf '%s\n' '/manuscript/comparison_provenance.json -text' '/manuscript/figures/runtime_memory_comparison.pdf -text' >> .git/info/attributes
+          git diff --exit-code
       - uses: actions/setup-python@v5
         with:
           python-version: '3.13'

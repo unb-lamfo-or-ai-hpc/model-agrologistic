@@ -277,6 +277,8 @@ def inspect_experiment(
 ) -> ModelSizeEstimate:
     """Load an instance and export its model-size estimate without solving."""
     run_dir = Path(output_root).resolve() / spec.name
+    if run_dir.exists():
+        raise FileExistsError("Preserve existing evidence; choose a fresh inspection directory.")
     progress(f"[{spec.name}] loading {spec.workbook}")
     data = loader(spec.workbook, spec.loader)
     data = prepare_model_data(data, spec.model)
@@ -304,6 +306,8 @@ def audit_existing_run(
     if not result_path.is_file():
         raise FileNotFoundError(f"Structured result not found: {result_path}")
     payload = json.loads(result_path.read_text(encoding="utf-8"))
+    if payload.get("schema_version") != 2:
+        raise ValueError("Historical result schema cannot be relabeled as a scalar re-audit.")
     experiment_payload = payload.get("experiment", {})
     expected_payload = json.loads(json.dumps(_spec_payload(spec)))
     mismatches = [

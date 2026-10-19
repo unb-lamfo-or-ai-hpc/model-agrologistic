@@ -285,6 +285,33 @@ def test_npad_batch_optimization_is_blocked_before_loading(monkeypatch, tmp_path
     assert not list(tmp_path.iterdir())
 
 
+def test_inspection_cannot_overwrite_existing_evidence(tmp_path):
+    from src.logic.experiment_runner import ExperimentSpec, inspect_experiment
+
+    directory = tmp_path / "preserved"
+    directory.mkdir()
+    audit = directory / "model_audit.json"
+    audit.write_bytes(b"original certificate\n")
+    spec = ExperimentSpec("preserved", tmp_path / "absent.xlsx")
+    with pytest.raises(FileExistsError, match="Preserve existing evidence"):
+        inspect_experiment(spec, tmp_path)
+    assert audit.read_bytes() == b"original certificate\n"
+
+
+def test_historical_results_cannot_receive_a_scalar_reaudit(tmp_path):
+    from src.logic.experiment_runner import ExperimentSpec, audit_existing_run
+
+    directory = tmp_path / "historical"
+    directory.mkdir()
+    result = directory / "result.json"
+    result.write_text('{"schema_version":1}\n')
+    spec = ExperimentSpec("historical", tmp_path / "absent.xlsx")
+    with pytest.raises(ValueError, match="Historical result schema"):
+        audit_existing_run(spec, tmp_path)
+    assert sorted(p.name for p in directory.iterdir()) == ["result.json"]
+    assert result.read_text() == '{"schema_version":1}\n'
+
+
 @pytest.mark.parametrize(
     "incumbent,bound,expected",
     [
