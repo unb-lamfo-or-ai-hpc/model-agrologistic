@@ -25,16 +25,9 @@ jobs:
         with:
           python-version: '3.13'
       - run: python -m pip install -e '.[dev,scip]' 'pyscipopt==6.2.1'
-      - name: Tiny native mathematical and lifecycle gate, no HPC
+      - name: Full retained native regression on exact PR head, no HPC
         run: >-
           python -B -m pytest -p no:cacheprovider
-          tests/test_scalar_contract.py tests/test_gurobipy_deterministic.py
-          tests/test_gurobipy_stochastic.py tests/test_gurobipy_big_m.py
-          tests/test_gurobipy_capacity_expansion.py tests/test_gurobipy_bulkification.py
-          tests/test_gurobipy_direct_origin_customer.py tests/test_gurobipy_transshipment.py
-          tests/test_gurobipy_export_demand.py tests/test_gurobipy_iis.py
-          tests/test_mathematical_contract.py tests/test_solution_validation.py
-          tests/test_scip_backend.py tests/test_resource_lifecycle.py
           --junitxml=/tmp/scalar-r1.xml
       - name: Require native zero-skip gate and clean exact source
         run: |

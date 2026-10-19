@@ -161,9 +161,12 @@ class OptimizationResult:
     @property
     def has_solution(self) -> bool:
         """Return True if the result contains a usable feasible solution."""
+        from math import isfinite
+
         return (
             self.status in {"optimal", "feasible", "time_limit"}
             and self.objective_value is not None
+            and isfinite(self.objective_value)
         )
 
 

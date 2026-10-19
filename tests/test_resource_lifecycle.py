@@ -1,4 +1,4 @@
-"""Bounded telemetry, ownership and explicit-stage miniature qualification."""
+"""Bounded telemetry, ownership and scalar miniature qualification."""
 
 import csv
 import hashlib
@@ -158,7 +158,6 @@ def test_native_scip_resource_run_completion(tmp_path):
     assert verify_completion(tmp_path / "mini", completion["run_identity"])[0]
     assert all("resources/" + name in completion["artifacts"] for name in PRODUCTS)
     matrix = json.loads((tmp_path / "mini/resources/matrix_statistics.json").read_text())
-    assert any(row["scope"] == "original" for row in matrix["observations"])
     assert any(row["scope"] == "original" for row in matrix["observations"])
     progress = list(csv.DictReader((tmp_path / "mini/resources/solver_progress.csv").open()))
     assert any(row["event"] == "phase_boundary" for row in progress)

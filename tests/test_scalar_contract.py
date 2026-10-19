@@ -211,6 +211,11 @@ def test_timeout_without_incumbent_is_not_a_feasible_solution(backend):
     assert not result.has_solution
 
 
+@pytest.mark.parametrize("objective", [float("inf"), float("nan"), -float("inf")])
+def test_nonfinite_objective_is_not_a_usable_incumbent(objective):
+    assert not OptimizationResult(status="feasible", objective_value=objective).has_solution
+
+
 def test_archived_modules_cannot_leak_from_another_editable_install():
     import importlib.util
 
