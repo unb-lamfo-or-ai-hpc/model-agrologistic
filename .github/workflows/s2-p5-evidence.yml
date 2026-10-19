@@ -1,0 +1,46 @@
+name: S2 P5 documentary evidence gate
+on:
+  pull_request:
+  push:
+    branches: [develop]
+permissions:
+  contents: read
+jobs:
+  p5-evidence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      PYTHONNOUSERSITE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - run: python -m pip install -e '.[dev]'
+      - name: Public consistency only; no private residuals, solver or NPAD
+        run: |
+          mkdir "$RUNNER_TEMP/p5-source"
+          git archive HEAD | tar -xf - -C "$RUNNER_TEMP/p5-source"
+          printf 'QUALIFIED_HEAD=%s\n' "$(git rev-parse HEAD)"
+          cd "$RUNNER_TEMP/p5-source"
+          python -B -I - "$RUNNER_TEMP/p5-files.json" <<'PY'
+          import hashlib,json,pathlib,sys
+          root=pathlib.Path.cwd()
+          files={p.relative_to(root).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in root.rglob('*') if p.is_file()}
+          pathlib.Path(sys.argv[1]).write_text(json.dumps(files,sort_keys=True))
+          PY
+          python -B -m ruff check --no-cache tests/test_mvp2_s2_p5_evidence.py
+          python -B -m pytest -p no:cacheprovider tests/test_mvp2_s2_p5_evidence.py -q --basetemp="$RUNNER_TEMP/p5-tests" --junitxml="$RUNNER_TEMP/p5-tests.xml"
+          python -B -I - "$RUNNER_TEMP/p5-tests.xml" "$RUNNER_TEMP/p5-files.json" <<'PY'
+          import hashlib,json,pathlib,sys,xml.etree.ElementTree as ET
+          cases=ET.parse(sys.argv[1]).getroot().findall('.//testcase')
+          assert len(cases)==29
+          assert not any(c.find(k) is not None for c in cases for k in ('failure','error','skipped'))
+          root=pathlib.Path.cwd()
+          files={p.relative_to(root).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in root.rglob('*') if p.is_file()}
+          assert files==json.loads(pathlib.Path(sys.argv[2]).read_text()),'Post-test source drift'
+          print('P5_PUBLIC_LEDGER=29 passed; SOURCE_CLOSED; NO_NPAD_OR_PRIVATE_RECOMPUTATION')
+          PY

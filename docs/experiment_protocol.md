@@ -1,5 +1,15 @@
 # Experimental protocol: portable summary
 
+19 October outcome: [P5](mvp2_s2_p5_closure.md) consolidates actual job2215308,
+the five cold1/2/4/8/16-thread arms at global3600s/arm inside one twelve-hour
+allocation. All original residuals accepted; all capacity passes time-censored,
+gap100%, no economic pass. Documentary S2 closure is proposed on this qualified
+P5 PR's authorized merge, never inferred from root exit0. Original certificates
+retain false closure/admission flags; no new execution/repeat follows. General
+thread ranking is inconclusive; keep SMT and the service sentinel/prefix caveat.
+The1800s proposal below is historical, superseded by the separately approved
+[executed contract](mvp2_s2_grid3600.md), not silently amended old evidence.
+
 15 October 2026 amendment: prospective S2 A/P2/P3 uses the explicitly approved
 [minimum academic profile](mvp2_s2_academic_consolidated.md). Trusted fixed code,
 exact source/input/runtime, limits, targeted step stop, terminal evidence and

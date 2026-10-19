@@ -1,5 +1,24 @@
 # S2 closure campaign: finite scope, staged admission
 
+## P5 decision proposed on 19 October 2026
+
+The [complete P5 review](mvp2_s2_p5_closure.md) now accounts for accepted
+A/P2/P3 and all five actual job2215308 arms under the approved3600s/arm,
+twelve-hour contract. Its redacted ledger preserves original identities,
+fresh on-NPAD validation, censored capacity/no economic pass, resources and
+limitations. The proposed outcome is complete interpretable diagnostic,
+inconclusive general thread ranking and no speedup claim, not full hierarchy.
+The existing criterion below expressly permits an audited censored diagnostic.
+P5 closure takes effect only after exact-head qualification, Ready and a
+separately authorized merge; until then S2 remains open. No certificate flag,
+old claim, historical budget or scientific criterion is rewritten.
+
+No new executable next step or NPAD CLI is required by P5. Every older start/
+handoff command below is historical, not permission to replay a consumed slot.
+Four threads is only a candidate for separately qualified h400 review. Later
+h400/existing-SCIP/h215/conditionalh500/S6 remain; no automatic follow-on,
+repeat, article change or main synchronization is admitted by Sprint closure.
+
 ## Current authority — 15 October minimum academic consolidation
 
 The maintainer authorises the [revised A/P2/P3 academic profile](mvp2_s2_academic_consolidated.md)

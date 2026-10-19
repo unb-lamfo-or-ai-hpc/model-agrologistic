@@ -27,10 +27,13 @@ checked-out branch. They do not configure other repositories or ChatGPT projects
   the cluster, submit jobs, retry experiments or upgrade campaign environments.
 - Finish qualification and mark a PR Ready before requesting merge authorization.
   Merge requires explicit maintainer authorization for that PR. Ready is not merge.
-- S2 is open. Synthetic jobs, native miniatures, h300 production and repeats
-  remain closed until their respective live gates are qualified and explicitly
-  admitted. Software CI, a read-only probe or an earlier license check cannot
-  authorize the next execution.
+- S2 P5 now proposes bounded documentary closure after the complete job2215308
+  diagnostic. Read [P5](docs/mvp2_s2_p5_closure.md). Closure takes effect only on
+  its qualified, explicitly authorized merge; until then S2 is open. Five feasible
+  time-censored arms do not certify full hierarchy or a generally superior thread
+  profile. Preserve original false closure/admission flags. All new jobs/repeats,
+  including downstream h400/SCIP/h500, remain closed pending separate qualification
+  and explicit admission. CI, collection or Sprint closure is not execution authority.
 - Preserve claims, failed attempts, original archives and run directories.
   Never reuse an old claim to imply a fresh admission or overwrite original receipts.
 - Do not weaken branch protection or force-push shared history. Main/develop
@@ -40,6 +43,16 @@ checked-out branch. They do not configure other repositories or ChatGPT projects
   separate decisions.
 
 ## Scientific and software discipline
+
+- Maintainer request, 19 October 2026: prepare and qualify the P5 evidence/exit PR
+  without new NPAD executions. All five1/2/4/8/16-thread levels are accounted for
+  in job2215308; each has accepted independent residuals but capacity TIME_LIMIT,
+  gap100%, and no economic pass. General thread ranking remains inconclusive;
+  four threads is only a candidate for separately reviewed h400. Preserve SMT,
+  measurement scopes, unchanged classifier prefix0 at zero-gap sentinel service,
+  original claims/certificates and negative outcomes. No scientific/runtime code,
+  manuscript, historical transport or original validation rule is changed by P5.
+  Update checkpoint/roadmap in the same functional PR; Ready before merge request.
 
 - Maintainer request,18 October2026: consolidate the complete new h300 thread
   grid (4/1/8/2/16, global3600s/arm) and old-vector preflight in ONE12h allocation

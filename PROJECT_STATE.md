@@ -1,9 +1,71 @@
 # Model Agrologistic — MVP 2.0 checkpoint
 
-Updated 18 October 2026. This public checkpoint contains scope and provenance,
+Updated 19 October 2026. This public checkpoint contains scope and provenance,
 not private evidence, credentials, local host paths or execution authority.
 
-## Latest checkpoint — P4 report-comparison failure; qualify existing-vector replay
+## Latest checkpoint — complete P4 evidence and proposed P5 S2 closure
+
+19 October 2026. The maintainer requests the complete P5 consolidation/exit PR,
+without new NPAD execution, Ready and exact-head qualification before any merge
+request. Based on PR109 merge `1e7637c890ab0a36589d48e02a5fa8e12122167e`, this
+[P5 decision](docs/mvp2_s2_p5_closure.md) proposes documentary closure of the
+contracted S2 diagnostic **effective only on its separately authorized merge**.
+Until that integration S2 stays open. Historical entries below are preserved;
+their older unexecuted plans/1800s budget do not supersede this completed3600s grid.
+
+Job2215308 source `2145a043c0a532ea2322e8466d0a8d561da5c153`, outer SHA256
+`11f405b6fbc846a8209f93feb3b9decbdb031850134cb57b3f7ba339918830da`, native
+SHA256 `18b209f70683f9ec264f5cf8baee74ef815b1dccf3c8f982a5989dd6c8c690c0`:
+sidecar/bytes and separate/nested native archive agree. Unchanged canonical audit
+returns portable_integrity_replayed_p5_required / five_arm_evidence_accounted=true,
+unrun=[], unaccounted=[], validation_error=null. All677 declared execution-source
+blobs match Git. See the [redacted ledger](docs/evidence/s2_p5_2215308_review.json)
+for exact release/plan/product/report anchors. No fresh local private-workbook
+residual calculation is claimed; the archive preserves original on-NPAD fresh
+reviews, raw worker/fresh reports, witnesses and bounded derived comparisons.
+
+Root/batch/extern and all five numeric steps COMPLETED0:0; root22749s=6h19m09s.
+Cold serial order4,1,8,2,16 on one shared16-logical-CPU/192GiB allocation,
+common SMT pool of eight physical cores. Global native TimeLimit3600s/arm;
+recorded Runtime3603.963--3626.755s includes bounded late return. No per-priority
+reset. Every arm has independently feasible partial hierarchy,32 residual
+families/zero failures; total13511232 checks. Service pass OPTIMAL/pass objective0,
+capacity TIME_LIMIT/bound0/gap100%, no economic pass. Final unmet demand is0 for
+1/2/4/8 and1.0036006238402074e-6 for16, accepted under original tolerances.
+The unchanged classifier retains prefix0 because its generic relative-gap
+predicate rejects the zero-service sentinel1e100; preserve that reporting caveat.
+
+Four threads gives the lowest observed capacity score; one uses less measured
+CPU/RSS and sixteen does not improve the final score. **General ranking is
+inconclusive, no speedup or full hierarchy is established.** Four threads remains
+only a conservative candidate for the separately qualified post-S2 h400 review,
+not a selected/admitted production profile. Sampled resource record:4227 samples,
+zero reported inspection errors, max gap5.32950s; no continuous coverage claim.
+Whole-job Slurm CPU13.778889h differs from101.106667 actual allocated logical-CPU
+hours; do not sum parent and steps or infer native-only efficiency.
+
+New preflight revalidates the preserved2214305 vector; only three transport
+rounding-budget diagnostics differ within the qualified analytical bounds.
+Other fields/tolerances stay exact. Both new raw reports/witness are preserved;
+the old discarded report is not recovered or retrospectively accepted. Original
+claims, failed outcomes and certificates stay unchanged, including false S2
+closure/configuration/admission flags. New1GiB transfer policy fits136 native
+members/414969927 payload bytes; per-arm<=256MiB exporter and old256MiB cohorts
+remain unchanged. No truncation, solver-memory or scientific-core change.
+
+Exit assessment: adopted A/P2/P3 gates and all five contracted P4 observations
+are accounted for; a fully audited censored diagnostic can close S2 without a
+favorable speedup. Next owner: agent qualifies this P5 evidence/tests/docs PR,
+then maintainer authorizes merge only after Ready. **No CLI, repeat or new job.**
+After the authorized P5 merge, proceed to separately qualified h400 profile/
+attempt and bounded existing-SCIP/h215 investigation; h500 remains conditional
+on h400 success/resources, not SCIP success. S6-A/B retain MVP2 focus; S3/S4
+cancelled, EVPI/VSS excluded, manuscript/coauthor review preserved and main sync
+only after article review. December remains conditional/base January2027.
+The requested balance and detailed Project01/chat01.01 presentation handoff were
+delivered locally on19 October; no cross-chat message or article edit occurred.
+
+## Prior checkpoint — P4 report-comparison failure; qualify existing-vector replay
 
 18 October scope expansion requested by maintainer: include all1/2/4/8/16-thread
 optimizations again, each global3600s. PR109's smaller Ready state and four-CPU

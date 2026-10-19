@@ -1,6 +1,41 @@
-# Dated research status: 18 October 2026
+# Dated research status: 19 October 2026
 
-## Current P4 evidence — strict report mismatch; derived replay next
+## Current P5 decision — complete five-arm diagnostic, closure pending merge
+
+Job2215308 ran all five cold serial4/1/8/2/16-thread arms at global3600s/arm,
+source2145a043c0a532ea2322e8466d0a8d561da5c153 (merged PR109). Root and all steps
+COMPLETED0:0, root6h19m09s. Sidecar/archive/native/source/product checks and
+unchanged portable audit pass; five_arm_evidence_accounted=true, no unrun or
+unaccounted levels. Fresh independent reports preserved on NPAD accept all five
+incumbents,32 families each/zero failures. This is not a fresh local private-data
+residual calculation. Read the [P5 review](mvp2_s2_p5_closure.md),
+[redacted ledger](evidence/s2_p5_2215308_review.json) and
+[checkpoint](../PROJECT_STATE.md) before older dated entries.
+
+All native calls hit TIME_LIMIT during capacity with100% gap; no economic pass.
+Service pass reports OPTIMAL/zero objective but its1e100 relative-gap sentinel
+leaves the unchanged conservative classifier prefix0. Preserve both facts.
+General thread ranking is inconclusive: four has the lowest observed capacity
+score, one lower CPU/RSS, and there is no comparable-completed-work speedup.
+Sixteen logical CPUs are eight observed cores with SMT, not sixteen physical
+cores. One shared-node/fixed-order block does not establish causal superiority.
+
+The P5 PR proposes bounded S2 documentary closure effective **only after its
+qualified, Ready and explicitly authorized merge**. Until then S2 remains open;
+original certificates keep false closure/admission flags. No new execution,
+repeat, automatic follow-on or main sync. Four threads is only a candidate for
+separate h400 qualification, not downstream admission. Preserve old failed
+claims/reports. New existing-vector replay confines differences to three
+qualified rounding-budget diagnostics, without changed scientific tolerances.
+
+Next after P5 integration: h400 profile/one admitted attempt, bounded existing
+SCIP/h215, conditionalh500, S6-A/B. S3/S4 cancelled, EVPI/VSS excluded; article
+and coauthor revision unchanged, final-only main reconciliation preserved.
+Requested MVP2 balance/presentation handoff delivered locally; no message sent.
+No NPAD CLI is needed now. Older state and instruction blocks below are history,
+not authority to restart consumed slots.
+
+## Prior P4 evidence — strict report mismatch; derived replay next
 
 Latest maintainer direction: include ALL1/2/4/8/16 optimizations at global3600s
 in the SAME PR109. Previous smaller Ready/CLI superseded; Draft while qualifying
