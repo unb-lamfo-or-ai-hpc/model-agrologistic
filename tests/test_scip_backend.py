@@ -262,11 +262,5 @@ def test_licensed_gurobi_parity_on_analytical_instance(policy):
     )
     report = validate_solution(prepare_model_data(data, config), config, gurobi)
     assert report["status"] == "accepted", report["failure_samples"]
-    if policy == "penalty":
-        assert native.cost_breakdown == pytest.approx(gurobi.cost_breakdown)
-        assert native.objective_value == pytest.approx(gurobi.objective_value)
-    else:
-        for name in ("expected_unmet_demand", "expected_emergency_capacity", "economic_cost"):
-            assert native.metrics["objective_values"][name] == pytest.approx(
-                gurobi.metrics["objective_values"][name], abs=0.0001
-            )
+    assert native.cost_breakdown == pytest.approx(gurobi.cost_breakdown)
+    assert native.objective_value == pytest.approx(gurobi.objective_value)

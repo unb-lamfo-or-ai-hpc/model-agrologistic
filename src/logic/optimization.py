@@ -181,6 +181,12 @@ def project_deterministic_result(result: OptimizationResult) -> OptimizationResu
     result.metadata["formulation"] = "deterministic_single_scenario_extensive_form"
     result.metadata.pop("scenario_probabilities", None)
     result.metrics.pop("scenario_metrics", None)
+    # Preserve the deterministic API; these are row sums, not new objectives.
+    result.metrics.update(
+        total_flow=sum(row["value"] for row in result.flows),
+        total_unmet_demand=sum(row["value"] for row in result.unmet_demand),
+        total_emergency_capacity=sum(row["value"] for row in result.emergency_capacity),
+    )
     result.metadata["deterministic_scenario_probability"] = 1.0
     return result
 

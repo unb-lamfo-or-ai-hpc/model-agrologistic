@@ -83,7 +83,11 @@ def assert_validation(data, config, result):
     report = validate_solution(prepare_model_data(data, config), config, result)
     assert report["status"] == "accepted", report["failure_samples"]
     assert sum(report["reconstructed_costs"].values()) == pytest.approx(result.objective_value)
-    assert not any("stage" in k or "lexicographic" in k for k in result.metadata)
+    # First/second-stage decisions describe STO recourse, not objective priorities.
+    assert not any(
+        "lexicographic" in k or k.startswith("objective_priority") for k in result.metadata
+    )
+    assert "solver_stages" not in result.metadata
     return report
 
 
@@ -129,6 +133,9 @@ def test_det_equals_one_scenario_sto_and_hand_calculated_cost(backend):
     assert deterministic.objective_value == pytest.approx(150)
     assert stochastic.objective_value == pytest.approx(150)
     assert deterministic.cost_breakdown == pytest.approx(stochastic.cost_breakdown)
+    assert deterministic.metrics["total_flow"] == pytest.approx(20)
+    assert deterministic.metrics["total_unmet_demand"] == pytest.approx(0)
+    assert deterministic.metrics["total_emergency_capacity"] == pytest.approx(0)
     assert_validation(data, ModelConfig(), deterministic)
     assert_validation(stochastic_data, ModelConfig(mode="sto"), stochastic)
     assert all("scenario" not in r for r in deterministic.flows)
