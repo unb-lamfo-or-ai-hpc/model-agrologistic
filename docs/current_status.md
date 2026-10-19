@@ -1,5 +1,17 @@
 # Dated research status: 19 October 2026
 
+## After P5 integration — closed h400 candidate qualification
+
+PR110 merged at5f9daa55b3afb5bbcb3449bc83c970cf10a28ca6;S2 is closed in its
+contracted diagnostic scope,not full hierarchy/speedup or full MVP2. Original
+false closure/admission certificate flags remain immutable history. Next is the
+[closed h400 package](mvp2_h400_post_s2_qualification.md):four-thread candidate,
+inherited global8h native profile,proposed12h/192GiB/16logical-CPU request,
+real public-input integration and metadata-only preparation/replay. No licensed
+solve,private input verification,terminal HPC evidence or NPAD admission occurs.
+Qualify before Ready/separate merge. Actual worker/claim/fresh allocation/license/
+terminal review and human CLI follow in one operational package. No CLI now.
+
 ## Current P5 decision — complete five-arm diagnostic, closure pending merge
 
 Job2215308 ran all five cold serial4/1/8/2/16-thread arms at global3600s/arm,

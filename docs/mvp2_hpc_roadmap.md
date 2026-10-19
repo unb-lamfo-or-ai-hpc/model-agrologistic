@@ -2,6 +2,18 @@
 
 ## Authority and scope
 
+Post-merge19 October: PR110/5f9daa55 adopts S2 diagnostic closure. The next
+[h400 candidate/input package](mvp2_h400_post_s2_qualification.md) is closed
+software qualification,carrying the actual merge checkpoint. Retain S1 global8h
+and four-thread candidate;no inferred winner or one-hour h400 budget. Proposed
+12h/192GiB/16logicalCPU and new external phase ledger require the separate
+complete operational worker/claim/terminal/CLI review before any execution.
+Fresh checks should be grouped into its intended future allocation,not another
+automatic short prerequisite campaign. No h400/h500/repeat admission now.
+Full original feasibility/hierarchy,budgets,closed evidence and human review
+are the prospective h400-success gate;h500 still needs independent input/build/
+resource approval. Retain all other approved scope and final-only main sync.
+
 19 October P5 consolidation: job2215308 provides all five contracted3600s
 thread arms, original fresh independent residual reports and closed terminal
 evidence. See [P5 decision/exit criteria](mvp2_s2_p5_closure.md) and
