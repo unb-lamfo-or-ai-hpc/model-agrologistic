@@ -1,6 +1,6 @@
 # Model Agrologistic — MVP 2.0 checkpoint
 
-## R1 — approved scalar refactor; software qualification in progress
+## R1 — scalar software qualified; merge pending
 
 19 October2026. The maintainer approved one consolidated R1 replacing PR111:
 DET and two-stage STO with a single economic objective; DET is the one-scenario/
@@ -21,11 +21,16 @@ workflows into the published archive. Penalty coefficients, units, tolerances,
 original evidence JSON/certificates and coauthor manuscript remain unchanged.
 New scalar quality is not inferred from historical hierarchy or CI.
 
-Qualification is in progress, not Ready/merged. T1 native SCIP scalar analytical
-cases pass locally; Gurobi local license is expired, so local skips do not qualify
-that backend. Related/full regressions, exact-head Linux native tests and packaging
-remain required. No NPAD job/probe/retry, old-claim reset, branch promotion or
-article publication occurred or is admitted. Request merge only after Ready.
+Consolidated [PR112](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/112)
+supersedes PR111, now closed without merge; its branch/head remain preserved.
+The [qualification record](docs/mvp2_scalar_r1_qualification.md) binds candidate
+`c72afc65fd4c200e630753bf911e87f29092936e`: full exact-head Linux497 tests passed,
+zero failures/errors/skips, native Gurobi and SCIP, source closure, Ruff/build and
+related CI passed. Local Windows441 passed/56 expired-license skips do not qualify
+Gurobi; Linux native evidence does. Final checkpoint-only head must retain the
+qualified source/test trees and pass CI again before Ready/merge request.
+No NPAD job/probe/retry, old-claim reset, merge, branch promotion or article
+publication occurred or is admitted. No scalar scalability result is claimed.
 
 Next: R2 small DET/STO qualification and fresh budget proposals; scalar h215/h300/
 h400, complementary existing SCIP/h215, conditional h500 and S6-A/S6-B. No automatic
