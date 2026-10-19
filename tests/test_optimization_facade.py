@@ -12,6 +12,19 @@ from src.logic.optimization import (
 )
 
 
+@pytest.fixture(autouse=True)
+def preserve_license_selection():
+    """Dummy discovery files must not contaminate later real native solver tests."""
+    previous = os.environ.get("GRB_LICENSE_FILE")
+    try:
+        yield
+    finally:
+        if previous is None:
+            os.environ.pop("GRB_LICENSE_FILE", None)
+        else:
+            os.environ["GRB_LICENSE_FILE"] = previous
+
+
 def tiny_valid_data() -> ModelData:
     return ModelData(
         origins=["O1"],
