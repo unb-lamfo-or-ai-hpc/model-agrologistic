@@ -44,6 +44,14 @@ checked-out branch. They do not configure other repositories or ChatGPT projects
 
 ## Scientific and software discipline
 
+- Maintainer continuation,19 October2026: PR110 is merged at5f9daa55 and S2's
+  bounded diagnostic is closed. Qualify the [closed h400 candidate/input package](docs/mvp2_h400_post_s2_qualification.md)
+  before Ready/separate merge approval. Four threads is a candidate,not a winner;
+  inherit S1 global28800s and unchanged science. New external resource/phase
+  proposals are not execution authority. No NPAD CLI/job or old-wrapper shortcut.
+  Actual worker/claim/terminal forensic collection and pinned human handoff
+  belong to the next complete operational package. Preserve all old evidence.
+
 - Maintainer request, 19 October 2026: prepare and qualify the P5 evidence/exit PR
   without new NPAD executions. All five1/2/4/8/16-thread levels are accounted for
   in job2215308; each has accepted independent residuals but capacity TIME_LIMIT,

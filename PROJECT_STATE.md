@@ -3,7 +3,78 @@
 Updated 19 October 2026. This public checkpoint contains scope and provenance,
 not private evidence, credentials, local host paths or execution authority.
 
-## Latest checkpoint — complete P4 evidence and proposed P5 S2 closure
+## Current h400 package — candidate/input qualification; execution closed
+
+19 October2026. After adopted PR110/S2 closure, prepare and qualify the
+[complete closed h400 candidate package](docs/mvp2_h400_post_s2_qualification.md)
+on the next functional branch, carrying the explicit post-merge checkpoint
+below. Candidate four threads is justified jointly by accepted S1 h400 and
+inconclusive S2, not claimed as a winner. Retain S1's global28800s/native
+profile,192GiB and12h; propose16 logical-CPU request with explicit actual/SMT
+observation, not a controlled cross-history speedup claim. The new external
+ledger is prospective and needs operational review; no execution is admitted.
+
+This package implements real public Excel/ExperimentSpec input integration,
+exact proposal/source/data anchors, a closed wrapper and bounded metadata-only
+carrier. Start/batch/worker/resume deny before effects. It is not the live
+worker, terminal HPC collector, fresh private h400 validation or future license
+admission. Qualify whole package/CI before Ready and separate merge request.
+Next functional package bundles actual worker/phase controls/exclusive claim,
+fresh allocation/license,unchanged independent review,forensic terminal collection
+and complete pinned human CLI. No NPAD CLI now and no original claim reset.
+
+The predetermined full-success/h500 boundary is in the runbook:original independent
+feasibility,all three original priority certificates,closed resources/identities,
+respected budgets and human review. Partial/no-incumbent/failed/unknown evidence
+remains useful but cannot admit h500. Separate h500 input/build/resource review
+still required;not conditional on SCIP success. Article,core and historical
+certificates remain unchanged. No scientific parameter/tolerance change.
+
+## Post-merge checkpoint — bounded S2 diagnostic closed
+
+19 October 2026, 17:29:39 UTC (14:29:39 America/Sao_Paulo). GitHub confirms
+PR #110 merged into develop at `5f9daa55b3afb5bbcb3449bc83c970cf10a28ca6`,
+with qualified head `474b6c39c7e35ea8e8ecf70340bbeedfc4e2c5f1`, after Ready
+and 15 successful checks. The maintainer explicitly authorized that integration.
+The [P5 decision](docs/mvp2_s2_p5_closure.md) is therefore adopted: **S2 is closed
+as the complete contracted, bounded diagnostic**, not as full hierarchy quality,
+causal speedup, a generally superior thread profile or completion of MVP2.
+
+The original job2215308 certificates retain `s2_closed=false` and false
+configuration/admission flags. Those immutable execution records predate this
+documentary decision; no flag, report, failed claim or archive is rewritten.
+All five arms have accepted independent feasibility, capacity TIME_LIMIT/100%
+gap and no economic pass. Four threads is only an h400-review candidate.
+
+This checkpoint and the refreshed balance/Project01-chat01.01 handoff introduce
+no NPAD access, optimization, repeat, claim reset, article/presentation edit,
+main synchronization, release or submission. No new CLI is needed. The merge
+was already visible when the agent resumed; no duplicate merge was attempted.
+
+Next approved work remains separate h400 profile/budget/acceptance qualification,
+bounded existing-SCIP/h215 root-LP investigation, conditional h500, then S6-A
+and S6-B. h400 and SCIP software/evidence preparation can overlap; no run is
+admitted here. h500 depends on the reviewed h400-success/input/build/resource
+gate, not SCIP success. The S2 one-hour diagnostic is not automatically an
+adequate h400 full-hierarchy budget: the accepted S1 control used about7.76h of
+optimization. Future budgets require their own justified prospective review.
+
+Remaining scope estimate:8--11 functional PRs including conditional h500, before
+final protected-branch reconciliation;6--8 if h500's conditional gate is not
+admitted, without treating it as cancelled. Repairs are evidence-dependent.
+S3/S4 stay cancelled, EVPI/VSS excluded, coauthor/article freeze preserved and
+main/develop synchronization only after article review. December remains a
+conditional target;18--29 January2027 is the retained base planning forecast,
+not a newly agreed deadline. No portfolio/calendar or cross-chat write occurred.
+
+Publication boundary: the merged P5 files already define closure as effective
+on authorized integration. Its public PR discussion records this actual merge
+checkpoint at [PR110](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/110#issuecomment-6273269848).
+This explicit post-merge header is prepared locally on the next-work
+branch for the next functional PR, avoiding a standalone bookkeeping PR or an
+unreviewed direct push to develop. Historical entries below are unchanged.
+
+## Prior checkpoint — complete P4 evidence and proposed P5 S2 closure
 
 19 October 2026. The maintainer requests the complete P5 consolidation/exit PR,
 without new NPAD execution, Ready and exact-head qualification before any merge
