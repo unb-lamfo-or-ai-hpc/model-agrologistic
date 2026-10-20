@@ -20,6 +20,28 @@ earlier evidence. Ready/full exact-head qualification and authorized merge must
 precede the corrected, newly pinned human CLI; no new HPC action occurs here.
 The scientific, resource and penalty contracts below are unchanged.
 
+### Observed correction qualification
+
+[PR118](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/118)
+implementationb998330 passed all four workflows, including the exact-source
+[full native Linux gate](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/actions/runs/39486576455):
+903 tests, zero failures/errors/skips,28.428s; downloaded JUnit SHA256
+`05973fcf90206994b808cab3ec951b56e19a970e9dfb180846396f12377ef53b`.
+Focused137 and related379 local Python3.13.15 cases passed. Actual Linux symlink
+refusal and Bash syntax passed, as did clean-source lint, distribution builds
+and the retained real tiny five-arm native lifecycle/collector/portable audit.
+Windows-local symlink behavior uses a controlled predicate; Windows Bash failed
+host initialization. Those are not represented as local Linux qualification.
+
+The first accidental local Python3.10 invocation failed collection, and the
+local3.13 environment lacked the build module. Neither is an accepted gate;
+Linux CI supplied the required full native/build checks. Untracked historical
+output utilities are excluded from local lint and never uploaded to this PR.
+The final documentary source must pass all checks before Ready and authorized
+merge. The new pinned human handoff then replaces0723e2a; do not modify the
+preserved bootstrap in place. Scientific source/manuscript trees are unchanged.
+Wrapper SHA256: `7a7f8ccf42620215948ae85afe2f8a625eafff8705e9914c399e9eab8e150813`.
+
 20 October2026. PR116 merged with explicit authorization at
 `1b7ef49a71e1eb2169fc6941a79474d07491a6a9`; the maintainer approved the30h
 resource envelope. This package integrates source/input/predecessor preparation,

@@ -2,6 +2,18 @@
 
 ## h300 input-path repair after PR117 merge —20 October2026
 
+[Consolidated PR118](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/118)
+implementationb998330 passed all four workflows. The exact-source full native
+[Linux gate](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/actions/runs/39486576455)
+reports903 passed, zero failures/errors/skips; JUnit SHA256
+`05973fcf90206994b808cab3ec951b56e19a970e9dfb180846396f12377ef53b`.
+Focused137 and related379 cases passed locally on Python3.13.15. Clean Linux
+lint, Bash syntax, native tiny five-worker transport, source closure and both
+distribution builds passed. Local default Python3.10, absent build module and
+Windows Bash host errors are not counted as successful qualification; clean
+Linux CI supplies the full checks. Final documentary head must pass all four
+checks before Ready and explicit merge request. No NPAD job was launched.
+
 PR117 merged with explicit authorization at
 `47c06e2c20e2756f2acb34f91bafe9b99cee396c`. The human bootstrap at qualified
 source0723e2a passed128 login-safe tests and source verification, then stopped
