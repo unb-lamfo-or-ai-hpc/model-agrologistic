@@ -15,6 +15,19 @@ from scripts import mvp2_scalar_r2 as r2
 
 ROOT = Path(__file__).resolve().parents[1]
 FIELDS = ("model_order", "warehouse_id", "population_role", "selection_stratum", "candidate_rank")
+HISTORICAL_CHECKPOINTS = (215, 500, 1000, 2000, 5000, 10000, 18000)
+
+
+def h300_derivation():
+    """Document the reviewed intermediate level, not a new ranking or campaign."""
+    return {
+        "schema_version": "reviewed-nested-population-v1",
+        "registered_checkpoints": list(HISTORICAL_CHECKPOINTS),
+        "reviewed_target": 300,
+        "method": "all146_existing_plus_first154_eligible_frozen_candidate_ranks",
+        "candidate_rank_changed": False,
+        "manifest_rewritten": False,
+    }
 
 
 def _rank(raw):
@@ -25,7 +38,7 @@ def _rank(raw):
     return int(value)
 
 
-def read_policy(manifest, order, manifest_sha, order_sha, target):
+def read_policy(manifest, order, manifest_sha, order_sha, target, *, reviewed_nested_target=None):
     """Reproduce membership from the already-audited nested ranking, no resampling."""
     from src.logic.run_integrity import file_sha256
 
@@ -45,10 +58,18 @@ def read_policy(manifest, order, manifest_sha, order_sha, target):
         == file_sha256(ROOT / registered["canonical_anchor"]["workbook"]),
         "Canonical anchor bytes differ: source review required.",
     )
-    r2.require(
-        meta["schema_version"] == 1 and target in meta["target_populations"],
-        "Population protocol differs.",
-    )
+    r2.require(meta["schema_version"] == 1, "Population protocol schema differs.")
+    if reviewed_nested_target is None:
+        r2.require(target in meta["target_populations"], "Population protocol differs.")
+    else:
+        # Only the approved h300 entry points may opt into the historical
+        # intermediate level. Hashes, original checkpoints and ranks stay bound.
+        r2.require(
+            type(reviewed_nested_target) is int
+            and reviewed_nested_target == target == 300
+            and meta["target_populations"] == list(HISTORICAL_CHECKPOINTS),
+            "Reviewed h300 nested checkpoint derivation differs.",
+        )
     r2.require(
         bool(meta["selection_method"].strip()) and bool(meta["selection_seed"].strip()),
         "Selection method/seed required.",
@@ -129,6 +150,7 @@ def read_policy(manifest, order, manifest_sha, order_sha, target):
         "anchor_sha256": meta["anchor_source"]["sha256"],
         "population_manifest_sha256": manifest_sha,
         "population_order_sha256": order_sha,
+        **({"checkpoint_derivation": h300_derivation()} if reviewed_nested_target else {}),
         "members": members,
     }
 

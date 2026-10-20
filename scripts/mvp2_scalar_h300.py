@@ -1,7 +1,7 @@
 """Consolidated h300 preparation and fixed-penalty gate; no job entry point.
 
-The public CLI only hashes/binds existing artifacts. Excel preflight is a pure
-software seam for the later reviewed runtime; no solver/Slurm is imported here.
+The public CLI binds existing artifacts and reads only warehouse IDs/roles.
+Full Excel preflight remains a later runtime gate; no solver/Slurm is imported here.
 """
 
 from __future__ import annotations
@@ -38,6 +38,54 @@ def input_file(path, label):
     r.require(path.exists(), f"{label}: missing or inaccessible file: {path}")
     r.require(path.is_file(), f"{label}: not a regular file: {path}")
     return previous.regular(path)
+
+
+def read_selection(workbook, population, order):
+    """Reconcile the original ranking with the already-materialized h300 sheet.
+
+    The original manifest lists 215/500/... checkpoints, not every nested level.
+    The historical nine-population builder used the same ranks for 300. Read
+    only Warehouses here: no route ETL, database write or optimization on login.
+    """
+    from types import SimpleNamespace
+
+    import pandas as pd
+
+    from src.logic.warehouse_population import _population_role
+
+    selection = r.warehouses.read_policy(
+        input_file(population, "population manifest"),
+        input_file(order, "population order"),
+        previous.POPULATION_SHA,
+        previous.ORDER_SHA,
+        300,
+        reviewed_nested_target=300,
+    )
+    frame = pd.read_excel(workbook, sheet_name="Warehouses", dtype={"CDA": str})
+    r.require({"CDA", "Status"} <= set(frame.columns), "Warehouse identity columns missing.")
+    frame = frame.dropna(how="all")
+    r.require(frame["CDA"].notna().all(), "Missing warehouse identifier in materialized sheet.")
+    ids = frame["CDA"].str.strip().tolist()
+    r.require(all(ids), "Empty warehouse identifier in materialized sheet.")
+    roles = frame["Status"].map(_population_role).tolist()
+    r.warehouses.membership_receipt(
+        SimpleNamespace(
+            warehouses=ids,
+            existing_warehouses=[
+                v for v, role in zip(ids, roles, strict=True) if role == "existing"
+            ],
+            candidate_warehouses=[
+                v for v, role in zip(ids, roles, strict=True) if role == "candidate"
+            ],
+        ),
+        selection,
+    )
+    selection["materialized_membership"] = {
+        "workbook_sha256": r.file_hash(workbook),
+        "ordered_ids": ids,
+        "scope": "Warehouse IDs/roles only; full scientific preflight still required.",
+    }
+    return selection
 
 
 def penalty_receipt(contract, *, warehouse_ids=None, demand_pairs=None):
@@ -201,16 +249,14 @@ def preflight(spec, selection):
 
 
 def prepare(claim, sha, workbook, population, order, predecessor):
-    """Hash-only human preparation; no scheduler, license, database or Excel ETL."""
+    """Hash/membership preparation; no scheduler, license, database or full ETL."""
     claim = Path(claim)
     r.require(claim.name == CLAIM and not claim.exists(), "Fresh dedicated preparation claim.")
     r.require(re.fullmatch(r"[0-9a-f]{40}", sha), "Full reviewed source required.")
     input_file(workbook, "h300 workbook")
     r.require(r.file_hash(workbook) == WORKBOOK_SHA, "Historical h300 workbook hash differs.")
     parent = verify_h215(predecessor)
-    selection = r.warehouses.read_policy(
-        population, order, previous.POPULATION_SHA, previous.ORDER_SHA, 300
-    )
+    selection = read_selection(workbook, population, order)
     inventory = r.r2.source_inventory(ROOT)
     r.require(inventory["source_commit"] == sha, "Wrong source head.")
     r.r2.verify_source(inventory, ROOT)
@@ -271,6 +317,15 @@ def review(
         "Source/population binding differs.",
     )
     members = selection["members"]
+    materialized = selection.get("materialized_membership", {})
+    ids = materialized.get("ordered_ids", [])
+    r.require(
+        selection.get("checkpoint_derivation") == r.warehouses.h300_derivation()
+        and materialized.get("workbook_sha256") == WORKBOOK_SHA
+        and len(ids) == len(set(ids)) == 300
+        and set(ids) == {m["warehouse_id"] for m in members},
+        "Historical checkpoint/materialized warehouse binding differs.",
+    )
     r.require(
         sorted(m["candidate_rank"] for m in members if m["population_role"] == "candidate")
         == list(range(1, 155))

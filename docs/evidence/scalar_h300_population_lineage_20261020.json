@@ -1,0 +1,43 @@
+{
+  "schema_version": "scalar-h300-population-lineage-review-v1",
+  "evidence_scope": "Maintainer-pasted read-only NPAD metadata; not a byte-identical copy of private receipts or a new HPC qualification.",
+  "failed_source": "66d8faa1419af345bd1e9190e1c48e33a0fa9d53",
+  "failed_bootstrap_basename": "scalar-h300-30h-driver-c6L4Gd2k",
+  "failed_gate": "Population protocol differs.",
+  "submission_reached": false,
+  "claim_creation_reached": false,
+  "reported_regression_passed": 137,
+  "registered_population_manifest_sha256": "4134147f45188d2e8722476dd325b40e584c3746affe99889e045a547d283505",
+  "registered_population_order_sha256": "7a524b2ed69b41481264d8049842b37e27cd3b96cc20d4e96d98eaf2a39e7903",
+  "reported_original_manifest": {
+    "schema_version": 1,
+    "created_at_utc": "2026-09-10T18:11:13.102959+00:00",
+    "source_sha256": "0d19865ac72eca0706960d10b6dbd1647a4951378a831715e39af8029ecb77f2",
+    "anchor_sha256": "de3bdc51b2c338194a5013165bec2884b68784fb207ae8c762984a1b44856082",
+    "selection_seed": "model-agrologistic-v020-warehouse-population-v1",
+    "selection_method": "nested deterministic proportional strata over state, warehouse type, and static-capacity quartile",
+    "target_populations": [215, 500, 1000, 2000, 5000, 10000, 18000]
+  },
+  "reported_ranking_provenance": {
+    "source_order_sha256": "7a524b2ed69b41481264d8049842b37e27cd3b96cc20d4e96d98eaf2a39e7903",
+    "projected_order_sha256": "001b11a69551492170e25dd820565a53461257055818ca895af38530ccf10c43",
+    "candidate_rank_changed": false,
+    "target_populations": [300, 400]
+  },
+  "reported_h300_materialization": {
+    "created_at_utc": "2026-09-14T16:24:03.345664+00:00",
+    "population_order_sha256": "001b11a69551492170e25dd820565a53461257055818ca895af38530ccf10c43",
+    "pre_osrm_workbook_sha256": "37c80e25c4acbb391a56873db2111e4ca5e3cdab038100b6c59e4608d7a7eb9b",
+    "osrm_workbook_sha256": "7761cce77cf93dcba2f617714f0117c1f2ead4de0c3f27149daceba447e0c7d1",
+    "warehouse_count": 300,
+    "existing_warehouse_count": 146,
+    "candidate_warehouse_count": 154,
+    "canonical_anchor_row_count": 215,
+    "additional_candidate_count": 85,
+    "candidate_activation_contract_valid": true
+  },
+  "scientific_configuration_changed": false,
+  "input_bytes_changed": false,
+  "agent_job_submitted": false,
+  "repeat_admitted": false
+}

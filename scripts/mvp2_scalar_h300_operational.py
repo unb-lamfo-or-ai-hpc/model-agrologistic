@@ -70,7 +70,7 @@ def prepare(claim, sha, workbook, population, order, materialization_path, prede
     original_audit = h.input_file(materialization_path, "h300 materialization audit").read_bytes()
     materialization(r.strict_json(original_audit))
     parent = h.verify_h215(predecessor)
-    selection = r.warehouses.read_policy(population, order, o.POPULATION_SHA, o.ORDER_SHA, 300)
+    selection = h.read_selection(workbook, population, order)
     inventory = r.r2.source_inventory(ROOT)
     r.require(inventory["source_commit"] == sha, "Wrong source head.")
     r.r2.verify_source(inventory, ROOT)

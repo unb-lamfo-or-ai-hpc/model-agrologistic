@@ -597,7 +597,8 @@ def test_complete_operational_prepare_load_and_original_audit_binding(tmp_path, 
     audit_path = tmp_path / "materialization.json"
     m.r.r2.write(audit_path, audit_fixture())
     policy = json.loads(fixture_files["warehouse_selection.json"])
-    monkeypatch.setattr(m.r.warehouses, "read_policy", lambda *_: policy)
+    policy["materialized_membership"]["workbook_sha256"] = m.h.WORKBOOK_SHA
+    monkeypatch.setattr(m.h, "read_selection", lambda *_: policy)
     monkeypatch.setattr(
         m.h, "verify_h215", lambda _: json.loads(fixture_files["plan.json"])["predecessor"]
     )

@@ -1,5 +1,16 @@
 # Dated research status: 20 October 2026
 
+Latest: PR118 merged at2f6237f6. Source66d8faa stopped before claim creation/sbatch
+because the original checkpoint list omits300 despite its preserved historical
+nested materialization. Read-only metadata confirms unchanged ranking and
+146 existing/154 candidate membership. Qualify the
+[consolidated lineage repair](mvp2_scalar_h300_population_repair.md): explicit
+h300-only derivation, original hashes, actual Excel ID/role comparison before
+claim, complete integration and negative tests in both wrappers. No scientific,
+penalty or budget change; no jobs or repeats. Ready/full qualification and
+explicit merge precede the new human CLI. Preserve all prior attempts.
+The following sections are historical snapshots.
+
 Latest: PR117 merged at47c06e2c. Its human bootstrap passed128 tests but stopped
 before claim creation/submission at a nonexistent extrapolated h215 path.
 The researcher confirms historical h300 input under `nine_population_osrm_v1`,
