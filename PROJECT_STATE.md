@@ -1,6 +1,6 @@
 # Model Agrologistic — MVP 2.0 checkpoint
 
-## R2 — approved small envelope; software preparation, no NPAD job
+## R2 — consolidated software qualified; merge pending, no NPAD job
 
 20 October2026. PR112 merged into develop at
 `f9aa616d378e27cc3ad8c725b5c340c34085e995`. The maintainer approved one R2
@@ -11,10 +11,18 @@ fresh capability check inside compute, one bounded step, fixed9-case gate,
 terminal/forensic collection and portable replay. Preparation/qualification only:
 no NPAD job/probe, merge or new experimental result is claimed here.
 
+Consolidated [PR113](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/113)
+candidate `9c97d944e2bf4b96bac296b0fc0e4b084a6027fc`:78 login-safe orchestration
+cases passed; full exact-head Linux576 passed, zero failures/errors/skips. Native
+math and original DET/STO product collection/replay passed with simulated transport,
+not a live scheduler/WLS receipt. Bash syntax, actual raw Git-byte/source-inventory
+closure, Ruff, related CI and distribution build passed. Local519 passed/57
+expired-Gurobi skips are disclosed separately, not native qualification.
+
 R1 scientific source, parameters/tolerances, manuscript, original evidence and
-historical NPAD claims remain unchanged. Before asking for merge, finish focused/
-related/full exact-head CI, wrapper syntax, native integration and lint/build;
-mark Ready only afterward. Later human CLI is pinned to that qualified release.
+historical NPAD claims remain unchanged. Final checkpoint-only head must retain
+qualified code/test bytes and pass CI again before Ready/explicit merge request.
+Later human CLI is pinned to that qualified release; no job has been executed.
 No automatic repeat or larger-instance admission; R3-A baselines still need their
 own input/resource/quality gate. The designated WLS path is confirmed, not replaced.
 
