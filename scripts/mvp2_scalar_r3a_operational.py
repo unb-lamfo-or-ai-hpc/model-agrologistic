@@ -117,6 +117,21 @@ def regular(path):
     return path
 
 
+def publish(path, value):
+    """Expose complete immutable IPC JSON, never a zero/partially written file."""
+    pending = path.with_name("." + path.name + ".pending")
+    with pending.open("xb") as stream:
+        stream.write(r.r2.encoded(value))
+        stream.flush()
+        os.fsync(stream.fileno())
+    if os.name == "nt":
+        # Windows rename fails if destination exists; POSIX rename would replace it.
+        os.rename(pending, path)
+    else:
+        os.link(pending, path)  # Exclusive publication: cannot replace a prior receipt.
+        pending.unlink()  # Only this function's new temporary link; final bytes persist.
+
+
 def prepare(claim, sha, workbook, population, order, audit, predecessor):
     """Hash/config preparation only; no Excel ETL, solver, database or Slurm call."""
     r.require(claim.name == CLAIM and not claim.exists(), "Fresh operational claim required.")
@@ -130,7 +145,7 @@ def prepare(claim, sha, workbook, population, order, audit, predecessor):
     inventory = r.r2.source_inventory(ROOT)
     r.require(inventory["source_commit"] == sha, "Wrong source head.")
     r.r2.verify_source(inventory, ROOT)
-    tools = {k: str(regular(shutil.which(k) or "").resolve()) for k in TOOLS}
+    tools = {k: str(regular(Path(shutil.which(k) or "").resolve())) for k in TOOLS}
     plan = {
         "schema_version": "scalar-h215-operational-v1",
         "source_commit": sha,
@@ -215,6 +230,17 @@ def invocation(action, claim, sha, *extra):
     ]
 
 
+def job_receipt(claim, sha):
+    job = r.strict_json(regular(claim / "job.json").read_bytes())
+    r.require(
+        job["source_commit"] == sha
+        and re.fullmatch(r"[1-9][0-9]*", job["job_id"])
+        and job["plan_sha256"] == r.file_hash(claim / "plan.json"),
+        "Job/source/plan receipt differs.",
+    )
+    return job
+
+
 def start(claim, sha, acknowledged, paths, *, command=r.r2.command):
     r.require(acknowledged, "Explicit human one-reviewed-h215-pair acknowledgement required.")
     r.require(sys.version_info[:2] == (3, 13) and not os.environ.get("SLURM_JOB_ID"), "Login only.")
@@ -250,6 +276,7 @@ def start(claim, sha, acknowledged, paths, *, command=r.r2.command):
             "--mem=192G",
             "--time=14:00:00",
             "--no-requeue",
+            "--export=ALL",
             "--job-name=scalar-h215-4h",
             "--chdir=" + str(claim),
             "--output=" + str(claim / "slurm.out"),
@@ -268,7 +295,7 @@ def start(claim, sha, acknowledged, paths, *, command=r.r2.command):
     match = re.fullmatch(r"([1-9][0-9]*)(?:;[A-Za-z0-9_.-]+)?\s*", result.stdout)
     r.require(result.returncode == 0 and match, "Submission uncertain; preserve, never retry.")
     job = {"job_id": match[1], "source_commit": sha, "plan_sha256": token}
-    r.r2.write(claim / "job.json", job)
+    publish(claim / "job.json", job)
     return {"status": "submitted_one_h215_pair_only", **job, **r.closed()}
 
 
@@ -423,6 +450,21 @@ def scalar_review(files, plan):
                 "Included population differs.",
             )
             arm = r.case_review(files, prefix, expected)
+            from src.logic.optimization import scalar_mip_gap
+
+            payload = r.strict_json(
+                files[prefix + "/products/" + expected["name"] + "/result.json"]
+            )
+            native = payload["result"]
+            metadata_bound = native["metadata"].get("objective_bound")
+            legacy_bound = native.get("objective_bound")
+            r.require(
+                metadata_bound is None or legacy_bound is None or metadata_bound == legacy_bound,
+                "Conflicting original bound fields.",
+            )
+            arm["bound"] = metadata_bound if metadata_bound is not None else legacy_bound
+            arm["common_gap"] = scalar_mip_gap(arm["objective"], arm["bound"])
+            arm["native_gap"] = native["metadata"].get("gurobi_native_gap", native.get("mip_gap"))
             arm["solve_sequence_runtime_seconds"] = arm.pop("native_runtime_seconds")
             arm["native_runtime_seconds"] = arm["timings"].get("solver_reported_runtime_seconds")
             gap = arm["common_gap"]
@@ -526,7 +568,7 @@ def run_case(spec, target, shape, selection, control, entry):
     def mark(name):
         nonlocal count
         r.require(count < len(PHASES) and PHASES[count] == name, "Worker phase order.")
-        r.r2.write(
+        publish(
             control / f"phase-{count:02d}.json",
             {
                 "entry": entry,
@@ -553,7 +595,7 @@ def run_case(spec, target, shape, selection, control, entry):
                 mark("optimization")
             elif name == "export_validation":
                 mark("native_return")
-                r.r2.write(
+                publish(
                     control / "native_terminal.json",
                     {
                         "entry": entry,
@@ -587,7 +629,7 @@ def run_case(spec, target, shape, selection, control, entry):
 
 def worker(claim, sha, mode):
     plan = load(claim, sha)
-    job = r.r2.read(claim / "job.json")
+    job = job_receipt(claim, sha)
     r.require(os.environ.get("SLURM_JOB_ID") == job["job_id"], "Worker job identity.")
     step = os.environ.get("SLURM_STEP_ID", "")
     r.require(step.isdigit() and mode in MODES, "Numeric native step/mode required.")
@@ -599,7 +641,7 @@ def worker(claim, sha, mode):
         "pid": os.getpid(),
         "started_monotonic": time.monotonic(),
     }
-    r.r2.write(control / "entry.json", entry)
+    publish(control / "entry.json", entry)
     deadline = time.monotonic() + 60
     while not (control / "release.json").exists() and time.monotonic() < deadline:
         time.sleep(0.1)
@@ -685,6 +727,7 @@ def supervise(
                 "--cpu-bind=threads",
                 "--time=05:15:00",
                 "--kill-on-bad-exit=1",
+                "--export=ALL",
                 *invocation("worker", claim, sha, "--mode", mode),
             ],
             stdout=out,
@@ -712,7 +755,7 @@ def supervise(
                     )
                     r.require(query.returncode == 0, "Step ownership query failed.")
                     exact = step_binding(query.stdout, entry, allocated, os.getuid())
-                    r.r2.write(control / "release.json", entry)
+                    publish(control / "release.json", entry)
                 r.require(entry is not None or elapsed <= 45, "Worker startup unbound.")
                 if entry is not None:
                     events = events_at(control, entry)
@@ -910,6 +953,7 @@ def portable_review(files):
         )
         r.require(r.strict_json(files["batch_entry.json"]) == job, "Batch entry differs.")
         wanted = {job["job_id"], job["job_id"] + ".batch"}
+        runtimes = []
         for mode in MODES:
             base = "control/" + mode + "/"
             entry = r.strict_json(files[base + "entry.json"])
@@ -939,7 +983,19 @@ def portable_review(files):
             r.require(
                 not usage["stop_reason"] and usage == control["usage"], "Phase budget differs."
             )
+            review_seconds = control.get("product_review_seconds")
+            r.require(
+                type(review_seconds) in (int, float)
+                and math.isfinite(review_seconds)
+                and review_seconds >= 0
+                and review_seconds + usage["seconds"]["independent_validation"]
+                <= PROFILE["validation_seconds_per_arm"],
+                "Combined review budget differs.",
+            )
             capability = r.strict_json(files[base + "license_capability.json"])
+            runtime = r.strict_json(files[base + "runtime.json"])
+            from scripts.probe_npad_gurobi_license import LICENSE_FILE
+
             r.require(
                 capability["status"] == "accepted"
                 and capability["probe_variable_count"] == 2001
@@ -947,8 +1003,22 @@ def portable_review(files):
                 and abs(capability["objective_value"] - 2001) <= 1e-6,
                 "Capability differs.",
             )
+            affinity = runtime["affinity_logical_cpus"]
+            r.require(
+                capability["license_file"] == LICENSE_FILE
+                and capability["gurobi_version"][0] == 13
+                and runtime["python"].startswith("3.13.")
+                and runtime["python_sha256"] == plan["python_sha256"]
+                and 4 <= len(affinity) <= PROFILE["allocated_logical_cpus"]
+                and len(affinity) == len(set(affinity))
+                and all(type(cpu) is int and cpu >= 0 for cpu in affinity),
+                "Runtime/license/affinity receipt differs.",
+            )
+            runtimes.append((runtime["python"], capability["gurobi_version"]))
         r.require(
-            wanted <= {x["job_id"] for x in rows}
+            len(wanted) == 4
+            and runtimes[0] == runtimes[1]
+            and wanted <= {x["job_id"] for x in rows}
             and {
                 x["job_id"]
                 for x in rows
@@ -957,6 +1027,18 @@ def portable_review(files):
             == wanted - {job["job_id"], job["job_id"] + ".batch"}
             and all(x["state"] == "COMPLETED" and x["exit_code"] == "0:0" for x in rows),
             "Unexpected/missing/failed accounting step.",
+        )
+        r.require(
+            all(
+                x["elapsed_seconds"]
+                <= (
+                    budget()["step_seconds"]
+                    if x["job_id"] in wanted - {job["job_id"], job["job_id"] + ".batch"}
+                    else PROFILE["slurm_wall_seconds"]
+                )
+                for x in rows
+            ),
+            "Observed scheduler envelope exceeded.",
         )
         result = r.strict_json(files["batch_outcome.json"])
         r.require(
@@ -1124,7 +1206,7 @@ def main(argv=None):
             result = review_arm(claim, args.source_sha, args.mode)
         elif args.action == "status":
             load(claim, args.source_sha)
-            job = r.r2.read(claim / "job.json")
+            job = job_receipt(claim, args.source_sha)
             q = r.r2.command(
                 [
                     "sacct",

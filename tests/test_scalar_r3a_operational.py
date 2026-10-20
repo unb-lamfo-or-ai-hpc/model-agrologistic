@@ -70,6 +70,7 @@ def science_files():
     plan = json.loads(files["plan.json"])
     plan.update(
         schema_version="scalar-h215-operational-v1",
+        python_sha256="b" * 64,
         profile=o.PROFILE,
         budget=o.budget(),
         selection_sha256=o.r.r2.digest(files["warehouse_selection.json"]),
@@ -129,6 +130,7 @@ def operational_files():
                 "local_client_reaped": True,
                 "step_id": str(step),
                 "usage": o.phase_usage(ev, 30),
+                "product_review_seconds": 1.0,
             }
         )
         files[base + "license_capability.json"] = o.r.r2.encoded(
@@ -137,6 +139,15 @@ def operational_files():
                 "probe_variable_count": 2001,
                 "probe_constraint_count": 2001,
                 "objective_value": 2001,
+                "license_file": "/home/vrrcelestino/model-agrologistic/secrets/gurobi.lic",
+                "gurobi_version": [13, 0, 3],
+            }
+        )
+        files[base + "runtime.json"] = o.r.r2.encoded(
+            {
+                "python": "3.13.15",
+                "python_sha256": "b" * 64,
+                "affinity_logical_cpus": [0, 1, 2, 3],
             }
         )
     files["accounting.txt"] = (
@@ -181,6 +192,18 @@ def test_confirmed_4h_budget_and_distinct_claim():
     assert o.CLAIM not in {o.r.CLAIM, o.r.r2.CLAIM}
     assert o.r.BUDGET["native_time_limit_seconds_per_arm"] == 3600
     assert all(b[k] is False for k in o.r.closed())
+
+
+def test_ipc_publication_complete_and_never_replaces(tmp_path):
+    path = tmp_path / "entry.json"
+    o.publish(path, {"stage": "complete"})
+    before = path.read_bytes()
+    assert json.loads(before) == {"stage": "complete"}
+    assert not (tmp_path / ".entry.json.pending").exists()
+    with pytest.raises(FileExistsError):
+        o.publish(path, {"stage": "must_not_replace"})
+    assert path.read_bytes() == before
+    assert (tmp_path / ".entry.json.pending").exists()
 
 
 def test_acknowledgement_precedes_environment_and_submission(tmp_path, monkeypatch):
@@ -344,6 +367,23 @@ def test_gap100_is_feasible_censored_not_quality_success():
     assert report["status"] == "pair_feasible_quality_censored"
     assert all(a["native_runtime_seconds"] == 3600.5 for a in report["arms"])
     assert not report["quality_target_met"]
+
+
+def test_actual_export_bound_in_metadata_and_native_runtime_scopes():
+    files, plan = science_files()
+    for spec in plan["cases"]:
+        root = "cases/" + spec["name"] + "/products/" + spec["name"] + "/"
+        result = json.loads(files[root + "result.json"])
+        native = result["result"]
+        native.pop("objective_bound")
+        native["metadata"].update(objective_bound=99.5, gurobi_native_gap=0.005)
+        files[root + "result.json"] = o.r.r2.encoded(result)
+        completion = json.loads(files[root + "run_completion.json"])
+        completion["artifacts"]["result.json"] = o.r.r2.digest(files[root + "result.json"])
+        files[root + "run_completion.json"] = o.r.r2.encoded(completion)
+    report = o.scalar_review(files, plan)
+    assert report["status"] == "pair_quality_target_met"
+    assert all(a["bound"] == 99.5 and a["common_gap"] == 0.005 for a in report["arms"])
 
 
 def test_missing_or_wrong_warehouse_receipt_is_partial():
@@ -615,3 +655,96 @@ def test_batch_never_runs_sto_after_unknown_det_cleanup(tmp_path, monkeypatch):
     )
     assert o.batch(claim, SHA) == 1 and modes == ["det"]
     assert o.r.r2.read(claim / "batch_outcome.json")["unrun"] == ["sto"]
+
+
+@pytest.mark.parametrize("binding_ok", [True, False])
+def test_real_controller_releases_only_bound_step_and_stops_on_bad_phase(
+    tmp_path,
+    monkeypatch,
+    binding_ok,
+):
+    claim = tmp_path / o.CLAIM
+    claim.mkdir()
+    monkeypatch.setattr(o.os, "getuid", lambda: 1271, raising=False)
+    j = job()
+    commands = []
+
+    class Process:
+        returncode = None
+
+        def __init__(self, _argv, **_kwargs):
+            control = claim / "control/det"
+            entry = {**j, "mode": "det", "step_id": "0", "started_monotonic": 0.0}
+            o.publish(control / "entry.json", entry)
+            o.publish(
+                control / "phase-00.json",
+                {
+                    "entry": entry,
+                    "phase": "optimization",
+                    "elapsed_seconds": 0.0,
+                },
+            )  # Deliberately invalid first phase; never reach review/next arm.
+
+        def poll(self):
+            return self.returncode
+
+        def wait(self, timeout):
+            self.returncode = -15
+            return self.returncode
+
+        def terminate(self):
+            self.returncode = -15
+
+        def kill(self):
+            self.returncode = -9
+
+    def command(argv):
+        commands.append(argv)
+        text = "StepId=123.0 UserId=1271 CPUs=4 Nodes=r1i3n5"
+        if not binding_ok:
+            text = text.replace("1271", "999")
+        return SimpleNamespace(returncode=0, stdout=text, stderr="")
+
+    result = o.supervise(
+        claim,
+        SHA,
+        "det",
+        o.allocation(allocation_text(), "123", 1271),
+        j,
+        command=command,
+        popen=Process,
+        clock=lambda: 1.0,
+        sleep=lambda _: None,
+        reviewer=lambda *_: pytest.fail("No product review"),
+    )
+    assert not result["next_arm_allowed"] and result["status"] == "partial"
+    release = claim / "control/det/release.json"
+    assert release.exists() is binding_ok
+    cancellations = [c for c in commands if c[0] == "scancel"]
+    assert bool(cancellations) is binding_ok
+    assert all(c[-1] == "123.0" for c in cancellations)
+    assert not result["remote_cleanup_proven"]
+
+
+@pytest.mark.parametrize(
+    "member,field,value",
+    [
+        ("control/det/runtime.json", "affinity_logical_cpus", [0]),
+        ("control/det/runtime.json", "python_sha256", "c" * 64),
+        ("control/det/license_capability.json", "license_file", "/other/license.lic"),
+        ("control/sto/license_capability.json", "gurobi_version", [13, 1, 0]),
+        ("control/det/controller.json", "product_review_seconds", 1801),
+    ],
+)
+def test_runtime_drift_or_combined_validation_overrun_is_not_closed(
+    member,
+    field,
+    value,
+    monkeypatch,
+):
+    tiny_replay(monkeypatch)
+    files = operational_files()
+    record = json.loads(files[member])
+    record[field] = value
+    files[member] = o.r.r2.encoded(record)
+    assert o.portable_review(files)["status"] == "forensic_partial_pair_preserved"

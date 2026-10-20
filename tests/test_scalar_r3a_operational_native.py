@@ -47,6 +47,7 @@ def test_real_worker_parent_phase_control_two_arms_original_residuals_and_termin
         "materialization_original_sha256": o.r.r2.digest(o.r.r2.encoded(material)),
         "tools": dict.fromkeys(o.TOOLS, sys.executable),
         "tool_sha256": dict.fromkeys(o.TOOLS, o.r.file_hash(sys.executable)),
+        "python_sha256": o.r.file_hash(sys.executable),
         **o.r.closed(),
     }
     plan = o.r.strict_json(o.r.r2.encoded(plan))
@@ -72,6 +73,8 @@ def test_real_worker_parent_phase_control_two_arms_original_residuals_and_termin
             "probe_variable_count": 2001,
             "probe_constraint_count": 2001,
             "objective_value": 2001,
+            "license_file": license_probe.LICENSE_FILE,
+            "gurobi_version": [13, 0, 3],
             "qualification": "Injected capability fixture, not a live WLS observation.",
         },
     )

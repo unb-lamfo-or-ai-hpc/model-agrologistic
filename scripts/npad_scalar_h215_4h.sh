@@ -1,6 +1,7 @@
 #!/bin/bash
 # Human-only one-pair wrapper. No package installation, cache mutation or retry.
 set -euo pipefail
+WRAPPER=$(readlink -f -- "$0")
 ACTION=${1:?Use start/status/wait/collect/budget/audit}
 SOURCE_SHA=${2:?Require the full reviewed source SHA}
 case "$ACTION" in
@@ -51,4 +52,4 @@ elif [[ "$ACTION" = audit ]]; then
   ARGS+=(--archive "${MVP2_H215_ARCHIVE:?Select the evidence archive}" --sha256 "${MVP2_H215_SHA256:?Select its external checksum}")
 fi
 "$PY" -B -I -c 'import runpy,sys; sys.path.insert(0,sys.argv.pop(1)); runpy.run_module("scripts.mvp2_scalar_r3a_operational",run_name="__main__")' "$SRC" "${ARGS[@]}"
-printf 'STATUS_COMMAND=bash %q status %s\nWAIT_COMMAND=bash %q wait %s\nCOLLECT_COMMAND=bash %q collect %s\n' "$0" "$SOURCE_SHA" "$0" "$SOURCE_SHA" "$0" "$SOURCE_SHA"
+printf 'STATUS_COMMAND=bash %q status %s\nWAIT_COMMAND=bash %q wait %s\nCOLLECT_COMMAND=bash %q collect %s\n' "$WRAPPER" "$SOURCE_SHA" "$WRAPPER" "$SOURCE_SHA" "$WRAPPER" "$SOURCE_SHA"
