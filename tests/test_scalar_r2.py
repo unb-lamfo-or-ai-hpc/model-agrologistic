@@ -46,6 +46,10 @@ def fixture():
         "job.json": r.encoded({"job_id": JOB, "source_commit": SHA, "plan_sha256": anchor}),
         "native/tests.xml": xml(),
         "accounting.txt": RAW.encode(),
+        "batch_entry.json": r.encoded({"job_id": JOB, "source_commit": SHA, "plan_sha256": anchor}),
+        "native_entry.json": r.encoded(
+            {"job_id": JOB, "source_commit": SHA, "plan_sha256": anchor, "step_id": "0"}
+        ),
         "allocation_query.json": r.encoded({"returncode": 0, "stdout": ALLOC, "stderr": ""}),
         "allocation.json": r.encoded(r.allocation(ALLOC, JOB)),
         "license_capability.json": r.encoded(
@@ -183,6 +187,84 @@ def test_root_completed_is_not_scientific_acceptance(state):
     assert r.terminal(r.accounting(files["accounting.txt"].decode(), JOB), JOB)
     with pytest.raises(ValueError):
         r.review(files)
+
+
+@pytest.mark.parametrize("change", ["extra_step", "root_time", "step_time"])
+def test_additional_steps_and_exceeded_observed_times_are_not_accepted(change):
+    files = fixture()
+    raw = RAW
+    if change == "extra_step":
+        raw += "77.1|COMPLETED|0:0|1|\n"
+    elif change == "root_time":
+        raw = raw.replace("77|COMPLETED|0:0|15|", "77|COMPLETED|0:0|1201|")
+    else:
+        raw = raw.replace("77.0|COMPLETED|0:0|8|", "77.0|COMPLETED|0:0|901|")
+    files["accounting.txt"] = raw.encode()
+    with pytest.raises(ValueError):
+        r.review(files)
+
+
+def test_late_native_accounting_is_pending_not_a_consumed_false_rejection(tmp_path, monkeypatch):
+    claim = claim_at(tmp_path)
+    raw = "\n".join(line for line in RAW.splitlines() if not line.startswith("77.0|")) + "\n"
+    monkeypatch.setattr(r, "observe", lambda *_: (r.accounting(raw, JOB), raw))
+    assert r.collect(claim, SHA)["status"] == "nonterminal_or_accounting_pending"
+    assert not (claim / "terminal_accounting.json").exists()
+    monkeypatch.setattr(r, "observe", lambda *_: (r.accounting(RAW, JOB), RAW))
+    assert r.collect(claim, SHA)["status"] == "small_r2_evidence_accepted"
+
+
+@pytest.mark.parametrize("code", [0, 3])
+def test_batch_native_step_result_and_reentry_are_preserved(tmp_path, monkeypatch, code):
+    files = fixture()
+    for name in (
+        "batch_outcome.json",
+        "batch_entry.json",
+        "allocation.json",
+        "allocation_query.json",
+    ):
+        del files[name]
+    claim = claim_at(tmp_path, files)
+    monkeypatch.setenv("SLURM_JOB_ID", JOB)
+    monkeypatch.setattr(r, "verify_source", lambda *_: None)
+    monkeypatch.setattr(
+        r, "command", lambda *a, **k: SimpleNamespace(returncode=0, stdout=ALLOC, stderr="")
+    )
+    calls = []
+
+    def step(argv, **kwargs):
+        assert argv[0] == "srun"
+        assert {"--exact", "--cpus-per-task=1", "--time=00:15:00", "-B", "-I"} <= set(argv)
+        calls.append(argv)
+        return SimpleNamespace(returncode=code)
+
+    monkeypatch.setattr(r.subprocess, "run", step)
+    assert r.batch(claim, SHA) == int(code != 0)
+    original = (claim / "batch_outcome.json").read_bytes()
+    with pytest.raises(FileExistsError):
+        r.batch(claim, SHA)
+    assert (claim / "batch_outcome.json").read_bytes() == original
+    assert len(calls) == 1
+
+
+def test_native_entry_prevents_even_a_second_license_probe(tmp_path, monkeypatch):
+    from scripts import probe_npad_gurobi_license as probe
+
+    files = fixture()
+    del files["native_entry.json"]
+    del files["license_capability.json"]
+    claim = claim_at(tmp_path, files)
+    monkeypatch.setenv("SLURM_JOB_ID", JOB)
+    monkeypatch.setenv("SLURM_STEP_ID", "0")
+    monkeypatch.setattr(r, "verify_source", lambda *_: None)
+    monkeypatch.setattr(r.os, "sched_getaffinity", lambda *_: {0, 32}, raising=False)
+    calls = []
+    monkeypatch.setattr(probe, "probe", lambda: calls.append(1) or {"status": "rejected"})
+    with pytest.raises(ValueError, match="WLS capability"):
+        r.native(claim, SHA)
+    with pytest.raises(FileExistsError):
+        r.native(claim, SHA)
+    assert calls == [1]
 
 
 @pytest.mark.parametrize("raw", ["", "77|RUNNING|0:0|10|\n", "77.batch|COMPLETED|0:0|1|\n"])
@@ -401,6 +483,7 @@ def test_original_excel_certificates_must_be_complete_and_bound(change):
 def test_batch_failure_before_worker_is_typed_and_preserved(tmp_path, monkeypatch):
     files = fixture()
     del files["batch_outcome.json"]
+    del files["batch_entry.json"]
     del files["allocation_query.json"]
     del files["allocation.json"]
     claim = claim_at(tmp_path, files)

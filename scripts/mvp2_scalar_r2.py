@@ -110,9 +110,13 @@ def verify_source(inventory, root=ROOT):
             path.is_file() and not path.is_symlink() and digest(path.read_bytes()) == sha,
             "Source bytes changed: " + name,
         )
-    physical = {p.relative_to(root).as_posix() for p in (root / "src").rglob("*.py")}
+    physical = {
+        p.relative_to(root).as_posix()
+        for folder in ("src", "scripts", "tests")
+        for p in (root / folder).rglob("*.py")
+    } | {p.name for p in root.glob("*.py")}
     require(
-        physical == {n for n in inventory["files"] if n.startswith("src/") and n.endswith(".py")},
+        physical == {n for n in inventory["files"] if n.endswith(".py")},
         "Extra/missing scientific source.",
     )
 
@@ -139,6 +143,7 @@ def invocation(action, claim, sha):
 
 
 def load(claim, sha):
+    require(claim.name == CLAIM, "Only the exclusive R2 claim is allowed.")
     require(re.fullmatch(r"[0-9a-f]{40}", sha) is not None, "Full source SHA required.")
     plan = read(claim / "plan.json")
     require(
@@ -340,6 +345,18 @@ def run_math(directory):
 def native(claim, sha):
     plan, inventory = load(claim, sha)
     require(os.environ.get("SLURM_JOB_ID", "").isdigit(), "Native gate is compute-only.")
+    require(os.environ.get("SLURM_STEP_ID") == "0", "Require the first exact native step.")
+    entry = read(claim / "batch_entry.json")
+    require(
+        entry
+        == {
+            "job_id": os.environ["SLURM_JOB_ID"],
+            "source_commit": sha,
+            "plan_sha256": digest(encoded(plan)),
+        },
+        "Native/batch entry binding differs.",
+    )
+    write(claim / "native_entry.json", {**entry, "step_id": "0"})
     verify_source(inventory)
     affinity = sorted(os.sched_getaffinity(0))
     require(0 < len(affinity) <= PROFILE["logical_cpus"], "Native affinity exceeds allocation.")
@@ -383,6 +400,10 @@ def batch(claim, sha):
     }
     try:
         plan, inventory = load(claim, sha)
+        write(
+            claim / "batch_entry.json",
+            {"job_id": job, "source_commit": sha, "plan_sha256": digest(encoded(plan))},
+        )
         verify_source(inventory)
         query = command(["scontrol", "-o", "show", "job", job], timeout=15)
         write(
@@ -544,6 +565,16 @@ def review(files):
         "Portable source anchor differs.",
     )
     rows = accounting(files["accounting.txt"].decode(), job["job_id"])
+    expected_entry = {
+        "job_id": job["job_id"],
+        "source_commit": plan["source_commit"],
+        "plan_sha256": job["plan_sha256"],
+    }
+    require(
+        json.loads(files["batch_entry.json"]) == expected_entry
+        and json.loads(files["native_entry.json"]) == {**expected_entry, "step_id": "0"},
+        "Exclusive batch/native entry bindings differ.",
+    )
     query = json.loads(files["allocation_query.json"])
     require(
         query["returncode"] == 0
@@ -559,6 +590,17 @@ def review(files):
     require(
         all(r["state"] == "COMPLETED" and r["exit_code"] == "0:0" for r in rows),
         "Scheduler/step did not complete normally.",
+    )
+    require(
+        {r["job_id"] for r in rows if "." in r["job_id"] and r["job_id"].split(".")[-1].isdigit()}
+        == {job["job_id"] + ".0"},
+        "Unexpected additional native step.",
+    )
+    require(
+        all(r["elapsed_seconds"] <= PROFILE["wall_seconds"] for r in rows)
+        and next(r["elapsed_seconds"] for r in rows if r["job_id"] == job["job_id"] + ".0")
+        <= STEP_SECONDS,
+        "Observed execution exceeded its approved time envelope.",
     )
     capability, outcome, batch_result = (
         json.loads(files[n])
@@ -577,7 +619,7 @@ def review(files):
         and outcome["job_id"] == job["job_id"]
         and outcome["source_commit"] == plan["source_commit"]
         and outcome["source_verified_before_after"] is True
-        and outcome["native_solver_limit_seconds"] <= 60
+        and 0 < outcome["native_solver_limit_seconds"] <= 60
         and outcome["solver_threads"] == 1,
         "Native mathematical receipt differs.",
     )
@@ -613,7 +655,14 @@ def collect(claim, sha):
         return prior
     rows, raw = observe(claim, sha)
     job = read(claim / "job.json")["job_id"]
-    if not terminal(rows, job):
+    ids = {r["job_id"] for r in rows}
+    root = next((r for r in rows if r["job_id"] == job), {})
+    late_step_accounting = (
+        root.get("state") == "COMPLETED"
+        and (claim / "native_outcome.json").is_file()
+        and not {job + ".batch", job + ".0"} <= ids
+    )
+    if not terminal(rows, job) or late_step_accounting:
         return {
             "status": "nonterminal_or_accounting_pending",
             "job_id": job,
@@ -629,6 +678,8 @@ def collect(claim, sha):
         "source.json",
         "job.json",
         "batch.sh",
+        "batch_entry.json",
+        "native_entry.json",
         "submission_intent.json",
         "submission.json",
         "allocation_query.json",
@@ -652,7 +703,17 @@ def collect(claim, sha):
     files["accounting.txt"] = raw.encode()
     require(not (claim / "native").is_symlink(), "Linked native evidence root.")
     for path in sorted((claim / "native").rglob("*")):
-        require(not path.is_symlink(), "Do not transfer linked evidence.")
+        if path.is_symlink():
+            # pytest creates directory aliases ending 'current'. Their real targets
+            # are preserved once; never follow aliases or external/linked files.
+            require(
+                path.name.endswith("current")
+                and path.is_dir()
+                and path.parent == claim / "native/cases"
+                and path.resolve().is_relative_to((claim / "native/cases").resolve()),
+                "Do not transfer linked evidence.",
+            )
+            continue
         if path.is_file():
             require(path.stat().st_size <= MAX_BYTES, "Evidence file exceeds transport cap.")
             files[path.relative_to(claim).as_posix()] = path.read_bytes()
