@@ -161,20 +161,20 @@ integration/CLI can be issued. No NPAD command is needed during this PR review.
 
 ### Observed software qualification, 20 October2026
 
-PR114 candidate `d0581ac060314db7dd3073305d9bb25120a166c1`:
+PR114 candidate `f0a8c03855491ed977740ef2f044f1a04aef4275`:
 
 | Gate | Observed result |
 | --- | --- |
-| T1 |57 passed, no solver/scheduler/probe |
-| T3 exact-head Linux |635 passed, zero failures/errors/skips; real small Gurobi/SCIP |
+| T1 |59 passed, no solver/scheduler/probe |
+| T3 exact-head Linux |637 passed, zero failures/errors/skips; real small Gurobi/SCIP |
 | New native integration |Public tiny DET/STO preflight, native case engine, original residuals, closed resource telemetry, collection and portable replay passed |
 | Source / wrapper |All-tracked raw Git bytes, physical executable inventory, unchanged scientific source and both Bash syntax checks passed |
 | Related CI / build |All four workflows passed, including Ruff and distribution build |
-| Local Windows |577 passed,58 expired-local-Gurobi skips, zero failures/errors; not native acceptance |
+| Local Windows |579 passed,58 expired-local-Gurobi skips, zero failures/errors; not native acceptance |
 
-[Exact-head native workflow](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/actions/runs/39438836280).
+[Exact-head native workflow](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/actions/runs/39439810732).
 Downloaded JUnit SHA256:
-`33fe20cd03fa4e71764e8bd3191ac6d789c856225e8dd73214dc677407f1f716`.
+`802022f542842dac4706cd6c0b0791478388901635b2f3d3c022b41f7563751e`.
 One pre-existing pandas FutureWarning remains. Initial CI failure from an absent
 case parent was fixed with exclusive nested-directory ownership and preserved
 typed preflight failures, without changing mathematics/validation or skipping the
@@ -183,8 +183,8 @@ environment path; clearing that variable only in the local test process restored
 the bundled test dependency. No NPAD environment/package/license was changed.
 
 Qualified Git anchors: `src` tree666029ace80bd60417d91c43d4460a33326acf64;
-tests tree4e8ea91fe84fe9aff9159d79c881aa8fd17b756d;
-R3-A module blob04a5f7cb48c946e1286d672fabfbdce236b12335.
+tests tree708dbc088c0958bca76519859b6b6344754187ec;
+R3-A module blob2b3232a0c057023d8b0fd42b1f7de216e01894d3.
 Wrapper SHA256:
 `d3b170ec6b87f5a7f30feb635e2ef491c6750eec3779bc3b5cbcd56c5e8671fe`.
 Final documentation-only head must preserve these bytes and pass all checks

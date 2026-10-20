@@ -17,9 +17,9 @@ and admitted operational integration remain subject to human decisions. No NPAD
 job/probe, old-claim reset or automatic h300/repeat follows preparation or merge.
 Older dated snapshots below are historical, not current R1/R2 merge status.
 
-PR114 candidate d0581ac0 passed all four workflows:635 exact-head Linux native
-cases/zero failures/errors/skips,57 focused, source closure/Bash/Ruff/build.
-Local577 passed/58 expired-local-Gurobi skips are not native acceptance. Final
+PR114 candidate f0a8c038 passed all four workflows:637 exact-head Linux native
+cases/zero failures/errors/skips,59 focused, source closure/Bash/Ruff/build.
+Local579 passed/58 expired-local-Gurobi skips are not native acceptance. Final
 documentation-only head must pass again before Ready. No R3-A execution follows.
 
 ## Current scalar R1 — software only, no execution
