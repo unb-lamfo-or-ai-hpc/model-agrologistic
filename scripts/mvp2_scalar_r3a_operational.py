@@ -592,6 +592,13 @@ def run_case(spec, target, shape, selection, control, entry):
     mark("input_build")
 
     def solve(*, data, model_config, solver_config):
+        from src.logic.model_validation import validate_or_raise_model_data
+
+        # Keep the exact public solve_model admission checks before its native
+        # backend; the only integration difference is the already-existing hook.
+        model_config.__post_init__()
+        solver_config.__post_init__()
+        validate_or_raise_model_data(data=data, config=model_config, require_distances=True)
         configure_gurobi_wls_license(solver_config)
         prepared, config = extensive_form_inputs(data, model_config)
 

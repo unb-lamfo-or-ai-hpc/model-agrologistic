@@ -23,6 +23,17 @@ def test_real_worker_parent_phase_control_two_arms_original_residuals_and_termin
 ):
     if os.environ.get("AGRO_REQUIRE_NATIVE_SOLVERS") != "1":
         require_gurobi_available()
+    from src.logic import model_validation
+
+    original_validate = model_validation.validate_or_raise_model_data
+    validated_modes = []
+
+    def original_input_validation(**kwargs):
+        validated_modes.append(kwargs["config"].mode)
+        assert kwargs["require_distances"] is True
+        return original_validate(**kwargs)
+
+    monkeypatch.setattr(model_validation, "validate_or_raise_model_data", original_input_validation)
     workbook = tmp_path / "public.xlsx"
     build_tiny_golden_excel(workbook)
     selected = [tiny_spec(workbook, mode) for mode in o.MODES]
@@ -148,6 +159,7 @@ def test_real_worker_parent_phase_control_two_arms_original_residuals_and_termin
     monkeypatch.setattr(o, "supervise", supervise)
     monkeypatch.setattr(o.r.r2, "command", command)
     assert o.batch(claim, SHA) == 0
+    assert validated_modes == ["det", "sto"]
     for mode, spec in zip(o.MODES, selected, strict=True):
         control = claim / "control" / mode
         observed = o.events_at(control, o.r.r2.read(control / "entry.json"))
