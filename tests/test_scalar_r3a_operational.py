@@ -118,7 +118,10 @@ def operational_files():
         files[base + "step_query.json"] = o.r.r2.encoded(
             {
                 "returncode": 0,
-                "stdout": f"StepId=123.{step} UserId=1271 CPUs=4 Nodes=r1i3n5",
+                "stdout": (
+                    f"StepId=123.{step} UserId=1271 CPUs=4 Nodes=1 Tasks=1 "
+                    "State=RUNNING NodeList=r1i3n5"
+                ),
             }
         )
         ev = events(entry)
@@ -285,7 +288,7 @@ def test_duplicate_scheduler_field_rejected():
 def test_only_owned_exact_numeric_step_released(step, user, cpus, node):
     with pytest.raises(ValueError):
         o.step_binding(
-            f"StepId={step} UserId={user} CPUs={cpus} Nodes={node}",
+            f"StepId={step} UserId={user} CPUs={cpus} Nodes=1 Tasks=1 State=RUNNING NodeList={node}",
             {**job(), "step_id": "0"},
             o.allocation(allocation_text(), "123", 1271),
             1271,
@@ -298,6 +301,27 @@ def test_late_native_return_and_export_share_900_seconds():
     assert used["shared_reserve_used_seconds"] == 800 and not used["stop_reason"]
     ev[-1]["elapsed_seconds"] = 15601
     assert o.phase_usage(ev, 15601)["stop_reason"] == "shared_return_export_watchdog"
+
+
+@pytest.mark.parametrize(
+    "change",
+    [
+        ("Nodes=1", "Nodes=r1i3n5"),
+        ("Nodes=1", "Nodes=2"),
+        ("NodeList=r1i3n5", "NodeList=r1i3n4"),
+        ("Tasks=1", "Tasks=2"),
+        ("State=RUNNING", "State=COMPLETING"),
+        ("CPUs=4", "CPUs=24"),
+    ],
+)
+def test_slurm22_step_nodes_is_count_not_nodelist(change):
+    # SchedMD/slurm tag slurm-22-05-11-1, src/api/job_step_info.c.
+    text = "StepId=123.0 UserId=1271 CPUs=4 Nodes=1 Tasks=1 State=RUNNING NodeList=r1i3n5"
+    entry = {**job(), "step_id": "0"}
+    allocated = o.allocation(allocation_text(), "123", 1271)
+    assert o.step_binding(text, entry, allocated, 1271) == "123.0"
+    with pytest.raises(ValueError):
+        o.step_binding(text.replace(*change), entry, allocated, 1271)
 
 
 @pytest.mark.parametrize(
@@ -767,7 +791,7 @@ def test_real_controller_releases_only_bound_step_and_stops_on_bad_phase(
 
     def command(argv):
         commands.append(argv)
-        text = "StepId=123.0 UserId=1271 CPUs=4 Nodes=r1i3n5"
+        text = "StepId=123.0 UserId=1271 CPUs=4 Nodes=1 Tasks=1 State=RUNNING NodeList=r1i3n5"
         if not binding_ok:
             text = text.replace("1271", "999")
         return SimpleNamespace(returncode=0, stdout=text, stderr="")

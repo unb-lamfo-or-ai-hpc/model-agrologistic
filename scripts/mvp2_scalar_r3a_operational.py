@@ -342,7 +342,10 @@ def step_binding(text, entry, allocated, uid):
     r.require(entry["step_id"].isdigit(), "Numeric step required.")
     r.require(
         f.get("StepId") == exact
-        and f.get("Nodes") == allocated["NodeList"]
+        and f.get("NodeList") == allocated["NodeList"]
+        and f.get("Nodes") == "1"
+        and f.get("Tasks") == "1"
+        and f.get("State") == "RUNNING"
         and f.get("UserId") in {str(uid), allocated["UserId"]}
         and f.get("CPUs") == "4",
         "Exact owned step not proven.",

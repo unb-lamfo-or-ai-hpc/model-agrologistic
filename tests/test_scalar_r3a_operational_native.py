@@ -103,7 +103,10 @@ def test_real_worker_parent_phase_control_two_arms_original_residuals_and_termin
         if argv[0] == "scontrol" and argv[3] == "job":
             text = allocation_text()
         elif argv[0] == "scontrol" and argv[3] == "step":
-            text = f"StepId={argv[-1]} UserId=1271 CPUs=4 Nodes=r1i3n5"
+            text = (
+                f"StepId={argv[-1]} UserId=1271 CPUs=4 Nodes=1 Tasks=1 "
+                "State=RUNNING NodeList=r1i3n5"
+            )
         elif argv[0] == "sacct":
             step = os.environ["SLURM_STEP_ID"]
             text = f"123.{step}|COMPLETED|0:0|30|123K\n"
