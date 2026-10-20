@@ -1,5 +1,23 @@
 # Article plan and editorial boundaries
 
+## S6-A preparation authorized in parallel —20 October2026
+
+The [current coauthor-review package](s6a_20261020/README.md) assesses the supplied
+annotated PDF with all146 response records, a scalar formulation proposal,
+revised outline/prose and results/supplement inventory. The researcher explicitly
+requests this separate PR while scalar h300 runs. Authorship identification of
+individual comments is omitted. The reviewed version and current manuscript
+remain preserved; incorporation of the proposed revisions is the later S6-B
+editorial step. Existing accepted h215 DET/STO supports the deterministic role;
+agricultural maps/decisions need original vectors and geographic inputs.
+
+Use scalar investment plus expected operations and three fixed penalties as the
+active formulation. Main Results foreground actual scalar experiments, with
+historical MVP1/hierarchical MVP2 retained only for stated context/supplement.
+Remove EVPI/VSS and detailed unimplemented Benders material in S6-B. The original
+planning table below is a preserved earlier framework; the detailed current
+outline and acceptance criteria are in the linked S6-A package.
+
 ## Scalar editorial decision — 19 October2026
 
 The [approved scalar contract](mvp2_scalar_contract.md) replaces the scientific

@@ -1,5 +1,25 @@
 # Model Agrologistic: agent working agreement
 
+## Early S6-A coauthor-review preparation —20 October2026
+
+The maintainer requests a separate PR while scalar h300 job2218193 runs. Read
+`docs/s6a_20261020/README.md` and the current checkpoint. Assess every annotation
+of the supplied33-page PDF, omit authorship identification, preserve unexplained
+marks and prepare the scientific response, scalar presentation, proposed prose,
+result-extraction inventory and author decisions. This explicit request authorizes
+the preparation PR; the attachment's request to ask again before opening it does
+not override that authorization. Current manuscript/PDF and historical evidence
+remain preserved; final incorporation/publication are later S6-B decisions.
+
+Use accepted scalar h215 evidence; h300 is only RUNNING in the last supplied
+snapshot. Preserve source04ba9edc, plan000a760b..., consumed claim and status/wait/
+collect handoff. Do not touch the live checkout, submit/repeat jobs, change fixed
+penalties90000/45000/45000 or replace native indicators with an unproved Big-M.
+Keep scalar objective/units/tolerances, S3/S4 cancellation and EVPI/VSS exclusion.
+No raw PDF/annotation export or individual reviewer metadata is committed; public
+responses use summaries and page/object locators. Ready follows appropriate
+document/scope/coverage checks; merge still requires explicit authorization.
+
 ## h300 historical nested-population repair —20 October2026
 
 PR118 merged; human source66d8faa stopped before claim creation/submission at

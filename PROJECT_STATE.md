@@ -1,5 +1,82 @@
 # Model Agrologistic — MVP 2.0 checkpoint
 
+## S6-A preparation in parallel with scalar h300 —20 October2026
+
+The researcher explicitly requests a separate PR to assess the latest coauthor
+review while job2218193 runs, applying the approved scalar mandate and omitting
+annotation-authorship identification. The [S6-A package](docs/s6a_20261020/README.md)
+contains the scientific assessment, complete146-annotation response matrix,
+proposed outline/prose, complete scalar DET/STO mathematical presentation,
+results/supplement inventory and editorial/author-decision roadmap. All17 marks
+without comments remain identifiable. This advances preparation without replacing
+the reviewed manuscript or asserting completion of S6-A/S6-B.
+
+The supplied33-page PDF SHA256fbcd5a08... differs from the earlier reviewed
+9fddd98a... file. Its exact build commit remains unverified; the source inventory
+records its historical SBC source family rather than assuming current Quarto or
+Pages identity. Three local deck copies reconcile slide15's ten-reference4h/1%
+cohort with the PDF's later13-attempt8h/10% cohort. The proposed scalar article
+uses the current global criterion and audited evidence. Original files and raw
+annotations remain external, unmodified; public responses are summarized without
+author attribution.
+
+Main scientific response: interpret actual scalar investment and recourse outputs,
+using accepted h215 DET/STO first, with h300/later cases only after review. Existing
+exported decisions can support maps, investment costs, flows and separate
+geographic/temporal slack diagnostics. Candidate inclusion is not opening; binary
+activation can coexist with zero installed quantity. No new optimization is
+needed just to interpret retained outputs. Their detailed availability/rights
+and geography/price-year facts remain documented dependencies.
+
+The accepted coefficients90000/45000/45000 and h215 success stand. Slack relaxes
+specified constraints; it need not restore every infeasible network or improve
+runtime monotonically. Report economic expenditure, artificial penalties and
+physical slacks separately, since the global gap concerns the penalized total.
+Retain native closed-candidate indicators; no arbitrary activation Big-M or
+calibration is introduced. S3/S4 stay cancelled and EVPI/VSS excluded. The full
+prior review/supplement and original certificates are preserved. Final title,
+source identity, disclosure and manuscript incorporation remain coauthor decisions.
+
+### Preserved running-job checkpoint and resumption
+
+PR119 merged at8e6a7cba5a27b330ee917d33e178baa90ceb617d. Last researcher-supplied
+snapshot: scalar h300 job2218193 RUNNING, root/batch/extern46s, first step37s,
+453 raw tracked files identical. Sacct reports24 allocated logical CPUs for the
+allocation/first step. This is the preserved snapshot, not fresh agent monitoring
+or a completed-arm/terminal/scientific result.
+
+Source: `04ba9edccc93f40ab36cbc3264039a7edf2f6f51`.
+Plan SHA256: `000a760b3c263cfd7e88fb75714ac5f125df9c4e27332045c761a75bd60bffb1`.
+Wrapper SHA256: `d88d7e6068d94e9aa07be874993e051058edfdbb11d518a27ab8224b287a18d2`.
+Preserve consumed `.mvp2-scalar-h300-30h-v1`, all older claims/evidence, running
+source/products and failed bootstraps. The latest status call printed no original
+bootstrap path; do not infer deletion or invent that directory.
+
+With BASE selecting the existing NPAD audit parent, the retained commands are:
+
+```bash
+SOURCE=04ba9edccc93f40ab36cbc3264039a7edf2f6f51
+WRAPPER="${BASE:?Select existing NPAD audit parent}/scalar-h300-lineage-cli-04ba9edc/npad_scalar_h300_30h.sh"
+bash "$WRAPPER" status "$SOURCE"
+bash "$WRAPPER" wait "$SOURCE"
+bash "$WRAPPER" collect "$SOURCE"
+```
+
+Ctrl-C in wait is safe. Resume wait/collect; no new start or claim reset. Transfer
+DOWNLOAD and TRANSFER_CHECKSUM at terminal collection and audit every launched/
+unrun arm, original validation, bounds/gaps, resources and membership. One30h/
+24-logical-CPU/192GiB allocation, common16-logical-CPU affinity, five cold STO
+arms4/1/8/2/16 and14400s global per arm remain unchanged. AllocCPUs does not
+establish solver Threads or physical cores. No new job, repeat, environment
+change, live-checkout edit or automatic follow-on is authorized by this PR.
+Full scientific synthesis follows accepted terminal evidence; experimental
+continuation and final main/develop synchronization keep their existing gates.
+
+The earlier local pause is publicly recorded in
+[PR119](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/119#issuecomment-6300749408).
+This preparation PR incorporates that documentary checkpoint; earlier pending
+merge/absent-claim paragraphs below are historical snapshots.
+
 ## h300 nested-population integration repair after PR118 —20 October2026
 
 [PR119](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/119)

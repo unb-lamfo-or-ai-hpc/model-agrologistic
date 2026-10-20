@@ -1,5 +1,19 @@
 # Scalar MVP2 roadmap — 19 October 2026
 
+20 October update: PR119 merged and scalar h300 job2218193 is RUNNING in the
+researcher's latest snapshot, source04ba9edc/plan000a760b.... The approved30h
+block remains bound to its original claim and software. Resume status/wait/
+collect; no additional experiment, repeat or live-source change follows.
+
+The researcher authorizes a separate early [S6-A coauthor-review preparation](s6a_20261020/README.md)
+PR during that execution. Annotation responses, scalar presentation, proposed
+text and extraction/supplement schemas can advance now. Accepted h215 DET/STO
+already supplies a scalar baseline; actual h300/later outcomes and agricultural
+vectors remain evidence dependencies. This does not close S6-A, edit the frozen
+manuscript or cancel/expand R3-B/R4/R5. S6-B and final protected-main integration
+retain their existing author-review/merge decisions. Earlier next-gate snapshots
+below are historical; the detailed current status is in PROJECT_STATE.md.
+
 Latest20 October: PR117 merged; human bootstrap stopped before claim/submission
 at an incorrect h300 path. Qualify the consolidated hash-preserving
 [path repair](mvp2_scalar_h300_30h.md#current-input-path-correction-20-october2026)

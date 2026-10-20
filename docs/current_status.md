@@ -1,5 +1,21 @@
 # Dated research status: 20 October 2026
 
+Current: researcher authorizes [S6-A coauthor-review preparation](s6a_20261020/README.md)
+in parallel with the scalar h300 job. The package covers all146 PDF annotations,
+including17 unexplained marks, without authorship identification. Scientific
+report, scalar mathematical presentation, proposed text, agricultural-result
+extraction inventory and editorial decision/dependency register precede S6-B
+incorporation. Reviewed PDF and current manuscript sources remain preserved.
+
+PR119 is merged at8e6a7cba. Last supplied snapshot: job2218193 RUNNING, source04ba9edc,
+plan000a760b...,453 tracked files identical. Preserve the consumed claim, source,
+inputs and all earlier evidence. Status/wait/collect remain the resumption path;
+no new start, job, repeat or experimental outcome is created by this editorial
+PR. The current PROJECT_STATE header retains the exact command/source/plan
+references. Accepted scalar h215 DET/STO can already support part of the revised
+article; h300 and later outcomes await their actual scientific reviews.
+The earlier status paragraphs below are historical snapshots.
+
 Latest: PR118 merged at2f6237f6. Source66d8faa stopped before claim creation/sbatch
 because the original checkpoint list omits300 despite its preserved historical
 nested materialization. Read-only metadata confirms unchanged ranking and
