@@ -9,12 +9,12 @@ license, scheduler admission, partial-solution collector or new experimental res
 No executor, Slurm script, submission command, admission token or repeat is added.
 Both execution/repeat flags in [the policy](mvp2_h300_thread_policy.json) remain false.
 
-The [solver-free contract](../scripts/mvp2_h300_thread_contract.py) validates
+The [solver-free contract](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/5f9daa55b3afb5bbcb3449bc83c970cf10a28ca6/scripts/mvp2_h300_thread_contract.py) validates
 fixed policy/budget arithmetic, normalized hypothetical environment records,
 adverse-result classification and measurement units. Its inputs are not signed
 or hash-authenticated receipts. A caller-provided `accepted=true` is not evidence;
 these helpers cannot validate an arbitrary archive or authorize execution.
-Synthetic [regressions](../tests/test_mvp2_h300_thread_contract.py) require no license.
+Synthetic [regressions](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/5f9daa55b3afb5bbcb3449bc83c970cf10a28ca6/tests/test_mvp2_h300_thread_contract.py) require no license.
 
 Reference: h300 warehouse-only **uncompacted control**, 300 hubs, nine scenarios,
 sixty periods, two products, no direct origin/customer arcs, 25,107,544 variables.

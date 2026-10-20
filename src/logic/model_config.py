@@ -37,7 +37,7 @@ type ConnectivityExportPolicy = Literal[
     "one_sink_per_product",
     "all_active_customer_product_pairs",
 ]
-type ObjectivePolicy = Literal["penalty", "lexicographic"]
+type ObjectivePolicy = Literal["penalty"]
 type CapacityCouplingPolicy = Literal["period_equivalent", "daily_factors"]
 
 
@@ -56,7 +56,7 @@ VALID_CONNECTIVITY_EXPORT_POLICIES = {
     "one_sink_per_product",
     "all_active_customer_product_pairs",
 }
-VALID_OBJECTIVE_POLICIES = {"penalty", "lexicographic"}
+VALID_OBJECTIVE_POLICIES = {"penalty"}
 VALID_CAPACITY_COUPLING_POLICIES = {"period_equivalent", "daily_factors"}
 
 
@@ -108,9 +108,6 @@ class SolverConfig:
     iis_max_items: int = 200
 
     solver_options: dict[str, Any] = field(default_factory=dict)
-    # Opt-in numerical experiments; mathematical priorities remain unchanged.
-    multiobjective_stage_options: dict[str, dict[str, int]] = field(default_factory=dict)
-    collect_solver_diagnostics: bool = False
     collect_resource_diagnostics: bool = False
     resource_sample_seconds: float = 5.0
     resource_max_samples: int = 8192
@@ -150,8 +147,6 @@ class SolverConfig:
         if self.iis_max_items <= 0:
             raise ValueError("iis_max_items must be positive.")
 
-        if not isinstance(self.collect_solver_diagnostics, bool):
-            raise ValueError("collect_solver_diagnostics must be boolean.")
         from math import isfinite
 
         if not isinstance(self.collect_resource_diagnostics, bool):
@@ -169,12 +164,8 @@ class SolverConfig:
             raise ValueError("Index compaction currently requires native Gurobi.")
         if self.collect_resource_diagnostics and self.backend == "pyomo":
             raise ValueError("Resource diagnostics are qualified only for native backends.")
-        from src.logic.solver_diagnostics import validate_stage_options
-
-        validate_stage_options(self.multiobjective_stage_options)
-        if self.multiobjective_stage_options or self.collect_solver_diagnostics:
-            if self.backend != "gurobipy":
-                raise ValueError("Stage diagnostics require the native Gurobi backend.")
+        if any(str(k).lower().startswith(("objn", "multiobj")) for k in self.solver_options):
+            raise ValueError("Multiobjective parameters are archived, not active scalar options.")
 
 
 # ---------------------------------------------------------------------
@@ -248,10 +239,8 @@ class ModelConfig:
     # mechanisms. Neither slack is a daily rate or installed capacity.
     separate_emergency_capacity_slacks: bool = True
 
-    # ``penalty`` preserves the single weighted-cost objective. The optional
-    # ``lexicographic`` policy minimizes unmet domestic demand first,
-    # emergency capacity second, and economic cost third. This makes domestic
-    # service the primary policy outcome while relaxing selected constraints.
+    # Only the scalar economic objective is active. The stable key is retained
+    # for existing callers, but historical policies cannot be selected.
     objective_policy: ObjectivePolicy = "penalty"
 
     # -----------------------------------------------------------------
@@ -277,7 +266,6 @@ class ModelConfig:
     # -----------------------------------------------------------------
 
     feasibility_tolerance: float = 1e-6
-    evpi_vss_tolerance: float = 1e-6
 
     def __post_init__(self) -> None:
         if self.mode not in VALID_MODEL_MODES:
@@ -373,9 +361,6 @@ class ModelConfig:
 
         if self.feasibility_tolerance <= 0:
             raise ValueError("feasibility_tolerance must be positive.")
-
-        if self.evpi_vss_tolerance <= 0:
-            raise ValueError("evpi_vss_tolerance must be positive.")
 
     def operating_days(self, period: str) -> float:
         """Return operating days for one period, falling back to the default."""

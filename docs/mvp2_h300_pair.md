@@ -56,7 +56,7 @@ This is not a new production formulation or a universal coefficient-equivalence 
 
 ## Executable protocol
 
-Run the versioned [NPAD driver](../scripts/npad_mvp2_h300_pair.sh) from the login
+Run the versioned [NPAD driver](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/5f9daa55b3afb5bbcb3449bc83c970cf10a28ca6/scripts/npad_mvp2_h300_pair.sh) from the login
 node using the full source commit whose PR checks passed. The maintained PR comment
 supplies the pinned commit and driver checksum. Transfer the driver and checksum
 with MobaXterm; verify the checksum before running it. Preserve the existing

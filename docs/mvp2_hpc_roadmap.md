@@ -1,5 +1,14 @@
 # MVP 2.0: evidence-led computational roadmap
 
+## Current scalar roadmap — approved 19 October2026
+
+The [scalar R1–R5/S6 roadmap](mvp2_scalar_roadmap.md) and
+[scientific contract](mvp2_scalar_contract.md) supersede the unexecuted hierarchy
+continuation below. Historical budgets, thread rankings and admission conditions
+are not scalar approvals. Preserve S2's historical closure and all certificates.
+No NPAD execution in R1; S3/S4 cancelled, EVPI/VSS excluded, article/main promotion
+only after separate review. Entries below are dated historical planning records.
+
 ## Authority and scope
 
 19 October P5 consolidation: job2215308 provides all five contracted3600s

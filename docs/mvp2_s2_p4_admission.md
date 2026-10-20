@@ -16,9 +16,9 @@ solver options, input hashes, thread grid or resource budget.
 
 | Component | Function | Does not establish |
 | --- | --- | --- |
-| [preparer/observer/auditor](../scripts/mvp2_s2_p4_admission.py) | Bind exact P3 certificate, current Git bytes/runtime and frozen h300 input; observe an existing allocation and designated license | Permission to submit or optimize h300 |
-| [wrapper](../scripts/npad_s2_p4_admission.sh) | Explicit prerequisite actions and resumable terminal collection; start/batch/worker/solve/repeat always deny | Automatic follow-on or retry |
-| [software tests](../tests/test_mvp2_s2_p4_admission.py) | Scheduler/native doubles, source/identity/resource drift, timeouts, terminal archives and cache corruption | Installed NPAD acceptance or a validated agricultural incumbent |
+| [preparer/observer/auditor](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/5f9daa55b3afb5bbcb3449bc83c970cf10a28ca6/scripts/mvp2_s2_p4_admission.py) | Bind exact P3 certificate, current Git bytes/runtime and frozen h300 input; observe an existing allocation and designated license | Permission to submit or optimize h300 |
+| [wrapper](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/5f9daa55b3afb5bbcb3449bc83c970cf10a28ca6/scripts/npad_s2_p4_admission.sh) | Explicit prerequisite actions and resumable terminal collection; start/batch/worker/solve/repeat always deny | Automatic follow-on or retry |
+| [software tests](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/5f9daa55b3afb5bbcb3449bc83c970cf10a28ca6/tests/test_mvp2_s2_p4_admission.py) | Scheduler/native doubles, source/identity/resource drift, timeouts, terminal archives and cache corruption | Installed NPAD acceptance or a validated agricultural incumbent |
 
 Four PR101 transport hashes are frozen in the gate. All57 scientific/native
 protected files remain bound to the accepted P3 source. A new reviewed source

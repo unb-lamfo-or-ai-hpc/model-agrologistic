@@ -7,9 +7,9 @@
 preserved unchanged; [its protocol](mvp2_s2_p4_admission.md) remains authoritative.
 Merge alone did not execute or admit h300 or any repetition.
 
-This complete successor adds the [human bootstrap](../scripts/npad_s2_p4_observation.sh),
-[one-shot observational job and terminal auditor](../scripts/mvp2_s2_p4_observation.py),
-[37 focused cases](../tests/test_mvp2_s2_p4_observation.py), Linux CI and handoff.
+This complete successor adds the [human bootstrap](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/5f9daa55b3afb5bbcb3449bc83c970cf10a28ca6/scripts/npad_s2_p4_observation.sh),
+[one-shot observational job and terminal auditor](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/5f9daa55b3afb5bbcb3449bc83c970cf10a28ca6/scripts/mvp2_s2_p4_observation.py),
+[37 focused cases](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/5f9daa55b3afb5bbcb3449bc83c970cf10a28ca6/tests/test_mvp2_s2_p4_observation.py), Linux CI and handoff.
 It launches only PR102's bounded prerequisite observer, never PR101's private
 agricultural submission/worker seams. The trusted-code academic profile remains
 unchanged; no model, scientific input, tolerance, solver/thread option or dependency

@@ -25,7 +25,7 @@ it; no unconditional installed success is presumed.
 
 ## Narrow operational representation, not scientific data imputation
 
-The [operational reader](../scripts/mvp2_s2_h300_runtime.py) creates a separate
+The [operational reader](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/5f9daa55b3afb5bbcb3449bc83c970cf10a28ca6/scripts/mvp2_s2_h300_runtime.py) creates a separate
 ModelData view after all original input audits. It copies only metadata and
 represents NaN annotation values as the explicit reserved JSON object
 `{"__s2_excel_metadata_nan_v1__": true}`. Nested dictionary/list/tuple positions
@@ -52,7 +52,7 @@ reader's current transport pin changes. Old plans replay with their old source.
 
 ## One functional PR, broader integration qualification
 
-The [32-case added suite](../tests/test_mvp2_s2_p4_metadata_identity.py) includes:
+The [32-case added suite](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/5f9daa55b3afb5bbcb3449bc83c970cf10a28ca6/tests/test_mvp2_s2_p4_metadata_identity.py) includes:
 
 - Real blank Excel annotation, real manifest/slotted spec and actual loader,
   preparation, dimensions/audits and identity; original failure reproduced first.

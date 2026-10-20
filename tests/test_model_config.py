@@ -1,27 +1,6 @@
 import pytest
 
 from src.logic.model_config import ModelConfig, RunConfig, SolverConfig
-from src.logic.optimization_gurobipy import (
-    _lexicographic_stage_diagnostics,
-    _set_objective_policy,
-)
-
-
-class FakeGRB:
-    MINIMIZE = 1
-
-
-class FakeModel:
-    def __init__(self) -> None:
-        self.ModelSense = None
-        self.objective = None
-        self.objectives = []
-
-    def setObjective(self, expression, sense) -> None:
-        self.objective = (expression, sense)
-
-    def setObjectiveN(self, expression, **kwargs) -> None:
-        self.objectives.append((expression, kwargs))
 
 
 def test_default_solver_config_uses_gurobipy():
@@ -149,129 +128,9 @@ def test_objective_policy_must_be_supported():
         ModelConfig(objective_policy="unsupported")  # type: ignore[arg-type]
 
 
-def test_penalty_policy_uses_one_weighted_objective():
-    model = FakeModel()
-
-    _set_objective_policy(
-        model=model,
-        GRB=FakeGRB,
-        config=ModelConfig(objective_policy="penalty"),
-        penalized_cost="penalized",
-        unmet_quantity="unmet",
-        emergency_quantity="emergency",
-        economic_cost="economic",
-    )
-
-    assert model.objective == ("penalized", FakeGRB.MINIMIZE)
-    assert model.objectives == []
-
-
-def test_lexicographic_policy_prioritizes_domestic_service():
-    model = FakeModel()
-
-    _set_objective_policy(
-        model=model,
-        GRB=FakeGRB,
-        config=ModelConfig(objective_policy="lexicographic"),
-        penalized_cost="penalized",
-        unmet_quantity="unmet",
-        emergency_quantity="emergency",
-        economic_cost="economic",
-    )
-
-    assert model.ModelSense == FakeGRB.MINIMIZE
-    assert [expression for expression, _ in model.objectives] == [
-        "unmet",
-        "emergency",
-        "economic",
-    ]
-    assert [options["priority"] for _, options in model.objectives] == [3, 2, 1]
-    assert [options["name"] for _, options in model.objectives] == [
-        "minimize_unmet_demand",
-        "minimize_emergency_capacity",
-        "minimize_economic_cost",
-    ]
-
-
 def test_v020_rejects_ambiguous_emergency_slack_and_negative_interhub_factor():
     with pytest.raises(ValueError, match="requires separate"):
         ModelConfig(separate_emergency_capacity_slacks=False)
 
     with pytest.raises(ValueError, match="interhub_factor"):
         ModelConfig(interhub_factor=-0.01)
-
-
-
-class DiagnosticGRB:
-    OPTIMAL = 2
-    TIME_LIMIT = 9
-
-
-class DiagnosticParameters:
-    FeasibilityTol = 1e-6
-
-
-class DiagnosticModel:
-    Params = DiagnosticParameters()
-
-
-def test_lexicographic_stage_diagnostics_distinguish_complete_and_partial_runs():
-    complete_stages = [
-        {
-            "stage_number": 1,
-            "objective_name": "unmet_demand",
-            "stage_role": "unmet_demand",
-            "status": "OPTIMAL",
-        },
-        {
-            "stage_number": 2,
-            "objective_name": "emergency_capacity",
-            "stage_role": "emergency_capacity",
-            "status": "OPTIMAL",
-        },
-        {
-            "stage_number": 3,
-            "objective_name": "economic_cost",
-            "stage_role": "economic_cost",
-            "status": "OPTIMAL",
-        },
-    ]
-    complete = _lexicographic_stage_diagnostics(
-        model=DiagnosticModel(),
-        GRB=DiagnosticGRB,
-        objective_policy="lexicographic",
-        stages=complete_stages,
-        primary_objective_value=1e-6,
-    )
-
-    assert complete["lexicographic_overall_status"] == "complete"
-    assert complete["lexicographic_completed_stage_count"] == 3
-    assert complete["service_target_status"] == "attained"
-    assert (
-        complete["service_certification_status"]
-        == "certified_zero_within_tolerance"
-    )
-    assert complete["economic_stage_status"] == "OPTIMAL"
-
-    partial_stages = [
-        complete_stages[0],
-        {
-            "stage_number": 2,
-            "objective_name": "emergency_capacity",
-            "stage_role": "emergency_capacity",
-            "status": "TIME_LIMIT",
-        },
-    ]
-    partial = _lexicographic_stage_diagnostics(
-        model=DiagnosticModel(),
-        GRB=DiagnosticGRB,
-        objective_policy="lexicographic",
-        stages=partial_stages,
-        primary_objective_value=1e-6,
-    )
-
-    assert partial["lexicographic_overall_status"] == "partial"
-    assert partial["lexicographic_completed_stage_count"] == 1
-    assert partial["service_stage_status"] == "OPTIMAL"
-    assert partial["capacity_stage_status"] == "TIME_LIMIT"
-    assert partial["economic_stage_status"] == "NOT_STARTED"

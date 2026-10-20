@@ -150,7 +150,7 @@ and selects the previously audited carrier explicitly, without deleting either.
 Corrected terminal evidence is not supplied. All later releases remain closed.
 
 The [machine-readable contract](mvp2_s2_closure_campaign.json) and
-[read-only compiler](../scripts/plan_mvp2_s2_closure.py) check the inherited
+[read-only compiler](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/5f9daa55b3afb5bbcb3449bc83c970cf10a28ca6/scripts/plan_mvp2_s2_closure.py) check the inherited
 synthetic cases, h300 policy, order and arithmetic. The compiler prints a plan
 or checks it; it cannot submit, resume, signal, inspect a license, accept a receipt
 or advance a gate from a supplied boolean. A plan checksum is not live evidence.

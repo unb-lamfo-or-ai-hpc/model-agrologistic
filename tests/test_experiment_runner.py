@@ -9,11 +9,9 @@ from src.logic.excel_loader import ExcelLoaderConfig
 from src.logic.experiment_runner import (
     ExperimentManifest,
     ExperimentSpec,
-    _evpi_vss_decomposition,
     _scenario_performance_records,
     _weighted_record_total,
     aggregate_experiment_summaries,
-    aggregate_service_policy_comparisons,
     audit_existing_run,
     estimate_model_size,
     inspect_manifest,
@@ -23,7 +21,7 @@ from src.logic.experiment_runner import (
 )
 from src.logic.model_config import ModelConfig, SolverConfig
 from src.logic.model_data import ModelData
-from src.logic.optimization import EVPIVSSResult, OptimizationResult
+from src.logic.optimization import OptimizationResult
 
 
 def model_data() -> ModelData:
@@ -139,6 +137,7 @@ def fake_solver(**_kwargs):
 def test_stochastic_diagnostic_totals_are_probability_weighted():
     result = OptimizationResult(
         status="optimal",
+        objective_value=0.0,
         unmet_demand=[
             {"scenario": "low", "value": 10.0},
             {"scenario": "high", "value": 30.0},
@@ -158,83 +157,10 @@ def test_stochastic_diagnostic_totals_are_probability_weighted():
     ) == pytest.approx(6.0)
 
 
-def test_evpi_vss_decomposition_separates_economic_and_penalty_values():
-    rp = OptimizationResult(
-        status="optimal",
-        cost_breakdown={
-            "opening": 10.0,
-            "transport_dc": 90.0,
-            "emergency_reception": 100.0,
-        },
-        emergency_capacity=[
-            {"capacity_type": "reception", "value": 50.0}
-        ],
-    )
-    ws_low = OptimizationResult(
-        status="optimal",
-        cost_breakdown={"opening": 4.0, "transport_dc": 76.0},
-    )
-    ws_high = OptimizationResult(
-        status="optimal",
-        cost_breakdown={
-            "opening": 8.0,
-            "transport_dc": 82.0,
-            "emergency_reception": 70.0,
-        },
-        emergency_capacity=[
-            {"capacity_type": "reception", "value": 35.0}
-        ],
-    )
-    ev = OptimizationResult(
-        status="optimal",
-        cost_breakdown={"opening": 5.0, "transport_dc": 85.0},
-    )
-    eev = OptimizationResult(
-        status="optimal",
-        cost_breakdown={
-            "opening": 5.0,
-            "transport_dc": 95.0,
-            "emergency_reception": 300.0,
-        },
-        emergency_capacity=[
-            {"capacity_type": "reception", "value": 150.0}
-        ],
-    )
-    result = EVPIVSSResult(
-        recourse_problem=200.0,
-        wait_and_see=140.0,
-        expected_value_problem=90.0,
-        expected_result_of_ev_solution=400.0,
-        evpi=60.0,
-        vss=200.0,
-        recourse_problem_result=rp,
-        wait_and_see_results={"low": ws_low, "high": ws_high},
-        expected_value_problem_result=ev,
-        expected_result_result=eev,
-        metadata={"scenario_probabilities": {"low": 0.25, "high": 0.75}},
-    )
-
-    decomposition = _evpi_vss_decomposition(result)
-
-    assert decomposition["cost_profiles"]["wait_and_see"]["groups"] == {
-        "investment": pytest.approx(7.0),
-        "operation": pytest.approx(80.5),
-        "penalty": pytest.approx(52.5),
-    }
-    assert decomposition["evpi_by_group"]["penalty"] == pytest.approx(47.5)
-    assert decomposition["vss_by_group"]["penalty"] == pytest.approx(200.0)
-    assert decomposition["vss_by_group"]["investment"] == pytest.approx(-5.0)
-    assert decomposition["physical_recourse_profiles"]["wait_and_see"][
-        "emergency_reception_tons_over_periods"
-    ] == pytest.approx(26.25)
-    assert decomposition["interpretation"][
-        "penalty_values_are_observed_monetary_costs"
-    ] is False
-
-
 def test_scenario_performance_records_are_unweighted_and_complete():
     result = OptimizationResult(
         status="optimal",
+        objective_value=0.0,
         flows=[
             {
                 "scenario": "low",
@@ -306,7 +232,7 @@ def test_manifest_loads_defaults_and_resolves_relative_paths(tmp_path):
     manifest_path = tmp_path / "experiments.yaml"
     manifest_path.write_text(
         """
-version: 1
+version: 2
 output_dir: results
 defaults:
   solver:
@@ -341,92 +267,11 @@ experiments:
     assert spec.loader.stochastic_probabilities == (0.4, 0.6)
 
 
-def test_example_manifest_uses_calibrated_direct_network():
-    path = Path(__file__).parents[1] / "experiments" / "example_hpc.yaml"
-    manifest = load_experiment_manifest(path)
-
-    deterministic, stochastic_rp, stochastic_evpi_vss = manifest.experiments
-    for spec in (deterministic, stochastic_rp, stochastic_evpi_vss):
-        assert spec.loader.include_direct_origin_customer_routes is True
-        assert spec.model.use_direct_origin_customer is True
-        assert spec.model.route_filter_strategy == "top_k"
-        assert spec.model.route_top_k == 10
-        assert spec.model.objective_policy == "penalty"
-        assert spec.model.days_per_period == pytest.approx(30.0)
-
-    assert stochastic_rp.max_estimated_variables == 6_000_000
-    assert stochastic_rp.calculate_evpi_vss is False
-    assert stochastic_evpi_vss.max_estimated_variables == 6_000_000
-    assert stochastic_evpi_vss.calculate_evpi_vss is True
-    assert stochastic_evpi_vss.resume_evpi_vss is True
-    for spec in (stochastic_rp, stochastic_evpi_vss):
-        assert spec.solver.time_limit == 7200
-        assert spec.solver.threads == 16
-        assert spec.solver.solver_options["SoftMemLimit"] == 56
-        assert spec.solver.solver_options["NumericFocus"] == 1
-
-
-def test_service_policy_manifest_defines_three_matched_gates():
-    path = (
-        Path(__file__).parents[1]
-        / "experiments"
-        / "service_policy_sensitivity.yaml"
-    )
-    manifest = load_experiment_manifest(path)
-
-    assert len(manifest.experiments) == 6
-    groups: dict[str, set[str]] = {}
-    for spec in manifest.experiments:
-        group = str(spec.metadata["comparison_group"])
-        groups.setdefault(group, set()).add(spec.model.objective_policy)
-        assert spec.calculate_evpi_vss is False
-        assert spec.model.route_filter_strategy == "top_k"
-        assert spec.model.route_top_k == 10
-        assert spec.model.days_per_period == pytest.approx(30.0)
-
-    assert groups == {
-        "deterministic": {"penalty", "lexicographic"},
-        "stochastic_three_scenarios": {"penalty", "lexicographic"},
-        "stochastic_nine_scenarios": {"penalty", "lexicographic"},
-    }
-    three_scenario_specs = manifest.experiments[2:4]
-    for spec in three_scenario_specs:
-        assert spec.loader.stochastic_combinations == (
-            ("baixo", "alto"),
-            ("base", "base"),
-            ("alto", "baixo"),
-        )
-    for spec in manifest.experiments[4:6]:
-        assert spec.max_estimated_variables == 6_000_000
-
-
-def test_service_policy_manifest_rejects_an_unmatched_pair(tmp_path):
-    manifest_path = tmp_path / "unmatched.yaml"
-    manifest_path.write_text(
-        """
-version: 1
-experiments:
-  - name: penalty
-    workbook: input.xlsx
-    model: {objective_policy: penalty, days_per_period: 30}
-    metadata: {comparison_group: same_case}
-  - name: lexicographic
-    workbook: input.xlsx
-    model: {objective_policy: lexicographic, days_per_period: 22}
-    metadata: {comparison_group: same_case}
-""".strip(),
-        encoding="utf-8",
-    )
-
-    with pytest.raises(ValueError, match="changes settings"):
-        load_experiment_manifest(manifest_path)
-
-
 def test_manifest_rejects_duplicate_and_unsafe_names(tmp_path):
     manifest_path = tmp_path / "experiments.yaml"
     manifest_path.write_text(
         """
-version: 1
+version: 2
 experiments:
   - {name: repeated, workbook: a.xlsx}
   - {name: repeated, workbook: b.xlsx}
@@ -449,28 +294,6 @@ def test_stochastic_spec_requires_scenario_loading():
         )
 
 
-def test_resume_requires_evpi_vss_analysis():
-    with pytest.raises(ValueError, match="calculate_evpi_vss=true"):
-        ExperimentSpec(
-            name="invalid_resume",
-            workbook=Path("input.xlsx"),
-            model=ModelConfig(mode="sto"),
-            loader=ExcelLoaderConfig(include_stochastic_scenarios=True),
-            resume_evpi_vss=True,
-        )
-
-
-def test_evpi_vss_spec_rejects_lexicographic_policy_early():
-    with pytest.raises(ValueError, match="objective_policy='penalty'"):
-        ExperimentSpec(
-            name="invalid_lexicographic_evpi",
-            workbook=Path("input.xlsx"),
-            model=ModelConfig(mode="sto", objective_policy="lexicographic"),
-            loader=ExcelLoaderConfig(include_stochastic_scenarios=True),
-            calculate_evpi_vss=True,
-        )
-
-
 def test_run_experiment_exports_complete_json_csv_and_metrics(
     tmp_path,
     monkeypatch,
@@ -485,9 +308,7 @@ def test_run_experiment_exports_complete_json_csv_and_metrics(
     )
     run_dir = tmp_path / "det_baseline"
     payload = json.loads((run_dir / "result.json").read_text(encoding="utf-8"))
-    preflight = json.loads(
-        (run_dir / "preflight.json").read_text(encoding="utf-8")
-    )
+    preflight = json.loads((run_dir / "preflight.json").read_text(encoding="utf-8"))
 
     assert summary.status == "optimal"
     assert summary.objective_value == pytest.approx(123.0)
@@ -499,9 +320,9 @@ def test_run_experiment_exports_complete_json_csv_and_metrics(
     assert summary.data_read_seconds >= 0.0
     assert summary.model_build_seconds == pytest.approx(1.25)
     assert summary.optimization_seconds == pytest.approx(3.25)
-    assert payload["result"]["metadata"]["timings"][
-        "data_read_seconds"
-    ] == pytest.approx(summary.data_read_seconds)
+    assert payload["result"]["metadata"]["timings"]["data_read_seconds"] == pytest.approx(
+        summary.data_read_seconds
+    )
     assert summary.dyn_cap == pytest.approx(600.0)
     assert summary.turnover == pytest.approx(6.0)
     assert summary.total_unmet_demand == pytest.approx(5.0)
@@ -517,7 +338,7 @@ def test_run_experiment_exports_complete_json_csv_and_metrics(
     assert summary.capacity_adequacy_status == "domestic_service_shortfall"
     assert summary.material_balance_ok is None
     assert summary.penalty_cost_share == pytest.approx(0.0)
-    assert payload["schema_version"] == 1
+    assert payload["schema_version"] == 2
     assert payload["experiment"]["metadata"] == {"replicate": 1}
     assert payload["result"]["metrics"]["DynCap"] == pytest.approx(600.0)
     assert payload["execution"]["slurm_job_id"] == "12345"
@@ -555,7 +376,6 @@ def test_run_experiment_exports_complete_json_csv_and_metrics(
         "inventories.csv",
         "unmet_demand.csv",
         "emergency_capacity.csv",
-        "lexicographic_stages.csv",
         "scenario_performance.csv",
         "storage_by_warehouse.csv",
         "storage_by_scenario.csv",
@@ -563,7 +383,6 @@ def test_run_experiment_exports_complete_json_csv_and_metrics(
         "capacity_gap_by_scenario.csv",
         "investment_saturation.csv",
         "emergency_capacity_daily.csv",
-        "evpi_vss_decomposition.csv",
     }
     assert {path.name for path in run_dir.iterdir()} == expected_files
     assert (run_dir / "scenario_performance.csv").read_text(encoding="utf-8") == ""
@@ -574,9 +393,7 @@ def test_run_experiment_exports_complete_json_csv_and_metrics(
 
     with (run_dir / "emergency_capacity_daily.csv").open(encoding="utf-8") as file:
         emergency_rows = list(csv.DictReader(file))
-    reception = next(
-        row for row in emergency_rows if row["capacity_type"] == "reception"
-    )
+    reception = next(row for row in emergency_rows if row["capacity_type"] == "reception")
     assert float(reception["days_in_period"]) == pytest.approx(30.0)
     assert float(reception["value_tons_per_day"]) == pytest.approx(20.0 / 30.0)
 
@@ -595,16 +412,16 @@ def test_existing_result_can_be_audited_without_solving_again(tmp_path):
         solver=fake_solver,
     )
     audit_path = tmp_path / spec.name / "model_audit.json"
-    audit_path.unlink()
+    original = audit_path.read_bytes()
 
     rebuilt = audit_existing_run(spec, tmp_path, loader=fake_loader)
     audit = json.loads(rebuilt.read_text(encoding="utf-8"))
 
-    assert rebuilt == audit_path.resolve()
+    assert rebuilt.parent.parent == audit_path.parent
+    assert rebuilt.parent.name.startswith('scalar_reaudit_')
+    assert audit_path.read_bytes() == original
     assert audit["solution"]["objective_value"] == pytest.approx(123.0)
-    assert audit["solution"]["service"]["expected"] == pytest.approx(
-        80.0 / 85.0
-    )
+    assert audit["solution"]["service"]["expected"] == pytest.approx(80.0 / 85.0)
 
 
 def test_manifest_can_continue_after_a_failed_run(tmp_path):
@@ -629,9 +446,7 @@ def test_manifest_can_continue_after_a_failed_run(tmp_path):
     )
 
     assert [summary.status for summary in summaries] == ["error", "optimal"]
-    failure = json.loads(
-        (tmp_path / "fails" / "run_summary.json").read_text(encoding="utf-8")
-    )
+    failure = json.loads((tmp_path / "fails" / "run_summary.json").read_text(encoding="utf-8"))
     assert failure["error_type"] == "RuntimeError"
     assert failure["error_message"] == "solver unavailable"
     assert failure["runtime_seconds"] is not None
@@ -663,9 +478,7 @@ def test_infeasible_result_exports_iis_diagnostic(tmp_path):
     )
 
     diagnostic = json.loads(
-        (tmp_path / "infeasible" / "infeasibility.json").read_text(
-            encoding="utf-8"
-        )
+        (tmp_path / "infeasible" / "infeasibility.json").read_text(encoding="utf-8")
     )
     assert summary.status == "infeasible"
     assert diagnostic["iis_computed"] is True
@@ -706,64 +519,6 @@ def test_aggregate_summaries_builds_one_csv_after_array_completion(tmp_path):
         rows = list(csv.DictReader(file))
     assert [row["name"] for row in rows] == ["run_0", "run_1"]
     assert all(row["status"] == "optimal" for row in rows)
-
-
-def test_service_policy_comparison_exports_matched_deltas(tmp_path):
-    def policy_result(**kwargs):
-        result = solved_result()
-        if kwargs["model_config"].objective_policy == "lexicographic":
-            result.flows[0]["value"] = 85.0
-            result.unmet_demand[0]["value"] = 0.0
-            result.metrics["objective_values"] = {
-                "economic_cost": 150.0,
-                "penalized_cost": 150.0,
-            }
-        return result
-
-    for policy in ("penalty", "lexicographic"):
-        spec = ExperimentSpec(
-            name=f"det_{policy}",
-            workbook=Path("input.xlsx"),
-            model=ModelConfig(mode="det", objective_policy=policy),
-            metadata={
-                "comparison_group": "deterministic",
-                "campaign_gate": "gate_1_deterministic",
-            },
-        )
-        run_experiment(
-            spec,
-            tmp_path,
-            loader=fake_loader,
-            solver=policy_result,
-            progress=lambda _message: None,
-        )
-
-    target = aggregate_service_policy_comparisons(tmp_path)
-    assert target == tmp_path / "service_policy_comparison.csv"
-
-    payload = json.loads(
-        (tmp_path / "service_policy_comparison.json").read_text(
-            encoding="utf-8"
-        )
-    )
-    comparison = payload["comparisons"][0]
-    assert payload["delta_convention"] == "lexicographic_minus_penalty"
-    assert comparison["pair_status"] == "optimal"
-    assert comparison["delta_domestic_service_level"] == pytest.approx(
-        1.0 - (80.0 / 85.0)
-    )
-    assert comparison["delta_service_percentage_points"] == pytest.approx(
-        100.0 * (1.0 - (80.0 / 85.0))
-    )
-    assert comparison["delta_total_unmet_demand"] == pytest.approx(-5.0)
-    assert comparison["delta_economic_cost"] == pytest.approx(27.0)
-    assert comparison["unmet_demand_reduction_fraction"] == pytest.approx(1.0)
-    assert comparison["emergency_capacity_ratio"] == pytest.approx(1.0)
-    assert comparison["emergency_static_capacity_ratio"] == pytest.approx(1.0)
-    assert comparison["emergency_reception_capacity_ratio"] == pytest.approx(1.0)
-    assert comparison["economic_cost_change_fraction"] == pytest.approx(
-        27.0 / 123.0
-    )
 
 
 def test_manifest_rejects_out_of_range_index(tmp_path):
@@ -821,30 +576,3 @@ def test_slurm_array_index_is_used_unless_cli_overrides_it(monkeypatch):
 
     assert selected_index(None) == 4
     assert selected_index(2) == 2
-
-
-
-def test_v020_policy_manifests_use_service_first_lexicographic_objective():
-    root = Path(__file__).parents[1]
-    for filename in ("v020_policy_mvp.yaml", "v020_policy_time_limit.yaml"):
-        manifest = load_experiment_manifest(root / "experiments" / filename)
-        assert all(
-            spec.model.objective_policy == "lexicographic"
-            for spec in manifest.experiments
-        )
-
-    diagnostic = load_experiment_manifest(
-        root / "experiments" / "v020_policy_service_feasibility.yaml"
-    )
-    assert len(diagnostic.experiments) == 3
-    assert all(
-        spec.model.objective_policy == "lexicographic"
-        for spec in diagnostic.experiments
-    )
-    confirmation = diagnostic.experiments[2]
-    assert confirmation.name == "policy_service_feasibility_p20_direct_t14400"
-    assert confirmation.solver.time_limit == 14400
-    assert (
-        confirmation.metadata["diagnostic_purpose"]
-        == "certify_secondary_and_tertiary_lexicographic_stages"
-    )

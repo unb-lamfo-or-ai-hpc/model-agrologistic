@@ -1,0 +1,42 @@
+name: Scalar R1 qualification
+on:
+  pull_request:
+    branches: [develop, main]
+permissions:
+  contents: read
+jobs:
+  scalar-native:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      PYTHONNOUSERSITE: '1'
+      PYTHONDONTWRITEBYTECODE: '1'
+      AGRO_REQUIRE_NATIVE_SOLVERS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - name: Preserve original historical manuscript bytes without normalization
+        run: |
+          printf '%s\n' '/manuscript/comparison_provenance.json -text' '/manuscript/figures/runtime_memory_comparison.pdf -text' >> .git/info/attributes
+          git diff --exit-code
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - run: python -m pip install -e '.[dev,scip]' 'pyscipopt==6.2.1'
+      - name: Full retained native regression on exact PR head, no HPC
+        run: >-
+          python -B -m pytest -p no:cacheprovider
+          --junitxml=/tmp/scalar-r1.xml
+      - name: Require native zero-skip gate and clean exact source
+        run: |
+          python -B -c 'import xml.etree.ElementTree as e; r=e.parse("/tmp/scalar-r1.xml").getroot(); s=r.findall("testsuite") if r.tag=="testsuites" else [r]; assert sum(int(x.get("tests",0)) for x in s)>0; assert all(int(x.get(k,0))==0 for x in s for k in ("failures","errors","skipped"))'
+          python -B scripts/check_scalar_source.py
+          git diff --exit-code
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: scalar-r1-native-results
+          path: /tmp/scalar-r1.xml
+          if-no-files-found: error

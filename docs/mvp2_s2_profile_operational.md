@@ -9,8 +9,8 @@ with a remaining-PR forecast. The agent does not access NPAD or submit jobs.
 Read the [checkpoint](../PROJECT_STATE.md), [closed package](mvp2_s2_profile_observation_v2.md)
 and [original job2211568 audit](mvp2_s2_profile_2211568_audit.md).
 
-The new [driver](../scripts/mvp2_s2_profile_operational.py) and
-[wrapper](../scripts/npad_s2_profile_operational.sh) select only the already
+The new [driver](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/5f9daa55b3afb5bbcb3449bc83c970cf10a28ca6/scripts/mvp2_s2_profile_operational.py) and
+[wrapper](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/5f9daa55b3afb5bbcb3449bc83c970cf10a28ca6/scripts/npad_s2_profile_operational.sh) select only the already
 qualified read-only observer. They do not open or edit the PR95/PR97 entries,
 normal launchers, native worker, h300 controller or scientific settings.
 The namespace `.mvp2-s2-profile-operational-v1` is distinct from every consumed

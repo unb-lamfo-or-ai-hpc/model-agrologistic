@@ -1,3 +1,15 @@
+# Current scalar contract
+
+The active template is `mvp2_scalar_template.yaml`, manifest version2, software
+qualification only. No NPAD admission. Other version1 manifests below are immutable
+historical references, intentionally rejected by the active runner rather than
+silently converted. EVPI/VSS and hierarchical campaigns are not active alternatives.
+Use the [scalar contract](../docs/mvp2_scalar_contract.md) and new reviewed resource
+proposals before any future execution. Original campaigns remain reproducible with
+their exact [archived implementation](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/tree/5f9daa55b3afb5bbcb3449bc83c970cf10a28ca6).
+
+## Historical catalogue
+
 # Experiment catalogue
 
 YAML files define scientific configurations, not proof that every listed run has

@@ -1,5 +1,14 @@
 # Article plan and editorial boundaries
 
+## Scalar editorial decision — 19 October2026
+
+The [approved scalar contract](mvp2_scalar_contract.md) replaces the scientific
+framing of new MVP2 results: DET/STO economic MILP scalability, no hierarchical
+contribution or EVPI/VSS calculation. R1 updates this plan, NOT the coauthor-reviewed
+article, figures, appendix or published Pages. S6-A consolidates scalar evidence;
+S6-B revises the manuscript coherently, removes the excluded section and preserves
+review history. Historical MVP1/S1/S2 outcomes are contextual, not scalar results.
+
 Prepared 9 October 2026 from the [checkpoint](../PROJECT_STATE.md) and
 [reconciled roadmap](mvp2_hpc_roadmap.md). This is planning only: no article,
 appendix, figures or presentation is edited by the portable-memory PR.

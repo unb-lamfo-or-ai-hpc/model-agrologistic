@@ -1,3 +1,19 @@
+# Current R1 implementation
+
+The active model uses one sparse scalar extensive form for DET and STO.
+`optimization_gurobipy_stochastic` supplies the shared builder; the deterministic
+interface embeds base arrays as one scenario/probability one. Native SCIP is a
+complementary scalar backend. `solution_validation` reconstructs original-unit
+constraints and all economic/penalty components independently. `resource_telemetry`,
+`model_lifecycle` and `run_integrity` retain resource, disposal and provenance controls.
+Manifest v2 and `mvp2_scalar_contract.md` govern new runs; no NPAD admission in R1.
+
+The module catalogue below is historical where it names retired priority/value
+analysis components. Their implementations are available only from the
+[archived source](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/tree/5f9daa55b3afb5bbcb3449bc83c970cf10a28ca6/src).
+
+## Historical catalogue
+
 # Implementation architecture
 
 The import namespace is `src.logic`. The scientific pipeline is intentionally

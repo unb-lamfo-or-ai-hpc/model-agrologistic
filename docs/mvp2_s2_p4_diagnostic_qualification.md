@@ -26,7 +26,7 @@ internal Gurobi subphase or independent proof of the solver's terminal status.
 
 ## Complete software scope
 
-[Diagnostic components](../scripts/mvp2_s2_p4_diagnostics.py) include:
+[Diagnostic components](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/5f9daa55b3afb5bbcb3449bc83c970cf10a28ca6/scripts/mvp2_s2_p4_diagnostics.py) include:
 
 - A private future worker seam binds a numeric Slurm step/source/plan/thread
   identity before selecting the designated file and invoking the original

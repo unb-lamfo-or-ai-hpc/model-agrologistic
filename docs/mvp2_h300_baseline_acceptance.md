@@ -46,7 +46,7 @@ The corrected completion gate requires all of the following:
   run-completion hash and the transfer hash. Independent and hierarchy gates
   remain required; no warning is suppressed to obtain acceptance.
 
-[`review_mvp2_h300_baseline.py`](../scripts/review_mvp2_h300_baseline.py)
+[`review_mvp2_h300_baseline.py`](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/5f9daa55b3afb5bbcb3449bc83c970cf10a28ca6/scripts/review_mvp2_h300_baseline.py)
 is a read-only, deliberately **job-specific** retrospective reviewer. It accepts
 only the pinned transferred checksum and original execution source. It verifies
 21 controls: safe/unique/bounded allowlisted archive members; all 57 transfer
