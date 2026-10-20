@@ -103,3 +103,31 @@ every optimizer call, preserve full per-arm warehouse receipts and compare
 homogeneity/censoring/quality. Until then no h300 start/batch/worker CLI exists.
 Next stages remain scalar h400, complementary existing-SCIP/h215, conditional
 h500 and S6-A/B; S3/S4 stay cancelled. Main synchronization follows article review.
+
+## Observed software qualification
+
+PR116 code candidate32468dda91fa1b9587151de6d5529a3266bc7979 passed all four
+workflows. [Complete native Linux gate](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/actions/runs/39477395230):
+838 tests, zero failures/errors/skips, including the retained real small native
+DET/STO and operational integration plus73 new login-safe h300 cases. Downloaded
+JUnit SHA256`adbc2f863065b98608a61795bfe91f58ffbe4949bf308001af898a2af28c05b6`.
+Bash syntax, raw-source closure and all-native zero-skip assertions passed.
+Quality workflow passed lint/build and810 cases, with10 optional-SCIP dependency
+skips; the separate native qualification had zero skips. The existing pandas
+FutureWarning remains disclosed.
+
+Local focused73 cases passed. The full Windows attempt had750 passes,68
+unavailable/expired local solver skips and two temporary-archive permission
+failures. Re-running the affected hygiene module with a workspace-owned TEMP
+directory passed all18 cases. Windows Bash sandbox initialization was unavailable;
+actual Bash syntax was qualified in Linux. No scientific test was skipped or
+weakened to make the native gate pass. Local build tooling was unavailable;
+the Linux Quality workflow built both distributions successfully.
+
+The accepted external h215 archive was replayed through the new predecessor
+gate: exact checksum/plan/source, both original validations, both1% scalar
+targets and actual penalty rates passed without a new solve or NPAD access.
+Scientific `src` tree remains666029ace80bd60417d91c43d4460a33326acf64, identical
+to merged PR115/develop; the coauthor manuscript is untouched. Final documentary
+head must retain these implementation bytes and pass all four checks before
+Ready. These are software/predecessor results, not an actual h300 run or admission.

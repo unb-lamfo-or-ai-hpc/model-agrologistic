@@ -2,6 +2,15 @@
 
 ## Maintainer decision: h215 success, frozen penalties, proceed to h300
 
+Consolidated [PR116](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/116)
+code32468dda passed838 exact-commit native Linux tests with zero failures/errors/
+skips, all four workflows, Bash syntax/source closure and distribution build.
+Focused73 login-safe cases passed; actual accepted h215 predecessor replay passed.
+See [qualification and limits](docs/mvp2_scalar_h300_preparation.md#observed-software-qualification).
+The final documentary head must pass checks before Ready and merge request.
+PR115 penalty/acceptance discussion is publicly appended at
+https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/115#issuecomment-6298463871.
+
 20 October2026. The researcher accepts PR115/job2217990 as success under its
 approved scalar contract and explicitly rejects the proposed calibration
 campaign. It is not a prerequisite to h300. Preserve effective coefficients
