@@ -31,6 +31,15 @@ MAX_VARIABLES = 30000000
 MAX_BYTES = 16 * 1024**2  # Preparation-only receipts, not native solution transfer.
 
 
+def input_file(path, label):
+    """Identify the rejected input without following a link or guessing another path."""
+    path = Path(path)
+    r.require(not path.is_symlink(), f"{label}: symbolic link refused: {path}")
+    r.require(path.exists(), f"{label}: missing or inaccessible file: {path}")
+    r.require(path.is_file(), f"{label}: not a regular file: {path}")
+    return previous.regular(path)
+
+
 def penalty_receipt(contract, *, warehouse_ids=None, demand_pairs=None):
     """Check every effective rate after route selection, not merely loader defaults."""
     from src.logic.mathematical_contract import canonical_hash
@@ -196,7 +205,7 @@ def prepare(claim, sha, workbook, population, order, predecessor):
     claim = Path(claim)
     r.require(claim.name == CLAIM and not claim.exists(), "Fresh dedicated preparation claim.")
     r.require(re.fullmatch(r"[0-9a-f]{40}", sha), "Full reviewed source required.")
-    previous.regular(workbook)
+    input_file(workbook, "h300 workbook")
     r.require(r.file_hash(workbook) == WORKBOOK_SHA, "Historical h300 workbook hash differs.")
     parent = verify_h215(predecessor)
     selection = r.warehouses.read_policy(

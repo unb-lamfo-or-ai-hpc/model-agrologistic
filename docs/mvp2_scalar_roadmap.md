@@ -1,5 +1,12 @@
 # Scalar MVP2 roadmap — 19 October 2026
 
+Latest20 October: PR117 merged; human bootstrap stopped before claim/submission
+at an incorrect h300 path. Qualify the consolidated hash-preserving
+[path repair](mvp2_scalar_h300_30h.md#current-input-path-correction-20-october2026)
+and issue a newly pinned human CLI after authorized merge. The confirmed original
+input is under `nine_population_osrm_v1/warehouses_300`; scientific/resource
+contracts and all later milestones are unchanged. Older snapshots follow.
+
 Latest20 October: PR116 merged with explicit authorization; its30h h300 envelope
 is approved. The next [complete operational delivery](mvp2_scalar_h300_30h.md)
 integrates the five-arm cold block, exact coefficient/source/input/warehouse

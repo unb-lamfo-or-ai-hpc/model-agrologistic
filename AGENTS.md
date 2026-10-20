@@ -1,5 +1,19 @@
 # Model Agrologistic: agent working agreement
 
+## h300 path repair —20 October2026
+
+PR117 merged. Its human bootstrap stopped before claim creation or sbatch;
+maintainer read-only evidence confirms the intended operational claim is absent
+and the original hash-bound h300 workbook/audit exist under
+`data/processed/nine_population_osrm_v1/warehouses_300/`, not the extrapolated
+h215 directory. Read the current PROJECT_STATE header and input-path ledger.
+Correct both h300 wrappers and qualify clear pre-claim diagnostics/regressions
+in one PR. Preserve all hashes, budgets, scientific settings/penalties, claims
+and failed bootstrap. No input copying/regeneration, symlink workaround, private
+data access or job submission. Keep existing consumed claims collect-only; never
+reset them. Full exact-head qualification precedes Ready and merge request;
+provide newly pinned complete human commands after authorized merge.
+
 ## Approved complete h300 operational package —20 October2026
 
 The maintainer explicitly authorized PR116 merge into develop and approved its

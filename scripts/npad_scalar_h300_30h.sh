@@ -46,7 +46,7 @@ fi
 ARGS=("$ACTION" --claim "$CLAIM" --source-sha "$SOURCE_SHA")
 if [[ "$ACTION" = start ]]; then
   INPUT=/home/vrrcelestino/model-agrologistic/data/processed
-  ARGS+=(--one-reviewed-h300-block --workbook "$INPUT/policy_population_v020_osrm/warehouses_300/model_input.xlsx" --materialization-path "$INPUT/policy_population_v020_osrm/warehouses_300/osrm_materialization_audit.json" --population "$INPUT/warehouse_population_v020/warehouse_population_manifest.json" --order "$INPUT/warehouse_population_v020/warehouse_population_order.csv" --predecessor "$BASE/.mvp2-scalar-r3a-h215-4h-v1/scalar-h215-evidence.tar.gz")
+  ARGS+=(--one-reviewed-h300-block --workbook "$INPUT/nine_population_osrm_v1/warehouses_300/model_input.xlsx" --materialization-path "$INPUT/nine_population_osrm_v1/warehouses_300/osrm_materialization_audit.json" --population "$INPUT/warehouse_population_v020/warehouse_population_manifest.json" --order "$INPUT/warehouse_population_v020/warehouse_population_order.csv" --predecessor "$BASE/.mvp2-scalar-r3a-h215-4h-v1/scalar-h215-evidence.tar.gz")
 elif [[ "$ACTION" = audit ]]; then
   ARGS+=(--archive "${MVP2_H300_ARCHIVE:?Select evidence archive}" --sha256 "${MVP2_H300_SHA256:?Select external checksum}")
 fi

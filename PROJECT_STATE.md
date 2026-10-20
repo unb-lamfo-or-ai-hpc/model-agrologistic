@@ -1,5 +1,43 @@
 # Model Agrologistic — MVP 2.0 checkpoint
 
+## h300 input-path repair after PR117 merge —20 October2026
+
+PR117 merged with explicit authorization at
+`47c06e2c20e2756f2acb34f91bafe9b99cee396c`. The human bootstrap at qualified
+source0723e2a passed128 login-safe tests and source verification, then stopped
+before claim creation/submission because its extrapolated h215 directory did
+not contain the h300 workbook. The researcher confirms the operational claim
+is absent. Preserve bootstrap `scalar-h300-30h-driver-9haZpDHG`; this is not a
+solver/license failure or a completed scientific attempt.
+
+The [read-only input ledger](docs/evidence/scalar_h300_input_path_20261020.json)
+confirms the historical `data/processed/nine_population_osrm_v1/warehouses_300/`
+workbook,4911854 bytes, unchanged SHA2567761cce7... and original14 September
+OSRM audit:113269 routes,113569 cache hits, zero misses/writes/requests/fallback.
+The audit content is user-reported; its private original bytes will be bound
+by the existing preparation gate, not reconstructed from this redacted record.
+
+Prepare and qualify one consolidated correction: both h300 wrappers use this
+directory; explicit missing/nonregular/symlink diagnostics precede claim creation;
+regressions preserve wrong-hash rejection and no automatic path discovery or
+data regeneration. The optional preparation-only wrapper still admits no jobs.
+The operational claim name stays unchanged because it was never created, not
+because an old claim may be reset. Existing claims remain collect-only.
+
+No source/model/tolerance/coefficient, input identity, population criterion,
+predecessor,30h/24 logical CPU/192GiB envelope or14400s-per-arm budget changes.
+Five serial cold STO arms4/1/8/2/16 and penalties90000/45000/45000 remain fixed.
+Slacks relax only specified constraints and do not guarantee full feasibility;
+their search effects need not be monotonic. Gap describes penalized total, not
+zero slack or economic subtotal. Report physical violations and costs separately.
+No scientific speedup or new acceptance rule is inferred from this path repair.
+
+Ready follows focused/related/full exact-head native Linux qualification and
+review. Request explicit merge only then; supply the newly pinned complete
+start/status/wait/collect commands immediately after authorized merge. No agent
+NPAD access, solver/probe/job or automatic retry is part of this correction.
+Earlier qualification/pending statements below are preserved historical records.
+
 ## PR116 merged;30h h300 envelope approved; complete operational qualification
 
 [Consolidated PR117](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/117)

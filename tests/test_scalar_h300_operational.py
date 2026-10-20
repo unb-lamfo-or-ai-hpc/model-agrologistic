@@ -590,7 +590,8 @@ def test_timeout_submission_preserves_intent_and_cannot_resubmit(tmp_path, monke
 
 def test_complete_operational_prepare_load_and_original_audit_binding(tmp_path, monkeypatch):
     fixture_files, _ = fixture()
-    workbook = tmp_path / "hash_only_public.xlsx"
+    workbook = tmp_path / "nine_population_osrm_v1/warehouses_300/model_input.xlsx"
+    workbook.parent.mkdir(parents=True)
     workbook.write_bytes(b"Public hash preparation fixture, no Excel ETL")
     monkeypatch.setattr(m.h, "WORKBOOK_SHA", m.r.file_hash(workbook))
     audit_path = tmp_path / "materialization.json"
@@ -608,9 +609,99 @@ def test_complete_operational_prepare_load_and_original_audit_binding(tmp_path, 
     claim = tmp_path / m.CLAIM
     plan = m.prepare(claim, SHA, workbook, None, None, audit_path, None)
     assert plan == m.load(claim, SHA)
+    assert all(case["workbook"] == str(workbook) for case in plan["cases"])
     assert (claim / "materialization.original.json").read_bytes() == audit_path.read_bytes()
     with pytest.raises(ValueError, match="Fresh exclusive"):
         m.prepare(claim, SHA, workbook, None, None, audit_path, None)
     (claim / "materialization.original.json").write_bytes(b"mutated")
     with pytest.raises(ValueError, match="Audit drift"):
         m.load(claim, SHA)
+
+
+@pytest.mark.parametrize("wrapper", ["npad_scalar_h300_30h.sh", "npad_scalar_h300_prepare.sh"])
+def test_h300_wrappers_bind_historical_directory_not_extrapolated_h215_path(wrapper):
+    text = (m.ROOT / "scripts" / wrapper).read_text()
+    assert '--workbook "$INPUT/nine_population_osrm_v1/warehouses_300/model_input.xlsx"' in text
+    assert "policy_population_v020_osrm/warehouses_300" not in text
+    if wrapper.endswith("30h.sh"):
+        assert (
+            '--materialization-path "$INPUT/nine_population_osrm_v1/warehouses_300/'
+            'osrm_materialization_audit.json"' in text
+        )
+
+
+@pytest.mark.parametrize("kind", ["missing", "directory", "wrong_hash", "missing_audit"])
+def test_rejected_input_precedes_claim_intent_predecessor_and_submission(
+    tmp_path, monkeypatch, kind
+):
+    workbook = tmp_path / "nine_population_osrm_v1/warehouses_300/model_input.xlsx"
+    workbook.parent.mkdir(parents=True)
+    audit = workbook.with_name("osrm_materialization_audit.json")
+    if kind == "directory":
+        workbook.mkdir()
+    elif kind != "missing":
+        workbook.write_bytes(b"Public identity fixture; not the private workbook")
+    if kind == "missing_audit":
+        monkeypatch.setattr(m.h, "WORKBOOK_SHA", m.r.file_hash(workbook))
+    monkeypatch.setattr(m.h, "verify_h215", lambda *_: pytest.fail("No predecessor replay"))
+    from scripts import probe_npad_gurobi_license as probe
+
+    monkeypatch.setattr(probe, "check_file", lambda: None)
+    monkeypatch.delenv("SLURM_JOB_ID", raising=False)
+    claim = tmp_path / m.CLAIM
+    messages = {
+        "missing": "h300 workbook: missing or inaccessible file:",
+        "directory": "h300 workbook: not a regular file:",
+        "wrong_hash": "h300 workbook hash differs",
+        "missing_audit": "h300 materialization audit: missing or inaccessible file:",
+    }
+    with pytest.raises(ValueError, match=messages[kind]) as caught:
+        m.start(
+            claim,
+            SHA,
+            True,
+            dict(
+                workbook=workbook,
+                population=None,
+                order=None,
+                materialization_path=audit,
+                predecessor=None,
+            ),
+            command=lambda *_: pytest.fail("No scheduler invocation"),
+        )
+    if kind != "wrong_hash":
+        assert str(audit if kind == "missing_audit" else workbook) in str(caught.value)
+    assert not claim.exists()
+
+
+@pytest.mark.parametrize("dangling", [False, True])
+def test_h300_input_links_refused_before_hash_or_claim(tmp_path, dangling):
+    target = tmp_path / "original.xlsx"
+    if not dangling:
+        target.write_bytes(b"Do not follow or modify")
+    link = tmp_path / "linked.xlsx"
+    if sys.platform == "win32":
+        # Directory junctions are not workbook symlinks. Linux CI must exercise
+        # actual links; Windows may not have the required symlink privilege.
+        from unittest.mock import patch
+
+        with patch.object(type(link), "is_symlink", return_value=True):
+            with pytest.raises(ValueError, match="symbolic link refused"):
+                m.h.input_file(link, "h300 workbook")
+    else:
+        link.symlink_to(target)
+        with pytest.raises(ValueError, match="symbolic link refused"):
+            m.h.input_file(link, "h300 workbook")
+    if not dangling:
+        assert target.read_bytes() == b"Do not follow or modify"
+
+
+def test_human_reported_h300_audit_preserves_original_materialization_contract():
+    receipt = m.r.r2.read(m.ROOT / "docs/evidence/scalar_h300_input_path_20261020.json")
+    assert receipt["workbook_sha256"] == m.h.WORKBOOK_SHA
+    assert receipt["operational_claim_present"] is False
+    assert receipt["job_submitted"] is False
+    assert m.materialization(receipt["reported_materialization_audit"])
+    assert m.h.RATES == {"unmet": 90000, "static": 45000, "reception": 45000}
+    assert m.PROFILE["blocks"][0]["slurm_wall_seconds"] == 108000
+    assert m.PROFILE["native_time_limit_seconds_per_arm"] == 14400
