@@ -300,7 +300,9 @@ def preflight(spec, expectations, selection=None, observer=None):
     return original, receipt
 
 
-def run_case_software(spec, directory, expectations, selection=None, *, runner=None):
+def run_case_software(
+    spec, directory, expectations, selection=None, *, runner=None, input_reviewer=None
+):
     """Qualified case engine; NEVER dispatched by this release's public CLI.
 
     Native CI calls this on public tiny cases. Future live integration requires
@@ -361,6 +363,8 @@ def run_case_software(spec, directory, expectations, selection=None, *, runner=N
 
     try:
         data, receipt = preflight(spec, expectations, selection, observer=observe)
+        if input_reviewer is not None:
+            input_reviewer(data, receipt)  # A prospective guard, before construction/solve.
         r2.write(directory / "input_receipt.json", receipt)
         population = receipt["warehouse_selection"]
         r2.write(directory / "warehouses_used.json", population)

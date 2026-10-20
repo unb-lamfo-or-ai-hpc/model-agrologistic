@@ -1,5 +1,13 @@
 # Dated research status: 20 October 2026
 
+Current: PR116 merged at1b7ef49a; the researcher approved the30h envelope.
+Prepare/qualify the [complete h300 operational block](mvp2_scalar_h300_30h.md),
+five cold STO arms4/1/8/2/16,14400s/arm, unchanged90000/45000/45000 penalties,
+new exclusive claim and terminal/forensic collection. No separate preparation
+CLI run is needed. Ready/explicit merge precede the pinned human-only CLI;
+no agent NPAD access or new execution has occurred. Original source/evidence
+and coauthor manuscript remain unchanged. Earlier pending-budget text follows.
+
 ## Current: accepted h215 scalar success; fixed-penalty h300 preparation
 
 PR115 is merged; job2217990 is independently replayed `pair_quality_target_met`

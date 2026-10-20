@@ -227,16 +227,22 @@ def prepare(claim, sha, workbook, population, order, predecessor):
     return {"status": plan["status"], "plan_sha256": r.file_hash(claim / "plan.json"), **r.closed()}
 
 
-def review(files):
+def review(
+    files,
+    *,
+    schema="scalar-h300-preparation-v1",
+    status="prepared_optimization_closed",
+    resource_profile=None,
+):
     plan = r.strict_json(files["plan.json"])
     source = r.strict_json(files["source.json"])
     selection = r.strict_json(files["warehouse_selection.json"])
     r.require(
-        plan["schema_version"] == "scalar-h300-preparation-v1"
-        and plan["status"] == "prepared_optimization_closed"
+        plan["schema_version"] == schema
+        and plan["status"] == status
         and re.fullmatch(r"[0-9a-f]{40}", plan["source_commit"])
         and all(plan[k] is False for k in r.closed())
-        and plan["resources"] == proposal()
+        and plan["resources"] == (proposal() if resource_profile is None else resource_profile)
         and plan["frozen_rates"] == RATES
         and plan["expected_shape"] == SHAPE,
         "h300 preparation contract drift.",

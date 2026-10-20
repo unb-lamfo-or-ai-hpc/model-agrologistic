@@ -305,14 +305,14 @@ def fields(text):
     return dict(pairs)
 
 
-def allocation(text, job, uid):
+def allocation(text, job, uid, *, walltime="14:00:00"):
     f = fields(text)
     expected = {
         "JobId": job,
         "NumNodes": "1",
         "NumCPUs": "24",
         "CPUs/Task": "24",
-        "TimeLimit": "14:00:00",
+        "TimeLimit": walltime,
         "Partition": "intel-256",
         "Account": "sxdsouza",
         "QOS": "preempt",
@@ -336,7 +336,7 @@ def allocation(text, job, uid):
     return f
 
 
-def step_binding(text, entry, allocated, uid):
+def step_binding(text, entry, allocated, uid, *, cpus=4):
     f = fields(text)
     exact = entry["job_id"] + "." + entry["step_id"]
     r.require(entry["step_id"].isdigit(), "Numeric step required.")
@@ -347,7 +347,7 @@ def step_binding(text, entry, allocated, uid):
         and f.get("Tasks") == "1"
         and f.get("State") == "RUNNING"
         and f.get("UserId") in {str(uid), allocated["UserId"]}
-        and f.get("CPUs") == "4",
+        and f.get("CPUs") == str(cpus),
         "Exact owned step not proven.",
     )
     return exact
@@ -413,7 +413,7 @@ def terminate_step(exact, process, *, command, sleep=time.sleep):
     }
 
 
-def scalar_review(files, plan):
+def scalar_review(files, plan, *, expected_count=2, include_case_names=False):
     """Original certificate replay, not a second solve or fresh residual computation."""
     selection = r.strict_json(files["warehouse_selection.json"])
     r.require(
@@ -488,11 +488,13 @@ def scalar_review(files, plan):
                     else ("gap_unavailable" if gap is None else "gap_above_target")
                 )
             )
+            if include_case_names:
+                arm.update(case_name=expected["name"], threads=expected["solver"]["threads"])
             arms.append(arm)
         except (KeyError, ValueError, TypeError) as exc:
             missing.append({"name": expected["name"], "error_kind": type(exc).__name__})
     feasible = (
-        len(arms) == 2
+        len(arms) == expected_count
         and not missing
         and all(a["classification"] == "validated_feasible" for a in arms)
     )
@@ -542,7 +544,7 @@ def case_contract(cases):
         )
 
 
-def snapshot(claim):
+def snapshot(claim, *, archive_name="scalar-h215-evidence.tar.gz"):
     """Bounded private artifacts only; never input workbooks, databases or licenses."""
     files = {}
     for path in sorted(claim.rglob("*")):
@@ -551,8 +553,8 @@ def snapshot(claim):
             continue
         name = path.relative_to(claim).as_posix()
         if name in {
-            "scalar-h215-evidence.tar.gz",
-            "scalar-h215-evidence.tar.gz.sha256",
+            archive_name,
+            archive_name + ".sha256",
             "collection.json",
         }:
             continue
@@ -569,7 +571,7 @@ def snapshot(claim):
     return files
 
 
-def run_case(spec, target, shape, selection, control, entry):
+def run_case(spec, target, shape, selection, control, entry, *, input_reviewer=None):
     """Complete original case engine with existing native hook, no scientific edits."""
     from src.logic.experiment_runner import run_experiment
     from src.logic.mathematical_contract import extensive_form_inputs
@@ -643,7 +645,8 @@ def run_case(spec, target, shape, selection, control, entry):
         kwargs.update(solver=solve, progress=progress)
         return run_experiment(*args, **kwargs)
 
-    result = r.run_case_software(spec, target, shape, selection, runner=runner)
+    extra = {} if input_reviewer is None else {"input_reviewer": input_reviewer}
+    result = r.run_case_software(spec, target, shape, selection, runner=runner, **extra)
     mark("complete")
     return result
 
@@ -732,6 +735,10 @@ def supervise(
     clock=time.monotonic,
     sleep=time.sleep,
     reviewer=review_process,
+    invoke=invocation,
+    step_cpus=4,
+    bind_step=step_binding,
+    whole_arm_seconds=None,
 ):
     control = claim / "control" / mode
     control.mkdir(parents=True)
@@ -744,12 +751,12 @@ def supervise(
                 "--exact",
                 "--nodes=1",
                 "--ntasks=1",
-                "--cpus-per-task=4",
+                "--cpus-per-task=" + str(step_cpus),
                 "--cpu-bind=threads",
                 "--time=05:15:00",
                 "--kill-on-bad-exit=1",
                 "--export=ALL",
-                *invocation("worker", claim, sha, "--mode", mode),
+                *invoke("worker", claim, sha, "--mode", mode),
             ],
             stdout=out,
             stderr=err,
@@ -775,7 +782,7 @@ def supervise(
                         },
                     )
                     r.require(query.returncode == 0, "Step ownership query failed.")
-                    exact = step_binding(query.stdout, entry, allocated, os.getuid())
+                    exact = bind_step(query.stdout, entry, allocated, os.getuid())
                     publish(control / "release.json", entry)
                 r.require(entry is not None or elapsed <= 45, "Worker startup unbound.")
                 if entry is not None:
@@ -829,10 +836,14 @@ def supervise(
             remaining = (
                 PROFILE["validation_seconds_per_arm"] - usage["seconds"]["independent_validation"]
             )
+            if whole_arm_seconds is not None:
+                remaining = min(remaining, whole_arm_seconds - (clock() - begun))
             r.require(remaining > 0, "Validation reserve exhausted.")
             review_started = clock()
             reviewer(claim, sha, mode, remaining)
             r.require(clock() - review_started <= remaining, "Product review deadline exceeded.")
+            if whole_arm_seconds is not None:
+                r.require(clock() - begun <= whole_arm_seconds, "Whole-arm deadline exceeded.")
             outcome.update(
                 status="closed_feasible_arm",
                 next_arm_allowed=True,
