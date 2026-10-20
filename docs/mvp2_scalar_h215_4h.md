@@ -187,22 +187,22 @@ Record actual final-head results before Ready; no scientific/NPAD result is clai
 
 ## Observed software qualification
 
-Candidate `d791a99f7b4cbdbbbcfc6b844700008feb801b59` on20 October2026:
+Candidate `90a8c681bdd97fd958000157cff32ede595ee84e` on20 October2026:
 
 | Gate | Result and scope |
 | --- | --- |
-| T1 login-safe |98 passed; no native solve, live license probe or scheduler |
-| T3 exact-head Linux |759 passed, zero failures/errors/skips, including real Gurobi/SCIP |
+| T1 login-safe |104 passed; no native solve, live license probe or scheduler |
+| T3 exact-head Linux |765 passed, zero failures/errors/skips, including real Gurobi/SCIP |
 | T2 complete tiny pipeline |Actual worker/native phase hook, original public input/residual validation, two arms, parent/controller, terminal collector and portable audit; controlled local transport/capability/affinity, NOT NPAD/Slurm/WLS proof |
 | Other checks |All four workflows passed, including Ruff/build, Bash syntax and raw tracked/physical source closure |
-| Local Windows earlier candidate |700 passed/59 expired-local-Gurobi skips; zero failures/errors; not native acceptance |
+| Local Windows matching candidate |706 passed/59 expired-local-Gurobi skips; zero failures/errors; not native acceptance |
 | Scientific scope |src tree666029ace80bd60417d91c43d4460a33326acf64, data/manuscript unchanged; old claims and certificates preserved |
 
-[Native CI](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/actions/runs/39459319869).
+[Native CI](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/actions/runs/39460803112).
 Downloaded JUnit SHA256:
-`f10122874fba6544568325483ecd4063287eb5f5cb20586c3fd346509849c482`.
-Qualified operational module blob8d7ab864b7ded0a23042c86295541a66fe4c09f1;
-tests tree5371d8ce0f6a0a37321240ddd49732d11278229d;
+`00131e310eedc6dae9389d8c7887ec97d3082bda9b18a5ae51b3187ad184319c`.
+Qualified operational module blob22f80383ad1c45e167eb811f483bd09c1b00169f;
+tests tree223946008a83b5cf36a1d8736f2b792b3d8a33b3;
 reused case-engine blob5f39c46596c7e42506921f456032955e00295562.
 Wrapper SHA256:
 `7c7bcf62bb08284bb5be931b948728e8df7e89be267cf02267fafb9d8317992c`.
@@ -216,3 +216,8 @@ The1e-5/1e-8 residual tolerances and conservative common-gap rule are unchanged;
 no test was skipped to hide the native rounding outcome. One pre-existing pandas
 FutureWarning remains. No live allocation, HPC scalability result or fresh local
 private-input mathematical re-solve is claimed.
+The759-case candidate was superseded after independent review of Slurm's tagged
+22.05.11 implementation exposed an unrealistic Nodes=node_name fixture. Correct
+NodeList/node count/task/state checks and six negatives passed in the full765-case
+head before Ready. Preserve those earlier CI runs, including the fixture's lint
+failure, rather than presenting the initial candidate as qualified live Slurm.

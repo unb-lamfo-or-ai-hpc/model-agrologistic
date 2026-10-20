@@ -2,10 +2,11 @@
 
 ## Latest — confirmed scalar h215 input, approved4h/arm and14h operational package
 
-PR115 code candidate d791a99f passed759 exact-head native Linux cases, zero
-failures/errors/skips, all four workflows;98 focused login-safe cases passed.
+PR115 code candidate90a8c681 passed765 exact-head native Linux cases, zero
+failures/errors/skips, all four workflows;104 focused login-safe cases passed.
 The complete tiny worker/controller/collector integration preserves original
-input/residual validation and conservative raw bound-order diagnostics. No live
+input/residual validation, primary-source Slurm22 Nodes/NodeList grammar and
+conservative raw bound-order diagnostics. No live
 NPAD/Slurm/WLS/private input certificate follows. See
 [qualification details](mvp2_scalar_h215_4h.md#observed-software-qualification).
 Final documentation-only checks precede Ready and explicit merge request.
