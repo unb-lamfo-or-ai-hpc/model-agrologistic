@@ -1,5 +1,60 @@
 # Model Agrologistic — MVP 2.0 checkpoint
 
+## PR116 merged;30h h300 envelope approved; complete operational qualification
+
+[Consolidated PR117](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/117)
+code54dce6b8 passed894 native Linux tests with zero failures/errors/skips and
+all four workflows. Focused128 login-safe cases passed. Full five-worker tiny
+native transport, original validation, raw-source/Bash closure, portable audit
+and distribution builds passed; actual NPAD/private h300 remains unexecuted.
+See [qualification details](docs/mvp2_scalar_h300_30h.md#observed-software-qualification20-october2026).
+Final documentation-only checks precede Ready and merge request. Existing h215
+archive replay remains accepted. No new resource confirmation is required.
+
+20 October2026: explicit maintainer authorization merged PR116 into develop at
+`1b7ef49a71e1eb2169fc6941a79474d07491a6a9`. Ready source27bb6ca7 passed all four
+workflows and838 native Linux cases without failures/errors/skips. The researcher
+also approves the single30h envelope. The previous pending-resource statements
+below are preserved historical snapshots, not a request to reconfirm approval.
+
+The [complete operational package](docs/mvp2_scalar_h300_30h.md) prepares ONE
+cold STO block4/1/8/2/16, global14400s/arm,24 allocated logical CPUs/192GiB,
+fixed16-logical-CPU worker affinity, seed42/gap0.01/SoftMemLimit160GB/compaction
+off. Each serial Slurm step owns all24 allocated CPUs, then applies the same16
+logical affinity IDs. This keeps the pool fixed across steps rather than asking
+Slurm to choose a potentially changing16-CPU subset. Record SMT/topology and do
+not call16 logical CPUs16 physical cores. Allocation is30h, planned26h45,
+contingency3h15;720 reserved logical-CPU hours is not measured use.
+
+New exclusive claim `.mvp2-scalar-h300-30h-v1`; retain every h215/R2/preparation/
+historical claim. No separate PR116 preparation run is required: the new block
+directly replays accepted h215 archive81890b54..., binds original h300 OSRM
+workbook7761cce7..., original materialization audit, population/order hashes and
+full membership/ranking. Effective penalties remain90000/45000/45000 and are
+checked after route selection before every native agricultural call. Three
+separate physical units and all original validation tolerances remain intact.
+
+Integrated worker uses the existing native phase hook and original scientific
+engine. Phase limits1800/14400/shared900/1800 seconds and whole-arm18900s cover
+worker plus product review. The parent proves ownership of each numeric step
+before release and targeted stop. A technical failure/rejected validation stops
+the block, preserving partial/unrun arms. A feasible above1% gap is censored and
+does not block subsequent planned arms. No additional observation or retry is
+admitted by spare walltime. Terminal collector waits for launched accounting,
+preserves original reports/logs and supports immutable repeat collection and
+portable replay under the approved1GiB expanded cap without truncation.
+
+Penalty-effects discussion is required and included in the package: slacks
+relax their permitted equations and alter search trade-offs; positive values
+remain descriptors, not new rejection rules. Relative gap certifies penalized
+total; keep economic subtotal, physical slacks/service, native/common bounds,
+timings and resource scopes together. No earlier research recovery/citation is
+required. Scalar h300 live qualification and configuration selection remain
+pending. No NPAD access/job/probe/optimization occurred during preparation.
+Complete final-commit Linux native qualification before Ready and merge request;
+only then supply pinned human execution/status/wait/collection commands. S3/S4
+stay cancelled, later h400/SCIP/h500/S6 and final-main decisions unchanged.
+
 ## Maintainer decision: h215 success, frozen penalties, proceed to h300
 
 Consolidated [PR116](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/116)

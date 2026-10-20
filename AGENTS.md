@@ -1,5 +1,23 @@
 # Model Agrologistic: agent working agreement
 
+## Approved complete h300 operational package —20 October2026
+
+The maintainer explicitly authorized PR116 merge into develop and approved its
+one30h envelope. PR116 merged at1b7ef49a71e1eb2169fc6941a79474d07491a6a9.
+Prepare/qualify the complete h300 launcher/worker/exact-step control, immutable
+terminal/forensic collection, portable audit, tests and full human runbook in
+one PR. Read `docs/mvp2_scalar_h300_30h.md`. Five cold STO arms4/1/8/2/16,
+14400s global native/arm,24 allocated logical CPUs/192GiB/30h, common16-logical-CPU
+affinity pool, SoftMemLimit160GB, gap0.01, seed42, compaction off; size guard30M,
+native transfer1GiB. Preserve effective90000/45000/45000 coefficients and all
+existing claims/evidence. No calibration, scientific src or manuscript changes.
+
+Use a new exclusive operational claim, not the optional PR116 preparation claim.
+The approved resources do not authorize agent NPAD access/jobs, repeats or
+automatic follow-on. Full native software qualification, Ready and explicit
+merge precede pinned human CLI. Include the current-MVP2 penalty-effects
+discussion before Ready. Older pending-resource language below is historical.
+
 ## Fixed-penalty h215 acceptance and h300 continuation — 20 October2026
 
 The maintainer accepts PR115/job2217990 as success under the approved scalar

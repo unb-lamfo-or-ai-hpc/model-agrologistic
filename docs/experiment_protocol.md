@@ -1,5 +1,12 @@
 # Experimental protocol: portable summary
 
+Latest20 October: PR116 is merged and the researcher approves its30h envelope.
+The [complete h300 operational package](mvp2_scalar_h300_30h.md) qualifies five
+cold STO thread arms with original penalties and validation, exact shared
+16-logical-CPU affinity, immutable terminal/forensic collection and no automatic
+repeat/follow-on. Explicit Ready merge precedes pinned human CLI. No separate
+preparation-only NPAD execution or new agent cluster access is required.
+
 Current20 October: accepted h215 job2217990 satisfies the approved scalar
 quality target. Preserve effective penalty rates90000/45000/45000 for h300;
 the maintainer does not approve a calibration campaign. Before each PR is Ready,

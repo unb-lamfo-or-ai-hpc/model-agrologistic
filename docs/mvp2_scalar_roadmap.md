@@ -1,5 +1,14 @@
 # Scalar MVP2 roadmap — 19 October 2026
 
+Latest20 October: PR116 merged with explicit authorization; its30h h300 envelope
+is approved. The next [complete operational delivery](mvp2_scalar_h300_30h.md)
+integrates the five-arm cold block, exact coefficient/source/input/warehouse
+guards, worker/phase/owned-step control, original validation, immutable terminal/
+forensic collection, portable audit, tests and full human handoff in one PR.
+No calibration or separate preliminary NPAD run is required. Qualify final
+native software before Ready; explicit merge precedes pinned human execution.
+No agent NPAD access/job or automatic repeat/follow-on. Later stages unchanged.
+
 Current20 October: PR115/job2217990 is an accepted scalar h215 success. The
 researcher preserves its effective90000/45000/45000 penalty coefficients and
 rejects calibration as a prerequisite. Every PR includes current-MVP2
