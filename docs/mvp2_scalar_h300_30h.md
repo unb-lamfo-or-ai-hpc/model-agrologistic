@@ -1,5 +1,47 @@
 # One30h scalar h300 operational block
 
+## Current input-path correction —20 October2026
+
+PR117 merged at47c06e2c20e2756f2acb34f91bafe9b99cee396c. The human start at
+0723e2a stopped before claim creation or sbatch: the wrapper extrapolated the
+h215 directory `policy_population_v020_osrm` to h300. The maintained
+[historical readiness record](pr29_readiness_evidence.md#subsequent-300400-hub-materialization-results)
+and [new read-only confirmation](evidence/scalar_h300_input_path_20261020.json)
+instead bind the original h300 workbook and sidecar under
+`data/processed/nine_population_osrm_v1/warehouses_300/`. Correct both h300
+wrappers; do not copy inputs, add links, regenerate routes or relax hashes.
+Dedicated diagnostics identify workbook/audit and offending path before any
+claim or submission intent is created. Existing symlink refusal remains active.
+
+The researcher confirms the operational claim is absent; retain its intended
+exclusive name. This is not permission to reset an existing claim or consumed
+submission. Preserve failed bootstrap `scalar-h300-30h-driver-9haZpDHG` and all
+earlier evidence. Ready/full exact-head qualification and authorized merge must
+precede the corrected, newly pinned human CLI; no new HPC action occurs here.
+The scientific, resource and penalty contracts below are unchanged.
+
+### Observed correction qualification
+
+[PR118](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/118)
+implementationb998330 passed all four workflows, including the exact-source
+[full native Linux gate](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/actions/runs/39486576455):
+903 tests, zero failures/errors/skips,28.428s; downloaded JUnit SHA256
+`05973fcf90206994b808cab3ec951b56e19a970e9dfb180846396f12377ef53b`.
+Focused137 and related379 local Python3.13.15 cases passed. Actual Linux symlink
+refusal and Bash syntax passed, as did clean-source lint, distribution builds
+and the retained real tiny five-arm native lifecycle/collector/portable audit.
+Windows-local symlink behavior uses a controlled predicate; Windows Bash failed
+host initialization. Those are not represented as local Linux qualification.
+
+The first accidental local Python3.10 invocation failed collection, and the
+local3.13 environment lacked the build module. Neither is an accepted gate;
+Linux CI supplied the required full native/build checks. Untracked historical
+output utilities are excluded from local lint and never uploaded to this PR.
+The final documentary source must pass all checks before Ready and authorized
+merge. The new pinned human handoff then replaces0723e2a; do not modify the
+preserved bootstrap in place. Scientific source/manuscript trees are unchanged.
+Wrapper SHA256: `7a7f8ccf42620215948ae85afe2f8a625eafff8705e9914c399e9eab8e150813`.
+
 20 October2026. PR116 merged with explicit authorization at
 `1b7ef49a71e1eb2169fc6941a79474d07491a6a9`; the maintainer approved the30h
 resource envelope. This package integrates source/input/predecessor preparation,
@@ -45,7 +87,7 @@ arms. No exclusive-node request or production isolation claim is introduced.
 
 ## Frozen input and previous evidence
 
-Use existing processed policy_population_v020_osrm/warehouses_300/model_input.xlsx,
+Use existing processed nine_population_osrm_v1/warehouses_300/model_input.xlsx,
 SHA2567761cce77cf93dcba2f617714f0117c1f2ead4de0c3f27149daceba447e0c7d1.
 The original materialization audit is copied without rewriting, hash-bound and
 checked for this output, OSRM-primary driving dataset, no fallbacks, coherent

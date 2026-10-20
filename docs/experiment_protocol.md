@@ -1,5 +1,15 @@
 # Experimental protocol: portable summary
 
+Current20 October: PR117's human start stopped before claim/submission because
+the h300 wrapper extrapolated the h215 input directory. Correct to the confirmed
+historical `nine_population_osrm_v1/warehouses_300` workbook/sidecar, without
+changing hashes or scientific settings. See the [input observation](evidence/scalar_h300_input_path_20261020.json).
+Qualify diagnostics, both wrappers and no-submission regressions before Ready
+and authorized merge. Preserve every old claim/bootstrap; the intended new
+operational claim is confirmed absent, not reset. The approved30h envelope,
+14400s/arm and90000/45000/45000 rates remain unchanged. No agent HPC execution.
+Older latest/current entries below are dated historical records.
+
 Latest20 October: PR116 is merged and the researcher approves its30h envelope.
 The [complete h300 operational package](mvp2_scalar_h300_30h.md) qualifies five
 cold STO thread arms with original penalties and validation, exact shared

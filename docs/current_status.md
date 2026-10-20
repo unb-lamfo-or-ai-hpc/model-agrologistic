@@ -1,5 +1,14 @@
 # Dated research status: 20 October 2026
 
+Latest: PR117 merged at47c06e2c. Its human bootstrap passed128 tests but stopped
+before claim creation/submission at a nonexistent extrapolated h215 path.
+The researcher confirms historical h300 input under `nine_population_osrm_v1`,
+unchanged7761cce7... checksum and original OSRM audit; operational claim absent.
+Qualify the consolidated [path repair](mvp2_scalar_h300_30h.md#current-input-path-correction-20-october2026)
+before Ready/merge and newly pinned human CLI. Preserve bootstrap and all claims;
+no data, penalties, validation,30h resources or4h-per-arm budget changes.
+The following sections are preserved earlier status snapshots.
+
 Current: PR116 merged at1b7ef49a; the researcher approved the30h envelope.
 Prepare/qualify the [complete h300 operational block](mvp2_scalar_h300_30h.md),
 five cold STO arms4/1/8/2/16,14400s/arm, unchanged90000/45000/45000 penalties,

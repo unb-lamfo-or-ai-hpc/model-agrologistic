@@ -63,8 +63,11 @@ def design_review(files):
 def prepare(claim, sha, workbook, population, order, materialization_path, predecessor):
     r.require(claim.name == CLAIM and not claim.exists(), "Fresh exclusive h300 operational claim.")
     r.require(re.fullmatch(r"[0-9a-f]{40}", sha), "Full reviewed source SHA.")
-    r.require(r.file_hash(o.regular(workbook)) == h.WORKBOOK_SHA, "h300 workbook hash differs.")
-    original_audit = o.regular(materialization_path).read_bytes()
+    r.require(
+        r.file_hash(h.input_file(workbook, "h300 workbook")) == h.WORKBOOK_SHA,
+        "h300 workbook hash differs.",
+    )
+    original_audit = h.input_file(materialization_path, "h300 materialization audit").read_bytes()
     materialization(r.strict_json(original_audit))
     parent = h.verify_h215(predecessor)
     selection = r.warehouses.read_policy(population, order, o.POPULATION_SHA, o.ORDER_SHA, 300)
