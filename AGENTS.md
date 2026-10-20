@@ -1,5 +1,44 @@
 # Model Agrologistic: agent working agreement
 
+## Consolidated operational R3-A mandate —20 October2026
+
+The maintainer selected the historically materialized OSRM h215 input, confirmed
+its40edb665... checksum and supplied materialization/population/order receipts.
+Read `docs/mvp2_scalar_h215_4h.md` and its redacted decision ledger. The maintainer
+then explicitly approved global14,400s per DET/STO arm and one14h reservation,
+not24h:24 logical CPUs/192GiB/four solver threads, all other parameters/limits
+unchanged, nine Cartesian scenarios at1/9. This supersedes the prospective3600s/
+6h budget for the NEW operational package only. Preserve PR114's original proposal
+and all historical certificates/claims. Do not silently rewrite a consumed plan.
+
+Prepare and qualify ONE complete launcher/worker/phase-stop/terminal-forensic
+collector/auditor/wrapper/test/runbook PR, no agent NPAD access/probe/jobs. Ready
+and explicit authorized merge precede separately admitted pinned human CLI.
+No automatic submission/follow-on, repeat, larger instance or quality acceptance
+from merge/CI. A feasible above1% scalar gap is censored, not target attainment;
+the historical h300 capacity100% gap is not the new scalar h215 objective gap.
+Do not change scientific source, validation tolerances, penalties, solver strategy,
+input bytes or WLS path while adding the existing native-hook lifecycle seam.
+Full exact-head native Linux tests without skips, lint/build/source closure and
+complete adverse/positive integrated transport tests precede Ready.
+
+## Operational preparation clarification — 20 October2026
+
+PR114 merged with explicit authorization ated126e59. The maintainer subsequently
+confirmed its proposed6h/24 logical CPU/192GiB/four-thread/global3600s-per-arm,
+MIPGap0.01/seed42/compaction-off/SoftMemLimit160 decimal GB/1GiB-transfer profile
+and nine equiprobable Cartesian scenarios. These are now confirmed prospective
+choices, NOT submission authority. No actual h215 input was selected by that
+reply: the maintainer asks for alternatives with historical PR/date and notes
+the SQLite matrix. Read `docs/mvp2_scalar_r3a_input_lineage.md` and the current
+checkpoint. Prefer reviewing the already materialized/hash-frozen input over
+silently generating new routes; do not change the Excel loader to query SQLite.
+Keep the next launcher/worker/phase-stop/terminal-forensic collector/auditor/tests/
+human runbook in one functional package, after input selection. No new job,
+source substitution, historical claim reset or automatic repeat/follow-on.
+The older unapproved-profile statements below are superseded ONLY for the
+choices explicitly confirmed above, not for input identity or job admission.
+
 ## R3-A software mandate — 20 October2026
 
 Maintainer clarification: every h215/h300/h400/h500 attempt must store its exact

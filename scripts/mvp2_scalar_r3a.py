@@ -300,7 +300,7 @@ def preflight(spec, expectations, selection=None, observer=None):
     return original, receipt
 
 
-def run_case_software(spec, directory, expectations, selection=None):
+def run_case_software(spec, directory, expectations, selection=None, *, runner=None):
     """Qualified case engine; NEVER dispatched by this release's public CLI.
 
     Native CI calls this on public tiny cases. Future live integration requires
@@ -366,7 +366,7 @@ def run_case_software(spec, directory, expectations, selection=None):
         r2.write(directory / "warehouses_used.json", population)
         with (directory / "warehouses_used.csv").open("xb") as stream:
             stream.write(warehouses.csv_bytes(population["included"]))
-        summary = run_experiment(
+        summary = (run_experiment if runner is None else runner)(
             spec, directory / "products", loader=lambda *_: data, progress=lambda *_: None
         )
         require(

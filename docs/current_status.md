@@ -1,6 +1,53 @@
 # Dated research status: 20 October 2026
 
-## Latest — R2 accepted, R3-A software qualified pending final-head checks/merge
+## Latest — confirmed scalar h215 input, approved4h/arm and14h operational package
+
+PR115 code candidate90a8c681 passed765 exact-head native Linux cases, zero
+failures/errors/skips, all four workflows;104 focused login-safe cases passed.
+The complete tiny worker/controller/collector integration preserves original
+input/residual validation, primary-source Slurm22 Nodes/NodeList grammar and
+conservative raw bound-order diagnostics. No live
+NPAD/Slurm/WLS/private input certificate follows. See
+[qualification details](mvp2_scalar_h215_4h.md#observed-software-qualification).
+Final documentation-only checks precede Ready and explicit merge request.
+
+The researcher confirmed the historical processed OSRM workbook hash40edb665...
+and population manifest/order4134147f.../7a524b2e..., selected reuse and explicitly
+approved four hours per arm with one14h reservation. Other parameters remain
+unchanged; no job/repeat admission follows. See [ledger](evidence/scalar_h215_input_20261020.json)
+and [consolidated protocol](mvp2_scalar_h215_4h.md). One complete operational PR
+is being qualified, including worker/targeted step/phase controls, original
+validation, terminal/forensic collection and human wrapper. No NPAD access/job.
+Do not apply the old3600s proposal or interpret the old h300 capacity100% gap as
+a scalar h215 result. Full final-head native qualification precedes Ready.
+
+The older input-pending and6h/3600s statements below are preserved snapshots.
+
+## Latest — PR114 merged; prepare one integrated operational gate
+
+Subsequent20 October reply confirms the prospective resource/solver/transfer
+profile and nine equiprobable Cartesian scenarios, but not input identity or
+job submission. The researcher requests historical input alternatives and asks
+about SQLite. See the [lineage comparison](mvp2_scalar_r3a_input_lineage.md):
+the historical h215 processed OSRM candidate is40edb665..., while SQLite is its
+upstream route-cache mechanism. Check current NPAD file/hash/audit/population
+artifacts read-only before selecting; no route regeneration or live job follows.
+The earlier pending science/resource statements below predate this confirmation.
+
+20 October2026: explicitly authorized PR114 merged into develop at
+`ed126e59d5cc94ff5026ad7c19d88886847631df`. Ready head
+`71b9aaa8a3e406d0f1fd94c4b5996e9d0af32e69` passed all four checks, including
+660 native Linux tests without failures/errors/skips. No NPAD execution occurred.
+See the [integrated next-gate plan](mvp2_scalar_r3a_operational.md).
+
+Next: researcher confirms the actual processed h215 OSRM input and provenance,
+scenario design and resource/solver/transfer proposal; then the agent completes
+one operational package, qualifies it and requests merge only after Ready.
+No separate speculative gate PR, optimization CLI, automatic source substitution
+or inferred approval from the software merge. All old claims/evidence stay intact.
+The prior pending-merge snapshot below is preserved, not current status.
+
+## Preserved PR114 pre-merge software snapshot
 
 PR113 merged at5d24dc63. R2 job2217613 has independently replayed accepted small
 native evidence:9 tests/zero failures/errors/skips, fresh WLS capability and

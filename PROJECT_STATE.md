@@ -1,6 +1,142 @@
 # Model Agrologistic — MVP 2.0 checkpoint
 
-## R2 accepted on NPAD; R3-A software qualified, merge pending, execution closed
+## R3-A operational pair: input confirmed, four-hour/14h envelope approved
+
+Software qualification update20 October: consolidated
+[PR115](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/115) candidate
+`90a8c681bdd97fd958000157cff32ede595ee84e` passed all four checks. Full exact-head
+Linux765 passed, zero failures/errors/skips, including real tiny DET/STO through
+the worker, original public input validation, native phase hook, parent handshake/
+controller, original residual/cost reports, terminal collection and portable audit
+using controlled scheduler/capability/affinity fixtures. T1:104 login-safe cases
+passed. Matching local Windows candidate:706 passed/59 expired-local-Gurobi skips,
+zero failures/errors; the pre-existing pandas FutureWarning remains disclosed.
+These are software qualifications, not live Slurm/WLS/private h215 acceptance.
+
+[Exact-head native workflow](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/actions/runs/39460803112),
+downloaded JUnit SHA256
+`00131e310eedc6dae9389d8c7887ec97d3082bda9b18a5ae51b3187ad184319c`.
+Original scientific src tree666029ace80bd60417d91c43d4460a33326acf64 is unchanged;
+qualified tests tree223946008a83b5cf36a1d8736f2b792b3d8a33b3 and operational module
+blob22f80383ad1c45e167eb811f483bd09c1b00169f. The final documentation-only head
+must retain these bytes and pass all checks before Ready. Then request explicit
+PR115 merge; no merge, job or human execution CLI has been authorized/issued here.
+
+Initial CI failures were repaired within this SAME PR: resolved tool symlinks
+are hash-bound; JSON configuration round-trips are canonical; actual exported
+bound/native Runtime fields are read from original metadata; atomic exclusive
+IPC prevents partial-file reads. The native tiny case has a raw bound slightly
+above the incumbent despite native gap0; tests now explicitly retain the unchanged
+common-gap null and unqualified common quality rather than clipping data or
+weakening a scientific criterion. Source/model/tolerance changes and native-test
+skips were NOT used to make this pass. Historical certificates remain unchanged.
+Independent primary-source review of Slurm22.05.11 also corrected an old mock
+assumption: Nodes is a count; NodeList contains the node name. Six added negative
+cases and complete native transport requalification cover that correction before
+any human NPAD launch. The earlier759-case candidate is superseded, not a live
+step-format certificate. No production-isolation project or extra HPC probe added.
+
+20 October2026. Maintainer selects the historical processed h215 OSRM workbook
+and pastes a matching SHA25640edb66585daca9cc393cab1f86bde6d4528a5f34b6afc57260cc1684396da4e.
+Original materialization audit reports11 September11:43:42UTC,63,289 all-OSRM
+routes,63,504 cache hits, zero misses/writes/API calls/fallback, four normalization
+occurrences. Population manifest/order hashes4134147f.../7a524b2e... were supplied;
+SQLite listing203M confirms presence only. This is human-provided read-only output,
+not agent cluster access or a new private-input preflight certificate. Full pins
+and scope: [decision ledger](docs/evidence/scalar_h215_input_20261020.json).
+
+Maintainer explicitly approves global14,400s per arm (four hours), one serial
+h215 DET then STO pair and14h Slurm reservation, with24 allocated logical CPUs,
+192GiB,4 solver threads, MIPGap0.01, seed42, SoftMemLimit160 decimal GB,
+compaction off and1GiB expanded transfer. Nine Cartesian scenarios remain1/9
+each.11h planned phases plus3h contingency;336 allocated logical-CPU hours is
+a reservation bound, not measured CPU or a runtime/quality forecast. No submission
+or repetition is authorized by this decision/record. Prior3600s/6h PR114 proposal
+stays unchanged as history; new budget has its own claim/profile.
+
+The [complete operational package](docs/mvp2_scalar_h215_4h.md) is being qualified
+on `research/mvp2-scalar-r3a-operational`, based on PR114's actual mergeed126e59.
+It integrates input/source/R2 binding, original warehouse inventory and scalar
+case engine, fresh compute WLS/allocation, exact-step handshake, phase/shared-
+reserve control, worker/independent certificate review, terminal/forensic transfer,
+portable auditor, wrapper and full human handoff. Scientific `src`, original
+validator/tolerances, input bytes, historical claims and manuscript are unchanged.
+Ready/exact-head qualification and explicit merge precede any human execution.
+No agent NPAD call, probe, optimizer or job has occurred.
+
+Historical PR110 h300 hierarchy gap100% pertains to capacity with no economic
+pass, not the new scalar h215 total. Four hours is a reviewed bounded effort,
+not proof it will reach1%. Feasible gap-censored arms are preserved but not
+quality-certified; operational/feasibility/quality decisions remain distinct.
+h300, h400, existing-SCIP/h215, h500, repeats and automatic follow-on stay closed.
+S3/S4 cancelled; EVPI/VSS excluded; S6/article/final-only main reconciliation
+unchanged. Actual final-head results must be recorded before Ready/merge request.
+
+## Preserved input-decision handoff, before the four-hour approval
+
+## PR114 merged; resources/scenarios confirmed, input lineage decision pending
+
+20 October2026, subsequent maintainer reply: confirmed the proposed6h/24 logical
+CPU/192GiB/four-thread/global3600s-per-arm/MIPGap0.01/seed42/compaction-off/
+SoftMemLimit160 decimal GB/1GiB-transfer profile, and nine equiprobable Cartesian
+scenarios. This supersedes earlier pending-confirmation statements for those
+prospective choices ONLY. It is not job/submission authority. The researcher
+does not have the processed input path/hash available and requests alternatives
+with historical PR/date, noting the SQLite matrix.
+
+[Input lineage review](docs/mvp2_scalar_r3a_input_lineage.md) recovers a strong
+candidate: the historically materialized h215 OSRM workbook with SHA256
+`40edb66585daca9cc393cab1f86bde6d4528a5f34b6afc57260cc1684396da4e`, recorded
+on14 September in PR29 readiness and used in the September pilot; the preserved
+PR44 campaign binds that same hash/path in October. SQLite is the provenance-
+keyed routing cache used upstream to materialize Distancias, not the current
+MILP loader's input. The original processed workbook's current NPAD existence/
+bytes, materialization audit and population selection artifacts must be checked
+read-only; no rematerialization, cache access or scientific source change occurred.
+The agent recommends reviewing/reusing that frozen workbook first, not adopting
+the supplied gold or universe registry as an interchangeable model input. No
+input selection is inferred from the researcher's question. Next human action:
+review alternatives and, if choosing the historical candidate, perform the
+short read-only location/hash check documented in the response. One integrated
+operational PR follows the resolved input decision, not speculative micro-gates.
+
+## PR114 merge checkpoint, before the subsequent confirmations
+
+20 October2026. Explicitly authorized PR114 merged into develop at
+`ed126e59d5cc94ff5026ad7c19d88886847631df` from Ready head
+`71b9aaa8a3e406d0f1fd94c4b5996e9d0af32e69`. All four checks on that exact
+head passed, including660 native Linux cases with zero failures/errors/skips.
+This is a software merge, not an approved experimental envelope or submission.
+R2 job2217613 remains accepted; no new NPAD access, probe, solve, retry or
+historical claim mutation occurred.
+
+The maintainer requests the next operational gate. Its
+[consolidated preparation plan](docs/mvp2_scalar_r3a_operational.md) covers one
+integrated launcher/worker/phase-control/terminal-forensic collector/auditor/test/
+runbook delivery, not another ladder of speculative observation PRs. Preparation
+is on `research/mvp2-scalar-r3a-operational`, based on the actual PR114 merge.
+No execution code has been opened and no new PR is represented as qualified.
+
+Before implementing the admitted profile, obtain the selected processed h215
+OSRM workbook/path/checksum and population-audit/order references, confirmation
+of the proposed nine equiprobable Cartesian scenarios, and confirmation or
+revision of the proposed resources/solver/transfer profile. Questions were sent
+to the maintainer; silence is not confirmation. Supplied gold/registry references
+are not automatically adopted as the processed input, and changed source bytes
+are not silently registered. The current proposed6h/24 logical CPU/192GiB,
+four-thread3600s-per-arm/1GiB envelope remains unapproved. No optimization CLI
+is available or necessary now. The next owner is the researcher for these
+scientific/input/resource choices, then the agent for one complete qualified
+operational package. Ready, separate merge authorization and human CLI follow;
+neither the choices alone nor PR114's merge admits a job.
+
+All previous claims, archives, warehouse inventories, original certificates,
+designated WLS file, coauthor manuscript and immutable historical branch remain
+preserved. h300, h400, SCIP/h215, h500, repeats and automatic follow-on remain
+closed. The scalar roadmap and final-only post-article main reconciliation are
+unchanged. Older pending-merge statements below are historical snapshots.
+
+## Preserved PR114 qualification checkpoint
 
 20 October2026. PR113 merged into develop at
 `5d24dc63bf16d2daedf7a761f782658a28644c66`. Actual R2 job2217613 used qualified

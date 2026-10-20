@@ -29,6 +29,7 @@ jobs:
         run: |
           bash -n scripts/npad_scalar_r2.sh
           bash -n scripts/npad_scalar_r3a.sh
+          bash -n scripts/npad_scalar_h215_4h.sh
       - name: Full retained native regression on exact PR head, no HPC
         run: >-
           python -B -m pytest -p no:cacheprovider
