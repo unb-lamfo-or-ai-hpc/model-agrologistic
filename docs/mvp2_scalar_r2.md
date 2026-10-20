@@ -115,30 +115,30 @@ to the maintainer after merge. No guessed script/checksum is a usable release.
 
 ## Software qualification status
 
-Candidate `9c97d944e2bf4b96bac296b0fc0e4b084a6027fc`, PR113:
+Candidate `fc7b11a13f826f7c6d937aad70c9d350d2216cf0`, PR113:
 
 | Gate | Observed software result |
 | --- | --- |
-| T1/login-safe orchestration |78 passed; zero failures/errors/skips; no native solver or scheduler command |
-| T3 exact-head Linux |576 passed; zero failures/errors/skips; real small Gurobi/SCIP cases and real math/product collection with simulated transport |
+| T1/login-safe orchestration |79 passed; zero failures/errors/skips; no native solver or scheduler command |
+| T3 exact-head Linux |577 passed; zero failures/errors/skips; real small Gurobi/SCIP cases and real math/product collection with simulated transport |
 | Operational software | Bash syntax, raw tracked Git-byte closure and physical executable-source inventory passed; no live Slurm/WLS claim |
-| Local Windows full suite |519 passed/57 expired-local-Gurobi skips; zero failures/errors; skips are not native acceptance |
+| Local Windows full suite |520 passed/57 expired-local-Gurobi skips; zero failures/errors; skips are not native acceptance |
 | Quality | Ruff, related resource/SCIP CI and sdist/wheel build passed; one pre-existing pandas FutureWarning remains |
 
-References: [exact-head full native gate](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/actions/runs/39429136505),
-[Quality/build](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/actions/runs/39429136492),
-[SCIP](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/actions/runs/39429136500),
-[resource/lifecycle](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/actions/runs/39429136748).
+References: [exact-head full native gate](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/actions/runs/39430180159),
+[Quality/build](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/actions/runs/39430180185),
+[SCIP](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/actions/runs/39430180174),
+[resource/lifecycle](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/actions/runs/39430180237).
 CI: Python3.13.16, Gurobi13.0.3 small-model restricted license, PySCIPOpt6.2.1.
 Downloaded JUnit SHA256:
-`7e59327a191497a48e3b5bcf465405facd4a62d41930f70aae00ec82fc8c17d0`.
+`e6d4f755a9fbcee5d500ce555a0f7547294a998181c4e3498cbe1f3333498c76`.
 
 Qualified Git anchors: unchanged `src` tree
 `666029ace80bd60417d91c43d4460a33326acf64`; test tree
-`eb09f827847894bbeacbd2fe21b90158f43cc995`; R2 runtime blob
+`6f0b89fb53eedbc2e94c5e346b25c957abca2d9c`; R2 runtime blob
 `eeb9398881969659e8e1c9389eb98aff856fd08c`.
 Wrapper SHA256:
-`b62e74ccab1b8217d8dc109206376b028bf457577536b6cc829179efc6366b35`.
+`21d02841f1a0b3d7241754764fd6cc96ecab13f337dac1a28cc1e3bce2e2cddf`.
 Final checkpoint-only head must retain these code/test bytes and pass all checks
 again before Ready. Its full SHA belongs in the release comment, not a self-hash
 inside this document. No merge, NPAD job/probe/retry, WLS replacement or new
@@ -151,3 +151,7 @@ EVERY tracked file, including that editorial file. No original file, scientific
 rule or tolerance was changed. Collector tests also exercise actual pytest
 directory aliases, all original Excel completion hashes, delayed accounting,
 exclusive reentry, partial evidence, transport caps and rejected archive members.
+Printed resume commands include the absolute wrapper and required base/Python
+selection, so they also work in a fresh shell or different directory. Exact-head
+Linux tests execute that scenario with spaces in paths and a mock observation
+module (no scheduler); Windows checks its structure, not native Bash execution.

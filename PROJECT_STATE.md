@@ -12,11 +12,11 @@ terminal/forensic collection and portable replay. Preparation/qualification only
 no NPAD job/probe, merge or new experimental result is claimed here.
 
 Consolidated [PR113](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/113)
-candidate `9c97d944e2bf4b96bac296b0fc0e4b084a6027fc`:78 login-safe orchestration
-cases passed; full exact-head Linux576 passed, zero failures/errors/skips. Native
+candidate `fc7b11a13f826f7c6d937aad70c9d350d2216cf0`:79 login-safe orchestration
+cases passed; full exact-head Linux577 passed, zero failures/errors/skips. Native
 math and original DET/STO product collection/replay passed with simulated transport,
 not a live scheduler/WLS receipt. Bash syntax, actual raw Git-byte/source-inventory
-closure, Ruff, related CI and distribution build passed. Local519 passed/57
+closure, Ruff, related CI and distribution build passed. Local520 passed/57
 expired-Gurobi skips are disclosed separately, not native qualification.
 
 R1 scientific source, parameters/tolerances, manuscript, original evidence and
