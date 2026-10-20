@@ -2,6 +2,9 @@
 
 import io
 import json
+import os
+import subprocess
+import sys
 import tarfile
 import xml.etree.ElementTree as ET
 from types import SimpleNamespace
@@ -127,6 +130,65 @@ def test_profile_is_the_approved_small_envelope():
     }
     assert r.STEP_SECONDS == 900 < 1200
     assert len(r.TESTS) == 9
+
+
+def test_wrapper_printed_resume_command_survives_new_shell_and_directory(tmp_path):
+    source = r.ROOT / "scripts/npad_scalar_r2.sh"
+    if os.name != "posix":
+        # Structural Windows fallback; exact-head Linux exercises real Bash below.
+        text = source.read_text()
+        assert 'WRAPPER=$(readlink -f -- "$0")' in text
+        assert "WAIT_COMMAND=MVP2_R2_BASE=%q MVP2_R2_PYTHON=%q bash %q" in text
+        return
+    base = tmp_path / "audit parent"
+    fake_root = base / "driver/source"
+    (fake_root / "scripts").mkdir(parents=True)
+    module = fake_root / "scripts/mvp2_scalar_r2.py"
+    module.write_text("import sys; print('MOCK_OBSERVATION_ONLY',sys.argv[1])\n")
+    (fake_root / "scripts/__init__.py").write_text("")
+    inventory = {
+        "source_commit": SHA,
+        "files": {
+            p.relative_to(fake_root).as_posix(): r.digest(p.read_bytes())
+            for p in (fake_root / "scripts").glob("*.py")
+        },
+    }
+    claim = base / r.CLAIM
+    claim.mkdir()
+    r.write(claim / "source.json", inventory)
+    r.write(
+        claim / "plan.json",
+        {
+            "source_commit": SHA,
+            "source_root": str(fake_root),
+            "source_inventory_sha256": r.digest(r.encoded(inventory)),
+        },
+    )
+    wrapper = tmp_path / "cli files/operator.sh"
+    wrapper.parent.mkdir()
+    wrapper.write_bytes(source.read_bytes())
+    env = {**os.environ, "MVP2_R2_BASE": str(base), "MVP2_R2_PYTHON": sys.executable}
+    first = subprocess.run(
+        ["bash", str(wrapper.relative_to(tmp_path)), "status", SHA],
+        cwd=tmp_path,
+        env=env,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert first.returncode == 0, first.stderr
+    resume = next(
+        line.removeprefix("WAIT_COMMAND=")
+        for line in first.stdout.splitlines()
+        if line.startswith("WAIT_COMMAND=")
+    )
+    for name in ("MVP2_R2_BASE", "MVP2_R2_PYTHON"):
+        env.pop(name)
+    second = subprocess.run(
+        ["bash", "-c", resume], cwd=base, env=env, capture_output=True, text=True, check=False
+    )
+    assert second.returncode == 0, second.stderr
+    assert "MOCK_OBSERVATION_ONLY wait" in second.stdout
 
 
 @pytest.mark.parametrize(

@@ -1,6 +1,7 @@
 #!/bin/bash
 # Human-only, pinned R2 wrapper. Never installs packages or touches historical claims.
 set -euo pipefail
+WRAPPER=$(readlink -f -- "$0")
 ACTION=${1:?Use start, status, wait or collect}
 SOURCE_SHA=${2:?Require the complete reviewed source SHA}
 [[ "$SOURCE_SHA" =~ ^[0-9a-f]{40}$ ]] || { echo 'Full SHA required' >&2; exit 2; }
@@ -36,6 +37,6 @@ cd "$SRC"
 ARGS=("$ACTION" --claim "$CLAIM" --source-sha "$SOURCE_SHA")
 if [[ "$ACTION" = start ]]; then ARGS+=(--one-reviewed-r2-only); fi
 "$PY" -B -I -c 'import runpy,sys; sys.dont_write_bytecode=True; sys.path.insert(0,sys.argv.pop(1)); runpy.run_module("scripts.mvp2_scalar_r2",run_name="__main__",alter_sys=True)' "$SRC" "${ARGS[@]}"
-printf 'STATUS_COMMAND=bash %q status %s\n' "$0" "$SOURCE_SHA"
-printf 'WAIT_COMMAND=bash %q wait %s\n' "$0" "$SOURCE_SHA"
-printf 'COLLECT_COMMAND=bash %q collect %s\n' "$0" "$SOURCE_SHA"
+printf 'STATUS_COMMAND=MVP2_R2_BASE=%q MVP2_R2_PYTHON=%q bash %q status %s\n' "$BASE" "$PY" "$WRAPPER" "$SOURCE_SHA"
+printf 'WAIT_COMMAND=MVP2_R2_BASE=%q MVP2_R2_PYTHON=%q bash %q wait %s\n' "$BASE" "$PY" "$WRAPPER" "$SOURCE_SHA"
+printf 'COLLECT_COMMAND=MVP2_R2_BASE=%q MVP2_R2_PYTHON=%q bash %q collect %s\n' "$BASE" "$PY" "$WRAPPER" "$SOURCE_SHA"
