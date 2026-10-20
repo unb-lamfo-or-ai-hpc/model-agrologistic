@@ -275,10 +275,12 @@ def run_case_software(spec, directory, expectations):
 
     directory = Path(directory)
     require(not directory.exists(), "Preserve original case directory.")
-    data, receipt = preflight(spec, expectations)
-    directory.mkdir()
-    r2.write(directory / "input_receipt.json", receipt)
+    # Own the new leaf exclusively, including when its case parent is absent.
+    # Preflight failures also get a forensic receipt; no original case is reused.
+    directory.mkdir(parents=True)
     try:
+        data, receipt = preflight(spec, expectations)
+        r2.write(directory / "input_receipt.json", receipt)
         summary = run_experiment(
             spec, directory / "products", loader=lambda *_: data, progress=lambda *_: None
         )

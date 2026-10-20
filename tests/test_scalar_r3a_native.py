@@ -14,6 +14,8 @@ def test_real_det_sto_preflight_engine_collection_and_independent_receipts(tmp_p
     workbook = tmp_path / "public_tiny.xlsx"
     build_tiny_golden_excel(workbook)
     specs = [tiny_spec(workbook, mode) for mode in ("det", "sto")]
+    for spec in specs:
+        spec.solver.collect_resource_diagnostics = True
     plan, inventory = plan_for([r.spec_payload(s) for s in specs])
     claim = tmp_path / r.CLAIM
     claim.mkdir()
@@ -23,6 +25,9 @@ def test_real_det_sto_preflight_engine_collection_and_independent_receipts(tmp_p
         outcome = r.run_case_software(spec, claim / "cases" / spec.name, SHAPE)
         assert outcome["summary"]["independent_validation_status"] == "accepted"
         assert not outcome["execution_admitted"]
+        assert (
+            claim / "cases" / spec.name / "products" / spec.name / "resources/manifest.json"
+        ).is_file()
     review = r.collect(claim, SHA)
     assert review["status"] == "pair_receipts_feasible"
     assert r.audit(claim / review["archive"], review["sha256"])["status"] == review["status"]

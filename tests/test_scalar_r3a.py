@@ -5,6 +5,7 @@ import io
 import json
 import subprocess
 import tarfile
+from pathlib import Path
 
 import pytest
 
@@ -249,6 +250,29 @@ def test_preserved_case_refuses_to_run(tmp_path):
     with pytest.raises(ValueError, match="Preserve original"):
         r.run_case_software(None, directory, SHAPE)
     assert original.read_bytes() == b"unchanged"
+
+
+def test_case_preflight_failure_preserves_typed_receipt_before_solver(tmp_path, monkeypatch):
+    directory = tmp_path / "absent_parent" / "case"
+
+    def fail(*_):
+        raise ValueError("Input shape rejected")
+
+    monkeypatch.setattr(r, "preflight", fail)
+    with pytest.raises(ValueError, match="Input shape rejected"):
+        r.run_case_software(None, directory, SHAPE)
+    outcome = json.loads((directory / "case_outcome.json").read_bytes())
+    assert outcome["status"] == "case_failed" and outcome["error_kind"] == "ValueError"
+    assert not (directory / "products").exists()
+
+
+def test_top_level_case_symlink_is_never_collected(tmp_path, monkeypatch):
+    claim = materialize(tmp_path)
+    original = Path.is_symlink
+    monkeypatch.setattr(Path, "is_symlink", lambda p: p == claim / "cases" or original(p))
+    with pytest.raises(ValueError, match="Linked case root"):
+        r.collect(claim, SHA)
+    assert not (claim / "scalar-r3a-evidence.tar.gz").exists()
 
 
 def test_pair_partial_preserved_not_promoted():
