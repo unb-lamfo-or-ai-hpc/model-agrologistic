@@ -1,5 +1,20 @@
 # Dated research status: 20 October 2026
 
+## Current: accepted h215 scalar success; fixed-penalty h300 preparation
+
+PR115 is merged; job2217990 is independently replayed `pair_quality_target_met`
+with both original validators accepted. The researcher explicitly accepts this
+as success and preserves effective rates90000/45000/45000. Penalty calibration
+is not a prerequisite. Every subsequent PR discusses feasibility, complexity
+and metric interpretation using current-MVP2 evidence. See the
+[accepted ledger](evidence/scalar_h215_2217990_review.json),
+[discussion](mvp2_penalty_interpretation.md) and
+[h300 preparation](mvp2_scalar_h300_preparation.md). Existing claims and original
+certificates are preserved. No new jobs are admitted; the resource/order proposal
+and later operational launcher remain separate human-reviewed decisions.
+
+The following sections retain their dated earlier preparation state.
+
 ## Latest — confirmed scalar h215 input, approved4h/arm and14h operational package
 
 PR115 code candidate90a8c681 passed765 exact-head native Linux cases, zero

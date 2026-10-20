@@ -1,5 +1,14 @@
 # Scalar R3-A operational h215 DET/STO pair — four hours per arm
 
+Post-execution20 October: PR115 merged and job2217990 is an accepted success
+under the approved scalar contract. See the [accepted ledger](evidence/scalar_h215_2217990_review.json)
+and [penalty-effects discussion](mvp2_penalty_interpretation.md): positive allowed
+slacks preserve feasibility of these equations, runtime effects are empirical,
+and the scalar gap concerns the penalized total. Service and each artificial
+penalty remain reported. The researcher explicitly retains90000/45000/45000 and
+declines calibration as a prerequisite. Original certificates/claims remain
+unchanged; this append-only interpretation is not a retrospective rerun.
+
 20 October2026. Complete consolidated operational software delivery based on
 merged PR114 (`ed126e59d5cc94ff5026ad7c19d88886847631df`). The maintainer selects
 the historical OSRM workbook and explicitly approves the14,400s-per-arm/14h

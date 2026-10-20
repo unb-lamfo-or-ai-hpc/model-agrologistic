@@ -1,5 +1,13 @@
 # Experimental protocol: portable summary
 
+Current20 October: accepted h215 job2217990 satisfies the approved scalar
+quality target. Preserve effective penalty rates90000/45000/45000 for h300;
+the maintainer does not approve a calibration campaign. Before each PR is Ready,
+include the current-MVP2 [penalty discussion](mvp2_penalty_interpretation.md).
+The [h300 preparation](mvp2_scalar_h300_preparation.md) binds existing inputs,
+warehouse ranking, predecessor and rate guard; its CLI cannot submit or solve.
+Resource/order decisions and live operational qualification remain pending.
+
 20 October2026: [R2 actual evidence](evidence/scalar_r2_2217613_review.json) is
 accepted for the small gate on NPAD. [R3-A](mvp2_scalar_r3a.md) is prospective
 software/input/resource qualification only; no large scalar job/admission,

@@ -1,5 +1,30 @@
 # Model Agrologistic: agent working agreement
 
+## Fixed-penalty h215 acceptance and h300 continuation — 20 October2026
+
+The maintainer accepts PR115/job2217990 as success under the approved scalar
+contract and rejects a penalty calibration prerequisite. Preserve the effective
+coefficients: unmet90000, storage45000, reception45000, with original units and
+nine equiprobable Cartesian STO scenarios. Read
+`docs/mvp2_penalty_interpretation.md` and `docs/mvp2_scalar_h300_preparation.md`.
+Every PR before Ready includes the current-MVP2 discussion of penalty effects
+on feasibility, complexity and solution metrics. For already-merged PR115 add
+the discussion as a new public record; never rewrite original certificates.
+No recovery/citation of earlier research is required for that discussion.
+
+Prepare and qualify h300 autonomously. Freeze effective rates after route
+selection, not just dynamic-policy defaults; stop on drift instead of silently
+reweighting or modifying input/scientific code. Preserve exact membership and
+selection provenance for each attempt. The new h300 preparation CLI has no job
+entry point; its five-arm/one30h-allocation resource and order proposal needs review
+before an operational launcher is admitted. Ready precedes merge authorization;
+all prior claims/evidence remain untouched. Do not treat successful preparation,
+merge or historical h215 budget as permission for new NPAD jobs.
+
+The maintainer confirms NPAD allows up to48h per Slurm job. Plan the complete
+five-arm cold thread contrast in one30h reservation with3h15 contingency after
+all existing phase windows. Do not split into the superseded18h+12h proposal.
+
 ## Consolidated operational R3-A mandate —20 October2026
 
 The maintainer selected the historically materialized OSRM h215 input, confirmed
