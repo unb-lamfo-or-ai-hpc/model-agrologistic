@@ -33,6 +33,7 @@ cd "$SRC"
 ARGS=("$ACTION" --claim "$CLAIM" --source-sha "$SOURCE_SHA")
 if [[ "$ACTION" = prepare ]]; then
   ARGS+=(--workbook "${MVP2_R3A_WORKBOOK:?Select existing h215 input}" --workbook-sha256 "${MVP2_R3A_WORKBOOK_SHA256:?Pin input checksum}" --r2-archive "${MVP2_R3A_R2_ARCHIVE:?Select preserved accepted R2 archive}" --r2-sha256 57b8e4d37ee21be04dd651088d9c525b812cf82514f3d55b23e3759651da2ed6)
+  ARGS+=(--population-manifest "${MVP2_R3A_POPULATION_MANIFEST:?Select preserved population protocol}" --population-order "${MVP2_R3A_POPULATION_ORDER:?Select preserved population order CSV}" --population-manifest-sha256 "${MVP2_R3A_POPULATION_MANIFEST_SHA256:?Pin protocol hash}" --population-order-sha256 "${MVP2_R3A_POPULATION_ORDER_SHA256:?Pin population-order hash}")
 elif [[ "$ACTION" = audit ]]; then
   ARGS+=(--archive "${MVP2_R3A_ARCHIVE:?Select evidence}" --sha256 "${MVP2_R3A_ARCHIVE_SHA256:?Select expected checksum}")
 fi

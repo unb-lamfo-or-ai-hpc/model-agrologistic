@@ -67,6 +67,13 @@ core-hours, expanded transfer cap, acceptance/stop rules and dependencies.
 Aggregate compatible serial arms only where justified; no automatic follow-on
 across size gates or unapproved repeats.
 
+Every attempt must preserve warehouses_used.csv and warehouse-selection metadata:
+exact included CDAs/roles/model ordering, source and canonical-anchor hashes,
+selection criterion/seed/strata/ranks and full artifact hashes. The selected
+population must match actual loaded model membership. Included candidates are
+not facilities opened by the solver. Keep this for partial/negative attempts too;
+never reconstruct an old run's list as a retrospective original certificate.
+
 Historical application RSS roughly56–58GiB for S2 h300 and101GiB for S1 h400 is
 a sizing reference only. Different formulations/scopes cannot predict scalar
 memory/time. Large scalar budgets/core-hour forecasts are not yet justified:

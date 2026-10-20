@@ -69,6 +69,24 @@ DET remains probability one. This prospective design awaits human confirmation.
 Final documentation-only head must keep qualified code/tests and pass again before
 Ready/merge request. Original `src` tree remains666029ace80bd60417d91c43d4460a33326acf64.
 
+Maintainer clarification20 October: EVERY h215/h300/h400/h500 attempt must keep
+the exact included warehouse list and selection criterion. The SAME PR114 now
+adds bound warehouses_used.csv/json per case, actual model order/roles, frozen
+candidate rank/stratum/seed, registry/anchor/population-protocol hashes and
+membership verification against the loaded model. These are included facilities,
+not the subset opened by the solver. No old run/certificate is rewritten.
+Full requalification is required after this addition; the637-case record above
+is the prior software candidate, not acceptance of the new population feature.
+
+Read-only inspection of maintainer-supplied source files found215 gold warehouses
+(146 existing/69 candidates) and18086 unique universe CDAs (146/17940). Gold
+scenario rows: base probability1 active; baixo/alto0.25 each inactive. Only base
+is effective under active_rows. Cartesian nine defaults remain1/9 as a separate
+unapproved proposal; do not silently replace probabilities or activate rows.
+The supplied gold and registry hashes differ from committed canonical byte
+references, despite matching gold CDA membership and scenario values. Do not
+replace registered source/anchor hashes or reuse old certificates automatically.
+
 ## Historical pre-execution R2 software checkpoint — preserved
 
 ## R2 — consolidated software qualified; merge pending, no NPAD job

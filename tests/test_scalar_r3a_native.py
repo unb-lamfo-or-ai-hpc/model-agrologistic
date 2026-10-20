@@ -5,7 +5,7 @@ import os
 from scripts import mvp2_scalar_r3a as r
 from tests.test_excel_loader import build_tiny_golden_excel
 from tests.test_gurobipy_transshipment import require_gurobi_available
-from tests.test_scalar_r3a import SHA, SHAPE, plan_for, tiny_spec
+from tests.test_scalar_r3a import SHA, SHAPE, plan_for, tiny_selection, tiny_spec
 
 
 def test_real_det_sto_preflight_engine_collection_and_independent_receipts(tmp_path):
@@ -21,13 +21,15 @@ def test_real_det_sto_preflight_engine_collection_and_independent_receipts(tmp_p
     claim.mkdir()
     r.r2.write(claim / "plan.json", plan)
     r.r2.write(claim / "source.json", inventory)
+    r.r2.write(claim / "warehouse_selection.json", tiny_selection())
     for spec in specs:
-        outcome = r.run_case_software(spec, claim / "cases" / spec.name, SHAPE)
+        outcome = r.run_case_software(spec, claim / "cases" / spec.name, SHAPE, tiny_selection())
         assert outcome["summary"]["independent_validation_status"] == "accepted"
         assert not outcome["execution_admitted"]
         assert (
             claim / "cases" / spec.name / "products" / spec.name / "resources/manifest.json"
         ).is_file()
+        assert (claim / "cases" / spec.name / "warehouses_used.csv").is_file()
     review = r.collect(claim, SHA)
     assert review["status"] == "pair_receipts_feasible"
     assert r.audit(claim / review["archive"], review["sha256"])["status"] == review["status"]

@@ -16,6 +16,7 @@ from dataclasses import asdict
 from pathlib import Path, PurePosixPath
 
 from scripts import mvp2_scalar_r2 as r2
+from scripts import mvp2_warehouse_receipt as warehouses
 
 ROOT = Path(__file__).resolve().parents[1]
 CLAIM = ".mvp2-scalar-r3a-proposal-v1"
@@ -155,7 +156,18 @@ def frozen_specs(manifest_path, workbook):
     return specs, payloads
 
 
-def prepare(claim, sha, workbook, workbook_sha256, r2_archive, r2_sha256):
+def prepare(
+    claim,
+    sha,
+    workbook,
+    workbook_sha256,
+    r2_archive,
+    r2_sha256,
+    population_manifest=None,
+    population_order=None,
+    population_manifest_sha256=None,
+    population_order_sha256=None,
+):
     """Login-safe hash/plan preparation: no workbook ETL, license, Slurm or solve."""
     claim = Path(claim).absolute()
     require(claim.name == CLAIM and not claim.exists(), "Fresh exclusive proposal claim required.")
@@ -166,6 +178,17 @@ def prepare(claim, sha, workbook, workbook_sha256, r2_archive, r2_sha256):
     )
     require(file_hash(workbook) == workbook_sha256, "Selected workbook checksum differs.")
     predecessor = verify_r2(r2_archive, r2_sha256)
+    require(
+        population_manifest is not None and population_order is not None,
+        "Warehouse selection protocol required.",
+    )
+    selection = warehouses.read_policy(
+        population_manifest,
+        population_order,
+        population_manifest_sha256,
+        population_order_sha256,
+        215,
+    )
     inventory = r2.source_inventory(ROOT)
     require(inventory["source_commit"] == sha, "Exact source differs.")
     r2.verify_source(inventory, ROOT)
@@ -179,6 +202,7 @@ def prepare(claim, sha, workbook, workbook_sha256, r2_archive, r2_sha256):
         "source_root": str(ROOT),
         "r2_predecessor": predecessor,
         "manifest_sha256": file_hash(MANIFEST),
+        "warehouse_selection_sha256": r2.digest(r2.encoded(selection)),
         "cases": specs,
         "expected_shape": {
             "warehouses": 215,
@@ -197,6 +221,7 @@ def prepare(claim, sha, workbook, workbook_sha256, r2_archive, r2_sha256):
     # Both files are exclusive; any interrupted preparation remains preserved.
     claim.mkdir()
     r2.write(claim / "source.json", inventory)
+    r2.write(claim / "warehouse_selection.json", selection)
     r2.write(claim / "plan.json", plan)
     return {"status": plan["status"], "plan_sha256": file_hash(claim / "plan.json"), **closed()}
 
@@ -217,6 +242,10 @@ def load_proposal(claim, sha):
         "Proposal source anchor differs.",
     )
     budget_report({k: plan["budget"][k] for k in BUDGET})
+    require(
+        file_hash(claim / "warehouse_selection.json") == plan["warehouse_selection_sha256"],
+        "Warehouse selection anchor differs.",
+    )
     return plan
 
 
@@ -231,7 +260,7 @@ def status(claim, sha):
     }
 
 
-def preflight(spec, expectations):
+def preflight(spec, expectations, selection=None):
     """Software engine, not a CLI admission. Reuses original loader/model rules."""
     from src.logic.excel_loader import load_model_data_from_excel
     from src.logic.experiment_runner import estimate_model_size
@@ -259,6 +288,7 @@ def preflight(spec, expectations):
         "experiment": spec_payload(spec),
         "shape": expectations,
         "estimate": asdict(estimate),
+        "warehouse_selection": warehouses.membership_receipt(data, selection),
         "effective_scenario_probabilities": (
             dict(data.scenario_prob) if spec.model.mode == "sto" else {"deterministic": 1.0}
         ),
@@ -268,7 +298,7 @@ def preflight(spec, expectations):
     return original, receipt
 
 
-def run_case_software(spec, directory, expectations):
+def run_case_software(spec, directory, expectations, selection=None):
     """Qualified case engine; NEVER dispatched by this release's public CLI.
 
     Native CI calls this on public tiny cases. Future live integration requires
@@ -282,8 +312,12 @@ def run_case_software(spec, directory, expectations):
     # Preflight failures also get a forensic receipt; no original case is reused.
     directory.mkdir(parents=True)
     try:
-        data, receipt = preflight(spec, expectations)
+        data, receipt = preflight(spec, expectations, selection)
         r2.write(directory / "input_receipt.json", receipt)
+        population = receipt["warehouse_selection"]
+        r2.write(directory / "warehouses_used.json", population)
+        with (directory / "warehouses_used.csv").open("xb") as stream:
+            stream.write(warehouses.csv_bytes(population["included"]))
         summary = run_experiment(
             spec, directory / "products", loader=lambda *_: data, progress=lambda *_: None
         )
@@ -395,6 +429,11 @@ def cohort_review(files):
     require(plan["schema_version"] == "scalar-r3a-proposal-v1", "Wrong plan schema.")
     require(all(plan[k] is False for k in closed()), "Unqualified admission in plan.")
     budget_report({k: plan["budget"][k] for k in BUDGET})
+    selection = _read(files, "warehouse_selection.json")
+    require(
+        r2.digest(files["warehouse_selection.json"]) == plan["warehouse_selection_sha256"],
+        "Selection policy hash differs.",
+    )
     source = _read(files, "source.json")
     require(
         r2.digest(files["source.json"]) == plan["source_inventory_sha256"]
@@ -408,6 +447,29 @@ def cohort_review(files):
         try:
             receipt = _read(files, prefix + "/input_receipt.json")
             require(receipt["experiment"] == spec, "Input receipt differs.")
+            population = _read(files, prefix + "/warehouses_used.json")
+            require(
+                population == receipt["warehouse_selection"]
+                and population["policy_sha256"] == plan["warehouse_selection_sha256"],
+                "Warehouse attempt receipt differs.",
+            )
+            csv = files[prefix + "/warehouses_used.csv"]
+            require(
+                r2.digest(csv) == population["csv_sha256"]
+                and csv == warehouses.csv_bytes(population["included"]),
+                "Warehouse list hash/rows differ.",
+            )
+            require(
+                population["count"]
+                == plan["expected_shape"]["warehouses"]
+                == len(population["included"]),
+                "Warehouse count receipt differs.",
+            )
+            require(
+                {m["warehouse_id"] for m in population["included"]}
+                == {m["warehouse_id"] for m in selection["members"]},
+                "Warehouse selection membership differs.",
+            )
             require(receipt["shape"] == plan["expected_shape"], "Input shape contract differs.")
             require(
                 receipt["estimate"]["period_count"] == receipt["shape"]["periods"],
@@ -460,7 +522,10 @@ def collect(claim, sha):
     # With no admitted jobs, only plan/source may be collected by the public CLI.
     require(not (claim / "job.json").exists(), "Unexpected job; do not guess terminal state.")
     require(not (claim / "cases").is_symlink(), "Linked case root is not transferable.")
-    files = {n: (claim / n).read_bytes() for n in ("plan.json", "source.json")}
+    files = {
+        n: (claim / n).read_bytes()
+        for n in ("plan.json", "source.json", "warehouse_selection.json")
+    }
     for path in sorted((claim / "cases").rglob("*")):
         require(not path.is_symlink(), "Linked evidence is not transferable.")
         if path.is_file():
@@ -582,6 +647,10 @@ def main(argv=None):
     parser.add_argument("--workbook-sha256")
     parser.add_argument("--r2-archive", type=Path)
     parser.add_argument("--r2-sha256")
+    parser.add_argument("--population-manifest", type=Path)
+    parser.add_argument("--population-order", type=Path)
+    parser.add_argument("--population-manifest-sha256")
+    parser.add_argument("--population-order-sha256")
     parser.add_argument("--archive", type=Path)
     parser.add_argument("--sha256")
     args = parser.parse_args(argv)
@@ -606,6 +675,10 @@ def main(argv=None):
                 args.workbook_sha256,
                 args.r2_archive,
                 args.r2_sha256,
+                args.population_manifest,
+                args.population_order,
+                args.population_manifest_sha256,
+                args.population_order_sha256,
             )
         else:
             report = {"status": status, "collect": collect}[args.action](

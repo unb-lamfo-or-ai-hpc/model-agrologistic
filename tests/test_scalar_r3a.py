@@ -6,6 +6,7 @@ import json
 import subprocess
 import tarfile
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 
@@ -17,6 +18,30 @@ from tests.test_excel_loader import build_tiny_golden_excel
 
 SHA = "a" * 40
 SHAPE = {"warehouses": 2, "periods": 2, "det_scenarios": 1, "sto_scenarios": 1}
+
+
+def tiny_selection():
+    return {
+        "schema_version": "warehouse-selection-policy-v1",
+        "target_population": 2,
+        "selection_method": "public_tiny_fixture",
+        "criterion": "Use both public golden fixture warehouses; no sampling or solver selection.",
+        "selection_seed": None,
+        "members": [
+            {
+                "warehouse_id": "W1",
+                "population_role": "existing",
+                "selection_stratum": "fixture_existing",
+                "candidate_rank": None,
+            },
+            {
+                "warehouse_id": "W2",
+                "population_role": "candidate",
+                "selection_stratum": "fixture_candidate",
+                "candidate_rank": 1,
+            },
+        ],
+    }
 
 
 def tiny_spec(workbook, mode):
@@ -35,6 +60,7 @@ def plan_for(specs):
         "schema_version": "scalar-r3a-proposal-v1",
         "source_commit": SHA,
         "source_inventory_sha256": r.r2.digest(r.r2.encoded(inventory)),
+        "warehouse_selection_sha256": r.r2.digest(r.r2.encoded(tiny_selection())),
         "cases": specs,
         "expected_shape": SHAPE,
         "budget": r.budget_report(r.BUDGET),
@@ -101,11 +127,23 @@ def fixture():
                 "experiment": spec,
                 "shape": SHAPE,
                 "estimate": {"period_count": 2, "scenario_count": 1},
+                "warehouse_selection": r.warehouses.membership_receipt(
+                    SimpleNamespace(
+                        warehouses=["W1", "W2"],
+                        existing_warehouses=["W1"],
+                        candidate_warehouses=["W2"],
+                    ),
+                    tiny_selection(),
+                ),
             }
         )
+        population = json.loads(files[prefix + "/input_receipt.json"])["warehouse_selection"]
+        files[prefix + "/warehouses_used.json"] = r.r2.encoded(population)
+        files[prefix + "/warehouses_used.csv"] = r.warehouses.csv_bytes(population["included"])
     plan, inventory = plan_for(specs)
     files["plan.json"] = r.r2.encoded(plan)
     files["source.json"] = r.r2.encoded(inventory)
+    files["warehouse_selection.json"] = r.r2.encoded(tiny_selection())
     return files
 
 
@@ -195,9 +233,19 @@ def test_prepare_requires_matching_predecessor_and_input_before_claim(tmp_path, 
         r.prepare(claim, SHA, workbook, "0" * 64, tmp_path / "none", r.R2_SHA)
     assert not claim.exists()
     monkeypatch.setattr(r, "verify_r2", lambda *_: {"archive_sha256": r.R2_SHA})
+    monkeypatch.setattr(r.warehouses, "read_policy", lambda *_: tiny_selection())
     monkeypatch.setattr(r.r2, "source_inventory", lambda *_: {"source_commit": SHA, "files": {}})
     monkeypatch.setattr(r.r2, "verify_source", lambda *_: None)
-    report = r.prepare(claim, SHA, workbook, r.file_hash(workbook), tmp_path / "none", r.R2_SHA)
+    report = r.prepare(
+        claim,
+        SHA,
+        workbook,
+        r.file_hash(workbook),
+        tmp_path / "none",
+        r.R2_SHA,
+        tmp_path / "protocol",
+        tmp_path / "order",
+    )
     assert report["status"] == "prepared_execution_closed"
     assert r.status(claim, SHA)["status"] == "proposal_only_no_job_admitted"
     original = (claim / "plan.json").read_bytes()
@@ -246,7 +294,7 @@ def test_model_size_guard_precedes_solver(tmp_path):
 def test_preflight_records_effective_probabilities_not_mean_demand(tmp_path, mode):
     workbook = tmp_path / "tiny.xlsx"
     build_tiny_golden_excel(workbook)
-    _, receipt = r.preflight(tiny_spec(workbook, mode), SHAPE)
+    _, receipt = r.preflight(tiny_spec(workbook, mode), SHAPE, tiny_selection())
     probabilities = receipt["effective_scenario_probabilities"]
     assert sum(probabilities.values()) == 1.0
     assert probabilities == ({"deterministic": 1.0} if mode == "det" else {"base": 1.0})

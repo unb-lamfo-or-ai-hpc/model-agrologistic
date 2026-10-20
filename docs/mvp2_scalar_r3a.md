@@ -131,6 +131,37 @@ for the original archive. Neither a portable review nor a feasible pair admits h
 
 ## h300 and subsequent roadmap
 
+### Included warehouse lists and selection criteria, all populations
+
+Maintainer requirement20 October: preserve an exact inventory for EACH h215,
+h300,h400,h500 attempt, including partial/negative cases. The existing population
+auditor's manifest/order CSV are selected with explicit hashes, not regenerated
+silently. Its frozen nested ranking protects146 existing and69 canonical anchor
+candidates, then extends deterministic proportional strata over UF, type and
+static-capacity quartile with the recorded seed. Prospective candidate counts
+are69/154/254/354 at215/300/400/500. Source-registry construction/filtering and
+experimental subset selection are distinct criteria; preserve both references.
+Do not claim how the original69 anchor candidates were initially chosen beyond
+the documented canonical anchor provenance.
+
+Each case binds warehouses_used.csv and warehouses_used.json to its input receipt
+and cohort inventory. Store actual model order, CDA, existing/candidate role,
+selection stratum/rank, criterion/seed, original registry/anchor/audit/order hashes
+and ordered-list/CSV hashes. Compare the entire selected ID/role set against the
+loaded model BEFORE optimization. A substituted, duplicate, omitted or wrong-role
+warehouse fails closed. These are facilities included in the MILP, NOT optimizer
+opening decisions; preserve warehouse_decisions.csv separately. Raw lists stay
+in private transfer artifacts, not public Git. Old certificates remain unchanged.
+
+Read-only supplied gold workbook:215 IDs,146 existing/69 candidates, matching
+canonical anchor membership. Its Cenarios rows declare base1 active, baixo/alto
+0.25 inactive. Activating all as-is would sum to1.5, not a valid distribution;
+do not automatically normalize or substitute25/50/25. The supplied complete
+registry has18086 unique IDs,146 existing/17940 candidates. Supplied XLSX byte
+hashes differ from registered references. Matching counts/IDs/scenario rows are
+not bit identity or whole-workbook equivalence: source review is needed before
+substitution. No supplied workbook was edited, saved or adopted as a new source.
+
 After separately admitted/audited h215, review actual scalar incumbent, bound/gap,
 validation, construction/optimization/return timings, CPU/affinity/SMT, native/
 process/cgroup memory and evidence volume. Then prepare the h300 input/resource
