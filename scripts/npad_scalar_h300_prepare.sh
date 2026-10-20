@@ -33,7 +33,7 @@ cd "$SRC"
 "$PY" -B -I -c 'import sys; assert sys.version_info[:2]==(3,13); sys.path.insert(0,sys.argv[1]); from scripts.mvp2_scalar_r2 import source_inventory,verify_source; i=source_inventory(); assert i["source_commit"]==sys.argv[2]; verify_source(i); print("RAW_HEAD_BYTES=VERIFIED; H300_PREPARATION_ONLY")' "$SRC" "$SOURCE_SHA"
 if [[ "$ACTION" = prepare ]]; then
   "$PY" -B -I -c 'import runpy,sys; sys.path.insert(0,sys.argv.pop(1)); runpy.run_module("ruff",run_name="__main__")' "$SRC" check .
-  "$PY" -B -I -c 'import runpy,sys; sys.path.insert(0,sys.argv.pop(1)); runpy.run_module("pytest",run_name="__main__")' "$SRC" -q -p no:cacheprovider tests/test_scalar_h300.py --basetemp "$DRIVER/tests" --junitxml "$DRIVER/regression.xml"
+  "$PY" -B -I -c 'import runpy,sys; sys.path.insert(0,sys.argv.pop(1)); runpy.run_module("pytest",run_name="__main__")' "$SRC" -q -p no:cacheprovider tests/test_scalar_h300.py tests/test_scalar_h300_lineage.py tests/test_warehouse_receipt.py --basetemp "$DRIVER/tests" --junitxml "$DRIVER/regression.xml"
   "$PY" -B -I -c 'import sys,xml.etree.ElementTree as e; s=list(e.parse(sys.argv[1]).getroot().iter("testsuite")); assert s and sum(int(x.get("tests",0)) for x in s)>0 and all(int(x.get(k,0))==0 for x in s for k in ("failures","errors","skipped")); print("H300_PREPARATION_REGRESSION=VERIFIED; NO_SOLVER_OR_JOB")' "$DRIVER/regression.xml"
 fi
 ARGS=("$ACTION" --claim "$CLAIM" --source-sha "$SOURCE_SHA")

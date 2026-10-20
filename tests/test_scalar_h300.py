@@ -125,6 +125,11 @@ def test_no_execution_entry_point(action, monkeypatch):
 def sample_files():
     population = {
         "target_population": 300,
+        "checkpoint_derivation": h.r.warehouses.h300_derivation(),
+        "materialized_membership": {
+            "workbook_sha256": h.WORKBOOK_SHA,
+            "ordered_ids": [f"W{i}" for i in range(300)],
+        },
         "population_manifest_sha256": h.previous.POPULATION_SHA,
         "population_order_sha256": h.previous.ORDER_SHA,
         "selection_method": "deterministic nested ranking",
@@ -305,7 +310,15 @@ def test_complete_prepare_collect_audit_and_exclusive_reentry(tmp_path, monkeypa
     workbook.write_bytes(b"public hash-only preparation fixture, not Excel ETL")
     monkeypatch.setattr(h, "WORKBOOK_SHA", h.r.file_hash(workbook))
     monkeypatch.setattr(
-        h.r.warehouses, "read_policy", lambda *_: json.loads(files["warehouse_selection.json"])
+        h,
+        "read_selection",
+        lambda *_: {
+            **json.loads(files["warehouse_selection.json"]),
+            "materialized_membership": {
+                "workbook_sha256": h.WORKBOOK_SHA,
+                "ordered_ids": [f"W{i}" for i in range(300)],
+            },
+        },
     )
     monkeypatch.setattr(h, "verify_h215", lambda _: json.loads(files["plan.json"])["predecessor"])
     monkeypatch.setattr(h.r.r2, "source_inventory", lambda _: json.loads(files["source.json"]))

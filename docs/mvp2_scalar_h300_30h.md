@@ -1,5 +1,17 @@
 # One30h scalar h300 operational block
 
+## Current nested-population correction —20 October2026
+
+PR118 merged. Source66d8faa reached the original population manifest but stopped
+before claim/sbatch: its checkpoint list omits300. The historical300/400 builder
+preserved the original ranking. The [consolidated lineage repair](mvp2_scalar_h300_population_repair.md)
+keeps original hashes and explicitly binds the approved intermediate300 level,
+then compares actual Excel IDs/roles before claim creation. Both wrappers include
+real historical-shape manifest/order/XLSX regression. No resource, penalty,
+scientific, input-byte or original-evidence changes. Use a newly pinned human
+handoff only after Ready, full qualification and authorized merge. Older hashes
+and qualification below belong to preserved earlier attempts, not this correction.
+
 ## Current input-path correction —20 October2026
 
 PR117 merged at47c06e2c20e2756f2acb34f91bafe9b99cee396c. The human start at

@@ -1,5 +1,37 @@
 # Model Agrologistic — MVP 2.0 checkpoint
 
+## h300 nested-population integration repair after PR118 —20 October2026
+
+PR118 merged at2f6237f62374fc241ab72f5d0bf5ebdb150a591f. Human source66d8faa
+passed137 tests and workbook/audit/predecessor/hash checks, then rejected300
+because the original population manifest lists215/500/... checkpoints. The
+failure precedes claim creation and sbatch; preserve bootstrap
+`scalar-h300-30h-driver-c6L4Gd2k`. No scalar h300 result exists from this attempt.
+
+Maintainer read-only metadata confirms the historical300/400 projection retained
+candidate ranks. The original order7a524b2e... produced projected order001b11a6...
+and pre-OSRM workbook37c80e25..., subsequently materialized as unchanged7761cce7....
+See the [ledger](docs/evidence/scalar_h300_population_lineage_20261020.json) and
+[consolidated correction](docs/mvp2_scalar_h300_population_repair.md). Selection
+remains146 existing +154 candidates, including69 anchors +85 additional ranks.
+
+Repair only the explicitly reviewed h300 intermediate-checkpoint interpretation.
+Preserve all original hashes; do not replace the original order with the projected
+CSV or regenerate data. Compare actual Excel warehouse IDs/roles to the frozen
+selection before claim creation; preserve observed order in the bound policy.
+Both wrappers include real historical-shape manifest/order/XLSX integration and
+negative tests, not just mocked policy returns. Full scientific validation still
+runs on compute. Complete exact-head native Linux/build qualification before
+Ready and explicit merge request; no job or automatic retry during preparation.
+
+The30h envelope,14400s/arm, threads4/1/8/2/16, all scientific settings and
+90000/45000/45000 penalties remain unchanged. Slacks relax specified constraints,
+not general infeasibility; search complexity can change non-monotonically.
+Relative gap concerns penalized total, not zero slack or economic subtotal.
+Preserve all claims/certificates and both failed bootstraps. After authorized
+merge, deliver pinned complete human CLI; do not modify old checkouts in place.
+Earlier snapshots below are historical and do not override this diagnosis.
+
 ## h300 input-path repair after PR117 merge —20 October2026
 
 [Consolidated PR118](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/118)

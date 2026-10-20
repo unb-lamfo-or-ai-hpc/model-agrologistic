@@ -1,5 +1,18 @@
 # Model Agrologistic: agent working agreement
 
+## h300 historical nested-population repair —20 October2026
+
+PR118 merged; human source66d8faa stopped before claim creation/submission at
+the population-checkpoint guard. Read the current PROJECT_STATE header and
+`docs/mvp2_scalar_h300_population_repair.md`. Original checkpoints omit300;
+historical300/400 materialization preserved candidate ranks. Qualify the bounded
+h300 interpretation and actual workbook ID/role comparison before claim creation
+in one consolidated PR, with real manifest/order/XLSX integration tests. Preserve
+all hashes, rank/anchor rules, parameters, penalties, claims and failed bootstraps.
+No new runtime dependency on the projected CSV, data rewrite, jobs or resampling.
+Full exact-head qualification before Ready/merge request; pinned human CLI only
+after authorized merge. Earlier path-repair statements are historical snapshots.
+
 ## h300 path repair —20 October2026
 
 PR117 merged. Its human bootstrap stopped before claim creation or sbatch;
