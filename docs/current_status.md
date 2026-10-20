@@ -1,5 +1,19 @@
 # Dated research status: 20 October 2026
 
+## Latest — confirmed scalar h215 input, approved4h/arm and14h operational package
+
+The researcher confirmed the historical processed OSRM workbook hash40edb665...
+and population manifest/order4134147f.../7a524b2e..., selected reuse and explicitly
+approved four hours per arm with one14h reservation. Other parameters remain
+unchanged; no job/repeat admission follows. See [ledger](evidence/scalar_h215_input_20261020.json)
+and [consolidated protocol](mvp2_scalar_h215_4h.md). One complete operational PR
+is being qualified, including worker/targeted step/phase controls, original
+validation, terminal/forensic collection and human wrapper. No NPAD access/job.
+Do not apply the old3600s proposal or interpret the old h300 capacity100% gap as
+a scalar h215 result. Full final-head native qualification precedes Ready.
+
+The older input-pending and6h/3600s statements below are preserved snapshots.
+
 ## Latest — PR114 merged; prepare one integrated operational gate
 
 Subsequent20 October reply confirms the prospective resource/solver/transfer

@@ -1,5 +1,45 @@
 # Model Agrologistic — MVP 2.0 checkpoint
 
+## R3-A operational pair: input confirmed, four-hour/14h envelope approved
+
+20 October2026. Maintainer selects the historical processed h215 OSRM workbook
+and pastes a matching SHA25640edb66585daca9cc393cab1f86bde6d4528a5f34b6afc57260cc1684396da4e.
+Original materialization audit reports11 September11:43:42UTC,63,289 all-OSRM
+routes,63,504 cache hits, zero misses/writes/API calls/fallback, four normalization
+occurrences. Population manifest/order hashes4134147f.../7a524b2e... were supplied;
+SQLite listing203M confirms presence only. This is human-provided read-only output,
+not agent cluster access or a new private-input preflight certificate. Full pins
+and scope: [decision ledger](docs/evidence/scalar_h215_input_20261020.json).
+
+Maintainer explicitly approves global14,400s per arm (four hours), one serial
+h215 DET then STO pair and14h Slurm reservation, with24 allocated logical CPUs,
+192GiB,4 solver threads, MIPGap0.01, seed42, SoftMemLimit160 decimal GB,
+compaction off and1GiB expanded transfer. Nine Cartesian scenarios remain1/9
+each.11h planned phases plus3h contingency;336 allocated logical-CPU hours is
+a reservation bound, not measured CPU or a runtime/quality forecast. No submission
+or repetition is authorized by this decision/record. Prior3600s/6h PR114 proposal
+stays unchanged as history; new budget has its own claim/profile.
+
+The [complete operational package](docs/mvp2_scalar_h215_4h.md) is being qualified
+on `research/mvp2-scalar-r3a-operational`, based on PR114's actual mergeed126e59.
+It integrates input/source/R2 binding, original warehouse inventory and scalar
+case engine, fresh compute WLS/allocation, exact-step handshake, phase/shared-
+reserve control, worker/independent certificate review, terminal/forensic transfer,
+portable auditor, wrapper and full human handoff. Scientific `src`, original
+validator/tolerances, input bytes, historical claims and manuscript are unchanged.
+Ready/exact-head qualification and explicit merge precede any human execution.
+No agent NPAD call, probe, optimizer or job has occurred.
+
+Historical PR110 h300 hierarchy gap100% pertains to capacity with no economic
+pass, not the new scalar h215 total. Four hours is a reviewed bounded effort,
+not proof it will reach1%. Feasible gap-censored arms are preserved but not
+quality-certified; operational/feasibility/quality decisions remain distinct.
+h300, h400, existing-SCIP/h215, h500, repeats and automatic follow-on stay closed.
+S3/S4 cancelled; EVPI/VSS excluded; S6/article/final-only main reconciliation
+unchanged. Actual final-head results must be recorded before Ready/merge request.
+
+## Preserved input-decision handoff, before the four-hour approval
+
 ## PR114 merged; resources/scenarios confirmed, input lineage decision pending
 
 20 October2026, subsequent maintainer reply: confirmed the proposed6h/24 logical

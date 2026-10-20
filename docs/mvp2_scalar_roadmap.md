@@ -1,5 +1,16 @@
 # Scalar MVP2 roadmap — 19 October 2026
 
+Latest20 October decision: the processed historical h215 OSRM input is selected
+after the human checksum confirmation. The maintainer approves14,400s/arm and
+one14h serial DET/STO reservation (24 logical CPUs/192GiB/four solver threads),
+not a new thread grid or an automatic repeat. All other settings stay unchanged.
+The [complete operational delivery](mvp2_scalar_h215_4h.md) integrates launcher,
+worker, phase/targeted-step controls, terminal/forensic collector, portable audit,
+tests and full human handoff in one PR. Ready/authorized merge precede separately
+admitted human execution; no agent NPAD access/jobs. New scalar h215 actual
+measurements still govern later h300/h400/SCIP/h500 proposals. Older3600s/6h
+proposal and input-pending text below are historical, not current decisions.
+
 Subsequent20 October decision: researcher confirms the R3-A resource/solver/
 transfer proposal and nine equiprobable Cartesian scenarios. Actual input
 selection remains pending the requested [historical lineage review](mvp2_scalar_r3a_input_lineage.md)

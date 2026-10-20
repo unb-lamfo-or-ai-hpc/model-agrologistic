@@ -1,5 +1,15 @@
 # R3-A input alternatives and SQLite lineage —20 October2026
 
+Subsequent20 October maintainer reply selects reuse of the historical processed
+h215 workbook and supplies its exact matching checksum, the original OSRM audit
+and population manifest/order hashes. See the [confirmation ledger](evidence/scalar_h215_input_20261020.json).
+The audit resolves the earlier unknown creation date:11 September2026 at
+11:43:42UTC (08:43:42 America/Sao_Paulo). It reports63,504 cache hits,63,289
+all-OSRM routes and zero misses/writes/API requests/fallback. Current SQLite
+presence/203M listing is distinct from a verified database snapshot hash. No
+agent database/workbook access or regeneration occurred. The alternatives and
+pending-input discussion below predate this selection and are preserved history.
+
 The maintainer confirmed the prospective resource/solver/transfer profile and
 nine equiprobable Cartesian scenarios, but does not have the processed h215
 path/hash available. This review answers the request for historical PRs/dates

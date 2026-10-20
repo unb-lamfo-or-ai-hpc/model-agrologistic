@@ -1,5 +1,15 @@
 # R3-A next operational gate — one integrated delivery, execution closed
 
+Latest20 October update: the maintainer selects the processed h215 OSRM input
+after matching the historical hash and explicitly approves14,400s per arm/14h
+reservation. The [complete operational protocol](mvp2_scalar_h215_4h.md) and
+[decision ledger](evidence/scalar_h215_input_20261020.json) supersede the pending
+choices and3600s/6h proposal below for the NEW integrated package. The original
+PR114 CLI remains closed; the separate human-acknowledged wrapper is being
+qualified as one functional PR. No NPAD access/job, execution handoff or Ready
+claim occurs during software preparation. The earlier next-delivery specification
+below is preserved for provenance, not the current input/budget decision.
+
 20 October2026. PR114 merged with explicit authorization into develop at
 `ed126e59d5cc94ff5026ad7c19d88886847631df`, from Ready source
 `71b9aaa8a3e406d0f1fd94c4b5996e9d0af32e69`.
