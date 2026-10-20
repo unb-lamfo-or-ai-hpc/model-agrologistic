@@ -12,8 +12,8 @@ R1–R5 below do not reopen cancelled S3/S4.
 R1 implementation and small native software qualification are consolidated in
 [PR112](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/112);
 [recorded results](mvp2_scalar_r1_qualification.md) do not admit R2 or NPAD.
-PR111 is closed as superseded, with its branch/history preserved. Merge remains
-subject to final-head checks, Ready and explicit authorization.
+PR111 is closed as superseded, with its branch/history preserved. PR112 has merged;
+R2 remains subject to final-head checks, Ready and explicit merge authorization.
 
 | Stage | Complete functional package | Acceptance / dependency |
 | --- | --- | --- |

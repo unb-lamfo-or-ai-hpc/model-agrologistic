@@ -66,6 +66,14 @@ existing claim and never submits again. Missing/uncertain job receipts consume
 the claim and require forensic review, not deletion, discovery guesses or retry.
 No historical claim is inspected or reused.
 
+Exclusive batch/native entry receipts prevent reentry from repeating even the
+license probe. Expected native accounting arriving after a successful root is
+treated as pending rather than permanently rejecting an incomplete snapshot.
+Unexpected numeric steps or observed times exceeding the approved envelope are
+not accepted. Normal pytest `*current` directory aliases are omitted only when
+they point inside the owned case directory; their real artifacts are archived
+once. Other linked evidence is rejected and never followed.
+
 Acceptance requires exact9-case JUnit inventory/zero failures/errors/skips; fresh
 accepted WLS capability; matched source/plan/job; correct observed allocation;
 root/batch/numeric native step COMPLETED0:0; preserved, independently accepted
