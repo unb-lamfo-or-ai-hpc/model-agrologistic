@@ -2,6 +2,14 @@
 
 ## Latest — confirmed scalar h215 input, approved4h/arm and14h operational package
 
+PR115 code candidate d791a99f passed759 exact-head native Linux cases, zero
+failures/errors/skips, all four workflows;98 focused login-safe cases passed.
+The complete tiny worker/controller/collector integration preserves original
+input/residual validation and conservative raw bound-order diagnostics. No live
+NPAD/Slurm/WLS/private input certificate follows. See
+[qualification details](mvp2_scalar_h215_4h.md#observed-software-qualification).
+Final documentation-only checks precede Ready and explicit merge request.
+
 The researcher confirmed the historical processed OSRM workbook hash40edb665...
 and population manifest/order4134147f.../7a524b2e..., selected reuse and explicitly
 approved four hours per arm with one14h reservation. Other parameters remain

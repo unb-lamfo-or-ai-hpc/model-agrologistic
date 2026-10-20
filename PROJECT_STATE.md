@@ -2,6 +2,35 @@
 
 ## R3-A operational pair: input confirmed, four-hour/14h envelope approved
 
+Software qualification update20 October: consolidated
+[PR115](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/115) candidate
+`d791a99f7b4cbdbbbcfc6b844700008feb801b59` passed all four checks. Full exact-head
+Linux759 passed, zero failures/errors/skips, including real tiny DET/STO through
+the worker, original public input validation, native phase hook, parent handshake/
+controller, original residual/cost reports, terminal collection and portable audit
+using controlled scheduler/capability/affinity fixtures. T1:98 login-safe cases
+passed. Prior local Windows candidate:700 passed/59 expired-local-Gurobi skips,
+zero failures/errors; the pre-existing pandas FutureWarning remains disclosed.
+These are software qualifications, not live Slurm/WLS/private h215 acceptance.
+
+[Exact-head native workflow](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/actions/runs/39459319869),
+downloaded JUnit SHA256
+`f10122874fba6544568325483ecd4063287eb5f5cb20586c3fd346509849c482`.
+Original scientific src tree666029ace80bd60417d91c43d4460a33326acf64 is unchanged;
+qualified tests tree5371d8ce0f6a0a37321240ddd49732d11278229d and operational module
+blob8d7ab864b7ded0a23042c86295541a66fe4c09f1. The final documentation-only head
+must retain these bytes and pass all checks before Ready. Then request explicit
+PR115 merge; no merge, job or human execution CLI has been authorized/issued here.
+
+Initial CI failures were repaired within this SAME PR: resolved tool symlinks
+are hash-bound; JSON configuration round-trips are canonical; actual exported
+bound/native Runtime fields are read from original metadata; atomic exclusive
+IPC prevents partial-file reads. The native tiny case has a raw bound slightly
+above the incumbent despite native gap0; tests now explicitly retain the unchanged
+common-gap null and unqualified common quality rather than clipping data or
+weakening a scientific criterion. Source/model/tolerance changes and native-test
+skips were NOT used to make this pass. Historical certificates remain unchanged.
+
 20 October2026. Maintainer selects the historical processed h215 OSRM workbook
 and pastes a matching SHA25640edb66585daca9cc393cab1f86bde6d4528a5f34b6afc57260cc1684396da4e.
 Original materialization audit reports11 September11:43:42UTC,63,289 all-OSRM

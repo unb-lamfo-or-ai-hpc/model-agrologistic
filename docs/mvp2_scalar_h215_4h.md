@@ -176,3 +176,35 @@ changed by a CLI flag. T3 requires full exact-head Linux native suite with zero
 native skips, Ruff, source closure, all Bash syntax and distribution build.
 Local Windows expired-license skips are disclosed separately, not native acceptance.
 Record actual final-head results before Ready; no scientific/NPAD result is claimed.
+
+## Observed software qualification
+
+Candidate `d791a99f7b4cbdbbbcfc6b844700008feb801b59` on20 October2026:
+
+| Gate | Result and scope |
+| --- | --- |
+| T1 login-safe |98 passed; no native solve, live license probe or scheduler |
+| T3 exact-head Linux |759 passed, zero failures/errors/skips, including real Gurobi/SCIP |
+| T2 complete tiny pipeline |Actual worker/native phase hook, original public input/residual validation, two arms, parent/controller, terminal collector and portable audit; controlled local transport/capability/affinity, NOT NPAD/Slurm/WLS proof |
+| Other checks |All four workflows passed, including Ruff/build, Bash syntax and raw tracked/physical source closure |
+| Local Windows earlier candidate |700 passed/59 expired-local-Gurobi skips; zero failures/errors; not native acceptance |
+| Scientific scope |src tree666029ace80bd60417d91c43d4460a33326acf64, data/manuscript unchanged; old claims and certificates preserved |
+
+[Native CI](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/actions/runs/39459319869).
+Downloaded JUnit SHA256:
+`f10122874fba6544568325483ecd4063287eb5f5cb20586c3fd346509849c482`.
+Qualified operational module blob8d7ab864b7ded0a23042c86295541a66fe4c09f1;
+tests tree5371d8ce0f6a0a37321240ddd49732d11278229d;
+reused case-engine blob5f39c46596c7e42506921f456032955e00295562.
+Wrapper SHA256:
+`7c7bcf62bb08284bb5be931b948728e8df7e89be267cf02267fafb9d8317992c`.
+Final documentation-only head must preserve these bytes and pass again before Ready.
+
+Initial failures remain visible in CI history. Repairs preserve, rather than
+bypass, the original model admission/validation: canonical tuple/list plan
+serialization, resolved executable symlink identity, metadata-bound extraction,
+atomic exclusive IPC and explicit native/common-gap rounding diagnostics.
+The1e-5/1e-8 residual tolerances and conservative common-gap rule are unchanged;
+no test was skipped to hide the native rounding outcome. One pre-existing pandas
+FutureWarning remains. No live allocation, HPC scalability result or fresh local
+private-input mathematical re-solve is claimed.
