@@ -313,7 +313,7 @@ def test_preserved_case_refuses_to_run(tmp_path):
 def test_case_preflight_failure_preserves_typed_receipt_before_solver(tmp_path, monkeypatch):
     directory = tmp_path / "absent_parent" / "case"
 
-    def fail(*_):
+    def fail(*_, **_kwargs):
         raise ValueError("Input shape rejected")
 
     monkeypatch.setattr(r, "preflight", fail)

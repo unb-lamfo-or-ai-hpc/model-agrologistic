@@ -9,7 +9,8 @@ import pytest
 
 from scripts import mvp2_scalar_r3a as r
 from scripts import mvp2_warehouse_receipt as w
-from tests.test_scalar_r3a import fixture, tiny_selection
+from tests.test_excel_loader import build_tiny_golden_excel
+from tests.test_scalar_r3a import SHAPE, fixture, tiny_selection, tiny_spec
 
 
 def registry_files(tmp_path, mutate=None):
@@ -177,3 +178,20 @@ def test_corrupted_per_attempt_population_prevents_positive_review(member):
     report = r.cohort_review(files)
     assert report["status"] == "partial_or_unvalidated_preserved"
     assert report["missing_or_rejected"][0]["name"] == "tiny_det"
+
+
+def test_shape_failure_still_preserves_intended_and_observed_lists(tmp_path):
+    workbook = tmp_path / "tiny.xlsx"
+    build_tiny_golden_excel(workbook)
+    directory = tmp_path / "case"
+    with pytest.raises(ValueError, match="Warehouse count"):
+        r.run_case_software(
+            tiny_spec(workbook, "det"), directory, {**SHAPE, "warehouses": 3}, tiny_selection()
+        )
+    intended = json.loads((directory / "warehouse_selection_intent.json").read_bytes())
+    observed = json.loads((directory / "warehouse_observation.json").read_bytes())
+    assert intended["selection_policy"]["target_population"] == 2
+    assert observed["count"] == 2
+    assert observed["criterion"] == tiny_selection()["criterion"]
+    assert (directory / "warehouses_observed.csv").is_file()
+    assert not (directory / "products").exists()

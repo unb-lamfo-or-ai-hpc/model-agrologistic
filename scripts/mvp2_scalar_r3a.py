@@ -260,13 +260,15 @@ def status(claim, sha):
     }
 
 
-def preflight(spec, expectations, selection=None):
+def preflight(spec, expectations, selection=None, observer=None):
     """Software engine, not a CLI admission. Reuses original loader/model rules."""
     from src.logic.excel_loader import load_model_data_from_excel
     from src.logic.experiment_runner import estimate_model_size
     from src.logic.mathematical_contract import prepare_model_data
 
     original = load_model_data_from_excel(spec.workbook, spec.loader)
+    if observer is not None:
+        observer(original)  # Preserve the observed list even if the shape/selection gate fails.
     data = prepare_model_data(original, spec.model)
     estimate = estimate_model_size(data, spec.model)
     require(len(data.warehouses) == expectations["warehouses"], "Warehouse count differs.")
@@ -311,8 +313,54 @@ def run_case_software(spec, directory, expectations, selection=None):
     # Own the new leaf exclusively, including when its case parent is absent.
     # Preflight failures also get a forensic receipt; no original case is reused.
     directory.mkdir(parents=True)
+    r2.write(
+        directory / "warehouse_selection_intent.json",
+        {
+            "scope": "Intended population only; no loaded model or optimizer opening claim.",
+            "selection_policy": selection,
+            **closed(),
+        },
+    )
+
+    def observe(data):
+        by_id = {m["warehouse_id"]: m for m in (selection or {}).get("members", [])}
+        rows = []
+        for i, warehouse in enumerate(data.warehouses, 1):
+            member = by_id.get(warehouse, {})
+            role = (
+                "existing"
+                if warehouse in data.existing_warehouses
+                else ("candidate" if warehouse in data.candidate_warehouses else "unresolved")
+            )
+            rows.append(
+                {
+                    "model_order": i,
+                    "warehouse_id": warehouse,
+                    "population_role": role,
+                    "selection_stratum": member.get("selection_stratum", "unmatched"),
+                    "candidate_rank": member.get("candidate_rank"),
+                }
+            )
+        content = warehouses.csv_bytes(rows)
+        with (directory / "warehouses_observed.csv").open("xb") as stream:
+            stream.write(content)
+        r2.write(
+            directory / "warehouse_observation.json",
+            {
+                "scope": (
+                    "Observed loaded input before admission/model construction; "
+                    "not an accepted solve."
+                ),
+                "criterion": (selection or {}).get("criterion"),
+                "workbook_sha256": file_hash(spec.workbook),
+                "csv_sha256": r2.digest(content),
+                "count": len(rows),
+                **closed(),
+            },
+        )
+
     try:
-        data, receipt = preflight(spec, expectations, selection)
+        data, receipt = preflight(spec, expectations, selection, observer=observe)
         r2.write(directory / "input_receipt.json", receipt)
         population = receipt["warehouse_selection"]
         r2.write(directory / "warehouses_used.json", population)
