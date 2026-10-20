@@ -163,7 +163,7 @@ def test_real_worker_parent_phase_control_two_arms_original_residuals_and_termin
         "123.1|COMPLETED|0:0|30|123K\n"
     )
     receipt = o.collect(claim, SHA, command=lambda *_: SimpleNamespace(returncode=0, stdout=raw))
-    assert receipt["status"] == "pair_quality_target_met"
+    assert receipt["status"] == "pair_quality_target_met", json.dumps(receipt, sort_keys=True)
     assert receipt["operational_receipts_closed"]
     assert not receipt["h300_admitted"]
     result = o.audit(claim / receipt["archive"], receipt["sha256"])
