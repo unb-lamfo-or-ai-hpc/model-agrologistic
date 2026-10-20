@@ -1,6 +1,42 @@
 # Model Agrologistic — MVP 2.0 checkpoint
 
-## R2 accepted on NPAD; R3-A software qualified, merge pending, execution closed
+## PR114 merged; next integrated operational gate awaits input/science/resources
+
+20 October2026. Explicitly authorized PR114 merged into develop at
+`ed126e59d5cc94ff5026ad7c19d88886847631df` from Ready head
+`71b9aaa8a3e406d0f1fd94c4b5996e9d0af32e69`. All four checks on that exact
+head passed, including660 native Linux cases with zero failures/errors/skips.
+This is a software merge, not an approved experimental envelope or submission.
+R2 job2217613 remains accepted; no new NPAD access, probe, solve, retry or
+historical claim mutation occurred.
+
+The maintainer requests the next operational gate. Its
+[consolidated preparation plan](docs/mvp2_scalar_r3a_operational.md) covers one
+integrated launcher/worker/phase-control/terminal-forensic collector/auditor/test/
+runbook delivery, not another ladder of speculative observation PRs. Preparation
+is on `research/mvp2-scalar-r3a-operational`, based on the actual PR114 merge.
+No execution code has been opened and no new PR is represented as qualified.
+
+Before implementing the admitted profile, obtain the selected processed h215
+OSRM workbook/path/checksum and population-audit/order references, confirmation
+of the proposed nine equiprobable Cartesian scenarios, and confirmation or
+revision of the proposed resources/solver/transfer profile. Questions were sent
+to the maintainer; silence is not confirmation. Supplied gold/registry references
+are not automatically adopted as the processed input, and changed source bytes
+are not silently registered. The current proposed6h/24 logical CPU/192GiB,
+four-thread3600s-per-arm/1GiB envelope remains unapproved. No optimization CLI
+is available or necessary now. The next owner is the researcher for these
+scientific/input/resource choices, then the agent for one complete qualified
+operational package. Ready, separate merge authorization and human CLI follow;
+neither the choices alone nor PR114's merge admits a job.
+
+All previous claims, archives, warehouse inventories, original certificates,
+designated WLS file, coauthor manuscript and immutable historical branch remain
+preserved. h300, h400, SCIP/h215, h500, repeats and automatic follow-on remain
+closed. The scalar roadmap and final-only post-article main reconciliation are
+unchanged. Older pending-merge statements below are historical snapshots.
+
+## Preserved PR114 qualification checkpoint
 
 20 October2026. PR113 merged into develop at
 `5d24dc63bf16d2daedf7a761f782658a28644c66`. Actual R2 job2217613 used qualified

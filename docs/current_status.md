@@ -1,6 +1,21 @@
 # Dated research status: 20 October 2026
 
-## Latest — R2 accepted, R3-A software qualified pending final-head checks/merge
+## Latest — PR114 merged; prepare one integrated operational gate
+
+20 October2026: explicitly authorized PR114 merged into develop at
+`ed126e59d5cc94ff5026ad7c19d88886847631df`. Ready head
+`71b9aaa8a3e406d0f1fd94c4b5996e9d0af32e69` passed all four checks, including
+660 native Linux tests without failures/errors/skips. No NPAD execution occurred.
+See the [integrated next-gate plan](mvp2_scalar_r3a_operational.md).
+
+Next: researcher confirms the actual processed h215 OSRM input and provenance,
+scenario design and resource/solver/transfer proposal; then the agent completes
+one operational package, qualifies it and requests merge only after Ready.
+No separate speculative gate PR, optimization CLI, automatic source substitution
+or inferred approval from the software merge. All old claims/evidence stay intact.
+The prior pending-merge snapshot below is preserved, not current status.
+
+## Preserved PR114 pre-merge software snapshot
 
 PR113 merged at5d24dc63. R2 job2217613 has independently replayed accepted small
 native evidence:9 tests/zero failures/errors/skips, fresh WLS capability and

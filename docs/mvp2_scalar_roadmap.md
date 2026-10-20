@@ -1,5 +1,15 @@
 # Scalar MVP2 roadmap — 19 October 2026
 
+20 October operational handoff: PR114 is merged into develop at
+`ed126e59d5cc94ff5026ad7c19d88886847631df`; all four exact-head checks passed.
+The [next integrated gate](mvp2_scalar_r3a_operational.md) combines launcher,
+worker, phase limits, targeted stop, immutable terminal/forensic collection,
+portable audit, tests and complete human runbook. Input identity, scenario design
+and the prospective resource/solver/transfer profile need researcher confirmation
+before the admitted implementation is finalized. No new execution, speculative
+micro-gate PR or inherited budget follows the merge. Earlier pending-merge
+wording is a dated snapshot, not current status.
+
 20 October latest: PR113 merged; R2 job2217613 is independently accepted on
 [external evidence review](evidence/scalar_r2_2217613_review.json). This is actual
 small native mathematics/operational evidence, not scalar scalability or an
