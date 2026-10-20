@@ -1,5 +1,13 @@
 # Research context and portable handoff
 
+Current20 October: PR115/job2217990 is accepted success under the scalar
+contract. The maintainer preserves90000/45000/45000 effective penalties and
+declines calibration as a prerequisite. Continue the [h300 preparation](mvp2_scalar_h300_preparation.md)
+with exact warehouse/input/rate provenance. Every PR includes discussion of
+[penalty effects](mvp2_penalty_interpretation.md) on feasibility, complexity and
+resolution metrics. The new CLI prepares/replays receipts only; new execution
+and resource/order admission remain pending. Historical snapshots follow.
+
 20 October2026: small R2 job2217613 is accepted on independent transfer review;
 see the [redacted ledger](evidence/scalar_r2_2217613_review.json). The current
 [R3-A package](mvp2_scalar_r3a.md) prepares scalar h215 baselines and conditional

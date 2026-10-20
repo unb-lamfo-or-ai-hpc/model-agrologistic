@@ -1,5 +1,187 @@
 # Model Agrologistic — MVP 2.0 checkpoint
 
+## Maintainer decision: h215 success, frozen penalties, proceed to h300
+
+20 October2026. The researcher accepts PR115/job2217990 as success under its
+approved scalar contract and explicitly rejects the proposed calibration
+campaign. It is not a prerequisite to h300. Preserve effective coefficients
+unmet90000, static45000, reception45000 and original validation/physical units.
+See [scientific interpretation](docs/mvp2_penalty_interpretation.md) and the
+[redacted accepted evidence](docs/evidence/scalar_h215_2217990_review.json).
+This supersedes any recommendation to delay h300 for penalty sensitivity or
+zero-slack diagnostics; original service/slack observations remain intact.
+
+Before finalizing EVERY PR, include discussion of penalty effects on feasibility,
+complexity and solution metrics, tied to the current computational objective.
+For merged PR115 the discussion is appended publicly; its consumed source,
+claims and certificates are unchanged. No earlier research recovery/citation
+is needed. Positive slack remains an allowed descriptor, not a new rejection
+criterion. The1% scalar-gap target remains on the penalized objective.
+
+The [consolidated h300 preparation](docs/mvp2_scalar_h300_preparation.md) binds
+the accepted h215 archive, historical h300 OSRM input, exact warehouse ranking,
+five cold STO thread configurations and effective-rate verification. It includes
+exclusive preparation claim, bounded immutable collection, portable auditor,
+pure Excel/penalty preflight and adverse tests. Its public CLI has no scheduler
+or optimization entry point. Preserve the existing h215/R2 and all historical
+claims. No NPAD job, retry, model change or manuscript edit occurs here.
+
+The maintainer subsequently confirms an NPAD per-job ceiling of48h. Updated
+resource/order proposal:4/1/8/2/16 in ONE30h allocation, four native hours per arm,24 allocated
+logical CPUs/192GiB, a fixed16-logical-CPU worker pool, SoftMemLimit160GB,
+seed42, MIPGap0.01 and compaction off. Retaining existing phase windows requires
+at least26h45 for all five arms, so propose30h with3h15 contingency,720 reserved
+logical-CPU hours total. This is proposed capacity, not measured usage or an
+approved admission. A30-million-variable guard replaces the h21525-million guard
+for preparation because historical h300 already estimated25,107,544 variables.
+No native execution is enabled by those proposed limits. After qualified Ready,
+request merge, resource/order approval and only then complete the separately
+admitted live-launcher handoff. Private input preflight and scalar h300 results
+remain pending; S3/S4 remain cancelled and S6/article decisions unchanged.
+
+## R3-A h215 accepted — terminal job2217990, 20 October2026
+
+[Public review and terminal checkpoint](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/115#issuecomment-6297737718).
+
+The maintainer transferred the original archive and sidecar. External SHA256
+`81890b546d720ad5999d11f44fd499337aad937e32773db39067796f73660534`
+matches both the sidecar and the supplied collector receipt. The unchanged
+qualified portable auditor independently reproduced `pair_quality_target_met`,
+both original residual/cost certificates accepted, operational receipts closed,
+no missing/rejected/unrun arm and all root/batch/extern/numeric steps COMPLETED
+with exit0:0. Archive:5,391,014 bytes,121 regular members,108,885,289 expanded bytes;
+safe inventory and original certificate hashes accepted without extraction or
+modification. This is certificate/integrity replay plus arithmetic checks, NOT a
+fresh private-input residual recomputation, mathematical re-solve or agent NPAD
+access. The local reproducible review is
+`output/scalar_h215_2217990_external_review.json`; its read-only audit script is
+`output/audit_h215_2217990.py`. These local outputs are not committed raw evidence.
+
+| Measure | DET | STO |
+| --- | ---: | ---: |
+| Scenarios |1 |9, each1/9 |
+| Native global TimeLimit configured |14,400s |14,400s |
+| Native reported Runtime |122.514958s |2445.517971s |
+| Common/native relative gap, percent |0.0008121363% |0.7401594783% |
+| Original validation |accepted, zero failed checks |accepted, zero failed checks |
+| Original variables |1,562,174 |14,054,654 |
+| Original linear constraints |74,017 |661,057 |
+| Original nonzeros |5,786,346 |52,068,826 |
+| Original general constraints, separate |8,280 |74,520 |
+| Slurm step elapsed |209s |2808s |
+| Slurm step MaxRSS, original raw value |5813892K |44532260K |
+| Application-reported peak_rss_mb, binary MiB |5677.62890625 |44168.125 |
+| Domestic service level |91.8611844% |92.2673837%, demand-weighted aggregate |
+| Artificial penalty share of penalized total |96.5917779% |96.9865311% |
+
+Whole allocation elapsed3022s (50m22), not14h consumed. Native optimization
+stopped before each four-hour ceiling with the1% target met; this does not prove
+that four hours was necessary or a shorter budget would suffice in other cases.
+Native status `optimal` is retained with the nonzero reported gaps, not relabelled
+as a proof of exact zero-gap optimality. Both original validators retained
+absolute1e-5 and relative1e-8 tolerances and zero failed checks. Arithmetic review
+reconstructed three separate penalties and economic subtotal under those original
+tolerances; it did not reload the private input or revalidate primal residuals.
+
+Both actual warehouse lists/order have the SAME CSV SHA256
+`cad57e7f5917f4e1ea59ba0f8e48033f25abb638f6079a1dd0fbfb0851b5d777`,
+215 included facilities:146 existing plus69 canonical candidates, with the
+original selection criterion/seed intact. Included is not solver-opened.
+The selected OSRM workbook hash remains40edb66585daca9cc393cab1f86bde6d4528a5f34b6afc57260cc1684396da4e;
+DET probability1 and all nine STO Cartesian probabilities1/9 were verified.
+Runtime affinity is[0,1,32,33] in each arm:four logical CPUs, not evidence of
+four distinct physical cores, no-SMT operation or speedup. Preserve native,
+application and Slurm timing/memory scopes separately; application RSS and Slurm
+MaxRSS differ and must not be silently substituted.
+
+Scientific caveat: both models use allowed emergency-capacity and unmet-demand
+slacks. Original capacity adequacy classification is `domestic_service_shortfall`;
+service is not100%, despite accepted feasibility in the slack-enabled formulation.
+STO scenario service ranges89.0495807%–95.9552735%. Artificial penalties dominate
+the objective, so a1% gap on the penalized total is not a1% certificate for the
+economic subtotal alone. This is a computational baseline milestone, not proof
+of an operationally adequate unrelaxed network or of STO economic superiority.
+Do not compare the raw DET/STO objective difference as VSS/EVPI, or compare
+scalar h215 against the archived hierarchical h300 as controlled speedup.
+No penalty/formulation/scientific parameter or tolerance change is approved.
+
+The h215 baseline part of R3-A is accepted at the portable evidence-review level;
+the h300 scalar thread contrast is still pending. Next: consolidate this reviewed
+baseline with the next functional h300 software/protocol package, explicitly
+review its fixed factors/resource budget and complete qualification before Ready,
+authorized merge and pinned human CLI. Old hierarchical thread rankings do not
+select the new scalar configuration. No h300/h400/SCIP/h500 job, repeat or automatic
+follow-on is admitted by this successful pair. All claims, source, original
+archives and WLS remain untouched. No new job or solver run was performed here.
+
+## Pause checkpoint — h215 DET/STO job2217990 running, 20 October2026
+
+PR115 was explicitly authorized and merged into develop at
+`b082157a57546a0d0403b5fb64a2ac47965265ae`, after Ready and all four exact-head
+checks passed. Qualified execution source remains
+`5f73871b6320da71e308e436f5cd780cdcfedae2`; do not substitute a later branch head.
+[Merged PR](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/115),
+[merge and human CLI handoff](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/115#issuecomment-6296523907).
+This section supersedes the earlier pre-merge/pending-authorization statements
+below, which remain historical preparation records.
+
+The maintainer supplied the actual NPAD start/status output:438 tracked files
+identical, Ruff passed,104 login-safe tests passed in14.77s and post-regression
+source closure verified. One h215 pair was submitted as job`2217990`, bound to
+plan SHA256`e9f9b26c91585fde271876a1dab6b51dcd63110b83e9600b3781165a66a7a722`.
+The last supplied sacct snapshot reports root/batch/extern and step2217990.0
+RUNNING at00:01:29, with24 allocated logical CPUs for the job and4 for the step.
+This is human-reported scheduler evidence, not an agent live query, proof that
+optimization has started, a terminal certificate or scientific acceptance.
+No current objective, bound, incumbent, gap, memory peak or completed arm is known.
+Retain the original false execution/follow-on/admission flags verbatim; the
+status receipt does not admit another submission, h300 or repetitions.
+
+Preserve without modification:
+
+- Claim: `/home/vrrcelestino/model-agrologistic-hygiene-audit/.mvp2-scalar-r3a-h215-4h-v1`.
+- Bootstrap/source parent: `/home/vrrcelestino/model-agrologistic-hygiene-audit/scalar-h215-4h-driver-yHd7ZUUA`.
+- Human wrapper: `/home/vrrcelestino/model-agrologistic-hygiene-audit/scalar-h215-4h-cli-5f73871b/npad_scalar_h215_4h.sh`.
+- Wrapper SHA256: `7c7bcf62bb08284bb5be931b948728e8df7e89be267cf02267fafb9d8317992c`.
+- All previous claims, original R2 archive, historical evidence, selected input,
+  population/order/audit files and SQLite cache. No deletion, reset or replacement.
+- Designated WLS remains `/home/vrrcelestino/model-agrologistic/secrets/gurobi.lic`;
+  never transfer its contents or credentials.
+
+The approved experiment remains one cold serial DET then STO pair, global
+TimeLimit14,400s per arm, one14h/24-logical-CPU/192GiB Slurm reservation,
+four Gurobi threads, MIPGap0.01, Seed42, SoftMemLimit160 decimal GB and compaction
+off. STO uses nine Cartesian scenarios at1/9. The selected workbook hash remains
+40edb66585daca9cc393cab1f86bde6d4528a5f34b6afc57260cc1684396da4e.
+Extra walltime is not extra optimizer budget or authority for another experiment.
+
+### Resume after the pause — existing job only
+
+These commands work from a fresh login shell; do not run a new bootstrap/start.
+
+```bash
+bash /home/vrrcelestino/model-agrologistic-hygiene-audit/scalar-h215-4h-cli-5f73871b/npad_scalar_h215_4h.sh status 5f73871b6320da71e308e436f5cd780cdcfedae2
+bash /home/vrrcelestino/model-agrologistic-hygiene-audit/scalar-h215-4h-cli-5f73871b/npad_scalar_h215_4h.sh wait 5f73871b6320da71e308e436f5cd780cdcfedae2
+bash /home/vrrcelestino/model-agrologistic-hygiene-audit/scalar-h215-4h-cli-5f73871b/npad_scalar_h215_4h.sh collect 5f73871b6320da71e308e436f5cd780cdcfedae2
+```
+
+Choose status for a snapshot, wait for terminal collection, or collect after
+termination. Ctrl-C during wait stops only the local wait; repeat wait/collect,
+not the experiment. Pending accounting is not a rejected scientific result.
+If collection fails, preserve the exact output and all paths; do not reset claims.
+After terminal collection, transfer both files from the claim directory with
+MobaXterm: `scalar-h215-evidence.tar.gz` and its `.sha256` sidecar. They are
+prospective outputs, not claimed to exist during this running checkpoint.
+
+Next action after return: independently audit the archive/checksum, full terminal
+accounting, both arm statuses, warehouse/scenario/source identities, original
+residual/cost receipts, native/common gaps, phase times and resource scopes.
+Keep operational closure, scientific feasibility and the1% quality target
+separate. Four hours does not guarantee convergence; preserve partial/negative
+results. No new jobs, repetitions, larger instances, automatic follow-on, article
+edits or main/develop synchronization are admitted. Work pauses now; the existing
+NPAD job is not cancelled. No agent monitoring or cluster access is scheduled.
+
 ## R3-A operational pair: input confirmed, four-hour/14h envelope approved
 
 Software qualification update20 October: consolidated

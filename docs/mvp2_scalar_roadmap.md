@@ -1,5 +1,17 @@
 # Scalar MVP2 roadmap — 19 October 2026
 
+Current20 October: PR115/job2217990 is an accepted scalar h215 success. The
+researcher preserves its effective90000/45000/45000 penalty coefficients and
+rejects calibration as a prerequisite. Every PR includes current-MVP2
+[penalty interpretation](mvp2_penalty_interpretation.md). The next consolidated
+[h300 preparation](mvp2_scalar_h300_preparation.md) binds input/predecessor,
+warehouse lists, cold thread configurations, exact rates, immutable collection
+and portable audit. Its public CLI admits no jobs. With the confirmed48h NPAD
+per-job ceiling, the one30h-block resource/
+order proposal and new30-million-variable size guard require review before a
+separately qualified operational launcher. The older input-pending statements
+below are historical. No repeat, h400/SCIP/h500 or automatic follow-on is admitted.
+
 Latest20 October decision: the processed historical h215 OSRM input is selected
 after the human checksum confirmation. The maintainer approves14,400s/arm and
 one14h serial DET/STO reservation (24 logical CPUs/192GiB/four solver threads),
