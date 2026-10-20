@@ -2,6 +2,15 @@
 
 ## PR116 merged;30h h300 envelope approved; complete operational qualification
 
+[Consolidated PR117](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/117)
+code54dce6b8 passed894 native Linux tests with zero failures/errors/skips and
+all four workflows. Focused128 login-safe cases passed. Full five-worker tiny
+native transport, original validation, raw-source/Bash closure, portable audit
+and distribution builds passed; actual NPAD/private h300 remains unexecuted.
+See [qualification details](docs/mvp2_scalar_h300_30h.md#observed-software-qualification20-october2026).
+Final documentation-only checks precede Ready and merge request. Existing h215
+archive replay remains accepted. No new resource confirmation is required.
+
 20 October2026: explicit maintainer authorization merged PR116 into develop at
 `1b7ef49a71e1eb2169fc6941a79474d07491a6a9`. Ready source27bb6ca7 passed all four
 workflows and838 native Linux cases without failures/errors/skips. The researcher

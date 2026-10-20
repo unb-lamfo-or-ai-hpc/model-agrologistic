@@ -171,3 +171,39 @@ is the new operational claim. Do not upload a license, workbook or SQLite file.
 If submission/collection fails, preserve exact output and all printed paths;
 never delete a claim, discover a different job by guessing or silently retry.
 No new NPAD action is needed while this software PR is reviewed.
+
+## Observed software qualification,20 October2026
+
+PR117 code54dce6b8ecf3792eee10659b32571beafd2d80d6 passed all four workflows.
+[Complete native Linux gate](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/actions/runs/39481936014):
+894 passed, zero failures/errors/skips,26.948s. Downloaded JUnit SHA256
+`0b19983aaf3b5136777abe55eb78fd297f1beef30ab81b5ec53b96837e499248`.
+The new five-arm real native integration completed in3.507s on a public tiny
+nine-scenario workbook, with controlled Slurm/WLS-capability/affinity transport.
+It exercises worker/parent ownership release, effective-rate guard, original
+public input and residual validation, all phases/native-terminal receipts,
+post-worker review, complete products/resource manifests and immutable terminal
+collection/portable audit. This is not actual NPAD, WLS or private h300 evidence.
+
+The complete local login-safe focused gate passed128 cases without failures,
+errors or skips. Native-hook assertions also check actual Seed/SoftMemLimit when
+configured, preserving the existing settings. Adverse cases include uncertain
+submission, missing/running/cancelled accounting, wrong owner/CPU/time, unavailable
+common affinity, altered penalties/configurations, missing post-worker/native
+receipts, corrupted source/audit, archive paths/duplicates and fail-fast unrun
+arms. A complete prepare/load case verifies original audit bytes and exclusive
+claim ownership. All earlier h215/R2 native/portable tests remain in the full gate.
+
+Quality passed Ruff and both distribution builds (866 tests/10 optional-SCIP
+dependency skips; the separate full native gate has zero skips). Bash syntax
+and raw/physical source closure passed. The existing pandas FutureWarning is
+retained. The original accepted h215 archive still independently replays
+`accepted_scalar_h215_success` after the shared transport extension.
+
+Scientific `src` tree666029ace80bd60417d91c43d4460a33326acf64 is unchanged from
+develop/PR115/PR116; manuscript is untouched. Qualified tests tree
+fca0a9ab83745f105221a5330a6da9a6861acb8d; operational module blob
+8c88623b8c5f486d84cc989f5cc506f7a0fc9d01. Wrapper SHA256
+`685044e4e9940a9131990b0eda16f6c08f8006149f0abb01529c3df5a017c5b6`.
+Final documentary head must retain these implementation bytes and pass all four
+checks before Ready and explicit merge request. No actual h300 run occurred.
