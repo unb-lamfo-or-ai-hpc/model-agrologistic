@@ -1,6 +1,32 @@
 # Model Agrologistic — MVP 2.0 checkpoint
 
-## PR114 merged; next integrated operational gate awaits input/science/resources
+## PR114 merged; resources/scenarios confirmed, input lineage decision pending
+
+20 October2026, subsequent maintainer reply: confirmed the proposed6h/24 logical
+CPU/192GiB/four-thread/global3600s-per-arm/MIPGap0.01/seed42/compaction-off/
+SoftMemLimit160 decimal GB/1GiB-transfer profile, and nine equiprobable Cartesian
+scenarios. This supersedes earlier pending-confirmation statements for those
+prospective choices ONLY. It is not job/submission authority. The researcher
+does not have the processed input path/hash available and requests alternatives
+with historical PR/date, noting the SQLite matrix.
+
+[Input lineage review](docs/mvp2_scalar_r3a_input_lineage.md) recovers a strong
+candidate: the historically materialized h215 OSRM workbook with SHA256
+`40edb66585daca9cc393cab1f86bde6d4528a5f34b6afc57260cc1684396da4e`, recorded
+on14 September in PR29 readiness and used in the September pilot; the preserved
+PR44 campaign binds that same hash/path in October. SQLite is the provenance-
+keyed routing cache used upstream to materialize Distancias, not the current
+MILP loader's input. The original processed workbook's current NPAD existence/
+bytes, materialization audit and population selection artifacts must be checked
+read-only; no rematerialization, cache access or scientific source change occurred.
+The agent recommends reviewing/reusing that frozen workbook first, not adopting
+the supplied gold or universe registry as an interchangeable model input. No
+input selection is inferred from the researcher's question. Next human action:
+review alternatives and, if choosing the historical candidate, perform the
+short read-only location/hash check documented in the response. One integrated
+operational PR follows the resolved input decision, not speculative micro-gates.
+
+## PR114 merge checkpoint, before the subsequent confirmations
 
 20 October2026. Explicitly authorized PR114 merged into develop at
 `ed126e59d5cc94ff5026ad7c19d88886847631df` from Ready head

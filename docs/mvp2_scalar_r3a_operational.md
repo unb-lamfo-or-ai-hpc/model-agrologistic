@@ -9,6 +9,13 @@ All four checks passed. The exact-head
 passed660 cases without failures/errors/skips. These are software results, not
 live scalar h215 performance or an execution admission.
 
+Subsequent maintainer reply on20 October confirms the proposed resource/solver/
+transfer profile and nine equiprobable Cartesian scenarios. Input selection
+remains pending: the researcher requests alternatives with PR/date and notes
+the SQLite matrix. Read the [input lineage review](mvp2_scalar_r3a_input_lineage.md).
+The earlier decision table describes the original proposal; its confirmation
+columns are now resolved for those two choices only, not input/submission.
+
 ## Decisions before an admitted implementation
 
 The maintainer authorized preparation of the next operational gate, not implicit
@@ -23,8 +30,9 @@ one branch and assemble one complete functional PR after the required choices.
 | Solver/resource/transfer profile |6h,24 allocated logical CPUs,192GiB,4 solver threads, global3600s/arm, MIPGap0.01, seed42, compaction off, SoftMemLimit160 decimal GB,1GiB expanded transfer | Researcher confirms or requests a reviewed adjustment; merge alone is not approval |
 | First operational submission | None | Qualified Ready package, explicitly authorized merge, then one pinned human-only submission; no agent cluster access |
 
-Questions were sent to the researcher on20 October. No response is recorded as
-approval. Preserve the registered source/anchor hashes until source review
+Questions were sent to the researcher on20 October. Their subsequent reply
+confirms the resource profile and nine equiprobable scenarios, not input choice
+or submission. Preserve the registered source/anchor hashes until source review
 explicitly approves a revision. Existing WLS location stays unchanged; no license
 contents, access IDs, secrets or connection strings belong in public evidence.
 

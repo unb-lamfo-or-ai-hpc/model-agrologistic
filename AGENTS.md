@@ -1,5 +1,22 @@
 # Model Agrologistic: agent working agreement
 
+## Operational preparation clarification — 20 October2026
+
+PR114 merged with explicit authorization ated126e59. The maintainer subsequently
+confirmed its proposed6h/24 logical CPU/192GiB/four-thread/global3600s-per-arm,
+MIPGap0.01/seed42/compaction-off/SoftMemLimit160 decimal GB/1GiB-transfer profile
+and nine equiprobable Cartesian scenarios. These are now confirmed prospective
+choices, NOT submission authority. No actual h215 input was selected by that
+reply: the maintainer asks for alternatives with historical PR/date and notes
+the SQLite matrix. Read `docs/mvp2_scalar_r3a_input_lineage.md` and the current
+checkpoint. Prefer reviewing the already materialized/hash-frozen input over
+silently generating new routes; do not change the Excel loader to query SQLite.
+Keep the next launcher/worker/phase-stop/terminal-forensic collector/auditor/tests/
+human runbook in one functional package, after input selection. No new job,
+source substitution, historical claim reset or automatic repeat/follow-on.
+The older unapproved-profile statements below are superseded ONLY for the
+choices explicitly confirmed above, not for input identity or job admission.
+
 ## R3-A software mandate — 20 October2026
 
 Maintainer clarification: every h215/h300/h400/h500 attempt must store its exact

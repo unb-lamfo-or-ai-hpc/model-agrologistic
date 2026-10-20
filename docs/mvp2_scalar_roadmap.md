@@ -1,5 +1,12 @@
 # Scalar MVP2 roadmap — 19 October 2026
 
+Subsequent20 October decision: researcher confirms the R3-A resource/solver/
+transfer proposal and nine equiprobable Cartesian scenarios. Actual input
+selection remains pending the requested [historical lineage review](mvp2_scalar_r3a_input_lineage.md)
+and a read-only NPAD existence/hash/provenance check. No submission is authorized
+by these confirmations. Continue one consolidated operational delivery after
+the input decision; preserve all historical sources, caches, claims and receipts.
+
 20 October operational handoff: PR114 is merged into develop at
 `ed126e59d5cc94ff5026ad7c19d88886847631df`; all four exact-head checks passed.
 The [next integrated gate](mvp2_scalar_r3a_operational.md) combines launcher,

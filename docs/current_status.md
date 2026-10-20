@@ -2,6 +2,15 @@
 
 ## Latest — PR114 merged; prepare one integrated operational gate
 
+Subsequent20 October reply confirms the prospective resource/solver/transfer
+profile and nine equiprobable Cartesian scenarios, but not input identity or
+job submission. The researcher requests historical input alternatives and asks
+about SQLite. See the [lineage comparison](mvp2_scalar_r3a_input_lineage.md):
+the historical h215 processed OSRM candidate is40edb665..., while SQLite is its
+upstream route-cache mechanism. Check current NPAD file/hash/audit/population
+artifacts read-only before selecting; no route regeneration or live job follows.
+The earlier pending science/resource statements below predate this confirmation.
+
 20 October2026: explicitly authorized PR114 merged into develop at
 `ed126e59d5cc94ff5026ad7c19d88886847631df`. Ready head
 `71b9aaa8a3e406d0f1fd94c4b5996e9d0af32e69` passed all four checks, including
