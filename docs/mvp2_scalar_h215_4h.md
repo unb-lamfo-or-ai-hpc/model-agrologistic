@@ -100,6 +100,14 @@ WLS file is explicitly selected; a fresh quiet2001-variable/constraint capabilit
 probe runs in compute, separately labelled from the one agricultural optimizer
 call. Credentials/license bytes are never hashed or transferred.
 
+Step formatting was independently checked against the primary
+[Slurm22.05.11 source](https://github.com/SchedMD/slurm/blob/slurm-22-05-11-1/src/api/job_step_info.c):
+NodeList is the node name/list, Nodes is a numeric count, UserId is numeric and
+CPUs/Tasks/State are separate fields. The new tests use that actual grammar and
+reject old synthetic Nodes=node_name fixtures, wrong counts and wrong nodes.
+This prevents repeating a mock-only parser mistake on NPAD; it is still not a
+fresh live step observation or proof of allocation acceptance.
+
 The existing native phase hook emits durable ordered markers without changing
 scientific source. Parent deadlines separate build, optimization, return,
 validation and export. Only a verified exact numeric step can receive TERM/KILL;

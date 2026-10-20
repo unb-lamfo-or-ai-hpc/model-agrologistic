@@ -288,7 +288,8 @@ def test_duplicate_scheduler_field_rejected():
 def test_only_owned_exact_numeric_step_released(step, user, cpus, node):
     with pytest.raises(ValueError):
         o.step_binding(
-            f"StepId={step} UserId={user} CPUs={cpus} Nodes=1 Tasks=1 State=RUNNING NodeList={node}",
+            f"StepId={step} UserId={user} CPUs={cpus} Nodes=1 Tasks=1 "
+            f"State=RUNNING NodeList={node}",
             {**job(), "step_id": "0"},
             o.allocation(allocation_text(), "123", 1271),
             1271,
