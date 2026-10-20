@@ -386,6 +386,26 @@ def test_actual_export_bound_in_metadata_and_native_runtime_scopes():
     assert all(a["bound"] == 99.5 and a["common_gap"] == 0.005 for a in report["arms"])
 
 
+def test_raw_bound_above_incumbent_not_clipped_even_with_native_gap_zero():
+    files, plan = science_files()
+    for spec in plan["cases"]:
+        root = "cases/" + spec["name"] + "/products/" + spec["name"] + "/"
+        result = json.loads(files[root + "result.json"])
+        native = result["result"]
+        native.pop("objective_bound")
+        native["metadata"].update(objective_bound=100.00000000001, gurobi_native_gap=0.0)
+        files[root + "result.json"] = o.r.r2.encoded(result)
+        completion = json.loads(files[root + "run_completion.json"])
+        completion["artifacts"]["result.json"] = o.r.r2.digest(files[root + "result.json"])
+        files[root + "run_completion.json"] = o.r.r2.encoded(completion)
+    report = o.scalar_review(files, plan)
+    assert not report["quality_target_met"]
+    assert all(
+        a["common_gap"] is None and a["native_gap"] == 0 and a["bound"] > a["objective"]
+        for a in report["arms"]
+    )
+
+
 def test_missing_or_wrong_warehouse_receipt_is_partial():
     files, plan = science_files()
     del files["cases/tiny_det/warehouses_used.csv"]
@@ -475,6 +495,53 @@ def test_terminal_collection_audit_and_idempotent_fresh_shell(tmp_path, monkeypa
     assert o.audit(archive, receipt["sha256"])["operational_receipts_closed"]
     assert o.collect(claim, SHA, command=lambda *_: pytest.fail("Already sealed")) == receipt
     assert archive.read_bytes() == original
+
+
+def test_early_failure_without_worker_keeps_traceback_and_seals_forensic(tmp_path, monkeypatch):
+    tiny_replay(monkeypatch)
+    files = {
+        k: v for k, v in operational_files().items() if not k.startswith(("cases/", "control/"))
+    }
+    del files["allocation_query.json"]
+    del files["allocation.json"]
+    files["slurm.err"] = b"Preserved synthetic pre-worker traceback\n"
+    files["accounting.txt"] = (
+        b"123|FAILED|1:0|2|\n123.batch|FAILED|1:0|2|1084K\n123.extern|COMPLETED|0:0|2|1K\n"
+    )
+    claim = materialize(tmp_path, files)
+    monkeypatch.setattr(o, "load", lambda *_: json.loads(files["plan.json"]))
+    receipt = o.collect(
+        claim,
+        SHA,
+        command=lambda *_: SimpleNamespace(returncode=0, stdout=files["accounting.txt"].decode()),
+    )
+    assert receipt["status"] == "forensic_partial_pair_preserved"
+    assert len(receipt["missing_or_rejected"]) == 2
+    assert (claim / "slurm.err").read_bytes() == files["slurm.err"]
+    assert o.audit(claim / receipt["archive"], receipt["sha256"])["status"] == receipt["status"]
+
+
+def test_no_incumbent_preserved_without_infeasibility_inference():
+    files, plan = science_files()
+    root = "cases/tiny_det/products/tiny_det/"
+    result = json.loads(files[root + "result.json"])
+    result["result"].update(objective_value=None, status="time_limit")
+    files[root + "result.json"] = o.r.r2.encoded(result)
+    validation = json.loads(files[root + "independent_validation.json"])
+    validation.update(status="not_run_no_solution")
+    files[root + "independent_validation.json"] = o.r.r2.encoded(validation)
+    files[root + "run_summary.json"] = o.r.r2.encoded(
+        {"independent_validation_status": "not_run_no_solution"}
+    )
+    completion = json.loads(files[root + "run_completion.json"])
+    for name in ("result.json", "independent_validation.json", "run_summary.json"):
+        completion["artifacts"][name] = o.r.r2.digest(files[root + name])
+    files[root + "run_completion.json"] = o.r.r2.encoded(completion)
+    report = o.scalar_review(files, plan)
+    det = next(a for a in report["arms"] if a["mode"] == "det")
+    assert not det["has_usable_incumbent"] and det["native_status"] == "time_limit"
+    assert det["classification"] == "unvalidated_or_no_incumbent"
+    assert not report["quality_target_met"]
 
 
 @pytest.mark.parametrize(

@@ -51,6 +51,10 @@ The first scalar h215 pair must be audited before a separately designed h300
 contrast. Existing input/hash and native quality targets are not changed to force
 acceptance.14h admission may still fail or be preempted; the approved budget is
 not evidence that Slurm accepted or guaranteed an uninterrupted allocation.
+Do not automatically apply this envelope to a five-arm thread grid: five4h
+native calls already total20h BEFORE build/validation/export, and the present
+per-arm ceilings would not fit24h. Review later h300 grouping using the measured
+scalar h215 phases and a separately approved contrast budget.
 
 ## Frozen input and provenance
 
@@ -133,6 +137,13 @@ reload/residual calculation. Solver-sequence runtime is labelled separately from
 solver-reported native Runtime. RSS, native decimal-GB memory, cgroup and Slurm
 MaxRSS have different scopes; requested CPUs, logical affinity/SMT and solver
 threads are not interchangeable or evidence of parallel speedup.
+The native tiny fixture can report OPTIMAL/native gap0 while raw ObjBound is
+about7e-10 above ObjVal near33,931. The unchanged conservative common-gap
+function returns null for ANY reversed bound order; retain that raw distinction
+and explicit quality_reason, without clipping, relaxing tolerances or forcing
+quality success. Native tests check this outcome rather than assuming both gap
+definitions always agree. This is a rounding diagnostic, not a100% MIP gap or
+time-censoring observation. Missing common quality still requires review.
 
 ## Human runbook boundary
 

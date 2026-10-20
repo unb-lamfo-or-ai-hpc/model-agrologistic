@@ -474,6 +474,17 @@ def scalar_review(files, plan):
                 and math.isfinite(gap)
                 and gap <= expected["solver"]["mip_gap"]
             )
+            arm["quality_reason"] = (
+                "target_met"
+                if arm["scalar_gap_target_met"]
+                else (
+                    "recorded_bound_exceeds_incumbent"
+                    if arm["bound"] is not None
+                    and arm["objective"] is not None
+                    and arm["bound"] > arm["objective"]
+                    else ("gap_unavailable" if gap is None else "gap_above_target")
+                )
+            )
             arms.append(arm)
         except (KeyError, ValueError, TypeError) as exc:
             missing.append({"name": expected["name"], "error_kind": type(exc).__name__})
