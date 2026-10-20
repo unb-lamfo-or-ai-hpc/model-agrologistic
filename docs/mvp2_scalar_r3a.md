@@ -43,8 +43,11 @@ historical version1 campaigns or silently convert their hierarchy fields.
 Both modes use the same resolved loader, model, solver, limits and input bytes;
 only experiment name and `model.mode` differ. DET retains original deterministic
 arrays, not expected stochastic demand. STO proposes the existing three-by-three
-supply/demand Cartesian design; actual probabilities are read from the selected
-input under the unchanged loader. Real preflight must verify215 warehouses,
+supply/demand Cartesian design. Under the unchanged loader this proposal uses
+equal probabilities1/9, NOT probabilities copied from active scenario rows;
+the selected workbook supplies the level multipliers. Effective probabilities
+are recorded in each input receipt (DET probability one). This experimental
+design requires researcher confirmation. Real preflight must verify215 warehouses,
 60 periods and1/9 effective scenarios, the size guard, selected routes and finite
 mathematical contract. The hashes do not certify input suitability without ETL.
 

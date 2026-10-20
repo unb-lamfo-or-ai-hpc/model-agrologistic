@@ -259,6 +259,9 @@ def preflight(spec, expectations):
         "experiment": spec_payload(spec),
         "shape": expectations,
         "estimate": asdict(estimate),
+        "effective_scenario_probabilities": (
+            dict(data.scenario_prob) if spec.model.mode == "sto" else {"deterministic": 1.0}
+        ),
         "mathematical_contract": data.metadata["mathematical_contract"],
     }
     r2.encoded(receipt)  # Reject nonfinite scientific payloads before a solve.

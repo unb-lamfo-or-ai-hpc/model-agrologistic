@@ -242,6 +242,16 @@ def test_model_size_guard_precedes_solver(tmp_path):
         r.preflight(spec, SHAPE)
 
 
+@pytest.mark.parametrize("mode", ["det", "sto"])
+def test_preflight_records_effective_probabilities_not_mean_demand(tmp_path, mode):
+    workbook = tmp_path / "tiny.xlsx"
+    build_tiny_golden_excel(workbook)
+    _, receipt = r.preflight(tiny_spec(workbook, mode), SHAPE)
+    probabilities = receipt["effective_scenario_probabilities"]
+    assert sum(probabilities.values()) == 1.0
+    assert probabilities == ({"deterministic": 1.0} if mode == "det" else {"base": 1.0})
+
+
 def test_preserved_case_refuses_to_run(tmp_path):
     directory = tmp_path / "old"
     directory.mkdir()
