@@ -1,5 +1,15 @@
 # Scalar MVP2 roadmap — 19 October 2026
 
+20 October latest: PR113 merged; R2 job2217613 is independently accepted on
+[external evidence review](evidence/scalar_r2_2217613_review.json). This is actual
+small native mathematics/operational evidence, not scalar scalability or an
+automatic large-job admission. The [consolidated R3-A software package](mvp2_scalar_r3a.md)
+prepares h215 DET/STO and conditional h300 while all execution entry points stay
+closed. Proposed6h/24 logical CPU/192GiB/four-thread/3600s-per-arm/1GiB transfer
+needs separate scientific/input/resource confirmation and live operational
+integration before a pinned human submission. No new job is executed by this PR.
+Older preparation snapshots below are preserved, not current R2 merge status.
+
 20 October update: R1 merged in PR112. The maintainer approved the prospective
 R2 envelope below. The [R2 package](mvp2_scalar_r2.md) is being prepared/qualified;
 no NPAD job has been executed/admitted by that software work. Later stages and

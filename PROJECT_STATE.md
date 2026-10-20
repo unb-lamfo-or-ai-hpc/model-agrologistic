@@ -1,5 +1,61 @@
 # Model Agrologistic — MVP 2.0 checkpoint
 
+## R2 accepted on NPAD; R3-A software preparation, execution closed
+
+20 October2026. PR113 merged into develop at
+`5d24dc63bf16d2daedf7a761f782658a28644c66`. Actual R2 job2217613 used qualified
+source `26f6a7b096adc2ba00cb883134d17989a68d53a2`. Transferred archive SHA256
+`57b8e4d37ee21be04dd651088d9c525b812cf82514f3d55b23e3759651da2ed6` matches
+the sidecar and bytes. Unchanged canonical portable auditor reproduces
+small_r2_evidence_accepted. All420 source-file hashes also match pinned Git bytes;
+60 regular archive members contain166040 expanded bytes. See the
+[redacted independent review](docs/evidence/scalar_r2_2217613_review.json).
+
+Fresh WLS capability accepted2001 variables/constraints, objective2001; Python
+3.13.15/Gurobi13.0.3. Root/batch/extern/step0 COMPLETED0:0, root7s/step6s. Approved
+allocation4 logical CPUs/8GiB/20min, native one thread and30s limits under the60s
+ceiling.9 native cases/zero failures/errors/skips, including closed DET/STO Excel
+products and original independent residuals with zero failed checks. Eight cases
+exercise actual mathematics/integration; the ninth no-incumbent API case is not
+a real timeout experiment. Source checked before/after. Process-wide peak RSS
+128484KiB includes pytest/license, not optimize-only, and does not agree in scope
+with Slurm step1244K. Neither tiny figure sizes a large instance.
+
+This is small mathematical/operational R2 acceptance, NOT scalar scalability,
+thread ranking, production isolation or fresh local mathematical re-solve. Raw
+archive, claim and original source/run remain preserved externally; no license,
+private paths or raw archive is committed. No repeat or larger job is admitted.
+
+The maintainer now requests consolidated R3-A software qualification. The
+[R3-A protocol](docs/mvp2_scalar_r3a.md) and explicit version2 h215 DET/STO template
+bind accepted R2, input/source/configs, shape/size preflight, case engine,
+telemetry/original validation/completion, bounded partial collection/replay and
+conditional h300 design. No scientific source, parameter in an executed campaign,
+tolerance, historical certificate or manuscript changes. Internal native tests
+use public tiny inputs; production count215/60-period/1-or9-scenario checks stay
+mandatory for the proposed input. DET uses base deterministic arrays, not means.
+
+Execution is CLOSED at Python and Bash boundaries: no sbatch/srun/worker/probe
+dispatch in R3-A. Proposed one serial h215 pair:6h/24 allocated logical CPUs/
+192GiB,4 solver threads, native3600s/arm, SoftMemLimit160 decimal GB, MIPGap0.01,
+seed42, compaction off and1GiB expanded transfer.5h phase allocation plus1h spare;
+reservation ceiling144 logical-CPU hours, not measured consumption or a runtime
+forecast. These are prospective selections requiring researcher confirmation,
+NOT inherited approval or a change to R2's approved envelope. Actual selected
+input/checksum/scientific profile, resources/transfer, one-pair admission and live
+operational stop/accounting integration remain outstanding before human CLI.
+
+R3-A experimental baselines remain pending. After actual h215 review, h300
+1/2/4/8/16-thread design/resource/order/replication gates remain separate; no
+automatic follow-on or repeats. R3-B h400, complementary existing-SCIP/h215,
+conditional h500 and S6-A/B retain approved scope. S3/S4 cancelled; EVPI/VSS
+excluded. December conditional/base January2027 until real scalar baseline
+measurements/review permit re-estimation. Main integration only after article
+review. Next owner: agent qualifies this software PR, marks Ready and requests
+explicit merge; researcher separately decides the prospective execution envelope.
+
+## Historical pre-execution R2 software checkpoint — preserved
+
 ## R2 — consolidated software qualified; merge pending, no NPAD job
 
 20 October2026. PR112 merged into develop at

@@ -1,5 +1,11 @@
 # Experimental protocol: portable summary
 
+20 October2026: [R2 actual evidence](evidence/scalar_r2_2217613_review.json) is
+accepted for the small gate on NPAD. [R3-A](mvp2_scalar_r3a.md) is prospective
+software/input/resource qualification only; no large scalar job/admission,
+automatic repeat or h300 follows. Preserve original certificates and tiny/large
+evidence boundaries. Read the current PROJECT_STATE header before old snapshots.
+
 ## Superseding scalar protocol, 19 October2026
 
 Read [scalar contract](mvp2_scalar_contract.md) and [roadmap](mvp2_scalar_roadmap.md).

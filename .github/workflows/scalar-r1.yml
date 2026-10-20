@@ -26,7 +26,9 @@ jobs:
           python-version: '3.13'
       - run: python -m pip install -e '.[dev,scip]' 'pyscipopt==6.2.1'
       - name: R2 wrapper syntax, no scheduler or cluster access
-        run: bash -n scripts/npad_scalar_r2.sh
+        run: |
+          bash -n scripts/npad_scalar_r2.sh
+          bash -n scripts/npad_scalar_r3a.sh
       - name: Full retained native regression on exact PR head, no HPC
         run: >-
           python -B -m pytest -p no:cacheprovider
@@ -36,6 +38,7 @@ jobs:
           python -B -c 'import xml.etree.ElementTree as e; r=e.parse("/tmp/scalar-r1.xml").getroot(); s=r.findall("testsuite") if r.tag=="testsuites" else [r]; assert sum(int(x.get("tests",0)) for x in s)>0; assert all(int(x.get(k,0))==0 for x in s for k in ("failures","errors","skipped"))'
           python -B scripts/check_scalar_source.py
           python -B -c 'from scripts.mvp2_scalar_r2 import source_inventory,verify_source; i=source_inventory(); verify_source(i); print("R2_RAW_TRACKED_SOURCE=VERIFIED; NO_SCHEDULER_OR_SOLVER")'
+          python -B -m scripts.mvp2_scalar_r3a budget
           git diff --exit-code
       - uses: actions/upload-artifact@v4
         if: always()
