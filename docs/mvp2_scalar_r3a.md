@@ -152,6 +152,11 @@ loaded model BEFORE optimization. A substituted, duplicate, omitted or wrong-rol
 warehouse fails closed. These are facilities included in the MILP, NOT optimizer
 opening decisions; preserve warehouse_decisions.csv separately. Raw lists stay
 in private transfer artifacts, not public Git. Old certificates remain unchanged.
+Even if a preflight shape/selection gate fails, preserve the selection intent and
+warehouses_observed.csv with its criterion/hash before any model construction.
+If input loading itself fails, keep the intended frozen list and typed failure;
+never invent an actually loaded/modelled set. Later accepted runs retain the
+separate bound warehouses_used products. A failed attempt is not silently omitted.
 
 Read-only supplied gold workbook:215 IDs,146 existing/69 candidates, matching
 canonical anchor membership. Its Cenarios rows declare base1 active, baixo/alto
@@ -161,6 +166,7 @@ registry has18086 unique IDs,146 existing/17940 candidates. Supplied XLSX byte
 hashes differ from registered references. Matching counts/IDs/scenario rows are
 not bit identity or whole-workbook equivalence: source review is needed before
 substitution. No supplied workbook was edited, saved or adopted as a new source.
+See the [redacted supplied-file inspection](evidence/scalar_r3a_supplied_input_inspection_20261020.json).
 
 After separately admitted/audited h215, review actual scalar incumbent, bound/gap,
 validation, construction/optimization/return timings, CPU/affinity/SMT, native/
@@ -192,20 +198,20 @@ integration/CLI can be issued. No NPAD command is needed during this PR review.
 
 ### Observed software qualification, 20 October2026
 
-PR114 candidate `f0a8c03855491ed977740ef2f044f1a04aef4275`:
+PR114 candidate `0d6a66516efc0afc7fb3fd5efb70428b0ffefcbb`:
 
 | Gate | Observed result |
 | --- | --- |
-| T1 |59 passed, no solver/scheduler/probe |
-| T3 exact-head Linux |637 passed, zero failures/errors/skips; real small Gurobi/SCIP |
+| T1 |82 passed, no solver/scheduler/probe |
+| T3 exact-head Linux |660 passed, zero failures/errors/skips; real small Gurobi/SCIP |
 | New native integration |Public tiny DET/STO preflight, native case engine, original residuals, closed resource telemetry, collection and portable replay passed |
 | Source / wrapper |All-tracked raw Git bytes, physical executable inventory, unchanged scientific source and both Bash syntax checks passed |
 | Related CI / build |All four workflows passed, including Ruff and distribution build |
-| Local Windows |579 passed,58 expired-local-Gurobi skips, zero failures/errors; not native acceptance |
+| Local Windows |602 passed,58 expired-local-Gurobi skips, zero failures/errors; not native acceptance |
 
-[Exact-head native workflow](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/actions/runs/39439810732).
+[Exact-head native workflow](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/actions/runs/39442903499).
 Downloaded JUnit SHA256:
-`802022f542842dac4706cd6c0b0791478388901635b2f3d3c022b41f7563751e`.
+`a7d8ca760cba30c0be0cace4bc1d00aecaa392c7e932f77d2f4d453c46b6f5f1`.
 One pre-existing pandas FutureWarning remains. Initial CI failure from an absent
 case parent was fixed with exclusive nested-directory ownership and preserved
 typed preflight failures, without changing mathematics/validation or skipping the
@@ -214,9 +220,10 @@ environment path; clearing that variable only in the local test process restored
 the bundled test dependency. No NPAD environment/package/license was changed.
 
 Qualified Git anchors: `src` tree666029ace80bd60417d91c43d4460a33326acf64;
-tests tree708dbc088c0958bca76519859b6b6344754187ec;
-R3-A module blob2b3232a0c057023d8b0fd42b1f7de216e01894d3.
+tests tree106dc9e473ef43049fa2aa383e2842f18fef666a;
+R3-A module blobf3b4c8e33b0abf79ac95f7190465c5fc7267aac7;
+population receipt module blob670638caf97ddb9744ea62c6f18a657247b209de.
 Wrapper SHA256:
-`d3b170ec6b87f5a7f30feb635e2ef491c6750eec3779bc3b5cbcd56c5e8671fe`.
+`72b1297f36e495a36778360770e1dc69b7864fb675edd475f2cf883740af8968`.
 Final documentation-only head must preserve these bytes and pass all checks
 again before Ready. These are software results, not h215/h300 runs or permission.
