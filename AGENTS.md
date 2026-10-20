@@ -1,5 +1,17 @@
 # Model Agrologistic: agent working agreement
 
+## R2 preparation mandate — 20 October2026
+
+The maintainer approved20min/four logical CPUs/8GiB/one solver thread, up to60s
+per small case. Prepare one consolidated R2 package and qualify it in software;
+the agent must not access NPAD or execute jobs. Read `docs/mvp2_scalar_r2.md`.
+Preserve all old claims/evidence and the designated WLS/path. R1 merged in PR112.
+Only the dedicated, pinned small R2 wrapper may subsequently implement this
+reviewed envelope after Ready, authorized merge and human CLI. Generic Slurm
+optimization, larger instances, repeats and automatic follow-on stay blocked.
+No scientific source/parameter/tolerance changes are part of R2. This section
+supersedes older blanket R1-only planning statements, not historical certificates.
+
 ## Current mandate — scalar R1 approved 19 October2026
 
 This section supersedes conflicting historical hierarchy instructions below.

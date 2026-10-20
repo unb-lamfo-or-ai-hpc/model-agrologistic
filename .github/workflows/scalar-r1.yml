@@ -25,6 +25,8 @@ jobs:
         with:
           python-version: '3.13'
       - run: python -m pip install -e '.[dev,scip]' 'pyscipopt==6.2.1'
+      - name: R2 wrapper syntax, no scheduler or cluster access
+        run: bash -n scripts/npad_scalar_r2.sh
       - name: Full retained native regression on exact PR head, no HPC
         run: >-
           python -B -m pytest -p no:cacheprovider

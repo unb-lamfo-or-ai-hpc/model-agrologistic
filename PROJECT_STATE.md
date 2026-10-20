@@ -1,5 +1,25 @@
 # Model Agrologistic — MVP 2.0 checkpoint
 
+## R2 — approved small envelope; software preparation, no NPAD job
+
+20 October2026. PR112 merged into develop at
+`f9aa616d378e27cc3ad8c725b5c340c34085e995`. The maintainer approved one R2
+envelope:20min/four logical CPUs/8GiB/one solver thread, up to60s per small case.
+The [consolidated R2 protocol](docs/mvp2_scalar_r2.md) reuses R1 mathematics and
+the original validator, adds one exclusive claim, explicit existing WLS selection,
+fresh capability check inside compute, one bounded step, fixed9-case gate,
+terminal/forensic collection and portable replay. Preparation/qualification only:
+no NPAD job/probe, merge or new experimental result is claimed here.
+
+R1 scientific source, parameters/tolerances, manuscript, original evidence and
+historical NPAD claims remain unchanged. Before asking for merge, finish focused/
+related/full exact-head CI, wrapper syntax, native integration and lint/build;
+mark Ready only afterward. Later human CLI is pinned to that qualified release.
+No automatic repeat or larger-instance admission; R3-A baselines still need their
+own input/resource/quality gate. The designated WLS path is confirmed, not replaced.
+
+## Previous R1 checkpoint — preserved qualification record
+
 ## R1 — scalar software qualified; merge pending
 
 19 October2026. The maintainer approved one consolidated R1 replacing PR111:
