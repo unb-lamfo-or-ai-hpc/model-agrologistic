@@ -1,5 +1,27 @@
 # Model Agrologistic: agent working agreement
 
+## R3-A software mandate — 20 October2026
+
+Maintainer clarification: every h215/h300/h400/h500 attempt must store its exact
+included warehouse list and selection criterion in bound attempt artifacts.
+Preserve source/anchor/selection hashes, roles, ordering, strata/ranks and seed;
+do not confuse included candidates with facilities opened by the optimizer.
+New external files whose bytes differ from registered references require source
+review; do not silently replace hashes, membership or old run certificates.
+
+R2 job2217613 has independently accepted small native evidence; read
+`docs/evidence/scalar_r2_2217613_review.json` and `docs/mvp2_scalar_r3a.md`.
+The maintainer requests one consolidated R3-A software PR and checkpoint, no
+NPAD access/jobs, Ready before merge authorization. Prepare/qualify the explicit
+h215 DET/STO proposal, input/predecessor binding, case engine, immutable partial
+collection and h300 design together. Do not treat tiny CI results as h215 evidence.
+All R3-A CLI execution paths remain closed. Its6h/24 logical CPU/192GiB/four-thread/
+3600s-per-arm/1GiB-transfer proposal is NOT approved; merging software must not
+admit jobs or replace the approved R2 envelope. Input, scientific profile,
+resources and one pinned pair need separate human confirmation and integrated
+live-launcher/accounting/phase-stop qualification. Preserve all historical claims,
+raw certificates, WLS path, scientific source/tolerances and coauthor manuscript.
+
 ## R2 preparation mandate — 20 October2026
 
 The maintainer approved20min/four logical CPUs/8GiB/one solver thread, up to60s

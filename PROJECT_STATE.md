@@ -1,5 +1,97 @@
 # Model Agrologistic — MVP 2.0 checkpoint
 
+## R2 accepted on NPAD; R3-A software qualified, merge pending, execution closed
+
+20 October2026. PR113 merged into develop at
+`5d24dc63bf16d2daedf7a761f782658a28644c66`. Actual R2 job2217613 used qualified
+source `26f6a7b096adc2ba00cb883134d17989a68d53a2`. Transferred archive SHA256
+`57b8e4d37ee21be04dd651088d9c525b812cf82514f3d55b23e3759651da2ed6` matches
+the sidecar and bytes. Unchanged canonical portable auditor reproduces
+small_r2_evidence_accepted. All420 source-file hashes also match pinned Git bytes;
+60 regular archive members contain166040 expanded bytes. See the
+[redacted independent review](docs/evidence/scalar_r2_2217613_review.json).
+
+Fresh WLS capability accepted2001 variables/constraints, objective2001; Python
+3.13.15/Gurobi13.0.3. Root/batch/extern/step0 COMPLETED0:0, root7s/step6s. Approved
+allocation4 logical CPUs/8GiB/20min, native one thread and30s limits under the60s
+ceiling.9 native cases/zero failures/errors/skips, including closed DET/STO Excel
+products and original independent residuals with zero failed checks. Eight cases
+exercise actual mathematics/integration; the ninth no-incumbent API case is not
+a real timeout experiment. Source checked before/after. Process-wide peak RSS
+128484KiB includes pytest/license, not optimize-only, and does not agree in scope
+with Slurm step1244K. Neither tiny figure sizes a large instance.
+
+This is small mathematical/operational R2 acceptance, NOT scalar scalability,
+thread ranking, production isolation or fresh local mathematical re-solve. Raw
+archive, claim and original source/run remain preserved externally; no license,
+private paths or raw archive is committed. No repeat or larger job is admitted.
+
+The maintainer now requests consolidated R3-A software qualification. The
+[R3-A protocol](docs/mvp2_scalar_r3a.md) and explicit version2 h215 DET/STO template
+bind accepted R2, input/source/configs, shape/size preflight, case engine,
+telemetry/original validation/completion, bounded partial collection/replay and
+conditional h300 design. No scientific source, parameter in an executed campaign,
+tolerance, historical certificate or manuscript changes. Internal native tests
+use public tiny inputs; production count215/60-period/1-or9-scenario checks stay
+mandatory for the proposed input. DET uses base deterministic arrays, not means.
+
+Execution is CLOSED at Python and Bash boundaries: no sbatch/srun/worker/probe
+dispatch in R3-A. Proposed one serial h215 pair:6h/24 allocated logical CPUs/
+192GiB,4 solver threads, native3600s/arm, SoftMemLimit160 decimal GB, MIPGap0.01,
+seed42, compaction off and1GiB expanded transfer.5h phase allocation plus1h spare;
+reservation ceiling144 logical-CPU hours, not measured consumption or a runtime
+forecast. These are prospective selections requiring researcher confirmation,
+NOT inherited approval or a change to R2's approved envelope. Actual selected
+input/checksum/scientific profile, resources/transfer, one-pair admission and live
+operational stop/accounting integration remain outstanding before human CLI.
+
+R3-A experimental baselines remain pending. After actual h215 review, h300
+1/2/4/8/16-thread design/resource/order/replication gates remain separate; no
+automatic follow-on or repeats. R3-B h400, complementary existing-SCIP/h215,
+conditional h500 and S6-A/B retain approved scope. S3/S4 cancelled; EVPI/VSS
+excluded. December conditional/base January2027 until real scalar baseline
+measurements/review permit re-estimation. Main integration only after article
+review. Next owner: agent qualifies this software PR, marks Ready and requests
+explicit merge; researcher separately decides the prospective execution envelope.
+
+Consolidated [PR114](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/114)
+software candidate `0d6a66516efc0afc7fb3fd5efb70428b0ffefcbb`:82 focused cases
+passed; full exact-head Linux660 passed, zero failures/errors/skips, real tiny
+Gurobi/SCIP including DET/STO preflight/case engine/closed telemetry/collection/
+portable replay. All four workflows passed, including Ruff/build, Bash syntax,
+all-tracked raw-byte and physical-source closure. Local Windows602 passed/58
+expired-local-Gurobi skips; native Linux, not those skips, supplies qualification.
+The pre-existing pandas FutureWarning remains disclosed. No live h215 scheduler,
+worker-timeout, WLS or private-input certificate is claimed by this software gate.
+Preflight records effective scenario probabilities: the proposed nine Cartesian
+combinations are equiprobable1/9, not active-row probabilities copied from Excel;
+DET remains probability one. This prospective design awaits human confirmation.
+Final documentation-only head must keep qualified code/tests and pass again before
+Ready/merge request. Original `src` tree remains666029ace80bd60417d91c43d4460a33326acf64.
+
+Maintainer clarification20 October: EVERY h215/h300/h400/h500 attempt must keep
+the exact included warehouse list and selection criterion. The SAME PR114 now
+adds bound warehouses_used.csv/json per case, actual model order/roles, frozen
+candidate rank/stratum/seed, registry/anchor/population-protocol hashes and
+membership verification against the loaded model. These are included facilities,
+not the subset opened by the solver. No old run/certificate is rewritten.
+Full requalification after this addition passed660 exact-head cases and all four
+workflows. Both actual model membership and preflight-failure observations are
+preserved; no historical population certificate is rewritten.
+
+Read-only inspection of maintainer-supplied source files found215 gold warehouses
+(146 existing/69 candidates) and18086 unique universe CDAs (146/17940). Gold
+scenario rows: base probability1 active; baixo/alto0.25 each inactive. Only base
+is effective under active_rows. Cartesian nine defaults remain1/9 as a separate
+unapproved proposal; do not silently replace probabilities or activate rows.
+The supplied gold and registry hashes differ from committed canonical byte
+references, despite matching gold CDA membership and scenario values. Do not
+replace registered source/anchor hashes or reuse old certificates automatically.
+See the [redacted supplied-file inspection](docs/evidence/scalar_r3a_supplied_input_inspection_20261020.json)
+for exact hashes, counts and active scenario values, without private paths/lists.
+
+## Historical pre-execution R2 software checkpoint — preserved
+
 ## R2 — consolidated software qualified; merge pending, no NPAD job
 
 20 October2026. PR112 merged into develop at

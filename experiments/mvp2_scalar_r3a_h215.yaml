@@ -1,0 +1,59 @@
+# Prospective R3-A proposal, NOT an execution admission. No automatic migration
+# of a version-1 hierarchy campaign or inheritance of its performance ranking.
+version: 2
+output_dir: ../data/results/scalar_r3a_h215_PROPOSAL_ONLY
+continue_on_error: false
+defaults:
+  max_estimated_variables: 25000000
+  loader:
+    compute_haversine_distances: false
+    use_workbook_distances: true
+    required_distance_source: osrm_primary
+    include_export_routes: true
+    include_transshipment_routes: true
+    include_direct_origin_customer_routes: false
+    candidate_cost_policy: variable_from_total
+    penalty_policy: thesis_dynamic
+    include_stochastic_scenarios: true
+    scenario_generation_mode: cartesian
+    stochastic_supply_levels: [baixo, base, alto]
+    stochastic_demand_levels: [baixo, base, alto]
+  model:
+    objective_policy: penalty
+    use_direct_origin_customer: false
+    use_warehouse_transshipment: true
+    interhub_factor: 1.0
+    route_filter_strategy: connectivity_preserving_pareto
+    pareto_fraction: 0.20
+    connectivity_export_policy: one_sink_per_product
+    candidate_capacity_mode: scalable
+    terminal_inventory_policy: free
+    capacity_coupling_policy: daily_factors
+    days_per_period: 30
+    allow_capacity_expansion: true
+    allow_bulkification: true
+    separate_emergency_capacity_slacks: true
+  solver:
+    backend: gurobipy
+    solver_name: gurobi
+    time_limit: 3600
+    mip_gap: 0.01
+    threads: 4
+    seed: 42
+    tee: false
+    compute_iis: false
+    collect_resource_diagnostics: true
+    resource_sample_seconds: 5
+    resource_max_samples: 8192
+    compact_python_indices: false
+    solver_options:
+      SoftMemLimit: 160
+experiments:
+  - name: scalar_h215_det
+    workbook: ../data/processed/policy_population_v020_osrm/warehouses_215/model_input.xlsx
+    model:
+      mode: det
+  - name: scalar_h215_sto
+    workbook: ../data/processed/policy_population_v020_osrm/warehouses_215/model_input.xlsx
+    model:
+      mode: sto

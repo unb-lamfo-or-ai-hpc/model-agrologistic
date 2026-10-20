@@ -1,5 +1,11 @@
 # Research context and portable handoff
 
+20 October2026: small R2 job2217613 is accepted on independent transfer review;
+see the [redacted ledger](evidence/scalar_r2_2217613_review.json). The current
+[R3-A package](mvp2_scalar_r3a.md) prepares scalar h215 baselines and conditional
+h300 design, but admits no execution. Scientific/resource/input choices and
+actual large-run performance remain unqualified; tiny success is not scalability.
+
 ## Current research question — scalar MVP2
 
 19 October2026: how do increasing warehouse populations affect MILP dimensions,

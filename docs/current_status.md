@@ -1,4 +1,29 @@
-# Dated research status: 19 October 2026
+# Dated research status: 20 October 2026
+
+## Latest — R2 accepted, R3-A software qualified pending final-head checks/merge
+
+PR113 merged at5d24dc63. R2 job2217613 has independently replayed accepted small
+native evidence:9 tests/zero failures/errors/skips, fresh WLS capability and
+closed DET/STO Excel products with accepted original independent residuals.
+Archive57b8e4d3 and420 raw-source Git comparisons agree. See the
+[redacted evidence ledger](evidence/scalar_r2_2217613_review.json) and authoritative
+[checkpoint](../PROJECT_STATE.md). This is not scalar scalability or thread ranking.
+
+[R3-A](mvp2_scalar_r3a.md) consolidates the version2 h215 DET/STO proposal,
+input/source/predecessor binding, case engine, partial collection/replay and h300
+design in one software PR. All execution entry points stay closed; actual h215
+inputs, scientific profile,6h/24 CPU/192GiB/four-thread/3600s/arm/1GiB proposal
+and admitted operational integration remain subject to human decisions. No NPAD
+job/probe, old-claim reset or automatic h300/repeat follows preparation or merge.
+Older dated snapshots below are historical, not current R1/R2 merge status.
+
+PR114 candidate0d6a6651 passed all four workflows:660 exact-head Linux native
+cases/zero failures/errors/skips,82 focused, source closure/Bash/Ruff/build.
+Local602 passed/58 expired-local-Gurobi skips are not native acceptance. Final
+documentation-only head must pass again before Ready. No R3-A execution follows.
+The per-attempt included warehouse inventory/selection policy is now qualified
+for215/300/400/500, including preflight failures and wrong-ID/role/corruption
+rejection. Supplied source-byte revisions remain unadopted pending review.
 
 ## Current scalar R1 — software only, no execution
 

@@ -1,0 +1,42 @@
+{
+  "schema_version": "scalar-r3a-read-only-input-inspection-v1",
+  "date": "2026-10-20",
+  "scope": "Read-only inspection of maintainer-supplied references, not an admitted h215 input or whole-workbook equivalence certificate",
+  "gold_reference": {
+    "file": "model_agrologistic_padrao_ouro.xlsx",
+    "sha256": "2fc994ac1d3b11e20941c1e3285d210d0bc97beae7ff55ca2df9bf110cf235ca",
+    "registered_template_sha256": "de3bdc51b2c338194a5013165bec2884b68784fb207ae8c762984a1b44856082",
+    "same_bytes_as_registered_template": false,
+    "warehouse_rows": 215,
+    "unique_cda": 215,
+    "existing": 146,
+    "candidate": 69,
+    "same_cda_membership_as_registered_template": true,
+    "scenarios_range": "Cenarios!A1:E4",
+    "scenario_rows": [
+      {"name": "base", "declared_probability": 1.0, "active": true, "supply_multiplier": 1.0, "domestic_demand_multiplier": 1.0},
+      {"name": "baixo", "declared_probability": 0.25, "active": false, "supply_multiplier": 0.85, "domestic_demand_multiplier": 0.95},
+      {"name": "alto", "declared_probability": 0.25, "active": false, "supply_multiplier": 1.15, "domestic_demand_multiplier": 1.05}
+    ],
+    "active_rows_effective_probabilities": {"base": 1.0},
+    "cartesian_proposal": "Nine combinations with probability1/9 each; active-row probabilities/flags are not used by this mode; experimental choice remains unapproved"
+  },
+  "registry_reference": {
+    "file": "Warehouses_Existing_Candidate_All (1).xlsx",
+    "sha256": "bb5e8bf6eb0a33876c25b8e2a9f6a23ebdcad75ceb1d6b27c4ae9d55e148ddfa",
+    "registered_source_sha256": "0d19865ac72eca0706960d10b6dbd1647a4951378a831715e39af8029ecb77f2",
+    "same_bytes_as_registered_source": false,
+    "sheet": "Sheet1",
+    "warehouse_rows": 18086,
+    "unique_cda": 18086,
+    "existing": 146,
+    "candidate": 17940,
+    "contains_all_supplied_gold_cda": true,
+    "methodology_scope": "Registry construction, operational filtering/type mapping/CDA deduplication; not sufficient by itself to reconstruct an experimental h300/h400/h500 subset"
+  },
+  "files_modified_or_saved": false,
+  "source_reference_hashes_replaced": false,
+  "source_revision_review_required_before_substitution": true,
+  "jobs_executed": false,
+  "follow_on_allowed": false
+}
