@@ -376,6 +376,32 @@ def test_source_closure_needs_no_git_on_compute_and_rejects_extra_source(tmp_pat
         r.verify_source(inventory, tmp_path)
 
 
+def test_source_closure_hashes_editorial_python_without_treating_it_as_execution_scope(tmp_path):
+    file = tmp_path / "manuscript/build_review_figures.py"
+    file.parent.mkdir()
+    file.write_bytes(b"# preserved historical editor tool\n")
+    inventory = {"files": {"manuscript/build_review_figures.py": r.digest(file.read_bytes())}}
+    r.verify_source(inventory, tmp_path)
+    file.write_bytes(b"# altered editorial tool\n")
+    with pytest.raises(ValueError, match="Source bytes changed"):
+        r.verify_source(inventory, tmp_path)
+
+
+def test_evidence_cap_preserves_products_and_can_resume_collection_after_review(
+    tmp_path, monkeypatch
+):
+    claim = claim_at(tmp_path)
+    original = (claim / "native/tests.xml").read_bytes()
+    monkeypatch.setattr(r, "observe", lambda *_: (r.accounting(RAW, JOB), RAW))
+    with monkeypatch.context() as cap:
+        cap.setattr(r, "MAX_BYTES", 100)
+        with pytest.raises(ValueError, match="cap"):
+            r.collect(claim, SHA)
+    assert (claim / "native/tests.xml").read_bytes() == original
+    assert not (claim / "scalar-r2-evidence.tar.gz").exists()
+    assert r.collect(claim, SHA)["status"] == "small_r2_evidence_accepted"
+
+
 def test_collection_is_terminal_repeatable_and_portably_replayed(tmp_path, monkeypatch):
     claim = claim_at(tmp_path)
     monkeypatch.setattr(r, "observe", lambda *_: (r.accounting(RAW, JOB), RAW))

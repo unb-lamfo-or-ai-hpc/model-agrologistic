@@ -116,7 +116,13 @@ def verify_source(inventory, root=ROOT):
         for p in (root / folder).rglob("*.py")
     } | {p.name for p in root.glob("*.py")}
     require(
-        physical == {n for n in inventory["files"] if n.endswith(".py")},
+        physical
+        == {
+            n
+            for n in inventory["files"]
+            if n.endswith(".py")
+            and ("/" not in n or n.split("/")[0] in {"src", "scripts", "tests"})
+        },
         "Extra/missing scientific source.",
     )
 
@@ -161,6 +167,7 @@ def load(claim, sha):
 
 def start(claim, sha, acknowledged=False):
     require(acknowledged, "Require explicit one-reviewed-R2-only acknowledgement.")
+    require(sys.version_info[:2] == (3, 13), "Select the existing qualified Python3.13.")
     require(not os.environ.get("SLURM_JOB_ID"), "Start is login-only, never nested.")
     require(claim.name == CLAIM, "Use the exclusive R2 claim name.")
     if claim.exists():
