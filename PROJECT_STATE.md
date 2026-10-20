@@ -2,6 +2,17 @@
 
 ## h300 nested-population integration repair after PR118 —20 October2026
 
+[PR119](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/119)
+implementatione8d2f664402cc76e0d982c2ff3fa852c284e2124 passed all four workflows.
+The [exact-head native Linux gate](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/actions/runs/39490201849)
+reports928 passed, zero failures/errors/skips; downloaded JUnit SHA256
+`05f14ccb5236722896c6f8d408b804dd55b1c4c22821f355b5c63aaa65a59559`.
+Focused185 and related348 local Python3.13.15 tests passed. Bash syntax,
+raw-source closure, native tiny lifecycle, lint and distribution checks passed.
+Scientific src/manuscript Git trees are unchanged. The final documentation-only
+head must pass all checks before Ready and explicit merge request. Private h300
+and NPAD execution remain unqualified; no agent job was submitted.
+
 PR118 merged at2f6237f62374fc241ab72f5d0bf5ebdb150a591f. Human source66d8faa
 passed137 tests and workbook/audit/predecessor/hash checks, then rejected300
 because the original population manifest lists215/500/... checkpoints. The

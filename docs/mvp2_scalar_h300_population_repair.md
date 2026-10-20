@@ -70,6 +70,32 @@ source closure, Bash syntax and distribution builds precede Ready/merge request.
 
 ## Preserved scientific scope and next owner
 
+### Observed software qualification
+
+[PR119](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/119)
+implementatione8d2f664402cc76e0d982c2ff3fa852c284e2124 passed all four workflows.
+The [exact-source full native Linux gate](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/actions/runs/39490201849)
+passed928 tests with zero failures/errors/skips in29.305s; downloaded JUnit
+SHA256 `05f14ccb5236722896c6f8d408b804dd55b1c4c22821f355b5c63aaa65a59559`.
+Local focused185/related348 cases passed on Python3.13.15. Full CI also checked
+Bash syntax, raw-source closure, native tiny lifecycle, lint and distributions.
+The scientific src tree remains666029ace80bd60417d91c43d4460a33326acf64;
+manuscript tree remainsc33c6dbdb829580d1d0c8c9296814b1b7a38280b.
+
+An initial local negative fixture mistakenly used the exclusive artifact writer
+to overwrite its own synthetic audit; those six fixture failures were corrected
+before the accepted runs. A local command referencing a nonexistent test file
+ran no tests and is not qualification. The earlier private h215 download is not
+currently present locally, so no new actual-archive replay is claimed here;
+the preserved prior acceptance and runtime predecessor gate remain unchanged.
+Final documentary-head checks still precede Ready/merge. None of this certifies
+a live private h300 run or a general production-isolation boundary.
+
+Operational wrapper SHA256:
+`d88d7e6068d94e9aa07be874993e051058edfdbb11d518a27ab8224b287a18d2`.
+
+### Unchanged contract and handoff
+
 The [approved30h contract](mvp2_scalar_h300_30h.md) remains unchanged: five cold
 STO arms4/1/8/2/16, global14400s/arm,24 allocated logical CPUs/192GiB, common16-
 logical-CPU affinity pool, gap0.01,seed42,SoftMemLimit160GB,compaction off, nine
