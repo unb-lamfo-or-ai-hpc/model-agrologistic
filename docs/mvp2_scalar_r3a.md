@@ -99,6 +99,8 @@ SHA, all tracked raw bytes, template hash, selected workbook hash, complete reso
 configs, expected shape and proposed resources. Proposal claim is exclusively
 `.mvp2-scalar-r3a-proposal-v1`. Reentry never resets it. Unknown/partial preparation
 must be preserved; no automatic job discovery or submission.
+The future admitted operational claim must be separate from this proposal slot;
+never turn a consumed proposal or historical claim into a new execution receipt.
 
 The case engine checks input shape/size before one unchanged `run_experiment`
 call, reuses its loader/sparse builder/validator/telemetry/completion hashes and
@@ -153,3 +155,34 @@ After qualified Ready, ask authorization to merge SOFTWARE ONLY. The researcher
 must separately confirm selected input/scientific profile, the proposed resource/
 transfer envelope and one pinned h215 pair before the admitted operational
 integration/CLI can be issued. No NPAD command is needed during this PR review.
+
+### Observed software qualification, 20 October2026
+
+PR114 candidate `d0581ac060314db7dd3073305d9bb25120a166c1`:
+
+| Gate | Observed result |
+| --- | --- |
+| T1 |57 passed, no solver/scheduler/probe |
+| T3 exact-head Linux |635 passed, zero failures/errors/skips; real small Gurobi/SCIP |
+| New native integration |Public tiny DET/STO preflight, native case engine, original residuals, closed resource telemetry, collection and portable replay passed |
+| Source / wrapper |All-tracked raw Git bytes, physical executable inventory, unchanged scientific source and both Bash syntax checks passed |
+| Related CI / build |All four workflows passed, including Ruff and distribution build |
+| Local Windows |577 passed,58 expired-local-Gurobi skips, zero failures/errors; not native acceptance |
+
+[Exact-head native workflow](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/actions/runs/39438836280).
+Downloaded JUnit SHA256:
+`33fe20cd03fa4e71764e8bd3191ac6d789c856225e8dd73214dc677407f1f716`.
+One pre-existing pandas FutureWarning remains. Initial CI failure from an absent
+case parent was fixed with exclusive nested-directory ownership and preserved
+typed preflight failures, without changing mathematics/validation or skipping the
+native integration. Local related SCIP import initially selected an obsolete DLL
+environment path; clearing that variable only in the local test process restored
+the bundled test dependency. No NPAD environment/package/license was changed.
+
+Qualified Git anchors: `src` tree666029ace80bd60417d91c43d4460a33326acf64;
+tests tree4e8ea91fe84fe9aff9159d79c881aa8fd17b756d;
+R3-A module blob04a5f7cb48c946e1286d672fabfbdce236b12335.
+Wrapper SHA256:
+`d3b170ec6b87f5a7f30feb635e2ef491c6750eec3779bc3b5cbcd56c5e8671fe`.
+Final documentation-only head must preserve these bytes and pass all checks
+again before Ready. These are software results, not h215/h300 runs or permission.

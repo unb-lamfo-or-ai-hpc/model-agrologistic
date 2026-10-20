@@ -1,6 +1,6 @@
 # Dated research status: 20 October 2026
 
-## Latest — R2 accepted, consolidated R3-A software under qualification
+## Latest — R2 accepted, R3-A software qualified pending final-head checks/merge
 
 PR113 merged at5d24dc63. R2 job2217613 has independently replayed accepted small
 native evidence:9 tests/zero failures/errors/skips, fresh WLS capability and
@@ -16,6 +16,11 @@ inputs, scientific profile,6h/24 CPU/192GiB/four-thread/3600s/arm/1GiB proposal
 and admitted operational integration remain subject to human decisions. No NPAD
 job/probe, old-claim reset or automatic h300/repeat follows preparation or merge.
 Older dated snapshots below are historical, not current R1/R2 merge status.
+
+PR114 candidate d0581ac0 passed all four workflows:635 exact-head Linux native
+cases/zero failures/errors/skips,57 focused, source closure/Bash/Ruff/build.
+Local577 passed/58 expired-local-Gurobi skips are not native acceptance. Final
+documentation-only head must pass again before Ready. No R3-A execution follows.
 
 ## Current scalar R1 — software only, no execution
 

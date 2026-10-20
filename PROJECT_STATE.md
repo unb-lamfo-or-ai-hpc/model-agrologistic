@@ -1,6 +1,6 @@
 # Model Agrologistic — MVP 2.0 checkpoint
 
-## R2 accepted on NPAD; R3-A software preparation, execution closed
+## R2 accepted on NPAD; R3-A software qualified, merge pending, execution closed
 
 20 October2026. PR113 merged into develop at
 `5d24dc63bf16d2daedf7a761f782658a28644c66`. Actual R2 job2217613 used qualified
@@ -53,6 +53,18 @@ excluded. December conditional/base January2027 until real scalar baseline
 measurements/review permit re-estimation. Main integration only after article
 review. Next owner: agent qualifies this software PR, marks Ready and requests
 explicit merge; researcher separately decides the prospective execution envelope.
+
+Consolidated [PR114](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/114)
+software candidate `d0581ac060314db7dd3073305d9bb25120a166c1`:57 focused cases
+passed; full exact-head Linux635 passed, zero failures/errors/skips, real tiny
+Gurobi/SCIP including DET/STO preflight/case engine/closed telemetry/collection/
+portable replay. All four workflows passed, including Ruff/build, Bash syntax,
+all-tracked raw-byte and physical-source closure. Local Windows577 passed/58
+expired-local-Gurobi skips; native Linux, not those skips, supplies qualification.
+The pre-existing pandas FutureWarning remains disclosed. No live h215 scheduler,
+worker-timeout, WLS or private-input certificate is claimed by this software gate.
+Final documentation-only head must keep qualified code/tests and pass again before
+Ready/merge request. Original `src` tree remains666029ace80bd60417d91c43d4460a33326acf64.
 
 ## Historical pre-execution R2 software checkpoint — preserved
 
