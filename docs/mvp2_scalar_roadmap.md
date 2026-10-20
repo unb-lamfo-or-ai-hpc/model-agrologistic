@@ -1,5 +1,10 @@
 # Scalar MVP2 roadmap — 19 October 2026
 
+20 October update: R1 merged in PR112. The maintainer approved the prospective
+R2 envelope below. The [R2 package](mvp2_scalar_r2.md) is being prepared/qualified;
+no NPAD job has been executed/admitted by that software work. Later stages and
+their separate scientific/resource decisions remain unchanged.
+
 The [scalar contract](mvp2_scalar_contract.md) supersedes the unexecuted PR111
 hierarchical h400 continuation, not the historical S0/S1/S2 certificates.
 R1–R5 below do not reopen cancelled S3/S4.
@@ -7,8 +12,8 @@ R1–R5 below do not reopen cancelled S3/S4.
 R1 implementation and small native software qualification are consolidated in
 [PR112](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/112);
 [recorded results](mvp2_scalar_r1_qualification.md) do not admit R2 or NPAD.
-PR111 is closed as superseded, with its branch/history preserved. Merge remains
-subject to final-head checks, Ready and explicit authorization.
+PR111 is closed as superseded, with its branch/history preserved. PR112 has merged;
+R2 remains subject to final-head checks, Ready and explicit merge authorization.
 
 | Stage | Complete functional package | Acceptance / dependency |
 | --- | --- | --- |
@@ -39,11 +44,11 @@ article review; it is not a prerequisite for experiments.
 
 Do not automatically inherit 3600s/28800s hierarchy budgets or four-thread
 ranking. R1 tests use public tiny analytical models, not scalability campaigns.
-Initial R2 proposal: one solver thread, at most four allocated logical CPUs,
+Approved R2 ceiling,20 October: one solver thread, at most four allocated logical CPUs,
 at most 8GiB, at most 60s optimization per small case and a 20-minute reservation
 including build/validation/cleanup/collection. Reservation ceiling: 1.333 allocated
-logical-CPU hours, not measured CPU/billing. R2 qualification and explicit human
-resource approval remain required; R1 admits no allocation.
+logical-CPU hours, not measured CPU/billing. R2 software qualification, explicitly
+authorized merge and human CLI remain required; R1 alone admits no allocation.
 
 Each later h215/h300/h400/SCIP-h215/h500 proposal must specify allocated logical
 CPUs, solver threads, observed affinity/SMT, memory request/native ceiling, build,
