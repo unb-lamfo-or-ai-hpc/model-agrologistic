@@ -179,6 +179,16 @@ def fixture():
                 "worker_affinity_logical_cpus": 16,
             }
         )
+        files[control + "native_terminal.json"] = m.r.r2.encoded(
+            {
+                "entry": entry,
+                "status_code": 9,
+                "solution_count": 1,
+                "runtime_seconds": 3600.5,
+                "time_limit_seconds": 14400,
+                "objective": 100.0,
+            }
+        )
     files["batch_outcome.json"] = m.r.r2.encoded(
         {
             "status": "block_returned",
@@ -192,6 +202,9 @@ def fixture():
         "123.extern|COMPLETED|0:0|200|1K\n"
         + "".join(f"123.{i}|COMPLETED|0:0|30|1K\n" for i in range(5))
     ).encode()
+    reviewed = m.science_review(files, p)
+    for arm, chosen in zip(m.ARMS, reviewed["arms"], strict=True):
+        files["control/" + arm + "/review.json"] = m.r.r2.encoded(chosen)
     return files, p
 
 
@@ -259,6 +272,8 @@ def test_wrong_allocation_fails_closed(changes):
         "control/t2/phase-01.json",
         "control/t16/runtime.json",
         "batch_outcome.json",
+        "control/t4/review.json",
+        "control/t16/native_terminal.json",
     ],
 )
 def test_missing_operational_receipt_is_forensic_not_success(name):
@@ -384,6 +399,17 @@ def test_materialization_drift_rejected(field):
         data["distance_provenance"]["fallback_count"] = 1
     else:
         data["distance_provenance"]["route_count"] -= 1
+    with pytest.raises(ValueError):
+        m.materialization(data)
+
+
+def test_original_h300_cache_misses_are_not_mislabelled_as_new_requests():
+    data = audit_fixture()
+    data["distance_provenance"].update(
+        osrm_request_count=20, osrm_cache_miss_count=20, osrm_cache_write_count=20
+    )
+    assert m.materialization(data) == data
+    data["distance_provenance"]["osrm_cache_miss_count"] = -1
     with pytest.raises(ValueError):
         m.materialization(data)
 
@@ -560,3 +586,31 @@ def test_timeout_submission_preserves_intent_and_cannot_resubmit(tmp_path, monke
     monkeypatch.setattr(m, "load", lambda *_: {})
     with pytest.raises(ValueError, match="Regular unlinked"):
         m.start(claim, SHA, True, {}, command=lambda *_: pytest.fail("No second sbatch"))
+
+
+def test_complete_operational_prepare_load_and_original_audit_binding(tmp_path, monkeypatch):
+    fixture_files, _ = fixture()
+    workbook = tmp_path / "hash_only_public.xlsx"
+    workbook.write_bytes(b"Public hash preparation fixture, no Excel ETL")
+    monkeypatch.setattr(m.h, "WORKBOOK_SHA", m.r.file_hash(workbook))
+    audit_path = tmp_path / "materialization.json"
+    m.r.r2.write(audit_path, audit_fixture())
+    policy = json.loads(fixture_files["warehouse_selection.json"])
+    monkeypatch.setattr(m.r.warehouses, "read_policy", lambda *_: policy)
+    monkeypatch.setattr(
+        m.h, "verify_h215", lambda _: json.loads(fixture_files["plan.json"])["predecessor"]
+    )
+    monkeypatch.setattr(
+        m.r.r2, "source_inventory", lambda _: json.loads(fixture_files["source.json"])
+    )
+    monkeypatch.setattr(m.r.r2, "verify_source", lambda *_: None)
+    monkeypatch.setattr(m.shutil, "which", lambda _: sys.executable)
+    claim = tmp_path / m.CLAIM
+    plan = m.prepare(claim, SHA, workbook, None, None, audit_path, None)
+    assert plan == m.load(claim, SHA)
+    assert (claim / "materialization.original.json").read_bytes() == audit_path.read_bytes()
+    with pytest.raises(ValueError, match="Fresh exclusive"):
+        m.prepare(claim, SHA, workbook, None, None, audit_path, None)
+    (claim / "materialization.original.json").write_bytes(b"mutated")
+    with pytest.raises(ValueError, match="Audit drift"):
+        m.load(claim, SHA)

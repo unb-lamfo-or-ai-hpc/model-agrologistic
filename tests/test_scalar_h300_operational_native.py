@@ -53,6 +53,8 @@ def test_real_five_cold_native_workers_control_original_validation_and_portable_
                     threads=threads,
                     time_limit=14400,
                     mip_gap=0.01,
+                    seed=42,
+                    solver_options={"SoftMemLimit": 160},
                     collect_resource_diagnostics=True,
                 ),
                 max_estimated_variables=10000,

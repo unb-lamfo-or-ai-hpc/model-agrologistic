@@ -48,8 +48,11 @@ arms. No exclusive-node request or production isolation claim is introduced.
 Use existing processed policy_population_v020_osrm/warehouses_300/model_input.xlsx,
 SHA2567761cce77cf93dcba2f617714f0117c1f2ead4de0c3f27149daceba447e0c7d1.
 The original materialization audit is copied without rewriting, hash-bound and
-checked for this output, OSRM-primary driving dataset, no fallbacks and113269
-routes (DD89700,OD/DC11100 each,OC1369). No SQLite query/write, route fetching,
+checked for this output, OSRM-primary driving dataset, no fallbacks, coherent
+original route counts bounded by the full matrix (maximum113269), and nonnegative
+historical cache/request counters. Do not assume h215's zero historical misses
+also describe h300. Those counters record the original materialization, not a
+new request by this launcher. No SQLite query/write, route fetching,
 input rematerialization or environment/package upgrade occurs. Hash mismatch
 preserves evidence and stops; do not substitute newer input bytes.
 

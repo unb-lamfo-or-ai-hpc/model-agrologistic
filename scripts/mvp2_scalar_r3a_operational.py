@@ -612,7 +612,12 @@ def run_case(spec, target, shape, selection, control, entry, *, input_reviewer=N
                 r.require(
                     model.Params.TimeLimit == solver_config.time_limit
                     and model.Params.Threads == solver_config.threads
-                    and model.Params.MIPGap == solver_config.mip_gap,
+                    and model.Params.MIPGap == solver_config.mip_gap
+                    and (solver_config.seed is None or model.Params.Seed == solver_config.seed)
+                    and (
+                        "SoftMemLimit" not in solver_config.solver_options
+                        or model.Params.SoftMemLimit == solver_config.solver_options["SoftMemLimit"]
+                    ),
                     "Effective solver parameters differ.",
                 )
                 mark("optimization")

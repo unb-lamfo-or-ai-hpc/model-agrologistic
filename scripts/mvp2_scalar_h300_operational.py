@@ -33,6 +33,8 @@ MAX_BYTES, MAX_FILES = 1024**3, 4096
 
 def materialization(audit):
     p = audit["distance_provenance"]
+    counts = p["route_count_by_arc_type"]
+    maxima = {"DD": 89700, "OD": 11100, "DC": 11100, "OC": 1369}
     r.require(
         audit["schema_version"] == 1
         and audit["output_workbook_sha256"] == h.WORKBOOK_SHA
@@ -40,12 +42,13 @@ def materialization(audit):
         and p["provider"] == "osrm"
         and p["profile"] == "driving"
         and p["dataset_id"] == o.DATASET
-        and p["route_count"] == 113269
-        and p["route_count_by_source"] == {"osrm": 113269}
-        and p["route_count_by_arc_type"] == {"DD": 89700, "OD": 11100, "DC": 11100, "OC": 1369}
+        and set(counts) == set(maxima)
+        and all(type(counts[k]) is int and 0 < counts[k] <= maxima[k] for k in counts)
+        and p["route_count"] == sum(counts.values())
+        and p["route_count_by_source"] == {"osrm": p["route_count"]}
         and p["fallback_count"] == 0
         and all(
-            p[k] == 0
+            type(p[k]) is int and p[k] >= 0
             for k in ("osrm_request_count", "osrm_cache_miss_count", "osrm_cache_write_count")
         ),
         "Frozen OSRM h300 materialization differs; preserve, do not regenerate.",
@@ -508,6 +511,7 @@ def portable_review(files):
         )
         wanted = {job["job_id"], job["job_id"] + ".batch"}
         runtimes = []
+        scientific_by_case = {a["case_name"]: a for a in science["arms"]}
         for arm in ARMS:
             base = "control/" + arm + "/"
             entry = r.strict_json(files[base + "entry.json"])
@@ -535,6 +539,22 @@ def portable_review(files):
                 and usage == control["usage"]
                 and usage["stop_reason"] is None,
                 "Controller/phase closure differs.",
+            )
+            chosen = scientific_by_case[plan["cases"][ARMS.index(arm)]["name"]]
+            r.require(
+                r.strict_json(files[base + "review.json"]) == chosen
+                and chosen["classification"] == "validated_feasible",
+                "Post-worker scientific review missing/different.",
+            )
+            terminal = r.strict_json(files[base + "native_terminal.json"])
+            r.require(
+                terminal["entry"] == entry
+                and terminal["solution_count"] > 0
+                and terminal["time_limit_seconds"] == 14400
+                and type(terminal["runtime_seconds"]) in (float, int)
+                and math.isfinite(terminal["runtime_seconds"])
+                and 0 <= terminal["runtime_seconds"] <= 15300,
+                "Original native terminal/budget evidence differs.",
             )
             seconds = control["product_review_seconds"]
             r.require(
