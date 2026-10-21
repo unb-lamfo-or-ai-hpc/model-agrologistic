@@ -2,6 +2,62 @@
 
 ## ACCEPTED: scalar h300 terminal block; h400 proposal pending —21 October2026
 
+### Latest: h400 envelope/exit criteria approved; complete operational qualification
+
+PR121 merged with maintainer authorization at
+`d6cf9505a66b964e1d09ab097be572c337aa2d29`. Its final21b1018 source passed four
+workflows; full Linux native959 tests, zero failures/errors/skips,26.745s.
+Downloaded JUnit SHA256d54275c83483043b6fe6844fa9ba96639b5ba86f5b002d76e3fe7d00cb1922a6.
+The maintainer approves the h400 profile and h500 criteria proposed there.
+
+The [complete h400 operational package](docs/mvp2_scalar_h400_operational.md)
+implements ONE cold STO/no-direct arm, nine scenarios1/9/60 periods,Threads1,
+global14400s native,MIPGap0.01,Seed42,SoftMemLimit160 decimal GB, compaction off,
+effective penalties90000/45000/45000. One8h/24-logical-CPU/192GiB allocation;
+same16-logical-CPU affinity policy, actual hardware/SMT recorded. Input/build3600s,
+shared late-return/export900s, combined validation/review1800s, whole arm20700s,
+setup1800s,contingency6300s; reservation ceiling192 logical-CPU hours. Size45M;
+transfer1GiB/4096 regular members. No native time reset or blanket shared-default
+increase. Shared supervisor keeps all old defaults; h400 passes an explicit profile.
+
+Current existence/hash/audit of the historically recorded h400 input has NOT been
+newly confirmed by human output. Dedicated wrapper checks the original
+nine_population_osrm_v1/warehouses_400 workbookc3085456... and original OSRM audit
+before creating `.mvp2-scalar-h400-8h-v1`. Missing/link/wrong hash stops without
+submission; no fallback discovery, input rewrite or SQLite/OSRM access. Real
+historical-checkpoint/order/400-row public Excel integration qualifies explicit
+400,146 existing+254 candidates,69 anchors+185 added ranks and actual IDs/roles.
+Original300 derivation/default strictness and all old hashes stay unchanged.
+
+Predecessor is the accepted ORIGINAL h300 job2218193/archive dc5969fa..., source
+04ba9edc/plan000a760b.... Preparation replays its original certificates; no new
+h300 solve/private-input residual computation. Preserve its consumed claim and
+all earlier failures, products, bootstraps, archives and scientific src/manuscript.
+The new claim is exclusive; ambiguous submission is consumed, not retried;
+terminal/forensic collection is immutable and repeatable with identical bytes.
+
+h500 preconditions are recorded separately from h400 feasibility/quality:
+accepted original incumbent, finite gap<=1%, all operational receipts/budgets
+closed, no memory/watchdog/cleanup termination, separately scoped OS/Slurm RSS
+<=153.6GiB and native memory<=128 decimal GB. Missing/inconsistent/incomplete
+measurements defer eligibility, never count as zero. Eligibility true still
+requires a separate actual h500 estimate, package/resource approval and human
+admission. `h500_execution_admitted=false` always; no repeat/automatic follow-on.
+Physical slack/service remain descriptors, not new rejection thresholds. Fixed
+penalties relax specified equations only; scalar gap is not economic-subtotal
+accuracy/full service, and search effects are not monotonic.
+
+Prepare and qualify this one operational PR fully before Ready and its own merge
+request. Profile approval/PR121 merge did not submit or admit a job. Human pinned
+CLI follows the separately authorized operational merge. PR120 remains draft and
+untouched; SCIP/h215 planned, h500 conditional, S3/S4 cancelled, EVPI/VSS excluded,
+main/develop sync after article review. Earlier pending-proposal status below is
+preserved history; no agent NPAD execution, probe, access or repeat occurred.
+Local software gate:307 related Python3.13.15 tests passed without skips, Ruff
+and runbook links passed; scientific src/manuscript/manifests unchanged. Full
+exact-head Linux native/Bash/build qualification and final run/JUnit identities
+must be recorded in the new PR before Ready. Wrapper hash006d67855eb3483986b82c609f14722b8d610bb654823cafa922734fb0cd69ce.
+
 The maintainer transferred job2218193's archive and SHA256 sidecar. Independent
 hash check agrees: `dc5969fa391dc81590210ef7e6f89abbb5df554e4bc5b2032ba9eafe1a67f3fc`.
 The original source04ba9edccc93f40ab36cbc3264039a7edf2f6f51 and plan

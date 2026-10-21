@@ -1,5 +1,15 @@
 # Scalar MVP2 roadmap — 19 October 2026
 
+Latest21 October: authorized PR121 merge isd6cf9505; maintainer APPROVES its h400
+envelope and h500 criteria. Qualify one complete
+[operational delivery](mvp2_scalar_h400_operational.md) with the approved8h/
+24-logical-CPU/192GiB/one-thread/4h-native scope, input/population/predecessor
+binding, exact-step lifecycle, immutable terminal/forensic collection, portable
+audit, tests/wrapper/full human handoff. No new probe/job/repeat during software
+preparation. Its OWN Ready/authorized merge precedes human CLI. h500 criteria
+are a separate descriptive gate, not submission authority. Preserve all earlier
+claims/evidence and PR120 draft hold. Older pending-profile wording is historical.
+
 Latest21 October: R3-A scalar h215 DET/STO and the complete scalar h300 thread
 block now have accepted original certificates and quality targets. The h300
 [evidence synthesis](mvp2_scalar_h300_results.md) closes five observations under

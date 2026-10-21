@@ -1,5 +1,16 @@
 # Dated research status: 21 October 2026
 
+Latest: PR121 merged atd6cf9505 with explicit authorization; h400 envelope and
+prospective h500 criteria approved. Qualify the complete
+[h400 operational package](mvp2_scalar_h400_operational.md): one STO/no-direct
+arm,Threads1,14400s native,8h/24 logical CPUs/192GiB,45M guard and1GiB transfer.
+Keep fixed penalties, separate memory scopes, original validators and exclusive
+claims. Missing/current private input is checked BEFORE claim/submission; no
+input rematerialization or agent job. Ready/full exact-head qualification and a
+separate operational merge authorization precede pinned human CLI. h500 remains
+closed even if prospective preconditions pass. PR120 remains independent DRAFT.
+The earlier pending h400-profile statements below are historical snapshots.
+
 Current: job2218193's complete scalar h300 block is independently replayed accepted:
 five original residual validators/1% scalar quality targets and operational
 receipts close. Common gap0.0041193549%; same objective/bound/exported decision

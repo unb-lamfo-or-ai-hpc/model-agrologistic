@@ -353,7 +353,8 @@ def step_binding(text, entry, allocated, uid, *, cpus=4):
     return exact
 
 
-def phase_usage(events, elapsed):
+def phase_usage(events, elapsed, *, profile=None):
+    limits = PROFILE if profile is None else profile
     r.require(events and events[0]["phase"] == "input_build", "Initial phase absent.")
     names = [e["phase"] for e in events]
     r.require(names == list(PHASES[: len(names)]), "Phase order/duplicate differs.")
@@ -367,14 +368,14 @@ def phase_usage(events, elapsed):
     used = {k: 0.0 for k in PHASES}
     for i, event in enumerate(events):
         used[event["phase"]] += (values[i + 1] if i + 1 < len(values) else elapsed) - values[i]
-    reserve = max(0.0, used["optimization"] - PROFILE["native_time_limit_seconds_per_arm"])
+    reserve = max(0.0, used["optimization"] - limits["native_time_limit_seconds_per_arm"])
     reserve += used["native_return"] + used["artifact_export"]
     reason = None
-    if used["input_build"] > PROFILE["build_input_seconds_per_arm"]:
+    if used["input_build"] > limits["build_input_seconds_per_arm"]:
         reason = "input_build_watchdog"
-    elif reserve > PROFILE["late_return_export_seconds_per_arm"]:
+    elif reserve > limits["late_return_export_seconds_per_arm"]:
         reason = "shared_return_export_watchdog"
-    elif used["independent_validation"] > PROFILE["validation_seconds_per_arm"]:
+    elif used["independent_validation"] > limits["validation_seconds_per_arm"]:
         reason = "validation_watchdog"
     return {"seconds": used, "shared_reserve_used_seconds": reserve, "stop_reason": reason}
 
@@ -744,7 +745,21 @@ def supervise(
     step_cpus=4,
     bind_step=step_binding,
     whole_arm_seconds=None,
+    phase_profile=None,
 ):
+    limits = PROFILE if phase_profile is None else phase_profile
+    step_seconds = sum(
+        limits[k]
+        for k in (
+            "build_input_seconds_per_arm",
+            "native_time_limit_seconds_per_arm",
+            "late_return_export_seconds_per_arm",
+            "validation_seconds_per_arm",
+        )
+    )
+    step_time = (
+        f"{step_seconds // 3600:02d}:{step_seconds % 3600 // 60:02d}:{step_seconds % 60:02d}"
+    )
     control = claim / "control" / mode
     control.mkdir(parents=True)
     begun, exact, entry = clock(), None, None
@@ -758,7 +773,7 @@ def supervise(
                 "--ntasks=1",
                 "--cpus-per-task=" + str(step_cpus),
                 "--cpu-bind=threads",
-                "--time=05:15:00",
+                "--time=" + step_time,
                 "--kill-on-bad-exit=1",
                 "--export=ALL",
                 *invoke("worker", claim, sha, "--mode", mode),
@@ -795,19 +810,21 @@ def supervise(
                     if events:
                         # Worker elapsed is on the same monotonic clock but with its own epoch.
                         age = clock() - entry["started_monotonic"]
-                        usage = phase_usage(events, age)
+                        usage = phase_usage(events, age, profile=limits)
                         r.require(usage["stop_reason"] is None, usage["stop_reason"])
                     else:
                         r.require(
-                            elapsed <= PROFILE["build_input_seconds_per_arm"],
+                            elapsed <= limits["build_input_seconds_per_arm"],
                             "Preflight/license startup watchdog.",
                         )
-                r.require(elapsed <= budget()["step_seconds"], "Whole-step watchdog.")
+                r.require(elapsed <= step_seconds, "Whole-step watchdog.")
                 sleep(0.25)
             process.wait(timeout=5)
             r.require(entry is not None and exact is not None, "Worker exited before binding.")
             events = events_at(control, entry)
-            usage = phase_usage(events, events[-1]["elapsed_seconds"] if events else 0)
+            usage = phase_usage(
+                events, events[-1]["elapsed_seconds"] if events else 0, profile=limits
+            )
             r.require(
                 events[-1]["phase"] == "complete"
                 and not usage["stop_reason"]
@@ -839,7 +856,7 @@ def supervise(
                 r.require(clock() < until, "Step accounting pending; no next arm.")
                 sleep(1)
             remaining = (
-                PROFILE["validation_seconds_per_arm"] - usage["seconds"]["independent_validation"]
+                limits["validation_seconds_per_arm"] - usage["seconds"]["independent_validation"]
             )
             if whole_arm_seconds is not None:
                 remaining = min(remaining, whole_arm_seconds - (clock() - begun))
