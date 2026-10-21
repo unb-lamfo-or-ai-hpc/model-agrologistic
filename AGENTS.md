@@ -1,5 +1,23 @@
 # Model Agrologistic: agent working agreement
 
+## Consolidated h400 acceptance / h500 operational mandate —21 October2026
+
+Maintainer agrees with the h5008h/24logicalCPU/192GiB/one-thread/global14400s
+profile and70M guard, confirms historical processed888fbff4... workbook and its
+OSRM audit, and requests ONE consolidated h400/h500 PR. Read
+`docs/mvp2_scalar_h500_operational.md`. Preserve all scientific source/penalties,
+raw certificates, claim identities and old launcher defaults. Bind accepted
+h400 job2219884/source d9ca710/plan852f886d/archivee0b58bb7 plus its predeclared
+quality/headroom; h500 itself needs its OWN qualified package/authorized merge/
+pinned human execution. No NPAD access/probe/jobs/repeats during preparation.
+Qualify actual500-row strict original checkpoint membership, old-path portability,
+worker/owned-step/phase/validation, partial collection, wrapper and complete handoff
+together; full final-head native Linux/zero-skip gates precede Ready/merge request.
+SCIP/h215 is deferred for a later decision, NOT silently cancelled. Editorial
+PR120 stays OPEN DRAFT and untouched; a new maintainer mandate for PR120/S6-A
+will come when h500 execution starts. Do not start that revision prematurely.
+Older pending h400/input and parallel-editorial statements below are historical.
+
 ## h300 terminal consolidation and h400 proposal —21 October2026
 
 Latest21 October: PR121 merged with explicit authorization atd6cf9505a66b964e1d09ab097be572c337aa2d29.
