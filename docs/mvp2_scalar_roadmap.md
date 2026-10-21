@@ -1,5 +1,26 @@
 # Scalar MVP2 roadmap — 19 October 2026
 
+21 October final editorial mandate: PR120 is resumed, not a new editorial PR.
+The researcher now explicitly permits replacing the current manuscript and
+related files ON that branch, superseding the earlier frozen-manuscript and
+untouched-PR120 preparation statements below. Read the
+[current mandate](s6a_20261021/README.md) and
+[meeting/source crosswalk](s6a_20261021/meeting_and_source_review.md).
+develop was reconciled into the editorial branch at63c39bb1 without rewriting
+history; PR120 remains draft, with integrated revision/qualification outstanding.
+No publication, submission, merge or experiment is implied.
+
+h215/h300/h400 scalar evidence is accepted. h500 job2220382 is RUNNING in the
+latest human snapshot; keep its original source/plan/claim and human collection
+commands in PROJECT_STATE.md. Editorial results must retain pending h500 status
+until original terminal evidence is reviewed. SCIP/h215 is a subsequent explicit
+decision, not silently cancelled. S3/S4 remain cancelled and EVPI/VSS excluded.
+The supplied meeting excerpt targets technical revision before15November and
+discussion on18November at09:30; intended submission is December with January2027
+as a recognized possibility. Keep time for coauthor review and reproducible
+packaging. Final main/develop integration follows article review/authorization,
+not S2 closure or the present reconciliation in the opposite direction.
+
 20 October update: PR119 merged and scalar h300 job2218193 is RUNNING in the
 researcher's latest snapshot, source04ba9edc/plan000a760b.... The approved30h
 block remains bound to its original claim and software. Resume status/wait/
