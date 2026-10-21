@@ -1,5 +1,32 @@
 # Scalar MVP2 roadmap — 19 October 2026
 
+21 October subsequent decision: prepare/qualify ONE consolidated h400-evidence/
+h500 operational package with confirmed historical input/audit and approved
+8h/24logicalCPU/192GiB/one-thread/global4h/70M boundary. Read
+[complete R5 package](mvp2_scalar_h500_operational.md). Full exact-head native
+qualification/Ready/explicit merge precede pinned human execution; no agent job,
+repeat or automatic continuation. SCIP/h215 remains planned but its decision is
+deferred. PR120/S6-A will receive a NEW mandate when h500 starts; keep PR120 draft
+untouched rather than anticipating that editorial revision now. Old parallel-
+editorial recommendations below are superseded for this preparation interval.
+
+21 October terminal update: [scalar h400](mvp2_scalar_h400_results.md) job2219884
+meets the original1% target (0.83678443%), accepted residuals and full operational
+closure. The predeclared quality/headroom h500 conditions pass, NOT submission
+authority. Next consolidated package should close this documentary evidence and
+bind actual historical h500 input/audit/500-member membership, actual preflight
+matrix/transfer/resource estimate, full lifecycle/review/wrapper/tests/runbook and
+separate approved envelope. No intermediate short job, new solver, automatic
+repeat/follow-on or scientific parameter/penalty change is implied. A candidate
+same8h/24logicalCPU/192GiB/one-thread/global4h-native profile and proposed70M guard
+need actual sizing and approval, not silent inheritance. SCIP/h215 remains an
+independent complementary investigation; S6-A synthesis is parallelizable. PR120
+stays DRAFT pending coauthors/resumed editorial work. Existing later S6-B/article/
+main-sync boundaries, S3/S4 cancellation and EVPI/VSS exclusion stand. December
+target is more plausible experimentally after accepted h215/h300/h400, but h500/
+SCIP/qualification/coauthor windows remain unresolved; do not guarantee a date.
+Older planning allowances and pending statuses below are chronological history.
+
 Latest21 October: authorized PR121 merge isd6cf9505; maintainer APPROVES its h400
 envelope and h500 criteria. Qualify one complete
 [operational delivery](mvp2_scalar_h400_operational.md) with the approved8h/

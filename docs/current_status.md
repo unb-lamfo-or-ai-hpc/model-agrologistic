@@ -1,5 +1,28 @@
 # Dated research status: 21 October 2026
 
+Latest mandate: maintain one consolidated h400-evidence/h500 complete operational
+qualification PR. [Full delivery](mvp2_scalar_h500_operational.md), confirmed
+processed888fbff4... input/audit and approved8h/24logicalCPU/192GiB/Threads1/
+global14400s/70M guard. No agent NPAD access/jobs/repeats. Actual h500 outcomes
+remain unobserved. Accepted original h400 evidence is a predecessor condition,
+not submission authority. Final exact-head native Linux zero-skip checks, Ready
+and its own explicit merge precede human CLI. SCIP/h215 decision deferred; PR120
+stays OPEN DRAFT pending a NEW maintainer mandate at h500 start. No premature
+S6-A/editorial work. Older pending/parallel statements below are historical.
+
+Latest: scalar h400 job2219884 has accepted original validation/quality and closed
+operational receipts. Read [terminal results](mvp2_scalar_h400_results.md) and
+[redacted external review](evidence/scalar_h400_2219884_review.json). The received
+archive SHA256e0b58bb7... agrees; original review is reproduced exactly with a
+disclosed Windows-only lexical POSIX path adapter, no numerical/certificate changes.
+Runtime70.461min,gap0.83678443%,42.107M variables,160.697M nonzeros,application
+RSS72.343GiB; total allocation1h29m14s. Service91.330374%,penalty share94.974939%.
+Success is under the retained slack-enabled scalar contract, not full service,
+exact optimality or causal speedup. Prospective h500 preconditions pass; h500
+execution stays FALSE pending actual input/matrix/resources and qualified package.
+Preserve source/plan, all claims and PR120 draft; no new jobs/repeats. Earlier
+pending/running statements below are historical snapshots, not current status.
+
 Latest: PR121 merged atd6cf9505 with explicit authorization; h400 envelope and
 prospective h500 criteria approved. Qualify the complete
 [h400 operational package](mvp2_scalar_h400_operational.md): one STO/no-direct
