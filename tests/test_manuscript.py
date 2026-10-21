@@ -237,6 +237,10 @@ def test_scalar_scope_does_not_restore_cancelled_methods(manuscript):
     assert "one observation per thread level" in article
     assert "no terminal evidence" in (manuscript / "scalar_results.qmd").read_text()
     assert (manuscript / "supplement/appendix_a_original.pdf").read_bytes().startswith(b"%PDF-")
+    # An empty pagecommand removes pdfpages' default empty style and overlays
+    # supplement page numbers on the preserved original pages.
+    supplement = (manuscript / "supplement/index.qmd").read_text(encoding="utf-8")
+    assert r"pagecommand={\thispagestyle{empty}}" in supplement
 
 
 def test_elsevier_template_and_supplement_are_checked(manuscript):
