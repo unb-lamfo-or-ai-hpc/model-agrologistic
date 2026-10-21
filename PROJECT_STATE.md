@@ -1,5 +1,66 @@
 # Model Agrologistic — MVP 2.0 checkpoint
 
+## PR120 resumed under the final mandate —21 October2026
+
+The final mandate, geographic/citation/qualification addendum and subsequent
+researcher reply authorize a comprehensive revision of the existing PR120,
+including replacement of `manuscript/index.qmd` and related files. Changes remain
+on its editorial branch until a separately authorized merge; no direct develop
+write, publication, submission or HPC execution follows this authorization.
+The [current decision record](docs/s6a_20261021/README.md) supersedes conflicting
+20 October proposals below. The original146 annotation locators remain intact;
+D06 source/build reconciliation and D09's17 unexplained marks are closed by
+administrative decision, not newly verified or interpreted.
+
+Reconciliation merged develop INTO the editorial branch at
+63c39bb1e87386d9d87a8ad24d0d6f5dfe490181, preserving shared history. GitHub shows
+four successful existing checks and no base conflicts at that reconciliation
+head. This is not qualification of subsequent editorial/geographic changes and
+not a PR120 merge into develop. PR120 remains DRAFT.
+
+The two requested DOCX sources are now received and completely text-inspected:
+the 21 October Subgroup1 guidance excerpt (SHA256
+3be25189e1dfb83b402b50d35de9f5bb7078d0cdba533c2349df3c79c93e535c)
+and the Gurobot retrospective (SHA256
+21735cebc3385dadd67c8ebc07c41b310a239bd9f4c9b91b3783c7f89820d1a3).
+Read the [source assessment and implementation crosswalk](docs/s6a_20261021/meeting_and_source_review.md).
+The first file contains Agreement5 and sections8–11, not the complete meeting
+record. It supports scalar two-stage economics, nine equiprobable scenarios,
+units/model review, qualified computational results, applied interpretation
+and explicit human-supervised AI methodology. Do not infer the content of
+missing sections or new instance-generation specifications. The second file
+is an AI-produced retrospective, not independent logs, verified Benders results
+or permission to restore historical revenue terms, Haversine substitution or
+information-value calculations to the active model.
+
+The agreed planning references are technical revision before15November2026,
+coauthor meeting18November2026 at09:30 (timezone not specified in the supplied
+excerpt), intended submission by December, and possible extension to January2027.
+These are planning intentions, not automatic acceptance or guaranteed completion.
+All integrated manuscript, appendix, figure, test and existing-CI acceptance
+requirements remain to be completed before Ready and any merge request.
+
+### Preserved h500 execution and human resumption commands
+
+Latest human-supplied job2220382 snapshot: RUNNING; root elapsed00:02:04,
+numeric step00:01:56,24 allocated logical CPUs; MaxRSS unreported, not zero.
+Original source fce341dfff1792d08b20eac132c6ada29f4326d2, plan
+1f57d2308ab233dbe686ad62aa2b02df31c0b8df4fca64d05f86bbc6c118ad60.
+Preserve `.mvp2-scalar-h500-8h-v1`, all original source/run/bootstrap directories,
+older claims and raw evidence. No terminal h500 quality or investment decision
+is inferred; h215/h300/h400 acceptance is recorded in their original reviews.
+
+```bash
+bash /home/vrrcelestino/model-agrologistic-hygiene-audit/scalar-h500-cli-fce341df/npad_scalar_h500_8h.sh status fce341dfff1792d08b20eac132c6ada29f4326d2
+bash /home/vrrcelestino/model-agrologistic-hygiene-audit/scalar-h500-cli-fce341df/npad_scalar_h500_8h.sh wait fce341dfff1792d08b20eac132c6ada29f4326d2
+bash /home/vrrcelestino/model-agrologistic-hygiene-audit/scalar-h500-cli-fce341df/npad_scalar_h500_8h.sh collect fce341dfff1792d08b20eac132c6ada29f4326d2
+```
+
+These are preserved human commands, not an instruction to execute them during
+editorial work. No repeat, larger instance or automatic follow-on is admitted.
+Fixed penalties90000/45000/45000, original tolerances/units and validation remain.
+S3/S4 are cancelled; EVPI/VSS excluded; SCIP/h215 remains a separate decision.
+
 ## S6-A preparation in parallel with scalar h300 —20 October2026
 
 The researcher explicitly requests a separate PR to assess the latest coauthor

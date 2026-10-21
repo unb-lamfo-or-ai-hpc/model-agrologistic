@@ -1,5 +1,33 @@
 # Model Agrologistic: agent working agreement
 
+## Current PR120 scientific and editorial mandate —21 October2026
+
+This section supersedes the older editorial-preparation restrictions below.
+The researcher resumed PR120 under the final mandate/addendum and explicitly
+authorized replacing `manuscript/index.qmd` and other relevant develop-targeted
+files. Implement those changes on `docs/s6a-coauthor-review` in the SAME PR120;
+this is not authorization to push directly to develop, merge, publish or submit.
+Read `docs/s6a_20261021/README.md` and its `meeting_and_source_review.md`.
+
+Use the single approved title/RQ, SO1–SO4, complete code-consistent scalar
+DET/STO presentation, BRL/physical units, cross-scale agricultural interpretation,
+full supplied Appendix A and bounded Human–AI subsection/Appendix B. The supplied
+21 October meeting excerpt is guidance, not a replacement for the fixed model
+contract; Gurobot's AI retrospective is not independent execution evidence.
+D06 source/build reconciliation and D09's17 unexplained marks are administratively
+closed. Preserve original146 locators; do not invent comments or reconstruct
+hidden reasoning. Do not assign named coauthor responsibilities or CRediT here.
+
+The separate geographic preparation may write its own source-bound SQLite;
+Dash and headless rendering are read-only and do not change the experimental
+distance cache, invoke optimizers or acquire new routes automatically. Use
+proportionate T1/T2 and final existing T3 CI, not production architecture.
+Preserve all claims/certificates and scientific code/parameters/tolerances.
+h215/h300/h400 are accepted; h500 job2220382 is only RUNNING in the latest human
+snapshot. No new NPAD access/jobs/repeats or result inference is authorized.
+Keep PR120 draft until the integrated revision is qualified; request merge only
+after Ready. Final main/develop integration remains after article review.
+
 ## Early S6-A coauthor-review preparation —20 October2026
 
 The maintainer requests a separate PR while scalar h300 job2218193 runs. Read
