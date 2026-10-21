@@ -339,11 +339,21 @@ def check(*, rendered: bool = False, publication: bool = False) -> None:
             raise ValueError("Original Appendix A must retain all 19 pages")
 
         def normalize(value):
-            return " ".join(value.split())
+            # PDF form embedding can change extractor word spacing, not content.
+            # Retain every non-whitespace character, its order and the page sequence.
+            return re.sub(r"\s+", "", value)
 
         originals = [normalize(p.extract_text()) for p in original_pages]
         rendered_text = [normalize(p.extract_text()) for p in pages]
         if not any(rendered_text[i : i + 19] == originals for i in range(len(pages) - 18)):
+            print(
+                json.dumps(
+                    {
+                        "original_page_characters": list(map(len, originals)),
+                        "rendered_page_characters": list(map(len, rendered_text)),
+                    }
+                )
+            )
             raise ValueError("Complete Appendix A page sequence missing or changed")
         copied = MANUSCRIPT / "_manuscript/appendix_a_original.pdf"
         if hashlib.sha256(copied.read_bytes()).hexdigest() != APPENDIX_SHA:

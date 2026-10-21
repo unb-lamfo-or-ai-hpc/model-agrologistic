@@ -96,6 +96,35 @@ def results(record):
         "![Observed h300 native runtime and sampled application memory by solver thread "
         "count. No causal speedup is inferred.](figures/scalar_threads.png){#fig-scalar-threads}\n",
         "## Investment and operational interpretation across populations\n",
+        "| Instance | One-time investment, BRL billion | Transport, BRL billion | "
+        "Inventory holding, BRL billion |",
+        "|:--|--:|--:|--:|",
+    ]
+    for r in representative:
+        c = r["reconstructed_costs"]
+        capital = sum(
+            c[k]
+            for k in (
+                "opening",
+                "candidate_capacity",
+                "expansion_fixed",
+                "expansion_variable",
+                "bulkification_fixed",
+                "bulkification_variable",
+            )
+        )
+        transport = sum(
+            c[k] for k in ("transport_od", "transport_dc", "transport_dd", "transport_oc")
+        )
+        text.append(
+            f"| {label(r)} | {capital / 1e9:.3f} | {transport / 1e9:.3f} | "
+            f"{c['storage'] / 1e9:.3f} |"
+        )
+    text += [
+        "\n: Reconstructed financial components, excluding artificial penalties. "
+        "Investment is charged once; STO operation is scenario-weighted over the horizon. "
+        "No annualization, currency conversion or price-year adjustment is applied. "
+        "{#tbl-scalar-financial-components}\n",
         "| Instance | Available candidates | Candidates with positive capacity | "
         "Expanded existing sites | Bulkified existing sites |",
         "|:--|--:|--:|--:|--:|",
@@ -142,6 +171,13 @@ def results(record):
         "\n: Physical diagnostics over the declared horizon. STO quantities are "
         "probability-weighted, not unweighted sums over nine scenarios. "
         "{#tbl-scalar-physical}\n",
+        "Across the returned STO plans, additional candidate sites accompany more "
+        "installed candidate capacity and greater one-time investment, while the "
+        "transport and holding components are lower. This is a descriptive comparison "
+        "of separately screened models and feasible incumbents, not a causal savings "
+        "estimate. Domestic service is not monotone across populations. Lower stock "
+        "and reception exceedances can coexist with substantial unmet demand; a lower "
+        "penalized total is not improvement in every service component.\n",
         "### Geographic interpretation\n",
     ]
     for population, case in [
