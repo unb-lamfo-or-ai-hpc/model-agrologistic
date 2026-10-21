@@ -1,5 +1,53 @@
 # Model Agrologistic — MVP 2.0 checkpoint
 
+### PR120 integrated scalar/geographic implementation —21 October2026
+
+The researcher confirmed the preserved inputs and evidence are under
+`D:/Downloads/model-agrologistic`. The three original accepted archives were
+read and verified against their SHA256 sidecars: h21581890b54…, h300dc5969fa…,
+h400e0b58bb7…. The historical published inputs ZIP contains the exact frozen
+workbooks40edb665…/7761cce7…/c3085456…/888fbff4…; current edited spreadsheets
+were NOT substituted. Original archive/CSV/certificate bytes remain unchanged.
+
+The active editorial draft now follows the approved scalar title/single RQ,
+SO1–SO4, complete DET/STO model presentation, eight accepted scalar observations,
+separate economic/penalty/physical metrics and qualified HPC interpretation.
+Post-processing original decision vectors found positive candidate capacity at
+all69/154/254 included candidates, positive transport incidence at every
+included warehouse and nine used export roles among ten available. This is
+returned-plan characterization, not uniqueness, full service or a construction
+recommendation. h300 thread observations remain descriptive, not causal speedup.
+Fixed90000/45000/45000 coefficients and original residual tolerances are intact.
+
+The separate geographic SQLite snapshot is
+219a80011f3844dd10648298ae103912dd8f8d115fbe87aead385f1ec26c171c.
+It contains eight accepted cases plus input-only pending h500. Local Dash and
+headless PDF/PNG/SVG reuse read-only semantic definitions. No OSRM polylines
+are present in the supplied distance workbooks; no straight-road substitutes
+were invented and no routes were acquired. Original coordinates and coincident
+node roles are retained. Read the reproducibility guide and integrated C01–C22
+crosswalk in `docs/s6a_20261021/`.
+
+The supplement embeds the complete supplied19-page Appendix A byte-for-byte
+(859dc52b…), preserving its counts/date issues, followed by the ten-section
+Human–AI Appendix B. Original146 annotation locators and17 administratively
+closed unexplained marks are unchanged. The manuscript integrity checker keeps
+historical rejected evidence separate and checks the new scalar cohort against
+its original acceptance reviews. The frozen Pages approval correctly BLOCKS
+publication of the changed source; no public deployment is admitted.
+
+Local affected integration:65 passed, three Dash/PDF/PNG integration cases
+excluded from that local environment, not claimed passed. Ruff, generated
+scalar-table replay and manuscript integrity passed; five maps and the thread
+chart have browser-free PDF/PNG previews. Final existing Linux CI, complete
+rendered article/supplement and visual inspection remain pending. PR120 remains
+DRAFT, with no merge request until qualified and Ready. This checkpoint records
+work in its editorial branch, not a direct develop update or a new PR.
+
+h500 job2220382 remains only RUNNING in the latest human snapshot; its source,
+plan, claim and status/wait/collect commands below are preserved. No NPAD access,
+job, repeat, new solve, h500 result or change to the live checkout occurred.
+
 ## PR120 resumed under the final mandate —21 October2026
 
 The final mandate, geographic/citation/qualification addendum and subsequent
