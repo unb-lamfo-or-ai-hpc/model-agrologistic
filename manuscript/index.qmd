@@ -337,7 +337,9 @@ native TimeLimit of 14,400 seconds, MIPGap 0.01, Seed 42 and the unchanged
 The h300 levels are cold serial observations in one reservation, without
 replication or randomized order. The h400 configuration is a separately reviewed
 candidate informed by descriptive h300 evidence, not a statistically established
-thread winner. The subsequent separately admitted h500 observation has no terminal
+thread winner. Here cold means a fresh native model without an incumbent warm
+start; operating-system caches and shared-node load were not controlled.
+The subsequent separately admitted h500 observation has no terminal
 certificate available at this draft's cutoff.
 
 Software qualification precedes experimental acceptance. Analytical examples
@@ -551,8 +553,8 @@ calibration under separate scientific approval.
 
 Source, experiment definitions and original acceptance records are versioned in
 [Model Agrologistic](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic).
-The scalar h215, h300 and h400 reviews identify original jobs2217990,2218193
-and2219884, input hashes, warehouse membership, parameters and certificate
+The scalar h215, h300 and h400 reviews identify original jobs 2217990, 2218193
+and 2219884, input hashes, warehouse membership, parameters and certificate
 digests. Subsequent documentary replay does not rewrite their source/runtime
 identities. Failed bootstraps, original claims and partial evidence are preserved.
 
@@ -569,7 +571,7 @@ those public URLs do not imply automatic publication of this revised draft.
 
 ## Data availability
 
-The research dataset is publicly available in Zenodo, version0.2.0
+The research dataset is publicly available in Zenodo, version 0.2.0
 [@celestino2026dataset], at
 [10.5281/zenodo.22751909](https://doi.org/10.5281/zenodo.22751909).
 It contains selected historical inputs, population records, road audits and

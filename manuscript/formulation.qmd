@@ -91,7 +91,12 @@ $$
 z_w+g_w&\le A_w &&\forall w\in W^X\cap W^B,\\
 K_w(X)&=K^0_w+k_w+e_w &&\forall w\in W, &&\text{(D3)}\\
 R_w(X)&=R^0_w+\rho^Nk_w+\rho^Xe_w+\rho^Bb_w &&\forall w\in W,\\
-H_w(X)&=H^0_w+\eta^Nk_w+\eta^Xe_w+\eta^Bb_w &&\forall w\in W,\\
+H_w(X)&=H^0_w+\eta^Nk_w+\eta^Xe_w+\eta^Bb_w &&\forall w\in W,
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
 \sum_{w:(o,w,p)\in A^{OD}}x^{OD}_{owpt}
  +\sum_{c:(o,c,p)\in A^{OC}}x^{OC}_{ocpt}
  &=a_{opt} &&\forall(o,p,t)\in O\times P\times T, &&\text{(D4)}\\
@@ -102,13 +107,23 @@ B^{out}_{wpt}&=\sum_{c:(w,c,p)\in A^{DC}}x^{DC}_{wcpt}
  +\sum_{v:(w,v,p)\in A^{DD}}x^{DD}_{wvpt}
  &&\forall(w,p,t)\in W\times P\times T,\\
 I_{wpt}&=I_{wp,t-1}+B^{in}_{wpt}-B^{out}_{wpt},\quad I_{wp,0}=I^0_{wp}
- &&\forall(w,p,t)\in W\times P\times T, &&\text{(D6)}\\
+ &&\forall(w,p,t)\in W\times P\times T, &&\text{(D6)}
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
 \sum_{w:(w,c,p)\in A^{DC}}x^{DC}_{wcpt}
  +\sum_{o:(o,c,p)\in A^{OC}}x^{OC}_{ocpt}+u_{cpt}
  &=D_{cpt} &&\forall(c,p,t)\in C^D\times P\times T, &&\text{(D7)}\\
 \sum_{w:(w,c,p)\in A^{DC}}x^{DC}_{wcpt}
  +\sum_{o:(o,c,p)\in A^{OC}}x^{OC}_{ocpt}
- &\le E_{cpt} &&\forall(c,p,t)\in C^X\times P\times T, &&\text{(D8)}\\
+ &\le E_{cpt} &&\forall(c,p,t)\in C^X\times P\times T, &&\text{(D8)}
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
 \sum_{p\in P}I_{wpt}&\le K_w(X)+q^K_{wt} &&\forall(w,t)\in W\times T, &&\text{(D9)}\\
 \sum_{p\in P}B^{in}_{wpt}&\le d_tR_w(X)+q^R_{wt} &&\forall(w,t)\in W\times T,\\
 \sum_{p\in P}B^{out}_{wpt}&\le d_tH_w(X) &&\forall(w,t)\in W\times T,\\
@@ -165,13 +180,23 @@ B^{out,s}_{wpt}&=\sum_{c:(w,c,p)\in A^{DC}}x^{DC,s}_{wcpt}
  +\sum_{v:(w,v,p)\in A^{DD}}x^{DD,s}_{wvpt}
  &&\forall(w,p,t,s)\in W\times P\times T\times S,\\
 I^s_{wpt}&=I^s_{wp,t-1}+B^{in,s}_{wpt}-B^{out,s}_{wpt},\quad I^s_{wp,0}=I^0_{wp}
- &&\forall(w,p,t,s)\in W\times P\times T\times S, &&\text{(S4)}\\
+ &&\forall(w,p,t,s)\in W\times P\times T\times S, &&\text{(S4)}
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
 \sum_{w:(w,c,p)\in A^{DC}}x^{DC,s}_{wcpt}
  +\sum_{o:(o,c,p)\in A^{OC}}x^{OC,s}_{ocpt}+u^s_{cpt}
  &=D^s_{cpt} &&\forall(c,p,t,s)\in C^D\times P\times T\times S, &&\text{(S5)}\\
 \sum_{w:(w,c,p)\in A^{DC}}x^{DC,s}_{wcpt}
  +\sum_{o:(o,c,p)\in A^{OC}}x^{OC,s}_{ocpt}
- &\le E^s_{cpt} &&\forall(c,p,t,s)\in C^X\times P\times T\times S, &&\text{(S6)}\\
+ &\le E^s_{cpt} &&\forall(c,p,t,s)\in C^X\times P\times T\times S, &&\text{(S6)}
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
 \sum_{p\in P}I^s_{wpt}&\le K_w(X)+q^{K,s}_{wt}
  &&\forall(w,t,s)\in W\times T\times S, &&\text{(S7)}\\
 \sum_{p\in P}B^{in,s}_{wpt}&\le d_tR_w(X)+q^{R,s}_{wt}
