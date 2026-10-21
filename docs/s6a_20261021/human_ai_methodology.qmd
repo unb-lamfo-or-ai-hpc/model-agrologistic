@@ -10,7 +10,7 @@ ChatGPT Classic for coordination, and Codex for Python and GitHub development.
 The available records establish research roles, not a complete chronology of
 model versions or a measure of individual coding authorship.
 
-The21 October2026 coauthor-meeting guidance explicitly requested documentation
+The 21 October 2026 coauthor-meeting guidance explicitly requested documentation
 of this process and its limitations as a potential methodological contribution.
 
 Human researchers retained authority over assumptions, objectives, experimental
