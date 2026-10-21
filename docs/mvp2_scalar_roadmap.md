@@ -1,5 +1,27 @@
 # Scalar MVP2 roadmap — 19 October 2026
 
+Latest21 October: R3-A scalar h215 DET/STO and the complete scalar h300 thread
+block now have accepted original certificates and quality targets. The h300
+[evidence synthesis](mvp2_scalar_h300_results.md) closes five observations under
+the existing contract, not a new Sprint/replication or causal thread ranking.
+Proceed to [R3-B h400 proposal](mvp2_scalar_h400_proposal.md): one-thread candidate,
+one STO/no-direct arm,4h native and8h allocation proposed, fixed penalties intact.
+Scope/resources/size guard and prospective h500 exit criteria need explicit
+approval before the ONE integrated operational package and human-only execution.
+No new job or automatic transition. All previous claims/evidence stay unchanged.
+
+PR120 remains draft by maintainer instruction, waiting for more coauthor comments
+and resumed editorial work. This independent results package must not modify it.
+SCIP/h215 preparation can proceed after h400 operational decisions in parallel
+with archival result interpretation; its experiment needs a separate hypothesis,
+budget and qualified execution. h500 remains conditional on scalar h400 success
+and its own admission. S6-A synthesis then S6-B manuscript/reproducibility follow;
+S3/S4 remain cancelled and EVPI/VSS excluded. No main/develop sync before article
+review. Earlier one/two-week engineering allowances below are historical planning
+assumptions, not forecasts of work already completed. December remains a target,
+not a guaranteed submission; reforecast after h400 and coauthor availability.
+Older running/path-repair and pending-R3-A statements below are preserved history.
+
 Latest20 October: PR117 merged; human bootstrap stopped before claim/submission
 at an incorrect h300 path. Qualify the consolidated hash-preserving
 [path repair](mvp2_scalar_h300_30h.md#current-input-path-correction-20-october2026)
