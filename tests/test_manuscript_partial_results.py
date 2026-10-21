@@ -52,7 +52,8 @@ def test_review_has_real_figures_and_explicit_missing_exports():
     assert "Reserved final-retry result" not in text
     assert "Working manuscript" not in text
     current = (MANUSCRIPT / "index.qmd").read_text(encoding="utf-8")
-    assert "{{< include comparison_results.qmd >}}" in current
+    assert "{{< include scalar_results.qmd >}}" in current
+    assert "{{< include comparison_results.qmd >}}" not in current
     final = current.split("# Final considerations, limitations and future work", 1)[1]
-    assert "ten-reference campaign" in final
-    assert "aggregate report therefore remains rejected" in final
+    assert "Historical hierarchical and MVP1" in final
+    assert "aggregate report remains rejected" in final
