@@ -4,6 +4,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 import zipfile
 from pathlib import Path
 
@@ -52,6 +53,20 @@ def package(output: Path, *, root: Path = ROOT) -> None:
     payload["main.tex"] = main.encode("utf-8")
     payload["supplement.tex"] = payload["supplement.tex"].decode("utf-8").replace(
         "../figures/", "").replace("figures/", "").encode("utf-8")
+    # The supplement may select PNG while the Elsevier article selects PDF
+    # from the same figure definition. Include each actual TeX dependency,
+    # not a directory-wide copy of unrelated/private rendering products.
+    for document in ("main.tex", "supplement.tex"):
+        for name in re.findall(
+            r"\\includegraphics(?:\[[^\]]*\])?\{([^}]+)\}",
+            payload[document].decode("utf-8"),
+        ):
+            if Path(name).name != name or Path(name).suffix.lower() not in {
+                ".pdf", ".png", ".jpg", ".svg"
+            }:
+                raise ValueError(f"Nonportable graphic dependency: {name}")
+            if name not in payload:
+                payload[name] = (manuscript / "figures" / name).read_bytes()
     payload["README.md"] = (
         b"# Editable Elsevier review project\n\n"
         b"Open main.tex in a TeX distribution or upload this ZIP to Overleaf.\n"
