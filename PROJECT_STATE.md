@@ -1,5 +1,38 @@
 # Model Agrologistic — MVP 2.0 checkpoint
 
+## PR123 qualification record —21 October2026
+
+The complete consolidated h400/h500 package is published in
+[PR123](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/123),
+branch `research/scalar-h500-consolidated`, base develop. Its tested implementation
+head `c24757416ebea94f49610e8ded5618b2837ff287` passed ALL FOUR checks. Full
+native Linux run39671944337/job119471808339 executed1157 tests with ZERO
+failures/errors/skips in37.715s, including the real public tiny h500 worker,
+original validation, controller, terminal collection and portable replay. This is
+software qualification with controlled scheduler/WLS transport, NOT a private
+h500 solve, actual NPAD capability or agricultural experimental acceptance.
+Quality/build, retained analytical and native SCIP checks also passed. Bash
+syntax, raw tracked source/physical inventory and original manuscript bytes passed.
+
+Downloaded JUnit artifact12379397951 has ZIP SHA256
+`b54dc89224dca9d8010b5c9485be7c76f3c507f3764f850fefb4fceb440770dd`;
+scalar-r1.xml SHA256
+`37371d525b02d5c9858f6910b307026657a792501bf25aea2d89e5e213c912e6`.
+The pinned GitHub source ZIP identifies this exact40-character commit; all18
+published changed files match the locally qualified files byte for byte.
+Wrapper `scripts/npad_scalar_h500_8h.sh` SHA256 is
+`7bb7b7b26820754258404e911669ae1bd12dd80037a53f4e5012a1c59537364c`.
+This documentary checkpoint commit requires its OWN final-head four-check rerun
+before Ready; the resulting head/run/JUnit identities will be bound in the PR's
+qualification comment. Do not substitute the earlier implementation head for
+the final reviewed source when preparing the human CLI after authorized merge.
+
+No NPAD job/access/probe, private input load, repeat or follow-on occurred.
+PR123 merge remains subject to explicit authorization AFTER Ready. Preserve
+all historical claims/certificates. PR120 remains independent OPEN DRAFT and
+untouched until the new editorial mandate when h500 starts; SCIP/h215 deferred.
+The earlier qualification-pending paragraphs below are historical snapshots.
+
 ## Latest: complete consolidated h400/h500 qualification —21 October2026
 
 The maintainer agrees with the proposed one8h/24logicalCPU/192GiB/Threads1/
