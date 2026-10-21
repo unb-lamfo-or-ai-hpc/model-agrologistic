@@ -32,6 +32,12 @@ def primitives(definition, width=1200, height=850):
 
     prefix = "SYNTHETIC FIXTURE - NOT A RESEARCH RESULT: " if definition["synthetic"] else ""
     title = f"{prefix}h{definition['population']} / {definition['evidence_status']}"
+    geometry_note = (
+        "No solution flows available; input availability only"
+        if definition["evidence_status"] in {"pending", "availability_only"}
+        else f"Road geometry missing for {len(definition['missing_geometry'])} "
+        "positive-flow routes; no straight-line replacements"
+    )
     text = [
         (35, 32, title, 24),
         (35, 63, "Longitude/latitude display; not a metric projection", 18),
@@ -47,8 +53,7 @@ def primitives(definition, width=1200, height=850):
         (
             35,
             height - 39,
-            f"Road geometry missing for {len(definition['missing_geometry'])} "
-            f"positive-flow routes; no straight-line replacements",
+            geometry_note,
             18,
         ),
         (

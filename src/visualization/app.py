@@ -74,6 +74,16 @@ def create_app(database, snapshot):
         Input("warehouse-layer", "value"),
     )
     def update(population, case_id, product, period, scenario, warehouse_layer):
+        selected = next(
+            (c for c in info["cases"] if c["id"] == case_id and c["population"] == population), {}
+        )
+        # Dash may deliver a population change before its dependent dropdown resets.
+        if not selected:
+            case_id, product, period, scenario = None, None, None, None
+        else:
+            product = product if product in selected.get("products", []) else None
+            period = period if str(period) in list(map(str, selected.get("periods", []))) else None
+            scenario = scenario if scenario in selected.get("probabilities", {}) else None
         if warehouse_layer is not None and warehouse_layer > population:
             warehouse_layer = None
         definition = figure_definition(
@@ -86,20 +96,13 @@ def create_app(database, snapshot):
             scenario=scenario,
             warehouse_layer=warehouse_layer,
         )
-        return plotly_figure(definition), json.dumps(
-            {
-                k: definition[k]
-                for k in (
-                    "evidence_status",
-                    "synthetic",
-                    "filters",
-                    "figure_sha256",
-                    "missing_geometry",
-                    "notes",
-                )
-            },
-            indent=2,
-        )
+        qualification = {
+            k: definition[k]
+            for k in ("evidence_status", "synthetic", "filters", "figure_sha256", "notes")
+        }
+        qualification["missing_geometry_count"] = len(definition["missing_geometry"])
+        qualification["missing_geometry_examples"] = definition["missing_geometry"][:20]
+        return plotly_figure(definition), json.dumps(qualification, indent=2)
 
     @app.callback(
         Output("details", "children"), Input("map", "clickData"), State("population", "value")
