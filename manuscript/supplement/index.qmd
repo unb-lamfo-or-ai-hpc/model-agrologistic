@@ -51,11 +51,11 @@ and the evidence actually retained. The principal contribution of the article
 remains computational scalability of grain-storage network MILPs. Human–AI
 methodology is complementary and is not a controlled productivity experiment.
 
-The supplied21 October2026 Subgroup1 meeting excerpt explicitly requests this
-methodological account in Agreement5 and sections8/10. It asks researchers to
+The supplied 21 October 2026 Subgroup1 meeting excerpt explicitly requests this
+methodological account in Agreement 5 and sections 8/10. It asks researchers to
 document tools, human supervision, limitations and the scientific/computational
 decision trail while preserving the central investigation. The excerpt contains
-Agreement5 and sections8–11, not the complete minutes. Its source identity and
+Agreement 5 and sections 8–11, not the complete minutes. Its source identity and
 editorial crosswalk are retained in the repository's source assessment.[^meeting]
 
 [^meeting]: https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/docs/s6a-coauthor-review/docs/s6a_20261021/meeting_and_source_review.md
