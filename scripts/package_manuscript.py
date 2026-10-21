@@ -40,9 +40,18 @@ def package(output: Path, *, root: Path = ROOT) -> None:
         if figure.is_file() and figure.suffix.lower() in {".png", ".pdf", ".jpg", ".svg"}:
             files[figure.name] = figure
     payload = {name: path.read_bytes() for name, path in files.items()}
+    for name, path in {
+        "appendix_a_original.pdf": supplement / "appendix_a_original.pdf",
+        "scalar_evidence.json": manuscript / "scalar_evidence.json",
+        "s6a_assets.json": manuscript / "figures/s6a_assets.json",
+    }.items():
+        if path.is_file():
+            payload[name] = path.read_bytes()
     # Editorial Manager expects a single file level, not figure subdirectories.
     main = payload["main.tex"].decode("utf-8").replace("figures/", "")
     payload["main.tex"] = main.encode("utf-8")
+    payload["supplement.tex"] = payload["supplement.tex"].decode("utf-8").replace(
+        "../figures/", "").replace("figures/", "").encode("utf-8")
     payload["README.md"] = (
         b"# Editable Elsevier review project\n\n"
         b"Open main.tex in a TeX distribution or upload this ZIP to Overleaf.\n"
