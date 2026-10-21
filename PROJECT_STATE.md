@@ -1,5 +1,189 @@
 # Model Agrologistic — MVP 2.0 checkpoint
 
+## PR123 qualification record —21 October2026
+
+The complete consolidated h400/h500 package is published in
+[PR123](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/123),
+branch `research/scalar-h500-consolidated`, base develop. Its tested implementation
+head `c24757416ebea94f49610e8ded5618b2837ff287` passed ALL FOUR checks. Full
+native Linux run39671944337/job119471808339 executed1157 tests with ZERO
+failures/errors/skips in37.715s, including the real public tiny h500 worker,
+original validation, controller, terminal collection and portable replay. This is
+software qualification with controlled scheduler/WLS transport, NOT a private
+h500 solve, actual NPAD capability or agricultural experimental acceptance.
+Quality/build, retained analytical and native SCIP checks also passed. Bash
+syntax, raw tracked source/physical inventory and original manuscript bytes passed.
+
+Downloaded JUnit artifact12379397951 has ZIP SHA256
+`b54dc89224dca9d8010b5c9485be7c76f3c507f3764f850fefb4fceb440770dd`;
+scalar-r1.xml SHA256
+`37371d525b02d5c9858f6910b307026657a792501bf25aea2d89e5e213c912e6`.
+The pinned GitHub source ZIP identifies this exact40-character commit; all18
+published changed files match the locally qualified files byte for byte.
+Wrapper `scripts/npad_scalar_h500_8h.sh` SHA256 is
+`7bb7b7b26820754258404e911669ae1bd12dd80037a53f4e5012a1c59537364c`.
+This documentary checkpoint commit requires its OWN final-head four-check rerun
+before Ready; the resulting head/run/JUnit identities will be bound in the PR's
+qualification comment. Do not substitute the earlier implementation head for
+the final reviewed source when preparing the human CLI after authorized merge.
+
+No NPAD job/access/probe, private input load, repeat or follow-on occurred.
+PR123 merge remains subject to explicit authorization AFTER Ready. Preserve
+all historical claims/certificates. PR120 remains independent OPEN DRAFT and
+untouched until the new editorial mandate when h500 starts; SCIP/h215 deferred.
+The earlier qualification-pending paragraphs below are historical snapshots.
+
+## Latest: complete consolidated h400/h500 qualification —21 October2026
+
+The maintainer agrees with the proposed one8h/24logicalCPU/192GiB/Threads1/
+global4h-native h500 envelope and70M estimated-variable guard, requests one
+consolidated functional PR, and supplies CURRENT processed workbook SHA256
+`888fbff42e4f80817d4d5f0101049495c86c6ed4cda75f00813779dadab41515` plus the original
+OSRM audit:287869 exported routes (249500DD/18500OD/18500DC/1369OC),288369 cache
+hits,zero requests/misses/writes/fallback,six normalization occurrences. Original
+pre-OSRM inputfce15769...,dataset/provenance and audit bytes are preserved, not
+regenerated; the confirmed historical directory is nine_population_osrm_v1/500.
+
+Read [complete package](docs/mvp2_scalar_h500_operational.md). It binds the
+accepted ORIGINAL h400 archive/source/plan/job/quality/headroom before a new
+exclusive `.mvp2-scalar-h500-8h-v1` claim; strict registered500 membership has
+146existing+354candidates (69anchors+285added ranks), with actual IDs/roles/order
+checked pre-claim and preserved in every attempt. Worker, fresh compute WLS,
+phase/native/owned-step control, original residual/cost review, separate resources,
+immutable terminal/forensic collection, wrapper/tests/full runbook are together.
+No scientific src, coefficient, tolerance, input, database or manuscript change.
+
+The h400 contract reader now preserves POSIX lexical path serialization across
+Windows while all non-path settings stay strict. Both direct transferred h400
+replay and the NEW h500 predecessor guard pass WITHOUT runtime monkeypatch;
+original d9ca710 claim/source/certificates are untouched. First external-review
+adapter disclosure remains historical evidence, not erased. Retained old runtime
+defaults/h300/400 lineage and old receipt scopes remain qualified separately.
+
+Local focused98pass; related216pass plus ONE native test skipped because THIS
+computer's local Gurobi license is expired. That skip does NOT qualify native
+mathematics or indicate NPAD WLS failure. Full final-head Linux native zero-skip,
+lint/build/source/Bash/integration qualification must pass before Ready/request.
+No job, private h500 load, native agricultural optimization or cluster access.
+Pinned human execution only after this PR's OWN explicit authorized merge.
+
+SCIP/h215 decision is deferred until later, not cancelled. The maintainer will
+send a new PR120/S6-A editorial mandate when h500 starts; until then PR120 stays
+OPEN DRAFT, untouched, with no anticipated article revision. S3/S4 cancelled,
+EVPI/VSS excluded, main/develop sync after article review. No repeat or automatic
+follow-on. Earlier preparation/input-pending/parallel-editorial text is history.
+
+## ACCEPTED: scalar h400 job2219884; h500 preparation only —21 October2026
+
+Public terminal checkpoint (confirmed published through the integrated browser):
+https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/122#issuecomment-6325500435
+The file updates/results/redacted review below are local preparation for the next
+reviewed consolidation, not a new commit or merge into develop. The public
+checkpoint already records the complete accepted result and next boundary.
+Local retained login-safe h400/population regression after the review:118 passed
+in16.74s, zero failures/errors/skips. Documentary links and git diff whitespace
+checks pass; tracked scripts/scientific src/runtime have no changes. These tests
+are software checks, not additional agricultural optimizations or NPAD jobs.
+
+The received archive/sidecar and independently calculated SHA256 agree:
+`e0b58bb74ac254706d30f0f1863162df5d8a714751eadf43b28e7dbc0c5d5def`.
+70 regular members/133321653 expanded bytes, safe inventory verified without
+extraction/executing archive code. Read [results](docs/mvp2_scalar_h400_results.md)
+and [redacted external review](docs/evidence/scalar_h400_2219884_review.json).
+The complete original portable review is reproduced exactly, including original
+accepted residual validation,1% scalar quality target and operational closure.
+This is original receipt/integrity replay plus arithmetic, NOT a fresh private-
+input residual re-solve. On Windows only, a disclosed lexical POSIX Path adapter
+was needed to retain the original Linux workbook slash spelling; no certificate,
+number, scientific/runtime source, setting or acceptance predicate changed.
+
+Job2219884/root,batch,extern,step.0 COMPLETED0:0. Allocation1h29m14s;step1h28m53s.
+Original source `d9ca710dd98b66a4d3421ebccee13d91673d468d`; plan
+`852f886d58f9bf1f78cee2000ae3d3103bb49f3a27c884e91d40deeca2057afe` unchanged.
+One STO/no-direct,Threads1,nine scenarios1/9,60 periods,fixed90000/45000/45000.
+Native Runtime4227.663s/70.461min; build712.042s; application end-to-end5221.092s.
+Original matrix42106944 variables,1160742 linear constraints,160697126 nonzeros,
+274320 general constraints. Native optimal with nonzero common gap0.83678443%,
+below1%; objective7.593395049303e12/bound7.529854702084e12. Two incumbents;
+original residual validator accepted at1e-5/1e-8 with zero failed checks.
+
+Economic subtotal381572750892.545; artificial penalties7211822298410.245,
+94.97493877% of reconstructed total. Service91.33037442%; expected shortage
+58.755130M tonnes, emergency storage26.254752M tonne-periods and reception
+16.497707M overflow tonnes. Positive slack is permitted; gap certifies penalized
+total, not economic-subtotal accuracy, full service or observed financial losses.
+No penalty calibration or causal slack/runtime/population/thread claim.
+
+Sampled application RSS72.343GiB,Slurm step72.318GiB,native44.577 decimal GB;
+zero recorded dropped samples/inspection errors, no phase/memory/cleanup stop.
+All approved8h/24logicalCPU/192GiB/global14400s and phase budgets closed.
+Prospective h500 preconditions pass with no blockers, but
+`h500_execution_admitted=false` and separate actual input/matrix/resource/package
+admission remain required. Original flags/claims/certificates are NOT rewritten.
+Preserve `.mvp2-scalar-h400-8h-v1`, bound bootstrap
+`scalar-h400-8h-driver-76BFknhT`, accepted h300 predecessor and all older evidence.
+
+Next: consolidate this evidence and qualify ONE complete h500 proposal/package
+after current read-only historical input/hash/audit confirmation and separate
+resource/size approval. Candidate same8h/24logicalCPU/192GiB/Threads1/4h-native,
+proposed70M guard; quadratic sensitivity65.792M variables/113.036GiB RSS is NOT a
+measured h500 estimate/admission. No job, repeat, new solver or automatic follow-on.
+SCIP/h215 planned separately; S6-A synthesis may proceed; PR120 remains draft.
+S3/S4 cancelled, EVPI/VSS excluded, main/develop sync after article review only.
+Previous RUNNING/preparation sections below are preserved chronological history.
+
+## RUNNING: scalar h400 job2219884 —21 October2026
+
+Maintainer-supplied NPAD output records job2219884/root,batch,extern and numeric
+step2219884.0 RUNNING. The accounting snapshot shows46s allocation/44s step;
+the separate sacct snapshot shows37s allocation/35s step and24 allocated logical
+CPUs. These are supplied observations, not live agent monitoring or terminal
+results;0:0 while RUNNING does not establish successful completion. No measured
+MaxRSS, accepted incumbent, quality gap or h500 eligibility is yet available.
+
+PR122 merged with explicit authorization into develop at
+`a04fdfc981058eb57b291022ab2552a2d711ec74`. Qualified operational source remains
+`d9ca710dd98b66a4d3421ebccee13d91673d468d`;466 raw tracked files matched on NPAD.
+Plan SHA256 `852f886d58f9bf1f78cee2000ae3d3103bb49f3a27c884e91d40deeca2057afe`.
+Four source workflows passed; full native Linux software gate1055 passed, zero
+failures/errors/skips. Software qualification is not private h400 acceptance.
+Earlier preparation/pending-input statements below are historical snapshots.
+The human launch progressed through the reviewed pre-claim checks; input bytes
+and mathematical/operational receipts remain subject to terminal archive review.
+
+Preserve exclusive claim `.mvp2-scalar-h400-8h-v1`, CLI directory and its bound
+source/bootstrap/run, accepted h300 predecessor and every earlier claim/evidence.
+The status action printed an empty PRESERVE_BOOTSTRAP; do not infer absence or
+invent a directory. Retain the bootstrap printed by the original start command.
+Do not alter the in-use NPAD checkout, reset claims, resubmit or upgrade packages.
+
+Approved observation: one cold h400 STO/no-direct arm, nine scenarios at1/9,
+Threads1,global14400s native,MIPGap0.01,Seed42,SoftMemLimit160 decimal GB,
+compaction off,effective penalties90000/45000/45000. Slurm8h/24 logical CPUs/
+192GiB; reviewed16-logical-CPU worker affinity policy, not16 physical cores.
+All previously approved phase limits remain unchanged. Positive slacks are
+permitted model trade-offs; penalized objective gap is not economic-subtotal
+accuracy or full service, and penalty/runtime effects are not established causal.
+No repeat, larger instance, h500 or automatic follow-on is admitted. Original
+false admission flags remain unchanged; they are not reinterpreted as no job.
+
+Human-only resumable commands on NPAD; no fresh-shell exports required:
+
+```bash
+bash /home/vrrcelestino/model-agrologistic-hygiene-audit/scalar-h400-cli-d9ca710d/npad_scalar_h400_8h.sh status d9ca710dd98b66a4d3421ebccee13d91673d468d
+bash /home/vrrcelestino/model-agrologistic-hygiene-audit/scalar-h400-cli-d9ca710d/npad_scalar_h400_8h.sh wait d9ca710dd98b66a4d3421ebccee13d91673d468d
+bash /home/vrrcelestino/model-agrologistic-hygiene-audit/scalar-h400-cli-d9ca710d/npad_scalar_h400_8h.sh collect d9ca710dd98b66a4d3421ebccee13d91673d468d
+```
+
+Ctrl-C during wait is safe; resume wait/collect only, never start a new attempt.
+After terminal collection transfer BOTH files from the preserved claim:
+`scalar-h400-8h-evidence.tar.gz` and its `.sha256`. Next owner: maintainer executes
+wait/collect and transfers evidence; agent verifies checksum, original validation,
+scalar quality, source/input/operational closure and separately scoped resource
+headroom. No h500 admission follows automatically. PR120 stays OPEN DRAFT;
+S3/S4 cancelled, EVPI/VSS excluded, main/develop sync only after article review.
+No new agent NPAD access, probe, job, retry or model change occurred.
+
 ## ACCEPTED: scalar h300 terminal block; h400 proposal pending —21 October2026
 
 ### Latest: h400 envelope/exit criteria approved; complete operational qualification

@@ -230,5 +230,11 @@ def design(files):
         "max_estimated_variables": MAX_VARIABLES,
         "metadata": template.metadata,
     }
+    # A sealed Linux path is a lexical identifier during portable replay, not
+    # a request to open that private workbook on the reviewer's operating system.
+    # Preserve old local Windows receipts too; only POSIX-form case strings use
+    # forward-slash serialization. All other fields and equality remain strict.
+    if case["workbook"].startswith("/") and "\\" not in case["workbook"]:
+        expected["workbook"] = template.workbook.as_posix()
     r.require(case == r.strict_json(r.r2.encoded(expected)), "h400 scientific/input profile drift.")
     return plan
