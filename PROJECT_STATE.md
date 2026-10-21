@@ -1,5 +1,43 @@
 # Model Agrologistic — MVP 2.0 checkpoint
 
+### PR120 integrated qualification and final review gate —21 October2026
+
+The five existing checks passed at editorial source
+adb0b46700005ac20c410b72b11f069be4b7403c. Full retained native Linux regression:
+1181 tests, zero failures/errors/skips,26.288s; original JUnit artifact SHA256
+6943bba3715cf467b5e0367f6f05d6ad7424ef352307ec32f981206a021cb6dd,
+[run39692318832](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/actions/runs/39692318832).
+The three optional Dash/PDF/PNG cases unavailable in the local Python environment
+are covered by this native CI, not relabelled as local passes. Local related
+regression remains65 passed/three deselected; Ruff and generated tables passed.
+
+The [rendered package](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/actions/runs/39692318799)
+contains a27-page article and26-page supplement. Every article page and the
+supplement wrapper/Appendix B were visually inspected; all19 original Appendix A
+pages were inspected and their complete ordered text checked on embedding.
+Pagination was fixed to avoid adding supplement numbers to the original pages;
+the supplied PDF bytes remain859dc52b…. Wide quantifiers were placed on separate
+lines without changing the model, and the one shared workflow SVG was rearranged
+for print legibility. Manuscript references resolve; the editable source and
+supplement include the original Appendix A, not a condensation.
+
+Inspection of the flat LaTeX package then found a missing PNG dependency used
+only by the supplement (the article uses the PDF from the same SVG). A bounded
+dependency collector and regression now include actual referenced graphic files
+and reject missing ones before creating an archive. This portability correction
+does not alter rendered scientific content. Its final-head existing CI and
+portable package inspection must complete before changing PR120 to Ready;
+the final public PR comment records that exact head and artifact identities.
+Neither this checkpoint nor Ready authorizes merge, Pages publication or journal
+submission. Merge requires a separate maintainer decision.
+
+No original scientific source, experiment configuration, evidence certificate,
+residual tolerance or fixed90000/45000/45000 penalty was changed. h500 remains
+pending under job2220382 in the last human-supplied snapshot. No cluster access,
+new solve, repeat or inference of a terminal h500 result occurred. OSRM distances
+remain authoritative but no supplied road polylines are available; geographic
+figures therefore show locations/decisions without invented route connections.
+
 ### PR120 integrated scalar/geographic implementation —21 October2026
 
 The researcher confirmed the preserved inputs and evidence are under
