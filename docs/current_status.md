@@ -1,4 +1,54 @@
-# Dated research status: 20 October 2026
+# Dated research status: 21 October 2026
+
+Latest mandate: maintain one consolidated h400-evidence/h500 complete operational
+qualification PR. [Full delivery](mvp2_scalar_h500_operational.md), confirmed
+processed888fbff4... input/audit and approved8h/24logicalCPU/192GiB/Threads1/
+global14400s/70M guard. No agent NPAD access/jobs/repeats. Actual h500 outcomes
+remain unobserved. Accepted original h400 evidence is a predecessor condition,
+not submission authority. Final exact-head native Linux zero-skip checks, Ready
+and its own explicit merge precede human CLI. SCIP/h215 decision deferred; PR120
+stays OPEN DRAFT pending a NEW maintainer mandate at h500 start. No premature
+S6-A/editorial work. Older pending/parallel statements below are historical.
+
+Latest: scalar h400 job2219884 has accepted original validation/quality and closed
+operational receipts. Read [terminal results](mvp2_scalar_h400_results.md) and
+[redacted external review](evidence/scalar_h400_2219884_review.json). The received
+archive SHA256e0b58bb7... agrees; original review is reproduced exactly with a
+disclosed Windows-only lexical POSIX path adapter, no numerical/certificate changes.
+Runtime70.461min,gap0.83678443%,42.107M variables,160.697M nonzeros,application
+RSS72.343GiB; total allocation1h29m14s. Service91.330374%,penalty share94.974939%.
+Success is under the retained slack-enabled scalar contract, not full service,
+exact optimality or causal speedup. Prospective h500 preconditions pass; h500
+execution stays FALSE pending actual input/matrix/resources and qualified package.
+Preserve source/plan, all claims and PR120 draft; no new jobs/repeats. Earlier
+pending/running statements below are historical snapshots, not current status.
+
+Latest: PR121 merged atd6cf9505 with explicit authorization; h400 envelope and
+prospective h500 criteria approved. Qualify the complete
+[h400 operational package](mvp2_scalar_h400_operational.md): one STO/no-direct
+arm,Threads1,14400s native,8h/24 logical CPUs/192GiB,45M guard and1GiB transfer.
+Keep fixed penalties, separate memory scopes, original validators and exclusive
+claims. Missing/current private input is checked BEFORE claim/submission; no
+input rematerialization or agent job. Ready/full exact-head qualification and a
+separate operational merge authorization precede pinned human CLI. h500 remains
+closed even if prospective preconditions pass. PR120 remains independent DRAFT.
+The earlier pending h400-profile statements below are historical snapshots.
+
+Current: job2218193's complete scalar h300 block is independently replayed accepted:
+five original residual validators/1% scalar quality targets and operational
+receipts close. Common gap0.0041193549%; same objective/bound/exported decision
+CSVs across all thread levels. Read [results](mvp2_scalar_h300_results.md) and
+[review](evidence/scalar_h300_2218193_review.json). Native Runtime47.14–67.61min;
+sampled application RSS46.35–78.37GiB. One thread is an observed h400 candidate,
+not a causal ranking. Preserve original claims/archives and fixed penalties;
+no repeat, new optimization or automatic larger-instance admission.
+
+The [h400 proposal](mvp2_scalar_h400_proposal.md) awaits profile/input/exit-rule
+decisions before a complete operational package. PR120 stays draft until other
+coauthor comments and resumed editorial revision; this separate evidence update
+does not edit it. S3/S4 stay cancelled, EVPI/VSS excluded; SCIP/h215, conditional
+h500 and S6 remain planned. Main/develop integration follows article review.
+All following sections are historical snapshots.
 
 Current: researcher authorizes [S6-A coauthor-review preparation](s6a_20261020/README.md)
 in parallel with the scalar h300 job. The package covers all146 PDF annotations,

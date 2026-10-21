@@ -19,6 +19,50 @@ Keep scalar objective/units/tolerances, S3/S4 cancellation and EVPI/VSS exclusio
 No raw PDF/annotation export or individual reviewer metadata is committed; public
 responses use summaries and page/object locators. Ready follows appropriate
 document/scope/coverage checks; merge still requires explicit authorization.
+## Consolidated h400 acceptance / h500 operational mandate —21 October2026
+
+Maintainer agrees with the h5008h/24logicalCPU/192GiB/one-thread/global14400s
+profile and70M guard, confirms historical processed888fbff4... workbook and its
+OSRM audit, and requests ONE consolidated h400/h500 PR. Read
+`docs/mvp2_scalar_h500_operational.md`. Preserve all scientific source/penalties,
+raw certificates, claim identities and old launcher defaults. Bind accepted
+h400 job2219884/source d9ca710/plan852f886d/archivee0b58bb7 plus its predeclared
+quality/headroom; h500 itself needs its OWN qualified package/authorized merge/
+pinned human execution. No NPAD access/probe/jobs/repeats during preparation.
+Qualify actual500-row strict original checkpoint membership, old-path portability,
+worker/owned-step/phase/validation, partial collection, wrapper and complete handoff
+together; full final-head native Linux/zero-skip gates precede Ready/merge request.
+SCIP/h215 is deferred for a later decision, NOT silently cancelled. Editorial
+PR120 stays OPEN DRAFT and untouched; a new maintainer mandate for PR120/S6-A
+will come when h500 execution starts. Do not start that revision prematurely.
+Older pending h400/input and parallel-editorial statements below are historical.
+
+## h300 terminal consolidation and h400 proposal —21 October2026
+
+Latest21 October: PR121 merged with explicit authorization atd6cf9505a66b964e1d09ab097be572c337aa2d29.
+The maintainer approves its h4008h/24 logical CPUs/192GiB/one-thread/14400s
+profile,45M guard/1GiB transfer and prospective h5001%-gap/20%-headroom criteria.
+Read `docs/mvp2_scalar_h400_operational.md`. Prepare/qualify the COMPLETE h400
+contract/400 lineage/worker/owned-step/collector/auditor/wrapper/tests/runbook PR;
+no agent NPAD access/jobs. Preserve effective90000/45000/45000 coefficients,
+scientific src/manuscript, original claims/certificates and PR120 OPEN DRAFT.
+The shared supervisor's old defaults and h300 derivation must remain unchanged;
+only explicit h400 profile/lineage opt-ins differ. Full exact-head native Linux
+qualification and Ready precede a separate merge request. No h500/repeat or
+automatic execution; missing private-path confirmation is checked before claim.
+Older pending-proposal statements below are historical, not new decisions.
+
+Current21 October: job2218193 now has a fully accepted scalar h300 terminal
+block. Read `docs/mvp2_scalar_h300_results.md`, its redacted external review and
+`docs/mvp2_scalar_h400_proposal.md`. Consolidate original certificates without
+rewriting consumed claims/source/plan or changing90000/45000/45000 penalties.
+One thread is an observed candidate, not a causal winner. Proposed h400 scope,
+resources/exit rules require approval before the complete operational package;
+this results PR admits no new solve, repeat or automatic follow-on.
+PR120 must stay draft pending other coauthors and resumed editorial work. Do not
+edit/merge it or return it to Ready through this independent evidence work.
+Ready follows full exact-head qualification; merge needs explicit authorization.
+The preparation/path-failure sections below are preserved historical snapshots.
 
 ## h300 historical nested-population repair —20 October2026
 
