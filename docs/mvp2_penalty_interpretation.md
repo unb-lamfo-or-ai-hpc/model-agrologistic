@@ -65,6 +65,14 @@ fresh private-input residual recomputation. See the [review ledger](evidence/sca
 
 ## Required discussion before each PR is finalized
 
+The [complete scalar h300 block](mvp2_scalar_h300_results.md), job2218193, also
+meets the original validators and1% quality targets at unchanged coefficients.
+All arms have0.0041193549% scalar gap,91.32562288% service and95.84995396% penalty
+share; their primary exported decisions coincide. These positive computational
+results are compatible with allowed physical shortage/emergency capacity, not
+proof of full service, economic-subtotal accuracy or uniquely optimal decisions.
+The one-thread observation is a prospective computational candidate only.
+
 Every subsequent experimental PR includes an explicit discussion of (1) which
 feasibility equations allow slack, (2) expected/observed effects on model size
 and search, and (3) penalized gap versus economic and physical diagnostics.

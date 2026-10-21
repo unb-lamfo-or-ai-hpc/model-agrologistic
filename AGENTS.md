@@ -2,6 +2,18 @@
 
 ## h300 historical nested-population repair —20 October2026
 
+Current21 October: job2218193 now has a fully accepted scalar h300 terminal
+block. Read `docs/mvp2_scalar_h300_results.md`, its redacted external review and
+`docs/mvp2_scalar_h400_proposal.md`. Consolidate original certificates without
+rewriting consumed claims/source/plan or changing90000/45000/45000 penalties.
+One thread is an observed candidate, not a causal winner. Proposed h400 scope,
+resources/exit rules require approval before the complete operational package;
+this results PR admits no new solve, repeat or automatic follow-on.
+PR120 must stay draft pending other coauthors and resumed editorial work. Do not
+edit/merge it or return it to Ready through this independent evidence work.
+Ready follows full exact-head qualification; merge needs explicit authorization.
+The preparation/path-failure sections below are preserved historical snapshots.
+
 PR118 merged; human source66d8faa stopped before claim creation/submission at
 the population-checkpoint guard. Read the current PROJECT_STATE header and
 `docs/mvp2_scalar_h300_population_repair.md`. Original checkpoints omit300;

@@ -1,5 +1,78 @@
 # Model Agrologistic — MVP 2.0 checkpoint
 
+## ACCEPTED: scalar h300 terminal block; h400 proposal pending —21 October2026
+
+The maintainer transferred job2218193's archive and SHA256 sidecar. Independent
+hash check agrees: `dc5969fa391dc81590210ef7e6f89abbb5df554e4bc5b2032ba9eafe1a67f3fc`.
+The original source04ba9edccc93f40ab36cbc3264039a7edf2f6f51 and plan
+000a760b3c263cfd7e88fb75714ac5f125df9c4e27332045c761a75bd60bffb1 are unchanged.
+PR119 merged at8e6a7cba5a27b330ee917d33e178baa90ceb617d. Portable replay accepts
+`block_quality_target_met`, all five original independent residual validators,
+complete terminal accounting and no unrun/rejected arm. See
+[results](docs/mvp2_scalar_h300_results.md) and
+[redacted review](docs/evidence/scalar_h300_2218193_review.json).
+This is original receipt/integrity replay and arithmetic checking, NOT a fresh
+private-input mathematical residual recomputation or a new solve.
+
+Allocation and five numeric steps are COMPLETED,0:0; whole block5h51m36s against
+30h approved. Thread order4/1/8/2/16; native Runtime3533.28/2828.60/4047.22/
+3180.50/4056.76s, all below14400s. Each has native/common gap0.0041193549%,
+objective9.289108634159e12/bound9.288725982805e12. Original tolerances1e-5/1e-8,
+zero failed checks. Scalar objective/bound and four primary exported decision
+CSVs coincide across arms. Matrix25,107,544 variables;890,642 linear constraints;
+94,635,126 nonzeros;166,320 general constraints. Native optimal is not exact
+zero-gap optimality. This cohort does not overwrite the closed historical S2.
+
+Frozen coefficients90000/45000/45000 retained. Economic subtotal385.502284843e9;
+artificial penalties8.903606349316e12 (95.84995396% of total). Domestic service
+91.32562288%, scenario range89.42854906–93.93998926%; expected horizon shortage
+58.787331589 million tonnes, storage46.444009174 million tonne-periods,
+reception33.839246522 million overflow tonnes. Positive slack is permitted,
+not a new rejection rule; gap concerns penalized total, not economic-subtotal
+accuracy or full service. No calibration, causal slack/runtime explanation or
+new criterion is introduced. Slacks relax only their specified equations.
+
+Sampled application RSS: one thread46.35GiB, two57.24GiB, four77.96GiB,
+eight78.21GiB, sixteen78.37GiB. Slurm MaxRSS/native memory are separately scoped.
+The common16-logical-CPU affinity covers12 observed physical cores with SMT;
+all steps allocated24 logical CPUs. One observation per serial level on a shared
+node supports descriptive comparison, not causal speedup/universal selection.
+One thread is the proposed h400 candidate, NOT automatically approved.
+
+Preserve `.mvp2-scalar-h300-30h-v1`, original runtime/products/archives and all
+earlier claims/failure bootstraps. The bound plan now identifies original source
+bootstrap `scalar-h300-30h-driver-7VpKV8oU`; no reconstructed directory is created.
+No start/reset/repeat or new job follows collection. Existing human commands,
+retained here as collect-only terminal handoff (BASE is the existing audit parent):
+
+```bash
+SOURCE=04ba9edccc93f40ab36cbc3264039a7edf2f6f51
+WRAPPER="$BASE/scalar-h300-lineage-cli-04ba9edc/npad_scalar_h300_30h.sh"
+bash "$WRAPPER" status "$SOURCE"
+bash "$WRAPPER" wait "$SOURCE"
+bash "$WRAPPER" collect "$SOURCE"
+```
+
+Next [R3-B proposal](docs/mvp2_scalar_h400_proposal.md): one cold STO h400 arm,
+one solver thread, no direct arcs, same penalties/scenarios/settings,14400s native;
+proposed8h/24-logical-CPU/192GiB allocation,1GiB transfer and45M size guard.
+Input/build3600s, shared late-return/export900s, validation/review1800s, setup1800s,
+contingency6300s. Proposed h500 eligibility requires accepted original feasibility,
+at most1% finite scalar gap, complete provenance/terminal closure, respected
+budgets,20% observed headroom per separately labelled OS/native memory scope,
+and a separately admissible h500 estimate. These new proposals require approval;
+they are NOT retroactive acceptance rules or current h400/h500 execution authority.
+Current historical input path/hash/audit still need human read-only confirmation.
+
+Prepare the complete subsequent h400 worker/lineage/owned-step/collector/auditor/
+wrapper/tests/runbook together after decisions. Existing SCIP/h215 remains planned;
+h500 remains conditional; S3/S4 cancelled; EVPI/VSS excluded; main/develop sync
+after article review. PR120 is OPEN DRAFT by explicit maintainer hold, pending
+other coauthors; do not modify/merge it or silently cherry-pick its editorial work.
+The independent consolidation has no changes to scientific src/manuscript or
+the historical launchers. Exact-head checks and Ready precede its merge request.
+Earlier preparation snapshots below are preserved history only.
+
 ## h300 nested-population integration repair after PR118 —20 October2026
 
 [PR119](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/119)

@@ -1,4 +1,20 @@
-# Dated research status: 20 October 2026
+# Dated research status: 21 October 2026
+
+Current: job2218193's complete scalar h300 block is independently replayed accepted:
+five original residual validators/1% scalar quality targets and operational
+receipts close. Common gap0.0041193549%; same objective/bound/exported decision
+CSVs across all thread levels. Read [results](mvp2_scalar_h300_results.md) and
+[review](evidence/scalar_h300_2218193_review.json). Native Runtime47.14–67.61min;
+sampled application RSS46.35–78.37GiB. One thread is an observed h400 candidate,
+not a causal ranking. Preserve original claims/archives and fixed penalties;
+no repeat, new optimization or automatic larger-instance admission.
+
+The [h400 proposal](mvp2_scalar_h400_proposal.md) awaits profile/input/exit-rule
+decisions before a complete operational package. PR120 stays draft until other
+coauthor comments and resumed editorial revision; this separate evidence update
+does not edit it. S3/S4 stay cancelled, EVPI/VSS excluded; SCIP/h215, conditional
+h500 and S6 remain planned. Main/develop integration follows article review.
+All following sections are historical snapshots.
 
 Latest: PR118 merged at2f6237f6. Source66d8faa stopped before claim creation/sbatch
 because the original checkpoint list omits300 despite its preserved historical
