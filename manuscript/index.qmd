@@ -357,6 +357,9 @@ is distinct from a later portable integrity replay. The latter verifies
 retained evidence and arithmetic; it is not a fresh private-input residual
 re-solve. Scheduler completion, incumbent existence, model feasibility and
 attainment of the scalar quality criterion are reported separately.
+Failure to find an incumbent within a resource budget is not a proof of
+mathematical infeasibility. A time- or memory-censored result does not
+demonstrate a speedup over another censored result.
 For minimization, the common relative gap is $(z-b)/|z|$ for finite nonzero
 incumbent $z$ and bound $b\le z$. Both zero imply gap zero; missing/nonfinite
 values or inconsistent bounds are not assigned a finite accepted gap.
@@ -375,9 +378,10 @@ logical CPUs are distinct resource scopes.
 
 Reservations are 14 hours for the h215 pair, 30 hours for the five-arm h300
 block, and eight hours each for h400 and h500. Reservation time is not measured
-optimizer time. Current models solve within one allocated node. Slurm
-arrays distribute independent experiments; this is not a distributed MILP
-solver, and no multi-node speedup is claimed. Network preparation, construction
+optimizer time. Current models solve within one allocated node, and the
+reported scalar blocks run serially. Distributing independent experiments
+through scheduler arrays would not make an individual model a distributed MILP
+solve; no multi-node speedup is claimed. Network preparation, construction
 and post-processing are CPU workloads outside the primary optimization call.
 No GPU acceleration or use of the InfiniBand fabric by a distributed MILP
 algorithm is asserted.
