@@ -28,6 +28,7 @@ jobs:
           tex_bin="$HOME/.TinyTeX/bin/x86_64-linux"
           test -x "$tex_bin/tlmgr"
           echo "$tex_bin" >> "$GITHUB_PATH"
+          "$tex_bin/tlmgr" update --self
           "$tex_bin/tlmgr" install orcidlink pgf caption bookmark xurl footnotehyper microtype lm amsfonts geometry natbib etoolbox booktabs tools babel-english parskip xcolor pdfpages eso-pic
       - run: python scripts/build_manuscript_comparison.py --check
       - run: python -m scripts.build_scalar_manuscript --check
