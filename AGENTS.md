@@ -1,6 +1,6 @@
 # Model Agrologistic: agent working agreement
 
-## h300 historical nested-population repair —20 October2026
+## h300 terminal consolidation and h400 proposal —21 October2026
 
 Current21 October: job2218193 now has a fully accepted scalar h300 terminal
 block. Read `docs/mvp2_scalar_h300_results.md`, its redacted external review and
@@ -13,6 +13,8 @@ PR120 must stay draft pending other coauthors and resumed editorial work. Do not
 edit/merge it or return it to Ready through this independent evidence work.
 Ready follows full exact-head qualification; merge needs explicit authorization.
 The preparation/path-failure sections below are preserved historical snapshots.
+
+## h300 historical nested-population repair —20 October2026
 
 PR118 merged; human source66d8faa stopped before claim creation/submission at
 the population-checkpoint guard. Read the current PROJECT_STATE header and

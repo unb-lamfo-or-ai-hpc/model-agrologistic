@@ -71,6 +71,12 @@ after article review. PR120 is OPEN DRAFT by explicit maintainer hold, pending
 other coauthors; do not modify/merge it or silently cherry-pick its editorial work.
 The independent consolidation has no changes to scientific src/manuscript or
 the historical launchers. Exact-head checks and Ready precede its merge request.
+Local qualification:31 new focused/193 related tests passed without skips,
+Ruff and relative-link checks passed; a second complete external replay exactly
+matches the committed redacted JSON. Full exact-head Linux/native checks and
+their final head/run/JUnit identities are recorded publicly in the consolidation
+PR before Ready. Initial synthetic fixture/tmp setup failures were corrected,
+not accepted as qualification. No native workload or job was run by this review.
 Earlier preparation snapshots below are preserved history only.
 
 ## h300 nested-population integration repair after PR118 —20 October2026

@@ -128,3 +128,21 @@ python -B -m scripts.review_scalar_h300_evidence \
 ```
 
 Output creation is exclusive. Never overwrite original evidence to run a review.
+
+## Qualification of the consolidation package
+
+Local Python3.13.15:31 focused and193 related tests passed, zero failures/errors/
+skips; Ruff and changed-document relative links passed. The stored redacted JSON
+equals a second complete external replay of the transferred archive. Source/plan/
+job bindings were separately checked against the original human handoff. The
+scientific src tree666029ace80bd60417d91c43d4460a33326acf64 and manuscript tree
+c33c6dbdb829580d1d0c8c9296814b1b7a38280b are unchanged from develop.
+
+Initial local testing exposed missing synthetic accounting fields and sandbox
+temporary-directory setup errors. The public fixture was corrected and explicit
+workspace basetemp used; original scientific validation was not relaxed. Full
+exact-head Linux native/SCIP/analytical and lint/distribution CI must pass before
+Ready. The PR's final qualification comment records the exact head/run identities
+and observed test counts. Tiny native CI is software qualification, not a new
+NPAD or agricultural h400 experiment. No local license or solver is accessed by
+the external receipt review. Historical resource budgets remain unchanged.

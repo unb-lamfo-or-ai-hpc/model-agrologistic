@@ -5,6 +5,7 @@ import hashlib
 import io
 import json
 import tarfile
+from pathlib import Path
 
 import pytest
 
@@ -301,3 +302,41 @@ def test_output_is_exclusive_and_never_overwrites_evidence(tmp_path, monkeypatch
     with pytest.raises(FileExistsError):
         m.main(["--archive", "unused", "--sha256", "a" * 64, "--output", str(target)])
     assert target.read_text() == "preserve"
+
+
+def test_committed_h300_review_retains_original_identities_and_quality():
+    path = Path(__file__).resolve().parents[1] / "docs/evidence/scalar_h300_2218193_review.json"
+    report = json.loads(path.read_text())
+    assert report["archive_sha256"] == (
+        "dc5969fa391dc81590210ef7e6f89abbb5df554e4bc5b2032ba9eafe1a67f3fc"
+    )
+    assert report["source_commit"] == "04ba9edccc93f40ab36cbc3264039a7edf2f6f51"
+    assert report["plan_sha256"] == (
+        "000a760b3c263cfd7e88fb75714ac5f125df9c4e27332045c761a75bd60bffb1"
+    )
+    assert report["job_id"] == "2218193" and report["operational_receipts_closed"]
+    assert [a["threads"] for a in report["arms"]] == [4, 1, 8, 2, 16]
+    for arm in report["arms"]:
+        assert arm["original_validation_failed_checks"] == 0
+        assert arm["original_absolute_tolerance"] == 1e-5
+        assert arm["original_relative_tolerance"] == 1e-8
+        assert 0 < arm["common_gap"] < 0.01
+        assert m.close(sum(arm["reconstructed_costs"].values()), arm["objective"])
+    assert not report["scientific_configuration_selected"]
+    assert not report["execution_admitted"] and not report["repeats_admitted"]
+    assert not report["automatic_follow_on_allowed"]
+    assert all(report["decision_artifacts_identical_across_arms"].values())
+
+
+def test_committed_review_has_no_private_paths_or_license_details():
+    path = Path(__file__).resolve().parents[1] / "docs/evidence/scalar_h300_2218193_review.json"
+    raw = path.read_text()
+    for private in (
+        "/home/",
+        "C:/Users/",
+        "LicenseID",
+        "WLSSecret",
+        "WLSAccessID",
+        "npad.internal",
+    ):
+        assert private not in raw
