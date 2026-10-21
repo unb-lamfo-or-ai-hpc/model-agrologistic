@@ -47,6 +47,15 @@ All five h300 objectives and best bounds coincide; their original warehouse, flo
 
 ## Investment and operational interpretation across populations
 
+| Instance | One-time investment, BRL billion | Transport, BRL billion | Inventory holding, BRL billion |
+|:--|--:|--:|--:|
+| h215 DET | 9.848 | 364.960 | 15.002 |
+| h215 STO | 9.819 | 367.138 | 16.946 |
+| h300 STO | 11.260 | 360.578 | 13.664 |
+| h400 STO | 12.539 | 356.123 | 12.911 |
+
+: Reconstructed financial components, excluding artificial penalties. Investment is charged once; STO operation is scenario-weighted over the horizon. No annualization, currency conversion or price-year adjustment is applied. {#tbl-scalar-financial-components}
+
 | Instance | Available candidates | Candidates with positive capacity | Expanded existing sites | Bulkified existing sites |
 |:--|--:|--:|--:|--:|
 | h215 DET | 69 | 69 | 80 | 66 |
@@ -75,6 +84,8 @@ All included warehouses have at least one positive transport flow in each repres
 | h400 STO | 91.3304 | 58.7551 | 26.2548 | 16.4977 |
 
 : Physical diagnostics over the declared horizon. STO quantities are probability-weighted, not unweighted sums over nine scenarios. {#tbl-scalar-physical}
+
+Across the returned STO plans, additional candidate sites accompany more installed candidate capacity and greater one-time investment, while the transport and holding components are lower. This is a descriptive comparison of separately screened models and feasible incumbents, not a causal savings estimate. Domestic service is not monotone across populations. Lower stock and reception exceedances can coexist with substantial unmet demand; a lower penalized total is not improvement in every service component.
 
 ### Geographic interpretation
 
