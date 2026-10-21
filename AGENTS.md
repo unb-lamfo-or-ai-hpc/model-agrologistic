@@ -2,6 +2,19 @@
 
 ## h300 terminal consolidation and h400 proposal —21 October2026
 
+Latest21 October: PR121 merged with explicit authorization atd6cf9505a66b964e1d09ab097be572c337aa2d29.
+The maintainer approves its h4008h/24 logical CPUs/192GiB/one-thread/14400s
+profile,45M guard/1GiB transfer and prospective h5001%-gap/20%-headroom criteria.
+Read `docs/mvp2_scalar_h400_operational.md`. Prepare/qualify the COMPLETE h400
+contract/400 lineage/worker/owned-step/collector/auditor/wrapper/tests/runbook PR;
+no agent NPAD access/jobs. Preserve effective90000/45000/45000 coefficients,
+scientific src/manuscript, original claims/certificates and PR120 OPEN DRAFT.
+The shared supervisor's old defaults and h300 derivation must remain unchanged;
+only explicit h400 profile/lineage opt-ins differ. Full exact-head native Linux
+qualification and Ready precede a separate merge request. No h500/repeat or
+automatic execution; missing private-path confirmation is checked before claim.
+Older pending-proposal statements below are historical, not new decisions.
+
 Current21 October: job2218193 now has a fully accepted scalar h300 terminal
 block. Read `docs/mvp2_scalar_h300_results.md`, its redacted external review and
 `docs/mvp2_scalar_h400_proposal.md`. Consolidate original certificates without

@@ -1,5 +1,14 @@
 # R3-B h400: evidence-derived proposal, not execution admission
 
+**Approved21 October2026:** the maintainer explicitly authorized PR121 merge and
+approved this envelope and prospective h500 criteria. PR121 merged at
+d6cf9505a66b964e1d09ab097be572c337aa2d29. The
+[complete operational package](mvp2_scalar_h400_operational.md) now implements
+these choices, pending exact-head software qualification, Ready, its OWN merge
+authorization and pinned human CLI. No actual h400 private-input/job evidence
+or automatic h500/repeat permission follows. The proposal below is preserved
+verbatim as the decision's basis; its pending-approval wording is historical.
+
 21 October2026. Depends on the [accepted scalar h300 block](mvp2_scalar_h300_results.md).
 This proposal is reviewable now; it does not extend the already-consumed h300
 permission, modify current launchers or allow h400 execution. Researcher approval

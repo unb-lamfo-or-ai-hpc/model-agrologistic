@@ -30,6 +30,15 @@ def h300_derivation():
     }
 
 
+def h400_derivation():
+    """Separately approved historical intermediate level; original h300 bytes stay fixed."""
+    return {
+        **h300_derivation(),
+        "reviewed_target": 400,
+        "method": "all146_existing_plus_first254_eligible_frozen_candidate_ranks",
+    }
+
+
 def _rank(raw):
     if not raw.strip():
         return None
@@ -62,13 +71,14 @@ def read_policy(manifest, order, manifest_sha, order_sha, target, *, reviewed_ne
     if reviewed_nested_target is None:
         r2.require(target in meta["target_populations"], "Population protocol differs.")
     else:
-        # Only the approved h300 entry points may opt into the historical
+        # Only explicitly reviewed entry points may opt into their historical
         # intermediate level. Hashes, original checkpoints and ranks stay bound.
         r2.require(
             type(reviewed_nested_target) is int
-            and reviewed_nested_target == target == 300
+            and reviewed_nested_target == target
+            and target in {300, 400}
             and meta["target_populations"] == list(HISTORICAL_CHECKPOINTS),
-            "Reviewed h300 nested checkpoint derivation differs.",
+            "Reviewed nested checkpoint derivation differs.",
         )
     r2.require(
         bool(meta["selection_method"].strip()) and bool(meta["selection_seed"].strip()),
@@ -150,7 +160,11 @@ def read_policy(manifest, order, manifest_sha, order_sha, target, *, reviewed_ne
         "anchor_sha256": meta["anchor_source"]["sha256"],
         "population_manifest_sha256": manifest_sha,
         "population_order_sha256": order_sha,
-        **({"checkpoint_derivation": h300_derivation()} if reviewed_nested_target else {}),
+        **(
+            {"checkpoint_derivation": h300_derivation() if target == 300 else h400_derivation()}
+            if reviewed_nested_target
+            else {}
+        ),
         "members": members,
     }
 
