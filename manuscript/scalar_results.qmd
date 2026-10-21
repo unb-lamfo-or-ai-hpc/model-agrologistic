@@ -1,0 +1,90 @@
+## Accepted scalar cohort and computational dimensions
+
+All eight scalar observations meet their original 1% global-gap target and retain accepted original independent feasibility certificates. The h500 experiment has no terminal evidence at this cutoff. It is absent from numerical solution comparisons.
+
+| Instance | Variables | Binary | Linear constraints | Matrix nonzeros |
+|:--|--:|--:|--:|--:|
+| h215 DET | 1,562,174 | 307 | 74,017 | 5,786,346 |
+| h215 STO | 14,054,654 | 307 | 661,057 | 52,068,826 |
+| h300 STO | 25,107,544 | 392 | 890,642 | 94,635,126 |
+| h400 STO | 42,106,944 | 492 | 1,160,742 | 160,697,126 |
+
+: Original model dimensions. General indicator constraints are additional and remain separately recorded; binary counts are included in integer counts. {#tbl-scalar-size}
+
+| Instance | Native Runtime, min | Build, min | Application end-to-end, min | Sampled application RSS, GiB |
+|:--|--:|--:|--:|--:|
+| h215 DET | 2.04 | 0.41 | 2.91 | 5.54 |
+| h215 STO | 40.76 | 3.98 | 46.22 | 43.13 |
+| h300 STO | 47.14 | 7.19 | 57.09 | 46.35 |
+| h400 STO | 70.46 | 11.87 | 87.02 | 72.34 |
+
+: Measured phases and memory scopes. Allocation elapsed, Slurm MaxRSS and solver-managed memory are different measurements. {#tbl-scalar-resources}
+
+| Instance | Penalized objective, BRL trillion | Economic subtotal, BRL billion | Artificial penalties, % | Global gap, % |
+|:--|--:|--:|--:|--:|
+| h215 DET | 11.437342 | 389.810 | 96.592 | 0.000812 |
+| h215 STO | 13.071397 | 393.902 | 96.987 | 0.740159 |
+| h300 STO | 9.289109 | 385.502 | 95.850 | 0.004119 |
+| h400 STO | 7.593395 | 381.573 | 94.975 | 0.836784 |
+
+: Scalar solution quality and cost composition. Native optimal status denotes the configured gap criterion, not exact zero-gap proof. {#tbl-scalar-quality}
+
+## Descriptive thread observations at h300
+
+| Solver threads | Native Runtime, min | Sampled application RSS, GiB | Global gap, % |
+|--:|--:|--:|--:|
+| 1 | 47.143 | 46.352 | 0.004119 |
+| 2 | 53.008 | 57.244 | 0.004119 |
+| 4 | 58.888 | 77.958 | 0.004119 |
+| 8 | 67.454 | 78.211 | 0.004119 |
+| 16 | 67.613 | 78.368 | 0.004119 |
+
+: Display order differs from execution order 4/1/8/2/16. This is one cold observation per level, not a causal scaling experiment. {#tbl-scalar-threads}
+
+All five h300 objectives and best bounds coincide; their original warehouse, flow, inventory and shortage CSVs are byte-identical across arms. Native Runtime ranges from 47.14 to 67.61 minutes and sampled application RSS from 46.35 to 78.37 GiB. This establishes identical exported vectors in this block, not a unique optimum.
+
+![Observed h300 native runtime and sampled application memory by solver thread count. No causal speedup is inferred.](figures/scalar_threads.png){#fig-scalar-threads}
+
+## Investment and operational interpretation across populations
+
+| Instance | Available candidates | Candidates with positive capacity | Expanded existing sites | Bulkified existing sites |
+|:--|--:|--:|--:|--:|
+| h215 DET | 69 | 69 | 80 | 66 |
+| h215 STO | 69 | 69 | 75 | 71 |
+| h300 STO | 154 | 154 | 70 | 76 |
+| h400 STO | 254 | 254 | 69 | 77 |
+
+: Counts from the accepted original decision vectors, using a display threshold of 1e-8 t. Original values/certificates are unchanged. Existing availability is not counted as candidate opening. {#tbl-scalar-investments}
+
+| Instance | Candidate capacity, million t | Static expansion, million t | Bulkification investment basis, million t |
+|:--|--:|--:|--:|
+| h215 DET | 7.408444 | 0.395351 | 0.445250 |
+| h215 STO | 7.381322 | 0.391226 | 0.461750 |
+| h300 STO | 8.522815 | 0.379411 | 0.509010 |
+| h400 STO | 9.552150 | 0.385596 | 0.484270 |
+
+: Investment quantities. The bulkification basis determines handling-rate gains; it is not additional static storage. {#tbl-scalar-quantities}
+
+All included warehouses have at least one positive transport flow in each representative solution. All included candidates are activated and receive positive capacity. Expansion/bulkification partition the 146 existing sites in these exported plans. Nine of the ten available export roles receive positive transport. These are returned plan characteristics, not an assertion of uniqueness or infrastructure implementation feasibility.
+
+| Instance | Domestic service, % | Unmet demand, million t | Stock exceedance, million t period | Reception overflow, million t |
+|:--|--:|--:|--:|--:|
+| h215 DET | 91.8612 | 55.1578 | 77.8448 | 57.3404 |
+| h215 STO | 92.2674 | 52.4049 | 109.0691 | 67.8432 |
+| h300 STO | 91.3256 | 58.7873 | 46.4440 | 33.8392 |
+| h400 STO | 91.3304 | 58.7551 | 26.2548 | 16.4977 |
+
+: Physical diagnostics over the declared horizon. STO quantities are probability-weighted, not unweighted sums over nine scenarios. {#tbl-scalar-physical}
+
+### Geographic interpretation
+
+![Verified h215 STO node and investment locations. Origins distinguish soybean/corn; domestic/export roles remain separate. Road polylines are unavailable and no connecting segments are invented.](figures/scalar_h215_sto.png){#fig-map-h215}
+
+![Verified h300 STO node and investment locations. Origins distinguish soybean/corn; domestic/export roles remain separate. Road polylines are unavailable and no connecting segments are invented.](figures/scalar_h300_t1.png){#fig-map-h300}
+
+![Verified h400 STO node and investment locations. Origins distinguish soybean/corn; domestic/export roles remain separate. Road polylines are unavailable and no connecting segments are invented.](figures/scalar_h400_t1.png){#fig-map-h400}
+
+![h500 input availability only. Existing and candidate locations are included options; no optimized decisions or terminal h500 result are shown.](figures/h500_pending.png){#fig-map-h500}
+
+The local read-only dashboard provides the corresponding DET/STO, population, incremental-membership, product, period and scenario filters, preserving coincident identifiers. Its ability to display a flow requires original positive-flow evidence and source-bound road geometry. Geography alone is not a validation of the agricultural plan.
+
