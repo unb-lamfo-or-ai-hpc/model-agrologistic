@@ -44,6 +44,15 @@ rendered article/supplement and visual inspection remain pending. PR120 remains
 DRAFT, with no merge request until qualified and Ready. This checkpoint records
 work in its editorial branch, not a direct develop update or a new PR.
 
+The first integrated CI source08e3ef4 stopped at the unchanged clean-checkout
+gate before native regression: five generated map JSONs carried Windows CRLF,
+and Git's automatic text detection also affected the supplied Appendix A PDF.
+Only derived JSON line endings were normalized to LF, preserving semantic and
+normalized-source hashes; the original PDF is explicitly binary in
+`.gitattributes` so its859dc52b… bytes remain exact. The clean-source requirement
+is retained, not bypassed. This is documentary portability repair, not a change
+to original evidence, inputs, parameters or mathematical validation.
+
 h500 job2220382 remains only RUNNING in the latest human snapshot; its source,
 plan, claim and status/wait/collect commands below are preserved. No NPAD access,
 job, repeat, new solve, h500 result or change to the live checkout occurred.
