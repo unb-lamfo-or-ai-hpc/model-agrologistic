@@ -1,5 +1,14 @@
 # S6-A: coauthor review and scalar manuscript preparation
 
+**Historical assessment, superseded where inconsistent.** The researcher resumed
+this same PR120 on21October under the
+[final mandate](../s6a_20261021/README.md) and supplied the
+[meeting/Gurobot sources](../s6a_20261021/meeting_and_source_review.md).
+The single title/RQ, cross-scale results, direct manuscript replacement on the
+editorial branch and full AppendixA now govern. D06/D09 are administratively
+closed. Preserve this original assessment and its146 locators, not its former
+unresolved-decision requests as current blockers. No new experiment is implied.
+
 20 October 2026. This package brings scientific/editorial preparation forward
 while the approved scalar h300 block runs. It evaluates the supplied annotated
 manuscript, reconciles its recommendations with the implemented scalar model,

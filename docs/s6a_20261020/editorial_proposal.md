@@ -1,5 +1,12 @@
 # Proposed article structure and prose
 
+**Historical proposal, not the current editorial instruction.** The researcher
+rejected the title alternatives, two research questions and h215-centered scope
+below. The [21October mandate](../s6a_20261021/README.md) selects one title/RQ,
+SO1–SO4, cross-scale interpretation and complete AppendixA. The researcher also
+authorizes replacing the active manuscript on the existing PR120 branch. Retain
+this file only as the original proposal and source of reusable, compatible text.
+
 These are editorial working passages for S6-B/coauthor review. They do not
 replace the reviewed PDF or `manuscript/index.qmd`. The numerical baseline is
 the accepted scalar h215 record; the running h300 block supplies no results yet.

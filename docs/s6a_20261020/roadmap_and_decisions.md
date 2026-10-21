@@ -1,5 +1,16 @@
 # Editorial dependencies, decisions and acceptance
 
+**Historical decision register.** The
+[final21October mandate](../s6a_20261021/README.md) and
+[meeting/source crosswalk](../s6a_20261021/meeting_and_source_review.md) supersede
+conflicting recommendations below. D06/D09 are administratively closed; do not
+seek another source-build reconciliation or explanations of the17 empty marks.
+Title/RQ, BRL, full AppendixA, cross-scale interpretation and Human–AI direction
+are approved. Manuscript replacement is authorized on the same PR120 branch,
+not a new editorial PR or direct develop write. Original author-role proposals
+are not assignments. h215/h300/h400 are accepted and h500 is RUNNING in the latest
+human snapshot. Current work is governed by the new checkpoint header.
+
 ## Approved work and remaining scientific sequence
 
 The researcher authorizes this separate S6-A preparation PR while scalar h300
