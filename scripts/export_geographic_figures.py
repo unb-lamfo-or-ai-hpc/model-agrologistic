@@ -32,6 +32,7 @@ def main(argv=None):
         path.write_text(
             json.dumps(definition, indent=2, ensure_ascii=False, allow_nan=False) + "\n",
             encoding="utf-8",
+            newline="\n",
         )
     print(
         json.dumps(

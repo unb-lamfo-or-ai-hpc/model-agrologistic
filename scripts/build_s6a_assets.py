@@ -89,8 +89,17 @@ def build(destination, *, workflow=True):
     destination = Path(destination)
     destination.mkdir(parents=True, exist_ok=True)
     source_hashes = {}
+    provenance = ROOT / "manuscript/geographic_sources.json"
+    source_hashes[provenance.relative_to(ROOT).as_posix()] = sha(provenance)
+    expected = json.loads(provenance.read_text(encoding="utf-8"))
     for source in sorted((ROOT / "manuscript/maps").glob("*.json")):
         definition = json.loads(source.read_text(encoding="utf-8"))
+        normalized_sha = hashlib.sha256(source.read_text(encoding="utf-8").encode()).hexdigest()
+        if (
+            normalized_sha != expected["figures"][source.name]["normalized_utf8_sha256"]
+            or definition["snapshot"] != expected["snapshot"]
+        ):
+            raise ValueError("Geographic source receipt differs")
         source_hashes[source.relative_to(ROOT).as_posix()] = sha(source)
         for extension in ("svg", "pdf", "png"):
             target = destination / f"{source.stem}.{extension}"
