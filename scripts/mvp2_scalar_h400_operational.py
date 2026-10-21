@@ -353,6 +353,7 @@ def supervise(claim, sha, allocated, job):
 
 
 def batch(claim, sha):
+    begun = time.monotonic()
     outcome = {"status": "blocked_or_partial", "completed_arms": [], "unrun": [ARM], **r.closed()}
     phase = "source_and_job_binding"
     try:
@@ -376,11 +377,26 @@ def batch(claim, sha):
         pool = sorted(os.sched_getaffinity(0))[:16]
         r.r2.write(claim / "hardware.json", previous.hardware(pool))
         phase = "h400_single_arm"
+        r.require(
+            time.monotonic() - begun <= c.PROFILE["setup_cleanup_seconds"],
+            "Allocation setup budget exhausted; no worker admitted.",
+        )
         outcome["unrun"] = []
+        worker_started = time.monotonic()
         control = supervise(claim, sha, allocated, job)
+        worker_span = time.monotonic() - worker_started
         r.require(control["next_arm_allowed"], "Stop; preserve partial h400 evidence.")
         load(claim, sha)
-        outcome.update(status="h400_returned", completed_arms=[ARM], source_verified_after=True)
+        auxiliary = time.monotonic() - begun - worker_span
+        r.require(
+            auxiliary <= c.PROFILE["setup_cleanup_seconds"], "Setup/cleanup budget exhausted."
+        )
+        outcome.update(
+            status="h400_returned",
+            completed_arms=[ARM],
+            source_verified_after=True,
+            auxiliary_seconds=auxiliary,
+        )
     except Exception as exc:
         outcome.update(error_kind=type(exc).__name__, failure_phase=phase)
     r.r2.write(claim / "batch_outcome.json", outcome)
@@ -585,6 +601,13 @@ def portable_review(files):
             and outcome["unrun"] == []
             and outcome["source_verified_after"],
             "Batch closure.",
+        )
+        auxiliary = outcome["auxiliary_seconds"]
+        r.require(
+            type(auxiliary) in (int, float)
+            and math.isfinite(auxiliary)
+            and 0 <= auxiliary <= c.PROFILE["setup_cleanup_seconds"],
+            "Setup/cleanup envelope differs.",
         )
         operational = True
     except (ValueError, KeyError, TypeError, IndexError) as exc:

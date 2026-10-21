@@ -53,10 +53,19 @@ CLI follows the separately authorized operational merge. PR120 remains draft and
 untouched; SCIP/h215 planned, h500 conditional, S3/S4 cancelled, EVPI/VSS excluded,
 main/develop sync after article review. Earlier pending-proposal status below is
 preserved history; no agent NPAD execution, probe, access or repeat occurred.
-Local software gate:307 related Python3.13.15 tests passed without skips, Ruff
+Local software gate:311 related Python3.13.15 tests passed without skips, Ruff
 and runbook links passed; scientific src/manuscript/manifests unchanged. Full
 exact-head Linux native/Bash/build qualification and final run/JUnit identities
 must be recorded in the new PR before Ready. Wrapper hash006d67855eb3483986b82c609f14722b8d610bb654823cafa922734fb0cd69ce.
+The operational work is [PR122](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/122).
+Implementation4b93601642be28db2df21ad10f3cfb6bb0a960bc passed all four checks,
+including1051 native Linux tests, zero failures/errors/skips,35.820s; JUnit
+SHA25630ede628dc9e25e8713f70fc7446af7117b7261b277872b771a006d73f7eec15.
+Setup/cleanup elapsed receipt/replay was subsequently completed and95 final
+focused cases pass locally. Final exact-head qualification before Ready remains
+mandatory; the public PR comment binds final source/run/JUnit identities. Actual
+transferred h300 evidence independently passes the NEW predecessor gate, without
+source/claim mutation or another solve. No private h400 execution is claimed.
 
 The maintainer transferred job2218193's archive and SHA256 sidecar. Independent
 hash check agrees: `dc5969fa391dc81590210ef7e6f89abbb5df554e4bc5b2032ba9eafe1a67f3fc`.

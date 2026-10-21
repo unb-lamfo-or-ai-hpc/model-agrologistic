@@ -188,13 +188,24 @@ EVPI/VSS excluded. Protected main/develop integration follows article review.
 
 ## Observed software qualification
 
-Local Python3.13.15:307 related tests passed without failures/errors/skips,
+Local Python3.13.15:311 related tests passed without failures/errors/skips,
 including all new login-safe transport/400-row lineage/headroom cases and retained
 h215/h300/default-policy tests. Ruff and runbook relative links passed; scientific
 src, manuscript and data/manifests have no diff from develop. Wrapper SHA256
 `006d67855eb3483986b82c609f14722b8d610bb654823cafa922734fb0cd69ce`.
 Initial public-fixture vector hashing, test-owned exclusive-output setup and
 temporary-parent errors were corrected, without weakening runtime validation.
+
+Implementation4b93601642be28db2df21ad10f3cfb6bb0a960bc passed all four workflows.
+[Full native Linux](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/actions/runs/39598586908):
+1051 passed, zero failures/errors/skips,35.820s; original downloaded JUnit SHA256
+`30ede628dc9e25e8713f70fc7446af7117b7261b277872b771a006d73f7eec15`.
+This includes the real one-arm native lifecycle, not a mock optimizer. The
+compute setup/cleanup elapsed receipt and conservative replay guard were then
+added within the same PR;95 final focused tests pass locally. The final exact
+head must repeat the full gates before Ready, as recorded in the PR comment.
+The new gate also independently replays the actual transferred h300 archive
+as `accepted_scalar_h300_predecessor`; no h300 solve or private input reload.
 
 Full exact-head native Linux, analytical/SCIP, lint/distribution/source-closure
 and Bash syntax checks are required before Ready. The final PR qualification

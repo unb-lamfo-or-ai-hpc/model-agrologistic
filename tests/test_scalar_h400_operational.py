@@ -122,6 +122,7 @@ def fixture():
             "completed_arms": ["t1"],
             "unrun": [],
             "source_verified_after": True,
+            "auxiliary_seconds": 1,
         }
     )
     files["accounting.txt"] = (
@@ -203,6 +204,16 @@ def test_wrong_allocation_fails(changes):
 def test_missing_operational_receipt_preserves_forensic_result(name):
     files, _ = fixture()
     del files[name]
+    report = m.portable_review(files)
+    assert not report["operational_receipts_closed"] and not report["h500_preconditions_met"]
+
+
+@pytest.mark.parametrize("seconds", [-1, 1801, "unknown", None])
+def test_auxiliary_budget_is_verified_not_inferred_from_completed_job(seconds):
+    files, _ = fixture()
+    outcome = json.loads(files["batch_outcome.json"])
+    outcome["auxiliary_seconds"] = seconds
+    files["batch_outcome.json"] = encode(outcome)
     report = m.portable_review(files)
     assert not report["operational_receipts_closed"] and not report["h500_preconditions_met"]
 
