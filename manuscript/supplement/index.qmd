@@ -34,7 +34,7 @@ The complete PDF is available using the download link above.
 ::: {.content-visible when-format="pdf"}
 
 ```{=latex}
-\includepdf[pages=-,pagecommand={},fitpaper=true]{appendix_a_original.pdf}
+\includepdf[pages=-,pagecommand={\thispagestyle{empty}},fitpaper=true]{appendix_a_original.pdf}
 ```
 
 :::
