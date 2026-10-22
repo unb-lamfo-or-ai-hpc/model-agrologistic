@@ -1,5 +1,31 @@
 # Model Agrologistic — MVP 2.0 checkpoint
 
+### Independent W/D topology audit —22 October2026
+
+Maintainer requests this documentary audit in its own develop-based PR and
+resumes existing PR120 under the supplied22October mandate, still draft.
+Read [the W/D report](docs/mvp2_scalar_wd_audit.md) and
+[derived ledger](docs/evidence/scalar_wd_audit_20261022.json).
+Inspected develop6fb43389ea70b02d0f54c959a2bfff8d53d83af4 implements W/D
+in DET/STO for Gurobi/SCIP. All eight accepted scalar h215/h300/h400 observations
+are W (OC disabled in loader/model, zero retained OC, no OC flow exports).
+Local input/graph-only inspection of the original h215 workbook confirms592
+extra product-specific OC arcs with unchanged common-family sets and identical
+effective penalty vector. No solver model, optimization or HPC job was run.
+
+Minimum scientific extension proposed: two cold h215 D cells (DET/STO), using
+historical accepted W controls, subject to explicit approval and a separately
+qualified operational package. This does not establish contemporaneous runtime
+causality. Optional four-cell new comparison requires approval of W repetitions
+and a new complete resource sum. No launcher/manifest or budget was changed.
+Penalty effects remain interpreted under90000/45000/45000: feasibility relaxation,
+not full service; search effects not monotonic; global gap is for penalized total.
+
+PR120's Appendix C/D work remains independent. No new h500 evidence is supplied:
+job2220382 current/terminal state remains unverified beyond its last human RUNNING
+snapshot. Preserve all claims/source/plan/status/wait/collect commands. No repeat,
+NPAD access, SCIP decision, main merge or Project01 handoff is implied.
+
 ## PR123 qualification record —21 October2026
 
 The complete consolidated h400/h500 package is published in
