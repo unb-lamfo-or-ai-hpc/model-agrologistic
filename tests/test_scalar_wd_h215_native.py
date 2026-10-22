@@ -45,6 +45,10 @@ def test_real_D_worker_det_nine_scenario_sto_exact_controller_validation_and_tra
                 compute_haversine_distances=True,
                 use_workbook_distances=False,
                 required_distance_source="any",
+                penalty_policy="fixed",
+                default_unmet_demand_penalty=90000,
+                default_emergency_static_penalty=45000,
+                default_emergency_reception_penalty=45000,
             ),
             model=replace(spec.model, route_filter_strategy="none"),
         )
