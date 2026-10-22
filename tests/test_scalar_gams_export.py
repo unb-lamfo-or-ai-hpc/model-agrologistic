@@ -79,6 +79,20 @@ def test_translation_keeps_native_indicators_and_blocks_large_execution():
     assert "qR(s,w,t);" in text
     assert "pi(s)*(" in text
     assert "sum(s,pi(s)*(" in text
+    assert "sum(tp$predecessor(t,tp),stock(s,w,p,tp))" in text
+    assert "ord(t)" not in text
+
+
+def test_explicit_predecessors_preserve_input_order(tmp_path):
+    data = economic_data()
+    # Deliberately nonlexicographic names: no sorting or GAMS UEL assumption.
+    data.periods = ["z", "a"]
+    data.supply = {("O", "P", t): 10 for t in data.periods}
+    data.demand_dom = {("C", "P", t): 10 for t in data.periods}
+    export(data, ModelConfig(), tmp_path / "periods", provenance={})
+    text = (tmp_path / "periods/data.inc").read_text()
+    assert "firstPeriod('t00000') = yes;" in text
+    assert "predecessor('t00001','t00000') = yes;" in text
 
 
 def test_new_editorial_sections_are_numbered_and_ordered():

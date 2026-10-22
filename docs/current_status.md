@@ -1,5 +1,11 @@
 # Dated research status: 22 October 2026
 
+Resumed direction: PR120 editing now incorporates the supplied expanded mandate,
+including Appendices C/D and numbered closing sections. It remains draft and
+unmerged; see [current scope](s6a_20261022/mandate_and_delivery.md).
+Independent W/D audit PR124 is Ready; no D execution is admitted. The earlier
+handoff below is historical and transfer to Project01/chat01.01 is deferred.
+
 Current maintainer decision: PR120 must remain DRAFT; merge is not authorized.
 Its integrated source1f45d02 passed all five checks/1181 native tests and rendered
 review, but the maintainer requires an expanded editorial round. Do not confuse

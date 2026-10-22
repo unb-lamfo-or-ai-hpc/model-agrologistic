@@ -124,7 +124,7 @@ capacity expressions rather than additional optimization decisions.
 | D4/S2; period t | `_add_scenario_constraints` supply balance; native SCIP flow sums | `supplyBalance`, `supply` | Original supply or approved Cartesian multiplier |
 | D5–D6/S3–S4; period t | `_add_scenario_constraints` inventory balance and explicit predecessor stock | `inventoryBalance`, `initial` | Retained OW/WD/WW arcs, initial inventory and ordered periods |
 | D7/S5; period t | Domestic sum of DC + OC + shortage | `domesticBalance`, `demand` | Role-separated domestic data, scenario multiplier |
-| D8/S6; period t | Export sum of DC + OC ≤ upper bound | `exportBound`, `exportCap` | Declared fixed or supply-derived export limits |
+| D8/S6; period t | Export sum of DC + OC at most the upper bound | `exportBound`, `exportCap` | Declared fixed or supply-derived export limits |
 | D9/S7; stock t, period handling t | Product-aggregated stock, inbound and outbound constraints | `stockBound`, `receiveBound`, `shipBound` | Daily rates × operating days; reception slack added afterward |
 | D10/S8; slack t | Native candidate indicators in both backends | `closedStock`, `closedReception` plus mandatory solver mapping | Candidate membership and common opening binary |
 | D11/S9; domains | Eligible first-stage keys, nonnegative recourse variables | `y,z,g,k,e,b,x*,stock,unmet,qK,qR` and subset fixes | ModelConfig and actual effective index sets |

@@ -84,6 +84,10 @@ def export(data, config, output, *, provenance):
 
     for kind, values in domains.items():
         set_values(kind, kind, values)
+    # Explicit predecessor relation avoids reliance on GAMS global UEL ordering
+    # or lag operators on dynamically populated input sets.
+    set_values("firstPeriod", "t", effective.periods[:1])
+    set_values("predecessor", "tt", zip(effective.periods[1:], effective.periods[:-1], strict=True))
     set_values("n", "w", effective.candidate_warehouses)
     set_values("old", "w", effective.existing_warehouses)
     set_values(

@@ -1,5 +1,10 @@
 # Research context and portable handoff
 
+22October resumed revision supersedes the editing hold below: same draft PR120,
+expanded implementation/GAMS/data-provenance Appendices C/D; independent W/D
+documentary audit PR124. Read [current scope](s6a_20261022/mandate_and_delivery.md).
+Neither merge nor new experiment nor Project01/chat01.01 transfer is authorized.
+
 22October superseding context: use the single approved scalar title/RQ and
 SO1–SO4 in [the final editorial mandate](s6a_20261021/README.md), with mathematical
 implementation governed by [the scalar contract](mvp2_scalar_contract.md).

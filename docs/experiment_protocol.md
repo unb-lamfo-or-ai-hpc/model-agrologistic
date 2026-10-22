@@ -1,5 +1,11 @@
 # Experimental protocol: portable summary
 
+22October addition: W/D documentary audit PR124 confirms the eight accepted
+scalar cases are W. Its proposed h215 D DET/STO pair is not execution admission.
+PR120's data-only exporter/reviewable GAMS translation is not a new solver
+benchmark or GAMS numerical-parity certificate. No scientific settings or
+approved budgets change; see [current record](s6a_20261022/mandate_and_delivery.md).
+
 22October current boundary: scalar h215 DET/STO, five h300 thread levels and h400
 STO are accepted under their ORIGINAL execution sources/certificates. h500
 job2220382 was human-reported RUNNING on21October; its present/terminal state is

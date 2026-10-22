@@ -12,8 +12,10 @@ $if not set execute_small $setglobal execute_small 0
 Sets o origins, w warehouses, c destinations, p products, t ordered_periods,
      s scenarios, n(w) candidates, old(w) existing, ex(w) expansion_eligible,
      bulk(w) conversion_eligible, dom(c) domestic, exportDest(c) export,
-     ow(o,w,p), wd(w,c,p), ww(w,w,p), direct(o,c,p);
+     ow(o,w,p), wd(w,c,p), ww(w,w,p), direct(o,c,p),
+     firstPeriod(t), predecessor(t,t);
 Alias(w,v);
+Alias(t,tp);
 Parameters pi(s), supply(s,o,p,t), demand(s,c,p,t), exportCap(s,c,p,t),
      initial(w,p), stock0(w), receive0(w), ship0(w), days(t),
      maxNew(w), maxExp(w), maxBulk(w), fixedNew(w), unitNew(w),
@@ -82,7 +84,8 @@ supplyBalance(s,o,p,t)..
 * D5/D6/S3/S4: initial stock at first period, predecessor thereafter.
 * Python _add_scenario_constraints/solve_model_scip; no terminal-stock fix.
 inventoryBalance(s,w,p,t).. stock(s,w,p,t) =e=
- initial(w,p)$(ord(t)=1)+stock(s,w,p,t-1)$(ord(t)>1)
+ initial(w,p)$firstPeriod(t)
+ +sum(tp$predecessor(t,tp),stock(s,w,p,tp))
  +sum(o$ow(o,w,p),xOW(s,o,w,p,t))
  +sum(v$ww(v,w,p),xWW(s,v,w,p,t))
  -sum(c$wd(w,c,p),xWD(s,w,c,p,t))
