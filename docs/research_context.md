@@ -1,5 +1,21 @@
 # Research context and portable handoff
 
+22October resumed revision supersedes the editing hold below: same draft PR120,
+expanded implementation/GAMS/data-provenance Appendices C/D; independent W/D
+documentary audit PR124. Read [current scope](s6a_20261022/mandate_and_delivery.md).
+Neither merge nor new experiment nor Project01/chat01.01 transfer is authorized.
+
+22October superseding context: use the single approved scalar title/RQ and
+SO1–SO4 in [the final editorial mandate](s6a_20261021/README.md), with mathematical
+implementation governed by [the scalar contract](mvp2_scalar_contract.md).
+Read the [completion handoff](mvp2_completion_handoff_20261022.md) before historical
+entries. Scalar h215/h300/h400 are accepted; h500 terminal evidence is unavailable.
+PR120's qualified21October working revision remains DRAFT by the latest human
+decision, pending expanded editorial review. No merge, new execution, hypothesis
+change or inferred h500 outcome follows. Historical hierarchy and older research
+questions below must not be restored as active scope. SCIP/h215 awaits a separate
+decision; S3/S4 stay cancelled and EVPI/VSS excluded.
+
 Current20 October: PR115/job2217990 is accepted success under the scalar
 contract. The maintainer preserves90000/45000/45000 effective penalties and
 declines calibration as a prerequisite. Continue the [h300 preparation](mvp2_scalar_h300_preparation.md)

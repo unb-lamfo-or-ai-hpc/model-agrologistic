@@ -1,5 +1,326 @@
 # Model Agrologistic — MVP 2.0 checkpoint
 
+### Authorized PR124/PR120 integration and W/D preparation —22 October2026
+
+The maintainer explicitly authorizes both merges and the next h215 W/D
+preparation gate, with no jobs. PR124 merged into develop at
+`ec1293986de5a654fe6374051da07dbf9b636db2`. PR120 integration is in progress:
+resolve only the overlapping chronological headers, preserve both histories,
+and require its combined exact-head CI before the authorized merge. The prior
+draft/merge holds below are superseded for this decision, not erased.
+
+PR120's last separately qualified source6401d596 has five green checks and1192
+native tests (zero failures/errors/skips),27-page article/35-page supplement,
+the original19-page Appendix A and33-member checksum-verified editable package.
+GAMS compilation and numerical parity remain UNPERFORMED. No original model,
+approved penalties, certificate or claim is altered by this integration.
+
+Next: qualify input/network/objective comparability for the two missing D h215
+DET/STO cells, using original W evidence as historical controls. No W repetition,
+causal runtime claim, resource approval, HPC submission or automatic follow-on
+is implied. Current h500 terminal state remains unverified pending supplied
+evidence. Project01 handoff, protected-main sync and publication are deferred.
+
+### PR120 resumed under expanded mandate; W/D audit separate —22 October2026
+
+The maintainer requests revised existing draft PR120 using the supplied mandate
+SHA256bd396eff7a15a4d97084368e04ec496b908de75923c146e2cc38d53607d9310f.
+It adds numbered AI disclosure, supplied NPAD Acknowledgements before References,
+and full implementation/data Appendices C/D. Read
+[current implementation record](docs/s6a_20261022/mandate_and_delivery.md).
+Earlier handoff/hold entries below are historical: editing is resumed, but
+merge/publication/submission and transfer to Project01/chat01.01 are NOT approved.
+Preserve the prior qualified article/supplement and original146 review locators.
+
+The new appendices map actual unchanged scalar DET/STO/Gurobi/SCIP source to
+equations, effective data, physical/currency units and native indicators; provide
+a reviewable shared GAMS translation/data exporter; and compare original hashes,
+cells, population identities and all eight accepted ordered input lists.
+GAMS compilation and numerical parity remain unperformed because GAMS is absent.
+No new solve, HPC job, original workbook/certificate or scientific code change.
+Effective penalties remain90000/45000/45000; their feasibility, search and
+penalized-gap interpretation is retained, not recalibrated.
+
+Independent [PR124](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/124)
+audits W/D on develop6fb43389…. All eight accepted scalar h215/h300/h400 cases
+are W; exact h215 input-only inspection finds592 additional OC arcs with common
+OD/DC/DD sets unchanged and identical effective penalty-vector hashes. A minimum
+two-cell D proposal is NOT authorization to execute or repeat W. PR124 is Ready
+after its four existing checks; no merge has been performed.
+
+h500 job2220382 has no supplied terminal update. Preserve sourcefce341df…,
+plan1f57d230…, claim `.mvp2-scalar-h500-8h-v1` and unchanged status/wait/collect
+commands. Its current/terminal state is unverified. SCIP/h215 remains a later
+decision. S3/S4 stay cancelled; EVPI/VSS excluded. Final protected-main sync remains
+after article review under separate authorization, not this editorial revision.
+
+### Current authority: PR120 draft hold / Project01 handoff —22 October2026
+
+The maintainer DOES NOT authorize merging PR120 into develop. Return it to DRAFT
+and keep it there pending additional editorial review material and a resumed
+revision instruction. The21October Ready request and its merge solicitation are
+superseded, not scientific approval. No manuscript/figure/model change is part
+of this handoff. Preserve the current revision as a reviewable working version.
+
+Last technically qualified editorial source:
+`1f45d020743e5dd855b3b26ab95fc87af0767a2a`.
+All five existing checks passed; full native Linux regression1181 tests, zero
+failures/errors/skips,25.427s. [Final JUnit run](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/actions/runs/39692846337),
+artifact SHA256 `a8016d46260240e961228af9d08502dca64a13c2f36c64d450709ff9c76073c8`.
+[Final rendered delivery](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/actions/runs/39692847112):
+27-page article,26-page supplement with all19 original Appendix A pages and
+ten-section Appendix B;53 rendered page images compared to the inspected layout.
+Editable LaTeX ZIP has28 allowlisted members and complete graphic dependencies.
+PDF article SHA256 `f5df2e44cf6d99155ef3b8255cd646ff314c4263565199fde860491cf2230fea`;
+supplement `334762cde282a2bd5cd73a1a0457418c7acd6e2a1ae2ffe0f79dda68284bb4bb`;
+ZIP `6de55159063a6eacb1c91ea404307c6ea46a01f32eb8a56d0d43d54254657393`.
+These qualify that source, not future edits or scientific/submission acceptance.
+
+Scalar R2 and h215 DET/STO, the five h300 thread observations and h400 STO have
+accepted original evidence. Historical S2 was boundedly closed through PR110;
+its time-censored hierarchical gap100% is NOT the later scalar gap. R1/PR112
+subsequently replaced the active hierarchy with one scalar economic objective;
+PR111 was superseded, with history retained. The current manuscript/interpretation
+foregrounds scalar MVP2, not mixed numerical cohorts from MVP1/hierarchical S2.
+
+h500 job2220382: only the21October human RUNNING snapshot is available. Its
+CURRENT/TERMINAL state is UNVERIFIED on22October; no final feasibility, gap,
+physical/financial result or resource peak is inferred. Preserve execution
+source `fce341dfff1792d08b20eac132c6ada29f4326d2`, plan
+`1f57d2308ab233dbe686ad62aa2b02df31c0b8df4fca64d05f86bbc6c118ad60`,
+claim `.mvp2-scalar-h500-8h-v1` and the unchanged human status/wait/collect
+commands below. The next experimental action is evidence collection/review of
+this SAME job, not another submission. No agent NPAD access or repeat is admitted.
+
+The [portable completion plan](docs/mvp2_completion_handoff_20261022.md) separates
+h500 terminal audit, the pending SCIP/h215 decision, resumed existing PR120,
+S6-A synthesis, S6-B reproduction/editorial packaging and final protected-main
+reconciliation. Five to seven functional PR packages INCLUDING existing PR120
+are a planning estimate if the planned SCIP package proceeds, not a quota or
+assigned future PR numbers. No new campaign, model/penalty change or unilateral
+scope cancellation follows. December remains conditional; January2027 is an
+explicit contingency if technical/coauthor gates slip, not an approved scope cut.
+
+Machine portability: the local editorial checkout has older Git HEADc50ea9a…
+plus intentional upstream/editorial working files; it is NOT a clean checkout
+of1f45d02. Preserve this dirt; use a separately cloned remote branch on another
+machine and verify its recorded handoff head before work. The portable package
+contains the FULL checkpoint, not merely this current header; older entries
+below are dated historical records and must not override current authority.
+
+### PR120 integrated qualification and final review gate —21 October2026
+
+The five existing checks passed at editorial source
+adb0b46700005ac20c410b72b11f069be4b7403c. Full retained native Linux regression:
+1181 tests, zero failures/errors/skips,26.288s; original JUnit artifact SHA256
+6943bba3715cf467b5e0367f6f05d6ad7424ef352307ec32f981206a021cb6dd,
+[run39692318832](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/actions/runs/39692318832).
+The three optional Dash/PDF/PNG cases unavailable in the local Python environment
+are covered by this native CI, not relabelled as local passes. Local related
+regression remains65 passed/three deselected; Ruff and generated tables passed.
+
+The [rendered package](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/actions/runs/39692318799)
+contains a27-page article and26-page supplement. Every article page and the
+supplement wrapper/Appendix B were visually inspected; all19 original Appendix A
+pages were inspected and their complete ordered text checked on embedding.
+Pagination was fixed to avoid adding supplement numbers to the original pages;
+the supplied PDF bytes remain859dc52b…. Wide quantifiers were placed on separate
+lines without changing the model, and the one shared workflow SVG was rearranged
+for print legibility. Manuscript references resolve; the editable source and
+supplement include the original Appendix A, not a condensation.
+
+Inspection of the flat LaTeX package then found a missing PNG dependency used
+only by the supplement (the article uses the PDF from the same SVG). A bounded
+dependency collector and regression now include actual referenced graphic files
+and reject missing ones before creating an archive. This portability correction
+does not alter rendered scientific content. Its final-head existing CI and
+portable package inspection must complete before changing PR120 to Ready;
+the final public PR comment records that exact head and artifact identities.
+Neither this checkpoint nor Ready authorizes merge, Pages publication or journal
+submission. Merge requires a separate maintainer decision.
+
+No original scientific source, experiment configuration, evidence certificate,
+residual tolerance or fixed90000/45000/45000 penalty was changed. h500 remains
+pending under job2220382 in the last human-supplied snapshot. No cluster access,
+new solve, repeat or inference of a terminal h500 result occurred. OSRM distances
+remain authoritative but no supplied road polylines are available; geographic
+figures therefore show locations/decisions without invented route connections.
+
+### PR120 integrated scalar/geographic implementation —21 October2026
+
+The researcher confirmed the preserved inputs and evidence are under
+`D:/Downloads/model-agrologistic`. The three original accepted archives were
+read and verified against their SHA256 sidecars: h21581890b54…, h300dc5969fa…,
+h400e0b58bb7…. The historical published inputs ZIP contains the exact frozen
+workbooks40edb665…/7761cce7…/c3085456…/888fbff4…; current edited spreadsheets
+were NOT substituted. Original archive/CSV/certificate bytes remain unchanged.
+
+The active editorial draft now follows the approved scalar title/single RQ,
+SO1–SO4, complete DET/STO model presentation, eight accepted scalar observations,
+separate economic/penalty/physical metrics and qualified HPC interpretation.
+Post-processing original decision vectors found positive candidate capacity at
+all69/154/254 included candidates, positive transport incidence at every
+included warehouse and nine used export roles among ten available. This is
+returned-plan characterization, not uniqueness, full service or a construction
+recommendation. h300 thread observations remain descriptive, not causal speedup.
+Fixed90000/45000/45000 coefficients and original residual tolerances are intact.
+
+The separate geographic SQLite snapshot is
+219a80011f3844dd10648298ae103912dd8f8d115fbe87aead385f1ec26c171c.
+It contains eight accepted cases plus input-only pending h500. Local Dash and
+headless PDF/PNG/SVG reuse read-only semantic definitions. No OSRM polylines
+are present in the supplied distance workbooks; no straight-road substitutes
+were invented and no routes were acquired. Original coordinates and coincident
+node roles are retained. Read the reproducibility guide and integrated C01–C22
+crosswalk in `docs/s6a_20261021/`.
+
+The supplement embeds the complete supplied19-page Appendix A byte-for-byte
+(859dc52b…), preserving its counts/date issues, followed by the ten-section
+Human–AI Appendix B. Original146 annotation locators and17 administratively
+closed unexplained marks are unchanged. The manuscript integrity checker keeps
+historical rejected evidence separate and checks the new scalar cohort against
+its original acceptance reviews. The frozen Pages approval correctly BLOCKS
+publication of the changed source; no public deployment is admitted.
+
+Local affected integration:65 passed, three Dash/PDF/PNG integration cases
+excluded from that local environment, not claimed passed. Ruff, generated
+scalar-table replay and manuscript integrity passed; five maps and the thread
+chart have browser-free PDF/PNG previews. Final existing Linux CI, complete
+rendered article/supplement and visual inspection remain pending. PR120 remains
+DRAFT, with no merge request until qualified and Ready. This checkpoint records
+work in its editorial branch, not a direct develop update or a new PR.
+
+The first integrated CI source08e3ef4 stopped at the unchanged clean-checkout
+gate before native regression: five generated map JSONs carried Windows CRLF,
+and Git's automatic text detection also affected the supplied Appendix A PDF.
+Only derived JSON line endings were normalized to LF, preserving semantic and
+normalized-source hashes; the original PDF is explicitly binary in
+`.gitattributes` so its859dc52b… bytes remain exact. The clean-source requirement
+is retained, not bypassed. This is documentary portability repair, not a change
+to original evidence, inputs, parameters or mathematical validation.
+
+h500 job2220382 remains only RUNNING in the latest human snapshot; its source,
+plan, claim and status/wait/collect commands below are preserved. No NPAD access,
+job, repeat, new solve, h500 result or change to the live checkout occurred.
+
+## PR120 resumed under the final mandate —21 October2026
+
+The final mandate, geographic/citation/qualification addendum and subsequent
+researcher reply authorize a comprehensive revision of the existing PR120,
+including replacement of `manuscript/index.qmd` and related files. Changes remain
+on its editorial branch until a separately authorized merge; no direct develop
+write, publication, submission or HPC execution follows this authorization.
+The [current decision record](docs/s6a_20261021/README.md) supersedes conflicting
+20 October proposals below. The original146 annotation locators remain intact;
+D06 source/build reconciliation and D09's17 unexplained marks are closed by
+administrative decision, not newly verified or interpreted.
+
+Reconciliation merged develop INTO the editorial branch at
+63c39bb1e87386d9d87a8ad24d0d6f5dfe490181, preserving shared history. GitHub shows
+four successful existing checks and no base conflicts at that reconciliation
+head. This is not qualification of subsequent editorial/geographic changes and
+not a PR120 merge into develop. PR120 remains DRAFT.
+
+The two requested DOCX sources are now received and completely text-inspected:
+the 21 October Subgroup1 guidance excerpt (SHA256
+3be25189e1dfb83b402b50d35de9f5bb7078d0cdba533c2349df3c79c93e535c)
+and the Gurobot retrospective (SHA256
+21735cebc3385dadd67c8ebc07c41b310a239bd9f4c9b91b3783c7f89820d1a3).
+Read the [source assessment and implementation crosswalk](docs/s6a_20261021/meeting_and_source_review.md).
+The first file contains Agreement5 and sections8–11, not the complete meeting
+record. It supports scalar two-stage economics, nine equiprobable scenarios,
+units/model review, qualified computational results, applied interpretation
+and explicit human-supervised AI methodology. Do not infer the content of
+missing sections or new instance-generation specifications. The second file
+is an AI-produced retrospective, not independent logs, verified Benders results
+or permission to restore historical revenue terms, Haversine substitution or
+information-value calculations to the active model.
+
+The agreed planning references are technical revision before15November2026,
+coauthor meeting18November2026 at09:30 (timezone not specified in the supplied
+excerpt), intended submission by December, and possible extension to January2027.
+These are planning intentions, not automatic acceptance or guaranteed completion.
+All integrated manuscript, appendix, figure, test and existing-CI acceptance
+requirements remain to be completed before Ready and any merge request.
+
+### Preserved h500 execution and human resumption commands
+
+Latest human-supplied job2220382 snapshot: RUNNING; root elapsed00:02:04,
+numeric step00:01:56,24 allocated logical CPUs; MaxRSS unreported, not zero.
+Original source fce341dfff1792d08b20eac132c6ada29f4326d2, plan
+1f57d2308ab233dbe686ad62aa2b02df31c0b8df4fca64d05f86bbc6c118ad60.
+Preserve `.mvp2-scalar-h500-8h-v1`, all original source/run/bootstrap directories,
+older claims and raw evidence. No terminal h500 quality or investment decision
+is inferred; h215/h300/h400 acceptance is recorded in their original reviews.
+
+```bash
+bash /home/vrrcelestino/model-agrologistic-hygiene-audit/scalar-h500-cli-fce341df/npad_scalar_h500_8h.sh status fce341dfff1792d08b20eac132c6ada29f4326d2
+bash /home/vrrcelestino/model-agrologistic-hygiene-audit/scalar-h500-cli-fce341df/npad_scalar_h500_8h.sh wait fce341dfff1792d08b20eac132c6ada29f4326d2
+bash /home/vrrcelestino/model-agrologistic-hygiene-audit/scalar-h500-cli-fce341df/npad_scalar_h500_8h.sh collect fce341dfff1792d08b20eac132c6ada29f4326d2
+```
+
+These are preserved human commands, not an instruction to execute them during
+editorial work. No repeat, larger instance or automatic follow-on is admitted.
+Fixed penalties90000/45000/45000, original tolerances/units and validation remain.
+S3/S4 are cancelled; EVPI/VSS excluded; SCIP/h215 remains a separate decision.
+
+## S6-A preparation in parallel with scalar h300 —20 October2026
+
+The researcher explicitly requests a separate PR to assess the latest coauthor
+review while job2218193 runs, applying the approved scalar mandate and omitting
+annotation-authorship identification. The [S6-A package](docs/s6a_20261020/README.md)
+contains the scientific assessment, complete146-annotation response matrix,
+proposed outline/prose, complete scalar DET/STO mathematical presentation,
+results/supplement inventory and editorial/author-decision roadmap. All17 marks
+without comments remain identifiable. This advances preparation without replacing
+the reviewed manuscript or asserting completion of S6-A/S6-B.
+
+The supplied33-page PDF SHA256fbcd5a08... differs from the earlier reviewed
+9fddd98a... file. Its exact build commit remains unverified; the source inventory
+records its historical SBC source family rather than assuming current Quarto or
+Pages identity. Three local deck copies reconcile slide15's ten-reference4h/1%
+cohort with the PDF's later13-attempt8h/10% cohort. The proposed scalar article
+uses the current global criterion and audited evidence. Original files and raw
+annotations remain external, unmodified; public responses are summarized without
+author attribution.
+
+Main scientific response: interpret actual scalar investment and recourse outputs,
+using accepted h215 DET/STO first, with h300/later cases only after review. Existing
+exported decisions can support maps, investment costs, flows and separate
+geographic/temporal slack diagnostics. Candidate inclusion is not opening; binary
+activation can coexist with zero installed quantity. No new optimization is
+needed just to interpret retained outputs. Their detailed availability/rights
+and geography/price-year facts remain documented dependencies.
+
+The accepted coefficients90000/45000/45000 and h215 success stand. Slack relaxes
+specified constraints; it need not restore every infeasible network or improve
+runtime monotonically. Report economic expenditure, artificial penalties and
+physical slacks separately, since the global gap concerns the penalized total.
+Retain native closed-candidate indicators; no arbitrary activation Big-M or
+calibration is introduced. S3/S4 stay cancelled and EVPI/VSS excluded. The full
+prior review/supplement and original certificates are preserved. Final title,
+source identity, disclosure and manuscript incorporation remain coauthor decisions.
+
+### Preserved running-job checkpoint and resumption
+
+PR119 merged at8e6a7cba5a27b330ee917d33e178baa90ceb617d. Last researcher-supplied
+snapshot: scalar h300 job2218193 RUNNING, root/batch/extern46s, first step37s,
+453 raw tracked files identical. Sacct reports24 allocated logical CPUs for the
+allocation/first step. This is the preserved snapshot, not fresh agent monitoring
+or a completed-arm/terminal/scientific result.
+
+Source: `04ba9edccc93f40ab36cbc3264039a7edf2f6f51`.
+Plan SHA256: `000a760b3c263cfd7e88fb75714ac5f125df9c4e27332045c761a75bd60bffb1`.
+Wrapper SHA256: `d88d7e6068d94e9aa07be874993e051058edfdbb11d518a27ab8224b287a18d2`.
+Preserve consumed `.mvp2-scalar-h300-30h-v1`, all older claims/evidence, running
+source/products and failed bootstraps. The latest status call printed no original
+bootstrap path; do not infer deletion or invent that directory.
+
+With BASE selecting the existing NPAD audit parent, the retained commands are:
+
+```bash
+SOURCE=04ba9edccc93f40ab36cbc3264039a7edf2f6f51
+WRAPPER="${BASE:?Select existing NPAD audit parent}/scalar-h300-lineage-cli-04ba9edc/npad_scalar_h300_30h.sh"
 ### Independent W/D topology audit —22 October2026
 
 Maintainer requests this documentary audit in its own develop-based PR and
@@ -328,6 +649,20 @@ bash "$WRAPPER" wait "$SOURCE"
 bash "$WRAPPER" collect "$SOURCE"
 ```
 
+Ctrl-C in wait is safe. Resume wait/collect; no new start or claim reset. Transfer
+DOWNLOAD and TRANSFER_CHECKSUM at terminal collection and audit every launched/
+unrun arm, original validation, bounds/gaps, resources and membership. One30h/
+24-logical-CPU/192GiB allocation, common16-logical-CPU affinity, five cold STO
+arms4/1/8/2/16 and14400s global per arm remain unchanged. AllocCPUs does not
+establish solver Threads or physical cores. No new job, repeat, environment
+change, live-checkout edit or automatic follow-on is authorized by this PR.
+Full scientific synthesis follows accepted terminal evidence; experimental
+continuation and final main/develop synchronization keep their existing gates.
+
+The earlier local pause is publicly recorded in
+[PR119](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/119#issuecomment-6300749408).
+This preparation PR incorporates that documentary checkpoint; earlier pending
+merge/absent-claim paragraphs below are historical snapshots.
 Next [R3-B proposal](docs/mvp2_scalar_h400_proposal.md): one cold STO h400 arm,
 one solver thread, no direct arcs, same penalties/scenarios/settings,14400s native;
 proposed8h/24-logical-CPU/192GiB allocation,1GiB transfer and45M size guard.

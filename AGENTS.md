@@ -1,5 +1,99 @@
 # Model Agrologistic: agent working agreement
 
+## Authorized integration and next W/D preparation —22 October2026
+
+The maintainer explicitly authorizes PR124 and PR120 merges into develop and
+requests the next h215 W/D gate, without jobs. PR124 merged atec1293986de5a654fe6374051da07dbf9b636db2.
+Preserve both documentary/editorial histories below. Their earlier draft/merge
+holds are historical and superseded ONLY for these authorized integrations.
+Qualify the combined exact head before merging PR120; its GAMS compilation/
+numerical parity limitation remains disclosed, not retrospectively passed.
+Prepare the two missing D cells against historical W controls, with unchanged
+scientific parameters/input and no W repetition, HPC access or submission.
+The proposed new D resource envelope remains a separate admission decision.
+Project01 handoff, protected-main promotion and journal submission stay deferred.
+
+## Resumed PR120 and independent W/D audit —22 October2026
+
+The maintainer now supplies the expanded mandate and resumes PR120 editing,
+including Appendices C/D and the numbered AI/Acknowledgements/References order.
+Read `docs/s6a_20261022/mandate_and_delivery.md`. This supersedes the older hold
+only for the requested revision. Keep this PR draft until integrated qualification
+and review; no merge/publication/submission is authorized. An independent
+develop-based documentary W/D audit is explicitly requested and is PR124.
+No mathematical or scientific-source change, jobs, repeats, route acquisition
+or penalty calibration. Preserve claims/evidence and the old qualified revision.
+GAMS source inspection/export is not compiled or numerical parity; report missing
+GAMS tooling honestly. Project01/chat01.01 handoff is deferred until both PRs
+are completed here and the maintainer reviews the resulting mandate.
+
+## Editorial hold and portable handoff —22 October2026
+
+The maintainer explicitly withholds PR120 merge authorization and requests DRAFT
+status pending an expanded editorial review. This supersedes the21October Ready
+request: previous exact-head qualification remains historical evidence, not
+editorial acceptance or permission to return to Ready. Preserve the manuscript,
+figures, supplements and original review until the maintainer supplies the next
+revision material/direction. Do not merge, publish or submit.
+
+Prepare the portable context/checkpoint/completion plan for Project01/chat01.01;
+read `docs/mvp2_completion_handoff_20261022.md`. Its future work packages and dates
+are proposals, not new experimental/scientific authorizations. Keep h500 source,
+claim and human status/wait/collect commands unchanged; its latest supplied
+snapshot is RUNNING, not a verified current or terminal state. No NPAD access,
+new job, repeat, new solver or penalty calibration is authorized. SCIP/h215 awaits
+the separate researcher decision; S3/S4 remain cancelled and EVPI/VSS excluded.
+Final protected-main integration still follows article review and explicit
+merge authorization. Revalidate remote heads and local dirt before resuming;
+never treat this machine's older local Git HEAD as the published editorial head.
+
+## Current PR120 scientific and editorial mandate —21 October2026
+
+This section supersedes the older editorial-preparation restrictions below.
+The researcher resumed PR120 under the final mandate/addendum and explicitly
+authorized replacing `manuscript/index.qmd` and other relevant develop-targeted
+files. Implement those changes on `docs/s6a-coauthor-review` in the SAME PR120;
+this is not authorization to push directly to develop, merge, publish or submit.
+Read `docs/s6a_20261021/README.md` and its `meeting_and_source_review.md`.
+
+Use the single approved title/RQ, SO1–SO4, complete code-consistent scalar
+DET/STO presentation, BRL/physical units, cross-scale agricultural interpretation,
+full supplied Appendix A and bounded Human–AI subsection/Appendix B. The supplied
+21 October meeting excerpt is guidance, not a replacement for the fixed model
+contract; Gurobot's AI retrospective is not independent execution evidence.
+D06 source/build reconciliation and D09's17 unexplained marks are administratively
+closed. Preserve original146 locators; do not invent comments or reconstruct
+hidden reasoning. Do not assign named coauthor responsibilities or CRediT here.
+
+The separate geographic preparation may write its own source-bound SQLite;
+Dash and headless rendering are read-only and do not change the experimental
+distance cache, invoke optimizers or acquire new routes automatically. Use
+proportionate T1/T2 and final existing T3 CI, not production architecture.
+Preserve all claims/certificates and scientific code/parameters/tolerances.
+h215/h300/h400 are accepted; h500 job2220382 is only RUNNING in the latest human
+snapshot. No new NPAD access/jobs/repeats or result inference is authorized.
+Keep PR120 draft until the integrated revision is qualified; request merge only
+after Ready. Final main/develop integration remains after article review.
+
+## Early S6-A coauthor-review preparation —20 October2026
+
+The maintainer requests a separate PR while scalar h300 job2218193 runs. Read
+`docs/s6a_20261020/README.md` and the current checkpoint. Assess every annotation
+of the supplied33-page PDF, omit authorship identification, preserve unexplained
+marks and prepare the scientific response, scalar presentation, proposed prose,
+result-extraction inventory and author decisions. This explicit request authorizes
+the preparation PR; the attachment's request to ask again before opening it does
+not override that authorization. Current manuscript/PDF and historical evidence
+remain preserved; final incorporation/publication are later S6-B decisions.
+
+Use accepted scalar h215 evidence; h300 is only RUNNING in the last supplied
+snapshot. Preserve source04ba9edc, plan000a760b..., consumed claim and status/wait/
+collect handoff. Do not touch the live checkout, submit/repeat jobs, change fixed
+penalties90000/45000/45000 or replace native indicators with an unproved Big-M.
+Keep scalar objective/units/tolerances, S3/S4 cancellation and EVPI/VSS exclusion.
+No raw PDF/annotation export or individual reviewer metadata is committed; public
+responses use summaries and page/object locators. Ready follows appropriate
+document/scope/coverage checks; merge still requires explicit authorization.
 ## Independent W/D documentary audit —22 October2026
 
 The maintainer explicitly requests a separate develop-based audit PR while

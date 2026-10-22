@@ -1,0 +1,2927 @@
+{
+  "schema_version": "appendix-d-source-inventory-v1",
+  "date": "2026-10-22",
+  "source_zip": "agrologistic-v020-inputs.zip",
+  "source_zip_md5": "79f85dfe638df1c2dfa5cca9cf343d88",
+  "workbooks": [
+    {
+      "zip_member": "data/processed/artur_reproduction/artur_legacy_i001/solver_v020_osrm/model_input.xlsx",
+      "sha256": "5684bb81fb47ff97d16d3caaaac667b2eb46e329c7a5deb8593a17371c7d2816",
+      "sheets": [
+        {
+          "name": "Oferta",
+          "rows_including_header": 421,
+          "columns": 6,
+          "headers": [
+            "Produto",
+            "Cidade",
+            "Latitude",
+            "Longitude",
+            "Data",
+            "Peso (ton)"
+          ]
+        },
+        {
+          "name": "Demanda",
+          "rows_including_header": 601,
+          "columns": 9,
+          "headers": [
+            "Produto",
+            "Cidade",
+            "Latitude",
+            "Longitude",
+            "Data",
+            "Peso (ton)",
+            "Tipo_Demanda",
+            "Regra_Limite",
+            "Peso_Modelo (ton)"
+          ]
+        },
+        {
+          "name": "Estoque_Inicial",
+          "rows_including_header": 21,
+          "columns": 3,
+          "headers": [
+            "CDA",
+            "Produto",
+            "Estoque Inicial (t)"
+          ]
+        },
+        {
+          "name": "Warehouses",
+          "rows_including_header": 21,
+          "columns": 22,
+          "headers": [
+            "CDA",
+            "Status",
+            "Município",
+            "UF",
+            "Latitude",
+            "Longitude",
+            "Armazenador",
+            "Tipo",
+            "Cap. Estática (t)",
+            "Cap. Recepção (t)",
+            "Cap. Expedição (t)",
+            "Cap. Estática Máxima (t)",
+            "Custo de Abertura ($)",
+            "Custo de Transbordo ($/t)",
+            "Permite_Expansao",
+            "Cap_Expansao_Maxima_Modelo (t)",
+            "Custo_Fixo_Expansao ($)",
+            "Custo_Expansao_Modelo ($/t)",
+            "Permite_Granelizacao",
+            "Cap. Granelização Máxima (t)",
+            "Custo_Fixo_Granelizacao ($)",
+            "Custo_Granelizacao_Modelo ($/t)"
+          ]
+        },
+        {
+          "name": "Frete",
+          "rows_including_header": 28,
+          "columns": 2,
+          "headers": [
+            "Estado",
+            "Frete Tonelada Km"
+          ]
+        },
+        {
+          "name": "Tarifa_Armz",
+          "rows_including_header": 4,
+          "columns": 3,
+          "headers": [
+            "Produto",
+            "Armazenar_Publico",
+            "Armazenar_Privado"
+          ]
+        },
+        {
+          "name": "Custo_Invest",
+          "rows_including_header": 5,
+          "columns": 3,
+          "headers": [
+            "Tipo",
+            "Custo Baixo (R$/t)",
+            "Custo Alto (R$/t)"
+          ]
+        },
+        {
+          "name": "Distancias",
+          "rows_including_header": 606,
+          "columns": 7,
+          "headers": [
+            "Tipo_Arco",
+            "Origem",
+            "Destino",
+            "Distancia_km",
+            "Duracao_s",
+            "Fonte_Distancia",
+            "Motivo_Fallback"
+          ]
+        },
+        {
+          "name": "Parametros_Modelo",
+          "rows_including_header": 5,
+          "columns": 3,
+          "headers": [
+            "Parametro",
+            "Valor",
+            "Fonte_Parametro"
+          ]
+        },
+        {
+          "name": "Proveniencia",
+          "rows_including_header": 9,
+          "columns": 2,
+          "headers": [
+            "Field",
+            "Value"
+          ]
+        },
+        {
+          "name": "Cenarios",
+          "rows_including_header": 4,
+          "columns": 8,
+          "headers": [
+            "Cenario",
+            "Probabilidade",
+            "Ativo",
+            "Multiplicador_Oferta",
+            "Multiplicador_Demanda_Domestica",
+            "Multiplicador_Demanda_Exportacao",
+            "Descricao",
+            "Fonte_Parametro"
+          ]
+        }
+      ]
+    },
+    {
+      "zip_member": "data/processed/nine_population_osrm_v1/warehouses_300/model_input.xlsx",
+      "sha256": "7761cce77cf93dcba2f617714f0117c1f2ead4de0c3f27149daceba447e0c7d1",
+      "sheets": [
+        {
+          "name": "00_README",
+          "rows_including_header": 10,
+          "columns": 2,
+          "headers": [
+            "Padrão ouro de entrada - model-agrologistic",
+            null
+          ]
+        },
+        {
+          "name": "Dicionario_Dados",
+          "rows_including_header": 11,
+          "columns": 7,
+          "headers": [
+            "Aba",
+            "Coluna",
+            "Obrigatoria",
+            "Tipo esperado",
+            "Descrição",
+            "Uso no modelo",
+            "Impacto se alterar"
+          ]
+        },
+        {
+          "name": "Alteracoes_Modelo",
+          "rows_including_header": 8,
+          "columns": 4,
+          "headers": [
+            "Melhoria/Ajuste",
+            "Classificação da alteração no Excel",
+            "Status no padrão ouro",
+            "Descrição"
+          ]
+        },
+        {
+          "name": "Parametros_Modelo",
+          "rows_including_header": 13,
+          "columns": 5,
+          "headers": [
+            "Parametro",
+            "Valor",
+            "Unidade",
+            "Fonte_Parametro",
+            "Observacao"
+          ]
+        },
+        {
+          "name": "Cenarios",
+          "rows_including_header": 4,
+          "columns": 8,
+          "headers": [
+            "Cenario",
+            "Probabilidade",
+            "Ativo",
+            "Multiplicador_Oferta",
+            "Multiplicador_Demanda_Domestica",
+            "Descricao",
+            "Fonte_Parametro",
+            "Observacao"
+          ]
+        },
+        {
+          "name": "Oferta_Cenarios",
+          "rows_including_header": 2,
+          "columns": 10,
+          "headers": [
+            "Cenario",
+            "Produto",
+            "Cidade",
+            "Latitude",
+            "Longitude",
+            "Data",
+            "Peso (ton)",
+            "Multiplicador",
+            "Fonte_Parametro",
+            "Observacao"
+          ]
+        },
+        {
+          "name": "Demanda_Cenarios",
+          "rows_including_header": 2,
+          "columns": 13,
+          "headers": [
+            "Cenario",
+            "Produto",
+            "Cidade",
+            "Latitude",
+            "Longitude",
+            "Data",
+            "Tipo_Demanda",
+            "Regra_Limite",
+            "Peso (ton)",
+            "Peso_Modelo (ton)",
+            "Multiplicador",
+            "Fonte_Parametro",
+            "Observacao"
+          ]
+        },
+        {
+          "name": "Listas",
+          "rows_including_header": 6,
+          "columns": 6,
+          "headers": [
+            "Tipo_Demanda",
+            "Regra_Limite",
+            "Sim_Nao",
+            "Fonte_Parametro",
+            "Terminal_Inventory_Policy",
+            "Distance_Source"
+          ]
+        },
+        {
+          "name": "Oferta",
+          "rows_including_header": 6301,
+          "columns": 6,
+          "headers": [
+            "Produto",
+            "Cidade",
+            "Latitude",
+            "Longitude",
+            "Data",
+            "Peso (ton)"
+          ]
+        },
+        {
+          "name": "Demanda",
+          "rows_including_header": 4441,
+          "columns": 11,
+          "headers": [
+            "Produto",
+            "Cidade",
+            "Latitude",
+            "Longitude",
+            "Data",
+            "Peso (ton)",
+            "Tipo_Demanda",
+            "Regra_Limite",
+            "Peso_Modelo (ton)",
+            "Fonte_Parametro",
+            "Observacao"
+          ]
+        },
+        {
+          "name": "Warehouses",
+          "rows_including_header": 301,
+          "columns": 25,
+          "headers": [
+            "CDA",
+            "Status",
+            "Município",
+            "UF",
+            "Latitude",
+            "Longitude",
+            "Armazenador",
+            "Tipo",
+            "Cap. Estática (t)",
+            "Cap. Recepção (t)",
+            "Cap. Expedição (t)",
+            "Cap. Estática Máxima (t)",
+            "Custo de Abertura ($)",
+            "Custo_Fixo_Abertura_Modelo ($)",
+            "Custo_Capacidade_Candidata_Modelo ($/t)",
+            "Permite_Expansao",
+            "Cap_Expansao_Maxima_Modelo (t)",
+            "Custo_Expansao_Modelo ($/t)",
+            "Permite_Granelizacao",
+            "Custo_Granelizacao_Modelo ($/t)",
+            "Penalidade_Cap_Estatica_Emerg_Modelo ($/t)",
+            "Penalidade_Cap_Recepcao_Emerg_Modelo ($/t)",
+            "Fonte_Parametro",
+            "Observacao",
+            "Alteracao_Excel_Modelo"
+          ]
+        },
+        {
+          "name": "Frete",
+          "rows_including_header": 28,
+          "columns": 4,
+          "headers": [
+            "Estado",
+            "Frete Tonelada Km",
+            "Fonte_Parametro",
+            "Observacao"
+          ]
+        },
+        {
+          "name": "Tarifa_Armz",
+          "rows_including_header": 4,
+          "columns": 5,
+          "headers": [
+            "Produto",
+            "Armazenar_Publico",
+            "Armazenar_Privado",
+            "Fonte_Parametro",
+            "Observacao"
+          ]
+        },
+        {
+          "name": "Custo_Invest",
+          "rows_including_header": 5,
+          "columns": 6,
+          "headers": [
+            "Tipo",
+            "Custo Baixo (R$/t)",
+            "Custo Alto (R$/t)",
+            "Custo Médio (R$/t)",
+            "Fonte_Parametro",
+            "Observacao"
+          ]
+        },
+        {
+          "name": "Distancias",
+          "rows_including_header": 113270,
+          "columns": 7,
+          "headers": [
+            "Tipo_Arco",
+            "Origem",
+            "Destino",
+            "Distancia_km",
+            "Duracao_s",
+            "Fonte_Distancia",
+            "Motivo_Fallback"
+          ]
+        }
+      ],
+      "population": 300,
+      "warehouse_count": 300,
+      "existing": 146,
+      "candidate": 154,
+      "ordered_ids_sha256": "7b5cd76aadd3fa623861e7171fbc697bea0072b6d001fd6cfc3fa6f38adb27d2"
+    },
+    {
+      "zip_member": "data/processed/nine_population_osrm_v1/warehouses_400/model_input.xlsx",
+      "sha256": "c3085456997714ef5a8bdbf61e2c9a5e578c2636003947427cf58933d21ceb13",
+      "sheets": [
+        {
+          "name": "00_README",
+          "rows_including_header": 10,
+          "columns": 2,
+          "headers": [
+            "Padrão ouro de entrada - model-agrologistic",
+            null
+          ]
+        },
+        {
+          "name": "Dicionario_Dados",
+          "rows_including_header": 11,
+          "columns": 7,
+          "headers": [
+            "Aba",
+            "Coluna",
+            "Obrigatoria",
+            "Tipo esperado",
+            "Descrição",
+            "Uso no modelo",
+            "Impacto se alterar"
+          ]
+        },
+        {
+          "name": "Alteracoes_Modelo",
+          "rows_including_header": 8,
+          "columns": 4,
+          "headers": [
+            "Melhoria/Ajuste",
+            "Classificação da alteração no Excel",
+            "Status no padrão ouro",
+            "Descrição"
+          ]
+        },
+        {
+          "name": "Parametros_Modelo",
+          "rows_including_header": 13,
+          "columns": 5,
+          "headers": [
+            "Parametro",
+            "Valor",
+            "Unidade",
+            "Fonte_Parametro",
+            "Observacao"
+          ]
+        },
+        {
+          "name": "Cenarios",
+          "rows_including_header": 4,
+          "columns": 8,
+          "headers": [
+            "Cenario",
+            "Probabilidade",
+            "Ativo",
+            "Multiplicador_Oferta",
+            "Multiplicador_Demanda_Domestica",
+            "Descricao",
+            "Fonte_Parametro",
+            "Observacao"
+          ]
+        },
+        {
+          "name": "Oferta_Cenarios",
+          "rows_including_header": 2,
+          "columns": 10,
+          "headers": [
+            "Cenario",
+            "Produto",
+            "Cidade",
+            "Latitude",
+            "Longitude",
+            "Data",
+            "Peso (ton)",
+            "Multiplicador",
+            "Fonte_Parametro",
+            "Observacao"
+          ]
+        },
+        {
+          "name": "Demanda_Cenarios",
+          "rows_including_header": 2,
+          "columns": 13,
+          "headers": [
+            "Cenario",
+            "Produto",
+            "Cidade",
+            "Latitude",
+            "Longitude",
+            "Data",
+            "Tipo_Demanda",
+            "Regra_Limite",
+            "Peso (ton)",
+            "Peso_Modelo (ton)",
+            "Multiplicador",
+            "Fonte_Parametro",
+            "Observacao"
+          ]
+        },
+        {
+          "name": "Listas",
+          "rows_including_header": 6,
+          "columns": 6,
+          "headers": [
+            "Tipo_Demanda",
+            "Regra_Limite",
+            "Sim_Nao",
+            "Fonte_Parametro",
+            "Terminal_Inventory_Policy",
+            "Distance_Source"
+          ]
+        },
+        {
+          "name": "Oferta",
+          "rows_including_header": 6301,
+          "columns": 6,
+          "headers": [
+            "Produto",
+            "Cidade",
+            "Latitude",
+            "Longitude",
+            "Data",
+            "Peso (ton)"
+          ]
+        },
+        {
+          "name": "Demanda",
+          "rows_including_header": 4441,
+          "columns": 11,
+          "headers": [
+            "Produto",
+            "Cidade",
+            "Latitude",
+            "Longitude",
+            "Data",
+            "Peso (ton)",
+            "Tipo_Demanda",
+            "Regra_Limite",
+            "Peso_Modelo (ton)",
+            "Fonte_Parametro",
+            "Observacao"
+          ]
+        },
+        {
+          "name": "Warehouses",
+          "rows_including_header": 401,
+          "columns": 25,
+          "headers": [
+            "CDA",
+            "Status",
+            "Município",
+            "UF",
+            "Latitude",
+            "Longitude",
+            "Armazenador",
+            "Tipo",
+            "Cap. Estática (t)",
+            "Cap. Recepção (t)",
+            "Cap. Expedição (t)",
+            "Cap. Estática Máxima (t)",
+            "Custo de Abertura ($)",
+            "Custo_Fixo_Abertura_Modelo ($)",
+            "Custo_Capacidade_Candidata_Modelo ($/t)",
+            "Permite_Expansao",
+            "Cap_Expansao_Maxima_Modelo (t)",
+            "Custo_Expansao_Modelo ($/t)",
+            "Permite_Granelizacao",
+            "Custo_Granelizacao_Modelo ($/t)",
+            "Penalidade_Cap_Estatica_Emerg_Modelo ($/t)",
+            "Penalidade_Cap_Recepcao_Emerg_Modelo ($/t)",
+            "Fonte_Parametro",
+            "Observacao",
+            "Alteracao_Excel_Modelo"
+          ]
+        },
+        {
+          "name": "Frete",
+          "rows_including_header": 28,
+          "columns": 4,
+          "headers": [
+            "Estado",
+            "Frete Tonelada Km",
+            "Fonte_Parametro",
+            "Observacao"
+          ]
+        },
+        {
+          "name": "Tarifa_Armz",
+          "rows_including_header": 4,
+          "columns": 5,
+          "headers": [
+            "Produto",
+            "Armazenar_Publico",
+            "Armazenar_Privado",
+            "Fonte_Parametro",
+            "Observacao"
+          ]
+        },
+        {
+          "name": "Custo_Invest",
+          "rows_including_header": 5,
+          "columns": 6,
+          "headers": [
+            "Tipo",
+            "Custo Baixo (R$/t)",
+            "Custo Alto (R$/t)",
+            "Custo Médio (R$/t)",
+            "Fonte_Parametro",
+            "Observacao"
+          ]
+        },
+        {
+          "name": "Distancias",
+          "rows_including_header": 190570,
+          "columns": 7,
+          "headers": [
+            "Tipo_Arco",
+            "Origem",
+            "Destino",
+            "Distancia_km",
+            "Duracao_s",
+            "Fonte_Distancia",
+            "Motivo_Fallback"
+          ]
+        }
+      ],
+      "population": 400,
+      "warehouse_count": 400,
+      "existing": 146,
+      "candidate": 254,
+      "ordered_ids_sha256": "c6acae04410dd82e80dcece0af972c2a1ed7d194c16eab26c572e45a1aae4ce8"
+    },
+    {
+      "zip_member": "data/processed/nine_population_osrm_v1/warehouses_500/model_input.xlsx",
+      "sha256": "888fbff42e4f80817d4d5f0101049495c86c6ed4cda75f00813779dadab41515",
+      "sheets": [
+        {
+          "name": "00_README",
+          "rows_including_header": 10,
+          "columns": 2,
+          "headers": [
+            "Padrão ouro de entrada - model-agrologistic",
+            null
+          ]
+        },
+        {
+          "name": "Dicionario_Dados",
+          "rows_including_header": 11,
+          "columns": 7,
+          "headers": [
+            "Aba",
+            "Coluna",
+            "Obrigatoria",
+            "Tipo esperado",
+            "Descrição",
+            "Uso no modelo",
+            "Impacto se alterar"
+          ]
+        },
+        {
+          "name": "Alteracoes_Modelo",
+          "rows_including_header": 8,
+          "columns": 4,
+          "headers": [
+            "Melhoria/Ajuste",
+            "Classificação da alteração no Excel",
+            "Status no padrão ouro",
+            "Descrição"
+          ]
+        },
+        {
+          "name": "Parametros_Modelo",
+          "rows_including_header": 13,
+          "columns": 5,
+          "headers": [
+            "Parametro",
+            "Valor",
+            "Unidade",
+            "Fonte_Parametro",
+            "Observacao"
+          ]
+        },
+        {
+          "name": "Cenarios",
+          "rows_including_header": 4,
+          "columns": 8,
+          "headers": [
+            "Cenario",
+            "Probabilidade",
+            "Ativo",
+            "Multiplicador_Oferta",
+            "Multiplicador_Demanda_Domestica",
+            "Descricao",
+            "Fonte_Parametro",
+            "Observacao"
+          ]
+        },
+        {
+          "name": "Oferta_Cenarios",
+          "rows_including_header": 2,
+          "columns": 10,
+          "headers": [
+            "Cenario",
+            "Produto",
+            "Cidade",
+            "Latitude",
+            "Longitude",
+            "Data",
+            "Peso (ton)",
+            "Multiplicador",
+            "Fonte_Parametro",
+            "Observacao"
+          ]
+        },
+        {
+          "name": "Demanda_Cenarios",
+          "rows_including_header": 2,
+          "columns": 13,
+          "headers": [
+            "Cenario",
+            "Produto",
+            "Cidade",
+            "Latitude",
+            "Longitude",
+            "Data",
+            "Tipo_Demanda",
+            "Regra_Limite",
+            "Peso (ton)",
+            "Peso_Modelo (ton)",
+            "Multiplicador",
+            "Fonte_Parametro",
+            "Observacao"
+          ]
+        },
+        {
+          "name": "Listas",
+          "rows_including_header": 6,
+          "columns": 6,
+          "headers": [
+            "Tipo_Demanda",
+            "Regra_Limite",
+            "Sim_Nao",
+            "Fonte_Parametro",
+            "Terminal_Inventory_Policy",
+            "Distance_Source"
+          ]
+        },
+        {
+          "name": "Oferta",
+          "rows_including_header": 6301,
+          "columns": 6,
+          "headers": [
+            "Produto",
+            "Cidade",
+            "Latitude",
+            "Longitude",
+            "Data",
+            "Peso (ton)"
+          ]
+        },
+        {
+          "name": "Demanda",
+          "rows_including_header": 4441,
+          "columns": 11,
+          "headers": [
+            "Produto",
+            "Cidade",
+            "Latitude",
+            "Longitude",
+            "Data",
+            "Peso (ton)",
+            "Tipo_Demanda",
+            "Regra_Limite",
+            "Peso_Modelo (ton)",
+            "Fonte_Parametro",
+            "Observacao"
+          ]
+        },
+        {
+          "name": "Warehouses",
+          "rows_including_header": 501,
+          "columns": 25,
+          "headers": [
+            "CDA",
+            "Status",
+            "Município",
+            "UF",
+            "Latitude",
+            "Longitude",
+            "Armazenador",
+            "Tipo",
+            "Cap. Estática (t)",
+            "Cap. Recepção (t)",
+            "Cap. Expedição (t)",
+            "Cap. Estática Máxima (t)",
+            "Custo de Abertura ($)",
+            "Custo_Fixo_Abertura_Modelo ($)",
+            "Custo_Capacidade_Candidata_Modelo ($/t)",
+            "Permite_Expansao",
+            "Cap_Expansao_Maxima_Modelo (t)",
+            "Custo_Expansao_Modelo ($/t)",
+            "Permite_Granelizacao",
+            "Custo_Granelizacao_Modelo ($/t)",
+            "Penalidade_Cap_Estatica_Emerg_Modelo ($/t)",
+            "Penalidade_Cap_Recepcao_Emerg_Modelo ($/t)",
+            "Fonte_Parametro",
+            "Observacao",
+            "Alteracao_Excel_Modelo"
+          ]
+        },
+        {
+          "name": "Frete",
+          "rows_including_header": 28,
+          "columns": 4,
+          "headers": [
+            "Estado",
+            "Frete Tonelada Km",
+            "Fonte_Parametro",
+            "Observacao"
+          ]
+        },
+        {
+          "name": "Tarifa_Armz",
+          "rows_including_header": 4,
+          "columns": 5,
+          "headers": [
+            "Produto",
+            "Armazenar_Publico",
+            "Armazenar_Privado",
+            "Fonte_Parametro",
+            "Observacao"
+          ]
+        },
+        {
+          "name": "Custo_Invest",
+          "rows_including_header": 5,
+          "columns": 6,
+          "headers": [
+            "Tipo",
+            "Custo Baixo (R$/t)",
+            "Custo Alto (R$/t)",
+            "Custo Médio (R$/t)",
+            "Fonte_Parametro",
+            "Observacao"
+          ]
+        },
+        {
+          "name": "Distancias",
+          "rows_including_header": 287870,
+          "columns": 7,
+          "headers": [
+            "Tipo_Arco",
+            "Origem",
+            "Destino",
+            "Distancia_km",
+            "Duracao_s",
+            "Fonte_Distancia",
+            "Motivo_Fallback"
+          ]
+        }
+      ],
+      "population": 500,
+      "warehouse_count": 500,
+      "existing": 146,
+      "candidate": 354,
+      "ordered_ids_sha256": "9eed78fc7632433e9f898eca37c0b6409d7139474b4dcb61e888c5b936333ca4"
+    },
+    {
+      "zip_member": "data/processed/policy_population_v020_osrm/warehouses_215/model_input.xlsx",
+      "sha256": "40edb66585daca9cc393cab1f86bde6d4528a5f34b6afc57260cc1684396da4e",
+      "sheets": [
+        {
+          "name": "00_README",
+          "rows_including_header": 10,
+          "columns": 2,
+          "headers": [
+            "Padrão ouro de entrada - model-agrologistic",
+            null
+          ]
+        },
+        {
+          "name": "Dicionario_Dados",
+          "rows_including_header": 11,
+          "columns": 7,
+          "headers": [
+            "Aba",
+            "Coluna",
+            "Obrigatoria",
+            "Tipo esperado",
+            "Descrição",
+            "Uso no modelo",
+            "Impacto se alterar"
+          ]
+        },
+        {
+          "name": "Alteracoes_Modelo",
+          "rows_including_header": 8,
+          "columns": 4,
+          "headers": [
+            "Melhoria/Ajuste",
+            "Classificação da alteração no Excel",
+            "Status no padrão ouro",
+            "Descrição"
+          ]
+        },
+        {
+          "name": "Parametros_Modelo",
+          "rows_including_header": 13,
+          "columns": 5,
+          "headers": [
+            "Parametro",
+            "Valor",
+            "Unidade",
+            "Fonte_Parametro",
+            "Observacao"
+          ]
+        },
+        {
+          "name": "Cenarios",
+          "rows_including_header": 4,
+          "columns": 8,
+          "headers": [
+            "Cenario",
+            "Probabilidade",
+            "Ativo",
+            "Multiplicador_Oferta",
+            "Multiplicador_Demanda_Domestica",
+            "Descricao",
+            "Fonte_Parametro",
+            "Observacao"
+          ]
+        },
+        {
+          "name": "Oferta_Cenarios",
+          "rows_including_header": 2,
+          "columns": 10,
+          "headers": [
+            "Cenario",
+            "Produto",
+            "Cidade",
+            "Latitude",
+            "Longitude",
+            "Data",
+            "Peso (ton)",
+            "Multiplicador",
+            "Fonte_Parametro",
+            "Observacao"
+          ]
+        },
+        {
+          "name": "Demanda_Cenarios",
+          "rows_including_header": 2,
+          "columns": 13,
+          "headers": [
+            "Cenario",
+            "Produto",
+            "Cidade",
+            "Latitude",
+            "Longitude",
+            "Data",
+            "Tipo_Demanda",
+            "Regra_Limite",
+            "Peso (ton)",
+            "Peso_Modelo (ton)",
+            "Multiplicador",
+            "Fonte_Parametro",
+            "Observacao"
+          ]
+        },
+        {
+          "name": "Listas",
+          "rows_including_header": 6,
+          "columns": 6,
+          "headers": [
+            "Tipo_Demanda",
+            "Regra_Limite",
+            "Sim_Nao",
+            "Fonte_Parametro",
+            "Terminal_Inventory_Policy",
+            "Distance_Source"
+          ]
+        },
+        {
+          "name": "Oferta",
+          "rows_including_header": 6301,
+          "columns": 6,
+          "headers": [
+            "Produto",
+            "Cidade",
+            "Latitude",
+            "Longitude",
+            "Data",
+            "Peso (ton)"
+          ]
+        },
+        {
+          "name": "Demanda",
+          "rows_including_header": 4441,
+          "columns": 11,
+          "headers": [
+            "Produto",
+            "Cidade",
+            "Latitude",
+            "Longitude",
+            "Data",
+            "Peso (ton)",
+            "Tipo_Demanda",
+            "Regra_Limite",
+            "Peso_Modelo (ton)",
+            "Fonte_Parametro",
+            "Observacao"
+          ]
+        },
+        {
+          "name": "Warehouses",
+          "rows_including_header": 216,
+          "columns": 25,
+          "headers": [
+            "CDA",
+            "Status",
+            "Município",
+            "UF",
+            "Latitude",
+            "Longitude",
+            "Armazenador",
+            "Tipo",
+            "Cap. Estática (t)",
+            "Cap. Recepção (t)",
+            "Cap. Expedição (t)",
+            "Cap. Estática Máxima (t)",
+            "Custo de Abertura ($)",
+            "Custo_Fixo_Abertura_Modelo ($)",
+            "Custo_Capacidade_Candidata_Modelo ($/t)",
+            "Permite_Expansao",
+            "Cap_Expansao_Maxima_Modelo (t)",
+            "Custo_Expansao_Modelo ($/t)",
+            "Permite_Granelizacao",
+            "Custo_Granelizacao_Modelo ($/t)",
+            "Penalidade_Cap_Estatica_Emerg_Modelo ($/t)",
+            "Penalidade_Cap_Recepcao_Emerg_Modelo ($/t)",
+            "Fonte_Parametro",
+            "Observacao",
+            "Alteracao_Excel_Modelo"
+          ]
+        },
+        {
+          "name": "Frete",
+          "rows_including_header": 28,
+          "columns": 4,
+          "headers": [
+            "Estado",
+            "Frete Tonelada Km",
+            "Fonte_Parametro",
+            "Observacao"
+          ]
+        },
+        {
+          "name": "Tarifa_Armz",
+          "rows_including_header": 4,
+          "columns": 5,
+          "headers": [
+            "Produto",
+            "Armazenar_Publico",
+            "Armazenar_Privado",
+            "Fonte_Parametro",
+            "Observacao"
+          ]
+        },
+        {
+          "name": "Custo_Invest",
+          "rows_including_header": 5,
+          "columns": 6,
+          "headers": [
+            "Tipo",
+            "Custo Baixo (R$/t)",
+            "Custo Alto (R$/t)",
+            "Custo Médio (R$/t)",
+            "Fonte_Parametro",
+            "Observacao"
+          ]
+        },
+        {
+          "name": "Distancias",
+          "rows_including_header": 63290,
+          "columns": 7,
+          "headers": [
+            "Tipo_Arco",
+            "Origem",
+            "Destino",
+            "Distancia_km",
+            "Duracao_s",
+            "Fonte_Distancia",
+            "Motivo_Fallback"
+          ]
+        }
+      ],
+      "population": 215,
+      "warehouse_count": 215,
+      "existing": 146,
+      "candidate": 69,
+      "ordered_ids_sha256": "dd03e71b04c1e70eeee6a54eedd9c35ecb459b46b4335843bd021f9bc8aa5a02"
+    },
+    {
+      "zip_member": "data/templates/model_agrologistic_padrao_ouro.xlsx",
+      "sha256": "de3bdc51b2c338194a5013165bec2884b68784fb207ae8c762984a1b44856082",
+      "sheets": [
+        {
+          "name": "00_README",
+          "rows_including_header": 10,
+          "columns": 2,
+          "headers": [
+            "Padrão ouro de entrada - model-agrologistic",
+            null
+          ]
+        },
+        {
+          "name": "Dicionario_Dados",
+          "rows_including_header": 11,
+          "columns": 7,
+          "headers": [
+            "Aba",
+            "Coluna",
+            "Obrigatoria",
+            "Tipo esperado",
+            "Descrição",
+            "Uso no modelo",
+            "Impacto se alterar"
+          ]
+        },
+        {
+          "name": "Alteracoes_Modelo",
+          "rows_including_header": 8,
+          "columns": 4,
+          "headers": [
+            "Melhoria/Ajuste",
+            "Classificação da alteração no Excel",
+            "Status no padrão ouro",
+            "Descrição"
+          ]
+        },
+        {
+          "name": "Parametros_Modelo",
+          "rows_including_header": 13,
+          "columns": 5,
+          "headers": [
+            "Parametro",
+            "Valor",
+            "Unidade",
+            "Fonte_Parametro",
+            "Observacao"
+          ]
+        },
+        {
+          "name": "Cenarios",
+          "rows_including_header": 4,
+          "columns": 8,
+          "headers": [
+            "Cenario",
+            "Probabilidade",
+            "Ativo",
+            "Multiplicador_Oferta",
+            "Multiplicador_Demanda_Domestica",
+            "Descricao",
+            "Fonte_Parametro",
+            "Observacao"
+          ]
+        },
+        {
+          "name": "Oferta_Cenarios",
+          "rows_including_header": 2,
+          "columns": 10,
+          "headers": [
+            "Cenario",
+            "Produto",
+            "Cidade",
+            "Latitude",
+            "Longitude",
+            "Data",
+            "Peso (ton)",
+            "Multiplicador",
+            "Fonte_Parametro",
+            "Observacao"
+          ]
+        },
+        {
+          "name": "Demanda_Cenarios",
+          "rows_including_header": 2,
+          "columns": 13,
+          "headers": [
+            "Cenario",
+            "Produto",
+            "Cidade",
+            "Latitude",
+            "Longitude",
+            "Data",
+            "Tipo_Demanda",
+            "Regra_Limite",
+            "Peso (ton)",
+            "Peso_Modelo (ton)",
+            "Multiplicador",
+            "Fonte_Parametro",
+            "Observacao"
+          ]
+        },
+        {
+          "name": "Listas",
+          "rows_including_header": 6,
+          "columns": 6,
+          "headers": [
+            "Tipo_Demanda",
+            "Regra_Limite",
+            "Sim_Nao",
+            "Fonte_Parametro",
+            "Terminal_Inventory_Policy",
+            "Distance_Source"
+          ]
+        },
+        {
+          "name": "Oferta",
+          "rows_including_header": 6301,
+          "columns": 6,
+          "headers": [
+            "Produto",
+            "Cidade",
+            "Latitude",
+            "Longitude",
+            "Data",
+            "Peso (ton)"
+          ]
+        },
+        {
+          "name": "Demanda",
+          "rows_including_header": 4441,
+          "columns": 11,
+          "headers": [
+            "Produto",
+            "Cidade",
+            "Latitude",
+            "Longitude",
+            "Data",
+            "Peso (ton)",
+            "Tipo_Demanda",
+            "Regra_Limite",
+            "Peso_Modelo (ton)",
+            "Fonte_Parametro",
+            "Observacao"
+          ]
+        },
+        {
+          "name": "Warehouses",
+          "rows_including_header": 216,
+          "columns": 25,
+          "headers": [
+            "CDA",
+            "Status",
+            "Município",
+            "UF",
+            "Latitude",
+            "Longitude",
+            "Armazenador",
+            "Tipo",
+            "Cap. Estática (t)",
+            "Cap. Recepção (t)",
+            "Cap. Expedição (t)",
+            "Cap. Estática Máxima (t)",
+            "Custo de Abertura ($)",
+            "Custo_Fixo_Abertura_Modelo ($)",
+            "Custo_Capacidade_Candidata_Modelo ($/t)",
+            "Permite_Expansao",
+            "Cap_Expansao_Maxima_Modelo (t)",
+            "Custo_Expansao_Modelo ($/t)",
+            "Permite_Granelizacao",
+            "Custo_Granelizacao_Modelo ($/t)",
+            "Penalidade_Cap_Estatica_Emerg_Modelo ($/t)",
+            "Penalidade_Cap_Recepcao_Emerg_Modelo ($/t)",
+            "Fonte_Parametro",
+            "Observacao",
+            "Alteracao_Excel_Modelo"
+          ]
+        },
+        {
+          "name": "Frete",
+          "rows_including_header": 28,
+          "columns": 4,
+          "headers": [
+            "Estado",
+            "Frete Tonelada Km",
+            "Fonte_Parametro",
+            "Observacao"
+          ]
+        },
+        {
+          "name": "Tarifa_Armz",
+          "rows_including_header": 4,
+          "columns": 5,
+          "headers": [
+            "Produto",
+            "Armazenar_Publico",
+            "Armazenar_Privado",
+            "Fonte_Parametro",
+            "Observacao"
+          ]
+        },
+        {
+          "name": "Custo_Invest",
+          "rows_including_header": 5,
+          "columns": 6,
+          "headers": [
+            "Tipo",
+            "Custo Baixo (R$/t)",
+            "Custo Alto (R$/t)",
+            "Custo Médio (R$/t)",
+            "Fonte_Parametro",
+            "Observacao"
+          ]
+        }
+      ]
+    },
+    {
+      "zip_member": "external-inputs/Warehouses_Existing_Candidate_All.xlsx",
+      "sha256": "0d19865ac72eca0706960d10b6dbd1647a4951378a831715e39af8029ecb77f2",
+      "sheets": [
+        {
+          "name": "Sheet1",
+          "rows_including_header": 18087,
+          "columns": 13,
+          "headers": [
+            "CDA",
+            "Status",
+            "Município",
+            "UF",
+            "Latitude",
+            "Longitude",
+            "Armazenador",
+            "Tipo",
+            "Cap. Estática (t)",
+            "Cap. Recepção (t)",
+            "Cap. Expedição (t)",
+            "Cap. Estática Máxima (t)",
+            "Custo de Abertura ($)"
+          ]
+        },
+        {
+          "name": "Metodologia",
+          "rows_including_header": 43,
+          "columns": 4,
+          "headers": [
+            "METODOLOGIA DE COMPOSICAO DOS HUBS ARMAZENADORES (BASE COMPLETA)",
+            null,
+            null,
+            null
+          ]
+        }
+      ]
+    }
+  ],
+  "nesting_by_identifier": {
+    "215_subset_300": true,
+    "300_subset_400": true,
+    "400_subset_500": true
+  },
+  "original_receipt_order_comparisons": [
+    {
+      "archive": "scalar-h215-evidence.tar.gz",
+      "member": "cases/scalar_h215_det/warehouses_used.csv",
+      "input_order_exact_match": true
+    },
+    {
+      "archive": "scalar-h215-evidence.tar.gz",
+      "member": "cases/scalar_h215_sto/warehouses_used.csv",
+      "input_order_exact_match": true
+    },
+    {
+      "archive": "scalar-h300-30h-evidence.tar.gz",
+      "member": "cases/scalar_h300_t1/warehouses_used.csv",
+      "input_order_exact_match": true
+    },
+    {
+      "archive": "scalar-h300-30h-evidence.tar.gz",
+      "member": "cases/scalar_h300_t16/warehouses_used.csv",
+      "input_order_exact_match": true
+    },
+    {
+      "archive": "scalar-h300-30h-evidence.tar.gz",
+      "member": "cases/scalar_h300_t2/warehouses_used.csv",
+      "input_order_exact_match": true
+    },
+    {
+      "archive": "scalar-h300-30h-evidence.tar.gz",
+      "member": "cases/scalar_h300_t4/warehouses_used.csv",
+      "input_order_exact_match": true
+    },
+    {
+      "archive": "scalar-h300-30h-evidence.tar.gz",
+      "member": "cases/scalar_h300_t8/warehouses_used.csv",
+      "input_order_exact_match": true
+    },
+    {
+      "archive": "scalar-h400-8h-evidence.tar.gz",
+      "member": "cases/scalar_h400_t1/warehouses_used.csv",
+      "input_order_exact_match": true
+    }
+  ],
+  "reference_cells": [
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "A1",
+      "original": "Parametro",
+      "cached": "Parametro"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "B1",
+      "original": "Valor",
+      "cached": "Valor"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "C1",
+      "original": "Unidade",
+      "cached": "Unidade"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "D1",
+      "original": "Fonte_Parametro",
+      "cached": "Fonte_Parametro"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "E1",
+      "original": "Observacao",
+      "cached": "Observacao"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "A2",
+      "original": "candidate_capacity_mode",
+      "cached": "candidate_capacity_mode"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "B2",
+      "original": "SCALABLE",
+      "cached": "SCALABLE"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "D2",
+      "original": "Decisão de modelagem",
+      "cached": "Decisão de modelagem"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "E2",
+      "original": "Candidatos podem escolher capacidade até Cap. Estática Máxima.",
+      "cached": "Candidatos podem escolher capacidade até Cap. Estática Máxima."
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "A3",
+      "original": "candidate_cost_policy",
+      "cached": "candidate_cost_policy"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "B3",
+      "original": "DERIVED_VARIABLE_FROM_TOTAL",
+      "cached": "DERIVED_VARIABLE_FROM_TOTAL"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "D3",
+      "original": "Decisão de transição",
+      "cached": "Decisão de transição"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "E3",
+      "original": "Enquanto não houver custos separados, custo variável = Custo de Abertura / Cap. Estática Máxima.",
+      "cached": "Enquanto não houver custos separados, custo variável = Custo de Abertura / Cap. Estática Máxima."
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "A4",
+      "original": "unmet_demand_penalty",
+      "cached": "unmet_demand_penalty"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "B4",
+      "original": 1000000,
+      "cached": 1000000
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "C4",
+      "original": "R$/t",
+      "cached": "R$/t"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "D4",
+      "original": "Sintético",
+      "cached": "Sintético"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "E4",
+      "original": "Penalidade alta para evitar demanda doméstica não atendida, salvo infeasibilidade.",
+      "cached": "Penalidade alta para evitar demanda doméstica não atendida, salvo infeasibilidade."
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "A5",
+      "original": "emergency_static_capacity_penalty",
+      "cached": "emergency_static_capacity_penalty"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "B5",
+      "original": 1000000,
+      "cached": 1000000
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "C5",
+      "original": "R$/t",
+      "cached": "R$/t"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "D5",
+      "original": "Sintético",
+      "cached": "Sintético"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "E5",
+      "original": "Penalidade alta para capacidade estática emergencial.",
+      "cached": "Penalidade alta para capacidade estática emergencial."
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "A6",
+      "original": "emergency_reception_capacity_penalty",
+      "cached": "emergency_reception_capacity_penalty"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "B6",
+      "original": 1000000,
+      "cached": 1000000
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "C6",
+      "original": "R$/t",
+      "cached": "R$/t"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "D6",
+      "original": "Sintético",
+      "cached": "Sintético"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "E6",
+      "original": "Penalidade alta para capacidade de recepção emergencial.",
+      "cached": "Penalidade alta para capacidade de recepção emergencial."
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "A7",
+      "original": "export_limit_rule",
+      "cached": "export_limit_rule"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "B7",
+      "original": "AUTO_OFERTA_TOTAL_PRODUTO_PERIODO",
+      "cached": "AUTO_OFERTA_TOTAL_PRODUTO_PERIODO"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "D7",
+      "original": "Tese do Artur",
+      "cached": "Tese do Artur"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "E7",
+      "original": "Mercado externo não vinculante: limite = soma da oferta de todas as origens do produto no período e cenário.",
+      "cached": "Mercado externo não vinculante: limite = soma da oferta de todas as origens do produto no período e cenário."
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "A8",
+      "original": "days_per_period",
+      "cached": "days_per_period"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "B8",
+      "original": 30,
+      "cached": 30
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "C8",
+      "original": "dias/período",
+      "cached": "dias/período"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "D8",
+      "original": "Sintético/A confirmar",
+      "cached": "Sintético/A confirmar"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "E8",
+      "original": "Parâmetro usado se capacidade de recepção/expedição for diária.",
+      "cached": "Parâmetro usado se capacidade de recepção/expedição for diária."
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "A9",
+      "original": "expansion_capacity_fraction_default",
+      "cached": "expansion_capacity_fraction_default"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "B9",
+      "original": 0.25,
+      "cached": 0.25
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "C9",
+      "original": "fração",
+      "cached": "fração"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "D9",
+      "original": "Sintético",
+      "cached": "Sintético"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "E9",
+      "original": "Valor inicial: expansão máxima = 25% da capacidade estática existente.",
+      "cached": "Valor inicial: expansão máxima = 25% da capacidade estática existente."
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "A10",
+      "original": "expansion_cost_default",
+      "cached": "expansion_cost_default"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "B10",
+      "original": "=AVERAGE(Custo_Invest!B4:C4)",
+      "cached": null
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "C10",
+      "original": "R$/t",
+      "cached": "R$/t"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "D10",
+      "original": "Derivado_de_Custo_Invest",
+      "cached": "Derivado_de_Custo_Invest"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "E10",
+      "original": "Média entre custo baixo e alto de Expansão.",
+      "cached": "Média entre custo baixo e alto de Expansão."
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "A11",
+      "original": "bulkification_cost_default",
+      "cached": "bulkification_cost_default"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "B11",
+      "original": "=AVERAGE(Custo_Invest!B5:C5)",
+      "cached": null
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "C11",
+      "original": "R$/t",
+      "cached": "R$/t"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "D11",
+      "original": "Derivado_de_Custo_Invest",
+      "cached": "Derivado_de_Custo_Invest"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "E11",
+      "original": "Média entre custo baixo e alto de Granelização.",
+      "cached": "Média entre custo baixo e alto de Granelização."
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "A12",
+      "original": "distance_source_default",
+      "cached": "distance_source_default"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "B12",
+      "original": "HAVERSINE",
+      "cached": "HAVERSINE"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "D12",
+      "original": "Decisão operacional",
+      "cached": "Decisão operacional"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "E12",
+      "original": "Para testes locais; OSRM pode substituir por distâncias rodoviárias.",
+      "cached": "Para testes locais; OSRM pode substituir por distâncias rodoviárias."
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "A13",
+      "original": "route_filter_strategy",
+      "cached": "route_filter_strategy"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "B13",
+      "original": "NONE",
+      "cached": "NONE"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "D13",
+      "original": "Decisão operacional",
+      "cached": "Decisão operacional"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "E13",
+      "original": "Sem filtragem inicial para preservar completude do modelo.",
+      "cached": "Sem filtragem inicial para preservar completude do modelo."
+    },
+    {
+      "sheet": "Cenarios",
+      "cell": "A1",
+      "original": "Cenario",
+      "cached": "Cenario"
+    },
+    {
+      "sheet": "Cenarios",
+      "cell": "B1",
+      "original": "Probabilidade",
+      "cached": "Probabilidade"
+    },
+    {
+      "sheet": "Cenarios",
+      "cell": "C1",
+      "original": "Ativo",
+      "cached": "Ativo"
+    },
+    {
+      "sheet": "Cenarios",
+      "cell": "D1",
+      "original": "Multiplicador_Oferta",
+      "cached": "Multiplicador_Oferta"
+    },
+    {
+      "sheet": "Cenarios",
+      "cell": "E1",
+      "original": "Multiplicador_Demanda_Domestica",
+      "cached": "Multiplicador_Demanda_Domestica"
+    },
+    {
+      "sheet": "Cenarios",
+      "cell": "F1",
+      "original": "Descricao",
+      "cached": "Descricao"
+    },
+    {
+      "sheet": "Cenarios",
+      "cell": "G1",
+      "original": "Fonte_Parametro",
+      "cached": "Fonte_Parametro"
+    },
+    {
+      "sheet": "Cenarios",
+      "cell": "H1",
+      "original": "Observacao",
+      "cached": "Observacao"
+    },
+    {
+      "sheet": "Cenarios",
+      "cell": "A2",
+      "original": "base",
+      "cached": "base"
+    },
+    {
+      "sheet": "Cenarios",
+      "cell": "B2",
+      "original": 1,
+      "cached": 1
+    },
+    {
+      "sheet": "Cenarios",
+      "cell": "C2",
+      "original": "SIM",
+      "cached": "SIM"
+    },
+    {
+      "sheet": "Cenarios",
+      "cell": "D2",
+      "original": 1,
+      "cached": 1
+    },
+    {
+      "sheet": "Cenarios",
+      "cell": "E2",
+      "original": 1,
+      "cached": 1
+    },
+    {
+      "sheet": "Cenarios",
+      "cell": "F2",
+      "original": "Cenário determinístico/base",
+      "cached": "Cenário determinístico/base"
+    },
+    {
+      "sheet": "Cenarios",
+      "cell": "G2",
+      "original": "Informado",
+      "cached": "Informado"
+    },
+    {
+      "sheet": "Cenarios",
+      "cell": "H2",
+      "original": "Padrão para leitura determinística e primeiro teste estocástico degenerado.",
+      "cached": "Padrão para leitura determinística e primeiro teste estocástico degenerado."
+    },
+    {
+      "sheet": "Cenarios",
+      "cell": "A3",
+      "original": "baixo",
+      "cached": "baixo"
+    },
+    {
+      "sheet": "Cenarios",
+      "cell": "B3",
+      "original": 0.25,
+      "cached": 0.25
+    },
+    {
+      "sheet": "Cenarios",
+      "cell": "C3",
+      "original": "NAO",
+      "cached": "NAO"
+    },
+    {
+      "sheet": "Cenarios",
+      "cell": "D3",
+      "original": 0.85,
+      "cached": 0.85
+    },
+    {
+      "sheet": "Cenarios",
+      "cell": "E3",
+      "original": 0.95,
+      "cached": 0.95
+    },
+    {
+      "sheet": "Cenarios",
+      "cell": "F3",
+      "original": "Exemplo sintético: oferta baixa",
+      "cached": "Exemplo sintético: oferta baixa"
+    },
+    {
+      "sheet": "Cenarios",
+      "cell": "G3",
+      "original": "Sintético",
+      "cached": "Sintético"
+    },
+    {
+      "sheet": "Cenarios",
+      "cell": "H3",
+      "original": "Ativar apenas quando for testar o modelo estocástico.",
+      "cached": "Ativar apenas quando for testar o modelo estocástico."
+    },
+    {
+      "sheet": "Cenarios",
+      "cell": "A4",
+      "original": "alto",
+      "cached": "alto"
+    },
+    {
+      "sheet": "Cenarios",
+      "cell": "B4",
+      "original": 0.25,
+      "cached": 0.25
+    },
+    {
+      "sheet": "Cenarios",
+      "cell": "C4",
+      "original": "NAO",
+      "cached": "NAO"
+    },
+    {
+      "sheet": "Cenarios",
+      "cell": "D4",
+      "original": 1.15,
+      "cached": 1.15
+    },
+    {
+      "sheet": "Cenarios",
+      "cell": "E4",
+      "original": 1.05,
+      "cached": 1.05
+    },
+    {
+      "sheet": "Cenarios",
+      "cell": "F4",
+      "original": "Exemplo sintético: oferta alta",
+      "cached": "Exemplo sintético: oferta alta"
+    },
+    {
+      "sheet": "Cenarios",
+      "cell": "G4",
+      "original": "Sintético",
+      "cached": "Sintético"
+    },
+    {
+      "sheet": "Cenarios",
+      "cell": "H4",
+      "original": "Ativar apenas quando for testar o modelo estocástico.",
+      "cached": "Ativar apenas quando for testar o modelo estocástico."
+    },
+    {
+      "sheet": "Custo_Invest",
+      "cell": "A1",
+      "original": "Tipo",
+      "cached": "Tipo"
+    },
+    {
+      "sheet": "Custo_Invest",
+      "cell": "B1",
+      "original": "Custo Baixo (R$/t)",
+      "cached": "Custo Baixo (R$/t)"
+    },
+    {
+      "sheet": "Custo_Invest",
+      "cell": "C1",
+      "original": "Custo Alto (R$/t)",
+      "cached": "Custo Alto (R$/t)"
+    },
+    {
+      "sheet": "Custo_Invest",
+      "cell": "D1",
+      "original": "Custo Médio (R$/t)",
+      "cached": "Custo Médio (R$/t)"
+    },
+    {
+      "sheet": "Custo_Invest",
+      "cell": "E1",
+      "original": "Fonte_Parametro",
+      "cached": "Fonte_Parametro"
+    },
+    {
+      "sheet": "Custo_Invest",
+      "cell": "F1",
+      "original": "Observacao",
+      "cached": "Observacao"
+    },
+    {
+      "sheet": "Custo_Invest",
+      "cell": "A2",
+      "original": "Novo Armazém Convencional",
+      "cached": "Novo Armazém Convencional"
+    },
+    {
+      "sheet": "Custo_Invest",
+      "cell": "B2",
+      "original": 1000,
+      "cached": 1000
+    },
+    {
+      "sheet": "Custo_Invest",
+      "cell": "C2",
+      "original": 1500,
+      "cached": 1500
+    },
+    {
+      "sheet": "Custo_Invest",
+      "cell": "D2",
+      "original": "=AVERAGE(B2:C2)",
+      "cached": null
+    },
+    {
+      "sheet": "Custo_Invest",
+      "cell": "E2",
+      "original": "Informado",
+      "cached": "Informado"
+    },
+    {
+      "sheet": "Custo_Invest",
+      "cell": "F2",
+      "original": "Custo médio usado como valor sintético inicial quando o modelo exigir parâmetro único.",
+      "cached": "Custo médio usado como valor sintético inicial quando o modelo exigir parâmetro único."
+    },
+    {
+      "sheet": "Custo_Invest",
+      "cell": "A3",
+      "original": "Novo Silo Metálico",
+      "cached": "Novo Silo Metálico"
+    },
+    {
+      "sheet": "Custo_Invest",
+      "cell": "B3",
+      "original": 785,
+      "cached": 785
+    },
+    {
+      "sheet": "Custo_Invest",
+      "cell": "C3",
+      "original": 1310,
+      "cached": 1310
+    },
+    {
+      "sheet": "Custo_Invest",
+      "cell": "D3",
+      "original": "=AVERAGE(B3:C3)",
+      "cached": null
+    },
+    {
+      "sheet": "Custo_Invest",
+      "cell": "E3",
+      "original": "Informado",
+      "cached": "Informado"
+    },
+    {
+      "sheet": "Custo_Invest",
+      "cell": "F3",
+      "original": "Custo médio usado como valor sintético inicial quando o modelo exigir parâmetro único.",
+      "cached": "Custo médio usado como valor sintético inicial quando o modelo exigir parâmetro único."
+    },
+    {
+      "sheet": "Custo_Invest",
+      "cell": "A4",
+      "original": "Expansão",
+      "cached": "Expansão"
+    },
+    {
+      "sheet": "Custo_Invest",
+      "cell": "B4",
+      "original": 600,
+      "cached": 600
+    },
+    {
+      "sheet": "Custo_Invest",
+      "cell": "C4",
+      "original": 1200,
+      "cached": 1200
+    },
+    {
+      "sheet": "Custo_Invest",
+      "cell": "D4",
+      "original": "=AVERAGE(B4:C4)",
+      "cached": null
+    },
+    {
+      "sheet": "Custo_Invest",
+      "cell": "E4",
+      "original": "Informado",
+      "cached": "Informado"
+    },
+    {
+      "sheet": "Custo_Invest",
+      "cell": "F4",
+      "original": "Custo médio usado como valor sintético inicial quando o modelo exigir parâmetro único.",
+      "cached": "Custo médio usado como valor sintético inicial quando o modelo exigir parâmetro único."
+    },
+    {
+      "sheet": "Custo_Invest",
+      "cell": "A5",
+      "original": "Granelização",
+      "cached": "Granelização"
+    },
+    {
+      "sheet": "Custo_Invest",
+      "cell": "B5",
+      "original": 380,
+      "cached": 380
+    },
+    {
+      "sheet": "Custo_Invest",
+      "cell": "C5",
+      "original": 660,
+      "cached": 660
+    },
+    {
+      "sheet": "Custo_Invest",
+      "cell": "D5",
+      "original": "=AVERAGE(B5:C5)",
+      "cached": null
+    },
+    {
+      "sheet": "Custo_Invest",
+      "cell": "E5",
+      "original": "Informado",
+      "cached": "Informado"
+    },
+    {
+      "sheet": "Custo_Invest",
+      "cell": "F5",
+      "original": "Custo médio usado como valor sintético inicial quando o modelo exigir parâmetro único.",
+      "cached": "Custo médio usado como valor sintético inicial quando o modelo exigir parâmetro único."
+    },
+    {
+      "sheet": "Frete",
+      "cell": "A1",
+      "original": "Estado",
+      "cached": "Estado"
+    },
+    {
+      "sheet": "Frete",
+      "cell": "B1",
+      "original": "Frete Tonelada Km",
+      "cached": "Frete Tonelada Km"
+    },
+    {
+      "sheet": "Frete",
+      "cell": "C1",
+      "original": "Fonte_Parametro",
+      "cached": "Fonte_Parametro"
+    },
+    {
+      "sheet": "Frete",
+      "cell": "D1",
+      "original": "Observacao",
+      "cached": "Observacao"
+    },
+    {
+      "sheet": "Frete",
+      "cell": "A2",
+      "original": "AC",
+      "cached": "AC"
+    },
+    {
+      "sheet": "Frete",
+      "cell": "B2",
+      "original": 0.2648,
+      "cached": 0.2648
+    },
+    {
+      "sheet": "Frete",
+      "cell": "C2",
+      "original": "Informado",
+      "cached": "Informado"
+    },
+    {
+      "sheet": "Frete",
+      "cell": "D2",
+      "original": "Mantido do arquivo original; revisar fonte e unidade se necessário.",
+      "cached": "Mantido do arquivo original; revisar fonte e unidade se necessário."
+    },
+    {
+      "sheet": "Frete",
+      "cell": "A3",
+      "original": "AL",
+      "cached": "AL"
+    },
+    {
+      "sheet": "Frete",
+      "cell": "B3",
+      "original": 0.2648,
+      "cached": 0.2648
+    },
+    {
+      "sheet": "Frete",
+      "cell": "C3",
+      "original": "Informado",
+      "cached": "Informado"
+    },
+    {
+      "sheet": "Frete",
+      "cell": "D3",
+      "original": "Mantido do arquivo original; revisar fonte e unidade se necessário.",
+      "cached": "Mantido do arquivo original; revisar fonte e unidade se necessário."
+    },
+    {
+      "sheet": "Frete",
+      "cell": "A4",
+      "original": "AP",
+      "cached": "AP"
+    },
+    {
+      "sheet": "Frete",
+      "cell": "B4",
+      "original": 0.2648,
+      "cached": 0.2648
+    },
+    {
+      "sheet": "Frete",
+      "cell": "C4",
+      "original": "Informado",
+      "cached": "Informado"
+    },
+    {
+      "sheet": "Frete",
+      "cell": "D4",
+      "original": "Mantido do arquivo original; revisar fonte e unidade se necessário.",
+      "cached": "Mantido do arquivo original; revisar fonte e unidade se necessário."
+    },
+    {
+      "sheet": "Frete",
+      "cell": "A5",
+      "original": "AM",
+      "cached": "AM"
+    },
+    {
+      "sheet": "Frete",
+      "cell": "B5",
+      "original": 0.1969,
+      "cached": 0.1969
+    },
+    {
+      "sheet": "Frete",
+      "cell": "C5",
+      "original": "Informado",
+      "cached": "Informado"
+    },
+    {
+      "sheet": "Frete",
+      "cell": "D5",
+      "original": "Mantido do arquivo original; revisar fonte e unidade se necessário.",
+      "cached": "Mantido do arquivo original; revisar fonte e unidade se necessário."
+    },
+    {
+      "sheet": "Frete",
+      "cell": "A6",
+      "original": "BA",
+      "cached": "BA"
+    },
+    {
+      "sheet": "Frete",
+      "cell": "B6",
+      "original": 0.2584,
+      "cached": 0.2584
+    },
+    {
+      "sheet": "Frete",
+      "cell": "C6",
+      "original": "Informado",
+      "cached": "Informado"
+    },
+    {
+      "sheet": "Frete",
+      "cell": "D6",
+      "original": "Mantido do arquivo original; revisar fonte e unidade se necessário.",
+      "cached": "Mantido do arquivo original; revisar fonte e unidade se necessário."
+    },
+    {
+      "sheet": "Frete",
+      "cell": "A7",
+      "original": "CE",
+      "cached": "CE"
+    },
+    {
+      "sheet": "Frete",
+      "cell": "B7",
+      "original": 0.2648,
+      "cached": 0.2648
+    },
+    {
+      "sheet": "Frete",
+      "cell": "C7",
+      "original": "Informado",
+      "cached": "Informado"
+    },
+    {
+      "sheet": "Frete",
+      "cell": "D7",
+      "original": "Mantido do arquivo original; revisar fonte e unidade se necessário.",
+      "cached": "Mantido do arquivo original; revisar fonte e unidade se necessário."
+    },
+    {
+      "sheet": "Frete",
+      "cell": "A8",
+      "original": "DF",
+      "cached": "DF"
+    },
+    {
+      "sheet": "Frete",
+      "cell": "B8",
+      "original": 0.294,
+      "cached": 0.294
+    },
+    {
+      "sheet": "Frete",
+      "cell": "C8",
+      "original": "Informado",
+      "cached": "Informado"
+    },
+    {
+      "sheet": "Frete",
+      "cell": "D8",
+      "original": "Mantido do arquivo original; revisar fonte e unidade se necessário.",
+      "cached": "Mantido do arquivo original; revisar fonte e unidade se necessário."
+    },
+    {
+      "sheet": "Frete",
+      "cell": "A9",
+      "original": "ES",
+      "cached": "ES"
+    },
+    {
+      "sheet": "Frete",
+      "cell": "B9",
+      "original": 0.2648,
+      "cached": 0.2648
+    },
+    {
+      "sheet": "Frete",
+      "cell": "C9",
+      "original": "Informado",
+      "cached": "Informado"
+    },
+    {
+      "sheet": "Frete",
+      "cell": "D9",
+      "original": "Mantido do arquivo original; revisar fonte e unidade se necessário.",
+      "cached": "Mantido do arquivo original; revisar fonte e unidade se necessário."
+    },
+    {
+      "sheet": "Frete",
+      "cell": "A10",
+      "original": "GO",
+      "cached": "GO"
+    },
+    {
+      "sheet": "Frete",
+      "cell": "B10",
+      "original": 0.3682,
+      "cached": 0.3682
+    },
+    {
+      "sheet": "Frete",
+      "cell": "C10",
+      "original": "Informado",
+      "cached": "Informado"
+    },
+    {
+      "sheet": "Frete",
+      "cell": "D10",
+      "original": "Mantido do arquivo original; revisar fonte e unidade se necessário.",
+      "cached": "Mantido do arquivo original; revisar fonte e unidade se necessário."
+    },
+    {
+      "sheet": "Frete",
+      "cell": "A11",
+      "original": "MA",
+      "cached": "MA"
+    },
+    {
+      "sheet": "Frete",
+      "cell": "B11",
+      "original": 0.2943,
+      "cached": 0.2943
+    },
+    {
+      "sheet": "Frete",
+      "cell": "C11",
+      "original": "Informado",
+      "cached": "Informado"
+    },
+    {
+      "sheet": "Frete",
+      "cell": "D11",
+      "original": "Mantido do arquivo original; revisar fonte e unidade se necessário.",
+      "cached": "Mantido do arquivo original; revisar fonte e unidade se necessário."
+    },
+    {
+      "sheet": "Frete",
+      "cell": "A12",
+      "original": "MT",
+      "cached": "MT"
+    },
+    {
+      "sheet": "Frete",
+      "cell": "B12",
+      "original": 0.1842,
+      "cached": 0.1842
+    },
+    {
+      "sheet": "Frete",
+      "cell": "C12",
+      "original": "Informado",
+      "cached": "Informado"
+    },
+    {
+      "sheet": "Frete",
+      "cell": "D12",
+      "original": "Mantido do arquivo original; revisar fonte e unidade se necessário.",
+      "cached": "Mantido do arquivo original; revisar fonte e unidade se necessário."
+    },
+    {
+      "sheet": "Frete",
+      "cell": "A13",
+      "original": "MS",
+      "cached": "MS"
+    },
+    {
+      "sheet": "Frete",
+      "cell": "B13",
+      "original": 0.2174,
+      "cached": 0.2174
+    },
+    {
+      "sheet": "Frete",
+      "cell": "C13",
+      "original": "Informado",
+      "cached": "Informado"
+    },
+    {
+      "sheet": "Frete",
+      "cell": "D13",
+      "original": "Mantido do arquivo original; revisar fonte e unidade se necessário.",
+      "cached": "Mantido do arquivo original; revisar fonte e unidade se necessário."
+    },
+    {
+      "sheet": "Frete",
+      "cell": "A14",
+      "original": "MG",
+      "cached": "MG"
+    },
+    {
+      "sheet": "Frete",
+      "cell": "B14",
+      "original": 0.3971,
+      "cached": 0.3971
+    },
+    {
+      "sheet": "Frete",
+      "cell": "C14",
+      "original": "Informado",
+      "cached": "Informado"
+    },
+    {
+      "sheet": "Frete",
+      "cell": "D14",
+      "original": "Mantido do arquivo original; revisar fonte e unidade se necessário.",
+      "cached": "Mantido do arquivo original; revisar fonte e unidade se necessário."
+    },
+    {
+      "sheet": "Frete",
+      "cell": "A15",
+      "original": "PA",
+      "cached": "PA"
+    },
+    {
+      "sheet": "Frete",
+      "cell": "B15",
+      "original": 0.2648,
+      "cached": 0.2648
+    },
+    {
+      "sheet": "Frete",
+      "cell": "C15",
+      "original": "Informado",
+      "cached": "Informado"
+    },
+    {
+      "sheet": "Frete",
+      "cell": "D15",
+      "original": "Mantido do arquivo original; revisar fonte e unidade se necessário.",
+      "cached": "Mantido do arquivo original; revisar fonte e unidade se necessário."
+    },
+    {
+      "sheet": "Frete",
+      "cell": "A16",
+      "original": "PB",
+      "cached": "PB"
+    },
+    {
+      "sheet": "Frete",
+      "cell": "B16",
+      "original": 0.2648,
+      "cached": 0.2648
+    },
+    {
+      "sheet": "Frete",
+      "cell": "C16",
+      "original": "Informado",
+      "cached": "Informado"
+    },
+    {
+      "sheet": "Frete",
+      "cell": "D16",
+      "original": "Mantido do arquivo original; revisar fonte e unidade se necessário.",
+      "cached": "Mantido do arquivo original; revisar fonte e unidade se necessário."
+    },
+    {
+      "sheet": "Frete",
+      "cell": "A17",
+      "original": "PR",
+      "cached": "PR"
+    },
+    {
+      "sheet": "Frete",
+      "cell": "B17",
+      "original": 0.312,
+      "cached": 0.312
+    },
+    {
+      "sheet": "Frete",
+      "cell": "C17",
+      "original": "Informado",
+      "cached": "Informado"
+    },
+    {
+      "sheet": "Frete",
+      "cell": "D17",
+      "original": "Mantido do arquivo original; revisar fonte e unidade se necessário.",
+      "cached": "Mantido do arquivo original; revisar fonte e unidade se necessário."
+    },
+    {
+      "sheet": "Frete",
+      "cell": "A18",
+      "original": "PE",
+      "cached": "PE"
+    },
+    {
+      "sheet": "Frete",
+      "cell": "B18",
+      "original": 0.2004,
+      "cached": 0.2004
+    },
+    {
+      "sheet": "Frete",
+      "cell": "C18",
+      "original": "Informado",
+      "cached": "Informado"
+    },
+    {
+      "sheet": "Frete",
+      "cell": "D18",
+      "original": "Mantido do arquivo original; revisar fonte e unidade se necessário.",
+      "cached": "Mantido do arquivo original; revisar fonte e unidade se necessário."
+    },
+    {
+      "sheet": "Frete",
+      "cell": "A19",
+      "original": "PI",
+      "cached": "PI"
+    },
+    {
+      "sheet": "Frete",
+      "cell": "B19",
+      "original": 0.2979,
+      "cached": 0.2979
+    },
+    {
+      "sheet": "Frete",
+      "cell": "C19",
+      "original": "Informado",
+      "cached": "Informado"
+    },
+    {
+      "sheet": "Frete",
+      "cell": "D19",
+      "original": "Mantido do arquivo original; revisar fonte e unidade se necessário.",
+      "cached": "Mantido do arquivo original; revisar fonte e unidade se necessário."
+    },
+    {
+      "sheet": "Frete",
+      "cell": "A20",
+      "original": "RJ",
+      "cached": "RJ"
+    },
+    {
+      "sheet": "Frete",
+      "cell": "B20",
+      "original": 0.2648,
+      "cached": 0.2648
+    },
+    {
+      "sheet": "Frete",
+      "cell": "C20",
+      "original": "Informado",
+      "cached": "Informado"
+    },
+    {
+      "sheet": "Frete",
+      "cell": "D20",
+      "original": "Mantido do arquivo original; revisar fonte e unidade se necessário.",
+      "cached": "Mantido do arquivo original; revisar fonte e unidade se necessário."
+    },
+    {
+      "sheet": "Frete",
+      "cell": "A21",
+      "original": "RN",
+      "cached": "RN"
+    },
+    {
+      "sheet": "Frete",
+      "cell": "B21",
+      "original": 0.2648,
+      "cached": 0.2648
+    },
+    {
+      "sheet": "Frete",
+      "cell": "C21",
+      "original": "Informado",
+      "cached": "Informado"
+    },
+    {
+      "sheet": "Frete",
+      "cell": "D21",
+      "original": "Mantido do arquivo original; revisar fonte e unidade se necessário.",
+      "cached": "Mantido do arquivo original; revisar fonte e unidade se necessário."
+    },
+    {
+      "sheet": "Frete",
+      "cell": "A22",
+      "original": "RS",
+      "cached": "RS"
+    },
+    {
+      "sheet": "Frete",
+      "cell": "B22",
+      "original": 0.3408,
+      "cached": 0.3408
+    },
+    {
+      "sheet": "Frete",
+      "cell": "C22",
+      "original": "Informado",
+      "cached": "Informado"
+    },
+    {
+      "sheet": "Frete",
+      "cell": "D22",
+      "original": "Mantido do arquivo original; revisar fonte e unidade se necessário.",
+      "cached": "Mantido do arquivo original; revisar fonte e unidade se necessário."
+    },
+    {
+      "sheet": "Frete",
+      "cell": "A23",
+      "original": "RO",
+      "cached": "RO"
+    },
+    {
+      "sheet": "Frete",
+      "cell": "B23",
+      "original": 0.3346,
+      "cached": 0.3346
+    },
+    {
+      "sheet": "Frete",
+      "cell": "C23",
+      "original": "Informado",
+      "cached": "Informado"
+    },
+    {
+      "sheet": "Frete",
+      "cell": "D23",
+      "original": "Mantido do arquivo original; revisar fonte e unidade se necessário.",
+      "cached": "Mantido do arquivo original; revisar fonte e unidade se necessário."
+    },
+    {
+      "sheet": "Frete",
+      "cell": "A24",
+      "original": "RR",
+      "cached": "RR"
+    },
+    {
+      "sheet": "Frete",
+      "cell": "B24",
+      "original": 0.2648,
+      "cached": 0.2648
+    },
+    {
+      "sheet": "Frete",
+      "cell": "C24",
+      "original": "Informado",
+      "cached": "Informado"
+    },
+    {
+      "sheet": "Frete",
+      "cell": "D24",
+      "original": "Mantido do arquivo original; revisar fonte e unidade se necessário.",
+      "cached": "Mantido do arquivo original; revisar fonte e unidade se necessário."
+    },
+    {
+      "sheet": "Frete",
+      "cell": "A25",
+      "original": "SC",
+      "cached": "SC"
+    },
+    {
+      "sheet": "Frete",
+      "cell": "B25",
+      "original": 0.4014,
+      "cached": 0.4014
+    },
+    {
+      "sheet": "Frete",
+      "cell": "C25",
+      "original": "Informado",
+      "cached": "Informado"
+    },
+    {
+      "sheet": "Frete",
+      "cell": "D25",
+      "original": "Mantido do arquivo original; revisar fonte e unidade se necessário.",
+      "cached": "Mantido do arquivo original; revisar fonte e unidade se necessário."
+    },
+    {
+      "sheet": "Frete",
+      "cell": "A26",
+      "original": "SP",
+      "cached": "SP"
+    },
+    {
+      "sheet": "Frete",
+      "cell": "B26",
+      "original": 0.3279,
+      "cached": 0.3279
+    },
+    {
+      "sheet": "Frete",
+      "cell": "C26",
+      "original": "Informado",
+      "cached": "Informado"
+    },
+    {
+      "sheet": "Frete",
+      "cell": "D26",
+      "original": "Mantido do arquivo original; revisar fonte e unidade se necessário.",
+      "cached": "Mantido do arquivo original; revisar fonte e unidade se necessário."
+    },
+    {
+      "sheet": "Frete",
+      "cell": "A27",
+      "original": "SE",
+      "cached": "SE"
+    },
+    {
+      "sheet": "Frete",
+      "cell": "B27",
+      "original": 0.2648,
+      "cached": 0.2648
+    },
+    {
+      "sheet": "Frete",
+      "cell": "C27",
+      "original": "Informado",
+      "cached": "Informado"
+    },
+    {
+      "sheet": "Frete",
+      "cell": "D27",
+      "original": "Mantido do arquivo original; revisar fonte e unidade se necessário.",
+      "cached": "Mantido do arquivo original; revisar fonte e unidade se necessário."
+    },
+    {
+      "sheet": "Frete",
+      "cell": "A28",
+      "original": "TO",
+      "cached": "TO"
+    },
+    {
+      "sheet": "Frete",
+      "cell": "B28",
+      "original": 0.3826,
+      "cached": 0.3826
+    },
+    {
+      "sheet": "Frete",
+      "cell": "C28",
+      "original": "Informado",
+      "cached": "Informado"
+    },
+    {
+      "sheet": "Frete",
+      "cell": "D28",
+      "original": "Mantido do arquivo original; revisar fonte e unidade se necessário.",
+      "cached": "Mantido do arquivo original; revisar fonte e unidade se necessário."
+    },
+    {
+      "sheet": "Tarifa_Armz",
+      "cell": "A1",
+      "original": "Produto",
+      "cached": "Produto"
+    },
+    {
+      "sheet": "Tarifa_Armz",
+      "cell": "B1",
+      "original": "Armazenar_Publico",
+      "cached": "Armazenar_Publico"
+    },
+    {
+      "sheet": "Tarifa_Armz",
+      "cell": "C1",
+      "original": "Armazenar_Privado",
+      "cached": "Armazenar_Privado"
+    },
+    {
+      "sheet": "Tarifa_Armz",
+      "cell": "D1",
+      "original": "Fonte_Parametro",
+      "cached": "Fonte_Parametro"
+    },
+    {
+      "sheet": "Tarifa_Armz",
+      "cell": "E1",
+      "original": "Observacao",
+      "cached": "Observacao"
+    },
+    {
+      "sheet": "Tarifa_Armz",
+      "cell": "A2",
+      "original": "Outros",
+      "cached": "Outros"
+    },
+    {
+      "sheet": "Tarifa_Armz",
+      "cell": "B2",
+      "original": 50,
+      "cached": 50
+    },
+    {
+      "sheet": "Tarifa_Armz",
+      "cell": "C2",
+      "original": 50,
+      "cached": 50
+    },
+    {
+      "sheet": "Tarifa_Armz",
+      "cell": "D2",
+      "original": "Informado",
+      "cached": "Informado"
+    },
+    {
+      "sheet": "Tarifa_Armz",
+      "cell": "E2",
+      "original": "Mantido do arquivo original; revisar fonte e unidade se necessário.",
+      "cached": "Mantido do arquivo original; revisar fonte e unidade se necessário."
+    },
+    {
+      "sheet": "Tarifa_Armz",
+      "cell": "A3",
+      "original": "Soja",
+      "cached": "Soja"
+    },
+    {
+      "sheet": "Tarifa_Armz",
+      "cell": "B3",
+      "original": 45,
+      "cached": 45
+    },
+    {
+      "sheet": "Tarifa_Armz",
+      "cell": "C3",
+      "original": 45,
+      "cached": 45
+    },
+    {
+      "sheet": "Tarifa_Armz",
+      "cell": "D3",
+      "original": "Informado",
+      "cached": "Informado"
+    },
+    {
+      "sheet": "Tarifa_Armz",
+      "cell": "E3",
+      "original": "Mantido do arquivo original; revisar fonte e unidade se necessário.",
+      "cached": "Mantido do arquivo original; revisar fonte e unidade se necessário."
+    },
+    {
+      "sheet": "Tarifa_Armz",
+      "cell": "A4",
+      "original": "Milho",
+      "cached": "Milho"
+    },
+    {
+      "sheet": "Tarifa_Armz",
+      "cell": "B4",
+      "original": 48,
+      "cached": 48
+    },
+    {
+      "sheet": "Tarifa_Armz",
+      "cell": "C4",
+      "original": 48,
+      "cached": 48
+    },
+    {
+      "sheet": "Tarifa_Armz",
+      "cell": "D4",
+      "original": "Informado",
+      "cached": "Informado"
+    },
+    {
+      "sheet": "Tarifa_Armz",
+      "cell": "E4",
+      "original": "Mantido do arquivo original; revisar fonte e unidade se necessário.",
+      "cached": "Mantido do arquivo original; revisar fonte e unidade se necessário."
+    }
+  ],
+  "h500_optimized_output_available": false,
+  "qualification": "read-only source and original receipt comparison, not a fresh solve"
+}

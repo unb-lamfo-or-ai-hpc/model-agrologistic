@@ -1,0 +1,116 @@
+{
+  "schema_version": "s6a-coauthor-review-inventory-v1",
+  "review_date": "2026-10-20",
+  "repository_base_commit": "8e6a7cba5a27b330ee917d33e178baa90ceb617d",
+  "reviewed_pdf": {
+    "file_basename": "Agrologistic_Manuscript_20261019-GC.pdf",
+    "sha256": "fbcd5a083775ca25f117adbab1f805c0a08545cd946b0c1bf0045e3258727179",
+    "bytes": 752974,
+    "pages": 33,
+    "annotation_types": {
+      "/Link": 169,
+      "/Highlight": 123,
+      "/Popup": 146,
+      "/Text": 10,
+      "/StrikeOut": 13
+    },
+    "review_annotations": 146,
+    "without_comment": 17,
+    "original_modified": false,
+    "raw_pdf_or_annotation_export_committed": false,
+    "exact_generating_commit_verified": false
+  },
+  "previous_review_pdf_sha256": "9fddd98a202dc28dd511b83d9e8c85f920d9db721ba608dcc3355bdc0449c774",
+  "candidate_source_family": {
+    "text_candidate_commit": "9e648a4cd72f0eda04287736fbd7329185aadba7",
+    "pre_Elsevier_parent": "ababbc3c56fc82f167a88ed3c511998b1c6c7517",
+    "basis": "Matching title, SBC format, abstract and thirteen-attempt body; not build proof"
+  },
+  "baseline_manuscript_tree": "c33c6dbdb829580d1d0c8c9296814b1b7a38280b",
+  "baseline_scientific_src_tree": "666029ace80bd60417d91c43d4460a33326acf64",
+  "baseline_manuscript_qmd_sha256": "da6fcab9accb9df28e21957b7d9fc7318f9bd852405fa7fa87a133518b73618f",
+  "matrix": {
+    "file": "annotation_responses.csv",
+    "rows": 146,
+    "sha256": "c2de3f955c467dc5a2fc7d962785eb86388527a3305199080e8c65b765005d0c",
+    "assessments": {
+      "accept": 104,
+      "adapt": 22,
+      "clarify": 17,
+      "partial": 1,
+      "superseded": 2
+    },
+    "unexplained_mark_ids": [
+      "A019",
+      "A063",
+      "A070",
+      "A077",
+      "A079",
+      "A095",
+      "A096",
+      "A097",
+      "A102",
+      "A103",
+      "A109",
+      "A116",
+      "A123",
+      "A136",
+      "A137",
+      "A138",
+      "A139"
+    ],
+    "authorship_identification": "Omitted at the researcher's explicit instruction"
+  },
+  "inspected_presentation_copies": [
+    {
+      "file_basename": "Agrologistic_ES_descarga_20261005.pptx",
+      "sha256": "28488050279db7d5bf27f81e08d21a50b4296874c9a3fb9ceb29fbf36850cea6",
+      "slide_count": 25,
+      "slides_checked": [
+        15,
+        18
+      ],
+      "internal_footer_date": "2026-10-04",
+      "scope": "Matching local content; exact coauthor-delivery attachment not verified"
+    },
+    {
+      "file_basename": "Agrologistic_MVP1_MVP2_ES_entrega.pptx",
+      "sha256": "4c109c6e1a935cae1578a077511ec3db0f4e07684e6c6f77decdcc956ea6518a",
+      "slide_count": 25,
+      "slides_checked": [
+        15,
+        18
+      ],
+      "internal_footer_date": "2026-10-04",
+      "scope": "Matching local content; exact coauthor-delivery attachment not verified"
+    },
+    {
+      "file_basename": "Agrologistic_MVP1_MVP2_ES_final.pptx",
+      "sha256": "62373742e52dd6151dabed3fec80294c80ec7c67fc37547fbe311902bbd15ca8",
+      "slide_count": 25,
+      "slides_checked": [
+        15,
+        18
+      ],
+      "internal_footer_date": "2026-10-04",
+      "scope": "Matching local content; exact coauthor-delivery attachment not verified"
+    }
+  ],
+  "accepted_scalar_h215": {
+    "job_id": "2217990",
+    "evidence": "../evidence/scalar_h215_2217990_review.json",
+    "new_private_input_validation_or_optimization": false
+  },
+  "scalar_h300_snapshot": {
+    "job_id": "2218193",
+    "reported_status": "RUNNING",
+    "source_commit": "04ba9edccc93f40ab36cbc3264039a7edf2f6f51",
+    "plan_sha256": "000a760b3c263cfd7e88fb75714ac5f125df9c4e27332045c761a75bd60bffb1",
+    "claim_basename": ".mvp2-scalar-h300-30h-v1",
+    "terminal_evidence_available": false,
+    "observation_source": "Researcher-supplied snapshot"
+  },
+  "review_scope": "S6-A preparation and proposed S6-B revisions; current manuscript and live experiment untouched",
+  "new_jobs": false,
+  "scientific_configuration_changed": false
+}

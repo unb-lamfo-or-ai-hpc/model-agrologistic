@@ -4,3 +4,6 @@
 # Shell and Slurm scripts must remain executable on Unix/HPC systems.
 *.sh text eol=lf
 *.slurm text eol=lf
+
+# Supplied complete Appendix A must remain byte-identical on every platform.
+/manuscript/supplement/appendix_a_original.pdf -text

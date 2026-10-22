@@ -1,5 +1,47 @@
 # Article plan and editorial boundaries
 
+22October resumed direction: the expanded supplied mandate now authorizes
+editing the SAME draft PR120, including implementation/data Appendices C/D and
+numbered disclosure/Acknowledgements/References. Read
+[current delivery record](s6a_20261022/mandate_and_delivery.md). The hold below
+is historical for editing, but merge/publication/submission remain unauthorized.
+Independent documentary W/D audit PR124 is separately qualified; its proposed
+D executions are not admitted. Project01/chat01.01 handoff is deferred until
+both workstreams finish here and the maintainer reviews the resulting mandate.
+
+## Current editorial hold —22 October2026
+
+PR120 contains the integrated scalar article/supplements/geographic package
+qualified at1f45d02 on21October, but the maintainer now explicitly requires
+DRAFT pending an expanded coauthor-review round. No merge, further substantive
+editorial revision, Ready promotion, Pages publication or submission follows this
+handoff. Preserve the working revision and original review material; resume when
+the maintainer supplies the next comments/direction. The single approved title,
+RQ, SO1–SO4, fixed scalar model and complete Appendix A remain the starting point.
+See [current mandate](s6a_20261021/README.md) and
+[completion sequence](mvp2_completion_handoff_20261022.md). Earlier statements
+reserving all incorporation to S6-B were superseded by the21October explicit
+authorization to replace manuscript/index.qmd ON the editorial branch, not develop.
+Do not restore historical MVP1/hierarchy numerics as current scalar results.
+
+## S6-A preparation authorized in parallel —20 October2026
+
+The [current coauthor-review package](s6a_20261020/README.md) assesses the supplied
+annotated PDF with all146 response records, a scalar formulation proposal,
+revised outline/prose and results/supplement inventory. The researcher explicitly
+requests this separate PR while scalar h300 runs. Authorship identification of
+individual comments is omitted. The reviewed version and current manuscript
+remain preserved; incorporation of the proposed revisions is the later S6-B
+editorial step. Existing accepted h215 DET/STO supports the deterministic role;
+agricultural maps/decisions need original vectors and geographic inputs.
+
+Use scalar investment plus expected operations and three fixed penalties as the
+active formulation. Main Results foreground actual scalar experiments, with
+historical MVP1/hierarchical MVP2 retained only for stated context/supplement.
+Remove EVPI/VSS and detailed unimplemented Benders material in S6-B. The original
+planning table below is a preserved earlier framework; the detailed current
+outline and acceptance criteria are in the linked S6-A package.
+
 ## Scalar editorial decision — 19 October2026
 
 The [approved scalar contract](mvp2_scalar_contract.md) replaces the scientific

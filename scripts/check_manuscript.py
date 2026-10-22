@@ -1,4 +1,5 @@
 """Check a solver-free manuscript draft without certifying scientific results."""
+
 from __future__ import annotations
 
 import argparse
@@ -10,6 +11,51 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 MANUSCRIPT = ROOT / "manuscript"
 PUBLIC_SITE = "https://unb-lamfo-or-ai-hpc.github.io/model-agrologistic/"
+APPENDIX_SHA = "859dc52b64b6bcf471f7616182d8cadf2b693dbfd19ad4b9248637b5c231b3ed"
+
+
+def check_scalar_revision() -> None:
+    """Bind editorial values to accepted original records, not a new solve."""
+    record = json.loads((MANUSCRIPT / "scalar_evidence.json").read_text(encoding="utf-8"))
+    if record["penalty_rates"] != {"unmet": 90000, "static": 45000, "reception": 45000}:
+        raise ValueError("Frozen scalar penalties differ")
+    rows = record["observations"]
+    if len(rows) != 8 or len({r["case"] for r in rows}) != 8:
+        raise ValueError("Scalar cohort differs")
+    for population, job in [(215, "2217990"), (300, "2218193"), (400, "2219884")]:
+        original = json.loads(
+            (ROOT / "docs/evidence" / f"scalar_h{population}_{job}_review.json").read_text()
+        )
+        for row in (r for r in rows if r["population"] == population):
+            matches = [
+                a
+                for a in original["arms"]
+                if (
+                    a.get("case_name") == row["case"]
+                    if population != 215
+                    else a["mode"] == row["mode"]
+                )
+            ]
+            if len(matches) != 1 or row["source_archive_sha256"] != original["archive_sha256"]:
+                raise ValueError("Scalar original source differs")
+            arm = matches[0]
+            if (
+                row["native_runtime_seconds"] != arm["native_runtime_seconds"]
+                or row["native_gap"] != arm["native_gap"]
+                or row["common_gap"] > 0.01
+                or row["original_validation_status"] != "accepted"
+            ):
+                raise ValueError("Scalar accepted observation differs")
+            if population != 215 and any(
+                row[k] != arm[k]
+                for k in ("objective", "bound", "economic_cost", "artificial_penalties")
+            ):
+                raise ValueError("Scalar cost or bound differs")
+    if record["h500"]["terminal_result_available"] is not False:
+        raise ValueError("No terminal h500 evidence in this revision")
+    source = MANUSCRIPT / "supplement/appendix_a_original.pdf"
+    if hashlib.sha256(source.read_bytes()).hexdigest() != APPENDIX_SHA:
+        raise ValueError("Complete original Appendix A checksum differs")
 
 
 def check_public_review_approval() -> None:
@@ -18,19 +64,29 @@ def check_public_review_approval() -> None:
     if not path.is_file():
         raise ValueError("Publication blocked: Pages approval receipt missing")
     approval = json.loads(path.read_text(encoding="utf-8"))
-    if (approval.get("schema_version") != "manuscript-pages-approval-v1"
-            or approval.get("repository") != "unb-lamfo-or-ai-hpc/model-agrologistic"
-            or approval.get("scope") != "public_coauthor_review"
-            or approval.get("authorized_by") != "repository_owner"
-            or approval.get("approved") is not True
-            or approval.get("journal_submission_authorized") is not False
-            or approval.get("dataset_publication_authorized") is not False):
+    if (
+        approval.get("schema_version") != "manuscript-pages-approval-v1"
+        or approval.get("repository") != "unb-lamfo-or-ai-hpc/model-agrologistic"
+        or approval.get("scope") != "public_coauthor_review"
+        or approval.get("authorized_by") != "repository_owner"
+        or approval.get("approved") is not True
+        or approval.get("journal_submission_authorized") is not False
+        or approval.get("dataset_publication_authorized") is not False
+    ):
         raise ValueError("Publication blocked: invalid or out-of-scope approval")
     digests = approval.get("source_sha256", {})
-    required = {"index.qmd", "authors.json", "references.bib", "review-methods.bib",
-                "supplement/index.qmd", "comparison_results.qmd",
-                "historical_reference_results.md", "evidence_status.json",
-                "dataset_release.json", "citation_selection.json"}
+    required = {
+        "index.qmd",
+        "authors.json",
+        "references.bib",
+        "review-methods.bib",
+        "supplement/index.qmd",
+        "comparison_results.qmd",
+        "historical_reference_results.md",
+        "evidence_status.json",
+        "dataset_release.json",
+        "citation_selection.json",
+    }
     if not required <= digests.keys():
         raise ValueError("Publication blocked: incomplete source approval")
     for relative, digest in digests.items():
@@ -44,26 +100,36 @@ def check_public_review_approval() -> None:
 def check_dataset_release(article: str) -> None:
     """Check the frozen public deposition receipt, not redistribution clearance."""
     receipt = json.loads((MANUSCRIPT / "dataset_release.json").read_text(encoding="utf-8"))
-    if (receipt.get("schema_version") != "zenodo-published-record-v1"
-            or receipt.get("record_id") != 22751909
-            or receipt.get("doi") != "10.5281/zenodo.22751909"
-            or receipt.get("state") != "done"
-            or receipt.get("submitted") is not True
-            or receipt.get("version") != "0.2.0"
-            or receipt.get("source_url") != "https://zenodo.org/api/records/22751909"):
+    if (
+        receipt.get("schema_version") != "zenodo-published-record-v1"
+        or receipt.get("record_id") != 22751909
+        or receipt.get("doi") != "10.5281/zenodo.22751909"
+        or receipt.get("state") != "done"
+        or receipt.get("submitted") is not True
+        or receipt.get("version") != "0.2.0"
+        or receipt.get("source_url") != "https://zenodo.org/api/records/22751909"
+    ):
         raise ValueError("Invalid published dataset receipt")
     files = receipt.get("files", [])
-    if (len(files) != 12 or len({row.get("name") for row in files}) != 12
-            or any(not row.get("name") or not isinstance(row.get("size"), int)
-                   or row["size"] <= 0
-                   or not re.fullmatch(r"md5:[a-f0-9]{32}", row.get("checksum", ""))
-                   for row in files)):
+    if (
+        len(files) != 12
+        or len({row.get("name") for row in files}) != 12
+        or any(
+            not row.get("name")
+            or not isinstance(row.get("size"), int)
+            or row["size"] <= 0
+            or not re.fullmatch(r"md5:[a-f0-9]{32}", row.get("checksum", ""))
+            for row in files
+        )
+    ):
         raise ValueError("Incomplete published dataset inventory")
     availability = article.split("## Data availability", 1)[-1].split("\n# ", 1)[0]
-    if ("https://doi.org/10.5281/zenodo.22751909" not in availability
-            or "@celestino2026dataset" not in availability
-            or "publicly available" not in availability
-            or re.search(r"\b(?:unpublished|reserved)\b", availability, re.IGNORECASE)):
+    if (
+        "https://doi.org/10.5281/zenodo.22751909" not in availability
+        or "@celestino2026dataset" not in availability
+        or "publicly available" not in availability
+        or re.search(r"\b(?:unpublished|reserved)\b", availability, re.IGNORECASE)
+    ):
         raise ValueError("Data availability must match the published dataset receipt")
 
 
@@ -78,8 +144,9 @@ def check(*, rendered: bool = False, publication: bool = False) -> None:
         raise ValueError("Relative appendix links are not portable in downloaded PDFs")
     check_dataset_release(article)
     for included in re.findall(r"\{\{< include ([A-Za-z0-9_-]+\.qmd) >\}\}", article):
-        article = article.replace("{{< include " + included + " >}}",
-                                  (MANUSCRIPT / included).read_text(encoding="utf-8"))
+        article = article.replace(
+            "{{< include " + included + " >}}", (MANUSCRIPT / included).read_text(encoding="utf-8")
+        )
     bibliography = (MANUSCRIPT / "references.bib").read_text(encoding="utf-8")
     selection = json.loads((MANUSCRIPT / "citation_selection.json").read_text())
     evidence = json.loads((MANUSCRIPT / "evidence_status.json").read_text())
@@ -111,44 +178,70 @@ def check(*, rendered: bool = False, publication: bool = False) -> None:
     keys = re.findall(r"@(?:article|incollection|book|misc|phdthesis)\{([^,]+),", bibliography)
     cited = set(re.findall(r"(?<!\w)@([A-Za-z][A-Za-z0-9_-]*)", article))
     cited = {key for key in cited if not key.startswith(("eq-", "tbl-", "fig-", "sec-"))}
-    if len(keys) != len(set(keys)) or set(keys) != cited:
+    if len(keys) != len(set(keys)) or cited - set(keys):
         raise ValueError(f"Bibliography/citation mismatch: {set(keys) ^ cited}")
     external = selection.get("external_records", [])
-    if (len(external) != 1
-            or external[0].get("citation_key") != "celestino2026dataset"
-            or external[0].get("doi") != "10.5281/zenodo.22751909"
-            or external[0].get("source_url") != "https://zenodo.org/api/records/22751909"
-            or external[0].get("publication_receipt") != "dataset_release.json"
-            or "zotero_item_key" in external[0]
-            or "membership_verified" in external[0]):
+    if (
+        len(external) != 1
+        or external[0].get("citation_key") != "celestino2026dataset"
+        or external[0].get("doi") != "10.5281/zenodo.22751909"
+        or external[0].get("source_url") != "https://zenodo.org/api/records/22751909"
+        or external[0].get("publication_receipt") != "dataset_release.json"
+        or "zotero_item_key" in external[0]
+        or "membership_verified" in external[0]
+    ):
         raise ValueError("Dataset citation provenance must not imply Zotero membership")
     selected = selection["records"] + external
-    if (len(selected) != len(cited)
-            or {row["citation_key"] for row in selected} != cited):
-        raise ValueError("Citation provenance must map exactly the cited records")
+    if len(selected) != len(keys) or {row["citation_key"] for row in selected} != set(keys):
+        raise ValueError("Citation provenance must map exactly the retained bibliography")
     for row in selected:
         identifier = row.get("doi") or row.get("url")
         if not identifier or identifier not in bibliography:
             raise ValueError(f"Missing bibliographic identifier for {row['citation_key']}")
     declaration = "# Declaration of generative AI and AI-assisted technologies"
-    if not (article.index("# Reproducibility and availability")
-            < article.index(declaration) < article.index("# References")):
-        raise ValueError("AI declaration must precede References")
-    if re.search(r"^# ", article[article.index(declaration) + 2:
-                                article.index("# References")], re.MULTILINE):
-        raise ValueError("AI declaration must immediately precede References")
-    for required in ("## Deterministic model", "## Two-stage stochastic model",
-                     "{#tbl-sets}", "{#tbl-parameters}", "{#tbl-variables}",
-                     "{#eq-sto-capacity}", "{#eq-indicator}"):
+    acknowledgements = "# Acknowledgements"
+    if not (
+        article.index("# Reproducibility and availability")
+        < article.index(declaration)
+        < article.index(acknowledgements)
+        < article.index("# References")
+    ):
+        raise ValueError("AI declaration, Acknowledgements and References order differs")
+    intervening = re.findall(
+        r"^# (.+)$", article[article.index(declaration):article.index("# References")],
+        re.MULTILINE)
+    if len(intervening) != 2 or intervening[1] != "Acknowledgements" or any(
+        "{-}" in heading for heading in intervening
+    ):
+        raise ValueError("Numbered declaration and Acknowledgements must precede References")
+    for required in (
+        "## Deterministic model",
+        "## Two-stage stochastic model",
+        "{#tbl-sets}",
+        "{#tbl-parameters}",
+        "{#tbl-variables}",
+        "\\text{(D1)}",
+        "\\text{(D10)}",
+        "\\text{(S1)}",
+        "\\text{(S9)}",
+    ):
         if required not in article:
             raise ValueError(f"Missing formulation section: {required}")
-    for prohibited in ("Manuscript Benchmark", "supplied benchmark",
-                       "conventional presentation sequence", "Questions for extracting"):
+    for prohibited in (
+        "Manuscript Benchmark",
+        "supplied benchmark",
+        "conventional presentation sequence",
+        "Questions for extracting",
+    ):
         if prohibited.casefold() in article.casefold():
             raise ValueError("Editorial instructions must not appear as research content")
-    for required in ("## HPC experimental environment",
-                     "# Final considerations, limitations and future work",
-                     "feasibility cuts", "@kaltis2026", "@npad2026"):
+    for required in (
+        "## HPC experimental environment",
+        "# Final considerations, limitations and future work",
+        "Artificial penalties",
+        "@npad2026",
+        "SO4",
+    ):
         if required not in article:
             raise ValueError(f"Missing scientific context: {required}")
     labels = re.findall(r"\{#((?:eq|tbl|fig|sec)-[A-Za-z0-9_-]+)\}", article)
@@ -171,17 +264,24 @@ def check(*, rendered: bool = False, publication: bool = False) -> None:
     if not abstract or len(abstract.group(1).split()) > 250:
         raise ValueError("The abstract must contain at most 250 words")
     highlights = [
-        line[2:] for line in (MANUSCRIPT / "highlights.txt").read_text().splitlines()
+        line[2:]
+        for line in (MANUSCRIPT / "highlights.txt").read_text().splitlines()
         if line.startswith("- ")
     ]
     if not 3 <= len(highlights) <= 5 or any(len(line) > 85 for line in highlights):
         raise ValueError("Highlights require 3–5 statements of at most 85 characters")
     supplement = (MANUSCRIPT / "supplement/index.qmd").read_text(encoding="utf-8")
+    for name in ("appendix_c.qmd", "appendix_d.qmd"):
+        if "{{< include " + name + " >}}" not in supplement:
+            raise ValueError("Missing implementation/data appendix include")
+        supplement += "\n" + (MANUSCRIPT / "supplement" / name).read_text(encoding="utf-8")
     review_bib = bibliography + (MANUSCRIPT / "review-methods.bib").read_text(encoding="utf-8")
-    review_keys = set(re.findall(r"@(?:article|incollection|book|misc|phdthesis)\{([^,]+),",
-                                review_bib))
+    review_keys = set(
+        re.findall(r"@(?:article|incollection|book|misc|phdthesis)\{([^,]+),", review_bib)
+    )
     review_cited = {
-        key for key in re.findall(r"(?<!\w)@([A-Za-z][A-Za-z0-9_-]*)", supplement)
+        key
+        for key in re.findall(r"(?<!\w)@([A-Za-z][A-Za-z0-9_-]*)", supplement)
         if not key.startswith(("eq-", "tbl-", "fig-", "sec-"))
     }
     if review_cited - review_keys:
@@ -192,25 +292,28 @@ def check(*, rendered: bool = False, publication: bool = False) -> None:
         if evidence["publication_ready"] or evidence["numeric_results_included"]:
             raise ValueError("Pending evidence cannot be labeled publication-ready")
         normalized_article = " ".join(article.split())
-        for required in ("100%", "economic pass was not executed",
-                         "report therefore remains rejected"):
+        for required in ("100%", "did not execute its economic pass", "report remains rejected"):
             if required not in normalized_article:
                 raise ValueError("The negative experimental outcome must remain explicit")
         if evidence.get("running_job") is not None:
             raise ValueError("Closed evidence must not report a running job")
     comparison = json.loads((MANUSCRIPT / "comparison_provenance.json").read_text())
-    if (comparison["attempt_count"], comparison["quality_certified_count"],
-            comparison["scip_incumbent_count"]) != (13, 4, 0):
+    if (
+        comparison["attempt_count"],
+        comparison["quality_certified_count"],
+        comparison["scip_incumbent_count"],
+    ) != (13, 4, 0):
         raise ValueError("Changed manuscript cohort requires editorial review")
     for relative, digest in comparison["generated"].items():
         if hashlib.sha256((MANUSCRIPT / relative).read_bytes()).hexdigest() != digest:
             raise ValueError(f"Generated comparison checksum mismatch: {relative}")
+    check_scalar_revision()
     if rendered:
         html = (MANUSCRIPT / "_manuscript/index.html").read_text(encoding="utf-8")
         for extension in ("html", "pdf"):
             if PUBLIC_SITE + f"supplementary-review.{extension}" not in html:
                 raise ValueError("Rendered manuscript omits the public appendix URL")
-        for key in keys:
+        for key in cited:
             if f'id="ref-{key}"' not in html:
                 raise ValueError(f"Missing rendered reference: {key}")
         if "citation-not-found" in html or "?@" in html:
@@ -225,17 +328,46 @@ def check(*, rendered: bool = False, publication: bool = False) -> None:
         if not supplement_pdf.is_file() or not supplement_pdf.read_bytes().startswith(b"%PDF-"):
             raise ValueError("Supplementary PDF output missing or malformed")
         supplement_html = (MANUSCRIPT / "_manuscript/supplementary-review.html").read_text(
-            encoding="utf-8")
-        supplement_content = re.sub(r"<(script|style)\b[^>]*>.*?</\1>", "",
-                                    supplement_html, flags=re.DOTALL | re.IGNORECASE)
+            encoding="utf-8"
+        )
+        supplement_content = re.sub(
+            r"<(script|style)\b[^>]*>.*?</\1>", "", supplement_html, flags=re.DOTALL | re.IGNORECASE
+        )
         if "citation-not-found" in supplement_content or "?@" in supplement_content:
             raise ValueError("Unresolved rendered supplementary reference")
         for key in review_cited:
             if f'id="ref-{key}"' not in supplement_html:
                 raise ValueError(f"Missing rendered supplementary citation: {key}")
+        from pypdf import PdfReader
+
+        original_pages = PdfReader(MANUSCRIPT / "supplement/appendix_a_original.pdf").pages
+        pages = PdfReader(supplement_pdf).pages
+        if len(original_pages) != 19:
+            raise ValueError("Original Appendix A must retain all 19 pages")
+
+        def normalize(value):
+            # PDF form embedding can change extractor word spacing, not content.
+            # Retain every non-whitespace character, its order and the page sequence.
+            return re.sub(r"\s+", "", value)
+
+        originals = [normalize(p.extract_text()) for p in original_pages]
+        rendered_text = [normalize(p.extract_text()) for p in pages]
+        if not any(rendered_text[i : i + 19] == originals for i in range(len(pages) - 18)):
+            print(
+                json.dumps(
+                    {
+                        "original_page_characters": list(map(len, originals)),
+                        "rendered_page_characters": list(map(len, rendered_text)),
+                    }
+                )
+            )
+            raise ValueError("Complete Appendix A page sequence missing or changed")
+        copied = MANUSCRIPT / "_manuscript/appendix_a_original.pdf"
+        if hashlib.sha256(copied.read_bytes()).hexdigest() != APPENDIX_SHA:
+            raise ValueError("Portable HTML appendix source differs")
     if publication:
         check_public_review_approval()
-    print(f"MANUSCRIPT INTEGRITY CHECK: accepted ({len(keys)} cited references)")
+    print(f"MANUSCRIPT INTEGRITY CHECK: accepted ({len(cited)} cited references)")
 
 
 if __name__ == "__main__":

@@ -23,6 +23,9 @@ def assemble(root: Path = ROOT) -> None:
     content = html.read_text(encoding="utf-8")
     content = content.replace('href="index.pdf"', 'href="supplementary-review.pdf"')
     html.write_text(content, encoding="utf-8", newline="\n")
+    original = manuscript / "supplement/appendix_a_original.pdf"
+    if original.exists():
+        shutil.copyfile(original, target / original.name)
 
 
 if __name__ == "__main__":

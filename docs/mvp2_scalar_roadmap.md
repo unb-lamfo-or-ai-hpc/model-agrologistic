@@ -1,5 +1,58 @@
 # Scalar MVP2 roadmap — 19 October 2026
 
+22October resumed mandate: existing draft PR120 now incorporates the new
+implementation/GAMS/data-provenance Appendices C/D and section-numbering changes;
+independent documentary W/D audit is PR124. See
+[current scope and limitations](s6a_20261022/mandate_and_delivery.md).
+The previous handoff remains a dated proposal, not the active transfer mandate.
+Do not send it to Project01/chat01.01 yet. New D runs, GAMS full-instance solves,
+SCIP/h215, repetitions and any new budgets need separate decisions. h500 terminal
+evidence is still awaited; no result is inferred. Main integration remains final.
+
+22October current authority: the maintainer withholds PR120 merge and requests
+DRAFT while additional editorial comments are prepared. The21October integrated
+revision at1f45d02 is technically qualified, not final editorial acceptance.
+The [completion handoff](mvp2_completion_handoff_20261022.md) is the current
+planning view: accepted scalar h215/h300/h400; h500 terminal evidence pending;
+separate SCIP/h215 decision; expanded SAME PR120; S6-A/S6-B; protected-main
+integration only after article review/authorization. No new jobs or unilateral
+scientific scope cuts. Earlier stage estimates and pending statuses below are
+dated history, not fresh instructions or proof of current execution state.
+
+21 October final editorial mandate: PR120 is resumed, not a new editorial PR.
+The researcher now explicitly permits replacing the current manuscript and
+related files ON that branch, superseding the earlier frozen-manuscript and
+untouched-PR120 preparation statements below. Read the
+[current mandate](s6a_20261021/README.md) and
+[meeting/source crosswalk](s6a_20261021/meeting_and_source_review.md).
+develop was reconciled into the editorial branch at63c39bb1 without rewriting
+history; PR120 remains draft, with integrated revision/qualification outstanding.
+No publication, submission, merge or experiment is implied.
+
+h215/h300/h400 scalar evidence is accepted. h500 job2220382 is RUNNING in the
+latest human snapshot; keep its original source/plan/claim and human collection
+commands in PROJECT_STATE.md. Editorial results must retain pending h500 status
+until original terminal evidence is reviewed. SCIP/h215 is a subsequent explicit
+decision, not silently cancelled. S3/S4 remain cancelled and EVPI/VSS excluded.
+The supplied meeting excerpt targets technical revision before15November and
+discussion on18November at09:30; intended submission is December with January2027
+as a recognized possibility. Keep time for coauthor review and reproducible
+packaging. Final main/develop integration follows article review/authorization,
+not S2 closure or the present reconciliation in the opposite direction.
+
+20 October update: PR119 merged and scalar h300 job2218193 is RUNNING in the
+researcher's latest snapshot, source04ba9edc/plan000a760b.... The approved30h
+block remains bound to its original claim and software. Resume status/wait/
+collect; no additional experiment, repeat or live-source change follows.
+
+The researcher authorizes a separate early [S6-A coauthor-review preparation](s6a_20261020/README.md)
+PR during that execution. Annotation responses, scalar presentation, proposed
+text and extraction/supplement schemas can advance now. Accepted h215 DET/STO
+already supplies a scalar baseline; actual h300/later outcomes and agricultural
+vectors remain evidence dependencies. This does not close S6-A, edit the frozen
+manuscript or cancel/expand R3-B/R4/R5. S6-B and final protected-main integration
+retain their existing author-review/merge decisions. Earlier next-gate snapshots
+below are historical; the detailed current status is in PROJECT_STATE.md.
 21 October subsequent decision: prepare/qualify ONE consolidated h400-evidence/
 h500 operational package with confirmed historical input/audit and approved
 8h/24logicalCPU/192GiB/one-thread/global4h/70M boundary. Read

@@ -1,0 +1,47 @@
+{
+  "schema_version": "geographic-editorial-source-v1",
+  "snapshot": "219a80011f3844dd10648298ae103912dd8f8d115fbe87aead385f1ec26c171c",
+  "sources": {
+    "archive_h215": "81890b546d720ad5999d11f44fd499337aad937e32773db39067796f73660534",
+    "archive_h300": "dc5969fa391dc81590210ef7e6f89abbb5df554e4bc5b2032ba9eafe1a67f3fc",
+    "archive_h400": "e0b58bb74ac254706d30f0f1863162df5d8a714751eadf43b28e7dbc0c5d5def",
+    "scalar_h215_det_validation": "81e9cc22f18a1c65b7d67bbb89362b0f49f6ebdb22f006cd71f9565499447c78",
+    "scalar_h215_sto_validation": "d130fdb7abb485bf0adc1254d4e518463c5a7ef5e1f644db140e94be4d6de0f9",
+    "scalar_h300_t16_validation": "b2274b7291e50ae9675c1b9c545d237fe61bc5cff466908ba445c08c4a52209d",
+    "scalar_h300_t1_validation": "6753456cbe5207a2b9eccfce059e242b52e64613790d5a419a3924c542c16b6e",
+    "scalar_h300_t2_validation": "809297f586ca65e3bdfd1752866503d2e73729d52bd0b89b37f3d31b0aa702d9",
+    "scalar_h300_t4_validation": "b0f28c0e80e9eebe015ef13d6b8d084d4fb14c0c8007e1426c6cae1d9197ebbd",
+    "scalar_h300_t8_validation": "a56abce761c493f2152376d99091edeb4fe4ad4d99b94617b6eeec575058fb86",
+    "scalar_h400_t1_validation": "d4b1c5a585b4b6b009e14c791ea743ebc822b7478cf1f17b10e4669116cfb242",
+    "workbook_h215": "40edb66585daca9cc393cab1f86bde6d4528a5f34b6afc57260cc1684396da4e",
+    "workbook_h300": "7761cce77cf93dcba2f617714f0117c1f2ead4de0c3f27149daceba447e0c7d1",
+    "workbook_h400": "c3085456997714ef5a8bdbf61e2c9a5e578c2636003947427cf58933d21ceb13",
+    "workbook_h500": "888fbff42e4f80817d4d5f0101049495c86c6ed4cda75f00813779dadab41515"
+  },
+  "figures": {
+    "h500_pending.json": {
+      "figure_sha256": "cdddc31e170caa676c7bf349d57fadd3b4d9718317150016cda555f8e7494d94",
+      "normalized_utf8_sha256": "b933b13260c860cded4aaf10ba05ab61c395d37b24280314ef12f1be8959e7d9"
+    },
+    "scalar_h215_det.json": {
+      "figure_sha256": "863ceb982e4c0381fb112619340eb82cdb6856223f452bf0fcc0741b132a0e58",
+      "normalized_utf8_sha256": "7594b09ed72e38fdf1a3397c81cd2e8adac323eaafb2bca3be5ece8184685fbc"
+    },
+    "scalar_h215_sto.json": {
+      "figure_sha256": "94d842a642ef1a3f4829d34b851ca76d1d7514ef36b0ababc30a4aa2c246652b",
+      "normalized_utf8_sha256": "d215a5e76df40d3e2e61f502a822cf3bce8ed62e5c6a57ba67d0b01544853330"
+    },
+    "scalar_h300_t1.json": {
+      "figure_sha256": "1acf326b41058e003fd639503052c02ceb5673584bb750f990f2f633dcd58a13",
+      "normalized_utf8_sha256": "a222957b143229d23a711d34b1898ac31dede6a7d5c211243b194503b08330d6"
+    },
+    "scalar_h400_t1.json": {
+      "figure_sha256": "305ca77b028392b449407c1f94f3ca5eb36f6bb5a7bf4de556edd530911f122e",
+      "normalized_utf8_sha256": "106d4b6fc72d9572dd9481674885eba9c3310d88cfa1e188d60455d3530b620d"
+    }
+  },
+  "qualification": "Original accepted-certificate and vector post-processing, not fresh residual re-solve",
+  "h500": "input availability only; no terminal solution",
+  "road_geometry": "not provided; never fabricated",
+  "source_text_normalization": "UTF-8 with universal newlines read as LF; original archive hashes are raw bytes"
+}

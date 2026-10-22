@@ -1,5 +1,23 @@
 # Experimental protocol: portable summary
 
+22October addition: W/D documentary audit PR124 confirms the eight accepted
+scalar cases are W. Its proposed h215 D DET/STO pair is not execution admission.
+PR120's data-only exporter/reviewable GAMS translation is not a new solver
+benchmark or GAMS numerical-parity certificate. No scientific settings or
+approved budgets change; see [current record](s6a_20261022/mandate_and_delivery.md).
+
+22October current boundary: scalar h215 DET/STO, five h300 thread levels and h400
+STO are accepted under their ORIGINAL execution sources/certificates. h500
+job2220382 was human-reported RUNNING on21October; its present/terminal state is
+unverified. Preserve its sourcefce341df/plan1f57d230/claim and use only the
+existing human status/wait/collect route. No new submission/repeat is admitted.
+Full current identities and commands are in PROJECT_STATE.md; subsequent
+interpretation/decision gates are in the [completion handoff](mvp2_completion_handoff_20261022.md).
+Keep global14400s native budgets, effective90000/45000/45000 rates and original
+validation1e-5/1e-8 unchanged. Historical hierarchical budgets/100% capacity gaps
+below are not current scalar settings or certificates. PR120 remains on editorial
+hold; software qualification alone does not authorize experimental action.
+
 Current20 October: PR117's human start stopped before claim/submission because
 the h300 wrapper extrapolated the h215 input directory. Correct to the confirmed
 historical `nine_population_osrm_v1/warehouses_300` workbook/sidecar, without

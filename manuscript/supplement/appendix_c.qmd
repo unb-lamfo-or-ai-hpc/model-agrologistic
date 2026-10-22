@@ -1,0 +1,200 @@
+# Appendix C Deterministic and Two-Stage Stochastic MILP Implementations in Python and GAMS
+
+## Mathematical implementation and terminology
+
+The mathematical foundation is attributed to Rosa (2026). This appendix documents
+the approved scalar implementation, not the archived hierarchical objective.
+The scientific source inspected here is pinned at
+[`6fb43389ea70b02d0f54c959a2bfff8d53d83af4`](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/tree/6fb43389ea70b02d0f54c959a2bfff8d53d83af4/src/logic).
+The editorial additions do not modify that source. Source references identify
+functions, not a claim that an old certificate was generated with the editorial
+commit. Each accepted execution retains its own source and runtime identities.
+
+Permanent implementation references are the
+[Gurobi extensive-form builder](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/6fb43389ea70b02d0f54c959a2bfff8d53d83af4/src/logic/optimization_gurobipy_stochastic.py#L40),
+[native SCIP builder](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/6fb43389ea70b02d0f54c959a2bfff8d53d83af4/src/logic/optimization_scip.py#L59),
+[effective-input preparation](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/6fb43389ea70b02d0f54c959a2bfff8d53d83af4/src/logic/mathematical_contract.py#L98),
+[Excel loader](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/6fb43389ea70b02d0f54c959a2bfff8d53d83af4/src/logic/excel_loader.py#L155)
+and [independent residual/cost validator](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/6fb43389ea70b02d0f54c959a2bfff8d53d83af4/src/logic/solution_validation.py#L37).
+
+We use Origin–Warehouse–Destination. In the Python records the Portuguese legacy
+letter D denotes *depósito*, not the destination or the direct-enabled topology.
+The crosswalk below prevents an ambiguity in reading the formulation and exports.
+No serialized field or internal scientific identifier is renamed.
+
+| Scientific transport family | Endpoints | Legacy code/artifact label | GAMS set / flow |
+| --- | --- | --- | --- |
+| OW | Origin → warehouse | OD | `ow / xOW` |
+| WD | Warehouse → destination | DC | `wd / xWD` |
+| WW | Warehouse → warehouse | DD | `ww / xWW` |
+| OD, direct | Origin → destination | OC | `direct / xOD` |
+
+W disables the last family; D permits it alongside all admissible warehouse
+paths. D does not prescribe a positive direct flow. Both modes retain the same
+three slack families and first-stage decisions. The accepted large scalar cohort
+in this article contains W observations only. Software support for D is not a
+controlled large-instance W×D result.
+
+## Deterministic Python and Gurobi path
+
+`optimization.solve_model` dispatches to
+`optimization_gurobipy.solve_model_gurobipy`. This actual entry point uses
+`mathematical_contract.extensive_form_inputs`, then
+`optimization_gurobipy_stochastic.solve_stochastic_model_gurobipy`.
+DET embeds the original deterministic supply and demand arrays in a singleton
+named `deterministic`, with probability one. It neither averages stochastic
+trajectories nor selects a convenient realization. `project_deterministic_result`
+restores the deterministic output API after extraction.
+
+The following excerpt is from the actual dispatcher, not pseudocode:
+
+```python
+prepared, config = extensive_form_inputs(data, model_config)
+result = solve_stochastic_model_gurobipy(prepared, config, solver_config)
+```
+
+The common builder first freezes the selected graph and penalty vector, creates
+the eligible first-stage binaries and quantities once, and creates nonnegative
+flows only on retained product-specific arcs. Inventory is warehouse/product/
+period indexed; shortage is domestic destination/product/period indexed; static
+and reception slacks are separate warehouse/period variables. An absent arc is
+not a zero-cost dense route. Explicit supply, initial stock and finite or
+unrestricted export bounds retain their original interpretation.
+
+## Stochastic Python and Gurobi path
+
+STO shares candidate opening, candidate capacity, expansion and conversion
+variables across scenarios by construction. Operating variables acquire a
+scenario index. There are no scenario-specific investment copies to reconcile
+after solving. Each realization supplies its full operating trajectory, so this
+is a two-stage model despite its 60 periods, not a multistage policy.
+
+The following actual objective-construction excerpt follows scenario cost
+construction in `solve_stochastic_model_gurobipy`:
+
+```python
+expected_costs = {
+    component: gp.quicksum(
+        data.scenario_prob[scenario] * scenario_costs[scenario][component]
+        for scenario in scenarios
+    )
+    for component in next(iter(scenario_costs.values()))
+}
+model.setObjective(penalized_cost, GRB.MINIMIZE)
+```
+
+Investment is charged once; probabilities multiply transport, storage and each
+slack cost once. They never scale conservation equations, installed capacity or
+the shared investment vector. `_optimize_scalar` makes one native call; the
+global TimeLimit does not restart at successive objective priorities.
+
+## Python and SCIP path for DET and STO
+
+`optimization_scip.solve_model_scip` uses the same deterministic embedding and
+effective-input preparation. It reuses algebraic investment, capacity and unit-
+cost helpers but creates native PySCIPOpt variables, constraints, indicators,
+objective, solve call and result extraction. Shared helpers do not instantiate
+a Gurobi environment. The SCIP extensive form creates separate scenario-indexed
+operational records and one first-stage dictionary.
+
+The source sets a single minimization of `penalized`, then calls
+`model.optimize()`. SCIP's requested thread ceilings are not a claim that its
+sequential optimize driver achieves concurrent search. Its native termination
+and native gap remain distinct from the common incumbent-denominator gap.
+The configured mathematical feasibility rules and original-unit independent
+validator are not replaced by a solver's status label.
+
+For inactive candidate slacks, Gurobi uses `addGenConstrIndicator` with binary
+value false and equality zero. SCIP uses `addConsIndicator` with `activeone=False`
+and a nonnegative slack bounded above by zero. These describe the same implication.
+Neither translation requires inventing a finite upper bound on the active slack.
+No SCIP/h215 large-instance success or failure under the current scalar contract
+is inferred from these source correspondences or the analytical tests.
+
+## Equation to code to data crosswalk
+
+Equation identifiers refer to the complete main-text formulation. D3 defines
+capacity expressions rather than additional optimization decisions.
+
+| Equations / units | Actual Python function or construction | GAMS symbol/equation | Effective input origin |
+| --- | --- | --- | --- |
+| D1, S1; BRL | Cost construction [C-a] | `objective`, `fixed*`, `unit*`, `cost*`, `hold`, `penalty*`, `pi` | Warehouse investment, freight × road distance, tariffs and frozen weights |
+| D2; investment t and binaries | First-stage construction [C-b] | `newBound`, `expBound`, `bulkBound`, `expActive`, `bulkActive`, `exclusion` | Eligible subsets, maximum quantities and flags |
+| D3; t and t/day | Capacity expressions [C-c] | RHS of `stockBound`, `receiveBound`, `shipBound` | Initial capacities, days and investment handling gains |
+| D4/S2; period t | Scenario supply balance [C-d] | `supplyBalance`, `supply` | Original supply or Cartesian multiplier |
+| D5–D6/S3–S4; period t | Scenario stock balance [C-d] | `inventoryBalance`, `initial` | Retained OW/WD/WW arcs, initial stock, ordered periods |
+| D7/S5; period t | Domestic sum of DC + OC + shortage | `domesticBalance`, `demand` | Role-separated domestic data, scenario multiplier |
+| D8/S6; period t | Export sum of DC + OC at most the upper bound | `exportBound`, `exportCap` | Declared fixed or supply-derived export limits |
+| D9/S7; stock t, period handling t | Product-aggregated stock, inbound and outbound constraints | `stockBound`, `receiveBound`, `shipBound` | Daily rates × operating days; reception slack added afterward |
+| D10/S8; slack t | Native candidate indicators in both backends | `closedStock`, `closedReception` plus mandatory solver mapping | Candidate membership and common opening binary |
+| D11/S9; domains | Eligible first-stage keys, nonnegative recourse variables | `y`, `z`, `g`, `k`, `e`, `b`, `x*`, `stock`, `unmet`, `qK`, `qR`; subset fixes | ModelConfig and effective index sets |
+| All residuals and D1/S1 cost | Independent validation [C-e] | Comparison required; not supplied by `modelstat` alone | Frozen input, sparse recourse and dense first-stage exports |
+
+The source keys in this table resolve as follows, all at the pinned scientific
+commit above. C-a is `_build_investment_costs` and `_build_scenario_costs` in
+`optimization_gurobipy_stochastic.py`. C-b is `_add_first_stage_constraints` in
+that same file. C-c comprises `_effective_static_capacity_expr`,
+`_effective_reception_capacity_expr` and `_effective_shipping_capacity_expr` in
+`optimization_gurobipy.py`. C-d is `_add_scenario_constraints` in the stochastic
+Gurobi file and the corresponding explicit physical loops inside
+`optimization_scip.solve_model_scip`. C-e is
+`solution_validation.validate_solution`. The source keys shorten table cells
+only; they are not additional functions or substitute implementations.
+
+The scalar cost has 14 independently reconstructed components: six investment,
+four transport, one storage and three artificial penalties. The validator uses
+absolute tolerance $10^{-5}$ and relative tolerance $10^{-8}$ locally for each
+constraint, with the existing explicit sparse-export rounding budget. Aggregate
+national balance cannot compensate for a failed local constraint.
+
+## GAMS deterministic and stochastic translations
+
+The reviewable source consists of `model_det.gms`, `model_sto.gms` and one shared
+`model_common.inc`, distributed with this supplement. The two entry files
+select the input interpretation; the common file contains the complete scalar
+objective, all physical constraints, domains, eligibility and activation rows.
+`scripts/export_scalar_gams_data.py` exports already effective Python inputs as
+`data.inc` plus a JSON identifier/symbol/hash receipt. It does not build a solver
+model, call GAMS, or change source spreadsheets. Safe synthetic GAMS labels map
+back to every original node, product, period and scenario identifier. No manual
+transcription of the large arrays is required.
+
+The translation deliberately supports the accepted scalable-candidate,
+daily-handling-factor, free-terminal, three-enabled-slack profile. Unsupported
+legacy settings fail rather than being approximately translated. The exporter
+preserves original DET data, probabilities, route filtering, all unit costs,
+initial stocks, eligible investment bounds and the effective penalty vector.
+The file hash identifies its generated bytes; the receipt additionally binds
+the workbook, manifest, case and source. Parameter exports remain local if their
+redistribution conditions are not established.
+
+GAMS passes indicator mappings through solver-specific option files, rather than
+ordinary endogenous dollar conditions. The common file writes the mandatory
+Gurobi mapping or SCIP indicator-file reference. Omitting that mapping would
+solve a different model. The mechanism follows the
+[GAMS indicator documentation](https://www.gams.com/latest/docs/UG_LanguageFeatures.html#UG_LanguageFeatures_IndicatorConstraints)
+and [GAMS/SCIP interface](https://www.gams.com/latest/docs/S_SCIP.html).
+No arbitrary slack Big-M is introduced. Default execution performs source/data
+inspection without a solve. An explicit tiny-local flag is restricted by size;
+full h215/h300/h400/h500 numerical reproduction is not admitted here.
+
+## Structural and numerical validation status
+
+**C1, structural inspection:** the crosswalk, shared first-stage indexing,
+probability placement, four flow families, capacity units, three slacks and
+native-indicator mapping were inspected against the pinned Python source.
+Exporter tests check original input preservation, costs, scenarios, configuration
+rejection and exclusive output. This is not a GAMS compiler certificate.
+
+**C2, small numerical parity:** unperformed. No GAMS executable is installed in
+the qualification environment; GAMS compilation, solver loading and numerical
+parity are not claimed. Existing Python Gurobi/SCIP analytical tests concern
+those backends, not execution of this translation. A future licensed small test
+must compare objective components, residuals and meaningful decisions, allowing
+alternative optima rather than demanding identical arbitrary binary choices.
+
+**C3, full-instance reproduction:** unperformed and not authorized. Accepted
+Python h215/h300/h400 records remain the empirical evidence; they do not validate
+GAMS by proxy. Full translation runs would require input review, appropriate
+licenses, resources, explicit scientific authorization and their own immutable
+certificates. Publication or production deployment is not implied.
