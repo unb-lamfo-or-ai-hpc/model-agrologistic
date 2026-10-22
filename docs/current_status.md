@@ -1,5 +1,13 @@
 # Dated research status: 22 October 2026
 
+Latest decision supersedes the dated draft holds below: PR124 and PR120 merged
+with explicit authorization atec129398… and2d75dee… respectively. Prepare the
+[W/D h215 input-only gate](mvp2_scalar_wd_h215_gate.md), not jobs or W repetitions.
+Historical W controls plus two proposed missing D cells permit a bounded
+solution/network comparison, not a contemporaneous causal runtime claim. The
+new D resource envelope remains proposed; execution is closed. h500 still lacks
+newly supplied terminal evidence. Keep Project01 handoff and main sync deferred.
+
 Resumed direction: PR120 editing now incorporates the supplied expanded mandate,
 including Appendices C/D and numbered closing sections. It remains draft and
 unmerged; see [current scope](s6a_20261022/mandate_and_delivery.md).

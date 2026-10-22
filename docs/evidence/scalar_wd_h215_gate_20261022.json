@@ -1,0 +1,189 @@
+{
+  "schema_version": "scalar-wd-h215-input-comparison-review-v1",
+  "review_date": "2026-10-22",
+  "baseline_develop": "2d75dee0d9a1b1b03d51d3dcf31eada74826d037",
+  "historical_w_archive_sha256": "81890b546d720ad5999d11f44fd499337aad937e32773db39067796f73660534",
+  "workbook_sha256": "40edb66585daca9cc393cab1f86bde6d4528a5f34b6afc57260cc1684396da4e",
+  "kind": "input_graph_cost_scenario_comparison_not_optimization",
+  "comparisons": {
+    "det": {
+      "added_direct_arcs": 592,
+      "added_flow_variables": 35520,
+      "automatic_follow_on_allowed": false,
+      "causal_runtime_comparison_admitted": false,
+      "common_arcs_identical": true,
+      "common_data_identical": true,
+      "d_execution_admitted": false,
+      "execution_admitted": false,
+      "h300_admitted": false,
+      "penalties_identical": true,
+      "repeats_admitted": false,
+      "resource_envelope_approved_for_d": false,
+      "w_repetition_admitted": false
+    },
+    "sto": {
+      "added_direct_arcs": 592,
+      "added_flow_variables": 319680,
+      "automatic_follow_on_allowed": false,
+      "causal_runtime_comparison_admitted": false,
+      "common_arcs_identical": true,
+      "common_data_identical": true,
+      "d_execution_admitted": false,
+      "execution_admitted": false,
+      "h300_admitted": false,
+      "penalties_identical": true,
+      "repeats_admitted": false,
+      "resource_envelope_approved_for_d": false,
+      "w_repetition_admitted": false
+    }
+  },
+  "cells": {
+    "D_det": {
+      "estimate": {
+        "base_routes_dc": 3440,
+        "base_routes_dd": 18490,
+        "base_routes_oc": 592,
+        "base_routes_od": 3182,
+        "emergency_capacity_variables": 25800,
+        "flow_variables": 1542240,
+        "inventory_variables": 25800,
+        "investment_variables": 614,
+        "period_count": 60,
+        "repair_routes_dc": 0,
+        "repair_routes_dd": 0,
+        "repair_routes_oc": 0,
+        "repair_routes_od": 0,
+        "routes_dc": 3440,
+        "routes_dd": 18490,
+        "routes_oc": 592,
+        "routes_od": 3182,
+        "scenario_count": 1,
+        "total_variables": 1597694,
+        "unmet_demand_variables": 3240
+      },
+      "edge_sha256": {
+        "dc": "7f68f8090509f5daff2b8d1a5651494ade6817f7ec388f1ffc9fb18ac8bf7920",
+        "dd": "e3f01bb2a1aa181d14425c9e854123247d7286be633a74a448ac308ae788e279",
+        "oc": "23bd4ee5afacb4cbde91f6053d8203bf3d4ca5591375ee7380bbd50e5d05bf5a",
+        "od": "eb186db766b9e464a1181bdd9c2e625807eadd1fbd85a32269f2250da1e8fafb"
+      },
+      "penalty_vector_sha256": "e0f93593659c35d14b85cdaddecbe020edb375376f5e30ae99b05bed876d276f",
+      "warehouse_ordered_ids_sha256": "1aa2511da56e546298e04efdcb021050b057ca3c455ecda584182c15fe5f33d7"
+    },
+    "D_sto": {
+      "estimate": {
+        "base_routes_dc": 3440,
+        "base_routes_dd": 18490,
+        "base_routes_oc": 592,
+        "base_routes_od": 3182,
+        "emergency_capacity_variables": 232200,
+        "flow_variables": 13880160,
+        "inventory_variables": 232200,
+        "investment_variables": 614,
+        "period_count": 60,
+        "repair_routes_dc": 0,
+        "repair_routes_dd": 0,
+        "repair_routes_oc": 0,
+        "repair_routes_od": 0,
+        "routes_dc": 3440,
+        "routes_dd": 18490,
+        "routes_oc": 592,
+        "routes_od": 3182,
+        "scenario_count": 9,
+        "total_variables": 14374334,
+        "unmet_demand_variables": 29160
+      },
+      "edge_sha256": {
+        "dc": "7f68f8090509f5daff2b8d1a5651494ade6817f7ec388f1ffc9fb18ac8bf7920",
+        "dd": "e3f01bb2a1aa181d14425c9e854123247d7286be633a74a448ac308ae788e279",
+        "oc": "23bd4ee5afacb4cbde91f6053d8203bf3d4ca5591375ee7380bbd50e5d05bf5a",
+        "od": "eb186db766b9e464a1181bdd9c2e625807eadd1fbd85a32269f2250da1e8fafb"
+      },
+      "penalty_vector_sha256": "e0f93593659c35d14b85cdaddecbe020edb375376f5e30ae99b05bed876d276f",
+      "warehouse_ordered_ids_sha256": "1aa2511da56e546298e04efdcb021050b057ca3c455ecda584182c15fe5f33d7"
+    },
+    "W_det": {
+      "estimate": {
+        "base_routes_dc": 3440,
+        "base_routes_dd": 18490,
+        "base_routes_oc": 0,
+        "base_routes_od": 3182,
+        "emergency_capacity_variables": 25800,
+        "flow_variables": 1506720,
+        "inventory_variables": 25800,
+        "investment_variables": 614,
+        "period_count": 60,
+        "repair_routes_dc": 0,
+        "repair_routes_dd": 0,
+        "repair_routes_oc": 0,
+        "repair_routes_od": 0,
+        "routes_dc": 3440,
+        "routes_dd": 18490,
+        "routes_oc": 0,
+        "routes_od": 3182,
+        "scenario_count": 1,
+        "total_variables": 1562174,
+        "unmet_demand_variables": 3240
+      },
+      "edge_sha256": {
+        "dc": "7f68f8090509f5daff2b8d1a5651494ade6817f7ec388f1ffc9fb18ac8bf7920",
+        "dd": "e3f01bb2a1aa181d14425c9e854123247d7286be633a74a448ac308ae788e279",
+        "oc": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+        "od": "eb186db766b9e464a1181bdd9c2e625807eadd1fbd85a32269f2250da1e8fafb"
+      },
+      "penalty_vector_sha256": "e0f93593659c35d14b85cdaddecbe020edb375376f5e30ae99b05bed876d276f",
+      "warehouse_ordered_ids_sha256": "1aa2511da56e546298e04efdcb021050b057ca3c455ecda584182c15fe5f33d7"
+    },
+    "W_sto": {
+      "estimate": {
+        "base_routes_dc": 3440,
+        "base_routes_dd": 18490,
+        "base_routes_oc": 0,
+        "base_routes_od": 3182,
+        "emergency_capacity_variables": 232200,
+        "flow_variables": 13560480,
+        "inventory_variables": 232200,
+        "investment_variables": 614,
+        "period_count": 60,
+        "repair_routes_dc": 0,
+        "repair_routes_dd": 0,
+        "repair_routes_oc": 0,
+        "repair_routes_od": 0,
+        "routes_dc": 3440,
+        "routes_dd": 18490,
+        "routes_oc": 0,
+        "routes_od": 3182,
+        "scenario_count": 9,
+        "total_variables": 14054654,
+        "unmet_demand_variables": 29160
+      },
+      "edge_sha256": {
+        "dc": "7f68f8090509f5daff2b8d1a5651494ade6817f7ec388f1ffc9fb18ac8bf7920",
+        "dd": "e3f01bb2a1aa181d14425c9e854123247d7286be633a74a448ac308ae788e279",
+        "oc": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+        "od": "eb186db766b9e464a1181bdd9c2e625807eadd1fbd85a32269f2250da1e8fafb"
+      },
+      "penalty_vector_sha256": "e0f93593659c35d14b85cdaddecbe020edb375376f5e30ae99b05bed876d276f",
+      "warehouse_ordered_ids_sha256": "1aa2511da56e546298e04efdcb021050b057ca3c455ecda584182c15fe5f33d7"
+    }
+  },
+  "qualification": "Original input/receipt comparison; no new optimizer model, solve, live HPC or residual certificate.",
+  "local_related_tests": {
+    "tests": 244,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "limitations": [
+    "Historical W is not contemporaneous",
+    "D resource envelope not approved",
+    "No D solution or causal performance result",
+    "Exact-head source/CI qualification recorded separately"
+  ],
+  "module_sha256": "5cdeeee0f59ef4e79f0417634fbc2615ee94716ede49d1bc9a663684cf1c4c72",
+  "execution_admitted": false,
+  "d_execution_admitted": false,
+  "repeats_admitted": false,
+  "w_repetition_admitted": false,
+  "automatic_follow_on_allowed": false
+}

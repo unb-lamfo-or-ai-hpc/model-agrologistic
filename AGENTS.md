@@ -1,5 +1,20 @@
 # Model Agrologistic: agent working agreement
 
+## Merged PR120/124 and input-only W/D h215 gate —22 October2026
+
+The maintainer authorized both integrations. PR124 merged atec1293986de5a654fe6374051da07dbf9b636db2;
+PR120 merged at2d75dee0d9a1b1b03d51d3dcf31eada74826d037 after its reconciled
+headf814955 passed all five checks. Earlier draft/merge holds below are dated
+history, not current instructions. Read `docs/mvp2_scalar_wd_h215_gate.md`.
+Prepare/qualify input-only W/D comparison and a prospective D DET/STO design,
+not W repetitions or execution. Preserve original model/scenarios/penalties,
+warehouse membership, accepted archives and operational claims. No NPAD access,
+solver model, job, retry or automatic follow-on. New D resource/design approval
+and a complete separately qualified operational package precede human execution.
+The proposed14h/24logicalCPU/192GiB/Threads4/global14400s profile is not inherited
+admission from W. Keep GAMS parity limitations and h500 terminal uncertainty
+explicit. Project01/new-machine handoff and final main integration remain deferred.
+
 ## Authorized integration and next W/D preparation —22 October2026
 
 The maintainer explicitly authorizes PR124 and PR120 merges into develop and
