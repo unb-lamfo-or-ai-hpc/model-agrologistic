@@ -91,6 +91,8 @@ def test_explicit_predecessors_preserve_input_order(tmp_path):
     data.demand_dom = {("C", "P", t): 10 for t in data.periods}
     export(data, ModelConfig(), tmp_path / "periods", provenance={})
     text = (tmp_path / "periods/data.inc").read_text()
+    assert "Set t / 't00000', 't00001' /;" in text
+    assert "t('t00000') = yes;" not in text
     assert "firstPeriod('t00000') = yes;" in text
     assert "predecessor('t00001','t00000') = yes;" in text
 

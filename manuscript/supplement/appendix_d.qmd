@@ -1,4 +1,4 @@
-# Appendix D Experimental Data Parameter Provenance and Warehouse Population Reproducibility
+# Appendix D Experimental Data, Parameter Provenance, and Warehouse-Population Reproducibility
 
 ## Sources and verified availability
 

@@ -82,8 +82,14 @@ def export(data, config, output, *, provenance):
             key = (key,) if len(kinds) == 1 else key
             lines.append(f"{name}({labels(kinds, key)}) = {value(number)};")
 
-    for kind, values in domains.items():
-        set_values(kind, kind, values)
+    # Base domains must be STATIC GAMS data statements, not assigned dynamic
+    # sets (which cannot subsequently be declaration domains).
+    lines.append("$onEmpty")
+    for kind, pairs in maps.items():
+        lines.append(
+            f"Set {kind} / " + ", ".join("'" + label + "'" for label in pairs.values()) + " /;"
+        )
+    lines.append("$offEmpty")
     # Explicit predecessor relation avoids reliance on GAMS global UEL ordering
     # or lag operators on dynamically populated input sets.
     set_values("firstPeriod", "t", effective.periods[:1])

@@ -12,15 +12,15 @@ $if not set execute_small $setglobal execute_small 0
 Sets o origins, w warehouses, c destinations, p products, t ordered_periods,
      s scenarios, n(w) candidates, old(w) existing, ex(w) expansion_eligible,
      bulk(w) conversion_eligible, dom(c) domestic, exportDest(c) export,
-     ow(o,w,p), wd(w,c,p), ww(w,w,p), direct(o,c,p),
-     firstPeriod(t), predecessor(t,t);
+     firstPeriod(t);
 Alias(w,v);
 Alias(t,tp);
+Sets ow(o,w,p), wd(w,c,p), ww(w,v,p), direct(o,c,p), predecessor(t,tp);
 Parameters pi(s), supply(s,o,p,t), demand(s,c,p,t), exportCap(s,c,p,t),
      initial(w,p), stock0(w), receive0(w), ship0(w), days(t),
      maxNew(w), maxExp(w), maxBulk(w), fixedNew(w), unitNew(w),
      fixedExp(w), unitExp(w), fixedBulk(w), unitBulk(w),
-     costOW(o,w,p), costWD(w,c,p), costWW(w,w,p), costOD(o,c,p),
+     costOW(o,w,p), costWD(w,c,p), costWW(w,v,p), costOD(o,c,p),
      hold(w,p), penaltyD(c,p), penaltyK(w), penaltyR(w);
 Scalars rhoNew, rhoExp, rhoBulk, etaNew, etaExp, etaBulk;
 $include %data%
@@ -36,7 +36,7 @@ Binary Variables y(w) candidate_open_or_existing_active,
                  z(w) expansion_active, g(w) conversion_active;
 Positive Variables k(w) candidate_tonnes, e(w) expansion_tonnes,
      b(w) conversion_tonnes, xOW(s,o,w,p,t), xWD(s,w,c,p,t),
-     xWW(s,w,w,p,t), xOD(s,o,c,p,t), stock(s,w,p,t),
+     xWW(s,w,v,p,t), xOD(s,o,c,p,t), stock(s,w,p,t),
      unmet(s,c,p,t), qK(s,w,t), qR(s,w,t);
 Variable total penalized_BRL;
 

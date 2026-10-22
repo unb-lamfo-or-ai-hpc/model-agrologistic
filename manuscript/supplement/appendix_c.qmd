@@ -1,4 +1,4 @@
-# Appendix C Deterministic and Two Stage Stochastic MILP Implementations in Python and GAMS
+# Appendix C Deterministic and Two-Stage Stochastic MILP Implementations in Python and GAMS
 
 ## Mathematical implementation and terminology
 
