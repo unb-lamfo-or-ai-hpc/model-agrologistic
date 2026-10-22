@@ -1,5 +1,18 @@
 # Model Agrologistic: agent working agreement
 
+## Authorized integration and next W/D preparation —22 October2026
+
+The maintainer explicitly authorizes PR124 and PR120 merges into develop and
+requests the next h215 W/D gate, without jobs. PR124 merged atec1293986de5a654fe6374051da07dbf9b636db2.
+Preserve both documentary/editorial histories below. Their earlier draft/merge
+holds are historical and superseded ONLY for these authorized integrations.
+Qualify the combined exact head before merging PR120; its GAMS compilation/
+numerical parity limitation remains disclosed, not retrospectively passed.
+Prepare the two missing D cells against historical W controls, with unchanged
+scientific parameters/input and no W repetition, HPC access or submission.
+The proposed new D resource envelope remains a separate admission decision.
+Project01 handoff, protected-main promotion and journal submission stay deferred.
+
 ## Resumed PR120 and independent W/D audit —22 October2026
 
 The maintainer now supplies the expanded mandate and resumes PR120 editing,
@@ -81,6 +94,17 @@ Keep scalar objective/units/tolerances, S3/S4 cancellation and EVPI/VSS exclusio
 No raw PDF/annotation export or individual reviewer metadata is committed; public
 responses use summaries and page/object locators. Ready follows appropriate
 document/scope/coverage checks; merge still requires explicit authorization.
+## Independent W/D documentary audit —22 October2026
+
+The maintainer explicitly requests a separate develop-based audit PR while
+PR120 resumes editorial revision and remains draft. Read
+`docs/mvp2_scalar_wd_audit.md`. Source/evidence inspection is read-only; only
+the report, compact derived ledger and checkpoint are changed in this PR.
+No model/manifest/parameter/budget/claim alteration, job, repetition or automatic
+W×D admission is authorized. A proposed D experiment needs a separate decision.
+The Project01/chat01.01 transfer is deferred until these two PR workstreams
+are completed here. Preserve all earlier source and experimental identities.
+
 ## Consolidated h400 acceptance / h500 operational mandate —21 October2026
 
 Maintainer agrees with the h5008h/24logicalCPU/192GiB/one-thread/global14400s

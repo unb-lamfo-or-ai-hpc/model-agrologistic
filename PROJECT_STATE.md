@@ -1,5 +1,26 @@
 # Model Agrologistic — MVP 2.0 checkpoint
 
+### Authorized PR124/PR120 integration and W/D preparation —22 October2026
+
+The maintainer explicitly authorizes both merges and the next h215 W/D
+preparation gate, with no jobs. PR124 merged into develop at
+`ec1293986de5a654fe6374051da07dbf9b636db2`. PR120 integration is in progress:
+resolve only the overlapping chronological headers, preserve both histories,
+and require its combined exact-head CI before the authorized merge. The prior
+draft/merge holds below are superseded for this decision, not erased.
+
+PR120's last separately qualified source6401d596 has five green checks and1192
+native tests (zero failures/errors/skips),27-page article/35-page supplement,
+the original19-page Appendix A and33-member checksum-verified editable package.
+GAMS compilation and numerical parity remain UNPERFORMED. No original model,
+approved penalties, certificate or claim is altered by this integration.
+
+Next: qualify input/network/objective comparability for the two missing D h215
+DET/STO cells, using original W evidence as historical controls. No W repetition,
+causal runtime claim, resource approval, HPC submission or automatic follow-on
+is implied. Current h500 terminal state remains unverified pending supplied
+evidence. Project01 handoff, protected-main sync and publication are deferred.
+
 ### PR120 resumed under expanded mandate; W/D audit separate —22 October2026
 
 The maintainer requests revised existing draft PR120 using the supplied mandate
@@ -300,6 +321,32 @@ With BASE selecting the existing NPAD audit parent, the retained commands are:
 ```bash
 SOURCE=04ba9edccc93f40ab36cbc3264039a7edf2f6f51
 WRAPPER="${BASE:?Select existing NPAD audit parent}/scalar-h300-lineage-cli-04ba9edc/npad_scalar_h300_30h.sh"
+### Independent W/D topology audit —22 October2026
+
+Maintainer requests this documentary audit in its own develop-based PR and
+resumes existing PR120 under the supplied22October mandate, still draft.
+Read [the W/D report](docs/mvp2_scalar_wd_audit.md) and
+[derived ledger](docs/evidence/scalar_wd_audit_20261022.json).
+Inspected develop6fb43389ea70b02d0f54c959a2bfff8d53d83af4 implements W/D
+in DET/STO for Gurobi/SCIP. All eight accepted scalar h215/h300/h400 observations
+are W (OC disabled in loader/model, zero retained OC, no OC flow exports).
+Local input/graph-only inspection of the original h215 workbook confirms592
+extra product-specific OC arcs with unchanged common-family sets and identical
+effective penalty vector. No solver model, optimization or HPC job was run.
+
+Minimum scientific extension proposed: two cold h215 D cells (DET/STO), using
+historical accepted W controls, subject to explicit approval and a separately
+qualified operational package. This does not establish contemporaneous runtime
+causality. Optional four-cell new comparison requires approval of W repetitions
+and a new complete resource sum. No launcher/manifest or budget was changed.
+Penalty effects remain interpreted under90000/45000/45000: feasibility relaxation,
+not full service; search effects not monotonic; global gap is for penalized total.
+
+PR120's Appendix C/D work remains independent. No new h500 evidence is supplied:
+job2220382 current/terminal state remains unverified beyond its last human RUNNING
+snapshot. Preserve all claims/source/plan/status/wait/collect commands. No repeat,
+NPAD access, SCIP decision, main merge or Project01 handoff is implied.
+
 ## PR123 qualification record —21 October2026
 
 The complete consolidated h400/h500 package is published in
