@@ -1,4 +1,18 @@
-# Dated research status: 21 October 2026
+# Dated research status: 22 October 2026
+
+Current maintainer decision: PR120 must remain DRAFT; merge is not authorized.
+Its integrated source1f45d02 passed all five checks/1181 native tests and rendered
+review, but the maintainer requires an expanded editorial round. Do not confuse
+technical qualification with coauthor/editorial acceptance or return it to Ready
+without resumed direction and qualification of the resulting revision.
+
+Scalar h215/h300/h400 are accepted. h500 job2220382 has only a21October RUNNING
+human snapshot; its present/terminal state remains unverified. Preserve its
+source/plan/claim and resume the SAME job's human collection, never resubmit.
+SCIP/h215 awaits a separate decision. Read the
+[current completion handoff](mvp2_completion_handoff_20261022.md) and the latest
+PROJECT_STATE header. S6-A/S6-B and final main integration remain open; S3/S4
+cancelled, EVPI/VSS excluded. The chronological entries below are history.
 
 Latest mandate: maintain one consolidated h400-evidence/h500 complete operational
 qualification PR. [Full delivery](mvp2_scalar_h500_operational.md), confirmed

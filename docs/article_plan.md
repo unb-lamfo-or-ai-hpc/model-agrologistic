@@ -1,5 +1,20 @@
 # Article plan and editorial boundaries
 
+## Current editorial hold —22 October2026
+
+PR120 contains the integrated scalar article/supplements/geographic package
+qualified at1f45d02 on21October, but the maintainer now explicitly requires
+DRAFT pending an expanded coauthor-review round. No merge, further substantive
+editorial revision, Ready promotion, Pages publication or submission follows this
+handoff. Preserve the working revision and original review material; resume when
+the maintainer supplies the next comments/direction. The single approved title,
+RQ, SO1–SO4, fixed scalar model and complete Appendix A remain the starting point.
+See [current mandate](s6a_20261021/README.md) and
+[completion sequence](mvp2_completion_handoff_20261022.md). Earlier statements
+reserving all incorporation to S6-B were superseded by the21October explicit
+authorization to replace manuscript/index.qmd ON the editorial branch, not develop.
+Do not restore historical MVP1/hierarchy numerics as current scalar results.
+
 ## S6-A preparation authorized in parallel —20 October2026
 
 The [current coauthor-review package](s6a_20261020/README.md) assesses the supplied

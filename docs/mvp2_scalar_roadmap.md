@@ -1,5 +1,15 @@
 # Scalar MVP2 roadmap — 19 October 2026
 
+22October current authority: the maintainer withholds PR120 merge and requests
+DRAFT while additional editorial comments are prepared. The21October integrated
+revision at1f45d02 is technically qualified, not final editorial acceptance.
+The [completion handoff](mvp2_completion_handoff_20261022.md) is the current
+planning view: accepted scalar h215/h300/h400; h500 terminal evidence pending;
+separate SCIP/h215 decision; expanded SAME PR120; S6-A/S6-B; protected-main
+integration only after article review/authorization. No new jobs or unilateral
+scientific scope cuts. Earlier stage estimates and pending statuses below are
+dated history, not fresh instructions or proof of current execution state.
+
 21 October final editorial mandate: PR120 is resumed, not a new editorial PR.
 The researcher now explicitly permits replacing the current manuscript and
 related files ON that branch, superseding the earlier frozen-manuscript and
