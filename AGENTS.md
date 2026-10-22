@@ -1,5 +1,25 @@
 # Model Agrologistic: agent working agreement
 
+## Editorial hold and portable handoff —22 October2026
+
+The maintainer explicitly withholds PR120 merge authorization and requests DRAFT
+status pending an expanded editorial review. This supersedes the21October Ready
+request: previous exact-head qualification remains historical evidence, not
+editorial acceptance or permission to return to Ready. Preserve the manuscript,
+figures, supplements and original review until the maintainer supplies the next
+revision material/direction. Do not merge, publish or submit.
+
+Prepare the portable context/checkpoint/completion plan for Project01/chat01.01;
+read `docs/mvp2_completion_handoff_20261022.md`. Its future work packages and dates
+are proposals, not new experimental/scientific authorizations. Keep h500 source,
+claim and human status/wait/collect commands unchanged; its latest supplied
+snapshot is RUNNING, not a verified current or terminal state. No NPAD access,
+new job, repeat, new solver or penalty calibration is authorized. SCIP/h215 awaits
+the separate researcher decision; S3/S4 remain cancelled and EVPI/VSS excluded.
+Final protected-main integration still follows article review and explicit
+merge authorization. Revalidate remote heads and local dirt before resuming;
+never treat this machine's older local Git HEAD as the published editorial head.
+
 ## Current PR120 scientific and editorial mandate —21 October2026
 
 This section supersedes the older editorial-preparation restrictions below.

@@ -1,5 +1,59 @@
 # Model Agrologistic — MVP 2.0 checkpoint
 
+### Current authority: PR120 draft hold / Project01 handoff —22 October2026
+
+The maintainer DOES NOT authorize merging PR120 into develop. Return it to DRAFT
+and keep it there pending additional editorial review material and a resumed
+revision instruction. The21October Ready request and its merge solicitation are
+superseded, not scientific approval. No manuscript/figure/model change is part
+of this handoff. Preserve the current revision as a reviewable working version.
+
+Last technically qualified editorial source:
+`1f45d020743e5dd855b3b26ab95fc87af0767a2a`.
+All five existing checks passed; full native Linux regression1181 tests, zero
+failures/errors/skips,25.427s. [Final JUnit run](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/actions/runs/39692846337),
+artifact SHA256 `a8016d46260240e961228af9d08502dca64a13c2f36c64d450709ff9c76073c8`.
+[Final rendered delivery](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/actions/runs/39692847112):
+27-page article,26-page supplement with all19 original Appendix A pages and
+ten-section Appendix B;53 rendered page images compared to the inspected layout.
+Editable LaTeX ZIP has28 allowlisted members and complete graphic dependencies.
+PDF article SHA256 `f5df2e44cf6d99155ef3b8255cd646ff314c4263565199fde860491cf2230fea`;
+supplement `334762cde282a2bd5cd73a1a0457418c7acd6e2a1ae2ffe0f79dda68284bb4bb`;
+ZIP `6de55159063a6eacb1c91ea404307c6ea46a01f32eb8a56d0d43d54254657393`.
+These qualify that source, not future edits or scientific/submission acceptance.
+
+Scalar R2 and h215 DET/STO, the five h300 thread observations and h400 STO have
+accepted original evidence. Historical S2 was boundedly closed through PR110;
+its time-censored hierarchical gap100% is NOT the later scalar gap. R1/PR112
+subsequently replaced the active hierarchy with one scalar economic objective;
+PR111 was superseded, with history retained. The current manuscript/interpretation
+foregrounds scalar MVP2, not mixed numerical cohorts from MVP1/hierarchical S2.
+
+h500 job2220382: only the21October human RUNNING snapshot is available. Its
+CURRENT/TERMINAL state is UNVERIFIED on22October; no final feasibility, gap,
+physical/financial result or resource peak is inferred. Preserve execution
+source `fce341dfff1792d08b20eac132c6ada29f4326d2`, plan
+`1f57d2308ab233dbe686ad62aa2b02df31c0b8df4fca64d05f86bbc6c118ad60`,
+claim `.mvp2-scalar-h500-8h-v1` and the unchanged human status/wait/collect
+commands below. The next experimental action is evidence collection/review of
+this SAME job, not another submission. No agent NPAD access or repeat is admitted.
+
+The [portable completion plan](docs/mvp2_completion_handoff_20261022.md) separates
+h500 terminal audit, the pending SCIP/h215 decision, resumed existing PR120,
+S6-A synthesis, S6-B reproduction/editorial packaging and final protected-main
+reconciliation. Five to seven functional PR packages INCLUDING existing PR120
+are a planning estimate if the planned SCIP package proceeds, not a quota or
+assigned future PR numbers. No new campaign, model/penalty change or unilateral
+scope cancellation follows. December remains conditional; January2027 is an
+explicit contingency if technical/coauthor gates slip, not an approved scope cut.
+
+Machine portability: the local editorial checkout has older Git HEADc50ea9a…
+plus intentional upstream/editorial working files; it is NOT a clean checkout
+of1f45d02. Preserve this dirt; use a separately cloned remote branch on another
+machine and verify its recorded handoff head before work. The portable package
+contains the FULL checkpoint, not merely this current header; older entries
+below are dated historical records and must not override current authority.
+
 ### PR120 integrated qualification and final review gate —21 October2026
 
 The five existing checks passed at editorial source
