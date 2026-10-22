@@ -7,7 +7,9 @@ future solves. A new operational package and human decisions are still required.
 from __future__ import annotations
 
 import argparse
+import io
 import math
+import subprocess
 import tarfile
 from dataclasses import asdict, fields, replace
 from pathlib import Path
@@ -46,6 +48,38 @@ def resource_proposal():
         "scope": "Two D cells only; historical W is not rerun.",
         **closed(),
     }
+
+
+def source_inventory(root):
+    """Same raw tracked-byte contract, one Git archive instead of N subprocesses.
+
+    Read Git objects as data only. Reject export-ignored/missing/link/extra Python
+    source; no archive extraction, executable import or relaxed EOL comparison.
+    """
+    head = r.r2.command(["git", "rev-parse", "HEAD"], cwd=root)
+    listing = r.r2.command(["git", "ls-files", "-z"], cwd=root)
+    r.require(head.returncode == listing.returncode == 0, "Source Git identity unavailable.")
+    raw = subprocess.check_output(["git", "archive", "--format=tar", "HEAD"], cwd=root, timeout=30)
+    files = {}
+    with tarfile.open(fileobj=io.BytesIO(raw)) as archive:
+        for member in archive:
+            if member.isdir():
+                continue
+            r.require(
+                member.isfile() and r._safe_name(member.name) and member.name not in files,
+                "Invalid Git source object.",
+            )
+            path = old.regular(root / member.name)
+            content = archive.extractfile(member).read()
+            r.require(path.read_bytes() == content, "Raw HEAD-byte mismatch: " + member.name)
+            files[member.name] = r.r2.digest(content)
+    r.require(
+        set(files) == set(filter(None, listing.stdout.split("\0"))),
+        "Full tracked source inventory differs.",
+    )
+    inventory = {"source_commit": head.stdout.strip(), "files": files}
+    r.r2.verify_source(inventory, root)
+    return inventory
 
 
 def proposed_specs(workbook):
@@ -262,7 +296,7 @@ def prepare(output, sha, *, workbook, population, order, audit, w_archive):
     materialization = old.materialization(r.strict_json(paths[3].read_bytes()))
     selection = r.warehouses.read_policy(paths[1], paths[2], old.POPULATION_SHA, old.ORDER_SHA, 215)
     previous = historical_w(paths[4])
-    inventory = r.r2.source_inventory(ROOT)
+    inventory = source_inventory(ROOT)
     r.require(inventory["source_commit"] == sha, "Exact source commit differs.")
     r.require(
         {k: v for k, v in inventory["files"].items() if k.startswith("src/logic/")}
@@ -281,10 +315,12 @@ def prepare(output, sha, *, workbook, population, order, audit, w_archive):
         r.r2.verify_source(inventory, ROOT)
         for label, cell in cells.items():
             r.r2.write(output / (label + ".json"), cell)
+        artifact_sha256 = {p.name: r.file_hash(p) for p in sorted(output.iterdir())}
         plan = {
             "schema_version": "scalar-wd-h215-preparation-v1",
             "status": "input_comparability_qualified_execution_closed",
             "source_commit": sha,
+            "artifact_sha256": artifact_sha256,
             "input_sha256": dict(
                 zip(
                     ("workbook", "population", "order", "materialization", "historical_w_archive"),
@@ -345,6 +381,11 @@ def audit_preparation(output, sha, plan_sha256):
         "Preparation artifact hash differs.",
     )
     plan = r.strict_json((output / "plan.json").read_bytes())
+    r.require(
+        plan["artifact_sha256"]
+        == {n: digest for n, digest in inventory.items() if n != "plan.json"},
+        "Plan-bound preparation artifacts differ.",
+    )
     r.require(
         plan["schema_version"] == "scalar-wd-h215-preparation-v1"
         and plan["source_commit"] == sha

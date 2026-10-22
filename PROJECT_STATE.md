@@ -29,7 +29,7 @@ old operational claim. Public metadata excludes private workbooks and warehouse 
 
 Data-only reconstruction of the exact original workbook and W receipts passes:
 OD3182/DC3440/DD18490 unchanged, D adds592 OC arcs; every common scientific
-field/cost and penalty vector matches. Local qualification37 new/239 related
+field/cost and penalty vector matches. Local qualification42 new/244 related
 tests passed with no failures/errors/skips. Retain the compact
 [input review](docs/evidence/scalar_wd_h215_gate_20261022.json); final exact-head
 Linux/source/sealed-preparation evidence is recorded in the PR checkpoint.

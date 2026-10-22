@@ -169,7 +169,7 @@
   },
   "qualification": "Original input/receipt comparison; no new optimizer model, solve, live HPC or residual certificate.",
   "local_related_tests": {
-    "tests": 239,
+    "tests": 244,
     "failures": 0,
     "errors": 0,
     "skipped": 0
@@ -180,7 +180,7 @@
     "No D solution or causal performance result",
     "Exact-head source/CI qualification recorded separately"
   ],
-  "module_sha256": "82668c581a2e2000450f9fd11c0cb2ab7373682dbafc7e2bf46aca611ce8a03d",
+  "module_sha256": "5cdeeee0f59ef4e79f0417634fbc2615ee94716ede49d1bc9a663684cf1c4c72",
   "execution_admitted": false,
   "d_execution_admitted": false,
   "repeats_admitted": false,

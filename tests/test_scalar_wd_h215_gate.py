@@ -231,7 +231,7 @@ def sealed_preparation(tmp_path, monkeypatch):
     paths["audit"].write_bytes(b"{}")
     monkeypatch.setattr(g, "historical_w", lambda *_: previous)
     monkeypatch.setattr(g.r.warehouses, "read_policy", lambda *_: {"fixture": True})
-    monkeypatch.setattr(g.r.r2, "source_inventory", lambda *_: inventory)
+    monkeypatch.setattr(g, "source_inventory", lambda *_: inventory)
     monkeypatch.setattr(g.r.r2, "verify_source", lambda *_: None)
     monkeypatch.setattr(g, "inspect_comparison", lambda *_: (cells, comparisons))
     output = tmp_path / g.CLAIM
@@ -275,6 +275,85 @@ def test_auditor_rejects_resealed_admission_flag(sealed_preparation):
     (output / "inventory.json").write_bytes(g.r.r2.encoded(inventory))
     with pytest.raises(ValueError, match="scope/admission"):
         g.audit_preparation(output, "a" * 40, inventory["plan.json"])
+
+
+def test_resealed_cell_inventory_cannot_bypass_external_plan_anchor(sealed_preparation):
+    output, report, _ = sealed_preparation
+    cell = g.r.strict_json((output / "D_det.json").read_bytes())
+    cell["specification"]["name"] = "changed"
+    (output / "D_det.json").write_bytes(g.r.r2.encoded(cell))
+    inventory = g.r.strict_json((output / "inventory.json").read_bytes())
+    inventory["D_det.json"] = g.r.file_hash(output / "D_det.json")
+    (output / "inventory.json").write_bytes(g.r.r2.encoded(inventory))
+    with pytest.raises(ValueError, match="Plan-bound"):
+        g.audit_preparation(output, "a" * 40, report["plan_sha256"])
+
+
+@pytest.fixture
+def public_git_source(tmp_path):
+    import subprocess
+
+    root = tmp_path / "public-source"
+    root.mkdir()
+    (root / "source.py").write_bytes(b"VALUE = 1\n")
+    (root / "hidden.txt").write_bytes(b"included in full tracked source\n")
+    (root / ".gitattributes").write_bytes(b"* -text\n")
+    for args in (
+        ["init"],
+        ["add", "."],
+        [
+            "-c",
+            "user.name=Public fixture",
+            "-c",
+            "user.email=fixture@example.invalid",
+            "-c",
+            "core.hooksPath=empty-hooks",
+            "commit",
+            "-m",
+            "Public source fixture",
+        ],
+    ):
+        subprocess.run(["git", "-C", str(root), *args], check=True, capture_output=True)
+    return root
+
+
+def test_batched_source_inventory_matches_existing_raw_byte_contract(public_git_source):
+    assert g.source_inventory(public_git_source) == g.r.r2.source_inventory(public_git_source)
+
+
+@pytest.mark.parametrize("change", ["tracked_bytes", "extra_python"])
+def test_batched_source_inventory_rejects_source_drift(public_git_source, change):
+    path = public_git_source / ("source.py" if change == "tracked_bytes" else "extra.py")
+    path.write_bytes(b"VALUE = 2\n")
+    with pytest.raises(ValueError):
+        g.source_inventory(public_git_source)
+
+
+def test_batched_inventory_rejects_export_ignored_tracked_files(public_git_source):
+    import subprocess
+
+    (public_git_source / ".gitattributes").write_bytes(b"* -text\nhidden.txt export-ignore\n")
+    subprocess.run(["git", "-C", str(public_git_source), "add", ".gitattributes"], check=True)
+    subprocess.run(
+        [
+            "git",
+            "-C",
+            str(public_git_source),
+            "-c",
+            "user.name=Public fixture",
+            "-c",
+            "user.email=fixture@example.invalid",
+            "-c",
+            "core.hooksPath=empty-hooks",
+            "commit",
+            "-m",
+            "Export exclusion fixture",
+        ],
+        check=True,
+        capture_output=True,
+    )
+    with pytest.raises(ValueError, match="Full tracked"):
+        g.source_inventory(public_git_source)
 
 
 def test_real_excel_loader_integration_without_model_or_solver(tmp_path):

@@ -123,7 +123,7 @@ weights. Preserve economic costs and each penalty separately in all comparisons.
 
 ## Next decisions and boundaries
 
-Local qualification:37 new input/admission tests and239 related tests passed,
+Local qualification:42 new input/admission tests and244 related tests passed,
 zero failures/errors/skips. Ruff and the scalar-source check passed. The
 [compact original-input review](evidence/scalar_wd_h215_gate_20261022.json)
 retains dimensions/edge/membership/penalty hashes, no private rows. Initial local
@@ -134,6 +134,17 @@ now use the same strict JSON representation, without omitting scientific fields
 or changing coefficients. Exact-head sealed preparation and Linux CI are
 recorded in the final public PR qualification comment, not assumed from these
 earlier local counts.
+
+The source inventory uses one trusted Git-object archive rather than launching
+one Git process per file; tests require exact equivalence to the existing raw
+tracked-byte contract and reject omitted/export-ignored files and extra Python
+source. No EOL normalization is accepted by the gate. The Windows qualification
+checkout was mechanically formatted to exact existing HEAD bytes only; no
+scientific edits or changes to the older dirty editorial checkout were made.
+An interrupted earlier LOCAL preparation remains preserved and is not accepted;
+the final sealed preparation uses a different fresh parent directory. Every
+cell/source/selection receipt hash is bound INSIDE the externally anchored plan,
+not only by a regenerable inventory. A resealed-inventory negative test guards it.
 
 After exact-head qualification and Ready, request merge of this preparation
 package. Separately confirm the two D cells and proposed resource envelope.
