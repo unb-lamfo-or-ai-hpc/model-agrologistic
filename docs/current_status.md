@@ -1,5 +1,13 @@
 # Dated research status: 22 October 2026
 
+Subsequent decision: PR125 merged at789f30bf…; its D DET->STO envelope is now
+approved (14h/24logicalCPU/192GiB/Threads4/global14400s per arm/1GiB transfer).
+Prepare/qualify the [complete operational package](mvp2_scalar_wd_h215_operational.md),
+not a job. Earlier pending-resource statements remain historical. Only a later
+qualified/authorized merge and pinned human CLI may submit the ONE D pair.
+All scientific settings/penalties and old W/h300/h400/h500 claims stay fixed;
+no W repetition, larger-instance admission or causal historical speedup claim.
+
 Latest decision supersedes the dated draft holds below: PR124 and PR120 merged
 with explicit authorization atec129398… and2d75dee… respectively. Prepare the
 [W/D h215 input-only gate](mvp2_scalar_wd_h215_gate.md), not jobs or W repetitions.

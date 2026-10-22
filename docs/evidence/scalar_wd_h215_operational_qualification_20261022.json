@@ -1,0 +1,33 @@
+{
+  "schema_version": "scalar-wd-h215-operational-software-qualification-v1",
+  "review_date": "2026-10-22",
+  "qualified_implementation_source": "3123a802261e13ca386bb7f9381beed130a37053",
+  "native_workflow": "https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/actions/runs/39835788871",
+  "native_tests": {"tests": 1270, "failures": 0, "errors": 0, "skipped": 0, "seconds": 42.121},
+  "local_related_tests": {"tests": 271, "failures": 0, "errors": 0, "skipped": 0},
+  "wrapper_sha256": "117daaa369809f850dfff75c2ca82a06d16669e13818fed83ffa9eee5a272c14",
+  "all_four_applicable_checks_passed": true,
+  "linux_wrapper_syntax_passed": true,
+  "distribution_build_passed": true,
+  "scientific_source_old_manifests_and_manuscript_unchanged": true,
+  "qualification": "Software qualification, including a public tiny native D DET/nine-scenario STO worker/controller/independent-validation/terminal-transfer integration with simulated scheduler transport. Not h215 optimization or live NPAD qualification.",
+  "native_fixture_adapters": ["Public tiny workbook and shape", "Fixed approved penalty rates on the public fixture", "Haversine distances and unfiltered common graph only in the fixture", "Simulated scheduler identity, allocation, affinity and designated-license capability", "No production input/source identity override is exposed by the human CLI"],
+  "original_input_data_only_check": {
+    "status": "preparation_and_fresh_W_D_comparison_replay_accepted",
+    "implementation_source": "3123a802261e13ca386bb7f9381beed130a37053",
+    "local_metadata_plan_sha256": "b317bb7de87e1b8df508f808eada3d2dd210c79a1e260c5166de237c52e27d97",
+    "workbook_sha256": "40edb66585daca9cc393cab1f86bde6d4528a5f34b6afc57260cc1684396da4e",
+    "historical_w_archive_sha256": "81890b546d720ad5999d11f44fd499337aad937e32773db39067796f73660534",
+    "common_arcs_data_costs_and_effective_penalties_identical": true,
+    "added_direct_arcs": 592,
+    "added_flow_variables": {"det": 35520, "sto": 319680},
+    "total_variables": {"W_det": 1562174, "D_det": 1597694, "W_sto": 14054654, "D_sto": 14374334},
+    "limitations": "Local prepare/load/fresh-input/comparison receipt replay with synthetic job identity and tool metadata; no native solve, actual scheduler command or NPAD access. This is not a submission plan or D optimization result. Historical input-gate flags are preserved, not rewritten as current resource approval."
+  },
+  "initial_draft_ci_failure": {"source": "670c5ec6c7a7d337bcb2104e15d2398918df2734", "reason": "Public native fixture did not use the approved effective penalty vector; fixed only the fixture loader configuration, not the scientific implementation or validator."},
+  "final_exact_head_qualification": "The public PR126 qualification comment binds the subsequent documentation-only checkpoint commit to its fresh complete CI, raw tracked-byte inventory and wrapper checksum before Ready.",
+  "execution_admitted": false,
+  "w_repetition_admitted": false,
+  "automatic_follow_on_allowed": false,
+  "production_isolation_certified": false
+}
