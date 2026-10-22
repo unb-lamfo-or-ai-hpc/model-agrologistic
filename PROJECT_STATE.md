@@ -30,8 +30,23 @@ Local focused/related regression:271 passed, zero failures/errors/skips. New
 operational coverage includes35 non-native cases; the separate tiny native D
 DET/nine-scenario STO integration must pass the final zero-skip Linux gate.
 Local MSYS Bash could not start under the Windows sandbox; rely on the explicit
-Linux syntax check, not an invented local pass. Final source/counts/wrapper hash
-and CI links are recorded in the PR qualification checkpoint before Ready.
+Linux syntax check, not an invented local pass. Implementation source3123a802
+passed all four checks and1270 native tests (zero failures/errors/skips,42.121s),
+including the new real tiny D DET/nine-scenario STO worker/controller/original
+validation/terminal-transfer integration with simulated scheduler transport.
+See the [software qualification ledger](docs/evidence/scalar_wd_h215_operational_qualification_20261022.json).
+Initial draft CI rejected the fixture penalty vector; only its public-fixture
+loader was aligned with the fixed approved rates. No scientific check was relaxed.
+Final exact-head source/counts/wrapper hash and links are bound in PR126's public
+checkpoint after rerunning the complete checks on this documentation-only update.
+
+Local original-byte preparation/load and fresh W/D input comparison also pass:
+same frozen workbook40edb665…/original W81890b54…/membership/common costs/arcs/
+penalties, D592 direct arcs and35520/319680 added DET/STO flow variables. D totals
+1597694/14374334 variables remain inside the25M guard. This check uses synthetic
+job/tool metadata only; local planb317bb7d… is NOT an NPAD submission/repetition
+or new D solve. Preserve its private local receipts; only redacted metadata is
+committed. No new experimental outcome or execution authority follows.
 
 Original W job2217990 remains historical control, not a contemporaneous runtime
 baseline. Feasible-set inclusion is conditional on the strict common-network/

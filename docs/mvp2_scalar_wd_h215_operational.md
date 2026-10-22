@@ -182,6 +182,23 @@ memory observations are retained without asserting unobserved physical cores or
 reconstructing missing peaks. CPU-model observations may be explicitly unavailable;
 there is no new host-isolation certification requirement.
 
+Implementation source3123a802 passed all four checks, including1270 native tests
+with zero failures/errors/skips in42.121s, Linux wrapper syntax and distribution
+build. The [qualification ledger](evidence/scalar_wd_h215_operational_qualification_20261022.json)
+retains this source and the earlier fixture-only CI rejection. No original model,
+input, penalty or residual acceptance rule was weakened to make CI pass. A fresh
+complete CI run binds the final documentation-only checkpoint head before Ready;
+its immutable source/wrapper hashes appear in PR126's qualification comment.
+
+Local original-byte preparation/load and the fresh compute-style W/D data gate
+also passed with the approved h215 workbook and original W archive. D retains
+592 OC arcs and adds35520 DET/319680 STO flow variables; D totals1597694/14374334
+variables. Membership/common costs/arcs/penalties are unchanged. Synthetic job
+and tool identity metadata are explicit local-only seams; no optimizer model,
+actual scheduler command or NPAD access occurred. This is NOT execution admission
+or a new D result. Private local input receipts remain outside Git; the ledger
+contains only bounded redacted checksums/dimensions and limitations.
+
 h500's original claim/source/evidence and collection remain unchanged; no new
 terminal result is inferred. SCIP/h215, protected-main integration, GAMS numerical
 parity, publication and Project01/new-machine mandate are separate decisions.
