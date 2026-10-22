@@ -14,6 +14,13 @@ The notation tables integrate sets, coefficients, units and domains. An absent
 arc has no flow variable; quantities for ineligible investment types are zero.
 Scenarios weight recourse costs, never the physical balance or capacity limits.
 
+The equations retain the implementation's legacy arc superscripts for an
+unambiguous code crosswalk: OD means Origin–Warehouse, DC Warehouse–Destination,
+DD Warehouse–Warehouse and OC direct Origin–Destination. Appendix C presents
+these scientifically as OW, WD, WW and OD, respectively, without renaming any
+experimental record. W disables direct OC; D permits it in addition to mediated
+routes. The accepted large scalar results reported here evaluate W only.
+
 | Symbol | Definition |
 |:--|:--|
 | $O$; $W=W^E\mathbin{\dot\cup}W^N$ | Supply origins; existing and candidate warehouses |

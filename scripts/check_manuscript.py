@@ -199,18 +199,21 @@ def check(*, rendered: bool = False, publication: bool = False) -> None:
         if not identifier or identifier not in bibliography:
             raise ValueError(f"Missing bibliographic identifier for {row['citation_key']}")
     declaration = "# Declaration of generative AI and AI-assisted technologies"
+    acknowledgements = "# Acknowledgements"
     if not (
         article.index("# Reproducibility and availability")
         < article.index(declaration)
+        < article.index(acknowledgements)
         < article.index("# References")
     ):
-        raise ValueError("AI declaration must precede References")
-    if re.search(
-        r"^# ",
-        article[article.index(declaration) + 2 : article.index("# References")],
-        re.MULTILINE,
+        raise ValueError("AI declaration, Acknowledgements and References order differs")
+    intervening = re.findall(
+        r"^# (.+)$", article[article.index(declaration):article.index("# References")],
+        re.MULTILINE)
+    if len(intervening) != 2 or intervening[1] != "Acknowledgements" or any(
+        "{-}" in heading for heading in intervening
     ):
-        raise ValueError("AI declaration must immediately precede References")
+        raise ValueError("Numbered declaration and Acknowledgements must precede References")
     for required in (
         "## Deterministic model",
         "## Two-stage stochastic model",
@@ -268,6 +271,10 @@ def check(*, rendered: bool = False, publication: bool = False) -> None:
     if not 3 <= len(highlights) <= 5 or any(len(line) > 85 for line in highlights):
         raise ValueError("Highlights require 3–5 statements of at most 85 characters")
     supplement = (MANUSCRIPT / "supplement/index.qmd").read_text(encoding="utf-8")
+    for name in ("appendix_c.qmd", "appendix_d.qmd"):
+        if "{{< include " + name + " >}}" not in supplement:
+            raise ValueError("Missing implementation/data appendix include")
+        supplement += "\n" + (MANUSCRIPT / "supplement" / name).read_text(encoding="utf-8")
     review_bib = bibliography + (MANUSCRIPT / "review-methods.bib").read_text(encoding="utf-8")
     review_keys = set(
         re.findall(r"@(?:article|incollection|book|misc|phdthesis)\{([^,]+),", review_bib)

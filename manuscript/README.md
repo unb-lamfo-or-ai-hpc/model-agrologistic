@@ -5,6 +5,14 @@ Two-Stage Stochastic MILP Models for Grain-Storage Network Design and Hub
 Location**. PR120 implements the researcher's final21October mandate on the
 existing editorial branch. It does not authorize merge, deployment or submission.
 
+The22October extension adds Appendix C (actual Python/Gurobi/SCIP crosswalk,
+shared reviewable GAMS translation and effective-input exporter) and Appendix D
+(source cells, units, transformation rules, source hashes and actual population
+nesting/order). GAMS compilation and numerical parity are explicitly unperformed;
+the tool is unavailable. The AI declaration, supplied NPAD Acknowledgements and
+References are consecutive numbered sections. No scientific code, model, penalty,
+certificate or live HPC claim is changed. PR120 remains draft during review.
+
 ## Evidence boundary
 
 The active Results section uses eight accepted scalar observations: h215

@@ -567,7 +567,14 @@ NPAD credentials. A shared source definition generates the geographic figures;
 its receipts retain filters, source hashes and evidence status. The
 community Elsevier extension and vendored styles retain their original notices.
 The revised supplementary package includes the complete supplied literature
-review as Appendix A and the Human–AI decision account as Appendix B.
+review as Appendix A, the Human–AI decision account as Appendix B,
+the Python/Gurobi/SCIP implementation crosswalk and reviewable GAMS translation
+as Appendix C, and source-to-effective-parameter provenance as Appendix D.
+The GAMS translation has not been compiled or numerically validated: GAMS is
+unavailable in the qualification environment. It is not an additional experiment
+or evidence of solver parity. The accepted large scalar cohort evaluates the
+warehouse-only topology W; direct-enabled topology D is supported in software
+but has no matched accepted large-instance comparison in this cohort.
 The previously published review is available as
 [HTML](https://unb-lamfo-or-ai-hpc.github.io/model-agrologistic/supplementary-review.html)
 and [PDF](https://unb-lamfo-or-ai-hpc.github.io/model-agrologistic/supplementary-review.pdf);
@@ -585,7 +592,7 @@ that earlier deposit. Project-authored code is MIT. OpenStreetMap-derived
 databases retain ODbL terms, while external inputs retain their applicable
 file-level notices and redistribution conditions.
 
-# Declaration of generative AI and AI-assisted technologies in the manuscript preparation process {-}
+# Declaration of generative AI and AI-assisted technologies in the manuscript preparation process
 
 During preparation, the authors used Gurobot, Gemini and GPT/ChatGPT systems,
 including ChatGPT Codex, for technical discussion, software development,
@@ -595,6 +602,13 @@ all work to a verified model/version chronology. The methodological section
 and Appendix B distinguish retained evidence from retrospective accounts.
 The human authors reviewed and edited the content and retain full responsibility
 for scientific claims and the article.
+
+# Acknowledgements
+
+The authors gratefully acknowledge the Núcleo de Processamento de Alto Desempenho
+(NPAD) at the Universidade Federal do Rio Grande do Norte (UFRN), Brazil, for
+providing access to the high-performance computing infrastructure used in this
+research.
 
 # References
 

@@ -59,6 +59,12 @@ def test_allowlisted_portable_package_and_checksums(tmp_path):
         "manuscript/_manuscript/_tex/figures/private.log",
         "manuscript/_manuscript/credentials.txt",
         "manuscript/figures/human_ai_workflow.png",
+        "manuscript/supplement/appendix_c/model_det.gms",
+        "manuscript/supplement/appendix_c/model_sto.gms",
+        "manuscript/supplement/appendix_c/model_common.inc",
+        "manuscript/supplement/appendix_c/README.md",
+        "manuscript/supplement/appendix_d_inventory.json",
+        "manuscript/supplement/appendix_c/data.inc",
     ]
     for name in paths:
         path = tmp_path / name
@@ -75,6 +81,9 @@ def test_allowlisted_portable_package_and_checksums(tmp_path):
         assert "main.tex" in names and "pipeline.png" in names
         assert "elsarticle.cls" in names and "supplement.tex" in names
         assert "human_ai_workflow.png" in names
+        assert {"model_det.gms", "model_sto.gms", "model_common.inc",
+                "appendix_c_readme.md", "appendix_d_inventory.json"} <= set(names)
+        assert "data.inc" not in names
         assert "../figures/" not in archive.read("supplement.tex").decode()
         assert all("/" not in name for name in names)
         assert not any("private" in name or "credentials" in name for name in names)

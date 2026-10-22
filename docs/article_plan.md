@@ -1,5 +1,14 @@
 # Article plan and editorial boundaries
 
+22October resumed direction: the expanded supplied mandate now authorizes
+editing the SAME draft PR120, including implementation/data Appendices C/D and
+numbered disclosure/Acknowledgements/References. Read
+[current delivery record](s6a_20261022/mandate_and_delivery.md). The hold below
+is historical for editing, but merge/publication/submission remain unauthorized.
+Independent documentary W/D audit PR124 is separately qualified; its proposed
+D executions are not admitted. Project01/chat01.01 handoff is deferred until
+both workstreams finish here and the maintainer reviews the resulting mandate.
+
 ## Current editorial hold —22 October2026
 
 PR120 contains the integrated scalar article/supplements/geographic package

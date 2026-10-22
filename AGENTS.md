@@ -1,5 +1,19 @@
 # Model Agrologistic: agent working agreement
 
+## Resumed PR120 and independent W/D audit —22 October2026
+
+The maintainer now supplies the expanded mandate and resumes PR120 editing,
+including Appendices C/D and the numbered AI/Acknowledgements/References order.
+Read `docs/s6a_20261022/mandate_and_delivery.md`. This supersedes the older hold
+only for the requested revision. Keep this PR draft until integrated qualification
+and review; no merge/publication/submission is authorized. An independent
+develop-based documentary W/D audit is explicitly requested and is PR124.
+No mathematical or scientific-source change, jobs, repeats, route acquisition
+or penalty calibration. Preserve claims/evidence and the old qualified revision.
+GAMS source inspection/export is not compiled or numerical parity; report missing
+GAMS tooling honestly. Project01/chat01.01 handoff is deferred until both PRs
+are completed here and the maintainer reviews the resulting mandate.
+
 ## Editorial hold and portable handoff —22 October2026
 
 The maintainer explicitly withholds PR120 merge authorization and requests DRAFT

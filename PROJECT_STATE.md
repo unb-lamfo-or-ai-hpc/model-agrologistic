@@ -1,5 +1,38 @@
 # Model Agrologistic — MVP 2.0 checkpoint
 
+### PR120 resumed under expanded mandate; W/D audit separate —22 October2026
+
+The maintainer requests revised existing draft PR120 using the supplied mandate
+SHA256bd396eff7a15a4d97084368e04ec496b908de75923c146e2cc38d53607d9310f.
+It adds numbered AI disclosure, supplied NPAD Acknowledgements before References,
+and full implementation/data Appendices C/D. Read
+[current implementation record](docs/s6a_20261022/mandate_and_delivery.md).
+Earlier handoff/hold entries below are historical: editing is resumed, but
+merge/publication/submission and transfer to Project01/chat01.01 are NOT approved.
+Preserve the prior qualified article/supplement and original146 review locators.
+
+The new appendices map actual unchanged scalar DET/STO/Gurobi/SCIP source to
+equations, effective data, physical/currency units and native indicators; provide
+a reviewable shared GAMS translation/data exporter; and compare original hashes,
+cells, population identities and all eight accepted ordered input lists.
+GAMS compilation and numerical parity remain unperformed because GAMS is absent.
+No new solve, HPC job, original workbook/certificate or scientific code change.
+Effective penalties remain90000/45000/45000; their feasibility, search and
+penalized-gap interpretation is retained, not recalibrated.
+
+Independent [PR124](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/124)
+audits W/D on develop6fb43389…. All eight accepted scalar h215/h300/h400 cases
+are W; exact h215 input-only inspection finds592 additional OC arcs with common
+OD/DC/DD sets unchanged and identical effective penalty-vector hashes. A minimum
+two-cell D proposal is NOT authorization to execute or repeat W. PR124 is Ready
+after its four existing checks; no merge has been performed.
+
+h500 job2220382 has no supplied terminal update. Preserve sourcefce341df…,
+plan1f57d230…, claim `.mvp2-scalar-h500-8h-v1` and unchanged status/wait/collect
+commands. Its current/terminal state is unverified. SCIP/h215 remains a later
+decision. S3/S4 stay cancelled; EVPI/VSS excluded. Final protected-main sync remains
+after article review under separate authorization, not this editorial revision.
+
 ### Current authority: PR120 draft hold / Project01 handoff —22 October2026
 
 The maintainer DOES NOT authorize merging PR120 into develop. Return it to DRAFT

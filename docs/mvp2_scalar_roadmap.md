@@ -1,5 +1,14 @@
 # Scalar MVP2 roadmap — 19 October 2026
 
+22October resumed mandate: existing draft PR120 now incorporates the new
+implementation/GAMS/data-provenance Appendices C/D and section-numbering changes;
+independent documentary W/D audit is PR124. See
+[current scope and limitations](s6a_20261022/mandate_and_delivery.md).
+The previous handoff remains a dated proposal, not the active transfer mandate.
+Do not send it to Project01/chat01.01 yet. New D runs, GAMS full-instance solves,
+SCIP/h215, repetitions and any new budgets need separate decisions. h500 terminal
+evidence is still awaited; no result is inferred. Main integration remains final.
+
 22October current authority: the maintainer withholds PR120 merge and requests
 DRAFT while additional editorial comments are prepared. The21October integrated
 revision at1f45d02 is technically qualified, not final editorial acceptance.

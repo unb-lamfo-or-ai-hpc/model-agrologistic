@@ -188,3 +188,7 @@ limit reproduction of particular figures. There is no counterfactual study of
 AI productivity or guaranteed error reduction. These limitations do not replace
 the requirement for mathematical correctness and original numerical validation;
 they define what this complementary methodological contribution can support.
+
+{{< include appendix_c.qmd >}}
+
+{{< include appendix_d.qmd >}}

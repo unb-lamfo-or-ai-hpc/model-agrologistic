@@ -41,6 +41,16 @@ def package(output: Path, *, root: Path = ROOT) -> None:
         if figure.is_file() and figure.suffix.lower() in {".png", ".pdf", ".jpg", ".svg"}:
             files[figure.name] = figure
     payload = {name: path.read_bytes() for name, path in files.items()}
+    # Supplement C/D has an explicit flat allowlist, never private generated data.inc.
+    for name, path in {
+        "model_det.gms": supplement / "appendix_c/model_det.gms",
+        "model_sto.gms": supplement / "appendix_c/model_sto.gms",
+        "model_common.inc": supplement / "appendix_c/model_common.inc",
+        "appendix_c_readme.md": supplement / "appendix_c/README.md",
+        "appendix_d_inventory.json": supplement / "appendix_d_inventory.json",
+    }.items():
+        if path.is_file():
+            payload[name] = path.read_bytes()
     for name, path in {
         "appendix_a_original.pdf": supplement / "appendix_a_original.pdf",
         "scalar_evidence.json": manuscript / "scalar_evidence.json",
