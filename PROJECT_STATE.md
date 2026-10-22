@@ -1,5 +1,44 @@
 # Model Agrologistic — MVP 2.0 checkpoint
 
+### PR124/120 merged; next W/D h215 preparation, execution CLOSED —22 October2026
+
+Both integrations were explicitly authorized and completed:
+
+- PR124 audit merge: `ec1293986de5a654fe6374051da07dbf9b636db2`.
+- PR120 editorial merge: `2d75dee0d9a1b1b03d51d3dcf31eada74826d037`.
+  Reconciled head `f81495522a77065c42440ffb6a409ef57f968ae0` passed all five
+  existing checks/1192 native tests (zero failures/errors/skips,47.859s) after
+  retaining both AGENTS/checkpoint histories. The old
+  draft/merge holds below are historical. GAMS compilation/numerical parity
+  remain unperformed, not qualified by the Python suite or authorized merge.
+
+Prepare the [input-only W/D h215 gate](docs/mvp2_scalar_wd_h215_gate.md):
+reconstruct W and D in DET/STO, bind W to original job2217990 and its accepted
+archive81890b54…, verify unchanged scientific source/configuration, actual215
+warehouse membership/order, common OD/DC/DD edges and every indexed penalty.
+Propose only the two missing D cells; W is not solved/repeated. Local/CI data
+qualification does not admit jobs or make a causal historical runtime contrast.
+
+Scientific parameters remain four solver threads, global14400s/arm, gap0.01,
+seed42, SoftMemLimit160 decimalGB, compaction off, DET original arrays and STO
+nine Cartesian1/9 cases; effective penalties90000/45000/45000 in original units.
+The NEW D reservation proposal14h/24logicalCPU/192GiB/1GiB transfer needs separate
+approval; no claim, allocation or execution authority is inherited from W.
+Preparation outputs use an exclusive NEW local preparation directory, never an
+old operational claim. Public metadata excludes private workbooks and warehouse IDs.
+
+Data-only reconstruction of the exact original workbook and W receipts passes:
+OD3182/DC3440/DD18490 unchanged, D adds592 OC arcs; every common scientific
+field/cost and penalty vector matches. Local qualification37 new/239 related
+tests passed with no failures/errors/skips. Retain the compact
+[input review](docs/evidence/scalar_wd_h215_gate_20261022.json); final exact-head
+Linux/source/sealed-preparation evidence is recorded in the PR checkpoint.
+
+h500 job2220382 has no newly supplied terminal evidence. Preserve its source,
+plan, claim and human collection commands unchanged. SCIP/h215 remains a separate
+pending decision; S3/S4 cancelled, EVPI/VSS excluded. Project01/chat01.01 transfer,
+new-machine mandate, protected-main integration and publication remain deferred.
+
 ### Authorized PR124/PR120 integration and W/D preparation —22 October2026
 
 The maintainer explicitly authorizes both merges and the next h215 W/D

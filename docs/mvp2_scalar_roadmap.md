@@ -1,5 +1,16 @@
 # Scalar MVP2 roadmap — 19 October 2026
 
+22October subsequent authority: authorized PR124/PR120 integrations are complete
+atec129398…/2d75dee…. Earlier draft/merge holds below are preserved history.
+The next [W/D h215 gate](mvp2_scalar_wd_h215_gate.md) qualifies inputs/identities
+only and proposes two D cells; it neither repeats W nor submits/adopts a new
+budget. After input qualification and D design/resource approval, consolidate
+the future operational launcher/worker/metrics/collector/wrapper/runbook in ONE
+functional package. Separate exact-head Ready/merge/human execution gates remain.
+W/D synthesis can enter R3/R5 and S6-A only after actual D evidence; do not reopen
+cancelled S3/S4 or silently add a multi-scale/repeated topology campaign. Existing
+h500 collection, separate SCIP decision and later S6-B/main-review boundaries stand.
+
 22October resumed mandate: existing draft PR120 now incorporates the new
 implementation/GAMS/data-provenance Appendices C/D and section-numbering changes;
 independent documentary W/D audit is PR124. See
