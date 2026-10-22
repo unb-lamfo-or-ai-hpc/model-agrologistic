@@ -18,7 +18,7 @@ permission to republish every external source or new raw experiment archive.
 | Full warehouse registry | 18,086-record population-selection source | `external-inputs/` member of preserved input archive; not Git-tracked as this workbook | SHA256 prefix 0d19865a… |
 | Original population manifest/order | Deterministic ranking, strata, source/anchor identities and seed | Archived processed population records; hash-bound by execution receipts | Manifest 4134147f…; order 7a524b2e… |
 | Materialized case workbooks | Effective warehouse population plus approved OSRM distance rows | External processed snapshot, not assumed present in Git from a filename mention | Full hashes in the population table below |
-| Scalar evidence archives | Original model/input/validation/results/resource receipts | External preserved archives, referenced by public review metadata | h215: 81890b54…; h300: dc5969fa…; h400: e0b58bb7… |
+| Scalar evidence archives | Original input, validation, result and resource receipts | External archives, referenced by public review metadata | h215: 81890b54…; h300: dc5969fa…; h400: e0b58bb7… |
 
 The canonical workbook has 14 sheets, including explanatory and control sheets.
 The registry's `Sheet1` has 18,087 rows including its header and 13 columns;
@@ -62,17 +62,18 @@ scenario generation change representation or intentionally select a subset.
 
 Four layers must be distinguished: original cell content; its scientific
 interpretation and validation; the numerical array supplied to the model; and
-the approved rule explaining a difference. A blank formula cache is not evidence
+the approved rule explaining a difference. The parameter sheet in the following
+table is `Parametros_Modelo` in the exact canonical workbook. A blank formula cache is not evidence
 of a zero cost. A deliberate approved transformation is not automatically a
 spreadsheet error.
 
 | Parameter | Original source fact | Effective rule/value | Unit and evidence |
 | --- | --- | --- | --- |
-| Unmet demand penalty | `Parametros_Modelo!B4 = 1000000`; A4 identifies the parameter | Dynamic preparation and exact experiment guard; accepted 90000 for every domestic/product entry | BRL/t shortage; original receipts and frozen vector |
-| Static exceedance penalty | `Parametros_Modelo!B5 = 1000000` | `50 × reference`; accepted 45000 at every site | BRL per stock-slack t at a period; time sum has t·period |
-| Reception overflow penalty | `Parametros_Modelo!B6 = 1000000` | Same reference rule; accepted 45000 at every site | BRL/t reception overflow within period; no extra days factor |
+| Unmet demand penalty | Parameter sheet, B4 = 1000000; A4 identifies the parameter | Dynamic preparation and exact experiment guard; accepted 90000 for every domestic/product entry | BRL/t shortage; original receipts and frozen vector |
+| Static exceedance penalty | Parameter sheet, B5 = 1000000 | `50 × reference`; accepted 45000 at every site | BRL per stock-slack t at a period; time sum has t·period |
+| Reception overflow penalty | Parameter sheet, B6 = 1000000 | Same reference rule; accepted 45000 at every site | BRL/t reception overflow within period; no extra days factor |
 | Candidate investment cost | Registry candidate maximum/opening columns contain placeholders; canonical enhanced cost cells can contain formulas without cached values | `variable_from_total`: total estimate divided by positive maximum capacity, fixed cost zero; documented canonical cost-table fallback when formula caches are absent | BRL/investment-t and BRL fixed; `_load_warehouses` |
-| Expansion unit cost | Custo_Invest low/high 600/1200 | Average 900 when the original explicit effective value is absent | BRL/expansion-t; `_investment_average_cost` |
+| Expansion unit cost | Custo_Invest low/high 600/1200 | Average 900 when the explicit effective value is absent | BRL/expansion-t; loader cost-table average |
 | Inventory tariff | `Tarifa_Armz`, Soja 45 and Milho 48 | Effective product/warehouse tariff mapping | BRL/(t period), not USD/t |
 | Capacity coupling | Original candidate/handling attributes and model settings | Daily factors: candidate/expansion 0.20 per invested t; conversion 1.0; default 30 days/period | t/day before conversion; conversion does not add static capacity |
 | STO probabilities | Template base probability 1, Ativo SIM; low/high probability 0.25, Ativo NAO | Approved supply × demand low/base/high Cartesian design; nine weights of 1/9 | Distinct from reading only the template's active rows |

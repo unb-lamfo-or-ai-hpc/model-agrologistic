@@ -118,17 +118,28 @@ capacity expressions rather than additional optimization decisions.
 
 | Equations / units | Actual Python function or construction | GAMS symbol/equation | Effective input origin |
 | --- | --- | --- | --- |
-| D1, S1; BRL | `_build_investment_costs`, `_build_scenario_costs`; common builder objective | `objective`, `fixed*`, `unit*`, `cost*`, `hold`, `penalty*`, `pi` | Warehouse investment rules, freight × OSRM distances, tariffs and frozen weights; Appendix D |
-| D2; investment t and binaries | `_add_first_stage_constraints` in stochastic Gurobi module; reused algebraically by SCIP | `newBound`, `expBound`, `bulkBound`, `expActive`, `bulkActive`, `exclusion` | Eligible subsets, maximum quantities and flags from `_load_warehouses` |
-| D3; t and t/day | `_effective_static_capacity_expr`, `_effective_reception_capacity_expr`, `_effective_shipping_capacity_expr` | RHS of `stockBound`, `receiveBound`, `shipBound` | Initial capacities, day factors and investment-to-handling coefficients |
-| D4/S2; period t | `_add_scenario_constraints` supply balance; native SCIP flow sums | `supplyBalance`, `supply` | Original supply or approved Cartesian multiplier |
-| D5–D6/S3–S4; period t | `_add_scenario_constraints` inventory balance and explicit predecessor stock | `inventoryBalance`, `initial` | Retained OW/WD/WW arcs, initial inventory and ordered periods |
+| D1, S1; BRL | Cost construction [C-a] | `objective`, `fixed*`, `unit*`, `cost*`, `hold`, `penalty*`, `pi` | Warehouse investment, freight × road distance, tariffs and frozen weights |
+| D2; investment t and binaries | First-stage construction [C-b] | `newBound`, `expBound`, `bulkBound`, `expActive`, `bulkActive`, `exclusion` | Eligible subsets, maximum quantities and flags |
+| D3; t and t/day | Capacity expressions [C-c] | RHS of `stockBound`, `receiveBound`, `shipBound` | Initial capacities, days and investment handling gains |
+| D4/S2; period t | Scenario supply balance [C-d] | `supplyBalance`, `supply` | Original supply or Cartesian multiplier |
+| D5–D6/S3–S4; period t | Scenario stock balance [C-d] | `inventoryBalance`, `initial` | Retained OW/WD/WW arcs, initial stock, ordered periods |
 | D7/S5; period t | Domestic sum of DC + OC + shortage | `domesticBalance`, `demand` | Role-separated domestic data, scenario multiplier |
 | D8/S6; period t | Export sum of DC + OC at most the upper bound | `exportBound`, `exportCap` | Declared fixed or supply-derived export limits |
 | D9/S7; stock t, period handling t | Product-aggregated stock, inbound and outbound constraints | `stockBound`, `receiveBound`, `shipBound` | Daily rates × operating days; reception slack added afterward |
 | D10/S8; slack t | Native candidate indicators in both backends | `closedStock`, `closedReception` plus mandatory solver mapping | Candidate membership and common opening binary |
-| D11/S9; domains | Eligible first-stage keys, nonnegative recourse variables | `y,z,g,k,e,b,x*,stock,unmet,qK,qR` and subset fixes | ModelConfig and actual effective index sets |
-| All residuals and D1/S1 cost | `solution_validation.validate_solution` | Independent comparison required; not supplied by `modelstat` alone | Frozen input plus sparse flow/stock/slack and dense first-stage exports |
+| D11/S9; domains | Eligible first-stage keys, nonnegative recourse variables | `y`, `z`, `g`, `k`, `e`, `b`, `x*`, `stock`, `unmet`, `qK`, `qR`; subset fixes | ModelConfig and effective index sets |
+| All residuals and D1/S1 cost | Independent validation [C-e] | Comparison required; not supplied by `modelstat` alone | Frozen input, sparse recourse and dense first-stage exports |
+
+The source keys in this table resolve as follows, all at the pinned scientific
+commit above. C-a is `_build_investment_costs` and `_build_scenario_costs` in
+`optimization_gurobipy_stochastic.py`. C-b is `_add_first_stage_constraints` in
+that same file. C-c comprises `_effective_static_capacity_expr`,
+`_effective_reception_capacity_expr` and `_effective_shipping_capacity_expr` in
+`optimization_gurobipy.py`. C-d is `_add_scenario_constraints` in the stochastic
+Gurobi file and the corresponding explicit physical loops inside
+`optimization_scip.solve_model_scip`. C-e is
+`solution_validation.validate_solution`. The source keys shorten table cells
+only; they are not additional functions or substitute implementations.
 
 The scalar cost has 14 independently reconstructed components: six investment,
 four transport, one storage and three artificial penalties. The validator uses

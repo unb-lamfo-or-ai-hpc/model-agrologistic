@@ -174,9 +174,11 @@ investment costs, operating-day factors and penalty coefficients stay fixed.
 The first-stage vector is common to every scenario.
 
 $$
-\min_{X,\{Y^s\}_{s\in S}} Z_{STO}=
-C^{INV}(X)+\sum_{s\in S}\pi_s
- [C^{TR}(Y^s)+C^{HOLD}(Y^s)+C^{PEN}(Y^s)].\text{(S1)}
+\begin{aligned}
+\min_{X,\{Y^s\}_{s\in S}} Z_{STO}={}&C^{INV}(X)\\
+&+\sum_{s\in S}\pi_s
+ [C^{TR}(Y^s)+C^{HOLD}(Y^s)+C^{PEN}(Y^s)]. &&\text{(S1)}
+\end{aligned}
 $$
 
 $$
