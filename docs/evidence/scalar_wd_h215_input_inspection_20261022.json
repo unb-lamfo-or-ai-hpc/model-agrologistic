@@ -1,0 +1,59 @@
+{
+  "kind": "input_graph_inspection_not_optimization",
+  "source": "6fb43389ea70b02d0f54c959a2bfff8d53d83af4",
+  "workbook_sha256": "40edb66585daca9cc393cab1f86bde6d4528a5f34b6afc57260cc1684396da4e",
+  "W": {
+    "routes": {
+      "od": 3182,
+      "dc": 3440,
+      "dd": 18490,
+      "oc": 0
+    },
+    "penalty_distinct_values": {
+      "unmet": [
+        90000.0
+      ],
+      "static": [
+        45000.0
+      ],
+      "reception": [
+        45000.0
+      ]
+    },
+    "penalty_vector_sha256": "e0f93593659c35d14b85cdaddecbe020edb375376f5e30ae99b05bed876d276f"
+  },
+  "D": {
+    "routes": {
+      "od": 3182,
+      "dc": 3440,
+      "dd": 18490,
+      "oc": 592
+    },
+    "penalty_distinct_values": {
+      "unmet": [
+        90000.0
+      ],
+      "static": [
+        45000.0
+      ],
+      "reception": [
+        45000.0
+      ]
+    },
+    "penalty_vector_sha256": "e0f93593659c35d14b85cdaddecbe020edb375376f5e30ae99b05bed876d276f"
+  },
+  "common_family_set_differences": {
+    "od": {
+      "W_only": 0,
+      "D_only": 0
+    },
+    "dc": {
+      "W_only": 0,
+      "D_only": 0
+    },
+    "dd": {
+      "W_only": 0,
+      "D_only": 0
+    }
+  }
+}

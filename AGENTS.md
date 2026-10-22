@@ -1,5 +1,16 @@
 # Model Agrologistic: agent working agreement
 
+## Independent W/D documentary audit —22 October2026
+
+The maintainer explicitly requests a separate develop-based audit PR while
+PR120 resumes editorial revision and remains draft. Read
+`docs/mvp2_scalar_wd_audit.md`. Source/evidence inspection is read-only; only
+the report, compact derived ledger and checkpoint are changed in this PR.
+No model/manifest/parameter/budget/claim alteration, job, repetition or automatic
+W×D admission is authorized. A proposed D experiment needs a separate decision.
+The Project01/chat01.01 transfer is deferred until these two PR workstreams
+are completed here. Preserve all earlier source and experimental identities.
+
 ## Consolidated h400 acceptance / h500 operational mandate —21 October2026
 
 Maintainer agrees with the h5008h/24logicalCPU/192GiB/one-thread/global14400s
