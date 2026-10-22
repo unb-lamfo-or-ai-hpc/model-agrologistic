@@ -1,5 +1,50 @@
 # Model Agrologistic — MVP 2.0 checkpoint
 
+### PR125 merged; D DET/STO envelope approved; complete package preparation —22 October2026
+
+The maintainer explicitly authorized PR125 integration and approved its D pair
+envelope. Merge commit `789f30bf1b6d73e40d0d023819fdec44c5ae2163`; qualified head
+`f204318336244870f50ea809912c1fd65ba25249` passed all four applicable checks and
+1234 native tests (zero failures/errors/skips,44.865s). Its original-byte
+input-only preparation/receipt replay passed with external plan SHA256
+`d9c434205aff4245efce9aefef3707e76beda061f73000e844be919284b79f53`.
+Historical proposal/admission flags remain unchanged; the NEW D approval here
+does not rewrite that earlier receipt or inherit W's original execution claim.
+
+Approved: ONE cold D DET->STO block,14h Slurm/24 logical CPUs/192GiB/four native
+solver threads, global14400s per arm/MIPGap0.01/Seed42/SoftMemLimit160 decimalGB,
+compaction off,25M size guard and1GiB expanded transfer. Original DET arrays,
+nine Cartesian1/9 STO cases,215 included warehouses and indexed90000/45000/45000
+penalties/units/tolerances are unchanged. No W solve/repetition is requested.
+
+Prepare the [complete operational package](docs/mvp2_scalar_wd_h215_operational.md)
+with exclusive NEW claim `.mvp2-scalar-wd-h215-d-14h-v1`, fresh allocation/WLS/
+input comparison before a model, original native-hook worker, owned-step phase
+control, clocks/dimensions/costs/slacks/investment/direct-versus-mediated flow
+and memory scopes, immutable terminal/partial/negative collection and checksum
+auditor. Reuse unchanged controllers/validator; never require Git on compute.
+No NPAD job, probe, W repeat or automatic follow-on is performed by this work.
+Final exact-head native qualification/Ready and explicit merge precede human CLI.
+
+Local focused/related regression:271 passed, zero failures/errors/skips. New
+operational coverage includes35 non-native cases; the separate tiny native D
+DET/nine-scenario STO integration must pass the final zero-skip Linux gate.
+Local MSYS Bash could not start under the Windows sandbox; rely on the explicit
+Linux syntax check, not an invented local pass. Final source/counts/wrapper hash
+and CI links are recorded in the PR qualification checkpoint before Ready.
+
+Original W job2217990 remains historical control, not a contemporaneous runtime
+baseline. Feasible-set inclusion is conditional on the strict common-network/
+coefficient checks; a larger feasible set need not improve a finite-budget
+incumbent. Report all economic/penalty components and original independent
+residuals; gap<=1% concerns the scalar total, not zero slack/full service.
+
+h500 job2220382/sourcefce341df/plan1f57d230…/claim and collection commands remain
+unchanged, with no newly supplied terminal result. SCIP/h215 still awaits its
+separate decision. S3/S4 cancelled; EVPI/VSS excluded. PR120/124 are merged but
+GAMS compilation/parity and journal submission are not certified. Project01/
+new-machine handoff and protected-main integration remain separate decisions.
+
 ### PR124/120 merged; next W/D h215 preparation, execution CLOSED —22 October2026
 
 Both integrations were explicitly authorized and completed:

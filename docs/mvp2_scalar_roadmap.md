@@ -1,5 +1,14 @@
 # Scalar MVP2 roadmap — 19 October 2026
 
+22October subsequent decision: PR125 merged at789f30bf… and the two-cell D
+design/resource envelope is approved. Prepare the [ONE operational package](mvp2_scalar_wd_h215_operational.md)
+with wrapper/worker/comparability gate/controller/metrics/collector/tests/runbook.
+No job during preparation, W repeats or automatic extension. Keep W historical
+and admit only future D DET/STO after exact-head qualification/Ready/authorized
+merge/pinned human CLI. Terminal D evidence then supports a separate W/D result
+synthesis for R3/S6-A; do not presume an improved incumbent, lower slack or faster
+solve. h500 collection and the SCIP decision remain independent dependencies.
+
 22October subsequent authority: authorized PR124/PR120 integrations are complete
 atec129398…/2d75dee…. Earlier draft/merge holds below are preserved history.
 The next [W/D h215 gate](mvp2_scalar_wd_h215_gate.md) qualifies inputs/identities

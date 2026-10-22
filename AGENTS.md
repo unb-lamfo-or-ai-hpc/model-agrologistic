@@ -1,5 +1,23 @@
 # Model Agrologistic: agent working agreement
 
+## Approved complete operational D h215 pair —22 October2026
+
+PR125 merged with explicit authorization at789f30bf1b6d73e40d0d023819fdec44c5ae2163.
+The maintainer approves ONE D DET->STO serial14h/24logicalCPU/192GiB reservation,
+four solver threads/global14400s per arm/gap0.01/Seed42/SoftMemLimit160GB,
+compaction off and1GiB expanded transfer. Read
+`docs/mvp2_scalar_wd_h215_operational.md`. This supersedes the earlier pending
+D-envelope language, not the original preparation receipts or W budget/certificates.
+Prepare/qualify launcher, worker, fresh pre-build W/D gate, exact-step controls,
+metrics, immutable terminal/forensic collection, native tiny tests and complete
+human handoff in ONE PR. Do not edit scientific src, old manifests/launchers,
+penalties, tolerances, private inputs, claims or earlier evidence. Compute-role
+verification MUST NOT call Git. No NPAD access or jobs during preparation.
+Final exact-head zero-skip native CI/Ready precede explicit merge authorization;
+only later pinned human CLI may submit the one reviewed pair. No W repeats,
+additional block, larger population, automatic follow-on, GAMS parity claim,
+main sync or Project01 transfer is admitted. h500 terminal evidence is still absent.
+
 ## Merged PR120/124 and input-only W/D h215 gate —22 October2026
 
 The maintainer authorized both integrations. PR124 merged atec1293986de5a654fe6374051da07dbf9b636db2;
