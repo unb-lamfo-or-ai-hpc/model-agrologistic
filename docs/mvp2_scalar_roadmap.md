@@ -1,5 +1,15 @@
 # Scalar MVP2 roadmap — 19 October 2026
 
+23October CURRENT: see [the complete revised plan](mvp2_completion_handoff_20261023.md).
+The bounded h215 W/D phase is accepted and closed on original D job2221443
+receipts plus historical W; no further experiment is indispensable. S5/h500
+original terminal transfer, separate SCIP decision, coauthor S6-A revisions and
+S6-B remain. The researcher explicitly authorizes main/develop review snapshot
+synchronization and public Pages now, superseding the older final-only hold.
+This is not final release/submission. Preserve all histories, parameters and
+claims; no new jobs or automatic follow-on. This chat pauses until at least16Nov;
+the other machine requires the next approved mandate from Project01/chat01.01.
+
 22October subsequent decision: PR125 merged at789f30bf… and the two-cell D
 design/resource envelope is approved. Prepare the [ONE operational package](mvp2_scalar_wd_h215_operational.md)
 with wrapper/worker/comparability gate/controller/metrics/collector/tests/runbook.

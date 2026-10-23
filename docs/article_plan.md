@@ -1,5 +1,15 @@
 # Article plan and editorial boundaries
 
+23October CURRENT: PR120 is merged and the researcher now requests public S6-A
+review via Pages after qualified develop/main reconciliation. The approved
+snapshot includes the separately accepted h215 W/D comparison, without changing
+the eight-observation W scalability cohort or its original certificates. D
+reduces penalized objectives but lowers service; keep that trade-off explicit.
+Appendices A–D and GAMS-parity limitations are preserved. This supersedes old
+draft/publication holds below, not final coauthor approval or S6-B/submission.
+See [current completion plan](mvp2_completion_handoff_20261023.md). This chat pauses
+until at least16Nov; S5/h500, SCIP disposition and editorial rounds remain open.
+
 22October resumed direction: the expanded supplied mandate now authorizes
 editing the SAME draft PR120, including implementation/data Appendices C/D and
 numbered disclosure/Acknowledgements/References. Read

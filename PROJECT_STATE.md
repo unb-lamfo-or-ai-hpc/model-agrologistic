@@ -1,5 +1,61 @@
 # Model Agrologistic — MVP 2.0 checkpoint
 
+### CURRENT: accepted D h215; review publication and portable continuation —23 October2026
+
+This supersedes older RUNNING/draft/main-hold paragraphs below, which remain
+chronological history. PR126 merged at91f8c72153cfc9e79eef9be0d7a523d2e047c39f.
+The maintainer supplied original D job2221443 terminal evidence and explicitly
+requests comparison/closure, develop/main synchronization, public S6-A REVIEW
+and the Project01/chat01.01/new-machine packet. No new job/repeat/model change,
+final S6-B acceptance, new data deposition or journal submission is authorized.
+
+Original D archive SHA256:fa71bdfbd9ab73a1741de4304958ce3482c1c18cf4ed61ed257cc9153818796c;
+source5713a8909e6a590df8ba35d7510d2b6b01ec42d4;
+plan6d150f05bac584fdf3c1547edfab3d029c0b2fb629c5c23c899480a037aba694.
+Unmodified original auditor independently replays `D_pair_quality_target_met`,
+full operational closure, accepted independent residuals and no rejected/missing
+arms. DET/STO gaps0.552427%/0.623718%; job completed55min12s. This is original
+certificate/integrity replay, not fresh private-input residual re-solve.
+See [bounded W/D results](docs/mvp2_scalar_wd_h215_results.md) and original-value
+[derived ledger](docs/evidence/scalar_wd_h215_2221443_review.json).
+
+Compared with historical W job2217990, returned penalized objectives fall
+35.82%/43.73% and economic subtotals13.11%/13.66%. D incumbents are below W
+lower bounds, conditional on verified common data/network/costs/source. BUT
+domestic service falls91.861→89.896% DET and92.267→89.857% STO; shortage rises.
+Direct arrivals replace much handling, sharply reducing capacity penalties.
+All69 candidates still receive capacity; the solution is not a sparse few-hub
+selection. Native D DET is observed faster, STO slower; no causal speedup.
+Fixed90000/45000/45000 penalties influence slack-enabled feasibility, investment,
+search and the penalized gap; no calibration or validation relaxation occurs.
+
+The bounded h215 W/D phase can close in PR126 without another experiment or
+operational repair. Preserve all original archives/claims/runtime sources and
+raw false repeat/follow-on flags. TEN accepted scalar observations now comprise
+eight W scaling observations plus two D observations, not independent replications.
+h500/S5 job2220382 still lacks original terminal transfer here; collect the SAME
+claim only, never infer current RUNNING/success from its old snapshot. SCIP/h215
+requires its separate proceed/defer/cancel decision. S3/S4 cancelled; EVPI/VSS
+excluded. GAMS compilation/parity remain unperformed; Appendix A stays complete.
+
+Read the current [completion plan](docs/mvp2_completion_handoff_20261023.md),
+[new-machine guide](docs/RESUME_MVP2_20261023.md) and
+[Project01/chat01.01 prompt](docs/PROMPT_PROJETO01_CHAT0101_20261023.md).
+The23Oct explicit synchronization/publication direction supersedes the old
+final-review-only hold for this REVIEW snapshot. Main's exclusive6b2923ce…
+university-name correction is preserved in ancestry/content. Use qualified PRs,
+required ancestry/CI checks and normal merges, no force push or protection edits.
+Actual final merge/deployment IDs and verified HTML/PDF/ZIP hashes are recorded
+in public PR comments and the delivered VERSION_MANIFEST/PUBLICATION_STATUS,
+not fabricated in advance in this source commit. Main is not the final release.
+
+This chat is inactive until AT LEAST16November2026. No monitor, wake-up or automatic
+cross-machine/chat synchronization is created. Project01/chat01.01 will prepare
+the next mandate from this packet and other materials; the researcher approves
+and forwards it to the other machine. S5 reviews, S6-A coauthor corrections and
+S6-B remain open. December submission is conditional; January2027 contingency
+must be considered if the pause/review/SCIP decisions consume available buffers.
+
 ### PR125 merged; D DET/STO envelope approved; complete package preparation —22 October2026
 
 The maintainer explicitly authorized PR125 integration and approved its D pair

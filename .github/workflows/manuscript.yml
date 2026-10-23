@@ -32,6 +32,7 @@ jobs:
           "$tex_bin/tlmgr" install orcidlink pgf caption bookmark xurl footnotehyper microtype lm amsfonts geometry natbib etoolbox booktabs tools babel-english parskip xcolor pdfpages eso-pic
       - run: python scripts/build_manuscript_comparison.py --check
       - run: python -m scripts.build_scalar_manuscript --check
+      - run: python -m scripts.build_wd_manuscript --check
       - run: python -m scripts.build_s6a_assets
       - run: python -m pytest tests/test_geographic_visualization.py tests/test_manuscript.py tests/test_manuscript_package.py -q
       - run: python scripts/check_manuscript.py
