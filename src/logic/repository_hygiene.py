@@ -231,7 +231,7 @@ def classify_relative_path(
             checkpoint_root,
             PIPELINE_REQUIRED,
             KEEP,
-            "EVPI/VSS checkpoints are retained for pipeline recovery and verification.",
+            "Historical EVPI/VSS checkpoints are preserved, not active scalar analysis.",
         )
 
     release_run_root = _find_release_run_root(relative_path)

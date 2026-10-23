@@ -23,3 +23,7 @@ format:
     cite-method: citeproc
     geometry:
       - margin=25mm
+    include-in-header:
+      text: |
+        \usepackage{pdfpages}
+        \usepackage{xurl}

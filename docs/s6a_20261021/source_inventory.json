@@ -1,0 +1,80 @@
+{
+  "schema_version": "s6a-final-mandate-sources-v1",
+  "date": "2026-10-21",
+  "pull_request": 120,
+  "editorial_branch": "docs/s6a-coauthor-review",
+  "reconciliation_commit": "63c39bb1e87386d9d87a8ad24d0d6f5dfe490181",
+  "manuscript_replacement_authorized": true,
+  "direct_develop_push_authorized": false,
+  "merge_authorized": false,
+  "publication_authorized": false,
+  "sources": [
+    {
+      "file_basename": "October 21, 2026 — Subgroup 1, Experimental Instance Definition.docx",
+      "sha256": "3be25189e1dfb83b402b50d35de9f5bb7078d0cdba533c2349df3c79c93e535c",
+      "role": "researcher-supplied meeting guidance",
+      "content_scope": "Agreement 5 and sections 8–11; not complete minutes",
+      "all_paragraphs_and_tables_text_inspected": true,
+      "original_committed": false
+    },
+    {
+      "file_basename": "Use of Gurobot in Research Development.docx",
+      "sha256": "21735cebc3385dadd67c8ebc07c41b310a239bd9f4c9b91b3783c7f89820d1a3",
+      "role": "researcher-supplied AI-generated retrospective",
+      "content_scope": "overview, five historical phases and methodological notes",
+      "all_paragraphs_and_tables_text_inspected": true,
+      "independent_execution_evidence": false,
+      "original_committed": false
+    },
+    {
+      "file_basename": "Appendix_Victor.pdf",
+      "sha256": "859dc52b64b6bcf471f7616182d8cadf2b693dbfd19ad4b9248637b5c231b3ed",
+      "role": "complete Appendix A replacement authority",
+      "pages": 19,
+      "all_page_text_inspected": true,
+      "integration_status": "pending full-content integration and rendered verification"
+    },
+    {
+      "file_basename": "Agrologistic_Manuscript_20261019-GC.pdf",
+      "sha256": "fbcd5a083775ca25f117adbab1f805c0a08545cd946b0c1bf0045e3258727179",
+      "role": "original reviewed manuscript",
+      "pages": 33,
+      "review_annotations": 146,
+      "original_modified": false,
+      "raw_pdf_or_annotation_export_committed": false
+    }
+  ],
+  "administrative_decisions": {
+    "D06": {
+      "status": "administratively_closed",
+      "exact_historical_build_newly_verified": false
+    },
+    "D09": {
+      "status": "administratively_closed_without_invented_interpretation",
+      "original_matrix_sha256": "c2de3f955c467dc5a2fc7d962785eb86388527a3305199080e8c65b765005d0c",
+      "preserved_locator_count": 146,
+      "unexplained_mark_ids": [
+        "A019", "A063", "A070", "A077", "A079", "A095", "A096", "A097",
+        "A102", "A103", "A109", "A116", "A123", "A136", "A137", "A138", "A139"
+      ]
+    }
+  },
+  "planning_references": {
+    "technical_revision_target": "2026-11-15",
+    "coauthor_meeting": "2026-11-18T09:30:00",
+    "meeting_timezone": null,
+    "intended_submission_month": "2026-12",
+    "possible_extension_month": "2027-01",
+    "completion_guaranteed": false
+  },
+  "experimental_boundary": {
+    "h215_h300_h400": "accepted original evidence",
+    "h500_job_id": "2220382",
+    "h500_latest_human_snapshot": "RUNNING",
+    "terminal_h500_result_inferred": false,
+    "new_jobs": false,
+    "scientific_model_changed": false,
+    "frozen_penalties": [90000, 45000, 45000]
+  },
+  "ready_for_review": false
+}

@@ -1,3 +1,19 @@
+# Current scalar software boundary
+
+R1 removes the old hierarchy-specific NPAD launchers, stage/value-analysis
+campaigns and acceptance drivers from the active tree. The catalogue/commands
+below are historical where their executable is retired; use the exact
+[archive](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/tree/5f9daa55b3afb5bbcb3449bc83c970cf10a28ca6/scripts)
+for historical reproduction, never as a new scalar admission shortcut.
+
+`run_batch_hpc.py` now accepts scalar manifest v2 and denies Slurm optimization
+pending R2. `check_scalar_source.py` is read-only software source closure, not an
+execution/quality certificate. Preprocessing remains reusable; historical report
+builders describe their original cohorts, not new scalar performance. R1 supplies
+no NPAD CLI. Read [current contract](../docs/mvp2_scalar_contract.md).
+
+## Historical catalogue
+
 # Pipeline entry points
 
 Run commands from the repository root, not from quarantine or a result folder.
@@ -6,6 +22,7 @@ supports `--help`; inspect its input and output defaults before execution.
 
 | Stage | Entry points | Effects |
 |---|---|---|
+| S2 campaign planning | `plan_mvp2_s2_closure.py` | Check frozen campaign scope and existing budget arithmetic; print only, no scheduler/solver/admission or output files |
 | Source lineage | `reconcile_artur_benchmark.py`, `build_artur_instance.py` | Verify/acquire pinned assets and persist a bounded instance |
 | Normalization | `normalize_artur_instance.py`, `build_artur_solver_workbook.py` | Produce audited derived inputs; never silently alter raw evidence |
 | Population | `audit_warehouse_registry.py`, `build_policy_population_workbooks.py` | Select nested real facilities and translate candidate capacities/costs |
@@ -51,6 +68,12 @@ not the current reference launcher. Their optional dependencies and historical
 assumptions must not be inferred from the native validated pipeline.
 
 ## HPC execution discipline
+
+The [S2-P1 first-normal runbook](../docs/mvp2_s2_first_normal.md) documents
+`npad_s2_first_normal.sh` and the narrowly scoped `mvp2_s2_first_normal.py`.
+After qualified merge, the maintainer may start one fixed normal stdlib case
+and collect it without resubmission. The generic S2 execution CLIs remain closed;
+there is no adverse/native/h300/repeat admission or license access here.
 
 - Activate the existing Conda prefix and export `PYTHONNOUSERSITE=1` before Python.
 - Keep credentials outside Git and reuse the authorized license configuration.

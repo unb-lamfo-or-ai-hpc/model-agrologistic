@@ -69,6 +69,19 @@ dev = [
     "seaborn>=0.13,<1",
     "setuptools>=77",
     "wheel>=0.45,<1",
+    "plotly>=6,<7",
+    "dash>=3,<4",
+    "reportlab>=4,<5",
+    "pillow>=11,<13",
+    "pypdf>=5,<7",
+]
+
+geographic = [
+    "plotly>=6,<7",
+    "dash>=3,<4",
+    "reportlab>=4,<5",
+    "pillow>=11,<13",
+    "pypdf>=5,<7",
 ]
 
 visualization = [

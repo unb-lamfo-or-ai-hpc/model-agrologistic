@@ -1,0 +1,845 @@
+{
+  "archive_bytes": 25801229,
+  "archive_inventory": {
+    "expanded_bytes": 572030788,
+    "members": 274
+  },
+  "archive_sha256": "dc5969fa391dc81590210ef7e6f89abbb5df554e4bc5b2032ba9eafe1a67f3fc",
+  "arms": [
+    {
+      "application_sampled_peak_rss_gib": 77.95775985717773,
+      "artificial_penalties": 8903606349315.89,
+      "automatic_follow_on_allowed": false,
+      "bound": 9288725982804.533,
+      "case_name": "scalar_h300_t4",
+      "classification": "validated_feasible",
+      "common_gap": 4.1193549272912564e-05,
+      "decision_artifact_sha256": {
+        "flows.csv": "f8ea87c7a41930ae720992d92358267cc61be06c82726544e42e6bc8b3e9dc71",
+        "inventories.csv": "ffba3a38d563c8d977590e0d3a1aa7cbbc5c70fecacc504b2cfca63b58f36886",
+        "unmet_demand.csv": "09d8b2ed85137c78fb36ea2dab37fe51aed3fcd35a153020be1946225f6eaca6",
+        "warehouse_decisions.csv": "47acb1e9ca166874a56a11a13fd66533314bca4634f2577d8118b9c364c96670"
+      },
+      "economic_cost": 385502284842.871,
+      "execution_admitted": false,
+      "gap_percent": 0.004119354927291256,
+      "h300_admitted": false,
+      "has_usable_incumbent": true,
+      "interpretation": "Original scalar certificate replay; no speedup or cross-mode stochastic-value claim.",
+      "matrix": {
+        "observations": [
+          {
+            "backend": "gurobipy",
+            "binary_variables": 392.0,
+            "coefficient_max": 307079.0,
+            "coefficient_min": 1.0,
+            "constraints": 890642.0,
+            "general_constraints": 166320.0,
+            "integer_count_semantics": "includes_binary",
+            "integer_variables": 392.0,
+            "nonzeros": 94635126.0,
+            "phase": "model_build",
+            "scope": "original",
+            "variables": 25107544.0
+          },
+          {
+            "backend": "gurobipy",
+            "constraints": 839812,
+            "nonzeros": 85548653,
+            "phase": "optimization",
+            "scope": "presolved_log",
+            "variables": 22375717
+          }
+        ],
+        "qualification": "Missing fields are unavailable; no presolved model copy is created.",
+        "schema_version": "resource-matrix-v1"
+      },
+      "mode": "sto",
+      "native_gap": 4.1193549272912564e-05,
+      "native_runtime_seconds": 3533.275866985321,
+      "native_status": "optimal",
+      "objective": 9289108634158.756,
+      "original_absolute_tolerance": 1e-05,
+      "original_relative_tolerance": 1e-08,
+      "original_validation_failed_checks": 0,
+      "original_validation_sha256": "b0f28c0e80e9eebe015ef13d6b8d084d4fb14c0c8007e1426c6cae1d9197ebbd",
+      "original_validation_status": "accepted",
+      "penalized_total": 9289108634158.762,
+      "physical_diagnostics": {
+        "domestic_service_level": 0.9132562288017915,
+        "emergency_reception_capacity": 33839246.52218609,
+        "emergency_static_capacity": 46444009.17365934,
+        "maximum_scenario_service_level": 0.9393998925596366,
+        "minimum_scenario_service_level": 0.8942854906195927,
+        "peak_rss_mb": 79828.74609375,
+        "penalty_cost_share": 0.9584995396194134,
+        "total_unmet_demand": 58787331.58892084
+      },
+      "quality_reason": "target_met",
+      "reconstructed_costs": {
+        "bulkification_fixed": 0.0,
+        "bulkification_variable": 264685200.0,
+        "candidate_capacity": 10653518750.0,
+        "emergency_reception": 1522766093498.3735,
+        "emergency_static": 2089980412814.6797,
+        "expansion_fixed": 0.0,
+        "expansion_variable": 341470125.0,
+        "opening": 0.0,
+        "storage": 13664193946.047565,
+        "transport_dc": 215806944674.68033,
+        "transport_dd": 12797366415.16484,
+        "transport_oc": 0.0,
+        "transport_od": 131974105731.9782,
+        "unmet_demand": 5290859843002.842
+      },
+      "repeats_admitted": false,
+      "resource_termination": {
+        "dropped_samples": {
+          "progress": 0,
+          "resource": 0
+        },
+        "elapsed_seconds": 4118.500631706789,
+        "exception_type": null,
+        "execution_status": "optimal",
+        "inspection_errors": [],
+        "quality_acceptance": "requires_independent_validation_and_scalar_bound_gap_review",
+        "sampler_work_seconds": 531.4113228181377,
+        "samples": {
+          "progress": 88,
+          "resource": 723
+        },
+        "schema_version": "resource-termination-v1"
+      },
+      "sampled_solver_progress": {
+        "sampled_max_iterations": 3314428.0,
+        "sampled_max_nodes": 0.0,
+        "sampled_max_solver_memory_bytes": 33340900520.0
+      },
+      "scalar_gap_target_met": true,
+      "selection_criterion": "Protect all146 existing and69 canonical anchor candidates; extend by frozen deterministic nested rank, never solver opening decisions.",
+      "selection_seed": "model-agrologistic-v020-warehouse-population-v1",
+      "solve_sequence_runtime_seconds": 3962.467624067329,
+      "threads": 4,
+      "timings": {
+        "artifact_export_seconds": 5.5670999782159925,
+        "data_read_seconds": 1.062639057636261e-06,
+        "end_to_end_seconds": 4116.0144370328635,
+        "independent_validation_seconds": 3.264064527116716,
+        "model_build_seconds": 417.53512100316584,
+        "optimization_seconds": 3544.932501747273,
+        "result_extraction_seconds": 92.22128471918404,
+        "solve_sequence_wall_seconds": 4068.520798932761,
+        "solver_reported_runtime_seconds": 3533.275866985321
+      },
+      "warehouse_csv_sha256": "796c81e951a2ff09b50cbfdb6efbb6c8e6dbbba367baace1c2ac5c8590c7ca0a",
+      "warehouse_ordered_ids_sha256": "ea794b078b77351f63973f11d008fb23ab7b0a5f084e9dcf138806c3ffafb143"
+    },
+    {
+      "application_sampled_peak_rss_gib": 46.352439880371094,
+      "artificial_penalties": 8903606349315.89,
+      "automatic_follow_on_allowed": false,
+      "bound": 9288725982804.533,
+      "case_name": "scalar_h300_t1",
+      "classification": "validated_feasible",
+      "common_gap": 4.1193549272912564e-05,
+      "decision_artifact_sha256": {
+        "flows.csv": "f8ea87c7a41930ae720992d92358267cc61be06c82726544e42e6bc8b3e9dc71",
+        "inventories.csv": "ffba3a38d563c8d977590e0d3a1aa7cbbc5c70fecacc504b2cfca63b58f36886",
+        "unmet_demand.csv": "09d8b2ed85137c78fb36ea2dab37fe51aed3fcd35a153020be1946225f6eaca6",
+        "warehouse_decisions.csv": "47acb1e9ca166874a56a11a13fd66533314bca4634f2577d8118b9c364c96670"
+      },
+      "economic_cost": 385502284842.871,
+      "execution_admitted": false,
+      "gap_percent": 0.004119354927291256,
+      "h300_admitted": false,
+      "has_usable_incumbent": true,
+      "interpretation": "Original scalar certificate replay; no speedup or cross-mode stochastic-value claim.",
+      "matrix": {
+        "observations": [
+          {
+            "backend": "gurobipy",
+            "binary_variables": 392.0,
+            "coefficient_max": 307079.0,
+            "coefficient_min": 1.0,
+            "constraints": 890642.0,
+            "general_constraints": 166320.0,
+            "integer_count_semantics": "includes_binary",
+            "integer_variables": 392.0,
+            "nonzeros": 94635126.0,
+            "phase": "model_build",
+            "scope": "original",
+            "variables": 25107544.0
+          },
+          {
+            "backend": "gurobipy",
+            "constraints": 839812,
+            "nonzeros": 85548653,
+            "phase": "optimization",
+            "scope": "presolved_log",
+            "variables": 22375717
+          }
+        ],
+        "qualification": "Missing fields are unavailable; no presolved model copy is created.",
+        "schema_version": "resource-matrix-v1"
+      },
+      "mode": "sto",
+      "native_gap": 4.1193549272912564e-05,
+      "native_runtime_seconds": 2828.5995960235596,
+      "native_status": "optimal",
+      "objective": 9289108634158.756,
+      "original_absolute_tolerance": 1e-05,
+      "original_relative_tolerance": 1e-08,
+      "original_validation_failed_checks": 0,
+      "original_validation_sha256": "6753456cbe5207a2b9eccfce059e242b52e64613790d5a419a3924c542c16b6e",
+      "original_validation_status": "accepted",
+      "penalized_total": 9289108634158.762,
+      "physical_diagnostics": {
+        "domestic_service_level": 0.9132562288017915,
+        "emergency_reception_capacity": 33839246.52218609,
+        "emergency_static_capacity": 46444009.17365934,
+        "maximum_scenario_service_level": 0.9393998925596366,
+        "minimum_scenario_service_level": 0.8942854906195927,
+        "peak_rss_mb": 47464.8984375,
+        "penalty_cost_share": 0.9584995396194134,
+        "total_unmet_demand": 58787331.58892084
+      },
+      "quality_reason": "target_met",
+      "reconstructed_costs": {
+        "bulkification_fixed": 0.0,
+        "bulkification_variable": 264685200.0,
+        "candidate_capacity": 10653518750.0,
+        "emergency_reception": 1522766093498.3735,
+        "emergency_static": 2089980412814.6797,
+        "expansion_fixed": 0.0,
+        "expansion_variable": 341470125.0,
+        "opening": 0.0,
+        "storage": 13664193946.047565,
+        "transport_dc": 215806944674.68033,
+        "transport_dd": 12797366415.16484,
+        "transport_oc": 0.0,
+        "transport_od": 131974105731.9782,
+        "unmet_demand": 5290859843002.842
+      },
+      "repeats_admitted": false,
+      "resource_termination": {
+        "dropped_samples": {
+          "progress": 0,
+          "resource": 0
+        },
+        "elapsed_seconds": 3428.836244941689,
+        "exception_type": null,
+        "execution_status": "optimal",
+        "inspection_errors": [],
+        "quality_acceptance": "requires_independent_validation_and_scalar_bound_gap_review",
+        "sampler_work_seconds": 530.9246463850141,
+        "samples": {
+          "progress": 87,
+          "resource": 585
+        },
+        "schema_version": "resource-termination-v1"
+      },
+      "sampled_solver_progress": {
+        "sampled_max_iterations": 3314428.0,
+        "sampled_max_nodes": 0.0,
+        "sampled_max_solver_memory_bytes": 31844934160.0
+      },
+      "scalar_gap_target_met": true,
+      "selection_criterion": "Protect all146 existing and69 canonical anchor candidates; extend by frozen deterministic nested rank, never solver opening decisions.",
+      "selection_seed": "model-agrologistic-v020-warehouse-population-v1",
+      "solve_sequence_runtime_seconds": 3273.264638834633,
+      "threads": 1,
+      "timings": {
+        "artifact_export_seconds": 5.487718435935676,
+        "data_read_seconds": 1.2414529919624329e-06,
+        "end_to_end_seconds": 3425.2220076611266,
+        "independent_validation_seconds": 3.4539405619725585,
+        "model_build_seconds": 431.4965729387477,
+        "optimization_seconds": 2841.7680628160015,
+        "result_extraction_seconds": 89.03448860812932,
+        "solve_sequence_wall_seconds": 3376.284532275982,
+        "solver_reported_runtime_seconds": 2828.5995960235596
+      },
+      "warehouse_csv_sha256": "796c81e951a2ff09b50cbfdb6efbb6c8e6dbbba367baace1c2ac5c8590c7ca0a",
+      "warehouse_ordered_ids_sha256": "ea794b078b77351f63973f11d008fb23ab7b0a5f084e9dcf138806c3ffafb143"
+    },
+    {
+      "application_sampled_peak_rss_gib": 78.2106819152832,
+      "artificial_penalties": 8903606349315.89,
+      "automatic_follow_on_allowed": false,
+      "bound": 9288725982804.533,
+      "case_name": "scalar_h300_t8",
+      "classification": "validated_feasible",
+      "common_gap": 4.1193549272912564e-05,
+      "decision_artifact_sha256": {
+        "flows.csv": "f8ea87c7a41930ae720992d92358267cc61be06c82726544e42e6bc8b3e9dc71",
+        "inventories.csv": "ffba3a38d563c8d977590e0d3a1aa7cbbc5c70fecacc504b2cfca63b58f36886",
+        "unmet_demand.csv": "09d8b2ed85137c78fb36ea2dab37fe51aed3fcd35a153020be1946225f6eaca6",
+        "warehouse_decisions.csv": "47acb1e9ca166874a56a11a13fd66533314bca4634f2577d8118b9c364c96670"
+      },
+      "economic_cost": 385502284842.871,
+      "execution_admitted": false,
+      "gap_percent": 0.004119354927291256,
+      "h300_admitted": false,
+      "has_usable_incumbent": true,
+      "interpretation": "Original scalar certificate replay; no speedup or cross-mode stochastic-value claim.",
+      "matrix": {
+        "observations": [
+          {
+            "backend": "gurobipy",
+            "binary_variables": 392.0,
+            "coefficient_max": 307079.0,
+            "coefficient_min": 1.0,
+            "constraints": 890642.0,
+            "general_constraints": 166320.0,
+            "integer_count_semantics": "includes_binary",
+            "integer_variables": 392.0,
+            "nonzeros": 94635126.0,
+            "phase": "model_build",
+            "scope": "original",
+            "variables": 25107544.0
+          },
+          {
+            "backend": "gurobipy",
+            "constraints": 839812,
+            "nonzeros": 85548653,
+            "phase": "optimization",
+            "scope": "presolved_log",
+            "variables": 22375717
+          }
+        ],
+        "qualification": "Missing fields are unavailable; no presolved model copy is created.",
+        "schema_version": "resource-matrix-v1"
+      },
+      "mode": "sto",
+      "native_gap": 4.1193549272912564e-05,
+      "native_runtime_seconds": 4047.219526052475,
+      "native_status": "optimal",
+      "objective": 9289108634158.756,
+      "original_absolute_tolerance": 1e-05,
+      "original_relative_tolerance": 1e-08,
+      "original_validation_failed_checks": 0,
+      "original_validation_sha256": "a56abce761c493f2152376d99091edeb4fe4ad4d99b94617b6eeec575058fb86",
+      "original_validation_status": "accepted",
+      "penalized_total": 9289108634158.762,
+      "physical_diagnostics": {
+        "domestic_service_level": 0.9132562288017915,
+        "emergency_reception_capacity": 33839246.52218609,
+        "emergency_static_capacity": 46444009.17365934,
+        "maximum_scenario_service_level": 0.9393998925596366,
+        "minimum_scenario_service_level": 0.8942854906195927,
+        "peak_rss_mb": 80087.73828125,
+        "penalty_cost_share": 0.9584995396194134,
+        "total_unmet_demand": 58787331.58892084
+      },
+      "quality_reason": "target_met",
+      "reconstructed_costs": {
+        "bulkification_fixed": 0.0,
+        "bulkification_variable": 264685200.0,
+        "candidate_capacity": 10653518750.0,
+        "emergency_reception": 1522766093498.3735,
+        "emergency_static": 2089980412814.6797,
+        "expansion_fixed": 0.0,
+        "expansion_variable": 341470125.0,
+        "opening": 0.0,
+        "storage": 13664193946.047565,
+        "transport_dc": 215806944674.68033,
+        "transport_dd": 12797366415.16484,
+        "transport_oc": 0.0,
+        "transport_od": 131974105731.9782,
+        "unmet_demand": 5290859843002.842
+      },
+      "repeats_admitted": false,
+      "resource_termination": {
+        "dropped_samples": {
+          "progress": 0,
+          "resource": 0
+        },
+        "elapsed_seconds": 4666.000093596056,
+        "exception_type": null,
+        "execution_status": "optimal",
+        "inspection_errors": [],
+        "quality_acceptance": "requires_independent_validation_and_scalar_bound_gap_review",
+        "sampler_work_seconds": 546.2284237323329,
+        "samples": {
+          "progress": 89,
+          "resource": 827
+        },
+        "schema_version": "resource-termination-v1"
+      },
+      "sampled_solver_progress": {
+        "sampled_max_iterations": 3314428.0,
+        "sampled_max_nodes": 0.0,
+        "sampled_max_solver_memory_bytes": 43497859312.0
+      },
+      "scalar_gap_target_met": true,
+      "selection_criterion": "Protect all146 existing and69 canonical anchor candidates; extend by frozen deterministic nested rank, never solver opening decisions.",
+      "selection_seed": "model-agrologistic-v020-warehouse-population-v1",
+      "solve_sequence_runtime_seconds": 4499.4039614815265,
+      "threads": 8,
+      "timings": {
+        "artifact_export_seconds": 6.511870462447405,
+        "data_read_seconds": 1.1045485734939575e-06,
+        "end_to_end_seconds": 4662.93972713314,
+        "independent_validation_seconds": 3.3278059205040336,
+        "model_build_seconds": 439.1382281901315,
+        "optimization_seconds": 4060.2657313849777,
+        "result_extraction_seconds": 100.38163094967604,
+        "solve_sequence_wall_seconds": 4613.470319197513,
+        "solver_reported_runtime_seconds": 4047.219526052475
+      },
+      "warehouse_csv_sha256": "796c81e951a2ff09b50cbfdb6efbb6c8e6dbbba367baace1c2ac5c8590c7ca0a",
+      "warehouse_ordered_ids_sha256": "ea794b078b77351f63973f11d008fb23ab7b0a5f084e9dcf138806c3ffafb143"
+    },
+    {
+      "application_sampled_peak_rss_gib": 57.24402618408203,
+      "artificial_penalties": 8903606349315.89,
+      "automatic_follow_on_allowed": false,
+      "bound": 9288725982804.533,
+      "case_name": "scalar_h300_t2",
+      "classification": "validated_feasible",
+      "common_gap": 4.1193549272912564e-05,
+      "decision_artifact_sha256": {
+        "flows.csv": "f8ea87c7a41930ae720992d92358267cc61be06c82726544e42e6bc8b3e9dc71",
+        "inventories.csv": "ffba3a38d563c8d977590e0d3a1aa7cbbc5c70fecacc504b2cfca63b58f36886",
+        "unmet_demand.csv": "09d8b2ed85137c78fb36ea2dab37fe51aed3fcd35a153020be1946225f6eaca6",
+        "warehouse_decisions.csv": "47acb1e9ca166874a56a11a13fd66533314bca4634f2577d8118b9c364c96670"
+      },
+      "economic_cost": 385502284842.871,
+      "execution_admitted": false,
+      "gap_percent": 0.004119354927291256,
+      "h300_admitted": false,
+      "has_usable_incumbent": true,
+      "interpretation": "Original scalar certificate replay; no speedup or cross-mode stochastic-value claim.",
+      "matrix": {
+        "observations": [
+          {
+            "backend": "gurobipy",
+            "binary_variables": 392.0,
+            "coefficient_max": 307079.0,
+            "coefficient_min": 1.0,
+            "constraints": 890642.0,
+            "general_constraints": 166320.0,
+            "integer_count_semantics": "includes_binary",
+            "integer_variables": 392.0,
+            "nonzeros": 94635126.0,
+            "phase": "model_build",
+            "scope": "original",
+            "variables": 25107544.0
+          },
+          {
+            "backend": "gurobipy",
+            "constraints": 839812,
+            "nonzeros": 85548653,
+            "phase": "optimization",
+            "scope": "presolved_log",
+            "variables": 22375717
+          }
+        ],
+        "qualification": "Missing fields are unavailable; no presolved model copy is created.",
+        "schema_version": "resource-matrix-v1"
+      },
+      "mode": "sto",
+      "native_gap": 4.1193549272912564e-05,
+      "native_runtime_seconds": 3180.4986979961395,
+      "native_status": "optimal",
+      "objective": 9289108634158.756,
+      "original_absolute_tolerance": 1e-05,
+      "original_relative_tolerance": 1e-08,
+      "original_validation_failed_checks": 0,
+      "original_validation_sha256": "809297f586ca65e3bdfd1752866503d2e73729d52bd0b89b37f3d31b0aa702d9",
+      "original_validation_status": "accepted",
+      "penalized_total": 9289108634158.762,
+      "physical_diagnostics": {
+        "domestic_service_level": 0.9132562288017915,
+        "emergency_reception_capacity": 33839246.52218609,
+        "emergency_static_capacity": 46444009.17365934,
+        "maximum_scenario_service_level": 0.9393998925596366,
+        "minimum_scenario_service_level": 0.8942854906195927,
+        "peak_rss_mb": 58617.8828125,
+        "penalty_cost_share": 0.9584995396194134,
+        "total_unmet_demand": 58787331.58892084
+      },
+      "quality_reason": "target_met",
+      "reconstructed_costs": {
+        "bulkification_fixed": 0.0,
+        "bulkification_variable": 264685200.0,
+        "candidate_capacity": 10653518750.0,
+        "emergency_reception": 1522766093498.3735,
+        "emergency_static": 2089980412814.6797,
+        "expansion_fixed": 0.0,
+        "expansion_variable": 341470125.0,
+        "opening": 0.0,
+        "storage": 13664193946.047565,
+        "transport_dc": 215806944674.68033,
+        "transport_dd": 12797366415.16484,
+        "transport_oc": 0.0,
+        "transport_od": 131974105731.9782,
+        "unmet_demand": 5290859843002.842
+      },
+      "repeats_admitted": false,
+      "resource_termination": {
+        "dropped_samples": {
+          "progress": 0,
+          "resource": 0
+        },
+        "elapsed_seconds": 3786.756469404325,
+        "exception_type": null,
+        "execution_status": "optimal",
+        "inspection_errors": [],
+        "quality_acceptance": "requires_independent_validation_and_scalar_bound_gap_review",
+        "sampler_work_seconds": 540.7717736000195,
+        "samples": {
+          "progress": 87,
+          "resource": 655
+        },
+        "schema_version": "resource-termination-v1"
+      },
+      "sampled_solver_progress": {
+        "sampled_max_iterations": 3314428.0,
+        "sampled_max_nodes": 0.0,
+        "sampled_max_solver_memory_bytes": 31844992600.0
+      },
+      "scalar_gap_target_met": true,
+      "selection_criterion": "Protect all146 existing and69 canonical anchor candidates; extend by frozen deterministic nested rank, never solver opening decisions.",
+      "selection_seed": "model-agrologistic-v020-warehouse-population-v1",
+      "solve_sequence_runtime_seconds": 3624.778524390422,
+      "threads": 2,
+      "timings": {
+        "artifact_export_seconds": 5.616155424155295,
+        "data_read_seconds": 1.2051314115524292e-06,
+        "end_to_end_seconds": 3784.138010567054,
+        "independent_validation_seconds": 3.3009456982836127,
+        "model_build_seconds": 431.38470713514835,
+        "optimization_seconds": 3193.3938148878515,
+        "result_extraction_seconds": 97.54693342465907,
+        "solve_sequence_wall_seconds": 3735.53895018436,
+        "solver_reported_runtime_seconds": 3180.4986979961395
+      },
+      "warehouse_csv_sha256": "796c81e951a2ff09b50cbfdb6efbb6c8e6dbbba367baace1c2ac5c8590c7ca0a",
+      "warehouse_ordered_ids_sha256": "ea794b078b77351f63973f11d008fb23ab7b0a5f084e9dcf138806c3ffafb143"
+    },
+    {
+      "application_sampled_peak_rss_gib": 78.36795425415039,
+      "artificial_penalties": 8903606349315.89,
+      "automatic_follow_on_allowed": false,
+      "bound": 9288725982804.533,
+      "case_name": "scalar_h300_t16",
+      "classification": "validated_feasible",
+      "common_gap": 4.1193549272912564e-05,
+      "decision_artifact_sha256": {
+        "flows.csv": "f8ea87c7a41930ae720992d92358267cc61be06c82726544e42e6bc8b3e9dc71",
+        "inventories.csv": "ffba3a38d563c8d977590e0d3a1aa7cbbc5c70fecacc504b2cfca63b58f36886",
+        "unmet_demand.csv": "09d8b2ed85137c78fb36ea2dab37fe51aed3fcd35a153020be1946225f6eaca6",
+        "warehouse_decisions.csv": "47acb1e9ca166874a56a11a13fd66533314bca4634f2577d8118b9c364c96670"
+      },
+      "economic_cost": 385502284842.871,
+      "execution_admitted": false,
+      "gap_percent": 0.004119354927291256,
+      "h300_admitted": false,
+      "has_usable_incumbent": true,
+      "interpretation": "Original scalar certificate replay; no speedup or cross-mode stochastic-value claim.",
+      "matrix": {
+        "observations": [
+          {
+            "backend": "gurobipy",
+            "binary_variables": 392.0,
+            "coefficient_max": 307079.0,
+            "coefficient_min": 1.0,
+            "constraints": 890642.0,
+            "general_constraints": 166320.0,
+            "integer_count_semantics": "includes_binary",
+            "integer_variables": 392.0,
+            "nonzeros": 94635126.0,
+            "phase": "model_build",
+            "scope": "original",
+            "variables": 25107544.0
+          },
+          {
+            "backend": "gurobipy",
+            "constraints": 839812,
+            "nonzeros": 85548653,
+            "phase": "optimization",
+            "scope": "presolved_log",
+            "variables": 22375717
+          }
+        ],
+        "qualification": "Missing fields are unavailable; no presolved model copy is created.",
+        "schema_version": "resource-matrix-v1"
+      },
+      "mode": "sto",
+      "native_gap": 4.1193549272912564e-05,
+      "native_runtime_seconds": 4056.7627518177032,
+      "native_status": "optimal",
+      "objective": 9289108634158.756,
+      "original_absolute_tolerance": 1e-05,
+      "original_relative_tolerance": 1e-08,
+      "original_validation_failed_checks": 0,
+      "original_validation_sha256": "b2274b7291e50ae9675c1b9c545d237fe61bc5cff466908ba445c08c4a52209d",
+      "original_validation_status": "accepted",
+      "penalized_total": 9289108634158.762,
+      "physical_diagnostics": {
+        "domestic_service_level": 0.9132562288017915,
+        "emergency_reception_capacity": 33839246.52218609,
+        "emergency_static_capacity": 46444009.17365934,
+        "maximum_scenario_service_level": 0.9393998925596366,
+        "minimum_scenario_service_level": 0.8942854906195927,
+        "peak_rss_mb": 80248.78515625,
+        "penalty_cost_share": 0.9584995396194134,
+        "total_unmet_demand": 58787331.58892084
+      },
+      "quality_reason": "target_met",
+      "reconstructed_costs": {
+        "bulkification_fixed": 0.0,
+        "bulkification_variable": 264685200.0,
+        "candidate_capacity": 10653518750.0,
+        "emergency_reception": 1522766093498.3735,
+        "emergency_static": 2089980412814.6797,
+        "expansion_fixed": 0.0,
+        "expansion_variable": 341470125.0,
+        "opening": 0.0,
+        "storage": 13664193946.047565,
+        "transport_dc": 215806944674.68033,
+        "transport_dd": 12797366415.16484,
+        "transport_oc": 0.0,
+        "transport_od": 131974105731.9782,
+        "unmet_demand": 5290859843002.842
+      },
+      "repeats_admitted": false,
+      "resource_termination": {
+        "dropped_samples": {
+          "progress": 0,
+          "resource": 0
+        },
+        "elapsed_seconds": 4658.1406191261485,
+        "exception_type": null,
+        "execution_status": "optimal",
+        "inspection_errors": [],
+        "quality_acceptance": "requires_independent_validation_and_scalar_bound_gap_review",
+        "sampler_work_seconds": 569.7316984115168,
+        "samples": {
+          "progress": 89,
+          "resource": 826
+        },
+        "schema_version": "resource-termination-v1"
+      },
+      "sampled_solver_progress": {
+        "sampled_max_iterations": 3314428.0,
+        "sampled_max_nodes": 0.0,
+        "sampled_max_solver_memory_bytes": 53946957792.0
+      },
+      "scalar_gap_target_met": true,
+      "selection_criterion": "Protect all146 existing and69 canonical anchor candidates; extend by frozen deterministic nested rank, never solver opening decisions.",
+      "selection_seed": "model-agrologistic-v020-warehouse-population-v1",
+      "solve_sequence_runtime_seconds": 4506.514073532075,
+      "threads": 16,
+      "timings": {
+        "artifact_export_seconds": 5.643078523688018,
+        "data_read_seconds": 1.058913767337799e-06,
+        "end_to_end_seconds": 4655.571897520684,
+        "independent_validation_seconds": 3.333267893642187,
+        "model_build_seconds": 438.08211804833263,
+        "optimization_seconds": 4068.4319537850097,
+        "result_extraction_seconds": 87.42300365213305,
+        "solve_sequence_wall_seconds": 4607.275387681089,
+        "solver_reported_runtime_seconds": 4056.7627518177032
+      },
+      "warehouse_csv_sha256": "796c81e951a2ff09b50cbfdb6efbb6c8e6dbbba367baace1c2ac5c8590c7ca0a",
+      "warehouse_ordered_ids_sha256": "ea794b078b77351f63973f11d008fb23ab7b0a5f084e9dcf138806c3ffafb143"
+    }
+  ],
+  "automatic_follow_on_allowed": false,
+  "decision_artifacts_identical_across_arms": {
+    "flows.csv": true,
+    "inventories.csv": true,
+    "unmet_demand.csv": true,
+    "warehouse_decisions.csv": true
+  },
+  "execution_admitted": false,
+  "h300_admitted": false,
+  "hardware": {
+    "affinity_logical_cpus": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      32,
+      33,
+      34,
+      35
+    ],
+    "cpu_model": {
+      "cpu family": "6",
+      "model": "63",
+      "model name": "Intel(R) Xeon(R) CPU E5-2698 v3 @ 2.30GHz",
+      "stepping": "2",
+      "vendor_id": "GenuineIntel"
+    },
+    "physical_cores_observed": 12,
+    "topology": [
+      {
+        "core": 0,
+        "logical_cpu": 0,
+        "socket": 0
+      },
+      {
+        "core": 1,
+        "logical_cpu": 1,
+        "socket": 0
+      },
+      {
+        "core": 2,
+        "logical_cpu": 2,
+        "socket": 0
+      },
+      {
+        "core": 3,
+        "logical_cpu": 3,
+        "socket": 0
+      },
+      {
+        "core": 4,
+        "logical_cpu": 4,
+        "socket": 0
+      },
+      {
+        "core": 5,
+        "logical_cpu": 5,
+        "socket": 0
+      },
+      {
+        "core": 6,
+        "logical_cpu": 6,
+        "socket": 0
+      },
+      {
+        "core": 7,
+        "logical_cpu": 7,
+        "socket": 0
+      },
+      {
+        "core": 8,
+        "logical_cpu": 8,
+        "socket": 0
+      },
+      {
+        "core": 9,
+        "logical_cpu": 9,
+        "socket": 0
+      },
+      {
+        "core": 10,
+        "logical_cpu": 10,
+        "socket": 0
+      },
+      {
+        "core": 11,
+        "logical_cpu": 11,
+        "socket": 0
+      },
+      {
+        "core": 0,
+        "logical_cpu": 32,
+        "socket": 0
+      },
+      {
+        "core": 1,
+        "logical_cpu": 33,
+        "socket": 0
+      },
+      {
+        "core": 2,
+        "logical_cpu": 34,
+        "socket": 0
+      },
+      {
+        "core": 3,
+        "logical_cpu": 35,
+        "socket": 0
+      }
+    ]
+  },
+  "interpretation": "One cold serial observation per thread level; no causal ranking or automatic h400 selection.",
+  "job_id": "2218193",
+  "operational_receipts_closed": true,
+  "penalty_rates": {
+    "reception": 45000,
+    "static": 45000,
+    "unmet": 90000
+  },
+  "plan_sha256": "000a760b3c263cfd7e88fb75714ac5f125df9c4e27332045c761a75bd60bffb1",
+  "qualification": "Original receipt/integrity replay and arithmetic checks; no fresh private-input residual re-solve.",
+  "quality_target_met": true,
+  "repeats_admitted": false,
+  "same_selected_network_sha256": "9520a303457e50e9cbd499654025ed3e639f95724cfe5cfb812c23dbaa5ba3a9",
+  "same_warehouse_population_and_order": true,
+  "schema_version": "scalar-h300-external-review-v1",
+  "scientific_configuration_selected": false,
+  "source_commit": "04ba9edccc93f40ab36cbc3264039a7edf2f6f51",
+  "status": "accepted_scalar_h300_block",
+  "terminal_accounting": [
+    {
+      "elapsed_seconds": 21096,
+      "exit_code": "0:0",
+      "job_id": "2218193",
+      "max_rss_raw": null,
+      "state": "COMPLETED"
+    },
+    {
+      "elapsed_seconds": 21096,
+      "exit_code": "0:0",
+      "job_id": "2218193.batch",
+      "max_rss_raw": "408732K",
+      "state": "COMPLETED"
+    },
+    {
+      "elapsed_seconds": 21096,
+      "exit_code": "0:0",
+      "job_id": "2218193.extern",
+      "max_rss_raw": "924K",
+      "state": "COMPLETED"
+    },
+    {
+      "elapsed_seconds": 4179,
+      "exit_code": "0:0",
+      "job_id": "2218193.0",
+      "max_rss_raw": "80014576K",
+      "state": "COMPLETED"
+    },
+    {
+      "elapsed_seconds": 3495,
+      "exit_code": "0:0",
+      "job_id": "2218193.1",
+      "max_rss_raw": "47839296K",
+      "state": "COMPLETED"
+    },
+    {
+      "elapsed_seconds": 4734,
+      "exit_code": "0:0",
+      "job_id": "2218193.2",
+      "max_rss_raw": "81121060K",
+      "state": "COMPLETED"
+    },
+    {
+      "elapsed_seconds": 3856,
+      "exit_code": "0:0",
+      "job_id": "2218193.3",
+      "max_rss_raw": "60024144K",
+      "state": "COMPLETED"
+    },
+    {
+      "elapsed_seconds": 4724,
+      "exit_code": "0:0",
+      "job_id": "2218193.4",
+      "max_rss_raw": "81271072K",
+      "state": "COMPLETED"
+    }
+  ]
+}

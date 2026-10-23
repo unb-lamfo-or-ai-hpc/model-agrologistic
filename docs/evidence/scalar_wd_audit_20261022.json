@@ -1,0 +1,226 @@
+{
+  "schema_version": "scalar-wd-documentary-audit-v1",
+  "date": "2026-10-22",
+  "inspected_develop": "6fb43389ea70b02d0f54c959a2bfff8d53d83af4",
+  "execution_admitted": false,
+  "repeats_admitted": false,
+  "records": [
+    {
+      "archive": "scalar-h215-evidence.tar.gz",
+      "sha256": "81890b546d720ad5999d11f44fd499337aad937e32773db39067796f73660534",
+      "job_id": "2217990",
+      "plan_sha256": "e9f9b26c91585fde271876a1dab6b51dcd63110b83e9600b3781165a66a7a722",
+      "source_commit": "5f73871b6320da71e308e436f5cd780cdcfedae2",
+      "cases": [
+        {
+          "case": "scalar_h215_det",
+          "topology": "W",
+          "loader_direct": false,
+          "model_direct": false,
+          "workbook_sha256": "40edb66585daca9cc393cab1f86bde6d4528a5f34b6afc57260cc1684396da4e",
+          "mode": "det",
+          "threads": 4,
+          "time_limit": 14400,
+          "retained_arcs": {
+            "OD": 3182,
+            "DC": 3440,
+            "DD": 18490,
+            "OC": 0
+          },
+          "penalty_vector_sha256": "e0f93593659c35d14b85cdaddecbe020edb375376f5e30ae99b05bed876d276f",
+          "input_receipt_sha256": null
+        },
+        {
+          "case": "scalar_h215_sto",
+          "topology": "W",
+          "loader_direct": false,
+          "model_direct": false,
+          "workbook_sha256": "40edb66585daca9cc393cab1f86bde6d4528a5f34b6afc57260cc1684396da4e",
+          "mode": "sto",
+          "threads": 4,
+          "time_limit": 14400,
+          "retained_arcs": {
+            "OD": 3182,
+            "DC": 3440,
+            "DD": 18490,
+            "OC": 0
+          },
+          "penalty_vector_sha256": "e0f93593659c35d14b85cdaddecbe020edb375376f5e30ae99b05bed876d276f",
+          "input_receipt_sha256": null
+        }
+      ],
+      "positive_flow_record_counts": {
+        "cases/scalar_h215_det/products/scalar_h215_det/flows.csv": {
+          "OD": 7773,
+          "DC": 10731,
+          "DD": 3339
+        },
+        "cases/scalar_h215_sto/products/scalar_h215_sto/flows.csv": {
+          "OD": 68943,
+          "DC": 94595,
+          "DD": 30950
+        }
+      }
+    },
+    {
+      "archive": "scalar-h300-30h-evidence.tar.gz",
+      "sha256": "dc5969fa391dc81590210ef7e6f89abbb5df554e4bc5b2032ba9eafe1a67f3fc",
+      "job_id": "2218193",
+      "plan_sha256": "000a760b3c263cfd7e88fb75714ac5f125df9c4e27332045c761a75bd60bffb1",
+      "source_commit": "04ba9edccc93f40ab36cbc3264039a7edf2f6f51",
+      "cases": [
+        {
+          "case": "scalar_h300_t1",
+          "topology": "W",
+          "loader_direct": false,
+          "model_direct": false,
+          "workbook_sha256": "7761cce77cf93dcba2f617714f0117c1f2ead4de0c3f27149daceba447e0c7d1",
+          "mode": "sto",
+          "threads": 1,
+          "time_limit": 14400,
+          "retained_arcs": {
+            "OD": 4440,
+            "DC": 4800,
+            "DD": 36000,
+            "OC": 0
+          },
+          "penalty_vector_sha256": "6742c2acbc376ccbffa8efee38dfc00150291c025170cafe8f5e4064fc8c2fe8",
+          "input_receipt_sha256": null
+        },
+        {
+          "case": "scalar_h300_t16",
+          "topology": "W",
+          "loader_direct": false,
+          "model_direct": false,
+          "workbook_sha256": "7761cce77cf93dcba2f617714f0117c1f2ead4de0c3f27149daceba447e0c7d1",
+          "mode": "sto",
+          "threads": 16,
+          "time_limit": 14400,
+          "retained_arcs": {
+            "OD": 4440,
+            "DC": 4800,
+            "DD": 36000,
+            "OC": 0
+          },
+          "penalty_vector_sha256": "6742c2acbc376ccbffa8efee38dfc00150291c025170cafe8f5e4064fc8c2fe8",
+          "input_receipt_sha256": null
+        },
+        {
+          "case": "scalar_h300_t2",
+          "topology": "W",
+          "loader_direct": false,
+          "model_direct": false,
+          "workbook_sha256": "7761cce77cf93dcba2f617714f0117c1f2ead4de0c3f27149daceba447e0c7d1",
+          "mode": "sto",
+          "threads": 2,
+          "time_limit": 14400,
+          "retained_arcs": {
+            "OD": 4440,
+            "DC": 4800,
+            "DD": 36000,
+            "OC": 0
+          },
+          "penalty_vector_sha256": "6742c2acbc376ccbffa8efee38dfc00150291c025170cafe8f5e4064fc8c2fe8",
+          "input_receipt_sha256": null
+        },
+        {
+          "case": "scalar_h300_t4",
+          "topology": "W",
+          "loader_direct": false,
+          "model_direct": false,
+          "workbook_sha256": "7761cce77cf93dcba2f617714f0117c1f2ead4de0c3f27149daceba447e0c7d1",
+          "mode": "sto",
+          "threads": 4,
+          "time_limit": 14400,
+          "retained_arcs": {
+            "OD": 4440,
+            "DC": 4800,
+            "DD": 36000,
+            "OC": 0
+          },
+          "penalty_vector_sha256": "6742c2acbc376ccbffa8efee38dfc00150291c025170cafe8f5e4064fc8c2fe8",
+          "input_receipt_sha256": null
+        },
+        {
+          "case": "scalar_h300_t8",
+          "topology": "W",
+          "loader_direct": false,
+          "model_direct": false,
+          "workbook_sha256": "7761cce77cf93dcba2f617714f0117c1f2ead4de0c3f27149daceba447e0c7d1",
+          "mode": "sto",
+          "threads": 8,
+          "time_limit": 14400,
+          "retained_arcs": {
+            "OD": 4440,
+            "DC": 4800,
+            "DD": 36000,
+            "OC": 0
+          },
+          "penalty_vector_sha256": "6742c2acbc376ccbffa8efee38dfc00150291c025170cafe8f5e4064fc8c2fe8",
+          "input_receipt_sha256": null
+        }
+      ],
+      "positive_flow_record_counts": {
+        "cases/scalar_h300_t1/products/scalar_h300_t1/flows.csv": {
+          "OD": 84572,
+          "DC": 109474,
+          "DD": 33468
+        },
+        "cases/scalar_h300_t16/products/scalar_h300_t16/flows.csv": {
+          "OD": 84572,
+          "DC": 109474,
+          "DD": 33468
+        },
+        "cases/scalar_h300_t2/products/scalar_h300_t2/flows.csv": {
+          "OD": 84572,
+          "DC": 109474,
+          "DD": 33468
+        },
+        "cases/scalar_h300_t4/products/scalar_h300_t4/flows.csv": {
+          "OD": 84572,
+          "DC": 109474,
+          "DD": 33468
+        },
+        "cases/scalar_h300_t8/products/scalar_h300_t8/flows.csv": {
+          "OD": 84572,
+          "DC": 109474,
+          "DD": 33468
+        }
+      }
+    },
+    {
+      "archive": "scalar-h400-8h-evidence.tar.gz",
+      "sha256": "e0b58bb74ac254706d30f0f1863162df5d8a714751eadf43b28e7dbc0c5d5def",
+      "job_id": "2219884",
+      "plan_sha256": "852f886d58f9bf1f78cee2000ae3d3103bb49f3a27c884e91d40deeca2057afe",
+      "source_commit": "d9ca710dd98b66a4d3421ebccee13d91673d468d",
+      "cases": [
+        {
+          "case": "scalar_h400_t1",
+          "topology": "W",
+          "loader_direct": false,
+          "model_direct": false,
+          "workbook_sha256": "c3085456997714ef5a8bdbf61e2c9a5e578c2636003947427cf58933d21ceb13",
+          "mode": "sto",
+          "threads": 1,
+          "time_limit": 14400,
+          "retained_arcs": {
+            "OD": 5920,
+            "DC": 6400,
+            "DD": 64000,
+            "OC": 0
+          },
+          "penalty_vector_sha256": "7d4812481cb45d39fdaba8849d7a2c5b82e81e694afa2a21b67210f4a3f14d47",
+          "input_receipt_sha256": null
+        }
+      ],
+      "positive_flow_record_counts": {
+        "cases/scalar_h400_t1/products/scalar_h400_t1/flows.csv": {
+          "OD": 100664,
+          "DC": 125724,
+          "DD": 40205
+        }
+      }
+    }
+  ]
+}

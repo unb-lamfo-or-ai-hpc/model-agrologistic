@@ -12,9 +12,9 @@ from collections import defaultdict
 from time import perf_counter
 from types import SimpleNamespace
 
-from src.logic.mathematical_contract import prepare_model_data
+from src.logic.mathematical_contract import extensive_form_inputs, prepare_model_data
 from src.logic.model_lifecycle import managed_model_solve, own_model
-from src.logic.optimization import OptimizationBackendNotImplementedError, OptimizationResult
+from src.logic.optimization import OptimizationResult, project_deterministic_result, scalar_mip_gap
 from src.logic.optimization_gurobipy import (
     VALUE_TOL,
     _effective_reception_capacity_expr,
@@ -29,10 +29,9 @@ from src.logic.optimization_gurobipy_stochastic import (
 )
 from src.logic.resource_telemetry import install_scip_events, observed_matrix, phase
 from src.logic.route_filtering import select_routes
-from src.logic.scip_lexicographic import ABSOLUTE_GAP, solve_stages
 
 
-def _configure(model, config, priority_tolerance):
+def _configure(model, config, feasibility_tolerance):
     if config.compute_iis:
         raise ValueError("SCIP IIS export is not qualified; set compute_iis=false.")
     # In particular, never reinterpret Gurobi Method, SoftMemLimit or MIPGap.
@@ -44,13 +43,9 @@ def _configure(model, config, priority_tolerance):
     if config.log_file:
         model.setLogfile(config.log_file)
     model.setParam("limits/gap", config.mip_gap)
-    model.setParam("limits/absgap", ABSOLUTE_GAP)
+    model.setParam("limits/absgap", 1e-10)
     model.setParam("timing/clocktype", 2)  # Wall clock, matching the global budget.
-    # Priority rows near 1e-6 must not be consumed by the default feasibility
-    # tolerance during presolve. A direct-route regression exercises this case.
-    if priority_tolerance < 1e-15:
-        raise ValueError("SCIP priority tolerance must be at least 1e-15.")
-    model.setParam("numerics/feastol", min(1e-9, priority_tolerance / 100))
+    model.setParam("numerics/feastol", min(1e-9, feasibility_tolerance / 100))
     model.setParam("randomization/randomseedshift", config.seed or 0)
     # optimize() is the sequential SCIP driver, not solveConcurrent(). These
     # settings are ceilings, not a claim of effective parallel search or LPs.
@@ -62,19 +57,15 @@ def _configure(model, config, priority_tolerance):
 
 @managed_model_solve
 def solve_model_scip(data, model_config, solver_config):
-    """Solve stochastic recourse only; deterministic/EVPI dispatch stays explicit."""
-    cfg = model_config
-    if cfg.mode != "sto":
-        raise OptimizationBackendNotImplementedError(
-            "Native SCIP currently supports mode='sto' only."
-        )
+    """One scalar extensive form, including the deterministic one-scenario case."""
+    data, cfg = extensive_form_inputs(data, model_config)
     import pyscipopt as scip
 
     started = perf_counter()
     data = prepare_model_data(data, cfg)
     model = own_model(scip.Model("agrologistic_stochastic"), "pyscipopt")
     _configure(model, solver_config, cfg.feasibility_tolerance)
-    install_scip_events(model)
+    scalar_progress = install_scip_events(model)
     q = scip.quicksum
     routes = select_routes(data, cfg)
     candidates = list(data.candidate_warehouses)
@@ -275,28 +266,18 @@ def solve_model_scip(data, model_config, solver_config):
         for mapping in emergency.values()
         for (s, w, t), var in mapping.items()
     )
-    objectives = (
-        [("penalized_cost", penalized)]
-        if cfg.objective_policy == "penalty"
-        else [
-            ("unmet_demand", primary),
-            ("emergency_capacity", capacity),
-            ("economic_cost", economic),
-        ]
-    )
+    model.setObjective(penalized, "minimize")
     observed_matrix(model, "pyscipopt")
     build_seconds = perf_counter() - started
-    stages, optimization_seconds = solve_stages(
-        model, objectives, solver_config, cfg.feasibility_tolerance
-    )
-    complete = len(stages) == len(objectives) and all(stage["certified"] for stage in stages)
+    if solver_config.time_limit is not None:
+        model.setParam("limits/time", solver_config.time_limit)
+    phase("optimization")
+    optimization_started = perf_counter()
+    model.optimize()
+    optimization_seconds = perf_counter() - optimization_started
     native_status = str(model.getStatus())
     has_solution = model.getNSols() > 0
-    status = (
-        "optimal" if complete else ("time_limit" if native_status == "timelimit" else "feasible")
-    )
-    if not has_solution:
-        status = {"infeasible": "infeasible", "unbounded": "unbounded"}.get(native_status, "error")
+    status = _scalar_status(native_status, has_solution)
     metadata = {
         "formulation": "two_stage_extensive_form",
         "objective_policy": cfg.objective_policy,
@@ -309,7 +290,8 @@ def solve_model_scip(data, model_config, solver_config):
         ),
         "pyscipopt_version": scip.__version__,
         "solution_count": model.getNSols(),
-        "solve_driver": "sequential_optimize",
+        **scalar_progress,
+        "solve_driver": "scalar_optimize",
         "requested_threads": solver_config.threads,
         "effective_scip_parameters": {
             name: model.getParam(name)
@@ -325,37 +307,21 @@ def solve_model_scip(data, model_config, solver_config):
         "timings": {
             "model_build_seconds": build_seconds,
             "optimization_seconds": optimization_seconds,
-            "solver_reported_runtime_seconds": sum(r["solver_runtime_seconds"] for r in stages),
+            "solver_reported_runtime_seconds": float(model.getSolvingTime()),
         },
-        "objective_bound": stages[0]["objective_bound"]
-        if len(objectives) == 1 and stages
-        else None,
+        "objective_bound": _finite_bound(model.getDualbound(), model.infinity()),
         "qualification": (
             "Native SCIP backend; large-network and cross-backend qualification "
             "remain separate gates."
         ),
     }
-    if cfg.objective_policy == "lexicographic":
-        metadata.update(
-            lexicographic_stages=stages,
-            lexicographic_overall_status="complete" if complete else "partial",
-            lexicographic_completed_stage_count=sum(r["certified"] for r in stages),
-        )
-        for role, prefix in (
-            ("unmet_demand", "service"),
-            ("emergency_capacity", "capacity"),
-            ("economic_cost", "economic"),
-        ):
-            metadata[f"{prefix}_stage_status"] = next(
-                (r["status"] for r in stages if r["stage_role"] == role), None
-            )
     result = OptimizationResult(
         status=status,
         solver_backend="pyscipopt",
         solver_name="scip",
-        model_mode="sto",
+        model_mode=model_config.mode,
         runtime_seconds=build_seconds + optimization_seconds,
-        mip_gap=stages[0]["mip_gap"] if len(objectives) == 1 and stages else None,
+        mip_gap=None,
         metadata=metadata,
     )
     if not has_solution:
@@ -419,9 +385,10 @@ def solve_model_scip(data, model_config, solver_config):
         "economic_cost": value(economic),
         "penalized_cost": value(penalized),
     }
-    result.objective_value = objective_values[
-        "penalized_cost" if cfg.objective_policy == "penalty" else "expected_unmet_demand"
-    ]
+    result.objective_value = float(model.getObjVal())
+    bound = metadata["objective_bound"]
+    result.mip_gap = scalar_mip_gap(result.objective_value, bound)
+    metadata["scip_native_gap"] = _finite_bound(model.getGap(), model.infinity())
     scenario_metrics = {
         s: {
             "probability": data.scenario_prob[s],
@@ -442,15 +409,26 @@ def solve_model_scip(data, model_config, solver_config):
         investment_cost=sum(value(expr) for expr in investment.values()),
         expected_operating_cost=sum(value(expr) for expr in expected.values()),
     )
-    if cfg.objective_policy == "lexicographic":
-        zero_service = (
-            stages and stages[0]["certified"] and value(primary) <= cfg.feasibility_tolerance + 1e-8
-        )
-        metadata.update(
-            service_target_status="attained" if zero_service else "not_attained",
-            service_certification_status="certified_zero_within_tolerance"
-            if zero_service
-            else "not_certified",
-        )
     metadata["timings"]["result_extraction_seconds"] = perf_counter() - extraction_started
-    return result
+    return project_deterministic_result(result) if model_config.mode == "det" else result
+
+
+def _finite_bound(value, infinity=None):
+    from math import isfinite
+
+    value = float(value)
+    return value if isfinite(value) and (infinity is None or abs(value) < infinity) else None
+
+
+def _scalar_status(native_status, has_solution):
+    if not has_solution:
+        return {
+            "infeasible": "infeasible",
+            "unbounded": "unbounded",
+            "timelimit": "time_limit",
+        }.get(native_status, "error")
+    return (
+        "optimal"
+        if native_status == "optimal"
+        else ("time_limit" if native_status == "timelimit" else "feasible")
+    )

@@ -25,7 +25,7 @@ PRODUCTS = (
     "allocation_receipt.json",
     "matrix_statistics.json",
     "resource_timeseries.csv",
-    "stage_progress.csv",
+    "solver_progress.csv",
     "termination.json",
     "manifest.json",
 )
@@ -44,8 +44,6 @@ RESOURCE_FIELDS = (
 PROGRESS_FIELDS = (
     "elapsed_seconds",
     "phase",
-    "stage_number",
-    "stage_role",
     "event",
     "incumbent",
     "bound",
@@ -200,7 +198,7 @@ class ResourceSession:
         self.files, self.writers = {}, {}
         for kind, name, fields in (
             ("resource", "resource_timeseries.csv", RESOURCE_FIELDS),
-            ("progress", "stage_progress.csv", PROGRESS_FIELDS),
+            ("progress", "solver_progress.csv", PROGRESS_FIELDS),
         ):
             stream = (self.directory / name).open("w", newline="", encoding="utf-8")
             self.files[kind] = stream
@@ -340,7 +338,7 @@ class ResourceSession:
                 "samples": self.counts,
                 "dropped_samples": self.dropped,
                 "inspection_errors": self.errors,
-                "quality_acceptance": "requires_independent_validation_and_stage_certificates",
+                "quality_acceptance": "requires_independent_validation_and_scalar_bound_gap_review",
             },
         )
         from src.logic.run_integrity import file_sha256
@@ -445,8 +443,6 @@ def gurobi_message(model, where, callback, session=None):
         session.event(kind, **values)
         return
     message = model.cbGet(callback.MSG_STRING)
-    if match := re.search(r"optimize objective (\d+)", message):
-        session.phase("optimization_stage_" + match[1])
     if match := re.search(r"Presolved: (\d+) rows, (\d+) columns, (\d+) nonzeros", message):
         session.matrix(
             "presolved_log",
@@ -460,8 +456,7 @@ def gurobi_message(model, where, callback, session=None):
 def install_scip_events(model):
     """Native solve events only; no unsupported in-progress LP bound is inferred."""
     session = CURRENT.get()
-    if session is None:
-        return
+    progress = {"time_to_first_incumbent_seconds": None}
     from pyscipopt import SCIP_EVENTTYPE, Eventhdlr
 
     mask = (
@@ -479,6 +474,11 @@ def install_scip_events(model):
             self.model.dropEvent(mask, self)
 
         def eventexec(self, ev):
+            if ev.getType() == SCIP_EVENTTYPE.BESTSOLFOUND:
+                if progress["time_to_first_incumbent_seconds"] is None:
+                    progress["time_to_first_incumbent_seconds"] = float(self.model.getSolvingTime())
+            if session is None:
+                return
             now = perf_counter()
             if now - session.last_solver_sample < session.config.resource_sample_seconds:
                 return
@@ -499,11 +499,15 @@ def install_scip_events(model):
                     session.errors.append("scip_event:" + type(exc).__name__)
 
     model.includeEventhdlr(Progress(), "resource_progress", "Bounded native resource events")
+    return progress
 
 
 def resource_run(function):
     @wraps(function)
     def wrapped(spec, output_root, **kwargs):
+        run_dir = Path(output_root).resolve() / spec.name
+        if run_dir.exists():
+            raise FileExistsError("Preserve existing run; select a new output location.")
         if not spec.solver.collect_resource_diagnostics:
             return function(spec, output_root, **kwargs)
         session = ResourceSession(

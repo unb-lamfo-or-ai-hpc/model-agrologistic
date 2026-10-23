@@ -58,17 +58,33 @@ def test_allowlisted_portable_package_and_checksums(tmp_path):
         "manuscript/_manuscript/_tex/figures/pipeline.png",
         "manuscript/_manuscript/_tex/figures/private.log",
         "manuscript/_manuscript/credentials.txt",
+        "manuscript/figures/human_ai_workflow.png",
+        "manuscript/supplement/appendix_c/model_det.gms",
+        "manuscript/supplement/appendix_c/model_sto.gms",
+        "manuscript/supplement/appendix_c/model_common.inc",
+        "manuscript/supplement/appendix_c/README.md",
+        "manuscript/supplement/appendix_d_inventory.json",
+        "manuscript/supplement/appendix_c/data.inc",
     ]
     for name in paths:
         path = tmp_path / name
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text("test fixture", encoding="utf-8")
+    (tmp_path / "manuscript/supplement/index.tex").write_text(
+        r"\includegraphics[keepaspectratio]{../figures/human_ai_workflow.png}",
+        encoding="utf-8",
+    )
     output = tmp_path / "review.zip"
     MODULE.package(output, root=tmp_path)
     with zipfile.ZipFile(output) as archive:
         names = archive.namelist()
         assert "main.tex" in names and "pipeline.png" in names
         assert "elsarticle.cls" in names and "supplement.tex" in names
+        assert "human_ai_workflow.png" in names
+        assert {"model_det.gms", "model_sto.gms", "model_common.inc",
+                "appendix_c_readme.md", "appendix_d_inventory.json"} <= set(names)
+        assert "data.inc" not in names
+        assert "../figures/" not in archive.read("supplement.tex").decode()
         assert all("/" not in name for name in names)
         assert not any("private" in name or "credentials" in name for name in names)
         hashes = json.loads(archive.read("SHA256SUMS.json"))
@@ -79,3 +95,9 @@ def test_allowlisted_portable_package_and_checksums(tmp_path):
     with pytest.raises(FileExistsError):
         MODULE.package(output, root=tmp_path)
     assert output.read_bytes() == original
+    (tmp_path / "manuscript/supplement/index.tex").write_text(
+        r"\includegraphics{missing.png}", encoding="utf-8"
+    )
+    with pytest.raises(FileNotFoundError):
+        MODULE.package(tmp_path / "incomplete.zip", root=tmp_path)
+    assert not (tmp_path / "incomplete.zip").exists()

@@ -5,12 +5,16 @@
 The frozen `v0.2.0-mvp1` release remains unchanged. This work introduces opt-in
 resource observations, explicit native-model ownership, and a small-instance
 stage-lifecycle qualification harness. It changes neither mathematical
-coefficients nor acceptance tolerances. No large NPAD execution is reported.
+coefficients nor acceptance tolerances. As of S1-C (8 October 2026), licensed
+miniatures and the bounded h215/h300/h400 executions are documented in the
+[S1 evidence and exit ledger](mvp2_sprint1_closure.md). Historical receipts are
+preserved; this status supersedes the initial pending-gate description.
 
 Sprint 0 software instrumentation is implemented. Sprint 1 includes exception-safe
 model disposal, optional stochastic Gurobi index compaction, and an experimental
-reuse/rebuild driver. Licensed miniature parity and large-instance memory
-qualification remain exit gates, not completed results. Production extensive-form
+reuse/rebuild driver. Corrected licensed miniature parity is accepted; paired
+large compaction observations do not establish causal memory/time improvements.
+Production extensive-form
 solvers continue using their existing hierarchical drivers. The experimental
 explicit driver rejects original LPs and models above 100000 variables.
 
@@ -22,8 +26,11 @@ model, installs a minimization objective and verifies `IsMultiObj == 0`
 before optimization. It reads the native bound without substitution.
 Regression tests cover one- and three-objective factories, both lifecycle
 modes, the API transition order and cleanup on rejected conversion.
-The corrected implementation still requires a new licensed NPAD report.
-Preserve the failed checkout and its receipts; do not rerun into that directory.
+Corrected job 2143922, source f9aa74abecfe416bac9f505b55c4eeacf4b111be,
+passed 138 tests without skips and twelve miniature Gurobi/SCIP observations.
+Its qualification report SHA-256 is
+`b9e4b2a5bb7ecf66b0c54432986c3033bf381bdea223fc914ddefa7dcc24bde7`.
+Preserve both failed and accepted checkouts/receipts; no repeat is needed.
 
 ## Resource evidence
 
@@ -57,8 +64,11 @@ streams without a final receipt and must be reconciled with scheduler accounting
 The sampler reads OS files only. Native solver APIs are queried on solver events
 or the solve thread, never from the background sampler. Both streams have bounded
 record counts.
-The default five-second interval and 8192-record cap cover an eight-hour run
-with room for phase boundaries. Dropped records remain disclosed; a smaller
+The nominal five-second interval and 8192-record cap budget for an eight-hour
+run with phase boundaries, but do not guarantee that observation cadence.
+Accepted large runs contain sampling gaps, including 277.8354 seconds for h400.
+Zero reported drops/errors does not imply continuous coverage. Dropped records
+remain disclosed; a smaller
 configured cap can exhaust coverage before a run terminates.
 `sampler_work_seconds` measures collection work, not a causal runtime penalty:
 repeated instrumented and uninstrumented miniature runs are
@@ -96,7 +106,12 @@ key lists after objective and constraint construction and calls `tupledict.clean
 to release selection indices. Variables, coefficients, constraints and exported
 solutions are unchanged. Construction peak memory is not reduced by this
 post-construction operation. The baseline arm retains those lists and indices.
-No memory improvement is assumed until a controlled NPAD contrast is available.
+Three h215 pairs and one descriptive h300 pair preserve observed numerical
+behavior with lower application-reported RSS in compact arms. Runtime effects
+vary; native memory is essentially unchanged. Shared nodes, unbalanced/fixed
+orders and sparse samples preclude causal attribution or safe allocation
+reduction. Compaction stays optional/default-off. The h400 observation is one
+uncompacted control, not a compaction contrast.
 
 `stage_lifecycle.compare_lifecycle` is a restricted qualification driver. A
 factory returns a fresh original MIP, its objective expressions, a canonical
@@ -122,52 +137,22 @@ degradation can use reduced costs and is not asserted equivalent. The harness
 stops at the first uncertified pass, checks bounds, and does not use a relative
 gap sentinel to reject a certified near-zero service objective. Production
 adapters, scalable coefficient fingerprints, crossover changes and large-model
-rebuilds remain gated pending licensed miniature evidence.
+rebuilds remain deferred and unqualified. Accepted miniature evidence does not
+admit those production extensions or prove formal large-model equivalence.
 
-## NPAD: qualification before additional large jobs
+## Closed qualification and next boundary
 
-The following commands create one isolated checkout and one report directory
-under the existing project audit tree. They do not modify `venv313`, the main
-checkout, historical results or the MVP 1.0 release. No QoS is hardcoded.
-Run from an SSH terminal on the login node:
+The initial moving-branch bootstrap is retired from this current guide; its
+historical version and receipts remain in Git history. Do not repeat completed
+jobs or delete claims. CI-only analytical reports cannot admit large instances.
+Accepted production protocols retain immutable sources, exact finite allocation
+and fresh license gates, original validation and closed evidence products.
 
-```bash
-(
-set -euo pipefail
-conda activate /home/vrrcelestino/venv313
-export PYTHONNOUSERSITE=1 PYTHONDONTWRITEBYTECODE=1
-unset SCIPOPTDIR SBATCH_QOS
-MVP2_ROOT=$(mktemp -d /home/vrrcelestino/model-agrologistic-hygiene-audit/mvp2-sprints01-XXXXXXXX)
-export MVP2_CHECKOUT="$MVP2_ROOT/source"
-export MVP2_REPORT="$MVP2_ROOT/report"
-export MVP2_PYTHON=/home/vrrcelestino/venv313/bin/python
-git clone --single-branch --branch research/mvp2-resource-lifecycle \
-  https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic.git "$MVP2_CHECKOUT"
-mkdir "$MVP2_REPORT"
-cd "$MVP2_CHECKOUT"
-git checkout --detach "$(git rev-parse HEAD)"
-# Use the already-authorized project license without copying or publishing it.
-export GRB_LICENSE_FILE=/home/vrrcelestino/model-agrologistic/secrets/gurobi.lic
-test -r "$GRB_LICENSE_FILE"
-"$MVP2_PYTHON" -m ruff check .
-bash scripts/submit_mvp2_qualification.sh
-printf 'Qualification parent: %s\n' "$MVP2_REPORT"
-)
-```
-
-Return `report/qualification/qualification_report.json`, `pytest.log`,
-`pytest.xml`, `scheduler/job.txt`, `scheduler/node.txt` and the Slurm log.
-Acceptance requires zero skipped tests, licensed Gurobi parity, independent
-miniature validation and unchanged source/runtime identities. A CI-only
-`--analytical-only` report cannot admit a large instance.
-
-After this gate, prepare matched new-directory contrasts in order: 215 positive
-control, 300 warehouse-only and 400 direct. Hold workbook/network identities,
-mathematical configuration, four solver threads, all-barrier profile, seed 42,
-solver memory cap, node class and eight-hour optimization budget constant. Use
-baseline versus post-build index compaction first. Inspect build/presolve/solve
-and disposal traces before qualifying a production explicit-rebuild adapter.
-Do not launch large jobs solely because the miniature tests passed.
+S1-C is documentary only. No NPAD CLI action, new compaction pair, explicit
+rebuild or lower-memory allocation is admitted. The [reconciled roadmap](mvp2_hpc_roadmap.md)
+routes subsequent thread screening to a separate S2 protocol/results workflow.
+Any future production lifecycle change needs its own mathematical, numerical,
+resource and execution qualification; existing miniatures alone are insufficient.
 
 ## Primary API references
 

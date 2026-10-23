@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="850" viewBox="0 0 820 850" role="img" aria-labelledby="title description">
+  <title id="title">Human-supervised research and computational verification</title>
+  <desc id="description">Problem definition, AI-assisted proposals, human scientific review, implementation, testing, human-authorized HPC execution, independent evidence review and scientific interpretation. Dashed return arrows indicate correction under human authority. No assistant may independently change the model, execute HPC jobs or approve publication.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#334155"/></marker>
+    <style>
+      text {font-family:Arial,Helvetica,sans-serif; fill:#172033}
+      .heading {font-size:24px; font-weight:bold}
+      .label {font-size:23px; font-weight:bold}
+      .detail {font-size:20px}
+      .note {font-size:18px}
+      .stage {fill:#f8fafc; stroke:#64748b; stroke-width:1.5}
+      .human {fill:#eaf2f8; stroke:#285979; stroke-width:2}
+      .flow {fill:none; stroke:#334155; stroke-width:2; marker-end:url(#arrow)}
+      .return {fill:none; stroke:#64748b; stroke-width:1.5; stroke-dasharray:7 5; marker-end:url(#arrow)}
+    </style>
+  </defs>
+  <rect width="820" height="850" fill="white"/>
+  <text x="30" y="35" class="heading">Human-supervised research and verification</text>
+  <text x="30" y="65" class="note">Inspectable decisions and artifacts, not hidden model reasoning</text>
+  <g id="problem">
+    <rect x="30" y="100" width="350" height="125" rx="6" class="human"/>
+    <text x="47" y="133" class="label">1  Problem definition</text>
+    <text x="47" y="167" class="detail">Research question and scope</text>
+    <text x="47" y="198" class="detail">Human scientific authority</text>
+  </g>
+  <g id="proposal">
+    <rect x="440" y="100" width="350" height="125" rx="6" class="stage"/>
+    <text x="457" y="133" class="label">2  AI-assisted proposals</text>
+    <text x="457" y="167" class="detail">Alternatives and criticism</text>
+    <text x="457" y="198" class="detail">Provisional, not evidence</text>
+  </g>
+  <g id="review">
+    <rect x="440" y="275" width="350" height="125" rx="6" class="human"/>
+    <text x="457" y="308" class="label">3  Human review</text>
+    <text x="457" y="342" class="detail">Mathematics and units</text>
+    <text x="457" y="373" class="detail">Accept or revise assumptions</text>
+  </g>
+  <g id="implementation">
+    <rect x="30" y="275" width="350" height="125" rx="6" class="stage"/>
+    <text x="47" y="308" class="label">4  Implementation</text>
+    <text x="47" y="342" class="detail">Versioned code and inputs</text>
+    <text x="47" y="373" class="detail">Recorded human decisions</text>
+  </g>
+  <g id="testing">
+    <rect x="30" y="450" width="350" height="125" rx="6" class="stage"/>
+    <text x="47" y="483" class="label">5  Verification</text>
+    <text x="47" y="517" class="detail">Analytical and native tests</text>
+    <text x="47" y="548" class="detail">Source and artifact checks</text>
+  </g>
+  <g id="execution">
+    <rect x="440" y="450" width="350" height="125" rx="6" class="human"/>
+    <text x="457" y="483" class="label">6  HPC execution</text>
+    <text x="457" y="517" class="detail">Human authorization and CLI</text>
+    <text x="457" y="548" class="detail">Bounded, identified experiment</text>
+  </g>
+  <g id="evidence">
+    <rect x="440" y="625" width="350" height="125" rx="6" class="stage"/>
+    <text x="457" y="658" class="label">7  Evidence review</text>
+    <text x="457" y="692" class="detail">Residuals, costs and quality</text>
+    <text x="457" y="723" class="detail">Retain partial/failed outcomes</text>
+  </g>
+  <g id="interpretation">
+    <rect x="30" y="625" width="350" height="125" rx="6" class="human"/>
+    <text x="47" y="658" class="label">8  Interpretation</text>
+    <text x="47" y="692" class="detail">Supported scientific claims</text>
+    <text x="47" y="723" class="detail">Human/coauthor approval</text>
+  </g>
+  <path d="M380 162 H434 M615 225 V269 M440 337 H386 M205 400 V444 M380 512 H434 M615 575 V619 M440 687 H386" class="flow"/>
+  <path d="M790 330 H807 V162 H796 M30 500 H12 V337 H24" class="return"/>
+  <text x="30" y="786" class="note">Blue stages require human scientific authority; dashed arrows indicate correction.</text>
+  <text x="30" y="813" class="note">Tests and scheduler completion do not certify scientific acceptance.</text>
+  <text x="30" y="840" class="note">One editable SVG definition is reused in the main article and Appendix B.</text>
+</svg>

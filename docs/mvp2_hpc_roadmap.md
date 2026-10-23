@@ -1,309 +1,1042 @@
-# MVP 2.0: resource-aware optimization research
+# MVP 2.0: evidence-led computational roadmap
 
-## Scientific objective
+## Current scalar roadmap — approved 19 October2026
 
-Determine how formulation structure, LP strategy, effective parallelism and
-memory allocation affect the ability to solve grain-storage networks under
-uncertainty. The primary outcome is completion of the service/capacity/economic
-hierarchy with independently validated solutions and a gap of at most 10% in
-each nonzero priority, within an eight-hour optimization budget on a specified
-resource profile. A valid incumbent without this certificate is a distinct,
-useful outcome, not an accepted optimum.
+The [scalar R1–R5/S6 roadmap](mvp2_scalar_roadmap.md) and
+[scientific contract](mvp2_scalar_contract.md) supersede the unexecuted hierarchy
+continuation below. Historical budgets, thread rankings and admission conditions
+are not scalar approvals. Preserve S2's historical closure and all certificates.
+No NPAD execution in R1; S3/S4 cancelled, EVPI/VSS excluded, article/main promotion
+only after separate review. Entries below are dated historical planning records.
 
-The contribution must be a measured resource-aware method and reproducible
-evaluation, not simply the use of an HPC cluster or a commercial solver.
-No improvement, scalability frontier or SCIP benefit is assumed in advance.
-MVP 1.0 remains frozen at `v0.2.0-mvp1`; this plan does not change its data,
-mathematical assumptions or results.
+## Authority and scope
 
-## What the existing evidence establishes
+19 October P5 consolidation: job2215308 provides all five contracted3600s
+thread arms, original fresh independent residual reports and closed terminal
+evidence. See [P5 decision/exit criteria](mvp2_s2_p5_closure.md) and
+[ledger](evidence/s2_p5_2215308_review.json). This P5 PR proposes bounded S2
+diagnostic closure effective only on qualified, separately authorized merge;
+until then S2 remains open. Old certificates/false admission/closure flags,
+negative outcomes and historical planning below remain unchanged.
 
-| Configuration | Observed outcome | Implication for the next study |
-| --- | --- | --- |
-| Gurobi, 215 warehouses, both network variants | Both quality-certified | Positive controls for instrumentation and parallel experiments |
-| Gurobi, 300, warehouse-only, automatic | Economic MIP gap 50.52% | Algorithm profile matters, not only population |
-| Gurobi, 300, warehouse-only, all-barrier | Complete; economic MIP gap 0.0831%; about 59.77 GiB application RSS | Barrier is a promising baseline, not a universal remedy |
-| Gurobi, 300, direct-enabled, automatic | Complete; economic MIP gap 0.0677% | Keep this accepted historical profile distinct from new repeats |
-| Gurobi, 400, both all-barrier variants | Valid incumbents; incomplete quality certification at the time budget | More memory alone is not demonstrated to resolve the difficulty |
-| SCIP, 215, both variants | Eight-hour stops without an incumbent | Lack of solution does not prove infeasibility |
-| SCIP, 300, original memory profile | Early memory stops before an incumbent | Internal solver budget was limiting |
-| SCIP, 300, enlarged-memory profile | Early memory stops removed; eight-hour stops without an incumbent | Additional memory helped execution continue, but did not establish optimization success |
+All five incumbents are independently feasible but capacity time-censored with
+100% gap/no economic pass. General thread ranking is inconclusive; four threads
+is a conservative h400-review candidate, not an admitted winner. No new repeat,
+solver, model/tolerance change or NPAD job. The complete contracted diagnostic,
+not successful full hierarchy or positive speedup in every arm, is the exit scope.
+The generic zero-service gap/prefix limitation and16-logical-CPU/eight-core SMT
+topology remain explicit. No runtime patch is needed to state this bounded result.
 
-The earlier isolated-barrier 400 direct trial reached the capacity objective
-with a 0.0643% gap but stopped in the economic pass with `MEM_LIMIT`. That
-trial is diagnostic evidence outside the thirteen-attempt comparative cohort.
-The later all-barrier 400 cases were time-limited. These observations must not
-be merged into a single memory-only explanation.
+After P5 merge, retain the approved sequence and complete functional packages:
+h400 profile/admission/evidence1--2 PRs; existing-SCIP/h215 root-LP hypothesis/
+qualification/one justified attempt2--3 PRs; conditionalh5002--3 PRs;
+S6-A scientific synthesis1 PR and S6-B editorial/packaging2 PRs. These are scope
+estimates, not quotas/admissions. h400 and SCIP preparation may overlap after S2;
+h500 needs h400-success/input/build/resource approval, not SCIP success. S6
+inventory/version identification may proceed in parallel without editing the
+frozen article before its gate. No requirement is silently cancelled for time.
 
-The original Gurobi `SoftMemLimit=128` denotes decimal GB, whereas Slurm
-memory and exported RSS use other units/scopes. SCIP profiles recorded
-`limits/memory=131072` and `393216`, with different node allocations.
-The next runtime receipt must state the solver parameter's documented units,
-Slurm allocation, cgroup limit and measured RSS separately. Never infer available
-memory from a missing `SLURM_MEM_PER_NODE`; use the exact Slurm array record
-and an independently observed cgroup limit.
+Planning review from19 October: aim to integrate P5 in the week19--23 October;
+qualify h400/SCIP in late October/early November, conditionalh500 in November,
+then S6 scientific/editorial synthesis. These are proposals, not new agreed
+milestones or queue/success predictions. Preserve M1 31 October, M2 15 November,
+M3 23 December/M4 31 December as targets and the conditional December/base
+18--29 January2027 forecast until subsequent evidence/review. Main/develop sync
+remains **after article review**, not S2 or a20 November calendar entry. External
+portfolio reconciliation needs researcher action; no schedule is changed here.
+S3/S4 cancelled, EVPI/VSS excluded, full review/supplement and human coauthor
+version control retained. The local coauthor-presentation handoff has been
+prepared, not sent or approved. No next execution is admitted by this roadmap.
 
-The native SCIP backend calls sequential `optimize()`. Its
-`parallel/maxnthreads` and `lp/threads` settings are ceilings, not evidence
-of actual parallel computation. The first 215-warehouse service pass was
-reported after presolve as approximately 12.45 million continuous variables
-and no integer variables. A large root LP, rather than branch-and-bound tree
-growth, is therefore an important diagnostic target for that pass. Other
-passes must be assessed separately.
+Historical authority updates follow; their unexecuted statuses and smaller
+budgets are retained chronology, not the active next step after this P5 gate.
 
-## Research questions and controlled outcomes
+18 October maintainer expansion: [consolidate ALL five3600s thread arms](mvp2_s2_grid3600.md)
+into the SAME PR109, not a separate short replay gate/PR. Old-vector preflight
+occurs before any new native probe/build inside ONE12h16CPU192GiB allocation.
+New claim, corrected canonical report/typed evidence, versioned1GiB expanded
+transfer policy (old256MiB untouched),177 focused/909 related Linux tests and
+complete human CLI together. Smaller Ready/CLI is superseded; keep Draft until
+renewed qualification. Then authorized merge/human one-grid execution, followed
+by P5 evidence/quality/resource/censoring/exit review. Baseline two PRs including
+109; repairs remain evidence-dependent. No five-level scope reduction or automatic
+second block. No optimizer/phase/resource budget change or S2 closure now.
 
-1. How do warehouse population and scenario count affect nonzeros, presolved
-   dimensions, construction memory, LP factorization memory and stage time?
-2. Which resource-aware LP profiles complete the hierarchy, and how stable
-   are their outcomes across repeated runs?
-3. Do additional threads improve latency or merely increase resource use?
-   How does this change across the three priorities?
-4. Can independently checked decomposition reduce per-worker memory while
-   preserving a valid global bound and the priority hierarchy?
-5. Which qualified SCIP configurations benefit from better hardware or
-   solver integration, and where does the LP backend remain limiting?
+18 October terminal2214305: [forensic audit](mvp2_s2_p4_2214305_forensic_review.md)
+verifies native return/closed vector and worker accepted residual report, but
+root FAILED2:0/post-worker review null/ValueError;1/8/2/16 unrun. Preserve the
+consumed claim and original cohorts. Supplemental stderr now confirms strict
+whole-validation-report equality mismatch, not the actual differing private fields.
+Public real-validator subprocesses reproduce accepted report transport-budget
+last-bit drift. Consolidate the [existing-vector replay](mvp2_s2_residual_replay.md),
+bounded analytical comparison (all other fields exact), raw reports/witness,
+typed diagnostics, one-shot wrapper/claim and forensic collector in the SAME
+functional P5 branch. Require56 exact-head Linux/810 existing integration/Quality;
+then Ready/authorized merge and human4CPU/16GiB/30min read-only replay.
+No construction/optimization/license probe or original receipt rewrite. Actual
+replay precedes the next consolidated grid integration/admission package, including
+explicit whole-grid export/cap qualification. No automatic new
+optimization/repeat, silent expanded-cap change or cohort mixing. Neither a
+complete scientific thread contrast nor S2 closure is established. After P4
+evidence passes, P5 audits quality/resources/censoring/unrun and explicit S2 exit;
+then prepare MVP2 balance and detailed Project01/chat01.01 coauthor handoff.
+Later approved scope/editorial decisions/final-only main sync remain unchanged.
 
-Do not add a predictive-learning contribution without a separate forecasting
-dataset, leakage-safe offline training, held-out evaluation and controlled
-optimization integration. This phase studies optimization and HPC.
+17 October pause: PR108 merged at233abebe97b111fea5f5bbe4cdd4c9f527988e72,
+qualified source c9b4fa7e783a499596cf31a2c5e31995605c90e2. The maintainer reports
+P4 job2214305 RUNNING with the frozen3600s/arm12h serial-block protocol. Save
+the [checkpoint](../PROJECT_STATE.md) on research/s2-p5-evidence-review and extend
+that SAME functional branch after terminal evidence arrives; no bookkeeping PR,
+source mutation, job/repeat or automatic follow-on during pause. Human resumes
+only existing-job status/wait/collect, preserving consumed claim and originals.
+Next P5 audits the actual terminal block, partial/unrun grid, native/observed
+resources, independent validation and configuration/exit criteria. Completion,
+solution quality and S2 closure are not inferred from RUNNING or ExitCode0:0.
+Additional repairs depend on evidence. Later approved work, S3/S4 cancellation,
+EVPI/VSS exclusion, manuscript preservation, final-only main sync and conditional
+December/base January forecast remain unchanged; do not reduce approved scope.
 
-## Experimental invariants
+17 October approved successor: PR107 merged at38ebfe256c262d2bd7c02d7ffd821b1e058ec578.
+The maintainer expressly approves global3600s per arm and minimum9h allocation.
+Consolidate the [integrated P4 package](mvp2_s2_p4_terminal_integration.md): new
+versioned runtime/profile/release, bounded diagnostic sidecar/auditor, exclusive
+claim, wrapper/tests/full pinned CLI together. Request12h/16 logical CPUs/192GiB
+for cold serial4/1/8/2/16; minimum ledger8h30 and no extra optimizer time from
+headroom. Preserve original1800s cohort, all claims/certificates/57 protected
+files/four transport pins. No A/P2/P3 repeats or automatic remaining-arm retry.
+Baseline: integrated Ready P4 PR, authorized merge/human one-block CLI, then P5
+actual-evidence/configuration/exit review. Repairs are conditional on findings.
+No P5/S2 closure from software qualification, scheduler completion or integrity
+replay alone. Later scope and conditional December/base January forecast remain;
+S3/S4 cancelled, EVPI/VSS excluded and post-article-only main sync preserved.
 
-- Preserve canonical workbook hashes, nested populations, nine scenarios,
-  probabilities, sixty periods, product definitions, capacity units, terminal
-  inventory policy and audited nearest-20% network selection with repair.
-- Check actual retained fractions and multi-hop reachability per product.
-- Fix the mathematical contract. Canonical sparse coefficient and objective
-  fingerprints must supplement aggregate cross-backend input reconciliation.
-- Separate pass objective, final achieved priority, incumbent, bound, relative
-  gap, absolute gap and permitted priority degradation. Equal configured
-  `MIPGap` does not by itself impose equal inherited priority limits.
-- Near-zero service is certified by a declared absolute tolerance, not the
-  relative-gap sentinel. Preserve the independent validator and its disclosed
-  absolute/relative and sparse-export rounding budgets.
-- Use the same cold-start protocol in primary comparisons. Warm starts form a
-  separate experimental arm with their generation cost and provenance included.
-- Report optimization-only, build, extraction, validation, end-to-end and
-  scheduler time. Reserve sufficient scheduler overhead beyond eight hours.
-- Never rewrite a historical run. Each profile/repeat has a new directory,
-  immutable source/environment receipt and explicit termination classification.
+17 October prospective successor: merged PR106 cannot be reopened for this
+repair. The [consolidated diagnostic/handoff software gate](mvp2_s2_p4_diagnostic_qualification.md)
+includes the preserved job2214130 audit, private future worker metadata selection,
+typed native milestones, bounded catalogue, actual strict-deadline comparison,
+tests and exact-head Linux qualification. No installed guard/transport/scientific
+byte changes or new execution. The proposed shared900s return/export reserve
+requires an explicit external-enforcement decision before integration/admission.
+After that decision, bundle integration/source requalification/claim/collection/
+wrapper/pinned CLI in ONE operational package, then actual P4 evidence and P5.
+Do not add another independent bookkeeping PR or reduce approved later scope.
+No NPAD CLI is needed for this closed software qualification.
 
-## Sprint 0 — freeze and instrumentation contract
+17 October job2214130: [P4 forensic audit](mvp2_s2_p4_2214130_forensic_review.md)
+finds an optimization_watchdog stop on the first4-thread arm; four grid levels
+remain unrun and no native terminal/vector is exported. Integrity replay passes,
+not P4 scientific acceptance. Preserve the consumed claim. Next: read existing
+worker logs (now received; startup-only native output), then consolidate the audit,
+explicit worker license-path evidence and terminal-handoff qualification in
+one evidence-driven package. No repetition, automatic continuation, guard/budget
+or scientific change, configuration selection or S2 closure follows. Any revised
+contract/new allocation needs explicit prospective admission; do not silently
+drop the remaining grid or combine nonhomogeneous allocations. Later scope and
+conditional December/base January forecast remain unchanged pending actual data.
 
-Estimated effort: two working days, excluding coauthor review.
+17 October resumption: consolidate the checkpoint and the complete
+[P4 human operational release](mvp2_s2_p4_release.md) on the SAME branch.
+One explicit diagnostic block only, no replay of accepted A/P2/P3/observation,
+no automatic repeat/follow-on or S2 closure. Fresh future-allocation checks remain
+mandatory. Ready/exact-head software and separate merge decision precede human
+CLI. Then one P5 actual-evidence/configuration/exit PR, including explicit
+decision on any unrun arms. No approved later scientific scope, resource budget,
+validation criterion or article decision changes. Expedite parallel evidence
+inventory/coauthor-version identification; December remains conditional, not an
+excuse to omit h400/SCIP or an admitted conditional h500. No NPAD job is launched
+by preparing this package.
 
-Finalize the MVP 1.0 release and a machine-readable experiment catalogue.
-Introduce a resource sampler that records process-tree RSS, cgroup memory,
-CPU use, affinity and native solver events, at a bounded sampling rate. Export
-original/presolved variables by type, constraints, nonzeros, coefficient ranges,
-presolve reductions, root LP progress and stage boundaries.
+16 October after PR105 merge `d70816fdd6c3d99ef05711731a9dda17cd5210dd`:
+[job2213305 prerequisite observation is independently accepted](mvp2_s2_p4_observed_prerequisites.md).
+Preserve source7ff70904, external archive/source/job/driver-plan/inner-plan anchors,
+original claims and earlier failed bootstraps. This is not agricultural execution,
+export fit, future-allocation admission or production isolation. H300/repeats/
+follow-on stay blocked. A/P2/P3 remain accepted; S2 is open through P4/P5.
 
-Products: `runtime_capabilities.json`, `allocation_receipt.json`,
-`matrix_statistics.json`, `resource_timeseries.csv`,
-`stage_progress.csv`, `termination.json` and a manifest.
+Maintainer pause: save this checkpoint on the next operational-package branch,
+then extend that SAME branch after resumption, avoiding a documentation-only PR.
+Baseline two complete remaining S2 PRs: P4 operational release/worker/controls/
+tests/wrapper/collection/pinned CLI with fresh future-allocation checks, then P5
+scientific grid/resource/censoring/configuration/exit review. Additional repairs
+are conditional on actual findings; do not promise two regardless of evidence.
+No new NPAD job/unlock/merge during this pause checkpoint. Later h4001–2PRs,
+existing-SCIP/h2152–3, conditional h5002–3, S6-A1 and S6-B2 are scope allowances,
+not campaigns or deadlines. h400 and SCIP can overlap after S2 if resources/review
+permit; h500 still depends on approved h400 success/resources, not SCIP success.
+S6 inventory/version identification can run in parallel; final article edits wait
+for their gate. January2027 base forecast and conditional accelerated December
+remain subject to resumption/queue/results/coauthors. S3/S4 cancellation, EVPI/VSS
+exclusion, original scientific criteria and final post-article main sync unchanged.
 
-Exit gate: analytical tests and miniature cross-backend parity pass; sampler
-overhead is measured; missing telemetry is explicit. No qualification may infer
-algorithm capability from parameter acceptance alone.
+16 October after PR104 merge `686068b8fd5ea468b57b64a788111a5e0bc785b1`:
+the installed641-file/107-case bootstrap reached data identity but rejected NaN
+before either new claim/sbatch. The collector correctly reported not_submitted.
+Preserve both pre-submission failures. Consolidate the
+[metadata-only identity and full lifecycle repair](mvp2_s2_p4_metadata_identity.md)
+with32 new cases, real Excel/plan/prepare/recheck/batch/terminal replay, wrapper,
+139/602-case Linux gates, documentation/checkpoint and conditional CLI in one PR.
+Keep strict numeric hashing/validation, protected scientific bytes and historical
+identities; no imputation, workbook/scientific/resource change or blind retry.
+Ready/separate merge approval precedes one reviewed prerequisite observation.
+P3 is already accepted at job2212446/PR101; current work is P4. Then consolidate
+the separately admitted operational P4 release and P5 scientific review as complete
+packages, not one PR per test. H300/repeats remain blocked; all later approved
+scope and final post-article-review branch synchronization stay unchanged.
 
-## Sprint 1 — stage lifecycle and memory engineering
+16 October after PR103 merge `d0f07fe9de0451e8dba749ab1b56a251588ce67d`:
+the installed real input reader failed at nonexistent ExperimentSpec.resume,
+after639-file/89-case bootstrap but before claims/submission. Preserve that
+negative evidence and the [narrow real-input correction](mvp2_s2_p4_input_contract_repair.md).
+Qualify actual Excel/YAML/ExperimentSpec integration, corrected operational pin,
+explicit absent-claim wait diagnostic and107/570-case Linux gates before Ready/
+separate merge and corrected human CLI. No private source patch, old claim reset,
+new experiment, scientific criterion relaxation or dependency change. H300 and
+repetitions remain blocked; P4/P5 and all later approved scope remain pending.
 
-Estimated effort: three to five working days.
+16 October after explicitly authorized PR102 merge
+`279a081a8d100c787b65ca620d2b69ef36e88342`: qualify the
+[complete human prerequisite observation package](mvp2_s2_p4_observation.md),
+including pinned bootstrap, one observational batch, immutable terminal/early-
+failure transfer, independent metadata audit and complete human CLI. Preserve
+PR102's observer, all accepted scientific bytes and old claims.89-case focused/
+552-case exact-head Linux gates precede Ready and separate merge approval.
+The existing allocation envelope is unchanged; observer duration is at most600s,
+not an agricultural campaign. H300/repeats stay blocked; positive prerequisite
+evidence grants no future allocation or agricultural execution permission.
+P4 live evidence/P5 and all later approved scope remain pending; no agent job.
 
-Profile construction, presolve, factorization, crossover and subsequent passes
-independently. Inspect retained Python references, dense temporary arrays,
-solver model copies and whether model transformations from an earlier pass
-remain resident. Remove redundant data copies and use sparse/incremental
-assembly without changing coefficients. Measure before/after rather than
-assuming Python cleanup releases native memory.
+16 October after PR101 merge `1c8503586c627849b061b7062cc7b78f0c940df3`:
+qualify the [complete observation-only P4 prerequisite gate](mvp2_s2_p4_admission.md)
+with unchanged transport/scientific bytes, explicit source/P3/input/runtime and
+future existing-allocation/license observations, new exclusive record, bounded
+observer, strict terminal archive/auditor and wrapper/tests. No h300 dispatcher,
+job submission or repetition is opened. Ready/exact-head515-case Linux approval
+precedes separate merge authorization; no NPAD CLI now. A future observed
+prerequisite report grants no campaign or future-allocation permission and proves
+neither export fit nor agricultural solution validity. P4 release/admission and
+P5/S2 scientific exit remain pending; subsequent approved scope is unchanged.
 
-Test an explicit sequential-stage formulation on small instances, with
-validated priority-lock rows, against the native Gurobi hierarchy. Compare
-reusing a model versus disposing and rebuilding each stage, including build
-time and loss or transfer of warm starts. Save bounded snapshots when a pass
-ends, not unbounded duplicate full models in memory.
+16 October continuation: [native P3 and all A/P2 gates are independently accepted](mvp2_s2_p3_accepted_p4.md).
+Preserve execution source09112881250ceccd06f6ef0d431e8698851724c9 and original
+certificates. Prepare one consolidated P4 functional PR from live developcbdf7be:
+new source/cohort and protected scientific parity, fresh h300 input/allocation/
+license, five cold serial arms4,1,8,2,16 in16CPU/192GiB/6h, bounded exports,
+partial/forensic/unrun collection and honest resource scopes. PR101 now contains
+the complete closed software package; keep Draft until exact-head Linux463-case
+qualification, then Ready/separate merge authorization. Public execution stays
+blocked after merge; fresh P4 live admission remains separate. No NPAD CLI/job now.
+P5 then audits the full diagnostic grid and S2 exit/configuration or inconclusive
+decision. S2 is open; later scope/cancelled S3/S4/EVPI-VSS exclusion and final
+post-article branch reconciliation remain unchanged. Historical entries follow.
 
-Start with a 215 control, then 300 warehouse-only and 400 direct. Keep barrier
-as the primary LP profile. Any crossover/basis experiment requires a documented
-supported combination and a miniature capability test; a basis-free LP
-solution is not automatically suitable for a later MIP pass.
+15 October after PR99 merge: [normal job2212000 and the consolidated resource
+reader/diagnostic correction](mvp2_s2_academic_2212000_audit.md) remain a negative
+installed gate. Complete compatible requested/allocated parsing, early portable
+forensics, raw-field replay and a distinct history-bound v2 namespace before
+another separately reviewed human A slot. Preserve A -> five P2 audits -> accepted
+native P3 -> P4/P5, without a PR per adverse case or a blind retry. S2 is open;
+no scientific/resource-budget change or new execution follows from this repair.
 
-Exit gate: equivalence on small analytical cases and independently valid large
-incumbents, with a measured explanation of memory changes. A memory reduction
-without semantic equivalence is rejected.
+15 October maintainer revision: use the
+[minimum academic A/P2/P3 consolidation](mvp2_s2_academic_consolidated.md) for
+new trusted-code research attempts. Production no-escape, global host namespace/
+hierarchy inspection and crash-durability certification are not required; exact
+provenance, bounded one-shot execution, targeted step stop, terminal evidence and
+unchanged scientific validation remain. Audit job2211851 as originally blocked,
+never reclassify it under the new profile. Group A/P2/P3 software in one PR, retain
+ordered live audits, then P4 and P5; three functional deliveries are a baseline,
+not a guarantee or permission to run. Later scope and article-review branch sync
+are unchanged. Earlier stronger-profile entries below are historical, superseded
+only where explicitly stated by the revised protocol.
 
-## Sprint 2 — Gurobi parallelism and memory response
+15 October operational continuation after PR #97 merge
+`adbb835b591558ffc39dd6127b22b86cc92fbf15`: qualify the
+[complete observation-only gate and pinned CLI](mvp2_s2_profile_operational.md).
+Use a distinct claim/source/plan with unchanged2CPU/2048MiB/twelve-minute envelope;
+no historical entry/evidence or scientific criterion changes. Ready/exact-head CI
+and separate merge authorization precede human observation, never an agent job.
+Normal/adverse/native/h300/repeats remain closed. Remaining-PR baseline6 including
+this gate, working range6–9: finish A, then complete P2-P5 packages, with additional
+corrections only when evidence justifies them. Preserve the initial PR97 legacy
+cleanup-test failure/successful single rerun and investigate before native/h300.
+No positive installed result, automatic retry or reduced S2 scope is presumed.
 
-Estimated effort: four to six working days plus queue time.
+15 October continuation after PR #96 merge
+`37d4b13b4fffdf9566b18075c3b7ab4f9784691f`: integrate and qualify the
+[complete prospective observation v2 package](mvp2_s2_profile_observation_v2.md)
+as one functional delivery. Versioned independent host/primitive diagnostics,
+bound controller replay, exclusive claim, wrapper and terminal/forensic/cache
+components preserve job2211568 and all old executables. Public start/batch remain
+closed; no CLI or observation is admitted now. Complete Ready/exact-head review
+and obtain this new PR's separate merge authorization, then review explicit
+observation-only admission and pinned human handoff before any new run. No blind
+normal retry, criterion relaxation or scientific scope/branch-timing change.
 
-Use thread counts 1, 2, 4, 8 and 16 as an experimental grid, not a claimed solver
-maximum. First run short diagnostic windows on a 300 case. Select feasible
-profiles before full eight-hour experiments at 300 and 400, with and without
-direct routes. Reproduce the four-thread baseline on the same node class.
+15 October outcome after PR #95 merge
+`cdc14591acd6b4743aa925e446070afd5524107d`: job2211568's
+[negative audit/closed diagnostic correction](mvp2_s2_profile_2211568_audit.md)
+preserves the original blocked result, source/claim and evidence. Unavailable
+host/hierarchy readings do not prove installed incompatibility; memory task_0
+and lost primitive/errno detail need qualified diagnostic correction. Capture
+was within90s, not a demonstrated timeout. No retry or new admission. Finish
+Ready/merge review, then integrate one complete prospective observational gate
+before any justified human command. No security/scientific criterion changes.
+Full S2 and later scope/post-article synchronization remain unchanged.
 
-Hold source, solver version, CPU model, NUMA placement, memory allocation,
-algorithm, tolerances and cold start fixed for the thread contrast. Record
-effective CPU utilization and affinity. Do not equate memory-driven Slurm CPU
-allocation with cores actually used by the solver. A separate memory contrast
-holds thread count fixed and tests the baseline cap against a higher verified
-cap on an adequately reserved 512-class node.
+15 October operational continuation after authorized PR #94 merge
+`6344d95a3841016cc5e1723e408d46b84a240b1c`: prepare one
+[complete prerequisite observation/handoff](mvp2_s2_lifecycle_profile.md), not
+another blind normal retry. Measure installed host/hierarchy prerequisites in one
+bounded observation allocation with exclusive claim/status/wait/forensic collection.
+No worker/security change or normal/native/h300/repeat admission. Unsupported
+profile requires evidence-backed review/NPAD support, not automatic host changes.
+Finish Ready/separate merge review; then human CLI only. All original evidence,
+full S2 and subsequent scientific scope/post-article synchronization are preserved.
 
-Pilot the higher cap with explicit headroom for Python, exports and monitoring.
-Do not allocate the entire physical node memory to the solver. The accepted
-Slurm allocation and cgroup limit determine the admissible cap; a node label
-alone does not. Only relax `SoftMemLimit` after measurements support it.
+15 October continuation after PR #93 merge
+`0f98ae96aa4b352883626ff8eb8efa9e4d01c9c6`: qualify the
+[complete closed normal lifecycle package](mvp2_s2_lifecycle_release.md) in one
+functional delivery: worker, fixed launcher, durable release/exact-step stop,
+exclusive claim, role wrapper and terminal/forensic transfer/cached resume.
+Unknown effects never authorize repeat; canonical archive replay preserves
+negative/partial evidence. All public entries and execution/cleanup flags stay
+closed. NPAD environment/cadence/durability remain unqualified; no CLI now.
+Finish Ready/merge review, then one complete operational admission/CLI handoff
+review, not a blind retry or another fragmented software release. Original
+claims/evidence, full S2 A/P2-P5, later science and post-article sync are intact.
 
-Screen all thread counts, then repeat the baseline and promising profiles at
-least three times with the same fixed seed to measure runtime variability.
-Perform a separate seed-sensitivity block (42, 43, 44), rather than confounding
-hardware variability with randomized search changes. Keep censored outcomes in
-the analysis. Report stage latency, time-to-bound, time-to-incumbent, core-hours,
-peak memory, speedup and parallel efficiency only for comparable completed work.
+14 October continuation after PR #92 merge
+`9cc579d23f544c3ec6cdd7bbd71d85e6294ba01a`: qualify the
+[independent environment verifier and closed adapter](mvp2_s2_lifecycle_integration.md)
+with current kernel/scheduler/source/runtime/IPC observations and terminal replay.
+This supplies observational software, not a runnable release or installed proof.
+Conservative sufficient-profile NPAD support remains unknown; no host changes,
+new claim/job/retry or cleanup/admission follows. Finish Ready/merge review, then
+group worker/security/release/stop/claim/wrapper/collection qualification before
+separate live admission. No CLI now. All original evidence, full S2 A/P2-P5,
+downstream unrun slots, scientific scope and post-article sync remain intact.
 
-Barrier can use parallel linear algebra; simplex is not equivalent to a
-multithreaded barrier solve. Concurrent LP algorithms may require additional
-workspaces. More threads need not increase memory or speed monotonically.
-Node files address branch-and-bound storage, not a pure root-LP factorization
-bottleneck. Do not make them the default remedy for these root-dominated cases.
+14 October continuation after PR #91 merge
+`c838fd10c911cd2cf2e16c60eb9a46d578cc0269`: the maintainer authorized the
+[new lifecycle protocol's software qualification](mvp2_s2_lifecycle_protocol.md).
+This closed package supplies prospective contract/reducer/observer/wrapper/replay
+and tests, not execution, claim reservation or an adopted live cleanup criterion.
+Unknown parent persistence/ownership/no-escape remains a blocking external
+obligation; no live verifier is supplied. Finish Ready/merge review, then qualify
+current environment/IPC/transport integration as one complete closed package.
+No NPAD CLI now. All original evidence, A/P2-P5, the unrun downstream slots,
+later scientific scope and final post-article synchronization are preserved.
 
-Exit gate: a documented performance/memory response, including profiles with
-no benefit. A four-thread versus sixteen-thread claim requires matched evidence,
-not different algorithms or hardware.
+14 October continuation after PR #90 merge
+`e2a40c8f1e6d87d82cbe7edbef370e78145f0024`: job2210952's
+[fast-exit audit](mvp2_s2_fast_exit_2210952_audit.md) records five observations
+with missing enforcement scopes and unavailable exact membership after exit.
+Products/accounting survive, but unchanged normal cleanup is not qualified.
+Do not blindly repeat normal or reuse the consumed observation claim. Finish
+the read-only audit PR and obtain a separate protocol decision: qualify the
+proposed lifecycle-aware persistent inventory, or retain current criteria and
+seek NPAD support. The proposal is neither implemented nor adopted by this
+audit. No new CLI action or execution admission follows. A/P2-P5 remain open;
+the eleven downstream slots remain unrun and all scientific scope is preserved.
 
-## Sprint 3 — SCIP capability and execution study
+14 October continuation after PR #89 merge
+`40a55f5270c6921f28349024de0dcce69befcab1`: qualify the
+[complete bounded post-fast-exit observation](mvp2_s2_fast_exit_observation.md),
+including one-shot wrapper/claim, exact regression, terminal/forensic transfer
+and pinned human CLI in one package. Proposed request is five minutes/twoCPUs/
+2048MiB with a fast stdlib leaf, not normal retry or cleanup-policy amendment.
+All downstream flags stay false. Prepare P2-P4 integration from the closed
+eleven-slot software inventory while evidence is pending; preserve serial live
+gates and all original claims. Finish Ready/merge review before human observation,
+then audit evidence before any separate normal proposal. S2 remains open.
 
-Estimated effort: four to six working days plus queue time; may overlap Sprint 2.
+14 October consolidation after PR #88 merge
+`a0c5e7c2859c6fb99b718bfc29b7087996f44eb8`: the maintainer requests a robust
+accelerated S2 strategy. The [complete closed operational qualification](mvp2_s2_operational_completion.md)
+groups source/runtime/entry, claim/acknowledgement, independent adapter and
+terminal/no-bound-attempt forensics in one functional package. No execution or
+cleanup amendment follows. A normal live audit and P2-P5 remain required; package
+count is not a fixed further-PR count. Prepare downstream software/evidence tables
+concurrently, retain serial live acceptance and no cross-block afterok chain.
+Resolve installed fast-exit observations before another normal proposal. Unknown
+scope retention is not a reason to repeat blindly or silently change worker timing.
+The current decision table and limits are in the linked completion plan; S2,
+later scientific scope and final post-article synchronization remain unchanged.
 
-Retain the accepted native backend's mathematical semantics. Probe the exact
-SCIP, PySCIPOpt, SoPlex and build provenance, enabled threading interfaces,
-available LP algorithms and actual execution driver. Test supported combinations
-on small LPs and MILPs, including zero-service priorities and strict lock rows.
-SoPlex parameter names do not establish a Gurobi-equivalent barrier-only mode.
+14 October operational-gate continuation: PR #87 merged at
+`0fab1b4274bca3068bdff29322ada44c28dd7465`. The
+[closed gate and terminal transfer](mvp2_s2_diagnostic_gate.md) qualifies a
+sealed source/release binding, distinct proposed claim identity, exact terminal
+accounting and independent bounded complete/forensic archive replay. It does
+not reserve a claim, expose a runnable worker/launcher or admit execution.
+Finish Ready/merge review; then qualify the explicit operational wrapper and
+current runtime/fast-exit prerequisites before any new normal admission.
+Unknown scopes remain unknown. No worker timing, cleanup predicate, experiment,
+historical certificate or scientific/editorial scope changes. S2 remains open.
 
-Assess whether the observed stringent numerical tolerance is necessary for the
-current units and priority rows. Test mathematically equivalent row/objective
-scaling with original-unit independent residual checks. Do not simply loosen
-feasibility tolerances to obtain an incumbent.
+14 October closed integration: authorized PR #86 merge
+`99a8294249182cb231994d96dabb92db7e4e8ef8` preserves the negative normal audit.
+The [diagnostic/fast-exit package](mvp2_s2_diagnostic_integration.md) qualifies
+independent reads, durable sidecars, unchanged strict cleanup projection and
+complete/forensic collection without a driver or execution admission. It does
+not accept missing scopes, change worker timing or identify the unrecorded old
+exception. Finish Ready/merge review, then qualify operational release and
+fast-exit observation prerequisites before any separately reviewed successor.
+No automatic retry or downstream release; full S2 and later scientific scope
+remain unchanged, with old evidence/claims intact.
 
-Compare presolve cost, symmetry handling, LP iteration progress and resident
-memory. Disable an expensive presolve feature only as a controlled hypothesis,
-not a blanket optimization. A concurrent SCIP driver requires supported build
-features and consumes additional worker memory; sequential `optimize()` does
-not become concurrent merely by setting a thread ceiling.
+14 October live normal audit: PR #85 merged at
+`8a3f15084400424e07cd3367fa3a76295cc828c8`; job `2210506` completed at scheduler
+level but [normal containment is not qualified](mvp2_s2_normal_2210506_audit.md).
+Two initial barriers passed and the stdlib worker completed; 186 sampling faults
+prevented quiet-cleanup proof and the controller blocked. Its claim is consumed.
+Qualify read-only outcome audit/disconnected diagnostics, then a bounded
+diagnostic/fast-exit integration before proposing any normal successor. The exact
+installed exception remains unrecorded; do not guess it or relax cleanup.
+No new CLI action, retry or downstream release follows. Full S2 scientific
+scope and later sprints remain unchanged, not replaced by this negative result.
 
-If a supported alternative LP backend offers useful parallelism or barrier,
-qualify its build, license, numerical behavior and miniature parity first.
-It becomes a new configuration, not a silent replacement of historical SoPlex.
-Start full trials at 215, then 300 only after resource admission. Preserve the
-original and enlarged-memory failures as separate observations.
+14 October operational continuation: PR #84 merged into develop at
+`f1ab13568cd961d1bf0a61638caa2d3874b9fa8c` with explicit authorization.
+The [normal-only operational wrapper](mvp2_s2_resource_operational.md) completes
+the pending software wiring and human CLI qualification, not a new scientific
+experiment. Finish Ready/merge review before one pinned human normal execution;
+audit terminal/forensic evidence before downstream admission. All historical
+claims and budgets remain unchanged. This software work does not establish
+live containment, close S2 or release adverse/native/h300/repeat execution.
 
-Exit gate: at least a validated positive control and measured large-instance
-progress. No-incumbent results remain legitimate experimental outcomes. The
-plan does not promise that more memory or cores will make SCIP competitive.
+14 October continuation: PR #83 merged into develop at
+`5f4100de9fb9969f0246247947a6050ebf439c2f`; the maintainer resumes the
+[closed normal launcher qualification](mvp2_s2_resource_launcher.md).
+Source/runtime sealing, a distinct exclusive claim, batch/worker binding and
+terminal/forensic collection are qualified without execution admission.
+Missing/truncated/rejected receipts retain separate negative outcomes and
+original bytes. Next: finish Ready/merge review, then qualify the pinned
+normal-only operational admission wrapper before human NPAD CLI and live audit.
+This completes the same pending software package, not a new experiment. Full
+S2, h400, SCIP/h215, conditional h500 and S6-A/S6-B remain planned; S3/S4 stay
+cancelled, EVPI/VSS excluded and main promotion deferred until article review.
 
-## Sprint 4 — scenario decomposition and bounded parallel workers
+13 October integration update: PR #82 merged at
+`656537428c5edd8702aff1ed1b865a604b117792`. The
+[closed normal-adapter integration](mvp2_s2_resource_normal_integration.md)
+qualifies actual CPU/affinity readers, handshake, sampling, finite exact-step
+cleanup and versioned negative/partial replay. Public launch remains denied;
+the next release gate must bind fresh source/runtime and a distinct claim,
+worker entry and terminal/forensic collection. No additional experiment or
+historical evidence reinterpretation is authorized. S2 scope is unchanged.
 
-Estimated effort: one to two weeks for a validated prototype.
+13 October CPU-contract decision after PR #81 merge: the maintainer approves
+at most two logical CPUs in the synthetic worker cpuset, within the unchanged
+allocation, with initial one-CPU affinity and unchanged memory/time. This is
+not execution approval or a change to h300. The [closed resource gate](mvp2_s2_synthetic_resource_contract.md)
+qualifies the new schema and replay while preserving strict legacy behavior.
+Explicit runtime integration/normal release remains before live qualification;
+no additional SMT configuration experiment is required. S2 P2-P5 and all later
+scientific scope remain unchanged. No historical claim/certificate is replaced.
 
-Develop Benders with shared investment decisions in the master and continuous
-scenario recourse subproblems. Verify that fixing the master removes all
-remaining integrality before claiming classical LP-dual cuts. Include
-feasibility cuts when recourse is infeasible; emergency variables do not by
-themselves establish complete recourse.
+13 October scope result: job `2209770` independently replayed as
+`observed_not_qualified`. The [review](evidence/s2_scope_2209770_review.json)
+identifies shared cpuacct, disjoint enforcement/tracking scopes and a separate
+two-CPU cpuset versus one scheduler CPU discrepancy. The observation claim is
+consumed. The maintainer's hash-asserting read of saved status reports supervisor
+affinity `0,32` and worker affinity `0`. This is not proof of a hard one-CPU bound,
+exclusive CPU placement or SMT topology. A combined role-aware repair must
+reconcile this distinction; no new normal, adverse, native or h300 release follows.
+Full S2 scope is unchanged.
 
-Implement the three priorities as certified global passes, carrying validated
-priority limits between them. Preserve scenario weights, valid cut signs,
-global lower/upper bounds and independent feasibility. Compare single-cut and
-multi-cut variants on small cases before using stabilization or cut selection.
+13 October evidence update after PR #80 merge: job `2209138` did not qualify
+normal containment; its numeric step failed and the preserved supervisor
+diagnostic identifies a shared/nested controller predicate, not which controller.
+Block A's claim is consumed. The next bounded action is the
+[scope observation](mvp2_s2_scope_observation.md), not another normal attempt or
+long campaign. Full S2 and its P2-P5 passage criteria remain unchanged. Earlier
+normal start instructions below are superseded by collection-only preservation.
 
-Use a bounded process pool for independent scenario LPs. Select worker count
-from measured per-worker peak memory, master memory and headroom; do not load
-all nine scenario models simultaneously by default. Avoid nested solver-thread
-oversubscription. Evaluate one-node worker parallelism first, then Slurm-based
-multi-node workers with explicit communication, license and failure handling.
-Distributed memory is not automatically pooled into a single monolithic solve.
+13 October integration update: PR #79 is merged; PR #80 reconciles the campaign
+and duplicate-carrier repair. Current normal execution source after its qualified
+merge is `9c008eecb93aa4b4a221fced2fafead467d89021`, with the same one-shot
+claim and limits. The PR #77 bootstrap stopped before reservation/submission.
+This supersedes the old normal pin below, not the scientific plan or budgets.
+No normal live result or downstream admission follows from the merge.
 
-Alternative routes merit small structural tests: Lagrangian scenario relaxation
-with feasible recovery and valid bounds; progressive hedging as an explicitly
-heuristic incumbent method for integer first-stage decisions; and
-Dantzig–Wolfe/column generation if the actual block structure supports it.
-Network partitioning requires boundary-flow consistency and investment coupling,
-not independent regional solves that change the model. These are alternatives
-to assess, not all mandatory implementations.
+13 October campaign update, after PR #78 merge `b416c11a42981dbfc6a330a35d3d0bcb4f1e4652`:
+the [finite S2 closure campaign](mvp2_s2_closure_campaign.md) binds the current
+normal handoff, all five existing adverse cases, pending native envelope and
+one six-hour homogeneous h300 block. It consolidates the existing four remaining
+functional packages P2-P5, not a new live gate. Normal evidence is still missing;
+no downstream execution follows from planning or merge. Known A/B/D requested
+envelopes exclude the unbudgeted native integration; no total cost is invented.
+S2 exit requires evidence/decision, not positive speedup or main synchronization.
 
-Exit gate: miniature equivalence, valid certificates and a successful replay of
-an accepted baseline. Acceleration is assessed only after correctness. Failure
-to outperform the monolith is reported without changing acceptance criteria.
+13 October planning decision: PR #77 merged into develop at
+`feb7b569c88315bff432c709445d07a482271f55`; its qualified execution pin remains
+`0f627f0779864ec5220d1e94b57e4bb6a6514433`. No live result has been reported for
+this normal gate. The maintainer cancels synchronization at S2 closure and defers
+main/develop reconciliation to final consolidation **after article review**.
+This supersedes the earlier timing decision, not history preservation or merge
+authorization. The active sequence is:
 
-## Sprint 5 — conditional scalability frontier
+1. Complete full S2: normal audit, adverse containment, licensed native miniature,
+   homogeneous h300 thread contrast, evidence audit/configuration selection.
+2. Continue h400 and bounded existing-SCIP h215; admit h500 only through its
+   existing h400-success/resource gates. No branch synchronization prerequisite.
+3. Complete S6-A scientific consolidation and S6-B manuscript/reproducibility;
+   preserve and obtain human review of the article revision.
+4. Only then qualify the final protected-main reconciliation/promotion PRs,
+   preserving both histories and requesting each merge only after Ready.
 
-Estimated effort: one week for the first frontier block, then evidence-dependent.
+S3/S4 remain cancelled; EVPI/VSS remain excluded. This documentation update
+changes no scientific budget, parameter, execution permission or submission date.
+The [final integration gate](#final-post-article-review-gate--protected-main-reconciliation)
+defines the deferred checks. Earlier next-action statements below are historical.
 
-Revisit 400 warehouses using the selected qualified profiles. Attempt 500 only
-after preflight and measured memory projections are credible. Advance through
-600–1000 conditionally; refine the interval between the last quality-certified
-and first non-certified population rather than assuming monotone difficulty.
-Candidate composition, connectivity repair and integer presolve can change
-difficulty between nested populations.
+12 October successor update: PR #76 is merged into develop at
+`0602edf3743cd3253b8253492d4098b65c4a0c9e`. The next functional PR qualifies
+the [step-corrected normal lifecycle](mvp2_s2_step_normal.md), bound to the
+preserved negative recovery of job 2208459. A new one-shot claim, complete
+offline qualification, Ready review and explicit merge precede human NPAD CLI.
+The unchanged allocation ceiling is 12 minutes, not a multi-hour experiment.
+After acknowledged submission, the maintainer can disconnect and collect after
+the pause. No automatic follow-on jobs or additional experiment are admitted.
+The dated entries below retain their historical decision context.
 
-Distinguish the quality-certified frontier, independently feasible-incumbent
-frontier and resource-admitted construction frontier, for each solver,
-algorithm, thread count, memory allocation and time budget. The largest
-population observed is not a universal solver limit.
+12 October recovery audit update: both carrier checksums and all inventory
+members are verified. Worker startup identity is present; live binding/contract,
+phase completion and telemetry are absent. The same functional PR corrects
+source-confirmed Slurm step UID/count/host parsing, not scientific parameters.
+Complete offline qualification/Ready and explicit merge before qualifying a
+distinct normal-only successor. No additional long-duration campaign is admitted.
+Full S2 remains planned: normal, adverse containment, native miniature, homogeneous
+h300 thread contrast and audited closure. The former end-of-S2 branch
+reconciliation timing is superseded by the 13 October decision above.
 
-Use an equal-resource Gurobi/SCIP comparison where both runtimes are qualified.
-Keep a separate best-qualified-profile comparison with resource costs disclosed.
-Do not impute costs or service levels to SCIP cases without an incumbent.
+12 October normal update: PR #75 is integrated. Job 2208459 progressed to a
+numeric step but preserved `blocked_unbound` with no samples and unknown remote
+cleanup. A distinct parser defect blocked collection of its attributed CANCELLED
+state. [Collect-only recovery](mvp2_s2_accounting_recovery.md) preserves original
+identities and negative evidence. Audit precedes any next execution. A proposed
+three-job/four-hour pause campaign cannot replace the pending live gates or
+silently change the 1800-second h300 screening design. All experimental scope
+below remains planned, not admitted; no main/develop synchronization now.
 
-Exit gate: a complete evidence table with achieved gaps, stage status, memory,
-elapsed time and censoring reason for every admitted attempt. Expansion beyond
-1000, including the registry's approximately 18000 hubs, remains conditional
-future research rather than a committed deadline.
+12 October post-merge continuation: PR #74 is integrated at
+`4b10f6bb623b7e2a77eaa85979a22d0dbdaa79d1`. The next functional PR qualifies the
+complete [node-normal one-shot lifecycle](mvp2_s2_node_normal.md), retaining the
+negative predecessor and diagnostic, before a pinned human-executed CLI handoff.
+This does not close S2 or admit adverse/native/h300/repeated execution. The
+remaining experimental/editorial scope is unchanged; live results govern the
+next gate, not offline test counts. No main/develop synchronization occurs now.
 
-## Sprint 6 — HPC manuscript and reproducibility package
+12 October live diagnostic update: job 2208438 identifies the NPAD local FQDN /
+Slurm short-node mismatch in both allocation node fields; the other seven fields
+matched. [Audited evidence and correction](mvp2_s2_node_identity_evidence.md)
+are incorporated in the same PR #74. Final CI/Ready and explicit merge precede
+any distinct normal-only admission; existing claims are never reset or reused.
+This removes an observed software incompatibility, not the live-containment
+milestone. No extra experimental campaign or change to S2/later scientific scope.
+Older next-action statements below are retained as historical planning.
 
-Estimated effort: three to five working days after the preceding evidence closes.
+12 October allocation update: PR #73 is integrated at
+`478d5ee513994a20e8788f1f504b195a7f67f346`; its job 2208339 has a checksum-audited
+negative allocation-preflight result. No normal worker has been qualified.
+The next functional PR first qualifies a [diagnostic-only observation](mvp2_s2_allocation_diagnostic.md),
+then incorporates an observed-data correction if warranted, before final review.
+Do not create another blind normal retry. The dedicated diagnostic may use a
+qualified pinned PR head before merge, but has no route to the normal worker.
+The old launchers' merged-source requirements remain unchanged. All original
+claims/certificates remain frozen. Existing S2/scientific milestones below are
+targets, not a guaranteed number of PRs or attempts; reassess after live evidence.
 
-Preserve the current introduction and related-work synthesis while sharpening
-the computational research questions. Explain memory bottlenecks, effective
-parallel execution and decomposition in Methods. Add stage-specific bound/time
-curves, memory traces, presolve tables and matched thread-scaling figures.
-Discuss findings against computational-agriculture literature, not merely solver
-brand rankings. Place unsupported configurations and unresolved outcomes in
-the limitations without obscuring the experimental tables.
+Latest 12 October checkpoint: PR #72 is merged at
+`7005b08e596ac47df3d9a9d6af13c2c563f07d64`; normal job 2208056 has an
+[independently audited negative preflight result](evidence/s2-compute-normal-2208056/README.md).
+The Slurm client compatibility correction preserves exact membership and signal
+boundaries. Software qualification cannot replace installed normal acceptance.
+The consumed claim cannot be reused; a successor normal-only gate must bind the
+negative predecessor before any separately authorized execution. The complete
+[successor gate](mvp2_s2_normal_successor.md) includes the fixed new claim,
+three-history release, terminal collection and portable independent audit;
+qualification and explicit merge/execution decisions are still required. Remaining S2
+and scientific scope below are unchanged; earlier bootstrap status is historical.
 
-Keep prediction and optimization results distinct if a later forecasting
-experiment is introduced. Update the pipeline figure to identify offline
-data/model preparation, optimization and independent validation; do not label
-unperformed training as an experimental result.
+12 October operational update: PR #70 is merged at
+`1463dcf8b3280e5799edbf017daafc71e49bd70a`; its authorized bootstrap failed
+before submission because isolated test subprocesses created ignored bytecode.
+The maintainer confirms caches in all three preserved sources and no new claim.
+The [bounded correction](mvp2_s2_compute_normal.md#bytecode-recovery--12-october-2026)
+combines prevention, historical-data/current-execution separation and end-to-end
+offline qualification. It does not add an experimental campaign, close S2 or
+admit another execution. Revised mandate: functional PRs and staged qualification,
+not component/fixture PR quotas; retain full scientific scope and M2 15 November,
+M3 23 December, M4 31 December targets, with evidence-led schedule reassessment.
 
-Publish a new dataset version for new evidence, linked to its exact code release,
-without replacing MVP 1.0 archives. Reconcile Appendix A and complete the coauthor
-audit. Journal selection, preprint and submission require a later decision.
-Computers and Electronics in Agriculture remains the intended first candidate,
-subject to demonstrable computational novelty and the authors' approval.
+Reconciled 11 October 2026 after PR #66 integration and the negative normal
+observation; preserve the maintainer's revised full experimental
+scope. S1-C followed PRs #44, #47, #48, #49, #50 and #51. This plan supersedes the earlier roadmap's
+mandatory solver campaign, decomposition implementation and calendar estimates.
+It does not rewrite archived results. The [S1 closure](mvp2_sprint1_closure.md)
+defines original receipts, adopted exit criteria and explicit limitations.
 
-## Execution and scheduling
+The research question is which instance and computational profile can complete
+the service/capacity/economic hierarchy for agricultural storage and transport
+networks under uncertainty, with original-unit independent feasibility and
+declared resource/time limits. Principal decisions are strategic facility
+opening, capacity and network planning; transport/storage operations provide
+tactical context. This is not evidence of operational deployment.
 
-The estimates above describe effort, not a guaranteed completion date. Begin
-Sprints 0–1 before scheduling expensive jobs; overlap qualified Gurobi and SCIP
-work only within allocation and license constraints. Decomposition is conditional
-on the root-LP and memory diagnosis. Each NPAD submission will be supplied as a
-tested CLI protocol using the consolidated `venv313`, an immutable checkout
-and a new campaign directory. No jobs are launched by this planning PR.
+Computers and Electronics in Agriculture is the intended journal, subject to
+coauthor approval and demonstrated contribution. The contribution is computational
+evidence relevant to agricultural decision support, not merely cluster use or a
+solver-brand ranking. No acceleration is assumed. The frozen `v0.2.0-mvp1`
+release, model, data and historical results remain unchanged.
 
-## Primary technical references
+Coauthor agreements were supplied on 7 October 2026; the meeting date was not
+provided. Their scope changes are recorded here, not applied to the article.
+No Benders or other decomposition implementation belongs to this study.
+The former S3 new-solver scope and S4 decomposition scope are cancelled. Revisit
+the existing SCIP backend at h215 after S2; then assess one h500 Gurobi frontier.
+This is not an admission for any execution. Do not seek adverse results: success,
+partial progress and failure are all informative only with adequate evidence.
+Sprint numbering is retained to keep historical references intelligible.
 
-- [Gurobi thread and memory management](https://support.gurobi.com/hc/en-us/articles/42058344459409-Managing-Threads-and-Memory-Usage-in-Gurobi):
-  memory behavior depends on the algorithm and search phase.
-- [Gurobi parameter guidelines](https://docs.gurobi.com/projects/optimizer/en/current/concepts/parameters/guidelines.html)
-  and [parameter reference](https://docs.gurobi.com/projects/optimizer/en/current/reference/parameters.html):
-  verify version-specific method, thread and memory settings.
-- [Gurobi distributed algorithms](https://docs.gurobi.com/projects/optimizer/en/current/features/distributed.html):
-  multiple machines require supported infrastructure and licensing.
-- [SCIP concurrent solving](https://www.scipopt.org/doc/html/CONCSCIP.php)
-  and [SCIP parameters](https://scipopt.org/scip/doc/html/PARAMETERS.php):
-  build capabilities, driver and LP integration must be qualified independently.
+## Evidence baseline and experimental invariants
 
-These references guide hypotheses; the project-specific benefits must be measured.
+The [MVP1 thirteen-attempt comparison](evidence/sprint_c_final_20260920/comparison_summary.md)
+remains a historical cohort, including unsuccessful configurations. Historical
+h300 automatic/all-barrier and h400 memory/time stops remain distinct profiles.
+The new accepted h400 control is neither a correction of historical failures
+nor proof of causal improvement. SCIP no-incumbent outcomes do not establish
+infeasibility or a universal backend ranking. S1 adds six accepted h215 arms,
+one separately reviewed h300 baseline, one descriptive h300 pair and one h400
+control. Input-only acceptance does not certify optimization.
+
+- Preserve canonical workbook identities, nested populations, nine scenarios,
+  probabilities, sixty periods, two products, units, terminal inventory and
+  audited grouped route selection/repair. Aggregated federative-unit flows are
+  not a full municipal network. Verify filter/cache claims and actual retained
+  routes from implementation before publication. Potential multi-hop reachability
+  is not active-network throughput feasibility.
+- Preserve native service-first hierarchy and original independent validation.
+  Pass certificates, feasibility, final degradation and scheduler termination
+  are separate decisions. A feasible incumbent or COMPLETED/0:0 is not complete
+  acceptance; OPTIMAL with tolerances does not mean exact zero-gap optimality.
+- Keep inherited Gurobi MIPGap=0.1 and native hierarchical allowances. Report
+  pass incumbent/bound/gap separately from final capacity and its difference
+  to the retained bound. Near-zero service uses its declared absolute tolerance,
+  not the relative-gap sentinel. The meeting's "below 10%" shorthand does not
+  replace the audited contract.
+- Keep seed 42 for common comparisons; it alone does not imply determinism.
+  Hold model, runtime/source, LP method, cold start and resources fixed for
+  thread contrasts. Memory/methodology changes require separate comparisons.
+- Distinguish optimization, build, extraction, validation, application and
+  scheduler clocks. Eight hours is the current optimization budget; Slurm
+  headroom is separate. A possible 24-hour budget is not admitted.
+- Separate SoftMemLimit decimal GB, allocation/RSS units, finite cgroup limit,
+  requested/allocated CPUs, solver threads and measured CPU usage. Do not infer
+  available resources from node labels or reduced allocation from sampled peaks.
+- Preserve source/environment receipts, durable claims, adverse outcomes and
+  new-directory protocols. Missing telemetry and censoring stay visible. Portable
+  replay is not new residual validation or a fresh private-workbook reload.
+- Production-scale sparse coefficient/objective fingerprints remain a desirable
+  gate for future formulation changes; miniature fingerprints and matching
+  aggregates/exports do not prove large-model formal equivalence.
+
+## S0 — instrumentation and miniature qualification: evidence complete
+
+Corrected licensed NPAD job 2143922 passed 138 tests without skips and twelve
+miniature Gurobi/SCIP observations. Initial ObjBound conversion failures remain
+archived. Instrumentation and native ownership are implemented. Large-run causal
+sampler overhead and continuous five-second coverage are not established; those
+limitations are explicit, not silently marked satisfied.
+
+## S1 — lifecycle and bounded memory study: integrated bounded closure
+
+S1-A: accepted h300 warehouse-only input, baseline and descriptive compact-first
+pair. S1-B: accepted h400 direct input and one instrumented control. S1-C:
+consolidate those with three h215 pairs, record exit decisions and reconcile
+this roadmap. Documentary PR #52 merged at
+`9d302406e2aae0958ff61084f750fa4cf1730eac`, closing the adopted bounded scope.
+
+Compaction stays optional/default-off. Paired application RSS was lower, runtime
+effects varied and native solver memory was essentially unchanged. No causal
+gain, significance, reduced construction peak or smaller allocation is demonstrated.
+Production retains the native hierarchy. Explicit reuse/rebuild equivalence is
+qualified only on restricted miniature original MIPs. Large rebuild, generalized
+copy elimination, crossover changes and scalable fingerprints are deferred.
+No extra pair or h400 compact arm is automatically admitted.
+
+## S2 — next: separately qualified Gurobi thread screening
+
+First PR: [qualify thread parameters and one-shot collection](mvp2_thread_qualification.md)
+on five licensed analytical miniatures, 1/2/4/8/16 threads, seed 42 and all-barrier.
+Accepted [job 2202239 and portable residual/integrity audit](mvp2_thread_qualification_evidence.md)
+close this first gate only. CI software checks remain distinct from original
+NPAD scientific evidence. Production remains closed. Select
+h300 warehouse-only uncompacted control as the proposed production reference,
+with a common 1800-second diagnostic optimization window, original memory and
+method, fixed node class and at least 16 CPUs/task. The miniature envelope is
+separate from production and provides no production speedup or utilization claim.
+
+After PR #53 integration, the [h300 design gate](mvp2_h300_thread_design.md)
+qualifies homogeneous environment, diagnostic/watchdog arithmetic, partial
+observations and resource metrics without admitting execution or repeats.
+Split live implementation/admission and resulting evidence/decision from that
+solver-free gate. Only a subsequent qualified, separately admitted bounded block
+can inform any selected full-budget or replicated block. This split replaces the
+earlier combined "second PR" boundary; it is not an extra experimental campaign.
+After PR #54 integration at `31c6dd8b0462af14d74997773e30bdda099e4b22`,
+the [runtime component gate](mvp2_h300_runtime_controls.md) implements parent
+watchdogs, immutable claims, post-cleanup parent closure and portable partial
+review. It does not qualify a native production worker, live allocation/cgroup
+containment, fresh license/homogeneity, production telemetry or source/cohort
+admission. Those remain a closed integration/qualification step before any
+separately authorized diagnostic block. No optimization or repeat is admitted;
+component completion does not close S2 or establish thread performance.
+After PR #55 integration at `af7271962d314d5c1e26f1c7745147ea071c4c7f`,
+the [closed native-worker gate](mvp2_h300_native_worker.md) connects strict
+native-call seams, effective global limits and native count snapshots to partial
+export. Fake native APIs qualify software paths, not licensed parity or h300
+resource sufficiency. Its changed implementation must receive a new source/cohort
+qualification; historical design hashes and accepted archives are not rewritten.
+Full worker-evidence transfer, live sampling and allocation-wide closure remain
+closed qualification steps before a separately authorized miniature protocol.
+No job, optimization block or repeat is admitted by this integration.
+PR #56 was integrated at `0443b1c23fc98b147f73618a5db50131dc2de70e`.
+The next [worker evidence/resource gate](mvp2_h300_worker_evidence.md) implements
+a separate whole-worker envelope, actual byte/runtime binding and read-only
+Linux resource/containment observations. The public entries remain denied.
+Existing process-group controls are not allocation containment; delegated cgroup
+setup, race-free worker placement, enforced teardown and licensed integration
+still need a separately qualified miniature protocol before h300 admission.
+Compare equal completed work, stage latency, time-to-bound,
+time-to-incumbent, effective CPU use, core-hours and memory. Speedup T1/Tp and
+efficiency (T1/Tp)/p require comparable completed work; censored runs are not
+ordinary complete timings. Disclose shared-node/order effects. Balanced repeats
+are necessary before stronger performance claims; allocated CPUs are not active
+solver threads.
+
+Memory response is a separate conditional PR with fixed threads and measured
+headroom. Higher caps, 512-class nodes or lower allocations are not automatic
+deliverables. Seed sensitivity, warm starts and LP changes likewise need separate
+rationale/qualification. Node files are not assumed to fix root-LP factorization.
+Exit: audited response including no-benefit/failure profiles, explicit comparison
+limits and justified next-profile decision. Speedup is not required for success.
+
+PR #67 is integrated at `fe56d465720d396ebfb2c7f202fb0482db0d91ad`.
+Recovery 2207181 failed before shared diagnostics; supplemental stderr identifies
+absent login Git on the batch node. The [closed identity correction](mvp2_s2_compute_identity.md)
+qualifies byte-preserving login/compute separation and early error coverage.
+PR #68 merged at `a2501f81cd4c45916b09227a378fe1505e97e190`.
+The [closed successor integration](mvp2_s2_compute_integration.md) connects
+batch/worker/history byte verification and role-specific runtime/collection.
+A fresh immutable normal-only driver, actual CLI wiring qualification and
+authorized merge remain required before new normal admission. Its public entry
+still denies execution. Both consumed attempts remain immutable. This does not
+cancel or release any scientific contrast; S2 remains open.
+
+PR #69 merged at `d6ab499c634bd03432f968c76df61d5cc521b862`.
+The next [one-shot normal operational gate](mvp2_s2_compute_normal.md) implements
+that actual driver and its portable evidence handoff. It binds a pre-submission
+proposal to the acknowledged job, checks source/history without Git on compute,
+and resumes collection without resubmission. After its own qualified/authorized
+merge, only the maintainer's frozen normal-only CLI is admitted. No successful
+normal result is assumed and no adverse/native/h300 or repeat is released.
+The full S2 scientific scope, later experiments and editorial priorities remain
+unchanged; this is an operational prerequisite, not a new experimental campaign.
+
+Historical PR66/67 sequence: PR #66's diagnostic correction is integrated. The failed normal job 2207167
+remains negative, with unknown cause and no live qualification. The next
+[normal continuation gate](mvp2_s2_normal_recovery.md) prepares one separately
+qualified observation with fresh source/claim and read-only binding to the
+preserved original. It retains the same limits and all future admission blocks.
+After offline qualification and authorized merge, the maintainer executes only
+that normal CLI; independent evidence review precedes any adverse-case gate.
+Native miniature, h300 diagnostics and selected/repeated thread blocks still
+require their later gates. This does not reduce the full 1/2/4/8/16 scope, close
+S2, synchronize branches or admit subsequent h400/SCIP/h500 work.
+
+## S3 — new alternative solvers: cancelled
+
+Maintainer decision of 9 October: no HiGHS, CPLEX or additional solver campaign.
+Preserve historical numbering and evidence; cancellation is not completion of
+an experiment. The existing SCIP backend has the separate bounded scope below.
+
+## S4 — decomposition: cancelled
+
+The earlier Benders/multi-worker prototype plan is superseded. Do not implement
+decomposition to finish MVP2. Mention it only briefly as future research in the
+conclusions at S6, not a dedicated subsection implying an unfulfilled requirement.
+A later method would need new mathematics, valid global bounds, miniature
+validation and smaller instances under that same method before comparisons.
+
+## Existing SCIP h215 requalification — bounded, after S2
+
+Audit the original LP-root bottleneck before parameter screening: both historical
+h215 variants timed out without an incumbent during the first root LP, with
+about 12.5 million transformed continuous variables. This is not mathematical
+infeasibility or a universal SCIP inability. Preserve SCIP/SoPlex build, LP method,
+numerics, presolve, resource and stage-clock provenance. First investigate the
+existing pinned stack, not a silent dependency upgrade or new commercial LP.
+
+Form a small evidence-led set of supported LP/presolve hypotheses; qualify on
+analytical fixtures and a smaller positive control before a bounded h215
+warehouse-only screen. At most one justified candidate receives a separately
+admitted full-budget attempt; no parameter sweep or automatic retry. Do not
+loosen numerical/priority tolerances to obtain apparent success, substitute a
+weighted objective, seed with a Gurobi solution without a separate warm-start
+experiment, or claim parameter availability proves LP/thread capability.
+
+Record construction, root LP completion, independently valid incumbent and full
+hierarchy acceptance separately. A smaller solved control does not meet h215.
+Negative closure describes tested profiles and resources, not "nothing else can
+work". Planning estimate: two or three scoped PRs, not a solver campaign quota.
+
+## Post-S2 h400 selection — one separately qualified attempt
+
+The maintainer retains the full S2 h300 thread experiment. Its bounded results
+can identify a candidate, not prove that h300 rankings transfer to direct-enabled
+h400. Compare observed completed hierarchy work, incumbent/bound progress,
+validation, time, memory, CPU use and allocated cost; disclose censoring and
+shared-node/order effects. Do not rank missing incumbents as poor objective
+values or censored windows as completed-work speedups. Keep the accepted S1
+h400 control as a separate reference. Freeze one justified profile before a
+new attempt; mathematical/tolerance or scientific acceptance changes require
+authorization. No new h400 execution is admitted by this plan.
+
+Predefine h500 admission from the new h400 gate: independent original-unit
+validation, completed hierarchy within its declared quality/resource/time
+contract, complete/adverse evidence audit and a separately justified h500
+input/build/headroom decision. A feasible incumbent alone or scheduler exit
+zero does not satisfy that success gate. If h400 fails, preserve the outcome
+and propose an explicit resource/hypothesis decision; do not silently drop or
+admit h500. SCIP success is not an h500 prerequisite. These criteria are a
+planning proposal for later researcher approval, not a changed scientific gate.
+
+## S5 — h500 empirical frontier, conditional on h400/resources
+
+Prioritize h500 with direct arcs to preserve the accepted S1-B h400 policy;
+verify nested population and all other input/model identities. Separate input-only
+and construction/resource qualification from one admitted bounded baseline and
+evidence review. Use the selected/audited post-S2 h400 profile as a candidate;
+the four-thread S1 control is not an automatically selected new winner.
+Preserve the approved budget unless separately authorized; h300 screening does not
+automatically transfer its best setting to h500. Do not change time, memory and
+threads together or globally relax size guards. No h600--h1000 commitment.
+Difficulty need not increase monotonically with population. Planning estimate:
+two or three scoped PRs; original negative outcomes remain preserved.
+
+Distinguish construction-admitted, independently feasible-incumbent and complete
+hierarchy-certified frontiers per method/resource/time profile. The largest
+accepted instance is not a universal solver/model limit. Retain timeout, partial
+hierarchy, OOM and no-incumbent outcomes without imputing costs/service. A
+documented sufficiency decision may close S5 without every candidate size.
+
+## S6-A — scientific consolidation of MVP2
+
+MVP2 is the primary experimental cohort. Integrate its complete, partial and
+negative results, original validations, comparison limitations and resource
+interpretation. Use MVP1 only where needed for historical context/complementary
+evidence, never as a substitute for unperformed MVP2 work. Scientific success
+does not require every solver/size to succeed; it requires predeclared questions,
+adequate traces and defensible interpretations.
+
+## S6-B — MVP2 manuscript and reproducibility package
+
+Current article/presentation stay unchanged until the editorial gate. Deepen the
+computational/HPC discussion around dimensions/nonzeros, phase-specific LP/MIP
+bottlenecks, effective parallelism versus allocated CPUs, scope-specific memory,
+quality versus runtime/core-hour cost, adverse outcomes and reproducibility.
+Keep agricultural strategic decision support central. Empirical difficulty is
+not an asymptotic complexity proof or universal solver ranking. Identify
+the exact manuscript linked in the last email to coauthors: URL/version not yet
+provided; Pages/local copies are not assumed authoritative. Respect the review
+freeze and check applicability of older comments before integration.
+
+An editorial PR reconciles audited results, strategic framing, accessible
+definitions/units and coauthor comments. Preserve the full approximately 21-page
+systematic review by Artur and collaborators as appendix/supplement, confirming
+the authoritative file; no unverified AI condensation. Explain mathematical
+indices/variables/results for non-HPC readers. Gabriela/Rodolfo emphasize coherence
+and comprehension; Luis emphasizes homogeneous comparisons. AI assists drafting
+and verification, not scientific authority. Victor manually incorporates final
+LaTeX changes after human review.
+
+Exclude section 3.8, "Value of information and stochasticity", and EVPI/VSS only
+at S6; those calculations are not remaining MVP2 work. Emergency-capacity reliance
+and penalty shares are not actual financial performance.
+
+A separate packaging PR reconciles Appendix A, figure/source provenance,
+complete/adverse evidence, cached-route identities and release manifest. Plan a
+new version linked to exact code and final Zenodo deposit; preserve MVP1 archives.
+Release, deposit, preprint and submission require their own later decisions.
+
+## PR and execution boundaries
+
+Counts are scope boundaries, not quotas/dates. The earlier after-#56 four-gate
+estimate is superseded by observed installed-containment prerequisites.
+After #63, retain five planned S2 PR boundaries: P1 first-normal wrapper/grammar;
+P2 normal audit/adverse qualification; P3 adverse audit/licensed native integration;
+P4 licensed audit/fresh h300 admission; P5 diagnostic evidence/configuration decision.
+Scoped corrections are possible when actual evidence requires them. No gate
+automatically admits another experiment or repetition. S3/S4 remain cancelled;
+new h400 selection, bounded existing-SCIP h215 and conditional h500 remain planned.
+S6-A scientific synthesis and S6-B editorial/packaging are distinct deliverables.
+Do not launch follow-on fronts inside the first-normal software PR.
+Do not schedule speculative campaigns to fill sprint numbers.
+
+After #57, closed integration evidence/resource replay is software-qualified.
+The licensed miniature integration has one justified prerequisite split:
+[compute-node containment capabilities](mvp2_s2_containment_gate.md). A read-only,
+solver-free input allocation establishes facts before implementing effective
+worker containment. This does not complete miniature qualification, admit h300
+or add a research campaign; missing delegation cannot be silently bypassed.
+
+After #58, job 2202795 input evidence replay is accepted but its capability
+outcome is blocked_environment (cgroup v1, existing path requires v2). The
+subsequent read-only site inventory supports investigating Slurm-owned numeric
+worker steps, not claiming effective containment. The justified next split is a
+[closed step contract and read-only v1 observer](mvp2_s2_slurm_step_gate.md), with
+no launcher or job admission. The proposed 390-second cleanup observation budget
+accounts for declared KillWait 300 s and UnkillableStepTimeout 60 s plus margin;
+it is not a guarantee of termination. A separate bounded synthetic integration
+and live audit must precede licensed miniatures. This does not require upgrading
+the cluster or change the research scope, tolerances or blocked h300 campaign.
+
+After #59 merged at `a4ce020d01298a292ab10819d21355775a562b85`, the v1
+observer/step contract is software-qualified. The next gate implements
+[closed synthetic launcher/controller and partial-evidence components](mvp2_s2_synthetic_controller.md)
+using injected transports, not a live job driver. Actual step ownership, finite
+enforcement, complete descendant cleanup/reaping and no late writes remain live
+qualification obligations. No synthetic, licensed miniature, h300 or repeat is
+admitted by component regression or merge. Finish the actual bounded batch
+adapter and its explicit synthetic-only protocol before requesting NPAD CLI.
+
+PR #60 merged at `4472c8429a2aa99d10a716d827f1f6bfa0ec022a`.
+The [closed real batch adapter](mvp2_s2_batch_adapter.md) integrates POSIX pipes,
+kernel-peer IPC, raw source/runtime/allocation checks, actual numeric-step binding,
+controller events/resources and terminal partial/adverse collection. Its public
+CLIs stay denied; offline regression cannot promote any admission flag. Next is
+the separately frozen installed runtime/tool envelope and synthetic-only
+admission/terminal protocol, including interruption, unknown client/remote
+cleanup and strict installed command grammar. No NPAD command is admitted yet.
+
+PR #61 merged at `dd68588a5bdfe1f6536e357dab049509678659e4`.
+The [operational protocol gate](mvp2_s2_operational_protocol.md) now qualifies
+the closed first-normal one-attempt proposal, interruption/unknown-effect
+dispositions and externally checksum-bound partial collection sidecar. Only
+the installed-envelope read-only probe becomes executable after merge: no
+allocation, step, synthetic exercise, solver/license or repeat. Actual installed
+binary identities/configuration are a concrete missing input; do not fabricate
+them or equate declaration with live containment. Independently audit the probe
+before separately qualifying the first-normal live wrapper/installed grammar.
+Then audit that one normal attempt before any adverse synthetic case, licensed
+miniature or fresh h300 admission. This is not S2 closure or a performance result.
+
+PR #62 merged at `01016fbbbdfdc6dd7cf005488105b4d3181f671d`.
+The first read-only bootstrap stopped before the probe: the Linux kernel-peer
+test inherited a pytest path exceeding the unchanged 100-byte IPC guard.
+The maintainer reported 166 passed, one failure, one intentional skip and no
+job submission. This is a fixture portability defect, not an observed Slurm,
+license, native-worker or containment failure. The reported directory existed
+during the traceback; its present location is unverified, not recreated.
+The [scoped recovery correction](mvp2_s2_envelope_recovery.md) preserves that
+attempt, fixes only the disposable test endpoint and versions the read-only
+driver with phase/location receipts. It does not add a research campaign or
+admit synthetic/native/h300 execution. S2 remains open; the next scientific
+decision still requires independently audited installed-envelope evidence.
+
+PR #63 merged at `0dccbfd5d25c4db97a74baf5da3766d7433c82a1`.
+Its [read-only envelope evidence](evidence/s2-envelope-pr63/README.md) is now
+independently audited: observed_not_admitted, not effective live containment.
+The [S2-P1 first-normal wrapper](mvp2_s2_first_normal.md) was integrated in PR #65
+at `b7506e0efbc520411d80d2394d8b7d06a27d3dc9`; PR #64 followed at
+`60c43d7a52389eee2822a08701801792a9b79548` with maintainer authorization.
+Live strict job/step checks precede phase release;
+unknown responses block rather than widen the grammar. One normal observation
+must be independently reviewed before adverse release. Job 2207167 at frozen
+source `12691638cd85d5218725bf704dc6b9452b1ca90c` failed before launch, 2:0
+after two seconds. [Audited public v1 records](evidence/s2-first-normal-2207167/records.json)
+preserve an unknown worker outcome and no replayed controller. Integrity replay
+does not qualify the normal gate. Original logs, as reported by the maintainer,
+also lack the caught exception. The next scoped correction qualifies bounded,
+message-free phase/error/code-location diagnostics and unchanged legacy replay;
+it neither diagnoses that original exception nor admits another attempt.
+Preserve the consumed original claim, checkout and archive. A fresh one-shot
+normal protocol must be separately reviewed before further CLI execution;
+P2 adverse release remains blocked. No extra scientific campaign is introduced.
+Manuscript/coauthor certificates remain frozen and the full S2 grid is retained.
+
+### Dated scheduling assessment, not an execution calendar
+
+Using 10 October as reference, allow approximately 2--3 weeks for remaining
+S2 operational gates/diagnostic audit, 1--2 weeks for the new h400 gate and
+2--3 weeks for evidence-led SCIP qualification/attempt/review. h500 needs roughly
+1--2 weeks after h400 success/resource admission, and can overlap SCIP if
+resources and review capacity permit. These are engineering/review allowances,
+not queue-delay or success predictions. S6-A evidence inventory and S6-B
+structure/coauthor-version identification can proceed in parallel without
+editing the frozen article before its editorial gate. Final synthesis/review/
+packaging needs approximately 3--4 weeks after decisive evidence is available.
+
+An accelerated December submission remains possible if gates and human reviews
+complete promptly. The base forecast is January 2027 (approximately 18--29
+January), with further slippage possible after adverse results or constraints.
+Reassess from observed dates, not by removing approved activities. Only P1's
+0.4 allocated core-hour synthetic ceiling is currently actionable; larger
+resource forecasts require the respective qualified manifests/headroom.
+
+## Final post-article-review gate — protected-main reconciliation
+
+Maintainer decision on 13 October cancels the 9 October end-of-S2 timing.
+Synchronize at final consolidation after article review, not at S2 closure or
+inside experimental gates. Admission requires consolidated S6-A evidence, an
+identified human-reviewed S6-B article revision, and a consistent reproducibility
+inventory. Experimental closure does not itself authorize branch promotion.
+
+GitHub's develop view at `a4ce020` on 9 October reported 111 commits ahead of
+main and 1 behind; this historical observation must be recomputed at the final
+gate. It is not a current conflict assessment or authorization
+to overwrite main-only work. The attached PDF and read-only live settings review
+on 9 October now document the ruleset below; prior unaudited-rule wording is
+superseded for this dated snapshot, not for later effective-rule changes.
+
+Ruleset `model-agrologistic-main-protect`, ID 24804465, is Active and targets
+`refs/heads/main` only. Restrict creations, updates and deletions are selected;
+required status check is `check-branch`, Any source. Organization admin has an
+Always allow bypass. Require-PR, linear history, up-to-date-before-merge and
+block-force-push are not selected. PDF SHA-256:
+`b2860c7cfc51bca4387a03e8dd92fc1a4232caf633fea435543080b9c3d25866`.
+These settings restrict ordinary writers but do not make main immutable against
+an exempt admin. They do not establish this assistant/account's bypass role.
+No rule, actor, permission or workflow is changed here. At the final gate recheck the
+effective rule set and the implementation/provenance of `check-branch`; a missing
+or failing required check is a blocker, not authorization to bypass it. Review
+PRs remain our workflow even though this ruleset does not itself require them.
+
+After article review, inspect exact main/develop heads, both ancestry directions, exclusive
+commits and affected files. If main has exclusive history, first prepare a scoped
+main-to-develop reconciliation PR, resolve conflicts explicitly without dropping
+either side, qualify exact-head CI and request approval only when Ready. Then
+prepare the develop-to-main promotion PR for the reviewed MVP2 code/article snapshot, with
+evidence ledger, scope/diff and checks. No force-push, history reset, protection
+bypass or rule weakening. A blocked protected-main merge is handed to the
+maintainer through normal review/merge controls.
+
+Prefer an allowed ancestry-preserving integration strategy. If promotion creates
+a new merge commit on main, develop can become one commit behind despite equal
+code trees: finish with a reviewed main-to-develop back-merge, if necessary, and
+verify main is an ancestor of develop and the integrated code trees match at
+handoff. If the rules require squash/rebase, inspect the resulting graph rather
+than assuming synchronization from equal files. One PR may not satisfy both
+directions; the sequence depends on the actual protected-branch rules and graph.
+
+Protection governs permitted mutations; it does not make history universally
+immutable against actors allowed by those rules. Release/tag/deposit and public
+manuscript deployment remain separate decisions. No promotion, reconciliation,
+rule change or merge authorization is exercised by this planning update.
+
+GitHub main stays stable, develop integrates scoped PRs. Qualify exact-head CI
+and mark Ready before requesting merge. The assistant prepares scoped code/docs;
+NPAD CLI is executed by the user and merge needs separate authorization. This
+planning update performs no job, release, deposit or article edit.

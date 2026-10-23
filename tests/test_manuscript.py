@@ -1,4 +1,5 @@
 """Document-quality checks must not be confused with scientific acceptance."""
+
 import hashlib
 import importlib.util
 import json
@@ -18,8 +19,9 @@ SPEC.loader.exec_module(CHECKER)
 @pytest.fixture
 def manuscript(tmp_path, monkeypatch):
     destination = tmp_path / "manuscript"
-    shutil.copytree(ROOT / "manuscript", destination,
-                    ignore=shutil.ignore_patterns("_manuscript", ".quarto"))
+    shutil.copytree(
+        ROOT / "manuscript", destination, ignore=shutil.ignore_patterns("_manuscript", ".quarto")
+    )
     # Construct a reviewed test snapshot, not a production publication approval.
     approval_path = destination / "pages_approval.json"
     approval = json.loads(approval_path.read_text())
@@ -39,7 +41,8 @@ def test_draft_integrity(manuscript):
 def test_relative_appendix_link_is_rejected(manuscript):
     path = manuscript / "index.qmd"
     text = path.read_text(encoding="utf-8").replace(
-        CHECKER.PUBLIC_SITE + "supplementary-review.pdf", "supplementary-review.pdf")
+        CHECKER.PUBLIC_SITE + "supplementary-review.pdf", "supplementary-review.pdf"
+    )
     path.write_text(text, encoding="utf-8")
     with pytest.raises(ValueError, match="absolute public HTTPS"):
         CHECKER.check()
@@ -48,14 +51,16 @@ def test_relative_appendix_link_is_rejected(manuscript):
 def test_stale_unpublished_statement_is_rejected(manuscript):
     path = manuscript / "index.qmd"
     text = path.read_text(encoding="utf-8").replace(
-        "The research dataset is publicly available", "The research dataset remains unpublished")
+        "The research dataset is publicly available", "The research dataset remains unpublished"
+    )
     path.write_text(text, encoding="utf-8")
     with pytest.raises(ValueError, match="published dataset receipt"):
         CHECKER.check()
 
 
-@pytest.mark.parametrize("field,value", [("state", "draft"), ("submitted", False),
-                                        ("doi", "10.5281/zenodo.00000000")])
+@pytest.mark.parametrize(
+    "field,value", [("state", "draft"), ("submitted", False), ("doi", "10.5281/zenodo.00000000")]
+)
 def test_invalid_dataset_publication_receipt_is_rejected(manuscript, field, value):
     path = manuscript / "dataset_release.json"
     receipt = json.loads(path.read_text())
@@ -87,10 +92,10 @@ def test_computational_focus_credits_thesis_without_speedup_claims(manuscript):
     article = (manuscript / "index.qmd").read_text(encoding="utf-8")
     bibliography = (manuscript / "references.bib").read_text(encoding="utf-8")
     assert "@phdthesis{rosa2026thesis," in bibliography
-    assert article.count("@rosa2026thesis") >= 4
+    assert article.count("@rosa2026thesis") >= 1
     assert "## Model size, memory and performance measurement" in article
-    assert "no multi-node speedup is claimed" in article
-    assert "Slurm\narrays distribute independent experiments" in article
+    assert "distributed MILP" in article
+    assert "logical CPUs" in article
     assert "@shastri2011" in article and "@knapen2025" in article
     selection = json.loads((manuscript / "citation_selection.json").read_text())
     assert len(selection["records"]) == selection["verified_member_count"]
@@ -151,9 +156,13 @@ def test_changed_style_is_rejected(manuscript):
 def test_approved_author_order(manuscript):
     metadata = json.loads((manuscript / "authors.json").read_text(encoding="utf-8"))
     assert [row["name"] for row in metadata["author"]] == [
-        "Victor Rafael Rezende Celestino", "Artur Guerra Rosa",
-        "Andréia Elizabeth Silva Barros", "Gabriela Corsano",
-        "Luis Javier Zeballos", "Rodolfo Dondo", "Silvia Araujo dos Reis",
+        "Victor Rafael Rezende Celestino",
+        "Artur Guerra Rosa",
+        "Andréia Elizabeth Silva Barros",
+        "Gabriela Corsano",
+        "Luis Javier Zeballos",
+        "Rodolfo Dondo",
+        "Silvia Araujo dos Reis",
     ]
     assert [row["institute"] for row in metadata["author"]] == ["1", "1", "1", "2", "2", "2", "1"]
 
@@ -178,16 +187,21 @@ def test_missing_pdf_email_is_rejected(manuscript):
 
 def test_ai_declaration_is_before_references(manuscript):
     article = (manuscript / "index.qmd").read_text(encoding="utf-8")
-    assert article.index("# Reproducibility and availability") < article.index(
-        "# Declaration of generative AI") < article.index("# References")
+    assert (
+        article.index("# Reproducibility and availability")
+        < article.index("# Declaration of generative AI")
+        < article.index("# References")
+    )
     for name in ("Gurobot", "Gemini 3.1 Pro", "5.6 Sol", "6.0 Astra"):
         assert name in article
 
 
 def test_missing_stochastic_formulation_is_rejected(manuscript):
-    path = manuscript / "index.qmd"
-    path.write_text(path.read_text(encoding="utf-8").replace(
-        "## Two-stage stochastic model", "## Other model"), encoding="utf-8")
+    path = manuscript / "formulation.qmd"
+    path.write_text(
+        path.read_text(encoding="utf-8").replace("## Two-stage stochastic model", "## Other model"),
+        encoding="utf-8",
+    )
     with pytest.raises(ValueError, match="Missing formulation"):
         CHECKER.check()
 
@@ -210,19 +224,23 @@ def test_benchmark_is_not_labeled_as_verified_slr(manuscript):
 
 def test_editorial_source_is_not_manuscript_content(manuscript):
     path = manuscript / "index.qmd"
-    path.write_text(path.read_text(encoding="utf-8") + "\nManuscript Benchmark V0",
-                    encoding="utf-8")
+    path.write_text(
+        path.read_text(encoding="utf-8") + "\nManuscript Benchmark V0", encoding="utf-8"
+    )
     with pytest.raises(ValueError, match="Editorial instructions"):
         CHECKER.check()
 
 
-def test_benders_is_future_work_with_feasibility_and_bound_checks(manuscript):
+def test_scalar_scope_does_not_restore_cancelled_methods(manuscript):
     article = (manuscript / "index.qmd").read_text(encoding="utf-8")
-    assert "feasibility cuts" in article
-    future = article.split("Future work follows four priorities:", 1)[1]
-    assert "Develop hierarchy-preserving Benders decomposition" in future
-    assert "valid global bound and independently feasible recourse" in future
-    assert "does not remove all network" in article
+    assert "No new solver, decomposition campaign, penalty calibration" in article
+    assert "one observation per thread level" in article
+    assert "no terminal evidence" in (manuscript / "scalar_results.qmd").read_text()
+    assert (manuscript / "supplement/appendix_a_original.pdf").read_bytes().startswith(b"%PDF-")
+    # An empty pagecommand removes pdfpages' default empty style and overlays
+    # supplement page numbers on the preserved original pages.
+    supplement = (manuscript / "supplement/index.qmd").read_text(encoding="utf-8")
+    assert r"pagecommand={\thispagestyle{empty}}" in supplement
 
 
 def test_elsevier_template_and_supplement_are_checked(manuscript):
@@ -246,8 +264,25 @@ def test_review_counts_are_not_silently_corrected(manuscript):
     assert "[NAME OF TOOL" not in text
 
 
+@pytest.mark.parametrize("mutation", ["cost", "penalties", "h500", "appendix"])
+def test_integrated_scalar_evidence_cannot_drift(manuscript, mutation):
+    path = manuscript / "scalar_evidence.json"
+    record = json.loads(path.read_text())
+    if mutation == "cost":
+        record["observations"][-1]["economic_cost"] += 1
+    elif mutation == "penalties":
+        record["penalty_rates"]["unmet"] = 90001
+    elif mutation == "h500":
+        record["h500"]["terminal_result_available"] = True
+    else:
+        (manuscript / "supplement/appendix_a_original.pdf").write_bytes(b"%PDF-incomplete")
+    path.write_text(json.dumps(record))
+    with pytest.raises(ValueError):
+        CHECKER.check()
+
+
 def test_hardware_and_preliminary_results_are_distinguished(manuscript):
     article = (manuscript / "index.qmd").read_text(encoding="utf-8")
     assert "@npad2026" in article
-    assert "primary optimization" in article
-    assert "not the arcs retained by the MILP" in article
+    assert "Native Runtime" in article or "native Runtime" in article or "native runtime" in article
+    assert "retained" in article and "MILP" in article

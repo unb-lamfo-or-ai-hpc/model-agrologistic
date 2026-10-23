@@ -4,6 +4,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 import zipfile
 from pathlib import Path
 
@@ -40,9 +41,45 @@ def package(output: Path, *, root: Path = ROOT) -> None:
         if figure.is_file() and figure.suffix.lower() in {".png", ".pdf", ".jpg", ".svg"}:
             files[figure.name] = figure
     payload = {name: path.read_bytes() for name, path in files.items()}
+    # Supplement C/D has an explicit flat allowlist, never private generated data.inc.
+    for name, path in {
+        "model_det.gms": supplement / "appendix_c/model_det.gms",
+        "model_sto.gms": supplement / "appendix_c/model_sto.gms",
+        "model_common.inc": supplement / "appendix_c/model_common.inc",
+        "appendix_c_readme.md": supplement / "appendix_c/README.md",
+        "appendix_d_inventory.json": supplement / "appendix_d_inventory.json",
+    }.items():
+        if path.is_file():
+            payload[name] = path.read_bytes()
+    for name, path in {
+        "appendix_a_original.pdf": supplement / "appendix_a_original.pdf",
+        "scalar_evidence.json": manuscript / "scalar_evidence.json",
+        "scalar_wd_h215_2221443_review.json": (
+            root / "docs/evidence/scalar_wd_h215_2221443_review.json"
+        ),
+        "s6a_assets.json": manuscript / "figures/s6a_assets.json",
+    }.items():
+        if path.is_file():
+            payload[name] = path.read_bytes()
     # Editorial Manager expects a single file level, not figure subdirectories.
     main = payload["main.tex"].decode("utf-8").replace("figures/", "")
     payload["main.tex"] = main.encode("utf-8")
+    payload["supplement.tex"] = payload["supplement.tex"].decode("utf-8").replace(
+        "../figures/", "").replace("figures/", "").encode("utf-8")
+    # The supplement may select PNG while the Elsevier article selects PDF
+    # from the same figure definition. Include each actual TeX dependency,
+    # not a directory-wide copy of unrelated/private rendering products.
+    for document in ("main.tex", "supplement.tex"):
+        for name in re.findall(
+            r"\\includegraphics(?:\[[^\]]*\])?\{([^}]+)\}",
+            payload[document].decode("utf-8"),
+        ):
+            if Path(name).name != name or Path(name).suffix.lower() not in {
+                ".pdf", ".png", ".jpg", ".svg"
+            }:
+                raise ValueError(f"Nonportable graphic dependency: {name}")
+            if name not in payload:
+                payload[name] = (manuscript / "figures" / name).read_bytes()
     payload["README.md"] = (
         b"# Editable Elsevier review project\n\n"
         b"Open main.tex in a TeX distribution or upload this ZIP to Overleaf.\n"

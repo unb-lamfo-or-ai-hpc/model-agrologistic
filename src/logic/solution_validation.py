@@ -19,7 +19,7 @@ from src.logic.model_config import ModelConfig
 from src.logic.model_data import ModelData
 from src.logic.optimization import OptimizationResult
 
-VALIDATION_VERSION = "v020-independent-residuals-v1"
+VALIDATION_VERSION = "mvp2-scalar-independent-residuals-v1"
 COST_NAMES = (
     "opening",
     "candidate_capacity",
@@ -383,17 +383,13 @@ def validate_solution(
             costs[component],
             rounding_budget=budgets[component],
         )
-    objective = (
-        sum(costs.values())
-        if config.objective_policy == "penalty"
-        else sum(weights[s] * v for (s, _c, _p, _t), v in unmet.items())
-    )
+    objective = sum(costs.values())
     check(
         "objective_reconstruction",
         "objective",
         float(result.objective_value) if result.objective_value is not None else math.nan,
         objective,
-        rounding_budget=sum(budgets.values()) if config.objective_policy == "penalty" else 0.0,
+        rounding_budget=sum(budgets.values()),
     )
     failed = sum(stats["failed"] for stats in families.values())
     return {

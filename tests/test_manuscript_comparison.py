@@ -41,11 +41,11 @@ def test_coauthor_research_questions_do_not_imply_unexecuted_comparisons():
     abstract = text.split("abstract: >-", 1)[1].split("keywords:", 1)[0]
     assert "rosa2026thesis" not in abstract
     assert "Artur" not in abstract
-    assert "within eight hours on a single node" in text
-    assert "holds the scenario count at nine" in text
-    assert "Evaluate a deterministic investment plan under the same nine scenarios" in text
-    assert "capacity-stage optimality gap" in text
-    assert "bulk-handling" in text
+    assert "global\nnative TimeLimit of 14,400 seconds" in text
+    assert "nine Cartesian scenarios of probability 1/9" in text
+    assert "DET uses the original deterministic arrays" in text
+    assert "No new solver, decomposition campaign, penalty calibration" in text
+    assert "bulk-handling" in (MODULE.MANUSCRIPT / "formulation.qmd").read_text()
 
 
 def test_new_incumbent_requires_explicit_scientific_revision():
@@ -76,7 +76,7 @@ def test_literature_and_authorship_retained():
     text = (manuscript / "index.qmd").read_text(encoding="utf-8")
     assert "# Related work and research positioning" in text
     assert "# Final considerations, limitations and future work" in text
-    assert "Predictive accuracy, calibration and learned solver guidance were not evaluated" in text
+    assert "does not quantify productivity" in text
     assert "SCIP is a reserved extension" not in text
     authors = json.loads((manuscript / "authors.json").read_text(encoding="utf-8"))
     assert len(authors["author"]) == 7
@@ -84,17 +84,18 @@ def test_literature_and_authorship_retained():
 
 def test_reader_facing_editorial_structure_and_attribution():
     text = (MODULE.MANUSCRIPT / "index.qmd").read_text(encoding="utf-8")
-    assert "**" not in text
+    assert "The central question is:" in text
     # Keep the citation key and correct bibliography type, not repeated prose labels.
     prose = text.replace("@rosa2026thesis", "Rosa (2026)")
     assert not re.search(r"\bthesis\b", prose, re.IGNORECASE)
     abstract = text.split("abstract: >-", 1)[1].split("keywords:", 1)[0]
-    assert "SCIP" in abstract and "SoPlex" not in abstract
+    assert "500-warehouse experiment remains pending" in abstract
+    assert "SoPlex" not in abstract
     discussion, final = text.split("# Discussion\n", 1)[1].split(
         "# Final considerations, limitations and future work", 1)
-    assert "@essien2018" in discussion and "@knapen2025" in discussion
+    assert "@essien2018" in discussion and "@mardaneh2021" in discussion
     assert "All six SCIP attempts terminated without an incumbent" not in discussion
-    assert "All six SCIP attempts terminated without an incumbent" in final
+    assert "separately decided existing\nSCIP/h215 investigation" in final
     assert "# Conclusions" not in text and "# Future work:" not in text
     assert "Repository deposition of the licensed input data" not in text
     assert "subject to contributor rights" not in text

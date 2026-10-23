@@ -1,0 +1,780 @@
+{
+  "schema_version": "s2-p5-2215308-derived-review-v1",
+  "review_date": "2026-10-19",
+  "review_scope": "documentary_scientific_synthesis_of_preserved_evidence_not_new_experiment",
+  "execution": {
+    "source_commit": "2145a043c0a532ea2322e8466d0a8d561da5c153",
+    "merged_pr": 109,
+    "merge_commit": "1e7637c890ab0a36589d48e02a5fa8e12122167e",
+    "job_id": "2215308",
+    "archive_sha256": "11f405b6fbc846a8209f93feb3b9decbdb031850134cb57b3f7ba339918830da",
+    "native_archive_sha256": "18b209f70683f9ec264f5cf8baee74ef815b1dccf3c8f982a5989dd6c8c690c0",
+    "release_sha256": "66e570a0e3b04b35aa583bd352019d0a6d23867b049479965d5f39164b4ab214",
+    "native_plan_sha256": "ed303bf45c4a483cb8eae9bcf28c6ebe9329575e8749f3d95ecf554b82641058",
+    "external_checksum_and_sidecar_match": true,
+    "separate_native_matches_nested_member": true,
+    "source_blobs_verified_against_execution_commit": 677,
+    "canonical_portable_audit": "portable_integrity_replayed_p5_required",
+    "five_arm_evidence_accounted": true,
+    "unrun": [],
+    "unaccounted": [],
+    "validation_error": null,
+    "fresh_private_input_revalidated_by_portable_auditor": false,
+    "original_certificate_s2_closed": false,
+    "original_certificate_configuration_selected": false
+  },
+  "input": {
+    "config_sha256": "68de9ef44b8b9e10687a406d9afdb632c8399d90cb85441e8238a91d40e4acc5",
+    "counts": {
+      "candidate_warehouses": 154,
+      "domestic_customers": 27,
+      "existing_warehouses": 146,
+      "export_customers": 10,
+      "origins": 37,
+      "periods": 60,
+      "products": 2,
+      "scenarios": 9,
+      "warehouses": 300
+    },
+    "data_sha256": "ab0c551713cffc03d224c9750b8834ed68267beb3f26452e2f65d02a5d76ff0d",
+    "reference_sha256": "348c4c08c2c9e906cbd3a28df7753577ebed3cac30702aae30dfb8ce2ad25694",
+    "size": {
+      "emergency_capacity_variables": 324000,
+      "flow_variables": 24429600,
+      "inventory_variables": 324000,
+      "investment_variables": 784,
+      "routes_dc": 4800,
+      "routes_dd": 36000,
+      "routes_oc": 0,
+      "routes_od": 4440,
+      "total_variables": 25107544,
+      "unmet_demand_variables": 29160
+    },
+    "workbook_sha256": "7761cce77cf93dcba2f617714f0117c1f2ead4de0c3f27149daceba447e0c7d1"
+  },
+  "contract": {
+    "order": [
+      4,
+      1,
+      8,
+      2,
+      16
+    ],
+    "cold_serial": true,
+    "solver_threads_only_factor": true,
+    "global_native_time_limit_seconds_per_arm": 3600,
+    "shared_late_return_export_seconds": 900,
+    "hard_arm_seconds": 5700,
+    "slurm_walltime_seconds": 43200,
+    "allocated_logical_cpus": 16,
+    "allocation_memory_gib": 192,
+    "solver_soft_memory_decimal_gb": 128,
+    "seed": 42,
+    "method_all_priorities": 2,
+    "configured_mip_gap": 0.1,
+    "compact_python_indices": false,
+    "warm_start": false,
+    "python_version": "3.13.15",
+    "gurobi_version": "13.0.3",
+    "affinity": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39
+    ],
+    "physical_cores_observed": 8,
+    "smt_siblings_per_core_observed": 2,
+    "exclusive_node": false,
+    "production_isolation_certified": false
+  },
+  "root_accounting": {
+    "elapsed_seconds": 22749,
+    "exit_code": "0:0",
+    "state": "COMPLETED"
+  },
+  "resource_aggregate": {
+    "allocated_logical_cpu_hours": 101.10666666666667,
+    "slurm_job_total_cpu_raw": "13:46:44",
+    "slurm_job_total_cpu_hours": 13.778888888888888,
+    "sample_count": 4227,
+    "sample_errors": 0,
+    "checked": 13511232,
+    "native_inventory_members": 136,
+    "native_inventory_payload_bytes": 414969927,
+    "new_whole_block_expanded_limit_bytes": 1073741824,
+    "unchanged_per_arm_native_product_limit_bytes": 268435456
+  },
+  "preflight_existing_vector": {
+    "original_job_id": "2214305",
+    "original_failed_outcome_preserved": true,
+    "original_archive_sha256": "27e2a6055463c54333f5368a1452e09af966a91be1034521a7c68db75cba57f0",
+    "status": "bounded_transport_budget_order_difference",
+    "changed_components": [
+      "transport_dc",
+      "transport_dd",
+      "transport_od"
+    ],
+    "scientific_tolerances_changed": false,
+    "raw_worker_report_sha256": "58319d2e6c25a04f9aac04323ce327ab158e681ad209e04767090a81b9877b83",
+    "fresh_report_sha256": "79d7ad752a321e4de277ddb35737ae5fcb971b53ba18c5db8e01911499c2afa3",
+    "witness_sha256": "493c0b1d8d919d56221e0b5bd480464b620873b8d5629f7c9159b9c4dc759151",
+    "original_claim_modified": false,
+    "original_discarded_report_recovered": false
+  },
+  "arms": [
+    {
+      "threads": 4,
+      "step_id": "2215308.0",
+      "scheduler": {
+        "elapsed_seconds": 4281,
+        "exit_code": "0:0",
+        "state": "COMPLETED"
+      },
+      "control": {
+        "return_code": 0,
+        "stop_reason": null,
+        "local_client_reaped": true,
+        "term": null,
+        "kill": null,
+        "global_cleanup_proven": false,
+        "observed_transitions": [
+          {
+            "observed_seconds": 1.67638068087399,
+            "phase": "build"
+          },
+          {
+            "observed_seconds": 530.0895735044032,
+            "phase": "optimization"
+          },
+          {
+            "observed_seconds": 4148.026114787906,
+            "phase": "export_validation"
+          },
+          {
+            "observed_seconds": 4280.886539854109,
+            "phase": "cleanup"
+          }
+        ]
+      },
+      "worker_elapsed_seconds": 4281.235872459598,
+      "native": {
+        "native_runtime_seconds": 3604.677304983139,
+        "native_status_code": 9,
+        "native_status_name": "TIME_LIMIT",
+        "solution_count": 2,
+        "native_peak_decimal_gb": 47.179371744
+      },
+      "classification": {
+        "censor_reason": "time_limit",
+        "certified_priority_prefix": 0,
+        "disposition": "feasible_partial_hierarchy",
+        "independently_feasible": true,
+        "production_admitted": false,
+        "products_closed": true,
+        "repeats_admitted": false
+      },
+      "stages": [
+        {
+          "role": "unmet_demand",
+          "status": "OPTIMAL",
+          "pass_objective": 0,
+          "retained_bound": -5.384208634495735e-9,
+          "reported_gap": 1e+100,
+          "final_objective": 0,
+          "within_recorded_degradation_limit": true
+        },
+        {
+          "role": "emergency_capacity",
+          "status": "TIME_LIMIT",
+          "pass_objective": 363890125158.43787,
+          "retained_bound": 0,
+          "reported_gap": 1,
+          "final_objective": 363890125158.4382,
+          "within_recorded_degradation_limit": true
+        }
+      ],
+      "economic_stage_observed": false,
+      "final_values": {
+        "economic_cost": 884358063440.9482,
+        "emergency_capacity": 363890125158.4382,
+        "unmet_demand": 0
+      },
+      "residual_validation": {
+        "status": "accepted",
+        "absolute_tolerance": 0.00001,
+        "relative_tolerance": 1e-8,
+        "family_count": 32,
+        "checked": 2694161,
+        "failed": 0
+      },
+      "resources": {
+        "root_peak_rss_kib": 59266376,
+        "root_peak_rss_gib": 56.52082061767578,
+        "root_cpu_seconds": 8081.334773,
+        "slurm_step_max_rss_raw": "58280488K",
+        "slurm_step_total_cpu_raw": "02:14:41",
+        "slurm_step_total_cpu_seconds": 8081,
+        "sample_count": 843,
+        "sample_errors": 0,
+        "max_sample_gap_seconds": 5.0999205112457275,
+        "sampled_tree_peak_rss_gib": 56.52082061767578,
+        "continuous_coverage": false,
+        "lifetime_tree_cpu_seconds": null
+      },
+      "comparison": {
+        "status": "bounded_transport_budget_order_difference",
+        "changed_components": [
+          "transport_dc",
+          "transport_dd",
+          "transport_od"
+        ],
+        "scientific_tolerances_changed": false,
+        "canonical_validation_sha256": "f9a01bbd3f3efa6b5eaa316a623c3982fd824d43bce5d1d4a5750776092c4898"
+      },
+      "preserved_artifact_sha256": {
+        "independent.json": "7898368a3ffb463192e2c370138662589b957f73eea332c31a68137c9f163084",
+        "attempt.json": "aaa0e65663dc6b8c27b0222b3b9d91e85f5356f171952e0e47627b305f74fc19",
+        "resources.json": "29d61de808f00a617945388b4a4b547184db06f836ff5876cf917392687c9c32",
+        "native/native-terminal.json": "827c32977a61355751bf1581d277d5d37f4d5c5042211b41a1b3878259299f30",
+        "native/products/closure.json": "00f56204680c0783443b987cb9eee684b901484afd8527e4d98d7bf2b7345d3d",
+        "native/products/incumbent.json": "4fa969c12a7b9211e46d6473ffbb10c9fe485b6838342a4cc958b4eeb9a96ea7",
+        "derived-review/worker-validation.json": "ca44785ec12d8b2e17eb664eccbfd96abb350c4f4d30c77ae28a83d0ddf261b8",
+        "derived-review/fresh-report.json": "655e6b69c086cf288571064310aa9d875319bd4138367f38b16de71dc6403316",
+        "derived-review/witness.json": "eb0e98f9834f1526729e5e27760748411a399139a04e99a2b9a22a6d46eef696",
+        "derived-review/comparison.json": "ef7b4d85d8ed7236a94e3216aeb6255e23e339f91c9eed5adec4478796c712a2"
+      },
+      "incumbent_json_bytes": 81589895
+    },
+    {
+      "threads": 1,
+      "step_id": "2215308.1",
+      "scheduler": {
+        "elapsed_seconds": 4280,
+        "exit_code": "0:0",
+        "state": "COMPLETED"
+      },
+      "control": {
+        "return_code": 0,
+        "stop_reason": null,
+        "local_client_reaped": true,
+        "term": null,
+        "kill": null,
+        "global_cleanup_proven": false,
+        "observed_transitions": [
+          {
+            "observed_seconds": 1.2746558245271444,
+            "phase": "build"
+          },
+          {
+            "observed_seconds": 533.5057074157521,
+            "phase": "optimization"
+          },
+          {
+            "observed_seconds": 4149.705421512015,
+            "phase": "export_validation"
+          },
+          {
+            "observed_seconds": 4280.142373422161,
+            "phase": "cleanup"
+          }
+        ]
+      },
+      "worker_elapsed_seconds": 4280.378168458119,
+      "native": {
+        "native_runtime_seconds": 3603.963036775589,
+        "native_status_code": 9,
+        "native_status_name": "TIME_LIMIT",
+        "solution_count": 2,
+        "native_peak_decimal_gb": 47.179189448
+      },
+      "classification": {
+        "censor_reason": "time_limit",
+        "certified_priority_prefix": 0,
+        "disposition": "feasible_partial_hierarchy",
+        "independently_feasible": true,
+        "production_admitted": false,
+        "products_closed": true,
+        "repeats_admitted": false
+      },
+      "stages": [
+        {
+          "role": "unmet_demand",
+          "status": "OPTIMAL",
+          "pass_objective": 0,
+          "retained_bound": -5.384208634495735e-9,
+          "reported_gap": 1e+100,
+          "final_objective": 0,
+          "within_recorded_degradation_limit": true
+        },
+        {
+          "role": "emergency_capacity",
+          "status": "TIME_LIMIT",
+          "pass_objective": 365970021950.9935,
+          "retained_bound": 0,
+          "reported_gap": 1,
+          "final_objective": 365970021950.9937,
+          "within_recorded_degradation_limit": true
+        }
+      ],
+      "economic_stage_observed": false,
+      "final_values": {
+        "economic_cost": 995584283941.1122,
+        "emergency_capacity": 365970021950.9937,
+        "unmet_demand": 0
+      },
+      "residual_validation": {
+        "status": "accepted",
+        "absolute_tolerance": 0.00001,
+        "relative_tolerance": 1e-8,
+        "family_count": 32,
+        "checked": 2748280,
+        "failed": 0
+      },
+      "resources": {
+        "root_peak_rss_kib": 58868356,
+        "root_peak_rss_gib": 56.141239166259766,
+        "root_cpu_seconds": 4268.066666,
+        "slurm_step_max_rss_raw": "58868356K",
+        "slurm_step_total_cpu_raw": "01:11:08",
+        "slurm_step_total_cpu_seconds": 4268,
+        "sample_count": 844,
+        "sample_errors": 0,
+        "max_sample_gap_seconds": 5.099570701830089,
+        "sampled_tree_peak_rss_gib": 55.183067321777344,
+        "continuous_coverage": false,
+        "lifetime_tree_cpu_seconds": null
+      },
+      "comparison": {
+        "status": "bounded_transport_budget_order_difference",
+        "changed_components": [
+          "transport_dc",
+          "transport_dd",
+          "transport_od"
+        ],
+        "scientific_tolerances_changed": false,
+        "canonical_validation_sha256": "66bdab5be30a8a775a75f71cf9cf88b6645e9d31c85577d193f46b2f0abf365e"
+      },
+      "preserved_artifact_sha256": {
+        "independent.json": "abe6901deac83b9d91a9e5280e5d0a059cff745e5233e9837698c70504c9c3a7",
+        "attempt.json": "5251b08e008bb9f1b2634c7310afcac8d1733ad4689801f10ff45bf1b1bc4105",
+        "resources.json": "d1698d890c8ed906c536e8beef195189194ee07f0121ded01d3a5f89d152d816",
+        "native/native-terminal.json": "087491bd8b119b52e9ed6f7b4713a02749336443d15891a27a2f48ca334af587",
+        "native/products/closure.json": "2b2f8d49d74455406a87301d80a108862f802481710eebff1235993ccefc815c",
+        "native/products/incumbent.json": "9318da1d0e33d962f5c07ea50c46de8b6e1bd67780548f88a880399c2cba630d",
+        "derived-review/worker-validation.json": "f4f3c82c0c35437a35aec35d51ec4c1b1f820074ebf31055ec3726255d28cffd",
+        "derived-review/fresh-report.json": "77e6ce01df68eb8db39bbfbd4b7e6670a17310624881acfae3b57513b3c79058",
+        "derived-review/witness.json": "eb0e98f9834f1526729e5e27760748411a399139a04e99a2b9a22a6d46eef696",
+        "derived-review/comparison.json": "bbcf8e50f43085c1e43e862720eb846ac902bd98eafaeadc12ea3103a7571977"
+      },
+      "incumbent_json_bytes": 83780085
+    },
+    {
+      "threads": 8,
+      "step_id": "2215308.2",
+      "scheduler": {
+        "elapsed_seconds": 4273,
+        "exit_code": "0:0",
+        "state": "COMPLETED"
+      },
+      "control": {
+        "return_code": 0,
+        "stop_reason": null,
+        "local_client_reaped": true,
+        "term": null,
+        "kill": null,
+        "global_cleanup_proven": false,
+        "observed_transitions": [
+          {
+            "observed_seconds": 1.296553791500628,
+            "phase": "build"
+          },
+          {
+            "observed_seconds": 528.2395315039903,
+            "phase": "optimization"
+          },
+          {
+            "observed_seconds": 4145.962292565964,
+            "phase": "export_validation"
+          },
+          {
+            "observed_seconds": 4272.87278216891,
+            "phase": "cleanup"
+          }
+        ]
+      },
+      "worker_elapsed_seconds": 4273.194428947754,
+      "native": {
+        "native_runtime_seconds": 3604.6725659370422,
+        "native_status_code": 9,
+        "native_status_name": "TIME_LIMIT",
+        "solution_count": 2,
+        "native_peak_decimal_gb": 49.254575248
+      },
+      "classification": {
+        "censor_reason": "time_limit",
+        "certified_priority_prefix": 0,
+        "disposition": "feasible_partial_hierarchy",
+        "independently_feasible": true,
+        "production_admitted": false,
+        "products_closed": true,
+        "repeats_admitted": false
+      },
+      "stages": [
+        {
+          "role": "unmet_demand",
+          "status": "OPTIMAL",
+          "pass_objective": 0,
+          "retained_bound": -5.093170329928398e-9,
+          "reported_gap": 1e+100,
+          "final_objective": 0,
+          "within_recorded_degradation_limit": true
+        },
+        {
+          "role": "emergency_capacity",
+          "status": "TIME_LIMIT",
+          "pass_objective": 379197786808.99286,
+          "retained_bound": 0,
+          "reported_gap": 1,
+          "final_objective": 379197786808.9937,
+          "within_recorded_degradation_limit": true
+        }
+      ],
+      "economic_stage_observed": false,
+      "final_values": {
+        "economic_cost": 1442808329843.7654,
+        "emergency_capacity": 379197786808.9937,
+        "unmet_demand": 0
+      },
+      "residual_validation": {
+        "status": "accepted",
+        "absolute_tolerance": 0.00001,
+        "relative_tolerance": 1e-8,
+        "family_count": 32,
+        "checked": 2630391,
+        "failed": 0
+      },
+      "resources": {
+        "root_peak_rss_kib": 60283848,
+        "root_peak_rss_gib": 57.49115753173828,
+        "root_cpu_seconds": 11219.926987,
+        "slurm_step_max_rss_raw": "59340456K",
+        "slurm_step_total_cpu_raw": "03:07:00",
+        "slurm_step_total_cpu_seconds": 11220,
+        "sample_count": 843,
+        "sample_errors": 0,
+        "max_sample_gap_seconds": 5.329501887783408,
+        "sampled_tree_peak_rss_gib": 56.591468811035156,
+        "continuous_coverage": false,
+        "lifetime_tree_cpu_seconds": null
+      },
+      "comparison": {
+        "status": "bounded_transport_budget_order_difference",
+        "changed_components": [
+          "transport_dc",
+          "transport_dd",
+          "transport_od"
+        ],
+        "scientific_tolerances_changed": false,
+        "canonical_validation_sha256": "fa54a364882f81270d199a3741486e16594f35fbc0e2310755f7c369c0826747"
+      },
+      "preserved_artifact_sha256": {
+        "independent.json": "191d2c423112d339f39f5cf24a7d8b0fd9586340b72cbac5dffd8f759bd78d27",
+        "attempt.json": "1af73d3bd85c90d482076f2359ed39fdab7fb2406bb55150677c4f6a6eb63665",
+        "resources.json": "032a728d89f2b62c0e7f845d4a59940a3efc511293c1d941cc708cbe620fec77",
+        "native/native-terminal.json": "d37d8bed38e779741c262e2feebe84214cbefa1a8d33422f015a1a4cbca87886",
+        "native/products/closure.json": "a8b745a028cf7b324c98e1e014d333fc7dc3936e751bdc45f711315a54e725e6",
+        "native/products/incumbent.json": "0890340fad8713b5413cee036ad168ecf5351555a4366df6054925d2a9618cc9",
+        "derived-review/worker-validation.json": "440d38e787b76d0f94a97e7aa624114698f1903cd41d93444d1fcaca25819e7c",
+        "derived-review/fresh-report.json": "e38d42e0c2d5896c717541dc5c82934a6f753b5248ba580edc42441317fe3f43",
+        "derived-review/witness.json": "eb0e98f9834f1526729e5e27760748411a399139a04e99a2b9a22a6d46eef696",
+        "derived-review/comparison.json": "f05fb30e3f142a6775ef2c247defbaf5fce7f8f754233d77a3207d5cebc82707"
+      },
+      "incumbent_json_bytes": 77872734
+    },
+    {
+      "threads": 2,
+      "step_id": "2215308.3",
+      "scheduler": {
+        "elapsed_seconds": 4305,
+        "exit_code": "0:0",
+        "state": "COMPLETED"
+      },
+      "control": {
+        "return_code": 0,
+        "stop_reason": null,
+        "local_client_reaped": true,
+        "term": null,
+        "kill": null,
+        "global_cleanup_proven": false,
+        "observed_transitions": [
+          {
+            "observed_seconds": 1.2930741664022207,
+            "phase": "build"
+          },
+          {
+            "observed_seconds": 524.597223973833,
+            "phase": "optimization"
+          },
+          {
+            "observed_seconds": 4153.561653768644,
+            "phase": "export_validation"
+          },
+          {
+            "observed_seconds": 4304.501463399269,
+            "phase": "cleanup"
+          }
+        ]
+      },
+      "worker_elapsed_seconds": 4304.722407060675,
+      "native": {
+        "native_runtime_seconds": 3615.8849878311157,
+        "native_status_code": 9,
+        "native_status_name": "TIME_LIMIT",
+        "solution_count": 2,
+        "native_peak_decimal_gb": 47.179240312
+      },
+      "classification": {
+        "censor_reason": "time_limit",
+        "certified_priority_prefix": 0,
+        "disposition": "feasible_partial_hierarchy",
+        "independently_feasible": true,
+        "production_admitted": false,
+        "products_closed": true,
+        "repeats_admitted": false
+      },
+      "stages": [
+        {
+          "role": "unmet_demand",
+          "status": "OPTIMAL",
+          "pass_objective": 0,
+          "retained_bound": -5.3551048040390015e-9,
+          "reported_gap": 1e+100,
+          "final_objective": 0,
+          "within_recorded_degradation_limit": true
+        },
+        {
+          "role": "emergency_capacity",
+          "status": "TIME_LIMIT",
+          "pass_objective": 365982659584.88245,
+          "retained_bound": 0,
+          "reported_gap": 1,
+          "final_objective": 365982659584.88257,
+          "within_recorded_degradation_limit": true
+        }
+      ],
+      "economic_stage_observed": false,
+      "final_values": {
+        "economic_cost": 997064546766.1414,
+        "emergency_capacity": 365982659584.88257,
+        "unmet_demand": 0
+      },
+      "residual_validation": {
+        "status": "accepted",
+        "absolute_tolerance": 0.00001,
+        "relative_tolerance": 1e-8,
+        "family_count": 32,
+        "checked": 2751068,
+        "failed": 0
+      },
+      "resources": {
+        "root_peak_rss_kib": 59410188,
+        "root_peak_rss_gib": 56.6579704284668,
+        "root_cpu_seconds": 5911.60718,
+        "slurm_step_max_rss_raw": "58410436K",
+        "slurm_step_total_cpu_raw": "01:38:31",
+        "slurm_step_total_cpu_seconds": 5911,
+        "sample_count": 848,
+        "sample_errors": 0,
+        "max_sample_gap_seconds": 5.098953231237829,
+        "sampled_tree_peak_rss_gib": 55.704532623291016,
+        "continuous_coverage": false,
+        "lifetime_tree_cpu_seconds": null
+      },
+      "comparison": {
+        "status": "bounded_transport_budget_order_difference",
+        "changed_components": [
+          "transport_dc",
+          "transport_dd",
+          "transport_od"
+        ],
+        "scientific_tolerances_changed": false,
+        "canonical_validation_sha256": "7e28658f8dabeff42a604b2f9112e7b19b19f16f488af7bf866e0d67a7a6e479"
+      },
+      "preserved_artifact_sha256": {
+        "independent.json": "4ce42c655e30059b357d2381afd9b748fe92b90a77e92c32b55ca4f644d234bf",
+        "attempt.json": "03a3e6b33982255249ba875eff3e85f0f0fcb409ef80d2cb515310ac7885aa67",
+        "resources.json": "bcec84bf564183c806e3cd9ebbd811a015686dff1da9139ce9beda23f27063a9",
+        "native/native-terminal.json": "a8d4029d0479aeb43a5f99c4a42e6862bfdb8d7d19a453845878be400bed161c",
+        "native/products/closure.json": "b0ce656fb86c2ee3258b3e8762acfa51db96a4e0499473ea763e421c5c439bba",
+        "native/products/incumbent.json": "0476175150fb3aac10a81175401d45043e2fb4ba9f34d2f4896dbeb5f866172d",
+        "derived-review/worker-validation.json": "d2166b5c934c949d0acc4ab598251deb8576490ffd65f2faacca017414cd8a45",
+        "derived-review/fresh-report.json": "865a61065fbd1bd9f9b7a8cb2a6a6fdd9b14974478ed69406d2b87e68ca29b08",
+        "derived-review/witness.json": "eb0e98f9834f1526729e5e27760748411a399139a04e99a2b9a22a6d46eef696",
+        "derived-review/comparison.json": "cdcaeb6a4215727d2cdd1211baa92027c0322943ffdda6820037b0b672bc1dc8"
+      },
+      "incumbent_json_bytes": 83909216
+    },
+    {
+      "threads": 16,
+      "step_id": "2215308.4",
+      "scheduler": {
+        "elapsed_seconds": 4306,
+        "exit_code": "0:0",
+        "state": "COMPLETED"
+      },
+      "control": {
+        "return_code": 0,
+        "stop_reason": null,
+        "local_client_reaped": true,
+        "term": null,
+        "kill": null,
+        "global_cleanup_proven": false,
+        "observed_transitions": [
+          {
+            "observed_seconds": 0.9829340819269419,
+            "phase": "build"
+          },
+          {
+            "observed_seconds": 537.2872400833294,
+            "phase": "optimization"
+          },
+          {
+            "observed_seconds": 4176.495914277621,
+            "phase": "export_validation"
+          },
+          {
+            "observed_seconds": 4305.761038544588,
+            "phase": "cleanup"
+          }
+        ]
+      },
+      "worker_elapsed_seconds": 4306.031278352253,
+      "native": {
+        "native_runtime_seconds": 3626.755303144455,
+        "native_status_code": 9,
+        "native_status_name": "TIME_LIMIT",
+        "solution_count": 4,
+        "native_peak_decimal_gb": 59.327329696
+      },
+      "classification": {
+        "censor_reason": "time_limit",
+        "certified_priority_prefix": 0,
+        "disposition": "feasible_partial_hierarchy",
+        "independently_feasible": true,
+        "production_admitted": false,
+        "products_closed": true,
+        "repeats_admitted": false
+      },
+      "stages": [
+        {
+          "role": "unmet_demand",
+          "status": "OPTIMAL",
+          "pass_objective": 0,
+          "retained_bound": -5.093170329928398e-9,
+          "reported_gap": 1e+100,
+          "final_objective": 0.0000010036006238402074,
+          "within_recorded_degradation_limit": true
+        },
+        {
+          "role": "emergency_capacity",
+          "status": "TIME_LIMIT",
+          "pass_objective": 381269754403.5173,
+          "retained_bound": 0,
+          "reported_gap": 1,
+          "final_objective": 381269754403.51807,
+          "within_recorded_degradation_limit": true
+        }
+      ],
+      "economic_stage_observed": false,
+      "final_values": {
+        "economic_cost": 1555722576656.6465,
+        "emergency_capacity": 381269754403.51807,
+        "unmet_demand": 0.0000010036006238402074
+      },
+      "residual_validation": {
+        "status": "accepted",
+        "absolute_tolerance": 0.00001,
+        "relative_tolerance": 1e-8,
+        "family_count": 32,
+        "checked": 2687332,
+        "failed": 0
+      },
+      "resources": {
+        "root_peak_rss_kib": 60926300,
+        "root_peak_rss_gib": 58.10384750366211,
+        "root_cpu_seconds": 18551.927932,
+        "slurm_step_max_rss_raw": "59989148K",
+        "slurm_step_total_cpu_raw": "05:09:12",
+        "slurm_step_total_cpu_seconds": 18552,
+        "sample_count": 849,
+        "sample_errors": 0,
+        "max_sample_gap_seconds": 5.100816986523569,
+        "sampled_tree_peak_rss_gib": 57.21010971069336,
+        "continuous_coverage": false,
+        "lifetime_tree_cpu_seconds": null
+      },
+      "comparison": {
+        "status": "bounded_transport_budget_order_difference",
+        "changed_components": [
+          "transport_dc",
+          "transport_dd",
+          "transport_od"
+        ],
+        "scientific_tolerances_changed": false,
+        "canonical_validation_sha256": "1cee5b50bda57de1ae7e7ac3205e7a3d774cf4cc246b3b87edb874411463d2c6"
+      },
+      "preserved_artifact_sha256": {
+        "independent.json": "b91fe97ff042541cd304a6d5e1759e850b376b645da3103123cfcdbb1c350c79",
+        "attempt.json": "d4184ffce4047490adbf7498dc9f05734b01da89e0c68ebabdd8ebc4749e6bc1",
+        "resources.json": "198ebe2a1fba8d68e343592adc05e05f77b226116694746183e7408127af6e7c",
+        "native/native-terminal.json": "afe53e524f30c957cdf1302c0fc087f334f7403f87b5c90010c92bd5fb8338b4",
+        "native/products/closure.json": "8603383d68a2ac8cf731be0cbe3d119d11fe9dd3205fcb3862f7a4425f79121d",
+        "native/products/incumbent.json": "15e4b287025163099601069dbd147a9b71b43455bb5f87e20b601acdb26c2318",
+        "derived-review/worker-validation.json": "cdb97874c9eb87a6f4f5f2ca362c6a81c4bafd4f86ec43d491a58277639a5948",
+        "derived-review/fresh-report.json": "4a640f4ead4d3321a48c595f6ba35a969d42b6b3fb9e5ddfd8be479cc9e1fe81",
+        "derived-review/witness.json": "eb0e98f9834f1526729e5e27760748411a399139a04e99a2b9a22a6d46eef696",
+        "derived-review/comparison.json": "f19aaaca88c29377929bccbfcf455692bfb8db4dfda94302512c817e77e0ccb9"
+      },
+      "incumbent_json_bytes": 80186588
+    }
+  ],
+  "p5_exit_assessment": {
+    "disposition": "complete_interpretable_time_censored_five_arm_diagnostic",
+    "documentary_closure": "proposed_effective_only_after_authorized_P5_merge",
+    "execution_permission_granted": false,
+    "complete_hierarchy_arm_count": 0,
+    "independently_feasible_arm_count": 5,
+    "speedup_established": false,
+    "causal_thread_superiority_established": false,
+    "configuration_selected_for_downstream_execution": false,
+    "inconclusive_general_thread_ranking": true,
+    "lowest_observed_capacity_score_threads": 4,
+    "candidate_for_separate_h400_review_threads": 4,
+    "additional_blocks_allowed": false,
+    "repeats_admitted": false,
+    "automatic_follow_on_allowed": false,
+    "new_npad_execution_performed_in_P5": false,
+    "main_sync_admitted": false
+  },
+  "measurement_caveats": [
+    "Service native pass OPTIMAL with zero objective has raw relative-gap sentinel1e100; unchanged conservative classifier retains priority_prefix0",
+    "Native Runtime can exceed configured3600s during late return; no per-priority reset or new optimizer budget",
+    "RSS root, sampled tree, native decimalGB and Slurm accounting have distinct scopes",
+    "Slurm CPU is job/step accounting, not native-only parallel efficiency; do not sum parent and steps",
+    "Fixed order/shared node/SMT and one observation per thread preclude causal/scaling generalization",
+    "Economic cost is reconstructed incumbent cost, not optimized economic-priority result or observed expenditure",
+    "Archive and original on-NPAD fresh reports replayed; no fresh private-workbook residual computation locally"
+  ]
+}

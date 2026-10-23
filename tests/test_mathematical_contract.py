@@ -3,6 +3,7 @@ from dataclasses import replace
 import pytest
 
 from src.logic.mathematical_contract import prepare_model_data
+from src.logic.mathematical_contract import scenario_projection as _single_scenario_data
 from src.logic.model_config import ModelConfig, SolverConfig
 from src.logic.model_data import ModelData
 from src.logic.optimization_gurobipy import (
@@ -11,23 +12,32 @@ from src.logic.optimization_gurobipy import (
 )
 from src.logic.optimization_gurobipy_stochastic import solve_stochastic_model_gurobipy
 from src.logic.route_filtering import select_routes
-from src.logic.stochastic_analysis_gurobipy import _single_scenario_data
 from tests.test_gurobipy_transshipment import require_gurobi_available
 
 
 def tiny_data():
     return ModelData(
-        origins=["O"], warehouses=["W"], existing_warehouses=["W"],
-        candidate_warehouses=[], bulk_eligible_warehouses=[],
-        customers=["C"], domestic_customers=["C"], export_customers=[],
-        products=["P"], periods=["t"],
-        routes_od={("O", "W", "P")}, routes_dc={("W", "C", "P")},
-        dist_od={("O", "W"): 1.0}, dist_dc={("W", "C"): 1.0},
+        origins=["O"],
+        warehouses=["W"],
+        existing_warehouses=["W"],
+        candidate_warehouses=[],
+        bulk_eligible_warehouses=[],
+        customers=["C"],
+        domestic_customers=["C"],
+        export_customers=[],
+        products=["P"],
+        periods=["t"],
+        routes_od={("O", "W", "P")},
+        routes_dc={("W", "C", "P")},
+        dist_od={("O", "W"): 1.0},
+        dist_dc={("W", "C"): 1.0},
         supply={("O", "P", "t"): 3030.0},
         demand_dom={("C", "P", "t"): 3030.0},
-        static_capacity={"W": 0.0}, reception_capacity={"W": 100.0},
+        static_capacity={"W": 0.0},
+        reception_capacity={"W": 100.0},
         shipping_capacity={"W": 1000.0},
-        freight_origin={"O": 1.0}, freight_warehouse={"W": 1.0},
+        freight_origin={"O": 1.0},
+        freight_warehouse={"W": 1.0},
         unmet_demand_penalty={("C", "P"): 10000.0},
         emergency_static_capacity_penalty={"W": 100.0},
         emergency_reception_capacity_penalty={"W": 100.0},
@@ -101,6 +111,7 @@ def test_reception_slack_is_period_overflow_in_both_backends(days, expected, mod
     assert overflow == pytest.approx(expected, abs=1e-5)
     assert overflow / days == pytest.approx(expected / days, abs=1e-5)
     from src.logic.solution_validation import validate_solution
+
     audit = validate_solution(prepare_model_data(data, config), config, result)
     assert audit["status"] == "accepted", audit["failure_samples"]
 

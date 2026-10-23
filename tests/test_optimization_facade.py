@@ -8,9 +8,21 @@ from src.logic.model_validation import ModelDataValidationError
 from src.logic.optimization import (
     OptimizationBackendNotImplementedError,
     OptimizationResult,
-    calculate_evpi_vss,
     solve_model,
 )
+
+
+@pytest.fixture(autouse=True)
+def preserve_license_selection():
+    """Dummy discovery files must not contaminate later real native solver tests."""
+    previous = os.environ.get("GRB_LICENSE_FILE")
+    try:
+        yield
+    finally:
+        if previous is None:
+            os.environ.pop("GRB_LICENSE_FILE", None)
+        else:
+            os.environ["GRB_LICENSE_FILE"] = previous
 
 
 def tiny_valid_data() -> ModelData:
@@ -203,40 +215,6 @@ def test_gurobipy_backend_dispatches_to_stochastic_extensive_form(monkeypatch):
     assert result.model_mode == "sto"
 
 
-def test_evpi_vss_facade_dispatches_to_native_gurobi_analysis(monkeypatch):
-    import src.logic.stochastic_analysis_gurobipy as stochastic_analysis
-
-    data = tiny_valid_data()
-    data.scenarios = ["expected"]
-    data.scenario_prob = {"expected": 1.0}
-    data.supply_s = {("expected", "O1", "soy", "t1"): 100.0}
-    data.demand_dom_s = {("expected", "C1", "soy", "t1"): 100.0}
-    sentinel = object()
-
-    monkeypatch.setattr(
-        stochastic_analysis,
-        "calculate_evpi_vss_gurobipy",
-        lambda **_kwargs: sentinel,
-    )
-
-    result = calculate_evpi_vss(
-        data=data,
-        model_config=ModelConfig(mode="sto"),
-        solver_config=SolverConfig(backend="gurobipy", solver_name="gurobi"),
-    )
-
-    assert result is sentinel
-
-
-def test_evpi_vss_facade_requires_stochastic_mode():
-    with pytest.raises(ValueError, match="mode='sto'"):
-        calculate_evpi_vss(
-            data=tiny_valid_data(),
-            model_config=ModelConfig(mode="det"),
-            solver_config=SolverConfig(backend="gurobipy", solver_name="gurobi"),
-        )
-
-
 def test_pyomo_backend_stub_raises_not_implemented():
     data = tiny_valid_data()
 
@@ -246,6 +224,7 @@ def test_pyomo_backend_stub_raises_not_implemented():
             model_config=ModelConfig(mode="det"),
             solver_config=SolverConfig(backend="pyomo", solver_name="scip"),
         )
+
 
 def test_facade_configures_gurobi_wls_license_from_default_path(
     monkeypatch,
@@ -258,9 +237,7 @@ def test_facade_configures_gurobi_wls_license_from_default_path(
 
     license_file = tmp_path / "gurobi.lic"
     license_file.write_text(
-        "WLSACCESSID=dummy\n"
-        "WLSSECRET=dummy\n"
-        "LICENSEID=123\n",
+        "WLSACCESSID=dummy\nWLSSECRET=dummy\nLICENSEID=123\n",
         encoding="utf-8",
     )
 
@@ -306,9 +283,7 @@ def test_facade_respects_explicit_gurobi_license_file_in_solver_options(
 
     license_file = tmp_path / "custom_gurobi.lic"
     license_file.write_text(
-        "WLSACCESSID=dummy\n"
-        "WLSSECRET=dummy\n"
-        "LICENSEID=123\n",
+        "WLSACCESSID=dummy\nWLSSECRET=dummy\nLICENSEID=123\n",
         encoding="utf-8",
     )
 
@@ -354,9 +329,7 @@ def test_gurobi_license_discovery_accepts_project_local_secrets_directory(
     license_file = tmp_path / "secrets" / "gurobi.lic"
     license_file.parent.mkdir()
     license_file.write_text(
-        "WLSACCESSID=dummy\n"
-        "WLSSECRET=dummy\n"
-        "LICENSEID=123\n",
+        "WLSACCESSID=dummy\nWLSSECRET=dummy\nLICENSEID=123\n",
         encoding="utf-8",
     )
 

@@ -1,0 +1,28 @@
+# Software-only scalar v2 template. No NPAD admission or large input is supplied.
+# R2 must qualify the actual workbook, budgets and explicit human execution.
+version: 2
+output_dir: ../data/results/scalar_qualification
+continue_on_error: false
+defaults:
+  max_estimated_variables: 2000
+  solver:
+    backend: gurobipy
+    solver_name: gurobi
+    time_limit: 60
+    mip_gap: 0.01
+    threads: 1
+    seed: 0
+  model:
+    objective_policy: penalty
+    route_filter_strategy: none
+  loader:
+    include_stochastic_scenarios: true
+experiments:
+  - name: scalar_det
+    workbook: ../data/generated/scalar_qualification.xlsx
+    model:
+      mode: det
+  - name: scalar_sto
+    workbook: ../data/generated/scalar_qualification.xlsx
+    model:
+      mode: sto

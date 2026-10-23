@@ -1,0 +1,259 @@
+{
+  "adverse_execution_admitted": false,
+  "archive_sha256": "e3c01f0b5db22b99b61b3a214eee42a694d1893d0f52c5b9b370d6a486b7561d",
+  "cleanup_accepted": false,
+  "exact_post_exit_rpc_failure_reason_in_portable_archive": false,
+  "final_accounting": {
+    "2210952": {
+      "elapsed_seconds": 14,
+      "exit_code": "0:0",
+      "state": "COMPLETED"
+    },
+    "2210952.0": {
+      "elapsed_seconds": 1,
+      "exit_code": "0:0",
+      "state": "COMPLETED"
+    },
+    "2210952.batch": {
+      "elapsed_seconds": 14,
+      "exit_code": "0:0",
+      "state": "COMPLETED"
+    },
+    "2210952.extern": {
+      "elapsed_seconds": 14,
+      "exit_code": "0:0",
+      "state": "COMPLETED"
+    }
+  },
+  "full_run_memory_peak_available": false,
+  "initial_reported_observations": {
+    "initial_affinity_in_portable_archive": false,
+    "limits": {
+      "supervisor": {
+        "cpuset_cpu_count": 2,
+        "direct_limit_is_unlimited_sentinel": true,
+        "direct_memory_limit_bytes": 9223372036854771712,
+        "error_kind": null,
+        "hierarchical_memory_limit_bytes": 2147483648,
+        "reported_effective_memory_limit_bytes": 2147483648
+      },
+      "worker": {
+        "cpuset_cpu_count": 2,
+        "direct_limit_is_unlimited_sentinel": true,
+        "direct_memory_limit_bytes": 9223372036854771712,
+        "error_kind": null,
+        "hierarchical_memory_limit_bytes": 268435456,
+        "reported_effective_memory_limit_bytes": 268435456
+      }
+    },
+    "relations": {
+      "cpuacct": "equal",
+      "cpuset": "disjoint",
+      "freezer": "disjoint",
+      "memory": "disjoint"
+    }
+  },
+  "job_id": "2210952",
+  "live_containment_qualified": false,
+  "live_isolation_proven": false,
+  "local_client_returncode": 0,
+  "native_miniature_admitted": false,
+  "normal_retry_admitted": false,
+  "normal_worker_admitted": false,
+  "observation_status": "observed_not_admitted",
+  "original_2210506_exception_identified": false,
+  "outcome": "post_exit_step_scopes_unobservable_protocol_decision_required",
+  "plan_sha256": "bd1b423377bf4aaaacf2fa6e5a03f1c2e6bb0c3cef4d6c044c81e504be720359",
+  "portable_review": {
+    "adverse_execution_admitted": false,
+    "live_containment_qualified": false,
+    "live_isolation_proven": false,
+    "native_miniature_admitted": false,
+    "normal_worker_admitted": false,
+    "production_admitted": false,
+    "repeats_admitted": false,
+    "status": "terminal_observation_preserved_not_qualified"
+  },
+  "production_admitted": false,
+  "protocol_decision_required": true,
+  "raw_product_contents_in_portable_archive": false,
+  "repeats_admitted": false,
+  "reported_product_receipts_stable": true,
+  "sample_count": 5,
+  "samples": [
+    {
+      "accounted_worker_step": {
+        "elapsed_seconds": 1,
+        "exit_code": "0:0",
+        "state": "COMPLETED"
+      },
+      "actual_start_seconds_after_client_reaping": 0.00005880091339349747,
+      "channel_statuses": {
+        "accounting": "available",
+        "controllers": "available",
+        "leader": "available",
+        "members": "unavailable",
+        "products": "available",
+        "step": "unavailable"
+      },
+      "controller_directory_statuses": {
+        "cpuacct": "available",
+        "cpuset": "missing",
+        "freezer": "missing",
+        "memory": "missing"
+      },
+      "cpuacct_is_worker_attributed": false,
+      "exact_step_member_count": null,
+      "known_leader_observation": "known_pid_absent",
+      "product_file_statuses": {
+        "phase-0.json": "available",
+        "phase-1.json": "available",
+        "phase-2.json": "available",
+        "phase-3.json": "available",
+        "terminal.json": "available"
+      },
+      "requested_offset_seconds": 0,
+      "shared_cpuacct_direct_member_count": 5
+    },
+    {
+      "accounted_worker_step": {
+        "elapsed_seconds": 1,
+        "exit_code": "0:0",
+        "state": "COMPLETED"
+      },
+      "actual_start_seconds_after_client_reaping": 1.0001037968322635,
+      "channel_statuses": {
+        "accounting": "available",
+        "controllers": "available",
+        "leader": "available",
+        "members": "unavailable",
+        "products": "available",
+        "step": "unavailable"
+      },
+      "controller_directory_statuses": {
+        "cpuacct": "available",
+        "cpuset": "missing",
+        "freezer": "missing",
+        "memory": "missing"
+      },
+      "cpuacct_is_worker_attributed": false,
+      "exact_step_member_count": null,
+      "known_leader_observation": "known_pid_absent",
+      "product_file_statuses": {
+        "phase-0.json": "available",
+        "phase-1.json": "available",
+        "phase-2.json": "available",
+        "phase-3.json": "available",
+        "terminal.json": "available"
+      },
+      "requested_offset_seconds": 1,
+      "shared_cpuacct_direct_member_count": 5
+    },
+    {
+      "accounted_worker_step": {
+        "elapsed_seconds": 1,
+        "exit_code": "0:0",
+        "state": "COMPLETED"
+      },
+      "actual_start_seconds_after_client_reaping": 3.0001000901684165,
+      "channel_statuses": {
+        "accounting": "available",
+        "controllers": "available",
+        "leader": "available",
+        "members": "unavailable",
+        "products": "available",
+        "step": "unavailable"
+      },
+      "controller_directory_statuses": {
+        "cpuacct": "available",
+        "cpuset": "missing",
+        "freezer": "missing",
+        "memory": "missing"
+      },
+      "cpuacct_is_worker_attributed": false,
+      "exact_step_member_count": null,
+      "known_leader_observation": "known_pid_absent",
+      "product_file_statuses": {
+        "phase-0.json": "available",
+        "phase-1.json": "available",
+        "phase-2.json": "available",
+        "phase-3.json": "available",
+        "terminal.json": "available"
+      },
+      "requested_offset_seconds": 3,
+      "shared_cpuacct_direct_member_count": 5
+    },
+    {
+      "accounted_worker_step": {
+        "elapsed_seconds": 1,
+        "exit_code": "0:0",
+        "state": "COMPLETED"
+      },
+      "actual_start_seconds_after_client_reaping": 6.000099645927548,
+      "channel_statuses": {
+        "accounting": "available",
+        "controllers": "available",
+        "leader": "available",
+        "members": "unavailable",
+        "products": "available",
+        "step": "unavailable"
+      },
+      "controller_directory_statuses": {
+        "cpuacct": "available",
+        "cpuset": "missing",
+        "freezer": "missing",
+        "memory": "missing"
+      },
+      "cpuacct_is_worker_attributed": false,
+      "exact_step_member_count": null,
+      "known_leader_observation": "known_pid_absent",
+      "product_file_statuses": {
+        "phase-0.json": "available",
+        "phase-1.json": "available",
+        "phase-2.json": "available",
+        "phase-3.json": "available",
+        "terminal.json": "available"
+      },
+      "requested_offset_seconds": 6,
+      "shared_cpuacct_direct_member_count": 5
+    },
+    {
+      "accounted_worker_step": {
+        "elapsed_seconds": 1,
+        "exit_code": "0:0",
+        "state": "COMPLETED"
+      },
+      "actual_start_seconds_after_client_reaping": 10.000102883204818,
+      "channel_statuses": {
+        "accounting": "available",
+        "controllers": "available",
+        "leader": "available",
+        "members": "unavailable",
+        "products": "available",
+        "step": "unavailable"
+      },
+      "controller_directory_statuses": {
+        "cpuacct": "available",
+        "cpuset": "missing",
+        "freezer": "missing",
+        "memory": "missing"
+      },
+      "cpuacct_is_worker_attributed": false,
+      "exact_step_member_count": null,
+      "known_leader_observation": "known_pid_absent",
+      "product_file_statuses": {
+        "phase-0.json": "available",
+        "phase-1.json": "available",
+        "phase-2.json": "available",
+        "phase-3.json": "available",
+        "terminal.json": "available"
+      },
+      "requested_offset_seconds": 10,
+      "shared_cpuacct_direct_member_count": 5
+    }
+  ],
+  "schema_version": "s2-fast-exit-outcome-audit-v1",
+  "scope_deletion_mechanism_proven": false,
+  "source_commit": "021ba83d99132c5b872873439ae00cc82aec3793",
+  "worker_only_cpu_usage_available": false
+}

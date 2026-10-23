@@ -1,0 +1,351 @@
+{
+  "allocated_logical_cpu_hours_arithmetic": 35.693333333333335,
+  "archive_bytes": 5749860,
+  "archive_inventory": {
+    "expanded_bytes": 133321653,
+    "members": 70
+  },
+  "archive_sha256": "e0b58bb74ac254706d30f0f1863162df5d8a714751eadf43b28e7dbc0c5d5def",
+  "arms": [
+    {
+      "absolute_gap": 63540347218.987305,
+      "artificial_penalties": 7211822298410.245,
+      "automatic_follow_on_allowed": false,
+      "bound": 7529854702083.786,
+      "case_name": "scalar_h400_t1",
+      "classification": "validated_feasible",
+      "common_gap": 0.008367844265500395,
+      "economic_cost": 381572750892.545,
+      "execution_admitted": false,
+      "h300_admitted": false,
+      "has_usable_incumbent": true,
+      "interpretation": "Original scalar certificate replay; no speedup or cross-mode stochastic-value claim.",
+      "mode": "sto",
+      "native_gap": 0.008367844265500395,
+      "native_runtime_seconds": 4227.662593841553,
+      "native_status": "optimal",
+      "objective": 7593395049302.773,
+      "original_validation_status": "accepted",
+      "penalized_total": 7593395049302.79,
+      "physical_diagnostics": {
+        "domestic_service_level": 0.9133037442273002,
+        "emergency_reception_capacity": 16497706.527072355,
+        "emergency_static_capacity": 26254751.626092095,
+        "maximum_scenario_service_level": 0.9337693740901043,
+        "minimum_scenario_service_level": 0.8987300759454714,
+        "peak_rss_mb": 74079.21484375,
+        "penalty_cost_share": 0.9497493876698039,
+        "total_unmet_demand": 58755129.79464296
+      },
+      "quality_reason": "target_met",
+      "repeats_admitted": false,
+      "scalar_gap_target_met": true,
+      "solve_sequence_runtime_seconds": 4960.307205998339,
+      "threads": 1,
+      "timings": {
+        "artifact_export_seconds": 5.572330827824771,
+        "data_read_seconds": 1.3522803783416748e-06,
+        "end_to_end_seconds": 5221.091833070852,
+        "independent_validation_seconds": 4.171121958643198,
+        "model_build_seconds": 712.0424033943564,
+        "optimization_seconds": 4248.264801242389,
+        "result_extraction_seconds": 154.68143105041236,
+        "solve_sequence_wall_seconds": 5137.653088685125,
+        "solver_reported_runtime_seconds": 4227.662593841553
+      }
+    }
+  ],
+  "automatic_follow_on_allowed": false,
+  "bootstrap_directory_name": "scalar-h400-8h-driver-76BFknhT",
+  "cpu_arithmetic_qualification": "Allocated CPU-time product, not measured CPU utilization or billing.",
+  "decision_artifact_sha256": {
+    "flows.csv": "b9e03d258855e1890f8259d6f3fb739d4b07bd0545e77c0bac78cf67669688d1",
+    "inventories.csv": "542e8119c16b6df399287234a3fca01e4a4dcd66b2a8eed217a7069651e04530",
+    "unmet_demand.csv": "08d41f889e9144238a62d762d5a6b48af7195c9d32517cb31012abb99c54e469",
+    "warehouse_decisions.csv": "5ad7ad6539042defb5999e70066f92c5183af1b4e4790f525fd18f6e2d917a49"
+  },
+  "execution_admitted": false,
+  "gap_percent": 0.8367844265500395,
+  "h300_admitted": false,
+  "h500_blockers": [],
+  "h500_execution_admitted": false,
+  "h500_preconditions_met": true,
+  "hardware": {
+    "affinity_logical_cpus": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      32,
+      33,
+      34,
+      35
+    ],
+    "cpu_model": {
+      "cpu family": "6",
+      "model": "63",
+      "model name": "Intel(R) Xeon(R) CPU E5-2698 v3 @ 2.30GHz",
+      "stepping": "2",
+      "vendor_id": "GenuineIntel"
+    },
+    "physical_cores_observed": 12,
+    "topology": [
+      {
+        "core": 0,
+        "logical_cpu": 0,
+        "socket": 0
+      },
+      {
+        "core": 1,
+        "logical_cpu": 1,
+        "socket": 0
+      },
+      {
+        "core": 2,
+        "logical_cpu": 2,
+        "socket": 0
+      },
+      {
+        "core": 3,
+        "logical_cpu": 3,
+        "socket": 0
+      },
+      {
+        "core": 4,
+        "logical_cpu": 4,
+        "socket": 0
+      },
+      {
+        "core": 5,
+        "logical_cpu": 5,
+        "socket": 0
+      },
+      {
+        "core": 6,
+        "logical_cpu": 6,
+        "socket": 0
+      },
+      {
+        "core": 7,
+        "logical_cpu": 7,
+        "socket": 0
+      },
+      {
+        "core": 8,
+        "logical_cpu": 8,
+        "socket": 0
+      },
+      {
+        "core": 9,
+        "logical_cpu": 9,
+        "socket": 0
+      },
+      {
+        "core": 10,
+        "logical_cpu": 10,
+        "socket": 0
+      },
+      {
+        "core": 11,
+        "logical_cpu": 11,
+        "socket": 0
+      },
+      {
+        "core": 0,
+        "logical_cpu": 32,
+        "socket": 0
+      },
+      {
+        "core": 1,
+        "logical_cpu": 33,
+        "socket": 0
+      },
+      {
+        "core": 2,
+        "logical_cpu": 34,
+        "socket": 0
+      },
+      {
+        "core": 3,
+        "logical_cpu": 35,
+        "socket": 0
+      }
+    ]
+  },
+  "headroom_converted": {
+    "application_headroom_fraction_of_requested": 0.6232136289278667,
+    "application_peak_gib": 72.34298324584961,
+    "native_headroom_fraction_of_soft_limit": 0.72139461365,
+    "native_limit_decimal_gb": 128.0,
+    "native_peak_decimal_gb": 44.576861816,
+    "os_limit_gib": 153.60000000000002,
+    "slurm_step_max_rss_gib": 72.31759262084961
+  },
+  "headroom_observations": {
+    "sampled_application_peak_bytes": 77677686784.0,
+    "sampled_native_peak_bytes": 44576861816.0,
+    "slurm_step_max_rss_bytes": 77650423808.0
+  },
+  "interpretation": "One observed h400 scalar success; no exact-optimality, full-service, causal speedup or automatic h500 claim.",
+  "job_id": "2219884",
+  "matrix": {
+    "observations": [
+      {
+        "backend": "gurobipy",
+        "binary_variables": 492.0,
+        "coefficient_max": 307079.0,
+        "coefficient_min": 1.0,
+        "constraints": 1160742.0,
+        "general_constraints": 274320.0,
+        "integer_count_semantics": "includes_binary",
+        "integer_variables": 492.0,
+        "nonzeros": 160697126.0,
+        "phase": "model_build",
+        "scope": "original",
+        "variables": 42106944.0
+      },
+      {
+        "backend": "gurobipy",
+        "constraints": 1104553,
+        "nonzeros": 147312374,
+        "phase": "optimization",
+        "scope": "presolved_log",
+        "variables": 38148639
+      }
+    ],
+    "qualification": "Missing fields are unavailable; no presolved model copy is created.",
+    "schema_version": "resource-matrix-v1"
+  },
+  "missing_or_rejected": [],
+  "operational_error_kind": null,
+  "operational_receipts_closed": true,
+  "original_absolute_tolerance": 1e-05,
+  "original_archived_review_identical": true,
+  "original_relative_tolerance": 1e-08,
+  "original_validation_failed_checks": 0,
+  "original_validation_sha256": "d4b1c5a585b4b6b009e14c791ea743ebc822b7478cf1f17b10e4669116cfb242",
+  "penalty_rates": {
+    "reception": 45000,
+    "static": 45000,
+    "unmet": 90000
+  },
+  "phase_controller": {
+    "local_client_reaped": true,
+    "mode": "t1",
+    "next_arm_allowed": true,
+    "product_review_seconds": 16.438880825415254,
+    "status": "closed_feasible_arm",
+    "step_id": "0",
+    "usage": {
+      "seconds": {
+        "artifact_export": 9.896935489960015,
+        "complete": 0.0,
+        "independent_validation": 4.970589934848249,
+        "input_build": 908.9755643447861,
+        "native_return": 175.6504576317966,
+        "optimization": 4227.854130600579
+      },
+      "shared_reserve_used_seconds": 185.5473931217566,
+      "stop_reason": null
+    }
+  },
+  "plan_sha256": "852f886d58f9bf1f78cee2000ae3d3103bb49f3a27c884e91d40deeca2057afe",
+  "production_isolation_certified": false,
+  "qualification": "Original certificate replay, not fresh private-input residual re-solve.",
+  "quality_target_met": true,
+  "reconstructed_costs": {
+    "bulkification_fixed": 0.0,
+    "bulkification_variable": 251820400.0,
+    "candidate_capacity": 11940187500.0,
+    "emergency_reception": 742396793718.2583,
+    "emergency_static": 1181463823174.141,
+    "expansion_fixed": 0.0,
+    "expansion_variable": 347036625.0,
+    "opening": 0.0,
+    "storage": 12910709432.146921,
+    "transport_dc": 219117071513.31046,
+    "transport_dd": 10776335333.098799,
+    "transport_oc": 0.0,
+    "transport_od": 126229590088.98907,
+    "unmet_demand": 5287961681517.844
+  },
+  "repeats_admitted": false,
+  "replay_path_adapter": "Windows external-review-only lexical POSIX Path adapter in the contract constructor; only original workbook slash spelling differs. Archive, scientific/runtime source, numbers and acceptance predicates unchanged.",
+  "replay_platform": "nt",
+  "resource_termination": {
+    "dropped_samples": {
+      "progress": 0,
+      "resource": 0
+    },
+    "elapsed_seconds": 5224.42586011067,
+    "exception_type": null,
+    "execution_status": "optimal",
+    "inspection_errors": [],
+    "quality_acceptance": "requires_independent_validation_and_scalar_bound_gap_review",
+    "sampler_work_seconds": 909.7184953317046,
+    "samples": {
+      "progress": 137,
+      "resource": 870
+    },
+    "schema_version": "resource-termination-v1"
+  },
+  "sampled_solver_progress": {
+    "sampled_max_iterations": 4053783.0,
+    "sampled_max_nodes": 0.0,
+    "sampled_max_solver_memory_bytes": 44576861816.0
+  },
+  "schema_version": "scalar-h400-external-review-v1",
+  "selected_network_sha256": "5f9b1e0d2c71066ae781310a7fad3f6c5b30ea14d4906c4914aa606a0be3e949",
+  "separate_h500_input_resource_admission_required": true,
+  "source_commit": "d9ca710dd98b66a4d3421ebccee13d91673d468d",
+  "status": "h400_quality_target_met",
+  "terminal_accounting": [
+    {
+      "elapsed_seconds": 5354,
+      "exit_code": "0:0",
+      "job_id": "2219884",
+      "max_rss_raw": null,
+      "state": "COMPLETED"
+    },
+    {
+      "elapsed_seconds": 5354,
+      "exit_code": "0:0",
+      "job_id": "2219884.batch",
+      "max_rss_raw": "240484K",
+      "state": "COMPLETED"
+    },
+    {
+      "elapsed_seconds": 5354,
+      "exit_code": "0:0",
+      "job_id": "2219884.extern",
+      "max_rss_raw": "932K",
+      "state": "COMPLETED"
+    },
+    {
+      "elapsed_seconds": 5333,
+      "exit_code": "0:0",
+      "job_id": "2219884.0",
+      "max_rss_raw": "75830492K",
+      "state": "COMPLETED"
+    }
+  ],
+  "warehouse_receipt": {
+    "candidate_count": 254,
+    "count": 400,
+    "criterion": "Protect all146 existing and69 canonical anchor candidates; extend by frozen deterministic nested rank, never solver opening decisions.",
+    "csv_sha256": "8bc199f5b4d9b4fc5b26e787e9735576a8b57eb1229ae383021ce08f69ac45c7",
+    "existing_count": 146,
+    "ordered_ids_sha256": "79c1d7624a8090008996b95c38390ebc1e41d07bd558ac19b029d5830a85f9e5",
+    "selection_method": "nested deterministic proportional strata over state, warehouse type, and static-capacity quartile",
+    "selection_seed": "model-agrologistic-v020-warehouse-population-v1"
+  },
+  "workbook_sha256": "c3085456997714ef5a8bdbf61e2c9a5e578c2636003947427cf58933d21ceb13"
+}

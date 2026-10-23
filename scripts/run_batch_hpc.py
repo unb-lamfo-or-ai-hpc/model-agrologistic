@@ -60,13 +60,16 @@ def main(argv: list[str] | None = None) -> int:
 
     from src.logic.experiment_runner import (
         aggregate_experiment_summaries,
-        aggregate_service_policy_comparisons,
         inspect_manifest,
         load_experiment_manifest,
         run_manifest,
     )
 
     args = build_parser().parse_args(argv)
+    if os.environ.get("SLURM_JOB_ID") and not (args.dry_run or args.aggregate_only):
+        raise SystemExit(
+            "R1 scalar software only: NPAD execution remains closed pending R2 admission."
+        )
     manifest = load_experiment_manifest(args.manifest)
     if args.workbook:
         workbook = args.workbook.resolve()
@@ -77,9 +80,6 @@ def main(argv: list[str] | None = None) -> int:
     if args.aggregate_only:
         target = aggregate_experiment_summaries(output_root, manifest=manifest)
         print(f"Summary written to {target}")
-        comparison_target = aggregate_service_policy_comparisons(output_root, manifest=manifest)
-        if comparison_target is not None:
-            print(f"Service-policy comparison written to {comparison_target}")
         return 0
 
     index = selected_index(args.index)
@@ -101,7 +101,6 @@ def main(argv: list[str] | None = None) -> int:
     # array tasks write only their isolated run_summary.json files.
     if index is None:
         aggregate_experiment_summaries(output_root, manifest=manifest)
-        aggregate_service_policy_comparisons(output_root, manifest=manifest)
 
     failures = [summary for summary in summaries if (
         summary.status == "error" or summary.independent_validation_status == "rejected"

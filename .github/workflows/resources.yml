@@ -17,8 +17,7 @@ jobs:
         with:
           python-version: '3.13'
       - run: python -m pip install -e '.[dev,scip]' 'pyscipopt==6.2.1'
-      - run: bash -n scripts/run_mvp2_qualification.slurm scripts/submit_mvp2_qualification.sh
-      - run: python scripts/qualify_mvp2_resources.py --analytical-only --output-dir /tmp/mvp2-resource-qualification
+      - run: python -m pytest tests/test_resource_lifecycle.py tests/test_run_integrity.py -p no:cacheprovider --junitxml=/tmp/mvp2-resource-qualification/results.xml
       - uses: actions/upload-artifact@v4
         if: always()
         with:

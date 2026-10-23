@@ -1,0 +1,41 @@
+{
+  "schema_version": "mvp2-h300-thread-design-v1",
+  "status": "design_qualified_execution_closed",
+  "large_instance_submission_allowed": false,
+  "automatic_repeats_allowed": false,
+  "base_develop": "1181eb1d03de1990f5e02d99bda0ef0a93563a47",
+  "grid": [1, 2, 4, 8, 16],
+  "order": [4, 1, 8, 2, 16],
+  "reference": {
+    "case": "h300-warehouse-control",
+    "input_job": "2198085",
+    "input_source": "3957f84ff49ac500eecf25b85e6b710b4b3b1010",
+    "input_archive_sha256": "97395d29b802e558d3ac88db8c8e74cf3447d165782530a9c8d7cafd59f106fb",
+    "pair_job": "2199525",
+    "pair_source": "0e663c8bd8d9c5c4b27dbb09db3f1375ad52257d",
+    "pair_archive_sha256": "5e52e56887dcb57b9c6209fb884129bf85cc322779fc17c2279c589519d4c1d9",
+    "miniature_job": "2202239",
+    "miniature_archive_sha256": "985002c13784ba071054e4c0db412cb41eefa60366f777866ce3eb3d52b586b2",
+    "workbook_sha256": "7761cce77cf93dcba2f617714f0117c1f2ead4de0c3f27149daceba447e0c7d1",
+    "implementation_sha256": "b4de41ade0b3c55f8f20a66480cffa275421f8157444b1db3000a9eb50f2d351"
+  },
+  "allocation": {
+    "partition": "intel-256",
+    "nodes": 1,
+    "tasks": 1,
+    "requested_cpus_per_task": 16,
+    "memory_mib": 196608,
+    "exclusive_node": false,
+    "walltime_seconds": 21600
+  },
+  "budget": {
+    "build_seconds": 900,
+    "optimization_seconds": 1800,
+    "export_validation_seconds": 900,
+    "cleanup_grace_seconds": 300,
+    "child_watchdog_seconds": 3900,
+    "admission_seconds": 600,
+    "block_audit_seconds": 900,
+    "terminal_reserve_seconds": 600
+  }
+}

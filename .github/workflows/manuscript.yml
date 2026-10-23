@@ -1,7 +1,7 @@
 name: Manuscript draft
 on:
   pull_request:
-    paths: ['manuscript/**', 'scripts/*manuscript*.py', 'docs/evidence/sprint_c_final_20260920/**', '.github/workflows/manuscript*.yml']
+    paths: ['manuscript/**', 'scripts/*manuscript*.py', 'scripts/*geographic*.py', 'scripts/build_s6a_assets.py', 'src/visualization/**', 'tests/test_geographic_visualization.py', 'docs/s6a_20261021/**', 'pyproject.toml', 'docs/evidence/sprint_c_final_20260920/**', '.github/workflows/manuscript*.yml']
   workflow_dispatch:
 permissions:
   contents: read
@@ -11,6 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           persist-credentials: false
       - uses: actions/setup-python@v5
         with:
@@ -21,11 +22,19 @@ jobs:
           tinytex: true
       - name: Install declared document dependencies
         run: |
+          python -m pip install -e '.[dev]'
+          sudo apt-get update
+          sudo apt-get install --yes librsvg2-bin poppler-utils
           tex_bin="$HOME/.TinyTeX/bin/x86_64-linux"
           test -x "$tex_bin/tlmgr"
           echo "$tex_bin" >> "$GITHUB_PATH"
-          "$tex_bin/tlmgr" install orcidlink pgf caption bookmark xurl footnotehyper microtype lm amsfonts geometry natbib etoolbox booktabs tools babel-english parskip xcolor
+          "$tex_bin/tlmgr" update --self
+          "$tex_bin/tlmgr" install orcidlink pgf caption bookmark xurl footnotehyper microtype lm amsfonts geometry natbib etoolbox booktabs tools babel-english parskip xcolor pdfpages eso-pic
       - run: python scripts/build_manuscript_comparison.py --check
+      - run: python -m scripts.build_scalar_manuscript --check
+      - run: python -m scripts.build_wd_manuscript --check
+      - run: python -m scripts.build_s6a_assets
+      - run: python -m pytest tests/test_geographic_visualization.py tests/test_manuscript.py tests/test_manuscript_package.py -q
       - run: python scripts/check_manuscript.py
       - run: quarto render manuscript
       - run: quarto render manuscript/supplement
@@ -33,6 +42,7 @@ jobs:
       - run: python scripts/check_manuscript.py --rendered
       - run: python scripts/package_manuscript.py --output manuscript/_manuscript/coauthor-latex.zip
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: manuscript-draft
           path: manuscript/_manuscript/

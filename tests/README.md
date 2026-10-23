@@ -1,3 +1,18 @@
+# Scalar R1 qualification
+
+The retained full suite checks data, routes, physical constraints, scalar costs,
+source integrity, independent residuals, native lifecycle/resources and historical
+evidence interpretation. Old hierarchy-only tests/workflows are preserved on
+`archive/mvp2-multiobjective-20261019`, not silently skipped to admit a scalar run.
+The `Scalar R1 qualification` Linux workflow requires its exact-head tiny native
+Gurobi/SCIP gate to have zero failures/errors/skips. Local missing/expired licenses
+must be disclosed; skipped tests do not qualify the backend. CI runs public small
+models only, never NPAD or a scalability campaign. The historical catalogue below
+does not restore removed objectives or EVPI/VSS. See the
+[current contract](../docs/mvp2_scalar_contract.md).
+
+## Historical catalogue
+
 # Verification strategy
 
 Tests address software and mathematical implementation, not automatic empirical

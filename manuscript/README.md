@@ -1,126 +1,119 @@
-# Scientific manuscript
+# Scientific manuscript — integrated scalar revision
 
-The article reports a bounded computational experiment for deterministic and
-two-stage stochastic grain-storage network models. Quarto Manuscript and a pinned
-Elsevier extension produce companion HTML and PDF versions without solving a
-model or contacting external services during rendering.
+23October current authority: PR120 is merged; the researcher explicitly requests
+the current S6-A as a public coauthor REVIEW snapshot after normal develop/main
+reconciliation. This supersedes the older draft/publication holds below, not
+final approval or journal submission. The separate h215 W/D Results section
+adds two accepted D observations, keeps the original eight W scaling observations
+unchanged and reports lower penalized cost BUT worse service. S5/h500 terminal
+evidence, further coauthor rounds and S6-B remain open. Check pages_approval.json
+and the actual deployment receipt; CI/merge alone is not publication.
+
+The approved article is **Computational Scalability of Deterministic and
+Two-Stage Stochastic MILP Models for Grain-Storage Network Design and Hub
+Location**. PR120 implements the researcher's final21October mandate on the
+existing editorial branch. It does not authorize merge, deployment or submission.
+
+The22October extension adds Appendix C (actual Python/Gurobi/SCIP crosswalk,
+shared reviewable GAMS translation and effective-input exporter) and Appendix D
+(source cells, units, transformation rules, source hashes and actual population
+nesting/order). GAMS compilation and numerical parity are explicitly unperformed;
+the tool is unavailable. The AI declaration, supplied NPAD Acknowledgements and
+References are consecutive numbered sections. No scientific code, model, penalty,
+certificate or live HPC claim is changed. PR120 remains draft during review.
+
+## Evidence boundary
+
+The active Results section uses eight accepted scalar observations: h215
+DET/STO, five h300 thread levels and h400 STO. Original source/job/input hashes,
+penalties and residual tolerances remain frozen. `scalar_evidence.json` and its
+generated `scalar_results.qmd` retain original certificate identities; later
+replay/post-processing is not fresh private-input residual revalidation.
+h500 job2220382 is pending in the last supplied snapshot, not a numerical result.
+No causal thread speedup, full service, exact zero-gap proof or financial
+interpretation of artificial penalties is claimed.
+
+The old thirteen-attempt comparison, ten-reference results, failed capacity-pass
+trial, original certificates and their figures remain unchanged historical
+cohorts. `comparison_results.qmd`, `historical_reference_results.md`,
+`comparison_provenance.json`, `results_snapshot.json` and
+`evidence_status.json` must not be pooled with or relabelled as scalar evidence.
+SCIP/h215 remains a separate decision; S3/S4 and EVPI/VSS remain excluded.
 
 ## Reproduce the document
 
-From the repository root, use Quarto 1.10.18 and TinyTeX:
+Use a clean checkout, Python3.13 with the declared geographic/document
+dependencies, Quarto1.10.18, TinyTeX with pdfpages and the existing declared
+template packages, and rsvg-convert for the shared workflow SVG:
 
 ```bash
-python scripts/check_manuscript.py
 python scripts/build_manuscript_comparison.py --check
+python -m scripts.build_scalar_manuscript --check
+python -m scripts.build_s6a_assets
+python scripts/check_manuscript.py
 quarto render manuscript
 quarto render manuscript/supplement
 python scripts/assemble_manuscript_outputs.py
 python scripts/check_manuscript.py --rendered
-```
-
-Outputs are `manuscript/_manuscript/index.html` and
-`manuscript/_manuscript/index.pdf`, together with `supplementary-review.html`
-and `supplementary-review.pdf`. CI retains the rendered artifacts.
-Create a portable coauthor project after rendering:
-
-```bash
 python scripts/package_manuscript.py --output manuscript/_manuscript/coauthor-latex.zip
 ```
 
-The flat ZIP contains `main.tex`, its PDF, a separate appendix TeX/PDF,
-bibliographies, highlights, figures, rights notices and checksums. Compile the
-main with pdfLaTeX, BibTeX and two further pdfLaTeX passes; compile the appendix
-with two pdfLaTeX passes. Use a
-new output filename for each review: the packager does not overwrite archives.
+No solver, licence, NPAD connection, map tiles, OSRM request or browser is used
+by the build. The existing manuscript CI installs declared dependencies and
+renders the article and supplement. Source and generated-asset hashes are
+recorded in `figures/s6a_assets.json`; scientific map definitions and full
+source identities are in `maps/` and `geographic_sources.json`.
+Use fresh outputs when changing render code; scientific map export preserves
+prior outputs rather than silently overwriting receipts.
 
-To regenerate the five data-driven figures, install the project visualization
-dependencies and run `python manuscript/build_review_figures.py`.
-Run `python scripts/build_manuscript_comparison.py` to regenerate the current
-thirteen-attempt tables, pipeline figure and comparison figure. Their source
-and generated hashes are recorded in `comparison_provenance.json`. Current
-LaTeX output uses equivalent vector PDF figures; HTML retains PNG previews.
-No solver license is required for document or figure generation.
+Outputs are `_manuscript/index.html`, `index.pdf`,
+`supplementary-review.html`, `supplementary-review.pdf` and the original
+`appendix_a_original.pdf`. The flat coauthor ZIP contains editable LaTeX,
+bibliographies, figures, notices and checksums. Use a new ZIP filename for each
+review; the packager preserves earlier archives.
 
-## Evidence boundary
+## Geographic preparation
 
-The current Results section uses the
-[final solver comparison](../docs/evidence/sprint_c_final_20260920/comparison_summary.md):
-seven Gurobi and six SCIP attempts. Gurobi has four quality-certified results at
-215/300 hubs and three valid uncertified incumbents. All SCIP attempts at 215/300
-have no incumbent. SCIP 400 is preflight-only; no 500 solve is reported.
-`comparison_results.qmd` is generated, not manually transcribed. Conditional
-economic observations do not establish a causal direct-arc benefit.
+See [the full local/headless guide](../docs/s6a_20261021/geographic_reproducibility.md).
+An explicit preparation step reads original frozen XLSX/accepted archives and
+writes a separate geographic SQLite. Dash and headless PNG/PDF/SVG open it
+read-only and share scientific figure definitions, styles and filters.
+Original coordinates and coincident node roles are retained. The supplied
+distance matrices lack road polylines; no straight connections are invented.
+h500 shows input availability, never inferred optimized decisions.
 
-The [historical reference supplement](historical_reference_results.md) retains
-the original ten-reference tables and figures. Its status is not the status of
-the later thirteen-attempt cohort described above.
+## Models, literature and Human–AI account
 
-[results_snapshot.json](results_snapshot.json) records the plotted measurements.
-The final validation receipt is archived in
-[docs/evidence/pr25-final](../docs/evidence/pr25-final/README.md).
-Nine references were accepted. The final warehouse-only nine-scenario trial
-achieved zero domestic shortage but reached the capacity-pass time limit with
-a 100% gap. Its economic pass was not executed. The original aggregate
-certificate remains rejected; development closure is recorded separately.
+`formulation.qmd` presents full scalar DET/STO objectives, constraints, domains,
+units and interpretation. The code crosswalk and C01–C22 response are in
+[the integrated review record](../docs/s6a_20261021/integrated_revision_crosswalk.md).
+Rosa's mathematical foundation is credited. The historical Benders audit is
+retained as unimplemented historical material, not an active method.
 
-The article reports that negative result alongside accepted configurations,
-route growth and observed computational resources. It does not infer unreported
-cost, transport-work or warehouse-level results from validation status.
-Optimization at 500 warehouses, a full scalability frontier, decomposition and
-controlled parallel-speedup experiments remain outside the observed evidence.
+Appendix A incorporates all19 pages of the supplied review byte-for-byte,
+SHA256859dc52b64b6bcf471f7616182d8cadf2b693dbfd19ad4b9248637b5c231b3ed.
+Original search arithmetic and date issues are documented, not silently
+corrected. Appendix B contains ten Human–AI sections; the main article has a
+bounded methodological passage, concise activity table and the same editable
+workflow figure. Retrospective AI accounts are not independent execution logs.
 
-[evidence_status.json](evidence_status.json) distinguishes the experimental
-outcome from publication approval. A merge into develop does not deploy Pages
-or imply author approval for journal submission. The separate Pages workflow is
-restricted to main and requires a hash-bound public-review approval,
-an explicit manual-dispatch acknowledgement and the repository enable variable.
-The owner renewed publication approval for this coauthor-review snapshot on 3 October
-2026; `pages_approval.json` records its source identities without credentials.
-This separation
-does not require changing the rejected certificate into a successful one.
+The retained bibliography/citation-selection provenance is unchanged; only
+actually cited records are required in the rendered reference list. Public
+bibliographic identifiers, not private library notes, are published. Seven
+authors' approved metadata remains in `authors.json`, without new CRediT or
+individual-reviewer responsibility assignments.
 
-## Sources, authorship and mathematical traceability
+## Rights, publication and final review
 
-Thirty-five references are mapped to verified Zotero collection membership in
-[citation_selection.json](citation_selection.json). A separate dataset citation,
-verified from the published Zenodo API, brings the main bibliography to 36
-records without claiming additional Zotero membership. The related-work synthesis
-does not claim a newly executed systematic literature search. Appendix A
-incorporates the supplied nine-study synthesis. Its two additional methods
-references in `review-methods.bib` are not represented as verified collection
-members. Rosa's 2026
-doctoral thesis is credited as the mathematical and decision-support foundation;
-the 2025 literature review is cited separately. Public bibliographic identifiers,
-not private library notes or attachments, are committed.
+The pinned Elsevier extension0.4.5, vendored files and their checksum/rights
+notices are preserved. Original project code is MIT; external data and
+OpenStreetMap-derived databases retain their applicable terms. The published
+Zenodo0.2.0 receipt does not assert that all later scalar archives are deposited.
 
-Seven authors' names, affiliations, email addresses and ORCIDs are recorded in
-[authors.json](authors.json). HTML uses native Quarto metadata; PDF uses
-native Elsevier author/affiliation metadata and ORCID links. Complete postal
-addresses and contribution roles require author confirmation.
-[formulation_traceability.md](formulation_traceability.md) maps the equations to
-the implementation; [benders_extension_audit.md](benders_extension_audit.md)
-qualifies the proposed, unimplemented decomposition.
-
-## Template, rights and editorial scope
-
-The active pinned upstream is the Quarto Elsevier extension 0.4.5 at
-`b766702f8a0b625eefa78c23c5137c37ff84a43c`, using `elsarticle` preprint format.
-[elsevier_provenance.json](elsevier_provenance.json) records vendor hashes and
-the ORCID adaptation. Historical SBC assets and their
-[template_provenance.json](template_provenance.json) remain for reproducibility.
-Original project contributions use MIT; upstream style files, external data and
-OpenStreetMap-derived databases retain their respective rights and obligations.
-See [LICENSING.md](../LICENSING.md) and
-[third-party notices](vendor/THIRD_PARTY_NOTICES.md).
-
-See the [journal checklist](../docs/cea_submission_checklist.md),
-[coauthor response matrix](../docs/cea_coauthor_revision.md) and
-[Elsevier rights notices](vendor/ELSEVIER_TEMPLATE_NOTICES.md).
-The community extension is not a journal endorsement. The systematic-review
-date and alternative-source counts require reconciliation. Dataset version 0.2.0
-is published at [DOI 10.5281/zenodo.22751909](https://doi.org/10.5281/zenodo.22751909);
-[dataset_release.json](dataset_release.json) preserves its public metadata receipt.
-File-level reuse conditions, funding, competing interests, CRediT roles and coauthor approval
-must be resolved before submission. Integration into GitHub does not authorize
-journal submission, arXiv upload or dataset publication. The separate owner
-authorization covers only the reviewed GitHub Pages snapshot.
+The old hash-bound Pages approval must reject this revised source. Merge into
+develop does not deploy the draft or authorize journal/arXiv submission. Coauthor
+review, declarations, rights and final submission authorization remain necessary.
+The original146 annotation locators are unchanged; the17 unexplained marks and
+historical source/build reconciliation are administratively closed as directed,
+not newly verified or interpreted. Final main/develop integration follows
+article review, not this editorial preparation.

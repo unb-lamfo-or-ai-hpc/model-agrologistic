@@ -5,6 +5,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import Any
 
+from src.logic.mathematical_contract import deterministic_inputs
 from src.logic.model_config import ModelConfig
 from src.logic.model_data import ModelData
 from src.logic.optimization import OptimizationResult
@@ -26,10 +27,11 @@ def build_model_audit(
 ) -> dict[str, Any]:
     """Return a JSON-serializable audit without changing model behavior."""
 
+    if config.mode == "det" and data.scenarios:
+        data = deterministic_inputs(data)
     findings: list[dict[str, Any]] = []
     parameter_profiles = {
-        name: _parameter_profile(values)
-        for name, values in _audited_parameters(data).items()
+        name: _parameter_profile(values) for name, values in _audited_parameters(data).items()
     }
     zero_cost_opportunities = _zero_cost_opportunities(data, config)
 
@@ -50,8 +52,7 @@ def build_model_audit(
     large_parameters = [
         name
         for name, profile in parameter_profiles.items()
-        if profile["maximum"] is not None
-        and profile["maximum"] >= LARGE_VALUE_THRESHOLD
+        if profile["maximum"] is not None and profile["maximum"] >= LARGE_VALUE_THRESHOLD
     ]
     if large_parameters:
         findings.append(
@@ -108,20 +109,19 @@ def build_model_audit(
             "independent_validation_status", "not_performed_legacy_result"
         )
         if audit["independent_validation_status"] == "rejected":
-            findings.append(_finding(
-                "error", "INDEPENDENT_VALIDATION_FAILED",
-                "Inspect independent_validation.json before interpreting this solution.",
-                ["local_constraints_or_reconstructed_costs"],
-            ))
+            findings.append(
+                _finding(
+                    "error",
+                    "INDEPENDENT_VALIDATION_FAILED",
+                    "Inspect independent_validation.json before interpreting this solution.",
+                    ["local_constraints_or_reconstructed_costs"],
+                )
+            )
 
     audit["summary"] = {
         "error_count": sum(finding["severity"] == "error" for finding in findings),
-        "warning_count": sum(
-            finding["severity"] == "warning" for finding in findings
-        ),
-        "info_count": sum(
-            finding["severity"] == "info" for finding in findings
-        ),
+        "warning_count": sum(finding["severity"] == "warning" for finding in findings),
+        "info_count": sum(finding["severity"] == "info" for finding in findings),
     }
     return audit
 
@@ -147,12 +147,8 @@ def _audited_parameters(data: ModelData) -> dict[str, Mapping[Any, float]]:
         "bulk_fixed_cost": data.bulk_fixed_cost,
         "bulk_variable_cost": data.bulk_variable_cost,
         "unmet_demand_penalty": data.unmet_demand_penalty,
-        "emergency_static_capacity_penalty": (
-            data.emergency_static_capacity_penalty
-        ),
-        "emergency_reception_capacity_penalty": (
-            data.emergency_reception_capacity_penalty
-        ),
+        "emergency_static_capacity_penalty": (data.emergency_static_capacity_penalty),
+        "emergency_reception_capacity_penalty": (data.emergency_reception_capacity_penalty),
     }
 
 
@@ -215,22 +211,16 @@ def _capacity_totals(data: ModelData, config: ModelConfig) -> dict[str, Any]:
         "reception_daily": reception_daily,
         "reception_per_period": reception_daily * float(config.days_per_period),
         "reception_per_period_by_period": {
-            period: reception_daily * config.operating_days(period)
-            for period in data.periods
+            period: reception_daily * config.operating_days(period) for period in data.periods
         },
         "shipping_daily": shipping_daily,
         "shipping_per_period": shipping_daily * float(config.days_per_period),
         "shipping_per_period_by_period": {
-            period: shipping_daily * config.operating_days(period)
-            for period in data.periods
+            period: shipping_daily * config.operating_days(period) for period in data.periods
         },
-        "maximum_candidate": sum(
-            map(float, data.max_candidate_capacity.values())
-        ),
+        "maximum_candidate": sum(map(float, data.max_candidate_capacity.values())),
         "maximum_expansion": sum(map(float, data.max_expand_capacity.values())),
-        "maximum_bulkification": sum(
-            map(float, data.max_bulk_capacity.values())
-        ),
+        "maximum_bulkification": sum(map(float, data.max_bulk_capacity.values())),
     }
 
 
@@ -240,9 +230,7 @@ def _solution_audit(
     result: OptimizationResult,
 ) -> tuple[dict[str, Any], list[dict[str, Any]]]:
     objective = float(result.objective_value or 0.0)
-    cost_components = {
-        name: float(value) for name, value in result.cost_breakdown.items()
-    }
+    cost_components = {name: float(value) for name, value in result.cost_breakdown.items()}
     penalized_cost_total = sum(cost_components.values())
     cost_shares = {
         name: value / penalized_cost_total if penalized_cost_total else None
@@ -440,17 +428,12 @@ def _investment_decision_summary(result: OptimizationResult) -> dict[str, float]
             for decision in decisions
         ),
         "candidate_capacity": sum(
-            float(decision.get("candidate_capacity", 0.0))
-            for decision in decisions
+            float(decision.get("candidate_capacity", 0.0)) for decision in decisions
         ),
         "expansion_capacity": sum(
-            float(decision.get("expansion_capacity", 0.0))
-            for decision in decisions
+            float(decision.get("expansion_capacity", 0.0)) for decision in decisions
         ),
-        "bulk_capacity": sum(
-            float(decision.get("bulk_capacity", 0.0))
-            for decision in decisions
-        ),
+        "bulk_capacity": sum(float(decision.get("bulk_capacity", 0.0)) for decision in decisions),
     }
 
 
@@ -485,9 +468,7 @@ def _service_audit(result: OptimizationResult) -> dict[str, Any]:
         expected_unmet += probability * unmet
     expected_total = expected_served + expected_unmet
     return {
-        "expected": (
-            expected_served / expected_total if expected_total > 0.0 else 1.0
-        ),
+        "expected": (expected_served / expected_total if expected_total > 0.0 else 1.0),
         "minimum_scenario": min(by_scenario.values()),
         "maximum_scenario": max(by_scenario.values()),
         "by_scenario": by_scenario,
@@ -562,9 +543,7 @@ def _material_balance_audit(
         )
     return {
         "available": True,
-        "all_within_tolerance": all(
-            record["within_tolerance"] for record in records
-        ),
+        "all_within_tolerance": all(record["within_tolerance"] for record in records),
         "by_scenario": records,
     }
 
@@ -605,8 +584,10 @@ def _capacity_adequacy_audit(
         ]
         peak_reception = max(
             reception_records,
-            key=lambda record: float(record.get("value", 0.0))
-            / float(config.operating_days(str(record.get("period")))),
+            key=lambda record: (
+                float(record.get("value", 0.0))
+                / float(config.operating_days(str(record.get("period"))))
+            ),
             default=None,
         )
         peak_static = max(
@@ -631,12 +612,8 @@ def _capacity_adequacy_audit(
                 "peak_emergency_static_tons": (
                     float(peak_static.get("value", 0.0)) if peak_static else 0.0
                 ),
-                "peak_static_warehouse": (
-                    peak_static.get("warehouse") if peak_static else None
-                ),
-                "peak_static_period": (
-                    peak_static.get("period") if peak_static else None
-                ),
+                "peak_static_warehouse": (peak_static.get("warehouse") if peak_static else None),
+                "peak_static_period": (peak_static.get("period") if peak_static else None),
                 "peak_emergency_reception_tons_per_day": (
                     float(peak_reception.get("value", 0.0))
                     / float(config.operating_days(str(peak_reception.get("period"))))
@@ -646,9 +623,7 @@ def _capacity_adequacy_audit(
                 "peak_reception_warehouse": (
                     peak_reception.get("warehouse") if peak_reception else None
                 ),
-                "peak_reception_period": (
-                    peak_reception.get("period") if peak_reception else None
-                ),
+                "peak_reception_period": (peak_reception.get("period") if peak_reception else None),
             }
         )
 
@@ -664,8 +639,7 @@ def _capacity_adequacy_audit(
         "affected_scenarios": [
             str(record["scenario"])
             for record in records
-            if record["status"] == overall_status
-            and overall_status != "nominally_adequate"
+            if record["status"] == overall_status and overall_status != "nominally_adequate"
         ],
         "by_scenario": records,
     }
@@ -677,10 +651,7 @@ def _investment_saturation_audit(
 ) -> dict[str, dict[str, Any]]:
     """Compare selected first-stage capacities with their configured bounds."""
 
-    selected = {
-        str(decision.get("warehouse")): decision
-        for decision in result.warehouse_decisions
-    }
+    selected = {str(decision.get("warehouse")): decision for decision in result.warehouse_decisions}
     categories = {
         "candidate_capacity": data.max_candidate_capacity,
         "expansion_capacity": data.max_expand_capacity,
@@ -708,13 +679,10 @@ def _investment_saturation_audit(
         audit[field] = {
             "selected_capacity_tons": selected_total,
             "maximum_capacity_tons": maximum_total,
-            "selected_fraction": (
-                selected_total / maximum_total if maximum_total else None
-            ),
+            "selected_fraction": (selected_total / maximum_total if maximum_total else None),
             "facilities_at_maximum": len(at_maximum),
             "eligible_facilities": len(eligible),
-            "all_eligible_at_maximum": bool(eligible)
-            and len(at_maximum) == len(eligible),
+            "all_eligible_at_maximum": bool(eligible) and len(at_maximum) == len(eligible),
             "facilities_at_maximum_sample": at_maximum[:SAMPLE_LIMIT],
         }
     return audit
@@ -735,11 +703,7 @@ def _record_total_for_scenario(
 
 def _record_matches_scenario(record: dict[str, Any], scenario: str | None) -> bool:
     record_scenario = record.get("scenario")
-    return (
-        record_scenario == scenario
-        if scenario is not None
-        else record_scenario is None
-    )
+    return record_scenario == scenario if scenario is not None else record_scenario is None
 
 
 def _record_total(records: list[dict[str, Any]], **filters: Any) -> float:

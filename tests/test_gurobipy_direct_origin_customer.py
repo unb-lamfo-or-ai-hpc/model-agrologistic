@@ -98,7 +98,7 @@ def solve_direct_data(
     )
 
 
-def test_lexicographic_policy_serves_demand_before_minimizing_cost():
+def test_scalar_penalty_is_a_cost_tradeoff_not_a_service_priority():
     require_gurobi_available()
 
     data = base_direct_data(
@@ -110,46 +110,11 @@ def test_lexicographic_policy_serves_demand_before_minimizing_cost():
     data.unmet_demand_penalty[("C1", "soy")] = 0.1
 
     penalty_result = solve_direct_data(data, enabled=False)
-    lexicographic_result = solve_direct_data(
-        data,
-        enabled=False,
-        objective_policy="lexicographic",
-    )
-
     assert penalty_result.metrics["total_unmet_demand"] == pytest.approx(100.0)
-    assert lexicographic_result.metrics["total_unmet_demand"] == pytest.approx(0.0)
-    assert lexicographic_result.objective_value == pytest.approx(0.0)
-    assert lexicographic_result.metadata["objective_policy"] == "lexicographic"
-    assert lexicographic_result.metadata["objective_priority_order"] == [
-        "unmet_demand",
-        "emergency_capacity",
-        "economic_cost",
-    ]
-    assert lexicographic_result.metadata["lexicographic_overall_status"] == "complete"
-    assert (
-        lexicographic_result.metadata["lexicographic_completed_stage_count"]
-        == 3
-    )
-    assert lexicographic_result.metadata["service_target_status"] == "attained"
-    assert (
-        lexicographic_result.metadata["service_certification_status"]
-        == "certified_zero_within_tolerance"
-    )
-    assert [
-        stage["stage_role"]
-        for stage in lexicographic_result.metadata["lexicographic_stages"]
-    ] == [
-        "unmet_demand",
-        "emergency_capacity",
-        "economic_cost",
-    ]
-    assert all(
-        stage["status"] == "OPTIMAL"
-        for stage in lexicographic_result.metadata["lexicographic_stages"]
-    )
-    assert lexicographic_result.metrics["objective_values"][
-        "economic_cost"
-    ] > penalty_result.metrics["objective_values"]["economic_cost"]
+    # All supply must still enter storage; unmet domestic demand costs 100*.1.
+    assert penalty_result.objective_value == pytest.approx(110.0)
+    assert penalty_result.metadata["objective_policy"] == "penalty"
+    assert "objective_priority_order" not in penalty_result.metadata
 
 
 def route_flow(result, route_type: str, *, customer: str | None = None) -> float:

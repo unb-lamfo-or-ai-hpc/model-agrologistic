@@ -4,6 +4,27 @@ Read the current mathematical contract before interpreting historical plots or
 executing an older campaign. Dates and experiment names matter: a chronological
 development record is not a single invariant specification.
 
+## Current MVP2 evidence and planning
+
+The frozen MVP1 cohort below remains historical. New accepted observations do
+not rewrite its unsuccessful outcomes. S1-C is documentary, not a new campaign.
+
+| Document | Use |
+| --- | --- |
+| [S2 closure campaign](mvp2_s2_closure_campaign.md) | Finite normal/adverse/native/h300 sequence, inherited budgets, stop criteria and remaining functional PRs; no downstream execution admission |
+| [Sprint 1 evidence and exit ledger](mvp2_sprint1_closure.md) | h215/h300/h400 provenance, accepted/limited/deferred outcomes and closure boundary |
+| [Reconciled HPC roadmap](mvp2_hpc_roadmap.md) | Close S2; old S3/S4 cancelled; bounded SCIP h215 requalification then h500; computational/HPC synthesis at S6 |
+| [S2 thread qualification](mvp2_thread_qualification.md) | Licensed miniature gate, immutable one-shot collection and proposed h300 diagnostic window; production closed |
+| [S2 accepted miniature evidence](mvp2_thread_qualification_evidence.md) | Job 2202239, portable hash/runtime audit and fresh public-fixture residual revalidation; no speedup or production admission |
+| [S2 h300 diagnostic design](mvp2_h300_thread_design.md) | Homogeneous environment, global window/watchdog arithmetic, partial observations and resource units; execution/repeats closed |
+| [S2 h300 runtime components](mvp2_h300_runtime_controls.md) | Parent watchdogs, one-shot lifecycle, two-level closure and fresh partial-evidence review; native integration/admission and repeats closed |
+| [S2 closed native worker](mvp2_h300_native_worker.md) | Native seams/global window, terminal count snapshot and failure-safe ownership; software tests only, licensed qualification/admission and repeats closed |
+| [S2 whole-worker evidence/resource gate](mvp2_h300_worker_evidence.md) | Failed/partial portable envelope, actual byte/runtime/cohort binding and read-only resource/containment observation; execution closed |
+| [Resource lifecycle](mvp2_resource_lifecycle.md) | Qualified miniature scope, native ownership and bounded telemetry limitations |
+| [h215 consolidation](mvp2_h215_resource_consolidation.md) | Three pairs, observed parity and no causal performance claim |
+| [h300 pair acceptance](mvp2_h300_pair_acceptance.md) | One descriptive pair, not a replication campaign |
+| [h400 control acceptance](mvp2_h400_control_acceptance.md) | One completed control, full hierarchy and final-capacity quality distinction |
+
 ## Current v0.2 reference
 
 The nine-scenario campaign below follows the earlier PR25 bounded demonstration;
@@ -36,6 +57,11 @@ its 10% gap target and 28,800-second budget do not rewrite the older certificate
 | [English documentation review](english_documentation_review.md) | PR #26 scope and evidence isolation |
 
 ## Historical development and reporting tools
+
+Current S2-P1: [first-normal wrapper and maintainer runbook](mvp2_s2_first_normal.md),
+with [audited PR63 read-only envelope](evidence/s2-envelope-pr63/README.md).
+Only one separately released normal synthetic attempt is proposed; no native,
+production, adverse case or repeat follows automatically. PR #64 stays separate.
 
 The following documents retain earlier experiments and decisions. Observations
 belong to their original configurations, not automatically to v0.2. The earlier
