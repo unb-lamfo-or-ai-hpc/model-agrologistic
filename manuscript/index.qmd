@@ -1,6 +1,6 @@
 ---
 title: "Computational Scalability of Deterministic and Two-Stage Stochastic MILP Models for Grain-Storage Network Design and Hub Location"
-date: 2026-10-21
+date: 2026-10-23
 abstract: >-
   Grain-storage network design links infrastructure investment to seasonal,
   multi-product logistics. Increasing candidate populations and replicating
@@ -35,6 +35,16 @@ keywords:
   - high-performance computing
   - reproducibility
 ---
+
+::: {.callout-note title="Coauthor review snapshot — 23 October 2026"}
+
+This S6-A working revision is published for coauthor review, not journal
+submission or final acceptance. The eight warehouse-only scalability observations
+are complemented by the separately validated h215 W/D comparison below.
+h500/S5 evidence review and S6-B remain open; no new h500 terminal result is
+inferred. Appendices A–D retain their disclosed provenance and limitations.
+
+:::
 
 # Introduction
 
@@ -435,6 +445,8 @@ physical road path. The h500 map shows availability only.
 # Results
 
 {{< include scalar_results.qmd >}}
+
+{{< include wd_results.qmd >}}
 
 # Discussion
 

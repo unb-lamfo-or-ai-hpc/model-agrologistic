@@ -1,5 +1,25 @@
 # Model Agrologistic: agent working agreement
 
+## Review publication and terminal W/D handoff —23 October2026
+
+The maintainer supplies original D job2221443 evidence and requests autonomous
+audit/comparison/checkpoint, closure in PR126 if sufficient, develop/main sync,
+public latest S6-A REVIEW and a complete other-machine packet. Read the CURRENT
+PROJECT_STATE header and docs/mvp2_completion_handoff_20261023.md. This supersedes
+the old main/publication/Project01 transfer holds ONLY for this review snapshot.
+Preserve main's exclusive correction/history and every original certificate;
+qualify normal PR merges and all required checks, never weaken protection/force
+push. Pages approval is public coauthor review, not journal submission, final
+S6-B approval or new dataset rights. No new NPAD access/probe/job/repeat follows.
+Current W/D original-certificate replay passes both gaps/residuals/operational
+closure; no additional experiment is indispensable for the bounded h215 phase.
+Keep service deterioration, unchanged penalties and noncausal timing explicit.
+h500 original terminal transfer and SCIP decision remain open. This chat pauses
+until at least16Nov; no automation/cross-machine agent is scheduled. The next
+machine needs the researcher's NEW approved mandate, not an inferred continuation
+license. Preserve scientific code/scenarios/units/tolerances, S3/S4 cancellation,
+EVPI/VSS exclusion, Appendix A bytes and the GAMS-parity limitation.
+
 ## Approved complete operational D h215 pair —22 October2026
 
 PR125 merged with explicit authorization at789f30bf1b6d73e40d0d023819fdec44c5ae2163.

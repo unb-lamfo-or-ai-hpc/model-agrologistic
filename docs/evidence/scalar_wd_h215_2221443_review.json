@@ -1,0 +1,776 @@
+{
+  "schema_version": "scalar-wd-h215-terminal-comparison-v1",
+  "review_date": "2026-10-23",
+  "status": "D_pair_quality_target_met_and_W_D_phase_documentarily_closed",
+  "D_archive_sha256": "fa71bdfbd9ab73a1741de4304958ce3482c1c18cf4ed61ed257cc9153818796c",
+  "W_archive_sha256": "81890b546d720ad5999d11f44fd499337aad937e32773db39067796f73660534",
+  "D_source_commit": "5713a8909e6a590df8ba35d7510d2b6b01ec42d4",
+  "D_plan_sha256": "6d150f05bac584fdf3c1547edfab3d029c0b2fb629c5c23c899480a037aba694",
+  "D_job_id": "2221443",
+  "W_source_commit": "5f73871b6320da71e308e436f5cd780cdcfedae2",
+  "W_plan_sha256": "e9f9b26c91585fde271876a1dab6b51dcd63110b83e9600b3781165a66a7a722",
+  "W_job_id": "2217990",
+  "workbook_sha256": "40edb66585daca9cc393cab1f86bde6d4528a5f34b6afc57260cc1684396da4e",
+  "penalty_rates": {
+    "unmet": 90000,
+    "static": 45000,
+    "reception": 45000
+  },
+  "penalty_vector_sha256": "e0f93593659c35d14b85cdaddecbe020edb375376f5e30ae99b05bed876d276f",
+  "transfer": {
+    "members": 126,
+    "expanded_bytes": 91541614
+  },
+  "input_comparisons": {
+    "det": {
+      "added_direct_arcs": 592,
+      "added_flow_variables": 35520,
+      "automatic_follow_on_allowed": false,
+      "causal_runtime_comparison_admitted": false,
+      "common_arcs_identical": true,
+      "common_data_identical": true,
+      "d_execution_admitted": false,
+      "execution_admitted": false,
+      "h300_admitted": false,
+      "penalties_identical": true,
+      "repeats_admitted": false,
+      "resource_envelope_approved_for_d": false,
+      "w_repetition_admitted": false
+    },
+    "sto": {
+      "added_direct_arcs": 592,
+      "added_flow_variables": 319680,
+      "automatic_follow_on_allowed": false,
+      "causal_runtime_comparison_admitted": false,
+      "common_arcs_identical": true,
+      "common_data_identical": true,
+      "d_execution_admitted": false,
+      "execution_admitted": false,
+      "h300_admitted": false,
+      "penalties_identical": true,
+      "repeats_admitted": false,
+      "resource_envelope_approved_for_d": false,
+      "w_repetition_admitted": false
+    }
+  },
+  "records": {
+    "W": {
+      "det": {
+        "job_id": "2217990",
+        "case": "scalar_h215_det",
+        "objective": 11437342455619.393,
+        "bound": 11437249568809.732,
+        "common_gap": 8.121362984503373e-06,
+        "native_gap": 8.121362984503373e-06,
+        "native_status": "optimal",
+        "native_runtime_seconds": 122.51495814323425,
+        "economic_cost": 389810035387.6125,
+        "artificial_penalties": 11047532420231.775,
+        "classification": "validated_feasible",
+        "scalar_gap_target_met": true,
+        "timings": {
+          "artifact_export_seconds": 0.5122565813362598,
+          "data_read_seconds": 1.1632218956947327e-06,
+          "end_to_end_seconds": 174.72218361869454,
+          "independent_validation_seconds": 0.3513184851035476,
+          "model_build_seconds": 24.757106170989573,
+          "optimization_seconds": 123.27437520213425,
+          "result_extraction_seconds": 6.242774092592299,
+          "solve_sequence_wall_seconds": 155.47338422574103,
+          "solver_reported_runtime_seconds": 122.51495814323425
+        },
+        "diagnostics": {
+          "cost_components": {
+            "bulkification_fixed": 0.0,
+            "bulkification_variable": 231530000.0,
+            "candidate_capacity": 9260555000.0,
+            "emergency_reception": 2580316756292.8843,
+            "emergency_static": 3503016852897.434,
+            "expansion_fixed": 0.0,
+            "expansion_variable": 355816125.0,
+            "opening": 0.0,
+            "storage": 15001851730.4136,
+            "transport_dc": 214526981026.7521,
+            "transport_dd": 9609853312.355104,
+            "transport_oc": 0.0,
+            "transport_od": 140823448193.0917,
+            "unmet_demand": 4964198811041.457
+          },
+          "investment": {
+            "candidate_activations": 69,
+            "positive_candidate_capacity_count": 69,
+            "positive_expansion_count": 80,
+            "positive_bulk_capacity_count": 66,
+            "candidate_capacity": 7408444.0,
+            "expansion_capacity": 395351.25,
+            "bulk_capacity": 445250.0
+          },
+          "positive_flows_by_family": {
+            "OD": {
+              "raw_arc_tonnes": 1374420353.0847976,
+              "expected_arc_tonnes": 1374420353.0847976,
+              "positive_records": 7773
+            },
+            "DC": {
+              "raw_arc_tonnes": 1371457378.2968316,
+              "expected_arc_tonnes": 1371457378.2968316,
+              "positive_records": 10731
+            },
+            "DD": {
+              "raw_arc_tonnes": 167041802.96680126,
+              "expected_arc_tonnes": 167041802.96680126,
+              "positive_records": 3339
+            },
+            "OC": {
+              "raw_arc_tonnes": 0.0,
+              "expected_arc_tonnes": 0.0,
+              "positive_records": 0
+            }
+          },
+          "flow_scope": "OC and DC are destination arrivals; OD/DD are network-arc volumes, not additive delivered tonnes. Original records retain product/period/scenario.",
+          "physical_diagnostics": {
+            "domestic_service_level": 0.9186118440810916,
+            "total_unmet_demand": 55157764.56712728,
+            "emergency_static_capacity": 77844818.9532763,
+            "emergency_reception_capacity": 57340372.36206411,
+            "penalty_cost_share": 0.9659177788109254,
+            "peak_rss_mb": 5677.62890625
+          },
+          "matrix": {
+            "schema_version": "resource-matrix-v1",
+            "observations": [
+              {
+                "scope": "original",
+                "phase": "model_build",
+                "backend": "gurobipy",
+                "variables": 1562174.0,
+                "binary_variables": 307.0,
+                "integer_variables": 307.0,
+                "constraints": 74017.0,
+                "nonzeros": 5786346.0,
+                "general_constraints": 8280.0,
+                "coefficient_min": 1.0,
+                "coefficient_max": 307079.0,
+                "integer_count_semantics": "includes_binary"
+              },
+              {
+                "scope": "presolved_log",
+                "phase": "optimization",
+                "backend": "gurobipy",
+                "constraints": 67961,
+                "variables": 1352844,
+                "nonzeros": 5097514
+              }
+            ],
+            "qualification": "Missing fields are unavailable; no presolved model copy is created."
+          },
+          "resource_termination": {
+            "schema_version": "resource-termination-v1",
+            "execution_status": "optimal",
+            "exception_type": null,
+            "elapsed_seconds": 175.13349901977926,
+            "sampler_work_seconds": 35.23243426065892,
+            "samples": {
+              "resource": 36,
+              "progress": 16
+            },
+            "dropped_samples": {
+              "resource": 0,
+              "progress": 0
+            },
+            "inspection_errors": [],
+            "quality_acceptance": "requires_independent_validation_and_scalar_bound_gap_review"
+          },
+          "sampled_memory_maxima_by_original_phase": {
+            "initialization": {
+              "process_tree_rss_bytes": 182710272.0,
+              "cgroup_current_bytes": 136101888.0
+            },
+            "data_read": {
+              "process_tree_rss_bytes": 182882304.0,
+              "cgroup_current_bytes": 136314880.0
+            },
+            "model_build": {
+              "process_tree_rss_bytes": 182882304.0,
+              "cgroup_current_bytes": 136298496.0
+            },
+            "optimization": {
+              "process_tree_rss_bytes": 5953425408.0,
+              "cgroup_current_bytes": 5919338496.0,
+              "solver_memory_bytes": 2491161168.0
+            },
+            "result_extraction": {
+              "process_tree_rss_bytes": 3226148864.0,
+              "cgroup_current_bytes": 3187081216.0
+            },
+            "native_model_disposal": {
+              "process_tree_rss_bytes": 2742444032.0,
+              "cgroup_current_bytes": 2702434304.0
+            },
+            "independent_validation": {
+              "process_tree_rss_bytes": 1674792960.0,
+              "cgroup_current_bytes": 1633255424.0
+            },
+            "artifact_export": {
+              "process_tree_rss_bytes": 1674272768.0,
+              "cgroup_current_bytes": 1641807872.0
+            }
+          },
+          "resource_scope": "Sampled application RSS, native solver memory, cgroup and Slurm MaxRSS remain separate; no inferred peak or causal speedup."
+        },
+        "validation_sha256": "81e9cc22f18a1c65b7d67bbb89362b0f49f6ebdb22f006cd71f9565499447c78",
+        "validation_absolute_tolerance": 1e-05,
+        "validation_relative_tolerance": 1e-08,
+        "warehouse_selection_sha256": "4d2045d9d279f1d8290614c9e48a05c2558cbf0cf3803a3e2ddd11abe3b02b51",
+        "penalty_vector_sha256": "e0f93593659c35d14b85cdaddecbe020edb375376f5e30ae99b05bed876d276f"
+      },
+      "sto": {
+        "job_id": "2217990",
+        "case": "scalar_h215_sto",
+        "objective": 13071396953900.23,
+        "bound": 12974647770396.824,
+        "common_gap": 0.007401594783221568,
+        "native_gap": 0.007401594783221568,
+        "native_status": "optimal",
+        "native_runtime_seconds": 2445.5179710388184,
+        "economic_cost": 393902480087.52356,
+        "artificial_penalties": 12677494473812.705,
+        "classification": "validated_feasible",
+        "scalar_gap_target_met": true,
+        "timings": {
+          "artifact_export_seconds": 4.3695851899683475,
+          "data_read_seconds": 9.872019290924072e-07,
+          "end_to_end_seconds": 2773.0708059510216,
+          "independent_validation_seconds": 2.6451273169368505,
+          "model_build_seconds": 238.8591228602454,
+          "optimization_seconds": 2452.270100120455,
+          "result_extraction_seconds": 48.79870230332017,
+          "solve_sequence_wall_seconds": 2747.442168704234,
+          "solver_reported_runtime_seconds": 2445.5179710388184
+        },
+        "diagnostics": {
+          "cost_components": {
+            "bulkification_fixed": 0.0,
+            "bulkification_variable": 240110000.0,
+            "candidate_capacity": 9226652347.166252,
+            "emergency_reception": 3052943766600.281,
+            "emergency_static": 4908109574405.175,
+            "expansion_fixed": 0.0,
+            "expansion_variable": 352103625.0,
+            "opening": 0.0,
+            "storage": 16945543324.641674,
+            "transport_dc": 214564108889.04315,
+            "transport_dd": 10389293910.241735,
+            "transport_oc": 0.0,
+            "transport_od": 142184667991.43076,
+            "unmet_demand": 4716441132807.25
+          },
+          "investment": {
+            "candidate_activations": 69,
+            "positive_candidate_capacity_count": 69,
+            "positive_expansion_count": 75,
+            "positive_bulk_capacity_count": 71,
+            "candidate_capacity": 7381321.8777330015,
+            "expansion_capacity": 391226.25,
+            "bulk_capacity": 461750.0
+          },
+          "positive_flows_by_family": {
+            "OD": {
+              "raw_arc_tonnes": 12369783177.763155,
+              "expected_arc_tonnes": 1374420353.084812,
+              "positive_records": 68943
+            },
+            "DC": {
+              "raw_arc_tonnes": 12343991745.445772,
+              "expected_arc_tonnes": 1371554638.3828323,
+              "positive_records": 94595
+            },
+            "DD": {
+              "raw_arc_tonnes": 1486931674.982512,
+              "expected_arc_tonnes": 165214630.55361086,
+              "positive_records": 30950
+            },
+            "OC": {
+              "raw_arc_tonnes": 0.0,
+              "expected_arc_tonnes": 0.0,
+              "positive_records": 0
+            }
+          },
+          "flow_scope": "OC and DC are destination arrivals; OD/DD are network-arc volumes, not additive delivered tonnes. Original records retain product/period/scenario.",
+          "physical_diagnostics": {
+            "domestic_service_level": 0.9226738370257308,
+            "total_unmet_demand": 52404901.4756365,
+            "emergency_static_capacity": 109069101.65344787,
+            "emergency_reception_capacity": 67843194.81333904,
+            "penalty_cost_share": 0.9698653111464118,
+            "peak_rss_mb": 44168.125
+          },
+          "matrix": {
+            "schema_version": "resource-matrix-v1",
+            "observations": [
+              {
+                "scope": "original",
+                "phase": "model_build",
+                "backend": "gurobipy",
+                "variables": 14054654.0,
+                "binary_variables": 307.0,
+                "integer_variables": 307.0,
+                "constraints": 661057.0,
+                "nonzeros": 52068826.0,
+                "general_constraints": 74520.0,
+                "coefficient_min": 1.0,
+                "coefficient_max": 307079.0,
+                "integer_count_semantics": "includes_binary"
+              },
+              {
+                "scope": "presolved_log",
+                "phase": "optimization",
+                "backend": "gurobipy",
+                "constraints": 610153,
+                "variables": 12170562,
+                "nonzeros": 45867962
+              }
+            ],
+            "qualification": "Missing fields are unavailable; no presolved model copy is created."
+          },
+          "resource_termination": {
+            "schema_version": "resource-termination-v1",
+            "execution_status": "optimal",
+            "exception_type": null,
+            "elapsed_seconds": 2775.139236350544,
+            "sampler_work_seconds": 298.3521185060963,
+            "samples": {
+              "resource": 500,
+              "progress": 54
+            },
+            "dropped_samples": {
+              "resource": 0,
+              "progress": 0
+            },
+            "inspection_errors": [],
+            "quality_acceptance": "requires_independent_validation_and_scalar_bound_gap_review"
+          },
+          "sampled_memory_maxima_by_original_phase": {
+            "initialization": {
+              "process_tree_rss_bytes": 178237440.0,
+              "cgroup_current_bytes": 131317760.0
+            },
+            "data_read": {
+              "process_tree_rss_bytes": 179388416.0,
+              "cgroup_current_bytes": 132386816.0
+            },
+            "model_build": {
+              "process_tree_rss_bytes": 11726512128.0,
+              "cgroup_current_bytes": 11702755328.0
+            },
+            "optimization": {
+              "process_tree_rss_bytes": 45663195136.0,
+              "cgroup_current_bytes": 45706158080.0,
+              "solver_memory_bytes": 18823833760.0
+            },
+            "result_extraction": {
+              "process_tree_rss_bytes": 19718467584.0,
+              "cgroup_current_bytes": 19713073152.0
+            },
+            "native_model_disposal": {
+              "process_tree_rss_bytes": 14193033216.0,
+              "cgroup_current_bytes": 14180749312.0
+            },
+            "independent_validation": {
+              "process_tree_rss_bytes": 1770721280.0,
+              "cgroup_current_bytes": 1724858368.0
+            },
+            "artifact_export": {
+              "process_tree_rss_bytes": 1840246784.0,
+              "cgroup_current_bytes": 1968488448.0
+            }
+          },
+          "resource_scope": "Sampled application RSS, native solver memory, cgroup and Slurm MaxRSS remain separate; no inferred peak or causal speedup."
+        },
+        "validation_sha256": "d130fdb7abb485bf0adc1254d4e518463c5a7ef5e1f644db140e94be4d6de0f9",
+        "validation_absolute_tolerance": 1e-05,
+        "validation_relative_tolerance": 1e-08,
+        "warehouse_selection_sha256": "4d2045d9d279f1d8290614c9e48a05c2558cbf0cf3803a3e2ddd11abe3b02b51",
+        "penalty_vector_sha256": "e0f93593659c35d14b85cdaddecbe020edb375376f5e30ae99b05bed876d276f"
+      }
+    },
+    "D": {
+      "det": {
+        "job_id": "2221443",
+        "case": "scalar_h215_d_det",
+        "objective": 7340491818111.279,
+        "bound": 7299940943909.026,
+        "common_gap": 0.005524272106972627,
+        "native_gap": 0.005524272106972627,
+        "native_status": "optimal",
+        "native_runtime_seconds": 103.92876100540161,
+        "economic_cost": 338714514632.45483,
+        "artificial_penalties": 7001777303478.818,
+        "classification": "validated_feasible",
+        "scalar_gap_target_met": true,
+        "timings": {
+          "artifact_export_seconds": 0.4833329590037465,
+          "data_read_seconds": 1.1976808309555054e-06,
+          "end_to_end_seconds": 156.58943191729486,
+          "independent_validation_seconds": 0.30408216547220945,
+          "model_build_seconds": 25.03636780101806,
+          "optimization_seconds": 104.70598823949695,
+          "result_extraction_seconds": 5.524877600371838,
+          "solve_sequence_wall_seconds": 136.51558021456003,
+          "solver_reported_runtime_seconds": 103.92876100540161
+        },
+        "diagnostics": {
+          "cost_components": {
+            "bulkification_fixed": 0.0,
+            "bulkification_variable": 8949200.0,
+            "candidate_capacity": 9201315376.89366,
+            "emergency_reception": 2770875000.000006,
+            "emergency_static": 836221710405.6266,
+            "expansion_fixed": 0.0,
+            "expansion_variable": 452125125.0,
+            "opening": 0.0,
+            "storage": 9660473778.601637,
+            "transport_dc": 43875374551.78423,
+            "transport_dd": 8348426617.1974535,
+            "transport_oc": 234546570140.47235,
+            "transport_od": 32621279842.505466,
+            "unmet_demand": 6162784718073.191
+          },
+          "investment": {
+            "candidate_activations": 69,
+            "positive_candidate_capacity_count": 69,
+            "positive_expansion_count": 142,
+            "positive_bulk_capacity_count": 4,
+            "candidate_capacity": 7361052.301514927,
+            "expansion_capacity": 502361.25,
+            "bulk_capacity": 17210.0
+          },
+          "positive_flows_by_family": {
+            "OD": {
+              "raw_arc_tonnes": 246625348.23994666,
+              "expected_arc_tonnes": 246625348.23994666,
+              "positive_records": 4080
+            },
+            "DC": {
+              "raw_arc_tonnes": 244772691.52542207,
+              "expected_arc_tonnes": 244772691.52542207,
+              "positive_records": 5393
+            },
+            "DD": {
+              "raw_arc_tonnes": 105637499.20932178,
+              "expected_arc_tonnes": 105637499.20932178,
+              "positive_records": 4654
+            },
+            "OC": {
+              "raw_arc_tonnes": 1127795004.8448505,
+              "expected_arc_tonnes": 1127795004.8448505,
+              "positive_records": 2586
+            }
+          },
+          "flow_scope": "OC and DC are destination arrivals; OD/DD are network-arc volumes, not additive delivered tonnes. Original records retain product/period/scenario.",
+          "physical_diagnostics": {
+            "domestic_service_level": 0.8989610000281233,
+            "total_unmet_demand": 68475385.75636877,
+            "emergency_static_capacity": 18582704.675680596,
+            "emergency_reception_capacity": 61575.00000000014,
+            "penalty_cost_share": 0.953856700201376,
+            "peak_rss_mb": 5903.75
+          },
+          "matrix": {
+            "schema_version": "resource-matrix-v1",
+            "observations": [
+              {
+                "scope": "original",
+                "phase": "model_build",
+                "backend": "gurobipy",
+                "variables": 1597694.0,
+                "binary_variables": 307.0,
+                "integer_variables": 307.0,
+                "constraints": 74017.0,
+                "nonzeros": 5857386.0,
+                "general_constraints": 8280.0,
+                "coefficient_min": 1.0,
+                "coefficient_max": 307079.0,
+                "integer_count_semantics": "includes_binary"
+              },
+              {
+                "scope": "presolved_log",
+                "phase": "optimization",
+                "backend": "gurobipy",
+                "constraints": 68045,
+                "variables": 1363049,
+                "nonzeros": 5118519
+              }
+            ],
+            "qualification": "Missing fields are unavailable; no presolved model copy is created."
+          },
+          "resource_termination": {
+            "schema_version": "resource-termination-v1",
+            "execution_status": "optimal",
+            "exception_type": null,
+            "elapsed_seconds": 156.9530967604369,
+            "sampler_work_seconds": 36.8063987409696,
+            "samples": {
+              "resource": 32,
+              "progress": 16
+            },
+            "dropped_samples": {
+              "resource": 0,
+              "progress": 0
+            },
+            "inspection_errors": [],
+            "quality_acceptance": "requires_independent_validation_and_scalar_bound_gap_review"
+          },
+          "sampled_memory_maxima_by_original_phase": {
+            "initialization": {
+              "process_tree_rss_bytes": 201084928.0,
+              "cgroup_current_bytes": 152530944.0
+            },
+            "data_read": {
+              "process_tree_rss_bytes": 201211904.0,
+              "cgroup_current_bytes": 152784896.0
+            },
+            "model_build": {
+              "process_tree_rss_bytes": 201211904.0,
+              "cgroup_current_bytes": 152338432.0
+            },
+            "optimization": {
+              "process_tree_rss_bytes": 6190530560.0,
+              "cgroup_current_bytes": 6151188480.0,
+              "solver_memory_bytes": 2514121016.0
+            },
+            "result_extraction": {
+              "process_tree_rss_bytes": 3274952704.0,
+              "cgroup_current_bytes": 3230875648.0
+            },
+            "native_model_disposal": {
+              "process_tree_rss_bytes": 2768809984.0,
+              "cgroup_current_bytes": 2723721216.0
+            },
+            "independent_validation": {
+              "process_tree_rss_bytes": 1620377600.0,
+              "cgroup_current_bytes": 1574899712.0
+            },
+            "artifact_export": {
+              "process_tree_rss_bytes": 1617973248.0,
+              "cgroup_current_bytes": 1579192320.0
+            }
+          },
+          "resource_scope": "Sampled application RSS, native solver memory, cgroup and Slurm MaxRSS remain separate; no inferred peak or causal speedup."
+        },
+        "validation_sha256": "ab0c707d463cd79a23dcd2752fc9351d974c17dfafe8059ceec6ee04f8860b70",
+        "validation_absolute_tolerance": 1e-05,
+        "validation_relative_tolerance": 1e-08,
+        "warehouse_selection_sha256": "4d2045d9d279f1d8290614c9e48a05c2558cbf0cf3803a3e2ddd11abe3b02b51",
+        "penalty_vector_sha256": "e0f93593659c35d14b85cdaddecbe020edb375376f5e30ae99b05bed876d276f"
+      },
+      "sto": {
+        "job_id": "2221443",
+        "case": "scalar_h215_d_sto",
+        "objective": 7355002213066.796,
+        "bound": 7309127710229.105,
+        "common_gap": 0.0062371840971292185,
+        "native_gap": 0.0062371840971292185,
+        "native_status": "optimal",
+        "native_runtime_seconds": 2582.5900778770447,
+        "economic_cost": 340109320404.3185,
+        "artificial_penalties": 7014892892662.477,
+        "classification": "validated_feasible",
+        "scalar_gap_target_met": true,
+        "timings": {
+          "artifact_export_seconds": 3.413276365958154,
+          "data_read_seconds": 8.903443813323975e-07,
+          "end_to_end_seconds": 2918.128668796271,
+          "independent_validation_seconds": 2.2827215483412147,
+          "model_build_seconds": 245.4644121574238,
+          "optimization_seconds": 2589.348796458915,
+          "result_extraction_seconds": 50.80846268776804,
+          "solve_sequence_wall_seconds": 2893.152863250114,
+          "solver_reported_runtime_seconds": 2582.5900778770447
+        },
+        "diagnostics": {
+          "cost_components": {
+            "bulkification_fixed": 0.0,
+            "bulkification_variable": 8949200.0,
+            "candidate_capacity": 9227029328.555492,
+            "emergency_reception": 4918247143.795521,
+            "emergency_static": 823623941448.1406,
+            "expansion_fixed": 0.0,
+            "expansion_variable": 452125125.0,
+            "opening": 0.0,
+            "storage": 9732289837.002155,
+            "transport_dc": 44771900839.84313,
+            "transport_dd": 8690018459.476841,
+            "transport_oc": 233982082400.95572,
+            "transport_od": 33244925213.48513,
+            "unmet_demand": 6186350704070.54
+          },
+          "investment": {
+            "candidate_activations": 69,
+            "positive_candidate_capacity_count": 69,
+            "positive_expansion_count": 142,
+            "positive_bulk_capacity_count": 4,
+            "candidate_capacity": 7381623.462844394,
+            "expansion_capacity": 502361.25,
+            "bulk_capacity": 17210.0
+          },
+          "positive_flows_by_family": {
+            "OD": {
+              "raw_arc_tonnes": 2263940815.0485573,
+              "expected_arc_tonnes": 251548979.44983938,
+              "positive_records": 36698
+            },
+            "DC": {
+              "raw_arc_tonnes": 2247408910.735544,
+              "expected_arc_tonnes": 249712101.1928383,
+              "positive_records": 49237
+            },
+            "DD": {
+              "raw_arc_tonnes": 835739932.9291552,
+              "expected_arc_tonnes": 92859992.5476824,
+              "positive_records": 42249
+            },
+            "OC": {
+              "raw_arc_tonnes": 10105842362.714552,
+              "expected_arc_tonnes": 1122871373.6349568,
+              "positive_records": 23143
+            }
+          },
+          "flow_scope": "OC and DC are destination arrivals; OD/DD are network-arc volumes, not additive delivered tonnes. Original records retain product/period/scenario.",
+          "physical_diagnostics": {
+            "domestic_service_level": 0.8985746351350664,
+            "total_unmet_demand": 68737230.04522865,
+            "emergency_static_capacity": 18302754.254403137,
+            "emergency_reception_capacity": 109294.38097323372,
+            "penalty_cost_share": 0.9537580940764252,
+            "peak_rss_mb": 44667.80078125
+          },
+          "matrix": {
+            "schema_version": "resource-matrix-v1",
+            "observations": [
+              {
+                "scope": "original",
+                "phase": "model_build",
+                "backend": "gurobipy",
+                "variables": 14374334.0,
+                "binary_variables": 307.0,
+                "integer_variables": 307.0,
+                "constraints": 661057.0,
+                "nonzeros": 52708186.0,
+                "general_constraints": 74520.0,
+                "coefficient_min": 1.0,
+                "coefficient_max": 307079.0,
+                "integer_count_semantics": "includes_binary"
+              },
+              {
+                "scope": "presolved_log",
+                "phase": "optimization",
+                "backend": "gurobipy",
+                "constraints": 610969,
+                "variables": 12266664,
+                "nonzeros": 46072190
+              }
+            ],
+            "qualification": "Missing fields are unavailable; no presolved model copy is created."
+          },
+          "resource_termination": {
+            "schema_version": "resource-termination-v1",
+            "execution_status": "optimal",
+            "exception_type": null,
+            "elapsed_seconds": 2919.755121478811,
+            "sampler_work_seconds": 316.9555233065039,
+            "samples": {
+              "resource": 526,
+              "progress": 55
+            },
+            "dropped_samples": {
+              "resource": 0,
+              "progress": 0
+            },
+            "inspection_errors": [],
+            "quality_acceptance": "requires_independent_validation_and_scalar_bound_gap_review"
+          },
+          "sampled_memory_maxima_by_original_phase": {
+            "initialization": {
+              "process_tree_rss_bytes": 191361024.0,
+              "cgroup_current_bytes": 143491072.0
+            },
+            "data_read": {
+              "process_tree_rss_bytes": 191459328.0,
+              "cgroup_current_bytes": 144035840.0
+            },
+            "model_build": {
+              "process_tree_rss_bytes": 12023762944.0,
+              "cgroup_current_bytes": 12002365440.0
+            },
+            "optimization": {
+              "process_tree_rss_bytes": 45993050112.0,
+              "cgroup_current_bytes": 46036029440.0,
+              "solver_memory_bytes": 19195399880.0
+            },
+            "result_extraction": {
+              "process_tree_rss_bytes": 21263241216.0,
+              "cgroup_current_bytes": 21257392128.0
+            },
+            "native_model_disposal": {
+              "process_tree_rss_bytes": 21322547200.0,
+              "cgroup_current_bytes": 15630958592.0
+            },
+            "independent_validation": {
+              "process_tree_rss_bytes": 3021250560.0,
+              "cgroup_current_bytes": 2979647488.0
+            },
+            "artifact_export": {
+              "process_tree_rss_bytes": 3037372416.0,
+              "cgroup_current_bytes": 3070996480.0
+            }
+          },
+          "resource_scope": "Sampled application RSS, native solver memory, cgroup and Slurm MaxRSS remain separate; no inferred peak or causal speedup."
+        },
+        "validation_sha256": "4627d220d621855fb3eeb6ce97e5da8ed623d8f1bf6bf8da480835939b1d6734",
+        "validation_absolute_tolerance": 1e-05,
+        "validation_relative_tolerance": 1e-08,
+        "warehouse_selection_sha256": "4d2045d9d279f1d8290614c9e48a05c2558cbf0cf3803a3e2ddd11abe3b02b51",
+        "penalty_vector_sha256": "e0f93593659c35d14b85cdaddecbe020edb375376f5e30ae99b05bed876d276f"
+      }
+    }
+  },
+  "comparisons": {
+    "det": {
+      "incumbent_penalized_reduction_percent": 35.81995252310776,
+      "returned_economic_subtotal_reduction_percent": 13.107800240276058,
+      "strict_penalized_improvement_certified_by_disjoint_intervals": true,
+      "exact_penalized_optimum_reduction_percent_interval": [
+        35.819431289412705,
+        36.17450056920853
+      ],
+      "direct_share_of_expected_destination_arrivals": 0.8216680370864632,
+      "native_runtime_ratio_D_over_W_observed_not_speedup": 0.848294466083862,
+      "no_causal_runtime_claim": true
+    },
+    "sto": {
+      "incumbent_penalized_reduction_percent": 43.732087404229446,
+      "returned_economic_subtotal_reduction_percent": 13.65646635970722,
+      "strict_penalized_improvement_certified_by_disjoint_intervals": true,
+      "exact_penalized_optimum_reduction_percent_interval": [
+        43.312509570794724,
+        44.083040733850446
+      ],
+      "direct_share_of_expected_destination_arrivals": 0.8180714646705424,
+      "native_runtime_ratio_D_over_W_observed_not_speedup": 1.0560503371725378,
+      "no_causal_runtime_claim": true
+    }
+  },
+  "qualification": "Independent replay of original archived validation, input comparability, scalar bound/gap and operational receipts; not a fresh private-input residual re-solve or optimizer call.",
+  "remaining_experiment_required_for_this_bounded_W_D_phase": false,
+  "limitations": [
+    "Historical W control; no contemporaneous replication or causal runtime effect",
+    "Native optimal means the configured MIPGap, not exact zero-gap optimality",
+    "Economic-subtotal changes are returned-plan comparisons, not economic-only optimality",
+    "Permitted slack and service degradation must remain explicit",
+    "No claim about stochastic information value, production isolation or unique hub selection"
+  ],
+  "execution_admitted": false,
+  "repeats_admitted": false,
+  "automatic_follow_on_allowed": false
+}

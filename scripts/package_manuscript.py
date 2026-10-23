@@ -54,6 +54,9 @@ def package(output: Path, *, root: Path = ROOT) -> None:
     for name, path in {
         "appendix_a_original.pdf": supplement / "appendix_a_original.pdf",
         "scalar_evidence.json": manuscript / "scalar_evidence.json",
+        "scalar_wd_h215_2221443_review.json": (
+            root / "docs/evidence/scalar_wd_h215_2221443_review.json"
+        ),
         "s6a_assets.json": manuscript / "figures/s6a_assets.json",
     }.items():
         if path.is_file():

@@ -1,5 +1,14 @@
 # Scientific manuscript — integrated scalar revision
 
+23October current authority: PR120 is merged; the researcher explicitly requests
+the current S6-A as a public coauthor REVIEW snapshot after normal develop/main
+reconciliation. This supersedes the older draft/publication holds below, not
+final approval or journal submission. The separate h215 W/D Results section
+adds two accepted D observations, keeps the original eight W scaling observations
+unchanged and reports lower penalized cost BUT worse service. S5/h500 terminal
+evidence, further coauthor rounds and S6-B remain open. Check pages_approval.json
+and the actual deployment receipt; CI/merge alone is not publication.
+
 The approved article is **Computational Scalability of Deterministic and
 Two-Stage Stochastic MILP Models for Grain-Storage Network Design and Hub
 Location**. PR120 implements the researcher's final21October mandate on the

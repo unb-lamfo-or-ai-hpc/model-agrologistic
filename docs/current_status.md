@@ -1,5 +1,16 @@
 # Dated research status: 22 October 2026
 
+23October CURRENT: D job2221443 original checksum/inventory/certificate replay
+passes both1% targets, original residuals and operational closure. The bounded
+[W/D phase](mvp2_scalar_wd_h215_results.md) closes without new jobs. D reduces
+penalized objective but worsens domestic service; no causal speedup. The
+researcher now authorizes review-only main/develop sync and Pages, preserving
+exclusive histories/protection. Actual deployment receipts are in the final
+handoff manifest/public PR checkpoint. [Current plan](mvp2_completion_handoff_20261023.md)
+and [restart guide](RESUME_MVP2_20261023.md) supersede older holds below. S5/h500,
+the SCIP decision, coauthor revisions and S6-B remain open. This chat is inactive
+until at least16Nov; no automation, new budget or experimental permission.
+
 Subsequent decision: PR125 merged at789f30bf…; its D DET->STO envelope is now
 approved (14h/24logicalCPU/192GiB/Threads4/global14400s per arm/1GiB transfer).
 Prepare/qualify the [complete operational package](mvp2_scalar_wd_h215_operational.md),

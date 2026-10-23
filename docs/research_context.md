@@ -1,5 +1,14 @@
 # Research context and portable handoff
 
+23October CURRENT: [updated continuation plan](mvp2_completion_handoff_20261023.md),
+[new-machine guide](RESUME_MVP2_20261023.md) and
+[Project01/chat01.01 prompt](PROMPT_PROJETO01_CHAT0101_20261023.md) supersede dated
+holds below. D h215 originals are accepted; bounded W/D closure needs no new
+solve, while h500/SCIP/S6-A corrections/S6-B remain separate. Review publication
+and main/develop sync are now explicitly requested, not final submission.
+This chat pauses until at least16Nov; another machine needs a new approved
+mandate and verified source/evidence/deployment manifest, not this history alone.
+
 22October resumed revision supersedes the editing hold below: same draft PR120,
 expanded implementation/GAMS/data-provenance Appendices C/D; independent W/D
 documentary audit PR124. Read [current scope](s6a_20261022/mandate_and_delivery.md).
