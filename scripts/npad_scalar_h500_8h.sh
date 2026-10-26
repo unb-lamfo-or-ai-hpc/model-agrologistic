@@ -11,6 +11,11 @@ PY=${MVP2_H500_PYTHON:-/home/vrrcelestino/venv313/bin/python}
 [[ "$BASE" = /* && -d "$BASE" && -x "$PY" && -z ${SLURM_JOB_ID:-} ]] || {
   echo 'Existing audit base/Python and login context required' >&2; exit 2;
 }
+BASE=$(readlink -f -- "$BASE")
+NPAD_HOME=$(readlink -f -- /home/vrrcelestino)
+[[ "${BASE%/*}" = "$NPAD_HOME" && "${BASE##*/}" = model-agrologistic* && "${BASE##*/}" != model-agrologistic ]] || {
+  echo 'Use an approved model-agrologistic output directory, never the home root or preserved input checkout' >&2; exit 2;
+}
 export PYTHONNOUSERSITE=1 PYTHONDONTWRITEBYTECODE=1
 export OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1
 CLAIM="$BASE/.mvp2-scalar-h500-8h-v1"
@@ -19,14 +24,15 @@ trap 'code=$?; printf "DRIVER_EXIT=%s\nPRESERVE_CLAIM=%s\nPRESERVE_BOOTSTRAP=%s\
 [[ ! -L "$CLAIM" ]] || { echo 'Claim link refused; preserve it' >&2; exit 2; }
 if [[ -e "$CLAIM" ]]; then
   [[ -d "$CLAIM" ]] || { echo 'Existing non-directory claim; preserve it' >&2; exit 2; }
+  [[ "$ACTION" != start ]] || {
+    echo 'Existing h500 claim: inspect its original receipts; no submission or automatic collection' >&2; exit 2;
+  }
   SRC=$("$PY" -B -I -c 'import hashlib,json,pathlib,sys; c=pathlib.Path(sys.argv[1]); p=json.loads((c/"plan.json").read_bytes()); raw=(c/"source.json").read_bytes(); i=json.loads(raw); assert hashlib.sha256(raw).hexdigest()==p["source_inventory_sha256"] and p["source_commit"]==sys.argv[2]==i["source_commit"]; n=pathlib.Path(p["source_root"]); assert n.is_relative_to(c.parent) and n.name=="source" and n.parent.name.startswith("scalar-h500-8h-driver-") and all((n/k).is_file() and not (n/k).is_symlink() and hashlib.sha256((n/k).read_bytes()).hexdigest()==v for k,v in i["files"].items()); print(n)' "$CLAIM" "$SOURCE_SHA")
-  if [[ "$ACTION" = start ]]; then
-    echo 'Existing consumed h500 claim: collect only; never submit again'
-    ACTION=collect
-  fi
 else
   case "$ACTION" in status|wait|collect) echo 'Claim absent; no job or terminal collection exists' >&2; exit 2;; esac
   DRIVER=$(mktemp -d "$BASE/scalar-h500-8h-driver-XXXXXXXX")
+  mkdir -p "$DRIVER/tmp" "$DRIVER/cache"
+  export TMPDIR="$DRIVER/tmp" XDG_CACHE_HOME="$DRIVER/cache" MPLCONFIGDIR="$DRIVER/cache/matplotlib"
   SRC="$DRIVER/source"
   printf 'PRESERVE_BOOTSTRAP=%s\n' "$DRIVER"
   git -c core.autocrlf=false clone --no-checkout https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic.git "$SRC"
@@ -45,7 +51,8 @@ fi
 ARGS=("$ACTION" --claim "$CLAIM" --source-sha "$SOURCE_SHA")
 if [[ "$ACTION" = start ]]; then
   INPUT=/home/vrrcelestino/model-agrologistic/data/processed
-  ARGS+=(--one-reviewed-h500 --workbook "$INPUT/nine_population_osrm_v1/warehouses_500/model_input.xlsx" --materialization-path "$INPUT/nine_population_osrm_v1/warehouses_500/osrm_materialization_audit.json" --population "$INPUT/warehouse_population_v020/warehouse_population_manifest.json" --order "$INPUT/warehouse_population_v020/warehouse_population_order.csv" --predecessor "$BASE/.mvp2-scalar-h400-8h-v1/scalar-h400-8h-evidence.tar.gz")
+  PREDECESSOR=${MVP2_H500_PREDECESSOR:-"$BASE/.mvp2-scalar-h400-8h-v1/scalar-h400-8h-evidence.tar.gz"}
+  ARGS+=(--one-reviewed-h500 --workbook "$INPUT/nine_population_osrm_v1/warehouses_500/model_input.xlsx" --materialization-path "$INPUT/nine_population_osrm_v1/warehouses_500/osrm_materialization_audit.json" --population "$INPUT/warehouse_population_v020/warehouse_population_manifest.json" --order "$INPUT/warehouse_population_v020/warehouse_population_order.csv" --predecessor "$PREDECESSOR")
 elif [[ "$ACTION" = audit ]]; then
   ARGS+=(--archive "${MVP2_H500_ARCHIVE:?Select evidence archive}" --sha256 "${MVP2_H500_SHA256:?Select external checksum}")
 fi

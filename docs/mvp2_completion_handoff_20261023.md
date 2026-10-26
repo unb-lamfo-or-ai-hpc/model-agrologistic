@@ -1,5 +1,15 @@
 # MVP2 continuation and completion plan —23 October2026
 
+## Current correction 26 October 2026
+
+The researcher confirms that h500 has not been executed. Earlier job2220382/
+RUNNING/terminal-collection statements below are superseded documentary history,
+not verified execution or permission to reuse a claim. Use
+[the current resumption package](mvp2_resume_h500_20261026.md) for active scope,
+the five-PR completion path and the manual input/claim inspection. Development is
+on GitHub; the local clone is untouched. All NPAD interaction is manual and all
+transfers use MobaXterm. No h500 archive can be requested before an actual run.
+
 This is the current portable planning view. Earlier22October holds/forecasts
 remain dated history. Latest authority: accept/review D evidence, close the
 bounded PR126 phase if sufficient, synchronize develop/main while preserving

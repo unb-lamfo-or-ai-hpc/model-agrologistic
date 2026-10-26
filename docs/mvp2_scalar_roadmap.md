@@ -1,5 +1,15 @@
 # Scalar MVP2 roadmap — 19 October 2026
 
+## Current correction 26 October 2026
+
+The researcher confirms that h500 has not been executed. Earlier job2220382/
+RUNNING/terminal-collection statements below are superseded documentary history,
+not verified execution or permission to reuse a claim. Use
+[the current resumption package](mvp2_resume_h500_20261026.md) for active scope,
+the five-PR completion path and the manual input/claim inspection. Development is
+on GitHub; the local clone is untouched. All NPAD interaction is manual and all
+transfers use MobaXterm. No h500 archive can be requested before an actual run.
+
 23October CURRENT: see [the complete revised plan](mvp2_completion_handoff_20261023.md).
 The bounded h215 W/D phase is accepted and closed on original D job2221443
 receipts plus historical W; no further experiment is indispensable. S5/h500

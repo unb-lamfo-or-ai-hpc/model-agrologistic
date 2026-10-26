@@ -1,5 +1,42 @@
 # Model Agrologistic — MVP 2.0 checkpoint
 
+### CURRENT resumption and corrected h500 state 26 October 2026
+
+The researcher's direct correction supersedes every older h500 RUNNING/terminal-
+transfer assertion below: **h500 has not been executed**. No h500 result or
+terminal archive exists. job2220382/source fce341df/plan/claim references remain
+dated, unverified documentary claims; they do not establish a consumed claim.
+Keep them for reconciliation, not as commands to collect an assumed running job.
+
+The researcher now authorizes preparation of one complete resumption/h500
+requalification PR, developing through a GitHub branch from develop. The local
+clone is not a development worktree; no new local clone/environment/install.
+The Temp Codex directory remains temporary-only. Human-only NPAD CLI and
+MobaXterm transfer apply to every interaction. New NPAD files stay below the
+audit project or another dedicated model-agrologistic-prefixed sibling; no
+home-root output or changes to the preserved input checkout.
+
+Accepted evidence remains TEN scalar observations: h215 W DET/STO, five h300 W
+STO thread observations, h400 W STO and two h215 D observations. No repeat is
+needed for their bounded acceptance. h500 is a prospective first observation.
+SCIP/h215 still needs the separate scientific decision. S3/S4 remain cancelled;
+EVPI/VSS excluded; penalties90000/45000/45000, original1e-5/1e-8 tolerances,
+scenarios/units/source certificates stay fixed. GAMS parity remains unperformed.
+
+Base main/develop at preparation: b53b87043f898f2af11dba3f79f23f43738ad2df.
+The integrated h500 package is reused; this delivery confines wrapper/CLI
+outputs, refuses an existing claim on start instead of auto-collecting, and
+qualifies focused/related/full existing CI without NPAD access. Full final-head
+results and pinned source/wrapper checksums belong to the PR's qualification
+record; no pass/Ready/merge/execution is fabricated in advance.
+
+See [current delivery and manual checks](docs/mvp2_resume_h500_20261026.md) and
+[the correction ledger](docs/evidence/h500_resume_20261026.json).
+Next owner: Codex completes qualification; researcher reviews this PR's merge
+and later execution separately. No automation, release, publication or journal
+submission is admitted. The older machine's pause does not pause this newly
+authorized work; all older dated sections below remain historical context.
+
 ### CURRENT: accepted D h215; review publication and portable continuation —23 October2026
 
 This supersedes older RUNNING/draft/main-hold paragraphs below, which remain
