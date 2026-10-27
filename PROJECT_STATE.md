@@ -1,5 +1,48 @@
 # Model Agrologistic — MVP 2.0 checkpoint
 
+### CURRENT original h500 accepted and S5 consolidation 27 October 2026
+
+The researcher supplied ORIGINAL scalar-h500-8h-evidence.tar.gz and its external
+checksum. Independent bounded inspection and the UNMODIFIED original-source
+auditor reproduce h500_quality_target_met. The26October “not executed” correction
+below is superseded by original source/accounting/certificate evidence, not
+silently erased. PR129 merged into develop at763af5f1a33f13898c99face98b1caf9d9ea0e56;
+its start guard preserved the existing claim. No new job was submitted.
+
+Original archive 34346c318b0335e70c56984d8394dd9d00a4ca4ee7d004149c3d3f154cbf2238,
+source fce341dfff1792d08b20eac132c6ada29f4326d2,
+plan 1f57d2308ab233dbe686ad62aa2b02df31c0b8df4fca64d05f86bbc6c118ad60,
+job 2220382. All 70 safe regular members / 69 inventory hashes and 478 original-source
+file identities match; original review is identical on replay. Original
+validation2c548b96…: accepted, zero failed checks, 1e-5/1e-8 tolerances.
+
+Original h500 STO/W/Threads1 has 63,426,344 variables / 244,039,126nonzeros,
+native 7654.7656 s, gap 0.20743206%, objective BRL 6.2972404 trillion, economic
+subtotal BRL 373.1733 billion, penalty share 94.0740%,domestic service 91.6360%.
+Sampled application RSS 111.780 GiB, Slurm 111.570 GiB, native 67.755 decimal GB
+are separate scopes. All 354 candidates receive capacity; no sparse-hub or
+causal speedup claim. Original operational/phase/resource closure passes.
+
+S5 closes on the authorized merge of this complete consolidation PR. ELEVEN
+accepted scalar observations are accounted for: nine W (h215 pair, five h300,
+h400,h500) plus two D h215. They are not eleven independent replications.
+Preserve original false execution/repeat/follow-on flags, source/claims/inputs/
+penalties 90000/45000/45000 and scenarios/units. No repeat, fresh private-input
+residual re-solve, native optimization or NPAD access was performed.
+
+Read [S5 audit and results](docs/mvp2_scalar_h500_results.md) and the
+[redacted original-evidence review](docs/evidence/scalar_h500_2220382_review.json).
+Development is GitHub-only; local originals remain private and unchanged.
+The reviewer executed trusted pinned source in disposable temporary storage,
+with native imports/subprocesses refused; no archive code was executed.
+
+Next owner: Codex qualifies this PR and asks its merge; researcher approves.
+After S5: decide SCIP/h215, perform integrated S6-A/coauthor revision and S6-B
+reproducibility/rights/author approvals. GAMS parity remains unperformed;
+S3/S4 cancelled and EVPI/VSS excluded. Manuscript/published review/h500-pending
+map are unchanged here and require the next scientific/editorial package.
+No publication, dataset release, submission or automatic experiment follows.
+
 ### CURRENT resumption and corrected h500 state 26 October 2026
 
 The researcher's direct correction supersedes every older h500 RUNNING/terminal-

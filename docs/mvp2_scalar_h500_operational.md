@@ -1,5 +1,20 @@
 # R5: consolidated h400 evidence and one-arm h500 operational qualification
 
+## Current S5 terminal audit 27 October 2026
+
+Original h500 job 2220382/source fce341df has been independently replayed from the
+transferred archive: h500_quality_target_met, original validation accepted,
+gap 0.20743206%, full operational/resource closure. Archive SHA25634346c31…;
+all 70 safe members / 69 inventory digests and 478 original-source file identities match.
+The26October “not executed”/first-start guidance below is superseded by this
+original evidence. Preserve that dated correction and the old receipts; never
+restart/reset the claim. See [the S5 closure report](mvp2_scalar_h500_results.md).
+
+S5 closes on this consolidation PR's authorized merge. Eleven scalar observations
+are accounted for (nine W plus two D), not independent replications. SCIP remains
+a separate scientific decision; S6-A/S6-B and final author approval remain open.
+No new optimization, NPAD access, repeat, manuscript change or publication.
+
 ## Current correction 26 October 2026
 
 The researcher confirms that h500 has not been executed. Earlier job2220382/
