@@ -1,0 +1,48 @@
+{
+  "schema_version": "h500-resumption-decision-v1",
+  "date": "2026-10-26",
+  "base_source": "b53b87043f898f2af11dba3f79f23f43738ad2df",
+  "authority": "Researcher's direct correction and resumption-PR request in Codex",
+  "h500": {
+    "experimental_status": "not_executed_researcher_confirmed",
+    "terminal_archive_available": false,
+    "historical_job_reference": "2220382",
+    "historical_reference_status": "unverified_documentary_claim_not_execution_evidence",
+    "existing_claim_state": "unobserved_requires_human_read_only_inspection",
+    "new_job_submitted_by_agent": false
+  },
+  "development": {
+    "location": "GitHub feature branch targeting develop",
+    "local_clone_modified": false,
+    "local_environment_installed": false,
+    "temporary_directory": "temporary_only",
+    "qualification": "existing_exact_head_Linux_CI_pending"
+  },
+  "operations": {
+    "npad_access": "researcher_manual_only",
+    "transfer": "MobaXterm",
+    "scp": false,
+    "output_scope": "dedicated model-agrologistic-prefixed sibling below the researcher's home; no home-root files or writes to preserved input checkout",
+    "source_and_wrapper_pins": "published in qualified PR after exact-head checks"
+  },
+  "science": {
+    "penalties": [
+      90000,
+      45000,
+      45000
+    ],
+    "absolute_tolerance": 0.00001,
+    "relative_tolerance": 1e-8,
+    "accepted_scalar_observations": 10,
+    "new_optimization_performed": false,
+    "scip_h215": "separate_researcher_decision_pending",
+    "gams_compilation_and_parity": "unperformed"
+  },
+  "authority_boundaries": {
+    "merge_authorized": false,
+    "npad_execution_authorized_by_preparation": false,
+    "automatic_retry": false,
+    "automatic_follow_on": false,
+    "publication": false
+  }
+}

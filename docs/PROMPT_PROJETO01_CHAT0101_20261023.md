@@ -1,5 +1,15 @@
 # Prompt para o Projeto01 / chat01.01 — continuidade do Agrologistic
 
+## Current correction 26 October 2026
+
+The researcher confirms that h500 has not been executed. Earlier job2220382/
+RUNNING/terminal-collection statements below are superseded documentary history,
+not verified execution or permission to reuse a claim. Use
+[the current resumption package](mvp2_resume_h500_20261026.md) for active scope,
+the five-PR completion path and the manual input/claim inspection. Development is
+on GitHub; the local clone is untouched. All NPAD interaction is manual and all
+transfers use MobaXterm. No h500 archive can be requested before an actual run.
+
 Atue como professor pesquisador em Pesquisa Operacional e coordenador científico
 do portfólio. Analise este pacote junto com os demais materiais do Projeto01.
 O objetivo é produzir um NOVO mandato operacional e editorial para o Codex da

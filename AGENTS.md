@@ -1,5 +1,28 @@
 # Model Agrologistic: agent working agreement
 
+## Current resumption mandate 26 October 2026
+
+The researcher confirms that h500 has NOT been executed. Earlier references to
+job2220382, source fce341df and a RUNNING h500 are unverified handover claims,
+not proof of submission, a consumed claim or a result. There is no h500 terminal
+archive to request. Preserve the dated records and reconcile any actual receipts
+through the researcher's manual inspection; never delete/reset an existing claim.
+
+The researcher authorizes the next complete resumption/requalification PR.
+Develop on a dedicated GitHub branch targeting develop; do not edit the local
+clone or install/create local environments. The local Temp Codex directory is
+temporary-only. Record work in GitHub and Codex. All NPAD interactions, including
+inspection/status/submission/collection, are human-only. Transfer via MobaXterm;
+do not use scp or request an SSH key.
+
+All new NPAD outputs belong below the existing model-agrologistic-hygiene-audit
+or another dedicated sibling whose name begins model-agrologistic. Never write
+in the researcher's home root or the preserved model-agrologistic input checkout.
+Reuse the integrated PR123 h500 package, retain the scientific/resource contract,
+qualify exact-head Linux CI, then request this PR's own merge. Preparation and
+Ready do not authorize a job. See
+[the complete current delivery](docs/mvp2_resume_h500_20261026.md).
+
 ## Review publication and terminal W/D handoff —23 October2026
 
 The maintainer supplies original D job2221443 evidence and requests autonomous

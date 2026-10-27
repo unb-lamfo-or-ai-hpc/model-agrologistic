@@ -1,6 +1,10 @@
 """Public synthetic h500 transport receipts; not agricultural mathematics or NPAD."""
 
 import json
+import os
+import shutil
+import subprocess
+import sys
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -427,3 +431,72 @@ def test_expanded_phase_profile_is_explicit_and_does_not_change_old_budget():
     assert m.o.phase_usage(data, final)["stop_reason"] == "input_build_watchdog"
     assert m.o.phase_usage(data, final, profile=m.c.PROFILE)["stop_reason"] is None
     assert m.o.PROFILE == old
+
+
+
+def test_cli_claim_location_preserves_input_checkout_and_home_root(tmp_path, monkeypatch):
+    home = tmp_path / "home"
+    home.mkdir()
+    monkeypatch.setattr(m, "NPAD_HOME", home)
+    for name in ("model-agrologistic-hygiene-audit", "model-agrologistic-h500-new"):
+        base = home / name
+        base.mkdir()
+        assert m.approved_claim(base / m.CLAIM) == base / m.CLAIM
+    for base in (home, home / "model-agrologistic", tmp_path / "model-agrologistic-outside"):
+        with pytest.raises(ValueError, match="approved model-agrologistic output directory"):
+            m.approved_claim(base / m.CLAIM)
+    assert not (home / m.CLAIM).exists()
+
+
+@pytest.mark.skipif(os.name == "nt", reason="POSIX link semantics are qualified in Linux CI")
+def test_cli_output_base_symlink_cannot_escape_home(tmp_path, monkeypatch):
+    home = tmp_path / "home"
+    outside = tmp_path / "outside"
+    home.mkdir()
+    outside.mkdir()
+    monkeypatch.setattr(m, "NPAD_HOME", home)
+    alias = home / "model-agrologistic-escape"
+    alias.symlink_to(outside, target_is_directory=True)
+    with pytest.raises(ValueError, match="approved model-agrologistic output directory"):
+        m.approved_claim(alias / m.CLAIM)
+    assert not (outside / m.CLAIM).exists()
+
+
+def test_main_rejects_disallowed_output_before_start(tmp_path, monkeypatch):
+    monkeypatch.setattr(m, "NPAD_HOME", tmp_path)
+    monkeypatch.setattr(m, "start", lambda *_: pytest.fail("No preparation or scheduler call"))
+    with pytest.raises(ValueError, match="approved model-agrologistic output directory"):
+        m.main(["start", "--claim", str(tmp_path / m.CLAIM), "--source-sha", SHA,
+                "--one-reviewed-h500"])
+    assert not (tmp_path / m.CLAIM).exists()
+
+
+@pytest.mark.skipif(os.name == "nt", reason="Real Bash wrapper is qualified in Linux CI")
+@pytest.mark.parametrize("name", ["unrelated", "model-agrologistic-wrong-parent"])
+def test_wrapper_refuses_output_outside_home_before_any_write(tmp_path, monkeypatch, name):
+    bash = shutil.which("bash")
+    assert bash, "Linux qualification requires Bash"
+    base = tmp_path / name
+    base.mkdir()
+    traps = tmp_path / "traps"
+    traps.mkdir()
+    sentinel = tmp_path / "forbidden-call"
+    for tool in ("git", "mktemp", "sbatch"):
+        stub = traps / tool
+        stub.write_text(f"#!/bin/sh\nprintf forbidden > '{sentinel}'\nexit 99\n")
+        stub.chmod(0o700)
+    environment = dict(os.environ)
+    environment.pop("SLURM_JOB_ID", None)
+    environment.update(
+        MVP2_H500_BASE=str(base),
+        MVP2_H500_PYTHON=sys.executable,
+        PATH=str(traps) + os.pathsep + environment.get("PATH", ""),
+    )
+    wrapper = Path(__file__).resolve().parents[1] / "scripts/npad_scalar_h500_8h.sh"
+    result = subprocess.run(
+        [bash, str(wrapper), "start", SHA],
+        env=environment, capture_output=True, text=True, timeout=10, check=False,
+    )
+    assert result.returncode == 2
+    assert "approved model-agrologistic output directory" in result.stderr
+    assert not sentinel.exists() and list(base.iterdir()) == []

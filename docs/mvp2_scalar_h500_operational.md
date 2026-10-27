@@ -1,5 +1,26 @@
 # R5: consolidated h400 evidence and one-arm h500 operational qualification
 
+## Current correction 26 October 2026
+
+The researcher confirms that h500 has not been executed. Earlier job2220382/
+RUNNING/terminal-collection statements below are superseded documentary history,
+not verified execution or permission to reuse a claim. Use
+[the current resumption package](mvp2_resume_h500_20261026.md) for active scope,
+the five-PR completion path and the manual input/claim inspection. Development is
+on GitHub; the local clone is untouched. All NPAD interaction is manual and all
+transfers use MobaXterm. No h500 archive can be requested before an actual run.
+
+The resource/scientific contract below is reused, not a new experiment record.
+The current wrapper and Python CLI reject outputs in the home root, in the
+preserved input checkout or outside a dedicated project sibling. start refuses
+any existing claim without submitting or automatically collecting it; inspect
+its original receipts first. Temporary/cache writes for a fresh bootstrap stay
+inside that bootstrap. Original compute-role/phase/validator behavior is unchanged.
+
+PR120 is already merged. Older draft/hold instructions below are dated history;
+this resumption package is not a new manuscript revision. Final commands/checksums
+are supplied in the qualified PR record only after its exact-head CI.
+
 21 October 2026. The maintainer accepts the [h400 result](mvp2_scalar_h400_results.md),
 agrees with the one8h/24logicalCPU/192GiB/global4h/Threads1 h500 proposal and70M
 guard, and supplies the current historical processed-workbook checksum/OSRM audit.

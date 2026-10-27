@@ -26,6 +26,24 @@ ROOT = c.ROOT
 CLAIM = ".mvp2-scalar-h500-8h-v1"
 ARCHIVE = "scalar-h500-8h-evidence.tar.gz"
 ARM = "t1"
+NPAD_HOME = Path("/home/vrrcelestino")
+
+
+def approved_claim(claim):
+    """Confine CLI outputs to a project directory; never write in the home root."""
+    claim = Path(claim).absolute()
+    parent = claim.parent.resolve()
+    home = NPAD_HOME.resolve()
+    r.require(
+        parent.parent == home
+        and parent.name.startswith("model-agrologistic")
+        and parent.name != "model-agrologistic"
+        and claim.name == CLAIM
+        and not claim.is_symlink(),
+        "Use an approved model-agrologistic output directory, never the home root "
+        "or the preserved input checkout.",
+    )
+    return parent / claim.name
 
 
 def prepare(claim, sha, workbook, population, order, materialization_path, predecessor):
@@ -729,7 +747,7 @@ def main(argv=None):
         r.require(
             args.claim is not None and args.source_sha is not None, "Claim and source required."
         )
-        claim = args.claim.absolute()
+        claim = approved_claim(args.claim)
         if args.action == "start":
             report = start(
                 claim,
