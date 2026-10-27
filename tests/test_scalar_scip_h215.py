@@ -1,0 +1,255 @@
+"""Public nonnative controls; safe login regression, never a scheduler or solver."""
+
+import copy
+from pathlib import Path
+from types import SimpleNamespace
+
+import pytest
+
+from scripts import mvp2_scalar_scip_h215 as m
+
+SHA = "a" * 40
+
+
+def fixture():
+    files = {}
+    case = "cases/" + m.CASE + "/"
+    base = case + "products/" + m.CASE + "/"
+
+    def put(name, value):
+        files[name] = m.r.r2.encoded(value)
+
+    selection = {"included": [], "count": 215}
+    contract = {"public": "fixture"}
+    experiment = {"public": "fixture"}
+    plan = {"cases": [experiment], "source_commit": SHA}
+    native = {
+        "status": "feasible", "objective_value": 100.0, "objective_bound": 99.5,
+        "solver_backend": "pyscipopt", "model_mode": "sto",
+        "metadata": {
+            "run_identity": "fixture", "effective_scip_parameters": m.EXPECTED_PARAMS.copy(),
+            "scip_status": "gaplimit", "scip_native_gap": 0.0051,
+            "timings": {"solver_reported_runtime_seconds": 2.0},
+        },
+    }
+    put(base + "result.json", {"schema_version": 2, "experiment": experiment, "result": native})
+    put(base + "independent_validation.json", {
+        "status": "accepted", "failed_check_count": 0,
+        "validator_version": "mvp2-scalar-independent-residuals-v1",
+        "absolute_tolerance": 1e-5, "relative_tolerance": 1e-8,
+        "families": {"public": {"failed": 0}},
+    })
+    put(base + "run_summary.json", {"independent_validation_status": "accepted"})
+    put(base + "preflight.json", {})
+    put(base + "model_audit.json", {})
+    put(base + "run_completion.json", {
+        "status": "complete", "run_identity": "fixture",
+        "artifacts": {name: m.r.r2.digest(files[base + name]) for name in (
+            "result.json", "independent_validation.json", "run_summary.json",
+            "preflight.json", "model_audit.json",
+        )},
+    })
+    put(case + "input_receipt.json", {
+        "experiment": experiment, "mathematical_contract": contract,
+        "effective_scenario_probabilities": {"public": 1.0}, "warehouse_selection": selection,
+    })
+    put(case + "warehouses_used.json", selection)
+    files[case + "warehouses_used.csv"] = m.r.warehouses.csv_bytes([])
+    put("historical_w.json", {"receipts": {"sto": {
+        "mathematical_contract": contract, "effective_scenario_probabilities": {"public": 1.0},
+        "warehouse_selection": selection,
+    }}})
+    return files, plan, base
+
+
+def update(files, base, name, transform):
+    value = m.r.strict_json(files[base + name])
+    transform(value)
+    files[base + name] = m.r.r2.encoded(value)
+    completion = m.r.strict_json(files[base + "run_completion.json"])
+    completion["artifacts"][name] = m.r.r2.digest(files[base + name])
+    files[base + "run_completion.json"] = m.r.r2.encoded(completion)
+
+
+def test_one_frozen_contract_preserves_science_and_uses_no_gurobi_parameters(tmp_path):
+    workbook = tmp_path / "public"
+    workbook.write_bytes(b"public")
+    selected = m.spec(workbook)
+    payload = m.r.spec_payload(selected)
+    payload["workbook_sha256"] = m.o.WORKBOOK_SHA
+    payload = m.r.strict_json(m.r.r2.encoded(payload))
+    m.case_contract([payload])
+    original = m.o.specs(workbook)[1]
+    assert selected.model == original.model and selected.loader == original.loader
+    assert selected.solver.backend == "pyscipopt" and selected.model.mode == "sto"
+    assert selected.solver.solver_options == {"limits/memory": 163840}
+    assert selected.solver.threads == 4 and selected.solver.time_limit == 14400
+    assert not selected.model.use_direct_origin_customer
+    changed = copy.deepcopy(payload)
+    changed["model"]["use_direct_origin_customer"] = True
+    with pytest.raises(ValueError, match="Frozen one-arm"):
+        m.case_contract([changed])
+
+
+def test_budget_and_authority_cannot_admit_follow_on():
+    assert m.budget()["step_seconds"] == 20700
+    assert m.budget()["reserve_seconds"] == 6300
+    assert all(value is False for value in m.closed().values())
+    assert "solver_soft_memory_decimal_gb" not in m.PROFILE
+
+
+@pytest.mark.parametrize("parent", [
+    "/home/vrrcelestino", "/home/vrrcelestino/model-agrologistic",
+    "/home/vrrcelestino/other", "/tmp/model-agrologistic",
+])
+def test_output_cannot_write_home_input_or_unapproved_root(parent):
+    with pytest.raises(ValueError, match="dedicated"):
+        m.output_location(Path(parent) / m.CLAIM)
+
+
+def test_output_allows_only_project_sibling():
+    m.output_location(Path("/home/vrrcelestino/model-agrologistic-hygiene-audit") / m.CLAIM)
+
+
+def test_existing_claim_never_submits_or_collects(tmp_path, monkeypatch):
+    claim = tmp_path / m.CLAIM
+    claim.mkdir()
+    sentinel = claim / "original"
+    sentinel.write_bytes(b"preserve")
+    monkeypatch.setattr(m, "output_location", lambda *_: None)
+    with pytest.raises(ValueError, match="Existing SCIP claim"):
+        m.start(claim, SHA, True, {}, command=lambda *_: pytest.fail("No scheduler"))
+    assert sentinel.read_bytes() == b"preserve"
+
+
+def test_acknowledgement_precedes_preparation(tmp_path):
+    with pytest.raises(ValueError, match="Explicit human"):
+        m.start(tmp_path / m.CLAIM, SHA, False, {})
+
+
+def test_native_fingerprint_uses_installed_metadata_not_solver_import(tmp_path, monkeypatch):
+    native = tmp_path / "libscip.so.10.0"
+    native.write_bytes(b"public native fixture")
+    dist = SimpleNamespace(version="6.2.1", files=[native.name], locate_file=lambda _: native)
+    monkeypatch.setattr(m, "distribution", lambda _: dist)
+    result = m.environment()
+    assert result["native_sha256"] == {native.name: m.r.file_hash(native)}
+    dist.version = "other"
+    with pytest.raises(ValueError, match="Existing PySCIPOpt"):
+        m.environment()
+
+
+@pytest.mark.parametrize("kind,classification", [
+    ("quality", "quality_target_met"),
+    ("wide", "validated_feasible_above_target_or_uncertified_bound"),
+    ("missing_bound", "validated_feasible_above_target_or_uncertified_bound"),
+    ("rejected", "incumbent_validation_rejected"),
+    ("none", "no_usable_incumbent"),
+])
+def test_negative_outcomes_are_distinct_and_cannot_admit_another_solver(kind, classification):
+    files, plan, base = fixture()
+    if kind in {"wide", "missing_bound", "none"}:
+        def alter(value):
+            result = value["result"]
+            result["objective_bound"] = 50.0 if kind == "wide" else None
+            if kind == "none":
+                result["status"] = "error"
+                result["objective_value"] = None
+                result["metadata"]["scip_status"] = "memlimit"
+        update(files, base, "result.json", alter)
+    if kind in {"rejected", "none"}:
+        status = "rejected" if kind == "rejected" else "no_solution"
+        update(files, base, "independent_validation.json", lambda v: v.update(
+            status=status, failed_check_count=1 if kind == "rejected" else 0,
+        ))
+        update(files, base, "run_summary.json", lambda v: v.update(
+            independent_validation_status=status,
+        ))
+    report = m.case_review(files, plan)
+    assert report["classification"] == classification
+    assert report["quality_target_met"] is (kind == "quality")
+    assert not report["highs_execution_admitted"] and not report["repeats_admitted"]
+
+
+@pytest.mark.parametrize("kind", ["parameters", "tolerance", "residuals", "identity", "digest"])
+def test_original_certificate_or_parameter_drift_is_rejected(kind):
+    files, plan, base = fixture()
+    if kind == "parameters":
+        update(files, base, "result.json", lambda v: v["result"]["metadata"].update(
+            effective_scip_parameters={},
+        ))
+    elif kind == "tolerance":
+        update(files, base, "independent_validation.json", lambda v: v.update(
+            absolute_tolerance=1.0,
+        ))
+    elif kind == "residuals":
+        update(files, base, "independent_validation.json", lambda v: v.update(
+            families={"bad": {"failed": 1}},
+        ))
+    elif kind == "identity":
+        update(files, base, "result.json", lambda v: v["result"]["metadata"].update(
+            run_identity="different",
+        ))
+    else:
+        files[base + "model_audit.json"] = b"changed"
+    with pytest.raises(ValueError):
+        m.case_review(files, plan)
+
+
+@pytest.mark.parametrize("state", ["OUT_OF_MEMORY", "TIMEOUT", "FAILED", "COMPLETED"])
+def test_partial_terminal_observation_is_preserved_without_success(state, monkeypatch):
+    files, plan, _ = fixture()
+    files = {"plan.json": m.r.r2.encoded(plan)}
+    job = {"job_id": "123", "source_commit": SHA,
+           "plan_sha256": m.r.r2.digest(files["plan.json"])}
+    files["job.json"] = m.r.r2.encoded(job)
+    files["accounting.txt"] = f"123|{state}|1:0|60|\n123.batch|{state}|1:0|60|123K\n".encode()
+    monkeypatch.setattr(m, "design", lambda _: plan)
+    report = m.portable_review(files)
+    assert report["status"] == "scip_forensic_partial_preserved"
+    assert not report["quality_target_met"] and not report["operational_receipts_closed"]
+    assert not report["highs_execution_admitted"]
+
+
+def test_transport_preserves_partial_and_rejects_overwrite_or_changed_checksum(
+    tmp_path, monkeypatch,
+):
+    claim = tmp_path / m.CLAIM
+    claim.mkdir()
+    plan = {"cases": [{}], "source_commit": SHA}
+    m.r.r2.write(claim / "plan.json", plan)
+    job = {"job_id": "123", "source_commit": SHA,
+           "plan_sha256": m.r.file_hash(claim / "plan.json")}
+    m.r.r2.write(claim / "job.json", job)
+    monkeypatch.setattr(m, "load", lambda *_: plan)
+    monkeypatch.setattr(m, "design", lambda _: plan)
+    response = SimpleNamespace(
+        returncode=0,
+        stdout="123|OUT_OF_MEMORY|0:125|60|\n123.batch|OUT_OF_MEMORY|0:125|60|123K\n",
+    )
+    result = m.collect(claim, SHA, command=lambda *_: response)
+    assert result["status"] == "scip_forensic_partial_preserved"
+    archive = claim / m.ARCHIVE
+    assert m.audit(archive, result["sha256"])["status"] == result["status"]
+    original = archive.read_bytes()
+    assert m.collect(claim, SHA, command=lambda *_: pytest.fail("No scheduler")) == result
+    assert archive.read_bytes() == original
+    archive.write_bytes(b"changed")
+    with pytest.raises(ValueError, match="Preserved transfer"):
+        m.collect(claim, SHA, command=lambda *_: response)
+
+
+def test_snapshot_rejects_private_workbook_and_links(tmp_path):
+    root = tmp_path / "claim"
+    root.mkdir()
+    (root / "private.xlsx").write_bytes(b"private")
+    with pytest.raises(ValueError, match="Forbidden private"):
+        m.snapshot(root)
+
+
+def test_wrapper_never_installs_or_uses_license_or_automatic_highs():
+    source = (m.ROOT / "scripts/npad_scalar_scip_h215_w.sh").read_text()
+    assert "pip install" not in source and "conda " not in source
+    assert "GRB_LICENSE_FILE" not in source and "gurobi.lic" not in source
+    assert "--one-reviewed-scip-w" in source
+    assert "Existing SCIP claim" in source

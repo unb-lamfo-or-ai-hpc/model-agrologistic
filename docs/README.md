@@ -11,6 +11,7 @@ not rewrite its unsuccessful outcomes. S1-C is documentary, not a new campaign.
 
 | Document | Use |
 | --- | --- |
+| [Scalar SCIP h215 W and S6-A continuation](mvp2_scalar_scip_h215_w.md) | Complete bounded one-shot protocol, negative outcomes, conditional HiGHS and h500 manuscript integration |
 | [Original scalar h500 and S5 closure](mvp2_scalar_h500_results.md) | Independently audited job2220382, eleven-observation inventory and remaining S6/SCIP decisions |
 | [S2 closure campaign](mvp2_s2_closure_campaign.md) | Finite normal/adverse/native/h300 sequence, inherited budgets, stop criteria and remaining functional PRs; no downstream execution admission |
 | [Sprint 1 evidence and exit ledger](mvp2_sprint1_closure.md) | h215/h300/h400 provenance, accepted/limited/deferred outcomes and closure boundary |

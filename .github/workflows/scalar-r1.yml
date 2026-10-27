@@ -35,6 +35,7 @@ jobs:
           bash -n scripts/npad_scalar_h400_8h.sh
           bash -n scripts/npad_scalar_h500_8h.sh
           bash -n scripts/npad_scalar_wd_h215.sh
+          bash -n scripts/npad_scalar_scip_h215_w.sh
           sha256sum scripts/npad_scalar_h500_8h.sh
       - name: Focused h500 resumption and related regressions, no HPC
         run: >-
@@ -42,6 +43,8 @@ jobs:
           tests/test_scalar_h500_operational.py
           tests/test_scalar_h500_lineage.py
           tests/test_scalar_h500_resources.py
+          tests/test_scalar_scip_h215.py
+          tests/test_scalar_scip_h215_native.py
           tests/test_scalar_h500_external_review.py
           tests/test_scalar_h300_external_review.py
           tests/test_scalar_h500_native.py

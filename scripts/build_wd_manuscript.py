@@ -13,7 +13,7 @@ def results(record):
     assert record["penalty_rates"] == {"unmet": 90000, "static": 45000, "reception": 45000}
     lines = [
         "## Controlled h215 topology comparison: historical W and new D\n",
-        "This separate comparison adds two accepted D observations to the eight-observation "
+        "This separate comparison adds two accepted D observations to the nine-observation "
         "warehouse-only scalability cohort above. W forbids direct origin-to-customer arcs; "
         "D permits them in addition to warehouse-mediated routes. The same frozen h215 input, "
         "215-member population, common OD/DC/DD arcs, costs, indexed penalties, original DET "
@@ -69,7 +69,8 @@ def results(record):
         "Original validation and owned-step/phase/terminal receipts close both D arms. "
         "Portable review replays those archived receipts, not a fresh private-input "
         "residual re-solve. No additional solve or repetition is required to close this "
-        "bounded h215 W/D phase; h500/S5 and S6-B remain separate open work.\n",
+        "bounded h215 W/D phase. Original h500/S5 is now accepted and closed; "
+        "the separate SCIP test, integrated coauthor review and S6-B remain open.\n",
     ]
     return "\n".join(lines)
 

@@ -1,5 +1,16 @@
 # Scientific manuscript — integrated scalar revision
 
+27 October current revision: S5 closed by authorized PR130 merge
+`b031c3d1014df433020a6bb98534b9b9d8de4ffb`. The original h500 job2220382
+is now in all numerical tables: nine W scaling observations plus two D h215
+observations, eleven scalar observations rather than replications. The stale
+pending statements below are dated history. The researcher authorizes this
+h500/W-D editorial reconciliation and one prospective SCIP STO h215 W test.
+SCIP has no current scalar population result; HiGHS is conditional future work.
+The h500 geographic snapshot remains input-only. No deployment, new deposit,
+journal submission or final author acceptance is implied. The existing Pages
+approval receipt belongs to the previous snapshot and is not rewritten here.
+
 23October current authority: PR120 is merged; the researcher explicitly requests
 the current S6-A as a public coauthor REVIEW snapshot after normal develop/main
 reconciliation. This supersedes the older draft/publication holds below, not
@@ -22,14 +33,14 @@ the tool is unavailable. The AI declaration, supplied NPAD Acknowledgements and
 References are consecutive numbered sections. No scientific code, model, penalty,
 certificate or live HPC claim is changed. PR120 remains draft during review.
 
-## Evidence boundary
+## Current evidence boundary
 
-The active Results section uses eight accepted scalar observations: h215
-DET/STO, five h300 thread levels and h400 STO. Original source/job/input hashes,
+The active Results section uses nine accepted W scalar observations: h215
+DET/STO, five h300 thread levels, h400 STO and h500 STO, plus the separate D pair. Original source/job/input hashes,
 penalties and residual tolerances remain frozen. `scalar_evidence.json` and its
 generated `scalar_results.qmd` retain original certificate identities; later
 replay/post-processing is not fresh private-input residual revalidation.
-h500 job2220382 is pending in the last supplied snapshot, not a numerical result.
+Original h500 job2220382 passed the S5 archive/source/certificate audit.
 No causal thread speedup, full service, exact zero-gap proof or financial
 interpretation of artificial penalties is claimed.
 
@@ -38,7 +49,8 @@ trial, original certificates and their figures remain unchanged historical
 cohorts. `comparison_results.qmd`, `historical_reference_results.md`,
 `comparison_provenance.json`, `results_snapshot.json` and
 `evidence_status.json` must not be pooled with or relabelled as scalar evidence.
-SCIP/h215 remains a separate decision; S3/S4 and EVPI/VSS remain excluded.
+The scalar SCIP/h215 W preparation is now authorized, with human CLI execution
+after its qualified PR merge. No result is presumed. S3/S4 and EVPI/VSS remain excluded.
 
 ## Reproduce the document
 

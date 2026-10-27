@@ -18,7 +18,7 @@ permission to republish every external source or new raw experiment archive.
 | Full warehouse registry | 18,086-record population-selection source | `external-inputs/` member of preserved input archive; not Git-tracked as this workbook | SHA256 prefix 0d19865a… |
 | Original population manifest/order | Deterministic ranking, strata, source/anchor identities and seed | Archived processed population records; hash-bound by execution receipts | Manifest 4134147f…; order 7a524b2e… |
 | Materialized case workbooks | Effective warehouse population plus approved OSRM distance rows | External processed snapshot, not assumed present in Git from a filename mention | Full hashes in the population table below |
-| Scalar evidence archives | Original input, validation, result and resource receipts | External archives, referenced by public review metadata | h215: 81890b54…; h300: dc5969fa…; h400: e0b58bb7… |
+| Scalar evidence archives | Original input, validation, result and resource receipts | External archives, referenced by public review metadata | h215: 81890b54…; h300: dc5969fa…; h400: e0b58bb7…; h500: 34346c31… |
 
 The canonical workbook has 14 sheets, including explanatory and control sheets.
 The registry's `Sheet1` has 18,087 rows including its header and 13 columns;
@@ -126,12 +126,14 @@ ranking; it is not a resampling or a rewrite of that original manifest.
 
 Membership was checked by actual CDA identifiers, not counts or coordinate
 equality: $W_{215}\subseteq W_{300}\subseteq W_{400}\subseteq W_{500}$.
-All eight accepted original `warehouses_used.csv` files match the corresponding
+All nine accepted original `warehouses_used.csv` files match the corresponding
 frozen workbook's ordered CDA list exactly. The compact inventory records the
 comparison and ordered-ID hashes. Each original attempt retains the complete
 ID/role/model-order/stratum/rank list and selection rule; optimized activation,
 positive capacity and positive utilization are separate output observations.
-The h500 membership check is an input finding only, not an accepted h500 solve.
+The original h500 membership/input receipt and accepted solve are now bound by
+job2220382, source fce341df… and archive34346c31… after the S5 portable audit.
+This later replay does not recompute private-input residuals.
 
 ## Transformation chain and road/scenario inputs
 
@@ -171,8 +173,11 @@ Accepted original archives retain job 2217990/source 5f73871b… (h215 DET/STO),
 effective model/network/penalty identities, membership, scenario probabilities
 and solver options; completion and independent-validation receipts retain
 output/source identities. The editorial `scalar_evidence.json` is a derivative
-summary, not a replacement certificate. h500 job 2220382/source fce341df… has no
-supplied terminal result at this evidence cutoff.
+summary, not a replacement certificate. The original h500 job2220382/source
+fce341df…/plan1f57d230…/archive34346c31… is accepted after the 27October audit;
+its original validation SHA256 is2c548b96… and its common gap is0.20743206%.
+The separate h215 D pair from job2221443 is accepted under the checked W/D
+contract; these two observations are additional to the nine W scaling cases.
 
 The separate geographic SQLite stores normalized identities, population
 membership, accepted positive flows and available geometry/metadata. It is

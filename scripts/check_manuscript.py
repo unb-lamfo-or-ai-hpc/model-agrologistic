@@ -20,9 +20,9 @@ def check_scalar_revision() -> None:
     if record["penalty_rates"] != {"unmet": 90000, "static": 45000, "reception": 45000}:
         raise ValueError("Frozen scalar penalties differ")
     rows = record["observations"]
-    if len(rows) != 8 or len({r["case"] for r in rows}) != 8:
+    if len(rows) != 9 or len({r["case"] for r in rows}) != 9:
         raise ValueError("Scalar cohort differs")
-    for population, job in [(215, "2217990"), (300, "2218193"), (400, "2219884")]:
+    for population, job in [(215, "2217990"), (300, "2218193"), (400, "2219884"), (500, "2220382")]:
         original = json.loads(
             (ROOT / "docs/evidence" / f"scalar_h{population}_{job}_review.json").read_text()
         )
@@ -51,8 +51,25 @@ def check_scalar_revision() -> None:
                 for k in ("objective", "bound", "economic_cost", "artificial_penalties")
             ):
                 raise ValueError("Scalar cost or bound differs")
-    if record["h500"]["terminal_result_available"] is not False:
-        raise ValueError("No terminal h500 evidence in this revision")
+    h500 = json.loads((ROOT / "docs/evidence/scalar_h500_2220382_review.json").read_text())
+    if (
+        record["h500"]["terminal_result_available"] is not True
+        or record["h500"]["archive_sha256"] != h500["archive_sha256"]
+        or record["h500"]["source_commit"] != h500["source_commit"]
+        or record["h500"]["plan_sha256"] != h500["plan_sha256"]
+    ):
+        raise ValueError("Accepted original h500 provenance differs")
+    row = next(r for r in rows if r["population"] == 500)
+    if (
+        row["matrix"] != h500["matrix"]
+        or row["reconstructed_costs"] != h500["reconstructed_costs"]
+        or row["physical_diagnostics"] != h500["arms"][0]["physical_diagnostics"]
+        or row["original_validation_sha256"] != h500["original_validation_sha256"]
+        or row["candidate_capacity_t"] != h500["investment"]["candidate_capacity_tonnes"]
+        or row["positive_candidate_investments"] != 354
+        or row["positive_expansions"] != 72 or row["positive_bulkifications"] != 74
+    ):
+        raise ValueError("Audited original h500 aggregates differ")
     source = MANUSCRIPT / "supplement/appendix_a_original.pdf"
     if hashlib.sha256(source.read_bytes()).hexdigest() != APPENDIX_SHA:
         raise ValueError("Complete original Appendix A checksum differs")

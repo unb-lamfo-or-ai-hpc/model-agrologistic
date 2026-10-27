@@ -1,5 +1,23 @@
 # Scalar MVP2 roadmap — 19 October 2026
 
+## Current continuation after S5 closure — 27 October 2026
+
+PR130 merged with explicit researcher authorization at
+`b031c3d1014df433020a6bb98534b9b9d8de4ffb`; S5 is closed. Eleven accepted
+scalar observations (nine W scaling plus two D h215) retain their originals.
+The researcher now requests ONE scalar SCIP STO h215 W test and parallel
+documentation/manuscript reconciliation including original h500. See
+[the complete new protocol](mvp2_scalar_scip_h215_w.md).
+
+Prepare/qualify the one-shot8h/192GiB/24logical-CPU reservation, four-thread
+ceiling, native14400s/common1% target, exact-step/phase controls and terminal
+positive/negative evidence. Keep source/scenarios/penalties/units/tolerances and
+historical controls unchanged. HiGHS is a conditional separately qualified
+future option, not an automatic fallback. No predicted failure or generalized
+open-source inability is a result. Merge approval and actual NPAD CLI remain
+researcher-only. Development is GitHub-only; no local clone/environment change.
+S6-A/coauthor revision and S6-B remain open; no publication/submission follows.
+
 ## Current S5 terminal audit 27 October 2026
 
 Original h500 job 2220382/source fce341df has been independently replayed from the
