@@ -1,5 +1,35 @@
 # Model Agrologistic: agent working agreement
 
+## Original h500 terminal audit and S5 consolidation 27 October 2026
+
+The researcher supplies the original h500 archive/checksum and explicitly
+requests its independent audit and ONE complete S5 consolidation PR, with
+autonomous GitHub changes and explicit authorization only for merge. Develop
+through GitHub; do not edit the local clone or install/create environments.
+Local temporary files are disposable audit inputs only. All NPAD interaction
+remains researcher-only, transfer through MobaXterm, no scp/SSH-key request.
+
+The transferred original independently reproduces h500_quality_target_met:
+job 2220382/source fce341df/plan 1f57d230/archive 34346c31…, original accepted
+residuals, 0.20743206% gap and complete phase/owned-step/resource closure.
+All 70 safe members / 69 inventory hashes and 478 source identities match. This
+supersedes the 26 October not-executed statement with original evidence; preserve
+all dated history/claims/certificates. No additional h500 execution is necessary.
+
+Consolidate the read-only reviewer, redacted evidence, S5 report and active
+checkpoint/planning in ONE PR. Qualify focused/related and existing exact-head
+native/analytical/quality CI before Ready; request its OWN merge. On authorized
+merge S5 closes; scalar inventory becomes 11 observations, not replications.
+Do not modify scientific src/inputs, old runtime/launchers/certificates,
+penalties 90000/45000/45000, tolerances 1e-5/1e-8, scenarios or units.
+Do not execute archive code or represent replay/aggregate arithmetic as fresh
+private-input residual validation. Keep raw evidence, row IDs and secrets
+outside Git. See [S5 results](docs/mvp2_scalar_h500_results.md).
+
+SCIP/h215 requires a separate decision, not automatic implementation/cancellation.
+S6-A/coauthor synthesis and S6-B remain open. No manuscript/map change, new
+headroom gate/h600, release/deposition/submission or automatic follow-on.
+
 ## Current resumption mandate 26 October 2026
 
 The researcher confirms that h500 has NOT been executed. Earlier references to
