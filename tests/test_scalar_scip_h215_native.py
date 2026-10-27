@@ -81,6 +81,7 @@ def test_real_worker_controller_original_validation_collection_and_replay(tmp_pa
     monkeypatch.setenv("SLURM_STEP_ID", "0")
 
     def compare(_selected, _data, actual, prior):
+        actual = m.r.strict_json(m.r.r2.encoded(actual))
         assert actual["mathematical_contract"] == prior["receipts"]["sto"]["mathematical_contract"]
         assert actual["warehouse_selection"] == prior["receipts"]["sto"]["warehouse_selection"]
 
@@ -116,6 +117,8 @@ def test_real_worker_controller_original_validation_collection_and_replay(tmp_pa
                     m.worker(claim, SHA, "sto")
                     self.returncode = 0
                 except Exception as exc:
+                    import traceback
+                    (claim / "public_worker_traceback.txt").write_text(traceback.format_exc())
                     self.error, self.returncode = exc, 1
 
             self.thread = threading.Thread(target=target)
@@ -150,6 +153,8 @@ def test_real_worker_controller_original_validation_collection_and_replay(tmp_pa
             for p in claim.rglob("*.json")
             if p.name in {"batch_outcome.json", "controller.json", "case_outcome.json"}
         }
+        trace = claim / "public_worker_traceback.txt"
+        details["trace"] = trace.read_text() if trace.exists() else "No worker traceback"
         raise AssertionError(details)
     products = claim / "cases" / m.CASE / "products" / m.CASE
     validation = m.r.r2.read(products / "independent_validation.json")

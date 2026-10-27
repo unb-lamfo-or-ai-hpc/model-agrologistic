@@ -18,7 +18,10 @@ def results(record):
         assert row["positive_candidate_investments"] <= row["candidate_activations"]
     representative = [
         next(r for r in rows if r["case"] == case)
-        for case in ("scalar_h215_det", "scalar_h215_sto", "scalar_h300_t1", "scalar_h400_t1", "scalar_h500_t1")
+        for case in (
+            "scalar_h215_det", "scalar_h215_sto", "scalar_h300_t1",
+            "scalar_h400_t1", "scalar_h500_t1",
+        )
     ]
 
     def label(r):
