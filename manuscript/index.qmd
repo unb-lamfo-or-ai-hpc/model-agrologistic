@@ -1,6 +1,6 @@
 ---
 title: "Computational Scalability of Deterministic and Two-Stage Stochastic MILP Models for Grain-Storage Network Design and Hub Location"
-date: 2026-10-23
+date: 2026-10-27
 abstract: >-
   Grain-storage network design links infrastructure investment to seasonal,
   multi-product logistics. Increasing candidate populations and replicating
@@ -14,16 +14,19 @@ abstract: >-
   settings, resource measurements and independent solution certificates.
   The accepted scalar cohort contains a deterministic/stochastic pair at
   215 warehouses, five stochastic observations at 300 warehouses with
-  1/2/4/8/16 solver threads, and one stochastic observation at 400 warehouses.
-  All eight observations meet the declared 1% global-gap criterion and retain
+  1/2/4/8/16 solver threads, and one stochastic observation each at 400 and 500 warehouses.
+  All nine warehouse-only observations meet the declared 1% global-gap criterion and retain
   accepted original feasibility certificates. The stochastic matrix grows
-  from 25.1 million variables at 300 warehouses to 42.1 million at 400.
+  from 25.1 million variables at 300 warehouses to 63.4 million at 500.
   One thread has the lowest observed runtime and memory within the 300-site
   block, without establishing causal parallel speedup. Validated decision
   vectors reveal extensive candidate investment alongside substantial
   permitted shortages and capacity exceedances. Artificial penalties dominate
   the scalar totals and must be distinguished from financial expenditure.
-  A 500-warehouse experiment remains pending at this draft's cutoff.
+  At 500 warehouses, the original accepted gap is 0.2074%, native runtime
+  is 127.58 minutes and sampled application RSS is 111.78 GiB. A separate
+  accepted h215 topology comparison adds two direct-enabled observations;
+  its lower penalized cost coexists with worse domestic service.
   The results characterize attainable computational scale under an explicit
   contract, while a complementary human-supervised AI workflow documents
   scientific decisions and verification.
@@ -36,13 +39,14 @@ keywords:
   - reproducibility
 ---
 
-::: {.callout-note title="Coauthor review snapshot — 23 October 2026"}
+::: {.callout-note title="Coauthor working revision — 27 October 2026"}
 
-This S6-A working revision is published for coauthor review, not journal
-submission or final acceptance. The eight warehouse-only scalability observations
-are complemented by the separately validated h215 W/D comparison below.
-h500/S5 evidence review and S6-B remain open; no new h500 terminal result is
-inferred. Appendices A–D retain their disclosed provenance and limitations.
+This S6-A working revision adds the audited original h500 result to the nine
+warehouse-only scalability observations and retains two separately validated
+h215 D observations: eleven scalar observations in total. S5 closed with PR130;
+coauthor review, the newly authorized SCIP h215 W test and S6-B remain open.
+This source revision is not yet published or approved for journal submission.
+Appendices A–D retain their disclosed provenance and limitations.
 
 :::
 
@@ -82,10 +86,10 @@ Four specific objectives organize the investigation.
 The intended contributions are empirical computational characterization (C1),
 applied interpretation of validated infrastructure and operating decisions (C2),
 and a complementary documented Human–AI workflow (C3). The present accepted
-cohort supports C1 and a bounded C2 analysis through 400 warehouses. C3 is an
+cohort supports C1 and a bounded C2 analysis through 500 warehouses. C3 is an
 inspectable methodological account, not a controlled productivity experiment.
-The pending h500 observation cannot yet support a claim about its solution,
-quality or resource frontier.
+The original h500 observation supplies a retained solution, bound and resource
+record; one observation at that scale does not establish a universal frontier.
 
 # Related work and research positioning
 
@@ -333,15 +337,18 @@ Every supply level is crossed with every demand level; the nine combinations
 each receive probability 1/9. The workbook's original active-row setting is
 base only, not this separately approved Cartesian experimental design.
 The models have two products and 60 ordered planning
-periods. All evaluated scalar large cases disable direct origin-to-customer
-arcs and optional memory compaction. The objective is an undiscounted BRL total
+periods. All warehouse-only scalability cases disable direct origin-to-customer
+arcs; the separate h215 D comparison enables them. Optional memory compaction
+is disabled in both cohorts. The objective is an undiscounted BRL total
 over the declared horizon. No verified common price year, inflation adjustment,
 currency conversion or discount rate is introduced.
 
 ## Experimental and validation protocol
 
-The scalar cohort comprises eight accepted observations: h215 DET/STO, the h300
-thread sequence 4, 1, 8, 2, 16, and h400 STO with one thread. Each uses a global
+The warehouse-only scalar cohort comprises nine accepted observations: h215
+DET/STO, the h300 thread sequence 4, 1, 8, 2, 16, and h400/h500 STO with one
+thread each. The separate h215 D DET/STO observations bring the scalar inventory
+to eleven; they are not eleven independent replications. Each uses a global
 native TimeLimit of 14,400 seconds, MIPGap 0.01, Seed 42 and the unchanged
 90000/45000/45000 penalty vector. The h215 pair uses four solver threads.
 The h300 levels are cold serial observations in one reservation, without
@@ -349,8 +356,9 @@ replication or randomized order. The h400 configuration is a separately reviewed
 candidate informed by descriptive h300 evidence, not a statistically established
 thread winner. Here cold means a fresh native model without an incumbent warm
 start; operating-system caches and shared-node load were not controlled.
-The subsequent separately admitted h500 observation has no terminal
-certificate available at this draft's cutoff.
+The original h500 job2220382 was executed on 21 October and accepted on
+27 October after archive/source/certificate replay. This later audit neither
+reran optimization nor recomputed private-input residuals.
 
 Software qualification precedes experimental acceptance. Analytical examples
 check objective reconstruction, investment charged once, deterministic/singleton
@@ -438,7 +446,9 @@ locations; positive-flow route geometry is unavailable and is not replaced by
 straight segments. The software accepts separately source-bound OSRM geometry
 for positive routes when it becomes available. Transport incidence and
 quantities remain analyzable from the original vectors without inventing a
-physical road path. The h500 map shows availability only.
+physical road path. The preserved h500 map still shows input availability
+only, despite the newly accepted numerical result; optimized h500 geographic
+layers await a separate source-bound export.
 
 {{< include human_ai_methodology.qmd >}}
 
@@ -460,7 +470,7 @@ bound meeting the configured gap target. It remains weaker than exact zero-gap
 optimality. A native status labelled optimal under MIPGap=0.01 does not remove
 the attained nonzero gap.
 
-The h300 one-thread and h400 observations connect increasing matrix dimensions
+The h300 one-thread, h400 and h500 observations connect increasing matrix dimensions
 to higher observed construction time, optimizer time and memory. The expanded
 warehouse set also changes retained routes and available investment choices.
 Consequently, these observations cannot isolate population size as the sole
@@ -488,7 +498,7 @@ without additional measures. Nor does it prove that a no-slack model is
 infeasible. A penalty magnitude cannot establish a monotonic runtime effect
 or demonstrate that slack caused rapid convergence.
 
-Artificial penalties account for approximately 95–97% of the reported scalar
+Artificial penalties account for approximately 94–97% of the reported scalar
 totals. This concentration makes the global gap a certificate about the
 penalized total, not a 1%-accurate economic subtotal or a service guarantee.
 Investment/operating expenditure, artificial penalties and physical shortages
@@ -536,15 +546,18 @@ under an explicit, inspectable scientific contract.
 # Final considerations, limitations and future work
 
 The accepted scalar cohort meets its declared 1% global-gap target for h215
-DET/STO, all five h300 thread observations and h400 STO. It supports empirical
+DET/STO, all five h300 thread observations and h400/h500 STO. It supports empirical
 computational characterization and an applied interpretation of the returned
 plans, including substantial investment and residual permitted shortages.
 It does not establish exact optimality, full service, a universal solver
 frontier or a causal thread speedup.
 
-The h500 experiment remains pending at this draft's evidence cutoff. Its
-membership and input provenance can be visualized, but no solution, final gap
-or terminal resource result is reported. Historical hierarchical and MVP1
+At h500, the retained gap is 0.207432%, native runtime is 7654.77 seconds
+and sampled application peak RSS is 111.78 GiB. Domestic service is 91.636%
+and artificial penalties account for 94.074% of the scalar objective. All
+354 included candidates receive positive capacity. These results support
+bounded empirical feasibility and quality, not full service, economic-subtotal
+precision or a causal population-size effect. Historical hierarchical and MVP1
 experiments remain separate cohorts in their original records; their differing
 objectives and stopping rules are not pooled with scalar outcomes. The earlier
 100% capacity-gap trial did not execute its economic pass and its original
@@ -558,10 +571,19 @@ current geographic exports. The fixed penalties express the approved trade-off,
 not observed damages or a demonstrated service policy. Detailed source
 identities and uncertainty about unobserved peaks constrain interpretation.
 
-Remaining scientific work is terminal h500 review, a separately decided existing
-SCIP/h215 investigation, cross-scale interpretation and coauthor revision.
-No new solver, decomposition campaign, penalty calibration or information-value
-calculation is part of this manuscript revision. Future methodological work
+Remaining scientific work includes the newly authorized scalar SCIP STO h215 W
+observation, cross-scale interpretation and coauthor revision. The experiment
+has no result at this cutoff and is not pooled with the historical hierarchy
+campaign. It uses the same frozen W input/scenarios/penalties, a four-hour
+optimization ceiling and an eight-hour/192-GiB allocation; construction,
+no-incumbent, memory/time-censored and validated outcomes are retained separately.
+Its purpose is to measure achievable quality under this configuration, whether
+SCIP succeeds or struggles. One failure cannot establish a general limitation
+of open-source solvers. HiGHS is a conditional later option requiring its own
+formulation/indicator, parity and resource qualification, not an automatic
+fallback or an already-tested result. No new solver implementation,
+decomposition campaign, penalty calibration or information-value calculation
+is part of this editorial revision. Future methodological work
 could evaluate controlled repeated performance measurements and better data
 calibration under separate scientific approval.
 
@@ -569,8 +591,8 @@ calibration under separate scientific approval.
 
 Source, experiment definitions and original acceptance records are versioned in
 [Model Agrologistic](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic).
-The scalar h215, h300 and h400 reviews identify original jobs 2217990, 2218193
-and 2219884, input hashes, warehouse membership, parameters and certificate
+The scalar h215, h300, h400 and h500 reviews identify original jobs 2217990,
+2218193, 2219884 and 2220382, input hashes, warehouse membership, parameters and certificate
 digests. Subsequent documentary replay does not rewrite their source/runtime
 identities. Failed bootstraps, original claims and partial evidence are preserved.
 
@@ -585,8 +607,11 @@ as Appendix C, and source-to-effective-parameter provenance as Appendix D.
 The GAMS translation has not been compiled or numerically validated: GAMS is
 unavailable in the qualification environment. It is not an additional experiment
 or evidence of solver parity. The accepted large scalar cohort evaluates the
-warehouse-only topology W; direct-enabled topology D is supported in software
-but has no matched accepted large-instance comparison in this cohort.
+warehouse-only topology W. The separately accepted h215 W/D comparison adds
+D DET/STO observations from job2221443 using the same frozen h215 input and
+common-route/cost checks. Historical W controls and single observations do not
+constitute matched runtime replications; the D service deterioration remains
+explicit. These results do not establish information-value metrics.
 The previously published review is available as
 [HTML](https://unb-lamfo-or-ai-hpc.github.io/model-agrologistic/supplementary-review.html)
 and [PDF](https://unb-lamfo-or-ai-hpc.github.io/model-agrologistic/supplementary-review.pdf);

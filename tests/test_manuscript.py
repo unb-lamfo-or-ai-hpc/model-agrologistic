@@ -233,9 +233,10 @@ def test_editorial_source_is_not_manuscript_content(manuscript):
 
 def test_scalar_scope_does_not_restore_cancelled_methods(manuscript):
     article = (manuscript / "index.qmd").read_text(encoding="utf-8")
-    assert "No new solver, decomposition campaign, penalty calibration" in article
+    assert "No new solver implementation," in article
     assert "one observation per thread level" in article
-    assert "no terminal evidence" in (manuscript / "scalar_results.qmd").read_text()
+    assert "original h500" in (manuscript / "scalar_results.qmd").read_text()
+    assert "0.207432" in (manuscript / "scalar_results.qmd").read_text()
     assert (manuscript / "supplement/appendix_a_original.pdf").read_bytes().startswith(b"%PDF-")
     # An empty pagecommand removes pdfpages' default empty style and overlays
     # supplement page numbers on the preserved original pages.
@@ -273,7 +274,7 @@ def test_integrated_scalar_evidence_cannot_drift(manuscript, mutation):
     elif mutation == "penalties":
         record["penalty_rates"]["unmet"] = 90001
     elif mutation == "h500":
-        record["h500"]["terminal_result_available"] = True
+        record["h500"]["terminal_result_available"] = False
     else:
         (manuscript / "supplement/appendix_a_original.pdf").write_bytes(b"%PDF-incomplete")
     path.write_text(json.dumps(record))

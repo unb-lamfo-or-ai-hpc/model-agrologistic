@@ -61,6 +61,7 @@ def test_real_worker_controller_original_validation_collection_and_replay(tmp_pa
         "source_commit": SHA, "cases": [m.r.spec_payload(selected)],
         "python_sha256": m.r.file_hash(sys.executable), "environment": environment,
     }
+    plan = m.r.strict_json(m.r.r2.encoded(plan))
     for name, value in (
         ("plan.json", plan), ("historical_w.json", previous),
         ("warehouse_selection.json", selection),
@@ -142,7 +143,14 @@ def test_real_worker_controller_original_validation_collection_and_replay(tmp_pa
 
     monkeypatch.setattr(m.o, "supervise", controlled)
     monkeypatch.setattr(m.r.r2, "command", command)
-    assert m.batch(claim, SHA) == 0
+    exit_code = m.batch(claim, SHA)
+    if exit_code:
+        details = {
+            p.relative_to(claim).as_posix(): p.read_text()
+            for p in claim.rglob("*.json")
+            if p.name in {"batch_outcome.json", "controller.json", "case_outcome.json"}
+        }
+        raise AssertionError(details)
     products = claim / "cases" / m.CASE / "products" / m.CASE
     validation = m.r.r2.read(products / "independent_validation.json")
     assert validation["status"] == "accepted" and validation["failed_check_count"] == 0

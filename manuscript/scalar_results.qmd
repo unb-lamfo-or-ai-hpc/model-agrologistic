@@ -1,6 +1,6 @@
 ## Accepted scalar cohort and computational dimensions
 
-All eight scalar observations meet their original 1% global-gap target and retain accepted original independent feasibility certificates. The h500 experiment has no terminal evidence at this cutoff. It is absent from numerical solution comparisons.
+All nine warehouse-only scalar observations meet their original 1% global-gap target and retain accepted original independent feasibility certificates. The original h500 job2220382 is accepted after integrity/certificate replay. Two separate h215 D observations bring the scalar inventory to eleven, not eleven independent replications.
 
 | Instance | Variables | Binary | Linear constraints | Matrix nonzeros |
 |:--|--:|--:|--:|--:|
@@ -8,6 +8,7 @@ All eight scalar observations meet their original 1% global-gap target and retai
 | h215 STO | 14,054,654 | 307 | 661,057 | 52,068,826 |
 | h300 STO | 25,107,544 | 392 | 890,642 | 94,635,126 |
 | h400 STO | 42,106,944 | 492 | 1,160,742 | 160,697,126 |
+| h500 STO | 63,426,344 | 592 | 1,430,842 | 244,039,126 |
 
 : Original model dimensions. General indicator constraints are additional and remain separately recorded; binary counts are included in integer counts. {#tbl-scalar-size}
 
@@ -17,6 +18,7 @@ All eight scalar observations meet their original 1% global-gap target and retai
 | h215 STO | 40.76 | 3.98 | 46.22 | 43.13 |
 | h300 STO | 47.14 | 7.19 | 57.09 | 46.35 |
 | h400 STO | 70.46 | 11.87 | 87.02 | 72.34 |
+| h500 STO | 127.58 | 18.16 | 152.72 | 111.78 |
 
 : Measured phases and memory scopes. Allocation elapsed, Slurm MaxRSS and solver-managed memory are different measurements. {#tbl-scalar-resources}
 
@@ -26,6 +28,7 @@ All eight scalar observations meet their original 1% global-gap target and retai
 | h215 STO | 13.071397 | 393.902 | 96.987 | 0.740159 |
 | h300 STO | 9.289109 | 385.502 | 95.850 | 0.004119 |
 | h400 STO | 7.593395 | 381.573 | 94.975 | 0.836784 |
+| h500 STO | 6.297240 | 373.173 | 94.074 | 0.207432 |
 
 : Scalar solution quality and cost composition. Native optimal status denotes the configured gap criterion, not exact zero-gap proof. {#tbl-scalar-quality}
 
@@ -53,6 +56,7 @@ All five h300 objectives and best bounds coincide; their original warehouse, flo
 | h215 STO | 9.819 | 367.138 | 16.946 |
 | h300 STO | 11.260 | 360.578 | 13.664 |
 | h400 STO | 12.539 | 356.123 | 12.911 |
+| h500 STO | 14.318 | 346.074 | 12.781 |
 
 : Reconstructed financial components, excluding artificial penalties. Investment is charged once; STO operation is scenario-weighted over the horizon. No annualization, currency conversion or price-year adjustment is applied. {#tbl-scalar-financial-components}
 
@@ -62,8 +66,9 @@ All five h300 objectives and best bounds coincide; their original warehouse, flo
 | h215 STO | 69 | 69 | 75 | 71 |
 | h300 STO | 154 | 154 | 70 | 76 |
 | h400 STO | 254 | 254 | 69 | 77 |
+| h500 STO | 354 | 354 | 72 | 74 |
 
-: Counts from the accepted original decision vectors, using a display threshold of 1e-8 t. Original values/certificates are unchanged. Existing availability is not counted as candidate opening. {#tbl-scalar-investments}
+: Counts from the accepted original decision vectors, using a display threshold of 1e-8 t for h215–h400 and 1e-7 t for the original h500 aggregate. Original values/certificates are unchanged. Existing availability is not counted as candidate opening. {#tbl-scalar-investments}
 
 | Instance | Candidate capacity, million t | Static expansion, million t | Bulkification investment basis, million t |
 |:--|--:|--:|--:|
@@ -71,10 +76,11 @@ All five h300 objectives and best bounds coincide; their original warehouse, flo
 | h215 STO | 7.381322 | 0.391226 | 0.461750 |
 | h300 STO | 8.522815 | 0.379411 | 0.509010 |
 | h400 STO | 9.552150 | 0.385596 | 0.484270 |
+| h500 STO | 10.992729 | 0.389176 | 0.437018 |
 
 : Investment quantities. The bulkification basis determines handling-rate gains; it is not additional static storage. {#tbl-scalar-quantities}
 
-All included warehouses have at least one positive transport flow in each representative solution. All included candidates are activated and receive positive capacity. Expansion/bulkification partition the 146 existing sites in these exported plans. Nine of the ten available export roles receive positive transport. These are returned plan characteristics, not an assertion of uniqueness or infrastructure implementation feasibility.
+All included candidates are activated and receive positive capacity through h500. The h500 aggregate records 354 candidate investments, 72 positive expansions and 74 positive bulk conversions. The original h215–h400 vector audits additionally establish positive transport at every included warehouse and nine used export roles; those two geographic-use findings are not extrapolated to the h500 aggregate. These are returned plan characteristics, not uniqueness or infrastructure feasibility.
 
 | Instance | Domestic service, % | Unmet demand, million t | Stock exceedance, million t period | Reception overflow, million t |
 |:--|--:|--:|--:|--:|
@@ -82,6 +88,7 @@ All included warehouses have at least one positive transport flow in each repres
 | h215 STO | 92.2674 | 52.4049 | 109.0691 | 67.8432 |
 | h300 STO | 91.3256 | 58.7873 | 46.4440 | 33.8392 |
 | h400 STO | 91.3304 | 58.7551 | 26.2548 | 16.4977 |
+| h500 STO | 91.6360 | 56.6840 | 14.2025 | 4.0754 |
 
 : Physical diagnostics over the declared horizon. STO quantities are probability-weighted, not unweighted sums over nine scenarios. {#tbl-scalar-physical}
 
@@ -95,7 +102,7 @@ Across the returned STO plans, additional candidate sites accompany more install
 
 ![Verified h400 STO node and investment locations. Origins distinguish soybean/corn; domestic/export roles remain separate. Road polylines are unavailable and no connecting segments are invented.](figures/scalar_h400_t1.png){#fig-map-h400}
 
-![h500 input availability only. Existing and candidate locations are included options; no optimized decisions or terminal h500 result are shown.](figures/h500_pending.png){#fig-map-h500}
+![h500 input availability only. Numerical h500 results are now accepted, but this preserved geographic snapshot contains no optimized h500 decisions.](figures/h500_pending.png){#fig-map-h500}
 
 The local read-only dashboard provides the corresponding DET/STO, population, incremental-membership, product, period and scenario filters, preserving coincident identifiers. Its ability to display a flow requires original positive-flow evidence and source-bound road geometry. Geography alone is not a validation of the agricultural plan.
 

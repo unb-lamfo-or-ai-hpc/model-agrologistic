@@ -1,5 +1,29 @@
 # Model Agrologistic — MVP 2.0 checkpoint
 
+## Current continuation after S5 closure — 27 October 2026
+
+PR130 merged with explicit researcher authorization at
+`b031c3d1014df433020a6bb98534b9b9d8de4ffb`; S5 is closed. Eleven accepted
+scalar observations (nine W scaling plus two D h215) retain their originals.
+The researcher now requests ONE scalar SCIP STO h215 W test and parallel
+documentation/manuscript reconciliation including original h500. See
+[the complete new protocol](docs/mvp2_scalar_scip_h215_w.md).
+
+Prepare/qualify the one-shot8h/192GiB/24logical-CPU reservation, four-thread
+ceiling, native14400s/common1% target, exact-step/phase controls and terminal
+positive/negative evidence. Keep source/scenarios/penalties/units/tolerances and
+historical controls unchanged. HiGHS is a conditional separately qualified
+future option, not an automatic fallback. No predicted failure or generalized
+open-source inability is a result. Merge approval and actual NPAD CLI remain
+researcher-only. Development is GitHub-only; no local clone/environment change.
+S6-A/coauthor revision and S6-B remain open; no publication/submission follows.
+
+The manuscript now contains original h500 numerical tables and corrected W/D
+scope. The pending scalar SCIP test has no result and is not pooled with old
+hierarchical SCIP records. Current h500 map remains input availability only.
+Final editorial/source freeze awaits the actual SCIP evidence and coauthor
+review; S6-B and GAMS limitations remain explicit.
+
 ### CURRENT original h500 accepted and S5 consolidation 27 October 2026
 
 The researcher supplied ORIGINAL scalar-h500-8h-evidence.tar.gz and its external

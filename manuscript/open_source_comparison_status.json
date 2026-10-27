@@ -1,0 +1,22 @@
+{
+  "schema_version": "scalar-open-source-status-v1",
+  "as_of": "2026-10-27",
+  "scope": "One prospective scalar SCIP STO h215 W observation; no measured result yet.",
+  "protocol": "docs/mvp2_scalar_scip_h215_w.md",
+  "observations": [],
+  "scip": {
+    "preparation_authorized": true,
+    "quality_target": 0.01,
+    "native_seconds": 14400,
+    "reservation_seconds": 28800,
+    "allocated_logical_cpus": 24,
+    "memory_mib": 196608,
+    "threads_ceiling": 4
+  },
+  "highs": {
+    "conditional_future_option": true,
+    "implemented": false,
+    "execution_admitted": false
+  },
+  "qualification": "Accept success and negative outcomes equally; no general open-source inability conclusion."
+}

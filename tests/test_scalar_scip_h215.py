@@ -77,6 +77,7 @@ def test_one_frozen_contract_preserves_science_and_uses_no_gurobi_parameters(tmp
     selected = m.spec(workbook)
     payload = m.r.spec_payload(selected)
     payload["workbook_sha256"] = m.o.WORKBOOK_SHA
+    payload = m.r.strict_json(m.r.r2.encoded(payload))
     m.case_contract([payload])
     original = m.o.specs(workbook)[1]
     assert selected.model == original.model and selected.loader == original.loader
