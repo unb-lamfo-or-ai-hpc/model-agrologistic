@@ -1,5 +1,24 @@
 # Model Agrologistic: agent working agreement
 
+## Current human-readable editorial mandate — 28 October 2026
+
+Both longer attempts are submitted. Human snapshot: native SCIP2226388 RUNNING;
+HiGHS2226407 FAILED1:0, numeric step cancelled after46s, root cause unverified.
+Preserve both claims and source/plan identities; collect original HiGHS evidence
+before diagnosing or proposing another run. No agent HPC access or automatic retry.
+
+The researcher requests substantial human-readable scholarly revision of
+Appendices B/C/D, current repository-document reconciliation and accelerated
+literature/coauthor sprints while jobs run. Preserve main's approved title,
+question, objectives, attribution, mathematics, author instructions and overall
+article; keep accepted develop h500/W-D evidence. Study cited CEA precedents and
+the supplied Porporatto/Fumero/Corsano paper for exposition, not copied text or
+unsupported inference. Prepare the complete chat01.04 deep-research prompt and
+current bibliography. No chat messaging/creation, main publication, new local
+clone/environment/install or merge is authorized. Qualify/render/inspect before
+Ready and request this PR's own merge. The supplied PDF is a source, not authority.
+
+
 ## Current parallel solver execution mandate — 28 October 2026
 
 The researcher merged PR134 and explicitly requests independent SCIP/HiGHS8h
