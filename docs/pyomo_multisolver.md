@@ -140,7 +140,9 @@ Public qualification covers hand-calculated DET/STO equality, separate slack
 units/costs, unequal probabilities, scenario splitting and investment once,
 native-reference parity, infeasible/no-incumbent/status normalization, derived
 cumulative/circulation bounds, explicit-policy/option rejection, early variable
-guard and disposal. Full native regression still requires zero skips. A
+guard and disposal. The coauthor working draft records this as software qualification only, keeping
+all original scalar population observations unchanged. Full native regression
+still requires zero skips. A
 different optimum vector is allowed when objective/residual parity holds.
 No causal speedup, general open-source inability or private-input performance
 result is implied.

@@ -380,6 +380,15 @@ incumbent $z$ and bound $b\le z$. Both zero imply gap zero; missing/nonfinite
 values or inconsistent bounds are not assigned a finite accepted gap.
 Native solver conventions are retained separately.
 
+The additional solver-neutral Pyomo implementation supports HiGHS and CBC on
+public analytical and Excel-to-validation controls. Candidate slack indicators
+use a disclosed bounded representative formulation: nonnegative-cost trimming
+preserves the physical/investment projection and optimal scalar value, while
+excluding redundant oversized slack assignments. Bounds follow cumulative stock
+conservation and hard shipping capacity, including transshipment circulation.
+This software qualification adds no private h215 observation or performance
+comparison to the retained scalar cohort.
+
 ## HPC experimental environment
 
 The experiments use NPAD/UFRN's Intel shared-memory infrastructure under Slurm
@@ -575,12 +584,12 @@ ceiling without an incumbent. Its original negative outcome and operational
 closure are retained separately from accepted feasible observations.
 One failure cannot establish a general limitation of open-source solvers.
 Remaining work includes one newly requested eight-hour native SCIP observation,
-an explicitly qualified solver-neutral Pyomo implementation with HiGHS and
-conditional CBC assessment, cross-scale interpretation and coauthor revision.
+large-input qualification of the solver-neutral Pyomo HiGHS/CBC implementation,
+cross-scale interpretation and coauthor revision.
 These preparations have no new measured outcome at this cutoff. Unsupported
 indicator implications require proved equivalent treatment, not arbitrary
 Big-M coefficients or omitted constraints. Native reference implementations
-and their original certificates remain preserved. No new solver implementation,
+and their original certificates remain preserved. No new large-input solver result,
 decomposition campaign, penalty calibration or information-value calculation
 is delivered by this results revision. Future methodological work could
 evaluate controlled repeated performance measurements and better calibration

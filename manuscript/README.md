@@ -8,7 +8,8 @@ pending statements below are dated history. The researcher authorizes this
 h500/W-D editorial reconciliation and one prospective SCIP STO h215 W test.
 The original SCIP scalar h215 observation is now audited: timelimit and zero
 solutions, recorded separately in scip_results.qmd/open_source_comparison_status.json.
-A longer SCIP window and multisolver Pyomo/HiGHS qualification are planned;
+The Pyomo HiGHS/CBC implementation is qualified on public miniatures only.
+A longer SCIP window and large-input multisolver qualification remain planned;
 no new execution follows from this checkpoint. See docs/mvp2_completion_plan_20261028.md.
 The h500 geographic snapshot remains input-only. No deployment, new deposit,
 journal submission or final author acceptance is implied. The existing Pages
@@ -53,7 +54,7 @@ cohorts. `comparison_results.qmd`, `historical_reference_results.md`,
 `comparison_provenance.json`, `results_snapshot.json` and
 `evidence_status.json` must not be pooled with or relabelled as scalar evidence.
 The original scalar SCIP/h215 W negative observation is complete. A distinct
-longer-window operational PR and separate multisolver implementation/qualification
+longer-window operational PR and separate large-input multisolver qualification
 are requested; their new jobs require qualified merge and pinned human CLI. S3/S4 and EVPI/VSS remain excluded.
 
 ## Reproduce the document

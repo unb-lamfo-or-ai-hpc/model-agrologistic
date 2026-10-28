@@ -233,7 +233,7 @@ def test_editorial_source_is_not_manuscript_content(manuscript):
 
 def test_scalar_scope_does_not_restore_cancelled_methods(manuscript):
     article = (manuscript / "index.qmd").read_text(encoding="utf-8")
-    assert "No new solver implementation," in article
+    assert "No new large-input solver result," in article
     assert "one observation per thread level" in article
     assert "original h500" in (manuscript / "scalar_results.qmd").read_text()
     assert "0.207432" in (manuscript / "scalar_results.qmd").read_text()

@@ -110,7 +110,9 @@ def check_scalar_scip_revision() -> None:
         status["highs"]["execution_admitted"] is not False
         or status["longer_scip"]["execution_admitted"] is not False
         or status["longer_scip"]["predecessor_archive_sha256"] != original["archive_sha256"]
-        or status["multisolver"]["pyomo_implemented"] is not False
+        or status["multisolver"]["pyomo_implemented"] is not True
+        or status["multisolver"]["public_miniature_solvers"] != ["HiGHS", "CBC"]
+        or status["multisolver"]["h215_execution_admitted"] is not False
     ):
         raise ValueError("Prospective multisolver scope differs")
     article = (MANUSCRIPT / "index.qmd").read_text(encoding="utf-8")
