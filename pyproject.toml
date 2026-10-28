@@ -97,6 +97,11 @@ pyomo = [
     "pyomo>=6.10,<7",
 ]
 
+multisolver = [
+    "pyomo==6.10.1",
+    "highspy==1.15.1",
+]
+
 scip = [
     "pyscipopt>=6.2,<7",
 ]

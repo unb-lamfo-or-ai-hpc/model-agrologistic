@@ -12,6 +12,7 @@ jobs:
       PYTHONNOUSERSITE: '1'
       PYTHONDONTWRITEBYTECODE: '1'
       AGRO_REQUIRE_NATIVE_SOLVERS: '1'
+      AGRO_REQUIRE_PYOMO_SOLVERS: '1'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -24,7 +25,11 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.13'
-      - run: python -m pip install -e '.[dev,scip]' 'pyscipopt==6.2.1'
+      - name: Install cloud-only retained native and Pyomo qualification dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes coinor-cbc
+          python -m pip install -e '.[dev,scip,multisolver]' 'pyscipopt==6.2.1'
       - name: R2 wrapper syntax, no scheduler or cluster access
         run: |
           bash -n scripts/npad_scalar_r2.sh
@@ -45,6 +50,7 @@ jobs:
           tests/test_scalar_h500_resources.py
           tests/test_scalar_scip_h215.py
           tests/test_scalar_scip_h215_native.py
+          tests/test_pyomo_multisolver.py
           tests/test_scalar_scip_external_review.py
           tests/test_scalar_h500_external_review.py
           tests/test_scalar_h300_external_review.py

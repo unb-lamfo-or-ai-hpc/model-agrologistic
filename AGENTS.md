@@ -1,5 +1,19 @@
 # Model Agrologistic: agent working agreement
 
+## Parallel implementation mandate — 28 October 2026
+
+The researcher reports PR132 merged (f9dddaee…) and explicitly requests a complete
+native SCIP8h/Slurm12h operational PR plus a separate Pyomo multisolver implementation
+PR in parallel. Preserve the original job2225638/claim/certificates and native
+reference implementations. New Pyomo code must disclose and prove its indicator
+translation and qualify public analytical/parity/negative/lifecycle controls.
+No new local clone/environment/install or agent NPAD access. A future large HiGHS
+observation requires its own complete operational/resource qualification.
+GitHub editing/PR creation is autonomous; each merge and actual NPAD CLI remain
+human gates. Keep both PRs draft until their own exact-head qualification.
+See docs/pyomo_multisolver.md and docs/mvp2_multisolver_plan.md.
+The parallel operational package has its own native-only runbook and source pin.
+
 ## Current audited SCIP outcome and continuation — 28 October 2026
 
 PR131 merged with explicit authorization at
