@@ -23,9 +23,9 @@ from dataclasses import asdict, replace
 from importlib.metadata import distribution
 from pathlib import Path
 
+from scripts import mvp2_scalar_scip_h215 as predecessor
 from scripts import mvp2_scalar_wd_h215_gate as g
 from scripts import mvp2_scalar_wd_h215_operational as d
-from scripts import mvp2_scalar_scip_h215 as predecessor
 from scripts.scip_external_observer import ExternalObserver, proc_start, review_external
 
 o, r = g.old, g.r
@@ -216,7 +216,8 @@ def design(files):
     check_predecessor(r.strict_json(files["scip_predecessor.json"]))
     for name in (
         "source.json", "historical_w.json",
-        "warehouse_selection.json", "materialization.original.json", "scip_predecessor.json", "admission_test.json",
+        "warehouse_selection.json", "materialization.original.json",
+        "scip_predecessor.json", "admission_test.json",
     ):
         r.require(r.r2.digest(files[name]) == plan["artifact_sha256"][name], "Plan artifact drift.")
     r.require(
@@ -254,7 +255,8 @@ def design(files):
 def plan_files(claim):
     return {n: o.regular(claim / n).read_bytes() for n in (
         "plan.json", "source.json", "historical_w.json",
-        "warehouse_selection.json", "materialization.original.json", "scip_predecessor.json", "admission_test.json",
+        "warehouse_selection.json", "materialization.original.json",
+        "scip_predecessor.json", "admission_test.json",
     )}
 
 
