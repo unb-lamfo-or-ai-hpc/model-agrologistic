@@ -123,7 +123,7 @@ small examples with known answers, software tests and checks of the
 mathematical formulation. Large experiments then use explicitly specified
 inputs, resource limits and solver settings.
 
-![Figure B.1. Human-supervised research workflow. Proposals are reviewed before implementation; tests and original experiment evidence support subsequent interpretation. Return arrows represent revision when a discrepancy is found.](../figures/human_ai_workflow.png){#fig-human-ai-appendix}
+![Figure B.1. Human-supervised research workflow. Proposals are reviewed before implementation; tests and original experiment evidence support subsequent interpretation. Return arrows represent revision when a discrepancy is found.](../figures/human_ai_workflow.png)
 
 The numerical checks address more than the reported objective. They examine
 local material balances, investment eligibility, scenario-specific constraints,

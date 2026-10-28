@@ -11,7 +11,7 @@ execute:
 format:
   html:
     embed-resources: true
-    number-sections: true
+    number-sections: false
   pdf:
     documentclass: article
     fontsize: 11pt
@@ -19,7 +19,7 @@ format:
     pdf-engine: pdflatex
     latex-auto-install: false
     keep-tex: true
-    number-sections: true
+    number-sections: false
     cite-method: citeproc
     geometry:
       - margin=25mm
@@ -27,3 +27,6 @@ format:
       text: |
         \usepackage{pdfpages}
         \usepackage{xurl}
+        \usepackage{caption}
+        \captionsetup[table]{labelformat=empty}
+        \captionsetup[figure]{labelformat=empty}
