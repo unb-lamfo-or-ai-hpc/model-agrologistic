@@ -188,7 +188,7 @@ Its original source/input/scenario/penalty contract remains unchanged. Sparse
 telemetry, including a 14,414.81-second sample interval, limits resource
 interpretation. This is a negative observation separate from the eleven
 accepted feasible Gurobi observations, not fresh private-input revalidation.
-A longer SCIP observation and Pyomo/HiGHS qualification remain planned only.
+A longer SCIP observation and large-input Pyomo/HiGHS qualification remain planned only.
 
 The separate geographic SQLite stores normalized identities, population
 membership, accepted positive flows and available geometry/metadata. It is

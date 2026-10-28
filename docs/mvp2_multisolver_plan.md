@@ -1,5 +1,21 @@
 # Bounded solver-agnostic scalar implementation plan — 28 October 2026
 
+## Implementation progress after authorized PR133 integration
+
+PR133 merged at4608250d…; the native8h/Slurm12h package and its frozen
+82cb58ff… human handoff are complete, awaiting manual NPAD execution/evidence.
+PR134 implements the scalar Pyomo HiGHS/CBC version with public miniature
+qualification and the explicitly proved bounded-slack representation.
+See [the implementation/qualification boundary](pyomo_multisolver.md).
+Its own merge remains a human gate. The older implementation-stub descriptions
+below are the retained design-stage snapshot, not the current software state.
+M1 is implemented; M2 still needs installed-runtime, small/medium build/resource
+evidence and a complete separate large-instance operational package.
+CBC is implemented/tested on public controls, without a population experiment.
+No moving develop pin, automatic solver fallback, additional SCIP attempt,
+h215 HiGHS/CBC job or new scientific observation is admitted by this update.
+
+
 The researcher requests planning a longer SCIP test and other free solvers,
 including HiGHS and a multisolver implementation. This document is design and
 qualification scope, not implemented Pyomo/HiGHS/CBC capability or admission of

@@ -1,5 +1,40 @@
 # Model Agrologistic — MVP 2.0 checkpoint
 
+## Parallel package checkpoint — 28 October 2026
+
+PR132 is merged at f9dddaee…; the independently audited original four-hour
+SCIP observation remains job2225638, native timelimit, zero usable incumbents.
+The researcher explicitly authorized PR133, now merged at
+`4608250d5aea92ec53ed4519bb85f98edbd59a96`.
+Its qualified native-only source is
+`82cb58ff6975662a7b576e7c6c0d5589539e635c`, with 1388 native passes/zero skips.
+The human-only CLI for one native8h/Slurm12h observation has been supplied;
+no new submission/job/result is claimed here. Preserve the old four-hour claim
+and use the new distinct claim. Never substitute a later develop/merge source
+containing the Pyomo extension for that pinned operational handoff.
+
+PR134 implements the formerly empty Pyomo scalar DET/STO backend with HiGHS
+and CBC, explicit proved candidate-slack representative bounds, common results/
+validator, early variable guard, export and negative/lifecycle qualification.
+This is public miniature software qualification; the original eleven accepted
+Gurobi observations and one negative scalar SCIP observation are unchanged.
+No private h215 HiGHS/CBC observation, large-build resource qualification, solver
+speedup or general open-source inability is established. The Pyomo formulation
+preserves physical/investment projection and optimal scalar value under checked
+conditions, not every redundant unbounded slack assignment; this difference is
+explicit in its metadata and manuscript. See docs/pyomo_multisolver.md.
+
+PR134 still requires its own exact-head combined qualification and merge approval.
+Next: human executes/collects/transfers the one extended native SCIP observation;
+Codex audits that original outcome and prepares a separate HiGHS h215 resource/
+operational gate after installed-runtime and small/medium construction evidence.
+A default 200000-variable Pyomo guard blocks accidental large allocation; an
+override is not HPC admission. Missing installed packages need human intervention,
+not a local/NPAD install by Codex. Coauthor S6-A and reproducibility/rights/author
+S6-B remain open. Old broad S3/S4 cancellation and EVPI/VSS exclusion stand;
+the new scoped solver requests are explicit extensions. No publication follows.
+
+
 ## Current audited SCIP outcome and continuation — 28 October 2026
 
 PR131 merged with explicit authorization at
