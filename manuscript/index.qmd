@@ -37,15 +37,11 @@ keywords:
 
 ::: {.callout-note title="Coauthor working revision — 28 October 2026"}
 
-This S6-A working revision adds the audited original h500 result to the nine
-warehouse-only scalability observations and retains two separately validated
-h215 D observations: eleven scalar observations in total. S5 closed with PR130;
-the separate audited four-hour SCIP h215 W observation returned no incumbent.
-In the latest supplied accounting, the longer SCIP job is running and the
-HiGHS attempt ended during worker initialization, without retained solve evidence.
-Coauthor review and S6-B remain open.
-This source revision is not yet published or approved for journal submission.
-Appendices A–D retain their disclosed provenance and limitations.
+This working revision incorporates eleven accepted scalar Gurobi observations
+through h500 and the original SCIP no-incumbent result. S5 is closed; longer
+solver attempts, coauthor review and S6-B remain under review. This revision
+is not yet published or approved for submission. Appendices A–D retain their
+disclosed provenance and limitations.
 
 :::
 
