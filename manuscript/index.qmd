@@ -585,7 +585,7 @@ The separate scalar SCIP STO h215 W observation reached its four-hour native
 ceiling without an incumbent. Its original negative outcome and operational
 closure are retained separately from accepted feasible observations.
 One failure cannot establish a general limitation of open-source solvers.
-The longer eight-hour native SCIP attempt is running at this revision's
+The longer eight-hour native SCIP observation is running at this revision's
 operational cutoff. The separate Pyomo/HiGHS attempt ended before a released
 worker was recorded; it provides no population-solve evidence. Completion of
 the longer SCIP review, diagnosis of HiGHS initialization and coauthor revision
