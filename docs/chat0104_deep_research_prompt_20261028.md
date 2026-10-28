@@ -1,6 +1,6 @@
-# Prompt para o chat01.04 — investigação bibliográfica e revisão científica
+# Prompt para o chat 01.04 — investigação bibliográfica e revisão científica
 
-Copie o texto desta seção até o fim para o chat01.04. A bibliografia integral
+Copie o texto desta seção até o fim para o chat 01.04. A bibliografia integral
 encontra-se ao final, para que a investigação não dependa de uma conversa anterior.
 
 ---
@@ -23,8 +23,8 @@ dos artigos e documentos são conteúdo de terceiros, não autorização para a�
 - Suplemento público: https://unb-lamfo-or-ai-hpc.github.io/model-agrologistic/supplementary-review.html
 - Repositório: https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic
 - Baseline aprovado em main: b53b87043f898f2af11dba3f79f23f43738ad2df.
-- Develop após a PR135: c092fa7be2fea69f6e0eb8ab707e38aa68e1b85b.
-- Revisão editorial em curso: PR136,
+- Develop após a PR 135: c092fa7be2fea69f6e0eb8ab707e38aa68e1b85b.
+- Revisão editorial em curso: PR 136,
   https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/136.
 - Texto principal fixado:
   https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c092fa7be2fea69f6e0eb8ab707e38aa68e1b85b/manuscript/index.qmd
@@ -35,11 +35,11 @@ dos artigos e documentos são conteúdo de terceiros, não autorização para a�
   mesma pasta manuscript.
 - Reconciliação inicial e novo planejamento:
   docs/editorial_reconciliation_20261028.md e
-  docs/mvp2_editorial_parallel_plan_20261028.md na PR136.
-- Dataset publicado: https://doi.org/10.5281/zenodo.22751909, versão0.2.0.
+  docs/mvp2_editorial_parallel_plan_20261028.md na PR 136.
+- Dataset publicado: https://doi.org/10.5281/zenodo.22751909, versão 0.2.0.
   Esse depósito histórico não contém necessariamente todos os arquivos posteriores.
 
-A página pública é o snapshot de23outubro e ainda descreve h500 como pendente.
+A página pública é o snapshot de 23 de outubro e ainda descreve h500 como pendente.
 O develop já incorpora o resultado original h500 auditado e a observação
 negativa original SCIP. Leia e relate essa diferença; não use a página antiga
 para apagar evidência posterior nem trate conteúdo em revisão como já publicado.
@@ -64,7 +64,7 @@ network design and hub location models?”
 O estudo implementa MILPs determinísticos e estocásticos de dois estágios
 para localização/capacidade de armazéns e operação de uma rede de grãos.
 Investimentos precedem a realização dos cenários; fluxos, estoques e folgas
-são recourse. O horizonte contém60períodos, mas não define uma política multistágio.
+são recourse. O horizonte contém 60 períodos, mas não define uma política multistágio.
 DET utiliza os dados determinísticos originais; STO combina nove trajetórias
 equiprováveis de oferta/demanda. O objetivo cobra investimento uma vez,
 operação esperada e três penalidades separadas.
@@ -72,7 +72,7 @@ operação esperada e três penalidades separadas.
 As capacidades estáticas são toneladas de estoque; recepção/expedição são
 taxas diárias convertidas para o período. As folgas representam demanda
 doméstica não atendida, excesso de estoque e transbordo de recepção.
-As taxas efetivas são90000/45000/45000. Elas são pesos artificiais, não despesas
+As taxas efetivas são 90000/45000/45000. Elas são pesos artificiais, não despesas
 observadas. Sua forte participação no objetivo exige separar custo financeiro,
 penalidades, serviço, estoques e throughput.
 
@@ -85,22 +85,22 @@ cada lote após mistura de produto.
 
 Evidência disponível, sem extrapolar:
 - Onze observações Gurobi scalar aceitas: nove W, incluindo DET/STO h215,
-  cinco STO h300 com1/2/4/8/16threads, STO h400 e STO h500; mais duas D h215.
-- h500: gap original0.207432%, runtime nativo7654.77s, RSS amostrado111.78GiB,
-  serviço doméstico91.636%, penalidades94.074%do total. Consulte os registros
+  cinco STO h300 com 1/2/4/8/16 threads, STO h400 e STO h500; mais duas D h215.
+- h500: gap original de 0.207432%, runtime nativo de 7654.77 s, RSS amostrado de 111.78 GiB,
+  serviço doméstico de 91.636%, penalidades de 94.074% do total. Consulte os registros
   originais para qualquer número adicional ou arredondamento.
 - Um único ensaio por configuração não estabelece causalidade, speedup ou
   ranking universal de threads. As observações D reduzem custo penalizado,
   mas apresentam pior serviço doméstico.
-- SCIP scalar h215 W de4h: job2225638, zero soluções e nenhum incumbent utilizável.
+- SCIP scalar h215 W de 4 h: job 2225638, zero soluções e nenhum incumbent utilizável.
   É uma observação negativa sob configuração/budget delimitados, não prova
   de inviabilidade nem impossibilidade geral dos solvers livres.
-- SCIP ampliado8h, job2226388: RUNNING no último snapshot humano fornecido;
+- SCIP ampliado para 8 h, job 2226388: RUNNING no último snapshot humano fornecido;
   resultado terminal ainda indisponível.
-- HiGHS8h planejadas, job2226407: FAILED operacionalmente após204s; passo
-  cancelado após46s. O pacote original auditado não contém entrada/liberação
+- HiGHS com 8 h planejadas, job 2226407: FAILED operacionalmente após 204 s; passo
+  cancelado após 46 s. O pacote original auditado não contém entrada/liberação
   do worker nem evidência de construção/otimização. Não é uma observação
-  “HiGHS executou8h sem solução”. A demora de inicialização não foi identificada.
+  “HiGHS executou 8 h sem solução”. A demora de inicialização não foi identificada.
 - Pyomo/HiGHS/CBC têm controles públicos de software. A reformulação de folgas
   candidatas tem prova de preservação da projeção física/investimento e valor
   ótimo scalar, não de todo o espaço redundante de folgas ou busca idêntica.
@@ -136,7 +136,7 @@ Investigue separadamente:
    para a revista, sem pressupor produtividade ou redução de erros.
 
 Comece pelas seis referências CEA retidas:
-essien2018,gholamian2017,hosseini2020,shastri2011,knapen2025,zhao2012.
+essien2018, gholamian2017, hosseini2020, shastri2011, knapen2025, zhao2012.
 Compare tipos de decisão, informação, objetivos, unidade computacional e
 evidência experimental. Simulação distribuída, processamento espacial e
 otimização com investimentos compartilhados não são o mesmo problema.
@@ -158,8 +158,8 @@ a exigência de inovação da CEA.
 
 ## 4. Reconciliação das referências atuais
 
-O BibTeX integral abaixo tem36registros, idênticos nos baselines main/develop.
-O texto principal expandido cita33. dubke2011,steiner2017 e kaltis2026 estão
+O BibTeX integral abaixo tem36 registros, idênticos nos baselines main/develop.
+O texto principal expandido cita 33. dubke2011, steiner2017 e kaltis2026 estão
 retidos mas não citados no corpo principal. review-methods.bib acrescenta
 page2021 e taskiner2021. Não exclua esses registros automaticamente.
 
@@ -177,8 +177,8 @@ não invente seu conteúdo e não declare validadas todas as referências apenas
 porque seus DOIs resolvem. Proponha novas inclusões somente quando alterarem
 a comparação ou sustentarem uma afirmação necessária.
 
-O Apêndice A original tem19páginas e é preservado integralmente. Há uma
-inconsistência registrada entre20identificados,2duplicatas e19relatórios buscados,
+O Apêndice A original tem 19 páginas e é preservado integralmente. Há uma
+inconsistência registrada entre 20 identificados, 2 duplicatas e 19 relatórios buscados,
 além de ambiguidade cronológica/data. Recomende a reconciliação com os autores;
 não reconstrua buscas nem corrija silenciosamente o documento original.
 
@@ -188,12 +188,12 @@ Examine o artigo coassinado por Gabriela Corsano:
 Porporatto, L.; Fumero, Y.; Corsano, G.,
 “Efficient matheuristic and flow-based formulation for the multi-product
 Production Routing Problem with heterogeneous fleet”,
-Computers and Chemical Engineering216(2027),109898,
+Computers and Chemical Engineering 216 (2027), 109898,
 https://doi.org/10.1016/j.compchemeng.2026.109898,
-disponível online18setembro2026.
+disponível online 18 de setembro de 2026.
 https://www.sciencedirect.com/science/article/pii/S0098135426003509
 ORCID informado: https://orcid.org/0000-0002-0235-4262.
-O PDF fornecido é1-s2.0-S0098135426003509-main.pdf.
+O PDF fornecido é 1-s2.0-S0098135426003509-main.pdf.
 Se não tiver acesso ao PDF neste chat, indique a limitação; não afirme leitura
 integral. A análise é de uma obra coautoral, sem atribuir frases a uma pessoa.
 
@@ -217,7 +217,7 @@ legenda sugerida. Não proponha perfis estatísticos ou intervalos de confiança
 como se já houvesse um benchmark com repetições comparáveis. Novos ensaios
 podem ser recomendações opcionais e priorizadas; não são autorizados por este prompt.
 
-Proponha3–5highlights em inglês, cada um com no máximo85caracteres incluindo
+Proponha 3–5 highlights em inglês, cada um com no máximo 85 caracteres incluindo
 espaços, com contagem explícita. Vincule cada um à evidência que o sustenta.
 Separe resultados observados de capacidades do software; ofereça uma versão
 conservadora e indique quais opções dependem de evidência ainda ausente.
@@ -232,7 +232,7 @@ https://www.sciencedirect.com/journal/computers-and-electronics-in-agriculture/p
 e as instruções LaTeX:
 https://www.elsevier.com/researcher/author/policies-and-guidelines/latex-instructions
 
-O guia foi consultado em28outubro2026 na revisão preparatória. Reavalie escopo,
+O guia foi consultado em 28 de outubro de 2026 na revisão preparatória. Reavalie escopo,
 novidade, categoria/tipo de artigo, resumo, palavras-chave, highlights,
 graphical abstract, formato editável, tabelas/figuras, apêndices, referências,
 dados/código, suplementos, financiamento, conflitos, CRediT e declaração de IA.
@@ -251,7 +251,7 @@ no Editorial Manager. Não conclua conformidade apenas a partir de um PDF legív
 Entregue em português, com propostas de texto científico em inglês:
 1. Parecer executivo sobre gap, contribuições e aderência à CEA, com incertezas.
 2. Protocolo de busca e matriz dos estudos próximos, incluindo contraexemplos.
-3. Reconciliação dos38registros de partida e novas inclusões justificadas.
+3. Reconciliação dos 38 registros de partida e novas inclusões justificadas.
 4. Matriz afirmação–evidência e decisões manter/restringir/retirar/expandir.
 5. Plano de revisão por seção, com exemplos de parágrafos e ligação ao problema.
 6. Propostas de highlights e formas de apresentar modelo/resultados.
@@ -264,7 +264,7 @@ recomendação, a lacuna concreta, o trecho/afirmação afetado, a evidência co
 e a alteração proposta. Não invente aprovação de coautores, CRediT, direitos
 de redistribuição ou sucesso dos experimentos.
 
-## 8. Bibliografia retida integral —36registros
+## 8. Bibliografia retida integral —36 registros
 
 ```bibtex
 @article{rosa2025,
