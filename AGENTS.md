@@ -11,7 +11,7 @@ No new local clone/environment/install or agent NPAD access. A future large HiGH
 observation requires its own complete operational/resource qualification.
 GitHub editing/PR creation is autonomous; each merge and actual NPAD CLI remain
 human gates. Keep both PRs draft until their own exact-head qualification.
-See docs/mvp2_scalar_scip_h215_native8h.md and docs/mvp2_multisolver_plan.md.
+See docs/mvp2_multisolver_plan.md and docs/mvp2_completion_plan_20261028.md.
 
 ## Current audited SCIP outcome and continuation — 28 October 2026
 
