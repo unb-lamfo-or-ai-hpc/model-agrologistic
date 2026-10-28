@@ -351,13 +351,14 @@ def solve_model_pyomo(data, model_config, solver_config):
             if not adapter.available(exception_flag=False):
                 raise RuntimeError("Existing CBC executable required.")
             adapter.options.update({
-                "seconds": solver_config.time_limit or 1e20,
                 "timeMode": "elapsed", "ratio": solver_config.mip_gap,
                 "threads": solver_config.threads or 1,
                 "randomSeed": solver_config.seed or 0,
                 "randomCbcSeed": solver_config.seed or 0,
                 "primalTolerance": 1e-9, "integerTolerance": 1e-9,
             })
+            if solver_config.time_limit is not None:
+                adapter.options["seconds"] = solver_config.time_limit
             build_seconds = perf_counter() - started
             transfer_seconds = None
             optimization_started = perf_counter()
