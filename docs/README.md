@@ -6,14 +6,30 @@ development record is not a single invariant specification.
 
 ## Current MVP2 evidence and planning
 
+As of 28 October 2026, the accepted cohort remains eleven scalar Gurobi
+observations. The original scalar SCIP four-hour outcome is negative.
+The latest supplied longer SCIP snapshot is running; the original HiGHS
+startup failure is audited, with no retained population-solve evidence.
+The following current entry points distinguish those outcomes from earlier
+campaign history.
+
+| Current review document | Use |
+| --- | --- |
+| [Accelerated editorial and literature sprints](mvp2_editorial_parallel_plan_20261028.md) | Advance coauthor preparation while terminal evidence is reconciled |
+| [Initial literature/exposition reconciliation](editorial_reconciliation_20261028.md) | Six cited CEA precedents, source access limits, coauthored-paper lessons and current journal guidance |
+| [Complete chat 01.04 prompt](chat0104_deep_research_prompt_20261028.md) | Deep gap/contribution/results/template investigation, with all 36 retained records and two review-method references |
+| [Original HiGHS startup audit](highs_h215_2226407_startup_audit.md) | Original hash-verified partial package; 45-second worker-entry deadline; underlying startup delay unidentified |
+| [Current Pyomo implementation](pyomo_multisolver.md) | Implemented scalar DET/STO HiGHS/CBC interfaces, proved bounded-slack scope and qualification limits |
+
+
 The frozen MVP1 cohort below remains historical. New accepted observations do
 not rewrite its unsuccessful outcomes. S1-C is documentary, not a new campaign.
 
 | Document | Use |
 | --- | --- |
-| [Current completion plan](mvp2_completion_plan_20261028.md) | Audited 4 h SCIP outcome, proposed 8 h SCIP, multisolver PRs and remaining S6/author gates |
+| [Current completion plan](mvp2_completion_plan_20261028.md) | Current accelerated plan, original scalar evidence and remaining literature/S6/author decisions |
 | [Original scalar SCIP h215 result](mvp2_scalar_scip_h215_w_results.md) | No usable incumbent; safe archive/source audit and sparse telemetry limitations |
-| [Multisolver implementation plan](mvp2_multisolver_plan.md) | Actual native PySCIPOpt, currently empty Pyomo, HiGHS/CBC mathematical and resource gates |
+| [Multisolver implementation plan](mvp2_multisolver_plan.md) | Architecture history and requirements; see the implemented Pyomo guide above for the current code |
 | [Scalar SCIP h215 W and S6-A continuation](mvp2_scalar_scip_h215_w.md) | Complete bounded one-shot protocol, negative outcomes, conditional HiGHS and h500 manuscript integration |
 | [Original scalar h500 and S5 closure](mvp2_scalar_h500_results.md) | Independently audited job2220382, eleven-observation inventory and remaining S6/SCIP decisions |
 | [S2 closure campaign](mvp2_s2_closure_campaign.md) | Finite normal/adverse/native/h300 sequence, inherited budgets, stop criteria and remaining functional PRs; no downstream execution admission |
@@ -30,7 +46,7 @@ not rewrite its unsuccessful outcomes. S1-C is documentary, not a new campaign.
 | [h300 pair acceptance](mvp2_h300_pair_acceptance.md) | One descriptive pair, not a replication campaign |
 | [h400 control acceptance](mvp2_h400_control_acceptance.md) | One completed control, full hierarchy and final-capacity quality distinction |
 
-## Current v0.2 reference
+## Historical v0.2 comparison
 
 The nine-scenario campaign below follows the earlier PR25 bounded demonstration;
 its 10% gap target and 28,800-second budget do not rewrite the older certificate.

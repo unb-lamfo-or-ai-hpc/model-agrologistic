@@ -264,7 +264,7 @@ recomendação, a lacuna concreta, o trecho/afirmação afetado, a evidência co
 e a alteração proposta. Não invente aprovação de coautores, CRediT, direitos
 de redistribuição ou sucesso dos experimentos.
 
-## 8. Bibliografia retida integral —36 registros
+## 8. Bibliografia retida integral — 36 registros
 
 ```bibtex
 @article{rosa2025,
