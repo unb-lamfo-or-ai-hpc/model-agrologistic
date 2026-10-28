@@ -82,7 +82,9 @@ def test_one_frozen_contract_preserves_science_and_uses_no_gurobi_parameters(tmp
     original = m.o.specs(workbook)[1]
     assert selected.model == original.model and selected.loader == original.loader
     assert selected.solver.backend == "pyomo" and selected.model.mode == "sto"
-    assert selected.solver.solver_options == {"indicator_reformulation": m.POLICY, "pyomo_max_variables": 16000000}
+    assert selected.solver.solver_options == {
+        "indicator_reformulation": m.POLICY, "pyomo_max_variables": 16000000,
+    }
     assert selected.solver.threads == 4 and selected.solver.time_limit == 28800
     assert not selected.model.use_direct_origin_customer
     changed = copy.deepcopy(payload)
@@ -177,7 +179,7 @@ def test_original_certificate_or_parameter_drift_is_rejected(kind):
     files, plan, base = fixture()
     if kind == "parameters":
         update(files, base, "result.json", lambda v: v["result"]["metadata"].update(
-            effective_highs_parameters={},
+            effective_highs_options={},
         ))
     elif kind == "tolerance":
         update(files, base, "independent_validation.json", lambda v: v.update(

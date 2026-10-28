@@ -49,7 +49,8 @@ def test_real_worker_controller_original_validation_collection_and_replay(tmp_pa
         solver=replace(
             original.solver, backend="pyomo", solver_name="highs", time_limit=28800,
             threads=4, mip_gap=0.01, seed=42, collect_resource_diagnostics=False,
-            solver_options={"indicator_reformulation": m.POLICY, "pyomo_max_variables": 16000000}, log_file="highs-native.log",
+            solver_options={"indicator_reformulation": m.POLICY, "pyomo_max_variables": 16000000},
+            log_file="highs-native.log",
         ),
     )
     selection = tiny_selection()

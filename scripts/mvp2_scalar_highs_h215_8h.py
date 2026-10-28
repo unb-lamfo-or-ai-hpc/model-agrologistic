@@ -7,7 +7,6 @@ representative formulation. No repeat, fallback or automatic follow-on.
 from __future__ import annotations
 
 import argparse
-import contextlib
 import io
 import json
 import os
@@ -134,7 +133,8 @@ def environment():
     packages, fingerprints = {}, {}
     for name, expected in (("pyomo", "6.10.1"), ("highspy", "1.15.1")):
         dist = distribution(name)
-        r.require(dist.version == expected, "Existing " + name + expected + " required; no install.")
+        r.require(dist.version == expected,
+                  "Existing " + name + expected + " required; no install.")
         packages[name] = dist.version
         files = {}
         for item in dist.files or []:
@@ -333,8 +333,9 @@ def start(claim, sha, acknowledged, paths, *, command=r.r2.command):
 
 def inspect_native():
     """Compute-only identity; no population model or optimization."""
-    import highspy
     from importlib.metadata import version
+
+    import highspy
 
     native = highspy.Highs()
     try:
@@ -533,7 +534,8 @@ def case_review(files, plan):
     summary = r.strict_json(files[base + "run_summary.json"])
     r.require(
         result["schema_version"] == 2 and result["experiment"] == plan["cases"][0]
-        and native["solver_backend"] == "pyomo" and native["solver_name"] == "highs" and native["model_mode"] == "sto"
+        and native["solver_backend"] == "pyomo" and native["solver_name"] == "highs"
+        and native["model_mode"] == "sto"
         and completion["status"] == "complete"
         and completion["run_identity"] == native["metadata"]["run_identity"],
         "Original scalar HiGHS completion/identity differs.",
@@ -594,7 +596,8 @@ def case_review(files, plan):
         "native_status": metadata["solver_termination"], "timings": metadata["timings"],
         "economic_cost": summary.get("economic_cost") if usable else None,
         "penalized_total": summary.get("penalized_cost") if usable else None,
-        "interpretation": "One original Pyomo/HiGHS observation; formulation/interface effects preclude causal speedup.",
+        "interpretation": ("One original Pyomo/HiGHS observation; "
+                           "formulation/interface effects preclude causal speedup."),
         **closed(),
     }
 
@@ -652,7 +655,8 @@ def batch(claim, sha):
             )
         finally:
             observer.finish()
-        r.require(outcome["status"] == "closed_feasible_arm", "HiGHS step not operationally closed.")
+        r.require(outcome["status"] == "closed_feasible_arm",
+                  "HiGHS step not operationally closed.")
         load(claim, sha)
         result.update(status="one_highs_observation_returned", completed_modes=["sto"],
                       source_verified_after=True)

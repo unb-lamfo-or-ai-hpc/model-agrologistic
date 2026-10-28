@@ -8,6 +8,7 @@ from time import perf_counter
 import pytest
 
 from scripts.highs_public_qualification import public_data, stochastic
+from src.logic.mathematical_contract import prepare_model_data
 from src.logic.model_config import ModelConfig, SolverConfig
 from src.logic.optimization import solve_model
 from src.logic.optimization_pyomo import PHASE_OBSERVER
@@ -28,7 +29,8 @@ def solve(data, mode):
     finally:
         PHASE_OBSERVER.reset(token)
     assert events == ["optimization", "native_return"]
-    assert validate_solution(data, cfg, result)["status"] == "accepted"
+    report = validate_solution(prepare_model_data(data, cfg), cfg, result)
+    assert report["status"] == "accepted", report["failure_samples"]
     assert result.metadata["effective_highs_options"] == {
         "time_limit": 30.0, "mip_rel_gap": 0.0, "threads": 1,
         "random_seed": 42, "mip_feasibility_tolerance": 1e-9,
