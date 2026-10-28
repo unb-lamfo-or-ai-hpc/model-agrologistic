@@ -4,8 +4,7 @@ PR135 merged with explicit authorization at
 c092fa7be2fea69f6e0eb8ab707e38aa68e1b85b.
 The researcher supplied HiGHS job2226407/source d1033d71/plan c3c5e571 and a
 later accounting snapshot: FAILED1:0 after204s, numeric step CANCELLED+
-(truncated display),46s,0:9. Root cause and whether native optimization began
-are unverified until original collection. Preserve its consumed claim; no retry.
+(truncated display),46s,0:9. The original package is now collected and hash-audited:25safe members/24inventory hashes; no worker entry/release/native products, observer elapsed45.308s and the pinned45s binding deadline. Underlying startup delay remains unidentified; no native solve is evidenced. Preserve the consumed claim; no retry.
 Native SCIP job2226388/source82cb58ff/planacf55202 was RUNNING after2057s in the
 same supplied snapshot. Codex has made no HPC query or submission.
 See docs/evidence/parallel_solvers_20261028_checkpoint.json.
@@ -19,6 +18,29 @@ Prepare a self-contained research prompt for chat01.04 with all current
 bibliographic records, defensible gap/highlight questions, journal requirements
 and recommendations. No hidden reasoning, fabricated solver evidence or new
 experimental authorization is inferred from the attached literature.
+
+## Parallel eight-hour solver continuation — 28 October 2026
+
+PR134 was merged by the researcher at addc470df30f69d23b7e939b6228d46f2728fe5c.
+The human supplied native SCIP submission job2226388/source82cb58ff/
+planacf55202643b97f6c6679ecc9c2a99754c4939a32a00d034c72228964f7cf49a,
+last observed PENDING; no terminal outcome. Preserve its consumed claim and source.
+The existing NPAD environment now reports Pyomo6.10.1/highspy1.15.1/NumPy2.5.2.
+This human installation is not a Codex/local environment change.
+
+A separate complete one-shot Pyomo/HiGHS8h/Slurm12h operational PR is prepared
+for independently scheduled overlap with native SCIP. Same private scientific
+input, disclosed proved bounded-slack representation, own claim, exact source/
+package/step/phase controls, fresh compute public/medium gate and immutable
+positive/negative/partial evidence. No pure-solver speedup comparison or guaranteed
+h215 memory fit follows. See [the complete protocol](docs/mvp2_scalar_highs_h215_native8h.md).
+The current request supersedes older no-HiGHS-execution planning holds only after
+this package's exact qualification, own authorized merge and manual pinned CLI.
+
+Next: audit both original terminal packages; reconcile manuscript/bibliography/
+documentation and coauthor bundle while jobs run; finalize S6-A then S6-B and
+author review. Original Gurobi11 and negative SCIP4h inventories remain unchanged.
+No CBC/population sweep, automatic repeat, final publication or submission.
 
 # Model Agrologistic — MVP 2.0 checkpoint
 

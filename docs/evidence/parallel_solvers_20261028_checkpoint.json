@@ -47,23 +47,42 @@
       "allocated_logical_cpus": 24,
       "numeric_step": {
         "job_id": "2226407.0",
-        "displayed_state": "CANCELLED+",
-        "state_is_truncated": true,
+        "state": "CANCELLED",
         "elapsed_seconds": 46,
         "exit_code": "0:9",
         "max_rss_raw": "81828K",
         "allocated_logical_cpus": 16
       },
-      "terminal_evidence_received": false,
+      "terminal_evidence_received": true,
       "operational_error_kind": null,
       "scientific_outcome": null,
-      "interpretation": "Operational failure reported; solver invocation, root cause and scientific outcome require original evidence."
+      "interpretation": "Worker entry was not retained before the controller's 45s binding deadline. No native population-solve evidence; underlying startup delay is unidentified.",
+      "archive": {
+        "file": "scalar-highs-h215-w-native8h-evidence.tar.gz",
+        "sha256": "2816e35c0d06774bfe197310b97e57b14dc01e7b88d530fbbb73c08633914f42",
+        "safe_regular_unique_members": 25,
+        "inventory_hashes_verified": 24,
+        "expanded_bytes": 327934
+      },
+      "retained_status": "highs_forensic_partial_preserved",
+      "retained_classification": "build_or_execution_incomplete",
+      "operational_receipts_closed": false,
+      "original_review_operational_error_kind": "KeyError",
+      "controller_error_kind": "ValueError",
+      "worker_entry_present": false,
+      "worker_release_present": false,
+      "native_terminal_present": false,
+      "observer": {
+        "elapsed_seconds": 45.3083604729909,
+        "samples": 0,
+        "entry": null
+      }
     }
   ],
   "additional_execution_admitted": false,
   "automatic_retry_allowed": false,
   "previous_accepted_gurobi_observations": 11,
   "previous_audited_scip_no_incumbent_observations": 1,
-  "next_human_step": "Collect the same terminal HiGHS claim and transfer original archive/checksum through MobaXterm.",
+  "next_human_step": "No further CLI is required for the completed HiGHS collection; preserve the claim. Later collect the same SCIP job when terminal.",
   "parallel_editorial_work": "Appendices B/C/D, bibliography reconciliation, journal fit and coauthor preparation proceed without waiting for terminal solver results."
 }

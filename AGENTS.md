@@ -2,10 +2,14 @@
 
 ## Current human-readable editorial mandate — 28 October 2026
 
-Both longer attempts are submitted. Human snapshot: native SCIP2226388 RUNNING;
-HiGHS2226407 FAILED1:0, numeric step cancelled after46s, root cause unverified.
-Preserve both claims and source/plan identities; collect original HiGHS evidence
-before diagnosing or proposing another run. No agent HPC access or automatic retry.
+Both longer attempts consumed their claims. The latest human snapshot records
+native SCIP job 2226388 as RUNNING. The collected HiGHS job 2226407 archive
+passes external, inventory and plan-artifact hash checks: no worker entry or
+native products are retained. The supervisor's 45-second process-binding
+deadline explains the observed startup cancellation; the underlying delay
+remains unidentified. This is an operational failure, not a native solver result.
+Preserve original claims and source/plan identities. No agent HPC access or
+automatic retry. See docs/highs_h215_2226407_startup_audit.md.
 
 The researcher requests substantial human-readable scholarly revision of
 Appendices B/C/D, current repository-document reconciliation and accelerated

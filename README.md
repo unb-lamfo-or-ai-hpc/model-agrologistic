@@ -1,6 +1,27 @@
 # Model Agrologistic
 
-## Active MVP2 contract — scalar DET/STO
+## Current scalar evidence and review — 28 October 2026
+
+S5 is closed. The accepted scalar cohort contains **eleven Gurobi observations**:
+nine warehouse-only (W) observations through h500, plus the separate h215
+direct-enabled (D) pair. These are observations, not statistical replications.
+The original scalar SCIP h215 four-hour run reached its time limit with no
+usable incumbent. In the latest human-supplied snapshot, the distinct longer
+SCIP job 2226388 is running. HiGHS job 2226407 failed during worker startup;
+the audited original package supplies no evidence of a population solve.
+No HiGHS numerical conclusion or automatic retry follows.
+
+Read the [current checkpoint](PROJECT_STATE.md),
+[results and scope](manuscript/README.md),
+[original HiGHS startup audit](docs/highs_h215_2226407_startup_audit.md) and
+[accelerated literature/document/article plan](docs/mvp2_editorial_parallel_plan_20261028.md).
+The [chat 01.04 research prompt](docs/chat0104_deep_research_prompt_20261028.md)
+includes all 36 retained bibliography records and both review-method records.
+Appendices B/C/D are being revised for coauthor review; this is not a completed
+literature reassessment or author approval. The public Pages article remains
+the dated 23 October snapshot until a separately authorized update.
+
+## Historical scalar transition — 19 October 2026
 
 19 October2026: development now targets one economic MILP objective for DET and
 two-stage STO, with DET as one scenario of probability one. Investments are shared
