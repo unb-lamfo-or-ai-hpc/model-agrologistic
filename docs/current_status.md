@@ -1,3 +1,13 @@
+## Current HiGHS startup-repair preparation — 28 October 2026
+
+The researcher requests a distinct one-shot repair after the preserved original
+job2226407 startup failure. PR137 prepares early isolated identity/release,
+timed full verification and a new predecessor-bound eight-hour attempt under
+the unchanged resource/scientific contract. It is not yet an executed result
+or permission to restart an original claim. See
+[the full protocol](mvp2_scalar_highs_h215_startup_v2.md).
+PR136 is merged; its parallel editorial/literature plan remains active.
+
 ## Editorial sprints advanced in parallel — 28 October 2026
 
 The researcher now prioritizes literature, repository-document and coauthor

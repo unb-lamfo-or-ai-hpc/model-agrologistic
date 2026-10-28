@@ -22,11 +22,11 @@ from dataclasses import asdict, replace
 from importlib.metadata import distribution
 from pathlib import Path
 
+from scripts import highs_worker_bootstrap as bootstrap
+from scripts import mvp2_scalar_highs_h215_8h as original
 from scripts import mvp2_scalar_wd_h215_gate as g
 from scripts import mvp2_scalar_wd_h215_operational as d
 from scripts.scip_external_observer import ExternalObserver, review_external
-from scripts import highs_worker_bootstrap as bootstrap
-from scripts import mvp2_scalar_highs_h215_8h as original
 
 o, r = g.old, g.r
 ROOT = Path(__file__).resolve().parents[1]

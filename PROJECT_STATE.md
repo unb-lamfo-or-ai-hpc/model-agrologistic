@@ -1,3 +1,19 @@
+## HiGHS startup repair preparation — 28 October 2026
+
+PR136 merged at 79bfdb18aa318470625ec5aa1c4a81f7c3af684e. The researcher now
+requests one separately qualified HiGHS initialization repair and new eight-hour
+attempt. Original job2226407/source d1033d71/plan c3c5e571/archive2816e35c and its
+consumed claim remain immutable; the underlying startup delay is unidentified.
+The separate minimal -B -I -S bootstrap binds before expensive initialization,
+then runs full timed source/package/input/public checks within the unchanged
+3600-second build and 35100-second worker ceilings. Native time stays28800s,
+Slurm12h/192GiB/24logical CPUs and four-thread ceiling. New claim/source/plan/
+archive and exact original failed-archive binding; no automatic retry or agent
+HPC access. See [the complete protocol](docs/mvp2_scalar_highs_h215_startup_v2.md).
+Draft PR137 awaits exact-head qualification, Ready, its own merge approval and
+the later human pinned CLI. SCIP's latest supplied state remains a snapshot.
+Literature/document/coauthor work continues under the merged PR136 plan.
+
 ## Current human solver checkpoint and editorial revision — 28 October 2026
 
 PR135 merged with explicit authorization at

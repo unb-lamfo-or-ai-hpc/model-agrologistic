@@ -12,8 +12,8 @@ from types import SimpleNamespace
 
 import pytest
 
-from scripts import mvp2_scalar_highs_h215_8h_startup as m
 from scripts import highs_worker_bootstrap as b
+from scripts import mvp2_scalar_highs_h215_8h_startup as m
 from tests.test_scalar_r3a_operational import allocation_text
 
 SHA = "a" * 40
@@ -414,7 +414,9 @@ FAIL = FAIL_VALUE
 
 def worker(claim, sha, mode, *, entry, startup):
     if FAIL:
-        startup.stage("plan_validation", lambda: (_ for _ in ()).throw(ValueError("public failure")))
+        def reject():
+            raise ValueError("public failure")
+        startup.stage("plan_validation", reject)
     for name in ("plan_validation","source_verification","runtime_fingerprints",
                  "input_hashes","tool_verification","native_identity",
                  "public_qualification","runtime_receipt"):
