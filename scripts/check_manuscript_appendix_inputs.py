@@ -96,7 +96,10 @@ def audit(root: Path = ROOT) -> dict:
             "Cap. Expedição (t)", "Cap. Estática Máxima (t)"
         )
         return {
-            "scope": "Public source and appendix-link audit; no model, solver or private-input access",
+            "scope": (
+                "Public source and appendix-link audit; "
+                "no model, solver or private-input access"
+            ),
             "gold_sha256": digest,
             "gold_worksheets": len(formulas.sheetnames),
             "original_and_cached_cells_checked": len(inventory["reference_cells"]),
