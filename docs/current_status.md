@@ -1,3 +1,26 @@
+## Parallel eight-hour solver continuation — 28 October 2026
+
+PR134 was merged by the researcher at addc470df30f69d23b7e939b6228d46f2728fe5c.
+The human supplied native SCIP submission job2226388/source82cb58ff/
+planacf55202643b97f6c6679ecc9c2a99754c4939a32a00d034c72228964f7cf49a,
+last observed PENDING; no terminal outcome. Preserve its consumed claim and source.
+The existing NPAD environment now reports Pyomo6.10.1/highspy1.15.1/NumPy2.5.2.
+This human installation is not a Codex/local environment change.
+
+A separate complete one-shot Pyomo/HiGHS8h/Slurm12h operational PR is prepared
+for independently scheduled overlap with native SCIP. Same private scientific
+input, disclosed proved bounded-slack representation, own claim, exact source/
+package/step/phase controls, fresh compute public/medium gate and immutable
+positive/negative/partial evidence. No pure-solver speedup comparison or guaranteed
+h215 memory fit follows. See [the complete protocol](mvp2_scalar_highs_h215_native8h.md).
+The current request supersedes older no-HiGHS-execution planning holds only after
+this package's exact qualification, own authorized merge and manual pinned CLI.
+
+Next: audit both original terminal packages; reconcile manuscript/bibliography/
+documentation and coauthor bundle while jobs run; finalize S6-A then S6-B and
+author review. Original Gurobi11 and negative SCIP4h inventories remain unchanged.
+No CBC/population sweep, automatic repeat, final publication or submission.
+
 # Dated research status: 22 October 2026
 
 ## Parallel package checkpoint — 28 October 2026

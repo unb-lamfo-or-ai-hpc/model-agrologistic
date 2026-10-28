@@ -5,6 +5,7 @@ the documented proved reformulation, selected explicitly by solver option.
 """
 
 from collections import defaultdict
+from contextvars import ContextVar
 from importlib.metadata import version
 from math import isfinite
 from time import perf_counter
@@ -31,6 +32,16 @@ from src.logic.optimization_gurobipy_stochastic import (
 )
 from src.logic.pyomo_bounds import POLICY, candidate_slack_bounds
 from src.logic.route_filtering import select_routes
+
+PHASE_OBSERVER = ContextVar("pyomo_phase_observer", default=None)
+
+
+def notify_phase(name):
+    """Optional owned-worker IPC observation; no background solver API calls."""
+    observer = PHASE_OBSERVER.get()
+    if observer is not None:
+        observer(name)
+
 
 SOLVERS = {"highs": "appsi_highs", "appsi_highs": "appsi_highs", "cbc": "cbc"}
 
@@ -335,7 +346,9 @@ def solve_model_pyomo(data, model_config, solver_config):
             transfer_seconds = perf_counter() - transfer_started
             build_seconds = perf_counter() - started
             optimization_started = perf_counter()
+            notify_phase("optimization")
             solved = adapter.solve(model)
+            notify_phase("native_return")
             optimization_seconds = perf_counter() - optimization_started
             objective = finite(solved.best_feasible_objective)
             bound = finite(solved.best_objective_bound)
@@ -343,6 +356,14 @@ def solve_model_pyomo(data, model_config, solver_config):
             if usable:
                 adapter.load_vars()
             native_gap = finite(adapter._solver_model.getInfo().mip_gap) if usable else None
+            effective_options = {}
+            for name in ("time_limit", "mip_rel_gap", "threads", "random_seed",
+                         "mip_feasibility_tolerance"):
+                code, value = adapter._solver_model.getOptionValue(name)
+                if str(code) != "HighsStatus.kOk":
+                    raise RuntimeError("HiGHS effective option unavailable: " + name)
+                effective_options[name] = value
+            native_version = adapter._solver_model.version()
             native_runtime = finite(solved.wallclock_time)
             termination = str(solved.termination_condition)
             versions = {"pyomo": version("pyomo"), "highspy": version("highspy")}
@@ -365,7 +386,9 @@ def solve_model_pyomo(data, model_config, solver_config):
             kwargs = {"tee": solver_config.tee, "load_solutions": False}
             if solver_config.log_file:
                 kwargs["logfile"] = solver_config.log_file
+            notify_phase("optimization")
             solved = adapter.solve(model, **kwargs)
+            notify_phase("native_return")
             optimization_seconds = perf_counter() - optimization_started
             termination = str(solved.solver.termination_condition)
             usable = len(solved.solution) > 0 and termination not in {
@@ -394,6 +417,8 @@ def solve_model_pyomo(data, model_config, solver_config):
             "solver_termination": termination, "objective_bound": bound,
             "raw_solver_bound_unqualified": raw_bound if bound is None else None,
             "pyomo_native_gap": native_gap,
+            "effective_highs_options": effective_options if selected == "appsi_highs" else None,
+            "highs_native_version": native_version if selected == "appsi_highs" else None,
             "requested_threads": solver_config.threads,
             "matrix": {"variables": built.variable_count, "constraints": len(model.rows)},
             "timings": {

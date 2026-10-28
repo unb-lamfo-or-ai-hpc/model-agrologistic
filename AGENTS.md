@@ -1,5 +1,19 @@
 # Model Agrologistic: agent working agreement
 
+## Current parallel solver execution mandate — 28 October 2026
+
+The researcher merged PR134 and explicitly requests independent SCIP/HiGHS8h
+observations in parallel. Human receipts record SCIP job2226388/source82cb58ff/
+planacf55202, last PENDING, and installed highspy1.15.1/Pyomo6.10.1.
+Prepare the complete separately qualified HiGHS operational package, with
+disclosed proved Pyomo reformulation and own claim/phase/resource/terminal controls.
+Native SCIP already consumed its new claim; never restart it. Exact-head CI/Ready,
+own merge approval and manual pinned HPC CLI remain gates. No agent NPAD access,
+local clone/environment/install, automatic fallback/repeat or CBC job.
+Advance bibliographic/documentary/coauthor preparation while human jobs run;
+no pending result, pure-solver causal comparison or MVP2 closure may be invented.
+See docs/mvp2_scalar_highs_h215_native8h.md. Older dated holds below remain history.
+
 ## Parallel implementation mandate — 28 October 2026
 
 The researcher reports PR132 merged (f9dddaee…) and explicitly requests a complete
