@@ -1,3 +1,24 @@
+## Current human solver checkpoint and editorial revision — 28 October 2026
+
+PR135 merged with explicit authorization at
+c092fa7be2fea69f6e0eb8ab707e38aa68e1b85b.
+The researcher supplied HiGHS job2226407/source d1033d71/plan c3c5e571 and a
+later accounting snapshot: FAILED1:0 after204s, numeric step CANCELLED+
+(truncated display),46s,0:9. The original package is now collected and hash-audited:25safe members/24inventory hashes; no worker entry/release/native products, observer elapsed45.308s and the pinned45s binding deadline. Underlying startup delay remains unidentified; no native solve is evidenced. Preserve the consumed claim; no retry.
+Native SCIP job2226388/source82cb58ff/planacf55202 was RUNNING after2057s in the
+same supplied snapshot. Codex has made no HPC query or submission.
+See docs/evidence/parallel_solvers_20261028_checkpoint.json.
+
+The researcher explicitly advances literature, repository-documentation and
+coauthor revision while experiments finish. Rewrite Appendices B/C/D as connected,
+didactic scientific prose; retain main's approved title/question/objectives,
+mathematical foundation/attribution, author instructions and general article.
+Retain accepted h500/W-D updates already on develop and every original certificate.
+Prepare a self-contained research prompt for chat01.04 with all current
+bibliographic records, defensible gap/highlight questions, journal requirements
+and recommendations. No hidden reasoning, fabricated solver evidence or new
+experimental authorization is inferred from the attached literature.
+
 ## Parallel eight-hour solver continuation — 28 October 2026
 
 PR134 was merged by the researcher at addc470df30f69d23b7e939b6228d46f2728fe5c.

@@ -40,6 +40,9 @@ and uncontrolled shared-system effects preclude a causal solver speedup claim.
 This negative observation is separate from the eleven accepted feasible
 Gurobi scalar observations and from historical hierarchical SCIP trials.
 It documents difficulty under this finite configuration, not general
-open-source inability. A longer native SCIP window and large-input
-qualification of the new Pyomo HiGHS/CBC implementation remain planned. Its
-public miniature software controls add no private-input performance result.
+open-source inability. The longer eight-hour native SCIP attempt is running
+in the latest supplied accounting. A separate Pyomo/HiGHS attempt ended during
+worker initialization, with no retained evidence of model construction or
+native optimization. It is an operational failure, not a second numerical
+no-incumbent observation. Public Pyomo/HiGHS/CBC controls add no private-input
+performance result.

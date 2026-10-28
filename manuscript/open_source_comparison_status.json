@@ -87,5 +87,24 @@
     "h215_execution_admitted": false,
     "reformulation": "bounded_scalar_slacks_v1",
     "equivalence": "physical_investment_projection_and_optimal_scalar_value"
+  },
+  "operational_checkpoint": {
+    "date": "2026-10-28",
+    "source": "docs/evidence/parallel_solvers_20261028_checkpoint.json",
+    "highs_original_audit": "docs/evidence/highs_h215_2226407_startup_audit.json",
+    "longer_scip": {
+      "job_id": "2226388",
+      "latest_supplied_state": "RUNNING",
+      "terminal_scientific_result": null
+    },
+    "highs": {
+      "job_id": "2226407",
+      "latest_supplied_state": "FAILED",
+      "retained_status": "highs_forensic_partial_preserved",
+      "native_population_solve_evidenced": false,
+      "scientific_result": null
+    },
+    "interpretation": "Operational attempts are not added to the immutable numerical observations array; historical preparation flags do not describe current job state.",
+    "additional_execution_admitted": false
   }
 }

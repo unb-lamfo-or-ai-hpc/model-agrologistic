@@ -1,7 +1,7 @@
 ---
 title: "Supplementary material"
 subtitle: "Computational Scalability of Deterministic and Two-Stage Stochastic MILP Models for Grain-Storage Network Design and Hub Location"
-date: 2026-10-21
+date: 2026-10-28
 bibliography:
   - ../references.bib
   - ../review-methods.bib
@@ -39,155 +39,161 @@ The complete PDF is available using the download link above.
 
 :::
 
-# Appendix B Human supervised AI assisted research
+# Appendix B Human-supervised AI-assisted research
 
+## B1 Purpose of the methodological account
 
-## B1 Scope and conceptual framework
+AI assistance was used to support the development and examination of Model
+Agrologistic, while the researchers retained responsibility for the scientific
+problem, the mathematical formulation and the interpretation of results.
+This appendix explains how that division of work operated. Its purpose is to
+make the research process understandable and inspectable, rather than to
+attribute scientific authority to an assistant or to measure gains in productivity.
 
-This appendix documents the observable research process rather than language
-models' hidden reasoning. A scientific decision trail links questions and
-assumptions to alternatives, human intervention, implementation, verification
-and the evidence actually retained. The principal contribution of the article
-remains computational scalability of grain-storage network MILPs. Human–AI
-methodology is complementary and is not a controlled productivity experiment.
+The mathematical foundation remains attributed to Rosa (2026). Consultations
+with Gurobot occurred partly in parallel with that research; they do not
+establish an independent origin for the model. The coauthors' meeting guidance
+of 21 October 2026 requested an account of the tools, supervision and limitations
+of AI assistance. The available meeting excerpt and historical source assessment
+are identified in the [supporting research record](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c092fa7be2fea69f6e0eb8ab707e38aa68e1b85b/docs/s6a_20261021/meeting_and_source_review.md).
 
-The supplied 21 October 2026 Subgroup1 meeting excerpt explicitly requests this
-methodological account in Agreement 5 and sections 8/10. It asks researchers to
-document tools, human supervision, limitations and the scientific/computational
-decision trail while preserving the central investigation. The excerpt contains
-Agreement 5 and sections 8–11, not the complete minutes. Its source identity and
-editorial crosswalk are retained in the repository's source assessment.[^meeting]
+We distinguish three kinds of material. Discussions document the questions and
+alternatives considered. Versioned code and tests show what was implemented
+and examined. Original experiment records establish what was actually executed
+and returned. These sources answer different questions: a plausible proposal
+does not establish a correct implementation, and a correct implementation does
+not establish that a particular large experiment succeeded.
 
-[^meeting]: https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/docs/s6a-coauthor-review/docs/s6a_20261021/meeting_and_source_review.md
+## B2 Assistance and human responsibility
 
-## B2 Tools and research roles
+Gurobot supported early formulation and implementation discussions. Gemini and
+GPT systems were subsequently used to examine mathematical interpretations,
+computational alternatives and possible inconsistencies. ChatGPT Classic
+supported planning and editorial coordination. Codex assisted with Python
+implementation, tests, diagnostics, execution scripts and documentation.
+Historical records identify particular model versions where available; they
+do not establish a complete chronology of every interaction.
 
-Gurobot, Gemini and GPT systems provided technical proposals and scientific
-discussion. ChatGPT Classic supported coordination and editorial decisions;
-Codex supported implementation, tests, diagnostics and documentation. GitHub is
-the persistent technical record, not an AI system. Python is the implementation
-language; Gurobi and SCIP/SoPlex are optimization tools; NPAD and Slurm provide
-computational infrastructure and scheduling. Human researchers decide what is
-scientifically admissible, execute cluster commands and accept evidence.
+The researchers evaluated the relevance of these proposals before adoption.
+For mathematical work, this included examining indexing, units, first-stage
+decisions, scenario probabilities and objective components. For computational
+work, analytical examples and regression tests were followed by checks of the
+returned large-instance evidence. The researcher executed NPAD commands and
+transferred the resulting files; assistants did not acquire authority to launch
+additional experiments from the success or failure of an earlier one.
 
-## B3 Historical modeling assistance
+Python, Gurobi, SCIP, Pyomo and HiGHS perform implementation or optimization
+functions and are distinct from generative AI assistants. GitHub records
+changes, while Slurm schedules computational work on NPAD. Keeping these roles
+separate matters: a scheduler's successful exit reports completion of a
+process, whereas acceptance of a solution requires examining its mathematical
+and numerical evidence. Human authors retain responsibility for both decisions.
 
-The source is the researcher-supplied *Expanded Summary: Use of Gurobot in
-Research Development*, DOCX SHA256
-21735cebc3385dadd67c8ebc07c41b310a239bd9f4c9b91b3783c7f89820d1a3.
-Gurobot generated this retrospective account. It is not a preserved transcript,
-timestamped native log or independent verification of its numerical claims.
-The researcher supplied the account as historical guidance; detailed original
-execution records are not supplied with it. Activities occurred
-partly in parallel with the modeling associated with Rosa (2026), whose
-mathematical contribution remains appropriately attributed.
+## B3 Historical formulation and exploratory work
 
-| Phase | Retrospectively reported activity | Evidence qualification and current boundary |
-| --- | --- | --- |
-| A Initial formulation and synthetic validation | Natural-language formulation, DET/STO structure, gurobipy and a two-origin/three-hub/two-destination/two-product/three-period/three-scenario example; 513 variables and 261 constraints reported | Historical reported counts, not independently reproduced here. DET singleton specialization is separately tested in the current scalar code |
-| B Expansion and modernization | Discussion of investment activation, capacities, simultaneity, budgets and operational feasibility | Exploratory proposals are not all implemented. Current eligibility, exclusion and handling-capacity rules govern the active model; no new budget constraint is introduced |
-| C Extended GAMS | Analysis/translation of agroSC-S3.gms, export outlets and a revenue-oriented objective; 1,710 variables and 936 constraints reported | Historical source/example claims. The approved scalar objective does not acquire an export-revenue term from this episode |
-| D Pyomo translation | Interpretation of the Rosa-related specification, native gurobipy construction, Excel ingestion and smoke tests | Mathematical attribution is retained. Historical Haversine substitution and information-value calculations are not current OSRM/scalar methodology |
-| E Exploratory Benders | Classical and callback-based implementations, cut/bound/index corrections, warm starts and reported numerical agreement | Retrospective exploration, not reproduced evidence. Decomposition implementation, derivation and benchmarking are outside active MVP2; the episode only illustrates scope decisions |
+The researcher supplied an expanded retrospective account produced by Gurobot.
+It describes five phases of early assistance, summarized in Table B.1. The
+account is useful for reconstructing the subjects discussed, but it is not an
+original execution log or a complete transcript. Its numerical statements are
+therefore reported as historical claims, without being added to the article's
+accepted experimental cohort.
 
-For each phase, distinguish researcher-attested consultation, AI retrospective,
-available source files, verified execution and current functionality. Do not
-promote reported synthetic optimality, a claimed sandbox run or a retrospective
-correction into independent experimental evidence. No historical dates, model
-versions or unavailable conversation text are reconstructed.
+| Phase | Reported assistance and its relation to the present study |
+| --- | --- |
+| Initial formulation | Discussion of DET/STO structure and a synthetic example with two origins, three hubs, two destinations, two products, three periods and three scenarios. The account reports 513 variables and 261 constraints; these counts have not been independently reproduced here. |
+| Model development | Exploration of investment activation, capacity expansion, eligibility and operational feasibility. The current model follows its explicitly defined rules; exploratory suggestions do not introduce an additional budget constraint. |
+| GAMS exploration | Interpretation of an extended GAMS model, export outlets and a revenue-oriented objective, with reported counts of 1,710 variables and 936 constraints. These statements do not change the present cost-minimization objective. |
+| Python/Pyomo translation | Discussion of the Rosa-related specification, Excel ingestion and implementation checks. Earlier distance approximations and information-value calculations are historical activities, rather than the current OSRM/scalar method. |
+| Benders exploration | Proposals concerning decomposition, bounds, indices and warm starts. Their retrospective description is not a reproduced decomposition experiment or a result of the evaluated extensive-form implementation. |
 
-## B4 Organization of subsequent AI assistance
+: Table B.1. Topics described in the researcher-supplied Gurobot retrospective.
 
-Gemini/GPT supported mathematical discussion, criticism, code and experimental
-planning. Multiple assistants discussing an issue are not statistically
-independent reviewers. ChatGPT Classic organized research objectives,
-interpretation and portfolio/editorial decisions. Codex developed Python,
-solver integration, tests, GitHub changes, HPC scripts and evidence handling
-within human-approved scope. Conversation history can explain why a proposal
-was considered; it cannot certify a numerical result. Neither commit author
-names nor passing CI identify which person or assistant independently authored
-every code line.
+This distinction preserves the usefulness of the historical account without
+overstating its evidentiary strength. In particular, a retrospective statement
+that code ran in a sandbox cannot replace a retained solver log, input identity
+and numerical validation report. Unavailable dates, model versions and
+conversation contents have not been reconstructed.
 
-## B5 Human–AI research workflow
+## B4 Verification through the research workflow
 
-![Human-supervised research workflow, identical to the main-text figure and generated from the same editable source.](../figures/human_ai_workflow.png){#fig-human-ai-appendix}
+The workflow in Figure B.1 begins with a scientific question and a provisional
+proposal. Human evaluation determines whether the proposal fits the problem.
+An adopted proposal is implemented under version control and examined using
+small examples with known answers, software tests and checks of the
+mathematical formulation. Large experiments then use explicitly specified
+inputs, resource limits and solver settings.
 
-Problem definition and AI-assisted proposals precede human scientific evaluation.
-Version-controlled implementation is followed by mathematical/software tests.
-Human-authorized HPC execution produces solver and resource records, which
-undergo independent evidence review before interpretation. Corrections can
-return to assumptions, implementation or experiment design. These loops do not
-authorize an assistant to change a model, launch a new optimization or approve
-publication. One authoritative figure definition serves both placements.
+![Figure B.1. Human-supervised research workflow. Proposals are reviewed before implementation; tests and original experiment evidence support subsequent interpretation. Return arrows represent revision when a discrepancy is found.](../figures/human_ai_workflow.png)
 
-## B6 Scientific decision provenance
+The numerical checks address more than the reported objective. They examine
+local material balances, investment eligibility, scenario-specific constraints,
+the units of each slack and the reconstruction of costs from exported
+decisions. Investment must be charged once, even when operating variables are
+replicated across scenarios. An aggregate balance cannot compensate for a
+local violation. Likewise, a small gap for the penalized objective does not
+establish accurate financial costs or adequate service when artificial penalties
+dominate that objective.
 
-| Decision and date | Scientific issue and AI-assisted proposal | Human intervention | Implementation and verification | Evidentiary outcome |
-| --- | --- | --- | --- | --- |
-| Economic-cost audit, September 2026 | Cost accounting and the relation of quantities to investment charges | Researcher requested correction and explicit modeling policy | Audit/correction records in PR12–13; original results retain their own source identities | Documentary correction episode, not proof of every later result.[^cost-prs] |
-| HPC containment, October 2026 | An initially strong execution-isolation design met unavailable host capabilities | Researcher retained academic traceability but rejected unnecessary production qualification | Diagnostic failures preserved; proportional academic profile in PR99 | Negative operational evidence informed simplification, not a claim that unavailable isolation was certified.[^academic] |
-| Scalar restoration, 19 October 2026 | Earlier hierarchy did not express the approved economic comparison | Researcher required a single scalar objective and excluded EVPI/VSS | PR112; analytical/native tests check investment once, separate penalties and singleton equivalence | Software qualification is separate from later large-instance success.[^scalar] |
-| Fixed penalties, 20 October 2026 | Calibration was proposed because large slack penalties dominate the total | Researcher rejected calibration as a prerequisite and retained 90000/45000/45000 | Accepted h215 original certificates and later unchanged effective-rate guards | Success means the approved scalar contract, not no-slack infrastructure adequacy.[^h215] |
-| Population lineage, 20 October 2026 | A guessed h300 path and an inapplicable checkpoint interpretation stopped preparation | Researcher supplied historical file/hash/ranking records | PR118–119; actual membership, original ranking and materialization provenance checked | Preserved failed bootstraps; no resampling or silent certificate rewrite.[^population] |
-| Scale progression, 21 October 2026 | Select a bounded h400 candidate from descriptive h300 evidence, then assess h500 | Researcher approved separate envelopes and prospective eligibility | PR121–123; original h400 residual/quality/resource gate and h500 package | h400 is accepted; h500 job2220382 is RUNNING, not a completed scientific result.[^scale] |
-| Editorial redirection, 21 October 2026 | Earlier proposal offered two questions and a narrow representative case | Researcher approved one question, cross-scale agricultural interpretation, complete Appendix A and complementary Human–AI method | This PR120 revision, notation/code audit and proportional documentation/geographic tests | Editorial preparation awaiting coauthor review, not journal submission.[^editorial] |
+After an experiment, the original outputs are retained together with the
+source version, input and population identities, settings, resource
+observations and terminal accounting. Replaying these records can verify
+their consistency and integrity. It does not constitute a new optimization or
+a fresh residual evaluation against private inputs. This separation allows
+later editorial corrections without changing the evidence generated by an
+earlier execution.
 
-Dates above refer to documented decision records or explicitly stated months,
-not invented timestamps of private conversations. The full matrix may retain
-exact technical references; the main article uses the consolidated history
-rather than an administrative catalogue of individual PRs.
+## B5 Decisions that illustrate the supervision process
 
-[^cost-prs]: https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/12 and https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/13
-[^academic]: https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/99
-[^scalar]: https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/112
-[^h215]: https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/115
-[^population]: https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/118 and https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/119
-[^scale]: https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/121 and https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/122 and https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/123
-[^editorial]: https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/120
+The restoration of the scalar objective illustrates why human mathematical
+review remained necessary. An earlier hierarchical implementation could run
+successfully without representing the economic comparison approved for this
+study. The researchers required a single scalar objective and excluded
+information-value calculations from the active campaign. Analytical tests then
+examined the placement of investment costs, the three penalties and the
+deterministic specialization of the stochastic implementation. The correction
+concerned the scientific meaning of the calculation, rather than merely
+whether the software executed.
 
-## B7 GitHub development history
+The treatment of penalties provides a second example. Their large contribution
+to the objective prompted a proposal for calibration. The researcher retained
+the approved effective rates of 90000/45000/45000 for the bounded computational
+study. Subsequent interpretation therefore separates financial expenditure,
+artificial penalties and physical shortages or capacity exceedances. The
+workflow did not turn a modeling limitation into an unperformed sensitivity
+analysis or silently change coefficients to obtain more attractive results.
 
-Representative corrections matter because they expose the distinction between
-a proposed method, a human decision and numerical evidence. The repository
-records failed admissions and revisions as well as successful tests and solves.
-The earlier hierarchical S2 closure is historical, not a scalar result.[^s2]
-Original claims and certificates are preserved at their original sources.
-The consolidated closed-PR history provides the wider technical record.[^all]
+Operational supervision also led to revisions. An initially stronger execution-
+isolation design required host capabilities unavailable in the academic
+environment. Diagnostic failures were retained, and the researcher adopted a
+proportionate procedure based on bounded resources, identified processes and
+inspectable records. This change improved the relevance of the execution
+protocol without certifying unavailable production-isolation properties.
+Similarly, population preparation was checked against original facility
+identifiers and ranking records after an unsuitable path or interpretation
+blocked an earlier attempt.
 
-[^s2]: https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/110
-[^all]: https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pulls?q=is%3Apr+state%3Aclosed
+These examples describe observable decisions and their consequences.
+Detailed commit, test and experiment identities remain in the
+[versioned development record](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pulls?q=is%3Apr+state%3Aclosed).
+They support reconstruction of the decisions without turning the supplement
+into a chronological catalogue of software administration.
 
-## B8 Human supervision mechanisms
+## B6 Limits and implications
 
-Conceptual supervision controls the research question and scope. Mathematical
-supervision checks units, indexing, stages and objective correspondence.
-Computational supervision reviews implementation and analytical/native tests.
-Experimental supervision approves bounded resources and preserves execution
-identities. Scientific acceptance checks the actual returned evidence, not
-only scheduler completion. Editorial supervision connects supported findings to
-claims and requires coauthor review. Formal authorship/CRediT assignments are
-not made by this methodological account.
+The available conversations are incomplete, and retrospective accounts can
+contain errors. Different assistants may rely on the same source or repeat
+one another's mistake; agreement among them is not independent scientific
+review. Commit records and passing tests do not identify the authorship of
+every line of code. The study has no counterfactual design for estimating time
+saved, improvements in productivity or reductions in error attributable to AI.
 
-## B9 Reproducibility
-
-Every reported experiment retains its source, input, population, configuration,
-runtime, solver, original validation and terminal identities. Read-only portable
-replay verifies retained certificates; it is not a private-input re-solve.
-Figures inherit accepted case identities and explicit filters. A separate local
-geographic SQLite repository caches source-bound entities and road geometry;
-viewing and rendering do not mutate data or contact OSRM. Restricted coordinates
-and row-level outputs remain external when disclosure is not established.
-
-## B10 Limitations
-
-Conversation records are incomplete, retrospective summaries can be mistaken,
-language-model outputs are nondeterministic, and internal reasoning is not
-available for audit. Shared records do not imply independent AI review or
-complete authorship attribution. Private inputs and absent route geometries can
-limit reproduction of particular figures. There is no counterfactual study of
-AI productivity or guaranteed error reduction. These limitations do not replace
-the requirement for mathematical correctness and original numerical validation;
-they define what this complementary methodological contribution can support.
+The methodological value of the workflow is consequently bounded. It connects
+proposals to human decisions, implementations and evidence that another
+researcher can inspect. It does not reveal hidden language-model reasoning or
+guarantee correctness. Restricted inputs may still limit independent
+reproduction, and final scientific interpretation and publication require
+coauthor review. Formal authorship and CRediT assignments remain decisions of
+the human authors.
 
 {{< include appendix_c.qmd >}}
 

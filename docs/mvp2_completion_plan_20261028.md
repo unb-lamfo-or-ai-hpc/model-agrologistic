@@ -1,3 +1,13 @@
+## Editorial sprints advanced in parallel — 28 October 2026
+
+The researcher now prioritizes literature, repository-document and coauthor
+revision during the existing jobs. See [the accelerated plan](mvp2_editorial_parallel_plan_20261028.md)
+and [the chat01.04 research handoff](chat0104_deep_research_prompt_20261028.md).
+The latest supplied accounting has SCIP2226388 RUNNING; HiGHS2226407 ended
+during unbound worker startup. Its original archive is hash-audited and retained,
+not a numerical solver result. No additional execution is admitted.
+All earlier dated planning below remains history; read this current entry first.
+
 ## Parallel eight-hour solver continuation — 28 October 2026
 
 PR134 was merged by the researcher at addc470df30f69d23b7e939b6228d46f2728fe5c.

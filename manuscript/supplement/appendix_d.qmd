@@ -1,207 +1,213 @@
 # Appendix D Experimental Data, Parameter Provenance, and Warehouse-Population Reproducibility
 
-## Sources and verified availability
+## D1 Sources and the construction of an experimental case
 
-The scientific input chain begins with the canonical reference workbook and
-the full existing/candidate warehouse registry. It does not begin with a map,
-a solver output or an unversioned cache. The exact files inspected here are
-preserved in the version 0.2.0 input archive identified by the published dataset
-receipt. The archive MD5 is `79f85dfe638df1c2dfa5cca9cf343d88`.
-Individual workbook SHA256 values, worksheet names, dimensions, original cells
-and input/output membership checks are distributed in
-`appendix_d_inventory.json`. This is a compact derived metadata record, not
-permission to republish every external source or new raw experiment archive.
+An experimental case is defined by more than its number of warehouses.
+It combines a facility population, supply and demand trajectories, costs,
+capacity rules and a selected road network. This appendix explains how the
+source records become those effective model inputs. The distinction matters
+because a spreadsheet label or an original parameter cell may differ from the
+quantity ultimately used by the formulation.
 
-| Source | Scientific role | Verified location and status | Identity |
-| --- | --- | --- | --- |
-| Canonical reference workbook | Model data, original scenarios, investment/tariff tables and 215-site anchor | Git-tracked `data/templates/`; same bytes in historical input archive | SHA256 prefix de3bdc51… |
-| Full warehouse registry | 18,086-record population-selection source | `external-inputs/` member of preserved input archive; not Git-tracked as this workbook | SHA256 prefix 0d19865a… |
-| Original population manifest/order | Deterministic ranking, strata, source/anchor identities and seed | Archived processed population records; hash-bound by execution receipts | Manifest 4134147f…; order 7a524b2e… |
-| Materialized case workbooks | Effective warehouse population plus approved OSRM distance rows | External processed snapshot, not assumed present in Git from a filename mention | Full hashes in the population table below |
-| Scalar evidence archives | Original input, validation, result and resource receipts | External archives, referenced by public review metadata | h215: 81890b54…; h300: dc5969fa…; h400: e0b58bb7…; h500: 34346c31… |
+The principal sources are a canonical reference workbook and a registry of
+18,086 warehouse records. The former supplies the model's original data and
+215-site reference population; the latter supports the larger candidate
+populations. Their preserved versions are identified in the published dataset
+record, version 0.2.0, and in the accompanying
+[metadata inventory](appendix_d_inventory.json). That inventory contains full
+file checksums, worksheet names, dimensions, selected source cells and
+membership comparisons. The historical input archive has MD5
+79f85dfe638df1c2dfa5cca9cf343d88; its identity does not imply that every subsequent
+experiment archive belongs to that deposit.
 
-The canonical workbook has 14 sheets, including explanatory and control sheets.
-The registry's `Sheet1` has 18,087 rows including its header and 13 columns;
-`Metodologia` retains its separate descriptive sheet. The template's `Warehouses`
-sheet has 216 rows including its header and 25 columns. `Oferta` has 6,301 rows/
-6 columns; `Demanda` 4,441/11; `Frete` 28/4; `Tarifa_Armz` 4/5;
-`Custo_Invest` 5/6; `Parametros_Modelo` 13/5; `Cenarios` 4/8.
-The metadata inventory enumerates the remaining sheets and actual headers.
-Dimensions include template/control rows and must not be called model entity
-counts. The effective cases have 37 origin identifiers, 27 domestic roles and 10
-export roles; geographic coincidences do not merge these identities. The
-conceptual reference to eight ports does not replace ten actual export-role
-records or assert that each record is a distinct physical port.
+The canonical workbook has 14 worksheets. Its Warehouses sheet contains
+215 facility records plus a header, with 25 columns. The registry's principal
+sheet contains 18,086 records plus a header, with 13 columns. Supply and demand
+sheets contain 6,301 and 4,441 rows respectively, including headers and control
+content. Such worksheet dimensions are not counts of model variables or
+distinct decision-making entities. The effective model retains 37 origin
+identifiers, 27 domestic destination roles and ten export roles. Coincident
+coordinates do not merge separate facilities or destination roles; the ten
+export records should not be reinterpreted as ten distinct physical ports.
 
-## Data dictionary and interpretation
+## D2 Quantities, costs and capacity units
 
-| Effective object | Original source / keys | Meaning and unit | Loader treatment |
-| --- | --- | --- | --- |
-| Supply | `Oferta`: Cidade, Produto, Data, Peso (ton) | Exogenous grain t per origin/product/period | Normalized keys and periods; additive records aggregated, not arbitrarily first-selected |
-| Demand | `Demanda`: role, city/ID, product, period, limit rule | Domestic requirement or optional export upper limit, t/period | Separate domestic/export identifiers; fixed versus supply-derived limit retained |
-| Facility | `Warehouses`: CDA, Status, coordinates, Tipo, holder | Stable site identity, existing/candidate role, geographic record | CDA preserved; coincident coordinates retain separate facilities |
-| Static capacity | Cap. Estática and maximum-capacity columns | t of stock; candidate investment maximum t | Candidate base capacities zero, maximum available investment distinct |
-| Handling | Cap. Recepção / Cap. Expedição legacy tonne-labelled columns | Effective daily t/day rates | Multiplied by declared operating days; investment daily gains added consistently |
-| Freight | `Frete`: Estado / Frete Tonelada Km | BRL/(t km) | State-derived origin and dispatching-warehouse coefficients |
-| Storage | `Tarifa_Armz`: product and public/private tariff | BRL/(t period) | Product/holder mapping, not a one-time capital cost |
-| Investment | `Custo_Invest`, explicit or formula-derived warehouse columns | Fixed BRL and variable BRL/investment-t | Explicit values preferred; documented capacity/cost fallback if absent |
-| Distance | Approved OSRM `Distancias` and materialization audit | Directed road km | Source/dataset/profile validated; retained graph selected afterward |
-| Scenarios | `Cenarios` and optional specific arrays | Dimensionless multipliers and probabilities | Original DET arrays or explicit nine Cartesian STO combinations |
-| Initial inventory | Optional original stock records | t by warehouse/product | Missing entries use the established zero convention |
+Table D.1 summarizes the effective inputs. Source labels are retained where
+they help a reader identify the original data, while the units correspond to
+the mathematical model.
 
-`excel_loader._clean_dataframe`, normalization helpers and `_add_to_mapping`
-implement cleaning, stable identifiers and additive record handling. Normalized
-duplicates are not universally harmless; aggregation is appropriate only for
-the additive source fields. Blank optional attributes and missing mandatory
-identities are different conditions. Model validation checks domains, capacities,
-route distances and required data. The pipeline is not described as globally
-lossless: role splitting, candidate translation, sparse arc selection and
-scenario generation change representation or intentionally select a subset.
-
-## Original versus effective parameter values
-
-Four layers must be distinguished: original cell content; its scientific
-interpretation and validation; the numerical array supplied to the model; and
-the approved rule explaining a difference. The parameter sheet in the following
-table is `Parametros_Modelo` in the exact canonical workbook. A blank formula cache is not evidence
-of a zero cost. A deliberate approved transformation is not automatically a
-spreadsheet error.
-
-| Parameter | Original source fact | Effective rule/value | Unit and evidence |
-| --- | --- | --- | --- |
-| Unmet demand penalty | Parameter sheet, B4 = 1000000; A4 identifies the parameter | Dynamic preparation and exact experiment guard; accepted 90000 for every domestic/product entry | BRL/t shortage; original receipts and frozen vector |
-| Static exceedance penalty | Parameter sheet, B5 = 1000000 | `50 × reference`; accepted 45000 at every site | BRL per stock-slack t at a period; time sum has t·period |
-| Reception overflow penalty | Parameter sheet, B6 = 1000000 | Same reference rule; accepted 45000 at every site | BRL/t reception overflow within period; no extra days factor |
-| Candidate investment cost | Registry candidate maximum/opening columns contain placeholders; canonical enhanced cost cells can contain formulas without cached values | `variable_from_total`: total estimate divided by positive maximum capacity, fixed cost zero; documented canonical cost-table fallback when formula caches are absent | BRL/investment-t and BRL fixed; `_load_warehouses` |
-| Expansion unit cost | Custo_Invest low/high 600/1200 | Average 900 when the explicit effective value is absent | BRL/expansion-t; loader cost-table average |
-| Inventory tariff | `Tarifa_Armz`, Soja 45 and Milho 48 | Effective product/warehouse tariff mapping | BRL/(t period), not USD/t |
-| Capacity coupling | Original candidate/handling attributes and model settings | Daily factors: candidate/expansion 0.20 per invested t; conversion 1.0; default 30 days/period | t/day before conversion; conversion does not add static capacity |
-| STO probabilities | Template base probability 1, Ativo SIM; low/high probability 0.25, Ativo NAO | Approved supply × demand low/base/high Cartesian design; nine weights of 1/9 | Distinct from reading only the template's active rows |
-
-The original sheet cell values above are exact, not approximate million-real
-substitutes. `excel_loader._build_parameter_table` reads explanatory/configuration
-parameters, but `_build_penalty_rates` constructs the actual arrays using the
-explicit loader policy. The accepted cases select `thesis_dynamic`, not an
-automatic pass-through of `Parametros_Modelo!B4:B6`. Initial loader defaults
-of 1,000,000 likewise are not the effective executed vector.
-
-`mathematical_contract.prepare_model_data` recomputes and freezes the vector
-after route selection. Its reference is the maximum of 100, effective expansion
-unit costs and storage tariffs; it is 900 in the accepted cohort. Storage and
-reception weights are 50 times that reference. Domestic weights are 100 times
-the larger of the reference and the maximum selected final-leg DC/OC freight
-cost for each domestic destination, replicated by product. Thus the general
-policy can be indexed and topology-dependent. Original accepted receipts show
-every effective entry at 90000/45000/45000; operational gates explicitly reject
-drift. This appendix does not restore the original cell values, calibrate the
-policy, or relabel earlier results under new coefficients.
-
-Monetary labels `$` in the original columns are interpreted as Brazilian reais
-under the researcher's clarification. The contextual BRL 5 per USD 1 reference is not
-an exchange-rate conversion of results. No new discounting, annualization or
-cost-base correction is made. Penalties are artificial feasibility-relaxation
-weights, not observed financial expenditures. They relax their specific physical
-constraints, not shipping, graph eligibility or every possible infeasibility.
-A penalized-objective gap at or below 1% is not a comparable relative guarantee for the
-economic subtotal, exact optimality or zero shortage. Search time need not
-change monotonically with the weight magnitudes.
-
-## Population selection and nesting
-
-The preserved selection method is nested deterministic proportional strata over
-state, warehouse type and static-capacity quartile. Its seed is
-`model-agrologistic-v020-warehouse-population-v1`. All 146 existing sites remain;
-the 69 canonical candidate anchors begin the ranked candidate sequence. Of 18,086
-registry entries, 17,940 are candidates and one nonpositive-static-capacity
-candidate is excluded. Original checkpoint levels include 215 and 500, but not 300
-or 400. The historical intermediate materialization preserves the candidate
-ranking; it is not a resampling or a rewrite of that original manifest.
-
-| Case | Existing / candidates | OSRM workbook SHA256 prefix |
+| Input | Meaning and effective unit | Main source |
 | --- | --- | --- |
-| h215 |146 /69|40edb665… (full value in metadata)|
-| h300 |146 /154|7761cce7… (full value in metadata)|
-| h400 |146 /254|c3085456… (full value in metadata)|
-| h500 |146 /354|888fbff4… (full value in metadata)|
+| Supply and domestic demand | Grain tonnes within each product-period record | Oferta and Demanda |
+| Export limit | Optional upper bound on destination arrivals, t/period | Export-role records and declared limit rule |
+| Initial stock and static capacity | Tonnes of grain held at a warehouse | Stock and Warehouses records |
+| Reception and shipping capacity | Daily rates, t/day, converted to period throughput | Warehouses and capacity-coupling settings |
+| Freight | BRL/(t km), multiplied by directed road distance | Frete and OSRM materialization |
+| Inventory holding | BRL/(t period) | Tarifa_Armz and warehouse/product mapping |
+| Investment | Fixed BRL and BRL per investment-tonne | Custo_Invest and documented facility-cost translation |
+| Scenarios | Supply/demand multipliers and probabilities | Cenarios and the declared Cartesian design |
 
-Membership was checked by actual CDA identifiers, not counts or coordinate
-equality: $W_{215}\subseteq W_{300}\subseteq W_{400}\subseteq W_{500}$.
-All nine accepted original `warehouses_used.csv` files match the corresponding
-frozen workbook's ordered CDA list exactly. The compact inventory records the
-comparison and ordered-ID hashes. Each original attempt retains the complete
-ID/role/model-order/stratum/rank list and selection rule; optimized activation,
-positive capacity and positive utilization are separate output observations.
-The original h500 membership/input receipt and accepted solve are now bound by
-job2220382, source fce341df… and archive34346c31… after the S5 portable audit.
-This later replay does not recompute private-input residuals.
+: Table D.1. Scientific interpretation of the principal data objects.
 
-## Transformation chain and road/scenario inputs
+Static capacity limits the stock remaining at a warehouse. Reception and
+shipping capacities instead limit grain handled during a period. In the
+evaluated configuration, the daily rates are multiplied by 30 operating days
+unless a period-specific value is supplied. Candidate and expansion investments
+add daily handling rates using factors of 0.20 per investment-tonne;
+bulk-handling conversion uses a factor of 1.0 and does not create static storage.
+These distinctions prevent annual throughput or handling rates from being
+mistaken for storage capacity.
 
-The auditable chain is original workbooks → normalized source records → frozen
-population ranking and candidate-cost translation → materialized OSRM distances
-→ role/product-specific arcs and sparse selection → original DET or explicit STO
-arrays → frozen effective penalties/network → native scalar MILP. The loader
-(`load_model_data_from_excel`, `_load_warehouses`, `_load_supply`, `_load_demand`,
-`_load_scenarios`) and preparation (`select_routes`, `apply_connectivity_repair`,
-`prepare_model_data`) provide the function-level path. Appendix C maps the final
-arrays to every equation and solver construction.
+The loader normalizes identifiers and periods and aggregates additive supply
+or demand records with the same effective keys. It does not treat all
+duplicates as interchangeable or missing mandatory identifiers as harmless
+blanks. Existing and candidate facilities retain their roles. Candidate base
+capacities are zero, while their admissible investment maxima are separate
+inputs. Missing initial-stock entries follow the established zero convention.
+These transformations are explicit modeling operations, rather than a claim
+that the entire input pipeline is lossless.
 
-Raw OSRM family pairs are not retained product/scenario/period flow variables.
-The frozen audits contain 63,289/113,269/190,569/287,869 raw directed pairs for
-h215/h300/h400/h500, including optional direct distances. Those distances do
-not prove OC was enabled in an optimization. Accepted receipts use W and retain
-zero OC; warehouse transshipment remains enabled. The common sparse policy is
-20% `connectivity_preserving_pareto`, export coverage `one_sink_per_product`.
-Direct-enabled selection can affect repairs or dynamic weights, so its actual
-common arc sets and indexed coefficients must be checked before a causal
-topology interpretation.
+## D3 Original parameter cells and executed coefficients
 
-OSRM uses the preserved Brazil dataset, driving profile and MLD fastest-route
-configuration. Its audits identify the PBF, OSRM version, container/profile
-hashes, cache counts and distance normalization. All four case audits report no
-Haversine fallback. The source contains directed distances, not necessarily
-route polylines; maps must not fabricate straight road geometry or silently
-query live OSRM. The nine controlled STO combinations use supply multipliers
-0.85/1/1.15 and domestic-demand multipliers 0.95/1/1.05, each probability 1/9.
-They are controlled experiments, not calibrated probabilities or forecasts.
+The original values and effective coefficients are documented separately in
+Table D.2. For the accepted experiments, the effective vector is frozen:
+domestic shortage costs 90000 BRL per tonne, static exceedance 45000 BRL per
+stock-slack tonne at its period, and reception overflow 45000 BRL per
+overflow tonne within its period. A later editorial explanation does not
+change those executed coefficients.
 
-## Evidence snapshots SQLite and access limitations
+| Source fact | Effective treatment | Interpretation |
+| --- | --- | --- |
+| Parametros_Modelo cells B4:B6 each contain 1000000 | The accepted preparation yields 90000/45000/45000 | Source cells are not passed through unchanged |
+| Expansion cost entries are 600 and 1200 | Their average, 900, is used when an explicit effective value is absent | BRL per expansion-tonne |
+| Product tariffs include soybean 45 and corn 48 | Product/warehouse mapping supplies holding coefficients | BRL/(t period) |
+| Candidate cost placeholders or uncached formulas may be present | A documented total-cost/capacity rule and canonical cost-table fallback are used | A zero placeholder does not establish free investment |
 
-Accepted original archives retain job 2217990/source 5f73871b… (h215 DET/STO),
-2218193/source 04ba9edc… (five h300 STO thread observations), and
-2219884/source d9ca710d… (h400 STO). Their input receipts bind workbook and
-effective model/network/penalty identities, membership, scenario probabilities
-and solver options; completion and independent-validation receipts retain
-output/source identities. The editorial `scalar_evidence.json` is a derivative
-summary, not a replacement certificate. The original h500 job2220382/source
-fce341df…/plan1f57d230…/archive34346c31… is accepted after the 27October audit;
-its original validation SHA256 is2c548b96… and its common gap is0.20743206%.
-The separate h215 D pair from job2221443 is accepted under the checked W/D
-contract; these two observations are additional to the nine W scaling cases.
+: Table D.2. Examples of source-to-effective parameter translation.
 
-The separate scalar SCIP STO/W h215 job2225638/source cbd64d86/plan1af2f262/
-archive41557726 is audited with 111 safe members, 110 inventory hashes and
-562 matched source files. Original portable review reproduces normal operational
-closure but native timelimit and zero solutions. No objective, service or gap
-is available; rejected empty candidate exports are not a feasible solution.
-Its original source/input/scenario/penalty contract remains unchanged. Sparse
-telemetry, including a 14,414.81-second sample interval, limits resource
-interpretation. This is a negative observation separate from the eleven
-accepted feasible Gurobi observations, not fresh private-input revalidation.
-A longer SCIP observation and large-input Pyomo/HiGHS qualification remain planned only.
+The accepted loader policy is thesis_dynamic. After network selection, input
+preparation calculates a reference from 100, the effective expansion unit costs
+and storage tariffs; the reference is 900 in the accepted cohort. Static and
+reception coefficients are 50 times this reference. For domestic shortage,
+the coefficient is 100 times the larger of the reference and the maximum
+selected final-leg freight cost to each destination. The general rule can
+therefore depend on destination and topology. The original accepted cases
+nevertheless retain the same complete effective vector, and the experiment
+checks reject a departure from it.
 
-The separate geographic SQLite stores normalized identities, population
-membership, accepted positive flows and available geometry/metadata. It is
-reused through source/content keys and opened read-only by Dash/headless
-rendering. It is not the authoritative Excel input or a replacement for the
-historical OSRM distance cache. Rebuilding a derived visualization database does
-not authorize route acquisition, source rewriting or a new optimization.
+Candidate investment uses the variable_from_total interpretation where
+applicable: a documented total estimate is divided by a positive maximum
+capacity, with the corresponding fixed component set to zero. Explicit
+effective values take precedence, and missing formula caches follow the
+documented canonical fallback. Charging the same project estimate again as
+an additional fixed cost would risk double counting. These rules translate
+the retained data; they are not a new cost calibration.
 
-Researchers can inspect the public canonical workbook, source and published
-dataset inventory, and request original restricted material under its applicable
-terms. The registry and exact processed inputs were inspected from the preserved
-archive; the fact that a file is available locally or in a historical deposit
-does not grant blanket new redistribution rights. No private workbook, raw HPC
-archive, license or credential is added to this supplementary package. Replaying
-an original residual certificate is distinguished from reloading private input
-and performing a fresh residual reconstruction or a new mathematical solve.
+All monetary quantities are interpreted as Brazilian reais. A contextual
+exchange-rate reference is not a conversion applied to the results. Costs are
+not newly discounted, annualized or adjusted to another price base. The three
+penalties are artificial weights that permit specific deviations from nominal
+service or capacity. They are not observed expenditures or calibrated damages.
+A small relative gap for their combined objective does not certify the same
+relative precision for financial expenditure alone.
+
+Static exceedance is a stock quantity at each period; summing it across periods
+produces tonne-periods. Reception overflow already measures tonnes handled
+within a period and is not multiplied by operating days again. Both quantities
+are distinct from permanent capacity investment. These units must remain
+visible when interpreting the reported physical diagnostics.
+
+## D4 Nested warehouse populations
+
+Population construction retains all 146 existing facilities and introduces
+candidates using the preserved deterministic ranking. The 69 canonical
+candidate anchors begin that sequence. Selection uses proportional strata
+over state, warehouse type and static-capacity quartile, with the fixed seed
+identified in the population manifest. Of the registry's 18,086 entries,
+17,940 are candidates; one candidate with nonpositive static capacity is excluded.
+
+| Population | Existing facilities | Candidate facilities |
+| --- | --- | --- |
+| h215 | 146 | 69 |
+| h300 | 146 | 154 |
+| h400 | 146 | 254 |
+| h500 | 146 | 354 |
+
+: Table D.3. Facility availability in the four warehouse populations.
+
+The original checkpoints include 215 and 500, but not 300 or 400. The
+intermediate cases retain the original candidate ranking rather than drawing
+new independent samples. Membership comparisons use facility identifiers
+(CDA), not geographic coincidence or a count alone, and establish
+$W_{215}\subseteq W_{300}\subseteq W_{400}\subseteq W_{500}$.
+The corresponding processed workbook SHA256 prefixes are 40edb665, 7761cce7,
+c3085456 and 888fbff4; full identities are retained in the inventory and
+experiment records.
+
+Population inclusion defines an available option. It does not establish that
+a candidate is opened, receives positive capacity, carries grain or holds stock.
+Those are separate properties of a returned solution. Nesting the facilities
+also does not guarantee nesting of the final feasible sets when sparse route
+selection is recomputed for each population. Consequently, changes in objective
+or runtime cannot be attributed to warehouse count alone.
+
+## D5 Road networks and stochastic trajectories
+
+Input preparation proceeds from the original records through population
+selection and cost translation to OSRM distance materialization, role- and
+product-specific network selection, scenario construction and effective
+penalty preparation. The archived OSRM audits retain directed road distances
+for the fixed Brazil dataset and driving profile. They identify the road-data,
+software and profile versions and report no Haversine fallback for these cases.
+
+The materializations contain 63,289, 113,269, 190,569 and 287,869 directed
+distance pairs at h215, h300, h400 and h500, respectively. These are not counts
+of flow variables: product, period and scenario indices are introduced later.
+They also include optional direct distances whose existence does not mean that
+topology W used direct routes. The evaluated sparse policy is the 20%
+connectivity-preserving Pareto selection with one export sink per product.
+Topology comparisons separately check the retained common graph and cost
+coefficients.
+
+The STO design combines supply multipliers 0.85/1/1.15 with domestic-demand
+multipliers 0.95/1/1.05. Their Cartesian product produces nine trajectories,
+each with probability $1/9$. This is an explicit controlled design, not
+an empirical probability forecast. The source scenario sheet's active-row
+flags alone do not define the executed design. DET retains the original
+deterministic arrays, as explained in Appendix C.
+
+Directed distances support transport costs but do not supply road polylines.
+Accordingly, geographic figures distinguish verified node locations and
+investment quantities from unavailable route geometry. Straight connecting
+segments would not reproduce the road network. A separate source-bound
+geographic SQLite database supports derived visualizations; it does not replace
+the Excel inputs or authorize new route acquisition.
+
+## D6 Reproducibility and the interpretation of evidence
+
+An original experiment record connects the source version and effective input
+to the selected population, model configuration, solver settings, exported
+decisions, independent validation and terminal accounting. The accepted
+Gurobi evidence consists of nine W observations through h500 and two separate
+h215 D observations. The original h500 result was accepted after its terminal
+package was audited. Its documentary replay does not constitute a new
+private-input residual calculation.
+
+The original four-hour SCIP h215 observation is separate: it reached the
+native time limit with no usable incumbent. The longer native SCIP attempt
+is still running in the latest researcher-supplied snapshot. The subsequent
+HiGHS attempt ended operationally before a released-worker record was retained;
+its original package contains no evidence of a population solve. These
+states do not supply new objective, service or gap observations. Repository
+checkpoints retain their changing operational status without converting it
+into an experimental comparison.
+
+Public code, metadata inventories and the versioned dataset support
+inspection, but each external source retains its applicable access and
+redistribution conditions. Availability of a historical deposit does not
+establish that every later restricted workbook or raw HPC archive is included.
+Original input and output records remain authoritative; compact tables,
+maps and metadata are derived representations. This separation allows a
+reader to trace a reported quantity to its source and to distinguish replay
+of retained evidence from an independently repeated calculation.
+

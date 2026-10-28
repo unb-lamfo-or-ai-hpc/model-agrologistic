@@ -37,13 +37,11 @@ keywords:
 
 ::: {.callout-note title="Coauthor working revision — 28 October 2026"}
 
-This S6-A working revision adds the audited original h500 result to the nine
-warehouse-only scalability observations and retains two separately validated
-h215 D observations: eleven scalar observations in total. S5 closed with PR130;
-the separate audited SCIP h215 W observation returned no incumbent. A longer
-SCIP test, multisolver qualification, coauthor review and S6-B remain planned/open.
-This source revision is not yet published or approved for journal submission.
-Appendices A–D retain their disclosed provenance and limitations.
+This working revision incorporates eleven accepted scalar Gurobi observations
+through h500 and the original SCIP no-incumbent result. S5 is closed; longer
+solver attempts, coauthor review and S6-B remain under review. This revision
+is not yet published or approved for submission. Appendices A–D retain their
+disclosed provenance and limitations.
 
 :::
 
@@ -583,10 +581,13 @@ The separate scalar SCIP STO h215 W observation reached its four-hour native
 ceiling without an incumbent. Its original negative outcome and operational
 closure are retained separately from accepted feasible observations.
 One failure cannot establish a general limitation of open-source solvers.
-Remaining work includes one newly requested eight-hour native SCIP observation,
-large-input qualification of the solver-neutral Pyomo HiGHS/CBC implementation,
-cross-scale interpretation and coauthor revision.
-These preparations have no new measured outcome at this cutoff. Unsupported
+The longer eight-hour native SCIP observation is running at this revision's
+operational cutoff. The separate Pyomo/HiGHS attempt ended before a released
+worker was recorded; it provides no population-solve evidence. Completion of
+the longer SCIP review, diagnosis of HiGHS initialization and coauthor revision
+remain open. There is no new measured outcome of population optimization
+from these two attempts at this cutoff. Public Pyomo/HiGHS/CBC controls establish software qualification,
+rather than additional private-input numerical results. Unsupported
 indicator implications require proved equivalent treatment, not arbitrary
 Big-M coefficients or omitted constraints. Native reference implementations
 and their original certificates remain preserved. No new large-input solver result,

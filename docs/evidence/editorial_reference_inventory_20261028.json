@@ -1,0 +1,241 @@
+{
+  "schema_version": "editorial-reference-inventory-v1",
+  "date": "2026-10-28",
+  "main_source": "b53b87043f898f2af11dba3f79f23f43738ad2df",
+  "develop_source": "c092fa7be2fea69f6e0eb8ab707e38aa68e1b85b",
+  "retained_records": 36,
+  "main_cited_records": 33,
+  "retained_uncited": [
+    "dubke2011",
+    "steiner2017",
+    "kaltis2026"
+  ],
+  "review_method_records": [
+    "page2021",
+    "taskiner2021"
+  ],
+  "bibliographic_metadata_independently_verified_for_all_records": false,
+  "cea_records": [
+    "essien2018",
+    "gholamian2017",
+    "hosseini2020",
+    "shastri2011",
+    "knapen2025",
+    "zhao2012"
+  ],
+  "records": [
+    {
+      "key": "rosa2025",
+      "doi": "10.1590/1806-9649-2025v32e4925",
+      "title": "Mathematical models for the grain warehouse location problem: a systematic literature review",
+      "main_cited": true
+    },
+    {
+      "key": "reis2023",
+      "doi": "10.3390/logistics7030049",
+      "title": "A Two-Stage Stochastic Linear Programming Model for Tactical Planning in the Soybean Supply Chain",
+      "main_cited": true
+    },
+    {
+      "key": "foulds2005",
+      "doi": "10.1504/IJOR.2005.007434",
+      "title": "Dynamic network flow models of sustainable grain silo location",
+      "main_cited": true
+    },
+    {
+      "key": "dubke2011",
+      "doi": "10.1590/S0101-74382011000100003",
+      "title": "Location model of specialized terminals for soybean exports in {Brazil}",
+      "main_cited": false
+    },
+    {
+      "key": "mardaneh2021",
+      "doi": "10.1016/j.knosys.2021.107037",
+      "title": "A decision support system for grain harvesting, storage, and distribution logistics",
+      "main_cited": true
+    },
+    {
+      "key": "steiner2017",
+      "doi": "10.1016/j.cie.2017.07.019",
+      "title": "A multi-objective genetic algorithm based approach for location of grain silos in {Paraná State of Brazil}",
+      "main_cited": false
+    },
+    {
+      "key": "maiyar2019",
+      "doi": "10.1016/j.ijpe.2018.07.021",
+      "title": "Modelling and analysis of intermodal food grain transportation under hub disruption towards sustainability",
+      "main_cited": true
+    },
+    {
+      "key": "mogale2020",
+      "doi": "10.1007/s10479-020-03664-y",
+      "title": "Green food supply chain design considering risk and post-harvest losses: a case study",
+      "main_cited": true
+    },
+    {
+      "key": "mogale2023",
+      "doi": "10.1080/00207543.2022.2078746",
+      "title": "Designing a food supply chain for enhanced social sustainability in developing countries",
+      "main_cited": true
+    },
+    {
+      "key": "milanez2026",
+      "doi": "10.15728/bbr.2024.1837.en",
+      "title": "Optimizing the Efficiency of The Soybean Exportation: Impact of Economies of Scale in Location and Network Design",
+      "main_cited": true
+    },
+    {
+      "key": "granillo2019",
+      "doi": "10.15446/dyna.v86n208.72056",
+      "title": "Hybrid model to design a distribution network in contract farming",
+      "main_cited": true
+    },
+    {
+      "key": "morais2023",
+      "doi": "10.3390/su15021063",
+      "title": "A Sustainable Location Model of Transshipment Terminals Applied to the Expansion Strategies of the Soybean Intermodal Transport Network in the State of {Mato Grosso, Brazil}",
+      "main_cited": true
+    },
+    {
+      "key": "mendoza2021",
+      "doi": "10.1007/978-3-030-86702-7_33",
+      "title": "Scenario-Based Model for the Location of Multiple Uncapacitated Facilities: Case Study in an Agro-Food Supply Chain",
+      "main_cited": true
+    },
+    {
+      "key": "vazquez2021",
+      "doi": "10.1016/j.compchemeng.2021.107223",
+      "title": "Integrating environmental and social impacts into optimal design of guayule and guar supply chains",
+      "main_cited": true
+    },
+    {
+      "key": "anselmino2025",
+      "doi": "10.1016/j.biombioe.2025.107686",
+      "title": "Strategic Optimization of Short-Rotation Woody Crops for Bioenergy Production",
+      "main_cited": true
+    },
+    {
+      "key": "guimaraes2017",
+      "doi": "10.19272/201706702006",
+      "title": "A location-allocation model for Logistics Integration Centers",
+      "main_cited": true
+    },
+    {
+      "key": "mascarenhas2014",
+      "title": "Analysis of warehousing network for {Mato Grosso}'s soybeans: applying a localization model",
+      "main_cited": true
+    },
+    {
+      "key": "essien2018",
+      "doi": "10.1016/j.compag.2018.02.019",
+      "title": "Decision support system for designing sustainable multi-stakeholder networks of grain storage facilities in developing countries",
+      "main_cited": true
+    },
+    {
+      "key": "gholamian2017",
+      "doi": "10.1016/j.compag.2017.05.038",
+      "title": "Integrated network design of wheat supply chain: A real case of Iran",
+      "main_cited": true
+    },
+    {
+      "key": "pourmohammadi2020",
+      "doi": "10.5267/j.dsl.2020.8.004",
+      "title": "A scenario-based stochastic programming approach for designing and planning wheat supply chain (A case study)",
+      "main_cited": true
+    },
+    {
+      "key": "hosseini2020",
+      "doi": "10.1016/j.compag.2019.105095",
+      "title": "A novel hybrid approach for synchronized development of sustainability and resiliency in the wheat network",
+      "main_cited": true
+    },
+    {
+      "key": "garima2024",
+      "doi": "10.3390/su162410816",
+      "title": "Decision-Making in Grain Supply Chains for Sustainable Food System",
+      "main_cited": true
+    },
+    {
+      "key": "filippi2022",
+      "doi": "10.3390/logistics6010009",
+      "title": "The Logic of Collective Action for Rural Warehouse Condominiums",
+      "main_cited": true
+    },
+    {
+      "key": "kussano2012",
+      "doi": "10.1590/S0104-530X2012000300013",
+      "title": "Custos logísticos agroindustriais: avaliação do escoamento da soja em grão do Mato Grosso para o mercado externo",
+      "main_cited": true
+    },
+    {
+      "key": "souza2024",
+      "doi": "10.1590/1806-9479.2022.268622",
+      "title": "Localização de armazéns agrícolas baseada em análise multicritério espacial",
+      "main_cited": true
+    },
+    {
+      "key": "wang2024",
+      "doi": "10.1016/j.scitotenv.2024.172434",
+      "title": "Planned expansion of transportation infrastructure in Brazil has implications for the pattern of agricultural production and carbon emissions",
+      "main_cited": true
+    },
+    {
+      "key": "rosa2026thesis",
+      "title": "Modelagem matemática e sistemas de apoio à decisão para a logística de alocação e armazenagem de grãos no Brasil",
+      "main_cited": true
+    },
+    {
+      "key": "shastri2011",
+      "doi": "10.1016/j.compag.2011.01.006",
+      "title": "A novel decomposition and distributed computing approach for the solution of large scale optimization models",
+      "main_cited": true
+    },
+    {
+      "key": "knapen2025",
+      "doi": "10.1016/j.compag.2025.110392",
+      "title": "Efficient and scalable crop growth simulations using standard big data and distributed computing technologies",
+      "main_cited": true
+    },
+    {
+      "key": "zhao2012",
+      "doi": "10.1016/j.compag.2012.08.007",
+      "title": "Parallelization and optimization of spatial analysis for large scale environmental model data assembly",
+      "main_cited": true
+    },
+    {
+      "key": "silva2025pascal",
+      "doi": "10.1109/ACCESS.2025.3639388",
+      "title": "{PaScal Suite}: A Toolset for Evaluating and Profiling Parallel Scalability in Shared-Memory Programs",
+      "main_cited": true
+    },
+    {
+      "key": "huangfu2018",
+      "doi": "10.1007/s12532-017-0130-5",
+      "title": "Parallelizing the dual revised simplex method",
+      "main_cited": true
+    },
+    {
+      "key": "birge2011",
+      "doi": "10.1007/978-1-4614-0237-4",
+      "title": "Introduction to Stochastic Programming",
+      "main_cited": true
+    },
+    {
+      "key": "kaltis2026",
+      "doi": "10.1080/03155986.2025.2540205",
+      "title": "Literature review on Benders cut selection and a multiple cut generation scheme",
+      "main_cited": false
+    },
+    {
+      "key": "celestino2026dataset",
+      "doi": "10.5281/zenodo.22751909",
+      "title": "Model Agrologistic: Brazilian Grain Logistics Data and Computational Evidence",
+      "main_cited": true
+    },
+    {
+      "key": "npad2026",
+      "title": "Hardware infrastructure",
+      "main_cited": true
+    }
+  ]
+}

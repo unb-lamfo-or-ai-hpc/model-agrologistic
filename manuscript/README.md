@@ -1,5 +1,35 @@
 # Scientific manuscript — integrated scalar revision
 
+## Current coauthor revision — 28 October 2026
+
+The accepted cohort remains eleven Gurobi observations: nine W scaling
+observations through h500 and the separate h215 D pair. The original scalar
+SCIP four-hour run is a separate negative numerical observation. The latest
+human snapshot records longer SCIP job 2226388 as running. Original HiGHS
+job 2226407 failed during startup; its audited package contains no worker
+entry or native model/solve products. Neither a HiGHS runtime limit nor an
+infeasibility result can be inferred.
+
+Appendices B/C/D now explain the supervised research process, model
+implementations and source-to-input transformations in connected scientific
+prose. The Pyomo section states the proof's exact scope: equal physical and
+investment projections and optimal scalar value under checked assumptions,
+rather than identical redundant-slack feasible sets or search behavior.
+GAMS compilation and numerical parity remain unperformed.
+
+The [editorial reconciliation](../docs/editorial_reconciliation_20261028.md)
+documents the access levels for the six cited CEA precedents and the supplied
+Porporatto/Fumero/Corsano paper. The
+[complete chat 01.04 prompt](../docs/chat0104_deep_research_prompt_20261028.md)
+retains all 36 bibliography records and two review-method references.
+The [accelerated sprint plan](../docs/mvp2_editorial_parallel_plan_20261028.md)
+advances literature, documentation and article review while terminal experiments
+are reconciled. The gap assessment and all-author decisions remain open.
+No new experiment, Pages deployment, submission or merge is authorized by this
+documentation.
+
+## Earlier dated checkpoints
+
 27 October current revision: S5 closed by authorized PR130 merge
 `b031c3d1014df433020a6bb98534b9b9d8de4ffb`. The original h500 job2220382
 is now in all numerical tables: nine W scaling observations plus two D h215
@@ -110,7 +140,7 @@ retained as unimplemented historical material, not an active method.
 Appendix A incorporates all19 pages of the supplied review byte-for-byte,
 SHA256859dc52b64b6bcf471f7616182d8cadf2b693dbfd19ad4b9248637b5c231b3ed.
 Original search arithmetic and date issues are documented, not silently
-corrected. Appendix B contains ten Human–AI sections; the main article has a
+corrected. Appendix B contains six connected Human–AI sections; the main article has a
 bounded methodological passage, concise activity table and the same editable
 workflow figure. Retrospective AI accounts are not independent execution logs.
 

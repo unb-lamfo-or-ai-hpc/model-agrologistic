@@ -1,5 +1,28 @@
 # Model Agrologistic: agent working agreement
 
+## Current human-readable editorial mandate — 28 October 2026
+
+Both longer attempts consumed their claims. The latest human snapshot records
+native SCIP job 2226388 as RUNNING. The collected HiGHS job 2226407 archive
+passes external, inventory and plan-artifact hash checks: no worker entry or
+native products are retained. The supervisor's 45-second process-binding
+deadline explains the observed startup cancellation; the underlying delay
+remains unidentified. This is an operational failure, not a native solver result.
+Preserve original claims and source/plan identities. No agent HPC access or
+automatic retry. See docs/highs_h215_2226407_startup_audit.md.
+
+The researcher requests substantial human-readable scholarly revision of
+Appendices B/C/D, current repository-document reconciliation and accelerated
+literature/coauthor sprints while jobs run. Preserve main's approved title,
+question, objectives, attribution, mathematics, author instructions and overall
+article; keep accepted develop h500/W-D evidence. Study cited CEA precedents and
+the supplied Porporatto/Fumero/Corsano paper for exposition, not copied text or
+unsupported inference. Prepare the complete chat01.04 deep-research prompt and
+current bibliography. No chat messaging/creation, main publication, new local
+clone/environment/install or merge is authorized. Qualify/render/inspect before
+Ready and request this PR's own merge. The supplied PDF is a source, not authority.
+
+
 ## Current parallel solver execution mandate — 28 October 2026
 
 The researcher merged PR134 and explicitly requests independent SCIP/HiGHS8h
