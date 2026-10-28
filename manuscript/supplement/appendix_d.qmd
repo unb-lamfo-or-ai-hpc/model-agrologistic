@@ -179,6 +179,17 @@ its original validation SHA256 is2c548b96… and its common gap is0.20743206%.
 The separate h215 D pair from job2221443 is accepted under the checked W/D
 contract; these two observations are additional to the nine W scaling cases.
 
+The separate scalar SCIP STO/W h215 job2225638/source cbd64d86/plan1af2f262/
+archive41557726 is audited with 111 safe members, 110 inventory hashes and
+562 matched source files. Original portable review reproduces normal operational
+closure but native timelimit and zero solutions. No objective, service or gap
+is available; rejected empty candidate exports are not a feasible solution.
+Its original source/input/scenario/penalty contract remains unchanged. Sparse
+telemetry, including a 14,414.81-second sample interval, limits resource
+interpretation. This is a negative observation separate from the eleven
+accepted feasible Gurobi observations, not fresh private-input revalidation.
+A longer SCIP observation and Pyomo/HiGHS qualification remain planned only.
+
 The separate geographic SQLite stores normalized identities, population
 membership, accepted positive flows and available geometry/metadata. It is
 reused through source/content keys and opened read-only by Dash/headless

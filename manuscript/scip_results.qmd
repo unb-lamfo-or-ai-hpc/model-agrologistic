@@ -1,0 +1,44 @@
+## Separate scalar SCIP h215 W observation
+
+A separately audited cold scalar STO/W observation used PySCIPOpt 6.2.1,
+SCIP 10.0.2 and SoPlex 8.0.2, with the frozen h215 workbook, nine equiprobable
+scenarios and unchanged mathematical/penalty contract. Job2225638 completed
+operationally, but the native solve reached its time limit with **zero solutions**.
+
+| Quantity | Original SCIP observation |
+|:--|--:|
+| Native ceiling, s | 14,400 |
+| Native returned runtime, s | 14,410.76 |
+| Construction, s | 249.83 |
+| End-to-end, s | 14,939.75 |
+| Slurm worker MaxRSS, GiB | 88.90 |
+| Usable incumbents | 0 |
+
+: Original scalar SCIP h215 W time-limited observation; operational completion is not solution feasibility. {#tbl-scalar-scip}
+
+No objective, economic subtotal, domestic service or computable native/common
+gap is available. The native dual bound was -1.77946e15 BRL; it is retained as a
+lower bound, not an economic result. The independent validator rejected the
+empty candidate exports. Default scenario service=1 and penalty share=0 in the
+raw summary are placeholders without an incumbent and are excluded here.
+
+The original native matrix had 14,129,174 variables and 810,097 constraints.
+The log reports 608.24 seconds of presolve, 12,708,003 presolved variables and
+one processed node. These records do not prove root-LP completion.
+Native matrix counts reflect backend representation and are not directly
+interchangeable with Gurobi linear/general-constraint counts. The four-thread
+setting is a ceiling, not evidence of four effective LP/search threads.
+
+Application sampling was sparse: the largest interval was 14,414.81 seconds.
+Sampled RSS, Slurm MaxRSS and reported sampler elapsed work have distinct scopes;
+the latter is not demonstrated observer CPU overhead or a causal slowdown.
+The 192-GiB allocation is retained without inferring a smaller safe envelope.
+Historical Gurobi STO/W h215 returned a validated incumbent in 2,445.52 seconds
+with 0.740159% gap. Different dates, attained quality, native representations
+and uncontrolled shared-system effects preclude a causal solver speedup claim.
+
+This negative observation is separate from the eleven accepted feasible
+Gurobi scalar observations and from historical hierarchical SCIP trials.
+It documents difficulty under this finite configuration, not general
+open-source inability. A longer native SCIP window and a solver-neutral
+Pyomo/HiGHS implementation are planned, not executed results.

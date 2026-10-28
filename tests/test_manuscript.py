@@ -287,3 +287,22 @@ def test_hardware_and_preliminary_results_are_distinguished(manuscript):
     assert "@npad2026" in article
     assert "Native Runtime" in article or "native Runtime" in article or "native runtime" in article
     assert "retained" in article and "MILP" in article
+
+@pytest.mark.parametrize("mutation", ["objective", "service", "gap", "source", "admission"])
+def test_scalar_scip_negative_result_cannot_be_promoted(manuscript, mutation):
+    path = manuscript / "open_source_comparison_status.json"
+    status = json.loads(path.read_text())
+    row = status["observations"][0]
+    if mutation == "objective":
+        row["objective"] = 0
+    elif mutation == "service":
+        row["domestic_service_level"] = 1.0
+    elif mutation == "gap":
+        row["common_gap"] = 0
+    elif mutation == "source":
+        row["archive_sha256"] = "0" * 64
+    else:
+        status["longer_scip"]["execution_admitted"] = True
+    path.write_text(json.dumps(status))
+    with pytest.raises(ValueError, match="SCIP|multisolver"):
+        CHECKER.check_scalar_scip_revision()

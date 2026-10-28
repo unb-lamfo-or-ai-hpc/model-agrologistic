@@ -11,6 +11,9 @@ not rewrite its unsuccessful outcomes. S1-C is documentary, not a new campaign.
 
 | Document | Use |
 | --- | --- |
+| [Current completion plan](mvp2_completion_plan_20261028.md) | Audited 4 h SCIP outcome, proposed 8 h SCIP, multisolver PRs and remaining S6/author gates |
+| [Original scalar SCIP h215 result](mvp2_scalar_scip_h215_w_results.md) | No usable incumbent; safe archive/source audit and sparse telemetry limitations |
+| [Multisolver implementation plan](mvp2_multisolver_plan.md) | Actual native PySCIPOpt, currently empty Pyomo, HiGHS/CBC mathematical and resource gates |
 | [Scalar SCIP h215 W and S6-A continuation](mvp2_scalar_scip_h215_w.md) | Complete bounded one-shot protocol, negative outcomes, conditional HiGHS and h500 manuscript integration |
 | [Original scalar h500 and S5 closure](mvp2_scalar_h500_results.md) | Independently audited job2220382, eleven-observation inventory and remaining S6/SCIP decisions |
 | [S2 closure campaign](mvp2_s2_closure_campaign.md) | Finite normal/adverse/native/h300 sequence, inherited budgets, stop criteria and remaining functional PRs; no downstream execution admission |

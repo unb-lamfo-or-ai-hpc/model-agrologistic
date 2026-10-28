@@ -41,17 +41,21 @@
   "final_job_status": "FAILED",
   "development_outcome": "bounded_mvp_closed_with_documented_computational_limit",
   "current_scalar_revision": {
-    "as_of": "2026-10-27",
+    "as_of": "2026-10-28",
     "warehouse_only_accepted_observations": 9,
     "direct_h215_accepted_observations": 2,
     "total_accepted_scalar_observations": 11,
     "h500_status": "original_accepted_S5_closed_PR130",
-    "scip_h215_w_status": "one_scalar_observation_preparation_authorized_result_unavailable",
-    "highs_status": "conditional_future_option_not_implemented_or_executed",
+    "scip_h215_w_status": "original_audited_timelimit_zero_solutions_no_usable_incumbent",
+    "highs_status": "multisolver_qualification_requested_not_implemented_or_executed",
     "article_source": "index.qmd",
     "scalar_source": "scalar_evidence.json",
     "qualification": "Historical hierarchy counts above remain unchanged; no cross-policy pooling.",
     "new_publication_authorized": false,
-    "journal_submission_authorized": false
+    "journal_submission_authorized": false,
+    "scip_job_id": "2225638",
+    "scip_source": "open_source_comparison_status.json",
+    "scip_negative_observations": 1,
+    "longer_scip_status": "native8h_slurm12h_planned_separate_operational_PR_not_executed"
   }
 }

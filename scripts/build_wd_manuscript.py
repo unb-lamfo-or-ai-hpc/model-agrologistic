@@ -70,7 +70,9 @@ def results(record):
         "Portable review replays those archived receipts, not a fresh private-input "
         "residual re-solve. No additional solve or repetition is required to close this "
         "bounded h215 W/D phase. Original h500/S5 is now accepted and closed; "
-        "the separate SCIP test, integrated coauthor review and S6-B remain open.\n",
+        "the original scalar SCIP test is audited without an incumbent; the newly requested "
+        "longer SCIP test, multisolver qualification, integrated coauthor review and "
+        "S6-B remain open.\n",
     ]
     return "\n".join(lines)
 

@@ -1,35 +1,31 @@
 ---
 title: "Computational Scalability of Deterministic and Two-Stage Stochastic MILP Models for Grain-Storage Network Design and Hub Location"
-date: 2026-10-27
+date: 2026-10-28
 abstract: >-
   Grain-storage network design links infrastructure investment to seasonal,
   multi-product logistics. Increasing candidate populations and replicating
-  operating decisions across uncertainty scenarios can make the resulting
-  mixed-integer linear programs expensive to construct, store and solve.
-  Building on Rosa's mathematical foundation, this study implements
-  deterministic and two-stage stochastic models with one scalar objective
-  containing investment, expected operating costs and three separate
-  feasibility penalties. A reproducible computational workflow binds input
-  and warehouse-selection provenance, road distances, sparse networks, solver
-  settings, resource measurements and independent solution certificates.
-  The accepted scalar cohort contains a deterministic/stochastic pair at
-  215 warehouses, five stochastic observations at 300 warehouses with
-  1/2/4/8/16 solver threads, and one stochastic observation each at 400 and 500 warehouses.
-  All nine warehouse-only observations meet the declared 1% global-gap criterion and retain
-  accepted original feasibility certificates. The stochastic matrix grows
-  from 25.1 million variables at 300 warehouses to 63.4 million at 500.
-  One thread has the lowest observed runtime and memory within the 300-site
-  block, without establishing causal parallel speedup. Validated decision
-  vectors reveal extensive candidate investment alongside substantial
-  permitted shortages and capacity exceedances. Artificial penalties dominate
-  the scalar totals and must be distinguished from financial expenditure.
-  At 500 warehouses, the original accepted gap is 0.2074%, native runtime
-  is 127.58 minutes and sampled application RSS is 111.78 GiB. A separate
-  accepted h215 topology comparison adds two direct-enabled observations;
-  its lower penalized cost coexists with worse domestic service.
-  The results characterize attainable computational scale under an explicit
-  contract, while a complementary human-supervised AI workflow documents
-  scientific decisions and verification.
+  operating decisions across scenarios can make mixed-integer linear programs
+  expensive to construct, store and solve. This study implements deterministic
+  and two-stage stochastic models with one scalar objective containing
+  investment, expected operating costs and three separate feasibility penalties.
+  A reproducible workflow binds input provenance, road distances, sparse networks,
+  solver settings, resource measurements and independent solution certificates.
+  The accepted warehouse-only cohort contains a deterministic/stochastic pair
+  at 215 warehouses, five stochastic observations at 300 warehouses using
+  1/2/4/8/16 threads, and one stochastic observation each at 400 and 500 warehouses.
+  All nine observations meet the declared 1% gap criterion and retain accepted
+  original feasibility certificates. The stochastic matrix grows from
+  25.1 million variables at 300 warehouses to 63.4 million at 500.
+  One thread has the lowest observed runtime and memory in the 300-site block,
+  without establishing causal parallel speedup. At 500 warehouses, the
+  original accepted gap is 0.2074%, native runtime is 127.58 minutes and
+  sampled application RSS is 111.78 GiB. Extensive investment coexists with
+  substantial permitted shortages and capacity exceedances; artificial penalties
+  dominate the totals. Two separate direct-enabled h215 observations yield lower
+  penalized costs but worse service. A scalar SCIP h215 observation reaches
+  its four-hour native limit without an incumbent. These results characterize
+  attainable scale under an explicit contract, with a human-supervised AI
+  workflow documenting decisions and verification.
 keywords:
   - grain storage
   - facility location
@@ -39,12 +35,13 @@ keywords:
   - reproducibility
 ---
 
-::: {.callout-note title="Coauthor working revision — 27 October 2026"}
+::: {.callout-note title="Coauthor working revision — 28 October 2026"}
 
 This S6-A working revision adds the audited original h500 result to the nine
 warehouse-only scalability observations and retains two separately validated
 h215 D observations: eleven scalar observations in total. S5 closed with PR130;
-coauthor review, the newly authorized SCIP h215 W test and S6-B remain open.
+the separate audited SCIP h215 W observation returned no incumbent. A longer
+SCIP test, multisolver qualification, coauthor review and S6-B remain planned/open.
 This source revision is not yet published or approved for journal submission.
 Appendices A–D retain their disclosed provenance and limitations.
 
@@ -458,6 +455,8 @@ layers await a separate source-bound export.
 
 {{< include wd_results.qmd >}}
 
+{{< include scip_results.qmd >}}
+
 # Discussion
 
 ## Computational scale and attainable solution quality
@@ -571,21 +570,21 @@ current geographic exports. The fixed penalties express the approved trade-off,
 not observed damages or a demonstrated service policy. Detailed source
 identities and uncertainty about unobserved peaks constrain interpretation.
 
-Remaining scientific work includes the newly authorized scalar SCIP STO h215 W
-observation, cross-scale interpretation and coauthor revision. The experiment
-has no result at this cutoff and is not pooled with the historical hierarchy
-campaign. It uses the same frozen W input/scenarios/penalties, a four-hour
-optimization ceiling and an eight-hour/192-GiB allocation; construction,
-no-incumbent, memory/time-censored and validated outcomes are retained separately.
-Its purpose is to measure achievable quality under this configuration, whether
-SCIP succeeds or struggles. One failure cannot establish a general limitation
-of open-source solvers. HiGHS is a conditional later option requiring its own
-formulation/indicator, parity and resource qualification, not an automatic
-fallback or an already-tested result. No new solver implementation,
+The separate scalar SCIP STO h215 W observation reached its four-hour native
+ceiling without an incumbent. Its original negative outcome and operational
+closure are retained separately from accepted feasible observations.
+One failure cannot establish a general limitation of open-source solvers.
+Remaining work includes one newly requested eight-hour native SCIP observation,
+an explicitly qualified solver-neutral Pyomo implementation with HiGHS and
+conditional CBC assessment, cross-scale interpretation and coauthor revision.
+These preparations have no new measured outcome at this cutoff. Unsupported
+indicator implications require proved equivalent treatment, not arbitrary
+Big-M coefficients or omitted constraints. Native reference implementations
+and their original certificates remain preserved. No new solver implementation,
 decomposition campaign, penalty calibration or information-value calculation
-is part of this editorial revision. Future methodological work
-could evaluate controlled repeated performance measurements and better data
-calibration under separate scientific approval.
+is delivered by this results revision. Future methodological work could
+evaluate controlled repeated performance measurements and better calibration
+under separate scientific approval.
 
 # Reproducibility and availability
 
@@ -593,7 +592,9 @@ Source, experiment definitions and original acceptance records are versioned in
 [Model Agrologistic](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic).
 The scalar h215, h300, h400 and h500 reviews identify original jobs 2217990,
 2218193, 2219884 and 2220382, input hashes, warehouse membership, parameters and certificate
-digests. Subsequent documentary replay does not rewrite their source/runtime
+digests. The separate SCIP job2225638/source cbd64d86/archive41557726 retains
+its original negative outcome and is not part of that accepted feasible cohort.
+Subsequent documentary replay does not rewrite their source/runtime
 identities. Failed bootstraps, original claims and partial evidence are preserved.
 
 This draft is rendered from Quarto without executing a solver or requiring

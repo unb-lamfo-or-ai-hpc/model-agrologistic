@@ -75,6 +75,54 @@ def check_scalar_revision() -> None:
         raise ValueError("Complete original Appendix A checksum differs")
 
 
+def check_scalar_scip_revision() -> None:
+    """Keep the original no-incumbent observation separate and reject invented KPIs."""
+    status = json.loads((MANUSCRIPT / "open_source_comparison_status.json").read_text())
+    original = json.loads(
+        (ROOT / "docs/evidence/scalar_scip_h215_w_2225638_review.json").read_text()
+    )
+    fields = (
+        "job_id",
+        "source_commit",
+        "plan_sha256",
+        "archive_sha256",
+        "classification",
+        "native_status",
+        "solution_count",
+        "has_usable_incumbent",
+        "quality_target_met",
+        "operational_receipts_closed",
+        "original_validation_status",
+        "objective",
+        "bound",
+        "economic_cost",
+        "penalized_total",
+        "common_gap",
+        "native_gap",
+        "timings",
+        "backend",
+        "resource_observations",
+    )
+    expected = {key: original[key] for key in fields}
+    if status["observations"] != [expected]:
+        raise ValueError("Original scalar SCIP observation differs")
+    if (
+        status["highs"]["execution_admitted"] is not False
+        or status["longer_scip"]["execution_admitted"] is not False
+        or status["longer_scip"]["predecessor_archive_sha256"] != original["archive_sha256"]
+        or status["multisolver"]["pyomo_implemented"] is not False
+    ):
+        raise ValueError("Prospective multisolver scope differs")
+    article = (MANUSCRIPT / "index.qmd").read_text(encoding="utf-8")
+    section = (MANUSCRIPT / "scip_results.qmd").read_text(encoding="utf-8")
+    if (
+        "{{< include scip_results.qmd >}}" not in article
+        or "zero solutions" not in section or "14,414.81" not in section
+        or "has no result at this cutoff" in article
+    ):
+        raise ValueError("Scalar SCIP manuscript scope differs")
+
+
 def check_public_review_approval() -> None:
     """Authorize only the reviewed Pages snapshot, not journal submission."""
     path = MANUSCRIPT / "pages_approval.json"
@@ -325,6 +373,7 @@ def check(*, rendered: bool = False, publication: bool = False) -> None:
         if hashlib.sha256((MANUSCRIPT / relative).read_bytes()).hexdigest() != digest:
             raise ValueError(f"Generated comparison checksum mismatch: {relative}")
     check_scalar_revision()
+    check_scalar_scip_revision()
     if rendered:
         html = (MANUSCRIPT / "_manuscript/index.html").read_text(encoding="utf-8")
         for extension in ("html", "pdf"):
