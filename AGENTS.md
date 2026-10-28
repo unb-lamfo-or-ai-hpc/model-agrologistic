@@ -1,5 +1,22 @@
 # Model Agrologistic: agent working agreement
 
+## Current HiGHS initialization repair mandate — 28 October 2026
+
+PR136 merged with explicit authorization at 79bfdb18. The researcher now
+requests a separate complete startup repair and preparation of one new 8-hour
+HiGHS attempt. Preserve original job 2226407/source d1033d71/plan c3c5e571/
+archive 2816e35c and its consumed claim; native SCIP remains independent.
+Use a new predecessor-bound claim/source/plan/archive, early minimal process
+identity and exact-step release before costly imports/checks, timed startup
+stages and retained failures. Keep full source/runtime/input verification,
+the existing build/whole-worker/native/Slurm budgets, scientific code and inputs.
+Qualify cold-bootstrap, delayed initialization, failure, original residual,
+collection and portable replay paths on exact cloud head before Ready.
+GitHub editing is autonomous; own merge approval and later manual pinned NPAD
+CLI are the only execution handoff. No agent HPC access, local clone/environment/
+installation, automatic retry or publication. Older no-retry holds preserve the
+original attempt and do not cancel this explicitly requested new preparation.
+
 ## Current human-readable editorial mandate — 28 October 2026
 
 Both longer attempts consumed their claims. The latest human snapshot records

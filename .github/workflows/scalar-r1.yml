@@ -43,6 +43,7 @@ jobs:
           bash -n scripts/npad_scalar_scip_h215_w.sh
           bash -n scripts/npad_scalar_scip_h215_w_native8h.sh
           bash -n scripts/npad_scalar_highs_h215_w_native8h.sh
+          bash -n scripts/npad_scalar_highs_h215_w_native8h_startup.sh
           sha256sum scripts/npad_scalar_h500_8h.sh
       - name: Focused h500 resumption and related regressions, no HPC
         run: >-
@@ -64,6 +65,8 @@ jobs:
           tests/test_pyomo_multisolver.py
           tests/test_scalar_highs_h215_8h.py
           tests/test_scalar_highs_h215_8h_native.py
+          tests/test_scalar_highs_h215_8h_startup.py
+          tests/test_scalar_highs_h215_8h_startup_native.py
           tests/test_scalar_highs_math.py
           --junitxml=/tmp/h500-resume.xml
       - name: Full retained native regression on exact PR head, no HPC
