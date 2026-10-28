@@ -38,7 +38,7 @@ jobs:
           tests/test_pyomo_multisolver.py tests/test_optimization_facade.py
           tests/test_scalar_highs_h215_8h.py tests/test_scalar_highs_math.py
           tests/test_scalar_highs_h215_8h_native.py
-          --junitxml=/tmp/pyomo-results.xml
+          --junitxml=/tmp/pyomo-results.xml --basetemp=/tmp/pyomo-publiccases
       - name: Reject missing or skipped solver controls
         run: |
           python -B -c 'import xml.etree.ElementTree as e; s=list(e.parse("/tmp/pyomo-results.xml").getroot().iter("testsuite")); assert s and all(int(x.get(k,0))==0 for x in s for k in ("errors","failures","skipped"))'
@@ -47,5 +47,7 @@ jobs:
         if: always()
         with:
           name: pyomo-multisolver-results
-          path: /tmp/pyomo-results.xml
+          path: |
+            /tmp/pyomo-results.xml
+            /tmp/pyomo-publiccases/**/medium-resource-receipt.json
           if-no-files-found: error

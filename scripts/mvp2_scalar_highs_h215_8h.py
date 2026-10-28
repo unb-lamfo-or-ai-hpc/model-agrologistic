@@ -147,7 +147,11 @@ def environment():
                 files[relative] = r.file_hash(path)
         r.require(files, "Installed package fingerprint unavailable.")
         fingerprints[name] = r.r2.digest(r.r2.encoded(files))
-    return {**packages, "python": platform.python_version(), "package_sha256": fingerprints}
+    # Record loader dependencies as installed metadata; no frozen cloud-version inference.
+    dependencies = {name: distribution(name).version
+                    for name in ("numpy", "pandas", "openpyxl", "PyYAML")}
+    return {**packages, "python": platform.python_version(),
+            "dependencies": dependencies, "package_sha256": fingerprints}
 
 
 def output_location(claim):
@@ -563,6 +567,21 @@ def case_review(files, plan):
     r.require(
         metadata["effective_highs_options"] == EXPECTED_PARAMS, "Effective native settings."
     )
+    proof = metadata["pyomo_reformulation"]
+    r.require(
+        metadata["pyomo_solver_interface"] == "appsi_highs"
+        and metadata["solver_versions"] == {"pyomo": "6.10.1", "highspy": "1.15.1"}
+        and metadata["highs_native_version"] == "1.15.1"
+        and proof["policy"] == POLICY
+        and proof["equivalence"] == "physical_investment_projection_and_optimal_scalar_value"
+        and proof["entire_redundant_slack_region_preserved"] is False
+        and re.fullmatch(r"[0-9a-f]{64}", proof["bounds_sha256"])
+        and isinstance(proof["candidate_slack_bounds"], int)
+        and proof["candidate_slack_bounds"] >= 0
+        and isinstance(proof["maximum_bound"], (int, float))
+        and 0 <= proof["maximum_bound"] < float("inf"),
+        "Pyomo reformulation/runtime provenance differs.",
+    )
     from src.logic.optimization import OptimizationResult, scalar_mip_gap
 
     usable = OptimizationResult(
@@ -594,6 +613,7 @@ def case_review(files, plan):
         "objective": native["objective_value"], "bound": native.get("objective_bound"),
         "common_gap": gap, "native_gap": metadata.get("pyomo_native_gap"),
         "native_status": metadata["solver_termination"], "timings": metadata["timings"],
+        "reformulation": proof,
         "economic_cost": summary.get("economic_cost") if usable else None,
         "penalized_total": summary.get("penalized_cost") if usable else None,
         "interpretation": ("One original Pyomo/HiGHS observation; "
@@ -747,6 +767,7 @@ def portable_review(files):
         r.require(
             native["entry"] == entry and native["effective_parameters"] == EXPECTED_PARAMS
             and native["time_limit_seconds"] == 28800
+            and native["reformulation"] == assessment["reformulation"]
             and 0 <= native["runtime_seconds"] <= 29700, "Native budget/parameters.",
         )
         numerical = {x["job_id"] for x in rows

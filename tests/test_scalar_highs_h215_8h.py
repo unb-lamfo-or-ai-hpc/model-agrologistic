@@ -28,6 +28,15 @@ def fixture():
         "solver_backend": "pyomo", "solver_name": "highs", "model_mode": "sto",
         "metadata": {
             "run_identity": "fixture", "effective_highs_options": m.EXPECTED_PARAMS.copy(),
+            "pyomo_solver_interface": "appsi_highs",
+            "solver_versions": {"pyomo": "6.10.1", "highspy": "1.15.1"},
+            "highs_native_version": "1.15.1",
+            "pyomo_reformulation": {
+                "policy": m.POLICY,
+                "equivalence": "physical_investment_projection_and_optimal_scalar_value",
+                "entire_redundant_slack_region_preserved": False,
+                "bounds_sha256": "b" * 64, "candidate_slack_bounds": 0, "maximum_bound": 0,
+            },
             "solver_termination": "gaplimit", "pyomo_native_gap": 0.0051,
             "timings": {"solver_reported_runtime_seconds": 2.0},
         },
@@ -282,3 +291,88 @@ def test_admission_check_is_test_only_and_rejects_before_claim(monkeypatch):
     monkeypatch.setattr(m.r.r2, "command", command)
     with pytest.raises(ValueError, match="no claim/job"):
         m.admission_test()
+
+
+def test_design_binds_inputs_scope_and_all_native_sources(tmp_path, monkeypatch):
+    workbook = tmp_path / "public"
+    workbook.write_bytes(b"public")
+    payload = m.r.spec_payload(m.spec(workbook))
+    payload["workbook_sha256"] = m.o.WORKBOOK_SHA
+    source_files = {
+        "src/logic/optimization.py": "c" * 64,
+        "src/logic/optimization_pyomo.py": "a" * 64,
+        "src/logic/pyomo_bounds.py": "b" * 64,
+    }
+    artifacts = {
+        "source.json": {"source_commit": SHA, "files": source_files},
+        "historical_w.json": {
+            "archive_sha256": m.g.W_SHA, "source_commit": m.g.W_SOURCE,
+            "plan_sha256": m.g.W_PLAN,
+            "review": {"job_id": "2217990", "status": "pair_quality_target_met"},
+            "scientific_sources": {
+                "src/logic/optimization.py": "c" * 64,
+                "src/logic/optimization_pyomo.py": "d" * 64,
+            },
+        },
+        "warehouse_selection.json": {
+            "target_population": 215, "population_manifest_sha256": m.o.POPULATION_SHA,
+            "population_order_sha256": m.o.ORDER_SHA,
+        },
+        "materialization.original.json": {},
+        "admission_test.json": {
+            "argv": m.ADMISSION_COMMAND, "returncode": 0, "job_submitted": False,
+        },
+    }
+    files = {name: m.r.r2.encoded(value) for name, value in artifacts.items()}
+    plan = {
+        "schema_version": "scalar-highs-h215-w-native8h-v1", "source_commit": SHA,
+        "profile": m.PROFILE, "budget": m.budget(), "expected_shape": m.SHAPE,
+        "cases": [payload], "environment": {"pyomo": "6.10.1", "highspy": "1.15.1"},
+        "artifact_sha256": {name: m.r.r2.digest(raw) for name, raw in files.items()},
+        "input_sha256": {
+            "workbook": m.o.WORKBOOK_SHA, "population": m.o.POPULATION_SHA,
+            "order": m.o.ORDER_SHA, "w_archive": m.g.W_SHA,
+            "materialization": m.r.r2.digest(files["materialization.original.json"]),
+        }, **m.closed(),
+    }
+    files["plan.json"] = m.r.r2.encoded(plan)
+    monkeypatch.setattr(m.o, "materialization", lambda _: None)
+    assert m.design(files)["source_commit"] == SHA
+    for key in ("workbook", "population", "order", "w_archive"):
+        altered = copy.deepcopy(plan)
+        altered["input_sha256"][key] = "0" * 64
+        with pytest.raises(ValueError, match="Frozen inputs"):
+            m.design({**files, "plan.json": m.r.r2.encoded(altered)})
+    for key in m.closed():
+        altered = copy.deepcopy(plan)
+        altered[key] = True
+        with pytest.raises(ValueError, match="scope"):
+            m.design({**files, "plan.json": m.r.r2.encoded(altered)})
+    for change in ("modify", "remove", "extra"):
+        drift = copy.deepcopy(artifacts["source.json"])
+        if change == "modify":
+            drift["files"]["src/logic/optimization.py"] = "0" * 64
+        elif change == "remove":
+            drift["files"].pop("src/logic/optimization.py")
+        else:
+            drift["files"]["src/logic/undeclared.py"] = "0" * 64
+        raw = m.r.r2.encoded(drift)
+        altered = copy.deepcopy(plan)
+        altered["artifact_sha256"]["source.json"] = m.r.r2.digest(raw)
+        with pytest.raises(ValueError, match="Native source"):
+            m.design({**files, "source.json": raw, "plan.json": m.r.r2.encoded(altered)})
+
+
+@pytest.mark.parametrize("key,value", [
+    ("policy", "arbitrary_big_m"),
+    ("entire_redundant_slack_region_preserved", True),
+    ("maximum_bound", -1),
+    ("bounds_sha256", "missing"),
+])
+def test_reformulation_provenance_cannot_be_relabelled(key, value):
+    files, plan, base = fixture()
+    update(files, base, "result.json", lambda v: v["result"]["metadata"][
+        "pyomo_reformulation"
+    ].update({key: value}))
+    with pytest.raises(ValueError, match="reformulation"):
+        m.case_review(files, plan)
