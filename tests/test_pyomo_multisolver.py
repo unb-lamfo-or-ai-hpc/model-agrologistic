@@ -259,3 +259,16 @@ def test_native_handle_and_model_are_cleared_when_adapter_raises(monkeypatch):
         solve_model(economic_data(), ModelConfig(), config("highs"))
     assert "native_clear" in calls
     assert len(list(calls[0].component_objects())) == 0
+
+
+@pytest.mark.parametrize("solver", ["highs", "cbc"])
+def test_real_unbounded_control_never_publishes_a_finite_optimum(solver):
+    data = economic_data()
+    # Public adverse control only: an existing-facility slack has no upper bound.
+    # The proof changes candidate slack representatives only; this control has none.
+    data.emergency_static_capacity_penalty["W"] = -1
+    result = solve_model(data, ModelConfig(), config(solver), validate=False)
+    assert result.status in {"unbounded", "error"}
+    assert not result.has_solution and result.objective_value is None
+    assert result.flows == [] and result.cost_breakdown == {}
+    assert result.metadata["native_model_lifecycle"][0]["status"] == "disposed"

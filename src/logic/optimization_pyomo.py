@@ -297,7 +297,7 @@ def normalized_status(termination, usable):
     if token in {"maxtimelimit", "timelimit"}:
         return "time_limit"
     if token in {"infeasible", "unbounded"}:
-        return token if not usable else "error"
+        return token
     if token == "optimal":
         return "optimal" if usable else "error"
     return "feasible" if usable else "error"
@@ -380,6 +380,9 @@ def solve_model_pyomo(data, model_config, solver_config):
             native_gap = None  # The retained CBC result API does not expose its native gap.
             native_runtime = finite(solved.solver.time)
             versions = {"pyomo": version("pyomo"), "cbc": ".".join(map(str, adapter.version()))}
+        status = normalized_status(termination, usable)
+        if status in {"infeasible", "unbounded", "error"}:
+            usable, objective, native_gap = False, None, None
         metadata = {
             "formulation": "two_stage_extensive_form",
             "objective_policy": built.cfg.objective_policy,
@@ -403,7 +406,7 @@ def solve_model_pyomo(data, model_config, solver_config):
             ),
         }
         result = OptimizationResult(
-            status=normalized_status(termination, usable), objective_value=objective,
+            status=status, objective_value=objective,
             solver_backend="pyomo", solver_name=solver_config.solver_name,
             model_mode=model_config.mode, runtime_seconds=build_seconds + optimization_seconds,
             metadata=metadata, mip_gap=scalar_mip_gap(objective, bound),

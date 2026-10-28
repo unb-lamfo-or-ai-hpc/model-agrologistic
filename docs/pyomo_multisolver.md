@@ -138,7 +138,8 @@ Primary interface documentation:
 
 Public qualification covers hand-calculated DET/STO equality, separate slack
 units/costs, unequal probabilities, scenario splitting and investment once,
-native-reference parity, infeasible/no-incumbent/status normalization, derived
+native-reference parity, actual infeasible/unbounded and no-incumbent/status
+normalization, derived
 cumulative/circulation bounds, explicit-policy/option rejection, early variable
 guard and disposal. The coauthor working draft records this as software qualification only, keeping
 all original scalar population observations unchanged. Full native regression
