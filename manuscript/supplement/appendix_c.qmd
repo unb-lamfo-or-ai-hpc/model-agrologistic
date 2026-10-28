@@ -118,9 +118,9 @@ The native model allows an open candidate's slack to be unbounded above.
 A finite bound must therefore be justified mathematically, rather than selected
 because it appears numerically large.
 
-For scenario \(s\) and period \(t\), let \(G_{st}\) denote total exogenous supply,
-and let \(I^0\) denote total initial inventory. Let
-\(\overline H_{wt}\) be a finite upper bound on warehouse \(w\)'s *period*
+For scenario $s$ and period $t$, let $G_{st}$ denote total exogenous supply,
+and let $I^0$ denote total initial inventory. Let
+$\overline H_{wt}$ be a finite upper bound on warehouse $w$'s *period*
 shipping capacity, obtained from the original daily rates, operating days and
 maximum eligible investments. Ignoring mutual exclusion when calculating this
 upper bound can only enlarge it. Define
@@ -136,7 +136,7 @@ The first bound follows by summing warehouse balances. Interwarehouse flows
 cancel, while deliveries to customers and other withdrawals are nonnegative.
 Consequently, the stock at any one warehouse cannot exceed initial stock plus
 cumulative supply. Since installed static capacity is nonnegative, the minimum
-required static exceedance is also bounded by \(M^K_{st}\).
+required static exceedance is also bounded by $M^K_{st}$.
 
 The reception bound must account for circulation. Arrivals from origins cannot
 exceed current exogenous supply. Arrivals from other warehouses are bounded
@@ -144,7 +144,7 @@ by their hard shipping capacities, even if grain traverses several warehouses.
 Their sum therefore provides a valid upper bound on incoming interwarehouse
 flow. Current supply alone would not provide such a bound.
 
-For each candidate warehouse with opening variable \(y_w\), Pyomo imposes
+For each candidate warehouse with opening variable $y_w$, Pyomo imposes
 
 $$
 0\leq q^K_{swt}\leq M^K_{st}y_w,
@@ -180,7 +180,7 @@ these formulation, interface and resource differences.
 
 Independent validation reconstructs the fourteen cost components and evaluates
 the original physical and investment constraints from the exported decisions.
-It uses absolute tolerance \(10^{-5}\) and relative tolerance \(10^{-8}\), together
+It uses absolute tolerance $10^{-5}$ and relative tolerance $10^{-8}$, together
 with the explicit sparse-export rounding allowance. Local constraints are
 examined individually; national balance alone is insufficient.
 

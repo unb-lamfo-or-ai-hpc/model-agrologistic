@@ -139,7 +139,7 @@ The original checkpoints include 215 and 500, but not 300 or 400. The
 intermediate cases retain the original candidate ranking rather than drawing
 new independent samples. Membership comparisons use facility identifiers
 (CDA), not geographic coincidence or a count alone, and establish
-\(W_{215}\subseteq W_{300}\subseteq W_{400}\subseteq W_{500}\).
+$W_{215}\subseteq W_{300}\subseteq W_{400}\subseteq W_{500}$.
 The corresponding processed workbook SHA256 prefixes are 40edb665, 7761cce7,
 c3085456 and 888fbff4; full identities are retained in the inventory and
 experiment records.
@@ -171,7 +171,7 @@ coefficients.
 
 The STO design combines supply multipliers 0.85/1/1.15 with domestic-demand
 multipliers 0.95/1/1.05. Their Cartesian product produces nine trajectories,
-each with probability \(1/9\). This is an explicit controlled design, not
+each with probability $1/9$. This is an explicit controlled design, not
 an empirical probability forecast. The source scenario sheet's active-row
 flags alone do not define the executed design. DET retains the original
 deterministic arrays, as explained in Appendix C.
