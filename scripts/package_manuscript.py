@@ -54,6 +54,10 @@ def package(output: Path, *, root: Path = ROOT) -> None:
     for name, path in {
         "appendix_a_original.pdf": supplement / "appendix_a_original.pdf",
         "scalar_evidence.json": manuscript / "scalar_evidence.json",
+        "open_source_comparison_status.json": manuscript / "open_source_comparison_status.json",
+        "scalar_scip_h215_w_2225638_review.json": (
+            root / "docs/evidence/scalar_scip_h215_w_2225638_review.json"
+        ),
         "scalar_wd_h215_2221443_review.json": (
             root / "docs/evidence/scalar_wd_h215_2221443_review.json"
         ),

@@ -4,34 +4,28 @@ date: 2026-10-28
 abstract: >-
   Grain-storage network design links infrastructure investment to seasonal,
   multi-product logistics. Increasing candidate populations and replicating
-  operating decisions across uncertainty scenarios can make the resulting
-  mixed-integer linear programs expensive to construct, store and solve.
-  Building on Rosa's mathematical foundation, this study implements
-  deterministic and two-stage stochastic models with one scalar objective
-  containing investment, expected operating costs and three separate
-  feasibility penalties. A reproducible computational workflow binds input
-  and warehouse-selection provenance, road distances, sparse networks, solver
-  settings, resource measurements and independent solution certificates.
-  The accepted scalar cohort contains a deterministic/stochastic pair at
-  215 warehouses, five stochastic observations at 300 warehouses with
-  1/2/4/8/16 solver threads, and one stochastic observation each at 400 and 500 warehouses.
-  All nine warehouse-only observations meet the declared 1% global-gap criterion and retain
-  accepted original feasibility certificates. The stochastic matrix grows
-  from 25.1 million variables at 300 warehouses to 63.4 million at 500.
-  One thread has the lowest observed runtime and memory within the 300-site
-  block, without establishing causal parallel speedup. Validated decision
-  vectors reveal extensive candidate investment alongside substantial
-  permitted shortages and capacity exceedances. Artificial penalties dominate
-  the scalar totals and must be distinguished from financial expenditure.
-  At 500 warehouses, the original accepted gap is 0.2074%, native runtime
-  is 127.58 minutes and sampled application RSS is 111.78 GiB. A separate
-  accepted h215 topology comparison adds two direct-enabled observations;
-  its lower penalized cost coexists with worse domestic service.
-  A separate scalar SCIP observation at 215 warehouses reached its four-hour
-  native limit without an incumbent, documenting bounded computational difficulty.
-  The results characterize attainable computational scale under an explicit
-  contract, while a complementary human-supervised AI workflow documents
-  scientific decisions and verification.
+  operating decisions across scenarios can make mixed-integer linear programs
+  expensive to construct, store and solve. This study implements deterministic
+  and two-stage stochastic models with one scalar objective containing
+  investment, expected operating costs and three separate feasibility penalties.
+  A reproducible workflow binds input provenance, road distances, sparse networks,
+  solver settings, resource measurements and independent solution certificates.
+  The accepted warehouse-only cohort contains a deterministic/stochastic pair
+  at 215 warehouses, five stochastic observations at 300 warehouses using
+  1/2/4/8/16 threads, and one stochastic observation each at 400 and 500 warehouses.
+  All nine observations meet the declared 1% gap criterion and retain accepted
+  original feasibility certificates. The stochastic matrix grows from
+  25.1 million variables at 300 warehouses to 63.4 million at 500.
+  One thread has the lowest observed runtime and memory in the 300-site block,
+  without establishing causal parallel speedup. At 500 warehouses, the
+  original accepted gap is 0.2074%, native runtime is 127.58 minutes and
+  sampled application RSS is 111.78 GiB. Extensive investment coexists with
+  substantial permitted shortages and capacity exceedances; artificial penalties
+  dominate the totals. Two separate direct-enabled h215 observations yield lower
+  penalized costs but worse service. A scalar SCIP h215 observation reaches
+  its four-hour native limit without an incumbent. These results characterize
+  attainable scale under an explicit contract, with a human-supervised AI
+  workflow documenting decisions and verification.
 keywords:
   - grain storage
   - facility location

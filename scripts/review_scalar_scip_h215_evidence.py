@@ -149,7 +149,7 @@ def summarize(files, replay):
             "sampled_application_peak_bytes": max(rss),
             "resource_samples": len(resources),
             "largest_resource_sample_interval_seconds": max(
-                right - left for left, right in zip(times, times[1:])
+                right - left for left, right in zip(times, times[1:], strict=False)
             ),
             "reported_sampler_work_seconds": termination["sampler_work_seconds"],
             "recorded_inspection_seconds_sum": sum(inspection),
