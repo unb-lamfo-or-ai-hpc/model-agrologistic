@@ -1,5 +1,19 @@
 # Model Agrologistic: agent working agreement
 
+## Current pre-merge appendix reader review — 28 October 2026
+
+The researcher withholds a new merge decision pending a didactic, complete
+reader review of the appendices, direct GitHub links and exact gold/registry/
+processed-input values. Work only through Codex tabs and the GitHub connector;
+no native local apps, shell, clone or environment changes. Keep PR138 draft
+until renewed exact-head qualification/render/visual review. Preserve original
+Appendix A and all scientific source/data/parameters/certificates. Distinguish
+registered originals from different-byte same-name supplied copies, source
+cells from effective settings, and data/document replay from a fresh solve.
+Prepare standalone cloud-rendered article/appendix PDFs. Request this revised
+head's own merge; only after authorization/merge generate the develop-bound
+PDFs requested for Codex tabs. No Pages deployment or submission follows.
+
 ## Current running-job and literature-reconciliation mandate — 28 October 2026
 
 PR137 is merged and the researcher has submitted HiGHS job2226536 from exact

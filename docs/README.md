@@ -15,6 +15,8 @@ full-text comparisons and coauthor decisions remain explicit.
 
 | Current review document | Use |
 | --- | --- |
+| [Appendix reader review](appendix_reader_review_20261028.md) | Didactic reproduction routes, source/effective values, pinned file links and cloud PDF delivery |
+| [Actual input guide](evidence/appendix_input_reproduction_20261028.json) | Registered gold, candidate source, same-name reference copies, all freight values and executed settings |
 | [Opinion reconciliation and claim/source matrix](literature_claims_reconciliation_20261028.md) | Adopted scope, source-access limits, current Guide and coauthor action sheet |
 | [38-record disposition](literature_disposition_20261028.json) | Retained bibliography versus newly examined sources; Gao candidate separate |
 | [New running-job checkpoint](evidence/parallel_solvers_20261028_running_v2.json) | Same SCIP2226388 and distinct HiGHS2226536; no repeat or terminal inference |

@@ -564,8 +564,11 @@
       "article_number": "147664",
       "doi": "10.1016/j.jclepro.2026.147664",
       "publisher_url": "https://www.sciencedirect.com/science/article/abs/pii/S0959652626002039",
-      "access": "publisher_metadata_and_highlights",
-      "decision": "Candidate only; compare complete text before deciding citation/claims; not added to the retained38 or historical selection ledger."
+      "access": "publisher_metadata_highlights_abstract_introduction_and_section_snippets",
+      "decision": "Candidate only; complete text requires organizational access or purchase. No numerical transfer, direct runtime ranking or automatic insertion into the retained38.",
+      "read_in": "Codex internal browser,28October2026",
+      "full_text_obtained": false,
+      "comparison_scope": "Decision-dependent distributionally robust uncertainty differs from the fixed Cartesian scenarios evaluated here; complete model/result comparison remains deferred."
     }
   ],
   "complete_full_text_review": false,

@@ -1,3 +1,22 @@
+## Pre-merge appendix reproduction review — 28 October 2026
+
+The researcher requests a renewed PR138 review for non-specialist readers,
+direct GitHub file links and the actual registered gold/candidate/runtime
+input values. New input guide is pinned at 1b54023f4e0c0c27aba64883b1e9cf25817ad0f8:
+docs/evidence/appendix_input_reproduction_20261028.json.
+It distinguishes registered de3bdc51/0d19865a inputs from inspected different-byte
+2fc994ac/bb5e8bf6 copies, and source million-valued penalty cells from executed
+90000/45000/45000. B/C/D gain reading/reproduction routes and pinned links;
+A's original 19 pages remain unchanged. See docs/appendix_reader_review_20261028.md.
+
+All work now uses only Codex tabs and the GitHub connector. The document CI
+adds a public gold-cell/path audit and read-only standalone PDF artifacts
+alongside the existing editable ZIP. Renewed exact-head CI, render and visual
+review are pending; the old Ready/merge question is superseded by this draft
+revision. Request the new head's own merge. Develop-bound PDFs follow only
+its authorized merge; no pre-merge PDF is labelled as develop.
+No new HPC access, start, solver result, source substitution or publication.
+
 ## Running solver checkpoint and literature review — 28 October 2026
 
 PR137 merged at fbbcee3d. The researcher supplies HiGHS job 2226536/source
@@ -1183,7 +1202,7 @@ The operational claim name stays unchanged because it was never created, not
 because an old claim may be reset. Existing claims remain collect-only.
 
 No source/model/tolerance/coefficient, input identity, population criterion,
-predecessor,30h/24 logical CPU/192GiB envelope or14400s-per-arm budget changes.
+predecessor, 30h/24 logical CPU/192GiB envelope or14400s-per-arm budget changes.
 Five serial cold STO arms4/1/8/2/16 and penalties90000/45000/45000 remain fixed.
 Slacks relax only specified constraints and do not guarantee full feasibility;
 their search effects need not be monotonic. Gap describes penalized total, not
@@ -2124,7 +2143,7 @@ and [redacted review ledger](docs/evidence/s2_p4_observation_2213305_review.json
 
 Root/batch/extern COMPLETED0:0/102s; observer98.69655s, exit0, local reap true,
 no TERM/KILL/error. Recorded fresh input/source/runtime checks and the existing
-2001-variable license capability pass: Python3.13.15/Gurobi13.0.3,300 warehouses,
+2001-variable license capability pass: Python3.13.15/Gurobi13.0.3, 300 warehouses,
 9 scenarios,60 periods,2 products, no direct arcs,25107544 estimated variables.
 The643 declared source hashes match published bytes;57 protected scientific
 files are preserved. Portable replay is not a fresh auditor remote-disk inspection.

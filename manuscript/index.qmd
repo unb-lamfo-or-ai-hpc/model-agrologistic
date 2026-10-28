@@ -519,6 +519,8 @@ operational failure and still-pending attempts at the documentary cutoff.
 
 {{< include scip_results.qmd >}}
 
+{{< pagebreak >}}
+
 ## Numerical evidence and pending execution states
 
 | Observation or attempt | Evidence at the 28 October 2026 cutoff | Scientific interpretation |
@@ -652,10 +654,10 @@ and agricultural assessment.
 
 The eleven accepted scalar observations meet the declared 1% global-gap target:
 h215 W DET/STO, five h300 W thread observations, h400/h500 W STO, and the
-separate h215 D DET/STO pair. It supports empirical
+separate h215 D DET/STO pair. Together, they support empirical
 computational characterization and an applied interpretation of the returned
 plans, including substantial investment and residual permitted shortages.
-It does not establish exact optimality, full service, a universal solver
+These observations do not establish exact optimality, full service, a universal solver
 frontier or a causal thread speedup.
 
 At h500, the retained gap is 0.207432%, native runtime is 7654.77 seconds

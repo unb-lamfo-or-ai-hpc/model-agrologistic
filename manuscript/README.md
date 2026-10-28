@@ -1,5 +1,23 @@
 # Scientific manuscript — integrated scalar revision
 
+## Current appendix reader and input review — 28 October 2026
+
+The pre-merge review now adds a reading route for non-specialists, seven
+Human–AI sections, practical model/data verification steps and pinned GitHub
+file links throughout B/C/D. Appendix D distinguishes the registered gold
+source, external candidate registry and the four exact processed inputs;
+reports actual source costs, all 27 freight coefficients and effective scalar
+settings; and identifies inspected same-name copies that were not substituted.
+The [input guide](../docs/evidence/appendix_input_reproduction_20261028.json)
+and [reader-review record](../docs/appendix_reader_review_20261028.md)
+make remaining access/validation limits explicit. Original Appendix A is unchanged.
+
+The cloud document workflow checks actual public gold cells and pinned file
+links, renders both PDFs, retains the editable ZIP and emits standalone PDF
+artifacts. This permits PDF review in Codex tabs without a local application.
+After this PR's authorized merge, run the same workflow on exact develop to
+obtain develop-bound outputs; a pre-merge branch PDF is not a develop PDF.
+
 ## Current opinion and coauthor revision — 28 October 2026
 
 The accepted cohort remains eleven Gurobi observations: nine W cases through
@@ -99,6 +117,7 @@ template packages, and rsvg-convert for the shared workflow SVG:
 ```bash
 python scripts/build_manuscript_comparison.py --check
 python -m scripts.build_scalar_manuscript --check
+python -m scripts.build_wd_manuscript --check
 python -m scripts.build_s6a_assets
 python scripts/check_manuscript.py
 quarto render manuscript
@@ -143,7 +162,7 @@ retained as unimplemented historical material, not an active method.
 Appendix A incorporates all19 pages of the supplied review byte-for-byte,
 SHA256859dc52b64b6bcf471f7616182d8cadf2b693dbfd19ad4b9248637b5c231b3ed.
 Original search arithmetic and date issues are documented, not silently
-corrected. Appendix B contains six connected Human–AI sections; the main article has a
+corrected. Appendix B contains seven connected Human–AI sections; the main article has a
 bounded methodological passage, concise activity table and the same editable
 workflow figure. Retrospective AI accounts are not independent execution logs.
 
