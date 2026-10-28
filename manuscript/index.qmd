@@ -585,7 +585,8 @@ The longer eight-hour native SCIP observation is running at this revision's
 operational cutoff. The separate Pyomo/HiGHS attempt ended before a released
 worker was recorded; it provides no population-solve evidence. Completion of
 the longer SCIP review, diagnosis of HiGHS initialization and coauthor revision
-remain open. Public Pyomo/HiGHS/CBC controls establish software qualification,
+remain open. There is no new measured outcome of population optimization
+from these two attempts at this cutoff. Public Pyomo/HiGHS/CBC controls establish software qualification,
 rather than additional private-input numerical results. Unsupported
 indicator implications require proved equivalent treatment, not arbitrary
 Big-M coefficients or omitted constraints. Native reference implementations
