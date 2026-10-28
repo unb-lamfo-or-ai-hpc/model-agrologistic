@@ -335,5 +335,5 @@ def worker(claim, sha, mode, *, entry, startup):
     result = m.case_review(files, m.r.r2.read(claim / "plan.json"))
     assert result["quality_target_met"] and result["original_validation_status"] == "accepted"
     assert (control / "qualification.json").exists()
-    assert result["native_status"] == "optimal"
+    assert result["native_status"] == "TerminationCondition.optimal"
     assert not result["additional_highs_execution_admitted"]
