@@ -1,5 +1,18 @@
 # One scalar SCIP STO h215 W observation and S6-A reconciliation
 
+## Terminal correction — 28 October 2026
+
+The one authorized original observation is complete and independently audited:
+job2225638, native timelimit, zero solutions, no usable incumbent. Preserve the
+original claim, source cbd64d86, plan1af2f262 and archive41557726.
+The preparation/start instructions below are historical, not a new execution
+handoff. Do not run start again or alter the consumed claim.
+Read [the original results](mvp2_scalar_scip_h215_w_results.md).
+The researcher's subsequent longer-window and multisolver planning request is
+recorded in [the active completion plan](mvp2_completion_plan_20261028.md).
+Its future operational package needs its own qualification, merge and human CLI.
+
+
 27 October 2026. S5 closed by the authorized PR130 merge
 `b031c3d1014df433020a6bb98534b9b9d8de4ffb`. The researcher requests one
 SCIP h215 W test and parallel h500/manuscript reconciliation. This is the complete

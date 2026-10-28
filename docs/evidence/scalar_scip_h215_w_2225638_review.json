@@ -1,0 +1,126 @@
+{
+  "accounting": [
+    {
+      "elapsed_seconds": 15031,
+      "exit_code": "0:0",
+      "job_id": "2225638",
+      "max_rss_raw": null,
+      "state": "COMPLETED"
+    },
+    {
+      "elapsed_seconds": 15031,
+      "exit_code": "0:0",
+      "job_id": "2225638.batch",
+      "max_rss_raw": "93072K",
+      "state": "COMPLETED"
+    },
+    {
+      "elapsed_seconds": 15031,
+      "exit_code": "0:0",
+      "job_id": "2225638.extern",
+      "max_rss_raw": "940K",
+      "state": "COMPLETED"
+    },
+    {
+      "elapsed_seconds": 15022,
+      "exit_code": "0:0",
+      "job_id": "2225638.0",
+      "max_rss_raw": "93214788K",
+      "state": "COMPLETED"
+    }
+  ],
+  "additional_scip_execution_admitted": false,
+  "archive_sha256": "41557726ecd93ab67a5764077ea18a35e08db4d6f97123a03ebd6b72930ebf68",
+  "automatic_follow_on_allowed": false,
+  "backend": {
+    "lp_solver": "SoPlex8.0.2",
+    "pyscipopt": "6.2.1",
+    "scip": "10.0.2"
+  },
+  "bound": -1779457702122698.2,
+  "classification": "no_usable_incumbent",
+  "common_gap": null,
+  "economic_cost": null,
+  "execution_admitted": false,
+  "expanded_bytes": 769739,
+  "h300_admitted": false,
+  "has_usable_incumbent": false,
+  "highs_execution_admitted": false,
+  "interpretation": "One original SCIP observation; no open-source impossibility inference.",
+  "inventory_digests_matched": 110,
+  "job_id": "2225638",
+  "matrix_observations": [
+    {
+      "backend": "pyscipopt",
+      "binary_variables": 307,
+      "coefficient_max": null,
+      "coefficient_min": null,
+      "constraints": 810097,
+      "implicit_integer_variables": 0,
+      "integer_count_semantics": "includes_binary_excludes_implicit_integer",
+      "integer_variables": 307,
+      "nonzeros": null,
+      "phase": "model_build",
+      "scope": "original",
+      "variables": 14129174
+    }
+  ],
+  "members": 111,
+  "native_gap": null,
+  "native_log_observations": {
+    "nodes": 1,
+    "presolve_seconds": 608.24,
+    "presolved_binary_variables": 92,
+    "presolved_constraints": 626547,
+    "presolved_variables": 12708003,
+    "root_lp_completion_proven": false
+  },
+  "native_log_sha256": "23258d661f4eb3331839fd34d085374725a8a929ae77625162e906a0e58f5a54",
+  "native_status": "timelimit",
+  "native_time_limit_overrun_seconds": 10.764461999999185,
+  "native_time_limit_seconds": 14400,
+  "objective": null,
+  "operational_error_kind": null,
+  "operational_receipts_closed": true,
+  "original_archived_review_identical": true,
+  "original_review_sha256": "832fa7a9a0466ab20a45127ddb2c860d31dfc6b8b53ad056d846c6ef2ebf7728",
+  "original_validation_failed_checks": 41066,
+  "original_validation_sha256": "04512dc888d48746b1db5cd09a430f4f8a39ee15c45839a52ff4b62bb80f4f39",
+  "original_validation_status": "rejected",
+  "penalized_total": null,
+  "physical_diagnostics": null,
+  "physical_diagnostics_qualification": "No incumbent: placeholder scenario service=1 and penalty_share=0 in the original summary are not physical or economic results.",
+  "plan_sha256": "1af2f262961cfcca46edfca6a2663e5e82267b3dab0dcefedebea3785761a7fe",
+  "production_isolation_certified": false,
+  "quality_target_met": false,
+  "repeats_admitted": false,
+  "resource_observations": {
+    "largest_resource_sample_interval_seconds": 14414.805638481863,
+    "qualification": "Sparse observations with a near-full-solve sampling gap. Inspection elapsed time is not demonstrated overhead or CPU cost; no causal observer slowdown or continuous utilization inference.",
+    "recorded_inspection_seconds_sum": 14680.98773016315,
+    "reported_sampler_work_seconds": 14681.029814624228,
+    "resource_samples": 20,
+    "sampled_application_peak_bytes": 91169603584,
+    "slurm_step_max_rss_bytes": 95451942912
+  },
+  "reviewer_scope": "Bounded original-certificate/log replay; no archive-code execution, scheduler call, solver model or fresh private-input residual recomputation.",
+  "schema_version": "scalar-scip-h215-w-external-review-v1",
+  "solution_count": 0,
+  "solver_thread_ceiling": 4,
+  "source_commit": "cbd64d86914dd416ed16b6a58ffe1069401e3aad",
+  "source_inventory_verified": true,
+  "status": "scip_returned_quality_not_met",
+  "timings": {
+    "artifact_export_seconds": 0.24919994361698627,
+    "data_read_seconds": 7.59027898311615e-7,
+    "end_to_end_seconds": 14939.748946234584,
+    "independent_validation_seconds": 1.3038459597155452,
+    "model_build_seconds": 249.8276324570179,
+    "optimization_seconds": 14410.764895354398,
+    "solve_sequence_wall_seconds": 14916.714241640642,
+    "solver_reported_runtime_seconds": 14410.764462
+  },
+  "trusted_original_files_matched": 562,
+  "validation_interpretation": "No candidate solution exists. Empty decision exports are rejected; 41066 failed checks do not describe an allegedly feasible incumbent.",
+  "worker_affinity_logical_cpus": 16
+}

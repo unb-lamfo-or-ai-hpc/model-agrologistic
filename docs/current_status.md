@@ -1,5 +1,38 @@
 # Dated research status: 22 October 2026
 
+## Current audited SCIP outcome and continuation — 28 October 2026
+
+PR131 merged with explicit authorization at
+`083e5759ee5bb4d4d2982c4dcf2ffd12f2afb476`. Original scalar SCIP STO/W h215
+job2225638/source cbd64d86/plan1af2f262/archive41557726 is independently audited:
+111 safe members,110 inventory digests,562 source files matched; original review
+reproduced exactly. COMPLETED0:0 is operational closure; native timelimit,
+zero solutions and no_usable_incumbent are the scientific outcome.
+No objective/economics/service/gap is available. The accepted feasible Gurobi
+inventory stays eleven; this negative SCIP observation is separate. S5 stays closed.
+
+The researcher now explicitly requests a longer SCIP window and planning other
+free solvers/HiGHS plus an agnostic multisolver implementation. Plan native8h/
+Slurm12h with unchanged input/science/memory/thread ceilings, a new predecessor-
+bound claim and full separately qualified operational PR. The original claim,
+source/plan and false follow-on flags remain unchanged. PySCIPOpt is native;
+Pyomo is currently only an unimplemented stub. Plan Pyomo DET/STO, indicator/
+bound proof, HiGHS then conditional CBC qualification; no solver sweep is released.
+This scoped new request supersedes older blanket no-repeat/no-new-backend
+planning holds, not the cancelled broad S3/S4 campaign or original certificates.
+
+Resource samples have a near-full-solve gap; do not infer continuous utilization,
+root-LP completion, proven observer slowdown, production isolation or smaller safe
+allocation. See the current result, completion plan and multisolver architecture.
+GitHub editing is autonomous; own merge and human NPAD CLI remain researcher gates.
+No local clone/environment/package change or new execution in this checkpoint PR.
+S6-A/coauthor work and S6-B remain open; no final publication/submission follows.
+
+See [SCIP original outcome](mvp2_scalar_scip_h215_w_results.md),
+[revised sprint/PR plan](mvp2_completion_plan_20261028.md) and
+[multisolver design](mvp2_multisolver_plan.md).
+
+
 ## Current continuation after S5 closure — 27 October 2026
 
 PR130 merged with explicit researcher authorization at

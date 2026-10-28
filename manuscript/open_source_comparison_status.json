@@ -1,9 +1,53 @@
 {
   "schema_version": "scalar-open-source-status-v1",
-  "as_of": "2026-10-27",
-  "scope": "One prospective scalar SCIP STO h215 W observation; no measured result yet.",
+  "as_of": "2026-10-28",
+  "scope": "One audited scalar SCIP STO h215 W time-limited no-incumbent observation, separate from accepted feasible Gurobi evidence.",
   "protocol": "docs/mvp2_scalar_scip_h215_w.md",
-  "observations": [],
+  "observations": [
+    {
+      "job_id": "2225638",
+      "source_commit": "cbd64d86914dd416ed16b6a58ffe1069401e3aad",
+      "plan_sha256": "1af2f262961cfcca46edfca6a2663e5e82267b3dab0dcefedebea3785761a7fe",
+      "archive_sha256": "41557726ecd93ab67a5764077ea18a35e08db4d6f97123a03ebd6b72930ebf68",
+      "classification": "no_usable_incumbent",
+      "native_status": "timelimit",
+      "solution_count": 0,
+      "has_usable_incumbent": false,
+      "quality_target_met": false,
+      "operational_receipts_closed": true,
+      "original_validation_status": "rejected",
+      "objective": null,
+      "bound": -1779457702122698.2,
+      "economic_cost": null,
+      "penalized_total": null,
+      "common_gap": null,
+      "native_gap": null,
+      "timings": {
+        "artifact_export_seconds": 0.24919994361698627,
+        "data_read_seconds": 7.59027898311615e-7,
+        "end_to_end_seconds": 14939.748946234584,
+        "independent_validation_seconds": 1.3038459597155452,
+        "model_build_seconds": 249.8276324570179,
+        "optimization_seconds": 14410.764895354398,
+        "solve_sequence_wall_seconds": 14916.714241640642,
+        "solver_reported_runtime_seconds": 14410.764462
+      },
+      "backend": {
+        "lp_solver": "SoPlex8.0.2",
+        "pyscipopt": "6.2.1",
+        "scip": "10.0.2"
+      },
+      "resource_observations": {
+        "largest_resource_sample_interval_seconds": 14414.805638481863,
+        "qualification": "Sparse observations with a near-full-solve sampling gap. Inspection elapsed time is not demonstrated overhead or CPU cost; no causal observer slowdown or continuous utilization inference.",
+        "recorded_inspection_seconds_sum": 14680.98773016315,
+        "reported_sampler_work_seconds": 14681.029814624228,
+        "resource_samples": 20,
+        "sampled_application_peak_bytes": 91169603584,
+        "slurm_step_max_rss_bytes": 95451942912
+      }
+    }
+  ],
   "scip": {
     "preparation_authorized": true,
     "quality_target": 0.01,
@@ -11,12 +55,28 @@
     "reservation_seconds": 28800,
     "allocated_logical_cpus": 24,
     "memory_mib": 196608,
-    "threads_ceiling": 4
+    "threads_ceiling": 4,
+    "original_observation_closed": true
   },
   "highs": {
     "conditional_future_option": true,
     "implemented": false,
     "execution_admitted": false
   },
-  "qualification": "Accept success and negative outcomes equally; no general open-source inability conclusion."
+  "qualification": "Accept success and negative outcomes equally; no general open-source inability conclusion.",
+  "longer_scip": {
+    "requested": true,
+    "preparation_status": "planned_separate_operational_PR",
+    "native_seconds": 28800,
+    "reservation_seconds": 43200,
+    "execution_admitted": false,
+    "predecessor_archive_sha256": "41557726ecd93ab67a5764077ea18a35e08db4d6f97123a03ebd6b72930ebf68"
+  },
+  "multisolver": {
+    "requested": true,
+    "design": "docs/mvp2_multisolver_plan.md",
+    "pyomo_implemented": false,
+    "highs_qualified": false,
+    "cbc_qualified": false
+  }
 }

@@ -46,7 +46,11 @@ def test_coauthor_research_questions_do_not_imply_unexecuted_comparisons():
     assert "DET uses the original deterministic arrays" in text
     assert "No new solver implementation," in text
     status = json.loads((MODULE.MANUSCRIPT / "open_source_comparison_status.json").read_text())
-    assert status["observations"] == [] and not status["highs"]["execution_admitted"]
+    assert len(status["observations"]) == 1 and not status["highs"]["execution_admitted"]
+    observation = status["observations"][0]
+    assert observation["job_id"] == "2225638"
+    assert observation["solution_count"] == 0 and observation["objective"] is None
+    assert observation["classification"] == "no_usable_incumbent"
     assert "bulk-handling" in (MODULE.MANUSCRIPT / "formulation.qmd").read_text()
 
 
@@ -98,8 +102,9 @@ def test_reader_facing_editorial_structure_and_attribution():
         "# Final considerations, limitations and future work", 1)
     assert "@essien2018" in discussion and "@mardaneh2021" in discussion
     assert "All six SCIP attempts terminated without an incumbent" not in discussion
-    assert "newly authorized scalar SCIP STO h215 W" in final
-    assert "has no result at this cutoff" in final
+    assert "separate scalar SCIP STO h215 W" in final
+    assert "eight-hour native SCIP observation" in final
+    assert "no new measured outcome" in final
     assert "One failure cannot establish a general limitation" in final
     assert "# Conclusions" not in text and "# Future work:" not in text
     assert "Repository deposition of the licensed input data" not in text

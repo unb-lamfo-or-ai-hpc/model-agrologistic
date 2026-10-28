@@ -45,6 +45,7 @@ jobs:
           tests/test_scalar_h500_resources.py
           tests/test_scalar_scip_h215.py
           tests/test_scalar_scip_h215_native.py
+          tests/test_scalar_scip_external_review.py
           tests/test_scalar_h500_external_review.py
           tests/test_scalar_h300_external_review.py
           tests/test_scalar_h500_native.py
