@@ -271,4 +271,5 @@ def test_real_unbounded_control_never_publishes_a_finite_optimum(solver):
     assert result.status in {"unbounded", "error"}
     assert not result.has_solution and result.objective_value is None
     assert result.flows == [] and result.cost_breakdown == {}
+    assert result.metadata["objective_bound"] is None
     assert result.metadata["native_model_lifecycle"][0]["status"] == "disposed"

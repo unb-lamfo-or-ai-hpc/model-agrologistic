@@ -381,8 +381,9 @@ def solve_model_pyomo(data, model_config, solver_config):
             native_runtime = finite(solved.solver.time)
             versions = {"pyomo": version("pyomo"), "cbc": ".".join(map(str, adapter.version()))}
         status = normalized_status(termination, usable)
+        raw_bound = bound
         if status in {"infeasible", "unbounded", "error"}:
-            usable, objective, native_gap = False, None, None
+            usable, objective, bound, native_gap = False, None, None, None
         metadata = {
             "formulation": "two_stage_extensive_form",
             "objective_policy": built.cfg.objective_policy,
@@ -391,6 +392,7 @@ def solve_model_pyomo(data, model_config, solver_config):
             "pyomo_reformulation": built.proof,
             "pyomo_solver_interface": selected, "solver_versions": versions,
             "solver_termination": termination, "objective_bound": bound,
+            "raw_solver_bound_unqualified": raw_bound if bound is None else None,
             "pyomo_native_gap": native_gap,
             "requested_threads": solver_config.threads,
             "matrix": {"variables": built.variable_count, "constraints": len(model.rows)},
