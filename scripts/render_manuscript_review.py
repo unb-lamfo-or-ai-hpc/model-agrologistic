@@ -10,6 +10,7 @@ import json
 import re
 import subprocess
 import tempfile
+import zipfile
 from pathlib import Path
 
 from pypdf import PdfReader
@@ -40,6 +41,18 @@ def build(output: Path) -> None:
     ).strip()
     pages = []
     report = {"source_commit": source_sha, "documents": {}}
+    with zipfile.ZipFile(rendered / "coauthor-latex.zip") as archive:
+        hashes = json.loads(archive.read("SHA256SUMS.json"))
+        for name, digest in hashes.items():
+            if hashlib.sha256(archive.read(name)).hexdigest() != digest:
+                raise ValueError(f"Editable bundle checksum differs: {name}")
+        for name, path in (("main.pdf", documents["Article"]),
+                           ("supplement.pdf", documents["Appendices"])):
+            if archive.read(name) != path.read_bytes():
+                raise ValueError("Editable and standalone PDF bytes differ")
+        if "input_reproduction_guide.json" not in hashes:
+            raise ValueError("Reader input guide is absent from the editable bundle")
+        report["editable_bundle"] = {"verified_member_count": len(hashes)}
     with tempfile.TemporaryDirectory(prefix="agrologistic-pdf-review-") as work:
         for label, path in documents.items():
             reader = PdfReader(path)
@@ -82,6 +95,14 @@ def build(output: Path) -> None:
                     "label": f"{label} — page {number}",
                     "image": "data:image/png;base64," + base64.b64encode(png).decode("ascii"),
                 })
+    downloads = {
+        label: {
+            "filename": f"model-agrologistic-{label.lower()}-{source_sha[:8]}.pdf",
+            "data": base64.b64encode(path.read_bytes()).decode("ascii"),
+        }
+        for label, path in documents.items()
+    }
+    download_data = json.dumps(downloads, ensure_ascii=True)
     data = json.dumps(pages, ensure_ascii=True)
     options = "".join(
         f'<option value="{i}">{html.escape(page["label"])}</option>'
@@ -93,15 +114,23 @@ def build(output: Path) -> None:
         '<style>body{margin:0;background:#ddd;color:#111;font:16px sans-serif}'
         'header{padding:12px;background:white;position:sticky;top:0;z-index:1}'
         'select,button{font:inherit;margin:4px;padding:5px}'
+        '#downloads a{display:inline-block;margin:4px 12px;color:#0645ad}'
         '#page{display:block;margin:12px auto;max-width:100%;width:1100px}'
         'small{display:block;overflow-wrap:anywhere}</style><header>'
         '<b>Model Agrologistic: PDF visual review</b>'
         f'<small>Source commit: {html.escape(source_sha)}. '
         'Page images only; standalone PDFs remain the document outputs.</small>'
+        '<div id="downloads"></div>'
         f'<label>Page <select id="choice">{options}</select></label>'
         '<button id="previous">Previous</button><button id="next">Next</button>'
         '</header><img id="page" alt="PDF page"><script>'
-        f'const pages={data};'
+        f'const pages={data};const originals={download_data};'
+        'for(const [label,pdf] of Object.entries(originals)){'
+        'const bytes=Uint8Array.from(atob(pdf.data),c=>c.charCodeAt(0));'
+        'const a=document.createElement("a");'
+        'a.href=URL.createObjectURL(new Blob([bytes],{type:"application/pdf"}));'
+        'a.download=pdf.filename;a.textContent=label+" PDF";'
+        'document.getElementById("downloads").appendChild(a);}'
         'const choice=document.getElementById("choice");'
         'function show(){const p=pages[Number(choice.value)];'
         'document.getElementById("page").src=p.image;'
