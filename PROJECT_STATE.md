@@ -1,3 +1,26 @@
+## Running solver checkpoint and literature review — 28 October 2026
+
+PR137 merged at fbbcee3d. The researcher supplies HiGHS job 2226536/source
+009119a0/plan a369659f, driver exit0, 601 source files and 44 login controls
+passed in13.82s. Its new startup-v2 claim is consumed. Latest human sacct:
+SCIP2226388 RUNNING02:01:41 (numeric02:01:21); HiGHS2226536 RUNNING00:02:21
+(numeric00:02:18),24allocated/16numeric logical CPUs each. No terminal result,
+worker-startup receipt or native phase is supplied. Do not repeat start.
+Original HiGHS2226407/claim/archive2816e35c remains preserved as startup failure.
+See docs/evidence/parallel_solvers_20261028_running_v2.json.
+
+The researcher requests bibliographic/documentary revision based on the supplied
+chat01.04 opinion HAI-LIT-AGRO-2026-01. It reviewed baseline c092fa7b, not the
+later merged PR136/137 content. Treat it as a qualified editorial input, not
+evidence that all38records/full texts or current journal requirements were
+independently verified. Reconcile gap/contributions, original-source support,
+highlights and current manuscript without changing approved title/RQ/SO1–SO4,
+mathematics, parameters, source/certificates or original Appendix A.
+Keep Human–AI complementary as the coauthors requested. One retained historical
+highlight still says eight accepted observations; correct against current eleven.
+No agent HPC access, new run, automatic retry, final publication or submission.
+Own exact-head qualification/Ready and explicit merge approval remain required.
+
 ## HiGHS startup repair preparation — 28 October 2026
 
 PR136 merged at 79bfdb18aa318470625ec5aa1c4a81f7c3af684e. The researcher now
