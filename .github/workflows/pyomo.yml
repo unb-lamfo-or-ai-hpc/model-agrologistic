@@ -1,0 +1,49 @@
+name: Pyomo multisolver qualification
+on:
+  pull_request:
+    branches: [develop, main]
+permissions:
+  contents: read
+jobs:
+  pyomo-multisolver:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      PYTHONNOUSERSITE: '1'
+      PYTHONDONTWRITEBYTECODE: '1'
+      AGRO_REQUIRE_PYOMO_SOLVERS: '1'
+      AGRO_REQUIRE_NATIVE_SOLVERS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - name: Preserve original historical bytes without line-ending normalization
+        run: |
+          printf '%s\n' '/manuscript/comparison_provenance.json -text' '/manuscript/figures/runtime_memory_comparison.pdf -text' >> .git/info/attributes
+          git diff --exit-code
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install only cloud qualification dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes coinor-cbc
+          python -m pip install -e '.[dev,scip,multisolver]' 'pyscipopt==6.2.1'
+          python -c 'import importlib.metadata as m; print({k:m.version(k) for k in ("pyomo","highspy","pyscipopt")})'
+          cbc -stop
+      - name: Real public analytical and parity qualification, no HPC
+        run: >-
+          python -B -m pytest -p no:cacheprovider -q
+          tests/test_pyomo_multisolver.py tests/test_optimization_facade.py
+          --junitxml=/tmp/pyomo-results.xml
+      - name: Reject missing or skipped solver controls
+        run: |
+          python -B -c 'import xml.etree.ElementTree as e; s=list(e.parse("/tmp/pyomo-results.xml").getroot().iter("testsuite")); assert s and all(int(x.get(k,0))==0 for x in s for k in ("errors","failures","skipped"))'
+          git diff --exit-code
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pyomo-multisolver-results
+          path: /tmp/pyomo-results.xml
+          if-no-files-found: error

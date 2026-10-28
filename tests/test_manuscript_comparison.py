@@ -44,7 +44,7 @@ def test_coauthor_research_questions_do_not_imply_unexecuted_comparisons():
     assert "global\nnative TimeLimit of 14,400 seconds" in text
     assert "nine Cartesian scenarios of probability 1/9" in text
     assert "DET uses the original deterministic arrays" in text
-    assert "No new solver implementation," in text
+    assert "No new large-input solver result," in text
     status = json.loads((MODULE.MANUSCRIPT / "open_source_comparison_status.json").read_text())
     assert len(status["observations"]) == 1 and not status["highs"]["execution_admitted"]
     observation = status["observations"][0]

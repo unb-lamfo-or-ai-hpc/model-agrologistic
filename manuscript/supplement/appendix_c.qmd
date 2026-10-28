@@ -198,3 +198,22 @@ Python h215/h300/h400 records remain the empirical evidence; they do not validat
 GAMS by proxy. Full translation runs would require input review, appropriate
 licenses, resources, explicit scientific authorization and their own immutable
 certificates. Publication or production deployment is not implied.
+
+## Solver-neutral implementation scope
+
+The additional Pyomo DET/STO implementation uses the common data, scalar
+objective, output contract and independent validator with HiGHS/APPSI and CBC.
+Public miniature qualification covers analytical costs, probabilities,
+investment once, each slack's units, export/reload and negative/lifecycle paths.
+It is not a private h215 observation, a GAMS parity result or large-scale
+resource qualification.
+
+Candidate emergency indicators use bounded_scalar_slacks_v1 with an explicit
+equivalence scope: physical/investment projection and optimal scalar value,
+not every redundant unbounded slack assignment. Summed material conservation
+bounds stock by initial stock plus cumulative supply. Hard shipping-capacity
+maxima bound incoming DD throughput even with circulation; per-period supply
+alone is insufficient. With nonnegative slack coefficients, oversized redundant
+slack can be reduced without worsening cost. Derived bounds preserve an optimal
+representative and every returned bounded solution satisfies the original
+indicator. The native Gurobi/SCIP paths and original certificates are unchanged.
