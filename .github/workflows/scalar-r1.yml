@@ -50,13 +50,13 @@ jobs:
           tests/test_scalar_h500_resources.py
           tests/test_scalar_scip_h215.py
           tests/test_scalar_scip_h215_native.py
-          tests/test_pyomo_multisolver.py
           tests/test_scalar_scip_external_review.py
           tests/test_scalar_h500_external_review.py
           tests/test_scalar_h300_external_review.py
           tests/test_scalar_h500_native.py
           tests/test_scalar_h400_portable_paths.py
           tests/test_warehouse_receipt.py
+          tests/test_pyomo_multisolver.py
           --junitxml=/tmp/h500-resume.xml
       - name: Full retained native regression on exact PR head, no HPC
         run: >-

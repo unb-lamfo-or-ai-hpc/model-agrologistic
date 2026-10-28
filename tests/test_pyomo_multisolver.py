@@ -14,7 +14,10 @@ from src.logic.optimization import solve_model
 from src.logic.optimization_pyomo import build_model, normalized_status, settings
 from src.logic.pyomo_bounds import POLICY, candidate_slack_bounds
 from tests.test_scalar_contract import (
-    assert_validation, economic_data, qualified_solver, scenario_data,
+    assert_validation,
+    economic_data,
+    qualified_solver,
+    scenario_data,
 )
 
 
@@ -179,3 +182,80 @@ def test_guard_precedes_model_allocation_and_solver_launch(solver):
     available(solver)
     with pytest.raises(ValueError, match="guard exceeded"):
         build_model(economic_data(), ModelConfig(), max_variables=1)
+
+
+@pytest.mark.parametrize("solver", ["highs", "cbc"])
+@pytest.mark.parametrize("mode", ["det", "sto"])
+def test_excel_export_original_validation_and_immutable_completion(tmp_path, solver, mode):
+    from src.logic.excel_loader import ExcelLoaderConfig
+    from src.logic.experiment_runner import ExperimentSpec, run_experiment
+    from src.logic.run_integrity import verify_completion
+    from tests.test_excel_loader import build_tiny_golden_excel
+
+    workbook = tmp_path / "public.xlsx"
+    build_tiny_golden_excel(workbook)
+    spec = ExperimentSpec(
+        "public", workbook, loader=ExcelLoaderConfig(include_stochastic_scenarios=True),
+        model=ModelConfig(mode=mode), solver=config(solver),
+    )
+    summary = run_experiment(spec, tmp_path / "results", progress=lambda *_: None)
+    run = tmp_path / "results/public"
+    result = json.loads((run / "result.json").read_bytes())
+    assert summary.independent_validation_status == "accepted"
+    assert verify_completion(run, result["result"]["metadata"]["run_identity"])[0]
+    receipt = (run / "run_completion.json").read_bytes()
+    with pytest.raises(FileExistsError):
+        run_experiment(spec, tmp_path / "results", progress=lambda *_: None)
+    assert (run / "run_completion.json").read_bytes() == receipt
+
+
+@pytest.mark.parametrize("solver", ["highs", "cbc"])
+def test_active_candidate_slacks_have_unchanged_stock_and_period_units(solver):
+    data = economic_data()
+    data.existing_warehouses = []
+    data.candidate_warehouses = ["W"]
+    data.static_capacity = {"W": 0}
+    data.reception_capacity = {"W": 0}
+    data.shipping_capacity = {"W": 0}
+    data.max_candidate_capacity = {"W": 2}
+    data.opening_fixed_cost = {"W": 17}
+    data.demand_dom["C", "P", "t"] = 0
+    cfg = ModelConfig(
+        candidate_capacity_mode="fixed", capacity_coupling_policy="daily_factors",
+        candidate_reception_daily_factor=0.1, candidate_shipping_daily_factor=1,
+    )
+    result = solve_model(data, cfg, config(solver))
+    assert result.objective_value == pytest.approx(28127)
+    assert_validation(data, cfg, result)
+    slacks = {r["capacity_type"]: r["value"] for r in result.emergency_capacity}
+    assert slacks == pytest.approx({"static": 8, "reception": 4})
+
+
+def test_native_handle_and_model_are_cleared_when_adapter_raises(monkeypatch):
+    from types import SimpleNamespace
+
+    available("highs")
+    import pyomo.contrib.appsi.solvers as solvers
+
+    calls = []
+    class Fake:
+        def __init__(self):
+            self.config = SimpleNamespace()
+            self.highs_options = {}
+            self._solver_model = SimpleNamespace(clear=lambda: calls.append("native_clear"))
+            self._last_results_object = None
+
+        def available(self):
+            return True
+
+        def set_instance(self, model):
+            self.model = model
+            calls.append(model)
+
+        def solve(self, model):
+            raise RuntimeError("public native failure")
+    monkeypatch.setattr(solvers, "Highs", Fake)
+    with pytest.raises(RuntimeError, match="public native failure"):
+        solve_model(economic_data(), ModelConfig(), config("highs"))
+    assert "native_clear" in calls
+    assert len(list(calls[0].component_objects())) == 0

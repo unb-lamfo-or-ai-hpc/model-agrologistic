@@ -12,16 +12,22 @@ from types import SimpleNamespace
 
 from src.logic.mathematical_contract import extensive_form_inputs, prepare_model_data
 from src.logic.optimization import (
-    OptimizationBackendNotImplementedError, OptimizationResult,
-    project_deterministic_result, scalar_mip_gap,
+    OptimizationBackendNotImplementedError,
+    OptimizationResult,
+    project_deterministic_result,
+    scalar_mip_gap,
 )
 from src.logic.optimization_gurobipy import (
-    VALUE_TOL, _effective_reception_capacity_expr,
-    _effective_shipping_capacity_expr, _effective_static_capacity_expr,
+    VALUE_TOL,
+    _effective_reception_capacity_expr,
+    _effective_shipping_capacity_expr,
+    _effective_static_capacity_expr,
 )
 from src.logic.optimization_gurobipy_stochastic import (
-    _add_first_stage_constraints, _build_investment_costs,
-    _build_scenario_costs, _extract_warehouse_decisions,
+    _add_first_stage_constraints,
+    _build_investment_costs,
+    _build_scenario_costs,
+    _extract_warehouse_decisions,
 )
 from src.logic.pyomo_bounds import POLICY, candidate_slack_bounds
 from src.logic.route_filtering import select_routes
@@ -235,15 +241,16 @@ def build_model(data, cfg, *, max_variables=200000):
                             emergency[kind][s, w, t]
                             <= bounds[kind][s, w, t] * first["open_candidate"][w]
                         )
+    # Pyomo keys() is an iterator: reuse every index for each scenario/cost component.
     scenario_costs = _build_scenario_costs(
         gp=pyo,
         data=data,
         model_config=cfg,
         scenarios=data.scenarios,
-        **{f"{kind.lower()}_keys": mapping.keys() for kind, mapping in flows.items()},
-        inventory_keys=inventory.keys(),
-        unmet_keys=unmet.keys(),
-        emergency_keys=emergency["static"].keys(),
+        **{f"{kind.lower()}_keys": tuple(mapping.keys()) for kind, mapping in flows.items()},
+        inventory_keys=tuple(inventory.keys()),
+        unmet_keys=tuple(unmet.keys()),
+        emergency_keys=tuple(emergency["static"].keys()),
         **{f"flow_{kind.lower()}": mapping for kind, mapping in flows.items()},
         inventory=inventory,
         unmet_demand=unmet,
