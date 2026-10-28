@@ -100,6 +100,21 @@ bulk-handling conversion uses a factor of 1.0 and does not create static storage
 These distinctions prevent annual throughput or handling rates from being
 mistaken for storage capacity.
 
+A concrete pair of gold-workbook records illustrates the distinction.
+Existing facility CDA 35.0287.0002-6 stores source values 890 for static capacity,
+5 for reception and 6 for shipping. Under the executed daily-handling
+interpretation, these mean 890 t of stock, 5 t/day received and 6 t/day shipped.
+With 30 operating days, the period reception and shipping limits are 150 t and
+180 t, before any eligible investment effects. The sheet's abbreviated
+capacity-column labels must not replace the declared unit interpretation.
+
+Canonical candidate CDA 79.G590.0003-9 instead has source base capacities
+0/0/0 and a maximum static capacity of 307079 t. That maximum is an investment
+upper bound, not stock already available and not the capacity chosen by the
+optimizer. These are actual source records, independently reread by the cloud
+gold-workbook audit; the period conversions above are arithmetic examples,
+not observed movements or new optimization results.
+
 The [Excel reader](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/src/logic/excel_loader.py)
 implements the sheet/column requirements and transformations described here.
 The loader normalizes identifiers and periods and aggregates additive supply
