@@ -138,8 +138,10 @@ The original 3600-second build watchdog is separately retained.
 
 A real public tiny HiGHS worker/controller/export/original-validator/collector
 and portable replay test uses controlled Slurm transport and input seams.
-Its synthetic bootstrap metadata is distinct from the real isolated subprocess
-controls; it is not evidence of a private population run. Retained native,
+A further real -I -S child exercises the complete bootstrap-to-actual-worker
+interface, native HiGHS, the fresh public gate, exported products and original
+validator with public input/provenance/transport seams. Neither control is a
+private population run. Retained native,
 multisolver and lifecycle regression must pass on the exact final PR head
 with required zero-skip native gates, Ruff and distribution builds.
 

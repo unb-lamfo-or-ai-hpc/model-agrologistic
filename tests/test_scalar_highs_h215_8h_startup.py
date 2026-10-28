@@ -467,8 +467,9 @@ def startup_files(claim):
 @pytest.mark.parametrize("fail", [False, True])
 def test_cold_bootstrap_publishes_before_import_and_retains_failed_stage(tmp_path, fail):
     claim, control, root, job, argv, env = cold_fixture(tmp_path, fail=fail)
-    with subprocess.Popen(argv, cwd=control, env=env, stdout=subprocess.PIPE,
-                          stderr=subprocess.PIPE) as child:
+    child = subprocess.Popen(argv, cwd=control, env=env, stdout=subprocess.PIPE,
+                             stderr=subprocess.PIPE)
+    try:
         until(control / "bootstrap.json", child)
         assert not (control / "application-imported").exists()
         entry = json.loads((control / "entry.json").read_bytes())
@@ -482,6 +483,10 @@ def test_cold_bootstrap_publishes_before_import_and_retains_failed_stage(tmp_pat
         (control / "allow-import").write_text("continue")
         _, error = child.communicate(timeout=15)
         assert child.returncode == int(fail), error.decode()
+    finally:
+        if child.poll() is None:
+            child.kill()
+            child.wait(timeout=10)
     result = b.review(startup_files(claim), job)
     assert result["status"] == ("failed" if fail else "complete")
     if fail:
@@ -572,3 +577,16 @@ def test_minimal_invocation_and_consumed_predecessor_are_not_a_new_solver_policy
     assert m.PROFILE["build_input_seconds_per_arm"] == prior.PROFILE["build_input_seconds_per_arm"]
     assert m.PYOMO_PATHS == prior.PYOMO_PATHS
     assert m.INPUT_KEYS == (*prior.INPUT_KEYS, "failed_highs_archive")
+
+
+
+def test_original_launchers_and_supervisor_keep_their_exact_git_bytes():
+    expected = {
+        "scripts/mvp2_scalar_highs_h215_8h.py": "918d0efc6b9f9eecfb2df47e7e4c1d251ab19502",
+        "scripts/mvp2_scalar_r3a_operational.py": "01689bd30aa12ed06263391f33511ea8b204d35f",
+        "scripts/npad_scalar_highs_h215_w_native8h.sh": "3110f5768dc2e3c5a5d238a166f6b7276b921957",
+    }
+    for name, digest in expected.items():
+        raw = (m.ROOT / name).read_bytes()
+        header = ("blob " + str(len(raw)) + "\0").encode()
+        assert hashlib.sha1(header + raw).hexdigest() == digest

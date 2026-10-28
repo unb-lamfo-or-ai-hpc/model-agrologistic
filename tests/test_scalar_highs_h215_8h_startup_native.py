@@ -210,3 +210,129 @@ def test_real_worker_controller_original_validation_collection_and_replay(tmp_pa
     assert m.audit(claim / m.ARCHIVE, report["sha256"])["status"] == report["status"]
     monkeypatch.chdir(tmp_path)
     highspy.Highs.resetGlobalScheduler(True)
+
+
+
+def test_real_isolated_bootstrap_reaches_public_highs_worker(tmp_path):
+    """Actual -I -S process and solver; only public input/provenance/transport seams."""
+    native_required()
+    import hashlib
+    import json
+    from scripts import highs_worker_bootstrap as b
+    from tests.test_scalar_highs_h215_8h_startup import cold_fixture, until
+
+    claim, control, root, _, argv, env = cold_fixture(tmp_path)
+    workbook = claim / "public.xlsx"
+    build_tiny_golden_excel(workbook)
+    selected = replace(
+        tiny_spec(workbook, "sto"), name=m.CASE, max_estimated_variables=10000,
+        loader=replace(
+            tiny_spec(workbook, "sto").loader,
+            scenario_generation_mode="cartesian", penalty_policy="fixed",
+            default_unmet_demand_penalty=90000, default_emergency_static_penalty=45000,
+            default_emergency_reception_penalty=45000,
+        ),
+        solver=replace(
+            tiny_spec(workbook, "sto").solver, backend="pyomo", solver_name="highs",
+            time_limit=28800, threads=4, mip_gap=0.01, seed=42,
+            collect_resource_diagnostics=False, log_file="highs-native.log",
+            solver_options={"indicator_reformulation": m.POLICY, "pyomo_max_variables": 16000000},
+        ),
+    )
+    selection = tiny_selection()
+    shape = {"warehouses": 2, "periods": 2, "sto_scenarios": 9}
+    _, receipt = m.r.preflight(selected, shape, selection)
+    for name, value in (
+        ("historical_w.json", {"receipts": {"sto": receipt}}),
+        ("warehouse_selection.json", selection),
+    ):
+        (claim / name).write_bytes(b.encoded(value))
+    # The small public adapter loads the actual worker source, then supplies
+    # deterministic fixture inputs. It cannot invoke any scheduler or private case.
+    adapter = r"""
+import importlib.util
+import json
+import sys
+from dataclasses import replace
+from pathlib import Path
+
+def worker(claim, sha, mode, *, entry, startup):
+    repo = Path(REPO_VALUE)
+    sys.path.insert(0, str(repo))
+    import scripts
+    scripts.__path__.append(str(repo / "scripts"))
+    location = repo / "scripts/mvp2_scalar_highs_h215_8h_startup.py"
+    spec = importlib.util.spec_from_file_location("public_actual_highs_worker", location)
+    actual = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(actual)
+    from tests.test_scalar_r3a import tiny_spec
+    workbook = claim / "public.xlsx"
+    original = tiny_spec(workbook, "sto")
+    selected = replace(
+        original, name=actual.CASE, max_estimated_variables=10000,
+        loader=replace(original.loader, scenario_generation_mode="cartesian",
+                       penalty_policy="fixed", default_unmet_demand_penalty=90000,
+                       default_emergency_static_penalty=45000,
+                       default_emergency_reception_penalty=45000),
+        solver=replace(original.solver, backend="pyomo", solver_name="highs",
+                       time_limit=28800, threads=4, mip_gap=0.01, seed=42,
+                       collect_resource_diagnostics=False, log_file="highs-native.log",
+                       solver_options={"indicator_reformulation": actual.POLICY,
+                                       "pyomo_max_variables":16000000}),
+    )
+    actual.SHAPE = {"warehouses":2,"periods":2,"sto_scenarios":9}
+    actual.spec = lambda _: selected
+    plan = json.loads((claim/"plan.json").read_bytes())
+    def fixture_load(*_, startup=None):
+        if startup is not None:
+            for name in ("plan_validation","source_verification","runtime_fingerprints",
+                         "input_hashes"):
+                startup.stage(name, lambda: None)
+        return plan
+    actual.load = fixture_load
+    actual.o.verify_tools = lambda _: None
+    actual.os.sched_getaffinity = lambda _: set(range(16))
+    def compare(_selected, _data, receipt, previous):
+        receipt=actual.r.strict_json(actual.r.r2.encoded(receipt))
+        assert receipt["mathematical_contract"] == previous["receipts"]["sto"][
+            "mathematical_contract"]
+        assert receipt["warehouse_selection"] == previous["receipts"]["sto"][
+            "warehouse_selection"]
+    actual.compare_input = compare
+    actual.worker(claim, sha, mode, entry=entry, startup=startup)
+"""
+    adapter = adapter.replace("REPO_VALUE", repr(str(m.ROOT)))
+    (root / b.DRIVER_FILE).write_text(adapter)
+    source = json.loads((claim / "source.json").read_bytes())
+    source["files"][b.DRIVER_FILE] = hashlib.sha256(adapter.encode()).hexdigest()
+    (claim / "source.json").write_bytes(b.encoded(source))
+    plan = json.loads((claim / "plan.json").read_bytes())
+    plan.update(
+        cases=[m.r.spec_payload(selected)], python_sha256=m.r.file_hash(sys.executable),
+        environment={"python": m.platform.python_version()},
+        artifact_sha256={"source.json": m.r.file_hash(claim / "source.json")},
+    )
+    (claim / "plan.json").write_bytes(b.encoded(m.r.strict_json(m.r.r2.encoded(plan))))
+    job = {"job_id": "123", "source_commit": SHA,
+           "plan_sha256": m.r.file_hash(claim / "plan.json")}
+    (claim / "job.json").write_bytes(b.encoded(job))
+    child = subprocess.Popen(argv, cwd=control, env=env, stdout=subprocess.PIPE,
+                             stderr=subprocess.PIPE)
+    try:
+        until(control / "bootstrap.json", child)
+        entry = json.loads((control / "entry.json").read_bytes())
+        b.publish(control / "release.json", entry)
+        out, err = child.communicate(timeout=180)
+        assert child.returncode == 0, (out.decode(), err.decode())
+    finally:
+        if child.poll() is None:
+            child.kill()
+            child.wait(timeout=10)
+    files = {p.relative_to(claim).as_posix(): p.read_bytes()
+             for p in claim.rglob("*") if p.is_file() and not p.is_symlink()}
+    assert b.review(files, job)["status"] == "complete"
+    result = m.case_review(files, m.r.r2.read(claim / "plan.json"))
+    assert result["quality_target_met"] and result["original_validation_status"] == "accepted"
+    assert (control / "qualification.json").exists()
+    assert result["native_status"] == "optimal"
+    assert not result["additional_highs_execution_admitted"]
