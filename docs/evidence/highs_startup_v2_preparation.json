@@ -22,6 +22,6 @@
   "bootstrap_before_site_and_application_imports": true,
   "unbound_entry_deadline_changed": false,
   "automatic_retry_allowed": false,
-  "status": "draft_qualification_and_own_merge_pending",
+  "status": "preparation_requires_exact_head_qualification_and_own_merge",
   "human_cli_required": true
 }

@@ -10,8 +10,8 @@ then runs full timed source/package/input/public checks within the unchanged
 Slurm12h/192GiB/24logical CPUs and four-thread ceiling. New claim/source/plan/
 archive and exact original failed-archive binding; no automatic retry or agent
 HPC access. See [the complete protocol](docs/mvp2_scalar_highs_h215_startup_v2.md).
-Draft PR137 awaits exact-head qualification, Ready, its own merge approval and
-the later human pinned CLI. SCIP's latest supplied state remains a snapshot.
+PR137 requires exact-head qualification (recorded in its checks and description),
+Ready, its own merge approval and the later human pinned CLI. SCIP's latest supplied state remains a snapshot.
 Literature/document/coauthor work continues under the merged PR136 plan.
 
 ## Current human solver checkpoint and editorial revision — 28 October 2026

@@ -218,11 +218,12 @@ def test_real_isolated_bootstrap_reaches_public_highs_worker(tmp_path):
     native_required()
     import hashlib
     import json
+
     from scripts import highs_worker_bootstrap as b
     from tests.test_scalar_highs_h215_8h_startup import cold_fixture, until
 
     claim, control, root, _, argv, env = cold_fixture(tmp_path)
-    workbook = claim / "public.xlsx"
+    workbook = claim.parent / "public.xlsx"
     build_tiny_golden_excel(workbook)
     selected = replace(
         tiny_spec(workbook, "sto"), name=m.CASE, max_estimated_variables=10000,
@@ -266,7 +267,7 @@ def worker(claim, sha, mode, *, entry, startup):
     actual = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(actual)
     from tests.test_scalar_r3a import tiny_spec
-    workbook = claim / "public.xlsx"
+    workbook = claim.parent / "public.xlsx"
     original = tiny_spec(workbook, "sto")
     selected = replace(
         original, name=actual.CASE, max_estimated_variables=10000,
