@@ -90,21 +90,31 @@
   },
   "operational_checkpoint": {
     "date": "2026-10-28",
-    "source": "docs/evidence/parallel_solvers_20261028_checkpoint.json",
+    "source": "docs/evidence/parallel_solvers_20261028_running_v2.json",
     "highs_original_audit": "docs/evidence/highs_h215_2226407_startup_audit.json",
     "longer_scip": {
       "job_id": "2226388",
       "latest_supplied_state": "RUNNING",
+      "root_elapsed_seconds": 7301,
       "terminal_scientific_result": null
     },
-    "highs": {
+    "original_highs": {
       "job_id": "2226407",
-      "latest_supplied_state": "FAILED",
       "retained_status": "highs_forensic_partial_preserved",
       "native_population_solve_evidenced": false,
       "scientific_result": null
     },
-    "interpretation": "Operational attempts are not added to the immutable numerical observations array; historical preparation flags do not describe current job state.",
+    "highs": {
+      "job_id": "2226536",
+      "source_commit": "009119a07eb8c68573cfa105893b9d4a719c5155",
+      "plan_sha256": "a369659f2573866860a18ba444e386e7a2f5a1242ac62583efe8a3a7a5e35e01",
+      "latest_supplied_state": "RUNNING",
+      "root_elapsed_seconds": 141,
+      "numeric_step_elapsed_seconds": 138,
+      "startup_receipts_received": false,
+      "scientific_result": null
+    },
+    "interpretation": "Dated human accounting only; no new accepted numerical observations or inference of active native optimization. Historical preparation flags remain historical scope, not live job states.",
     "additional_execution_admitted": false
   }
 }

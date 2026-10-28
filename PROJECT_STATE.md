@@ -16,8 +16,12 @@ evidence that all38records/full texts or current journal requirements were
 independently verified. Reconcile gap/contributions, original-source support,
 highlights and current manuscript without changing approved title/RQ/SO1–SO4,
 mathematics, parameters, source/certificates or original Appendix A.
-Keep Human–AI complementary as the coauthors requested. One retained historical
-highlight still says eight accepted observations; correct against current eleven.
+Keep Human–AI complementary as the coauthors requested. The highlights now identify eleven accepted observations and distinguish the
+1% criterion from h500's attained 0.2074% gap. The claim/source matrix and
+38-record disposition are in docs/literature_claims_reconciliation_20261028.md
+and docs/literature_disposition_20261028.json. The approved title/RQ/objectives
+and mathematical attribution remain unchanged; full-text gaps and author
+choices are explicit.
 No agent HPC access, new run, automatic retry, final publication or submission.
 Own exact-head qualification/Ready and explicit merge approval remain required.
 

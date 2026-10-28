@@ -6,15 +6,18 @@ development record is not a single invariant specification.
 
 ## Current MVP2 evidence and planning
 
-As of 28 October 2026, the accepted cohort remains eleven scalar Gurobi
-observations. The original scalar SCIP four-hour outcome is negative.
-The latest supplied longer SCIP snapshot is running; the original HiGHS
-startup failure is audited, with no retained population-solve evidence.
-The following current entry points distinguish those outcomes from earlier
-campaign history.
+As of 28 October 2026, eleven accepted Gurobi observations and the original
+negative SCIP four-hour case are retained. The original HiGHS2226407 startup
+failure remains distinct from new HiGHS2226536. It and longer SCIP2226388 were
+RUNNING in the last human snapshot, without terminal numerical results.
+The returned 01.04 opinion is reconciled against current develop; incomplete
+full-text comparisons and coauthor decisions remain explicit.
 
 | Current review document | Use |
 | --- | --- |
+| [Opinion reconciliation and claim/source matrix](literature_claims_reconciliation_20261028.md) | Adopted scope, source-access limits, current Guide and coauthor action sheet |
+| [38-record disposition](literature_disposition_20261028.json) | Retained bibliography versus newly examined sources; Gao candidate separate |
+| [New running-job checkpoint](evidence/parallel_solvers_20261028_running_v2.json) | Same SCIP2226388 and distinct HiGHS2226536; no repeat or terminal inference |
 | [Accelerated editorial and literature sprints](mvp2_editorial_parallel_plan_20261028.md) | Advance coauthor preparation while terminal evidence is reconciled |
 | [Initial literature/exposition reconciliation](editorial_reconciliation_20261028.md) | Six cited CEA precedents, source access limits, coauthored-paper lessons and current journal guidance |
 | [Complete chat 01.04 prompt](chat0104_deep_research_prompt_20261028.md) | Deep gap/contribution/results/template investigation, with all 36 retained records and two review-method references |

@@ -1,32 +1,35 @@
 # Scientific manuscript — integrated scalar revision
 
-## Current coauthor revision — 28 October 2026
+## Current opinion and coauthor revision — 28 October 2026
 
-The accepted cohort remains eleven Gurobi observations: nine W scaling
-observations through h500 and the separate h215 D pair. The original scalar
-SCIP four-hour run is a separate negative numerical observation. The latest
-human snapshot records longer SCIP job 2226388 as running. Original HiGHS
-job 2226407 failed during startup; its audited package contains no worker
-entry or native model/solve products. Neither a HiGHS runtime limit nor an
-infeasibility result can be inferred.
+The accepted cohort remains eleven Gurobi observations: nine W cases through
+h500 and the separate D h215 pair. The original SCIP four-hour run is a negative
+numerical observation. Original HiGHS2226407 is an audited startup failure.
+Longer SCIP2226388 and distinct startup-repaired HiGHS2226536 were RUNNING
+in the latest supplied snapshot; scheduler state does not establish native
+optimization, terminal quality or accepted feasibility.
 
-Appendices B/C/D now explain the supervised research process, model
-implementations and source-to-input transformations in connected scientific
-prose. The Pyomo section states the proof's exact scope: equal physical and
-investment projections and optimal scalar value under checked assumptions,
-rather than identical redundant-slack feasible sets or search behavior.
-GAMS compilation and numerical parity remain unperformed.
+The returned chat 01.04 opinion is reconciled against merged PR136/137.
+The revised introduction/abstract frame observed computational scale and
+agricultural trade-offs against the closest precedents. Highlights now identify
+eleven observations and separate the 1% target from the attained h500 gap.
+The approved title, RQ, SO1–SO4, authors, mathematics and original Appendix A
+remain preserved. Human–AI provenance remains complementary, as requested by
+the coauthors; Appendices B/C/D retain PR136's substantial prose revision.
 
-The [editorial reconciliation](../docs/editorial_reconciliation_20261028.md)
-documents the access levels for the six cited CEA precedents and the supplied
-Porporatto/Fumero/Corsano paper. The
-[complete chat 01.04 prompt](../docs/chat0104_deep_research_prompt_20261028.md)
-retains all 36 bibliography records and two review-method references.
-The [accelerated sprint plan](../docs/mvp2_editorial_parallel_plan_20261028.md)
-advances literature, documentation and article review while terminal experiments
-are reconciled. The gap assessment and all-author decisions remain open.
-No new experiment, Pages deployment, submission or merge is authorized by this
-documentation.
+Read the [claim/source matrix and author actions](../docs/literature_claims_reconciliation_20261028.md),
+[38-record disposition](../docs/literature_disposition_20261028.json),
+[new running-job checkpoint](../docs/evidence/parallel_solvers_20261028_running_v2.json)
+and [parallel completion plan](../docs/mvp2_completion_plan_20261028.md).
+There are 36 retained main bibliography entries, 33 main-text citations and two
+review-method records; the whole inventory has not been reread in full.
+Rosa/SiloDSS overlap and target-journal fit require further author decisions.
+
+Pyomo's proof covers equal physical/investment projections and optimal scalar
+value under checked assumptions, rather than identical redundant-slack sets,
+LP relaxations or search. GAMS compilation and numerical parity remain
+unperformed. This is a working revision, not a new experiment, Pages deployment,
+journal submission or final author approval.
 
 ## Earlier dated checkpoints
 

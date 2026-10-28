@@ -1,3 +1,21 @@
+## Current opinion reconciliation and running-job checkpoint — 28 October 2026
+
+PR137 merged with authorization at fbbcee3d. The supplied CLI records the distinct
+startup-repaired HiGHS job **2226536**, source009119a0/plan a369659f, in its own
+consumed v2 claim. The last supplied accounting shows SCIP2226388 RUNNING
+02:01:41 and HiGHS2226536 RUNNING00:02:21 (numeric step00:02:18).
+These are dated human observations, not a live query or a native-solve result.
+Preserve original HiGHS2226407/archive2816e35c and every original package.
+Never repeat either start. See the
+[new checkpoint](evidence/parallel_solvers_20261028_running_v2.json).
+
+The [opinion reconciliation and claim/source matrix](literature_claims_reconciliation_20261028.md)
+adopts a bounded empirical contribution, agricultural trade-off interpretation
+and complementary Human–AI account. The [38-record disposition ledger](literature_disposition_20261028.json)
+distinguishes focused primary-source reading from retained, unreassessed records.
+All-author decisions, complete Rosa/SiloDSS overlap comparison and final terminal
+audits remain open; the accepted Gurobi inventory stays eleven.
+
 ## Current HiGHS startup-repair preparation — 28 October 2026
 
 The researcher requests a distinct one-shot repair after the preserved original

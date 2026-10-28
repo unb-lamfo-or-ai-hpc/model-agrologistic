@@ -1,3 +1,8 @@
+> Follow-up: the returned 01.04 opinion and current develop are reconciled in
+> [the claim/source matrix and author action sheet](literature_claims_reconciliation_20261028.md).
+> This document preserves PR136's earlier reading baseline and exposition work;
+> it is not the current pending-job list or a full 38-record review.
+
 # Literature and exposition reconciliation — 28 October 2026
 
 ## What was preserved and what was examined
