@@ -24,6 +24,9 @@ def native_required():
 
 def test_real_native_build_and_fresh_scalar_gate(tmp_path):
     native_required()
+    fingerprint = m.environment()
+    assert fingerprint == m.environment()
+    assert set(fingerprint["package_sha256"]) == {"pyomo", "highspy"}
     build = m.inspect_native()
     assert build["highs"] == "1.15.1" and build["pyomo"] == "6.10.1"
     assert not build["population_optimized"]
