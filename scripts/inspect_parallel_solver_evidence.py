@@ -203,8 +203,8 @@ def inspect(base, specification):
         if "/qualification-cases/" in key or not key.endswith("/result.json"):
             continue
         document = strict_json(raw)
-        native = document.get("result", {})
-        metadata = native.get("metadata", {})
+        native = document.get("result") or {}
+        metadata = native.get("metadata") or {}
         numerical[key] = {
             field: native.get(field) for field in (
                 "status", "objective_value", "objective_bound", "solver_backend", "solver_name"

@@ -103,3 +103,15 @@ an approved temporary directory, not a Git clone or environment, and runs source
 checks with the existing Python. Optional -Render uses existing Quarto/TeX only,
 with automatic LaTeX installation disabled by the project configuration. Nothing
 is uploaded. Local execution and visual verification are still pending.
+
+## Existing cloud artifact cleanup
+
+scripts/preserve_pr138_artifacts_local.ps1 downloads only the two known PR138
+PDF artifacts to the approved local temporary directory and checks their fixed
+SHA256 values. It reuses a saved Git HTTPS credential without opening login,
+printing a token or storing credentials. If none is available it stops.
+No gh installation is required. Its optional -DeleteVerifiedArtifacts switch
+removes only document artifacts from Manuscript draft runs bound to PR138's
+commit list, after local copies are verified. It does not target HPC archives,
+Git source blobs, releases, Pages or other PRs. Local execution is pending.
+GitHub API deletion cannot independently attest physical provider/cache erasure.
