@@ -1,0 +1,68 @@
+{
+  "schema_version": "pyomo-operational-qualification-pause-v1",
+  "date": "2026-10-29",
+  "timezone": "America/Fortaleza",
+  "status": "paused_at_researcher_request",
+  "pull_request": 141,
+  "qualification_source_commit": "57204e0b076cf9a52dadab35b089520ba98e0d46",
+  "plan_sha256": "ceeb6d1035868200f30c544b0760e781495f9818d44f6b08545bb519a68b3029",
+  "job_id": "2227480",
+  "claim": ".mvp2-pyomo-h215-operational-qualification-v1",
+  "evidence_scope": "Researcher-supplied preparation/submission terminal output; no direct NPAD access or original receipt audit",
+  "reported_preparation": {
+    "status": "prepared_public_controls_only",
+    "private_h215_execution_admitted": false,
+    "qualifier_checksum_check": "SUCESSO",
+    "cbc_archive_checksum_check": "SUCESSO"
+  },
+  "reported_observation": {
+    "result_json": "absent when cat was executed",
+    "scheduler_state": null,
+    "terminal_accounting_supplied": false,
+    "pytest_counts": null,
+    "qualification_outcome": "unknown",
+    "cbc_thread_capability": "unknown",
+    "cbc_h215_cancelled": false
+  },
+  "interpretation": "Missing result.json alone does not distinguish queued/running from a failure before result publication; it is not a numerical solver result.",
+  "required_qualification": {
+    "tests": 282,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "source_and_predecessor_verified_after": true,
+    "explicit_cbc_capability_required": true
+  },
+  "cbc_policy": "If the NPAD binary rejects threads, cancel only the CBC h215 observation; retain Gurobi and SCIP subject to their normal qualification/merge gates.",
+  "gurobi_proposal": {
+    "interface": "Pyomo APPSI/gurobipy",
+    "algorithm_policy": "Keep native automatic/default strategy; no presolve/LP-method/heuristic/cut tuning",
+    "explicit_overrides": {
+      "TimeLimit": 28800,
+      "MIPGap": 0.01,
+      "Threads": 4,
+      "Seed": 42,
+      "FeasibilityTol": 1e-9,
+      "IntFeasTol": 1e-9
+    },
+    "pure_default_configuration": false,
+    "seed_rationale": "Historical continuity and documented native randomness; not a shared initial solution or bitwise reproducibility guarantee"
+  },
+  "pause_boundary": {
+    "new_execution_code_developed": false,
+    "new_commands_requested": false,
+    "merge_authorized": false,
+    "private_h215_execution_admitted": false,
+    "automatic_retry": false,
+    "automatic_follow_up": false,
+    "npad_job_cancelled_by_codex": false,
+    "qualification_job_may_continue_independently": true
+  },
+  "resume_order": [
+    "Inspect existing job2227480 accounting and bounded logs through the researcher; never repeat submission",
+    "Read/verify original result and CBC capability, or diagnose the first actual failure without weakening controls",
+    "Record actual qualification, review defaults/overrides/seed policy and obtain PR141 merge authorization when Ready",
+    "Only then plan pinned manual new h215 W observations for Gurobi/SCIP and CBC if supported",
+    "Audit common matrix/input identity and report gaps/bounds/residuals/timings/resources with limitations; resume documentary/bibliographic review"
+  ]
+}

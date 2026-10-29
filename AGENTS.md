@@ -1,5 +1,20 @@
 # Model Agrologistic: agent working agreement
 
+## Current explicit pause — 29 October 2026
+
+The researcher requests a saved checkpoint/continuation plan and then a pause.
+Read docs/checkpoints/20261029_pause_pr141.md and its JSON. Public qualification
+job2227480/source57204e0b/planceeb6d10 was reported submitted; result.json was
+absent at the supplied read. Scheduler state, test outcome and CBC capability
+are UNKNOWN. Do not repeat submission or infer success/failure/thread support.
+If actual NPAD CBC rejects threads, cancel only its h215 arm; retain Gurobi/SCIP
+subject to normal qualification. PR141 stays DRAFT, no merge authorization.
+Do not develop further execution code, request new CLI, merge, submit/cancel
+jobs or follow up automatically until the researcher explicitly resumes.
+The existing public job may continue independently; no NPAD job is cancelled
+by this conversational pause. Local/remote original packages remain preserved.
+
+
 ## Current operational preparation after PR140 merge — 29 October 2026
 
 PR140 was explicitly authorized and merged at40f33d7cc13d516cd6b130f00398590840131904.

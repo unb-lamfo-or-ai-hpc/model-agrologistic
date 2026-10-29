@@ -1,3 +1,20 @@
+# Paused: PR141 qualification submitted, outcome unknown — 29 October 2026
+
+At the researcher's explicit request, save the checkpoint and pause. Public
+job2227480/source57204e0b/planceeb6d10 was reported submitted successfully;
+result.json did not exist at the supplied read. No scheduler state, test counts,
+terminal outcome or Linux CBC capability is known. This is not solver evidence.
+Keep PR141 DRAFT; preserve the claim and do not repeat the submission. If CBC
+rejects threads on NPAD, cancel only CBC h215 and retain Gurobi/SCIP in the plan.
+No further execution code, CLI handoff, merge or automatic follow-up is requested.
+The existing public job is not cancelled by the pause. Resume only on explicit
+researcher instruction, starting with existing-job accounting/log/result review.
+See [pause and configuration plan](docs/checkpoints/20261029_pause_pr141.md)
+and [structured checkpoint](docs/checkpoints/20261029_pause_pr141.json).
+Gurobi proposal retains default automatic algorithm strategy with explicit
+8h/1%/four-thread/seed42/1e-9 solver-tolerance overrides; it is not pure default.
+No private h215 observation or result has been admitted or reported.
+
 # PR140 merged; operational package preparation — 29 October 2026
 
 Authorized PR140 merged at40f33d7cc13d516cd6b130f00398590840131904. Public adapter
