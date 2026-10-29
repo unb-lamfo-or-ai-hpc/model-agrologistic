@@ -87,3 +87,19 @@ product-completion hashes and accepted residual certificate fields/cost totals,
 and emits bounded redacted controller/native/error log tails for SCIP diagnosis.
 It does not claim a full operational replay or fresh original-unit residual
 calculation. The script itself still requires local syntax/run verification.
+
+### First local inspector run
+
+The researcher ran the pinned01749bd inspector in the existing Windowsvenv313.
+It reached original-source and completion inspection, then raised KeyError for
+an absent completion.artifacts field before writing its report. The inspector
+must preserve partial completion records rather than require success-only
+structure for a forensic partial. The correction keeps missing maps fatal for
+claimed accepted results and records incomplete forensic metadata. It does not
+change the original collector, packages or numerical acceptance contract.
+
+scripts/review_manuscript_local.ps1 prepares an isolated source snapshot below
+an approved temporary directory, not a Git clone or environment, and runs source
+checks with the existing Python. Optional -Render uses existing Quarto/TeX only,
+with automatic LaTeX installation disabled by the project configuration. Nothing
+is uploaded. Local execution and visual verification are still pending.

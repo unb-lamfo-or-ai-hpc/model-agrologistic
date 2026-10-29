@@ -154,10 +154,20 @@ def inspect(base, specification):
             continue
         completion = strict_json(raw)
         prefix = key.rsplit("/", 1)[0] + "/"
-        for artifact, expected in completion["artifacts"].items():
-            require(safe_name(artifact) and hashes.get(prefix + artifact) == expected,
-                    "Product completion artifact differs")
-        completions[key] = len(completion["artifacts"])
+        artifacts = completion.get("artifacts")
+        complete_map = isinstance(artifacts, dict)
+        if complete_map:
+            for artifact, expected in artifacts.items():
+                require(safe_name(artifact) and hashes.get(prefix + artifact) == expected,
+                        "Product completion artifact differs")
+        elif review.get("quality_target_met"):
+            require(False, "Claimed accepted result has no completion artifact map")
+        completions[key] = {
+            "status": completion.get("status"),
+            "artifact_map_present": complete_map,
+            "artifact_hashes_checked": len(artifacts) if complete_map else 0,
+            "record": completion if not complete_map else {"status": completion.get("status")},
+        }
     validations = {}
     physical = {}
     for key, raw in selected.items():
