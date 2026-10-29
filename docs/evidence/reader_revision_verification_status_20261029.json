@@ -1,14 +1,18 @@
 {
   "date": "2026-10-29",
-  "scope": "journal-reader-source-revision",
+  "state": "paused_by_researcher",
+  "scope": "journal-reader revision and original solver certificate inspection",
   "cloud_checks_requested": false,
-  "local_source_checks": "pending researcher CLI",
-  "local_render_and_visual_review": "pending",
+  "local_inspector_self_tests_passed": 5,
+  "local_archive_integrity_inspections_completed": true,
+  "local_source_document_checks": "not completed; Ruff initially absent and subsequently installed",
+  "local_render_and_visual_review": "pending if required",
   "temporary_pdf_upload_authorized": false,
   "final_pdf_delivery": "Quarto and GitHub Pages after separately authorized main merge",
   "mathematics_changed": false,
   "original_scientific_data_changed": false,
   "original_certificates_changed": false,
   "appendix_a_original_bytes_changed": false,
-  "merge_authorized": false
+  "merge_authorized": false,
+  "checkpoint": "docs/checkpoints/20261029_pause_pr139.md"
 }

@@ -1,5 +1,13 @@
 # Model Agrologistic: agent working agreement
 
+## PAUSED by researcher — 29 October 2026
+
+The researcher requested a pause after saving this checkpoint. Keep PR139 draft.
+Read docs/checkpoints/20261029_pause_pr139.md and its JSON before resuming.
+Do not continue work, request CLI execution, merge, publish, install or run jobs
+until a new researcher instruction. No automatic follow-up is scheduled.
+
+
 ## Current journal-reader/local-output mandate — 29 October 2026
 
 PR138 is merged at0351caeb7c10e08405c37793dcf340389f03b1b8. Revise all

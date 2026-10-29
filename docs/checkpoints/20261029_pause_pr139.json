@@ -1,0 +1,107 @@
+{
+  "schema_version": "research-pause-checkpoint-v1",
+  "date": "2026-10-29",
+  "state": "paused_by_researcher",
+  "resume_requires_new_user_instruction": true,
+  "repository": "unb-lamfo-or-ai-hpc/model-agrologistic",
+  "pr_number": 139,
+  "pr_url": "https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/139",
+  "branch": "docs/journal-readers-local-review-20261029",
+  "target": "develop",
+  "draft": true,
+  "merge_authorized": false,
+  "latest_saved_parent_before_pause": "ad2ded8132bf5171be65c0113b3d0026c22b2e7b",
+  "previous_pr138_merge": "0351caeb7c10e08405c37793dcf340389f03b1b8",
+  "scientific_evidence": {
+    "highs": {
+      "job": "2226536",
+      "status": "original_validated_quality_target_met",
+      "common_gap": 0.0000019554119122548442,
+      "native_runtime_seconds": 25601.980820178986,
+      "validation_failed_checks": 0,
+      "inventory_digests_verified": 97,
+      "source_files_matched": 601,
+      "completion_artifacts_verified": 17,
+      "record": "docs/evidence/scalar_highs_h215_2226536_inspection.json"
+    },
+    "scip": {
+      "job": "2226388",
+      "status": "integrity_confirmed_forensic_partial",
+      "controller_issued_TERM": true,
+      "native_terminal_available": false,
+      "original_validation_available": false,
+      "incumbent_count_known": false,
+      "cancellation_trigger_established": false,
+      "inventory_digests_verified": 86,
+      "source_files_matched": 576,
+      "record": "docs/evidence/scalar_scip_h215_2226388_inspection.json"
+    },
+    "gurobi_accepted_observations": 11,
+    "additional_validated_highs_observations": 1,
+    "fresh_private_input_residuals_recomputed": false,
+    "full_operational_replay_performed": false,
+    "large_highs_result_json_parsed": false
+  },
+  "completed": [
+    "PR139 draft created and attached",
+    "Active journal-reader prose revised; obsolete/internal penalty narration removed",
+    "Original equations, numerical Gurobi tables, input bytes, certificates and Appendix A retained",
+    "Local inspector five self-tests and both archive integrity/source inspections passed via researcher CLI",
+    "HiGHS success and censored SCIP original records saved",
+    "Historical PR138 PDFs preserved locally with known hashes; 23 document artifacts deleted",
+    "Final render workflow artifact list independently observed empty",
+    "Ruff0.16.6 installed by researcher in existing venv313; no new clone/environment",
+    "New HiGHS comparison and terminal-status reconciliation saved in this checkpoint commit"
+  ],
+  "pending": [
+    "Add/complete new HiGHS and censored-SCIP editorial drift guards and focused tests",
+    "Run source/document checks on the actual final PR head with existing local venv313",
+    "Review Appendix A and remaining full-text literature/Rosa-SiloDSS overlap without altering the preserved original PDF",
+    "Inspect local working render if needed; final PDFs only after approved main merge",
+    "Complete remaining reader/document revision, then request PR139 own merge approval"
+  ],
+  "local_tools": {
+    "python_environment": "existing venv313",
+    "quarto_available": true,
+    "ruff": "0.16.6",
+    "pytest": "9.1.1",
+    "openpyxl": "3.1.5",
+    "numpy": "2.5.2",
+    "pandas": "2.3.3",
+    "gurobipy": "13.0.3",
+    "PyYAML": "6.0.3",
+    "requests": "2.34.2",
+    "reportlab": null,
+    "pypdf": null,
+    "matplotlib": null
+  },
+  "last_document_check": {
+    "source_commit": "b7a7165e9a5db87572bce6970dcaed14c99c2401",
+    "result": "Stopped before tests because Ruff was absent; Ruff installed afterward; checks not rerun"
+  },
+  "local_receipts": {
+    "parallel_inspection": "parallel-inspection-20261029-095104-327.json",
+    "pdf_preservation": "pr138-preserved-previews-5966c08e/preservation-20261029-093828-390.json",
+    "historical_pdfs": [
+      "pr138-preserved-previews-5966c08e/article-pr138.pdf",
+      "pr138-preserved-previews-5966c08e/appendices-pr138.pdf"
+    ]
+  },
+  "storage_rules": {
+    "temporary_outputs": "approved local .codex or specified Temp Codex directory, or Codex tab",
+    "temporary_upload_to_github": false,
+    "final_pdfs": "Quarto/GitHub Pages after separately authorized main merge",
+    "original_hpc_packages_preserved": true,
+    "provider_physical_blob_erasure_attested": false
+  },
+  "execution_rules": {
+    "native_desktop_apps": false,
+    "github_changes_autonomous": true,
+    "merge_requires_approval": true,
+    "hpc_cli": "researcher only",
+    "powershell_cli": "researcher intervention when necessary",
+    "new_job_or_repeat_authorized": false,
+    "cloud_render_or_upload_during_revision": false,
+    "automation_created": false
+  }
+}

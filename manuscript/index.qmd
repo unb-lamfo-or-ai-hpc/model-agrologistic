@@ -2,30 +2,28 @@
 title: "Computational Scalability of Deterministic and Two-Stage Stochastic MILP Models for Grain-Storage Network Design and Hub Location"
 date: 2026-10-29
 abstract: >-
-  Large extensive-form grain-storage models can be expensive to construct and
-  solve, while solver completion alone does not establish useful planning
-  performance. This study characterizes observed model dimensions, resource
-  requirements and certified solution quality for deterministic and two-stage
-  stochastic mixed-integer linear programs for grain-storage network design.
-  One scalar objective combines investment, expected operating costs and three
-  artificial feasibility penalties. Original source, input and validation records
-  connect computational outcomes to returned agricultural decisions.
-  The accepted warehouse-only cohort contains a deterministic/stochastic pair
-  at 215 warehouses, five stochastic observations at 300 warehouses using
-  1/2/4/8/16 threads, and one stochastic observation each at 400 and 500 warehouses.
-  All nine meet the declared 1% gap criterion and retain accepted original
-  feasibility certificates. The stochastic matrix grows from 25.1 million
-  variables at 300 warehouses to 63.4 million at 500. One thread has the lowest
-  observed runtime and memory in the 300-site block, without establishing causal
-  parallel speedup. At 500 warehouses, the original accepted gap is 0.2074%,
+  Large grain-storage models can be expensive to construct and solve, while solver
+  completion alone does not establish useful planning performance. This study
+  examines model dimensions, resource use and validated solution quality for
+  deterministic and two-stage stochastic mixed-integer linear programs for
+  grain-storage network design. A scalar objective combines investment,
+  expected operating costs and three artificial penalties. Nine Gurobi
+  warehouse-only observations cover a deterministic/stochastic pair at 215
+  facilities, five stochastic thread configurations at 300, and stochastic
+  instances at 400 and 500. All meet a 1% gap criterion. At 500 facilities,
+  the stochastic matrix has 63.4 million variables; the gap is 0.2074%,
   native runtime is 127.58 minutes and sampled application RSS is 111.78 GiB.
-  Artificial penalties account for 94.074% of that objective despite extensive
-  investment and incomplete domestic service. Two separate direct-enabled h215
-  plans have lower penalized costs but worse service. An original scalar SCIP
-  h215 observation reaches its four-hour native limit without an incumbent.
-  These findings support a bounded assessment of attainable scale and require
-  separate agricultural interpretation. A human-supervised AI workflow documents
-  decisions and verification.
+  Artificial penalties contribute 94.074% of the objective despite extensive
+  investment and incomplete domestic service. Two direct-enabled h215
+  observations reduce penalized costs while worsening service. A separate
+  Pyomo/APPSI HiGHS h215 observation passes independent validation with a
+  0.000196% gap in 426.70 minutes. A four-hour native SCIP observation returns
+  no incumbent; an extended attempt is externally interrupted without a
+  terminal numerical result. Formulation, interface and attained-quality
+  differences preclude causal solver-speed comparisons. The findings connect
+  attainable computational scale to the agricultural meaning of the returned
+  plans. A human-supervised AI workflow documents scientific decisions
+  and verification.
 keywords:
   - grain storage
   - facility location
@@ -421,8 +419,8 @@ use a disclosed bounded representative formulation: nonnegative-cost trimming
 preserves the physical/investment projection and optimal scalar value, while
 excluding redundant oversized slack assignments. Bounds follow cumulative stock
 conservation and hard shipping capacity, including transshipment circulation.
-Implementation tests and large-instance performance observations are reported
-separately; neither substitutes for the other.
+Its independently validated h215 HiGHS result is reported separately from
+software tests and the Gurobi scaling sequence.
 
 ## HPC experimental environment
 
@@ -498,8 +496,8 @@ layers await a separate source-bound export.
 The results proceed from problem dimensions and resource requirements to
 solution quality and agricultural interpretation. The warehouse-only sequence
 and the separate h215 topology comparison retain their original scopes.
-The separate SCIP experiment records a time-limited outcome without a usable
-incumbent.
+The open-source comparison distinguishes a validated HiGHS solution, a
+completed time-limited SCIP observation and an interrupted extended attempt.
 
 {{< include scalar_results.qmd >}}
 
@@ -623,8 +621,10 @@ h215 W DET/STO, five h300 W thread observations, h400/h500 W STO, and the
 separate h215 D DET/STO pair. Together, they support empirical
 computational characterization and an applied interpretation of the returned
 plans, including substantial investment and residual permitted shortages.
-These observations do not establish exact optimality, full service, a universal solver
-frontier or a causal thread speedup.
+A separate Pyomo/APPSI HiGHS h215 STO solution also passes independent
+validation and the gap target. These twelve validated observations do not
+establish exact optimality, full service, a universal solver frontier or a
+causal thread speedup.
 
 At h500, the retained gap is 0.207432%, native runtime is 7654.77 seconds
 and sampled application peak RSS is 111.78 GiB. Domestic service is 91.636%
@@ -644,9 +644,11 @@ identities and uncertainty about unobserved peaks constrain interpretation.
 The separate scalar SCIP STO h215 W observation reached its four-hour native
 ceiling without an incumbent. Its original negative outcome and operational
 closure are retained separately from accepted feasible observations.
-One failure cannot establish a general limitation of open-source solvers.
-The Pyomo implementation enables further comparison with open-source solvers,
-subject to its proved bounded-slack representation. A fair comparison must
+The HiGHS observation demonstrates a successful open-source solution to the
+same h215 physical planning problem, using the proved bounded-slack
+representation. Its 0.000196% gap and 426.70-minute native runtime describe
+one returned calculation. The interrupted extended SCIP attempt has no
+terminal numerical result and cannot be pooled with normally returned solves. A fair comparison must
 identify the formulation, interface, data, stopping rule and resource scopes;
 different attained gaps do not represent equal computational tasks.
 

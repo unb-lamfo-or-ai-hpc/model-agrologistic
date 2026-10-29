@@ -1,3 +1,15 @@
+# PAUSED — researcher checkpoint, 29 October 2026
+
+PR139 remains DRAFT. Read docs/checkpoints/20261029_pause_pr139.md and its JSON.
+Both original solver package integrity inspections completed. HiGHS2226536
+has an original accepted certificate/gap0.000195541%; SCIP2226388 remains a
+censored forensic partial. The current article incorporates the separate HiGHS
+result but is not yet qualified by source/document checks. Ruff was installed
+after the last local check stopped; source checks have not been rerun.
+Local historical PR138 PDFs are verified,23document artifacts were removed.
+Final PDFs follow Quarto/GitHub Pages after an explicitly authorized main merge.
+No automatic continuation, merge, new job or CLI execution during this pause.
+
 # Project state
 
 ## Current checkpoint — 29 October 2026

@@ -1,7 +1,7 @@
 {
   "schema_version": "scalar-open-source-status-v1",
-  "as_of": "2026-10-28",
-  "scope": "One audited scalar SCIP STO h215 W time-limited no-incumbent observation, separate from accepted feasible Gurobi evidence.",
+  "as_of": "2026-10-29",
+  "scope": "Original native SCIP4h negative result, censored native SCIP8h attempt, and one validated Pyomo/APPSI HiGHS h215 result; Gurobi cohort remains separate.",
   "protocol": "docs/mvp2_scalar_scip_h215_w.md",
   "observations": [
     {
@@ -59,25 +59,36 @@
     "original_observation_closed": true
   },
   "highs": {
-    "conditional_future_option": true,
+    "conditional_future_option": false,
     "implemented": true,
     "execution_admitted": false,
-    "implementation_scope": "Pyomo public miniature qualification only; no h215 observation"
+    "implementation_scope": "Pyomo public controls and original validated h215 STO/W observation",
+    "job_id": "2226536",
+    "evidence": "docs/evidence/scalar_highs_h215_2226536_inspection.json"
   },
   "qualification": "Accept success and negative outcomes equally; no general open-source inability conclusion.",
   "longer_scip": {
     "requested": true,
-    "preparation_status": "planned_separate_operational_PR",
+    "preparation_status": "original_attempt_forensic_partial",
     "native_seconds": 28800,
     "reservation_seconds": 43200,
     "execution_admitted": false,
-    "predecessor_archive_sha256": "41557726ecd93ab67a5764077ea18a35e08db4d6f97123a03ebd6b72930ebf68"
+    "predecessor_archive_sha256": "41557726ecd93ab67a5764077ea18a35e08db4d6f97123a03ebd6b72930ebf68",
+    "evidence": "docs/evidence/scalar_scip_h215_2226388_inspection.json",
+    "observation": {
+      "job_id": "2226388",
+      "archive_sha256": "5626db207faf9436c9600c8a00f5ef1d5814d1acdc86bc0aab6c422f51d7548d",
+      "classification": "build_or_execution_incomplete",
+      "native_termination": null,
+      "usable_incumbent": null,
+      "operational_receipts_closed": false
+    }
   },
   "multisolver": {
     "requested": true,
     "design": "docs/mvp2_multisolver_plan.md",
     "pyomo_implemented": true,
-    "highs_qualified": false,
+    "highs_qualified": true,
     "cbc_qualified": false,
     "public_miniature_solvers": [
       "HiGHS",
@@ -86,17 +97,27 @@
     "large_input_resource_qualification": false,
     "h215_execution_admitted": false,
     "reformulation": "bounded_scalar_slacks_v1",
-    "equivalence": "physical_investment_projection_and_optimal_scalar_value"
+    "equivalence": "physical_investment_projection_and_optimal_scalar_value",
+    "highs_qualification_scope": "Original h215 Pyomo/APPSI observation; no automatic larger population or repeated execution"
   },
   "operational_checkpoint": {
-    "date": "2026-10-28",
-    "source": "docs/evidence/parallel_solvers_20261028_running_v2.json",
-    "highs_original_audit": "docs/evidence/highs_h215_2226407_startup_audit.json",
+    "date": "2026-10-29",
+    "source": "docs/evidence/parallel_solvers_20261029_terminal_reported.json",
+    "independent_inspections": [
+      "docs/evidence/scalar_highs_h215_2226536_inspection.json",
+      "docs/evidence/scalar_scip_h215_2226388_inspection.json"
+    ],
     "longer_scip": {
       "job_id": "2226388",
-      "latest_supplied_state": "RUNNING",
-      "root_elapsed_seconds": 7301,
+      "scheduler_state": "FAILED",
+      "classification": "build_or_execution_incomplete",
       "terminal_scientific_result": null
+    },
+    "highs": {
+      "job_id": "2226536",
+      "scheduler_state": "COMPLETED",
+      "classification": "quality_target_met",
+      "original_validation_status": "accepted"
     },
     "original_highs": {
       "job_id": "2226407",
@@ -104,17 +125,18 @@
       "native_population_solve_evidenced": false,
       "scientific_result": null
     },
-    "highs": {
-      "job_id": "2226536",
-      "source_commit": "009119a07eb8c68573cfa105893b9d4a719c5155",
-      "plan_sha256": "a369659f2573866860a18ba444e386e7a2f5a1242ac62583efe8a3a7a5e35e01",
-      "latest_supplied_state": "RUNNING",
-      "root_elapsed_seconds": 141,
-      "numeric_step_elapsed_seconds": 138,
-      "startup_receipts_received": false,
-      "scientific_result": null
-    },
-    "interpretation": "Dated human accounting only; no new accepted numerical observations or inference of active native optimization. Historical preparation flags remain historical scope, not live job states.",
+    "interpretation": "Local source/inventory and original-certificate inspection completed; no fresh residual solve or full operational replay.",
+    "additional_execution_admitted": false
+  },
+  "highs_observation": {
+    "job_id": "2226536",
+    "archive_sha256": "db04224d755cd5720091ddb96fc275bcefc6082431ea4b417a1b90d0fece071b",
+    "source_commit": "009119a07eb8c68573cfa105893b9d4a719c5155",
+    "objective": 12974673141227.254,
+    "bound": 12974647770396.836,
+    "common_gap": 0.0000019554119122548442,
+    "quality_target_met": true,
+    "original_validation_status": "accepted",
     "additional_execution_admitted": false
   }
 }

@@ -1,4 +1,6 @@
-## Separate scalar SCIP h215 W observation
+## Open-source solver observations
+
+### Native SCIP with a four-hour allowance
 
 A cold scalar STO/W observation used PySCIPOpt 6.2.1,
 SCIP 10.0.2 and SoPlex 8.0.2, with the frozen h215 workbook, nine equiprobable
@@ -43,3 +45,62 @@ retained population-solve evidence. It is an operational failure, not a second
 numerical no-incumbent observation. Public miniature controls of other interfaces
 establish implementation behavior, rather than additional h215 performance
 observations.
+
+### Pyomo/APPSI HiGHS with an eight-hour allowance
+
+The HiGHS experiment used the same h215 input, selected warehouse-only network,
+nine equiprobable scenarios and effective costs as the Gurobi STO observation.
+Pyomo 6.10.1 and HiGHS 1.15.1 were used through APPSI, with four threads,
+a 28800-second native allowance and a 1% relative-gap target. Candidate slack
+indicators were replaced by the bounded representation proved in Appendix C.
+Its equivalence concerns the physical and investment projection and optimal
+scalar value, rather than identical redundant slack regions or solver search.
+
+HiGHS returned a feasible solution that passed the original independent
+validation, with no failed checks at the stated tolerances. The
+[experiment and certificate record](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/ad2ded8132bf5171be65c0113b3d0026c22b2e7b/docs/evidence/scalar_highs_h215_2226536_inspection.json)
+retains the source, input, validation and resource identities. Table
+@tbl-highs-h215 compares the returned objective, attained gap and native runtime
+with the earlier Gurobi observation.
+
+| Implementation | Objective, BRL trillion | Gap, % | Native runtime, min |
+|:--|--:|--:|--:|
+| Native Gurobi | 13.071397 | 0.740159 | 40.76 |
+| Pyomo/APPSI HiGHS | 12.974673 | 0.000196 | 426.70 |
+
+: Validated h215 STO/W observations. The inputs and scalar interpretation are
+common, but interfaces, redundant-slack representations, attained gaps and
+execution dates differ. These are not matched runtime replications. {#tbl-highs-h215}
+
+The smaller HiGHS objective is compatible with the earlier Gurobi bound
+interval. It is approximately 0.740% below the earlier incumbent, while both
+observations satisfy the 1% criterion. HiGHS's financial subtotal is
+393.331 billion BRL, domestic service is 92.3284%, and artificial penalties
+account for 96.9685% of its objective. Thus, the near-zero relative gap does
+not remove the substantial modeled shortage or establish economic calibration.
+
+The HiGHS model has 14054654 variables, including 307 binaries, 735577 linear
+rows and 52217866 nonzeros. Its native log reports one processed node and
+2901682 LP iterations. It also records parallel search off with one maximum
+worker despite the four-thread setting. These are backend observations;
+they do not isolate the cause of runtime. The externally sampled worker-tree
+peak is 55.22 GiB. This scope differs from Gurobi's sampled application RSS
+and should not be treated as a matched memory-efficiency measurement.
+
+### Interrupted extended SCIP attempt
+
+A further native SCIP attempt used a 28800-second allowance but was
+externally terminated before a native terminal report or validated solution
+was exported. Its retained completion record is incomplete. The
+[forensic record](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/ad2ded8132bf5171be65c0113b3d0026c22b2e7b/docs/evidence/scalar_scip_h215_2226388_inspection.json)
+confirms the original input and source identities and a controller-issued
+termination signal. The log ends after presolve; it does not establish
+root-LP completion, a normally returned time-limit status or an internal
+incumbent count. This attempt is therefore censored, rather than another
+completed no-incumbent observation.
+
+Taken together, these experiments show configuration-specific computational
+difficulty and a successful open-source solution at h215. They support neither
+a general impossibility claim for open-source software nor a causal ranking
+of solver performance. The earlier HiGHS initialization failure is retained
+as an operational record and supplies no numerical performance observation.
