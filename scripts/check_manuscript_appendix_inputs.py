@@ -13,14 +13,17 @@ import openpyxl
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def read_json(path: Path) -> dict:
+    """Decode every provenance record strictly as UTF-8 on all platforms."""
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
 def audit(root: Path = ROOT) -> dict:
     """Read frozen source cells and metadata; do not prepare or solve an instance."""
     manuscript = root / "manuscript"
     supplement = manuscript / "supplement"
-    guide = json.loads(
-        (root / "docs/evidence/appendix_input_reproduction_20261028.json").read_text(encoding="utf-8")
-    )
-    inventory = json.loads((supplement / "appendix_d_inventory.json").read_text(encoding="utf-8"))
+    guide = read_json(root / "docs/evidence/appendix_input_reproduction_20261028.json")
+    inventory = read_json(supplement / "appendix_d_inventory.json")
     gold = root / guide["public_gold"]["repository_path"]
     digest = hashlib.sha256(gold.read_bytes()).hexdigest()
     if digest != guide["public_gold"]["sha256"]:
@@ -62,9 +65,7 @@ def audit(root: Path = ROOT) -> dict:
             "unmet": 90000, "static": 45000, "reception": 45000
         }:
             raise ValueError("Executed penalty vector differs")
-        registry = json.loads(
-            (root / "data/manifests/warehouse_population_source_v020.json").read_text(encoding="utf-8")
-        )
+        registry = read_json(root / "data/manifests/warehouse_population_source_v020.json")
         if registry["source_sha256"] != guide["registry"]["sha256"]:
             raise ValueError("Registry identity differs")
         for case in guide["processed_workbooks"]:

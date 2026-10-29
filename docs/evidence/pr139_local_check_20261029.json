@@ -11,5 +11,42 @@
   "diagnosis": "Text inventories were read without encoding=utf-8. D2 is the first accented source value after ASCII entries; Windows locale decoding is a confound. Fix explicit UTF-8 reads and verify with new regression/negative controls; do not change original workbook or expected cells.",
   "new_fix_checks": "pending",
   "original_inputs_modified": false,
-  "solver_executed": false
+  "solver_executed": false,
+  "subsequent_attempts": [
+    {
+      "checked_commit": "51115940863e93d3234c747c3904a15002d20116",
+      "ruff": "failed",
+      "errors": [
+        {
+          "rule": "E501",
+          "file": "scripts/check_manuscript_appendix_inputs.py",
+          "line": 21,
+          "length": 102,
+          "limit": 100
+        },
+        {
+          "rule": "E501",
+          "file": "scripts/check_manuscript_appendix_inputs.py",
+          "line": 66,
+          "length": 103,
+          "limit": 100
+        }
+      ],
+      "appendix_input_audit": "not_reached",
+      "pytest": "not_reached",
+      "interpretation": "The UTF-8 fix was not exercised; this attempt stopped at the initial style gate."
+    }
+  ],
+  "current_refactor": {
+    "description": "Centralize three JSON reads in read_json(Path), retaining strict UTF-8 and unchanged cell/hash comparisons.",
+    "original_inputs_modified": false,
+    "limits_relaxed": false,
+    "source_line_scan": {
+      "maximum_characters": 100,
+      "files_checked": 7,
+      "violations": 0,
+      "scope": "Independent source-text codepoint length check only; no Ruff or pytest execution."
+    },
+    "manual_full_qualification": "pending"
+  }
 }
