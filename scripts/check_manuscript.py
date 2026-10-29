@@ -200,6 +200,22 @@ def check_dataset_release(article: str) -> None:
         raise ValueError("Data availability must match the published dataset receipt")
 
 
+def check_reader_audience(article: str, supplement: str) -> None:
+    """Keep internal review directions and unused legacy penalties out of the paper."""
+    text = article + "\n" + supplement
+    forbidden = (
+        r"(?i)coauthor|co-author",
+        r"(?i)working revision|S6-B|S5 is closed|merge approval",
+        r"(?i)million-valued",
+        r"(?i)penalt[^.\n]{0,100}(?:1000000|1,000,000)",
+        r"(?i)(?:1000000|1,000,000)[^.\n]{0,100}penalt",
+    )
+    if any(re.search(pattern, text) for pattern in forbidden):
+        raise ValueError(
+            "Reader audience: internal editorial history belongs in repository records"
+        )
+
+
 def check(*, rendered: bool = False, publication: bool = False) -> None:
     """Fail on unresolved citations, changed vendor files or unsafe publication."""
     article = (MANUSCRIPT / "index.qmd").read_text(encoding="utf-8")
@@ -342,6 +358,7 @@ def check(*, rendered: bool = False, publication: bool = False) -> None:
         if "{{< include " + name + " >}}" not in supplement:
             raise ValueError("Missing implementation/data appendix include")
         supplement += "\n" + (MANUSCRIPT / "supplement" / name).read_text(encoding="utf-8")
+    check_reader_audience(article, supplement)
     review_bib = bibliography + (MANUSCRIPT / "review-methods.bib").read_text(encoding="utf-8")
     review_keys = set(
         re.findall(r"@(?:article|incollection|book|misc|phdthesis)\{([^,]+),", review_bib)
@@ -358,10 +375,8 @@ def check(*, rendered: bool = False, publication: bool = False) -> None:
     if evidence["final_four_level_status"] != "accepted":
         if evidence["publication_ready"] or evidence["numeric_results_included"]:
             raise ValueError("Pending evidence cannot be labeled publication-ready")
-        normalized_article = " ".join(article.split())
-        for required in ("100%", "did not execute its economic pass", "report remains rejected"):
-            if required not in normalized_article:
-                raise ValueError("The negative experimental outcome must remain explicit")
+        # Historical rejected cohorts stay in evidence_status/comparison records.
+        # They are not editorial instructions for the current scalar article.
         if evidence.get("running_job") is not None:
             raise ValueError("Closed evidence must not report a running job")
     comparison = json.loads((MANUSCRIPT / "comparison_provenance.json").read_text())

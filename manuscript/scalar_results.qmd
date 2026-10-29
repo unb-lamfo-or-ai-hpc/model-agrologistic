@@ -1,6 +1,6 @@
 ## Accepted scalar cohort and computational dimensions
 
-All nine warehouse-only scalar observations meet their original 1% global-gap target and retain accepted original independent feasibility certificates. The original h500 job2220382 is accepted after integrity/certificate replay. Two separate h215 D observations bring the scalar inventory to eleven, not eleven independent replications.
+All nine warehouse-only scalar observations meet the 1% global-gap target and pass independent feasibility validation. The original h500 result extends the reported sequence to 500 facilities. Two separate h215 D observations bring the Gurobi cohort to eleven; they are distinct configurations rather than eleven independent replications.
 
 | Instance | Variables | Binary | Linear constraints | Matrix nonzeros |
 |:--|--:|--:|--:|--:|

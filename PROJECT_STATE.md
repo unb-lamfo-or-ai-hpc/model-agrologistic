@@ -1,3 +1,34 @@
+# Project state
+
+## Current checkpoint — 29 October 2026
+
+PR138 merged at0351caeb7c10e08405c37793dcf340389f03b1b8. The next draft
+revises all active article/appendix prose for journal readers. Internal
+provenance/history stays in technical records; only effective experimental
+values and reader-relevant reproducibility instructions remain in the paper.
+
+Human terminal collection reports HiGHS2226536 quality_target_met/accepted,
+common gap0.000195541%, native426.70min and operational closure. Its new archive
+is db04224d… . Independent local archive/source/certificate audit remains
+pending before manuscript evidence promotion. SCIP2226388 is forensic partial,
+archive5626db20…, not an established native time-limit/no-incumbent result.
+Preserve the older failed HiGHS2226407 and original four-hour SCIP2225638.
+No repeat/start/new job is authorized by these results.
+
+Working PDFs and intermediate outputs remain only in approved local temporary
+directories or Codex tabs. No temporary upload to GitHub. Final PDFs follow
+Quarto/GitHub Pages after the separately authorized main merge. Do not remove
+old cloud artifacts until their required local copies are verified.
+PowerShell host DNS/HTTPS returned api.github.com/HTTP200; this does not
+independently verify the agent command sandbox. Pythonvenv313 and Quarto exist;
+gh is absent. No configuration/package/environment change has been made.
+
+See docs/journal_reader_revision_20261029.md and
+docs/evidence/parallel_solvers_20261029_terminal_reported.json.
+The new PR is draft; local qualification/render/visual review and independent
+archive audit remain the immediate gates. Request its own merge afterward.
+
+
 ## Pre-merge appendix reproduction review — 28 October 2026
 
 The researcher requests a renewed PR138 review for non-specialist readers,

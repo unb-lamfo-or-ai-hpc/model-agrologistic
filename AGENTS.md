@@ -1,5 +1,30 @@
 # Model Agrologistic: agent working agreement
 
+## Current journal-reader/local-output mandate — 29 October 2026
+
+PR138 is merged at0351caeb7c10e08405c37793dcf340389f03b1b8. Revise all
+article/supplement prose for future journal readers: no coauthor instructions,
+sprint administration, unused legacy source-penalty cells or stale job snapshots.
+Preserve their technical record, mathematical/scientific content and original
+Appendix A. Keep effective values and didactic reproducibility links.
+
+No new temporary cloud outputs. Use only the researcher's .codex or named
+Temp Codex directory for local temporary files. Do not upload working PDFs or temporary files to GitHub. Final PDFs are for
+Quarto/GitHub Pages after a separately authorized main merge. Verify local
+copies before deleting obsolete cloud artifacts; never delete original HPC
+packages or Git blobs needed by history.
+Use Codex tabs and GitHub connector. Native desktop apps are forbidden; obtain
+manual PowerShell intervention for necessary local CLI. Do not modify the local
+clone, install packages or create an environment.
+
+Human terminal collect reports HiGHS2226536 quality_target_met/accepted and
+SCIP2226388 forensic_partial. Independently audit the new original packages
+before manuscript evidence promotion. Preserve all claims and source versions.
+No start/retry/new HPC execution. See docs/journal_reader_revision_20261029.md.
+Prepare the new draft PR with [skip ci] to avoid cloud jobs; qualification and
+visual review must be completed locally and documented before Ready. Request
+this PR's own merge only after reviewable work and checks are complete.
+
 ## Current pre-merge appendix reader review — 28 October 2026
 
 The researcher withholds a new merge decision pending a didactic, complete

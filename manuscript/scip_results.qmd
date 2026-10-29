@@ -19,9 +19,7 @@ operationally, but the native solve reached its time limit with **zero solutions
 No objective, economic subtotal, domestic service or computable native/common
 gap is available. The native dual bound was -1.77946e15 BRL; it is retained as a
 lower bound, not an economic result. The independent validator rejected the
-empty candidate exports. Default scenario service=1 and penalty share=0 in the
-raw summary are placeholders without an incumbent and are excluded here.
-
+empty candidate exports. 
 The original native matrix had 14,129,174 variables and 810,097 constraints.
 The log reports 608.24 seconds of presolve, 12,708,003 presolved variables and
 one processed node. These records do not prove root-LP completion.
@@ -42,7 +40,6 @@ Gurobi scalar observations and from historical hierarchical SCIP trials.
 It documents difficulty under this finite configuration, not general
 open-source inability. The original HiGHS attempt ended during worker initialization, without
 retained population-solve evidence. It is an operational failure, not a second
-numerical no-incumbent observation. The extended native SCIP and distinct
-HiGHS startup-v2 attempts are running in the latest supplied snapshot
-(@tbl-solver-evidence-status). Public Pyomo/HiGHS/CBC controls add no private-input
-performance result.
+numerical no-incumbent observation. Public miniature controls of other interfaces
+establish implementation behavior, rather than additional h215 performance
+observations.

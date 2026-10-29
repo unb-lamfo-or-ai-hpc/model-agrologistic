@@ -1,0 +1,14 @@
+{
+  "date": "2026-10-29",
+  "scope": "journal-reader-source-revision",
+  "cloud_checks_requested": false,
+  "local_source_checks": "pending researcher CLI",
+  "local_render_and_visual_review": "pending",
+  "temporary_pdf_upload_authorized": false,
+  "final_pdf_delivery": "Quarto and GitHub Pages after separately authorized main merge",
+  "mathematics_changed": false,
+  "original_scientific_data_changed": false,
+  "original_certificates_changed": false,
+  "appendix_a_original_bytes_changed": false,
+  "merge_authorized": false
+}

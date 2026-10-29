@@ -66,13 +66,11 @@ def results(record):
         "95.39%/95.38% of D totals. Their unchanged weights influence routing, investments, "
         "relaxation/search and the reported penalized gap; a 1% total gap is not a 1% "
         "economic-subtotal or service certificate.\n",
-        "Original validation and owned-step/phase/terminal receipts close both D arms. "
-        "Portable review replays those archived receipts, not a fresh private-input "
-        "residual re-solve. No additional solve or repetition is required to close this "
-        "bounded h215 W/D phase. Original h500/S5 is now accepted and closed; "
-        "the original scalar SCIP test is audited without an incumbent; the newly requested "
-        "longer SCIP test, multisolver qualification, integrated coauthor review and "
-        "S6-B remain open.\n",
+        "Independent validation reconstructs the objective and checks physical feasibility "
+        "for both D plans. The comparison evaluates the same h215 data and common network "
+        "components, with direct routes added only in D. Its bound-based cost comparison "
+        "and service deterioration should be interpreted jointly; neither implies that "
+        "the returned plans can operate without the permitted shortages or exceedances.\n",
     ]
     return "\n".join(lines)
 

@@ -233,7 +233,7 @@ def test_editorial_source_is_not_manuscript_content(manuscript):
 
 def test_scalar_scope_does_not_restore_cancelled_methods(manuscript):
     article = (manuscript / "index.qmd").read_text(encoding="utf-8")
-    assert "No new large-input solver result," in article
+    assert "Experiments using different objectives or stopping rules are excluded" in article
     assert "one observation per thread level" in article
     assert "original h500" in (manuscript / "scalar_results.qmd").read_text()
     assert "0.207432" in (manuscript / "scalar_results.qmd").read_text()
@@ -258,11 +258,26 @@ def test_overlong_highlight_is_rejected(manuscript):
         CHECKER.check()
 
 
-def test_review_counts_are_not_silently_corrected(manuscript):
+def test_original_review_bytes_remain_authoritative(manuscript):
+    source = manuscript / "supplement/appendix_a_original.pdf"
+    assert hashlib.sha256(source.read_bytes()).hexdigest() == CHECKER.APPENDIX_SHA
     text = (manuscript / "supplement/index.qmd").read_text(encoding="utf-8")
-    assert "subtracting two duplicates from 20 gives 18" in text
-    assert "ISO interpretation remains" in text
     assert "[NAME OF TOOL" not in text
+
+
+@pytest.mark.parametrize(
+    "internal_text",
+    [
+        "Coauthor working revision",
+        "The original penalty was 1000000.",
+        "S5 is closed and S6-B remains open.",
+    ],
+)
+def test_internal_history_is_rejected_from_reader_text(manuscript, internal_text):
+    path = manuscript / "supplement/appendix_d.qmd"
+    path.write_text(path.read_text(encoding="utf-8") + "\n" + internal_text, encoding="utf-8")
+    with pytest.raises(ValueError, match="Reader audience"):
+        CHECKER.check()
 
 
 @pytest.mark.parametrize("mutation", ["cost", "penalties", "h500", "appendix"])
