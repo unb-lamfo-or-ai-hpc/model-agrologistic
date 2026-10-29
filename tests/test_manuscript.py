@@ -270,6 +270,7 @@ def test_original_review_bytes_remain_authoritative(manuscript):
     [
         "Coauthor working revision",
         "The original penalty was 1000000.",
+        "The reference contains emergency-weight entries near BRL1,000,000/t.",
         "S5 is closed and S6-B remains open.",
     ],
 )

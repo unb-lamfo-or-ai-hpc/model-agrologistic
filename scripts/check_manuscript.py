@@ -207,7 +207,7 @@ def check_reader_audience(article: str, supplement: str) -> None:
         r"(?i)coauthor|co-author",
         r"(?i)working revision|S6-B|S5 is closed|merge approval",
         r"(?i)million-valued",
-        r"(?i)penalt[^.\n]{0,100}(?:1000000|1,000,000)",
+        r"(?i)(?:penalt|emergency-weight)[^.\n]{0,100}(?:1000000|1,000,000)",
         r"(?i)(?:1000000|1,000,000)[^.\n]{0,100}penalt",
     )
     if any(re.search(pattern, text) for pattern in forbidden):
