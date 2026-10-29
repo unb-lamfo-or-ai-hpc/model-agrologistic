@@ -1,3 +1,17 @@
+# PR139 source qualification complete — 29 October 2026
+
+The researcher reports and the retained local transcript confirms sourceaf60e234
+passed Ruff, scalar/W-D table consistency, manuscript integrity (33citations),
+public gold/source/appendix audit (254cells,42pinned links) and60tests in21.81s.
+The audit reads UTF-8 explicitly; original workbook and expected values remain.
+Original solver archives, certificates and all scope limits stay preserved.
+No new render or solver run occurred; full-text bibliography is not certified.
+The researcher now authorizes autonomous local PowerShell/code execution in
+approved temporary folders. Existing venv313 only; no new clone/environment.
+Credentials, every NPAD CLI and all merges remain human gates.
+Next: finish this evidence PR, then a separate Pyomo Gurobi/SCIP adapter PR and
+new human-executed h215 STO/W Gurobi/SCIP/CBC observations.
+
 # Current ordered continuation — 29 October 2026
 
 The researcher requests completion of PR139/evidence consolidation FIRST, then

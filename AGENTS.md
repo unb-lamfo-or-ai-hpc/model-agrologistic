@@ -1,5 +1,19 @@
 # Model Agrologistic: agent working agreement
 
+## Current local CLI autonomy — 29 October 2026
+
+The researcher now explicitly authorizes Codex to execute local PowerShell,
+Ruff and necessary code/downloads in the approved temporary directories.
+This supersedes earlier human-only local CLI language. Use the existing venv313
+interpreter explicitly; no new clone or environment. Native GUI apps remain
+outside the workflow. Ask for credentials when necessary, and keep every NPAD
+interaction human-only. Every merge still needs explicit authorization.
+PR139 sourceaf60e234 passed Ruff, generated-table/source/appendix checks and
+60tests. Original evidence, code/math/input and AppendixA bytes are preserved.
+Final PDFs follow Quarto/Pages after separately approved main merge; do not
+create cloud temporary artifacts. Full-text bibliography remains a disclosed
+separate workstream. Complete this PR before the next adapter PR.
+
 ## Current required delivery order — 29 October 2026
 
 The researcher explicitly requests: finish PR139 and preserve evidence first;

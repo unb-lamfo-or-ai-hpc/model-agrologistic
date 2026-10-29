@@ -9,7 +9,7 @@
   "appendix_input_audit": "stopped_at_Parametros_Modelo_D2",
   "pytest": "not_reached",
   "diagnosis": "Text inventories were read without encoding=utf-8. D2 is the first accented source value after ASCII entries; Windows locale decoding is a confound. Fix explicit UTF-8 reads and verify with new regression/negative controls; do not change original workbook or expected cells.",
-  "new_fix_checks": "pending",
+  "new_fix_checks": "passed_at_af60e234",
   "original_inputs_modified": false,
   "solver_executed": false,
   "subsequent_attempts": [
@@ -35,6 +35,33 @@
       "appendix_input_audit": "not_reached",
       "pytest": "not_reached",
       "interpretation": "The UTF-8 fix was not exercised; this attempt stopped at the initial style gate."
+    },
+    {
+      "checked_commit": "af60e234ef198d579b3e0df391ddb6f73a0bffd7",
+      "execution": "researcher_manual_PowerShell_existing_venv313",
+      "ruff": "passed",
+      "scalar_tables": "verified",
+      "wd_tables": "verified",
+      "manuscript_source_integrity": "accepted_33_cited_references",
+      "appendix_input_audit": {
+        "status": "passed",
+        "gold_sha256": "de3bdc51b2c338194a5013165bec2884b68784fb207ae8c762984a1b44856082",
+        "worksheets": 14,
+        "original_and_cached_cells": 254,
+        "warehouses": 215,
+        "existing": 146,
+        "candidates": 69,
+        "freight_states": 27,
+        "pinned_github_links": 42
+      },
+      "pytest": {
+        "passed": 60,
+        "failed": 0,
+        "seconds": 21.81
+      },
+      "local_document_checks": "passed",
+      "transcript_sha256": "82f00295fc860e28b4c73baf98d3216ec2bd68326d8e503a5ccf2cce6e088e3c",
+      "appendix_audit_sha256": "4e8adb071a51b2239457170dd779accb4162da29b633c44554227865c18639a7"
     }
   ],
   "current_refactor": {
@@ -47,6 +74,6 @@
       "violations": 0,
       "scope": "Independent source-text codepoint length check only; no Ruff or pytest execution."
     },
-    "manual_full_qualification": "pending"
+    "manual_full_qualification": "passed_at_af60e234"
   }
 }
