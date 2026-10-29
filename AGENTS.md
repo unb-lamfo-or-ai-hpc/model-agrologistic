@@ -1,5 +1,23 @@
 # Model Agrologistic: agent working agreement
 
+## Current operational preparation after PR140 merge — 29 October 2026
+
+PR140 was explicitly authorized and merged at40f33d7cc13d516cd6b130f00398590840131904.
+Prepare the separate common-form h215 STO/W operational PR for Gurobi and SCIP,
+plus CBC only if the verified Linux binary accepts threads. The researcher
+explicitly permits cancelling CBC otherwise; do not block Gurobi/SCIP or call
+this a numerical failure. Preserve all original data, 38 scientific source
+files, claims and historical HiGHS/native results. No HiGHS restart or fallback.
+Read docs/mvp2_pyomo_h215_operational.md. Public operational qualification is
+pending: 282 tests, zero failures/errors/skips, exact source/predecessor/CBC
+integrity and explicit capability decision. Keep this operational PR DRAFT
+until the manual NPAD qualification and final review. Its own merge requires
+new explicit authorization; PR140 authorization does not transfer. Then give
+separately pinned manual starts for eligible new claims, never a solver sweep.
+Local CLI/Ruff in approved temporary directories is autonomous. No new local
+clone/environment or native GUI; every NPAD action remains researcher-only.
+
+
 ## Current completed adapter qualification — 29 October 2026
 
 Public NPAD qualification-v2/job2227458/sourcef166f60c/plandc41c8b7 passed

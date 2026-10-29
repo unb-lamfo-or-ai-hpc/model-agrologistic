@@ -1,3 +1,25 @@
+# PR140 merged; operational package preparation — 29 October 2026
+
+Authorized PR140 merged at40f33d7cc13d516cd6b130f00398590840131904. Public adapter
+qualification-v2/job2227458 remains accepted (168tests, zero failures/errors/skips).
+The separate operational branch prepares new common-form Pyomo STO/W8h arms:
+Gurobi, SCIP and conditional CBC. Scientific logic38files match the adapter
+merge byte-for-byte. Workbook, membership, frozen OSRM network, scenarios,
+penalties and original residual tolerances remain fixed. Existing HiGHS and
+all consumed claims are preserved; no new private experiment has run.
+
+Researcher steering: cancel the CBC h215 experiment if its binary rejects
+threads; retain this capability observation and continue Gurobi/SCIP. The
+Windows CBC release rejects threads. NPAD Linux capability is still unknown,
+not inferred from the Windows build. Public operational qualification must
+return282tests with0failures/errors/skips and explicit CBC decision. Local
+Ruff/Bash syntax and public controls passed with24Linux-only skips disclosed;
+they do not satisfy that target-platform gate. Keep the operational PR draft.
+Own merge approval and later manual NPAD starts remain pending. Read
+[operational runbook](docs/mvp2_pyomo_h215_operational.md) and
+[preparation evidence](docs/evidence/pyomo_h215_operational_preparation_20261029.json).
+No cloud PDFs, automatic retries, main promotion or publication.
+
 # Public Pyomo qualification complete — 29 October 2026
 
 Qualification-v2 job2227458/sourcef166f60c/plandc41c8b7 returned accepted:
