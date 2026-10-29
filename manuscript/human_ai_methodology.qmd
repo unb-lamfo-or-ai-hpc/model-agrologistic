@@ -13,7 +13,7 @@ model versions or a measure of individual coding authorship.
 Human researchers retained authority over assumptions, objectives, experimental
 design, HPC execution and interpretation. AI proposals were provisional: a
 successful program or passing test suite was insufficient to establish that a
-model represented the approved scientific problem. Mathematical review,
+model represented the intended scientific problem. Mathematical review,
 analytical examples, original-unit residual checks and objective reconstruction
 provided complementary forms of verification. Portable replay of a certificate
 was distinguished from a new solve or fresh residual evaluation against private

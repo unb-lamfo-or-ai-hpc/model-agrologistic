@@ -115,3 +115,14 @@ removes only document artifacts from Manuscript draft runs bound to PR138's
 commit list, after local copies are verified. It does not target HPC archives,
 Git source blobs, releases, Pages or other PRs. Local execution is pending.
 GitHub API deletion cannot independently attest physical provider/cache erasure.
+
+## Editorial checks completed by source inspection
+
+All active main-article includes and the B/C/D sources were read. No table
+numbers, values, mathematical rows, author metadata or bibliography entries were
+changed. The main working notice, internal/coauthor meeting material, running-job
+table and unrelated historical failure narration were removed. Internal history
+and Appendix A's original chronology/count issues remain preserved in repository
+records; this revision is not a completed new systematic search. Main and
+supplement still need local rendered-layout review before Ready. Final full-text
+bibliographic reconciliation and the substantive Appendix A review remain open.

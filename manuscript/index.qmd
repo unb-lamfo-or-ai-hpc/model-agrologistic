@@ -137,9 +137,9 @@ financing, operating agreements or coordination among producers.
 The closest agricultural studies establish why location and uncertainty alone
 cannot define this article's gap. @tbl-closest-precedents distinguishes their
 decision or computational emphasis from the assessment undertaken here.
-The comparison concerns published problem descriptions and accessible methods;
-it does not assert that an unreported feature was absent from an inaccessible
-full text.
+The studies differ in decision horizon, infrastructure choices and solution
+method. These distinctions determine which aspects can inform the present
+assessment.
 
 | Precedent | Established decision or computational emphasis | Question examined here |
 |:--|:--|:--|
@@ -637,7 +637,7 @@ this scalar comparison.
 Limitations include controlled rather than empirically fitted scenarios,
 finite resource budgets, one observation per thread level, shared-node load,
 incomplete physical cost calibration and unavailable road polylines in the
-current geographic exports. The fixed penalties express the approved trade-off,
+current geographic exports. The fixed penalties express the modeled trade-off,
 not observed damages or a demonstrated service policy. Detailed source
 identities and uncertainty about unobserved peaks constrain interpretation.
 
