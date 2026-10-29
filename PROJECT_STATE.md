@@ -1,3 +1,49 @@
+## Pre-merge appendix reproduction review — 28 October 2026
+
+The researcher requests a renewed PR138 review for non-specialist readers,
+direct GitHub file links and the actual registered gold/candidate/runtime
+input values. New input guide is pinned at 1b54023f4e0c0c27aba64883b1e9cf25817ad0f8:
+docs/evidence/appendix_input_reproduction_20261028.json.
+It distinguishes registered de3bdc51/0d19865a inputs from inspected different-byte
+2fc994ac/bb5e8bf6 copies, and source million-valued penalty cells from executed
+90000/45000/45000. B/C/D gain reading/reproduction routes and pinned links;
+A's original 19 pages remain unchanged. See docs/appendix_reader_review_20261028.md.
+
+All work now uses only Codex tabs and the GitHub connector. The document CI
+adds a public gold-cell/path audit and read-only standalone PDF artifacts
+alongside the existing editable ZIP. Renewed exact-head CI, render and visual
+review are pending; the old Ready/merge question is superseded by this draft
+revision. Request the new head's own merge. Develop-bound PDFs follow only
+its authorized merge; no pre-merge PDF is labelled as develop.
+No new HPC access, start, solver result, source substitution or publication.
+
+## Running solver checkpoint and literature review — 28 October 2026
+
+PR137 merged at fbbcee3d. The researcher supplies HiGHS job 2226536/source
+009119a0/plan a369659f, driver exit0, 601 source files and 44 login controls
+passed in13.82s. Its new startup-v2 claim is consumed. Latest human sacct:
+SCIP2226388 RUNNING02:01:41 (numeric02:01:21); HiGHS2226536 RUNNING00:02:21
+(numeric00:02:18),24allocated/16numeric logical CPUs each. No terminal result,
+worker-startup receipt or native phase is supplied. Do not repeat start.
+Original HiGHS2226407/claim/archive2816e35c remains preserved as startup failure.
+See docs/evidence/parallel_solvers_20261028_running_v2.json.
+
+The researcher requests bibliographic/documentary revision based on the supplied
+chat01.04 opinion HAI-LIT-AGRO-2026-01. It reviewed baseline c092fa7b, not the
+later merged PR136/137 content. Treat it as a qualified editorial input, not
+evidence that all38records/full texts or current journal requirements were
+independently verified. Reconcile gap/contributions, original-source support,
+highlights and current manuscript without changing approved title/RQ/SO1–SO4,
+mathematics, parameters, source/certificates or original Appendix A.
+Keep Human–AI complementary as the coauthors requested. The highlights now identify eleven accepted observations and distinguish the
+1% criterion from h500's attained 0.2074% gap. The claim/source matrix and
+38-record disposition are in docs/literature_claims_reconciliation_20261028.md
+and docs/literature_disposition_20261028.json. The approved title/RQ/objectives
+and mathematical attribution remain unchanged; full-text gaps and author
+choices are explicit.
+No agent HPC access, new run, automatic retry, final publication or submission.
+Own exact-head qualification/Ready and explicit merge approval remain required.
+
 ## HiGHS startup repair preparation — 28 October 2026
 
 PR136 merged at 79bfdb18aa318470625ec5aa1c4a81f7c3af684e. The researcher now
@@ -1156,7 +1202,7 @@ The operational claim name stays unchanged because it was never created, not
 because an old claim may be reset. Existing claims remain collect-only.
 
 No source/model/tolerance/coefficient, input identity, population criterion,
-predecessor,30h/24 logical CPU/192GiB envelope or14400s-per-arm budget changes.
+predecessor, 30h/24 logical CPU/192GiB envelope or14400s-per-arm budget changes.
 Five serial cold STO arms4/1/8/2/16 and penalties90000/45000/45000 remain fixed.
 Slacks relax only specified constraints and do not guarantee full feasibility;
 their search effects need not be monotonic. Gap describes penalized total, not
@@ -2097,7 +2143,7 @@ and [redacted review ledger](docs/evidence/s2_p4_observation_2213305_review.json
 
 Root/batch/extern COMPLETED0:0/102s; observer98.69655s, exit0, local reap true,
 no TERM/KILL/error. Recorded fresh input/source/runtime checks and the existing
-2001-variable license capability pass: Python3.13.15/Gurobi13.0.3,300 warehouses,
+2001-variable license capability pass: Python3.13.15/Gurobi13.0.3, 300 warehouses,
 9 scenarios,60 periods,2 products, no direct arcs,25107544 estimated variables.
 The643 declared source hashes match published bytes;57 protected scientific
 files are preserved. Portable replay is not a fresh auditor remote-disk inspection.

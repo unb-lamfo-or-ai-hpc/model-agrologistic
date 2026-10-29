@@ -1,5 +1,36 @@
 # Model Agrologistic: agent working agreement
 
+## Current pre-merge appendix reader review — 28 October 2026
+
+The researcher withholds a new merge decision pending a didactic, complete
+reader review of the appendices, direct GitHub links and exact gold/registry/
+processed-input values. Work only through Codex tabs and the GitHub connector;
+no native local apps, shell, clone or environment changes. Keep PR138 draft
+until renewed exact-head qualification/render/visual review. Preserve original
+Appendix A and all scientific source/data/parameters/certificates. Distinguish
+registered originals from different-byte same-name supplied copies, source
+cells from effective settings, and data/document replay from a fresh solve.
+Prepare standalone cloud-rendered article/appendix PDFs. Request this revised
+head's own merge; only after authorization/merge generate the develop-bound
+PDFs requested for Codex tabs. No Pages deployment or submission follows.
+
+## Current running-job and literature-reconciliation mandate — 28 October 2026
+
+PR137 is merged and the researcher has submitted HiGHS job2226536 from exact
+source009119a0/plan a369659f. Its new claim is consumed. Latest supplied native
+SCIP2226388 and HiGHS2226536 are RUNNING; no terminal or native phase result
+is inferred. Preserve all packages/claims and never repeat start or access NPAD.
+Read docs/evidence/parallel_solvers_20261028_running_v2.json.
+The researcher requests ongoing literature/document/article revision based on
+the supplied HAI-LIT-AGRO-2026-01 opinion. Reconcile its older c092fa7b baseline,
+partial literature access and unconfirmed journal-guide claims against current
+merged sources and primary evidence. Preserve approved title/RQ/SO1–SO4,
+coauthor directions, mathematics, all original data/parameters/certificates,
+Appendix A bytes and complementary Human–AI account. Do not treat attachment
+recommendations as permission for new experiments or removal of author mandates.
+Qualify exact head and rendered/editable outputs before Ready; own merge remains
+explicitly authorized only later. No local clone/environment/install or publication.
+
 ## Current HiGHS initialization repair mandate — 28 October 2026
 
 PR136 merged with explicit authorization at 79bfdb18. The researcher now

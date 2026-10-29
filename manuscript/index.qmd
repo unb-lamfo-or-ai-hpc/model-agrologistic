@@ -2,30 +2,30 @@
 title: "Computational Scalability of Deterministic and Two-Stage Stochastic MILP Models for Grain-Storage Network Design and Hub Location"
 date: 2026-10-28
 abstract: >-
-  Grain-storage network design links infrastructure investment to seasonal,
-  multi-product logistics. Increasing candidate populations and replicating
-  operating decisions across scenarios can make mixed-integer linear programs
-  expensive to construct, store and solve. This study implements deterministic
-  and two-stage stochastic models with one scalar objective containing
-  investment, expected operating costs and three separate feasibility penalties.
-  A reproducible workflow binds input provenance, road distances, sparse networks,
-  solver settings, resource measurements and independent solution certificates.
+  Large extensive-form grain-storage models can be expensive to construct and
+  solve, while solver completion alone does not establish useful planning
+  performance. This study characterizes observed model dimensions, resource
+  requirements and certified solution quality for deterministic and two-stage
+  stochastic mixed-integer linear programs for grain-storage network design.
+  One scalar objective combines investment, expected operating costs and three
+  artificial feasibility penalties. Original source, input and validation records
+  connect computational outcomes to returned agricultural decisions.
   The accepted warehouse-only cohort contains a deterministic/stochastic pair
   at 215 warehouses, five stochastic observations at 300 warehouses using
   1/2/4/8/16 threads, and one stochastic observation each at 400 and 500 warehouses.
-  All nine observations meet the declared 1% gap criterion and retain accepted
-  original feasibility certificates. The stochastic matrix grows from
-  25.1 million variables at 300 warehouses to 63.4 million at 500.
-  One thread has the lowest observed runtime and memory in the 300-site block,
-  without establishing causal parallel speedup. At 500 warehouses, the
-  original accepted gap is 0.2074%, native runtime is 127.58 minutes and
-  sampled application RSS is 111.78 GiB. Extensive investment coexists with
-  substantial permitted shortages and capacity exceedances; artificial penalties
-  dominate the totals. Two separate direct-enabled h215 observations yield lower
-  penalized costs but worse service. A scalar SCIP h215 observation reaches
-  its four-hour native limit without an incumbent. These results characterize
-  attainable scale under an explicit contract, with a human-supervised AI
-  workflow documenting decisions and verification.
+  All nine meet the declared 1% gap criterion and retain accepted original
+  feasibility certificates. The stochastic matrix grows from 25.1 million
+  variables at 300 warehouses to 63.4 million at 500. One thread has the lowest
+  observed runtime and memory in the 300-site block, without establishing causal
+  parallel speedup. At 500 warehouses, the original accepted gap is 0.2074%,
+  native runtime is 127.58 minutes and sampled application RSS is 111.78 GiB.
+  Artificial penalties account for 94.074% of that objective despite extensive
+  investment and incomplete domestic service. Two separate direct-enabled h215
+  plans have lower penalized costs but worse service. An original scalar SCIP
+  h215 observation reaches its four-hour native limit without an incumbent.
+  These findings support a bounded assessment of attainable scale and require
+  separate agricultural interpretation. A human-supervised AI workflow documents
+  decisions and verification.
 keywords:
   - grain storage
   - facility location
@@ -55,7 +55,22 @@ the directed logistics network. Products, planning periods and uncertainty
 scenarios replicate continuous operating decisions, increasing the matrix that
 must be constructed, held in memory and optimized.
 
-This study builds on the mathematical foundation of @rosa2026thesis. Its focus
+Grain-storage location and integrated network design are established research
+topics [@essien2018; @gholamian2017]. Agricultural network uncertainty has also
+been addressed through wheat-network design and tactical soybean planning
+[@hosseini2020; @reis2023]. Decomposition and distributed computing already
+provide computational precedents in agricultural MILP [@shastri2011].
+The question addressed here is therefore specific: how do extensive-form model
+dimensions, the resources used to construct and solve them, and certified
+solution quality relate to the agricultural plans actually returned?
+Answering this question requires examining resource use and decision quality
+together; a large variable count or a successful solver exit is insufficient.
+
+This study builds on the mathematical foundation of @rosa2026thesis.
+Its opening, expansion and bulk-handling decisions retain that attribution.
+The present assessment concerns the explicitly defined scalar implementation
+and its retained computational cohort; earlier model versions, objectives and
+results are not pooled with these observations. Its focus
 is computational operations research for grain-storage network design, rather
 than the mere availability of a mathematical formulation or commercial solver.
 The central question is: **How computational scalability affects the optimal
@@ -78,13 +93,19 @@ Four specific objectives organize the investigation.
 
 : Research objectives. {#tbl-objectives}
 
-The intended contributions are empirical computational characterization (C1),
-applied interpretation of validated infrastructure and operating decisions (C2),
-and a complementary documented Human–AI workflow (C3). The present accepted
-cohort supports C1 and a bounded C2 analysis through 500 warehouses. C3 is an
-inspectable methodological account, not a controlled productivity experiment.
-The original h500 observation supplies a retained solution, bound and resource
-record; one observation at that scale does not establish a universal frontier.
+The contributions have three distinct roles. C1 characterizes observed matrix
+dimensions, construction and solution effort, memory and certified gaps across
+the evaluated populations. C2 interprets the returned investment and operating
+decisions by separating financial costs, artificial penalties, domestic service
+and capacity exceedances. C3 documents human-supervised AI assistance and
+verification as a complementary account of research practice, detailed in
+Appendix B.
+
+The accepted observations support these bounded empirical and interpretative
+claims. They do not establish a new generic MILP algorithm, a parallel scaling
+law or a universal solver frontier. In particular, the original h500 observation
+supplies a retained solution, bound and resource record at that scale; one
+observation cannot establish general performance across other networks or data.
 
 # Related work and research positioning
 
@@ -120,6 +141,34 @@ locate implementation within governance and stakeholder coordination. For a
 public planning tool, candidate opening is therefore interpreted as an option
 for appraisal, rather than a decision that can be executed without land,
 financing, operating agreements or coordination among producers.
+
+## Closest precedents and the scope of the empirical question
+
+The closest agricultural studies establish why location and uncertainty alone
+cannot define this article's gap. @tbl-closest-precedents distinguishes their
+decision or computational emphasis from the assessment undertaken here.
+The comparison concerns published problem descriptions and accessible methods;
+it does not assert that an unreported feature was absent from an inaccessible
+full text.
+
+| Precedent | Established decision or computational emphasis | Question examined here |
+|:--|:--|:--|
+| @essien2018 | Multi-stakeholder grain-storage location and decision support | How do returned investment and service outcomes relate to a certified scalar objective? |
+| @gholamian2017 | Integrated wheat-network planning, including silo location and distribution | What construction, solution and memory requirements accompany explicitly defined extensive-form instances? |
+| @hosseini2020 | Wheat-network design/redesign with sustainability and resilience concerns | What do the present cost and slack variables support, without adding unmodeled resilience or sustainability outcomes? |
+| @reis2023 | Two-stage tactical soybean purchasing and contracted transport | How does shared infrastructure investment differ from tactical contracting under uncertainty? |
+| @shastri2011 | Decomposition and distributed solution of an agricultural MILP | What attainable quality and resource use are observed for the present direct extensive-form solution? |
+
+: Closest agricultural and computational precedents. Models, data, hardware and
+stopping criteria differ; the rows are not matched runtime comparisons. {#tbl-closest-precedents}
+
+The empirical contribution is the joint assessment of model structure,
+phase-specific computation, original solution certificates and agricultural
+consequences in a traceable cohort. This is a delimited research question,
+not a claim that agricultural scalability or stochastic location has not been
+studied. The relation to Rosa's grain-storage research remains foundational
+[@rosa2026thesis]; a different software version or a larger instance does not
+by itself establish mathematical originality.
 
 ## Network representation and decision horizons
 
@@ -458,11 +507,39 @@ layers await a separate source-bound export.
 
 # Results
 
+The results proceed from problem dimensions and resource requirements to
+solution quality and agricultural interpretation. The warehouse-only sequence
+and the separate h215 topology comparison retain their original scopes.
+A final status table distinguishes accepted numerical observations from
+operational failure and still-pending attempts at the documentary cutoff.
+
 {{< include scalar_results.qmd >}}
 
 {{< include wd_results.qmd >}}
 
 {{< include scip_results.qmd >}}
+
+{{< pagebreak >}}
+
+## Numerical evidence and pending execution states
+
+| Observation or attempt | Evidence at the 28 October 2026 cutoff | Scientific interpretation |
+|:--|:--|:--|
+| Gurobi scalar cohort | Eleven accepted observations: nine W and two h215 D | Original feasible incumbents and gaps meeting the 1% target |
+| Original SCIP h215 W, four-hour native allowance | Original terminal package: time limit, no usable incumbent | Negative numerical observation under the stated configuration |
+| Original HiGHS h215 W attempt | Audited startup failure; no retained worker entry or population-solve evidence | Operational failure, without a numerical HiGHS outcome |
+| Extended SCIP, job2226388 | Human accounting: RUNNING, allocation elapsed 2:01:41 | Terminal package and numerical outcome pending |
+| HiGHS startup-v2, job2226536 | Human accounting: RUNNING, allocation elapsed 0:02:21; numeric step 0:02:18 | Startup phase records and terminal numerical outcome pending |
+
+: Evidence classes and latest supplied execution states. RUNNING is a dated
+scheduler snapshot, not proof that native optimization has begun. Elapsed
+allocation/step times are not solver runtimes. {#tbl-solver-evidence-status}
+
+The two running attempts are not added to the accepted numerical cohort.
+Neither their planned eight-hour native allowances nor the ongoing allocation
+times establish completion of eight hours of optimization. Original packages,
+claims and the failed HiGHS attempt remain separate observations.
+
 
 # Discussion
 
@@ -511,6 +588,17 @@ Investment/operating expenditure, artificial penalties and physical shortages
 or exceedances therefore remain separately visible. No recalibration or
 additional acceptance condition is applied retrospectively.
 
+The W/D comparison makes this distinction concrete. Direct delivery can
+bypass warehouse reception and storage, allowing the scalar objective to
+balance lower capacity-related penalties against a different domestic-shortage
+outcome. In the returned D plans, lower penalized costs coexist with more
+unmet domestic demand. The model permits that trade-off because shortage and
+capacity exceedance have explicit weights; it does not impose full domestic
+service as a hard requirement. A decision-maker would therefore need to assess
+the service and investment consequences jointly. Introducing a service floor
+or recalibrating penalties would be a new model-policy study, rather than a
+reinterpretation of the existing certificates.
+
 All included candidates receive positive capacity in the accepted vectors.
 The plans are consequently not sparse selections of a few hubs. Under the
 frozen cost translation, available options and penalty trade-offs, adding
@@ -531,31 +619,45 @@ or totals from overstating service improvements and infrastructure requirements.
 
 ## Contribution to agricultural computing
 
-The computational contribution is a documented relationship between strategic
-grain-network models, their extensive-form dimensions, attainable quality and
-resource requirements. Its relevance to agricultural computing lies in the
-integration of location/capacity decisions, seasonal grain flows, scenario
-replication, road-data provenance and independently validated outputs.
-It complements agricultural network-design and decision-support work rather
-than treating generic HPC use as sufficient novelty [@essien2018; @gholamian2017;
-@mardaneh2021].
+The computational contribution lies in connecting strategic grain-network
+structure to observed construction effort, memory requirements, attainable
+quality and the interpretation of returned plans. It complements the location
+and decision-support questions in @essien2018 and @gholamian2017 and the
+uncertainty concerns in @hosseini2020 and @reis2023. Their existence rules out
+a generic novelty claim based only on combining location and uncertainty.
 
-The HPC discussion concerns actual construction and memory-intensive solution
-work, resource scopes, limits of solver parallelism and the cost of verification.
-Distributed simulation or data-processing precedents do not establish a
-distributed MILP result here. The complementary Human–AI contribution documents
-how scientific assumptions and computational proposals were supervised and
-corrected; it does not quantify productivity or independently accredit the
-assistants. The article's central claim remains computational scalability
-under an explicit, inspectable scientific contract.
+The comparison with @shastri2011 is methodological: decomposition and distributed
+optimization address computational burden through a solution strategy, whereas
+this cohort examines a direct extensive-form implementation. Its times cannot
+be ranked against theirs without a matched model, data, equipment and stopping
+rule. Distributed simulation and spatial-processing studies likewise concern
+different workloads. The present observations support a configuration-specific
+assessment of attainable scale and resource use, with original feasibility and
+bound information, rather than an algorithmic superiority claim.
+
+C2 adds a related planning lesson. A quality-qualified penalized objective can
+coexist with substantial shortages and capacity exceedances, and the
+direct-enabled plans can reduce that objective while worsening domestic service.
+This is useful information about the encoded trade-off, but it does not convert
+uncalibrated artificial weights into observed economic damages or prove that
+the plans are ready for implementation.
+
+Integrated decision support requires connecting model outputs to their
+operational and institutional meaning [@mardaneh2021]. The complementary
+Human–AI account documents how scientific assumptions and computational
+proposals were supervised and checked; it does not quantify productivity or
+independently accredit the assistants. Appendix B retains that methodological
+detail while the article's central claim remains the bounded computational
+and agricultural assessment.
 
 # Final considerations, limitations and future work
 
-The accepted scalar cohort meets its declared 1% global-gap target for h215
-DET/STO, all five h300 thread observations and h400/h500 STO. It supports empirical
+The eleven accepted scalar observations meet the declared 1% global-gap target:
+h215 W DET/STO, five h300 W thread observations, h400/h500 W STO, and the
+separate h215 D DET/STO pair. Together, they support empirical
 computational characterization and an applied interpretation of the returned
 plans, including substantial investment and residual permitted shortages.
-It does not establish exact optimality, full service, a universal solver
+These observations do not establish exact optimality, full service, a universal solver
 frontier or a causal thread speedup.
 
 At h500, the retained gap is 0.207432%, native runtime is 7654.77 seconds
@@ -581,13 +683,13 @@ The separate scalar SCIP STO h215 W observation reached its four-hour native
 ceiling without an incumbent. Its original negative outcome and operational
 closure are retained separately from accepted feasible observations.
 One failure cannot establish a general limitation of open-source solvers.
-The longer eight-hour native SCIP observation is running at this revision's
-operational cutoff. The separate Pyomo/HiGHS attempt ended before a released
-worker was recorded; it provides no population-solve evidence. Completion of
-the longer SCIP review, diagnosis of HiGHS initialization and coauthor revision
-remain open. There is no new measured outcome of population optimization
-from these two attempts at this cutoff. Public Pyomo/HiGHS/CBC controls establish software qualification,
-rather than additional private-input numerical results. Unsupported
+The longer eight-hour native SCIP observation and the distinct HiGHS
+startup-v2 attempt are running in the latest supplied snapshot
+(@tbl-solver-evidence-status). The original HiGHS startup failure is preserved
+separately. There is no new measured outcome of population optimization from
+these two running attempts at this cutoff. Their terminal evidence and coauthor
+review remain open. Public Pyomo/HiGHS/CBC controls establish software
+qualification, rather than additional private-input numerical results. Unsupported
 indicator implications require proved equivalent treatment, not arbitrary
 Big-M coefficients or omitted constraints. Native reference implementations
 and their original certificates remain preserved. No new large-input solver result,

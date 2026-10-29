@@ -1,25 +1,26 @@
 # Model Agrologistic
 
-## Current scalar evidence and review — 28 October 2026
+## Current scalar evidence and coauthor review — 28 October 2026
 
-S5 is closed. The accepted scalar cohort contains **eleven Gurobi observations**:
-nine warehouse-only (W) observations through h500, plus the separate h215
-direct-enabled (D) pair. These are observations, not statistical replications.
-The original scalar SCIP h215 four-hour run reached its time limit with no
-usable incumbent. In the latest human-supplied snapshot, the distinct longer
-SCIP job 2226388 is running. HiGHS job 2226407 failed during worker startup;
-the audited original package supplies no evidence of a population solve.
-No HiGHS numerical conclusion or automatic retry follows.
+S5 is closed. Eleven accepted scalar Gurobi observations comprise nine
+warehouse-only cases through h500 and a separate h215 direct-enabled pair.
+The original SCIP four-hour case had no usable incumbent. Original HiGHS2226407
+failed at startup and supplies no population-solve evidence. Distinct longer
+SCIP2226388 and startup-repaired HiGHS2226536 were RUNNING in the last
+human-supplied snapshot; no terminal result or automatic repeat is inferred.
 
 Read the [current checkpoint](PROJECT_STATE.md),
-[results and scope](manuscript/README.md),
-[original HiGHS startup audit](docs/highs_h215_2226407_startup_audit.md) and
-[accelerated literature/document/article plan](docs/mvp2_editorial_parallel_plan_20261028.md).
-The [chat 01.04 research prompt](docs/chat0104_deep_research_prompt_20261028.md)
-includes all 36 retained bibliography records and both review-method records.
-Appendices B/C/D are being revised for coauthor review; this is not a completed
-literature reassessment or author approval. The public Pages article remains
-the dated 23 October snapshot until a separately authorized update.
+[article and results](manuscript/README.md),
+[opinion reconciliation and claim/source matrix](docs/literature_claims_reconciliation_20261028.md),
+[38-record disposition](docs/literature_disposition_20261028.json) and
+[current sprint/PR plan](docs/mvp2_completion_plan_20261028.md).
+The article now frames its empirical contribution against the closest
+precedents and distinguishes the 1% target from h500's attained 0.2074% gap.
+The complementary Human–AI account and revised Appendices B/C/D remain
+available. Full-text gaps and coauthor decisions are explicit.
+
+The public Pages article remains the dated 23 October review snapshot.
+This development revision does not deploy Pages or imply final author approval.
 
 ## Historical scalar transition — 19 October 2026
 

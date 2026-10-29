@@ -1,3 +1,26 @@
+## Current parallel completion plan — opinion received 28 October 2026
+
+PR136's B/C/D revision and PR137's startup-repair preparation are merged.
+The new manual submission consumed the distinct HiGHS2226536 claim. It and
+SCIP2226388 were RUNNING in the last supplied snapshot; collect those same
+jobs when terminal, without a new start. The original failed HiGHS2226407
+package remains separate. See [the checkpoint](evidence/parallel_solvers_20261028_running_v2.json).
+
+| Sprint / complete PR package | Work and present status | Exit / dependency |
+| --- | --- | --- |
+| B2 / PR138, current literature and article reconciliation | Adopt the returned 01.04 opinion against current develop; primary-source matrix,38-record disposition, narrowed C1/C2/C3, updated abstract/highlights/status | Exact-head CI, rendered/editable package and visual review; own merge approval. This is not a complete38-full-text review. |
+| X2 / terminal evidence PR, as originals arrive | Audit the two existing longer jobs independently; report usable incumbent, negative, censored or operational outcome without selecting only success | Original package/checksum/source/plan and full scientific/operational review; human collection/transfer only. No repeat or automatic fallback. |
+| D2 / documentary and coauthor reconciliation, already proceeding | Keep active entry points consistent, preserve historical records, compare Rosa's complete Chapter5 and current tables, examine inaccessible closest sources and Gao candidate | Source-located decisions and coauthor feedback; no claim of mathematical firstness or proven journal fit. |
+| A2 / integrated final article review | Read problem→precedents→model→computational evidence→agricultural mechanism; reconcile terminal evidence, captions, units, limitations and references | Depends on X2 evidence and human decisions, not solver success; own complete PR/merge. |
+| S6-B / submission package and final branch reconciliation | Editable sources/figures, declarations, CRediT/funding/rights, reproducibility and coauthor approval | Explicit final integration and publication/submission decisions. No closure/deployment is inferred from the present revisions. |
+
+Bibliographic and documentary work no longer waits for successful numerical
+experiments. The current [claim/source matrix and author action sheet](literature_claims_reconciliation_20261028.md)
+record what can already be adopted and what still requires complete texts or
+human judgment. The approved title/RQ/SO1–SO4, model, units, penalties, original
+certificates and supplied Appendix A remain unchanged. S5 stays closed;
+S6-A/coauthor work and S6-B remain open. Earlier dated plans below are history.
+
 ## Current HiGHS startup-repair preparation — 28 October 2026
 
 The researcher requests a distinct one-shot repair after the preserved original

@@ -1,32 +1,53 @@
 # Scientific manuscript — integrated scalar revision
 
-## Current coauthor revision — 28 October 2026
+## Current appendix reader and input review — 28 October 2026
 
-The accepted cohort remains eleven Gurobi observations: nine W scaling
-observations through h500 and the separate h215 D pair. The original scalar
-SCIP four-hour run is a separate negative numerical observation. The latest
-human snapshot records longer SCIP job 2226388 as running. Original HiGHS
-job 2226407 failed during startup; its audited package contains no worker
-entry or native model/solve products. Neither a HiGHS runtime limit nor an
-infeasibility result can be inferred.
+The pre-merge review now adds a reading route for non-specialists, seven
+Human–AI sections, practical model/data verification steps and pinned GitHub
+file links throughout B/C/D. Appendix D distinguishes the registered gold
+source, external candidate registry and the four exact processed inputs;
+reports actual source costs, all 27 freight coefficients and effective scalar
+settings; and identifies inspected same-name copies that were not substituted.
+The [input guide](../docs/evidence/appendix_input_reproduction_20261028.json)
+and [reader-review record](../docs/appendix_reader_review_20261028.md)
+make remaining access/validation limits explicit. Original Appendix A is unchanged.
 
-Appendices B/C/D now explain the supervised research process, model
-implementations and source-to-input transformations in connected scientific
-prose. The Pyomo section states the proof's exact scope: equal physical and
-investment projections and optimal scalar value under checked assumptions,
-rather than identical redundant-slack feasible sets or search behavior.
-GAMS compilation and numerical parity remain unperformed.
+The cloud document workflow checks actual public gold cells and pinned file
+links, renders both PDFs, retains the editable ZIP and emits standalone PDF
+artifacts. This permits PDF review in Codex tabs without a local application.
+After this PR's authorized merge, run the same workflow on exact develop to
+obtain develop-bound outputs; a pre-merge branch PDF is not a develop PDF.
 
-The [editorial reconciliation](../docs/editorial_reconciliation_20261028.md)
-documents the access levels for the six cited CEA precedents and the supplied
-Porporatto/Fumero/Corsano paper. The
-[complete chat 01.04 prompt](../docs/chat0104_deep_research_prompt_20261028.md)
-retains all 36 bibliography records and two review-method references.
-The [accelerated sprint plan](../docs/mvp2_editorial_parallel_plan_20261028.md)
-advances literature, documentation and article review while terminal experiments
-are reconciled. The gap assessment and all-author decisions remain open.
-No new experiment, Pages deployment, submission or merge is authorized by this
-documentation.
+## Current opinion and coauthor revision — 28 October 2026
+
+The accepted cohort remains eleven Gurobi observations: nine W cases through
+h500 and the separate D h215 pair. The original SCIP four-hour run is a negative
+numerical observation. Original HiGHS2226407 is an audited startup failure.
+Longer SCIP2226388 and distinct startup-repaired HiGHS2226536 were RUNNING
+in the latest supplied snapshot; scheduler state does not establish native
+optimization, terminal quality or accepted feasibility.
+
+The returned chat 01.04 opinion is reconciled against merged PR136/137.
+The revised introduction/abstract frame observed computational scale and
+agricultural trade-offs against the closest precedents. Highlights now identify
+eleven observations and separate the 1% target from the attained h500 gap.
+The approved title, RQ, SO1–SO4, authors, mathematics and original Appendix A
+remain preserved. Human–AI provenance remains complementary, as requested by
+the coauthors; Appendices B/C/D retain PR136's substantial prose revision.
+
+Read the [claim/source matrix and author actions](../docs/literature_claims_reconciliation_20261028.md),
+[38-record disposition](../docs/literature_disposition_20261028.json),
+[new running-job checkpoint](../docs/evidence/parallel_solvers_20261028_running_v2.json)
+and [parallel completion plan](../docs/mvp2_completion_plan_20261028.md).
+There are 36 retained main bibliography entries, 33 main-text citations and two
+review-method records; the whole inventory has not been reread in full.
+Rosa/SiloDSS overlap and target-journal fit require further author decisions.
+
+Pyomo's proof covers equal physical/investment projections and optimal scalar
+value under checked assumptions, rather than identical redundant-slack sets,
+LP relaxations or search. GAMS compilation and numerical parity remain
+unperformed. This is a working revision, not a new experiment, Pages deployment,
+journal submission or final author approval.
 
 ## Earlier dated checkpoints
 
@@ -96,6 +117,7 @@ template packages, and rsvg-convert for the shared workflow SVG:
 ```bash
 python scripts/build_manuscript_comparison.py --check
 python -m scripts.build_scalar_manuscript --check
+python -m scripts.build_wd_manuscript --check
 python -m scripts.build_s6a_assets
 python scripts/check_manuscript.py
 quarto render manuscript
@@ -140,7 +162,7 @@ retained as unimplemented historical material, not an active method.
 Appendix A incorporates all19 pages of the supplied review byte-for-byte,
 SHA256859dc52b64b6bcf471f7616182d8cadf2b693dbfd19ad4b9248637b5c231b3ed.
 Original search arithmetic and date issues are documented, not silently
-corrected. Appendix B contains six connected Human–AI sections; the main article has a
+corrected. Appendix B contains seven connected Human–AI sections; the main article has a
 bounded methodological passage, concise activity table and the same editable
 workflow figure. Retrospective AI accounts are not independent execution logs.
 

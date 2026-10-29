@@ -1,3 +1,22 @@
+# Current execution of the accelerated plan — 28 October 2026
+
+The returned 01.04 opinion is now being reconciled in PR138, following merged
+PR136's appendix revision and PR137's startup repair. Read the
+[current sprint/PR table](mvp2_completion_plan_20261028.md),
+[claim/source matrix and coauthor actions](literature_claims_reconciliation_20261028.md)
+and [38-record disposition](literature_disposition_20261028.json).
+B2/D1/A1 can advance together; original terminal evidence is needed only for
+final numerical integration. It is not necessary to wait for solver success.
+
+The last supplied snapshot has SCIP2226388 and new HiGHS2226536 RUNNING.
+The previous HiGHS2226407 failure remains preserved. No scheduler state is a
+native optimization result. The [new dated checkpoint](evidence/parallel_solvers_20261028_running_v2.json)
+supersedes the older active-job description without changing original receipts.
+
+The plan below records the initial handoff. Its E0/E1 deliverables were
+integrated in PR136; B1 has returned an opinion; B2 is this bounded reconciliation,
+not a claim that the entire full-text literature review is finished.
+
 # Accelerated reconciliation and coauthor sprints — 28 October 2026
 
 The researcher explicitly moves editorial work ahead while the bounded solver

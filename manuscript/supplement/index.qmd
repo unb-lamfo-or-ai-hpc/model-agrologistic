@@ -7,11 +7,28 @@ bibliography:
   - ../review-methods.bib
 ---
 
+## How to use this supplement
+
+For reproduction, begin with Appendix D: it identifies the actual source
+workbooks, explains their transformations and gives the executed numerical
+settings. Continue with Appendix C to connect those inputs to the model,
+small verification examples and independent validation. Appendix B explains
+how proposals, human decisions and experimental evidence were kept distinct.
+Appendix A preserves the supplied background review.
+
+The [current bibliography](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/manuscript/references.bib),
+[review-method references](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/manuscript/review-methods.bib) and
+[claim/source reconciliation](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/docs/literature_claims_reconciliation_20261028.md)
+support further reading. A linked software snapshot is a stable reading aid;
+each original result retains its own executed source and input identities.
+
 # Appendix A Literature review
 
 This appendix incorporates the complete 19-page researcher-supplied review,
 including its PRISMA figure, comparative tables, narrative synthesis and
-bibliography. The original file is retained byte-for-byte, SHA256
+bibliography. The [original PDF is also preserved on GitHub](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/manuscript/supplement/appendix_a_original.pdf).
+Its inclusion does not claim a new systematic search or a completed full-text
+assessment of every currently retained reference. The original file is retained byte-for-byte, SHA256
 859dc52b64b6bcf471f7616182d8cadf2b693dbfd19ad4b9248637b5c231b3ed.
 It replaces the earlier supplementary review rather than an AI condensation.
 Search/count/date details retain their original meaning. In particular,
@@ -194,6 +211,33 @@ guarantee correctness. Restricted inputs may still limit independent
 reproduction, and final scientific interpretation and publication require
 coauthor review. Formal authorship and CRediT assignments remain decisions of
 the human authors.
+
+
+## B7 Following the decision and verification record
+
+A reader need not reconstruct every conversation to inspect the scientific
+calculation. Begin with the [scalar mathematical contract](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/docs/mvp2_scalar_contract.md):
+it states the adopted objective and the scope of the three slacks. The
+[original h500 review](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/docs/evidence/scalar_h500_2220382_review.json)
+then identifies its executed source, input, objective/bound, original validation,
+phase times and resource observations. Appendix C links these records to the
+model implementation and validator; Appendix D identifies the corresponding
+spreadsheet values and transformations.
+
+This provides a concrete chain of questions. What scientific problem was
+approved? Which version and input represented it? What did the optimizer return?
+Did the exported decisions satisfy the original constraints, and what can their
+cost and service measures support? Each answer has a different source.
+For example, the original [HiGHS startup audit](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/docs/highs_h215_2226407_startup_audit.md)
+retains an operational failure, while the
+[running-job checkpoint](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/docs/evidence/parallel_solvers_20261028_running_v2.json)
+records later attempts without treating them as accepted solutions.
+
+The [literature claim/source matrix](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/docs/literature_claims_reconciliation_20261028.md)
+likewise records which scholarly statements are supported and where complete
+texts or human judgment remain necessary. These links make the account
+inspectable. They do not convert the source histories into controlled measures
+of AI performance or remove the need for independent scientific assessment.
 
 {{< include appendix_c.qmd >}}
 

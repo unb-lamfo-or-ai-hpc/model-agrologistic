@@ -48,6 +48,9 @@ def package(output: Path, *, root: Path = ROOT) -> None:
         "model_common.inc": supplement / "appendix_c/model_common.inc",
         "appendix_c_readme.md": supplement / "appendix_c/README.md",
         "appendix_d_inventory.json": supplement / "appendix_d_inventory.json",
+        "input_reproduction_guide.json": (
+            root / "docs/evidence/appendix_input_reproduction_20261028.json"
+        ),
     }.items():
         if path.is_file():
             payload[name] = path.read_bytes()
