@@ -31,6 +31,7 @@ from src.logic.optimization_gurobipy_stochastic import (
     _extract_warehouse_decisions,
 )
 from src.logic.pyomo_bounds import POLICY, candidate_slack_bounds
+from src.logic.pyomo_linear_matrix import matrix_identity
 from src.logic.route_filtering import select_routes
 
 PHASE_OBSERVER = ContextVar("pyomo_phase_observer", default=None)
@@ -43,14 +44,18 @@ def notify_phase(name):
         observer(name)
 
 
-SOLVERS = {"highs": "appsi_highs", "appsi_highs": "appsi_highs", "cbc": "cbc"}
+SOLVERS = {
+    "highs": "appsi_highs", "appsi_highs": "appsi_highs", "cbc": "cbc",
+    "gurobi": "appsi_gurobi", "appsi_gurobi": "appsi_gurobi",
+    "scip": "pyscipopt_linear", "pyscipopt_linear": "pyscipopt_linear",
+}
 
 
 def settings(config):
     name = config.solver_name.lower()
     if name not in SOLVERS:
         raise OptimizationBackendNotImplementedError(
-            f"Pyomo interface {name!r} is not qualified; choose highs/appsi_highs/cbc."
+            f"Pyomo interface {name!r} is unsupported; choose highs/gurobi/scip/cbc."
         )
     options = dict(config.solver_options)
     if options.pop("indicator_reformulation", None) != POLICY:
@@ -324,6 +329,10 @@ def solve_model_pyomo(data, model_config, solver_config):
     model = built.model
     adapter, result, failed = None, None, False
     try:
+        identity_started = perf_counter()
+        common_matrix = matrix_identity(model)
+        identity_seconds = perf_counter() - identity_started
+        effective_options, native_version, counters = None, None, {}
         if selected == "appsi_highs":
             from pyomo.contrib.appsi.solvers import Highs
 
@@ -367,6 +376,68 @@ def solve_model_pyomo(data, model_config, solver_config):
             native_runtime = finite(solved.wallclock_time)
             termination = str(solved.termination_condition)
             versions = {"pyomo": version("pyomo"), "highspy": version("highspy")}
+        elif selected == "appsi_gurobi":
+            from pyomo.contrib.appsi.solvers import Gurobi
+
+            adapter = Gurobi()
+            if not adapter.available():
+                raise RuntimeError("Existing gurobipy installation and license required.")
+            adapter.config.load_solution = False
+            adapter.config.stream_solver = solver_config.tee
+            adapter.config.time_limit = solver_config.time_limit
+            adapter.config.mip_gap = solver_config.mip_gap
+            if solver_config.log_file:
+                adapter.config.logfile = solver_config.log_file
+            adapter.gurobi_options.update({
+                "Threads": solver_config.threads or 1,
+                "Seed": solver_config.seed or 0,
+                "FeasibilityTol": 1e-9, "IntFeasTol": 1e-9,
+            })
+            transfer_started = perf_counter()
+            adapter.set_instance(model)
+            transfer_seconds = perf_counter() - transfer_started
+            build_seconds = perf_counter() - started
+            optimization_started = perf_counter()
+            notify_phase("optimization")
+            solved = adapter.solve(model)
+            notify_phase("native_return")
+            optimization_seconds = perf_counter() - optimization_started
+            native = adapter._solver_model
+            usable = native.SolCount > 0
+            objective = finite(solved.best_feasible_objective) if usable else None
+            bound = finite(solved.best_objective_bound)
+            if usable:
+                adapter.load_vars()
+            native_gap = finite(native.MIPGap) if usable and native.IsMIP else None
+            native_runtime = finite(native.Runtime)
+            termination = str(solved.termination_condition)
+            effective_options = {
+                key: native.getParamInfo(key)[2] for key in (
+                    "TimeLimit", "MIPGap", "Threads", "Seed", "FeasibilityTol", "IntFeasTol",
+                    "Presolve", "Method", "NodeMethod", "Heuristics", "Cuts", "ConcurrentMIP",
+                )
+            }
+            versions = {"pyomo": version("pyomo"), "gurobipy": version("gurobipy")}
+            counters = {"nodes": native.NodeCount, "lp_iterations": native.IterCount}
+        elif selected == "pyscipopt_linear":
+            from src.logic.pyomo_scip_adapter import ScipAdapter
+
+            adapter = ScipAdapter()
+            transfer_started = perf_counter()
+            adapter.set_instance(model, solver_config)
+            transfer_seconds = perf_counter() - transfer_started
+            build_seconds = perf_counter() - started
+            optimization_started = perf_counter()
+            notify_phase("optimization")
+            solved = adapter.solve()
+            notify_phase("native_return")
+            optimization_seconds = perf_counter() - optimization_started
+            usable = solved.usable
+            objective, bound = finite(solved.objective), finite(solved.bound)
+            native_gap, native_runtime = finite(solved.gap), finite(solved.runtime)
+            termination = solved.termination
+            effective_options, versions = solved.parameters, solved.versions
+            counters = solved.counters
         else:
             adapter = pyo.SolverFactory("cbc")
             if not adapter.available(exception_flag=False):
@@ -419,11 +490,17 @@ def solve_model_pyomo(data, model_config, solver_config):
             "pyomo_native_gap": native_gap,
             "effective_highs_options": effective_options if selected == "appsi_highs" else None,
             "highs_native_version": native_version if selected == "appsi_highs" else None,
+            "effective_native_options": effective_options,
+            "requested_cbc_options": dict(adapter.options) if selected == "cbc" else None,
+            "common_linear_matrix": common_matrix,
+            "native_counters": counters,
+            "seed_qualification": "Native randomness control, not a shared initial solution.",
             "requested_threads": solver_config.threads,
             "matrix": {"variables": built.variable_count, "constraints": len(model.rows)},
             "timings": {
                 "model_build_seconds": build_seconds,
                 "solver_transfer_seconds": transfer_seconds,
+                "matrix_identity_seconds": identity_seconds,
                 "optimization_seconds": optimization_seconds,
                 "solver_reported_runtime_seconds": native_runtime,
             },
@@ -455,6 +532,16 @@ def solve_model_pyomo(data, model_config, solver_config):
                 cached = getattr(adapter, "_last_results_object", None)
                 if cached is not None:
                     cached.solution_loader.invalidate()
+            elif adapter is not None and selected == "appsi_gurobi":
+                native = getattr(adapter, "_solver_model", None)
+                if native is not None:
+                    native.dispose()
+                    adapter._solver_model = None
+                cached = getattr(adapter, "_last_results_object", None)
+                if cached is not None:
+                    cached.solution_loader.invalidate()
+            elif adapter is not None and selected == "pyscipopt_linear":
+                adapter.close()
             model.clear()
             if result is not None:
                 result.metadata["native_model_lifecycle"] = [{

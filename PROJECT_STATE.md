@@ -1,3 +1,58 @@
+# Public Pyomo qualification complete — 29 October 2026
+
+Qualification-v2 job2227458/sourcef166f60c/plandc41c8b7 returned accepted:
+168tests,0failures/errors/skips, pytest exit0, source verified after, no h215.
+Original v1/job2227457 remains rejected and preserved. The fixture-only fix
+separates login existing-claim protection from compute start protection.
+See docs/evidence/pyomo_qualification_2227458.json.
+Public four-adapter correctness/target-platform qualification is complete.
+Save final records and request PR140's own merge; no scientific h215 admission
+follows. Continue a separate operational PR/package for three fresh Pyomo
+h215 STO/W8h observations (Gurobi/SCIP/CBC), preserving original HiGHS and claims.
+No HPC agent access, automatic retries or main publication.
+
+# Qualification2227457 diagnosed; fresh v2 preparation — 29 October 2026
+
+Original167public tests:166passed,1failed,0errors/skips, source verified after.
+The only failure was a login-guard test inheriting SLURM_JOB_ID on compute,
+not a numerical solver failure. Preserve the original REJECTED result and v1
+claim. The test now simulates login explicitly; a new compute-context control
+preserves the real start guard. No production/runtime or scientific setting changed.
+Local Ruff and2guard tests passed;48portable preparation/startup controls passed.
+A predecessor-bound qualification-v2 requires all168target tests with0failures,
+errors or skips and post-test integrity. It is prepared, not submitted by Codex.
+See docs/pyomo_qualification_2227457_diagnosis.md.
+PR140 remains DRAFT; h215Gurobi/SCIP/CBC preparation continues without execution.
+
+# Public Pyomo qualification2227457 — 29 October 2026
+
+The researcher supplied original plan9b5eb14b/sourcefd4ef123 and result.json:
+167tests,1failure,0errors,0skips,pytest exit1,status rejected; source verified
+after the tests. This is PUBLIC software qualification, never an h215 solve.
+Failed test identity/traceback and scheduler terminal accounting are not supplied.
+Read-only original XML/log inspection has been requested. Keep PR140 DRAFT,
+preserve qualification-v1 and do not retry or loosen tests. Diagnose the actual
+failure before any repair/requalification; h215Gurobi/SCIP/CBC release is held.
+See docs/evidence/pyomo_qualification_2227457.json.
+Local code/Ruff remain autonomous; every NPAD action and merge stays human.
+
+# Pyomo adapter continuation after PR139 — 29 October 2026
+
+PR139 merged with explicit authorization at8740dc5771ae87b95e49c649abad0a8deb4631da.
+The next PR implements Gurobi/APPSI and SCIP/PySCIPOpt from the common Pyomo
+linear form, with exact ordered algebra hashes, effective options and cleanup.
+Public local tests:66functional plus2exception-disposal plus8preparation-safety;
+146related portable controls also pass. Windows cannot qualify Linux resource/
+proc startup checks; those are explicit remaining compute-node gates, not skips.
+See docs/pyomo_native_adapters.md and its qualification evidence JSON.
+The human NPAD inventory has matching Python3.13.15/Pyomo/Gurobi/SCIP/HiGHS
+packages, but no CBC executable. The official CBC2.10.13 static Linux archive
+and binary are hash-verified; compatibility is still pending actual target use.
+Prepare public exact-source qualification first, then separately release the
+three NEW common-form h215 STO/W8h observations after full operational controls.
+Do not reuse consumed claims or repeat HiGHS. NPAD stays manual; local CLI is
+autonomous. Keep this PR draft; no new private experiment or merge admitted.
+
 # PR139 source qualification complete — 29 October 2026
 
 The researcher reports and the retained local transcript confirms sourceaf60e234

@@ -1,5 +1,39 @@
 # Model Agrologistic: agent working agreement
 
+## Current completed adapter qualification — 29 October 2026
+
+Public NPAD qualification-v2/job2227458/sourcef166f60c/plandc41c8b7 passed
+all168tests with0failures/errors/skips, source verified after and original v1
+predecessor preserved. This completes public Gurobi/SCIP/HiGHS/CBC adapter
+qualification. Keep original job2227457 REJECTED; its sole issue was the login
+test's inherited Slurm environment, fixed in the test only with an additional
+compute refusal control. No runtime guard or scientific rule was relaxed.
+PR140's final record changes only docs/evidence/working agreement; request
+its own explicit merge. It does NOT admit private h215 execution. Next prepare
+a separate operational package/PR for one NEW h215 STO/W8h arm each for Pyomo
+Gurobi, SCIP and CBC, with own source/plans/claims, startup/resource/phase/
+terminal/collection controls and frozen W input/OSRM/membership contract.
+Local code/Ruff are autonomous; NPAD and each merge remain human gates.
+
+## Current Pyomo adapter implementation — 29 October 2026
+
+PR139 was explicitly authorized and merged at8740dc5771ae87b95e49c649abad0a8deb4631da.
+This separate PR adds Gurobi/APPSI and a PySCIPOpt transfer adapter for the SAME
+bounded Pyomo extensive form used by HiGHS/CBC, with a common ordered matrix
+identity, native settings/counters and cleanup. Native scientific builders and
+all historical artifacts remain unchanged. Windows public controls passed;
+Linux/public compute qualification is pending. Keep this PR DRAFT until its
+own target qualification. Never treat local tiny tests as h215 admission.
+Human NPAD inventory confirms the four Python packages, but CBC is absent.
+A verified official static CBC is prepared only under the dedicated audit path;
+scripts/qualify_pyomo_adapters.py prepares exact-source PUBLIC compute tests
+without submitting a scheduler job. Every NPAD command is manual.
+Then prepare ONE fresh h215 STO/W8h observation each for Pyomo Gurobi, SCIP,
+CBC with own claims/source/plan; existing HiGHS is preserved, never restarted.
+Local PowerShell/Ruff/code are autonomous in approved temporary directories,
+existing venv313 only. No native GUI or new clone/environment. Each merge still
+requires explicit researcher approval; no cloud temporary outputs or publish.
+
 ## Current local CLI autonomy — 29 October 2026
 
 The researcher now explicitly authorizes Codex to execute local PowerShell,

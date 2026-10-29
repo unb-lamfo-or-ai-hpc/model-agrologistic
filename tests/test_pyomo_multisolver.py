@@ -1,4 +1,4 @@
-"""Public real Pyomo HiGHS/CBC controls; no private inputs, scheduler or HPC."""
+"""Public real Pyomo solver controls; no private inputs, scheduler or HPC."""
 
 import copy
 import importlib.util
@@ -27,6 +27,8 @@ def available(solver):
         importlib.util.find_spec("pyomo") is None
         or (solver == "highs" and importlib.util.find_spec("highspy") is None)
         or (solver == "cbc" and shutil.which("cbc") is None)
+        or (solver == "gurobi" and importlib.util.find_spec("gurobipy") is None)
+        or (solver == "scip" and importlib.util.find_spec("pyscipopt") is None)
     )
     if missing:
         if required:
@@ -52,7 +54,7 @@ def test_reformulation_is_explicit_and_solver_options_are_not_silently_remapped(
         ))
 
 
-@pytest.mark.parametrize("solver", ["highs", "cbc"])
+@pytest.mark.parametrize("solver", ["highs", "cbc", "gurobi", "scip"])
 def test_real_det_sto_hand_calculated_cost_and_independent_certificate(solver):
     data = economic_data()
     before = copy.deepcopy(data)
@@ -73,7 +75,7 @@ def test_real_det_sto_hand_calculated_cost_and_independent_certificate(solver):
     json.dumps(result.metadata, allow_nan=False)
 
 
-@pytest.mark.parametrize("solver", ["highs", "cbc"])
+@pytest.mark.parametrize("solver", ["highs", "cbc", "gurobi", "scip"])
 @pytest.mark.parametrize("kind", ["unmet", "static", "reception"])
 def test_three_slacks_units_and_costs(solver, kind):
     data = economic_data()
@@ -93,7 +95,7 @@ def test_three_slacks_units_and_costs(solver, kind):
     assert_validation(data, ModelConfig(), result)
 
 
-@pytest.mark.parametrize("solver", ["highs", "cbc"])
+@pytest.mark.parametrize("solver", ["highs", "cbc", "gurobi", "scip"])
 def test_unequal_probabilities_and_scenario_split_count_investment_once(solver):
     data = scenario_data(economic_data(), {"low": 0.25, "high": 0.75})
     data.supply_s["high", "O", "P", "t"] = 6
@@ -120,7 +122,7 @@ def test_unequal_probabilities_and_scenario_split_count_investment_once(solver):
     assert_validation(split, replace(cfg, mode="sto"), sto)
 
 
-@pytest.mark.parametrize("solver", ["highs", "cbc"])
+@pytest.mark.parametrize("solver", ["highs", "cbc", "gurobi", "scip"])
 def test_infeasible_no_incumbent_never_exports_zero_cost_or_decisions(solver):
     data = economic_data()
     data.static_capacity["W"] = 0
@@ -134,7 +136,7 @@ def test_infeasible_no_incumbent_never_exports_zero_cost_or_decisions(solver):
     assert result.metadata["native_model_lifecycle"][0]["status"] == "disposed"
 
 
-@pytest.mark.parametrize("solver", ["highs", "cbc"])
+@pytest.mark.parametrize("solver", ["highs", "cbc", "gurobi", "scip"])
 def test_public_parity_against_native_reference(solver):
     result = solve_model(economic_data(), ModelConfig(), config(solver))
     reference = solve_model(economic_data(), ModelConfig(), qualified_solver("gurobipy"))
@@ -177,14 +179,14 @@ def test_cumulative_inventory_bound_includes_previous_periods_and_initial_stock(
     assert bounds["static"]["s", "W", "u"] == 21
 
 
-@pytest.mark.parametrize("solver", ["highs", "cbc"])
+@pytest.mark.parametrize("solver", ["highs", "cbc", "gurobi", "scip"])
 def test_guard_precedes_model_allocation_and_solver_launch(solver):
     available(solver)
     with pytest.raises(ValueError, match="guard exceeded"):
         build_model(economic_data(), ModelConfig(), max_variables=1)
 
 
-@pytest.mark.parametrize("solver", ["highs", "cbc"])
+@pytest.mark.parametrize("solver", ["highs", "cbc", "gurobi", "scip"])
 @pytest.mark.parametrize("mode", ["det", "sto"])
 def test_excel_export_original_validation_and_immutable_completion(tmp_path, solver, mode):
     from src.logic.excel_loader import ExcelLoaderConfig
@@ -209,7 +211,7 @@ def test_excel_export_original_validation_and_immutable_completion(tmp_path, sol
     assert (run / "run_completion.json").read_bytes() == receipt
 
 
-@pytest.mark.parametrize("solver", ["highs", "cbc"])
+@pytest.mark.parametrize("solver", ["highs", "cbc", "gurobi", "scip"])
 def test_active_candidate_slacks_have_unchanged_stock_and_period_units(solver):
     data = economic_data()
     data.existing_warehouses = []
@@ -261,7 +263,7 @@ def test_native_handle_and_model_are_cleared_when_adapter_raises(monkeypatch):
     assert len(list(calls[0].component_objects())) == 0
 
 
-@pytest.mark.parametrize("solver", ["highs", "cbc"])
+@pytest.mark.parametrize("solver", ["highs", "cbc", "gurobi", "scip"])
 def test_real_unbounded_control_never_publishes_a_finite_optimum(solver):
     data = economic_data()
     # Public adverse control only: an existing-facility slack has no upper bound.
