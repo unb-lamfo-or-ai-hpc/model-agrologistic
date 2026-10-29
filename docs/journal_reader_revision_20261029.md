@@ -147,3 +147,35 @@ accepted claim. It explicitly reports whether native result metadata was reread.
 Original residual recalculation and full operational replay remain unperformed.
 Per-observation reports are written independently so one failure no longer hides
 the other job. Five dependency-free self-tests precede the next local handoff.
+
+## Completed local package integrity and certificate inspection
+
+The researcher ran the b7a7165e inspector; five controls passed and both original
+integrity inspections completed. SCIP:87 safe members,86 inventory digests,
+576 original source files matched, original planacf55202… . HiGHS:98 members,
+97 inventory digests,601 source files,17 completion artifacts, source009119a0
+and plana369659f… . Both retained input receipts match historical W.
+The large HiGHS result.json70,769,592bytes was fully hashed as57cebb07…,
+not parsed. Native terminal/log, original accepted certificate, cost arithmetic,
+input binding and controller records were inspected; no fresh residual solve
+or complete operational replay was performed.
+
+HiGHS's original residual families have zero failed checks at1e-5/1e-8;
+nonzero accepted cost/objective reconstruction residuals are retained. Its native
+terminal confirms the28800s allowance,4threads,1% target and bounded-slack proof.
+The log records parallel search off/one max worker,1processed node and2,901,682
+LP iterations. These are observed backend diagnostics, not causal explanations.
+The result can be included as one separate validated Pyomo/APPSI observation,
+not pooled into the eleven Gurobi observations or interpreted as a speedup.
+
+SCIP's completion record remains running and has no artifact map, original
+validation or native terminal record. The controller issued TERM and Slurm
+records stepCANCELLED0:15. The log ends after565s of presolve; retained evidence
+does not prove root-LP completion or the ValueError that initiated cancellation.
+No further HPC execution is needed to report this as a censored forensic attempt.
+
+The local document check stopped before tests because Ruff was absent. The
+researcher installed only Ruff0.16.6 in the existing venv313. Existing pytest,
+openpyxl,numpy,pandas,gurobipy,PyYAML,requests were reported; rendering libraries
+reportlab,pypdf,matplotlib are absent. No further installation is needed for the
+source-only checks; local render requirements remain a separate decision.
