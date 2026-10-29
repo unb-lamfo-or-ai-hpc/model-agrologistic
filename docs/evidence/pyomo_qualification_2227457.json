@@ -1,0 +1,27 @@
+{
+  "schema_version": "public-pyomo-qualification-observation-v1",
+  "date": "2026-10-29",
+  "source": "researcher-pasted original preparation and result.json",
+  "source_commit": "fd4ef12352578fce5ef0ea9f9fdb82b2a06924c4",
+  "job_id": "2227457",
+  "plan_sha256": "9b5eb14b38651aaf9729aa86b462aefd5419717ab039e8befd40eef4d4c49802",
+  "claim": ".mvp2-pyomo-adapter-qualification-v1",
+  "pytest_exit": 1,
+  "counts": {
+    "tests": 167,
+    "failures": 1,
+    "errors": 0,
+    "skipped": 0
+  },
+  "status": "rejected",
+  "source_verified_after": true,
+  "private_h215_execution_admitted": false,
+  "scientific_h215_solve_performed": false,
+  "failed_test_identity": null,
+  "failure_diagnosis": null,
+  "scheduler_terminal_receipt": null,
+  "xml_sha256": null,
+  "scope": "Original human terminal report; read-only failure XML/log inspection requested, not yet supplied.",
+  "automatic_retry": false,
+  "preserve_original_claim": true
+}

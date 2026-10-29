@@ -1,3 +1,15 @@
+# Public Pyomo qualification2227457 — 29 October 2026
+
+The researcher supplied original plan9b5eb14b/sourcefd4ef123 and result.json:
+167tests,1failure,0errors,0skips,pytest exit1,status rejected; source verified
+after the tests. This is PUBLIC software qualification, never an h215 solve.
+Failed test identity/traceback and scheduler terminal accounting are not supplied.
+Read-only original XML/log inspection has been requested. Keep PR140 DRAFT,
+preserve qualification-v1 and do not retry or loosen tests. Diagnose the actual
+failure before any repair/requalification; h215Gurobi/SCIP/CBC release is held.
+See docs/evidence/pyomo_qualification_2227457.json.
+Local code/Ruff remain autonomous; every NPAD action and merge stays human.
+
 # Pyomo adapter continuation after PR139 — 29 October 2026
 
 PR139 merged with explicit authorization at8740dc5771ae87b95e49c649abad0a8deb4631da.
