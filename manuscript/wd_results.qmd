@@ -1,4 +1,4 @@
-## Controlled h215 topology comparison: historical W and new D
+## h215 comparison of warehouse-only and direct-enabled networks
 
 This separate comparison adds two accepted D observations to the nine-observation warehouse-only scalability cohort above. W forbids direct origin-to-customer arcs; D permits them in addition to warehouse-mediated routes. The same frozen h215 input, 215-member population, common OD/DC/DD arcs, costs, indexed penalties, original DET arrays and nine equiprobable STO scenarios were checked. D adds 592 OC arcs and 35,520 DET/319,680 STO flow variables. Both use four solver threads and a global 14,400-second ceiling per arm, MIPGap=0.01 and the same scientific implementation. W job2217990 is a historical control, not a contemporaneous runtime replicate.
 

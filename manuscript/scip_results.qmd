@@ -1,8 +1,8 @@
 ## Separate scalar SCIP h215 W observation
 
-A separately audited cold scalar STO/W observation used PySCIPOpt 6.2.1,
+A cold scalar STO/W observation used PySCIPOpt 6.2.1,
 SCIP 10.0.2 and SoPlex 8.0.2, with the frozen h215 workbook, nine equiprobable
-scenarios and unchanged mathematical/penalty contract. Job2225638 completed
+scenarios and unchanged mathematical/penalty contract. The computational process completed
 operationally, but the native solve reached its time limit with **zero solutions**.
 
 | Quantity | Original SCIP observation |

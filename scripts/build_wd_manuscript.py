@@ -12,7 +12,7 @@ def results(record):
     assert record["D_job_id"] == "2221443" and record["W_job_id"] == "2217990"
     assert record["penalty_rates"] == {"unmet": 90000, "static": 45000, "reception": 45000}
     lines = [
-        "## Controlled h215 topology comparison: historical W and new D\n",
+        "## h215 comparison of warehouse-only and direct-enabled networks\n",
         "This separate comparison adds two accepted D observations to the nine-observation "
         "warehouse-only scalability cohort above. W forbids direct origin-to-customer arcs; "
         "D permits them in addition to warehouse-mediated routes. The same frozen h215 input, "
