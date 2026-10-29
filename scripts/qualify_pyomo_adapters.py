@@ -18,6 +18,7 @@ TESTS = (
     "tests/test_scalar_contract.py", "tests/test_scalar_highs_math.py",
     "tests/test_scalar_highs_h215_8h_startup.py",
 )
+EXPECTED_TESTS = 167
 VERSIONS = {
     "pyomo": "6.10.1", "gurobipy": "13.0.3", "pyscipopt": "6.2.1", "highspy": "1.15.1",
 }
@@ -122,6 +123,7 @@ def prepare(claim, source_archive, cbc_archive, sha):
         "source_commit": sha, "source_archive_sha256": digest(source_archive),
         "source_files": files, "cbc_archive_sha256": CBC_SHA, "cbc_sha256": binary_sha,
         "python": sys.executable, "packages": versions, "tests": list(TESTS),
+        "expected_test_count": EXPECTED_TESTS,
         "private_h215_execution_admitted": False, "automatic_retry": False,
     }
     write_json(claim / "plan.json", plan)
@@ -144,6 +146,7 @@ def run(claim, sha):
     plan = json.loads((claim / "plan.json").read_text(encoding="utf-8"))
     if (
         plan["source_commit"] != sha or plan["tests"] != list(TESTS)
+        or plan["expected_test_count"] != EXPECTED_TESTS
         or not os.environ.get("SLURM_JOB_ID") or not os.environ.get("SLURM_STEP_ID")
         or plan["private_h215_execution_admitted"] is not False
         or Path(sys.executable) != Path(plan["python"])
@@ -154,7 +157,10 @@ def run(claim, sha):
         if PurePosixPath(name).is_absolute() or ".." in PurePosixPath(name).parts:
             raise ValueError("Unsafe source inventory path.")
         path = source / name
-        if path.is_symlink() or not path.is_file() or digest(path) != expected:
+        if (
+            not path.resolve().is_relative_to(source.resolve())
+            or path.is_symlink() or not path.is_file() or digest(path) != expected
+        ):
             raise ValueError("Qualification source drift: " + name)
     if {name: importlib.metadata.version(name) for name in VERSIONS} != plan["packages"]:
         raise ValueError("Compute packages differ from the recorded inventory.")
@@ -167,6 +173,8 @@ def run(claim, sha):
         "TMPDIR": str(temporary), "TMP": str(temporary), "TEMP": str(temporary),
         "AGRO_REQUIRE_PYOMO_SOLVERS": "1", "AGRO_REQUIRE_NATIVE_SOLVERS": "1",
         "PYTHONDONTWRITEBYTECODE": "1", "PYTHONNOUSERSITE": "1",
+        "PYTEST_ADDOPTS": "",
+        "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1",
     })
     os.chdir(source)
     sys.path.insert(0, str(source))
@@ -178,13 +186,17 @@ def run(claim, sha):
     suites = list(et.fromstring(xml.read_bytes()).iter("testsuite"))
     counts = {key: sum(int(s.get(key, 0)) for s in suites)
               for key in ("tests", "failures", "errors", "skipped")}
-    accepted = code == 0 and counts["tests"] > 0 and all(
+    source_verified_after = all(
+        digest(source / name) == expected for name, expected in plan["source_files"].items()
+    ) and digest(claim / "cbc-bin/cbc") == plan["cbc_sha256"]
+    accepted = source_verified_after and code == 0 and counts["tests"] == EXPECTED_TESTS and all(
         counts[key] == 0 for key in ("failures", "errors", "skipped")
     )
     record = {
         "source_commit": sha, "job_id": os.environ["SLURM_JOB_ID"],
         "plan_sha256": digest(claim / "plan.json"), "pytest_exit": int(code),
         "counts": counts, "status": "accepted" if accepted else "rejected",
+        "source_verified_after": source_verified_after,
         "private_h215_execution_admitted": False,
     }
     write_json(claim / "result.json", record)

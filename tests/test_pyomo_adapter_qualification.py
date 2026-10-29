@@ -70,6 +70,7 @@ def test_qualification_is_public_and_not_an_h215_execution_admission():
     assert all(name.startswith("tests/test_") for name in q.TESTS)
     assert "tests/test_pyomo_solver_adapters.py" in q.TESTS
     assert "tests/test_scalar_highs_math.py" in q.TESTS
+    assert q.EXPECTED_TESTS == 167
 
 
 def test_human_home_root_cannot_be_a_qualification_claim(tmp_path):
