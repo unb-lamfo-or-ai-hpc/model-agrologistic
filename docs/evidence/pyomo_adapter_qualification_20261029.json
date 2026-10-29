@@ -37,7 +37,9 @@
       "skipped": 0,
       "scope": "scalar contract52, historical HiGHS operational34, manuscript60"
     },
-    "target_only_remaining": {
+    "dependencies": "official wheels unpacked in approved temporary directory, process-local PYTHONPATH; existing environment unchanged",
+    "gurobi_license": "bundled restricted license for public tiny models; inherited expired GRB_LICENSE_FILE removed only in child test process; no persistent change",
+    "windows_unavailable_checks": {
       "linux_resource_module_test": "collection unavailable on Windows; required on NPAD",
       "historical_linux_bootstrap": {
         "tests": 44,
@@ -45,9 +47,7 @@
         "windows_failures": 3,
         "reason": "Linux /proc process identity unavailable; no Windows-portability change to the historical bootstrap"
       }
-    },
-    "dependencies": "official wheels unpacked in approved temporary directory, process-local PYTHONPATH; existing environment unchanged",
-    "gurobi_license": "bundled restricted license for public tiny models; inherited expired GRB_LICENSE_FILE removed only in child test process; no persistent change"
+    }
   },
   "tested_files": {
     "src/logic/optimization_pyomo.py": "2e34aff718b83e10f3e9fb5b869e33af78a754dde314ebc3976ada4d4516c785",
@@ -66,7 +66,8 @@
     "executable_sha256": "d7b39260dc23a7b8441db4511242d6bb314f9deb97d5d44bcd6561774587517e",
     "elf_interpreter_present": false,
     "glibc_dynamic_version_requirements_found": [],
-    "npad_execution_qualified": false
+    "npad_execution_qualified": true,
+    "npad_qualification_scope": "Public small/medium controls in job2227458; not h215 resource/admission."
   },
   "npad_inventory": {
     "scope": "human read-only metadata; no solver/scheduler/files",
@@ -95,10 +96,12 @@
     "source_verified_after_required": true,
     "scheduler_submitted_by_agent": false,
     "h215_inputs_used": false,
-    "target_result": "requalification_v2_pending",
+    "target_result": "accepted_v2",
     "original_rejected_result": "docs/evidence/pyomo_qualification_2227457.json",
     "new_claim": ".mvp2-pyomo-adapter-qualification-v2",
-    "predecessor_bound": true
+    "predecessor_bound": true,
+    "qualified_source_commit": "f166f60c1600057dea2a4538ef7e6c2aed372dd8",
+    "observation": "docs/evidence/pyomo_qualification_2227458.json"
   },
   "repair_checks": {
     "ruff": "passed",

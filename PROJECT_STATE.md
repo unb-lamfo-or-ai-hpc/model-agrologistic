@@ -1,3 +1,16 @@
+# Public Pyomo qualification complete — 29 October 2026
+
+Qualification-v2 job2227458/sourcef166f60c/plandc41c8b7 returned accepted:
+168tests,0failures/errors/skips, pytest exit0, source verified after, no h215.
+Original v1/job2227457 remains rejected and preserved. The fixture-only fix
+separates login existing-claim protection from compute start protection.
+See docs/evidence/pyomo_qualification_2227458.json.
+Public four-adapter correctness/target-platform qualification is complete.
+Save final records and request PR140's own merge; no scientific h215 admission
+follows. Continue a separate operational PR/package for three fresh Pyomo
+h215 STO/W8h observations (Gurobi/SCIP/CBC), preserving original HiGHS and claims.
+No HPC agent access, automatic retries or main publication.
+
 # Qualification2227457 diagnosed; fresh v2 preparation — 29 October 2026
 
 Original167public tests:166passed,1failed,0errors/skips, source verified after.

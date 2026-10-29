@@ -1,10 +1,13 @@
 # Common Pyomo formulation with Gurobi and SCIP
 
-Target update29October: original public job2227457 ran167tests,166passed and
-one login-context test failed because it inherited a real SLURM_JOB_ID.
-The original result stays rejected. A fixture-only repair plus an explicit
-compute-context guard test are prepared; the fresh predecessor-bound v2 must
-pass all168tests. See [diagnosis](pyomo_qualification_2227457_diagnosis.md).
+Target update29October: public v2/job2227458 passed all168tests with zero
+failures/errors/skips and verified source integrity after testing. It verifies
+the untouched v1 predecessor. Public four-adapter qualification is complete;
+private h215 resource/admission qualification remains separate. Original
+job2227457 stays rejected:166passed/one login-context test failure, repaired
+only in the test fixture with an additional compute-refusal control.
+See [accepted v2](evidence/pyomo_qualification_2227458.json) and
+[original diagnosis](pyomo_qualification_2227457_diagnosis.md).
 
 PR139 consolidated the journal-reader revision and original solver evidence and
 was merged into develop at8740dc5771ae87b95e49c649abad0a8deb4631da with explicit

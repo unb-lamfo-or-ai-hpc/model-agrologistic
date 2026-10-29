@@ -1,5 +1,20 @@
 # Model Agrologistic: agent working agreement
 
+## Current completed adapter qualification — 29 October 2026
+
+Public NPAD qualification-v2/job2227458/sourcef166f60c/plandc41c8b7 passed
+all168tests with0failures/errors/skips, source verified after and original v1
+predecessor preserved. This completes public Gurobi/SCIP/HiGHS/CBC adapter
+qualification. Keep original job2227457 REJECTED; its sole issue was the login
+test's inherited Slurm environment, fixed in the test only with an additional
+compute refusal control. No runtime guard or scientific rule was relaxed.
+PR140's final record changes only docs/evidence/working agreement; request
+its own explicit merge. It does NOT admit private h215 execution. Next prepare
+a separate operational package/PR for one NEW h215 STO/W8h arm each for Pyomo
+Gurobi, SCIP and CBC, with own source/plans/claims, startup/resource/phase/
+terminal/collection controls and frozen W input/OSRM/membership contract.
+Local code/Ruff are autonomous; NPAD and each merge remain human gates.
+
 ## Current Pyomo adapter implementation — 29 October 2026
 
 PR139 was explicitly authorized and merged at8740dc5771ae87b95e49c649abad0a8deb4631da.
