@@ -102,7 +102,11 @@ def build(output: Path) -> None:
         }
         for label, path in documents.items()
     }
-    download_data = json.dumps(downloads, ensure_ascii=True)
+    download_links = "".join(
+        f'<a download="{html.escape(pdf["filename"])}" '
+        f'href="data:application/pdf;base64,{pdf["data"]}">{label} PDF</a>'
+        for label, pdf in downloads.items()
+    )
     data = json.dumps(pages, ensure_ascii=True)
     options = "".join(
         f'<option value="{i}">{html.escape(page["label"])}</option>'
@@ -120,17 +124,11 @@ def build(output: Path) -> None:
         '<b>Model Agrologistic: PDF visual review</b>'
         f'<small>Source commit: {html.escape(source_sha)}. '
         'Page images only; standalone PDFs remain the document outputs.</small>'
-        '<div id="downloads"></div>'
+        f'<div id="downloads">{download_links}</div>'
         f'<label>Page <select id="choice">{options}</select></label>'
         '<button id="previous">Previous</button><button id="next">Next</button>'
         '</header><img id="page" alt="PDF page"><script>'
-        f'const pages={data};const originals={download_data};'
-        'for(const [label,pdf] of Object.entries(originals)){'
-        'const bytes=Uint8Array.from(atob(pdf.data),c=>c.charCodeAt(0));'
-        'const a=document.createElement("a");'
-        'a.href=URL.createObjectURL(new Blob([bytes],{type:"application/pdf"}));'
-        'a.download=pdf.filename;a.textContent=label+" PDF";'
-        'document.getElementById("downloads").appendChild(a);}'
+        f'const pages={data};'
         'const choice=document.getElementById("choice");'
         'function show(){const p=pages[Number(choice.value)];'
         'document.getElementById("page").src=p.image;'
