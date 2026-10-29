@@ -1,4 +1,32 @@
-# PAUSED — researcher checkpoint, 29 October 2026
+# Resumed research assessment — 29 October 2026
+
+The researcher explicitly resumed the work and requested a reassessment of h215
+identity, SCIP difficulty, HiGHS solution quality and solver comparison design.
+PR139 remains DRAFT; no merge or new experiment is admitted.
+
+The evidence supports the same scientific STO/W input, included warehouses,
+selected network, OSRM workbook, scenarios and costs. Native solver matrices
+differ, especially Pyomo/HiGHS bounded candidate slacks versus native indicators.
+HiGHS2226536 achieved0.000195541% common gap in426.70native minutes; Gurobi's
+historical accepted h215 STO observation achieved0.740159% in40.76minutes.
+These are descriptive implementation observations, not equal-quality or causal
+speedup measurements. Original SCIP4h returned no incumbent. Extended SCIP8h
+was controller-terminated; its initiating error/native result remain unknown.
+
+The plan prioritizes read-only forensic reconstruction from preserved originals,
+a provenance/results table, pending document checks and reader/literature review.
+A common-form solver-engine benchmark is optional and needs separate design/
+qualification/manual execution; current Pyomo adapters do not include SCIP/Gurobi.
+No new CLI command, solver call, retry, installation or cloud workflow was issued.
+Original archives, certificates, equations and numerical tables remain unchanged.
+
+Read docs/h215_solver_comparison_reassessment_20261029.md and
+docs/prompts/project01_h215_solver_comparison_20261029.md.
+The historical pause checkpoint below remains preserved. Ruff was installed
+after the previous source-check failure; no source/document rerun or new render
+has been performed. Final PDFs remain for Quarto/Pages after authorized main merge.
+
+# Historical pause — researcher checkpoint, 29 October 2026
 
 PR139 remains DRAFT. Read docs/checkpoints/20261029_pause_pr139.md and its JSON.
 Both original solver package integrity inspections completed. HiGHS2226536

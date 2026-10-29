@@ -1,6 +1,22 @@
 # Model Agrologistic: agent working agreement
 
-## PAUSED by researcher — 29 October 2026
+## Current resumption: solver comparison reassessment — 29 October 2026
+
+The researcher explicitly resumed work after the historical pause below.
+Reassess same-instance identity, SCIP difficulty and HiGHS attained gap, and
+plan a scientifically defensible commercial/open-source comparison. Read
+docs/h215_solver_comparison_reassessment_20261029.md and
+docs/prompts/project01_h215_solver_comparison_20261029.md.
+This instruction supersedes the pause for the requested analysis/planning.
+Keep PR139 draft; source/document qualification remains pending.
+No new HPC run, start/retry, package installation, native desktop app,
+automatic cloud workflow or merge is authorized by this reassessment.
+Continue through Codex tabs/GitHub connector; necessary CLI stays manual.
+Distinguish native SCIP4h no incumbent from censored SCIP8h. HiGHS solved the
+same scientific h215 STO/W input/network with a disclosed different formulation;
+its common gap is0.000195541%, not1%. Original claims/certificates stay unchanged.
+
+## Historical pause by researcher — 29 October 2026
 
 The researcher requested a pause after saving this checkpoint. Keep PR139 draft.
 Read docs/checkpoints/20261029_pause_pr139.md and its JSON before resuming.
