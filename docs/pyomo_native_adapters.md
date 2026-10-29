@@ -84,11 +84,10 @@ independent certificates, immutable completion, infeasible/unbounded outcomes,
 common matrix equality across all four engines, parameter recording, transfer
 constants/ranged rows/negative bounds, and no-incumbent/time-limit behavior.
 
-Linux-specific tests importing resource cannot run on Windows and remain target
-qualification, not silently skipped acceptance. Historical startup tests also
-need Windows extended-length temporary paths; their first failure under an
-overlong ordinary path is retained separately. No Linux/NPAD large-input
-qualification, performance result or additional experiment is claimed here.
+Linux-specific resource/proc tests could not be qualified on Windows; the full
+accepted NPAD v2 suite subsequently covered them. The earlier Windows path and
+platform failures remain in the history. No private h215 large-input resource
+qualification, performance result or scientific experiment is claimed here.
 
 ## Next h215 W campaign
 
@@ -101,9 +100,10 @@ HiGHS result and every consumed claim; do not repeat an old start.
 The latest human read-only NPAD inventory confirms Python3.13.15, Pyomo6.10.1,
 gurobipy13.0.3, PySCIPOpt6.2.1 and highspy1.15.1. CBC is NOT on PATH. Package
 metadata does not establish an available Gurobi license or compatible CBC binary.
-The recorded compute platform is glibc2.28: do not assume a newer Ubuntu-built
-binary is compatible. Obtain or build a private CBC executable below the approved
-model-agrologistic directory, then qualify it on a compute node before release.
+The recorded compute platform is glibc2.28. The official fully static CBC
+executable was hash-verified and passed the public controls on that target.
+Each future arm must bind this qualified executable and recheck its environment;
+public compatibility does not certify safe h215 memory or solve time.
 
 The operational package must qualify startup/phase/late-return controls, the
 matrix identity receipt, resources, terminal positive/negative/censored results,
