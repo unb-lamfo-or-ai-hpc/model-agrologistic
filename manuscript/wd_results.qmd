@@ -1,4 +1,4 @@
-## Controlled h215 topology comparison: historical W and new D
+## h215 comparison of warehouse-only and direct-enabled networks
 
 This separate comparison adds two accepted D observations to the nine-observation warehouse-only scalability cohort above. W forbids direct origin-to-customer arcs; D permits them in addition to warehouse-mediated routes. The same frozen h215 input, 215-member population, common OD/DC/DD arcs, costs, indexed penalties, original DET arrays and nine equiprobable STO scenarios were checked. D adds 592 OC arcs and 35,520 DET/319,680 STO flow variables. Both use four solver threads and a global 14,400-second ceiling per arm, MIPGap=0.01 and the same scientific implementation. W job2217990 is a historical control, not a contemporaneous runtime replicate.
 
@@ -19,4 +19,4 @@ Direct routes account for 82.17%/81.81% of expected OC+DC destination arrivals i
 
 D has more variables: 1,597,694 DET and 14,374,334 STO, compared with 1,562,174/14,054,654 in W. Native runtimes are 103.93/2,582.59 seconds in D versus 122.51/2,445.52 in W. Different attained gaps, historical timing, a single observation per cell and uncontrolled shared-system effects preclude causal speedup or a universal complexity claim. Artificial penalties remain about 95.39%/95.38% of D totals. Their unchanged weights influence routing, investments, relaxation/search and the reported penalized gap; a 1% total gap is not a 1% economic-subtotal or service certificate.
 
-Original validation and owned-step/phase/terminal receipts close both D arms. Portable review replays those archived receipts, not a fresh private-input residual re-solve. No additional solve or repetition is required to close this bounded h215 W/D phase. Original h500/S5 is now accepted and closed; the original scalar SCIP test is audited without an incumbent; the newly requested longer SCIP test, multisolver qualification, integrated coauthor review and S6-B remain open.
+Independent validation reconstructs the objective and checks physical feasibility for both D plans. The comparison evaluates the same h215 data and common network components, with direct routes added only in D. Its bound-based cost comparison and service deterioration should be interpreted jointly; neither implies that the returned plans can operate without the permitted shortages or exceedances.

@@ -29,10 +29,11 @@ def results(record):
 
     text = [
         "## Accepted scalar cohort and computational dimensions\n",
-        "All nine warehouse-only scalar observations meet their original 1% global-gap target "
-        "and retain accepted original independent feasibility certificates. The original h500 "
-        "job2220382 is accepted after integrity/certificate replay. Two separate h215 D "
-        "observations bring the scalar inventory to eleven, not eleven independent replications.\n",
+        "All nine warehouse-only scalar observations meet the 1% global-gap target "
+        "and pass independent feasibility validation. The original h500 result extends "
+        "the reported sequence to 500 facilities. Two separate h215 D observations bring "
+        "the Gurobi cohort to eleven; they are distinct configurations rather than "
+        "eleven independent replications.\n",
         "| Instance | Variables | Binary | Linear constraints | Matrix nonzeros |",
         "|:--|--:|--:|--:|--:|",
     ]
@@ -141,7 +142,7 @@ def results(record):
     text += [
         "\n: Counts from the accepted original decision vectors, using a display threshold "
         "of 1e-8 t for h215–h400 and 1e-7 t for the original h500 aggregate. "
-        "Original values/certificates are unchanged. Existing availability is "
+        "Existing availability is "
         "not counted as candidate opening. {#tbl-scalar-investments}\n",
         "| Instance | Candidate capacity, million t | Static expansion, million t | "
         "Bulkification investment basis, million t |",
@@ -197,8 +198,8 @@ def results(record):
             f"(figures/{case}.png){{#fig-map-h{population}}}\n"
         )
     text += [
-        "![h500 input availability only. Numerical h500 results are now accepted, but this "
-        "preserved geographic snapshot contains no optimized h500 decisions.]"
+        "![h500 warehouse population: existing sites and candidate options. "
+        "The map shows input availability and contains no optimized capacity or flow decisions.]"
         "(figures/h500_pending.png){#fig-map-h500}\n",
         "The local read-only dashboard provides the corresponding DET/STO, population, "
         "incremental-membership, product, period and scenario filters, preserving "

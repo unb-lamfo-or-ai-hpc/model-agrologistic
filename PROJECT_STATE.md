@@ -1,3 +1,107 @@
+# PR139 source qualification complete — 29 October 2026
+
+The researcher reports and the retained local transcript confirms sourceaf60e234
+passed Ruff, scalar/W-D table consistency, manuscript integrity (33citations),
+public gold/source/appendix audit (254cells,42pinned links) and60tests in21.81s.
+The audit reads UTF-8 explicitly; original workbook and expected values remain.
+Original solver archives, certificates and all scope limits stay preserved.
+No new render or solver run occurred; full-text bibliography is not certified.
+The researcher now authorizes autonomous local PowerShell/code execution in
+approved temporary folders. Existing venv313 only; no new clone/environment.
+Credentials, every NPAD CLI and all merges remain human gates.
+Next: finish this evidence PR, then a separate Pyomo Gurobi/SCIP adapter PR and
+new human-executed h215 STO/W Gurobi/SCIP/CBC observations.
+
+# Current ordered continuation — 29 October 2026
+
+The researcher requests completion of PR139/evidence consolidation FIRST, then
+a separate implementation/operational PR for Pyomo Gurobi and SCIP adapters
+and one new h215 STO/W observation each for Gurobi, SCIP and CBC. This supersedes
+the earlier optional-benchmark recommendation. Existing HiGHS and all original
+claims/results stay preserved. See
+docs/mvp2_pyomo_three_solver_execution_plan_20261029.md.
+
+PR139 now adds focused guards against drift of the accepted HiGHS certificate,
+gap-percentage confusion and promotion of the censored extended SCIP attempt.
+These new checks are committed but have not yet run. Source/document checks
+remain the immediate manual PowerShell gate; Ruff is now installed.
+No new run, installation, merge or cloud workflow occurred. The Gurobi engine
+retains automatic strategies through Pyomo; seed42 is a recorded randomness
+setting, not a common initial incumbent. Qualification of the next adapters and
+the three fresh operational claims precedes the later human NPAD CLI.
+
+# Resumed research assessment — 29 October 2026
+
+The researcher explicitly resumed the work and requested a reassessment of h215
+identity, SCIP difficulty, HiGHS solution quality and solver comparison design.
+PR139 remains DRAFT; no merge or new experiment is admitted.
+
+The evidence supports the same scientific STO/W input, included warehouses,
+selected network, OSRM workbook, scenarios and costs. Native solver matrices
+differ, especially Pyomo/HiGHS bounded candidate slacks versus native indicators.
+HiGHS2226536 achieved0.000195541% common gap in426.70native minutes; Gurobi's
+historical accepted h215 STO observation achieved0.740159% in40.76minutes.
+These are descriptive implementation observations, not equal-quality or causal
+speedup measurements. Original SCIP4h returned no incumbent. Extended SCIP8h
+was controller-terminated; its initiating error/native result remain unknown.
+
+The plan prioritizes read-only forensic reconstruction from preserved originals,
+a provenance/results table, pending document checks and reader/literature review.
+A common-form solver-engine benchmark is optional and needs separate design/
+qualification/manual execution; current Pyomo adapters do not include SCIP/Gurobi.
+No new CLI command, solver call, retry, installation or cloud workflow was issued.
+Original archives, certificates, equations and numerical tables remain unchanged.
+
+Read docs/h215_solver_comparison_reassessment_20261029.md and
+docs/prompts/project01_h215_solver_comparison_20261029.md.
+The historical pause checkpoint below remains preserved. Ruff was installed
+after the previous source-check failure; no source/document rerun or new render
+has been performed. Final PDFs remain for Quarto/Pages after authorized main merge.
+
+# Historical pause — researcher checkpoint, 29 October 2026
+
+PR139 remains DRAFT. Read docs/checkpoints/20261029_pause_pr139.md and its JSON.
+Both original solver package integrity inspections completed. HiGHS2226536
+has an original accepted certificate/gap0.000195541%; SCIP2226388 remains a
+censored forensic partial. The current article incorporates the separate HiGHS
+result but is not yet qualified by source/document checks. Ruff was installed
+after the last local check stopped; source checks have not been rerun.
+Local historical PR138 PDFs are verified,23document artifacts were removed.
+Final PDFs follow Quarto/GitHub Pages after an explicitly authorized main merge.
+No automatic continuation, merge, new job or CLI execution during this pause.
+
+# Project state
+
+## Current checkpoint — 29 October 2026
+
+PR138 merged at0351caeb7c10e08405c37793dcf340389f03b1b8. The next draft
+revises all active article/appendix prose for journal readers. Internal
+provenance/history stays in technical records; only effective experimental
+values and reader-relevant reproducibility instructions remain in the paper.
+
+Human terminal collection reports HiGHS2226536 quality_target_met/accepted,
+common gap0.000195541%, native426.70min and operational closure. Its new archive
+is db04224d… . Independent local archive/source/certificate audit remains
+pending before manuscript evidence promotion. SCIP2226388 is forensic partial,
+archive5626db20…, not an established native time-limit/no-incumbent result.
+Preserve the older failed HiGHS2226407 and original four-hour SCIP2225638.
+No repeat/start/new job is authorized by these results.
+
+Working PDFs and intermediate outputs remain only in approved local temporary
+directories or Codex tabs. No temporary upload to GitHub. Final PDFs follow
+Quarto/GitHub Pages after the separately authorized main merge. PR138's two local PDF copies were hash-verified by the researcher, and 23
+obsolete document artifacts were removed. The final render run independently
+lists no artifacts. A second cleanup404 concerns an already removed artifact.
+PowerShell host DNS/HTTPS returned api.github.com/HTTP200; this does not
+independently verify the agent command sandbox. Pythonvenv313 and Quarto exist;
+gh is absent. No configuration/package/environment change has been made.
+
+See docs/journal_reader_revision_20261029.md and
+docs/evidence/parallel_solvers_20261029_terminal_reported.json.
+The new PR is draft; local qualification/render/visual review and independent
+archive audit remain the immediate gates. Request its own merge afterward.
+
+
 ## Pre-merge appendix reproduction review — 28 October 2026
 
 The researcher requests a renewed PR138 review for non-specialist readers,

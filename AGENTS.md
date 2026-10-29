@@ -1,5 +1,83 @@
 # Model Agrologistic: agent working agreement
 
+## Current local CLI autonomy — 29 October 2026
+
+The researcher now explicitly authorizes Codex to execute local PowerShell,
+Ruff and necessary code/downloads in the approved temporary directories.
+This supersedes earlier human-only local CLI language. Use the existing venv313
+interpreter explicitly; no new clone or environment. Native GUI apps remain
+outside the workflow. Ask for credentials when necessary, and keep every NPAD
+interaction human-only. Every merge still needs explicit authorization.
+PR139 sourceaf60e234 passed Ruff, generated-table/source/appendix checks and
+60tests. Original evidence, code/math/input and AppendixA bytes are preserved.
+Final PDFs follow Quarto/Pages after separately approved main merge; do not
+create cloud temporary artifacts. Full-text bibliography remains a disclosed
+separate workstream. Complete this PR before the next adapter PR.
+
+## Current required delivery order — 29 October 2026
+
+The researcher explicitly requests: finish PR139 and preserve evidence first;
+then a new PR for Pyomo Gurobi/SCIP adapters and new h215 STO/W observations
+using Pyomo Gurobi, SCIP and CBC. The optional-benchmark position below is
+superseded by this scoped preparation request. Preserve the existing HiGHS
+result without restarting it. Read
+docs/mvp2_pyomo_three_solver_execution_plan_20261029.md.
+Qualify the current exact head through the researcher's manual local checks;
+request PR139 merge only when ready. Every later merge remains separately
+approved and all HPC/necessary PowerShell CLI stays human-only. No new local
+clone/environment, native desktop app, automatic cloud output or old claim retry.
+Seed42 documents solver-specific randomness, not a shared initial solution.
+Do not silently force presolve/LP/heuristic choices to claim reproducibility.
+
+## Current resumption: solver comparison reassessment — 29 October 2026
+
+The researcher explicitly resumed work after the historical pause below.
+Reassess same-instance identity, SCIP difficulty and HiGHS attained gap, and
+plan a scientifically defensible commercial/open-source comparison. Read
+docs/h215_solver_comparison_reassessment_20261029.md and
+docs/prompts/project01_h215_solver_comparison_20261029.md.
+This instruction supersedes the pause for the requested analysis/planning.
+Keep PR139 draft; source/document qualification remains pending.
+No new HPC run, start/retry, package installation, native desktop app,
+automatic cloud workflow or merge is authorized by this reassessment.
+Continue through Codex tabs/GitHub connector; necessary CLI stays manual.
+Distinguish native SCIP4h no incumbent from censored SCIP8h. HiGHS solved the
+same scientific h215 STO/W input/network with a disclosed different formulation;
+its common gap is0.000195541%, not1%. Original claims/certificates stay unchanged.
+
+## Historical pause by researcher — 29 October 2026
+
+The researcher requested a pause after saving this checkpoint. Keep PR139 draft.
+Read docs/checkpoints/20261029_pause_pr139.md and its JSON before resuming.
+Do not continue work, request CLI execution, merge, publish, install or run jobs
+until a new researcher instruction. No automatic follow-up is scheduled.
+
+
+## Current journal-reader/local-output mandate — 29 October 2026
+
+PR138 is merged at0351caeb7c10e08405c37793dcf340389f03b1b8. Revise all
+article/supplement prose for future journal readers: no coauthor instructions,
+sprint administration, unused legacy source-penalty cells or stale job snapshots.
+Preserve their technical record, mathematical/scientific content and original
+Appendix A. Keep effective values and didactic reproducibility links.
+
+No new temporary cloud outputs. Use only the researcher's .codex or named
+Temp Codex directory for local temporary files. Do not upload working PDFs or temporary files to GitHub. Final PDFs are for
+Quarto/GitHub Pages after a separately authorized main merge. Verify local
+copies before deleting obsolete cloud artifacts; never delete original HPC
+packages or Git blobs needed by history.
+Use Codex tabs and GitHub connector. Native desktop apps are forbidden; obtain
+manual PowerShell intervention for necessary local CLI. Do not modify the local
+clone, install packages or create an environment.
+
+Human terminal collect reports HiGHS2226536 quality_target_met/accepted and
+SCIP2226388 forensic_partial. Independently audit the new original packages
+before manuscript evidence promotion. Preserve all claims and source versions.
+No start/retry/new HPC execution. See docs/journal_reader_revision_20261029.md.
+Prepare the new draft PR with [skip ci] to avoid cloud jobs; qualification and
+visual review must be completed locally and documented before Ready. Request
+this PR's own merge only after reviewable work and checks are complete.
+
 ## Current pre-merge appendix reader review — 28 October 2026
 
 The researcher withholds a new merge decision pending a didactic, complete

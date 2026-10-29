@@ -19,7 +19,8 @@ unambiguous code crosswalk: OD means Origin–Warehouse, DC Warehouse–Destinat
 DD Warehouse–Warehouse and OC direct Origin–Destination. Appendix C presents
 these scientifically as OW, WD, WW and OD, respectively, without renaming any
 experimental record. W disables direct OC; D permits it in addition to mediated
-routes. The accepted large scalar results reported here evaluate W only.
+routes. The warehouse-only scaling sequence evaluates W; the separate h215 comparison
+also evaluates D.
 
 | Symbol | Definition |
 |:--|:--|
@@ -240,18 +241,18 @@ The accepted experiments freeze $\lambda^D=90000$, $\lambda^K=45000$, $\lambda^R
 on their declared units. Static exceedance is stock tonnes at a period, so its
 sum over time is labelled tonne-periods. Reception overflow is tonnes during a
 period, and $q^R/d_t$ is a derived daily equivalent. It is never multiplied by
-operating days again in the penalty. The reference workbook contains emergency-weight entries near BRL1,000,000/t;
-the approved experiments freeze the different effective coefficients above.
-These are artificial model weights,
+operating days again in the penalty. These are artificial model weights,
 separate from investment and operating expenditure. Slack enlarges the set
 permitted by its specific constraint, but shipping/connectivity/activation can
 still prevent feasibility. Neither smaller runtime nor full service follows
 from changing a penalty coefficient; coefficients remain fixed here.
 
-The implementation retains D10/S8 as native indicator restrictions. An inequality $q\le My$ is
-equivalent only with a valid nonrestrictive finite bound for all relevant
-variables/instances. No such finite-bound substitution is made in the implemented formulation. Numeric penalty
-coefficients and activation Big-M constants serve different roles.
+The native implementations retain D10/S8 as indicator restrictions. The Pyomo
+implementation instead uses finite bounds derived from stock conservation and
+hard shipping capacity. As proved in Appendix C, that representation preserves
+the physical and investment projection and optimal scalar value under its
+stated nonnegativity conditions, while removing redundant oversized slacks.
+Penalty coefficients and activation bounds serve different mathematical roles.
 
 No arbitrary lower investment bound is added. A zero-cost activation can be one
 with a zero quantity; report binary activation and positive-capacity/positive-flow

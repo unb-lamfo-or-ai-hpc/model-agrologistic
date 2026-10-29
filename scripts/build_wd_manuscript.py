@@ -12,7 +12,7 @@ def results(record):
     assert record["D_job_id"] == "2221443" and record["W_job_id"] == "2217990"
     assert record["penalty_rates"] == {"unmet": 90000, "static": 45000, "reception": 45000}
     lines = [
-        "## Controlled h215 topology comparison: historical W and new D\n",
+        "## h215 comparison of warehouse-only and direct-enabled networks\n",
         "This separate comparison adds two accepted D observations to the nine-observation "
         "warehouse-only scalability cohort above. W forbids direct origin-to-customer arcs; "
         "D permits them in addition to warehouse-mediated routes. The same frozen h215 input, "
@@ -66,13 +66,11 @@ def results(record):
         "95.39%/95.38% of D totals. Their unchanged weights influence routing, investments, "
         "relaxation/search and the reported penalized gap; a 1% total gap is not a 1% "
         "economic-subtotal or service certificate.\n",
-        "Original validation and owned-step/phase/terminal receipts close both D arms. "
-        "Portable review replays those archived receipts, not a fresh private-input "
-        "residual re-solve. No additional solve or repetition is required to close this "
-        "bounded h215 W/D phase. Original h500/S5 is now accepted and closed; "
-        "the original scalar SCIP test is audited without an incumbent; the newly requested "
-        "longer SCIP test, multisolver qualification, integrated coauthor review and "
-        "S6-B remain open.\n",
+        "Independent validation reconstructs the objective and checks physical feasibility "
+        "for both D plans. The comparison evaluates the same h215 data and common network "
+        "components, with direct routes added only in D. Its bound-based cost comparison "
+        "and service deterioration should be interpreted jointly; neither implies that "
+        "the returned plans can operate without the permitted shortages or exceedances.\n",
     ]
     return "\n".join(lines)
 

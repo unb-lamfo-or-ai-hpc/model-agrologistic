@@ -1,176 +1,114 @@
-# Appendix D Experimental Data, Parameter Provenance, and Warehouse-Population Reproducibility
+# Appendix D Data and Preparation of the Experimental Instances
 
-## D1 Sources and the construction of an experimental case
+## D1 Data sources and scope
 
-An experimental case is defined by more than its number of warehouses.
-It combines a facility population, supply and demand trajectories, costs,
-capacity rules and a selected road network. This appendix explains how the
-source records become those effective model inputs. The distinction matters
-because a spreadsheet label or an original parameter cell may differ from the
-quantity ultimately used by the formulation.
+An experimental instance combines a facility population, supply and demand
+over time, investment and operating costs, capacity rules, road distances and
+an uncertainty design. This appendix describes these inputs and the
+transformations needed to reproduce the evaluated model.
 
-The principal sources are a canonical reference workbook and a registry of
-18,086 warehouse records. The former supplies the model's original data and
-215-site reference population; the latter supports the larger candidate
-populations. The registered gold workbook is
-[model_agrologistic_padrao_ouro.xlsx](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/data/templates/model_agrologistic_padrao_ouro.xlsx),
-whose complete file identity is recorded in the
-[data contract](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/data/manifests/mvp_data_contract.json).
-The larger source is Warehouses_Existing_Candidate_All.xlsx, identified by the
-[registry manifest](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/data/manifests/warehouse_population_source_v020.json).
-The workbooks have different purposes: the gold file supplies the original
-model schema and reference data; the registry supplies the pool from which
-additional candidate locations are selected. Neither should be confused with
-the processed model_input.xlsx actually read by an experiment.
+The reference is the
+[gold workbook, model_agrologistic_padrao_ouro.xlsx](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/data/templates/model_agrologistic_padrao_ouro.xlsx).
+It supplies the model schema, supply and demand records, costs and a
+215-facility population. Additional candidate locations come from
+Warehouses_Existing_Candidate_All.xlsx, whose version and structure are
+identified in the [registry manifest](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/data/manifests/warehouse_population_source_v020.json).
+The two sources have different roles: the gold workbook defines the reference
+instance; the registry provides potential additions to its candidate set.
 
-Their preserved versions are identified in the
-[published dataset, version 0.2.0](https://doi.org/10.5281/zenodo.22751909),
-and the accompanying
-[workbook and cell inventory](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/manuscript/supplement/appendix_d_inventory.json).
-A separate [reader's input guide](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/docs/evidence/appendix_input_reproduction_20261028.json)
-collects the actual source values, executed settings and full identities in one
-machine-readable file. The workbook inventory contains full
-file checksums, worksheet names, dimensions, selected source cells and
-membership comparisons. The registered candidate workbook is not embedded in Git; its manifest therefore
-provides an identity, not a download of the rows. The deposited
-[agrologistic-v020-inputs.zip](https://zenodo.org/records/22751909/files/agrologistic-v020-inputs.zip?download=1)
-is the source package identified by the preserved inventory. Source-specific
-access and reuse notices remain applicable. The historical input archive has MD5
-79f85dfe638df1c2dfa5cca9cf343d88; its identity does not imply that every subsequent
-experiment archive belongs to that deposit.
+The [version 0.2.0 dataset](https://doi.org/10.5281/zenodo.22751909)
+and its
+[input archive](https://zenodo.org/records/22751909/files/agrologistic-v020-inputs.zip?download=1)
+provide the deposited source material, subject to the stated file-level access
+and reuse conditions. The gold workbook is also directly available from GitHub.
+The external registry and ignored processed workbooks are not embedded in the
+Git repository. Full file identities, worksheet inventories and experimental
+input paths are listed in the
+[input reproduction guide](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/docs/evidence/appendix_input_reproduction_20261028.json).
+Readers should compare those identities before using a downloaded workbook;
+a matching filename or facility count alone does not identify an input.
 
-A second pair of files supplied for inspection on 20 October had the same
-reference populations but different bytes. The
-[original inspection](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/docs/evidence/scalar_r3a_supplied_input_inspection_20261020.json)
-records gold SHA-256 prefix 2fc994ac and registry prefix bb5e8bf6, as distinct
-from the registered de3bdc51 and 0d19865a sources. Matching file names or CDA
-memberships do not establish equality of supply, costs or capacities. Those
-copies are not substituted for the inputs of the accepted experiments. Thus,
-"revised gold" must be identified by its checksum, rather than assumed to mean
-the most recently saved spreadsheet.
+The gold workbook contains 14 worksheets and 215 facility records:
+146 existing warehouses and 69 candidates. Its Warehouses sheet has 25 columns.
+The registry has 18,086 facility records and 13 columns: 146 existing sites
+and 17,940 candidates. One candidate with nonpositive static capacity is
+excluded from the eligible selection pool.
 
-The registered gold workbook has 14 worksheets. Its Warehouses sheet contains
-215 facility records plus a header, with 25 columns. The registry's principal
-sheet contains 18,086 records plus a header, with 13 columns. Supply and demand
-sheets contain 6,301 and 4,441 rows respectively, including headers and control
-content. Such worksheet dimensions are not counts of model variables or
-distinct decision-making entities. Each processed OSRM workbook additionally contains Distancias, giving 15
-worksheets in the four current runtime inputs. The gold workbook has no
-Estoque_Inicial sheet; the documented missing-initial-stock rule supplies zero.
-The effective model retains 37 origin
-identifiers, 27 domestic destination roles and ten export roles. Coincident
-coordinates do not merge separate facilities or destination roles; the ten
-export records should not be reinterpreted as ten distinct physical ports.
+The effective model contains 37 origin identifiers, 27 domestic destination
+roles, ten export roles, two products and 60 planning periods. An identifier
+denotes a model entity; coincident coordinates do not merge entities.
+A destination may have both domestic and export roles, so the ten export
+records should not be interpreted as ten distinct physical ports.
 
-The source schema can be read directly from the workbook or from the inventory.
-Oferta identifies a product, city, coordinates, date and Peso (ton). Demanda
-adds domestic/export roles and an explicit model quantity. Warehouses uses
-CDA as the facility identifier; names and coordinates are descriptive fields,
-not substitutes for that key. Its first 13 columns describe the facility,
-capacity and opening-cost inputs. The additional gold columns specify
-effective candidate cost, expansion and bulk-conversion eligibility, maxima
-and costs, followed by provenance notes. The registry contains the first
-13-column structure; it is not a ready-made 18,086-site model input.
+## D2 Quantities and units
 
-## D2 Quantities, costs and capacity units
+Supply and demand are read from Oferta and Demanda. Each record identifies
+a product, location, period and quantity. Facility records use CDA as the
+identifier; names and coordinates are descriptive attributes. The input reader
+aggregates additive supply or demand entries that share the same effective
+keys. Missing mandatory identifiers are treated as input errors. Initial
+inventory is zero where no initial-stock record is supplied.
 
-Table D.1 summarizes the effective inputs. Source labels are retained where
-they help a reader identify the original data, while the units correspond to
-the mathematical model.
-
-| Input | Meaning and effective unit | Main source |
+| Quantity | Meaning | Effective unit |
 | --- | --- | --- |
-| Supply and domestic demand | Grain tonnes within each product-period record | Oferta and Demanda |
-| Export limit | Optional upper bound on destination arrivals, t/period | Export-role records and declared limit rule |
-| Initial stock and static capacity | Tonnes of grain held at a warehouse | Stock and Warehouses records |
-| Reception and shipping capacity | Daily rates, t/day, converted to period throughput | Warehouses and capacity-coupling settings |
-| Freight | BRL/(t km), multiplied by directed road distance | Frete and OSRM materialization |
-| Inventory holding | BRL/(t period) | Tarifa_Armz and warehouse/product mapping |
-| Investment | Fixed BRL and BRL per investment-tonne | Custo_Invest and documented facility-cost translation |
-| Scenarios | Supply/demand multipliers and probabilities | Cenarios and the declared Cartesian design |
+| Supply and domestic demand | Grain available or required in a product-period record | t/period |
+| Export limit | Upper bound on optional arrivals at an export destination | t/period |
+| Initial inventory and static capacity | Grain held at a warehouse | t |
+| Reception and shipping rates | Grain that can be handled each operating day | t/day |
+| Freight coefficient | Cost multiplied by grain quantity and directed road distance | BRL/(t km) |
+| Inventory holding | Cost per unit held in a planning period | BRL/(t period) |
+| Capacity investment | Fixed cost and cost per investment-tonne, according to facility eligibility | BRL and BRL/t |
 
-: Table D.1. Scientific interpretation of the principal data objects.
+: Table D.1. Units used in the experimental model.
 
-Static capacity limits the stock remaining at a warehouse. Reception and
-shipping capacities instead limit grain handled during a period. In the
-evaluated configuration, the daily rates are multiplied by 30 operating days
-unless a period-specific value is supplied. Candidate and expansion investments
-add daily handling rates using factors of 0.20 per investment-tonne;
-bulk-handling conversion uses a factor of 1.0 and does not create static storage.
-These distinctions prevent annual throughput or handling rates from being
-mistaken for storage capacity.
+Static capacity limits inventory, whereas reception and shipping limit flows
+within a period. The experiments use 30 operating days per period. Candidate
+and expansion investments add daily reception and shipping capacity at a rate
+of 0.20 per investment-tonne. Bulk-handling conversion uses a factor of 1.0
+and adds handling capacity without adding static storage.
 
-A concrete pair of gold-workbook records illustrates the distinction.
-Existing facility CDA 35.0287.0002-6 stores source values 890 for static capacity,
-5 for reception and 6 for shipping. Under the executed daily-handling
-interpretation, these mean 890 t of stock, 5 t/day received and 6 t/day shipped.
-With 30 operating days, the period reception and shipping limits are 150 t and
-180 t, before any eligible investment effects. The sheet's abbreviated
-capacity-column labels must not replace the declared unit interpretation.
+Two actual gold-workbook records illustrate these distinctions. Existing
+facility CDA 35.0287.0002-6 has static capacity 890 t, reception 5 t/day and
+shipping 6 t/day. Its period reception and shipping limits are therefore
+150 t and 180 t before eligible investment effects. Candidate
+CDA 79.G590.0003-9 has zero base capacity in all three categories and an
+investment upper bound of 307079 t. That bound is neither installed capacity
+nor an investment chosen by the optimizer. These values illustrate input
+interpretation, not observed grain movements.
 
-Canonical candidate CDA 79.G590.0003-9 instead has source base capacities
-0/0/0 and a maximum static capacity of 307079 t. That maximum is an investment
-upper bound, not stock already available and not the capacity chosen by the
-optimizer. These are actual source records, independently reread by the cloud
-gold-workbook audit; the period conversions above are arithmetic examples,
-not observed movements or new optimization results.
+The [Excel reader](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/src/logic/excel_loader.py) and
+[mathematical input contract](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/src/logic/mathematical_contract.py)
+implement the unit conventions and transformations. Facility-specific
+eligibility and maxima take precedence over general fallback values.
 
-The [Excel reader](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/src/logic/excel_loader.py)
-implements the sheet/column requirements and transformations described here.
-The loader normalizes identifiers and periods and aggregates additive supply
-or demand records with the same effective keys. It does not treat all
-duplicates as interchangeable or missing mandatory identifiers as harmless
-blanks. Existing and candidate facilities retain their roles. Effective candidate base
-capacities are zero, while their admissible investment maxima are separate
-inputs. An observed storage capacity in the registry becomes an investment
-upper bound for a newly introduced candidate; it is not installed capacity
-available before opening. Missing initial-stock entries follow the established zero convention.
-These transformations are explicit modeling operations, rather than a claim
-that the entire input pipeline is lossless.
+## D3 Investment, operating costs and penalty coefficients
 
-## D3 Original parameter cells and executed coefficients
+Table D.2 reports the investment cost schedule used when a facility has no
+explicit effective coefficient. The average of each low/high pair provides
+the corresponding fallback. An explicit facility coefficient is retained
+instead of replacing every facility by a common average.
 
-The original values and effective coefficients are documented separately in
-Table D.2. For the accepted experiments, the effective vector is frozen:
-domestic shortage costs 90000 BRL per tonne, static exceedance 45000 BRL per
-stock-slack tonne at its period, and reception overflow 45000 BRL per
-overflow tonne within its period. A later editorial explanation does not
-change those executed coefficients.
+| Investment type | Low/high source values, BRL/t | Fallback coefficient, BRL/t |
+| --- | ---: | ---: |
+| New conventional warehouse | 1000 / 1500 | 1250 |
+| New metal silo | 785 / 1310 | 1047.5 |
+| Existing-site expansion | 600 / 1200 | 900 |
+| Bulk-handling conversion | 380 / 660 | 520 |
 
-| Source fact | Effective treatment | Interpretation |
-| --- | --- | --- |
-| Parametros_Modelo cells B4:B6 each contain 1000000 | The accepted preparation yields 90000/45000/45000 | Source cells are not passed through unchanged |
-| Expansion cost entries are 600 and 1200 | Their average, 900, is used when an explicit effective value is absent | BRL per expansion-tonne |
-| Product tariffs include soybean 45 and corn 48 | Product/warehouse mapping supplies holding coefficients | BRL/(t period) |
-| Candidate cost placeholders or uncached formulas may be present | A documented total-cost/capacity rule and canonical cost-table fallback are used | A zero placeholder does not establish free investment |
+: Table D.2. Investment cost schedule and arithmetic-mean fallback coefficients.
 
-: Table D.2. Source-to-effective parameter translation. The complete cell values and formula-cache states are linked in the reader's input guide.
+The candidate-cost fallback uses the conventional-warehouse value of
+1250 BRL/t. Where a candidate has a total investment estimate and a positive
+maximum capacity, the capacity-proportional coefficient is obtained by
+dividing that estimate by the maximum capacity, with the corresponding fixed
+component set to zero. The same project estimate is consequently not charged
+again as an additional fixed cost. The general expansion limit is 0.25 of
+static capacity when no facility-specific maximum is supplied.
 
-The source Custo_Invest table contains four actual low/high pairs:
-1000/1500 for Novo Armazém Convencional, 785/1310 for Novo Silo Metálico,
-600/1200 for Expansão, and 380/660 for Granelização, in BRL per investment-tonne.
-Their arithmetic means are respectively 1250, 1047.5, 900 and 520.
-These are source-table values, not a claim that every facility receives each
-mean. The reader uses explicit facility coefficients when available. The
-documented uncached candidate-cost fallback uses the conventional-warehouse
-mean of 1250; expansion and bulk-conversion fallbacks use 900 and 520.
-The stored formulas in Custo_Invest!D2:D5 and Parametros_Modelo!B10:B11 have
-no cached values in the registered workbook. Recalculating Excel and resaving
-the file changes its identity and is not required to invoke these documented
-fallbacks.
-
-The actual holding tariffs in Tarifa_Armz are 45 for Soja and 48 for Milho,
-for both public and private operators, in BRL/(t period). The additional Outros
-row is 50 for both operator classes; it does not introduce a third product
-into this two-product experiment. Parametros_Modelo!B8 contains 30 days per
-period and B9 contains the default expansion fraction 0.25. Explicit
-facility-specific expansion maxima retain precedence.
-
-Table D.3 gives all 27 state freight coefficients, grouped only where their
-numeric values coincide. Each is in BRL/(t km). The complete one-state-per-row
-mapping is in the reader's guide. These coefficients multiply the selected
-directed road distances; they are not transport totals, observed route prices
-or distance values.
+Inventory-holding tariffs are 45 BRL/(t period) for soybean and
+48 BRL/(t period) for corn, for both public and private operators. The
+additional Outros tariff in the source does not create a third product in
+the evaluated instances.
 
 | State code(s) | Source freight coefficient, BRL/(t km) |
 | --- | ---: |
@@ -194,216 +132,143 @@ or distance values.
 
 : Table D.3. Actual Frete!A2:B28 values in the registered gold workbook.
 
-The accepted loader policy is thesis_dynamic. After network selection, input
-preparation calculates a reference from 100, the effective expansion unit costs
-and storage tariffs; the reference is 900 in the accepted cohort. Static and
-reception coefficients are 50 times this reference. For domestic shortage,
-the coefficient is 100 times the larger of the reference and the maximum
-selected final-leg freight cost to each destination. The complete preparation rule is inspectable in the
-[mathematical input contract](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/src/logic/mathematical_contract.py)
-and the [loader's penalty policy](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/src/logic/excel_loader.py).
-The general rule can therefore depend on destination and topology. The original accepted cases
-nevertheless retain the same complete effective vector, and the experiment
-checks reject a departure from it.
 
-Candidate investment uses the variable_from_total interpretation where
-applicable: a documented total estimate is divided by a positive maximum
-capacity, with the corresponding fixed component set to zero. Explicit
-effective values take precedence, and missing formula caches follow the
-documented canonical fallback. Charging the same project estimate again as
-an additional fixed cost would risk double counting. These rules translate
-the retained data; they are not a new cost calibration.
+Transport cost is calculated from grain quantity, the applicable state freight
+coefficient and directed road distance. These coefficients are a declared
+cost approximation, rather than observed prices for each road movement.
 
-All monetary quantities are interpreted as Brazilian reais. A contextual
-exchange-rate reference is not a conversion applied to the results. Costs are
-not newly discounted, annualized or adjusted to another price base. The three
-penalties are artificial weights that permit specific deviations from nominal
-service or capacity. They are not observed expenditures or calibrated damages.
-A small relative gap for their combined objective does not certify the same
-relative precision for financial expenditure alone.
+The scalar objective uses three artificial coefficients: 90000 BRL per tonne
+of unmet domestic demand, 45000 BRL per tonne of static exceedance in each
+period, and 45000 BRL per tonne of reception overflow. They are identical
+across the reported scalar experiments. Static exceedance summed across
+periods is expressed in tonne-periods; reception overflow is already a period
+flow and is not multiplied by operating days again.
 
-Static exceedance is a stock quantity at each period; summing it across periods
-produces tonne-periods. Reception overflow already measures tonnes handled
-within a period and is not multiplied by operating days again. Both quantities
-are distinct from permanent capacity investment. These units must remain
-visible when interpreting the reported physical diagnostics.
+These weights allow the optimizer to trade investment and operation against
+specified shortages or exceedances. They are not calibrated economic damages.
+Financial expenditure and artificial penalties are therefore reported
+separately. A small gap for their sum does not establish the same relative
+accuracy for the financial subtotal or a particular domestic service level.
 
-## D4 Nested warehouse populations
+All monetary results are in Brazilian reais over the 60-period horizon,
+without a newly imposed currency conversion, price-year adjustment,
+annualization or discount rate. The
+[parameter guide](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/docs/evidence/appendix_input_reproduction_20261028.json)
+retains the complete numerical mapping to the effective model.
 
-Population construction retains all 146 existing facilities and introduces
-candidates using the preserved deterministic ranking. The 69 canonical
-candidate anchors begin that sequence. Selection uses proportional strata
-over state, warehouse type and static-capacity quartile, with the fixed seed
-identified in the [original population lineage](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/docs/evidence/scalar_h300_population_lineage_20261020.json). Of the registry's 18,086 entries,
-17,940 are candidates; one candidate with nonpositive static capacity is excluded.
+## D4 Warehouse populations
 
-| Population | Existing facilities | Candidate facilities |
-| --- | --- | --- |
-| h215 | 146 | 69 |
-| h300 | 146 | 154 |
-| h400 | 146 | 254 |
-| h500 | 146 | 354 |
+The h215 reference population contains 146 existing facilities and 69
+candidate anchors. Larger instances retain these facilities and add candidates
+from a deterministic, proportionally stratified ranking of the eligible
+registry. Strata use state, facility type and static-capacity quartile.
+The selection seed and ordered memberships are retained with the
+[population lineage](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/docs/evidence/scalar_h300_population_lineage_20261020.json).
 
-: Table D.4. Facility availability in the four warehouse populations.
+| Instance | Existing facilities | Candidate options | Candidates added beyond h215 |
+| --- | ---: | ---: | ---: |
+| h215 | 146 | 69 | 0 |
+| h300 | 146 | 154 | 85 |
+| h400 | 146 | 254 | 185 |
+| h500 | 146 | 354 | 285 |
+
+: Table D.4. Facility populations available to the optimization.
 
 The [population selector](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/src/logic/warehouse_population.py)
-orders the eligible pool, and the
+orders the eligible candidates. The
 [workbook constructor](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/src/logic/warehouse_workbook.py)
-materializes the requested population. The original checkpoints include 215
-and 500, but not 300 or 400. The intermediate cases retain the original candidate ranking rather than
-drawing new independent samples. h300, h400 and h500 add respectively 85,
-185 and 285 candidates beyond the 69 anchors. The 146 existing and 69 anchor
-rows retain their canonical values. For each additional candidate, the
-constructor preserves its CDA and location/type, sets base static/reception/
-shipping capacities to zero, and uses its positive observed static capacity
-as the maximum investable capacity. It derives investment cost through the
-gold cost table and does not grant expansion or bulk conversion to that new
-candidate. Inclusion is therefore an available investment option, not a claim
-that all registry facilities are pre-existing infrastructure. Membership comparisons use facility identifiers
-(CDA), not geographic coincidence or a count alone, and establish
-$W_{215}\subseteq W_{300}\subseteq W_{400}\subseteq W_{500}$.
-The corresponding processed workbook SHA256 prefixes are 40edb665, 7761cce7,
-c3085456 and 888fbff4; full identities are retained in the inventory and
-experiment records.
+retains the canonical rows and materializes the selected additions.
+For each new candidate, base static, reception and shipping capacities are
+zero. Its positive registry static capacity becomes the maximum investable
+capacity. The new candidate has no expansion or bulk-conversion eligibility.
+Thus, adding a registry location creates an investment option, not an
+already operating warehouse.
 
-Population inclusion defines an available option. It does not establish that
-a candidate is opened, receives positive capacity, carries grain or holds stock.
-Those are separate properties of a returned solution. Nesting the facilities
-also does not guarantee nesting of the final feasible sets when sparse route
-selection is recomputed for each population. Consequently, changes in objective
-or runtime cannot be attributed to warehouse count alone.
+The facility sets are nested, but the optimizer's chosen capacities and flows
+need not be. In addition, route screening is recalculated for each population;
+nested facility membership does not guarantee nested selected arc sets or
+feasible regions. Objective and runtime changes therefore cannot be attributed
+to warehouse count alone.
 
-## D5 Road networks and stochastic trajectories
+## D5 Road distances, network selection and scenarios
 
-Input preparation proceeds from the original records through population
-selection and cost translation to OSRM distance materialization, role- and
-product-specific network selection, scenario construction and effective
-penalty preparation. The archived OSRM audits retain directed road distances
-for the fixed Brazil dataset and driving profile. They identify the road-data,
-software and profile versions and report no Haversine fallback for these cases.
+OSRM materialization supplies directed road distances for the fixed Brazil
+road dataset and driving profile. The retained h215, h300, h400 and h500
+workbooks contain respectively 63289, 113269, 190569 and 287869 directed
+distance pairs. No Haversine fallback is recorded for these materializations.
+The processed workbooks add a Distancias sheet to the gold structure, giving
+15 worksheets.
 
-The materializations contain 63,289, 113,269, 190,569 and 287,869 directed
-distance pairs at h215, h300, h400 and h500, respectively. These are not counts
-of flow variables: product, period and scenario indices are introduced later.
-They also include optional direct distances whose existence does not mean that
-topology W used direct routes. The evaluated sparse policy is the 20%
-connectivity-preserving Pareto selection with one export sink per product.
-Topology comparisons separately check the retained common graph and cost
-coefficients.
+The distance matrix precedes product-specific network selection. The
+evaluated sparse policy uses 20% connectivity-preserving Pareto selection
+and one export sink per product. Materialized pairs are consequently not
+counts of retained arcs or flow variables. Topology W excludes direct
+origin-to-destination movement; D includes it in addition to warehouse routes.
+Availability of a distance does not itself authorize a flow variable.
 
-The STO design combines supply multipliers 0.85/1/1.15 with domestic-demand
-multipliers 0.95/1/1.05. Their Cartesian product produces nine trajectories,
-each with probability $1/9$. This is an explicit controlled design, not
-an empirical probability forecast. The source scenario sheet's active-row
-flags alone do not define the executed design. DET retains the original
-deterministic arrays, as explained in Appendix C.
+STO combines supply multipliers 0.85, 1 and 1.15 with domestic-demand
+multipliers 0.95, 1 and 1.05. Their Cartesian product gives nine complete
+trajectories, each with probability 1/9. These are controlled scenarios,
+rather than empirically estimated event probabilities. DET uses the original
+deterministic supply and demand arrays. Investments are shared across the
+STO trajectories; operations vary by scenario.
 
-Directed distances support transport costs but do not supply road polylines.
-Accordingly, geographic figures distinguish verified node locations and
-investment quantities from unavailable route geometry. Straight connecting
-segments would not reproduce the road network. A separate source-bound
-geographic SQLite database supports derived visualizations; it does not replace
-the Excel inputs or authorize new route acquisition.
+Road lengths determine transport costs but do not supply route polylines.
+Geographic figures therefore show the available verified node and investment
+locations. Straight lines between nodes are not substituted for actual road
+paths. Transport quantities can still be analyzed from exported flows without
+claiming a verified geographic path.
 
-## D6 Reproducibility and the interpretation of evidence
+## D6 Reproducing an instance
 
-An original experiment record connects the source version and effective input
-to the selected population, model configuration, solver settings, exported
-decisions, independent validation and terminal accounting. The accepted
-Gurobi evidence consists of nine W observations through h500 and two separate
-h215 D observations. The original h500 result was accepted after its terminal
-package was audited. Its documentary replay does not constitute a new
-private-input residual calculation.
+First obtain the source files identified in the
+[data contract](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/data/manifests/mvp_data_contract.json)
+and input guide, subject to their access conditions. Compare full file
+hashes before processing. The runtime workbook, facility order, road
+materialization and experiment definition must belong to the same instance.
 
-The original four-hour SCIP h215 observation is separate: it reached the
-native time limit with no usable incumbent. The original HiGHS job 2226407 ended operationally before a released-worker
-record was retained; its preserved package contains no evidence of a population
-solve. A distinct startup-repaired HiGHS job 2226536 and longer native SCIP
-job 2226388 were RUNNING in the latest supplied snapshot. Their
-[dated checkpoint](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/docs/evidence/parallel_solvers_20261028_running_v2.json)
-is separate from terminal numerical evidence. These
-states do not supply new objective, service or gap observations. Repository
-checkpoints retain their changing operational status without converting it
-into an experimental comparison.
+The h215 processed workbook is model_input.xlsx under
+data/processed/policy_population_v020_osrm/warehouses_215.
+The h300, h400 and h500 inputs use warehouses_300, warehouses_400 and
+warehouses_500 under data/processed/nine_population_osrm_v1. These identify
+retained experimental inputs, rather than files distributed as GitHub source.
+A newly generated workbook should be recorded separately; changes in spreadsheet
+metadata or recalculated caches can alter its byte identity.
 
-Public code, metadata inventories and the versioned dataset support
-inspection, but each external source retains its applicable access and
-redistribution conditions. Availability of a historical deposit does not
-establish that every later restricted workbook or raw HPC archive is included.
-Original input and output records remain authoritative; compact tables,
-maps and metadata are derived representations. This separation allows a
-reader to trace a reported quantity to its source and to distinguish replay
-of retained evidence from an independently repeated calculation.
+Next verify existing/candidate roles, ordered CDA memberships and the 69
+canonical anchors. Reuse the recorded candidate order and OSRM materialization.
+A new random draw or routing query creates a different input. Apply the
+recorded capacity coupling, terminal-stock rule, route policy, topology and
+scenario design. Check the effective coefficients listed above before
+constructing the model.
 
-
-## D7 A practical route to reproducing the inputs
-
-Begin with the [data contract](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/data/manifests/mvp_data_contract.json)
-and the [input guide](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/docs/evidence/appendix_input_reproduction_20261028.json),
-then obtain the source files identified there. The gold workbook is directly
-downloadable from GitHub. Obtain the external registry and retained processed
-workbooks through the dataset's source package, observing its access notices.
-Compare their full SHA-256 values before loading them. A matching warehouse
-count is not sufficient. In particular, an historical generated h215 workbook
-with prefix 5684bb81 is not the accepted policy h215 workbook with prefix 40edb665.
-
-The archived policy h215 input is model_input.xlsx in the warehouses_215
-subdirectory of data/processed/policy_population_v020_osrm. The other inputs
-use warehouses_300, warehouses_400 and warehouses_500 under
-data/processed/nine_population_osrm_v1. Their full file and ordered-membership identities
-are in the linked guide. These paths identify archived inputs; they are not
-promises that ignored processed workbooks are stored as GitHub source files.
-
-Next, match the population-order and materialization records. Check CDA
-membership *and order*, existing/candidate roles, and the canonical anchors.
-The intermediate h300/h400 order is a projection of the original ranking;
-its different file digest is not a different random sample. Do not generate a
-fresh ranking or ask an online routing service for new distances while claiming
-to replay an original input. OSRM road data, profile, software, directed
-coordinate pairs and output workbook all have their own identities.
-
-Then apply the case's recorded loader and mathematical settings. Verify
-scalable candidates, daily-factor capacity coupling, 30-day periods,
-free terminal stock, the selected route policy, W/D topology and the nine
-Cartesian STO scenarios. After route selection and penalty preparation,
-check the actual 90000/45000/45000 vector rather than the source million-valued
-cells. The [W/D input comparison](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/docs/evidence/scalar_wd_h215_input_inspection_20261022.json)
-shows the common selected graph and equal penalty vectors, with direct arcs
-added only for D. The
-[h215 manifest](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/experiments/mvp2_scalar_r3a_h215.yaml)
-illustrates the schema; it is explicitly a proposal. Its 3600-second default
-must not be mistaken for the accepted original 14400-second native allowance.
-
-Finally, bind the input to the original source and output review. The
+Finally, bind the input to the source version and numerical settings of its
+experiment. The original
 [h215](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/docs/evidence/scalar_h215_2217990_review.json),
 [h300](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/docs/evidence/scalar_h300_2218193_review.json),
 [h400](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/docs/evidence/scalar_h400_2219884_review.json) and
 [h500](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/docs/evidence/scalar_h500_2220382_review.json)
-records identify their own executed source commits and certificates.
-The source links in this appendix are reading references, not replacement
-execution versions. Recreating a workbook can alter ZIP/XML metadata and
-formula caches; it does not retroactively replace an original checksum or
-certificate. Preserve original files and record newly generated inputs separately.
+records identify those versions, inputs and validation results.
+The [W/D comparison](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/docs/evidence/scalar_wd_h215_input_inspection_20261022.json)
+documents the common graph and costs for the topology comparison.
+Appendix C explains small verification cases and original-unit solution
+validation before large results are interpreted.
 
-## D8 What a reader can verify, and what remains necessary
+## D7 Reproduction and evidence limits
 
-The public workbook, source code, input inventory and original reviews permit
-inspection of the schema, numerical coefficients, transformations and reported
-claims. Public tests provide small, independently checkable examples
-(Appendix C). Rebuilding the article reproduces the document and its derived
-tables; it does not execute the optimization experiments.
+Public source code, the gold workbook, data inventories and experiment records
+allow inspection of the formulation, effective coefficients and reported
+claims. Repeating a large calculation additionally requires access to its
+exact processed inputs, a compatible solver and runtime, sufficient resources
+and the declared stopping rules.
 
-Repeating a large experiment additionally requires the exact processed input,
-eligible original data access, compatible solver/runtime, sufficient memory
-and the declared resource and stopping rules. Auditing an old certificate
-checks retained evidence; a fresh numerical reproduction requires newly
-exported decisions and independent original-unit validation. It should not be
-expected to produce a byte-identical log or the same vector when alternative
-optima and uncontrolled shared-node effects are possible.
+Rebuilding the article reproduces its document and derived tables; it does
+not rerun the optimization. Reviewing an existing certificate checks retained
+evidence. A fresh numerical reproduction instead requires newly exported
+decisions and independent residual validation. Alternative optima, solver
+versions and shared-node conditions can produce different decision vectors
+or logs even when objective quality and physical feasibility agree.
 
-The older source inventory's h500-output flag predates S5 acceptance and is
-preserved as a dated statement. The original h500 review now supplies its
-accepted output identity. Likewise, source values marked synthetic or
-unconfirmed remain assumptions, even though their use is traceable. Publishing
-a checksum makes an input identifiable; it does not by itself establish
-complete access, calibrated economic validity or numerical reproducibility.
+Traceability makes these distinctions inspectable. It does not by itself
+establish economic calibration, unrestricted data access or reproducibility
+under arbitrary computing conditions.

@@ -1,6 +1,6 @@
 ## Accepted scalar cohort and computational dimensions
 
-All nine warehouse-only scalar observations meet their original 1% global-gap target and retain accepted original independent feasibility certificates. The original h500 job2220382 is accepted after integrity/certificate replay. Two separate h215 D observations bring the scalar inventory to eleven, not eleven independent replications.
+All nine warehouse-only scalar observations meet the 1% global-gap target and pass independent feasibility validation. The original h500 result extends the reported sequence to 500 facilities. Two separate h215 D observations bring the Gurobi cohort to eleven; they are distinct configurations rather than eleven independent replications.
 
 | Instance | Variables | Binary | Linear constraints | Matrix nonzeros |
 |:--|--:|--:|--:|--:|
@@ -68,7 +68,7 @@ All five h300 objectives and best bounds coincide; their original warehouse, flo
 | h400 STO | 254 | 254 | 69 | 77 |
 | h500 STO | 354 | 354 | 72 | 74 |
 
-: Counts from the accepted original decision vectors, using a display threshold of 1e-8 t for h215–h400 and 1e-7 t for the original h500 aggregate. Original values/certificates are unchanged. Existing availability is not counted as candidate opening. {#tbl-scalar-investments}
+: Counts from the accepted original decision vectors, using a display threshold of 1e-8 t for h215–h400 and 1e-7 t for the original h500 aggregate. Existing availability is not counted as candidate opening. {#tbl-scalar-investments}
 
 | Instance | Candidate capacity, million t | Static expansion, million t | Bulkification investment basis, million t |
 |:--|--:|--:|--:|
@@ -102,7 +102,7 @@ Across the returned STO plans, additional candidate sites accompany more install
 
 ![Verified h400 STO node and investment locations. Origins distinguish soybean/corn; domestic/export roles remain separate. Road polylines are unavailable and no connecting segments are invented.](figures/scalar_h400_t1.png){#fig-map-h400}
 
-![h500 input availability only. Numerical h500 results are now accepted, but this preserved geographic snapshot contains no optimized h500 decisions.](figures/h500_pending.png){#fig-map-h500}
+![h500 warehouse population: existing sites and candidate options. The map shows input availability and contains no optimized capacity or flow decisions.](figures/h500_pending.png){#fig-map-h500}
 
 The local read-only dashboard provides the corresponding DET/STO, population, incremental-membership, product, period and scenario filters, preserving coincident identifiers. Its ability to display a flow requires original positive-flow evidence and source-bound road geometry. Geography alone is not a validation of the agricultural plan.
 

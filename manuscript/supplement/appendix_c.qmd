@@ -79,8 +79,7 @@ candidate, the emergency slacks must also be zero.
 Gurobi uses a common extensive-form builder for DET and STO. Its cost construction
 separates six investment components, four transport components, inventory
 holding and three artificial penalties: fourteen components in total.
-After the scalar objective is assembled, one optimization call is made.
-The time allowance is not restarted across objective priorities.
+The scalar model uses one optimization call under the stated time allowance.
 
 The SCIP backend uses PySCIPOpt to create its own variables, constraints,
 indicator relationships and scalar optimization call. It shares algebraic
@@ -112,9 +111,7 @@ can be read alongside the [displayed formulation](https://github.com/unb-lamfo-o
 The [mathematical input contract](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/src/logic/mathematical_contract.py)
 prepares the common effective arrays; the
 [independent solution validator](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/src/logic/solution_validation.py)
-evaluates exported decisions. The
-[formulation crosswalk](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/docs/s6a_20261021/integrated_revision_crosswalk.md)
-links the mathematical and editorial decisions. A source file defines what
+evaluates exported decisions.  A source file defines what
 software can do; the original review for each experiment identifies which
 version actually did it.
 
@@ -234,8 +231,7 @@ replace it with an arbitrary slack bound.
 
 Structural inspection and exporter tests have examined indexing, units,
 costs, scenarios and input preservation. **GAMS compilation and numerical
-parity have not been performed**, because GAMS was unavailable in the
-qualification environment. The Python results do not validate the GAMS
+parity have not been performed**, and no GAMS performance result is reported. The Python results do not validate the GAMS
 translation by proxy. A future numerical comparison would need to evaluate
 objective components and residuals on the same small input before considering
 large cases; alternative optimal vectors should not be mistaken for a failure
@@ -264,7 +260,7 @@ check shared investments, scenario weights, units and cost reconstruction.
 They are executable examples, not substitute large-instance data.
 The corresponding [native qualification workflow](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/.github/workflows/scalar-r1.yml)
 and [Pyomo qualification workflow](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/.github/workflows/pyomo.yml)
-show the tested cloud environments and fail/skip conditions. A skipped native
+identify the tested software environments and fail/skip conditions. A skipped native
 control is not evidence that the absent solver has been checked.
 
 For a reader who has prepared an existing compatible environment, the first
@@ -288,7 +284,8 @@ to produce data.inc and data_manifest.json without optimization. The exporter
 takes a version-2 case manifest, a case index, the workbook and its expected
 hash, and a new output directory. Its receipt records effective settings,
 identifier mappings and hashes. This is a reproducible interface description,
-not a claim that private generated data are included in the review ZIP.
+the generated input must still be associated with its source workbook and
+experiment definition.
 
 For a fresh optimization, retain the source version, exact inputs, topology,
 scenario design, solver/interface settings and resource/stopping rules with the
