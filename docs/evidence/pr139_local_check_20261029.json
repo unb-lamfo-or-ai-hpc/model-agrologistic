@@ -1,0 +1,15 @@
+{
+  "date": "2026-10-29",
+  "checked_commit": "2cd9dc755bf197090645d843d1c841cbed04f03e",
+  "execution": "researcher_manual_powershell_existing_venv313",
+  "ruff": "passed",
+  "scalar_tables": "verified",
+  "wd_tables": "verified",
+  "manuscript_source_integrity": "accepted_33_cited_references",
+  "appendix_input_audit": "stopped_at_Parametros_Modelo_D2",
+  "pytest": "not_reached",
+  "diagnosis": "Text inventories were read without encoding=utf-8. D2 is the first accented source value after ASCII entries; Windows locale decoding is a confound. Fix explicit UTF-8 reads and verify with new regression/negative controls; do not change original workbook or expected cells.",
+  "new_fix_checks": "pending",
+  "original_inputs_modified": false,
+  "solver_executed": false
+}

@@ -65,14 +65,15 @@ try {
     Invoke-Checked $python @('-B', '-m', 'ruff', 'check',
         'scripts/check_manuscript.py', 'scripts/check_manuscript_appendix_inputs.py',
         'scripts/build_scalar_manuscript.py', 'scripts/build_wd_manuscript.py',
-        'scripts/inspect_parallel_solver_evidence.py', 'tests/test_manuscript.py')
+        'scripts/inspect_parallel_solver_evidence.py', 'tests/test_manuscript.py',
+        'tests/test_manuscript_appendix_inputs.py')
     Invoke-Checked $python @('-B', '-m', 'scripts.build_scalar_manuscript', '--check')
     Invoke-Checked $python @('-B', '-m', 'scripts.build_wd_manuscript', '--check')
     Invoke-Checked $python @('-B', 'scripts/check_manuscript.py')
     Invoke-Checked $python @('-B', 'scripts/check_manuscript_appendix_inputs.py',
         '--output', (Join-Path $work 'appendix-reader-audit.json'))
     Invoke-Checked $python @('-B', '-m', 'pytest', 'tests/test_manuscript.py',
-        'tests/test_manuscript_package.py', '-q', '-p', 'no:cacheprovider',
+        'tests/test_manuscript_package.py', 'tests/test_manuscript_appendix_inputs.py', '-q', '-p', 'no:cacheprovider',
         '--basetemp', (Join-Path $work 'test-temp'))
     if ($Render) {
         Invoke-Checked $quarto @('render', 'manuscript')

@@ -18,9 +18,9 @@ def audit(root: Path = ROOT) -> dict:
     manuscript = root / "manuscript"
     supplement = manuscript / "supplement"
     guide = json.loads(
-        (root / "docs/evidence/appendix_input_reproduction_20261028.json").read_text()
+        (root / "docs/evidence/appendix_input_reproduction_20261028.json").read_text(encoding="utf-8")
     )
-    inventory = json.loads((supplement / "appendix_d_inventory.json").read_text())
+    inventory = json.loads((supplement / "appendix_d_inventory.json").read_text(encoding="utf-8"))
     gold = root / guide["public_gold"]["repository_path"]
     digest = hashlib.sha256(gold.read_bytes()).hexdigest()
     if digest != guide["public_gold"]["sha256"]:
@@ -63,7 +63,7 @@ def audit(root: Path = ROOT) -> dict:
         }:
             raise ValueError("Executed penalty vector differs")
         registry = json.loads(
-            (root / "data/manifests/warehouse_population_source_v020.json").read_text()
+            (root / "data/manifests/warehouse_population_source_v020.json").read_text(encoding="utf-8")
         )
         if registry["source_sha256"] != guide["registry"]["sha256"]:
             raise ValueError("Registry identity differs")
@@ -83,7 +83,7 @@ def audit(root: Path = ROOT) -> dict:
         )]
         prefix = "https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/"
         for source in files:
-            for target in re.findall(r"\]\((https://[^)]+)\)", source.read_text()):
+            for target in re.findall(r"\]\((https://[^)]+)\)", source.read_text(encoding="utf-8")):
                 if not target.startswith(prefix):
                     continue
                 ref, _, relative = target.removeprefix(prefix).partition("/")
