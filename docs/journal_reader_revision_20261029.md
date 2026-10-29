@@ -76,3 +76,14 @@ with [skip ci]; no cloud qualification is claimed. Local PowerShell intervention
 is needed for source checks, archive inspection and PDF migration/rendering.
 Keep source/render/audit receipts in this PR. No local clone/environment/install
 or native desktop app is requested. Only manual researcher CLI may access NPAD.
+
+## Local integrity/forensic inspector
+
+scripts/inspect_parallel_solver_evidence.py uses only the standard library.
+It verifies the two external archive/checksum pairs, every inventory digest,
+job/source/plan and plan-artifact bindings, and each original GitHub source
+snapshot without extraction or execution of archive contents. It checks retained
+product-completion hashes and accepted residual certificate fields/cost totals,
+and emits bounded redacted controller/native/error log tails for SCIP diagnosis.
+It does not claim a full operational replay or fresh original-unit residual
+calculation. The script itself still requires local syntax/run verification.
