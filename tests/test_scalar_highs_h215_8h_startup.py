@@ -131,6 +131,9 @@ def test_output_allows_only_project_sibling():
 
 
 def test_existing_claim_never_submits_or_collects(tmp_path, monkeypatch):
+    # This case exercises the LOGIN existing-claim guard even when pytest itself
+    # runs inside a public compute-node qualification allocation.
+    monkeypatch.delenv("SLURM_JOB_ID", raising=False)
     claim = tmp_path / m.CLAIM
     claim.mkdir()
     sentinel = claim / "original"
@@ -139,6 +142,19 @@ def test_existing_claim_never_submits_or_collects(tmp_path, monkeypatch):
     with pytest.raises(ValueError, match="Existing HiGHS claim"):
         m.start(claim, SHA, True, {}, command=lambda *_: pytest.fail("No scheduler"))
     assert sentinel.read_bytes() == b"preserve"
+
+
+def test_compute_context_refuses_start_without_touching_existing_claim(tmp_path, monkeypatch):
+    monkeypatch.setenv("SLURM_JOB_ID", "2227457")
+    claim = tmp_path / m.CLAIM
+    claim.mkdir()
+    sentinel = claim / "original"
+    sentinel.write_bytes(b"preserve")
+    monkeypatch.setattr(m, "output_location", lambda *_: None)
+    with pytest.raises(ValueError, match="Login Python3.13 only"):
+        m.start(claim, SHA, True, {}, command=lambda *_: pytest.fail("No scheduler"))
+    assert sentinel.read_bytes() == b"preserve"
+    assert not (claim / "submission_intent.json").exists()
 
 
 def test_acknowledgement_precedes_preparation(tmp_path):

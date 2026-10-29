@@ -2,6 +2,7 @@
 
 import hashlib
 import io
+import json
 import tarfile
 
 import pytest
@@ -70,9 +71,48 @@ def test_qualification_is_public_and_not_an_h215_execution_admission():
     assert all(name.startswith("tests/test_") for name in q.TESTS)
     assert "tests/test_pyomo_solver_adapters.py" in q.TESTS
     assert "tests/test_scalar_highs_math.py" in q.TESTS
-    assert q.EXPECTED_TESTS == 167
+    assert q.EXPECTED_TESTS == 168
 
 
 def test_human_home_root_cannot_be_a_qualification_claim(tmp_path):
     with pytest.raises(ValueError, match="dedicated"):
         q.location(tmp_path)
+
+
+def original_qualification(base, monkeypatch):
+    original = base / ".mvp2-pyomo-adapter-qualification-v1"
+    original.mkdir()
+    q.write_json(original / "plan.json", {"source_commit": q.PREDECESSOR_SOURCE})
+    monkeypatch.setattr(q, "PREDECESSOR_PLAN", q.digest(original / "plan.json"))
+    (original / "qualification.xml").write_bytes(b"<testsuite tests='167' failures='1'/>")
+    monkeypatch.setattr(q, "PREDECESSOR_XML", q.digest(original / "qualification.xml"))
+    q.write_json(original / "result.json", {
+        "source_commit": q.PREDECESSOR_SOURCE, "plan_sha256": q.PREDECESSOR_PLAN,
+        "job_id": "2227457", "pytest_exit": 1, "status": "rejected",
+        "counts": {"tests": 167, "failures": 1, "errors": 0, "skipped": 0},
+        "source_verified_after": True, "private_h215_execution_admitted": False,
+    })
+    return original
+
+
+def test_new_qualification_binds_but_never_changes_original(tmp_path, monkeypatch):
+    original = original_qualification(tmp_path, monkeypatch)
+    before = {p.name: p.read_bytes() for p in original.iterdir()}
+    result = q.predecessor(tmp_path)
+    assert result["job_id"] == "2227457"
+    assert result["result_sha256"] == q.digest(original / "result.json")
+    assert before == {p.name: p.read_bytes() for p in original.iterdir()}
+
+
+@pytest.mark.parametrize("name", ["plan.json", "qualification.xml", "result.json"])
+def test_changed_predecessor_is_rejected(tmp_path, monkeypatch, name):
+    original = original_qualification(tmp_path, monkeypatch)
+    target = original / name
+    if name == "result.json":
+        data = json.loads(target.read_text(encoding="utf-8"))
+        data["status"] = "accepted"
+        target.write_text(json.dumps(data), encoding="utf-8")
+    else:
+        target.write_bytes(target.read_bytes() + b"changed")
+    with pytest.raises(ValueError, match="Original qualification"):
+        q.predecessor(tmp_path)

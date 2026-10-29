@@ -17,11 +17,23 @@
   "source_verified_after": true,
   "private_h215_execution_admitted": false,
   "scientific_h215_solve_performed": false,
-  "failed_test_identity": null,
-  "failure_diagnosis": null,
+  "failed_test_identity": {
+    "class": "tests.test_scalar_highs_h215_8h_startup",
+    "test": "test_existing_claim_never_submits_or_collects"
+  },
+  "failure_diagnosis": {
+    "expected_guard": "Existing HiGHS claim",
+    "actual_guard": "Login Python3.13 only.",
+    "cause": "The login-only test inherited real SLURM_JOB_ID inside the qualification allocation. The real login guard rejected the call before it could reach the existing-claim guard.",
+    "classification": "test environment isolation defect; no numerical solver failure",
+    "scientific_runtime_guard_changed": false,
+    "repair": "Simulate login only in that test with monkeypatch.delenv; add a separate compute-context rejection control with scheduler execution forbidden."
+  },
   "scheduler_terminal_receipt": null,
-  "xml_sha256": null,
-  "scope": "Original human terminal report; read-only failure XML/log inspection requested, not yet supplied.",
+  "xml_sha256": "68423e51c25488b5e209368440093f2f3395e2019b449a308506fcc42051ffac",
+  "scope": "Researcher-pasted original result and bounded XML/log diagnostic; original plan hash asserted, XML SHA recorded; no source/claim rewrite or new solve.",
   "automatic_retry": false,
-  "preserve_original_claim": true
+  "preserve_original_claim": true,
+  "elapsed_pytest_seconds": 39.68,
+  "passed": 166
 }

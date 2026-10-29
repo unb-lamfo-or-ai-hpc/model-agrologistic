@@ -18,7 +18,11 @@ TESTS = (
     "tests/test_scalar_contract.py", "tests/test_scalar_highs_math.py",
     "tests/test_scalar_highs_h215_8h_startup.py",
 )
-EXPECTED_TESTS = 167
+EXPECTED_TESTS = 168
+CLAIM_NAME = ".mvp2-pyomo-adapter-qualification-v2"
+PREDECESSOR_SOURCE = "fd4ef12352578fce5ef0ea9f9fdb82b2a06924c4"
+PREDECESSOR_PLAN = "9b5eb14b38651aaf9729aa86b462aefd5419717ab039e8befd40eef4d4c49802"
+PREDECESSOR_XML = "68423e51c25488b5e209368440093f2f3395e2019b449a308506fcc42051ffac"
 VERSIONS = {
     "pyomo": "6.10.1", "gurobipy": "13.0.3", "pyscipopt": "6.2.1", "highspy": "1.15.1",
 }
@@ -43,9 +47,41 @@ def location(claim):
     if claim.is_symlink():
         raise ValueError("Linked qualification claim refused.")
     claim = claim.resolve()
-    if claim.parent != base or claim.name != ".mvp2-pyomo-adapter-qualification-v1":
+    if claim.parent != base or claim.name != CLAIM_NAME:
         raise ValueError("Use the one dedicated qualification claim below the audit base.")
     return claim
+
+
+def predecessor(base):
+    """Bind a new qualification to the untouched rejected observation."""
+    original = base / ".mvp2-pyomo-adapter-qualification-v1"
+    if not original.is_dir() or original.is_symlink():
+        raise ValueError("Preserved original qualification required.")
+    for name in ("plan.json", "result.json", "qualification.xml"):
+        path = original / name
+        if path.is_symlink() or not path.is_file() or path.stat().st_size > 32 * 1024**2:
+            raise ValueError("Original qualification receipt differs.")
+    if digest(original / "plan.json") != PREDECESSOR_PLAN:
+        raise ValueError("Original qualification plan checksum differs.")
+    if digest(original / "qualification.xml") != PREDECESSOR_XML:
+        raise ValueError("Original qualification XML checksum differs.")
+    plan = json.loads((original / "plan.json").read_text(encoding="utf-8"))
+    result = json.loads((original / "result.json").read_text(encoding="utf-8"))
+    if (
+        plan["source_commit"] != PREDECESSOR_SOURCE
+        or result["source_commit"] != PREDECESSOR_SOURCE
+        or result["plan_sha256"] != PREDECESSOR_PLAN or result["job_id"] != "2227457"
+        or result["counts"] != {"tests": 167, "failures": 1, "errors": 0, "skipped": 0}
+        or result["pytest_exit"] != 1 or result["status"] != "rejected"
+        or result["source_verified_after"] is not True
+        or result["private_h215_execution_admitted"] is not False
+    ):
+        raise ValueError("Original qualification outcome differs.")
+    return {
+        "source_commit": PREDECESSOR_SOURCE, "job_id": "2227457",
+        "plan_sha256": PREDECESSOR_PLAN, "xml_sha256": PREDECESSOR_XML,
+        "result_sha256": digest(original / "result.json"),
+    }
 
 
 def extract_source(archive_path, output, sha):
@@ -112,6 +148,7 @@ def prepare(claim, source_archive, cbc_archive, sha):
     versions = {name: importlib.metadata.version(name) for name in VERSIONS}
     if versions != VERSIONS:
         raise ValueError("Installed qualification package versions differ.")
+    previous = predecessor(claim.parent)
     claim.mkdir(exist_ok=False)
     source = claim / "source"
     source.mkdir()
@@ -125,6 +162,7 @@ def prepare(claim, source_archive, cbc_archive, sha):
         "python": sys.executable, "packages": versions, "tests": list(TESTS),
         "expected_test_count": EXPECTED_TESTS,
         "private_h215_execution_admitted": False, "automatic_retry": False,
+        "predecessor": previous,
     }
     write_json(claim / "plan.json", plan)
     command = [sys.executable, "-B", "-I", str(source / "scripts/qualify_pyomo_adapters.py"),
@@ -150,6 +188,7 @@ def run(claim, sha):
         or not os.environ.get("SLURM_JOB_ID") or not os.environ.get("SLURM_STEP_ID")
         or plan["private_h215_execution_admitted"] is not False
         or Path(sys.executable) != Path(plan["python"])
+        or plan["predecessor"] != predecessor(claim.parent)
     ):
         raise ValueError("Qualification job/source/step differs.")
     source = claim / "source"
@@ -183,12 +222,16 @@ def run(claim, sha):
     xml = claim / "qualification.xml"
     code = pytest.main([*TESTS, "-q", "--tb=short", "-p", "no:cacheprovider",
                         "--basetemp", str(temporary / "pytest"), "--junitxml", str(xml)])
-    suites = list(et.fromstring(xml.read_bytes()).iter("testsuite"))
+    tree = et.fromstring(xml.read_bytes())
+    suites = list(tree.iter("testsuite"))
     counts = {key: sum(int(s.get(key, 0)) for s in suites)
               for key in ("tests", "failures", "errors", "skipped")}
     source_verified_after = all(
         digest(source / name) == expected for name, expected in plan["source_files"].items()
-    ) and digest(claim / "cbc-bin/cbc") == plan["cbc_sha256"]
+    ) and (
+        digest(claim / "cbc-bin/cbc") == plan["cbc_sha256"]
+        and predecessor(claim.parent) == plan["predecessor"]
+    )
     accepted = source_verified_after and code == 0 and counts["tests"] == EXPECTED_TESTS and all(
         counts[key] == 0 for key in ("failures", "errors", "skipped")
     )
@@ -197,6 +240,12 @@ def run(claim, sha):
         "plan_sha256": digest(claim / "plan.json"), "pytest_exit": int(code),
         "counts": counts, "status": "accepted" if accepted else "rejected",
         "source_verified_after": source_verified_after,
+        "failed_tests": [
+            {"class": case.get("classname"), "test": case.get("name"),
+             "kind": item.tag, "message": item.get("message", "")[:2000]}
+            for case in tree.iter("testcase") for item in case
+            if item.tag in {"failure", "error"}
+        ],
         "private_h215_execution_admitted": False,
     }
     write_json(claim / "result.json", record)

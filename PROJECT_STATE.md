@@ -1,3 +1,16 @@
+# Qualification2227457 diagnosed; fresh v2 preparation — 29 October 2026
+
+Original167public tests:166passed,1failed,0errors/skips, source verified after.
+The only failure was a login-guard test inheriting SLURM_JOB_ID on compute,
+not a numerical solver failure. Preserve the original REJECTED result and v1
+claim. The test now simulates login explicitly; a new compute-context control
+preserves the real start guard. No production/runtime or scientific setting changed.
+Local Ruff and2guard tests passed;48portable preparation/startup controls passed.
+A predecessor-bound qualification-v2 requires all168target tests with0failures,
+errors or skips and post-test integrity. It is prepared, not submitted by Codex.
+See docs/pyomo_qualification_2227457_diagnosis.md.
+PR140 remains DRAFT; h215Gurobi/SCIP/CBC preparation continues without execution.
+
 # Public Pyomo qualification2227457 — 29 October 2026
 
 The researcher supplied original plan9b5eb14b/sourcefd4ef123 and result.json:

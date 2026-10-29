@@ -55,8 +55,9 @@
     "src/logic/pyomo_scip_adapter.py": "58f089a817cad21075f6396146a933fce74ec1f2215f02b1187b1568f6e5cae2",
     "tests/test_pyomo_multisolver.py": "4eb12eba6a605fafb16e24502ed8d1172198c1a1a712cc517c3c2a2de61121c8",
     "tests/test_pyomo_solver_adapters.py": "bbc4078a002292361514ae076e90fe9839dc22d9198390268d7e4c9d5d088048",
-    "scripts/qualify_pyomo_adapters.py": "4c6801be896ec91aed33d38ceb3525bc06d9dbafb06cacad98dcb9ac9fec242f",
-    "tests/test_pyomo_adapter_qualification.py": "2407319307a3b31eb7d560b730e6ad53a76ead13aaec152cb7f3a248fd9bf364"
+    "scripts/qualify_pyomo_adapters.py": "3e60378014f76615088dec03eaeaa2ebefc0e966efa4b185eb2afba9f51bc2d4",
+    "tests/test_pyomo_adapter_qualification.py": "37921e4443019f2d7841c8454c07f6facca7b674af75a4d59aae6d0b90becf78",
+    "tests/test_scalar_highs_h215_8h_startup.py": "27a2aac63f5746a84bd750674625bf339b596b255e54573b48e3589c509b9609"
   },
   "cbc_linux": {
     "version": "2.10.13",
@@ -87,14 +88,29 @@
   "private_h215_execution_admitted": false,
   "original_evidence_modified": false,
   "public_npad_qualification": {
-    "expected_tests": 167,
+    "expected_tests": 168,
     "expected_failures": 0,
     "expected_errors": 0,
     "expected_skips": 0,
     "source_verified_after_required": true,
     "scheduler_submitted_by_agent": false,
     "h215_inputs_used": false,
-    "target_result": "rejected_167_tests_one_failure",
-    "observation": "docs/evidence/pyomo_qualification_2227457.json"
+    "target_result": "requalification_v2_pending",
+    "original_rejected_result": "docs/evidence/pyomo_qualification_2227457.json",
+    "new_claim": ".mvp2-pyomo-adapter-qualification-v2",
+    "predecessor_bound": true
+  },
+  "repair_checks": {
+    "ruff": "passed",
+    "guard_tests_in_simulated_slurm": {
+      "passed": 2,
+      "skipped": 0
+    },
+    "portable_preparation_and_startup_subset": {
+      "passed": 48,
+      "deselected": 9,
+      "reason": "Linux proc/cold-worker and path-bound tests reserved for complete NPAD gate"
+    },
+    "original_runtime_guards_changed": false
   }
 }
