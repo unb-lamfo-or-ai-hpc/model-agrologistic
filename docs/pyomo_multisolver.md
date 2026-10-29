@@ -4,18 +4,18 @@ The researcher explicitly requests a separate implementation PR, parallel to the
 longer native SCIP operational PR. The native Gurobi/SCIP implementations,
 historical scenarios/input/penalties/claims/certificates and their output
 semantics remain unchanged. This PR implements solver-neutral scalar DET/STO
-construction and HiGHS/CBC adapters; it submits no HPC job and provides no h215
+construction and HiGHS/CBC adapters. The later Gurobi/SCIP extension is described in [native adapters](pyomo_native_adapters.md); it submits no HPC job and provides no new h215
 performance result. Public miniature correctness is not large-input admission.
 
 ## Actual interfaces and explicit scope
 
 Use the existing optimization.solve_model facade with backend=pyomo and
-solver_name=highs (alias appsi_highs) or cbc. The shared ModelData,
+solver_name=highs (alias appsi_highs), cbc, gurobi or scip. The shared ModelData,
 ModelConfig, mathematical preparation, sparse route selection,
 OptimizationResult and independent solution validator are reused. The
 implementation uses Pyomo6.10.1, highspy1.15.1 and the installed CBC executable
 whose version is recorded. Native solver APIs retain their original paths.
-An unsupported Pyomo solver raises not-implemented rather than silently switching
+Gurobi uses APPSI; SCIP translates the same Pyomo linear algebra through PySCIPOpt. An unsupported Pyomo solver raises not-implemented rather than silently switching
 backends. SoPlex alone is not a MILP adapter.
 
 A solver-neutral extensive form preserves first-stage investment once, original

@@ -1,3 +1,20 @@
+# Pyomo adapter continuation after PR139 — 29 October 2026
+
+PR139 merged with explicit authorization at8740dc5771ae87b95e49c649abad0a8deb4631da.
+The next PR implements Gurobi/APPSI and SCIP/PySCIPOpt from the common Pyomo
+linear form, with exact ordered algebra hashes, effective options and cleanup.
+Public local tests:66functional plus2exception-disposal plus8preparation-safety;
+146related portable controls also pass. Windows cannot qualify Linux resource/
+proc startup checks; those are explicit remaining compute-node gates, not skips.
+See docs/pyomo_native_adapters.md and its qualification evidence JSON.
+The human NPAD inventory has matching Python3.13.15/Pyomo/Gurobi/SCIP/HiGHS
+packages, but no CBC executable. The official CBC2.10.13 static Linux archive
+and binary are hash-verified; compatibility is still pending actual target use.
+Prepare public exact-source qualification first, then separately release the
+three NEW common-form h215 STO/W8h observations after full operational controls.
+Do not reuse consumed claims or repeat HiGHS. NPAD stays manual; local CLI is
+autonomous. Keep this PR draft; no new private experiment or merge admitted.
+
 # PR139 source qualification complete — 29 October 2026
 
 The researcher reports and the retained local transcript confirms sourceaf60e234
