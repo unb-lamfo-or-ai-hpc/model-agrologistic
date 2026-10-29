@@ -109,6 +109,7 @@ def inspect(base, specification):
     suffixes = (
         "controller.json", "native_terminal.json", "independent_validation.json",
         "run_summary.json", "run_completion.json", "result.json", "runtime.json",
+        "input_receipt.json", "warehouses_used.json", "matrix_statistics.json",
         "error.json", "outcome.json",
     )
     with tarfile.open(path, "r|gz") as archive:
@@ -197,6 +198,43 @@ def inspect(base, specification):
                              and any(word in field for word in (
                                  "demand", "service", "economic", "penal", "capacity"
                              ))}
+    numerical = {}
+    for key, raw in selected.items():
+        if "/qualification-cases/" in key or not key.endswith("/result.json"):
+            continue
+        document = strict_json(raw)
+        native = document.get("result", {})
+        metadata = native.get("metadata", {})
+        numerical[key] = {
+            field: native.get(field) for field in (
+                "status", "objective_value", "objective_bound", "solver_backend", "solver_name"
+            )
+        }
+        numerical[key]["metadata"] = {
+            field: metadata.get(field) for field in (
+                "solver_termination", "scip_status", "solver_versions",
+                "effective_highs_options", "effective_scip_parameters",
+                "pyomo_reformulation", "timings"
+            )
+        }
+        if review.get("quality_target_met"):
+            objective, bound = native["objective_value"], native["objective_bound"]
+            gap = (objective - bound) / abs(objective)
+            require(0 <= gap <= 0.01 and math.isclose(
+                gap, review["common_gap"], rel_tol=1e-8, abs_tol=1e-12
+            ), "Original objective/bound/common-gap arithmetic differs")
+    input_bindings = {}
+    historical = strict_json(selected["historical_w.json"])["receipts"]["sto"]
+    for key, raw in selected.items():
+        if "/qualification-cases/" in key or not key.endswith("/input_receipt.json"):
+            continue
+        receipt = strict_json(raw)
+        matches = all(receipt.get(field) == historical.get(field) for field in (
+            "mathematical_contract", "effective_scenario_probabilities", "warehouse_selection"
+        ))
+        input_bindings[key] = {"matches_historical_w": matches}
+        if review.get("quality_target_met"):
+            require(matches, "Accepted result differs from original W input binding")
     controls = {
         key: strict_json(raw) for key, raw in selected.items()
         if (key == "batch_outcome.json" or key.startswith("control/sto/"))
@@ -210,7 +248,8 @@ def inspect(base, specification):
         "original_source_commit": commit, "original_source_files_matched": source_count,
         "plan_sha256": hashes["plan.json"], "original_review": review,
         "completion_artifacts_checked": completions, "original_validation": validations,
-        "physical_summary": physical, "controls": controls,
+        "physical_summary": physical, "numerical_metadata": numerical,
+        "input_bindings": input_bindings, "controls": controls,
         "retained_log_tails": tails,
         "scope": (
             "Integrity/source/certificate inspection; no extraction, solver or fresh residuals"
