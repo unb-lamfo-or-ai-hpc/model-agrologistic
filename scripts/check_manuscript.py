@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
 import re
 from pathlib import Path
 
@@ -123,6 +124,66 @@ def check_scalar_scip_revision() -> None:
         or "has no result at this cutoff" in article
     ):
         raise ValueError("Scalar SCIP manuscript scope differs")
+
+
+
+def check_highs_and_censored_scip_revision() -> None:
+    """Bind new observations to original certificates and preserve missing results."""
+    status = json.loads((MANUSCRIPT / "open_source_comparison_status.json").read_text())
+    evidence = ROOT / "docs/evidence"
+    highs = json.loads((evidence / "scalar_highs_h215_2226536_inspection.json").read_text())
+    scip = json.loads((evidence / "scalar_scip_h215_2226388_inspection.json").read_text())
+    expected = {
+        key: highs[key] for key in (
+            "job_id", "archive_sha256", "source_commit", "objective", "bound",
+            "common_gap", "quality_target_met", "original_validation_status",
+        )
+    }
+    expected["additional_execution_admitted"] = False
+    if status.get("highs_observation") != expected:
+        raise ValueError("HiGHS original certificate differs")
+    gap = abs(highs["objective"] - highs["bound"]) / abs(highs["objective"])
+    if (
+        highs["job_id"] != "2226536"
+        or highs["archive_sha256"]
+        != "db04224d755cd5720091ddb96fc275bcefc6082431ea4b417a1b90d0fece071b"
+        or highs["source_commit"] != "009119a07eb8c68573cfa105893b9d4a719c5155"
+        or not math.isfinite(gap) or not 0 <= gap <= 0.01
+        or not math.isclose(gap, highs["common_gap"], rel_tol=1e-8, abs_tol=1e-12)
+        or highs["original_validation_status"] != "accepted"
+        or highs["validation_failed_check_count"] != 0
+        or highs["original_operational_receipts_closed"] is not True
+        or highs["historical_W_input_binding_matches"] is not True
+        or highs["additional_execution_admitted"] is not False
+        or highs["fresh_private_input_residuals_recomputed"] is not False
+    ):
+        raise ValueError("HiGHS original quality or inspection scope differs")
+    expected_scip = {
+        "job_id": scip["job_id"], "archive_sha256": scip["archive_sha256"],
+        "classification": scip["classification"],
+        "native_termination": scip["native_termination"],
+        "usable_incumbent": scip["usable_incumbent"],
+        "operational_receipts_closed": scip["operational_receipts_closed"],
+    }
+    if (
+        status["longer_scip"].get("observation") != expected_scip
+        or scip["job_id"] != "2226388"
+        or scip["classification"] != "build_or_execution_incomplete"
+        or scip["native_termination"] is not None
+        or scip["usable_incumbent"] is not None
+        or scip["native_terminal_present"] is not False
+        or scip["operational_receipts_closed"] is not False
+        or scip["cancellation_trigger_established"] is not False
+    ):
+        raise ValueError("Censored SCIP result cannot be promoted")
+    section = (MANUSCRIPT / "scip_results.qmd").read_text(encoding="utf-8")
+    row = (
+        f"| Pyomo/APPSI HiGHS | {highs['objective'] / 1e12:.6f} | "
+        f"{100 * highs['common_gap']:.6f} | "
+        f"{highs['timings']['solver_reported_runtime_seconds'] / 60:.2f} |"
+    )
+    if row not in section or "rather than another" not in section:
+        raise ValueError("HiGHS or censored SCIP manuscript values differ")
 
 
 def check_public_review_approval() -> None:
@@ -391,6 +452,7 @@ def check(*, rendered: bool = False, publication: bool = False) -> None:
             raise ValueError(f"Generated comparison checksum mismatch: {relative}")
     check_scalar_revision()
     check_scalar_scip_revision()
+    check_highs_and_censored_scip_revision()
     if rendered:
         html = (MANUSCRIPT / "_manuscript/index.html").read_text(encoding="utf-8")
         for extension in ("html", "pdf"):

@@ -322,3 +322,48 @@ def test_scalar_scip_negative_result_cannot_be_promoted(manuscript, mutation):
     path.write_text(json.dumps(status))
     with pytest.raises(ValueError, match="SCIP|multisolver"):
         CHECKER.check_scalar_scip_revision()
+
+
+@pytest.mark.parametrize(
+    "field,value",
+    [
+        ("objective", 0), ("bound", 0), ("common_gap", 0),
+        ("archive_sha256", "0" * 64), ("source_commit", "0" * 40),
+        ("original_validation_status", "rejected"),
+        ("additional_execution_admitted", True),
+    ],
+)
+def test_highs_original_certificate_cannot_drift(manuscript, field, value):
+    path = manuscript / "open_source_comparison_status.json"
+    status = json.loads(path.read_text())
+    status["highs_observation"][field] = value
+    path.write_text(json.dumps(status))
+    with pytest.raises(ValueError, match="HiGHS"):
+        CHECKER.check_highs_and_censored_scip_revision()
+
+
+@pytest.mark.parametrize(
+    "field,value",
+    [
+        ("native_termination", "timelimit"), ("usable_incumbent", False),
+        ("classification", "no_usable_incumbent"),
+        ("operational_receipts_closed", True),
+    ],
+)
+def test_extended_scip_censoring_cannot_be_erased(manuscript, field, value):
+    path = manuscript / "open_source_comparison_status.json"
+    status = json.loads(path.read_text())
+    status["longer_scip"]["observation"][field] = value
+    path.write_text(json.dumps(status))
+    with pytest.raises(ValueError, match="Censored SCIP"):
+        CHECKER.check_highs_and_censored_scip_revision()
+
+
+def test_highs_gap_percentage_cannot_be_confused_with_fraction(manuscript):
+    path = manuscript / "scip_results.qmd"
+    path.write_text(
+        path.read_text(encoding="utf-8").replace("0.000196", "0.00000196"),
+        encoding="utf-8",
+    )
+    with pytest.raises(ValueError, match="manuscript values"):
+        CHECKER.check_highs_and_censored_scip_revision()

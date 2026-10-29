@@ -1,5 +1,20 @@
 # Model Agrologistic: agent working agreement
 
+## Current required delivery order — 29 October 2026
+
+The researcher explicitly requests: finish PR139 and preserve evidence first;
+then a new PR for Pyomo Gurobi/SCIP adapters and new h215 STO/W observations
+using Pyomo Gurobi, SCIP and CBC. The optional-benchmark position below is
+superseded by this scoped preparation request. Preserve the existing HiGHS
+result without restarting it. Read
+docs/mvp2_pyomo_three_solver_execution_plan_20261029.md.
+Qualify the current exact head through the researcher's manual local checks;
+request PR139 merge only when ready. Every later merge remains separately
+approved and all HPC/necessary PowerShell CLI stays human-only. No new local
+clone/environment, native desktop app, automatic cloud output or old claim retry.
+Seed42 documents solver-specific randomness, not a shared initial solution.
+Do not silently force presolve/LP/heuristic choices to claim reproducibility.
+
 ## Current resumption: solver comparison reassessment — 29 October 2026
 
 The researcher explicitly resumed work after the historical pause below.

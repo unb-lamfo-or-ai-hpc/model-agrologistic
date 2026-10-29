@@ -1,3 +1,21 @@
+# Current ordered continuation — 29 October 2026
+
+The researcher requests completion of PR139/evidence consolidation FIRST, then
+a separate implementation/operational PR for Pyomo Gurobi and SCIP adapters
+and one new h215 STO/W observation each for Gurobi, SCIP and CBC. This supersedes
+the earlier optional-benchmark recommendation. Existing HiGHS and all original
+claims/results stay preserved. See
+docs/mvp2_pyomo_three_solver_execution_plan_20261029.md.
+
+PR139 now adds focused guards against drift of the accepted HiGHS certificate,
+gap-percentage confusion and promotion of the censored extended SCIP attempt.
+These new checks are committed but have not yet run. Source/document checks
+remain the immediate manual PowerShell gate; Ruff is now installed.
+No new run, installation, merge or cloud workflow occurred. The Gurobi engine
+retains automatic strategies through Pyomo; seed42 is a recorded randomness
+setting, not a common initial incumbent. Qualification of the next adapters and
+the three fresh operational claims precedes the later human NPAD CLI.
+
 # Resumed research assessment — 29 October 2026
 
 The researcher explicitly resumed the work and requested a reassessment of h215
