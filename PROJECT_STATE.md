@@ -17,8 +17,9 @@ No repeat/start/new job is authorized by these results.
 
 Working PDFs and intermediate outputs remain only in approved local temporary
 directories or Codex tabs. No temporary upload to GitHub. Final PDFs follow
-Quarto/GitHub Pages after the separately authorized main merge. Do not remove
-old cloud artifacts until their required local copies are verified.
+Quarto/GitHub Pages after the separately authorized main merge. PR138's two local PDF copies were hash-verified by the researcher, and 23
+obsolete document artifacts were removed. The final render run independently
+lists no artifacts. A second cleanup404 concerns an already removed artifact.
 PowerShell host DNS/HTTPS returned api.github.com/HTTP200; this does not
 independently verify the agent command sandbox. Pythonvenv313 and Quarto exist;
 gh is absent. No configuration/package/environment change has been made.

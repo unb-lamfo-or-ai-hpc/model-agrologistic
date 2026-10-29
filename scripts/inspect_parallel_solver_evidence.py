@@ -87,6 +87,50 @@ def original_source(expected, commit):
     return len(actual)
 
 
+def read_payload(stream, *, size, retain, is_log, json_limit=64 * 1024**2):
+    """Hash every byte; retain only bounded JSON and a bounded log tail."""
+    hasher, data, tail = hashlib.sha256(), bytearray(), b""
+    keep_json = retain and size <= json_limit
+    seen = 0
+    for block in iter(lambda: stream.read(1024**2), b""):
+        hasher.update(block)
+        seen += len(block)
+        if keep_json:
+            data.extend(block)
+        if is_log:
+            tail = (tail + block)[-5000:]
+    require(seen == size, "Truncated evidence member")
+    return hasher.hexdigest(), bytes(data) if keep_json else None, tail
+
+
+def self_test():
+    """Exercise bounded reads before requesting any original archive."""
+    raw = b'{"status":"complete"}'
+    hashed, kept, tail = read_payload(
+        io.BytesIO(raw), size=len(raw), retain=True, is_log=False, json_limit=64
+    )
+    require(hashed == digest(raw) and kept == raw and tail == b"", "Small JSON regression")
+    raw = bytes(range(256)) * 10000
+    hashed, kept, tail = read_payload(
+        io.BytesIO(raw), size=len(raw), retain=True, is_log=True, json_limit=64
+    )
+    require(hashed == digest(raw) and kept is None, "Large member hash/retention regression")
+    require(tail == raw[-5000:], "Bounded log-tail regression")
+    try:
+        read_payload(io.BytesIO(b"x"), size=2, retain=False, is_log=False)
+    except ValueError:
+        pass
+    else:
+        raise ValueError("Truncation regression")
+    try:
+        strict_json(b'{"key":1,"key":2}')
+    except ValueError:
+        pass
+    else:
+        raise ValueError("Duplicate-key regression")
+    print("LOCAL_INSPECTOR_SELF_TEST=PASSED; CASES=5; NO_ARCHIVE_OR_SOLVER")
+
+
 def inspect(base, specification):
     job, name, checksum, commit = specification
     path = base / name
@@ -100,7 +144,7 @@ def inspect(base, specification):
         for block in iter(lambda: stream.read(1024**2), b""):
             hasher.update(block)
     require(hasher.hexdigest() == checksum, "Original archive checksum differs")
-    hashes, selected, tails = {}, {}, {}
+    hashes, selected, tails, unparsed = {}, {}, {}, []
     total = 0
     keep = {
         "plan.json", "job.json", "source.json", "review.json", "inventory.json",
@@ -119,20 +163,20 @@ def inspect(base, specification):
             total += member.size
             require(total <= LIMIT and len(hashes) < 4096, "Evidence limit exceeded")
             stream = archive.extractfile(member)
-            hasher, data, tail = hashlib.sha256(), bytearray(), b""
             retain = member.name in keep or member.name.endswith(suffixes)
             is_log = member.name.endswith((".log", ".err", ".out", ".txt", ".stderr"))
             is_log = is_log and "/qualification-cases/" not in member.name
-            for block in iter(lambda: stream.read(1024**2), b""):
-                hasher.update(block)
-                if retain:
-                    data.extend(block)
-                    require(len(data) <= 64 * 1024**2, "Selected JSON exceeds limit")
-                if is_log:
-                    tail = (tail + block)[-5000:]
-            hashes[member.name] = hasher.hexdigest()
-            if retain:
-                selected[member.name] = bytes(data)
+            checksum_value, data, tail = read_payload(
+                stream, size=member.size, retain=retain, is_log=is_log
+            )
+            hashes[member.name] = checksum_value
+            if data is not None:
+                selected[member.name] = data
+            elif retain:
+                unparsed.append({
+                    "name": member.name, "bytes": member.size, "sha256": checksum_value,
+                    "reason": "Fully hashed; JSON exceeds the bounded metadata buffer",
+                })
             if is_log and (member.name.startswith("control/sto/") or "/" not in member.name):
                 tails[member.name] = tail.decode("utf-8", errors="replace")
     inventory = strict_json(selected["inventory.json"])
@@ -241,6 +285,22 @@ def inspect(base, specification):
         and key.endswith(("controller.json", "native_terminal.json", "error.json", "outcome.json"))
         and "/qualification-cases/" not in key
     }
+    gap_check = None
+    if review.get("quality_target_met"):
+        objective, bound = review["objective"], review["bound"]
+        gap_check = (objective - bound) / abs(objective)
+        require(0 <= gap_check <= 0.01 and math.isclose(
+            gap_check, review["common_gap"], rel_tol=1e-8, abs_tol=1e-12
+        ), "Original review objective/bound/common-gap arithmetic differs")
+        require(validations and all(
+            item["status"] == "accepted" for item in validations.values()
+        ), "Accepted result lacks a bounded original residual certificate")
+        require(completions and all(
+            item["artifact_map_present"] for item in completions.values()
+        ), "Accepted result lacks product-completion integrity")
+        require(input_bindings and all(
+            item["matches_historical_w"] for item in input_bindings.values()
+        ), "Accepted result lacks original-W input bindings")
     return scrub({
         "job_id": job, "archive": name, "archive_sha256": checksum,
         "members": len(hashes), "expanded_bytes": total,
@@ -251,6 +311,9 @@ def inspect(base, specification):
         "physical_summary": physical, "numerical_metadata": numerical,
         "input_bindings": input_bindings, "controls": controls,
         "retained_log_tails": tails,
+        "fully_hashed_json_not_parsed": unparsed,
+        "gap_recomputed_from_original_review": gap_check,
+        "native_result_metadata_reread": bool(numerical),
         "scope": (
             "Integrity/source/certificate inspection; no extraction, solver or fresh residuals"
         ),
@@ -260,17 +323,47 @@ def inspect(base, specification):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--base", type=Path, required=True)
-    parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--base", type=Path)
+    parser.add_argument("--output", type=Path)
+    parser.add_argument("--self-test", action="store_true")
     args = parser.parse_args()
+    if args.self_test:
+        self_test()
+        return
+    require(args.base is not None and args.output is not None, "Base/output required")
     base = args.base.resolve(strict=True)
     require(base.is_dir() and not base.is_symlink(), "Existing temporary directory required")
-    report = {"schema_version": "parallel-original-integrity-inspection-v1",
-              "observations": [inspect(base, item) for item in CASES]}
+    report = {"schema_version": "parallel-original-integrity-inspection-v2",
+              "observations": [], "all_integrity_inspections_completed": False}
     with args.output.open("x", encoding="utf-8") as stream:
+        for item in CASES:
+            try:
+                observation = inspect(base, item)
+                observation["integrity_inspection_completed"] = True
+            except Exception as exc:
+                observation = {
+                    "job_id": item[0], "archive": item[1],
+                    "integrity_inspection_completed": False,
+                    "inspection_error_kind": type(exc).__name__,
+                    "inspection_error": scrub(str(exc)),
+                }
+            report["observations"].append(observation)
+            stream.seek(0)
+            json.dump(report, stream, indent=2, allow_nan=False)
+            stream.write("\n")
+            stream.truncate()
+            stream.flush()
+        report["all_integrity_inspections_completed"] = all(
+            row["integrity_inspection_completed"] for row in report["observations"]
+        )
+        stream.seek(0)
         json.dump(report, stream, indent=2, allow_nan=False)
         stream.write("\n")
+        stream.truncate()
     print(json.dumps(report, indent=2, allow_nan=False))
+    print("LOCAL_REPORT_CREATED=" + str(args.output))
+    if not report["all_integrity_inspections_completed"]:
+        raise SystemExit(1)
 
 
 if __name__ == "__main__":

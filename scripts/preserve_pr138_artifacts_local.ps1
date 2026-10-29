@@ -54,13 +54,13 @@ try {
     }
     $copies = @()
     foreach ($spec in $specs) {
-        $meta = Get-RepositoryApi "actions/artifacts/$($spec.Id)"
-        if ($meta.name -ne $spec.Name -or $meta.workflow_run.head_sha -ne $renderSource -or
-            $meta.workflow_run.id -ne $runId -or $meta.expired) {
-            throw 'Original render artifact metadata differs'
-        }
         $target = Join-Path $destination $spec.Local
         if (-not (Test-Path -LiteralPath $target)) {
+            $meta = Get-RepositoryApi "actions/artifacts/$($spec.Id)"
+            if ($meta.name -ne $spec.Name -or $meta.workflow_run.head_sha -ne $renderSource -or
+                $meta.workflow_run.id -ne $runId -or $meta.expired) {
+                throw 'Original render artifact metadata differs'
+            }
             $partial = $target + '.part'
             if (Test-Path -LiteralPath $partial) { throw 'Preserve existing partial download' }
             Invoke-WebRequest -UseBasicParsing -Uri "https://api.github.com/repos/$repo/actions/artifacts/$($spec.Id)/zip" -Headers $headers -OutFile $partial

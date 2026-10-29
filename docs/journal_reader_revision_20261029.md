@@ -126,3 +126,24 @@ and Appendix A's original chronology/count issues remain preserved in repository
 records; this revision is not a completed new systematic search. Main and
 supplement still need local rendered-layout review before Ready. Final full-text
 bibliographic reconciliation and the substantive Appendix A review remain open.
+
+## Local follow-up: cleanup completed; metadata buffer corrected
+
+The researcher reports successful local hash-verified preservation of the two
+PR138 PDF previews and deletion of 23 PR138 document artifacts. The connector
+independently confirms the final render run's artifact list is empty. A second
+invocation received404 for an already deleted artifact; no new loss follows.
+The preservation tool now verifies existing local copies before consulting
+optional deleted cloud metadata, making the completed cleanup safely repeatable.
+Provider physical/cache erasure is not attested. Original HPC packages and Git
+source history were not targeted.
+
+The corrected inspector reached a selected JSON larger than64MiB and stopped.
+Large solution JSON is now hashed in full as a stream without retaining or
+parsing it in memory. The report lists every fully hashed/unparsed selected JSON,
+keeps the metadata cap, reconstructs the gap from the original compact review,
+and still requires bounded original validation/completion/input receipts for an
+accepted claim. It explicitly reports whether native result metadata was reread.
+Original residual recalculation and full operational replay remain unperformed.
+Per-observation reports are written independently so one failure no longer hides
+the other job. Five dependency-free self-tests precede the next local handoff.
