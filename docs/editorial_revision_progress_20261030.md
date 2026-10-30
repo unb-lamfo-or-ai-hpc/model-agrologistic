@@ -125,3 +125,14 @@ figure assets; the old dated SVG remains preserved. The document figure builder
 now reads the current source. Captions identify supplement tables/figures,
 and the workflow figures stay with their explanatory text. Local PDF rendering
 and visual acceptance are pending at this source commit.
+
+
+## Local Quarto review PDFs, 2026-10-30
+
+The explicit local-preview request is fulfilled from render source 3844c037ab5fcd4e1950ac1bda68ec16fa42b9b7: a 32-page article and 34-page supplement, generated with Quarto 1.9.38. Every rendered page was visually inspected; the 19 original Appendix A pages remain in order. The article contains 63 URI annotations (three GitHub links), and the supplement 42 (37 GitHub links). PDFs and raster previews remain only in the authorized local .codex temporary directory. No temporary document is committed or uploaded.
+
+The reader pass removes internal figure identifiers, preserves exact scientific map geometry and synthetic markings, places maps with their interpretations, and repairs Appendix C's display-math delimiters without changing mathematical terms. The cross-reference checker now accepts figure-placement attributes while retaining duplicate/unresolved-reference checks. Ruff, 64 document/package tests and 18 focused visualization controls passed. Three optional visualization cases were deselected because the existing venv lacks Dash/Plotly/ReportLab; the bundled runtime successfully produced the actual static figures. The initial long Windows test path was shortened; no environment, clone or global package was created.
+
+The [curated PDF qualification](evidence/editorial_local_pdf_review_20261030.json) records hashes, source binding, test scope and remaining gates. These are working review PDFs, not a submission or Pages release. Close-precedent full texts/thesis, D effective-data access/rights and the recorded author decisions remain open. Reconcile this branch with the newer develop history before Ready qualification, preserving PR145's licensing code and records.
+
+The human-supplied running receipt for Gurobi2228514 (source311015e, plan ece5de8def42276b88a15e693070df8d65531dc73459bbb286a36a688bbacf18) is preserved separately. SCIP2228192 was last reported RUNNING03:20:20. Neither pending job contributes numerical outcomes to these PDFs; no start was repeated.

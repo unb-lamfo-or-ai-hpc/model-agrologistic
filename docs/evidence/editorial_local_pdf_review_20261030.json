@@ -1,0 +1,415 @@
+{
+  "schema_version": "pr144-local-quarto-pdf-review-v1",
+  "render_source_commit": "3844c037ab5fcd4e1950ac1bda68ec16fa42b9b7",
+  "date": "2026-10-30",
+  "scope": "Local working PDFs; no publication, solver, scheduler access or experiment rerun",
+  "quarto_version": "1.9.38",
+  "source_binding": {
+    "baseline_commit": "8ea2f8035b9e7ad96d47a61a614b28839de4f252",
+    "unchanged_git_blobs": 659,
+    "modified_source_files": {
+      "manuscript/scalar_results.qmd": {
+        "baseline_blob": "e05dac5d42e7c6513e135ec62eb40681fd65f700",
+        "rendered_blob": "54a099d43deadad6b2761a92bdfaa2ee9df331dd",
+        "sha256": "9c248b73a87a36e296e40246dd7e793e62036d2a7ad89d41e0a735e6b89ed348"
+      },
+      "manuscript/supplement/appendix_c.qmd": {
+        "baseline_blob": "52376ff877bee2197ce156867f40a1a9d37765da",
+        "rendered_blob": "f184166886ee5cef8dc1163a3b2903fd29f607d5",
+        "sha256": "65e89d4c4faeecf162fb701db7e402bdb2f50e2a8c6b0969c4f5e73dd881401c"
+      },
+      "scripts/build_s6a_assets.py": {
+        "baseline_blob": "9bfad97ef08173b2cfa30bcabe926b187aadbbe3",
+        "rendered_blob": "35d330a41eeb9af730da3a64fde7b213ee3baba8",
+        "sha256": "04dfa51fee83b89b2810d2d5d317d5248ba712ca1611ca7b8ec682d6de7b3666"
+      },
+      "scripts/build_scalar_manuscript.py": {
+        "baseline_blob": "a072e907bf847f3268bed084c3dfff1a65d94937",
+        "rendered_blob": "f4e09d6fe183ae7789c42e11bdb21c84e8093c66",
+        "sha256": "8860c9b86b117b7a38b95171e4f8b27ccdc770d99f6012ec0002f734998a401f"
+      },
+      "scripts/check_manuscript.py": {
+        "baseline_blob": "a3b4add4af7f77455a829dfb5a5cb2060b835f8c",
+        "rendered_blob": "ecc2b5b4fc779a5fa0772ad895221f5d88ac6d38",
+        "sha256": "af6313ad2ad07fc2d30d21cfcf690ca603086f1d0fcc24229a7a415cc00833ce"
+      },
+      "src/visualization/render.py": {
+        "baseline_blob": "8dfdd64365f65b8b3cfa33265a28511a02d67061",
+        "rendered_blob": "a2cefece65cc0100118e7f93ca9016d42f8f0ed6",
+        "sha256": "ed8365c572c065789f5cc3cc437614825227c32d52044c1458714548c41b522b"
+      },
+      "tests/test_geographic_visualization.py": {
+        "baseline_blob": "c509823b5122eac9df6d29dda03633cf2eee96b7",
+        "rendered_blob": "4f2d05566f463835999cb56a8e922aeeb497b56c",
+        "sha256": "be22058dcc819af3c63b4cf64f72c21ea429eeef8f1d5b21d308b8a488bfb27e"
+      },
+      "tests/test_manuscript.py": {
+        "baseline_blob": "c88f6d7e4927fe493b7e0e10af9d024f8a12b5c4",
+        "rendered_blob": "f16e1a880bfab7008681aaf9fed81435f3e78eaf",
+        "sha256": "debd28a7ba8863a31746d57459b9965aaa53cb8849589a876936647443ee40ee"
+      }
+    }
+  },
+  "pdf_review": {
+    "article": {
+      "pages": 32,
+      "sha256": "05ed1555163dbb8f785f277aa8c8e4682ea6061409e91b1ce93e4741fb1095ee",
+      "github_links": 3,
+      "uri_links": 63,
+      "source_administration_phrases": {
+        "Coauthor working revision": 0,
+        "One editable SVG": 0,
+        "Figure ID:": 0,
+        "2228514": 0,
+        "2228192": 0
+      },
+      "original_appendix_a_sequence_starts_on_page": [],
+      "headings": [
+        {
+          "page": 1,
+          "text": "Computational Scalability of Deterministic and Two-Stage Stochastic\nMILP Models for Grain-Storage Network Design and Hub Location\nVictor Raf"
+        },
+        {
+          "page": 2,
+          "text": "2020; Reis et al., 2023). Decomposition and distributed computing already provide computational\nprecedents in agricultural MILP (Shastri et "
+        },
+        {
+          "page": 3,
+          "text": "2. Related work and research positioning\n2.1. Grain-storage planning as an integrated decision problem\nThe systematic review by Rosa et al. "
+        },
+        {
+          "page": 4,
+          "text": "Precedent\nEstablished decision or\ncomputational emphasis Question examined here\nReis et al. (2023) Two-stage tactical soybean LP\nwith purcha"
+        },
+        {
+          "page": 5,
+          "text": "Table 3: Selected agricultural network-design studies and their implications for comparability. The studies address\ndifferent commodities an"
+        },
+        {
+          "page": 6,
+          "text": "is represented by a fixed term, a capacity-proportional term, or a documented decomposition.\nSensitivity to uncertain investment costs is a "
+        },
+        {
+          "page": 7,
+          "text": "for environmental model-data assembly. This distinction supports measuring data preparation\nseparately from the numerical solver rather than"
+        },
+        {
+          "page": 8,
+          "text": "it omits production choices, quality loss, processing, transport lead times and fleet scheduling.\nDomestic demand has a shortage variable; e"
+        },
+        {
+          "page": 9,
+          "text": "Symbol Definition and units\ncN\nw,c X\nw,c B\nw Corresponding quantity-dependent investment\ncharges, BRL per investment-tonne\nλD\ncp,λK\nw,λR\nw S"
+        },
+        {
+          "page": 10,
+          "text": "min\nX,Y\nZD =C IN V (X) +C T R(Y) +C HOLD (Y) +C P EN (Y),(D1)\nCIN V (X) =\n∑︂\nw∈WN\n(F N\nwyw +c N\nwkw) +\n∑︂\nw∈WX\n(F X\nwzw +c X\nwew) +\n∑︂\nw∈WB\n"
+        },
+        {
+          "page": 11,
+          "text": "∑︂\np∈P\nIwpt≤Kw(X) +q K\nwt ∀(w,t)∈W×T,(D9)\n∑︂\np∈P\nBin\nwpt≤dtRw(X) +q R\nwt ∀(w,t)∈W×T,\n∑︂\np∈P\nBout\nwpt≤dtHw(X)∀(w,t)∈W×T,\nyw = 0 =⇒qK\nwt =q R\n"
+        },
+        {
+          "page": 12,
+          "text": "∑︂\nw:(w,c,p)∈ADC\nxDC,s\nwcpt +\n∑︂\no:(o,c,p)∈AOC\nxOC,s\nocpt +u s\ncpt =D s\ncpt (S5)\n∀(c,p,t,s)∈CD×P×T×S,\n∑︂\nw:(w,c,p)∈ADC\nxDC,s\nwcpt +\n∑︂\no:(o,"
+        },
+        {
+          "page": 13,
+          "text": "and source/anchor/ranking hashes are preserved. Included candidates are investment options,\nnot decisions made by the optimizer.\nThe process"
+        },
+        {
+          "page": 14,
+          "text": "original accepted certificate is distinct from a later portable integrity replay. The latter verifies\nretained evidence and arithmetic; a fr"
+        },
+        {
+          "page": 15,
+          "text": "Native Runtime, model-construction wall time, application optimization wall time, extraction,\nvalidation, export and application end-to-end "
+        },
+        {
+          "page": 16,
+          "text": "Figure 1: Human-supervised research workflow.\nThe return arrows represent revision when a discrepancy is found. For example, shared\ninvestme"
+        },
+        {
+          "page": 17,
+          "text": "Table 9: Measured phases and memory scopes. Allocation elapsed, Slurm MaxRSS and solver-managed memory\nare different measurements.\nInstance\n"
+        },
+        {
+          "page": 18,
+          "text": "Runtime and memory at 300 sites\nNative Runtime (min)\n0\n10\n20\n30\n40\n50\n60\n70\n80\n47.14\n1\n53.01\n2\n58.89\n4\n67.45\n8\n67.61\n16\nSolver threads\nSampl"
+        },
+        {
+          "page": 19,
+          "text": "Table 14: Investment quantities. The bulkification basis determines handling-rate gains; it is not additional static\nstorage.\nInstance\nCandi"
+        },
+        {
+          "page": 20,
+          "text": "Facility locations (215 sites)\nLongitude and latitude (degrees)\n-65\n-60\n-55\n-50\n-45\n-40\n-35\n-30\n-25\n-20\n-15\n-10\n-5\n0\nSoybean origins\nCorn or"
+        },
+        {
+          "page": 21,
+          "text": "Facility locations (300 sites)\nLongitude and latitude (degrees)\n-65\n-60\n-55\n-50\n-45\n-40\n-35\n-30\n-25\n-20\n-15\n-10\n-5\n0\nSoybean origins\nCorn or"
+        },
+        {
+          "page": 22,
+          "text": "Facility locations (400 sites)\nLongitude and latitude (degrees)\n-65\n-60\n-55\n-50\n-45\n-40\n-35\n-30\n-25\n-20\n-15\n-10\n-5\n0\nSoybean origins\nCorn or"
+        },
+        {
+          "page": 23,
+          "text": "Facility locations (500 sites)\nLongitude and latitude (degrees)\n-65\n-60\n-55\n-50\n-45\n-40\n-35\n-30\n-25\n-20\n-15\n-10\n-5\n0\nSoybean origins\nCorn or"
+        },
+        {
+          "page": 24,
+          "text": "Table 16: Original validated h215 W/D observations. Optimal native status means the configured gap criterion,\nnot exact zero-gap optimality."
+        },
+        {
+          "page": 25,
+          "text": "Table 17: Original scalar SCIP h215 W time-limited observation; operational completion is not solution feasibility.\nQuantity Original SCIP o"
+        },
+        {
+          "page": 26,
+          "text": "Table 18: Validated h215 STO/W observations. The inputs and scalar interpretation are common, but interfaces,\nredundant-slack representation"
+        },
+        {
+          "page": 27,
+          "text": "Within the h300 block, all five exported decision vectors and objectives are identical while time\nand memory differ. One thread is fastest a"
+        },
+        {
+          "page": 28,
+          "text": "The comparison with Shastri et al. (2011) is methodological: decomposition and distributed\noptimization address computational burden through"
+        },
+        {
+          "page": 29,
+          "text": "Future work can examine repeated measurements under controlled resource conditions, de-\ncomposition methods and sensitivity to the artificia"
+        },
+        {
+          "page": 30,
+          "text": "Anselmino, A., Piedra-Jimenez, F., Rodriguez, M.A., Dondo, R.G., Cóccola, M.E., 2025. Strategic\noptimization of short-rotation woody crops f"
+        },
+        {
+          "page": 31,
+          "text": "Mardaneh, E., Loxton, R., Meka, S., Gamble, L., 2021. A decision support system for grain\nharvesting, storage, and distribution logistics. K"
+        },
+        {
+          "page": 32,
+          "text": "Wang, Z., Martha, G.B., Liu, J., Lima, C.Z., Hertel, T.W., 2024. Planned expansion of\ntransportation infrastructure in brazil has implicatio"
+        }
+      ]
+    },
+    "supplement": {
+      "pages": 34,
+      "sha256": "461a5b28c5be1251b14aa7bfed9f77b0dbd8847382c4d6c48f7a449ac123bbd9",
+      "github_links": 37,
+      "uri_links": 42,
+      "source_administration_phrases": {
+        "Coauthor working revision": 0,
+        "One editable SVG": 0,
+        "Figure ID:": 0,
+        "2228514": 0,
+        "2228192": 0
+      },
+      "original_appendix_a_sequence_starts_on_page": [
+        2
+      ],
+      "headings": [
+        {
+          "page": 1,
+          "text": "Supplementary material\nComputational Scalability of Deterministic and Two-Stage Stochastic MILP Models for\nGrain-Storage Network Design and "
+        },
+        {
+          "page": 2,
+          "text": "1 \n \n \nAppendix A. Systematic literature review of grain facility-location \nmodels \n \nVictor Rafael Rezende Celestino, Artur Guerra Rosa, An"
+        },
+        {
+          "page": 3,
+          "text": "2 \n \n \nSpanish (almacen* OR almacén* OR silo* OR almacenamiento OR \ninstalacion* OR instalación* OR hub*) AND (grano* OR soja OR \nsoya OR ar"
+        },
+        {
+          "page": 4,
+          "text": "3 \n \n \nduplicate records left 419 records for screening. Title and abstract screening resulted in the \nexclusion of 404 records. Of the rema"
+        },
+        {
+          "page": 5,
+          "text": "4 \n \n \nReference Network nodes \nand echelons \nTime \nhorizon \nCapacity \nand tech \nlevels \nTransport \nmodes and \nfleet \nStochastic \n(Granillo-"
+        },
+        {
+          "page": 6,
+          "text": "5 \n \n \nIntermediate logistical layers show structural variation, with most models using a single \nlayer of facilities to act as temporary wa"
+        },
+        {
+          "page": 7,
+          "text": "6 \n \n \nTable A3 \nParameters. \nReferenc\ne \nCost \nparameters \nLogistics and \ncapacities \nUncertai\nnty and \nrisk \nEnvironmenta\nl and Social \nWa"
+        },
+        {
+          "page": 8,
+          "text": "7 \n \n \nReferenc\ne \nCost \nparameters \nLogistics and \ncapacities \nUncertai\nnty and \nrisk \nEnvironmenta\nl and Social \nWasta\nge and \nlosses \nDat"
+        },
+        {
+          "page": 9,
+          "text": "8 \n \n \nReferenc\ne \nCost \nparameters \nLogistics and \ncapacities \nUncertai\nnty and \nrisk \nEnvironmenta\nl and Social \nWasta\nge and \nlosses \nDat"
+        },
+        {
+          "page": 10,
+          "text": "9 \n \n \nEnvironmental parameters appear as emission costs, emission factors, modal preference \nweights, or upper bounds on environmental impa"
+        },
+        {
+          "page": 11,
+          "text": "10 \n \n \nReference Binary Integer Continuous \nshipments \n(n), number \nof possible \nsilo locations \nfor \nintermediate \nstorage (p) \n(Mascarenh"
+        },
+        {
+          "page": 12,
+          "text": "11 \n \n \nformulations deploy continuous variables to track direct product flows, inbound and outbound \ntransfers, and peer to peer movements "
+        },
+        {
+          "page": 13,
+          "text": "12 \n \n \nReference Type Economic Risk Environmental \nand social \n(Foulds, 2005) \nSingle \nobjective. \nMinimize  \nfixed cost of silo (fk), tota"
+        },
+        {
+          "page": 14,
+          "text": "13 \n \n \n2026; Vazquez et al., 2021) . One work also account for the financial loss from food spoilage \nduring transit and storage (Mogale et"
+        },
+        {
+          "page": 15,
+          "text": "14 \n \n \nReference Mass balance and \nflow conservation \nCapacity and demand \nlimits \nLogical and \nassignment rules Unique \n(∑ 𝑉 ≤ 𝑛𝑣), Exact "
+        },
+        {
+          "page": 16,
+          "text": "15 \n \n \nReference Mass balance and \nflow conservation \nCapacity and demand \nlimits \nLogical and \nassignment rules Unique \n(Guimaraes et \nal."
+        },
+        {
+          "page": 17,
+          "text": "16 \n \n \nlimits established for distinct crop varieties (Mendoza-Ortega et al., 2021) . Distribution \nconstraints force the network to satisf"
+        },
+        {
+          "page": 18,
+          "text": "17 \n \n \nsustainability by measuring job creation and farmer welfare (Mogale et al., 2023). To manage \nuncertainty and disruption, intermodal"
+        },
+        {
+          "page": 19,
+          "text": "18 \n \n \nMascarenhas, C. S., de Oliveira, A. L. R., Lopes, B. F. R., & Coleti, J. D. C. (2014). Analysis \nof warehousing network for Mato Gro"
+        },
+        {
+          "page": 20,
+          "text": "19 \n \n \nsoja e milho. Revista Gestão da Produção Operações e Sistemas , 12(1), 41. \nhttps://doi.org/10.15675/gepros.v12i1.1598 \n "
+        },
+        {
+          "page": 21,
+          "text": "Appendix B Human-supervised AI-assisted research\nB1 Purpose and scope\nAI assistants supported the development of this work through mathemati"
+        },
+        {
+          "page": 22,
+          "text": "Phase Research activity Example from this work\nP6 Provenance/Reporting Associate reported results\nwith their implemented\nexperiment\nRetain t"
+        },
+        {
+          "page": 23,
+          "text": "Level Question examined Evidence used in this work\nV2 Mathematical consistency Does the implementation\nexpress the reviewed\nequations and un"
+        },
+        {
+          "page": 24,
+          "text": "Appendix C Deterministic and Two-Stage Stochastic MILP Im-\nplementations in Python and GAMS\nC1 From the planning problem to an executable mo"
+        },
+        {
+          "page": 25,
+          "text": "The following expression makes the shared-investment accounting explicit. LetWN, WX and\nWB denote candidate, expansion-eligible and bulk-han"
+        },
+        {
+          "page": 26,
+          "text": "C3 Native Gurobi and SCIP implementations\nGurobi uses a common extensive-form builder for DET and STO. Its cost construction separates\nsix i"
+        },
+        {
+          "page": 27,
+          "text": "MK\nst =I 0 +\n∑︂\nτ≤t\nGsτ, M R\nst =G st +\n∑︂\nw∈W\nHwt.(C.2)\nThe first bound follows by summing warehouse balances. Interwarehouse flows cancel,"
+        },
+        {
+          "page": 28,
+          "text": "Three outcomes must remain distinct. A usable incumbent supplies decisions that can be checked.\nAn accepted incumbent also passes the indepe"
+        },
+        {
+          "page": 29,
+          "text": "The translation supports the declared scalable-candidate, daily-handling-factor, free-terminal\nand three-enabled-slack configuration. Unsupp"
+        },
+        {
+          "page": 30,
+          "text": "Appendix D Data and Preparation of the Experimental Instances\nD1 Data sources and scope\nAnexperimentalinstancecombinesafacilitypopulation, s"
+        },
+        {
+          "page": 31,
+          "text": "Quantity Meaning Effective unit\nInventory holding Cost per unit held in a\nplanning period\nBRL/(t period)\nCapacity investment Fixed cost and "
+        },
+        {
+          "page": 32,
+          "text": "Table D.3. Actual Frete!A2:B28 values in the registered gold workbook.\nState code(s) Source freight coefficient, BRL/(t km)\nMT 0.1842\nAM 0.1"
+        },
+        {
+          "page": 33,
+          "text": "Instance Existing facilities Candidate options\nCandidates added\nbeyond h215\nh300 146 154 85\nh400 146 254 185\nh500 146 354 285\nThe population"
+        },
+        {
+          "page": 34,
+          "text": "Next verify existing/candidate roles, ordered CDA memberships and the 69 canonical anchors.\nReuse the recorded candidate order and OSRM mate"
+        }
+      ]
+    }
+  },
+  "visual_review": {
+    "all_pages_inspected": true,
+    "article_pages": 32,
+    "supplement_pages": 34,
+    "focused_pages": [
+      "article 1",
+      "article 20",
+      "supplement 25",
+      "supplement 27",
+      "supplement 31"
+    ],
+    "material_clipping_or_overlap_found": false
+  },
+  "checks": {
+    "ruff": "passed",
+    "document_tests": {
+      "passed": 64,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "visualization_subset": {
+      "passed": 18,
+      "deselected": 3,
+      "qualification": "Dash/Plotly and ReportLab-dependent tests excluded from the existing venv; bundled ReportLab rendered the actual local static figures."
+    },
+    "manuscript_cited_references": 33,
+    "public_gold_cells": 254,
+    "pinned_github_file_links": 37,
+    "generated_scalar_tables": "verified",
+    "quarto_article": "exit_0",
+    "quarto_supplement": "exit_0"
+  },
+  "original_appendix_a": {
+    "source_sha256": "859dc52b64b6bcf471f7616182d8cadf2b693dbfd19ad4b9248637b5c231b3ed",
+    "all_19_page_texts_preserved_in_order": true,
+    "starts_on_supplement_page": 2,
+    "qualification": "Original PDF is included; its pre-existing font/resource characteristics are retained."
+  },
+  "resolved_render_issues": [
+    "C.1 display-math delimiters and tag placement repaired without changing terms",
+    "Cross-reference audit accepts valid placement attributes and still rejects duplicate/unresolved references",
+    "Publication-only figure labels remove internal identifiers while preserving geometry and synthetic markings",
+    "All five geographic/thread figures are kept with their explanations"
+  ],
+  "local_test_environment_issue": "Initial long Windows pytest destination paths exceeded legacy path limits; all 64 document controls passed with a shorter authorized temporary path.",
+  "preservation": {
+    "optimization_formulation_unchanged": true,
+    "solver_backends_unchanged": true,
+    "inputs_and_accepted_certificates_unchanged": true,
+    "default_technical_visualization_unchanged": true,
+    "temporary_pdfs_uploaded": false,
+    "new_hpc_start": false
+  },
+  "remaining_gates": [
+    "Close-precedent full texts and thesis overlap review",
+    "Complete effective numeric input disclosure, access and rights",
+    "Scientific author decisions already recorded in the blueprint",
+    "Reconcile this editorial branch with newer develop before final qualification",
+    "Audit final common-Pyomo Gurobi/SCIP products when supplied"
+  ],
+  "temporary_storage": "Authorized local .codex directory only; no PDF or page image uploaded to GitHub/cloud blobs"
+}

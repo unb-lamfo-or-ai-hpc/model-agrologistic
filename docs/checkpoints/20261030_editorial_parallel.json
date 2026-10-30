@@ -90,5 +90,15 @@
     "step_cpus": 16
   },
   "working_PDF_preview_explicitly_authorized": true,
-  "workflow_figure_source_cleaned": true
+  "workflow_figure_source_cleaned": true,
+  "local_pdf_review": {
+    "render_source_commit": "3844c037ab5fcd4e1950ac1bda68ec16fa42b9b7",
+    "article_pages": 32,
+    "supplement_pages": 34,
+    "all_pages_visually_inspected": true,
+    "original_appendix_a_pages": 19,
+    "evidence": "docs/evidence/editorial_local_pdf_review_20261030.json",
+    "temporary_pdfs_uploaded": false,
+    "publication_authorized": false
+  }
 }
