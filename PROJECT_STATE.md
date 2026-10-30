@@ -1,5 +1,22 @@
 # Operational qualification accepted; CBC h215 cancelled — 30 October 2026
 
+## Current Gurobi license failure repair — 30 October 2026
+
+Original common-Pyomo Gurobi job2228189 failed with a size-limited license at
+native optimize; it returned no numerical result or native search certificate.
+PR142 preserves the audit and original archive SHA1e39227e. The researcher
+confirmed the existing file /home/vrrcelestino/model-agrologistic/secrets/gurobi.lic.
+Select it explicitly only for prospective Gurobi starts; verify default-env
+capacity on compute before private construction. Never read/hash/upload license
+contents or expose native startup/exception text. Preserve old source/claim/archive
+and independent SCIP2228192; no start/retry, solver tuning or private release.
+This separate repair remains DRAFT until Linux CI and a manual public NPAD
+capacity check. Old qualification does not qualify changed execution bytes.
+Future private execution requires separately reviewed qualification/new claim.
+Read docs/pyomo_gurobi_license_admission_20261030.md. All NPAD actions remain
+manual; every merge needs separate explicit approval. Local CLI is autonomous
+in approved temporary directories, no new local clone/environment or GUI.
+
 Original human receipts for job2227480/source57204e0b/planceeb6d10 report
 282tests passed in71.02s,0failures/errors/skips and source_verified_after=true.
 Slurm root/batch/extern/step COMPLETED0:0 in76s. Original result/capability/XML

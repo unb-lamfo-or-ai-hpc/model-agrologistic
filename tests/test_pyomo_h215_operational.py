@@ -90,6 +90,23 @@ def operational_files(tmp_path):
         "started_monotonic": 10.0,
     }
     base = "control/sto/"
+    if m.solver == "gurobi":
+        put(
+            base + "gurobi_license.json",
+            {
+                "entry": entry,
+                "schema_version": "pyomo-gurobi-default-license-v1",
+                "status": "accepted",
+                "large_model_construction_allowed": True,
+                "environment_scope": "gurobipy_default_environment_as_used_by_appsi",
+                "probe_variable_count": 2001,
+                "probe_constraint_count": 2001,
+                "private_input_accessed": False,
+                "gurobi_version": [13, 0, 3],
+                "solver_status_code": 2,
+                "objective_value": 2001,
+            },
+        )
     put(base + "entry.json", entry)
     put(base + "release.json", entry)
     put(

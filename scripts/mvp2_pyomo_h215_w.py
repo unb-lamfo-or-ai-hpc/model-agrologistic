@@ -541,6 +541,16 @@ class Campaign:
             **self.closed(),
         }
 
+    def license_admission(self, control, entry):
+        """Fail before the private build and preserve a redacted, identity-bound proof."""
+        if self.solver != "gurobi":
+            return
+        from scripts import pyomo_gurobi_license_gate as gate
+
+        record = gate.probe()
+        r.r2.write(control / "gurobi_license.json", {"entry": entry, **record})
+        r.require(gate.accepted(record), "Gurobi default-environment license capacity rejected.")
+
     def inspect_native(self):
         """Compute-only selected-engine identity; no population optimization."""
         if self.solver == "gurobi":
@@ -761,7 +771,11 @@ class Campaign:
         startup.stage("tool_verification", lambda: o.verify_tools(plan))
         affinity = sorted(os.sched_getaffinity(0))
         r.require(4 <= len(affinity) == len(set(affinity)) <= 24, "Observed affinity differs.")
-        native = startup.stage("native_identity", self.inspect_native)
+        def native_identity():
+            self.license_admission(control, entry)
+            return self.inspect_native()
+
+        native = startup.stage("native_identity", native_identity)
         r.r2.write(control / "native_build.json", native)
         checked = startup.stage("public_qualification", lambda: self.run_math(control))
         r.r2.write(control / "qualification.json", checked)
@@ -1084,6 +1098,14 @@ class Campaign:
                 and (r.strict_json(files[base + "release.json"]) == entry),
                 "Owned release.",
             )
+            if self.solver == "gurobi":
+                from scripts import pyomo_gurobi_license_gate as gate
+
+                license_record = r.strict_json(files[base + "gurobi_license.json"])
+                r.require(
+                    license_record["entry"] == entry and gate.accepted(license_record),
+                    "Original Gurobi license capacity proof.",
+                )
             query = r.strict_json(files[base + "step_query.json"])
             r.require(query["returncode"] == 0, "Step query.")
             exact = o.step_binding(query["stdout"], entry, allocated, int(owner[1]), cpus=16)

@@ -1,0 +1,47 @@
+{
+  "schema_version": "pyomo-gurobi-license-repair-local-checks-v1",
+  "date": "2026-10-30",
+  "base_source": "1b53b24f68b6bcbef2260e39d232464cebb01745",
+  "scope": "Local Windows public/fault controls; no private input, NPAD or large solve",
+  "ruff": "passed",
+  "selected_public_controls": {
+    "passed": 288,
+    "skipped": 15,
+    "failures": 0,
+    "errors": 0,
+    "deselected_linux_cold_worker_cases": 12
+  },
+  "new_gate_controls_passed": 27,
+  "unix_resource_module_controls_not_collected": 3,
+  "linux_and_designated_license_positive_qualification": "pending",
+  "native_negative_control": {
+    "scope": "Local native negative control; compute/file-policy mocked; no NPAD admission",
+    "gurobi_version": [
+      13,
+      0,
+      3
+    ],
+    "restricted_default_environment_rejected": true,
+    "observed_error_code": 10010,
+    "public_probe_variables": 2001,
+    "public_probe_constraints": 2001,
+    "small_appsi_model_still_usable": true,
+    "private_input_accessed": false
+  },
+  "original_archive_rechecked_unchanged": true,
+  "original_archive_sha256": "1e39227e78f6350e27243917808a81c1d550b92c1800ef170220e0b527bb8839",
+  "frozen_source_files_compared": 648,
+  "original_source_paths_changed": [
+    ".github/workflows/pyomo.yml",
+    "AGENTS.md",
+    "PROJECT_STATE.md",
+    "scripts/mvp2_pyomo_h215_w.py",
+    "scripts/npad_pyomo_h215_w_native8h.sh",
+    "tests/test_pyomo_h215_operational.py"
+  ],
+  "scientific_builders_adapters_data_manuscript_unchanged": true,
+  "private_execution_admitted": false,
+  "old_claim_restarted_or_modified": false,
+  "gurobi_license_path_confirmed_by_researcher": "/home/vrrcelestino/model-agrologistic/secrets/gurobi.lic",
+  "qualification_limit": "Mocked/unit controls and local restricted-license rejection do not establish the designated NPAD license capacity; old source qualification cannot qualify changed execution bytes."
+}
