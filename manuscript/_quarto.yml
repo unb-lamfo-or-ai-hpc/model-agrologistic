@@ -46,3 +46,4 @@ format:
     include-in-header:
       text: |
         \usepackage{orcidlink}
+        \usepackage{float}

@@ -1,6 +1,6 @@
 ---
 title: "Computational Scalability of Deterministic and Two-Stage Stochastic MILP Models for Grain-Storage Network Design and Hub Location"
-date: 2026-10-29
+date: 2026-10-30
 abstract: >-
   Designing grain-storage networks requires decisions about facility location,
   storage capacity and grain handling before uncertain supply and demand are

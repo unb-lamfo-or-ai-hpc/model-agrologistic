@@ -1,7 +1,7 @@
 ---
 title: "Supplementary material"
 subtitle: "Computational Scalability of Deterministic and Two-Stage Stochastic MILP Models for Grain-Storage Network Design and Hub Location"
-date: 2026-10-29
+date: 2026-10-30
 bibliography:
   - ../references.bib
   - ../review-methods.bib
@@ -76,7 +76,7 @@ assumption or implementation.
 | P5 Human Scientific Decision | Accept, revise or reject interpretations and methodological changes | Interpret penalized plans using unmet demand and storage/handling indicators |
 | P6 Provenance/Reporting | Associate reported results with their implemented experiment | Retain the source, input, scenario, solver and validation records for each result |
 
-: Research phases and their application.
+: Table B.1. Research phases and their application.
 
 The example distinguishes a shared investment from repeated recourse decisions.
 A capacity investment is made once, before the scenario is known. Each
@@ -90,7 +90,7 @@ The workflow in Figure B.1 links the research phases to repeated review and
 verification. A proposed change is examined at the levels appropriate to its
 effect on the scientific calculation.
 
-![Human-supervised research workflow.](../figures/human_ai_workflow.png)
+![Figure B.1. Human-supervised research workflow.](../figures/human_ai_workflow.png){fig-pos="H"}
 
 The return arrows represent revision after a discrepancy is identified.
 For example, a successful program is followed by checks of investment
@@ -105,7 +105,7 @@ distinguishes these complementary levels.
 | V3 Protocol conformity | Was the specified instance and experimental configuration used? | Source/input identities, scenario membership, solver settings and resource records |
 | V4 Empirical scientific support | What conclusions do the observed decisions and resources support? | Accepted original residual checks, objective bounds, service/capacity indicators and qualified interpretation |
 
-: Complementary levels of verification.
+: Table B.2. Complementary levels of verification.
 
 Small examples examined investment charged once, probability weighting,
 capacity units and activation conditions. Large-instance outputs were checked

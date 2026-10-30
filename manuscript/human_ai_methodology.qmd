@@ -11,7 +11,7 @@ The workflow in @fig-human-ai connects human scientific intent to implementation
 verification, scientific assessment and reporting. Appendix B explains its six
 phases and four complementary verification levels.
 
-![Human-supervised research workflow.](figures/human_ai_workflow.png){#fig-human-ai}
+![Human-supervised research workflow.](figures/human_ai_workflow.png){#fig-human-ai fig-pos="H"}
 
 The return arrows represent revision when a discrepancy is found. For example,
 shared investment and probability-weighted recourse were checked in analytical

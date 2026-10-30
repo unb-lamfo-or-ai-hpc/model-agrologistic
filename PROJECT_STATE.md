@@ -1,3 +1,21 @@
+# Local PR144 PDF review and two human-submitted running jobs — 30 October 2026
+
+## Current local PDF review request and running jobs — 30 October 2026
+
+The researcher explicitly requests new local article/supplement PDFs from PR144.
+Generate working Quarto previews only in approved local temporary directories;
+no cloud PDF upload, Pages deployment, merge or publication is authorized.
+This working-review request supersedes an interpretation that all local PDFs
+must await main; final publication PDFs still require authorized main integration.
+Gurobi2228514/source311015e8/planece5de8d has consumed the new license-v2 claim;
+human receipt reports124login passes and RUNNING00:00:25,step00:00:23.
+SCIP2228192 latest human snapshot RUNNING03:20:20,step03:20:16. Preserve both
+claims/originals and never repeat start. No numerical outcome is inferred.
+Read docs/evidence/pyomo_running_2228192_2228514_20261030.json.
+Preserve approved scientific/author directions, all original evidence and
+AppendixA. Keep publication prose for readers. Review rendered pages and links,
+save source/QA metadata in PR144, and keep temporary PDFs local.
+
 # Parallel B3/D2 checkpoint and authorized Gurobi launch handoff — 30 October 2026
 
 ## Current parallel checkpoint after PR145 merge — 30 October 2026

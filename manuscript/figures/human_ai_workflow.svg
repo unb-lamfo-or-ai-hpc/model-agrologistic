@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="650" viewBox="0 0 1200 650" role="img" aria-labelledby="title description">
+<title id="title">Human-supervised research workflow</title>
+<desc id="description">Six research phases connect the planning question, AI-assisted implementation, technical verification, scientific validation, human decision and provenance. Dashed arrows indicate revision.</desc>
+<rect width="1200" height="650" fill="white"/>
+<rect x="30" y="30" width="320" height="220" rx="10" fill="#eaf2f8" stroke="#285979" stroke-width="2"/>
+<text x="48" y="61" font-family="Arial,Helvetica,sans-serif" font-size="18" font-weight="700" fill="#285979">P1</text>
+<text x="48" y="105" font-family="Arial,Helvetica,sans-serif" font-size="26" font-weight="700" fill="#172033">Human scientific</text>
+<text x="48" y="137" font-family="Arial,Helvetica,sans-serif" font-size="26" font-weight="700" fill="#172033">intent</text>
+<text x="48" y="181" font-family="Arial,Helvetica,sans-serif" font-size="22" font-weight="400" fill="#172033">Planning question</text>
+<text x="48" y="210" font-family="Arial,Helvetica,sans-serif" font-size="22" font-weight="400" fill="#172033">Assumptions and scope</text>
+<rect x="440" y="30" width="320" height="220" rx="10" fill="#f7f9fc" stroke="#64748b" stroke-width="2"/>
+<text x="458" y="61" font-family="Arial,Helvetica,sans-serif" font-size="18" font-weight="700" fill="#285979">P2</text>
+<text x="458" y="105" font-family="Arial,Helvetica,sans-serif" font-size="26" font-weight="700" fill="#172033">AI-assisted</text>
+<text x="458" y="137" font-family="Arial,Helvetica,sans-serif" font-size="26" font-weight="700" fill="#172033">implementation</text>
+<text x="458" y="181" font-family="Arial,Helvetica,sans-serif" font-size="22" font-weight="400" fill="#172033">Reviewed equations</text>
+<text x="458" y="210" font-family="Arial,Helvetica,sans-serif" font-size="22" font-weight="400" fill="#172033">Code and proposed checks</text>
+<rect x="850" y="30" width="320" height="220" rx="10" fill="#f7f9fc" stroke="#64748b" stroke-width="2"/>
+<text x="868" y="61" font-family="Arial,Helvetica,sans-serif" font-size="18" font-weight="700" fill="#285979">P3</text>
+<text x="868" y="105" font-family="Arial,Helvetica,sans-serif" font-size="26" font-weight="700" fill="#172033">Technical</text>
+<text x="868" y="137" font-family="Arial,Helvetica,sans-serif" font-size="26" font-weight="700" fill="#172033">verification</text>
+<text x="868" y="181" font-family="Arial,Helvetica,sans-serif" font-size="22" font-weight="400" fill="#172033">V1 Software functionality</text>
+<text x="868" y="210" font-family="Arial,Helvetica,sans-serif" font-size="22" font-weight="400" fill="#172033">V2 Mathematical consistency</text>
+<rect x="850" y="385" width="320" height="220" rx="10" fill="#eaf2f8" stroke="#285979" stroke-width="2"/>
+<text x="868" y="416" font-family="Arial,Helvetica,sans-serif" font-size="18" font-weight="700" fill="#285979">P4</text>
+<text x="868" y="460" font-family="Arial,Helvetica,sans-serif" font-size="26" font-weight="700" fill="#172033">Scientific</text>
+<text x="868" y="492" font-family="Arial,Helvetica,sans-serif" font-size="26" font-weight="700" fill="#172033">validation</text>
+<text x="868" y="536" font-family="Arial,Helvetica,sans-serif" font-size="22" font-weight="400" fill="#172033">V3 Protocol conformity</text>
+<text x="868" y="565" font-family="Arial,Helvetica,sans-serif" font-size="22" font-weight="400" fill="#172033">V4 Empirical support</text>
+<rect x="440" y="385" width="320" height="220" rx="10" fill="#eaf2f8" stroke="#285979" stroke-width="2"/>
+<text x="458" y="416" font-family="Arial,Helvetica,sans-serif" font-size="18" font-weight="700" fill="#285979">P5</text>
+<text x="458" y="460" font-family="Arial,Helvetica,sans-serif" font-size="26" font-weight="700" fill="#172033">Human scientific</text>
+<text x="458" y="492" font-family="Arial,Helvetica,sans-serif" font-size="26" font-weight="700" fill="#172033">decision</text>
+<text x="458" y="536" font-family="Arial,Helvetica,sans-serif" font-size="22" font-weight="400" fill="#172033">Interpret plans</text>
+<text x="458" y="565" font-family="Arial,Helvetica,sans-serif" font-size="22" font-weight="400" fill="#172033">Accept or revise conclusions</text>
+<rect x="30" y="385" width="320" height="220" rx="10" fill="#f7f9fc" stroke="#64748b" stroke-width="2"/>
+<text x="48" y="416" font-family="Arial,Helvetica,sans-serif" font-size="18" font-weight="700" fill="#285979">P6</text>
+<text x="48" y="460" font-family="Arial,Helvetica,sans-serif" font-size="26" font-weight="700" fill="#172033">Provenance and</text>
+<text x="48" y="492" font-family="Arial,Helvetica,sans-serif" font-size="26" font-weight="700" fill="#172033">reporting</text>
+<text x="48" y="536" font-family="Arial,Helvetica,sans-serif" font-size="22" font-weight="400" fill="#172033">Source and input identities</text>
+<text x="48" y="565" font-family="Arial,Helvetica,sans-serif" font-size="22" font-weight="400" fill="#172033">Settings, outputs and checks</text>
+<polyline points="350,140 430,140" fill="none" stroke="#334155" stroke-width="3"/>
+<polygon points="430,140 419,135 419,145" fill="#334155"/>
+<polyline points="760,140 840,140" fill="none" stroke="#334155" stroke-width="3"/>
+<polygon points="840,140 829,135 829,145" fill="#334155"/>
+<polyline points="1010,250 1010,375" fill="none" stroke="#334155" stroke-width="3"/>
+<polygon points="1010,375 1015,364 1005,364" fill="#334155"/>
+<polyline points="850,495 770,495" fill="none" stroke="#334155" stroke-width="3"/>
+<polygon points="770,495 781,500 781,490" fill="#334155"/>
+<polyline points="440,495 360,495" fill="none" stroke="#334155" stroke-width="3"/>
+<polygon points="360,495 371,500 371,490" fill="#334155"/>
+<polyline points="1010,30 1010,10 600,10 600,25" fill="none" stroke="#64748b" stroke-width="2" stroke-dasharray="8 6"/>
+<polygon points="600,25 605,14 595,14" fill="#64748b"/>
+<polyline points="600,605 600,630 1010,630 1010,610" fill="none" stroke="#64748b" stroke-width="2" stroke-dasharray="8 6"/>
+<polygon points="1010,610 1005,621 1015,621" fill="#64748b"/>
+</svg>

@@ -271,7 +271,7 @@ gives the plan's flows and the corresponding end stocks.
 | End stock | 2 | 2 |
 | Shortage / static exceedance / reception overflow | 0 / 0 / 0 | 0 / 0 / 0 |
 
-: Illustrative scenario balances.
+: Table C.3. Illustrative scenario balances.
 
 The warehouse balances are $0+10-8=2$ and $0+14-12=2$. End stock is below
 5 t, and each scenario's receipts and shipments are below the daily
@@ -334,7 +334,7 @@ Each numerical result remains associated with its original executed source.
 | Public mathematical / Excel examples | [test_scalar_contract.py](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/tests/test_scalar_contract.py); [test_excel_loader.py](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/tests/test_excel_loader.py) |
 | Environment and adapter instructions | [README.md](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/README.md); [pyomo_native_adapters.md](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/docs/pyomo_native_adapters.md) |
 
-: Implementation and verification index.
+: Table C.4. Implementation and verification index.
 
 The index separates data preparation, model construction, solver transfer and
 validation. A reader can therefore follow one physical relationship from its

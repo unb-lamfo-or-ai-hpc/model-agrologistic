@@ -114,7 +114,7 @@ def build(destination, *, workflow=True):
     # Generated products only; original certificates and published figures are not edited.
     thread_chart(json.loads(evidence.read_text(encoding="utf-8")), destination)
     if workflow:
-        source = ROOT / "docs/s6a_20261021/figures/human_ai_workflow.svg"
+        source = ROOT / "manuscript/figures/human_ai_workflow.svg"
         source_hashes[source.relative_to(ROOT).as_posix()] = sha(source)
         for extension in ("png", "pdf"):
             subprocess.run(

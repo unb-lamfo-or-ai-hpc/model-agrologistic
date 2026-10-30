@@ -2,7 +2,7 @@
   "schema_version": "editorial-parallel-mandate-checkpoint-v1",
   "date": "2026-10-30",
   "baseline_commit": "c80dca69c247753d49f06925ec712fcd43bb5a56",
-  "status": "B3_primary_comparison_and_D2_equations_example_index_saved",
+  "status": "local_working_PDF_review_authorized_pending_render",
   "pr143": {
     "merged": true,
     "authorized_head": "3588c4387d611d59e6c36265d6f3e526d9e840d0",
@@ -51,9 +51,12 @@
   },
   "latest_human_scip_snapshot": {
     "job_id": "2228192",
+    "source_commit": "1b53b24f68b6bcbef2260e39d232464cebb01745",
     "state": "RUNNING",
-    "elapsed": "03:06:56",
-    "step_elapsed": "03:06:52"
+    "elapsed": "03:20:20",
+    "step_elapsed": "03:20:16",
+    "allocated_cpus": 24,
+    "step_cpus": 16
   },
   "B3_D2_increment": {
     "closest_precedent_comparison": "docs/literature_primary_comparison_20261030.md",
@@ -63,5 +66,29 @@
     "centralized_implementation_index": true,
     "related_document_tests": 60,
     "pinned_links_checked": 37
-  }
+  },
+  "latest_human_gurobi_snapshot": {
+    "job_id": "2228514",
+    "source_commit": "311015e8527419f9c1c70e7f79a8ddce551a9772",
+    "plan_sha256": "ece5de8def42276b88a15e693070df8d65531dc73459bbb286a36a688bbacf18",
+    "claim": ".mvp2-pyomo-gurobi-h215-w-native8h-license-v2",
+    "cli_directory": "pyomo-gurobi-h215-w-license-v2-cli-Q7jabJYv",
+    "bootstrap_directory": "pyomo-h215-w-driver-CF4Ek1i2",
+    "raw_head_files_identical": 661,
+    "login_regression": {
+      "passed": 124,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 12.16
+    },
+    "submission_status": "submitted_one_pyomo_W_only",
+    "driver_exit": 0,
+    "state": "RUNNING",
+    "elapsed": "00:00:25",
+    "step_elapsed": "00:00:23",
+    "allocated_cpus": 24,
+    "step_cpus": 16
+  },
+  "working_PDF_preview_explicitly_authorized": true,
+  "workflow_figure_source_cleaned": true
 }

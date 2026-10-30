@@ -1,0 +1,51 @@
+{
+  "schema_version": "common-pyomo-running-jobs-human-checkpoint-v1",
+  "date": "2026-10-30",
+  "provenance": "Researcher-supplied original submission output and sacct snapshot; no agent NPAD access or terminal/numerical inference.",
+  "gurobi": {
+    "job_id": "2228514",
+    "source_commit": "311015e8527419f9c1c70e7f79a8ddce551a9772",
+    "plan_sha256": "ece5de8def42276b88a15e693070df8d65531dc73459bbb286a36a688bbacf18",
+    "claim": ".mvp2-pyomo-gurobi-h215-w-native8h-license-v2",
+    "cli_directory": "pyomo-gurobi-h215-w-license-v2-cli-Q7jabJYv",
+    "bootstrap_directory": "pyomo-h215-w-driver-CF4Ek1i2",
+    "raw_head_files_identical": 661,
+    "login_regression": {
+      "passed": 124,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 12.16
+    },
+    "submission_status": "submitted_one_pyomo_W_only",
+    "driver_exit": 0,
+    "state": "RUNNING",
+    "elapsed": "00:00:25",
+    "step_elapsed": "00:00:23",
+    "allocated_cpus": 24,
+    "step_cpus": 16
+  },
+  "scip": {
+    "job_id": "2228192",
+    "source_commit": "1b53b24f68b6bcbef2260e39d232464cebb01745",
+    "state": "RUNNING",
+    "elapsed": "03:20:20",
+    "step_elapsed": "03:20:16",
+    "allocated_cpus": 24,
+    "step_cpus": 16
+  },
+  "terminal_results_available": false,
+  "originals_preserved": true,
+  "repeat_or_follow_on_admitted": false,
+  "raw_submission_flags": {
+    "execution_admitted": false,
+    "repeats_admitted": false,
+    "automatic_follow_on_allowed": false,
+    "additional_cbc_execution_admitted": false,
+    "additional_gurobi_execution_admitted": false,
+    "additional_highs_execution_admitted": false,
+    "additional_scip_execution_admitted": false,
+    "h300_admitted": false,
+    "highs_execution_admitted": false
+  },
+  "note": "Original false flags close repeats/follow-ons; do not relabel them as a blanket campaign admission. Running accounting is not a solver outcome."
+}

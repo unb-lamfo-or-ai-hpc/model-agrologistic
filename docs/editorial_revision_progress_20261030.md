@@ -103,3 +103,25 @@ verified after; the qualified code and final head passed all5CI checks.
 A pinned human start for the new Gurobi license-v2 claim was supplied.
 Submission/job identity has not yet been reported. SCIP2228192's latest human
 snapshot is RUNNING03:06:56,step03:06:52. No scientific result is inferred.
+
+## Local PDF review explicitly requested — 30 October 2026
+
+The researcher supplies the original new Gurobi submission2228514/source311015e8/
+planece5de8d,124login regressions and RUNNING00:00:25 (step00:00:23).
+SCIP2228192 is RUNNING03:20:20 (step03:20:16). The
+[human snapshot](evidence/pyomo_running_2228192_2228514_20261030.json) preserves
+the source/plan/claim and original false repeat/follow-on flags. Neither
+snapshot supplies a terminal numerical result.
+
+The researcher explicitly requests a new local article/supplement PDF version
+from PR144. This authorizes local Quarto working previews in the approved
+temporary directory, without deploying Pages, uploading temporary PDFs,
+merging the PR or approving publication. Final publication PDFs remain a
+separate main-integration action.
+
+The current editable workflow figure now uses P1–P6 and V1–V4 and removes
+development instructions. The source SVG and matching300dpi PNG are permanent
+figure assets; the old dated SVG remains preserved. The document figure builder
+now reads the current source. Captions identify supplement tables/figures,
+and the workflow figures stay with their explanatory text. Local PDF rendering
+and visual acceptance are pending at this source commit.

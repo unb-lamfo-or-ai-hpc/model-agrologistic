@@ -26,6 +26,7 @@ format:
     include-in-header:
       text: |
         \usepackage{pdfpages}
+        \usepackage{float}
         \usepackage{xurl}
         \usepackage{caption}
         \captionsetup[table]{labelformat=empty}
