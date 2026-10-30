@@ -1,0 +1,99 @@
+{
+  "schema_version": "pyomo-gurobi-npad-license-public-receipt-v1",
+  "date": "2026-10-30",
+  "provenance": "Researcher-supplied NPAD CLI output; parsed receipt, not an independently read raw report",
+  "job_id": "2228385",
+  "claim": ".mvp2-pyomo-gurobi-license-public-v1",
+  "expected_source_commit": "fe37669c24895a0bb2a45ff18e99ae7028722c2f",
+  "designated_license_path": "/home/vrrcelestino/model-agrologistic/secrets/gurobi.lic",
+  "expected_public_source_sha256": {
+    "scripts/pyomo_gurobi_license_gate.py": "ccab4050b28fb5c9151822c488a44e57a7242a692433259948c32e19ceab835f",
+    "scripts/probe_npad_gurobi_license.py": "8546181e7fabe9310f53f048f4bebdf2e260a2cca87031c47bb4667b0c55aacd"
+  },
+  "source_checksum_checks_reported_success": true,
+  "original_receipt_file_sha256": "a2a8aaa52f262f7cee2829efb19736973146653ce51b7d8b1dd33f480e2d3223",
+  "source_identity_file_received": true,
+  "terminal_accounting_received": true,
+  "terminal_accounting": [
+    {
+      "job_id": "2228385",
+      "state": "COMPLETED",
+      "elapsed_seconds": 3,
+      "exit_code": "0:0",
+      "max_rss_raw": null,
+      "allocated_cpus": 1
+    },
+    {
+      "job_id": "2228385.batch",
+      "state": "COMPLETED",
+      "elapsed_seconds": 3,
+      "exit_code": "0:0",
+      "max_rss_raw": "1340K",
+      "allocated_cpus": 1
+    },
+    {
+      "job_id": "2228385.extern",
+      "state": "COMPLETED",
+      "elapsed_seconds": 3,
+      "exit_code": "0:0",
+      "max_rss_raw": "928K",
+      "allocated_cpus": 1
+    },
+    {
+      "job_id": "2228385.0",
+      "state": "COMPLETED",
+      "elapsed_seconds": 3,
+      "exit_code": "0:0",
+      "max_rss_raw": "1248K",
+      "allocated_cpus": 1
+    }
+  ],
+  "reported_capability_receipt": {
+    "schema_version": "pyomo-gurobi-default-license-v1",
+    "created_at_utc": "2026-10-30T15:21:59.756432+00:00",
+    "status": "accepted",
+    "large_model_construction_allowed": true,
+    "environment_scope": "gurobipy_default_environment_as_used_by_appsi",
+    "probe_variable_count": 2001,
+    "probe_constraint_count": 2001,
+    "private_input_accessed": false,
+    "qualification": "Public license capacity only; no h215 or performance acceptance.",
+    "compute_identity": {
+      "job_id": "2228385",
+      "step_id": "0"
+    },
+    "gurobi_version": [
+      13,
+      0,
+      3
+    ],
+    "solver_status_code": 2,
+    "objective_value": 2001
+  },
+  "assessment": "Public default-environment LP capacity and original source/accounting receipts accepted: pinned public-file hashes, known optimum 2001, native status2, owned job/step, all scheduler rows COMPLETED0:0. Researcher-supplied records; no independent NPAD file access.",
+  "qualification_state": "public_license_capacity_and_operational_receipts_closed",
+  "private_h215_execution_admitted": false,
+  "old_claim_restart_admitted": false,
+  "original_gurobi_job_preserved": "2228189",
+  "independent_scip_job_preserved": "2228192",
+  "scientific_or_performance_result": false,
+  "license_contents_accessed_or_uploaded": false,
+  "next_action": "Complete evidence-only PR143 review, mark ready and request its own explicit merge authorization. No new private source/claim qualification or h215 start is admitted. Preserve original Gurobi2228189 and independent SCIP2228192.",
+  "source_commit_reported": "fe37669c24895a0bb2a45ff18e99ae7028722c2f",
+  "source_identity_scope": "PUBLIC_LICENSE_PROOF_ONLY; NO_H215_START",
+  "reported_public_source_sha256": {
+    "scripts/pyomo_gurobi_license_gate.py": "ccab4050b28fb5c9151822c488a44e57a7242a692433259948c32e19ceab835f",
+    "scripts/probe_npad_gurobi_license.py": "8546181e7fabe9310f53f048f4bebdf2e260a2cca87031c47bb4667b0c55aacd"
+  },
+  "reported_scip_snapshot": {
+    "job_id": "2228192",
+    "state": "RUNNING",
+    "elapsed": "01:31:59",
+    "worker_elapsed": "01:31:55",
+    "allocated_cpus": 24,
+    "worker_allocated_cpus": 16
+  },
+  "resource_scope": "Short public probe accounting only; not a full h215 solver runtime, memory-peak or performance observation.",
+  "canonical_report_reconstruction_matches_reported_sha256": true,
+  "reconstruction_scope": "Reconstructed from the pasted JSON using the pinned producer's JSON serialization; matches the supplied original-file SHA-256. No direct NPAD file access."
+}

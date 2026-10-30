@@ -46,6 +46,11 @@ git merge-base --is-ancestor "$SOURCE_SHA" origin/develop || {
   echo "Reviewed source is not in develop; no execution admitted" >&2; exit 2;
 }
 "$PY" -B -I -c 'import sys; assert sys.version_info[:2]==(3,13); sys.path.insert(0,sys.argv[1]); from scripts.mvp2_scalar_r2 import source_inventory,verify_source; i=source_inventory(); assert i["source_commit"]==sys.argv[2]; verify_source(i); print("RAW_HEAD_BYTES="+str(len(i["files"]))+" identical; ONE_COMMON_PYOMO_H215_W_ONLY")' "$SRC" "$SOURCE_SHA"
+if [[ "$ACTION" = start && "$SOLVER" = gurobi ]]; then
+  export GRB_LICENSE_FILE=/home/vrrcelestino/model-agrologistic/secrets/gurobi.lic
+  # Metadata only on login; the default-environment capacity probe runs on compute.
+  "$PY" -B -I -c 'import sys; sys.path.insert(0,sys.argv[1]); from scripts.probe_npad_gurobi_license import check_file; check_file()' "$SRC"
+fi
 if [[ "$ACTION" = start ]]; then
   "$PY" -B -I -c 'import runpy,sys; sys.path.insert(0,sys.argv.pop(1)); runpy.run_module("ruff",run_name="__main__")' "$SRC" check .
   "$PY" -B -I -c 'import runpy,sys; sys.path.insert(0,sys.argv.pop(1)); runpy.run_module("pytest",run_name="__main__")' "$SRC" -q -p no:cacheprovider tests/test_pyomo_h215_operational.py --basetemp "$DRIVER/tests" --junitxml "$DRIVER/regression.xml"

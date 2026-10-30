@@ -40,6 +40,9 @@ jobs:
           tests/test_scalar_highs_h215_8h_native.py
           tests/test_scalar_highs_h215_8h_startup.py
           tests/test_scalar_highs_h215_8h_startup_native.py
+          tests/test_pyomo_solver_adapters.py tests/test_pyomo_campaign_contract.py
+          tests/test_pyomo_h215_operational.py tests/test_npad_gurobi_license.py
+          tests/test_pyomo_gurobi_license_gate.py
           --junitxml=/tmp/pyomo-results.xml --basetemp=/tmp/pyomo-publiccases
       - name: Reject missing or skipped solver controls
         run: |

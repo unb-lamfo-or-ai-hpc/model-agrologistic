@@ -40,9 +40,10 @@ def test_frozen_wd_table_and_interpretation():
     assert (ROOT / "manuscript/wd_results.qmd").read_text(encoding="utf-8") == text
     for phrase in (
         "service falls", "shortage increases", "not statistical confidence",
-        "historical control", "not a fresh private-input", "no-slack", "S6-B remain",
+        "historical control", "Independent validation reconstructs", "no-slack",
     ):
         assert phrase in text
+    assert "S6-B" not in text
     article = (ROOT / "manuscript/index.qmd").read_text(encoding="utf-8")
     assert "{{< include wd_results.qmd >}}" in article
 

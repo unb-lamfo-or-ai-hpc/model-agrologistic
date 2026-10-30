@@ -1,5 +1,42 @@
 # Model Agrologistic: agent working agreement
 
+## Current closed public license qualification — 30 October 2026
+
+The researcher supplied complete existing records for public job 2228385,
+step 0: accepted default-environment LP capacity, 2001 variables/rows,
+objective 2001, native status 2, Gurobi 13.0.3, no private input.
+source-identity.txt selects fe37669c; both public code hashes match the
+pinned recipe. The reconstructed posted report matches its supplied original
+SHA-256 a2a8aaa52f262f7cee2829efb19736973146653ce51b7d8b1dd33f480e2d3223.
+Root, batch, extern and step all COMPLETED 0:0 in 3 seconds with one CPU.
+Read docs/evidence/pyomo_gurobi_license_public_2228385_reported.json.
+Public capacity and operational receipts are closed. Final evidence-only
+commits do not change the qualified runtime. Finish exact-head review/CI,
+mark PR143 ready and request its OWN explicit merge approval. No merge or
+new private admission is authorized by these records. A future Gurobi h215
+attempt still requires separately reviewed source qualification and a fresh
+claim; never repeat an original start. Preserve Gurobi 2228189 and independent
+SCIP 2228192 (still RUNNING in the supplied 01:31:59 snapshot).
+All NPAD actions remain manual. No CBC/HiGHS or SCIP repeat is admitted.
+
+
+## Current Gurobi license failure repair — 30 October 2026
+
+Original common-Pyomo Gurobi job2228189 failed with a size-limited license at
+native optimize; it returned no numerical result or native search certificate.
+PR142 preserves the audit and original archive SHA1e39227e. The researcher
+confirmed the existing file /home/vrrcelestino/model-agrologistic/secrets/gurobi.lic.
+Select it explicitly only for prospective Gurobi starts; verify default-env
+capacity on compute before private construction. Never read/hash/upload license
+contents or expose native startup/exception text. Preserve old source/claim/archive
+and independent SCIP2228192; no start/retry, solver tuning or private release.
+This separate repair remains DRAFT until Linux CI and a manual public NPAD
+capacity check. Old qualification does not qualify changed execution bytes.
+Future private execution requires separately reviewed qualification/new claim.
+Read docs/pyomo_gurobi_license_admission_20261030.md. All NPAD actions remain
+manual; every merge needs separate explicit approval. Local CLI is autonomous
+in approved temporary directories, no new local clone/environment or GUI.
+
 ## Current accepted operational qualification — 30 October 2026
 
 Human original receipts for public job2227480/source57204e0b/planceeb6d10
