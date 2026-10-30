@@ -48,3 +48,4 @@ examples/ofertas/*
 # Scheduler and temporary artifacts
 slurm-*.out
 *.old
+manuscript/.cartography.sqlite3

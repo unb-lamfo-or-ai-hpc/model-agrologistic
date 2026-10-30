@@ -12,6 +12,7 @@ This is not a blanket relicensing of research inputs or dependencies.
 | OpenStreetMap/Geofabrik inputs and derived road databases | Preserve attribution and applicable ODbL obligations |
 | Artur/silodss upstream code and benchmark assets | Preserve upstream notices and asset-specific terms; the upstream repository currently carries GPLv3, not MIT |
 | Registry and externally supplied Excel inputs | No inferred redistribution permission from possession or public accessibility |
+| IBGE 2023 administrative boundary derivative in data/cartography | CC BY 4.0; retain IBGE attribution, source links and notice of simplification/projection changes |
 | Quarto SBC adapter and historical SBC style | Preserve the vendored license and separate style notices |
 | Gurobi and other dependencies | Their own licenses; credentials are never distributable artifacts |
 

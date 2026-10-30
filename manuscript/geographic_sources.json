@@ -16,7 +16,9 @@
     "workbook_h215": "40edb66585daca9cc393cab1f86bde6d4528a5f34b6afc57260cc1684396da4e",
     "workbook_h300": "7761cce77cf93dcba2f617714f0117c1f2ead4de0c3f27149daceba447e0c7d1",
     "workbook_h400": "c3085456997714ef5a8bdbf61e2c9a5e578c2636003947427cf58933d21ceb13",
-    "workbook_h500": "888fbff42e4f80817d4d5f0101049495c86c6ed4cda75f00813779dadab41515"
+    "workbook_h500": "888fbff42e4f80817d4d5f0101049495c86c6ed4cda75f00813779dadab41515",
+    "archive_h500": "34346c318b0335e70c56984d8394dd9d00a4ca4ee7d004149c3d3f154cbf2238",
+    "scalar_h500_t1_validation": "2c548b960d38ab13488e31c00fe5da8e58551392d5f568dcb4bc11afb5bebe2a"
   },
   "figures": {
     "h500_pending.json": {
@@ -38,10 +40,15 @@
     "scalar_h400_t1.json": {
       "figure_sha256": "305ca77b028392b449407c1f94f3ca5eb36f6bb5a7bf4de556edd530911f122e",
       "normalized_utf8_sha256": "106d4b6fc72d9572dd9481674885eba9c3310d88cfa1e188d60455d3530b620d"
+    },
+    "scalar_h500_t1.json": {
+      "figure_sha256": "587d16da622a02f336ae7c1c618631b12d79d22017c3b5a8fd7bc1e0e9a76c71",
+      "normalized_utf8_sha256": "2675040f2a42fb698da06ea13c7638645bebf8b246b272b18d346702f7e17199",
+      "snapshot": "d83c3126d124c1fb11793814271842f1601557d89017a8739a1b3c88252e61da"
     }
   },
   "qualification": "Original accepted-certificate and vector post-processing, not fresh residual re-solve",
-  "h500": "input availability only; no terminal solution",
+  "h500": "Original input-availability map preserved; accepted original investment vector reconstructed in a separate investment-only snapshot; no flow reconstruction or fresh residual validation.",
   "road_geometry": "not provided; never fabricated",
   "source_text_normalization": "UTF-8 with universal newlines read as LF; original archive hashes are raw bytes"
 }

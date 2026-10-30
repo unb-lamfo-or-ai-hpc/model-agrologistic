@@ -1,0 +1,15 @@
+# IBGE cartography checkpoint — 30 October 2026
+
+Functional PR: #146, stacked on the scientific-reader branch of #144. Render and executable source: `83e1dbb3f8d14f4af4c9676298c415c4f36b553b`. All changes are cartographic or bounded editorial; the scientific model, solver settings, original inputs and original claims remain unchanged.
+
+Completed: verified official IBGE 2023 reference vectors (distribution2024), 27 UFs and national outline, source CRS/transformation, topological coverage simplification, source/licensing metadata, additive SQLite context tables, deterministic cache reuse and shared Albers static/Plotly display. Original facility coordinates and the five earlier map-source files are byte-preserved.
+
+The accepted original h500 archive was checked against its transfer identity and69 inventory hashes. A separate investment-only snapshot reconstructs500 decisions,354 positive candidate capacities,72 expansions and74 bulk conversions. The original availability map is preserved. Five companions encode added static capacity by circle area in tonnes, excluding the bulk-handling basis. Six categorical plus five capacity designs yield11SVG/PDF/PNG figures. Local panels compare populations and the previous/new cartographic context.
+
+Qualification: Ruff;103focused tests, no failures/errors/skips;33cited-reference integrity;254gold source/cached cells and38pinned file links;90projection comparisons against PROJ; topology/union validation;25render-related source files matched to the committed Git blobs;56original optimization/data/map source files compared byte-for-byte. All11single-page figure PDFs were rasterized and visually inspected. No full article/supplement PDF was rerendered. Temporary figures, atlas, SQLite and archives remain local. The permanent IBGE derivative is source data in this PR, with CC BY4.0 attribution.
+
+The second01.01review is incorporated as targeted qualification: cross-reference prefix fixes, a real hierarchical-to-scalar supervision episode and clearer location/capacity/use interpretation. Keep the approved literalRQ and original AppendixA pending explicit author decisions. GAMS numerical parity remains unproved. [Disposition and Sprint continuation](../evidence/editorial_followup_disposition_20261030.json).
+
+P0 continuation: audit the terminal SCIP2228192 package when supplied; compare exact inputs/common-matrix identity, effective options, attained gaps and full timing/memory scopes. Gurobi2228514 original accepted evidence is saved separately in PR142 (gap0.7401594783%, native31.544min). Consolidate final numerical article sections once, after both audits. Finish closest-precedent/thesis and effective-data access/rights checks; then author mathematical/editorial decisions, ancestry reconciliation, exact-head qualification and explicitly approved merges.
+
+The proposed functional merge is PR146 into the PR144 branch. It does not merge develop/main, publish Pages or admit any experiment. Retarget/reconcile the editorial integration only after its separate scientific gates are closed.

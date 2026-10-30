@@ -76,6 +76,12 @@ dev = [
     "pypdf>=5,<7",
 ]
 
+cartography-prepare = [
+    "shapely==2.1.2",
+    "pyproj==3.7.2",
+    "pyshp==2.3.1",
+]
+
 geographic = [
     "plotly>=6,<7",
     "dash>=3,<4",

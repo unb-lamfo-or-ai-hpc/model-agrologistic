@@ -1,0 +1,119 @@
+{
+  "schema_version": "bounded-editorial-followup-20261030-v1",
+  "source_attachment": "22785bc9-a01b-4890-8ce2-3f19f5f2d2d3/Texto colado.txt",
+  "reviewed_preview_source": "3844c037ab5fcd4e1950ac1bda68ec16fa42b9b7",
+  "mandate": "Retain the current structure; targeted scientific/editorial qualification, no new experimental campaign",
+  "dispositions": [
+    {
+      "priority": "P0",
+      "item": "Originality and closest precedents",
+      "status": "open",
+      "action": "Close selected full-text comparisons and Rosa overlap before final contribution/highlight approval; do not expand indiscriminately."
+    },
+    {
+      "priority": "P0",
+      "item": "Terminal experiment evidence",
+      "status": "partially_closed",
+      "action": "Gurobi2228514 original archive and 256 inventory digests checked; accepted original validation, common gap0.7401594783%. SCIP2228192 remains without a terminal receipt. Update final numerical sections once after both audits.",
+      "evidence_pr": 142
+    },
+    {
+      "priority": "P0",
+      "item": "Effective-data access and rights",
+      "status": "open",
+      "action": "Verify exact deposited processed workbooks, registry/ranking inputs and file-level access/reuse permissions; distinguish full reproduction, conditional reproduction and documentary verification."
+    },
+    {
+      "priority": "P1",
+      "item": "IBGE national and UF context",
+      "status": "implemented",
+      "implementation_pr": 146,
+      "action": "Versioned IBGE2023 source, 27 UF entities, preserved coordinates, fixed shared Albers display and read-only SQLite reuse."
+    },
+    {
+      "priority": "P1",
+      "item": "Investment magnitude",
+      "status": "implemented_and_exported",
+      "action": "Companion maps encode added candidate plus expansion static capacity in tonnes by circle area; exclude bulk-handling basis; coincide groups sum only for display and retain IDs."
+    },
+    {
+      "priority": "P1",
+      "item": "Optimized h500 cartography",
+      "status": "reconstructed_from_original",
+      "action": "Original archive34346c31 and69 inventory digests verified;500 original decision rows yield354 positive candidate investments,72 positive expansions and74 positive conversions. New investment-only snapshot; preserve availability map and original sources.",
+      "evidence": "docs/evidence/h500_original_map_reconstruction_20261030.json"
+    },
+    {
+      "priority": "P1",
+      "item": "Agricultural meaning",
+      "status": "targeted_strengthening",
+      "action": "Distinguish opening, positive capacity, actual operation and service; spatial activation or large circles alone do not establish equivalent operational importance."
+    },
+    {
+      "priority": "P1",
+      "item": "Concrete Human-AI episode",
+      "status": "implemented_in_appendix_B_source",
+      "action": "Explain the documented hierarchical-to-scalar scientific redirection, retain historical cohort separately, link archive/contract history; no measured AI productivity claim."
+    },
+    {
+      "priority": "P2",
+      "item": "Duplicated Quarto labels",
+      "status": "corrected_in_source",
+      "action": "Remove manual Figure/Figures/Table prefixes before automatic references; add regression guard. No full manuscript PDF rerender requested."
+    },
+    {
+      "priority": "author_decision",
+      "item": "Approved research question",
+      "status": "pending_explicit_author_decision",
+      "current": "How computational scalability affects the optimal resolution of grain-storage network design and hub location models?",
+      "proposal": "How does computational scalability affect the attainable solution quality and computational requirements of grain-storage network design and hub-location models?",
+      "action": "Keep the deliberated literal wording until authorized."
+    },
+    {
+      "priority": "author_decision",
+      "item": "Appendix A PRISMA arithmetic",
+      "status": "pending_original_author_resolution",
+      "action": "Preserve the original19-page PDF. The review flags20 records,2 removals and19 reports. Seek an explicit original-author clarification/formally corrected original; no silent edit."
+    },
+    {
+      "priority": "author_review",
+      "item": "Final mathematical notation review",
+      "status": "open",
+      "action": "Check indices, units, capacities, activation and published/internal notation without changing the approved mathematical contract."
+    },
+    {
+      "priority": "scope",
+      "item": "GAMS equivalence",
+      "status": "limitation_retained",
+      "action": "Compilation/numerical parity remains unproved; no experimental-equivalence claim or new GAMS campaign."
+    }
+  ],
+  "sprint_continuation": [
+    {
+      "track": "Current S6-A / B3 / D2",
+      "deliverable": "Finish functional maps and targeted reader corrections while X3 closes; save source/QA in existing PRs144/146."
+    },
+    {
+      "track": "X3 then A2",
+      "deliverable": "Audit final SCIP receipt manually supplied; compare exact workbook/order/common-algebra hashes, effective options, attained gaps, phases and memory scopes; consolidate final numerical narrative once."
+    },
+    {
+      "track": "B3 + D2 P0 closure",
+      "deliverable": "Finish closest-precedent/thesis comparison and exact effective-data access/rights matrix; no new performance experiment."
+    },
+    {
+      "track": "S6-B1",
+      "deliverable": "Obtain outstanding author scientific decisions and final mathematical/editorial review; reconcile develop history without losing license/evidence work."
+    },
+    {
+      "track": "S6-B2",
+      "deliverable": "Exact-head qualification; request authorization for every merge. Final publication PDFs and Pages only after authorized main integration."
+    }
+  ],
+  "mathematical_model_changed": false,
+  "new_hpc_execution_admitted": false,
+  "approved_RQ_changed": false,
+  "original_appendix_A_changed": false,
+  "full_article_PDF_rerendered": false,
+  "source_attachment_sha256": "0222ec31d7f444333dfb696f7754cdddb869e3768af26f4094d7c0645cfef581"
+}

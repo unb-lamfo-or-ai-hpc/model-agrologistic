@@ -496,8 +496,12 @@ requests routes or changes the experimental distance cache.
 
 The Dash and static renderers share scientific figure definitions, filters,
 node styles and legends. The static Python renderer uses no browser, GUI,
-Dash server or Kaleido. Coordinates use a declared longitude/latitude display,
-not a metric projection. Existing/candidate availability, candidate activation,
+Dash server or Kaleido. Official IBGE 2023 national and federative-unit vectors
+provide a neutral geographic background. The source SIRGAS 2000 geometries are
+transformed to WGS84 after a topology-preserving simplification; both renderers
+apply the same Albers equal-area display and fixed national extent. Original
+facility coordinates are retained. The cached background is independent of
+facility selection and the road-distance data. Existing/candidate availability, candidate activation,
 positive capacity investment and use by transport/inventory are distinct.
 Product, period and scenario filters are explicit; aggregation across scenarios
 uses the original probabilities.
@@ -508,9 +512,10 @@ locations; positive-flow route geometry is unavailable and is not replaced by
 straight segments. The software accepts separately source-bound OSRM geometry
 for positive routes when it becomes available. Transport incidence and
 quantities remain analyzable from the original vectors without inventing a
-physical road path. The preserved h500 map still shows input availability
-only, despite the newly accepted numerical result; optimized h500 geographic
-layers await a separate source-bound export.
+physical road path. The h500 investment map is reconstructed from its original
+accepted decision CSV and source-bound facility coordinates. Its original
+input-availability map remains separately retained. This investment-only
+reconstruction does not establish facility use or recover original flow geometry.
 
 {{< include human_ai_methodology.qmd >}}
 

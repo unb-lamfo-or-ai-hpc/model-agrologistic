@@ -394,6 +394,8 @@ def check(*, rendered: bool = False, publication: bool = False) -> None:
     references = set(re.findall(r"@((?:eq|tbl|fig|sec)-[A-Za-z0-9_-]+)", article))
     if len(labels) != len(set(labels)) or references - set(labels):
         raise ValueError("Duplicate or unresolved mathematical cross-reference")
+    if re.search(r"\b(?:Figure|Figures)\s+@fig-|\b(?:Table|Tables)\s+@tbl-", article):
+        raise ValueError("Do not repeat Quarto automatic cross-reference labels")
     if re.search(r"(?im)^\s*(file|abstract|note)\s*=", bibliography):
         raise ValueError("Private library fields must not be published")
     if "```{" in article:

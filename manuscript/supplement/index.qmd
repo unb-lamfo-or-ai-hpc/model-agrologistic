@@ -84,6 +84,20 @@ scenario then has its own flow, inventory and shortage decisions. Consequently,
 scenario probabilities weight operating costs, while investment enters the
 objective once and physical balances retain their original units.
 
+A substantive redirection concerned the objective itself. Early experiments
+used a hierarchical formulation in which capacity-related and economic
+criteria had different priorities. Reviewing the interpretation of those
+outputs led the researchers to adopt the single scalar objective reported
+here: investment is counted once, operating costs are probability weighted,
+and the three artificial penalties remain explicit. The earlier experiments
+were retained as a separate historical cohort rather than relabeled as scalar
+results. This change concerned the scientific question expressed by the model,
+not merely whether the program executed successfully. The
+[retained formulation history](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/2dbd780b1dfdc77d8e31f164e5d3bcc3b2708410/docs/mvp2_completion_handoff_20261022.md)
+links the archived hierarchy and scalar contract. The episode illustrates
+human responsibility for accepting a model interpretation; it does not
+measure an AI assistant's productivity or independent scientific judgment.
+
 ## B4 Four levels of verification
 
 The workflow in Figure B.1 links the research phases to repeated review and

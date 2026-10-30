@@ -330,6 +330,7 @@ def test_hardware_and_preliminary_results_are_distinguished(manuscript):
     assert "Native Runtime" in article or "native Runtime" in article or "native runtime" in article
     assert "retained" in article and "MILP" in article
 
+
 @pytest.mark.parametrize("mutation", ["objective", "service", "gap", "source", "admission"])
 def test_scalar_scip_negative_result_cannot_be_promoted(manuscript, mutation):
     path = manuscript / "open_source_comparison_status.json"
@@ -353,8 +354,11 @@ def test_scalar_scip_negative_result_cannot_be_promoted(manuscript, mutation):
 @pytest.mark.parametrize(
     "field,value",
     [
-        ("objective", 0), ("bound", 0), ("common_gap", 0),
-        ("archive_sha256", "0" * 64), ("source_commit", "0" * 40),
+        ("objective", 0),
+        ("bound", 0),
+        ("common_gap", 0),
+        ("archive_sha256", "0" * 64),
+        ("source_commit", "0" * 40),
         ("original_validation_status", "rejected"),
         ("additional_execution_admitted", True),
     ],
@@ -371,7 +375,8 @@ def test_highs_original_certificate_cannot_drift(manuscript, field, value):
 @pytest.mark.parametrize(
     "field,value",
     [
-        ("native_termination", "timelimit"), ("usable_incumbent", False),
+        ("native_termination", "timelimit"),
+        ("usable_incumbent", False),
         ("classification", "no_usable_incumbent"),
         ("operational_receipts_closed", True),
     ],
@@ -393,3 +398,13 @@ def test_highs_gap_percentage_cannot_be_confused_with_fraction(manuscript):
     )
     with pytest.raises(ValueError, match="manuscript values"):
         CHECKER.check_highs_and_censored_scip_revision()
+
+
+def test_quarto_automatic_reference_labels_cannot_be_duplicated(manuscript):
+    path = manuscript / "index.qmd"
+    path.write_text(
+        path.read_text(encoding="utf-8") + "\nFigure @fig-map-h215\n",
+        encoding="utf-8",
+    )
+    with pytest.raises(ValueError, match="automatic cross-reference labels"):
+        CHECKER.check()
