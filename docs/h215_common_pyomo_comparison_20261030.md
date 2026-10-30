@@ -1,7 +1,7 @@
 # Common-Pyomo h215 W comparison: preparation and interpretation
 
 The researcher has submitted Gurobi job 2228189 and SCIP job 2228192 from merged
-source `1b53b24f`. Both were RUNNING in the supplied snapshot. This is not live
+source `1b53b24f`. Both were initially RUNNING. The original Gurobi package now establishes a size-limited-license rejection; see [the original audit](pyomo_gurobi_h215_2228189_license_failure.md). No newer terminal SCIP evidence is supplied. This is not live
 monitoring and does not establish that native optimization has started.
 Source/plan/job bindings are recorded in
 [the submission observation](evidence/pyomo_h215_submissions_20261030.json).
@@ -41,7 +41,7 @@ these runs based on a desired outcome or silently introduce warm starts.
 
 | Implementation | Last supplied scheduler state | Native status | Validated objective / bound / gap | Native and end-to-end times |
 |---|---|---|---|---|
-| Gurobi common-Pyomo | RUNNING | Not supplied | Not supplied | Not supplied |
+| Gurobi common-Pyomo | FAILED | License rejection before search report | Not available | Native time unavailable; worker failed |
 | SCIP common-Pyomo | RUNNING | Not supplied | Not supplied | Not supplied |
 
 The 87login controls passed in63.67 s for the Gurobi launcher and16.87 s for the

@@ -1,3 +1,15 @@
+# Gurobi2228189 original audited: license-capability failure — 30 October 2026
+
+Original archive1e39227e is verified:232members,231inventory hashes,9plan
+artifacts,648exact-source hashes and original W input bindings. All startup
+stages passed, but APPSI Gurobi Model.optimize reports a size-limited license.
+No native search/termination report, objective/gap or validated private result
+was returned. This is operational licensing evidence, not solver difficulty.
+See [audit](docs/pyomo_gurobi_h215_2228189_license_failure.md).
+Save this in PR142; prepare a separate license-selection/capability correction.
+Do not modify or repeat the consumed Gurobi claim or touch the SCIP worker.
+No newer SCIP terminal evidence is supplied. All original archives remain.
+
 # Common-Pyomo h215 submissions; consolidation draft — 30 October 2026
 
 Gurobi job2228189 and SCIP job2228192 were submitted manually from merged

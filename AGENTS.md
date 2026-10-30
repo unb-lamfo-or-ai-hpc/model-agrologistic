@@ -1,5 +1,24 @@
 # Model Agrologistic: agent working agreement
 
+## Current Gurobi failure audit and separate correction — 30 October 2026
+
+The researcher supplies the original Gurobi2228189 archive/sidecar and requests
+cause analysis, evidence in PR142 and an autonomous correction, never a repeated
+start. Archive1e39227e passes232safe members/231inventory hashes/9plan artifacts/
+648source hashes and original W input bindings. First worker error is
+Model too large for size-limited license from APPSI Model.optimize. All twelve
+startup stages passed; no native terminal report/private solution returned.
+Do not classify this as OOM, infeasibility, time-limit or comparative performance.
+Read docs/pyomo_gurobi_h215_2228189_license_failure.md and its evidence JSON.
+
+Preserve original archive/claim/source and the independently running SCIP.
+Prepare a separate operational correction PR for designated-license selection
+and a compute-only capability gate above the bundled limit, before private build.
+No credential read/copy/hash/log, scientific parameter change, current worker
+mutation or private retry. The current full-license validity needs a real target
+check, not inferred acceptance from miniature controls. A future attempt needs
+its own qualified source/fresh claim and explicit manual admission.
+
 ## Current running common-Pyomo campaign and next consolidation — 30 October 2026
 
 The researcher supplies the terminal attachment SHA-256

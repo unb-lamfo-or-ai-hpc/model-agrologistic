@@ -86,16 +86,19 @@
       "job_id": "2228189",
       "source_commit": "1b53b24f68b6bcbef2260e39d232464cebb01745",
       "plan_sha256": "909390ed9980f69337786a4411eb55d32faa5c396d47527c5cdcbe69baa399fa",
-      "last_supplied_scheduler_state": "RUNNING",
+      "last_supplied_scheduler_state": "FAILED",
       "native_status": null,
-      "validation_status": null,
+      "validation_status": "no_private_result_returned",
       "objective": null,
       "bound": null,
       "common_gap": null,
       "native_gap": null,
       "native_seconds": null,
       "end_to_end_seconds": null,
-      "resource_scope": null
+      "resource_scope": null,
+      "operational_failure": "size_limited_license",
+      "original_archive_sha256": "1e39227e78f6350e27243917808a81c1d550b92c1800ef170220e0b527bb8839",
+      "scientific_performance_observation": false
     },
     {
       "solver": "scip",
