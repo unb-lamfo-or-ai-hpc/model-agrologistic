@@ -422,6 +422,7 @@ def worker(claim, sha, mode, *, entry, startup):
         driver.replace("FAIL_VALUE", repr(fail))
         + "\nclass Campaign:\n    def __init__(self, solver): pass\n"
         "    worker = staticmethod(worker)\n"
+        "\ndef campaign_for_claim(solver, claim): return Campaign(solver)\n"
     )
     (root / b.DRIVER_FILE).write_text(driver)
     claim = base / m.CLAIM

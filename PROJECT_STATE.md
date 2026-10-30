@@ -1,3 +1,43 @@
+# Gurobi license-v2 public qualification accepted — 30 October 2026
+
+## Current accepted Gurobi license-v2 public qualification — 30 October 2026
+
+Human original receipts for job2228483/source6983f76f/planed4a7deb report
+355tests passed,0failures/errors/skips, source/originals verified after and
+fresh default-environment license capacity accepted. All Slurm records are
+COMPLETED/0:0. Read docs/evidence/pyomo_gurobi_qualification_2228483.json.
+The qualified source passed all5CI checks,352Pyomo and1752full native tests
+with zero skips. Final documentation/evidence commits do not change executable
+bytes; verify that closure and final exact-head CI before Ready. Request
+PR145's OWN explicit merge authorization, then provide one pinned human start
+for the new license-v2 claim. No private start has occurred. Original2228189,
+all predecessor claims/archives and SCIP2228192 remain preserved. Latest human
+SCIP snapshot RUNNING03:06:56,step03:06:52; no terminal result is inferred.
+B3/D2 continue independently in PR144. All previous scientific/resource/seed
+settings and human-only NPAD/every-merge approval boundaries remain in force.
+
+# Priority Gurobi requalification and independent editorial revision — 30 October 2026
+
+## Current priority: fresh Gurobi Pyomo claim — 30 October 2026
+
+The researcher requests priority preparation of one new Gurobi/Pyomo h215 W
+attempt after PR143's authorized merge atc80dca69. Read
+docs/pyomo_gurobi_h215_license_v2_20261030.md. Preserve original2228189/source1b53/
+archive1e39227e and original public2227480/2228385 receipts. The old qualification
+cannot qualify changed scripts. New public qualification must pass355tests with
+zero skips/failures/errors, fresh capacity proof and preserved-source checks.
+Use only the dedicated license-v2 private claim after its own qualification,
+Ready/merge authorization and manual pinned NPAD start. Never repeat an old
+start, reset a claim, install cluster packages or alter scientific/solver inputs.
+SCIP2228192 remains independent: latest human snapshot RUNNING02:41:30,
+step02:41:26; no terminal result is inferred. Four threads,seed42,1%gap and
+8h-native/12h-Slurm remain unchanged; automatic Gurobi algorithm choices retain
+their documented explicit resource/tolerance overrides. Editorial PR144 B3/D2
+continues independently, preserving approved author directions and evidence.
+All NPAD actions stay human-only; every merge needs separate explicit approval.
+Local CLI remains autonomous in approved temporary paths, with no native GUI,
+new local clone/environment or temporary cloud PDFs.
+
 # Operational qualification accepted; CBC h215 cancelled — 30 October 2026
 
 ## Current closed public license qualification — 30 October 2026

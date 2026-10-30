@@ -62,6 +62,7 @@ class Campaign:
     def __init__(self, solver):
         r.require(solver in SOLVERS, "Choose one reviewed Gurobi/SCIP/CBC arm.")
         self.solver = solver
+        self.operational_contract = contract
         self.CLAIM = f".mvp2-pyomo-{solver}-h215-w-native8h-v1"
         self.CASE = f"pyomo_{solver}_h215_w_native8h"
         self.ARCHIVE = f"pyomo-{solver}-h215-w-native8h-evidence.tar.gz"
@@ -87,7 +88,9 @@ class Campaign:
         # Read only the immutable plan-bound source inventory; do not execute Git on compute.
         if source_files is None:
             source_files = r.r2.read(Path(plan["claim_path"]) / "source.json")["files"]
-        operational = contract.read_operational(Path(plan["claim_path"]).parent, source_files)
+        operational = self.operational_contract.read_operational(
+            Path(plan["claim_path"]).parent, source_files
+        )
         r.require(
             all(
                 r.r2.digest(content) == plan["artifact_sha256"]["operational." + name]
@@ -257,7 +260,7 @@ class Campaign:
         qualified = contract.qualification(
             files["qualification.plan.json"], files["qualification.result.json"]
         )
-        contract.operational_qualification(
+        self.operational_contract.operational_qualification(
             files["operational.plan.json"], files["operational.result.json"], source["files"]
         )
         r.require(plan["solver_name"] == self.solver, "Solver/claim binding differs.")
@@ -361,7 +364,7 @@ class Campaign:
         previous = g.historical_w(frozen["w_archive"])
         inventory = g.source_inventory(ROOT)
         r.require(inventory["source_commit"] == sha, "Exact source SHA required.")
-        operational = contract.read_operational(claim.parent, inventory["files"])
+        operational = self.operational_contract.read_operational(claim.parent, inventory["files"])
         r.require(
             self.solver != "cbc"
             or not r.strict_json(operational["result.json"])["cbc_capability"]["cbc_arm_cancelled"],
@@ -1312,6 +1315,16 @@ class Campaign:
         return self.portable_review(files)
 
 
+def campaign_for_claim(solver, claim):
+    """Select only an explicitly named profile; original claims keep their original policy."""
+    if claim is not None and Path(claim).name == ".mvp2-pyomo-gurobi-h215-w-native8h-license-v2":
+        r.require(solver == "gurobi", "The license-requalified profile is Gurobi only.")
+        from scripts.mvp2_pyomo_gurobi_license_v2 import LicenseCampaign
+
+        return LicenseCampaign()
+    return Campaign(solver)
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -1337,7 +1350,7 @@ def main(argv=None):
     parser.add_argument("--sha256")
     parser.add_argument("--solver", choices=SOLVERS, required=True)
     args = parser.parse_args(argv)
-    campaign = Campaign(args.solver)
+    campaign = campaign_for_claim(args.solver, args.claim)
     if args.action == "budget":
         report = campaign.budget()
     elif args.action == "audit":

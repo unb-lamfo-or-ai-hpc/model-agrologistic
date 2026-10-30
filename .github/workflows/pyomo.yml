@@ -43,7 +43,12 @@ jobs:
           tests/test_pyomo_solver_adapters.py tests/test_pyomo_campaign_contract.py
           tests/test_pyomo_h215_operational.py tests/test_npad_gurobi_license.py
           tests/test_pyomo_gurobi_license_gate.py
+          tests/test_pyomo_gurobi_license_v2.py
           --junitxml=/tmp/pyomo-results.xml --basetemp=/tmp/pyomo-publiccases
+      - name: Freeze the NPAD public requalification count and wrapper syntax
+        run: |
+          bash -n scripts/npad_pyomo_gurobi_h215_w_native8h_license_v2.sh
+          python -B -c 'import pytest; from scripts.qualify_pyomo_gurobi_license_v2 import TESTS; from scripts.pyomo_gurobi_retry_contract import EXPECTED_TESTS; hook=type("Counter",(),{"pytest_collection_finish":lambda self,session: (_ for _ in ()).throw(AssertionError("Public test inventory differs")) if len(session.items)!=EXPECTED_TESTS else print("NPAD_PUBLIC_TESTS="+str(len(session.items)))})(); raise SystemExit(pytest.main(["--collect-only","-q","-p","no:cacheprovider",*TESTS],plugins=[hook]))'
       - name: Reject missing or skipped solver controls
         run: |
           python -B -c 'import xml.etree.ElementTree as e; s=list(e.parse("/tmp/pyomo-results.xml").getroot().iter("testsuite")); assert s and all(int(x.get(k,0))==0 for x in s for k in ("errors","failures","skipped"))'
