@@ -2,7 +2,7 @@
   "schema_version": "editorial-parallel-mandate-checkpoint-v1",
   "date": "2026-10-30",
   "baseline_commit": "c80dca69c247753d49f06925ec712fcd43bb5a56",
-  "status": "blueprint_and_bounded_first_reader_source_pass_saved",
+  "status": "B3_primary_comparison_and_D2_equations_example_index_saved",
   "pr143": {
     "merged": true,
     "authorized_head": "3588c4387d611d59e6c36265d6f3e526d9e840d0",
@@ -20,7 +20,7 @@
     "S6_B1": "Author scientific decisions, data rights, editable sources and qualification",
     "S6_B2": "Explicitly authorized main integration, Quarto/Pages rendering and publication"
   },
-  "operational_followup": "New Gurobi package/claim preparation remains separate under earlier authority; no execution package released by this checkpoint.",
+  "operational_followup": "PR145 explicitly authorized and merged at dd92b95762084e4e8fa934ca4b1f238337bebce7; human pinned fresh Gurobi start supplied at source311015e8, submission/job not yet reported.",
   "private_h215_execution_admitted": false,
   "new_experiment_authorized_by_editorial_mandate": false,
   "scip2228192_terminal_status": "unknown_latest_supplied_snapshot_running",
@@ -38,5 +38,30 @@
     "public_gold_sheets_inventoried": 14,
     "document_regressions_passed": 60
   },
-  "next": "Continue B3 close-precedent/full-thesis comparison, D2 graphic/C/example/effective-data reconciliation and A2 scientific restructuring; keep X3 original evidence and separate new Gurobi package independent."
+  "next": "Continue B3 close-precedent/full-thesis comparison, D2 graphic/C/example/effective-data reconciliation and A2 scientific restructuring; keep X3 original evidence and separate new Gurobi package independent.",
+  "public_gurobi_qualification": {
+    "job_id": "2228483",
+    "source": "6983f76fbd0b36fa7ac5cd589dd451f3f71d2147",
+    "tests": 355,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "status": "accepted",
+    "preserved_originals_verified_after": true
+  },
+  "latest_human_scip_snapshot": {
+    "job_id": "2228192",
+    "state": "RUNNING",
+    "elapsed": "03:06:56",
+    "step_elapsed": "03:06:52"
+  },
+  "B3_D2_increment": {
+    "closest_precedent_comparison": "docs/literature_primary_comparison_20261030.md",
+    "full_scalar_objective_in_C": true,
+    "worked_feasible_plan_objective_BRL": 44,
+    "example_is_experimental_result": false,
+    "centralized_implementation_index": true,
+    "related_document_tests": 60,
+    "pinned_links_checked": 37
+  }
 }

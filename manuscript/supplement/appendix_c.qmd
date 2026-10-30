@@ -11,8 +11,8 @@ explain how those decisions are represented in software and how the resulting
 calculations are checked. A reader can follow three successive questions:
 which input arrays define the case (Appendix D), how the equations become
 variables and constraints (Sections C2–C4), and what makes a returned answer
-acceptable (Section C5). Section C7 gives a practical route through the public
-examples and the separate input-export procedure.
+acceptable (Section C5). Section C7 provides one implementation index and a practical route through
+public examples and the separate input-export procedure.
 
 The deterministic (DET) and stochastic (STO) models use the same economic
 objective and physical relationships. DET evaluates the original deterministic
@@ -57,6 +57,50 @@ probability-weighted sum of operating and penalty costs. Scenario probabilities
 do not multiply material balances or capacity limits. A scenario's grain must
 still satisfy the physical equations in its original units.
 
+The following expression makes the shared-investment accounting explicit.
+Let $W^N$, $W^X$ and $W^B$ denote candidate, expansion-eligible and
+bulk-handling-eligible facilities; $O$, $W$ and $C^D$ denote origins,
+warehouses and domestic destinations. Products and periods are indexed by
+$P$ and $T$, and $S$ is the scenario set. The first-stage vector is
+$X=(y,z,g,k,e,b)$: the first three entries are activation binaries and the
+remaining entries are the corresponding investment quantities. For each
+scenario, $Y^s$ contains arc flows $x$, end stocks $I$, domestic shortages $u$
+and static/reception exceedances $q^K,q^R$.
+
+The scalar objective and its fourteen components are
+
+$
+\begin{aligned}
+\min_{X,\{Y^s\}}\ Z={}&C^{INV}(X)
++\sum_{s\in S}\pi_s
+ \left[C^{TR}(Y^s)+C^{HOLD}(Y^s)+C^{PEN}(Y^s)\right],
+\tag{C.1}\\
+C^{INV}(X)={}&\sum_{w\in W^N}(F^N_wy_w+c^N_wk_w)
+ +\sum_{w\in W^X}(F^X_wz_w+c^X_we_w)
+ +\sum_{w\in W^B}(F^B_wg_w+c^B_wb_w),\\
+C^{TR}(Y)={}&\sum_{t\in T}\sum_{(o,w,p)\in A^{OW}}
+ (f^O_o\ell^{OW}_{ow}+\tau_w)x^{OW}_{owpt}\\
+&+\sum_{t\in T}\sum_{(w,c,p)\in A^{WD}}f^W_w\ell^{WD}_{wc}x^{WD}_{wcpt}\\
+&+\sum_{t\in T}\sum_{(w,v,p)\in A^{WW}}
+ (\alpha f^W_w\ell^{WW}_{wv}+\tau_v)x^{WW}_{wvpt}\\
+&+\sum_{t\in T}\sum_{(o,c,p)\in A^{OD}}f^O_o\ell^{OD}_{oc}x^{OD}_{ocpt},\\
+C^{HOLD}(Y)={}&\sum_{w\in W,p\in P,t\in T}h_{wp}I_{wpt},\\
+C^{PEN}(Y)={}&\sum_{c\in C^D,p\in P,t\in T}\lambda^D_{cp}u_{cpt}
+ +\sum_{w\in W,t\in T}(\lambda^K_wq^K_{wt}+\lambda^R_wq^R_{wt}).
+\end{aligned}
+$
+
+In the component expressions, $Y$ denotes one scenario's operating vector.
+Fixed investment charges $F$ are in BRL and quantity-dependent charges $c$
+are in BRL per investment-tonne. Each transport coefficient combines a
+distance $\ell$ in km and a freight rate $f$ in BRL/(t km), with a receiving
+charge $\tau$ in BRL/t where applicable; $\alpha$ multiplies interwarehouse
+freight. The holding charge $h$ is in BRL/(t period). The three $\lambda$
+coefficients price their respective shortage, stock-exceedance and
+reception-overflow quantities at each period. The scenario weights satisfy
+$\sum_s\pi_s=1$. Stock and period throughput consequently enter different
+physical checks even when both are measured in tonnes.
+
 For DET, the original arrays are embedded as one scenario with probability one.
 The resulting solution is projected back to the deterministic output format.
 Thus, DET is neither the solution for a conveniently selected STO realization
@@ -89,10 +133,8 @@ implementations express the closed-candidate implication using indicators,
 without an arbitrary finite upper bound on an active candidate's slack.
 
 Table C.2 links the main formulation to the principal software components.
-The [pinned software reading snapshot](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/tree/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/src/logic)
-also retains the native reference implementations. Earlier accepted experiments
-keep their own source identities; this reference is a reading aid, not a
-reassignment of their provenance.
+The software reading index in Section C7 identifies the implementations.
+Original experiments retain their own executed versions.
 
 | Main equations | Computational role | Principal implementation |
 | --- | --- | --- |
@@ -105,20 +147,15 @@ reassignment of their provenance.
 
 : Table C.2. Mathematical relationships and their implementation roles.
 
-The [Gurobi extensive-form builder](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/src/logic/optimization_gurobipy_stochastic.py)
-and [native SCIP implementation](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/src/logic/optimization_scip.py)
-can be read alongside the [displayed formulation](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/manuscript/formulation.qmd).
-The [mathematical input contract](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/src/logic/mathematical_contract.py)
-prepares the common effective arrays; the
-[independent solution validator](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/src/logic/solution_validation.py)
-evaluates exported decisions.  A source file defines what
-software can do; the original review for each experiment identifies which
-version actually did it.
+The extensive-form builders implement these relationships; the mathematical
+input contract prepares the effective arrays, and the independent validator
+reconstructs balances and costs from exported decisions. The worked example
+below illustrates this separation without requiring a source-code lookup.
 
 ## C4 Pyomo and the bounded representation of candidate slacks
 
-The [Pyomo implementation](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b53b24f68b6bcbef2260e39d232464cebb01745/src/logic/optimization_pyomo.py)
-and its [bound derivation](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b53b24f68b6bcbef2260e39d232464cebb01745/src/logic/pyomo_bounds.py)
+The Pyomo implementation
+and its bound derivation
 provide a common scalar formulation for Gurobi, SCIP and HiGHS.
 It uses the same effective data, investment expressions and physical balances.
 The principal representational difference concerns candidate emergency slacks.
@@ -137,7 +174,7 @@ $$
 M^K_{st}=I^0+\sum_{\tau\leq t}G_{s\tau},
 \qquad
 M^R_{st}=G_{st}+\sum_{w\in W}\overline H_{wt}.
-\tag{C.1}
+\tag{C.2}
 $$
 
 The first bound follows by summing warehouse balances. Interwarehouse flows
@@ -158,7 +195,7 @@ $$
 0\leq q^K_{swt}\leq M^K_{st}y_w,
 \qquad
 0\leq q^R_{swt}\leq M^R_{st}y_w.
-\tag{C.2}
+\tag{C.3}
 $$
 
 When the candidate is closed, these constraints reproduce the native zero-slack
@@ -181,13 +218,13 @@ not promise that two solver interfaces will explore the same search tree.
 
 The implementation checks the proof's finite, nonnegative data conditions and
 records the derived bounds' identity and scope. Gurobi and HiGHS use Pyomo's
-APPSI interfaces. The [SCIP transfer adapter](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b53b24f68b6bcbef2260e39d232464cebb01745/src/logic/pyomo_scip_adapter.py)
+APPSI interfaces. The SCIP transfer adapter
 reads the same Pyomo linear expressions and creates the native SCIP variables,
 objective and constraints through PySCIPOpt. It does not rebuild the problem
 with a separate scientific formulation.
 
 To compare inputs to these adapters, the
-[ordered algebra record](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b53b24f68b6bcbef2260e39d232464cebb01745/src/logic/pyomo_linear_matrix.py)
+ordered algebra record
 includes variable domains and bounds, objective coefficients and constant,
 and constraint coefficients and bounds. Matching records describe the common
 Pyomo algebra before solver transformations; they do not assert identical
@@ -218,15 +255,46 @@ definitions. A small gap for the penalized total remains a statement about that
 total; it is not a relative-accuracy guarantee for the financial subtotal or a
 proof that nominal capacity and full service can be achieved without slack.
 
+### An illustrative balance and objective check
+
+Consider a teaching example with one product, one operating day, one origin,
+one candidate warehouse and one domestic destination. Two scenarios have
+probability $1/2$. A specified plan opens the warehouse and installs 5 t of
+static capacity at BRL4/t. At that capacity, its reception and shipping rates
+are each 15 t/day. Initial stock and fixed opening cost are zero. Table C.3
+gives the plan's flows and the corresponding end stocks.
+
+| Quantity (t within the period, except end stock in t) | Scenario A | Scenario B |
+| --- | ---: | ---: |
+| Supply and origin-to-warehouse flow | 10 | 14 |
+| Domestic demand and warehouse-to-destination flow | 8 | 12 |
+| End stock | 2 | 2 |
+| Shortage / static exceedance / reception overflow | 0 / 0 / 0 | 0 / 0 / 0 |
+
+: Illustrative scenario balances.
+
+The warehouse balances are $0+10-8=2$ and $0+14-12=2$. End stock is below
+5 t, and each scenario's receipts and shipments are below the daily
+handling limits. A free terminal-stock policy permits the remaining 2 t.
+The example demonstrates checks on a specified feasible plan.
+
+If each transport leg costs BRL1/t, receiving has no additional charge and
+holding costs BRL1/(t period), the operating totals are
+$10+8+2=20$ and $14+12+2=28$ BRL. Shared investment costs $5(4)=20$ BRL,
+so Equation C.1 gives $20+(20+28)/2=44$ BRL. The validator checks the two
+balances separately and reconstructs the same investment, transport and
+holding totals. These illustrative values explain the accounting procedure;
+the experimental input values are reported in Appendix D.
+
 ## C6 GAMS translation and verification limits
 
 The supplement provides
-[model_det.gms](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/manuscript/supplement/appendix_c/model_det.gms) and
-[model_sto.gms](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/manuscript/supplement/appendix_c/model_sto.gms)
+model_det.gms and
+model_sto.gms
 as entry files, with
-[model_common.inc](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/manuscript/supplement/appendix_c/model_common.inc)
+model_common.inc
 containing the shared objective, constraints and domains.
-The [data-only exporter](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/scripts/export_scalar_gams_data.py)
+The data-only exporter
 writes already prepared effective Python inputs to data.inc and
 produces an identifier and checksum record. This avoids manual transcription
 of the large arrays while retaining the mapping to original facilities,
@@ -239,69 +307,58 @@ described by [GAMS](https://www.gams.com/latest/docs/UG_LanguageFeatures.html#UG
 omitting that mapping would change the model. The provided source does not
 replace it with an arbitrary slack bound.
 
-Structural inspection and exporter tests have examined indexing, units,
-costs, scenarios and input preservation. **GAMS compilation and numerical
-parity have not been performed**, and no GAMS performance result is reported. The Python results do not validate the GAMS
-translation by proxy. A future numerical comparison would need to evaluate
-objective components and residuals on the same small input before considering
-large cases; alternative optimal vectors should not be mistaken for a failure
-of equivalence.
+Structural inspection and exporter tests examine indexing, units, costs,
+scenarios and input preservation. **The GAMS translation has not been compiled
+or numerically validated.** Numerical verification requires comparing objective
+components and original-unit residuals on the same small input; alternative
+optimal decision vectors can represent the same scalar value.
 
 
-## C7 A practical route through the implementation
+## C7 Implementation index and reproduction sequence
 
-First read the [software and environment instructions](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/README.md)
-and the [declared Python dependencies](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/pyproject.toml).
-The repository separates reading/building the manuscript, preparing data,
-running an optimizer and validating its output. Installing a solver is not
-necessary to inspect the formulation or reproduce the document. Native Gurobi
-tests require an appropriate Gurobi installation/licence; native SCIP uses
-PySCIPOpt. The [Pyomo adapter guide](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b53b24f68b6bcbef2260e39d232464cebb01745/docs/pyomo_native_adapters.md)
-explains the supported interfaces and the scope of their public qualification.
-Software versions recorded by an original experiment remain authoritative for
-that result; the current dependency declaration does not rewrite them.
+Table C.4 groups the principal reading links by scientific task. Paths are
+relative to the repository root: mathematical software is under src/logic,
+executable public examples under tests, and the GAMS translation under
+manuscript/supplement/appendix_c. The links identify a fixed reading snapshot.
+Each numerical result remains associated with its original executed source.
 
-Start numerical verification with small cases whose answers can be checked.
-The [Excel-reader tests](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/tests/test_excel_loader.py)
-show valid input tables, missing-field errors and source-to-model translation.
-The [mathematical-contract tests](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/tests/test_mathematical_contract.py)
-and [scalar-objective tests](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/tests/test_scalar_contract.py)
-check shared investments, scenario weights, units and cost reconstruction.
-They are executable examples, not substitute large-instance data.
-The corresponding [native qualification workflow](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/.github/workflows/scalar-r1.yml)
-and [Pyomo qualification workflow](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/.github/workflows/pyomo.yml)
-identify the tested software environments and fail/skip conditions. A skipped native
-control is not evidence that the absent solver has been checked.
+| Task | Repository files |
+| --- | --- |
+| Displayed equations and effective inputs | [formulation.qmd](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/manuscript/formulation.qmd); [mathematical_contract.py](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/src/logic/mathematical_contract.py) |
+| Native Gurobi / native SCIP | [optimization_gurobipy_stochastic.py](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/src/logic/optimization_gurobipy_stochastic.py); [optimization_scip.py](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/src/logic/optimization_scip.py) |
+| Common Pyomo algebra and bounds | [optimization_pyomo.py](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/src/logic/optimization_pyomo.py); [pyomo_bounds.py](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/src/logic/pyomo_bounds.py) |
+| Ordered algebra / SCIP transfer | [pyomo_linear_matrix.py](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/src/logic/pyomo_linear_matrix.py); [pyomo_scip_adapter.py](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/src/logic/pyomo_scip_adapter.py) |
+| Independent residual and cost validation | [solution_validation.py](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/src/logic/solution_validation.py) |
+| GAMS entry points and common equations | [model_det.gms](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/manuscript/supplement/appendix_c/model_det.gms); [model_sto.gms](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/manuscript/supplement/appendix_c/model_sto.gms); [model_common.inc](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/manuscript/supplement/appendix_c/model_common.inc) |
+| Data-only GAMS export and instructions | [export_scalar_gams_data.py](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/scripts/export_scalar_gams_data.py); [README.md](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/manuscript/supplement/appendix_c/README.md) |
+| Public mathematical / Excel examples | [test_scalar_contract.py](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/tests/test_scalar_contract.py); [test_excel_loader.py](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/tests/test_excel_loader.py) |
+| Environment and adapter instructions | [README.md](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/README.md); [pyomo_native_adapters.md](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/docs/pyomo_native_adapters.md) |
 
-For a reader who has prepared an existing compatible environment, the first
-data-layer check is:
+: Implementation and verification index.
+
+The index separates data preparation, model construction, solver transfer and
+validation. A reader can therefore follow one physical relationship from its
+effective input through the builder to the residual check, rather than treating
+a solver's status as the complete numerical assessment.
+
+Begin with the equations and the small accounting example above. In an
+existing compatible Python environment, public input examples can be examined
+with:
 
 ```bash
 python -m pytest tests/test_excel_loader.py -q
 ```
 
-This runs public examples, rather than reproducing the h215–h500 experiments.
-Inspect failures before proceeding. Numerical controls should establish both
-the objective and physical residuals: for example, a two-scenario input must
-charge one common investment once, while weighting each scenario's operating
-cost by its probability. Agreement of objectives alone can conceal a
-constraint violation or incorrectly duplicated investment.
+Then obtain the exact processed workbook, population and network definition
+described in Appendix D. Record the source, scenario design, solver/interface
+settings and stopping rules for a fresh calculation. Validate the returned
+decisions in original units, reconstruct all fourteen cost components and
+compare the incumbent and bound using the declared gap definition.
 
-Next obtain the exact processed workbook and case definition described in
-Appendix D. If inspecting the GAMS translation, follow its
-[export and validation guide](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/manuscript/supplement/appendix_c/README.md)
-to produce data.inc and data_manifest.json without optimization. The exporter
-takes a version-2 case manifest, a case index, the workbook and its expected
-hash, and a new output directory. Its receipt records effective settings,
-identifier mappings and hashes. This is a reproducible interface description,
-the generated input must still be associated with its source workbook and
-experiment definition.
+For the GAMS translation, the exporter writes already prepared effective arrays
+to data.inc and records identifier mappings and checksums in data_manifest.json.
+Its inputs are a version-2 case manifest, a case index, a workbook and expected
+hash, and a new output directory. The resulting data remain bound to that
+workbook and case. The compilation and numerical-verification boundary is
+stated in Section C6.
 
-For a fresh optimization, retain the source version, exact inputs, topology,
-scenario design, solver/interface settings and resource/stopping rules with the
-new outputs. Then use the independent validator to reconstruct balances,
-eligibility, capacities and all fourteen cost components in original units.
-Compare the new incumbent and bound with the declared gap definition, and report
-the actual scientific and operational outcome, including partial or failed
-results. A later replay of an old certificate cannot serve as that new residual
-check. Large HPC observations remain distinct from these public miniature controls.

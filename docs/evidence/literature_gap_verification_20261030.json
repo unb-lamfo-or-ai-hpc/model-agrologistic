@@ -105,5 +105,7 @@
     ],
     "scope_risk": "Existing-software application alone is insufficient; articulate a distinctive agricultural-computing contribution.",
     "template_note": "Research-article requirements must not be confused with the shorter application-note limit. No unverified mandatory template migration is proposed."
-  }
+  },
+  "comparison_increment": "docs/literature_primary_comparison_20261030.md",
+  "manuscript_increment": "Closest-precedent paragraph now identifies the verified tactical-LP computational comparison and distinguishes it from location/capacity MILP."
 }

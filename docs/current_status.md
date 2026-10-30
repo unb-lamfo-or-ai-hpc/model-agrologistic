@@ -1,3 +1,22 @@
+## Current parallel checkpoint after PR145 merge — 30 October 2026
+
+PR145 was explicitly authorized and merged atdd92b95762084e4e8fa934ca4b1f238337bebce7.
+Public Gurobi qualification2228483/source6983f76f passed355tests with0skips,
+fresh license capacity and preserved originals verified after. Final head311015e8
+passed all5CI checks with executable bytes unchanged from that qualified source.
+The pinned human new-claim h215 Gurobi/Pyomo start has been supplied; no private
+submission/job identity is reported yet. Never repeat an old start or interfere
+with SCIP2228192 (latest human RUNNING03:06:56,step03:06:52).
+PR144 independently advances B3 primary-source comparison and D2's full scalar
+objective, worked accounting/balance example and central implementation index.
+60document regressions and254cell/37link audit passed. Keep approved question,
+author directions, original evidence and AppendixA unchanged. Full-text/thesis
+comparison, graphic cleanup and complete D numerical data/access remain open.
+This editorial branch does not change scientific/runtime code. Its older base
+must be reconciled with develop's PR145 changes before final Ready review.
+Read docs/editorial_revision_progress_20261030.md. Every NPAD action remains
+human-only; every merge needs explicit approval; no automatic experiment/follow-on.
+
 ## Current scientific/editorial revision — 30 October 2026
 
 The researcher supplies a new 01.01 mandate and two annotated historical PDFs.

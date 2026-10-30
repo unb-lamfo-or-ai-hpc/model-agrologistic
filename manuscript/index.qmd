@@ -143,11 +143,20 @@ assessment.
 | @essien2018 | Multi-stakeholder grain-storage location and decision support | How do returned investment and service outcomes relate to a certified scalar objective? |
 | @gholamian2017 | Integrated wheat-network planning, including silo location and distribution | What construction, solution and memory requirements accompany explicitly defined extensive-form instances? |
 | @hosseini2020 | Wheat-network design/redesign with sustainability and resilience concerns | What do the present cost and slack variables support, without adding unmodeled resilience or sustainability outcomes? |
-| @reis2023 | Two-stage tactical soybean purchasing and contracted transport | How does shared infrastructure investment differ from tactical contracting under uncertainty? |
+| @reis2023 | Two-stage tactical soybean LP with purchasing and transport contracts; 243 scenarios | How does shared infrastructure investment differ from tactical contracting under uncertainty? |
 | @shastri2011 | Decomposition and distributed solution of an agricultural MILP | What attainable quality and resource use are observed for the present direct extensive-form solution? |
 
 : Closest agricultural and computational precedents. Models, data, hardware and
 stopping criteria differ; the rows are not matched runtime comparisons. {#tbl-closest-precedents}
+
+The computational assessment in @reis2023 is an especially relevant
+precedent: their tactical stochastic LP contains 1,987,225 variables and
+2,288,220 constraints, and compares primal simplex, dual simplex and barrier
+algorithms (Section 6.1). Its first-stage decisions concern grain purchasing
+and transport contracts. This evidence motivates distinguishing the decision
+structure of an infrastructure MILP from the numerical size of an agricultural
+LP, and comparing the scope of computational measurements alongside the
+planning question.
 
 The empirical contribution is the joint assessment of model structure,
 phase-specific computation, original solution certificates and agricultural
@@ -218,7 +227,7 @@ processing, emissions, losses and employment. @mogale2020 include risk and
 post-harvest losses in a green food supply-chain design. @vazquez2021 connect
 supply-chain design to environmental and social impacts; @mogale2023 examine
 social sustainability. Those dimensions are relevant to public planning but
-are not current outputs of Model Agrologistic. We report neither avoided
+are outside the scope of the present formulation. We report neither avoided
 emissions nor jobs created from a reduction in transport distance alone.
 
 The cost evidence available to the present study is strongest at the

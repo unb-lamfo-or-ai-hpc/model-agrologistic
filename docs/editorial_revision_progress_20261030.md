@@ -72,3 +72,34 @@ question is preserved (normalizing only source line wrapping for comparison).
 These checks do not approve the incomplete literature/data review, old graphic
 pixels, final layout, publication or a new experiment. Final exact-head
 mandatory checks/rendering and visual review remain outstanding.
+
+## Parallel B3/D2 increment after Gurobi qualification preparation
+
+The [primary comparison](literature_primary_comparison_20261030.md) distinguishes
+verified positive findings from full-text fields still pending. The related-work
+paragraph now explicitly recognizes the computational stochastic-LP precedent
+in Reis2023, preserving the approved question and38-record inventory.
+
+Appendix C now states the full14-component scalar objective with scientific
+transport notation, explains units/shared investment, and works through a
+one-period/two-scenario feasible-plan example (objective44BRL) with explicit
+balances and handling limits. These are clearly labeled teaching values,
+not experimental inputs. A centralized pinned index replaces scattered code
+links; the unchanged original numerical sources retain their own identities.
+GAMS's compilation/numerical-verification limitation is stated once.
+
+The original workflow graphic still needs its pixel/source cleanup; complete
+D effective numerical coverage and external-data rights/access remain open.
+No model, solver, parameter, experiment or final PDF is changed by this increment.
+
+The B3/D2 increment passed manuscript integrity with33cited references,
+the254-cell/37-pinned-link public-source audit and60related document/package
+tests without failures/errors/skips (15.55s). These source checks do not replace
+the final rendering/visual inspection or pending full-text/data work.
+
+Separately, PR145 was explicitly authorized and merged atdd92b957. Public
+NPAD job2228483 passed355tests with fresh license capacity and originals
+verified after; the qualified code and final head passed all5CI checks.
+A pinned human start for the new Gurobi license-v2 claim was supplied.
+Submission/job identity has not yet been reported. SCIP2228192's latest human
+snapshot is RUNNING03:06:56,step03:06:52. No scientific result is inferred.

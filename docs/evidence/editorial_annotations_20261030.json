@@ -278,7 +278,7 @@
       "proposed_correction": "Reorganize C around equations, a compact linked implementation tree and a worked example; state the uncompiled/unvalidated GAMS limitation once.",
       "source_evidence": "https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/manuscript/supplement/appendix_c.qmd",
       "acceptance_status": "planned",
-      "implementation_status": "Current qualified Gurobi/SCIP/HiGHS adapter description adopted from PR142; didactic C restructuring remains pending."
+      "implementation_status": "C now contains the full 14-component objective, a self-contained feasible-plan example, centralized pinned source index and one GAMS numerical-verification limitation; final rendering/review remains pending."
     },
     {
       "id": "SUP-13",
