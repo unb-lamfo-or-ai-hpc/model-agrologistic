@@ -11,7 +11,7 @@ import pytest
 from scripts.geographic_evidence import verified_sources
 from scripts.prepare_manuscript_geography import customer_identity
 from src.visualization import geography as g
-from src.visualization.render import render
+from src.visualization.render import primitives, render
 
 
 @pytest.fixture
@@ -85,6 +85,22 @@ def prepared(tmp_path, bundle):
     key, created = g.prepare(path, bundle, bundle["sources"])
     assert created
     return path, key
+
+
+def test_publication_layout_preserves_scientific_geometry_and_synthetic_marking(tmp_path, bundle):
+    db, key = prepared(tmp_path, bundle)
+    definition = g.figure_definition(db, key, population=300, case_id="accepted")
+    before = copy.deepcopy(definition)
+    original, paper = primitives(definition), primitives(definition, publication=True)
+    assert original["lines"] == paper["lines"] and original["markers"] == paper["markers"]
+    assert definition == before
+    labels = " ".join(value for _, _, value, _ in paper["text"])
+    assert "SYNTHETIC FIXTURE" in labels
+    assert "Figure ID:" not in labels and "Case:" not in labels
+    target = tmp_path / "publication.svg"
+    receipt = render(definition, target, publication=True)
+    assert receipt["presentation"] == "publication"
+    assert receipt["figure_sha256"] == definition["figure_sha256"]
 
 
 def test_reopening_and_filters_do_not_write_or_reprepare(tmp_path, bundle):

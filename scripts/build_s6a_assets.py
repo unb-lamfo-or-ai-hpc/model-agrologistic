@@ -27,8 +27,7 @@ def thread_chart(record, directory):
         (r for r in record["observations"] if r["population"] == 300), key=lambda r: r["threads"]
     )
     labels = [
-        (35, 35, "h300: descriptive thread observations", 26),
-        (35, 68, "One cold solve per level; no causal speedup claim", 20),
+        (35, 35, "Runtime and memory at 300 sites", 26),
     ]
     lines, boxes = [], []
     for panel, (title, values, limit, color) in enumerate(
@@ -64,7 +63,6 @@ def thread_chart(record, directory):
                 ]
             )
         labels.append((left + 140, bottom + 66, "Solver threads", 21))
-    labels.append((35, 585, "Execution order: 4 / 1 / 8 / 2 / 16; identical exported vectors", 20))
     image = Image.new("RGB", (1200, 620), "white")
     draw = ImageDraw.Draw(image)
     pdf = Canvas(str(directory / "scalar_threads.pdf"), pagesize=(1200, 620), invariant=1)
@@ -105,10 +103,13 @@ def build(destination, *, workflow=True):
             target = destination / f"{source.stem}.{extension}"
             if target.exists():
                 receipt = json.loads(target.with_suffix(target.suffix + ".json").read_text())
-                if receipt["figure_sha256"] != definition["figure_sha256"]:
+                if (
+                    receipt["figure_sha256"] != definition["figure_sha256"]
+                    or receipt.get("presentation") != "publication"
+                ):
                     raise ValueError("Existing geographic figure source differs")
             else:
-                render(definition, target)
+                render(definition, target, publication=True)
     evidence = ROOT / "manuscript/scalar_evidence.json"
     source_hashes[evidence.relative_to(ROOT).as_posix()] = sha(evidence)
     # Generated products only; original certificates and published figures are not edited.

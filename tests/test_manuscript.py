@@ -213,6 +213,23 @@ def test_unresolved_equation_is_rejected(manuscript):
         CHECKER.check()
 
 
+@pytest.mark.parametrize("change", ("valid", "duplicate", "unresolved"))
+def test_figure_placement_attributes_preserve_cross_reference_checks(manuscript, change):
+    path = manuscript / "human_ai_methodology.qmd"
+    text = path.read_text(encoding="utf-8")
+    assert '{#fig-human-ai fig-pos="H"}' in text
+    if change == "duplicate":
+        text += '\n![Duplicate](figures/human_ai_workflow.png){#fig-human-ai fig-pos="H"}\n'
+    elif change == "unresolved":
+        text += "\nSee @fig-missing-placement.\n"
+    path.write_text(text, encoding="utf-8")
+    if change == "valid":
+        CHECKER.check()
+    else:
+        with pytest.raises(ValueError, match="mathematical cross-reference"):
+            CHECKER.check()
+
+
 def test_benchmark_is_not_labeled_as_verified_slr(manuscript):
     audit = json.loads((manuscript / "benchmark_review_audit.json").read_text())
     assert audit["review_status"] == "provisional_structural_synthesis"
@@ -263,6 +280,15 @@ def test_original_review_bytes_remain_authoritative(manuscript):
     assert hashlib.sha256(source.read_bytes()).hexdigest() == CHECKER.APPENDIX_SHA
     text = (manuscript / "supplement/index.qmd").read_text(encoding="utf-8")
     assert "[NAME OF TOOL" not in text
+
+
+def test_malformed_supplement_display_math_is_rejected(manuscript):
+    path = manuscript / "supplement/appendix_c.qmd"
+    text = path.read_text(encoding="utf-8")
+    assert "\n$$\n" in text
+    path.write_text(text.replace("\n$$\n", "\n$\n", 1), encoding="utf-8")
+    with pytest.raises(ValueError, match="Display mathematics"):
+        CHECKER.check()
 
 
 @pytest.mark.parametrize(

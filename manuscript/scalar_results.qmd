@@ -46,7 +46,11 @@ All nine warehouse-only scalar observations meet the 1% global-gap target and pa
 
 All five h300 objectives and best bounds coincide; their original warehouse, flow, inventory and shortage CSVs are byte-identical across arms. Native Runtime ranges from 47.14 to 67.61 minutes and sampled application RSS from 46.35 to 78.37 GiB. This establishes identical exported vectors in this block, not a unique optimum.
 
-![Observed h300 native runtime and sampled application memory by solver thread count. No causal speedup is inferred.](figures/scalar_threads.png){#fig-scalar-threads}
+Figure @fig-scalar-threads compares the observed runtime and sampled memory for these five configurations.
+
+![Thread-count observations at 300 sites.](figures/scalar_threads.png){#fig-scalar-threads fig-pos="H"}
+
+The single-thread observation has the lowest recorded runtime and memory in this block. The five configurations returned identical exported plans; the observations describe this execution sequence rather than a replicated estimate of parallel speedup.
 
 ## Investment and operational interpretation across populations
 
@@ -96,13 +100,25 @@ Across the returned STO plans, additional candidate sites accompany more install
 
 ### Geographic interpretation
 
-![Verified h215 STO node and investment locations. Origins distinguish soybean/corn; domestic/export roles remain separate. Road polylines are unavailable and no connecting segments are invented.](figures/scalar_h215_sto.png){#fig-map-h215}
+Figures @fig-map-h215, @fig-map-h300 and @fig-map-h400 locate the facilities and investments in the returned stochastic plans. Origin products and domestic/export destinations are distinguished. Coincident facilities retain their original identities.
 
-![Verified h300 STO node and investment locations. Origins distinguish soybean/corn; domestic/export roles remain separate. Road polylines are unavailable and no connecting segments are invented.](figures/scalar_h300_t1.png){#fig-map-h300}
+![Stochastic plan at 215 warehouse sites.](figures/scalar_h215_sto.png){#fig-map-h215 fig-pos="H"}
 
-![Verified h400 STO node and investment locations. Origins distinguish soybean/corn; domestic/export roles remain separate. Road polylines are unavailable and no connecting segments are invented.](figures/scalar_h400_t1.png){#fig-map-h400}
+The 215-site map shows the spatial distribution of the returned investment decisions. The accompanying capacity and service tables quantify their consequences. The screened networks differ across populations, so the map is interpreted together with those model-specific results.
 
-![h500 warehouse population: existing sites and candidate options. The map shows input availability and contains no optimized capacity or flow decisions.](figures/h500_pending.png){#fig-map-h500}
+![Stochastic plan at 300 warehouse sites.](figures/scalar_h300_t1.png){#fig-map-h300 fig-pos="H"}
+
+The 300-site map shows the spatial distribution of the returned investment decisions. The accompanying capacity and service tables quantify their consequences. The screened networks differ across populations, so the map is interpreted together with those model-specific results.
+
+![Stochastic plan at 400 warehouse sites.](figures/scalar_h400_t1.png){#fig-map-h400 fig-pos="H"}
+
+The 400-site map shows the spatial distribution of the returned investment decisions. The accompanying capacity and service tables quantify their consequences. The screened networks differ across populations, so the map is interpreted together with those model-specific results.
+
+Figure @fig-map-h500 shows the input population of the largest instance.
+
+![Available facilities at 500 warehouse sites.](figures/h500_pending.png){#fig-map-h500 fig-pos="H"}
+
+The 146 existing sites and 354 candidate options describe input availability. The accepted h500 investment quantities and operating outcomes are reported in the preceding tables; those optimized quantities are not encoded in this population map. Road polylines are unavailable for these maps, so the geographic views contain no connecting flow segments.
 
 The local read-only dashboard provides the corresponding DET/STO, population, incremental-membership, product, period and scenario filters, preserving coincident identifiers. Its ability to display a flow requires original positive-flow evidence and source-bound road geometry. Geography alone is not a validation of the agricultural plan.
 

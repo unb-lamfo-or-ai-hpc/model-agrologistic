@@ -69,12 +69,12 @@ and static/reception exceedances $q^K,q^R$.
 
 The scalar objective and its fourteen components are
 
-$
+$$
 \begin{aligned}
 \min_{X,\{Y^s\}}\ Z={}&C^{INV}(X)
 +\sum_{s\in S}\pi_s
  \left[C^{TR}(Y^s)+C^{HOLD}(Y^s)+C^{PEN}(Y^s)\right],
-\tag{C.1}\\
+\\
 C^{INV}(X)={}&\sum_{w\in W^N}(F^N_wy_w+c^N_wk_w)
  +\sum_{w\in W^X}(F^X_wz_w+c^X_we_w)
  +\sum_{w\in W^B}(F^B_wg_w+c^B_wb_w),\\
@@ -88,7 +88,8 @@ C^{HOLD}(Y)={}&\sum_{w\in W,p\in P,t\in T}h_{wp}I_{wpt},\\
 C^{PEN}(Y)={}&\sum_{c\in C^D,p\in P,t\in T}\lambda^D_{cp}u_{cpt}
  +\sum_{w\in W,t\in T}(\lambda^K_wq^K_{wt}+\lambda^R_wq^R_{wt}).
 \end{aligned}
-$
+\tag{C.1}
+$$
 
 In the component expressions, $Y$ denotes one scenario's operating vector.
 Fixed investment charges $F$ are in BRL and quantity-dependent charges $c$

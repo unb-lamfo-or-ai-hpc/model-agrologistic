@@ -98,8 +98,14 @@ def results(record):
         "flow, inventory and shortage CSVs are byte-identical across arms. Native Runtime "
         "ranges from 47.14 to 67.61 minutes and sampled application RSS from 46.35 to 78.37 GiB. "
         "This establishes identical exported vectors in this block, not a unique optimum.\n",
-        "![Observed h300 native runtime and sampled application memory by solver thread "
-        "count. No causal speedup is inferred.](figures/scalar_threads.png){#fig-scalar-threads}\n",
+        "Figure @fig-scalar-threads compares the observed runtime and sampled memory "
+        "for these five configurations.\n",
+        "![Thread-count observations at 300 sites.]"
+        "(figures/scalar_threads.png){#fig-scalar-threads fig-pos=\"H\"}\n",
+        "The single-thread observation has the lowest recorded runtime and memory "
+        "in this block. The five configurations returned identical exported plans; "
+        "the observations describe this execution sequence rather than a replicated "
+        "estimate of parallel speedup.\n",
         "## Investment and operational interpretation across populations\n",
         "| Instance | One-time investment, BRL billion | Transport, BRL billion | "
         "Inventory holding, BRL billion |",
@@ -185,6 +191,10 @@ def results(record):
         "and reception exceedances can coexist with substantial unmet demand; a lower "
         "penalized total is not improvement in every service component.\n",
         "### Geographic interpretation\n",
+        "Figures @fig-map-h215, @fig-map-h300 and @fig-map-h400 locate the facilities "
+        "and investments in the returned stochastic plans. Origin products and "
+        "domestic/export destinations are distinguished. Coincident facilities retain "
+        "their original identities.\n",
     ]
     for population, case in [
         (215, "scalar_h215_sto"),
@@ -192,15 +202,24 @@ def results(record):
         (400, "scalar_h400_t1"),
     ]:
         text.append(
-            f"![Verified h{population} STO node and investment locations. "
-            "Origins distinguish soybean/corn; domestic/export roles remain separate. "
-            "Road polylines are unavailable and no connecting segments are invented.]"
-            f"(figures/{case}.png){{#fig-map-h{population}}}\n"
+            f"![Stochastic plan at {population} warehouse sites.]"
+            f'(figures/{case}.png){{#fig-map-h{population} fig-pos="H"}}\n'
+        )
+        text.append(
+            f"The {population}-site map shows the spatial distribution of the returned "
+            "investment decisions. The accompanying capacity and service tables quantify "
+            "their consequences. The screened networks differ across populations, so "
+            "the map is interpreted together with those model-specific results.\n"
         )
     text += [
-        "![h500 warehouse population: existing sites and candidate options. "
-        "The map shows input availability and contains no optimized capacity or flow decisions.]"
-        "(figures/h500_pending.png){#fig-map-h500}\n",
+        "Figure @fig-map-h500 shows the input population of the largest instance.\n",
+        "![Available facilities at 500 warehouse sites.]"
+        '(figures/h500_pending.png){#fig-map-h500 fig-pos="H"}\n',
+        "The 146 existing sites and 354 candidate options describe input availability. "
+        "The accepted h500 investment quantities and operating outcomes are reported "
+        "in the preceding tables; those optimized quantities are not encoded in this "
+        "population map. Road polylines are unavailable for these maps, so the "
+        "geographic views contain no connecting flow segments.\n",
         "The local read-only dashboard provides the corresponding DET/STO, population, "
         "incremental-membership, product, period and scenario filters, preserving "
         "coincident identifiers. Its ability to display a flow requires original "

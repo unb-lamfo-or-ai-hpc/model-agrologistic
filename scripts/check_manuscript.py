@@ -388,7 +388,9 @@ def check(*, rendered: bool = False, publication: bool = False) -> None:
     ):
         if required not in article:
             raise ValueError(f"Missing scientific context: {required}")
-    labels = re.findall(r"\{#((?:eq|tbl|fig|sec)-[A-Za-z0-9_-]+)\}", article)
+    labels = re.findall(
+        r"\{#((?:eq|tbl|fig|sec)-[A-Za-z0-9_-]+)(?:\s+[^{}]*)?\}", article
+    )
     references = set(re.findall(r"@((?:eq|tbl|fig|sec)-[A-Za-z0-9_-]+)", article))
     if len(labels) != len(set(labels)) or references - set(labels):
         raise ValueError("Duplicate or unresolved mathematical cross-reference")
@@ -420,6 +422,8 @@ def check(*, rendered: bool = False, publication: bool = False) -> None:
             raise ValueError("Missing implementation/data appendix include")
         supplement += "\n" + (MANUSCRIPT / "supplement" / name).read_text(encoding="utf-8")
     check_reader_audience(article, supplement)
+    if re.search(r"(?m)^\$\s*$", supplement):
+        raise ValueError("Display mathematics requires double-dollar delimiters")
     review_bib = bibliography + (MANUSCRIPT / "review-methods.bib").read_text(encoding="utf-8")
     review_keys = set(
         re.findall(r"@(?:article|incollection|book|misc|phdthesis)\{([^,]+),", review_bib)

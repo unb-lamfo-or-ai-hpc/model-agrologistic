@@ -14,7 +14,7 @@ from pathlib import Path
 from .geography import STYLES, digest, require
 
 
-def primitives(definition, width=1200, height=850):
+def primitives(definition, width=1200, height=850, *, publication=False):
     """One layout and legend for every static output format."""
     require(width >= 700 and height >= 550, "Figure canvas too small")
     unsigned = {k: v for k, v in definition.items() if k != "figure_sha256"}
@@ -114,6 +114,22 @@ def primitives(definition, width=1200, height=850):
         (legend_x, legend_y + 36 * len(layers) + 52, "No invented connections", 18),
         (legend_x, legend_y + 36 * len(layers) + 84, "Coincident IDs retained", 18),
     ]
+    if publication:
+        labels = {
+            "origin": "Origins", "origin soybean": "Soybean origins",
+            "origin corn": "Corn origins", "domestic": "Domestic destinations",
+            "export": "Export outlets", "existing": "Existing warehouses",
+            "candidate": "Candidate sites", "opened": "Opened candidates",
+            "expanded": "Expanded warehouses", "bulkified": "Bulk handling",
+        }
+        omitted = {"Road geometry only", "No invented connections", "Coincident IDs retained"}
+        text = [
+            (x, y, labels.get(value, value), size)
+            for x, y, value, size in text
+            if y < height - 100 and value not in omitted
+        ]
+        text[0] = (35, 32, f"{prefix}Facility locations ({definition['population']} sites)", 24)
+        text[1] = (35, 63, "Longitude and latitude (degrees)", 18)
     return {"width": width, "height": height, "text": text, "lines": lines, "markers": markers}
 
 
@@ -130,13 +146,13 @@ def marker_points(marker):
     return None
 
 
-def render(definition, output, *, width=1200, height=850):
+def render(definition, output, *, width=1200, height=850, publication=False):
     """Export exclusively; a provenance sidecar binds the scientific figure."""
     path = Path(output)
     require(path.suffix.lower() in {".svg", ".pdf", ".png"}, "SVG/PDF/PNG required")
     sidecar = path.with_suffix(path.suffix + ".json")
     require(not path.exists() and not sidecar.exists(), "Preserve existing figure outputs")
-    scene = primitives(definition, width, height)
+    scene = primitives(definition, width, height, publication=publication)
     path.parent.mkdir(parents=True, exist_ok=True)
     if path.suffix == ".svg":
         content = [
@@ -226,5 +242,7 @@ def render(definition, output, *, width=1200, height=850):
         "renderer": "browser-free-equirectangular-v1",
         "definition": definition,
     }
+    if publication:
+        receipt["presentation"] = "publication"
     sidecar.write_text(json.dumps(receipt, indent=2, allow_nan=False) + "\n", encoding="utf-8")
     return receipt
