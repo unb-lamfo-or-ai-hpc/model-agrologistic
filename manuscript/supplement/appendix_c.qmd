@@ -117,9 +117,9 @@ version actually did it.
 
 ## C4 Pyomo and the bounded representation of candidate slacks
 
-The [Pyomo implementation](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/src/logic/optimization_pyomo.py)
-and its [bound derivation](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/src/logic/pyomo_bounds.py)
-provide a common scalar formulation for HiGHS and CBC.
+The [Pyomo implementation](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b53b24f68b6bcbef2260e39d232464cebb01745/src/logic/optimization_pyomo.py)
+and its [bound derivation](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b53b24f68b6bcbef2260e39d232464cebb01745/src/logic/pyomo_bounds.py)
+provide a common scalar formulation for Gurobi, SCIP and HiGHS.
 It uses the same effective data, investment expressions and physical balances.
 The principal representational difference concerns candidate emergency slacks.
 The native model allows an open candidate's slack to be unbounded above.
@@ -180,12 +180,22 @@ representative of every feasible physical plan and investment vector. It does
 not promise that two solver interfaces will explore the same search tree.
 
 The implementation checks the proof's finite, nonnegative data conditions and
-records the derived bounds' identity and scope. HiGHS uses the Pyomo APPSI
-interface; CBC uses a solver-process interface. Construction and transfer costs
-can differ between these interfaces and native APIs. Public analytical and
-intermediate-size controls test correctness and operational behavior, but they
-do not predict h215 runtime or memory. Any large-instance comparison must retain
-these formulation, interface and resource differences.
+records the derived bounds' identity and scope. Gurobi and HiGHS use Pyomo's
+APPSI interfaces. The [SCIP transfer adapter](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b53b24f68b6bcbef2260e39d232464cebb01745/src/logic/pyomo_scip_adapter.py)
+reads the same Pyomo linear expressions and creates the native SCIP variables,
+objective and constraints through PySCIPOpt. It does not rebuild the problem
+with a separate scientific formulation.
+
+To compare inputs to these adapters, the
+[ordered algebra record](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b53b24f68b6bcbef2260e39d232464cebb01745/src/logic/pyomo_linear_matrix.py)
+includes variable domains and bounds, objective coefficients and constant,
+and constraint coefficients and bounds. Matching records describe the common
+Pyomo algebra before solver transformations; they do not assert identical
+presolved models. Construction, transfer, optimization and validation are
+therefore measured separately. Public analytical and intermediate-size controls
+test correctness and operational behavior, but do not predict h215 runtime
+or memory. Large-instance interpretation must retain these formulation,
+interface and resource scopes.
 
 ## C5 Checking a returned solution
 
@@ -246,8 +256,8 @@ The repository separates reading/building the manuscript, preparing data,
 running an optimizer and validating its output. Installing a solver is not
 necessary to inspect the formulation or reproduce the document. Native Gurobi
 tests require an appropriate Gurobi installation/licence; native SCIP uses
-PySCIPOpt. The [Pyomo guide](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/docs/pyomo_multisolver.md)
-identifies the HiGHS and CBC interfaces and their public qualification scope.
+PySCIPOpt. The [Pyomo adapter guide](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b53b24f68b6bcbef2260e39d232464cebb01745/docs/pyomo_native_adapters.md)
+explains the supported interfaces and the scope of their public qualification.
 Software versions recorded by an original experiment remain authoritative for
 that result; the current dependency declaration does not rewrite them.
 

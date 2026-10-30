@@ -7,30 +7,7 @@ bibliography:
   - ../review-methods.bib
 ---
 
-## Guide to the supplementary material
-
-Appendix A presents the literature review that supports the study.
-Appendix B describes the use and verification of AI-assisted research.
-Appendix C connects the mathematical formulation to its software implementations
-and explains how solutions are validated. Appendix D describes the data,
-effective parameter values and preparation of the experimental instances.
-Readers reproducing the calculations can begin with D and then follow C.
-
-The [bibliography](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/manuscript/references.bib) and
-[review-method references](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/manuscript/review-methods.bib)
-provide the sources cited throughout the supplement. Links to software and
-data records identify fixed versions; each computational result is associated
-with the version and input used in its experiment.
-
-# Appendix A Literature review
-
-The following review presents the search, selection and synthesis of the
-grain-storage literature, including the PRISMA diagram, comparative tables and
-references. Its search scope is that of the original review; the related-work
-section of the article additionally discusses the computational precedents
-relevant to the present experiments. The
-[complete review](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/manuscript/supplement/appendix_a_original.pdf)
-is available as a separate PDF.
+# Appendix A — Systematic Literature Review of Grain Facility-Location Models
 
 ::: {.content-visible when-format="html"}
 
@@ -54,76 +31,89 @@ The complete PDF is available using the download link above.
 
 ## B1 Purpose and scope
 
-AI assistants supported mathematical discussion, software development and
-scientific writing. Human researchers defined the research question, selected
-the assumptions, evaluated proposed changes and interpreted the results.
-The mathematical foundation is attributed to @rosa2026thesis. AI assistance
-is described here to make the research procedure transparent; it is not
-evidence of an independent origin for the model or a measured productivity gain.
+AI assistants supported the development of this work through mathematical
+discussion, implementation, technical criticism and scientific writing.
+Human researchers defined the planning problem, selected assumptions and
+experimental configurations, reviewed proposed changes and interpreted the
+resulting investment and operating decisions. This appendix explains how those
+activities were connected through mathematical review and computational
+verification.
 
-Three types of evidence serve different purposes. A discussion identifies a
-proposal. Versioned code and tests establish what was implemented and examined.
-An experiment record identifies the calculation performed and its numerical
-outcome. A proposal becomes part of the method only after mathematical review,
-implementation and verification appropriate to its scientific role.
+The procedure follows six phases: Human Scientific Intent, AI-Assisted
+Implementation, Technical Verification, Scientific Validation, Human Scientific
+Decision, and Provenance/Reporting. Section B3 explains these phases through
+examples from the shared-investment stochastic model; Section B4 distinguishes
+the four levels of verification used to assess the work.
 
 ## B2 Tools and human responsibilities
 
-Gurobot supported early formulation discussions. Gemini and GPT systems
-assisted with technical criticism and alternative interpretations. ChatGPT
-supported coordination and writing, while Codex assisted with implementation,
-tests, diagnostics and documentation. Available records identify these roles
-without establishing a complete chronology of model versions or the authorship
-of every code fragment.
+Gurobot was used for formulation and implementation discussions. Gemini and
+GPT systems supported technical criticism and alternative interpretations.
+ChatGPT Classic supported coordination and writing, while Codex supported
+Python implementation, tests, diagnostics and documentation. Researchers
+reviewed the proposed changes and decided which ones to adopt.
 
-These generative assistants are distinct from the numerical tools. Python
-organizes data and calculations; Gurobi and SCIP solve mathematical programs;
-Pyomo expresses a solver-independent formulation, with HiGHS and CBC interfaces.
-GitHub maintains the software history, and Slurm schedules the HPC experiments.
-Researchers executed the experimental commands and evaluated the returned
-evidence. A completed software process was not treated as proof of a feasible
-or sufficiently accurate solution.
+The numerical tools had distinct roles. Python organized the data and
+calculations. Gurobi and SCIP provided native mathematical-programming
+implementations, while Pyomo expressed a common algebraic formulation for
+Gurobi, SCIP and HiGHS interfaces. GitHub retained versioned source and
+experiment records, and Slurm scheduled the HPC calculations. Researchers
+executed the experimental commands and assessed their outputs.
 
-## B3 Mathematical review before implementation
+## B3 From the scientific question to a computational result
 
-Review began with the connection between the planning problem and its
-equations. The researchers checked which decisions preceded uncertainty,
-which decisions varied by scenario, and which quantities represented stock,
-throughput, investment or constraint exceedance. They also examined indexing,
-units, eligibility and objective coefficients.
+The six phases connect a planning question to an implemented and interpreted
+experiment. Table B.1 illustrates their application to the two-stage model.
+A discrepancy found during verification returns the work to the relevant
+assumption or implementation.
 
-This review was especially important for the two-stage implementation.
-Investment must be shared across scenarios and charged once, while operating
-costs are probability weighted. Scenario probabilities do not scale the
-physical balances. Similarly, static storage and daily handling rates cannot
-be interchanged merely because both appear in capacity constraints.
-AI-generated proposals were assessed against these requirements before adoption.
+| Phase | Research activity | Example from this work |
+| --- | --- | --- |
+| P1 Human Scientific Intent | Define the planning question, decisions and assumptions | Locate and size storage facilities before uncertain supply and demand are realized |
+| P2 AI-Assisted Implementation | Translate reviewed equations into code and propose checks | Represent common investment decisions and scenario-dependent grain flows |
+| P3 Technical Verification | Check executable behavior and mathematical properties | Verify that investment is charged once and operating costs are probability weighted |
+| P4 Scientific Validation | Examine whether experiments address the question and how their outputs should be interpreted | Assess feasibility, objective bounds, resources and agricultural service jointly |
+| P5 Human Scientific Decision | Accept, revise or reject interpretations and methodological changes | Interpret penalized plans using unmet demand and storage/handling indicators |
+| P6 Provenance/Reporting | Associate reported results with their implemented experiment | Retain the source, input, scenario, solver and validation records for each result |
 
-Exploratory discussions also considered alternative objectives, GAMS
-representations and decomposition. These discussions did not constitute
-additional experiments in the extensive-form cohort reported in the article.
-Only the implemented, tested formulation and its original computational
-outputs support that cohort.
+: Research phases and their application.
 
-## B4 Numerical verification
+The example distinguishes a shared investment from repeated recourse decisions.
+A capacity investment is made once, before the scenario is known. Each
+scenario then has its own flow, inventory and shortage decisions. Consequently,
+scenario probabilities weight operating costs, while investment enters the
+objective once and physical balances retain their original units.
 
-The procedure in Figure B.1 connects human review, implementation, small
-verification examples and large experiments. Return arrows indicate revision
-when a discrepancy is found.
+## B4 Four levels of verification
 
-![Figure B.1. Human-supervised research and verification. Mathematical review precedes implementation; analytical examples, software tests and original experiment outputs support interpretation.](../figures/human_ai_workflow.png)
+The workflow in Figure B.1 links the research phases to repeated review and
+verification. A proposed change is examined at the levels appropriate to its
+effect on the scientific calculation.
 
-Small examples tested objective reconstruction, investment charged once,
-probability weighting, deterministic specialization, capacity units and
-activation conditions. The returned large-instance decisions were then checked
-in original units against material balances, eligibility and capacity
-relationships. All fourteen objective components were reconstructed separately.
+![Human-supervised research workflow.](../figures/human_ai_workflow.png)
 
-These checks are complementary. Agreement of objective values can conceal a
-constraint violation, and an aggregate material balance can conceal a local
-violation. A small optimization gap bounds uncertainty about the penalized
-objective; it does not establish adequate service or accurate financial costs
-when artificial penalties dominate the total.
+The return arrows represent revision after a discrepancy is identified.
+For example, a successful program is followed by checks of investment
+accounting and probability weights, and then by examination of original-unit
+balances and the agricultural meaning of the returned plan. Table B.2
+distinguishes these complementary levels.
+
+| Level | Question examined | Evidence used in this work |
+| --- | --- | --- |
+| V1 Software functionality | Does the intended operation execute and return the required products? | Data-loading, model-construction and output tests |
+| V2 Mathematical consistency | Does the implementation express the reviewed equations and units? | Analytical examples, deterministic specialization, investment accounting and objective reconstruction |
+| V3 Protocol conformity | Was the specified instance and experimental configuration used? | Source/input identities, scenario membership, solver settings and resource records |
+| V4 Empirical scientific support | What conclusions do the observed decisions and resources support? | Accepted original residual checks, objective bounds, service/capacity indicators and qualified interpretation |
+
+: Complementary levels of verification.
+
+Small examples examined investment charged once, probability weighting,
+capacity units and activation conditions. Large-instance outputs were checked
+against material balances, eligibility and capacity relationships in their
+original units, with all fourteen objective components reconstructed
+separately. These checks support different conclusions: the relative gap
+quantifies uncertainty about the scalar objective, while service and
+capacity indicators explain the physical consequences of the plan.
 
 ## B5 Traceability of a computational result
 

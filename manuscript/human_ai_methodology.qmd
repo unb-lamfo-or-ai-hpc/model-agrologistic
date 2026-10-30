@@ -1,56 +1,23 @@
-## Human-Supervised AI-Assisted Research and Computational Decision Provenance
+## Human-supervised AI-assisted research
 
-The development of Model Agrologistic used a human-supervised workflow in which
-AI assistants supported mathematical discussion, implementation, experimentation
-and scientific documentation. The mathematical foundation is attributed to Rosa
-(2026). Technical consultations with Gurobot occurred partly in parallel with
-that research; they are not presented as a subsequent independent origin of the
-model. Later activities involved Gemini and GPT models for scientific criticism,
-ChatGPT Classic for coordination, and Codex for Python and GitHub development.
-The available records establish research roles, not a complete chronology of
-model versions or a measure of individual coding authorship.
+AI assistants supported mathematical discussion, implementation and scientific
+writing under human supervision. Gurobot supported formulation discussions;
+Gemini and GPT systems supported technical criticism; ChatGPT Classic supported
+coordination; and Codex supported Python development, tests and documentation.
+Researchers selected assumptions and experimental configurations, reviewed
+changes, executed the HPC commands and interpreted the resulting plans.
 
-Human researchers retained authority over assumptions, objectives, experimental
-design, HPC execution and interpretation. AI proposals were provisional: a
-successful program or passing test suite was insufficient to establish that a
-model represented the intended scientific problem. Mathematical review,
-analytical examples, original-unit residual checks and objective reconstruction
-provided complementary forms of verification. Portable replay of a certificate
-was distinguished from a new solve or fresh residual evaluation against private
-inputs. Human approval of a software change was likewise distinguished from
-acceptance of its experimental results.
+The workflow in @fig-human-ai connects human scientific intent to implementation,
+verification, scientific assessment and reporting. Appendix B explains its six
+phases and four complementary verification levels.
 
-The workflow connected decisions to inspectable artifacts. Versioned source,
-input identities, scenario and population manifests, solver settings, resource
-measurements and terminal records established which experiment produced each
-result. Researchers executed the NPAD commands; collection preserved partial
-and failed attempts as well as accepted outcomes. Disagreements led to revised
-proposals, implementation changes and renewed verification. Mathematical meaning was checked separately from executability: for example,
-a successful program did not establish that shared investment was charged once
-or that probability weights were applied to the correct cost components.
+![Human-supervised research workflow.](figures/human_ai_workflow.png){#fig-human-ai}
 
-This externally documented decision-reasoning trail records questions,
-alternatives, human decisions, implementations, tests and evidence. It does not
-recover the hidden internal reasoning of language models. We propose the
-workflow as a complementary research method for making computational operations
-research more inspectable. We do not claim controlled productivity gains,
-statistical independence between AI reviewers or guaranteed correctness.
-Incomplete conversational records and restricted data limit independent
-reconstruction. The human authors remain responsible for every assumption,
-reported result and conclusion. Appendix B describes the verification procedure and its limitations; the
-versioned development history is available for inspection.[^development-history]
+The return arrows represent revision when a discrepancy is found. For example,
+shared investment and probability-weighted recourse were checked in analytical
+examples before large experiments. Original-unit residuals and objective
+reconstruction then supported assessment of the returned decisions. Each result
+was associated with its source, inputs, solver configuration and validation
+record. Human scientific judgment connected this evidence to conclusions about
+computational requirements and agricultural planning.
 
-[^development-history]: https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pulls?q=is%3Apr+state%3Aclosed
-
-| Research activity | AI-assisted support | Human verification and authority |
-| --- | --- | --- |
-| Mathematical modeling | Gurobot formulation and implementation proposals | Mathematical consistency and adoption of assumptions |
-| Scientific exploration | Gemini/GPT alternatives and criticism | Scientific relevance and scope decisions |
-| Coordination | ChatGPT Classic planning and interpretation support | Objectives, experiment design and editorial direction |
-| Implementation | Codex Python, tests and documentation | Code/model review and acceptance of changes |
-| Experimentation | Codex-supported scripts, collection and diagnostics | Human NPAD execution and independent evidence acceptance |
-| Publication preparation | AI-assisted structure, language and figures | Author review and final scientific responsibility |
-
-: AI-assisted activities and human verification responsibilities. {#tbl-human-ai}
-
-![Human-supervised AI-assisted research and computational verification workflow. The return arrows represent correction, not autonomous scientific authority.](figures/human_ai_workflow.png){#fig-human-ai}

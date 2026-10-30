@@ -1,0 +1,295 @@
+{
+  "schema_version": "scientific-editorial-annotation-response-v1",
+  "date": "2026-10-30",
+  "baseline_commit": "c80dca69c247753d49f06925ec712fcd43bb5a56",
+  "mandate_sha256": "9e6d3255c7dcbf2b403b7d5ab4c147deaf6f1d9f44f8106db0516ef95b8eeecc",
+  "scope": "Curated editorial decisions, not a PDF extract or a scientific acceptance certificate.",
+  "comment_authorship": "PDF author and subject metadata are blank; no attribution to an individual coauthor.",
+  "original_pdfs": [
+    {
+      "id": "article",
+      "filename": "model-agrologistic-article-5966c08e.pdf",
+      "pages": 33,
+      "annotations": 11,
+      "sha256": "45a3eb7676ff689e5758e759679cff470d0f21211ad6dc9fbff19c03f025db79"
+    },
+    {
+      "id": "supplement",
+      "filename": "model-agrologistic-appendices-5966c08e.pdf",
+      "pages": 36,
+      "annotations": 13,
+      "sha256": "f89016c85c3e05ce6970e6003e3f1021e9a2b0e0b4b43203ba7833b4019ee5a1"
+    }
+  ],
+  "review": {
+    "all_69_pages_text_read": true,
+    "all_pages_visually_inspected_in_12_contact_sheets": true,
+    "final_revised_pdf_rendered": false,
+    "appendix_a_original_sha256": "859dc52b64b6bcf471f7616182d8cadf2b693dbfd19ad4b9248637b5c231b3ed",
+    "appendix_a_19_embedded_form_content_streams_match": true,
+    "appendix_a_19_normalized_page_texts_match": true,
+    "appendix_a_comparison_scope": "Original decoded page content matches embedded Form XObjects on supplement pages 2–20. PDF wrappers and rounded media boxes are not byte-identical. The tracked original PDF is unchanged."
+  },
+  "responses": [
+    {
+      "id": "ART-01",
+      "pdf": "article",
+      "page": 1,
+      "annotation": "Este tipo de comentário não pode existir neste documento. Isso é uma informação de desenvolvimento. Devemos deixar apenas o texto que será lido pelos leitores da revista",
+      "scientific_concern": "Remove development announcement",
+      "proposed_correction": "Keep reader-only front matter; the announcement is already absent from develop.",
+      "source_evidence": "https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/manuscript/index.qmd",
+      "acceptance_status": "resolved_in_baseline"
+    },
+    {
+      "id": "ART-02",
+      "pdf": "article",
+      "page": 1,
+      "annotation": "Esta apresentação do problema está confusa e totalmente inadequada para uma descrição didática, com rigor acadêmico científico, dentro das áreas de pesquisa operacional e HPC. Reescreva",
+      "scientific_concern": "Explain the problem before technical bookkeeping",
+      "proposed_correction": "Rewrite the abstract around location/capacity decisions, uncertainty, computational assessment and agricultural findings.",
+      "source_evidence": "https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/manuscript/index.qmd",
+      "acceptance_status": "source_revised_final_acceptance_pending",
+      "implementation_status": "first_source_revision_implemented_pending_render_and_author_review"
+    },
+    {
+      "id": "ART-03",
+      "pdf": "article",
+      "page": 1,
+      "annotation": "Comparar desde 215 warehouses",
+      "scientific_concern": "Begin scale comparison at h215",
+      "proposed_correction": "Describe the stochastic matrix from 14.1 million variables at h215 to 63.4 million at h500.",
+      "source_evidence": "https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/manuscript/scalar_results.qmd",
+      "acceptance_status": "source_revised_final_acceptance_pending",
+      "implementation_status": "first_source_revision_implemented_pending_render_and_author_review"
+    },
+    {
+      "id": "ART-04",
+      "pdf": "article",
+      "page": 1,
+      "annotation": "Este texto esta escrito para máquinas e não humanos. Além disso, esta quantidade de detalhes excessiva deve ser reservada para a parte de resultados. Aqui precisamos comunicar ao leitor a relevância dos resultados obtidos",
+      "scientific_concern": "Reduce abstract detail and explain relevance",
+      "proposed_correction": "Move thread lists and phase/resource detail to Results; retain a small number of interpretable headline findings.",
+      "source_evidence": "https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/manuscript/scalar_results.qmd",
+      "acceptance_status": "source_revised_final_acceptance_pending",
+      "implementation_status": "first_source_revision_implemented_pending_render_and_author_review"
+    },
+    {
+      "id": "ART-05",
+      "pdf": "article",
+      "page": 1,
+      "annotation": "Esta questão de discutir service e penalized costs deve ser submetida ao novo contrato de uma função objetivo única e discutida somente na parte de resultados. Não é relavante para o abstract",
+      "scientific_concern": "Keep detailed cost/service trade-offs in Results",
+      "proposed_correction": "Explain W/D under the single scalar objective in Results; omit the W/D comparison from the abstract.",
+      "source_evidence": "https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/manuscript/wd_results.qmd",
+      "acceptance_status": "source_revised_final_acceptance_pending",
+      "implementation_status": "first_source_revision_implemented_pending_render_and_author_review"
+    },
+    {
+      "id": "ART-06",
+      "pdf": "article",
+      "page": 1,
+      "annotation": "Resultados negativos de experimentos não podem estar no abstract e no texto do artigo, mas devem ser documentados no GitHub e citados de forma mais genérica e superficial na parte de limitações nas considerações finais",
+      "scientific_concern": "Separate operational incidents from scientific outcomes",
+      "proposed_correction": "Remove incident narratives from the abstract. Retain relevant adverse numerical outcomes in any solver comparison, with concise limitations; author confirmation is needed on the tension with blanket exclusion.",
+      "source_evidence": "https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/manuscript/index.qmd",
+      "acceptance_status": "author_decision_required",
+      "implementation_status": "Removed from abstract; cohort/limitations author decision remains open."
+    },
+    {
+      "id": "ART-07",
+      "pdf": "article",
+      "page": 1,
+      "annotation": "Esta frase tem que ser muito revisada. É obrigatório discutir em profundidade o assessment e agriculture interpretation no abstract",
+      "scientific_concern": "State the agricultural meaning of the computational assessment",
+      "proposed_correction": "Explain how attainable scale supports capacity-sizing analysis and why returned plans require service/stock/throughput interpretation.",
+      "source_evidence": "https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/manuscript/scalar_results.qmd",
+      "acceptance_status": "source_revised_final_acceptance_pending",
+      "implementation_status": "first_source_revision_implemented_pending_render_and_author_review"
+    },
+    {
+      "id": "ART-08",
+      "pdf": "article",
+      "page": 1,
+      "annotation": "A metodologia de Human-AI deve ser brevemente introduzida somente na parte de metodologia, incluindo o apêndice para dar mais detalhes. Não pode aparecer em nenhuma outra parte, muito menos no abstract",
+      "scientific_concern": "Concentrate Human–AI exposition in Methods and Appendix B",
+      "proposed_correction": "Remove AI discussion from the abstract; preserve approved SO4/C3 and the required AI declaration pending an explicit author decision on their placement.",
+      "source_evidence": "https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/manuscript/index.qmd",
+      "acceptance_status": "author_decision_required",
+      "implementation_status": "Removed from abstract and shortened Methods; SO4/C3 placement decision remains open."
+    },
+    {
+      "id": "ART-09",
+      "pdf": "article",
+      "page": 1,
+      "annotation": "faltou network design e mixed integer linear programming MILP",
+      "scientific_concern": "Index the actual mathematical/planning problem",
+      "proposed_correction": "Add network design and mixed-integer linear programming to the keywords.",
+      "source_evidence": "https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/manuscript/index.qmd",
+      "acceptance_status": "source_revised_final_acceptance_pending",
+      "implementation_status": "first_source_revision_implemented_pending_render_and_author_review"
+    },
+    {
+      "id": "ART-10",
+      "pdf": "article",
+      "page": 1,
+      "annotation": "substituir por hub location",
+      "scientific_concern": "Use the approved hub-location terminology",
+      "proposed_correction": "Replace the facility-location keyword with hub location.",
+      "source_evidence": "https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/manuscript/index.qmd",
+      "acceptance_status": "source_revised_final_acceptance_pending",
+      "implementation_status": "first_source_revision_implemented_pending_render_and_author_review"
+    },
+    {
+      "id": "ART-11",
+      "pdf": "article",
+      "page": 1,
+      "annotation": "Esta pode ser excluída. A reprodutibilidade é uma obrigação do artigo científico",
+      "scientific_concern": "Do not present reproducibility as a novelty keyword",
+      "proposed_correction": "Remove reproducibility from the keywords while retaining reproducibility obligations in Methods/data availability.",
+      "source_evidence": "https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/manuscript/index.qmd",
+      "acceptance_status": "source_revised_final_acceptance_pending",
+      "implementation_status": "first_source_revision_implemented_pending_render_and_author_review"
+    },
+    {
+      "id": "SUP-01",
+      "pdf": "supplement",
+      "page": 1,
+      "annotation": "Esta introdução deve ser eliminada. Cada um dos apêndices deve ser supplementary material que pode ser consumido opcionalmente pelos leitores de forma independente",
+      "scientific_concern": "Make each appendix independently readable",
+      "proposed_correction": "Remove the general supplementary guide; introduce necessary concepts within each appendix.",
+      "source_evidence": "https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/manuscript/supplement/index.qmd",
+      "acceptance_status": "source_revised_final_acceptance_pending",
+      "implementation_status": "first_source_revision_implemented_pending_render_and_author_review"
+    },
+    {
+      "id": "SUP-02",
+      "pdf": "supplement",
+      "page": 1,
+      "annotation": "Essas informações devem estar no GitHub, mas nunca no material para a revista e os leitores. O apêndice A é somente o PDF com a systematic literature review. O nome de revisão sistemática da literatura é importante e não somente literature review",
+      "scientific_concern": "Preserve the systematic review without administrative commentary",
+      "proposed_correction": "Use the full systematic-review title and preserve the original 19-page PDF. Keep checksum/count/date issues in the author decision record only.",
+      "source_evidence": "https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/manuscript/supplement/appendix_a_original.pdf",
+      "acceptance_status": "source_revised_final_acceptance_pending",
+      "implementation_status": "first_source_revision_implemented_pending_render_and_author_review"
+    },
+    {
+      "id": "SUP-03",
+      "pdf": "supplement",
+      "page": 21,
+      "annotation": "Model Agrologistic é o nome de desenvolvimento e não deve ser usado no texto do artigo e dos apêndices. refira-se a development of this work",
+      "scientific_concern": "Use scientific rather than development branding",
+      "proposed_correction": "Use this work in scientific prose. The development name is absent from current Appendix B but remains in the Methods include and will be removed there.",
+      "source_evidence": "https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/manuscript/human_ai_methodology.qmd",
+      "acceptance_status": "source_revised_final_acceptance_pending",
+      "implementation_status": "first_source_revision_implemented_pending_render_and_author_review"
+    },
+    {
+      "id": "SUP-04",
+      "pdf": "supplement",
+      "page": 21,
+      "annotation": "Este tipo de afirmação é inadequada. O texto científico não inclui o que não se trata, mas somente o que sim está sendo apresentado. Evite frases com disclaimers aqui. Relate de forma didática, com teor acadêmico científico, como a IA foi empregada",
+      "scientific_concern": "Describe what the researchers actually did",
+      "proposed_correction": "Replace defensive introductory clauses with constructive descriptions of assistants, human review and verification.",
+      "source_evidence": "https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/manuscript/supplement/index.qmd",
+      "acceptance_status": "source_revised_final_acceptance_pending",
+      "implementation_status": "first_source_revision_implemented_pending_render_and_author_review"
+    },
+    {
+      "id": "SUP-05",
+      "pdf": "supplement",
+      "page": 21,
+      "annotation": "Esta afirmação está no artigo e deve ser excluída daqui. Não é necessário explicações além do relato de como a IA foi usada",
+      "scientific_concern": "Avoid repeated attribution in the AI account",
+      "proposed_correction": "Retain Rosa attribution in the model/Introduction; remove its redundant explanatory paragraph from Appendix B.",
+      "source_evidence": "https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/manuscript/supplement/index.qmd",
+      "acceptance_status": "source_revised_final_acceptance_pending",
+      "implementation_status": "first_source_revision_implemented_pending_render_and_author_review"
+    },
+    {
+      "id": "SUP-06",
+      "pdf": "supplement",
+      "page": 21,
+      "annotation": "outra afirmação inadequada. Não inclua o que não é ou não ocorreu, mas somente o que sim ocorreu",
+      "scientific_concern": "Remove defensive independent-origin assertions",
+      "proposed_correction": "Describe adoption and verification of proposals constructively; keep historical attribution decisions in GitHub.",
+      "source_evidence": "https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/manuscript/supplement/index.qmd",
+      "acceptance_status": "source_revised_final_acceptance_pending",
+      "implementation_status": "first_source_revision_implemented_pending_render_and_author_review"
+    },
+    {
+      "id": "SUP-07",
+      "pdf": "supplement",
+      "page": 21,
+      "annotation": "Nunca inclua referências a reuniões de preparação e datas nos documentos que vão para os leitores da revista. A publicação deve ter total independência dos milestones do processo de desenvolvimento",
+      "scientific_concern": "Keep meeting milestones outside publication prose",
+      "proposed_correction": "The meeting-date reference is already absent from current Appendix B; preserve that reader-facing separation.",
+      "source_evidence": "https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/manuscript/supplement/index.qmd",
+      "acceptance_status": "resolved_in_baseline"
+    },
+    {
+      "id": "SUP-08",
+      "pdf": "supplement",
+      "page": 21,
+      "annotation": "Use com parcimônia citações ao processo documentado no GitHub. Procure citar somente o que finalmente for para a branch main. Procure fazer os apêndices auto explicativos, sem que o leitor tem que acessar muitos hyperlinks para compreender o que se está relatando",
+      "scientific_concern": "Centralize useful, stable software links",
+      "proposed_correction": "Replace historical meeting/PR links with one compact implementation/data index and self-contained explanation. Freeze final main/release links only after authorized integration.",
+      "source_evidence": "https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/manuscript/supplement/appendix_c.qmd",
+      "acceptance_status": "planned"
+    },
+    {
+      "id": "SUP-09",
+      "pdf": "supplement",
+      "page": 21,
+      "annotation": "Confuso e inadequado. Precisa ser mais assertivo, didático e relatar o que foi feito, sem se preocupar que questões são respondidas e o que não estabelece uma implementação correta. Mais uma vez, o texto do artigo e dos apêndices não pode incluir afirmações negativas, do que não foi feito ou resultados que não deram certo. Isso só pode ser mencionado sucintamente nas limitações nas considerações finais do trabalho.",
+      "scientific_concern": "Show the verification method concretely",
+      "proposed_correction": "Introduce P1–P6 and V1–V4 using investment/probability/residual examples; avoid making development failures the organizing narrative.",
+      "source_evidence": "https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/manuscript/supplement/index.qmd",
+      "acceptance_status": "source_revised_final_acceptance_pending",
+      "implementation_status": "first_source_revision_implemented_pending_render_and_author_review"
+    },
+    {
+      "id": "SUP-10",
+      "pdf": "supplement",
+      "page": 21,
+      "annotation": "Esta frase é inadequada, pois relata parte do processo de construção. Não é preciso dizer mais nada do que \"Gurobot was used for ...\", sem detalhes de como esta informação foi obtida",
+      "scientific_concern": "State Gurobot's role directly",
+      "proposed_correction": "The retrospective-account wording is already absent; retain a direct description of Gurobot's role while improving the surrounding prose.",
+      "source_evidence": "https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/manuscript/supplement/index.qmd",
+      "acceptance_status": "resolved_in_baseline"
+    },
+    {
+      "id": "SUP-11",
+      "pdf": "supplement",
+      "page": 23,
+      "annotation": "A figura não deve incluir o texto abaixo, mas somente na forma de legendas. O título das figuras e tabelas devem ser bem sucintos. Sempre que surgir uma figura ou tabela no texto, esta precisa ser citada antes de aparecer. Além disso, é preciso sempre incluir um parágrafo após cada figura ou tabela que ajuda ao leitor a leitura e interpretação da figura ou tabela. Assim o texto adicional que ficou dentro do SVG e no título poderia estar neste parágrafo explicativo. Observe um absurdo que a figura inclui uma frase de desenvolvimento, que não é endereçada aos leitores: \"One editable SVG definition ... Appendix B\"",
+      "scientific_concern": "Make the workflow figure readable and properly introduced",
+      "proposed_correction": "Remove development text inside the graphic; shorten title/caption, cite before and interpret after in Methods and B. Check floating placement in final rendering.",
+      "source_evidence": "https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/manuscript/human_ai_methodology.qmd",
+      "acceptance_status": "planned",
+      "implementation_status": "Figure citation/caption/interpretation revised in text; graphic source/raster cleanup and final placement still pending."
+    },
+    {
+      "id": "SUP-12",
+      "pdf": "supplement",
+      "page": 25,
+      "annotation": "Revisar o texto deste apêndice, de forma que seja mais didático e com uma linguagem humana com teor acadêmico científico. Ao invés desta quantitade imensa de links para o GitHub, seria interessante apresentar a estrutura das implementações na branch main, semelhante ao que se utiliza no README.md do GitHub, com todos os hyperlinks em um só lugar. Procure incluir exemplos para que o texto fique auto-explicativo, sem que o leitor seja forçado a clicar em todos os links",
+      "scientific_concern": "Explain the model-to-code connection without link overload",
+      "proposed_correction": "Reorganize C around equations, a compact linked implementation tree and a worked example; state the uncompiled/unvalidated GAMS limitation once.",
+      "source_evidence": "https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/manuscript/supplement/appendix_c.qmd",
+      "acceptance_status": "planned",
+      "implementation_status": "Current qualified Gurobi/SCIP/HiGHS adapter description adopted from PR142; didactic C restructuring remains pending."
+    },
+    {
+      "id": "SUP-13",
+      "pdf": "supplement",
+      "page": 29,
+      "annotation": "Este apêndice tem que explicitar aqui todos os dados das planilhas gold e warehouses candidatos. Não deve incluir valores que são históricos como o parãmetro emergencial de 1000000. Isso fica no GitHub, mas não aqui. Use a mesma estratégia do Apêndice C e mostra didaticamente como os dados estão estruturados no GitHub, como uma estrutura de README.md. No entanto, é importante repetir todos os dados de entrada aqui para que possam ser conferidos pelos leitores",
+      "scientific_concern": "Expose the actual numerical inputs and access limits",
+      "proposed_correction": "Present effective values, 14-sheet gold coverage and registry/processed-input provenance. Prepare a numerical coverage ledger; full-data publication needs access/rights/format decisions. Obsolete penalty values remain outside publication prose.",
+      "source_evidence": "https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/manuscript/supplement/appendix_d.qmd",
+      "acceptance_status": "data_and_author_decision_required",
+      "implementation_status": "Public 14-sheet cell inventory completed; effective-data reconciliation, full companions/access decision remain pending."
+    }
+  ]
+}
