@@ -1,5 +1,27 @@
 # Model Agrologistic: agent working agreement
 
+## Current accepted operational qualification — 30 October 2026
+
+Human original receipts for public job2227480/source57204e0b/planceeb6d10
+report282passed in71.02s,0failures/errors/skips, source_verified_after=true;
+root/batch/extern/step COMPLETED0:0 in76s. Read
+docs/evidence/pyomo_qualification_2227480.json and its review MD. Original file
+hashes are supplied and recorded; no independent raw-package audit is claimed.
+Actual NPAD CBC2.10.13 static binary rejects threads: CANCEL only CBC h215.
+Keep its original capability evidence; do not downgrade threads, replace/install
+a binary or mislabel this as numerical failure. Gurobi/SCIP remain proposed.
+Scientific/runtime/test/launcher bytes remain qualified at57204e0b; subsequent
+commits are evidence/docs only. Finish review, mark PR141 Ready and request
+its OWN explicit merge authorization. Only after authorized merge provide
+pinned manual starts for the two eligible new h215 W claims. No merge/private
+job is authorized by the qualification itself; no old claim or HiGHS restart.
+At campaign completion deliver both configuration and outcome comparison
+tables with effective settings/default-strategy/seed42 qualifications, input/
+matrix identity, gaps/validation, timing/resources and cancelled/negative rows.
+Every NPAD action remains human-only. GitHub/local CLI autonomy remains scoped;
+no new local clone/environment, native GUI, cloud PDF or automatic follow-on.
+
+
 ## Current resumption and comparison deliverable — 30 October 2026
 
 The researcher explicitly resumes after the historical pause below, requesting

@@ -1,3 +1,21 @@
+# Operational qualification accepted; CBC h215 cancelled — 30 October 2026
+
+Original human receipts for job2227480/source57204e0b/planceeb6d10 report
+282tests passed in71.02s,0failures/errors/skips and source_verified_after=true.
+Slurm root/batch/extern/step COMPLETED0:0 in76s. Original result/capability/XML
+checksums are saved in [evidence](docs/evidence/pyomo_qualification_2227480.json).
+See [qualification review](docs/pyomo_qualification_2227480.md).
+Actual NPAD static CBC2.10.13 rejects threads; cancel ONLY its h215 experiment.
+This is binary capability evidence, not a numerical result or general CBC
+inability. Preserve public CBC controls and every original claim/receipt.
+Gurobi/SCIP remain the two proposed common-Pyomo h215 W observations. Their
+8h-native/12h-Slurm,4thread/seed42/1% profile and original science stay unchanged.
+The pending action is final review/Ready and PR141's own explicit merge approval,
+then pinned manual NPAD commands. No private experiment or merge has occurred.
+The execution source remains57204e0b; later commits only add docs/evidence.
+Final campaign deliverables: configuration and outcome comparison tables,
+including honest gap/timing/resource/negative-outcome scopes and CBC cancelled.
+
 # Resumed: qualification2227480 terminal; original result pending — 30 October 2026
 
 The researcher supplies sacct for public job2227480: root/batch/extern/step

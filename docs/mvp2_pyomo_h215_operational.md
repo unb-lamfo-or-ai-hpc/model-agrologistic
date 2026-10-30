@@ -1,5 +1,19 @@
 # Common-form Pyomo h215 W operational protocol
 
+## Current qualification and eligible experiment scope — 30 October 2026
+
+Public qualification job2227480/source57204e0b/planceeb6d10 is accepted:
+282tests,0failures/errors/skips, sources verified after; Slurm COMPLETED0:0.
+The actual NPAD CBC2.10.13 static binary rejects threads. Its h215 arm is
+CANCELLED under the researcher's policy; Gurobi and SCIP remain proposed.
+The generic CBC implementation/tests below remain historical/public controls,
+not permission to run its cancelled large arm. No replacement/fallback/retry.
+See [accepted qualification](pyomo_qualification_2227480.md) and
+[redacted original evidence](evidence/pyomo_qualification_2227480.json).
+The operational PR still needs its own merge authorization; no private h215
+job is submitted by this qualification. All execution code remains unchanged.
+
+
 PR140 was explicitly authorized and merged into develop at
 `40f33d7cc13d516cd6b130f00398590840131904`. Its accepted public qualification
 is job2227458/sourcef166f60c/plan dc41c8b7: 168 tests, no failures, errors or
