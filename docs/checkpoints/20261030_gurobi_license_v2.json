@@ -1,0 +1,32 @@
+{
+  "schema_version": "gurobi-pyomo-fresh-license-v2-checkpoint",
+  "date": "2026-10-30",
+  "baseline": "c80dca69c247753d49f06925ec712fcd43bb5a56",
+  "status": "preparing_exact_source_public_qualification",
+  "original_job": "2228189",
+  "original_archive_sha256": "1e39227e78f6350e27243917808a81c1d550b92c1800ef170220e0b527bb8839",
+  "original_plan_sha256": "909390ed9980f69337786a4411eb55d32faa5c396d47527c5cdcbe69baa399fa",
+  "original_archive_plan_job_reread_locally_without_extraction": true,
+  "private_claim": ".mvp2-pyomo-gurobi-h215-w-native8h-license-v2",
+  "public_claim": ".mvp2-pyomo-gurobi-license-qualification-v1",
+  "expected_public_tests": 355,
+  "private_h215_execution_admitted": false,
+  "original_start_repeated": false,
+  "latest_human_scip_snapshot": {
+    "job_id": "2228192",
+    "state": "RUNNING",
+    "elapsed": "02:41:30",
+    "step_elapsed": "02:41:26",
+    "allocated_cpus": 24,
+    "step_cpus": 16
+  },
+  "local_checks": {
+    "ruff": "passed full source",
+    "focused_tests_passed": 134,
+    "linux_controls_skipped": 26,
+    "qualified_for_NPAD": false
+  },
+  "scientific_runtime_src_unchanged": true,
+  "editorial_pr": 144,
+  "next_owner": "Codex completes Linux CI; researcher executes the pinned short NPAD public control, then separate merge approval and fresh private start."
+}

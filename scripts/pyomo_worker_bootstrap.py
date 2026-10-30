@@ -126,7 +126,13 @@ def identity(claim, sha, root, solver, *, origin=None):
     require(re.fullmatch(r"[0-9a-f]{40}", sha), "Full source SHA required.")
     require(
         solver in SOLVERS
-        and claim.name == f".mvp2-pyomo-{solver}-h215-w-native8h-v1"
+        and (
+            claim.name == f".mvp2-pyomo-{solver}-h215-w-native8h-v1"
+            or (
+                solver == "gurobi"
+                and claim.name == ".mvp2-pyomo-gurobi-h215-w-native8h-license-v2"
+            )
+        )
         and not claim.is_symlink()
         and claim.parent.name.startswith("model-agrologistic")
         and claim.parent.name != "model-agrologistic",
@@ -232,7 +238,9 @@ def launch(claim, sha, root, solver):
     recorder.stage("site_initialization", initialize_site)
     sys.path.insert(0, str(root))
     module = recorder.stage("driver_import", lambda: importlib.import_module(DRIVER))
-    module.Campaign(solver).worker(claim, sha, "sto", entry=entry, startup=recorder)
+    module.campaign_for_claim(solver, claim).worker(
+        claim, sha, "sto", entry=entry, startup=recorder
+    )
 
 
 def review(files, job):
