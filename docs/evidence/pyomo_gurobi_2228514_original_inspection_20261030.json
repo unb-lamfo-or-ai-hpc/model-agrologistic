@@ -1,0 +1,204 @@
+{
+  "scope": "Original archive and selected retained certificates only; no extraction, solver or fresh residual validation",
+  "archive": "pyomo-gurobi-h215-w-native8h-license-v2-evidence.tar.gz",
+  "sha256": "ed880c6ffedff384611fd12b754428f9c0b99ad7885a8aeb0f8a47fa83abfdbc",
+  "members_fully_hashed": 257,
+  "expanded_bytes": 100260845,
+  "inventory_digests_verified": 256,
+  "gap_recomputed": 0.007401594783231128,
+  "large_json_not_parsed": [
+    {
+      "name": "cases/pyomo_gurobi_h215_w_native8h_license_v2/products/pyomo_gurobi_h215_w_native8h_license_v2/result.json",
+      "bytes": 73854255
+    }
+  ],
+  "original_review": {
+    "accounting": [
+      {
+        "elapsed_seconds": 3488,
+        "exit_code": "0:0",
+        "job_id": "2228514",
+        "max_rss_raw": null,
+        "state": "COMPLETED"
+      },
+      {
+        "elapsed_seconds": 3488,
+        "exit_code": "0:0",
+        "job_id": "2228514.batch",
+        "max_rss_raw": "270580K",
+        "state": "COMPLETED"
+      },
+      {
+        "elapsed_seconds": 3488,
+        "exit_code": "0:0",
+        "job_id": "2228514.extern",
+        "max_rss_raw": "928K",
+        "state": "COMPLETED"
+      },
+      {
+        "elapsed_seconds": 3471,
+        "exit_code": "0:0",
+        "job_id": "2228514.0",
+        "max_rss_raw": "57755676K",
+        "state": "COMPLETED"
+      }
+    ],
+    "additional_cbc_execution_admitted": false,
+    "additional_gurobi_execution_admitted": false,
+    "additional_highs_execution_admitted": false,
+    "additional_scip_execution_admitted": false,
+    "automatic_follow_on_allowed": false,
+    "bound": 12974647770396.707,
+    "classification": "quality_target_met",
+    "common_gap": 0.007401594783231128,
+    "common_linear_matrix": {
+      "binary_variables": 307,
+      "linear_constraints": 735577,
+      "nonzeros": 52217866,
+      "schema_version": "ordered-pyomo-linear-matrix-v1",
+      "scope": "Ordered common Pyomo algebra; not a presolved/native matrix fingerprint.",
+      "sha256": "a0c9d863aaeefee2b0a84de47150ec90011dc8eb16be9a7a8c4e491eb2cf1944",
+      "variables": 14054654
+    },
+    "economic_cost": 393902480087.52374,
+    "execution_admitted": false,
+    "external_observation": {
+      "errors": [],
+      "largest_interval_seconds": 6.191727276018355,
+      "production_isolation_certified": false,
+      "qualification": "Observed sampled scope only; no unobserved peak or causal overhead.",
+      "sampled_worker_tree_peak_bytes": 59474169856.0,
+      "samples": 683,
+      "status": "timely_samples"
+    },
+    "h300_admitted": false,
+    "has_usable_incumbent": true,
+    "highs_execution_admitted": false,
+    "interpretation": "One common-form observation; compare attained gaps, full timing and shared-node qualifications before making performance claims.",
+    "job_id": "2228514",
+    "native_counters": {
+      "lp_iterations": 3089817.0,
+      "nodes": 1.0
+    },
+    "native_gap": 0.00740159478322742,
+    "native_status": "TerminationCondition.optimal",
+    "objective": 13071396953900.238,
+    "operational_error_kind": null,
+    "operational_receipts_closed": true,
+    "original_validation_status": "accepted",
+    "parameter_evidence": {
+      "effective_parameters": {
+        "ConcurrentMIP": 1,
+        "Cuts": -1,
+        "FeasibilityTol": 1e-09,
+        "Heuristics": 0.05,
+        "IntFeasTol": 1e-09,
+        "MIPGap": 0.01,
+        "Method": -1,
+        "NodeMethod": -1,
+        "Presolve": -1,
+        "Seed": 42,
+        "Threads": 4,
+        "TimeLimit": 28800.0
+      },
+      "scope": "Native in-process option introspection"
+    },
+    "penalized_total": 13071396953900.238,
+    "production_isolation_certified": false,
+    "quality_target_met": true,
+    "reformulation": {
+      "bounds_sha256": "d3c10c1ae4c3b9540c31792edc7b9ff29332710783f696b96e619e6e7ac7eff7",
+      "candidate_slack_bounds": 74520,
+      "entire_redundant_slack_region_preserved": false,
+      "equivalence": "physical_investment_projection_and_optimal_scalar_value",
+      "maximum_bound": 1580583406.0475163,
+      "nonnegative_candidate_slack_penalties_required": true,
+      "policy": "bounded_scalar_slacks_v1"
+    },
+    "repeats_admitted": false,
+    "solver": "gurobi",
+    "source_commit": "311015e8527419f9c1c70e7f79a8ddce551a9772",
+    "startup": {
+      "completed_stages": [
+        "bootstrap_identity",
+        "exact_release",
+        "site_initialization",
+        "driver_import",
+        "plan_validation",
+        "source_verification",
+        "runtime_fingerprints",
+        "input_hashes",
+        "tool_verification",
+        "native_identity",
+        "public_qualification",
+        "runtime_receipt"
+      ],
+      "last_stage": "runtime_receipt",
+      "stage_seconds": {
+        "bootstrap_identity": 0.00608265699702315,
+        "driver_import": 0.4807724239944946,
+        "exact_release": 0.20221970498096198,
+        "input_hashes": 0.06307839101646096,
+        "native_identity": 0.6367563419917133,
+        "plan_validation": 0.013414807006483898,
+        "public_qualification": 4.975775518018054,
+        "runtime_fingerprints": 0.9087281760002952,
+        "runtime_receipt": 0.09605302798445337,
+        "site_initialization": 0.007266272004926577,
+        "source_verification": 0.19854714500252157,
+        "tool_verification": 0.009546529006911442
+      },
+      "status": "complete"
+    },
+    "status": "pyomo_quality_target_met",
+    "timings": {
+      "artifact_export_seconds": 4.646642392996,
+      "data_read_seconds": 9.20990714803338e-07,
+      "end_to_end_seconds": 3337.2631384849956,
+      "independent_validation_seconds": 2.7073931820050348,
+      "matrix_identity_seconds": 471.6022234180127,
+      "model_build_seconds": 1102.443621020997,
+      "optimization_seconds": 1925.2440300559974,
+      "result_extraction_seconds": 223.79241490800632,
+      "solve_sequence_wall_seconds": 3311.3305123689934,
+      "solver_reported_runtime_seconds": 1892.6507291793823,
+      "solver_transfer_seconds": 485.19993911799975
+    }
+  },
+  "original_validation": {
+    "status": "accepted",
+    "validator_version": "mvp2-scalar-independent-residuals-v1",
+    "failed_check_count": 0,
+    "absolute_tolerance": 1e-05,
+    "relative_tolerance": 1e-08
+  },
+  "original_input_binding": {
+    "schema_version": "scalar-r3a-input-v1",
+    "shape": {
+      "det_scenarios": 1,
+      "periods": 60,
+      "sto_scenarios": 9,
+      "warehouses": 215
+    },
+    "qualification": "The original input receipt was reread; private numerical inputs and membership arrays are not redistributed.",
+    "workbook_sha256": "40edb66585daca9cc393cab1f86bde6d4528a5f34b6afc57260cc1684396da4e",
+    "matches_qualified_h215_W_workbook": true,
+    "warehouse_selection": {
+      "candidate_count": 69,
+      "count": 215,
+      "criterion": "Protect all146 existing and69 canonical anchor candidates; extend by frozen deterministic nested rank, never solver opening decisions.",
+      "csv_sha256": "cad57e7f5917f4e1ea59ba0f8e48033f25abb638f6079a1dd0fbfb0851b5d777",
+      "existing_count": 146,
+      "ordered_ids_sha256": "1aa2511da56e546298e04efdcb021050b057ca3c455ecda584182c15fe5f33d7",
+      "policy_sha256": "f4a83fbf210cab2275651fb589e0f4bb314b55221394126a427d600d0746c13e",
+      "schema_version": "warehouses-used-v1",
+      "scope": "Included in MILP, NOT facilities selected/opened by the solver.",
+      "selection_method": "nested deterministic proportional strata over state, warehouse type, and static-capacity quartile",
+      "selection_seed": "model-agrologistic-v020-warehouse-population-v1"
+    }
+  },
+  "fresh_residual_validation_performed": false,
+  "original_source_git_files_reread": false,
+  "solver_executed": false,
+  "new_execution_admitted": false
+}
