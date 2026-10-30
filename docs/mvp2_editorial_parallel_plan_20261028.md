@@ -1,3 +1,11 @@
+> **Current direction, 30 October 2026:** use the
+> [reconciled completion plan](mvp2_completion_plan_20261030.md).
+> PR139–141 are merged; Gurobi2228189 and SCIP2228192 were RUNNING in the last
+> supplied snapshot. B3 literature and D2 reader-document work can advance while
+> terminal packages are pending. Older dates/job snapshots below are historical.
+> The excluded capability test remains solely in GitHub's technical record;
+> final PDFs follow authorized main integration through Quarto/GitHub Pages.
+
 # Current execution of the accelerated plan — 28 October 2026
 
 The returned 01.04 opinion is now being reconciled in PR138, following merged

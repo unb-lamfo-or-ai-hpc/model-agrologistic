@@ -1,3 +1,7 @@
+> **Historical plan.** The [30 October completion plan](mvp2_completion_plan_20261030.md)
+> supersedes this file's active-job, pending-implementation and sprint descriptions.
+> Preserve the dated sections below as history, not current execution authority.
+
 ## Current parallel completion plan — opinion received 28 October 2026
 
 PR136's B/C/D revision and PR137's startup-repair preparation are merged.

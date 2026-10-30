@@ -1,3 +1,27 @@
+# Common-Pyomo h215 submissions; consolidation draft — 30 October 2026
+
+Gurobi job2228189 and SCIP job2228192 were submitted manually from merged
+source1b53b24f with distinct plan hashes909390ed/09fea24f. Each launcher
+verified648source files, passed Ruff and87nonnative login controls. Both
+allocations/steps were RUNNING in the supplied snapshot (24/16logical CPUs).
+No private native outcome, incumbent, objective, gap or validation is supplied.
+See [original submission metadata](docs/evidence/pyomo_h215_submissions_20261030.json).
+
+Current work is S6-A/X3 evidence and table consolidation, with B3 primary
+literature and D2 reader-document work in parallel, then A2 article synthesis
+and S6-B reproducibility/author/final integration. Read
+[the current sprint plan](docs/mvp2_completion_plan_20261030.md) and
+[comparison preparation](docs/h215_common_pyomo_comparison_20261030.md).
+Prepare the next PR as DRAFT until the two original terminal outcomes are
+accounted for and the integrated package is qualified. No repeat start.
+
+The researcher excludes the CBC capability test/cancellation from article,
+appendices and publication-facing tables; preserve it only on GitHub.
+Gurobi/SCIP/HiGHS methodology may be explained without inventing results.
+No source/math/input/validator change or new HPC execution. S5 stays closed;
+full-text reconciliation, S6-A and S6-B remain open. Final PDFs follow Quarto/
+Pages after explicit main integration. All merges and NPAD CLI remain human.
+
 # Operational qualification accepted; CBC h215 cancelled — 30 October 2026
 
 Original human receipts for job2227480/source57204e0b/planceeb6d10 report

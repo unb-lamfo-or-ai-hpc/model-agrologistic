@@ -1,3 +1,22 @@
+# Current snapshot — 30 October 2026
+
+PR141 merged at1b53b24f after accepted public qualification2227480 (282tests,
+zero failures/errors/skips). The researcher has submitted Gurobi2228189 and
+SCIP2228192 with distinct plan hashes; both were RUNNING in the supplied
+accounting snapshot. No native/validated private result is yet supplied.
+See [submission evidence](evidence/pyomo_h215_submissions_20261030.json),
+[comparison preparation](h215_common_pyomo_comparison_20261030.md) and
+[the current sprint/PR plan](mvp2_completion_plan_20261030.md).
+
+Preserve both consumed claims and all historical originals. Do not repeat
+start or infer optimizer progress from worker state or login-test duration.
+The article/appendices exclude the cancelled capability-only test; its record
+remains on GitHub. The scoped next PR is a draft evidence/editorial consolidation,
+with terminal results added only after audit. Literature and reader-document
+review proceed independently. Every NPAD command and merge remains a human gate.
+
+The dated entries below are historical and do not replace this current snapshot.
+
 ## Current opinion reconciliation and running-job checkpoint — 28 October 2026
 
 PR137 merged with authorization at fbbcee3d. The supplied CLI records the distinct

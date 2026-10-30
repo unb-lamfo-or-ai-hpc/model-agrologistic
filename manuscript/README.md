@@ -1,5 +1,24 @@
 # Scientific manuscript — integrated scalar revision
 
+## Current reader and output policy — 30 October 2026
+
+The article and appendices describe the qualified Gurobi/SCIP/HiGHS interfaces;
+large-instance results require original terminal evidence and validation.
+The current common-Pyomo experiment submissions and draft comparison structures
+are technical records, not additional results in the manuscript. See
+[the current completion plan](../docs/mvp2_completion_plan_20261030.md) and
+[comparison preparation](../docs/h215_common_pyomo_comparison_20261030.md).
+Earlier dated job/cohort descriptions below are historical snapshots.
+
+Write all article/appendix prose for future journal readers. Keep internal
+review instructions, job administration and the excluded capability test in
+GitHub documentation. Preserve the original Appendix A, model/input/certificate
+identities and effective-value/source links. Temporary working files stay only
+in the researcher's approved local directories or Codex tab. Do not create
+temporary cloud PDF/editable artifacts. Final PDFs follow Quarto/GitHub Pages
+after a separately authorized main merge, not an automatic draft/develop render.
+
+
 ## Current appendix reader and input review — 28 October 2026
 
 The pre-merge review now adds a reading route for non-specialists, seven
@@ -12,11 +31,11 @@ The [input guide](../docs/evidence/appendix_input_reproduction_20261028.json)
 and [reader-review record](../docs/appendix_reader_review_20261028.md)
 make remaining access/validation limits explicit. Original Appendix A is unchanged.
 
-The cloud document workflow checks actual public gold cells and pinned file
-links, renders both PDFs, retains the editable ZIP and emits standalone PDF
-artifacts. This permits PDF review in Codex tabs without a local application.
-After this PR's authorized merge, run the same workflow on exact develop to
-obtain develop-bound outputs; a pre-merge branch PDF is not a develop PDF.
+Source checks verify the public gold cells, worksheet roles and pinned file
+links without running an optimizer. Any required working review uses approved
+local temporary files. The former cloud-preview workflow is historical and is
+not the current output policy. Final publication PDFs are generated only after
+the separately authorized main integration.
 
 ## Current opinion and coauthor revision — 28 October 2026
 
