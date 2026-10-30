@@ -37,11 +37,24 @@
     "PROJECT_STATE.md",
     "scripts/mvp2_pyomo_h215_w.py",
     "scripts/npad_pyomo_h215_w_native8h.sh",
-    "tests/test_pyomo_h215_operational.py"
+    "tests/test_pyomo_h215_operational.py",
+    "tests/test_optimization_facade.py",
+    "tests/test_pyomo_campaign_contract.py",
+    "tests/test_manuscript_comparison.py",
+    "tests/test_manuscript_partial_results.py",
+    "tests/test_wd_terminal_review.py"
   ],
   "scientific_builders_adapters_data_manuscript_unchanged": true,
   "private_execution_admitted": false,
   "old_claim_restarted_or_modified": false,
   "gurobi_license_path_confirmed_by_researcher": "/home/vrrcelestino/model-agrologistic/secrets/gurobi.lic",
-  "qualification_limit": "Mocked/unit controls and local restricted-license rejection do not establish the designated NPAD license capacity; old source qualification cannot qualify changed execution bytes."
+  "qualification_limit": "Mocked/unit controls and local restricted-license rejection do not establish the designated NPAD license capacity; old source qualification cannot qualify changed execution bytes.",
+  "initial_validation_candidate": "db2a194df7f11062139c45dc7e723f5933b7bf8d",
+  "ci_reconciliation": {
+    "failures": 0,
+    "scope": "Correct outdated facade/reader assertions and enforce optional-profile and frozen native-version guards in tests; no runtime or reader-source change",
+    "errors": 0,
+    "skipped": 0,
+    "focused_local_tests_passed": 81
+  }
 }

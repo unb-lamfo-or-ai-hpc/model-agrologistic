@@ -10,6 +10,12 @@ import pytest
 from scripts import mvp2_pyomo_h215_w as campaign
 from scripts import pyomo_gurobi_license_gate as gate
 
+try:
+    # Initialize Pyomo logging before a per-test fd capture can own its stream.
+    from pyomo.common import tee as optional_tee
+except ImportError:
+    optional_tee = None
+
 
 def proof():
     return {
@@ -38,6 +44,7 @@ def test_login_or_non_numeric_step_rejected_without_native_import(monkeypatch, j
 
 
 @pytest.mark.parametrize("outcome", ["accepted", "restricted", "wrong_objective", "time_limit"])
+@pytest.mark.skipif(optional_tee is None, reason="Optional Pyomo output-capture integration")
 def test_default_environment_only_and_credential_output_discarded(monkeypatch, capfd, outcome):
     monkeypatch.setattr(gate, "compute_context", lambda: None)
     monkeypatch.setattr(gate.policy, "check_file", lambda: None)

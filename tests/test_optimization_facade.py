@@ -6,7 +6,6 @@ from src.logic.model_config import ModelConfig, RunConfig, SolverConfig
 from src.logic.model_data import ModelData
 from src.logic.model_validation import ModelDataValidationError
 from src.logic.optimization import (
-    OptimizationBackendNotImplementedError,
     OptimizationResult,
     solve_model,
 )
@@ -215,10 +214,10 @@ def test_gurobipy_backend_dispatches_to_stochastic_extensive_form(monkeypatch):
     assert result.model_mode == "sto"
 
 
-def test_pyomo_backend_stub_raises_not_implemented():
+def test_pyomo_backend_requires_explicit_indicator_reformulation():
     data = tiny_valid_data()
 
-    with pytest.raises(OptimizationBackendNotImplementedError):
+    with pytest.raises(ValueError, match="Explicit indicator_reformulation"):
         solve_model(
             data=data,
             model_config=ModelConfig(mode="det"),
