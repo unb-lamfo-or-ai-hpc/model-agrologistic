@@ -59,7 +59,7 @@ scalar value, rather than identical redundant slack regions or solver search.
 HiGHS returned a feasible solution that passed the original independent
 validation, with no failed checks at the stated tolerances. The
 [experiment and certificate record](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/ad2ded8132bf5171be65c0113b3d0026c22b2e7b/docs/evidence/scalar_highs_h215_2226536_inspection.json)
-retains the source, input, validation and resource identities. Table
+retains the source, input, validation and resource identities.
 @tbl-highs-h215 compares the returned objective, attained gap and native runtime
 with the earlier Gurobi observation.
 

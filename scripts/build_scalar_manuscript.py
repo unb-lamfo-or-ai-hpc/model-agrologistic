@@ -98,7 +98,7 @@ def results(record):
         "flow, inventory and shortage CSVs are byte-identical across arms. Native Runtime "
         "ranges from 47.14 to 67.61 minutes and sampled application RSS from 46.35 to 78.37 GiB. "
         "This establishes identical exported vectors in this block, not a unique optimum.\n",
-        "Figure @fig-scalar-threads compares the observed runtime and sampled memory "
+        "@fig-scalar-threads compares the observed runtime and sampled memory "
         "for these five configurations.\n",
         "![Thread-count observations at 300 sites.]"
         "(figures/scalar_threads.png){#fig-scalar-threads fig-pos=\"H\"}\n",
@@ -191,7 +191,7 @@ def results(record):
         "and reception exceedances can coexist with substantial unmet demand; a lower "
         "penalized total is not improvement in every service component.\n",
         "### Geographic interpretation\n",
-        "Figures @fig-map-h215, @fig-map-h300 and @fig-map-h400 locate the facilities "
+        "@fig-map-h215, @fig-map-h300 and @fig-map-h400 locate the facilities "
         "and investments in the returned stochastic plans. Origin products and "
         "domestic/export destinations are distinguished. Coincident facilities retain "
         "their original identities.\n",
@@ -212,13 +212,16 @@ def results(record):
             "the map is interpreted together with those model-specific results.\n"
         )
     text += [
-        "Figure @fig-map-h500 shows the input population of the largest instance.\n",
-        "![Available facilities at 500 warehouse sites.]"
-        '(figures/h500_pending.png){#fig-map-h500 fig-pos="H"}\n',
-        "The 146 existing sites and 354 candidate options describe input availability. "
-        "The accepted h500 investment quantities and operating outcomes are reported "
-        "in the preceding tables; those optimized quantities are not encoded in this "
-        "population map. Road polylines are unavailable for these maps, so the "
+        "@fig-map-h500 shows the investments reconstructed from the original accepted "
+        "h500 decision vector.\n",
+        "![Stochastic investments at 500 warehouse sites.]"
+        '(figures/scalar_h500_t1.png){#fig-map-h500 fig-pos="H"}\n',
+        "The original h500 vector assigns positive capacity to all 354 candidates, "
+        "expands 72 existing sites and converts 74 for bulk handling. These location "
+        "decisions do not establish equal operational importance or use. The companion "
+        "capacity maps use circle area to show added candidate and expansion storage "
+        "in tonnes, excluding bulk-handling investment basis. Road polylines are "
+        "unavailable for these maps, so the "
         "geographic views contain no connecting flow segments.\n",
         "The local read-only dashboard provides the corresponding DET/STO, population, "
         "incremental-membership, product, period and scenario filters, preserving "

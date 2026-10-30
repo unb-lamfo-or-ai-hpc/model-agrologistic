@@ -433,11 +433,19 @@ def figure_definition(
             "Transport-leg totals are not unique grain supply.",
         ],
     }
-    return {**definition, "figure_sha256": digest(definition)}
+    definition = {**definition, "figure_sha256": digest(definition)}
+    from .cartography import read_context, with_context
+
+    context = read_context(database)
+    return with_context(definition, context) if context is not None else definition
 
 
 def plotly_figure(definition):
     """Offline Cartesian geographic coordinates; no external basemap requests."""
+    if definition.get("cartography"):
+        from .cartographic_view import plotly_map
+
+        return plotly_map(definition)
     import plotly.graph_objects as go
 
     figure = go.Figure()

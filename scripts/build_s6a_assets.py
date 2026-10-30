@@ -3,11 +3,13 @@
 from __future__ import annotations
 
 import argparse
+import gzip
 import hashlib
 import json
 import subprocess
 from pathlib import Path
 
+from src.visualization.cartography import prepare_context, read_context, with_context
 from src.visualization.render import render
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -83,33 +85,80 @@ def thread_chart(record, directory):
     pdf.save()
 
 
-def build(destination, *, workflow=True):
+def build(destination, *, workflow=True, maps_only=False, boundary_database=None):
     destination = Path(destination)
     destination.mkdir(parents=True, exist_ok=True)
     source_hashes = {}
+    boundary_source = ROOT / "data/cartography/ibge_2023_simplified.json.gz"
+    context = json.loads(gzip.decompress(boundary_source.read_bytes()))
+    database = boundary_database or ROOT / "manuscript/.cartography.sqlite3"
+    boundary_key, prepared = prepare_context(database, context)
+    context = read_context(database)
+    source_hashes[boundary_source.relative_to(ROOT).as_posix()] = sha(boundary_source)
     provenance = ROOT / "manuscript/geographic_sources.json"
     source_hashes[provenance.relative_to(ROOT).as_posix()] = sha(provenance)
     expected = json.loads(provenance.read_text(encoding="utf-8"))
     for source in sorted((ROOT / "manuscript/maps").glob("*.json")):
         definition = json.loads(source.read_text(encoding="utf-8"))
         normalized_sha = hashlib.sha256(source.read_text(encoding="utf-8").encode()).hexdigest()
-        if (
-            normalized_sha != expected["figures"][source.name]["normalized_utf8_sha256"]
-            or definition["snapshot"] != expected["snapshot"]
+        if normalized_sha != expected["figures"][source.name][
+            "normalized_utf8_sha256"
+        ] or definition["snapshot"] != expected["figures"][source.name].get(
+            "snapshot", expected["snapshot"]
         ):
             raise ValueError("Geographic source receipt differs")
         source_hashes[source.relative_to(ROOT).as_posix()] = sha(source)
-        for extension in ("svg", "pdf", "png"):
-            target = destination / f"{source.stem}.{extension}"
-            if target.exists():
-                receipt = json.loads(target.with_suffix(target.suffix + ".json").read_text())
-                if (
-                    receipt["figure_sha256"] != definition["figure_sha256"]
-                    or receipt.get("presentation") != "publication"
-                ):
-                    raise ValueError("Existing geographic figure source differs")
-            else:
-                render(definition, target, publication=True)
+        definition = with_context(definition, context)
+        variants = [False, True] if definition["evidence_status"] == "accepted" else [False]
+        for capacity in variants:
+            stem = source.stem + ("_capacity" if capacity else "")
+            for extension in ("svg", "pdf", "png"):
+                target = destination / f"{stem}.{extension}"
+                if target.exists():
+                    receipt = json.loads(target.with_suffix(target.suffix + ".json").read_text())
+                    if (
+                        receipt["figure_sha256"] != definition["figure_sha256"]
+                        or receipt.get("presentation") != "publication"
+                        or bool(receipt.get("capacity_encoding")) != capacity
+                    ):
+                        raise ValueError("Existing geographic figure source differs")
+                else:
+                    render(
+                        definition,
+                        target,
+                        width=2400,
+                        height=1700,
+                        publication=True,
+                        capacity=capacity,
+                    )
+    if maps_only:
+        receipt = {
+            "schema_version": "ibge-manuscript-map-build-v1",
+            "sources": source_hashes,
+            "outputs": {
+                p.name: sha(p)
+                for p in sorted(destination.iterdir())
+                if p.suffix in {".png", ".pdf", ".svg"}
+            },
+            "boundary_dataset": boundary_key,
+            "boundary_cache_prepared": prepared,
+            "solver_executed": False,
+            "routes_acquired": False,
+            "network_access": False,
+        }
+        (destination / "ibge_map_assets.json").write_text(
+            json.dumps(receipt, indent=2) + "\n", encoding="utf-8"
+        )
+        print(
+            json.dumps(
+                {
+                    "map_figures": len(expected["figures"]),
+                    "boundary_cache_prepared": prepared,
+                    "solver_executed": False,
+                }
+            )
+        )
+        return
     evidence = ROOT / "manuscript/scalar_evidence.json"
     source_hashes[evidence.relative_to(ROOT).as_posix()] = sha(evidence)
     # Generated products only; original certificates and published figures are not edited.
@@ -161,13 +210,20 @@ def build(destination, *, workflow=True):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, default=ROOT / "manuscript/figures")
+    parser.add_argument("--maps-only", action="store_true", help="Export maps only")
+    parser.add_argument("--boundary-sqlite", type=Path, help="Existing/new explicit boundary cache")
     parser.add_argument(
         "--without-workflow",
         action="store_true",
         help="Map/chart QA only; full manuscript build requires rsvg-convert",
     )
     args = parser.parse_args()
-    build(args.output, workflow=not args.without_workflow)
+    build(
+        args.output,
+        workflow=not args.without_workflow,
+        maps_only=args.maps_only,
+        boundary_database=args.boundary_sqlite,
+    )
 
 
 if __name__ == "__main__":

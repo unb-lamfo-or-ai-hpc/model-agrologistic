@@ -1,5 +1,35 @@
 # Model Agrologistic: agent working agreement
 
+## Current IBGE cartography and bounded editorial qualification — 30 October 2026
+
+PR146 is a separate functional increment stacked on PR144. It adds verified IBGE
+2023 reference geometry (distributed in 2024), all 27 UFs, a reusable SQLite context,
+one shared Albers display and eleven static map designs. Original coordinates,
+identifiers, scientific inputs, mathematical/solver code and accepted certificates
+are preserved. The original h500 availability map remains; a separate investment-only
+snapshot is reconstructed from the original accepted h500 CSV and 69 inventory hashes.
+Capacity-circle area represents added candidate plus expansion static tonnes;
+bulk-handling basis, operational use and service remain distinct.
+
+The latest 01.01 review is adopted as a bounded follow-up, not a new structural
+rewrite or experimental campaign. Sources correct duplicated Quarto labels and add
+the documented hierarchical-to-scalar supervision episode. Preserve the approved
+literal research question and original Appendix A until explicit author decisions.
+Close-precedent/thesis review, effective-data access/rights and final author math
+review remain open. Read docs/evidence/editorial_followup_disposition_20261030.json.
+
+Gurobi2228514 is now COMPLETED 0:0. Its original archive ed880c6f, transfer sidecar,
+256 inventory digests and accepted zero-failure certificate were inspected locally;
+common gap0.7401594783%, native runtime1892.650729 s. Evidence remains separately
+in PR142. SCIP2228192 was last human-reported RUNNING05:15:06. No start is repeated.
+Interpret attained gaps, phases and shared-node qualifications together.
+
+Ruff and103 focused document/geographic tests passed with no skips. All11 map PDFs,
+SVGs and300-dpi PNGs are local; no article/supplement PDF was rerendered or uploaded.
+GIS/Plotly/Dash qualification used temporary wheels, with existing environments
+unchanged. NPAD actions remain human-only; every merge needs explicit approval.
+Reconcile the older editorial ancestry with newer develop before final integration.
+
 ## Current local PDF review request and running jobs — 30 October 2026
 
 The researcher explicitly requests new local article/supplement PDFs from PR144.

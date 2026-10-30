@@ -1,6 +1,7 @@
 """Browser-free SVG/PDF/PNG maps from the same semantic definition as Dash.
 
-Coordinates use a declared equirectangular display, not distance measurement.
+Cached IBGE context uses the shared Albers display; legacy maps retain their
+declared longitude/latitude layout. Neither display measures road distances.
 ReportLab and Pillow are lazy optional imports; no Kaleido, Chrome or server.
 """
 
@@ -14,11 +15,16 @@ from pathlib import Path
 from .geography import STYLES, digest, require
 
 
-def primitives(definition, width=1200, height=850, *, publication=False):
+def primitives(definition, width=1200, height=850, *, publication=False, capacity=False):
     """One layout and legend for every static output format."""
     require(width >= 700 and height >= 550, "Figure canvas too small")
     unsigned = {k: v for k, v in definition.items() if k != "figure_sha256"}
     require(digest(unsigned) == definition["figure_sha256"], "Figure definition drift")
+    if definition.get("cartography"):
+        from .cartographic_view import scene
+
+        return scene(definition, width, height, publication, capacity=capacity)
+    require(not capacity, "Capacity maps require a cached cartographic context")
     points = [(n["lon"], n["lat"]) for n in definition["nodes"]]
     points += [tuple(p) for r in definition["routes"] for p in r["geometry"]]
     require(points, "No geographic points")
@@ -116,11 +122,16 @@ def primitives(definition, width=1200, height=850, *, publication=False):
     ]
     if publication:
         labels = {
-            "origin": "Origins", "origin soybean": "Soybean origins",
-            "origin corn": "Corn origins", "domestic": "Domestic destinations",
-            "export": "Export outlets", "existing": "Existing warehouses",
-            "candidate": "Candidate sites", "opened": "Opened candidates",
-            "expanded": "Expanded warehouses", "bulkified": "Bulk handling",
+            "origin": "Origins",
+            "origin soybean": "Soybean origins",
+            "origin corn": "Corn origins",
+            "domestic": "Domestic destinations",
+            "export": "Export outlets",
+            "existing": "Existing warehouses",
+            "candidate": "Candidate sites",
+            "opened": "Opened candidates",
+            "expanded": "Expanded warehouses",
+            "bulkified": "Bulk handling",
         }
         omitted = {"Road geometry only", "No invented connections", "Coincident IDs retained"}
         text = [
@@ -146,19 +157,27 @@ def marker_points(marker):
     return None
 
 
-def render(definition, output, *, width=1200, height=850, publication=False):
+def render(definition, output, *, width=1200, height=850, publication=False, capacity=False):
     """Export exclusively; a provenance sidecar binds the scientific figure."""
     path = Path(output)
     require(path.suffix.lower() in {".svg", ".pdf", ".png"}, "SVG/PDF/PNG required")
     sidecar = path.with_suffix(path.suffix + ".json")
     require(not path.exists() and not sidecar.exists(), "Preserve existing figure outputs")
-    scene = primitives(definition, width, height, publication=publication)
+    scene = primitives(definition, width, height, publication=publication, capacity=capacity)
     path.parent.mkdir(parents=True, exist_ok=True)
     if path.suffix == ".svg":
         content = [
             f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}">',
             '<rect width="100%" height="100%" fill="white"/>',
         ]
+        for polygon in scene.get("polygons", []):
+            parts = []
+            for ring in polygon["rings"]:
+                parts.append("M " + " L ".join(f"{x:.3f},{y:.3f}" for x, y in ring) + " Z")
+            content.append(
+                f'<path d="{" ".join(parts)}" fill="{polygon["fill"]}" '
+                'stroke="none" fill-rule="evenodd"/>'
+            )
         for line in scene["lines"]:
             points = " ".join(f"{x:.3f},{y:.3f}" for x, y in line["points"])
             content.append(
@@ -168,6 +187,8 @@ def render(definition, output, *, width=1200, height=850, publication=False):
         for m in scene["markers"]:
             points = marker_points(m)
             fill = "white" if m["symbol"] == "circle-open" else m["color"]
+            if m.get("hollow"):
+                fill = "none"
             title = html.escape(" | ".join(m["ids"]))
             shape = (
                 f'<polygon points="{" ".join(f"{x},{y}" for x, y in points)}"'
@@ -189,6 +210,15 @@ def render(definition, output, *, width=1200, height=850, publication=False):
         from reportlab.pdfgen.canvas import Canvas
 
         canvas = Canvas(str(path), pagesize=(width, height), invariant=1)
+        for polygon in scene.get("polygons", []):
+            p = canvas.beginPath()
+            for ring in polygon["rings"]:
+                p.moveTo(ring[0][0], height - ring[0][1])
+                for x, y in ring[1:]:
+                    p.lineTo(x, height - y)
+                p.close()
+            canvas.setFillColor(HexColor(polygon["fill"]))
+            canvas.drawPath(p, stroke=0, fill=1, fillMode=0)
         for line in scene["lines"]:
             canvas.setStrokeColor(HexColor(line["color"]))
             canvas.setLineWidth(line["width"])
@@ -209,7 +239,9 @@ def render(definition, output, *, width=1200, height=850, publication=False):
                 p.close()
                 canvas.drawPath(p, fill=1)
             else:
-                canvas.circle(m["xy"][0], height - m["xy"][1], m["size"], fill=1)
+                canvas.circle(
+                    m["xy"][0], height - m["xy"][1], m["size"], fill=0 if m.get("hollow") else 1
+                )
         canvas.setFillColor(HexColor("#172033"))
         for x, y, value, size in scene["text"]:
             canvas.setFont("Helvetica", size)
@@ -220,10 +252,22 @@ def render(definition, output, *, width=1200, height=850, publication=False):
 
         image = Image.new("RGB", (width, height), "white")
         draw = ImageDraw.Draw(image)
+        for polygon in scene.get("polygons", []):
+            mask = Image.new("1", (width, height), 0)
+            mask_draw = ImageDraw.Draw(mask)
+            for i, ring in enumerate(polygon["rings"]):
+                mask_draw.polygon(ring, fill=1 if i == 0 else 0)
+            image.paste(polygon["fill"], mask=mask)
         for line in scene["lines"]:
-            draw.line(line["points"], fill=line["color"], width=2)
+            draw.line(
+                line["points"],
+                fill=line["color"],
+                width=max(1, round(line["width"])) if definition.get("cartography") else 2,
+            )
         for m in scene["markers"]:
             fill = "white" if m["symbol"] == "circle-open" else m["color"]
+            if m.get("hollow"):
+                fill = None
             points = marker_points(m)
             if points:
                 draw.polygon(points, fill=fill, outline=m["color"])
@@ -233,7 +277,7 @@ def render(definition, output, *, width=1200, height=850, publication=False):
                 draw.ellipse((x - r, y - r, x + r, y + r), fill=fill, outline=m["color"])
         for x, y, value, size in scene["text"]:
             draw.text((x, y - size), value, fill="#172033", font=ImageFont.load_default(size=size))
-        image.save(path, dpi=(150, 150))
+        image.save(path, dpi=(300, 300) if definition.get("cartography") else (150, 150))
     receipt = {
         "figure_sha256": definition["figure_sha256"],
         "snapshot": definition["snapshot"],
@@ -244,5 +288,16 @@ def render(definition, output, *, width=1200, height=850, publication=False):
     }
     if publication:
         receipt["presentation"] = "publication"
+    if definition.get("cartography"):
+        receipt["renderer"] = "browser-free-ibge-albers-v1"
+        receipt["cartography_sha256"] = definition["cartography"]["dataset_sha256"]
+    if capacity:
+        receipt["capacity_encoding"] = {
+            "quantity": "candidate_capacity + expansion_capacity",
+            "unit": "t",
+            "circle_area_proportional_to_quantity": True,
+            "coincident_capacities_summed_for_display_only": True,
+            "bulk_handling_basis_excluded": True,
+        }
     sidecar.write_text(json.dumps(receipt, indent=2, allow_nan=False) + "\n", encoding="utf-8")
     return receipt
