@@ -1,5 +1,52 @@
 # Model Agrologistic: agent working agreement
 
+## Current Gurobi failure audit and separate correction — 30 October 2026
+
+The researcher supplies the original Gurobi2228189 archive/sidecar and requests
+cause analysis, evidence in PR142 and an autonomous correction, never a repeated
+start. Archive1e39227e passes232safe members/231inventory hashes/9plan artifacts/
+648source hashes and original W input bindings. First worker error is
+Model too large for size-limited license from APPSI Model.optimize. All twelve
+startup stages passed; no native terminal report/private solution returned.
+Do not classify this as OOM, infeasibility, time-limit or comparative performance.
+Read docs/pyomo_gurobi_h215_2228189_license_failure.md and its evidence JSON.
+
+Preserve original archive/claim/source and the independently running SCIP.
+Prepare a separate operational correction PR for designated-license selection
+and a compute-only capability gate above the bundled limit, before private build.
+No credential read/copy/hash/log, scientific parameter change, current worker
+mutation or private retry. The current full-license validity needs a real target
+check, not inferred acceptance from miniature controls. A future attempt needs
+its own qualified source/fresh claim and explicit manual admission.
+
+## Current running common-Pyomo campaign and next consolidation — 30 October 2026
+
+The researcher supplies the terminal attachment SHA-256
+80b3416ed6197f16d5c4c48f61f3f28988b7ed02c236a0b3288799399d4ecf91.
+Manual submissions: Gurobi2228189/plan909390ed and SCIP2228192/plan09fea24f,
+same merged source1b53b24f. Both were RUNNING in the supplied snapshot;
+87login controls and Ruff passed for each. No native phase, result or gap is
+known. This is not live monitoring; login timings are not optimizer runtimes.
+Preserve consumed claims/source and do not repeat start or add another trial.
+
+Prepare the next DRAFT consolidation PR with submission metadata, requested
+versus observed configuration/result table structures and the current sprint
+plan. Final numerical integration waits for original terminal packages/audits,
+not solver success. B3 primary-literature and D2 reader-document work may advance
+independently. Read docs/mvp2_completion_plan_20261030.md and
+docs/h215_common_pyomo_comparison_20261030.md.
+
+New researcher editorial boundary: the CBC threads probe and cancelled h215
+arm remain ONLY in technical GitHub records. Do not discuss that test in the
+article, appendices or publication-facing tables. Remove stale publication
+mentions while explaining qualified Gurobi/SCIP/HiGHS interfaces without adding
+unperformed large results. Preserve math, data, original Appendix A and all
+accepted certificates. No new code/runtime/scientific setting change, local
+clone/environment, cloud PDF, automatic monitoring/retry or agent HPC access.
+All merges need explicit authorization; all NPAD commands stay human-only.
+Final PDFs follow Quarto/Pages only after separately authorized main merge.
+
+
 ## Current accepted operational qualification — 30 October 2026
 
 Human original receipts for public job2227480/source57204e0b/planceeb6d10

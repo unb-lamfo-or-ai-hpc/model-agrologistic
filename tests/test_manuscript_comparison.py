@@ -44,7 +44,7 @@ def test_coauthor_research_questions_do_not_imply_unexecuted_comparisons():
     assert "global\nnative TimeLimit of 14,400 seconds" in text
     assert "nine Cartesian scenarios of probability 1/9" in text
     assert "DET uses the original deterministic arrays" in text
-    assert "No new large-input solver result," in text
+    assert "differences preclude causal solver-speed comparisons" in text
     status = json.loads((MODULE.MANUSCRIPT / "open_source_comparison_status.json").read_text())
     assert len(status["observations"]) == 1 and not status["highs"]["execution_admitted"]
     observation = status["observations"][0]
@@ -95,17 +95,17 @@ def test_reader_facing_editorial_structure_and_attribution():
     prose = text.replace("@rosa2026thesis", "Rosa (2026)")
     assert not re.search(r"\bthesis\b", prose, re.IGNORECASE)
     abstract = text.split("abstract: >-", 1)[1].split("keywords:", 1)[0]
-    assert "original accepted gap is 0.2074%" in abstract
-    assert "63.4 million at 500" in abstract
+    assert "the gap is 0.2074%" in abstract
+    assert "63.4 million variables" in abstract
     assert "SoPlex" not in abstract
     discussion, final = text.split("# Discussion\n", 1)[1].split(
         "# Final considerations, limitations and future work", 1)
     assert "@essien2018" in discussion and "@mardaneh2021" in discussion
     assert "All six SCIP attempts terminated without an incumbent" not in discussion
     assert "separate scalar SCIP STO h215 W" in final
-    assert "eight-hour native SCIP observation" in final
-    assert "no new measured outcome" in final
-    assert "One failure cannot establish a general limitation" in final
+    assert "interrupted extended SCIP attempt" in final
+    assert "no\nterminal numerical result" in final
+    assert "universal solver frontier" in final
     assert "# Conclusions" not in text and "# Future work:" not in text
     assert "Repository deposition of the licensed input data" not in text
     assert "subject to contributor rights" not in text

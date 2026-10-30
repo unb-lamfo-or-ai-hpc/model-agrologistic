@@ -1,3 +1,22 @@
+# Current reader-facing article direction — 30 October 2026
+
+Use [the reconciled completion plan](mvp2_completion_plan_20261030.md) for
+current S6-A/X3/B3/D2/A2 and S6-B gates. The dated freeze/pending-result windows
+below are historical. PR139–141 are merged; two newly submitted common-Pyomo
+h215 W observations have no returned scientific results yet. Do not insert
+live job administration, provisional values or predicted solver outcomes into
+the article. Preserve approved title, RQ, SO1–SO4, author directions, mathematics
+and original Appendix A.
+
+The excluded capability-only solver test/cancellation stays solely in GitHub's
+technical record. Publication-facing configuration/result tables cover relevant
+scientific observations with explicit cohort, gap and measurement qualifications.
+Explain the qualified Gurobi/SCIP/HiGHS interfaces, default strategy versus
+explicit parameter overrides, and seed semantics in clear reader prose.
+Continue full-text claim reconciliation and didactic B/C/D review in parallel.
+Final PDFs are generated through Quarto/GitHub Pages after authorized main
+integration; no temporary cloud PDF or automatic publication is part of this PR.
+
 # Article plan and editorial boundaries
 
 23October CURRENT: PR120 is merged and the researcher now requests public S6-A

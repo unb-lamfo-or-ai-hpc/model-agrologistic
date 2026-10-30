@@ -12,7 +12,7 @@ from scripts import pyomo_campaign_contract as c
 from scripts import qualify_pyomo_h215_operational as q
 from src.logic.model_config import ModelConfig
 from src.logic.optimization import solve_model
-from tests.test_pyomo_multisolver import config
+from tests.test_pyomo_multisolver import available, config
 from tests.test_scalar_contract import economic_data
 
 
@@ -140,12 +140,19 @@ def test_real_public_native_settings_match_operational_contract(solver, tmp_path
 def test_real_cbc_public_control_requires_thread_capability(tmp_path):
     import shutil
 
+    available("cbc")
     capability = c.probe_cbc(shutil.which("cbc"))
     settings = replace(
         config("cbc"), threads=4, time_limit=28800, mip_gap=0.01, log_file=str(tmp_path / "cbc.log")
     )
     result = solve_model(economic_data(), ModelConfig(), settings)
     text = (tmp_path / "cbc.log").read_text(errors="replace")
+    if result.metadata["solver_versions"] != c.VERSIONS["cbc"]:
+        # Generic cloud profiles can supply a different CBC release. It must
+        # remain rejected by the frozen NPAD contract, even if it accepts threads.
+        with pytest.raises(ValueError, match="Native interface/version differs"):
+            c.metadata("cbc", result.metadata, cbc_log=text, large=False)
+        return
     # On Windows the official MSVC release lacks threads. A rejection is evidence
     # of that local binary limitation, not an accepted NPAD thread qualification.
     if capability["cbc_arm_cancelled"]:

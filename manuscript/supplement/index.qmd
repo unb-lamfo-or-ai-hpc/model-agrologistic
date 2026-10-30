@@ -78,7 +78,8 @@ of every code fragment.
 
 These generative assistants are distinct from the numerical tools. Python
 organizes data and calculations; Gurobi and SCIP solve mathematical programs;
-Pyomo expresses a solver-independent formulation, with HiGHS and CBC interfaces.
+Pyomo expresses a common algebraic formulation that can be passed to Gurobi,
+SCIP and HiGHS through their respective interfaces.
 GitHub maintains the software history, and Slurm schedules the HPC experiments.
 Researchers executed the experimental commands and evaluated the returned
 evidence. A completed software process was not treated as proof of a feasible

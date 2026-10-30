@@ -1,0 +1,22 @@
+{
+  "date": "2026-10-30",
+  "scope": "Reader regression reconciliation after the accepted PR139 prose revision; no reader source or scientific/runtime change",
+  "original_audit_commit": "289f143639498eb3d9c06a492c85ea91bcd73679",
+  "gurobi_failure": "size-limited license; no numerical performance result",
+  "correction_pr": "https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/143",
+  "updated_tests": [
+    "tests/test_manuscript_comparison.py",
+    "tests/test_manuscript_partial_results.py",
+    "tests/test_wd_terminal_review.py"
+  ],
+  "local_reader_regressions": {
+    "passed": 17,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "rationale": "Replace obsolete manuscript/staging phrases with the current accepted numerical claims and explicit censored-outcome/scientific-comparison boundaries. Keep administrative sprint text out of the generated reader-facing W/D table.",
+  "original_archives_and_claims_preserved": true,
+  "private_start_or_repeat_admitted": false,
+  "scip_original_terminal_evidence": "pending"
+}

@@ -1,0 +1,56 @@
+{
+  "schema_version": "h215-consolidation-document-source-verification-v1",
+  "date": "2026-10-30",
+  "pull_request": 142,
+  "source_commit": "5c3b519b86e95cc36a5a056dd6f4a78500757356",
+  "scope": "Local public document/source checks; no model optimization, scheduler or private-input access",
+  "temporary_snapshot": {
+    "tracked_files_verified_by_git_blob_sha": 652,
+    "no_git_clone": true,
+    "tracked_bytes_unchanged_after_checks": true,
+    "location": "Approved local .codex temporary directory"
+  },
+  "ruff_repository": "passed",
+  "scalar_manuscript_tables": "verified_existing_original_receipts",
+  "wd_manuscript_tables": "verified_existing_original_receipts",
+  "manuscript_integrity": {
+    "status": "accepted",
+    "cited_references": 33
+  },
+  "appendix_input_audit": {
+    "public_gold_sha256": "de3bdc51b2c338194a5013165bec2884b68784fb207ae8c762984a1b44856082",
+    "worksheets": 14,
+    "original_and_cached_cells": 254,
+    "warehouses": 215,
+    "existing": 146,
+    "candidates": 69,
+    "freight_states": 27,
+    "pinned_github_file_targets": 44,
+    "link_scope": "Commit-pin format and tracked-target existence; no claim of independent HTTP testing of all historical versions",
+    "external_registry_bytes_reread": false,
+    "processed_workbook_bytes_reread": false
+  },
+  "related_tests": {
+    "tests": 60,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 29.71
+  },
+  "publication_exclusion_check": {
+    "qmd_sources_scanned": 11,
+    "cbc_mentions": 0
+  },
+  "scientific_runtime_data_and_original_appendix_A_unchanged": true,
+  "qualification_limits": {
+    "terminal_job_results_pending": true,
+    "full_text_bibliography_review_complete": false,
+    "complete_final_article_review": false,
+    "render_or_visual_qa_performed": false,
+    "final_pdf_generated": false,
+    "cloud_temporary_artifact_created": false,
+    "large_solver_repeated": false
+  },
+  "pr_state": "draft_pending_original_terminal_evidence_and_final_integration",
+  "last_commit_scope": "Subsequent sprint-PR link and this verification record only; no further manuscript or executable changes"
+}

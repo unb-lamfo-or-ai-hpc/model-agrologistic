@@ -413,14 +413,29 @@ incumbent $z$ and bound $b\le z$. Both zero imply gap zero; missing/nonfinite
 values or inconsistent bounds are not assigned a finite accepted gap.
 Native solver conventions are retained separately.
 
-The additional solver-neutral Pyomo implementation supports HiGHS and CBC on
-public analytical and Excel-to-validation controls. Candidate slack indicators
-use a disclosed bounded representative formulation: nonnegative-cost trimming
-preserves the physical/investment projection and optimal scalar value, while
-excluding redundant oversized slack assignments. Bounds follow cumulative stock
-conservation and hard shipping capacity, including transshipment circulation.
-Its independently validated h215 HiGHS result is reported separately from
-software tests and the Gurobi scaling sequence.
+The additional Pyomo implementation separates the algebraic model from the
+optimizer. One scalar formulation is transferred to Gurobi through APPSI and
+gurobipy, to SCIP through a linear PySCIPOpt adapter, or to HiGHS through APPSI.
+Public analytical and Excel-to-validation controls check the adapters against
+the same physical constraints and cost reconstruction. These tests establish
+implementation behavior; they do not constitute additional large-instance
+performance observations.
+
+Candidate slack indicators use a disclosed bounded representative formulation.
+With nonnegative slack costs, trimming redundant excess preserves the
+physical/investment projection and optimal scalar value. The derived bounds
+follow cumulative stock conservation and hard shipping capacity, including
+transshipment circulation (Appendix C). This equivalence does not imply
+identical native relaxations or search paths. The independently validated
+h215 HiGHS result is reported separately from software qualification and the
+Gurobi scaling sequence.
+
+The modeling interface does not select a common search strategy or initial
+solution for the solvers. Algorithmic defaults are distinguished from explicit
+time, gap, thread, seed and numerical-tolerance settings in each experiment
+record. In particular, the documented seed value 42 controls solver-specific
+pseudorandom choices; it does not supply the same starting incumbent across
+different optimizers.
 
 ## HPC experimental environment
 
