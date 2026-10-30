@@ -54,9 +54,14 @@ python -m pytest
 - Do not present controlled stochastic scenarios as reconstructed forecasts.
 - Report Big-M feasibility penalties separately from observed economic costs.
 
-Gurobi is the native reference backend for the archived v0.1 demonstration and
-current v0.2 validation. Native PySCIPOpt parity remains deferred. CBC is not a
-target backend.
+Gurobi remains the native reference for the archived v0.1 demonstration and
+accepted v0.2 observations. PR140 qualifies Gurobi/APPSI, SCIP/PySCIPOpt transfer,
+HiGHS and CBC on the common bounded Pyomo form with public controls. The scoped
+new h215 W campaign targets Gurobi and SCIP, and CBC only if its verified Linux
+binary accepts threads. Cancel CBC otherwise; this is not numerical evidence.
+Every large arm still needs the separate qualified operational package, its
+own merge authorization and the researcher's manual NPAD CLI. See
+[the operational protocol](docs/mvp2_pyomo_h215_operational.md).
 
 ## Pull requests
 

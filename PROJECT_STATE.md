@@ -1,3 +1,75 @@
+# Operational qualification accepted; CBC h215 cancelled — 30 October 2026
+
+Original human receipts for job2227480/source57204e0b/planceeb6d10 report
+282tests passed in71.02s,0failures/errors/skips and source_verified_after=true.
+Slurm root/batch/extern/step COMPLETED0:0 in76s. Original result/capability/XML
+checksums are saved in [evidence](docs/evidence/pyomo_qualification_2227480.json).
+See [qualification review](docs/pyomo_qualification_2227480.md).
+Actual NPAD static CBC2.10.13 rejects threads; cancel ONLY its h215 experiment.
+This is binary capability evidence, not a numerical result or general CBC
+inability. Preserve public CBC controls and every original claim/receipt.
+Gurobi/SCIP remain the two proposed common-Pyomo h215 W observations. Their
+8h-native/12h-Slurm,4thread/seed42/1% profile and original science stay unchanged.
+The pending action is final review/Ready and PR141's own explicit merge approval,
+then pinned manual NPAD commands. No private experiment or merge has occurred.
+The execution source remains57204e0b; later commits only add docs/evidence.
+Final campaign deliverables: configuration and outcome comparison tables,
+including honest gap/timing/resource/negative-outcome scopes and CBC cancelled.
+
+# Resumed: qualification2227480 terminal; original result pending — 30 October 2026
+
+The researcher supplies sacct for public job2227480: root/batch/extern/step
+COMPLETED0:0,76s,4CPUs. Original result.json/test counts/CBC capability have not
+yet been supplied after completion. Read-only original receipt/log collection
+is the next human NPAD step; never repeat submission. PR141 remains DRAFT,
+with no merge approval or private h215 admission. Keep Gurobi and SCIP; cancel
+only CBC h215 if the actual NPAD thread-capability receipt rejects threads.
+At campaign completion, deliver comparative solver-configuration and outcome
+tables including effective settings/seed semantics, gaps/validation and honest
+runtime/resource/negative-outcome scopes. Keep historical native and new common
+Pyomo cohorts distinguishable; preserve the accepted HiGHS observation.
+See [resumption checkpoint](docs/checkpoints/20261030_resume_pr141.json).
+The dated pause below is historical and is superseded by this explicit resume.
+
+# Paused: PR141 qualification submitted, outcome unknown — 29 October 2026
+
+At the researcher's explicit request, save the checkpoint and pause. Public
+job2227480/source57204e0b/planceeb6d10 was reported submitted successfully;
+result.json did not exist at the supplied read. No scheduler state, test counts,
+terminal outcome or Linux CBC capability is known. This is not solver evidence.
+Keep PR141 DRAFT; preserve the claim and do not repeat the submission. If CBC
+rejects threads on NPAD, cancel only CBC h215 and retain Gurobi/SCIP in the plan.
+No further execution code, CLI handoff, merge or automatic follow-up is requested.
+The existing public job is not cancelled by the pause. Resume only on explicit
+researcher instruction, starting with existing-job accounting/log/result review.
+See [pause and configuration plan](docs/checkpoints/20261029_pause_pr141.md)
+and [structured checkpoint](docs/checkpoints/20261029_pause_pr141.json).
+Gurobi proposal retains default automatic algorithm strategy with explicit
+8h/1%/four-thread/seed42/1e-9 solver-tolerance overrides; it is not pure default.
+No private h215 observation or result has been admitted or reported.
+
+# PR140 merged; operational package preparation — 29 October 2026
+
+Authorized PR140 merged at40f33d7cc13d516cd6b130f00398590840131904. Public adapter
+qualification-v2/job2227458 remains accepted (168tests, zero failures/errors/skips).
+The separate operational branch prepares new common-form Pyomo STO/W8h arms:
+Gurobi, SCIP and conditional CBC. Scientific logic38files match the adapter
+merge byte-for-byte. Workbook, membership, frozen OSRM network, scenarios,
+penalties and original residual tolerances remain fixed. Existing HiGHS and
+all consumed claims are preserved; no new private experiment has run.
+
+Researcher steering: cancel the CBC h215 experiment if its binary rejects
+threads; retain this capability observation and continue Gurobi/SCIP. The
+Windows CBC release rejects threads. NPAD Linux capability is still unknown,
+not inferred from the Windows build. Public operational qualification must
+return282tests with0failures/errors/skips and explicit CBC decision. Local
+Ruff/Bash syntax and public controls passed with24Linux-only skips disclosed;
+they do not satisfy that target-platform gate. Keep the operational PR draft.
+Own merge approval and later manual NPAD starts remain pending. Read
+[operational runbook](docs/mvp2_pyomo_h215_operational.md) and
+[preparation evidence](docs/evidence/pyomo_h215_operational_preparation_20261029.json).
+No cloud PDFs, automatic retries, main promotion or publication.
+
 # Public Pyomo qualification complete — 29 October 2026
 
 Qualification-v2 job2227458/sourcef166f60c/plandc41c8b7 returned accepted:

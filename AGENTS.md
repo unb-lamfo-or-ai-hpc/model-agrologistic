@@ -1,5 +1,79 @@
 # Model Agrologistic: agent working agreement
 
+## Current accepted operational qualification — 30 October 2026
+
+Human original receipts for public job2227480/source57204e0b/planceeb6d10
+report282passed in71.02s,0failures/errors/skips, source_verified_after=true;
+root/batch/extern/step COMPLETED0:0 in76s. Read
+docs/evidence/pyomo_qualification_2227480.json and its review MD. Original file
+hashes are supplied and recorded; no independent raw-package audit is claimed.
+Actual NPAD CBC2.10.13 static binary rejects threads: CANCEL only CBC h215.
+Keep its original capability evidence; do not downgrade threads, replace/install
+a binary or mislabel this as numerical failure. Gurobi/SCIP remain proposed.
+Scientific/runtime/test/launcher bytes remain qualified at57204e0b; subsequent
+commits are evidence/docs only. Finish review, mark PR141 Ready and request
+its OWN explicit merge authorization. Only after authorized merge provide
+pinned manual starts for the two eligible new h215 W claims. No merge/private
+job is authorized by the qualification itself; no old claim or HiGHS restart.
+At campaign completion deliver both configuration and outcome comparison
+tables with effective settings/default-strategy/seed42 qualifications, input/
+matrix identity, gaps/validation, timing/resources and cancelled/negative rows.
+Every NPAD action remains human-only. GitHub/local CLI autonomy remains scoped;
+no new local clone/environment, native GUI, cloud PDF or automatic follow-on.
+
+
+## Current resumption and comparison deliverable — 30 October 2026
+
+The researcher explicitly resumes after the historical pause below, requesting
+read-only collection of original qualification job2227480, never resubmission.
+Supplied sacct shows root/batch/extern/step COMPLETED0:0 in76s with4CPUs.
+This is scheduler closure; test counts/result.json and CBC capability remain
+pending original receipt review. Preserve source57204e0b/planceeb6d10/claim.
+Keep Gurobi/SCIP; cancel only CBC h215 if its actual NPAD receipt rejects threads.
+Do not infer CBC Linux capability from Windows or zero scheduler exit alone.
+Keep PR141 DRAFT until full qualification review and its own merge approval.
+No agent NPAD access, solver invocation, automatic retry or private job release.
+Read docs/checkpoints/20261030_resume_pr141.json. At campaign completion, deliver
+both comparative CONFIGURATION and RESULT tables, with effective parameters,
+seed/default-strategy qualifications, input/matrix identity, gaps, original
+validation, timing/resource scopes, and negative/censored/cancelled cases.
+Separate new common-Pyomo and historical native-reference cohorts; preserve
+HiGHS without restart. Local CLI remains autonomous; NPAD stays human-only.
+
+
+## Current explicit pause — 29 October 2026
+
+The researcher requests a saved checkpoint/continuation plan and then a pause.
+Read docs/checkpoints/20261029_pause_pr141.md and its JSON. Public qualification
+job2227480/source57204e0b/planceeb6d10 was reported submitted; result.json was
+absent at the supplied read. Scheduler state, test outcome and CBC capability
+are UNKNOWN. Do not repeat submission or infer success/failure/thread support.
+If actual NPAD CBC rejects threads, cancel only its h215 arm; retain Gurobi/SCIP
+subject to normal qualification. PR141 stays DRAFT, no merge authorization.
+Do not develop further execution code, request new CLI, merge, submit/cancel
+jobs or follow up automatically until the researcher explicitly resumes.
+The existing public job may continue independently; no NPAD job is cancelled
+by this conversational pause. Local/remote original packages remain preserved.
+
+
+## Current operational preparation after PR140 merge — 29 October 2026
+
+PR140 was explicitly authorized and merged at40f33d7cc13d516cd6b130f00398590840131904.
+Prepare the separate common-form h215 STO/W operational PR for Gurobi and SCIP,
+plus CBC only if the verified Linux binary accepts threads. The researcher
+explicitly permits cancelling CBC otherwise; do not block Gurobi/SCIP or call
+this a numerical failure. Preserve all original data, 38 scientific source
+files, claims and historical HiGHS/native results. No HiGHS restart or fallback.
+Read docs/mvp2_pyomo_h215_operational.md. Public operational qualification is
+pending: 282 tests, zero failures/errors/skips, exact source/predecessor/CBC
+integrity and explicit capability decision. Keep this operational PR DRAFT
+until the manual NPAD qualification and final review. Its own merge requires
+new explicit authorization; PR140 authorization does not transfer. Then give
+separately pinned manual starts for eligible new claims, never a solver sweep.
+Local CLI/Ruff in approved temporary directories is autonomous. No new local
+clone/environment or native GUI; every NPAD action remains researcher-only.
+
+
 ## Current completed adapter qualification — 29 October 2026
 
 Public NPAD qualification-v2/job2227458/sourcef166f60c/plandc41c8b7 passed

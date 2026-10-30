@@ -1,0 +1,50 @@
+{
+  "schema_version": "pyomo-h215-operational-preparation-v1",
+  "scope": "Software preparation and local public controls; no private h215 execution",
+  "adapter_merge": "40f33d7cc13d516cd6b130f00398590840131904",
+  "qualified_adapter_source": "f166f60c1600057dea2a4538ef7e6c2aed372dd8",
+  "qualified_adapter_job": "2227458",
+  "qualified_adapter_tests": 168,
+  "scientific_logic_files_byte_identical_to_adapter_merge": 38,
+  "local_checks": {
+    "platform": "Windows",
+    "python": "3.13.15",
+    "ruff": "0.16.6",
+    "ruff_repository": "passed",
+    "bash_launcher_syntax": "passed; syntax only, no execution",
+    "related_suite_before_conditional_cbc_and_receipt_controls": {
+      "passed": 165,
+      "skipped": 24,
+      "failures": 0,
+      "errors": 0
+    },
+    "final_changed_operational_and_contract_suite": {
+      "passed": 90,
+      "skipped": 24,
+      "failures": 0,
+      "errors": 0,
+      "seconds": 22.67
+    },
+    "skip_scope": "24 real Linux /proc cold-worker controls; not target-platform acceptance",
+    "unchanged_qualification_safety_functions_ast_checked": 5,
+    "gurobi_license_scope": "Existing bundled restricted nonproduction license; public miniatures only",
+    "cbc_windows_build": "Official MSVC CBC2.10.13; threads option unsupported, correctly rejected",
+    "dependency_scope": "Existing venv313 plus temporary unpacked public wheels; no environment installation"
+  },
+  "required_manual_public_npad_qualification": {
+    "claim": ".mvp2-pyomo-h215-operational-qualification-v1",
+    "expected_tests": 282,
+    "required_failures": 0,
+    "required_errors": 0,
+    "required_skips": 0,
+    "source_and_predecessor_verified_after_required": true,
+    "cbc_threads_probe_required": true,
+    "status": "not_executed_by_codex"
+  },
+  "researcher_cbc_policy": "Cancel the CBC h215 experiment if its binary rejects threads; continue Gurobi/SCIP qualification",
+  "cbc_npad_capability": "pending actual compute probe",
+  "private_h215_execution_admitted": false,
+  "automatic_retry": false,
+  "highs_restart_admitted": false,
+  "operational_pr_merge_authorized": false
+}
