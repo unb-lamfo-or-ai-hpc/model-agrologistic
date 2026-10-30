@@ -2,35 +2,34 @@
 title: "Computational Scalability of Deterministic and Two-Stage Stochastic MILP Models for Grain-Storage Network Design and Hub Location"
 date: 2026-10-29
 abstract: >-
-  Large grain-storage models can be expensive to construct and solve, while solver
-  completion alone does not establish useful planning performance. This study
-  examines model dimensions, resource use and validated solution quality for
-  deterministic and two-stage stochastic mixed-integer linear programs for
-  grain-storage network design. A scalar objective combines investment,
-  expected operating costs and three artificial penalties. Nine Gurobi
-  warehouse-only observations cover a deterministic/stochastic pair at 215
-  facilities, five stochastic thread configurations at 300, and stochastic
-  instances at 400 and 500. All meet a 1% gap criterion. At 500 facilities,
-  the stochastic matrix has 63.4 million variables; the gap is 0.2074%,
-  native runtime is 127.58 minutes and sampled application RSS is 111.78 GiB.
-  Artificial penalties contribute 94.074% of the objective despite extensive
-  investment and incomplete domestic service. Two direct-enabled h215
-  observations reduce penalized costs while worsening service. A separate
-  Pyomo/APPSI HiGHS h215 observation passes independent validation with a
-  0.000196% gap in 426.70 minutes. A four-hour native SCIP observation returns
-  no incumbent; an extended attempt is externally interrupted without a
-  terminal numerical result. Formulation, interface and attained-quality
-  differences preclude causal solver-speed comparisons. The findings connect
-  attainable computational scale to the agricultural meaning of the returned
-  plans. A human-supervised AI workflow documents scientific decisions
-  and verification.
+  Designing grain-storage networks requires decisions about facility location,
+  storage capacity and grain handling before uncertain supply and demand are
+  known. The resulting mixed-integer linear programs can contain millions of
+  operating decisions, making computational requirements central to their use
+  in agricultural planning. This study evaluates deterministic and two-stage
+  stochastic models through model dimensions, construction and optimization
+  time, memory use and independently checked solution quality. Warehouse-only
+  instances contain 215 to 500 facilities, with nine supply–demand scenarios
+  in the stochastic model. The stochastic formulation grows from 14.1 to
+  63.4 million variables across this range. All nine warehouse-only Gurobi
+  observations satisfy the prescribed 1% relative-gap criterion; the
+  500-facility instance reaches a 0.21% gap in approximately 128 minutes of
+  native optimization. The returned stochastic plans allocate capacity
+  investment across the admitted candidate sites, indicating distributed
+  capacity sizing within the available network. Substantial handling and
+  storage exceedances and unmet demand remain in the penalized solutions.
+  The assessment therefore connects attainable computational scale to the
+  physical meaning of the investment and operating decisions. Evaluating
+  solution quality together with service, stock and throughput reveals
+  which conclusions the optimized plans support for grain-storage planning.
 keywords:
   - grain storage
-  - facility location
+  - network design
+  - hub location
+  - mixed-integer linear programming
   - two-stage stochastic programming
   - computational scalability
   - high-performance computing
-  - reproducibility
 ---
 
 # Introduction
@@ -413,14 +412,29 @@ incumbent $z$ and bound $b\le z$. Both zero imply gap zero; missing/nonfinite
 values or inconsistent bounds are not assigned a finite accepted gap.
 Native solver conventions are retained separately.
 
-The additional solver-neutral Pyomo implementation supports HiGHS and CBC on
-public analytical and Excel-to-validation controls. Candidate slack indicators
-use a disclosed bounded representative formulation: nonnegative-cost trimming
-preserves the physical/investment projection and optimal scalar value, while
-excluding redundant oversized slack assignments. Bounds follow cumulative stock
-conservation and hard shipping capacity, including transshipment circulation.
-Its independently validated h215 HiGHS result is reported separately from
-software tests and the Gurobi scaling sequence.
+The additional Pyomo implementation separates the algebraic model from the
+optimizer. One scalar formulation is transferred to Gurobi through APPSI and
+gurobipy, to SCIP through a linear PySCIPOpt adapter, or to HiGHS through APPSI.
+Public analytical and Excel-to-validation controls check the adapters against
+the same physical constraints and cost reconstruction. These tests establish
+implementation behavior; they do not constitute additional large-instance
+performance observations.
+
+Candidate slack indicators use a disclosed bounded representative formulation.
+With nonnegative slack costs, trimming redundant excess preserves the
+physical/investment projection and optimal scalar value. The derived bounds
+follow cumulative stock conservation and hard shipping capacity, including
+transshipment circulation (Appendix C). This equivalence does not imply
+identical native relaxations or search paths. The independently validated
+h215 HiGHS result is reported separately from software qualification and the
+Gurobi scaling sequence.
+
+The modeling interface does not select a common search strategy or initial
+solution for the solvers. Algorithmic defaults are distinguished from explicit
+time, gap, thread, seed and numerical-tolerance settings in each experiment
+record. In particular, the documented seed value 42 controls solver-specific
+pseudorandom choices; it does not supply the same starting incumbent across
+different optimizers.
 
 ## HPC experimental environment
 

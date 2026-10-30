@@ -1,0 +1,50 @@
+{
+  "schema_version": "editorial-first-pass-checks-v1",
+  "date": "2026-10-30",
+  "source_baseline": "c80dca69c247753d49f06925ec712fcd43bb5a56",
+  "pre_edit_blueprint_commit": "91eb9b5fbe4112b9cd0122c5747aeef99660abb7",
+  "environment": "Existing Windows venv313 for document checks; bundled existing PDF runtime for read-only extraction/preservation checks; temporary source snapshot, not a clone.",
+  "baseline_all_653_git_blob_identities_verified": true,
+  "ruff": "passed; focused unchanged document checkers and related tests",
+  "manuscript_integrity": {
+    "status": "accepted",
+    "cited_references": 33
+  },
+  "generated_scalar_tables": "verified_no_solver_or_HPC",
+  "generated_wd_tables": "verified_original_receipts_only_no_solve",
+  "appendix_source_audit": {
+    "gold_worksheets": 14,
+    "original_and_cached_cells_checked": 254,
+    "warehouses": 215,
+    "existing": 146,
+    "candidates": 69,
+    "freight_states_checked": 27,
+    "pinned_file_links_checked": 41,
+    "external_registry_bytes_reread": false,
+    "processed_workbook_bytes_reread": false
+  },
+  "related_regressions": {
+    "tests": 60,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 14.49
+  },
+  "focused_preservation": {
+    "scope": "Focused editorial source/annotation and preservation controls; no solver or HPC",
+    "annotations": 24,
+    "abstract_words": 185,
+    "keywords": 7,
+    "all_response_source_paths_exist": true,
+    "approved_question_preserved": true,
+    "scientific_runtime_tests_and_formulation_bytes_unchanged": true,
+    "bibliography_and_original_appendix_a_unchanged": true,
+    "final_revised_pdf_rendered": false
+  },
+  "limitation": "Source-level document qualification only. Graphic pixels/layout, complete literature and numerical-data coverage, final exact-head required CI and final rendered article/supplement inspection remain pending.",
+  "new_solver_run": false,
+  "NPAD_access": false,
+  "final_pdf_generated": false,
+  "temporary_pdf_upload": false,
+  "publication_approval": false
+}

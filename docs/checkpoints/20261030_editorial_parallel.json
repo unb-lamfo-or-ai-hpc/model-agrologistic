@@ -2,7 +2,7 @@
   "schema_version": "editorial-parallel-mandate-checkpoint-v1",
   "date": "2026-10-30",
   "baseline_commit": "c80dca69c247753d49f06925ec712fcd43bb5a56",
-  "status": "blueprint_precedes_extensive_editorial_revision",
+  "status": "blueprint_and_bounded_first_reader_source_pass_saved",
   "pr143": {
     "merged": true,
     "authorized_head": "3588c4387d611d59e6c36265d6f3e526d9e840d0",
@@ -27,5 +27,16 @@
   "final_pdf_rendered": false,
   "temporary_pdfs_uploaded": false,
   "merge_requested": false,
-  "continuation": "Read docs/editorial_revision_blueprint_20261030.md and docs/editorial_research_evidence_20261030.md; advance B3/D2 and coherent A2 source revision without changing scientific/runtime bytes."
+  "continuation": "Read docs/editorial_revision_blueprint_20261030.md and docs/editorial_research_evidence_20261030.md; advance B3/D2 and coherent A2 source revision without changing scientific/runtime bytes.",
+  "pull_request": 144,
+  "initial_blueprint_commit": "91eb9b5fbe4112b9cd0122c5747aeef99660abb7",
+  "first_source_pass": {
+    "abstract_words": 185,
+    "keywords": 7,
+    "appendix_B_phases": 6,
+    "verification_levels": 4,
+    "public_gold_sheets_inventoried": 14,
+    "document_regressions_passed": 60
+  },
+  "next": "Continue B3 close-precedent/full-thesis comparison, D2 graphic/C/example/effective-data reconciliation and A2 scientific restructuring; keep X3 original evidence and separate new Gurobi package independent."
 }

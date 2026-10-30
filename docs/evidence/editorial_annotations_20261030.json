@@ -49,7 +49,8 @@
       "scientific_concern": "Explain the problem before technical bookkeeping",
       "proposed_correction": "Rewrite the abstract around location/capacity decisions, uncertainty, computational assessment and agricultural findings.",
       "source_evidence": "https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/manuscript/index.qmd",
-      "acceptance_status": "planned"
+      "acceptance_status": "source_revised_final_acceptance_pending",
+      "implementation_status": "first_source_revision_implemented_pending_render_and_author_review"
     },
     {
       "id": "ART-03",
@@ -59,7 +60,8 @@
       "scientific_concern": "Begin scale comparison at h215",
       "proposed_correction": "Describe the stochastic matrix from 14.1 million variables at h215 to 63.4 million at h500.",
       "source_evidence": "https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/manuscript/scalar_results.qmd",
-      "acceptance_status": "planned"
+      "acceptance_status": "source_revised_final_acceptance_pending",
+      "implementation_status": "first_source_revision_implemented_pending_render_and_author_review"
     },
     {
       "id": "ART-04",
@@ -69,7 +71,8 @@
       "scientific_concern": "Reduce abstract detail and explain relevance",
       "proposed_correction": "Move thread lists and phase/resource detail to Results; retain a small number of interpretable headline findings.",
       "source_evidence": "https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/manuscript/scalar_results.qmd",
-      "acceptance_status": "planned"
+      "acceptance_status": "source_revised_final_acceptance_pending",
+      "implementation_status": "first_source_revision_implemented_pending_render_and_author_review"
     },
     {
       "id": "ART-05",
@@ -79,7 +82,8 @@
       "scientific_concern": "Keep detailed cost/service trade-offs in Results",
       "proposed_correction": "Explain W/D under the single scalar objective in Results; omit the W/D comparison from the abstract.",
       "source_evidence": "https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/manuscript/wd_results.qmd",
-      "acceptance_status": "planned"
+      "acceptance_status": "source_revised_final_acceptance_pending",
+      "implementation_status": "first_source_revision_implemented_pending_render_and_author_review"
     },
     {
       "id": "ART-06",
@@ -89,7 +93,8 @@
       "scientific_concern": "Separate operational incidents from scientific outcomes",
       "proposed_correction": "Remove incident narratives from the abstract. Retain relevant adverse numerical outcomes in any solver comparison, with concise limitations; author confirmation is needed on the tension with blanket exclusion.",
       "source_evidence": "https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/manuscript/index.qmd",
-      "acceptance_status": "author_decision_required"
+      "acceptance_status": "author_decision_required",
+      "implementation_status": "Removed from abstract; cohort/limitations author decision remains open."
     },
     {
       "id": "ART-07",
@@ -99,7 +104,8 @@
       "scientific_concern": "State the agricultural meaning of the computational assessment",
       "proposed_correction": "Explain how attainable scale supports capacity-sizing analysis and why returned plans require service/stock/throughput interpretation.",
       "source_evidence": "https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/manuscript/scalar_results.qmd",
-      "acceptance_status": "planned"
+      "acceptance_status": "source_revised_final_acceptance_pending",
+      "implementation_status": "first_source_revision_implemented_pending_render_and_author_review"
     },
     {
       "id": "ART-08",
@@ -109,7 +115,8 @@
       "scientific_concern": "Concentrate Human–AI exposition in Methods and Appendix B",
       "proposed_correction": "Remove AI discussion from the abstract; preserve approved SO4/C3 and the required AI declaration pending an explicit author decision on their placement.",
       "source_evidence": "https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/manuscript/index.qmd",
-      "acceptance_status": "author_decision_required"
+      "acceptance_status": "author_decision_required",
+      "implementation_status": "Removed from abstract and shortened Methods; SO4/C3 placement decision remains open."
     },
     {
       "id": "ART-09",
@@ -119,7 +126,8 @@
       "scientific_concern": "Index the actual mathematical/planning problem",
       "proposed_correction": "Add network design and mixed-integer linear programming to the keywords.",
       "source_evidence": "https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/manuscript/index.qmd",
-      "acceptance_status": "planned"
+      "acceptance_status": "source_revised_final_acceptance_pending",
+      "implementation_status": "first_source_revision_implemented_pending_render_and_author_review"
     },
     {
       "id": "ART-10",
@@ -129,7 +137,8 @@
       "scientific_concern": "Use the approved hub-location terminology",
       "proposed_correction": "Replace the facility-location keyword with hub location.",
       "source_evidence": "https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/manuscript/index.qmd",
-      "acceptance_status": "planned"
+      "acceptance_status": "source_revised_final_acceptance_pending",
+      "implementation_status": "first_source_revision_implemented_pending_render_and_author_review"
     },
     {
       "id": "ART-11",
@@ -139,7 +148,8 @@
       "scientific_concern": "Do not present reproducibility as a novelty keyword",
       "proposed_correction": "Remove reproducibility from the keywords while retaining reproducibility obligations in Methods/data availability.",
       "source_evidence": "https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/manuscript/index.qmd",
-      "acceptance_status": "planned"
+      "acceptance_status": "source_revised_final_acceptance_pending",
+      "implementation_status": "first_source_revision_implemented_pending_render_and_author_review"
     },
     {
       "id": "SUP-01",
@@ -149,7 +159,8 @@
       "scientific_concern": "Make each appendix independently readable",
       "proposed_correction": "Remove the general supplementary guide; introduce necessary concepts within each appendix.",
       "source_evidence": "https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/manuscript/supplement/index.qmd",
-      "acceptance_status": "planned"
+      "acceptance_status": "source_revised_final_acceptance_pending",
+      "implementation_status": "first_source_revision_implemented_pending_render_and_author_review"
     },
     {
       "id": "SUP-02",
@@ -159,7 +170,8 @@
       "scientific_concern": "Preserve the systematic review without administrative commentary",
       "proposed_correction": "Use the full systematic-review title and preserve the original 19-page PDF. Keep checksum/count/date issues in the author decision record only.",
       "source_evidence": "https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/manuscript/supplement/appendix_a_original.pdf",
-      "acceptance_status": "planned"
+      "acceptance_status": "source_revised_final_acceptance_pending",
+      "implementation_status": "first_source_revision_implemented_pending_render_and_author_review"
     },
     {
       "id": "SUP-03",
@@ -169,7 +181,8 @@
       "scientific_concern": "Use scientific rather than development branding",
       "proposed_correction": "Use this work in scientific prose. The development name is absent from current Appendix B but remains in the Methods include and will be removed there.",
       "source_evidence": "https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/manuscript/human_ai_methodology.qmd",
-      "acceptance_status": "partially_resolved_in_baseline"
+      "acceptance_status": "source_revised_final_acceptance_pending",
+      "implementation_status": "first_source_revision_implemented_pending_render_and_author_review"
     },
     {
       "id": "SUP-04",
@@ -179,7 +192,8 @@
       "scientific_concern": "Describe what the researchers actually did",
       "proposed_correction": "Replace defensive introductory clauses with constructive descriptions of assistants, human review and verification.",
       "source_evidence": "https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/manuscript/supplement/index.qmd",
-      "acceptance_status": "planned"
+      "acceptance_status": "source_revised_final_acceptance_pending",
+      "implementation_status": "first_source_revision_implemented_pending_render_and_author_review"
     },
     {
       "id": "SUP-05",
@@ -189,7 +203,8 @@
       "scientific_concern": "Avoid repeated attribution in the AI account",
       "proposed_correction": "Retain Rosa attribution in the model/Introduction; remove its redundant explanatory paragraph from Appendix B.",
       "source_evidence": "https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/manuscript/supplement/index.qmd",
-      "acceptance_status": "planned"
+      "acceptance_status": "source_revised_final_acceptance_pending",
+      "implementation_status": "first_source_revision_implemented_pending_render_and_author_review"
     },
     {
       "id": "SUP-06",
@@ -199,7 +214,8 @@
       "scientific_concern": "Remove defensive independent-origin assertions",
       "proposed_correction": "Describe adoption and verification of proposals constructively; keep historical attribution decisions in GitHub.",
       "source_evidence": "https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/manuscript/supplement/index.qmd",
-      "acceptance_status": "planned"
+      "acceptance_status": "source_revised_final_acceptance_pending",
+      "implementation_status": "first_source_revision_implemented_pending_render_and_author_review"
     },
     {
       "id": "SUP-07",
@@ -229,7 +245,8 @@
       "scientific_concern": "Show the verification method concretely",
       "proposed_correction": "Introduce P1–P6 and V1–V4 using investment/probability/residual examples; avoid making development failures the organizing narrative.",
       "source_evidence": "https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/manuscript/supplement/index.qmd",
-      "acceptance_status": "planned"
+      "acceptance_status": "source_revised_final_acceptance_pending",
+      "implementation_status": "first_source_revision_implemented_pending_render_and_author_review"
     },
     {
       "id": "SUP-10",
@@ -249,7 +266,8 @@
       "scientific_concern": "Make the workflow figure readable and properly introduced",
       "proposed_correction": "Remove development text inside the graphic; shorten title/caption, cite before and interpret after in Methods and B. Check floating placement in final rendering.",
       "source_evidence": "https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/manuscript/human_ai_methodology.qmd",
-      "acceptance_status": "planned"
+      "acceptance_status": "planned",
+      "implementation_status": "Figure citation/caption/interpretation revised in text; graphic source/raster cleanup and final placement still pending."
     },
     {
       "id": "SUP-12",
@@ -259,7 +277,8 @@
       "scientific_concern": "Explain the model-to-code connection without link overload",
       "proposed_correction": "Reorganize C around equations, a compact linked implementation tree and a worked example; state the uncompiled/unvalidated GAMS limitation once.",
       "source_evidence": "https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/manuscript/supplement/appendix_c.qmd",
-      "acceptance_status": "planned"
+      "acceptance_status": "planned",
+      "implementation_status": "Current qualified Gurobi/SCIP/HiGHS adapter description adopted from PR142; didactic C restructuring remains pending."
     },
     {
       "id": "SUP-13",
@@ -269,7 +288,8 @@
       "scientific_concern": "Expose the actual numerical inputs and access limits",
       "proposed_correction": "Present effective values, 14-sheet gold coverage and registry/processed-input provenance. Prepare a numerical coverage ledger; full-data publication needs access/rights/format decisions. Obsolete penalty values remain outside publication prose.",
       "source_evidence": "https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/manuscript/supplement/appendix_d.qmd",
-      "acceptance_status": "data_and_author_decision_required"
+      "acceptance_status": "data_and_author_decision_required",
+      "implementation_status": "Public 14-sheet cell inventory completed; effective-data reconciliation, full companions/access decision remain pending."
     }
   ]
 }

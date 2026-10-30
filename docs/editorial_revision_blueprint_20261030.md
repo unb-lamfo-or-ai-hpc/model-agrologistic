@@ -18,6 +18,10 @@ changes below are not a declaration that the scientific revision is complete.
 PR #143 has been merged with explicit approval at c80dca69c247753d49f06925ec712fcd43bb5a56; its public license
 qualification does not authorize or qualify another private experiment.
 
+The [first-pass progress record](editorial_revision_progress_20261030.md) and
+structured matrix record subsequent implementation; the table below preserves
+the pre-edit disposition required by the mandate.
+
 ## A. Annotation-response matrix
 
 “Resolved in baseline” means the commented wording is already absent in develop.
@@ -183,8 +187,11 @@ The following data layers must remain distinct:
 | Effective model settings | Explicit units, 60 periods/two products, nine Cartesian scenarios, probability weights, initial-stock convention, costs/capacities and penalties | Use only executed 90,000 / 45,000 / 45,000 penalty rates, with their distinct physical units |
 | Derived inputs/results | Explain deterministic transformations and distinguish input candidates from optimized facilities | No regeneration or new solve is part of this revision |
 
-Create a sheet/column/row **numerical coverage ledger**, not merely another
-dictionary. Separate values already public, values derivable from public
+The first [14-sheet numerical coverage ledger](evidence/appendix_d_numerical_coverage_20261030.json)
+now records dimensions and counts of numerical, formula and nonempty cells from
+the hash-verified public gold source. It is a coverage inventory, not a complete
+effective-values export. Continue the sheet/column/row reconciliation rather than
+substituting another dictionary. Separate values already public, values derivable from public
 sources and restricted/missing values. Present freight, holding, investment,
 handling and scalable-capacity numbers in human-readable tables. Explain
 146 existing facilities and 69/154/254/354 candidates for totals
