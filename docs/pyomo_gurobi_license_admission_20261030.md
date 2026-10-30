@@ -1,5 +1,21 @@
 # Pyomo Gurobi license admission repair — 30 October 2026
 
+## Reported NPAD public capacity result
+
+The researcher supplied an accepted receipt for job2228385/step0 on
+30 October 2026: Gurobi13.0.3, native status2, 2001 variables/2001 rows and
+objective2001.0, with no private input access. Both public-file checksum
+checks were reported successful. The planned source was
+`fe37669c24895a0bb2a45ff18e99ae7028722c2f`; its five Linux GitHub checks
+passed, including315 Pyomo tests and1715 full native tests without skips.
+
+This is positive license-capacity evidence for the process default environment.
+The original report's byte hash, source-identity file and terminal Slurm
+accounting have not yet been supplied. The [reported receipt](evidence/pyomo_gurobi_license_public_2228385_reported.json)
+preserves that distinction. Keep the PR in draft until those existing records
+are read and reviewed, then request its own merge authorization. No public
+resubmission or private h215 start is admitted by this result.
+
 Job 2228189 did not produce a numerical Gurobi result. Its original worker
 trace ends in `GurobiError: Model too large for size-limited license` at
 APPSI's native `Model.optimize()`. The original archive, consumed v1 claim,
@@ -53,8 +69,8 @@ it is not a positive NPAD qualification or a license-file test.
 The original job's traceback does not retain a numeric error code; 10010 is
 observed only in the separate local negative control. Windows cannot execute
 the Linux `/proc` cold-worker controls or import Unix `resource`; Linux CI
-covers the related controls. A public compute-node check of the designated
-license remains mandatory before calling this repair target-qualified.
+covers the related controls. The reported compute-node LP capacity result is accepted; its original source
+identity and terminal accounting remain pending before closing target qualification.
 
 No mathematical builder, adapter, model/data file, parameter/seed contract,
 validator, original source or evidence package changes in this repair.

@@ -1,5 +1,20 @@
 # Operational qualification accepted; CBC h215 cancelled — 30 October 2026
 
+## Current public license capacity receipt — 30 October 2026
+
+The researcher supplied job2228385/step0's accepted default-environment public
+LP receipt: 2001 variables/rows, objective2001, native OPTIMAL2, Gurobi13.0.3,
+no private input. Both source checksum checks were reported successful.
+Read docs/evidence/pyomo_gurobi_license_public_2228385_reported.json.
+Expected source is fe37669c; source-identity.txt, raw report hash and terminal
+sacct accounting have not yet been supplied. Capacity success does not certify
+scheduler closure or release h215. Keep PR143 DRAFT pending those read-only
+receipts, then request its own merge approval. Five Linux GitHub checks passed
+at fe37669c (315 Pyomo tests, 1715 full native tests, no skips). Subsequent work
+records evidence/docs only; do not repeat the public submission or old start.
+Preserve original Gurobi2228189, independent SCIP2228192 and every original
+claim/package. Every NPAD action stays human-only. No new private admission.
+
 ## Current Gurobi license failure repair — 30 October 2026
 
 Original common-Pyomo Gurobi job2228189 failed with a size-limited license at

@@ -1,0 +1,49 @@
+{
+  "schema_version": "pyomo-gurobi-npad-license-public-receipt-v1",
+  "date": "2026-10-30",
+  "provenance": "Researcher-supplied NPAD CLI output; parsed receipt, not an independently read raw report",
+  "job_id": "2228385",
+  "claim": ".mvp2-pyomo-gurobi-license-public-v1",
+  "expected_source_commit": "fe37669c24895a0bb2a45ff18e99ae7028722c2f",
+  "designated_license_path": "/home/vrrcelestino/model-agrologistic/secrets/gurobi.lic",
+  "expected_public_source_sha256": {
+    "scripts/pyomo_gurobi_license_gate.py": "ccab4050b28fb5c9151822c488a44e57a7242a692433259948c32e19ceab835f",
+    "scripts/probe_npad_gurobi_license.py": "8546181e7fabe9310f53f048f4bebdf2e260a2cca87031c47bb4667b0c55aacd"
+  },
+  "source_checksum_checks_reported_success": true,
+  "original_receipt_file_sha256": null,
+  "source_identity_file_received": false,
+  "terminal_accounting_received": false,
+  "terminal_accounting": null,
+  "reported_capability_receipt": {
+    "schema_version": "pyomo-gurobi-default-license-v1",
+    "created_at_utc": "2026-10-30T15:21:59.756432+00:00",
+    "status": "accepted",
+    "large_model_construction_allowed": true,
+    "environment_scope": "gurobipy_default_environment_as_used_by_appsi",
+    "probe_variable_count": 2001,
+    "probe_constraint_count": 2001,
+    "private_input_accessed": false,
+    "qualification": "Public license capacity only; no h215 or performance acceptance.",
+    "compute_identity": {
+      "job_id": "2228385",
+      "step_id": "0"
+    },
+    "gurobi_version": [
+      13,
+      0,
+      3
+    ],
+    "solver_status_code": 2,
+    "objective_value": 2001
+  },
+  "assessment": "Reported public LP capacity accepted in the default Gurobi environment used by APPSI, with the known objective 2001; source identity and terminal accounting remain to be received.",
+  "qualification_state": "public_capacity_accepted_operational_closure_pending",
+  "private_h215_execution_admitted": false,
+  "old_claim_restart_admitted": false,
+  "original_gurobi_job_preserved": "2228189",
+  "independent_scip_job_preserved": "2228192",
+  "scientific_or_performance_result": false,
+  "license_contents_accessed_or_uploaded": false,
+  "next_action": "Read only source-identity.txt, public-file/report hashes and sacct for 2228385; no solver or scheduler submission. Keep PR143 draft until closure is reviewed, then request its own merge authorization."
+}
