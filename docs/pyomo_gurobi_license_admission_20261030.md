@@ -1,20 +1,28 @@
 # Pyomo Gurobi license admission repair — 30 October 2026
 
-## Reported NPAD public capacity result
+## Accepted NPAD public license qualification
 
-The researcher supplied an accepted receipt for job2228385/step0 on
-30 October 2026: Gurobi13.0.3, native status2, 2001 variables/2001 rows and
-objective2001.0, with no private input access. Both public-file checksum
-checks were reported successful. The planned source was
-`fe37669c24895a0bb2a45ff18e99ae7028722c2f`; its five Linux GitHub checks
-passed, including315 Pyomo tests and1715 full native tests without skips.
+The researcher supplied complete records for public job **2228385**, step **0**,
+on 30 October 2026. Gurobi **13.0.3** returned native status **2** and objective
+**2001.0** for the public LP with **2001 variables and 2001 rows**. The process
+default environment is the route used by APPSI; no private input was accessed.
 
-This is positive license-capacity evidence for the process default environment.
-The original report's byte hash, source-identity file and terminal Slurm
-accounting have not yet been supplied. The [reported receipt](evidence/pyomo_gurobi_license_public_2228385_reported.json)
-preserves that distinction. Keep the PR in draft until those existing records
-are read and reviewed, then request its own merge authorization. No public
-resubmission or private h215 start is admitted by this result.
+The source-identity file selects
+`fe37669c24895a0bb2a45ff18e99ae7028722c2f`, and both public-file SHA-256s
+match the pinned recipe. Reconstructing the posted JSON with the producer's
+serialization matches its supplied original-file hash
+`a2a8aaa52f262f7cee2829efb19736973146653ce51b7d8b1dd33f480e2d3223`.
+Root, batch, extern and step all report **COMPLETED, 0:0, 3 seconds**, with
+one CPU. These are researcher-supplied records, not direct NPAD file access;
+the short public probe is not a scientific runtime or memory comparison.
+
+The [closed public receipt](evidence/pyomo_gurobi_license_public_2228385_reported.json)
+therefore supports both license capacity and operational closure. Its executed
+source passed five GitHub checks, including **315 Pyomo tests** and **1715 full
+native tests** without skips. Subsequent commits record evidence/documentation
+only. Finish exact-head checks, mark the correction ready and request its own
+merge authorization. No public resubmission or private h215 start is admitted.
+The original Gurobi failure and the independent SCIP arm remain preserved.
 
 Job 2228189 did not produce a numerical Gurobi result. Its original worker
 trace ends in `GurobiError: Model too large for size-limited license` at
@@ -69,8 +77,8 @@ it is not a positive NPAD qualification or a license-file test.
 The original job's traceback does not retain a numeric error code; 10010 is
 observed only in the separate local negative control. Windows cannot execute
 the Linux `/proc` cold-worker controls or import Unix `resource`; Linux CI
-covers the related controls. The reported compute-node LP capacity result is accepted; its original source
-identity and terminal accounting remain pending before closing target qualification.
+covers the related controls. The compute-node LP capacity, source identity and terminal accounting are now
+accepted for this bounded public license qualification; no private admission follows.
 
 No mathematical builder, adapter, model/data file, parameter/seed contract,
 validator, original source or evidence package changes in this repair.
