@@ -1,5 +1,24 @@
 # Model Agrologistic: agent working agreement
 
+## Current resumption and comparison deliverable — 30 October 2026
+
+The researcher explicitly resumes after the historical pause below, requesting
+read-only collection of original qualification job2227480, never resubmission.
+Supplied sacct shows root/batch/extern/step COMPLETED0:0 in76s with4CPUs.
+This is scheduler closure; test counts/result.json and CBC capability remain
+pending original receipt review. Preserve source57204e0b/planceeb6d10/claim.
+Keep Gurobi/SCIP; cancel only CBC h215 if its actual NPAD receipt rejects threads.
+Do not infer CBC Linux capability from Windows or zero scheduler exit alone.
+Keep PR141 DRAFT until full qualification review and its own merge approval.
+No agent NPAD access, solver invocation, automatic retry or private job release.
+Read docs/checkpoints/20261030_resume_pr141.json. At campaign completion, deliver
+both comparative CONFIGURATION and RESULT tables, with effective parameters,
+seed/default-strategy qualifications, input/matrix identity, gaps, original
+validation, timing/resource scopes, and negative/censored/cancelled cases.
+Separate new common-Pyomo and historical native-reference cohorts; preserve
+HiGHS without restart. Local CLI remains autonomous; NPAD stays human-only.
+
+
 ## Current explicit pause — 29 October 2026
 
 The researcher requests a saved checkpoint/continuation plan and then a pause.

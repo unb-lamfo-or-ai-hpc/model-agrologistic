@@ -1,3 +1,18 @@
+# Resumed: qualification2227480 terminal; original result pending — 30 October 2026
+
+The researcher supplies sacct for public job2227480: root/batch/extern/step
+COMPLETED0:0,76s,4CPUs. Original result.json/test counts/CBC capability have not
+yet been supplied after completion. Read-only original receipt/log collection
+is the next human NPAD step; never repeat submission. PR141 remains DRAFT,
+with no merge approval or private h215 admission. Keep Gurobi and SCIP; cancel
+only CBC h215 if the actual NPAD thread-capability receipt rejects threads.
+At campaign completion, deliver comparative solver-configuration and outcome
+tables including effective settings/seed semantics, gaps/validation and honest
+runtime/resource/negative-outcome scopes. Keep historical native and new common
+Pyomo cohorts distinguishable; preserve the accepted HiGHS observation.
+See [resumption checkpoint](docs/checkpoints/20261030_resume_pr141.json).
+The dated pause below is historical and is superseded by this explicit resume.
+
 # Paused: PR141 qualification submitted, outcome unknown — 29 October 2026
 
 At the researcher's explicit request, save the checkpoint and pause. Public
