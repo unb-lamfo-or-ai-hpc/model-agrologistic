@@ -1,5 +1,21 @@
 # Model Agrologistic: agent working agreement
 
+## Current accepted Gurobi license-v2 public qualification — 30 October 2026
+
+Human original receipts for job2228483/source6983f76f/planed4a7deb report
+355tests passed,0failures/errors/skips, source/originals verified after and
+fresh default-environment license capacity accepted. All Slurm records are
+COMPLETED/0:0. Read docs/evidence/pyomo_gurobi_qualification_2228483.json.
+The qualified source passed all5CI checks,352Pyomo and1752full native tests
+with zero skips. Final documentation/evidence commits do not change executable
+bytes; verify that closure and final exact-head CI before Ready. Request
+PR145's OWN explicit merge authorization, then provide one pinned human start
+for the new license-v2 claim. No private start has occurred. Original2228189,
+all predecessor claims/archives and SCIP2228192 remain preserved. Latest human
+SCIP snapshot RUNNING03:06:56,step03:06:52; no terminal result is inferred.
+B3/D2 continue independently in PR144. All previous scientific/resource/seed
+settings and human-only NPAD/every-merge approval boundaries remain in force.
+
 ## Current priority: fresh Gurobi Pyomo claim — 30 October 2026
 
 The researcher requests priority preparation of one new Gurobi/Pyomo h215 W

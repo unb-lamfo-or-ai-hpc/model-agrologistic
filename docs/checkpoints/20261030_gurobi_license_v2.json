@@ -2,7 +2,7 @@
   "schema_version": "gurobi-pyomo-fresh-license-v2-checkpoint",
   "date": "2026-10-30",
   "baseline": "c80dca69c247753d49f06925ec712fcd43bb5a56",
-  "status": "preparing_exact_source_public_qualification",
+  "status": "NPAD_public_qualification_accepted_pending_final_review_and_own_merge",
   "original_job": "2228189",
   "original_archive_sha256": "1e39227e78f6350e27243917808a81c1d550b92c1800ef170220e0b527bb8839",
   "original_plan_sha256": "909390ed9980f69337786a4411eb55d32faa5c396d47527c5cdcbe69baa399fa",
@@ -15,8 +15,8 @@
   "latest_human_scip_snapshot": {
     "job_id": "2228192",
     "state": "RUNNING",
-    "elapsed": "02:41:30",
-    "step_elapsed": "02:41:26",
+    "elapsed": "03:06:56",
+    "step_elapsed": "03:06:52",
     "allocated_cpus": 24,
     "step_cpus": 16
   },
@@ -28,5 +28,21 @@
   },
   "scientific_runtime_src_unchanged": true,
   "editorial_pr": 144,
-  "next_owner": "Codex completes Linux CI; researcher executes the pinned short NPAD public control, then separate merge approval and fresh private start."
+  "next_owner": "Codex finishes exact-head review/CI, asks the researcher to authorize PR145 merge, then supplies the pinned new-claim h215 start. NPAD remains human-only.",
+  "qualification_job": "2228483",
+  "plan_sha256": "ed4a7debd595d139cd25fdbcb5b07e8a6976c88ff3527691060d3b4957822749",
+  "qualified_source": "6983f76fbd0b36fa7ac5cd589dd451f3f71d2147",
+  "public_tests": {
+    "tests": 355,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "license_capacity_accepted": true,
+  "CI_on_qualified_source": {
+    "all_five_checks_passed": true,
+    "pyomo_tests": 352,
+    "full_native_tests": 1752,
+    "skipped": 0
+  }
 }

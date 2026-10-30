@@ -106,3 +106,25 @@ the researcher's separate current request authorizes preparation of this new
 Gurobi attempt. Every NPAD command stays manual, every merge separately
 authorized, and final publication remains outside this package.
 
+
+## Accepted public qualification — 30 October 2026
+
+The researcher supplies job2228483 at exact source6983f76f:
+355tests,0failures/errors/skips, source and originals verified after, and a
+fresh accepted2001-variable/constraint Gurobi default-environment proof.
+Slurm root/batch/extern/step are COMPLETED/0:0 in36/36/36/35seconds.
+[Original reported receipts and hashes](evidence/pyomo_gurobi_qualification_2228483.json)
+are retained as parsed human evidence. Reconstructing the reported result and
+license JSON with the producer's serialization matches both supplied file
+hashes; the raw plan/XML were not independently fetched from NPAD.
+
+All five checks on6983f76f passed. The Pyomo job passed352tests with zero
+skips and separately collected the exact355-test NPAD manifest; the complete
+native suite passed1752tests with zero skips. The focused native cohort
+passed409tests. LocalWindows skips are not used as acceptance evidence.
+
+Later commits in this PR contain only documentation/evidence. Verify that
+their src/scripts/tests bytes match6983f76f and complete exact-head required
+CI before Ready. The next gate is this PR's explicit merge approval, followed
+by one pinned human start in the new license-v2 claim. No original start,
+private instance, repeat or automatic follow-on has occurred.

@@ -1,0 +1,91 @@
+{
+  "schema_version": "pyomo-gurobi-license-requalification-2228483-reported-v1",
+  "date": "2026-10-30",
+  "provenance": "Researcher-supplied original NPAD CLI JSON/checksums and Slurm accounting; no agent cluster access or independently fetched raw XML/plan.",
+  "source_commit": "6983f76fbd0b36fa7ac5cd589dd451f3f71d2147",
+  "claim": ".mvp2-pyomo-gurobi-license-qualification-v1",
+  "job_id": "2228483",
+  "file_sha256": {
+    "plan.json": "ed4a7debd595d139cd25fdbcb5b07e8a6976c88ff3527691060d3b4957822749",
+    "result.json": "4fcf73800bcf07a753c745e14686ed652ad6bf9d50eb7b4fd04f0e635dd06b35",
+    "qualification.xml": "1bf5febb40adc2c3973d6b47cb18701c7d58f39cd3c21c93fc8ac0d5f376e402",
+    "license-capability.json": "420702ce04bdf484a3db880c8599debceba0c5a94253e9d1f1a3a3c414ce7343"
+  },
+  "faithful_result_and_license_JSON_reconstruction_matches_reported_sha256": true,
+  "result": {
+    "source_commit": "6983f76fbd0b36fa7ac5cd589dd451f3f71d2147",
+    "job_id": "2228483",
+    "plan_sha256": "ed4a7debd595d139cd25fdbcb5b07e8a6976c88ff3527691060d3b4957822749",
+    "pytest_exit": 0,
+    "counts": {
+      "tests": 355,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "status": "accepted",
+    "source_verified_after": true,
+    "preserved_originals_verified_after": true,
+    "failed_tests": [],
+    "public_license_capacity_accepted": true,
+    "private_h215_execution_admitted": false
+  },
+  "license": {
+    "schema_version": "pyomo-gurobi-default-license-v1",
+    "created_at_utc": "2026-10-30T16:58:09.215463+00:00",
+    "status": "accepted",
+    "large_model_construction_allowed": true,
+    "environment_scope": "gurobipy_default_environment_as_used_by_appsi",
+    "probe_variable_count": 2001,
+    "probe_constraint_count": 2001,
+    "private_input_accessed": false,
+    "qualification": "Public license capacity only; no h215 or performance acceptance.",
+    "compute_identity": {
+      "job_id": "2228483",
+      "step_id": "0"
+    },
+    "gurobi_version": [
+      13,
+      0,
+      3
+    ],
+    "solver_status_code": 2,
+    "objective_value": 2001
+  },
+  "accounting": [
+    {
+      "job_id": "2228483",
+      "state": "COMPLETED",
+      "elapsed_seconds": 36,
+      "exit_code": "0:0",
+      "max_rss_raw": null,
+      "allocated_cpus": 4
+    },
+    {
+      "job_id": "2228483.batch",
+      "state": "COMPLETED",
+      "elapsed_seconds": 36,
+      "exit_code": "0:0",
+      "max_rss_raw": "8816K",
+      "allocated_cpus": 4
+    },
+    {
+      "job_id": "2228483.extern",
+      "state": "COMPLETED",
+      "elapsed_seconds": 36,
+      "exit_code": "0:0",
+      "max_rss_raw": "928K",
+      "allocated_cpus": 4
+    },
+    {
+      "job_id": "2228483.0",
+      "state": "COMPLETED",
+      "elapsed_seconds": 35,
+      "exit_code": "0:0",
+      "max_rss_raw": "217728K",
+      "allocated_cpus": 4
+    }
+  ],
+  "qualification": "Public software/license acceptance only; not h215 numerical performance or private-execution admission.",
+  "original_start_repeated": false
+}
