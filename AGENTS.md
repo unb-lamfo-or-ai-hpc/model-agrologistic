@@ -1,5 +1,26 @@
 # Model Agrologistic: agent working agreement
 
+## Current researcher-requested pause — 30 October 2026
+
+The researcher requests PAUSE after recording the latest cartographic corrections
+and Appendix E scope. Read docs/checkpoints/20261030_pause_appendix_E.md first on
+resume. These changes are pending; no corrected atlas or Appendix E is claimed.
+Next: distinguish Export ports with a different vector symbol; use the exact
+annotation “OSRM road route not depicted”; capitalize Federative Units (UF);
+remove the visible Albers wording and explain the projection in following prose.
+Keep article maps individual. Add Appendix E with individual maps, opened/
+expanded/bulk-handling warehouse lists, and source-bound original solution OD
+flows with exact frozen OSRM distances for each accepted reported configuration.
+Do not confuse gap-qualified solutions with exact optima, activation with capacity
+or use, or distance matrices with route geometry. h500's current reconstructed
+snapshot is investment-only; bind its original flows/distances before OD export.
+
+PR146 is merged into PR144 at96fcebb1. PR144 remains Draft. Latest human SCIP2228192
+snapshot is RUNNING06:53:11,step06:53:07; no terminal result or new action. Gurobi2228514
+original evidence is accepted in PR142. Preserve all originals, never repeat start.
+Stop after saving this checkpoint; resume only when the researcher returns.
+Every NPAD action is human-only; every merge requires explicit approval.
+
 ## Current IBGE cartography and bounded editorial qualification — 30 October 2026
 
 PR146 is a separate functional increment stacked on PR144. It adds verified IBGE
