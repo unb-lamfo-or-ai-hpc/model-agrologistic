@@ -1,5 +1,27 @@
 # Model Agrologistic: agent working agreement
 
+## Current scientific/editorial revision — 30 October 2026
+
+The researcher supplies a new 01.01 mandate and two annotated historical PDFs.
+Read docs/editorial_revision_blueprint_20261030.md first: all24 annotations have
+individual dispositions; B3/D2 advance independently of X3. Preserve approved
+title/literal RQ, SO1–SO4, Rosa attribution, model/data/solver settings, original
+evidence and the19-page AppendixA PDF. Publication prose is for journal readers.
+Keep author decisions, hashes, meetings, job/PR administration and CBC capability
+only in technical GitHub records. Show actual numerical input coverage without
+claiming public reproduction of unavailable processed/registry bytes.
+PR143 is explicitly authorized and merged atc80dca69; public license proof is
+accepted, not a new h215 admission. Keep PR142's original failure audit and
+SCIP2228192 independent; its latest supplied RUNNING snapshot is not terminal.
+No new HPC experiment or solver/formulation change under this editorial mandate.
+A separately qualified new Gurobi package/claim remains a distinct operational
+follow-up. Every NPAD action is manual, every merge separately authorized.
+No native GUI, new local clone/environment or temporary cloud PDF; local CLI is
+autonomous in approved temporary directories. Final PDFs follow authorized main
+integration through Quarto/Pages. Keep this editorial package DRAFT until B3/D2/
+A2 acceptance, scientific author decisions and proportionate final checks.
+This current section supersedes conflicting historical editorial snapshots.
+
 ## Current closed public license qualification — 30 October 2026
 
 The researcher supplied complete existing records for public job 2228385,

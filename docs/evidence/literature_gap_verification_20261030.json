@@ -1,0 +1,109 @@
+{
+  "schema_version": "literature-gap-verification-increment-v1",
+  "date": "2026-10-30",
+  "baseline_commit": "c80dca69c247753d49f06925ec712fcd43bb5a56",
+  "retained_inventory": "docs/evidence/editorial_reference_inventory_20261028.json",
+  "retained_main_records": 36,
+  "main_cited_records": 33,
+  "retained_review_method_records": 2,
+  "all_38_full_texts_read": false,
+  "all_bibliographic_metadata_verified": false,
+  "new_citation_inserted": false,
+  "access_rule": "Reading a preview or abstract cannot establish absence of a method, metric or experiment in the full text.",
+  "sources": [
+    {
+      "key": "essien2018",
+      "doi": "10.1016/j.compag.2018.02.019",
+      "url": "https://ugspace.ug.edu.gh/server/api/core/bitstreams/ba3cff00-501e-4c12-aba8-011fe3e7ccb0/content",
+      "access": "institutional_full_text_read",
+      "locators": "Sections 2.1.1–2.2, pp.127–129; Tables 1–4, pp.129–130",
+      "model": "Integrated grain-storage decision support with location, transport, forecasting and goal programming.",
+      "uncertainty": "Forecasting is included; this reading does not establish an equivalent two-stage investment/recourse design.",
+      "method": "Weighted goal formulation, prescribed number of selected sites; GAMS 24.8.3 and associated tools.",
+      "scale_quality_resources": "Ghana case and network alternatives; report only directly extracted quantities, not inferred metric omissions.",
+      "gap_implication": "Grain-storage network location and integrated decision support are established; acknowledge this precedent.",
+      "pending": "Compare investment/recourse structure and exact reported computational metrics against current extensive-form scope."
+    },
+    {
+      "key": "reis2023",
+      "doi": "10.3390/logistics7030049",
+      "url": "https://www.mdpi.com/2305-6290/7/3/49",
+      "access": "publisher_full_text_available_targeted_sections_reread",
+      "locators": "Sections 3.1–3.2, 4.2, 6.1 and 7; Table 8",
+      "model": "Two-stage stochastic linear tactical soybean planning; first-stage grain and transport contracts, operational recourse.",
+      "uncertainty": "Purchase/selling prices, foreign demand and crop failure; 243 scenarios reported.",
+      "method": "AIMMS 4.82, CPLEX 20.1; primal/dual simplex and barrier comparison.",
+      "scale_quality_resources": "1,987,225 variables and 2,288,220 constraints; 2.70 GHz i7-7500/8 GB; barrier reported as 1 min 24 s. This is an LP, not the present location MILP.",
+      "gap_implication": "Large stochastic agricultural models and algorithm/runtime comparisons already exist. No universal absence claim or cross-paper speed ratio.",
+      "pending": "Read numerical tables/units and the remaining formulation in full before a comprehensive comparative literature table."
+    },
+    {
+      "key": "gholamian2017",
+      "doi": "10.1016/j.compag.2017.05.038",
+      "url": "https://www.sciencedirect.com/science/article/pii/S016816991630919X",
+      "access": "publisher_preview_only",
+      "locators": "Abstract and available section previews",
+      "model": "Integrated wheat supply-chain planning, silo/network and logistics decisions.",
+      "gap_implication": "Direct strategic/operational precedent; cannot infer missing gap/resource reporting from preview.",
+      "pending": "Full text: sets, location/capacity decisions, uncertainty, algorithm, matrix dimensions, quality and resources."
+    },
+    {
+      "key": "hosseini2020",
+      "doi": "10.1016/j.compag.2019.105095",
+      "url": "https://www.sciencedirect.com/science/article/pii/S0168169919315479",
+      "access": "prior_20261028_ledger_publisher_preview_not_new_full_text",
+      "gap_implication": "Uncertain wheat-network design is already established.",
+      "pending": "Full-text verification of uncertainty, investment, quality and computational assessment."
+    },
+    {
+      "key": "shastri2011",
+      "doi": "10.1016/j.compag.2011.01.006",
+      "url": "https://experts.illinois.edu/en/publications/a-novel-decomposition-and-distributed-computing-approach-for-the-/",
+      "access": "institutional_abstract_only",
+      "model": "Agricultural biomass MILP decomposition and distributed computing.",
+      "gap_implication": "Computational solution methods in agriculture precede this study; no claim of first HPC/scalability treatment.",
+      "pending": "Full text, algorithm assumptions, bounds/gaps, resources and timing scope."
+    },
+    {
+      "key": "rosa2026thesis",
+      "access": "prior_ledger_defense_abstract_only_full_thesis_comparison_pending",
+      "model": "The manuscript's acknowledged mathematical foundation.",
+      "gap_implication": "The article must delimit empirical and methodological additions to the thesis.",
+      "pending": "Author-verified thesis/model/result overlap; no thesis-level novelty conclusions from an abstract."
+    },
+    {
+      "key": "rosa2025",
+      "doi": "10.1590/1806-9649-2025v32e4925",
+      "access": "prior_ledger_open_text_identified_not_reread_this_pass",
+      "gap_implication": "Preserve the original systematic review and use it to prioritize close precedents.",
+      "pending": "Resolve original search date/count chronology with authors; retain the original PDF."
+    },
+    {
+      "key": "nourbakhsh2016_candidate",
+      "doi": "10.1016/j.biosystemseng.2016.08.011",
+      "url": "https://www.sciencedirect.com/science/article/pii/S1537511016304767",
+      "access": "publisher_preview_and_institutional_metadata",
+      "inventory_disposition": "candidate_for_full_text_review_not_added_to_retained_38_or_bibliography",
+      "model": "Grain network design, preprocessing facility location, transport/infrastructure investment and post-harvest losses.",
+      "locators": "Publisher abstract/highlights; Essien reference list; Biosystems Engineering 151,105–115",
+      "gap_implication": "Close precedent for infrastructure and grain logistics, requiring review before finalizing the gap.",
+      "pending": "Obtain full text and record formulation, uncertainty, numerical quality and computational scope."
+    }
+  ],
+  "journal": {
+    "url": "https://www.sciencedirect.com/journal/computers-and-electronics-in-agriculture/publish/guide-for-authors",
+    "access": "official_guide_read_in_Codex_in_app_tab_20261030",
+    "requirements_rechecked": [
+      "Abstract maximum 250 words",
+      "One to seven English keywords",
+      "Separate editable highlights file: three to five bullets, each at most 85 characters including spaces",
+      "Editable Word or LaTeX source; PDF alone is insufficient",
+      "Editable, consecutively numbered and text-cited tables",
+      "Cited and captioned supplements, published as supplied",
+      "Data deposit/citation or a reason for non-sharing; availability statement",
+      "AI disclosure, author contribution/funding/conflict declarations and author approval"
+    ],
+    "scope_risk": "Existing-software application alone is insufficient; articulate a distinctive agricultural-computing contribution.",
+    "template_note": "Research-article requirements must not be confused with the shorter application-note limit. No unverified mandatory template migration is proposed."
+  }
+}
