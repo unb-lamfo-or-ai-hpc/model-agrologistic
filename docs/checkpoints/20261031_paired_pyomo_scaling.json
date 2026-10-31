@@ -1,0 +1,86 @@
+{
+  "automatic_follow_on_allowed": false,
+  "automatic_private_start_allowed": false,
+  "base_develop": "dd92b95762084e4e8fa934ca4b1f238337bebce7",
+  "bash_syntax": "Exact final wrapper passed bash -n; nothing executed",
+  "branch": "ops/pyomo-gurobi-highs-progressive-20261031",
+  "cells": 90,
+  "date": "2026-10-31",
+  "editorial_commit": "3816578394f5c41d1eebb5f91141e5c6be85486a",
+  "editorial_pr": 144,
+  "highs_parallel": "on",
+  "local_new_controls": {
+    "failures": 0,
+    "passed": 105,
+    "skip_reason": "Local Gurobi license unavailable; error code10009. No NPAD acceptance inferred.",
+    "skipped": 6
+  },
+  "local_related_regression": {
+    "failed_control": "tests/test_pyomo_campaign_contract.py::test_real_public_native_settings_match_operational_contract[gurobi]",
+    "failure_reason": "Existing local Gurobi license unavailable; preserve result, qualify with license on NPAD.",
+    "failures": 1,
+    "passed": 259,
+    "skipped": 34
+  },
+  "mip_gap_target": 0.01,
+  "native_seconds": 28800,
+  "next_owner": "Researcher: execute only the separately pinned public NPAD qualification. Codex: audit receipts/CI before requesting merge.",
+  "original_archives": "read only and preserved",
+  "original_input_preflight": {
+    "native_modules_loaded": [],
+    "new_optimization_performed": false,
+    "populations": [
+      300,
+      400,
+      500
+    ],
+    "report": "docs/evidence/paired_pyomo_scaling_input_preflight_20261031.json",
+    "status": "accepted_original_bindings"
+  },
+  "original_scientific_native_sources": "unchanged; common Pyomo algebra/bounds unchanged; explicit parallel option/readback and HiGHS counters added",
+  "populations": [
+    300,
+    400,
+    500
+  ],
+  "private_jobs_submitted": 0,
+  "profile": {
+    "allocated_logical_cpus_requested": 24,
+    "build_input_seconds_per_arm": 7200,
+    "contingency_seconds": 1800,
+    "exclusive_node_requested": true,
+    "expanded_transfer_bytes": 4294967296,
+    "late_return_export_seconds_per_arm": 1800,
+    "max_regular_members": 4096,
+    "memory_mib": 196608,
+    "native_time_limit_seconds_per_arm": 28800,
+    "setup_cleanup_seconds": 1800,
+    "slurm_wall_seconds": 43200,
+    "step_seconds": 39600,
+    "validation_seconds_per_arm": 1800,
+    "worker_affinity_logical_cpus": 16
+  },
+  "public_npad_expected_controls": 111,
+  "public_npad_status": "not_executed_pending_human_cli",
+  "pyomo_build_model_ast_unchanged": true,
+  "raw_packages_uploaded": false,
+  "repetitions": [
+    1,
+    2,
+    3
+  ],
+  "ruff": "passed",
+  "schema_version": "paired-pyomo-scaling-preparation-checkpoint-v1",
+  "seed": 42,
+  "solvers": [
+    "gurobi",
+    "highs"
+  ],
+  "threads": [
+    1,
+    2,
+    4,
+    8,
+    16
+  ]
+}

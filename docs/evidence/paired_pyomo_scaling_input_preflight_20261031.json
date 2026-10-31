@@ -1,0 +1,123 @@
+{
+  "native_modules_loaded": [],
+  "records": [
+    {
+      "estimate": {
+        "base_routes_dc": 4800,
+        "base_routes_dd": 36000,
+        "base_routes_oc": 0,
+        "base_routes_od": 4440,
+        "emergency_capacity_variables": 324000,
+        "flow_variables": 24429600,
+        "inventory_variables": 324000,
+        "investment_variables": 784,
+        "period_count": 60,
+        "repair_routes_dc": 0,
+        "repair_routes_dd": 0,
+        "repair_routes_oc": 0,
+        "repair_routes_od": 0,
+        "routes_dc": 4800,
+        "routes_dd": 36000,
+        "routes_oc": 0,
+        "routes_od": 4440,
+        "scenario_count": 9,
+        "total_variables": 25107544,
+        "unmet_demand_variables": 29160
+      },
+      "input_hashes": {
+        "materialization": "644567aa884296d23629fb4e84befc8accdf19dcf0c8feb7e3c7747ce41e914d",
+        "order": "7a524b2ed69b41481264d8049842b37e27cd3b96cc20d4e96d98eaf2a39e7903",
+        "population": "4134147f45188d2e8722476dd325b40e584c3746affe99889e045a547d283505",
+        "workbook": "7761cce77cf93dcba2f617714f0117c1f2ead4de0c3f27149daceba447e0c7d1"
+      },
+      "original_certificate_bindings": {
+        "loader_sha256": "50619925e726d6c0a0afaf65bd962c44eef55499043c5f1ed28b05ae4436c635",
+        "mathematical_contract_sha256": "709c0a55608de197c7d280949f04e31b0cd6b1019bef162fcd2184c083c113f8",
+        "model_sha256": "d66a64b13e5c56d7c0cf0b8f04204950986dcd2b1781b23478fc71938a1eb70f",
+        "scenario_probabilities_sha256": "7980996471c6559a9c522f31eaa858ac5e3f95cee4a4c00f0c9fc6081018c2af",
+        "warehouse_selection_sha256": "d5609de482fb0b6a3c060c94254c217c0677d8e5c0c4422a0475f32699f11b33",
+        "workbook_sha256": "7761cce77cf93dcba2f617714f0117c1f2ead4de0c3f27149daceba447e0c7d1"
+      },
+      "population": 300
+    },
+    {
+      "estimate": {
+        "base_routes_dc": 6400,
+        "base_routes_dd": 64000,
+        "base_routes_oc": 0,
+        "base_routes_od": 5920,
+        "emergency_capacity_variables": 432000,
+        "flow_variables": 41212800,
+        "inventory_variables": 432000,
+        "investment_variables": 984,
+        "period_count": 60,
+        "repair_routes_dc": 0,
+        "repair_routes_dd": 0,
+        "repair_routes_oc": 0,
+        "repair_routes_od": 0,
+        "routes_dc": 6400,
+        "routes_dd": 64000,
+        "routes_oc": 0,
+        "routes_od": 5920,
+        "scenario_count": 9,
+        "total_variables": 42106944,
+        "unmet_demand_variables": 29160
+      },
+      "input_hashes": {
+        "materialization": "a4ca64408f7e4b374533cbf5d961c13a8ab7aa963f1fbfdec58dd0b925671471",
+        "order": "7a524b2ed69b41481264d8049842b37e27cd3b96cc20d4e96d98eaf2a39e7903",
+        "population": "4134147f45188d2e8722476dd325b40e584c3746affe99889e045a547d283505",
+        "workbook": "c3085456997714ef5a8bdbf61e2c9a5e578c2636003947427cf58933d21ceb13"
+      },
+      "original_certificate_bindings": {
+        "loader_sha256": "50619925e726d6c0a0afaf65bd962c44eef55499043c5f1ed28b05ae4436c635",
+        "mathematical_contract_sha256": "44210fee10f3eaee94d9682c9fa9d76a630aa56c38d552caaa420ad82e806e31",
+        "model_sha256": "d66a64b13e5c56d7c0cf0b8f04204950986dcd2b1781b23478fc71938a1eb70f",
+        "scenario_probabilities_sha256": "7980996471c6559a9c522f31eaa858ac5e3f95cee4a4c00f0c9fc6081018c2af",
+        "warehouse_selection_sha256": "7b4a42c3f1747dbf5d4db0dbdc555221066f7043b12f5a610cb21d0aefe96fcc",
+        "workbook_sha256": "c3085456997714ef5a8bdbf61e2c9a5e578c2636003947427cf58933d21ceb13"
+      },
+      "population": 400
+    },
+    {
+      "estimate": {
+        "base_routes_dc": 8000,
+        "base_routes_dd": 100000,
+        "base_routes_oc": 0,
+        "base_routes_od": 7400,
+        "emergency_capacity_variables": 540000,
+        "flow_variables": 62316000,
+        "inventory_variables": 540000,
+        "investment_variables": 1184,
+        "period_count": 60,
+        "repair_routes_dc": 0,
+        "repair_routes_dd": 0,
+        "repair_routes_oc": 0,
+        "repair_routes_od": 0,
+        "routes_dc": 8000,
+        "routes_dd": 100000,
+        "routes_oc": 0,
+        "routes_od": 7400,
+        "scenario_count": 9,
+        "total_variables": 63426344,
+        "unmet_demand_variables": 29160
+      },
+      "input_hashes": {
+        "materialization": "997d84446de2b6987cd4af0e07e11b2367efd479ad1a4ae3d50cac95e5c4f19a",
+        "order": "7a524b2ed69b41481264d8049842b37e27cd3b96cc20d4e96d98eaf2a39e7903",
+        "population": "4134147f45188d2e8722476dd325b40e584c3746affe99889e045a547d283505",
+        "workbook": "888fbff42e4f80817d4d5f0101049495c86c6ed4cda75f00813779dadab41515"
+      },
+      "original_certificate_bindings": {
+        "loader_sha256": "50619925e726d6c0a0afaf65bd962c44eef55499043c5f1ed28b05ae4436c635",
+        "mathematical_contract_sha256": "fb3715ff6b456f2e5b306e988df160b1624de424dd67625fc0dfdac142c88280",
+        "model_sha256": "d66a64b13e5c56d7c0cf0b8f04204950986dcd2b1781b23478fc71938a1eb70f",
+        "scenario_probabilities_sha256": "7980996471c6559a9c522f31eaa858ac5e3f95cee4a4c00f0c9fc6081018c2af",
+        "warehouse_selection_sha256": "13d94990e680c9e95b93707761134019b8cd9f78c69232448afb3201e1d46e70",
+        "workbook_sha256": "888fbff42e4f80817d4d5f0101049495c86c6ed4cda75f00813779dadab41515"
+      },
+      "population": 500
+    }
+  ],
+  "scope": "Read-only original workbook/selection/scenario/contract preflight; no model allocation, solver or HPC"
+}

@@ -1,3 +1,30 @@
+## Current paired Pyomo scaling preparation — 31 October 2026
+
+The researcher selects common Pyomo for Gurobi and HiGHS, seed42, explicit
+HiGHS1.15.1 parallel=on and progressive h300/h400/h500 qualification. Read
+[the operational protocol](docs/experiments/paired_pyomo_scaling_20261031.md).
+Prepare90fresh cells (2solvers/3populations/5thread ceilings/3temporal repeats),
+with four1/16-thread pilots per population, immutable claims,8h native/12h job,
+fixed resources, paired algebra/bound identity and observed memory gates.
+No native Gurobi comparator, SCIP/CBC addition, old-claim retry or automatic
+submission/next-population promotion belongs to this prospective campaign.
+This preparation supersedes older no-HiGHS/repeat instructions only within the
+new qualified namespace; originals and all scientific inputs remain unchanged.
+
+The operational PR remains DRAFT pending111public NPAD controls with no skips,
+license/16CPU/exclusive-node proof, exact-source review and CI. Local Gurobi
+license failure is not NPAD acceptance. The researcher executes every NPAD
+command. Each merge still needs explicit approval. After its accepted merge,
+provide pinned manual pilot commands; neither software nor CI starts a campaign.
+Resource/profile changes require separate qualification and a new namespace.
+
+PR144 remains independent for B3/D2 and reader review. Its methodology/C4.1 now
+explain version-specific HiGHS parallelism, serial simplex inside MIP relaxations,
+configured ceilings versus actual use and fixed-seed limitations. Do not relabel
+old h215 parallel-search-off evidence or promise16-thread speedup. Keep original
+Appendix A and author decisions. Temporary outputs stay local; no raw HPC archive
+or preview PDF upload. Final publication and every main/develop merge stay gated.
+
 # Model Agrologistic: agent working agreement
 
 ## Current accepted Gurobi license-v2 public qualification — 30 October 2026
