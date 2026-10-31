@@ -445,6 +445,17 @@ record. In particular, the documented seed value 42 controls solver-specific
 pseudorandom choices; it does not supply the same starting incumbent across
 different optimizers.
 
+Parallelism is version specific. In HiGHS 1.15.1, the thread setting limits
+available workers, while `parallel="on"` enables parallel branch-and-bound
+exploration. It does not make every phase parallel: the release disables
+parallel simplex for the LP relaxations within MIP. Consequently, root-LP
+work can limit gains from additional threads. The retained h215 HiGHS
+observation used four threads with parallel tree search disabled; it remains
+distinct from the prospective parallel-search campaign. Appendix C explains
+these settings and their interpretation using the
+[versioned parallelism documentation](https://github.com/ERGO-Code/HiGHS/blob/v1.15.1/docs/src/parallel.md)
+and [release notes](https://github.com/ERGO-Code/HiGHS/releases/tag/v1.15.1).
+
 ## HPC experimental environment
 
 The experiments use NPAD/UFRN's Intel shared-memory infrastructure under Slurm

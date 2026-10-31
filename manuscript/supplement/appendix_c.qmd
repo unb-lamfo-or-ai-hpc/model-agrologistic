@@ -235,6 +235,41 @@ test correctness and operational behavior, but do not predict h215 runtime
 or memory. Large-instance interpretation must retain these formulation,
 interface and resource scopes.
 
+### C4.1 What parallel execution means in HiGHS 1.15.1
+
+A MILP solution involves several kinds of work. Presolve simplifies the model;
+an LP relaxation supplies a bound; branch-and-bound explores remaining
+integer decisions. Parallelism in one part does not imply parallel execution
+of the whole calculation.
+
+HiGHS 1.15.1 introduces a parallel MIP search. Setting `parallel="on"`
+allows several workers to explore the tree, including cuts and heuristics
+away from the root. Symmetry detection, clique-table queries and analytic-centre
+calculations also offer parallel work. However, parallel simplex is disabled
+for LP relaxations inside MIP in this release. The parallel capability of a
+standalone LP solver must therefore not be assumed for a MIP's root relaxation.
+These distinctions follow the
+[HiGHS 1.15.1 documentation](https://github.com/ERGO-Code/HiGHS/blob/v1.15.1/docs/src/parallel.md)
+and [release description](https://github.com/ERGO-Code/HiGHS/releases/tag/v1.15.1).
+
+The prospective common-Pyomo profile sets `threads` to 1, 2, 4, 8 or 16,
+`parallel="on"` and `random_seed=42`, with an eight-hour native limit and
+a 1% relative-gap target. Each calculation starts in a fresh process;
+requested options and values returned by the native solver are retained.
+A thread ceiling is not a measurement of active workers. Additional threads
+may provide little benefit when root-relaxation work dominates or memory
+bandwidth limits progress. Actual logs, CPU observations and elapsed times
+must support any parallel-performance claim.
+
+The completed h215 HiGHS observation belongs to a different execution profile:
+its log records four threads, one maximum search worker and parallel search
+off. Its accepted objective and bound remain valid, but its runtime cannot
+establish the performance of the prospective parallel profile. Fixing seed 42
+specifies solver-specific pseudorandom choices; it neither constructs a shared
+initial incumbent for Gurobi and HiGHS nor guarantees identical parallel
+trajectories. Repeated runs under that fixed seed quantify observed execution
+variation and do not represent independent random problem instances.
+
 ## C5 Checking a returned solution
 
 Independent validation reconstructs the fourteen cost components and evaluates
