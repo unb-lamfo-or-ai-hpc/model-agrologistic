@@ -10,7 +10,7 @@ import subprocess
 from pathlib import Path
 
 from src.visualization.cartography import prepare_context, read_context, with_context
-from src.visualization.render import render
+from src.visualization.render import PRESENTATION_VERSION, render
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -89,6 +89,13 @@ def build(destination, *, workflow=True, maps_only=False, boundary_database=None
     destination = Path(destination)
     destination.mkdir(parents=True, exist_ok=True)
     source_hashes = {}
+    for name in (
+        "src/visualization/render.py",
+        "src/visualization/cartographic_view.py",
+        "src/visualization/geography.py",
+        "scripts/build_s6a_assets.py",
+    ):
+        source_hashes[name] = sha(ROOT / name)
     boundary_source = ROOT / "data/cartography/ibge_2023_simplified.json.gz"
     context = json.loads(gzip.decompress(boundary_source.read_bytes()))
     database = boundary_database or ROOT / "manuscript/.cartography.sqlite3"
@@ -119,6 +126,7 @@ def build(destination, *, workflow=True, maps_only=False, boundary_database=None
                     if (
                         receipt["figure_sha256"] != definition["figure_sha256"]
                         or receipt.get("presentation") != "publication"
+                        or receipt.get("presentation_version") != PRESENTATION_VERSION
                         or bool(receipt.get("capacity_encoding")) != capacity
                     ):
                         raise ValueError("Existing geographic figure source differs")

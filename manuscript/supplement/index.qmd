@@ -169,3 +169,6 @@ all assumptions, reported results and conclusions.
 {{< include appendix_c.qmd >}}
 
 {{< include appendix_d.qmd >}}
+
+{{< include appendix_e.qmd >}}
+

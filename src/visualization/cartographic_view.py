@@ -12,7 +12,7 @@ LABELS = {
     "origin_soybean": "Soybean origins",
     "origin_corn": "Corn origins",
     "domestic": "Domestic destinations",
-    "export": "Export outlets",
+    "export": "Export ports",
     "existing": "Existing warehouses",
     "candidate": "Candidate sites",
     "opened": "Opened candidates",
@@ -155,7 +155,7 @@ def scene(definition, width, height, publication, capacity=False):
             {
                 "xy": xy((lon, lat)),
                 "color": node["color"],
-                "symbol": node["symbol"],
+                "symbol": STYLES[node["layer"]][1],
                 "size": 4.5 * unit,
                 "ids": [f["id"] for f in node["facilities"]],
             }
@@ -176,7 +176,7 @@ def scene(definition, width, height, publication, capacity=False):
         (
             35 * unit,
             64 * unit,
-            "Brazil and federative units | Albers equal-area display",
+            "Brazil and Federative Units (UF)",
             17 * unit,
         ),
     ]
@@ -208,7 +208,7 @@ def scene(definition, width, height, publication, capacity=False):
             (
                 35 * unit,
                 785 * unit,
-                "Investment locations; road-route geometry unavailable.",
+                "OSRM road route not depicted",
                 17 * unit,
             )
         )
@@ -269,7 +269,7 @@ def plotly_map(definition):
         layer="below",
     )
     for level, label, color, width in (
-        ("UF", "Federative units (IBGE 2023)", "#bdc3c7", 0.6),
+        ("UF", "Federative Units (UF; IBGE 2023)", "#bdc3c7", 0.6),
         ("country", "Brazil outline", "#777f82", 1.1),
     ):
         for f in [f for f in context["features"] if f["level"] == level]:

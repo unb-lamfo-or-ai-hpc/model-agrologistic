@@ -1,3 +1,28 @@
+## Current active revision — 31 October 2026
+
+The researcher resumed work. SCIP2228192 is terminal COMPLETED0:0; its original
+archive and255inventory hashes were verified. Native timelimit28800.308305s,
+zero solutions, no objective or computable gap. Preserve the original negative
+result; do not infer infeasibility or repeat start. Gurobi/SCIP ordered Pyomo
+matrix and exact h215W input/warehouse/network/scenario receipts agree.
+
+Read docs/checkpoints/20261031_scip_appendix_E.md. The five map corrections and
+AppendixE are implemented: distinct Export ports stars, exact OSRM annotation,
+Federative Units (UF), individual maps and projection explanation in following
+prose. Nine accepted solutions have source-bound investment lists; complete
+local flow-distance companions use exact frozen OSRM workbooks, includingh500.
+Full-resolution companions remain local under the existing data-rights gate.
+Original AppendixA, optimizer/input/solver code, old maps and archives remain
+preserved. Local110tests and19figure-design QA passed; no new HPC/solver/CI run.
+
+The article declaration uses “ChatGPT Codex with models 6.1 Sol and 6.0 Astra”.
+After completing bibliographic reconciliation, generate updated LOCAL working
+PDFs of both article and appendices and present them in Codex tabs, as requested.
+Do not claim this bibliographic/data/author review complete. PR144 remainsDraft;
+reconcile with newer develop/PR145 before final qualification. Every merge needs
+explicit approval; every NPAD command remains human-only. No new experiment.
+This active checkpoint supersedes the historical pause immediately below.
+
 ## Current researcher-requested pause — 30 October 2026
 
 The researcher requests PAUSE after recording the latest cartographic corrections

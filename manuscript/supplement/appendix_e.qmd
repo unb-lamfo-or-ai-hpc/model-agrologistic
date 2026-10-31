@@ -1,0 +1,104 @@
+# Appendix E. Geographic decisions and origin-destination flows
+
+## E1 Reading the geographic results
+
+The maps in this appendix locate the investments in each accepted planning
+solution. An orange circle denotes a candidate warehouse that is opened, a red
+square denotes an expansion, and a magenta diamond denotes conversion to bulk
+handling. Purple stars identify **export ports**. A warehouse can receive more
+than one investment, and different facilities can share coordinates. Their CDA
+identifiers remain separate in the investment tables even when symbols overlap.
+
+An opened candidate, installed capacity and operational use answer different
+questions. Opening is a binary investment decision; installed capacity is a
+quantity in tonnes; use is established by a positive exported flow. For an
+existing warehouse, the original availability flag does not signify a new
+opening. Likewise, the bulk-handling investment basis is not additional static
+storage. The tables distinguish candidate storage, static expansion and the
+basis used to calculate handling gains.
+
+The configuration summaries count positive investment quantities above
+$10^{-7}$ t. Binary activation flags and the original quantities are retained
+separately in the complete lists, allowing activation without material capacity
+to be distinguished from a positive investment. This display threshold does
+not replace the original feasibility tolerances.
+
+Each map is presented individually. All maps use the same national extent and
+IBGE boundary dataset, with attribution retained in the image. The paragraph
+following each figure explains its projection and interpretation. Companion
+capacity views use circle area proportional to added candidate plus expansion
+storage, measured in tonnes. Original facility coordinates are retained.
+
+The configurations comprise the deterministic and stochastic warehouse-only
+plans, the larger stochastic populations, the two h215 plans permitting direct
+origin-destination movements, and the accepted Pyomo solutions. The h300 runs
+with 1, 2, 4, 8 and 16 solver threads have byte-identical original warehouse,
+flow, inventory and shortage exports. Their common investment map and flow
+matrices are therefore represented by the single-thread vector; their runtime
+observations remain distinct. The eight-hour Pyomo/SCIP observation returned no
+usable incumbent and consequently supplies no investment map or flow matrix.
+
+## E2 From exported flows to sparse matrices
+
+Let $x^{k}_{ijpts}$ denote the exported tonnes on directed movement family $k$,
+from endpoint $i$ to endpoint $j$, for product $p$, period $t$ and scenario $s$.
+The full-resolution companion retains these indices and the original
+probability $\pi_s$. Its expected-horizon matrix is
+
+$$
+F^{k,p}_{ij}=\sum_{s\in S}\pi_s\sum_{t\in T}x^{k}_{ijpts}.
+$$
+
+For a deterministic solution there is one scenario with probability one. For
+the reported stochastic configurations, nine Cartesian supply-demand scenarios
+each have probability $1/9$. The aggregation sums transported tonnes over the
+original 60 monthly periods. It neither annualizes the quantities nor treats
+different scenarios as successive physical shipments.
+
+The paired distance matrix is $D^k_{ij}=d^k_{ij}$, where $d^k_{ij}$ is the OSRM
+road distance in kilometres in the exact processed workbook used by that
+configuration. Distances are joined by **movement family and directed endpoint
+identities**, never by the order of rows or by geographic proximity. A
+destination's domestic or export role is retained separately. Reversing a
+movement requires its own recorded distance. Distances are not summed when
+periods or scenarios are aggregated.
+
+The implementation's legacy family codes are OD for origin-warehouse, DD for
+warehouse-warehouse, DC for warehouse-destination, and OC for a direct
+origin-destination movement. Thus, the code OD does not mean a direct
+origin-customer movement. OC occurs only in the D configurations. The
+warehouse-only W configurations do not admit that movement family.
+
+The companions use coordinate-form sparse matrices: each row names the product,
+directed endpoints, movement family, expected tonnes and OSRM kilometres. The
+unaggregated companion also gives period, scenario, probability and original
+tonnes. This representation preserves the positive flows without printing
+large mostly empty rectangular arrays. Summing all movement families would
+double-count grain transported through successive network legs; domestic and
+export arrivals must instead be evaluated at their appropriate destinations.
+
+The original exporter omits flow magnitudes at or below $10^{-7}$ t. An absent
+row therefore must not be treated as proof of an exact zero or as evidence that
+an arc was inadmissible. Zero flow, an arc excluded by screening, an unexported
+small value and missing road geometry are distinct states. Reconstructing the
+complete admissibility mask requires the frozen network definition identified
+with the input data. All positive records in the prepared companions have an
+exact matching workbook distance; no distance or road polyline is interpolated.
+
+These are **flows of accepted solutions**, rather than claims of exact
+zero-gap optima. Each configuration below retains its attained relative
+objective gap. The original independent primal certificates were accepted;
+post-processing their exports does not constitute a new optimization or a
+fresh residual check.
+
+The [configuration and original-export index](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/__APPENDIX_E_SOURCE_SHA__/manuscript/supplement/appendix_e_sources.json),
+[numerical companion inventory](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/__APPENDIX_E_SOURCE_SHA__/manuscript/supplement/appendix_e_summary.json)
+and [reconstruction program](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/__APPENDIX_E_SOURCE_SHA__/scripts/build_appendix_e.py)
+identify the precise versions and aggregation procedure. The complete warehouse
+lists are linked under each configuration. Full-resolution flow-distance tables
+are prepared as compressed CSVs and a separate SQLite database; they are not
+currently public GitHub downloads. Access to their processed-source data and
+redistribution conditions follows the availability statement in Appendix D.
+The software license does not by itself establish unrestricted input-data access.
+
+{{< include appendix_e_case_tables.qmd >}}

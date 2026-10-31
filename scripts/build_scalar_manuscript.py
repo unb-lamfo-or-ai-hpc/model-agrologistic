@@ -19,8 +19,11 @@ def results(record):
     representative = [
         next(r for r in rows if r["case"] == case)
         for case in (
-            "scalar_h215_det", "scalar_h215_sto", "scalar_h300_t1",
-            "scalar_h400_t1", "scalar_h500_t1",
+            "scalar_h215_det",
+            "scalar_h215_sto",
+            "scalar_h300_t1",
+            "scalar_h400_t1",
+            "scalar_h500_t1",
         )
     ]
 
@@ -101,7 +104,7 @@ def results(record):
         "@fig-scalar-threads compares the observed runtime and sampled memory "
         "for these five configurations.\n",
         "![Thread-count observations at 300 sites.]"
-        "(figures/scalar_threads.png){#fig-scalar-threads fig-pos=\"H\"}\n",
+        '(figures/scalar_threads.png){#fig-scalar-threads fig-pos="H"}\n',
         "The single-thread observation has the lowest recorded runtime and memory "
         "in this block. The five configurations returned identical exported plans; "
         "the observations describe this execution sequence rather than a replicated "
@@ -206,6 +209,9 @@ def results(record):
             f'(figures/{case}.png){{#fig-map-h{population} fig-pos="H"}}\n'
         )
         text.append(
+            "The Albers equal-area conic projection preserves relative areas on the "
+            "display surface. Original facility coordinates are retained; the display "
+            "projection does not determine OSRM road distances. "
             f"The {population}-site map shows the spatial distribution of the returned "
             "investment decisions. The accompanying capacity and service tables quantify "
             "their consequences. The screened networks differ across populations, so "
@@ -216,13 +222,16 @@ def results(record):
         "h500 decision vector.\n",
         "![Stochastic investments at 500 warehouse sites.]"
         '(figures/scalar_h500_t1.png){#fig-map-h500 fig-pos="H"}\n',
-        "The original h500 vector assigns positive capacity to all 354 candidates, "
+        "The Albers equal-area conic projection preserves relative areas on the "
+        "display surface. Original facility coordinates are retained; the projection "
+        "does not determine OSRM road distances. The original h500 vector assigns "
+        "positive capacity to all 354 candidates, "
         "expands 72 existing sites and converts 74 for bulk handling. These location "
         "decisions do not establish equal operational importance or use. The companion "
         "capacity maps use circle area to show added candidate and expansion storage "
-        "in tonnes, excluding bulk-handling investment basis. Road polylines are "
-        "unavailable for these maps, so the "
-        "geographic views contain no connecting flow segments.\n",
+        "in tonnes, excluding bulk-handling investment basis. OSRM road routes are "
+        "not depicted. Appendix E associates the accepted flow vectors with the "
+        "original OSRM distances.\n",
         "The local read-only dashboard provides the corresponding DET/STO, population, "
         "incremental-membership, product, period and scenario filters, preserving "
         "coincident identifiers. Its ability to display a flow requires original "

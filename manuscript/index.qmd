@@ -524,8 +524,8 @@ reconstruction does not establish facility use or recover original flow geometry
 The results proceed from problem dimensions and resource requirements to
 solution quality and agricultural interpretation. The warehouse-only sequence
 and the separate h215 topology comparison retain their original scopes.
-The open-source comparison distinguishes a validated HiGHS solution, a
-completed time-limited SCIP observation and an interrupted extended attempt.
+The solver comparison distinguishes accepted Gurobi/HiGHS solutions, normally
+returned time-limited SCIP observations and a separate interrupted attempt.
 
 {{< include scalar_results.qmd >}}
 
@@ -669,8 +669,8 @@ current geographic exports. The fixed penalties express the modeled trade-off,
 not observed damages or a demonstrated service policy. Detailed source
 identities and uncertainty about unobserved peaks constrain interpretation.
 
-The separate scalar SCIP STO h215 W observation reached its four-hour native
-ceiling without an incumbent. Its original negative outcome and operational
+The scalar SCIP STO h215 W observations reached their four-hour native and
+subsequent eight-hour common-Pyomo limits without usable incumbents. Its original negative outcome and operational
 closure are retained separately from accepted feasible observations.
 The HiGHS observation demonstrates a successful open-source solution to the
 same h215 physical planning problem, using the proved bounded-slack
@@ -725,7 +725,7 @@ file-level notices and redistribution conditions.
 During preparation, the authors used Gurobot, Gemini and GPT/ChatGPT systems,
 including ChatGPT Codex, for technical discussion, software development,
 language refinement and visualization. Historical records name Gemini 3.1 Pro
-and Codex models 5.6 Sol and 6.0 Astra where documented; this does not attribute
+and ChatGPT Codex with models 6.1 Sol and 6.0 Astra where documented; this does not attribute
 all work to a verified model/version chronology. The methodological section
 and Appendix B distinguish retained evidence from retrospective accounts.
 The human authors reviewed and edited the content and retain full responsibility

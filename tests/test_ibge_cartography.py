@@ -138,7 +138,10 @@ def test_every_current_map_uses_identical_projection_and_original_nodes(context)
         assert updated["cartography"]["projection"] == PROJECTION
         assert hashlib.sha256(path.read_bytes()).hexdigest() == hashlib.sha256(raw).hexdigest()
         ids.add(old["case"])
-    assert len(ids) == 6
+    provenance = json.loads(
+        (ROOT / "manuscript/geographic_sources.json").read_text(encoding="utf-8")
+    )
+    assert ids == {Path(name).stem for name in provenance["figures"]}
 
 
 def test_offline_plotly_carries_all_ids_and_same_cartographic_projection(context, definition):

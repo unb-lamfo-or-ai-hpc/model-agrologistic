@@ -104,21 +104,21 @@ Across the returned STO plans, additional candidate sites accompany more install
 
 ![Stochastic plan at 215 warehouse sites.](figures/scalar_h215_sto.png){#fig-map-h215 fig-pos="H"}
 
-The 215-site map shows the spatial distribution of the returned investment decisions. The accompanying capacity and service tables quantify their consequences. The screened networks differ across populations, so the map is interpreted together with those model-specific results.
+The Albers equal-area conic projection preserves relative areas on the display surface. Original facility coordinates are retained; the display projection does not determine OSRM road distances. The 215-site map shows the spatial distribution of the returned investment decisions. The accompanying capacity and service tables quantify their consequences. The screened networks differ across populations, so the map is interpreted together with those model-specific results.
 
 ![Stochastic plan at 300 warehouse sites.](figures/scalar_h300_t1.png){#fig-map-h300 fig-pos="H"}
 
-The 300-site map shows the spatial distribution of the returned investment decisions. The accompanying capacity and service tables quantify their consequences. The screened networks differ across populations, so the map is interpreted together with those model-specific results.
+The Albers equal-area conic projection preserves relative areas on the display surface. Original facility coordinates are retained; the display projection does not determine OSRM road distances. The 300-site map shows the spatial distribution of the returned investment decisions. The accompanying capacity and service tables quantify their consequences. The screened networks differ across populations, so the map is interpreted together with those model-specific results.
 
 ![Stochastic plan at 400 warehouse sites.](figures/scalar_h400_t1.png){#fig-map-h400 fig-pos="H"}
 
-The 400-site map shows the spatial distribution of the returned investment decisions. The accompanying capacity and service tables quantify their consequences. The screened networks differ across populations, so the map is interpreted together with those model-specific results.
+The Albers equal-area conic projection preserves relative areas on the display surface. Original facility coordinates are retained; the display projection does not determine OSRM road distances. The 400-site map shows the spatial distribution of the returned investment decisions. The accompanying capacity and service tables quantify their consequences. The screened networks differ across populations, so the map is interpreted together with those model-specific results.
 
 @fig-map-h500 shows the investments reconstructed from the original accepted h500 decision vector.
 
 ![Stochastic investments at 500 warehouse sites.](figures/scalar_h500_t1.png){#fig-map-h500 fig-pos="H"}
 
-The original h500 vector assigns positive capacity to all 354 candidates, expands 72 existing sites and converts 74 for bulk handling. These location decisions do not establish equal operational importance or use. The companion capacity maps use circle area to show added candidate and expansion storage in tonnes, excluding bulk-handling investment basis. Road polylines are unavailable for these maps, so the geographic views contain no connecting flow segments.
+The Albers equal-area conic projection preserves relative areas on the display surface. Original facility coordinates are retained; the projection does not determine OSRM road distances. The original h500 vector assigns positive capacity to all 354 candidates, expands 72 existing sites and converts 74 for bulk handling. These location decisions do not establish equal operational importance or use. The companion capacity maps use circle area to show added candidate and expansion storage in tonnes, excluding bulk-handling investment basis. OSRM road routes are not depicted. Appendix E associates the accepted flow vectors with the original OSRM distances.
 
 The local read-only dashboard provides the corresponding DET/STO, population, incremental-membership, product, period and scenario filters, preserving coincident identifiers. Its ability to display a flow requires original positive-flow evidence and source-bound road geometry. Geography alone is not a validation of the agricultural plan.
 

@@ -1,0 +1,650 @@
+{
+  "schema_version": "appendix-e-reader-summary-v1",
+  "cases": [
+    {
+      "case": "scalar_h215_det",
+      "population": 215,
+      "mode": "det",
+      "topology": "W",
+      "solver": "gurobi",
+      "interface": "gurobipy",
+      "threads": 4,
+      "mip_gap": 8.121362984503373e-06,
+      "objective": 11437342455619.393,
+      "bound": 11437249568809.732,
+      "archive": "scalar-h215-evidence.tar.gz",
+      "archive_sha256": "81890b546d720ad5999d11f44fd499337aad937e32773db39067796f73660534",
+      "workbook_member": "data/processed/policy_population_v020_osrm/warehouses_215/model_input.xlsx",
+      "workbook_sha256": "40edb66585daca9cc393cab1f86bde6d4528a5f34b6afc57260cc1684396da4e",
+      "source_commit": "5f73871b6320da71e308e436f5cd780cdcfedae2",
+      "probabilities": {
+        "deterministic": 1.0
+      },
+      "selected_network_sha256": "7352445b5c816be485e70358e4abe2b8f2c96d6f3ab05f07ac266cf06b53f6ca",
+      "sparse_export_threshold_t": 1e-07,
+      "members": {
+        "cases/scalar_h215_det/input_receipt.json": "233aff05d516366d2d67613051b5f5b2ade219d906da62501955dab3d70673ca",
+        "cases/scalar_h215_det/products/scalar_h215_det/warehouse_decisions.csv": "dba2b9cc0ae7bdbda42abfbfdb47bc25d7900b400049ccd72adfc30fdc170f09",
+        "cases/scalar_h215_det/products/scalar_h215_det/flows.csv": "8daa08f201e01e6b6b908cb9b19cdd18fd3368811bf9b148bfae89056d6efdf3",
+        "cases/scalar_h215_det/products/scalar_h215_det/independent_validation.json": "81e9cc22f18a1c65b7d67bbb89362b0f49f6ebdb22f006cd71f9565499447c78"
+      },
+      "inventory_digests_verified": 120,
+      "counts": {
+        "opened": 69,
+        "expanded": 80,
+        "bulk_handling": 66
+      },
+      "positive_flow_records": 21843,
+      "sparse_od_coordinates": 3015,
+      "families": {
+        "OD": {
+          "positive_export_records": 7773,
+          "expected_arc_tonnes": 1374420353.084797
+        },
+        "DD": {
+          "positive_export_records": 3339,
+          "expected_arc_tonnes": 167041802.96680146
+        },
+        "DC": {
+          "positive_export_records": 10731,
+          "expected_arc_tonnes": 1371457378.29683
+        },
+        "OC": {
+          "positive_export_records": 0,
+          "expected_arc_tonnes": 0
+        }
+      },
+      "investment_csv_sha256": "129a2d5229391b63f18e687163f0e699f5ac98ba8990f0288e51b9cb9bc78429",
+      "local_companions": {
+        "scalar_h215_det_flows.csv.gz": "e78fb751d6d9a9ffe49ad81a5f822552072b298c4a593c1f02066089183341bf",
+        "scalar_h215_det_investments.csv.gz": "6ebaeac682ab785d8eaeb18e5262e5922ac539bd33d81820619ce00d3c9ec55b",
+        "scalar_h215_det_od_matrix.csv.gz": "bc2d338b9535a0cc4a1dcb49d0b08bd979a15e48743497c78d20541bde32e853"
+      }
+    },
+    {
+      "case": "scalar_h215_sto",
+      "population": 215,
+      "mode": "sto",
+      "topology": "W",
+      "solver": "gurobi",
+      "interface": "gurobipy",
+      "threads": 4,
+      "mip_gap": 0.007401594783221568,
+      "objective": 13071396953900.23,
+      "bound": 12974647770396.824,
+      "archive": "scalar-h215-evidence.tar.gz",
+      "archive_sha256": "81890b546d720ad5999d11f44fd499337aad937e32773db39067796f73660534",
+      "workbook_member": "data/processed/policy_population_v020_osrm/warehouses_215/model_input.xlsx",
+      "workbook_sha256": "40edb66585daca9cc393cab1f86bde6d4528a5f34b6afc57260cc1684396da4e",
+      "source_commit": "5f73871b6320da71e308e436f5cd780cdcfedae2",
+      "probabilities": {
+        "oferta_alto__demanda_alto": 0.1111111111111111,
+        "oferta_alto__demanda_baixo": 0.1111111111111111,
+        "oferta_alto__demanda_base": 0.1111111111111111,
+        "oferta_baixo__demanda_alto": 0.1111111111111111,
+        "oferta_baixo__demanda_baixo": 0.1111111111111111,
+        "oferta_baixo__demanda_base": 0.1111111111111111,
+        "oferta_base__demanda_alto": 0.1111111111111111,
+        "oferta_base__demanda_baixo": 0.1111111111111111,
+        "oferta_base__demanda_base": 0.1111111111111111
+      },
+      "selected_network_sha256": "7352445b5c816be485e70358e4abe2b8f2c96d6f3ab05f07ac266cf06b53f6ca",
+      "sparse_export_threshold_t": 1e-07,
+      "members": {
+        "cases/scalar_h215_sto/input_receipt.json": "e917c11995ac37c8d0150b3298c02f4188743339d6a375c55f292d22327625fc",
+        "cases/scalar_h215_sto/products/scalar_h215_sto/warehouse_decisions.csv": "9bd5535755354df0422ea61aaec173939c0438a682aa6166347405b0d6cb9210",
+        "cases/scalar_h215_sto/products/scalar_h215_sto/flows.csv": "3a100423f8a703fc5a930e335840474fb016eb5ede095cb989f60d7622f5da2c",
+        "cases/scalar_h215_sto/products/scalar_h215_sto/independent_validation.json": "d130fdb7abb485bf0adc1254d4e518463c5a7ef5e1f644db140e94be4d6de0f9"
+      },
+      "inventory_digests_verified": 120,
+      "counts": {
+        "opened": 69,
+        "expanded": 75,
+        "bulk_handling": 71
+      },
+      "positive_flow_records": 194488,
+      "sparse_od_coordinates": 4090,
+      "families": {
+        "OD": {
+          "positive_export_records": 68943,
+          "expected_arc_tonnes": 1374420353.0847967
+        },
+        "DD": {
+          "positive_export_records": 30950,
+          "expected_arc_tonnes": 165214630.55361268
+        },
+        "DC": {
+          "positive_export_records": 94595,
+          "expected_arc_tonnes": 1371554638.3828728
+        },
+        "OC": {
+          "positive_export_records": 0,
+          "expected_arc_tonnes": 0
+        }
+      },
+      "investment_csv_sha256": "732cc1b4ba34e9c4eb5415b0485926e70c6ccb1ee3776df23414d6aa08976162",
+      "local_companions": {
+        "scalar_h215_sto_flows.csv.gz": "442e9baffc34dd31c3ea5a6c2ea181d508b9f90509602d395682cbcb50b7b091",
+        "scalar_h215_sto_investments.csv.gz": "70ad49783b685da36f8ef40713fc8841f1466eda5abf2e791e443abdc520ad7c",
+        "scalar_h215_sto_od_matrix.csv.gz": "d12a28cb696eaac55261a1e229d575e8729542d24a2f81d0bfb5214a23958ca2"
+      }
+    },
+    {
+      "case": "scalar_h300_t1",
+      "population": 300,
+      "mode": "sto",
+      "topology": "W",
+      "solver": "gurobi",
+      "interface": "gurobipy",
+      "threads": 1,
+      "mip_gap": 4.1193549272912564e-05,
+      "objective": 9289108634158.756,
+      "bound": 9288725982804.533,
+      "archive": "scalar-h300-30h-evidence.tar.gz",
+      "archive_sha256": "dc5969fa391dc81590210ef7e6f89abbb5df554e4bc5b2032ba9eafe1a67f3fc",
+      "workbook_member": "data/processed/nine_population_osrm_v1/warehouses_300/model_input.xlsx",
+      "workbook_sha256": "7761cce77cf93dcba2f617714f0117c1f2ead4de0c3f27149daceba447e0c7d1",
+      "source_commit": "04ba9edccc93f40ab36cbc3264039a7edf2f6f51",
+      "probabilities": {
+        "oferta_alto__demanda_alto": 0.1111111111111111,
+        "oferta_alto__demanda_baixo": 0.1111111111111111,
+        "oferta_alto__demanda_base": 0.1111111111111111,
+        "oferta_baixo__demanda_alto": 0.1111111111111111,
+        "oferta_baixo__demanda_baixo": 0.1111111111111111,
+        "oferta_baixo__demanda_base": 0.1111111111111111,
+        "oferta_base__demanda_alto": 0.1111111111111111,
+        "oferta_base__demanda_baixo": 0.1111111111111111,
+        "oferta_base__demanda_base": 0.1111111111111111
+      },
+      "selected_network_sha256": "9520a303457e50e9cbd499654025ed3e639f95724cfe5cfb812c23dbaa5ba3a9",
+      "sparse_export_threshold_t": 1e-07,
+      "members": {
+        "cases/scalar_h300_t1/input_receipt.json": "6d51e1ca482fdbe4d082a8241cb49c868b95dec7da5f67795dd76551c539388d",
+        "cases/scalar_h300_t1/products/scalar_h300_t1/warehouse_decisions.csv": "47acb1e9ca166874a56a11a13fd66533314bca4634f2577d8118b9c364c96670",
+        "cases/scalar_h300_t1/products/scalar_h300_t1/flows.csv": "f8ea87c7a41930ae720992d92358267cc61be06c82726544e42e6bc8b3e9dc71",
+        "cases/scalar_h300_t1/products/scalar_h300_t1/independent_validation.json": "6753456cbe5207a2b9eccfce059e242b52e64613790d5a419a3924c542c16b6e"
+      },
+      "inventory_digests_verified": 273,
+      "counts": {
+        "opened": 154,
+        "expanded": 70,
+        "bulk_handling": 76
+      },
+      "positive_flow_records": 227514,
+      "sparse_od_coordinates": 5058,
+      "families": {
+        "OD": {
+          "positive_export_records": 84572,
+          "expected_arc_tonnes": 1374420353.0847967
+        },
+        "DD": {
+          "positive_export_records": 33468,
+          "expected_arc_tonnes": 189900398.31393257
+        },
+        "DC": {
+          "positive_export_records": 109474,
+          "expected_arc_tonnes": 1371084300.4657161
+        },
+        "OC": {
+          "positive_export_records": 0,
+          "expected_arc_tonnes": 0
+        }
+      },
+      "investment_csv_sha256": "4b303a92ff2e862b166be1730fa8ca888c7a35914cd985e5be8361521d96db3a",
+      "local_companions": {
+        "scalar_h300_t1_flows.csv.gz": "10d6b75afc89c78ba89ed59f83955c216cdd41f2c25544afb5a37d0aea14a103",
+        "scalar_h300_t1_investments.csv.gz": "3ce65d0664db62c20d2512203921794c23ae9de46a42bb404d8c31ecca3f2af5",
+        "scalar_h300_t1_od_matrix.csv.gz": "f2d6713d0d95e8c927b80d042bcc40e2716b8c5fe31e8ba3ad73b8a8cf6d6c47"
+      }
+    },
+    {
+      "case": "scalar_h400_t1",
+      "population": 400,
+      "mode": "sto",
+      "topology": "W",
+      "solver": "gurobi",
+      "interface": "gurobipy",
+      "threads": 1,
+      "mip_gap": 0.008367844265500395,
+      "objective": 7593395049302.773,
+      "bound": 7529854702083.786,
+      "archive": "scalar-h400-8h-evidence.tar.gz",
+      "archive_sha256": "e0b58bb74ac254706d30f0f1863162df5d8a714751eadf43b28e7dbc0c5d5def",
+      "workbook_member": "data/processed/nine_population_osrm_v1/warehouses_400/model_input.xlsx",
+      "workbook_sha256": "c3085456997714ef5a8bdbf61e2c9a5e578c2636003947427cf58933d21ceb13",
+      "source_commit": "d9ca710dd98b66a4d3421ebccee13d91673d468d",
+      "probabilities": {
+        "oferta_alto__demanda_alto": 0.1111111111111111,
+        "oferta_alto__demanda_baixo": 0.1111111111111111,
+        "oferta_alto__demanda_base": 0.1111111111111111,
+        "oferta_baixo__demanda_alto": 0.1111111111111111,
+        "oferta_baixo__demanda_baixo": 0.1111111111111111,
+        "oferta_baixo__demanda_base": 0.1111111111111111,
+        "oferta_base__demanda_alto": 0.1111111111111111,
+        "oferta_base__demanda_baixo": 0.1111111111111111,
+        "oferta_base__demanda_base": 0.1111111111111111
+      },
+      "selected_network_sha256": "5f9b1e0d2c71066ae781310a7fad3f6c5b30ea14d4906c4914aa606a0be3e949",
+      "sparse_export_threshold_t": 1e-07,
+      "members": {
+        "cases/scalar_h400_t1/input_receipt.json": "c6c729df9acbf1bbe9e26a0c769ecbd41a176a907192a84f057f279790375b89",
+        "cases/scalar_h400_t1/products/scalar_h400_t1/warehouse_decisions.csv": "5ad7ad6539042defb5999e70066f92c5183af1b4e4790f525fd18f6e2d917a49",
+        "cases/scalar_h400_t1/products/scalar_h400_t1/flows.csv": "b9e03d258855e1890f8259d6f3fb739d4b07bd0545e77c0bac78cf67669688d1",
+        "cases/scalar_h400_t1/products/scalar_h400_t1/independent_validation.json": "d4b1c5a585b4b6b009e14c791ea743ebc822b7478cf1f17b10e4669116cfb242"
+      },
+      "inventory_digests_verified": 69,
+      "counts": {
+        "opened": 254,
+        "expanded": 69,
+        "bulk_handling": 77
+      },
+      "positive_flow_records": 266593,
+      "sparse_od_coordinates": 6143,
+      "families": {
+        "OD": {
+          "positive_export_records": 100664,
+          "expected_arc_tonnes": 1374420353.0847967
+        },
+        "DD": {
+          "positive_export_records": 40205,
+          "expected_arc_tonnes": 200859544.37560257
+        },
+        "DC": {
+          "positive_export_records": 125724,
+          "expected_arc_tonnes": 1370916024.951058
+        },
+        "OC": {
+          "positive_export_records": 0,
+          "expected_arc_tonnes": 0
+        }
+      },
+      "investment_csv_sha256": "ee779597e00541e2fc06726c37106f8ad9be36de8a281c7f27ff8a60612ca30c",
+      "local_companions": {
+        "scalar_h400_t1_flows.csv.gz": "001648888a4d15f5a9319d1fd35e41ad19a735e6c6124436894a6a7daf3aaac4",
+        "scalar_h400_t1_investments.csv.gz": "73232f9382cf0429e62a019c94d015e0149893168d153c7c93eec0db15e5ab18",
+        "scalar_h400_t1_od_matrix.csv.gz": "fa394ce4f439c3d8df6caff71add3d8acfaf718abcc539819a97d3c6fa541239"
+      }
+    },
+    {
+      "case": "scalar_h500_t1",
+      "population": 500,
+      "mode": "sto",
+      "topology": "W",
+      "solver": "gurobi",
+      "interface": "gurobipy",
+      "threads": 1,
+      "mip_gap": 0.0020743205999626283,
+      "objective": 6297240401530.439,
+      "bound": 6284177906042.628,
+      "archive": "scalar-h500-8h-evidence.tar.gz",
+      "archive_sha256": "34346c318b0335e70c56984d8394dd9d00a4ca4ee7d004149c3d3f154cbf2238",
+      "workbook_member": "data/processed/nine_population_osrm_v1/warehouses_500/model_input.xlsx",
+      "workbook_sha256": "888fbff42e4f80817d4d5f0101049495c86c6ed4cda75f00813779dadab41515",
+      "source_commit": "fce341dfff1792d08b20eac132c6ada29f4326d2",
+      "probabilities": {
+        "oferta_alto__demanda_alto": 0.1111111111111111,
+        "oferta_alto__demanda_baixo": 0.1111111111111111,
+        "oferta_alto__demanda_base": 0.1111111111111111,
+        "oferta_baixo__demanda_alto": 0.1111111111111111,
+        "oferta_baixo__demanda_baixo": 0.1111111111111111,
+        "oferta_baixo__demanda_base": 0.1111111111111111,
+        "oferta_base__demanda_alto": 0.1111111111111111,
+        "oferta_base__demanda_baixo": 0.1111111111111111,
+        "oferta_base__demanda_base": 0.1111111111111111
+      },
+      "selected_network_sha256": "abf3c275a1c9f6f7ddd84d9ef9096f151a64fb10fe2f3c1b166bc9b81f84e956",
+      "sparse_export_threshold_t": 1e-07,
+      "members": {
+        "cases/scalar_h500_t1/input_receipt.json": "6a85f0f5fbe2c32dd26faa8ab340cbb7d4d211e5358977a50d1b9a0dcc9953dc",
+        "cases/scalar_h500_t1/products/scalar_h500_t1/warehouse_decisions.csv": "4caef8867035fa20f87eea939f52820f42c96aab73beade69fee48251d18a3d4",
+        "cases/scalar_h500_t1/products/scalar_h500_t1/flows.csv": "f4020e50157ed0d2ff7bc04cd7a57fe23502f294e2514b16942f63563fc485ad",
+        "cases/scalar_h500_t1/products/scalar_h500_t1/independent_validation.json": "2c548b960d38ab13488e31c00fe5da8e58551392d5f568dcb4bc11afb5bebe2a"
+      },
+      "inventory_digests_verified": 69,
+      "counts": {
+        "opened": 354,
+        "expanded": 72,
+        "bulk_handling": 74
+      },
+      "positive_flow_records": 289785,
+      "sparse_od_coordinates": 7023,
+      "families": {
+        "OD": {
+          "positive_export_records": 110385,
+          "expected_arc_tonnes": 1374420353.0847967
+        },
+        "DD": {
+          "positive_export_records": 44294,
+          "expected_arc_tonnes": 209001024.44312638
+        },
+        "DC": {
+          "positive_export_records": 135106,
+          "expected_arc_tonnes": 1370709301.0452132
+        },
+        "OC": {
+          "positive_export_records": 0,
+          "expected_arc_tonnes": 0
+        }
+      },
+      "investment_csv_sha256": "68f06f5823607520f0676adfc07ceefc820efa9a51f412524d0d56fabfdccce1",
+      "local_companions": {
+        "scalar_h500_t1_flows.csv.gz": "14bcb42272d57fb361084b36aab2511bd15b2787cc9922829c13677464321541",
+        "scalar_h500_t1_investments.csv.gz": "998cdd97e59707109138b36d0cc2d69609383e45f006b14a3c2ffd3fb64271a9",
+        "scalar_h500_t1_od_matrix.csv.gz": "b24dfcd8446dcc7e952136e6b2cf1c0cb6fcb0f6a3145d49ca4ee4fe300178ca"
+      }
+    },
+    {
+      "case": "scalar_h215_d_det",
+      "population": 215,
+      "mode": "det",
+      "topology": "D",
+      "solver": "gurobi",
+      "interface": "gurobipy",
+      "threads": 4,
+      "mip_gap": 0.005524272106972627,
+      "objective": 7340491818111.279,
+      "bound": 7299940943909.026,
+      "archive": "scalar-wd-h215-evidence.tar.gz",
+      "archive_sha256": "fa71bdfbd9ab73a1741de4304958ce3482c1c18cf4ed61ed257cc9153818796c",
+      "workbook_member": "data/processed/policy_population_v020_osrm/warehouses_215/model_input.xlsx",
+      "workbook_sha256": "40edb66585daca9cc393cab1f86bde6d4528a5f34b6afc57260cc1684396da4e",
+      "source_commit": "5713a8909e6a590df8ba35d7510d2b6b01ec42d4",
+      "probabilities": {
+        "deterministic": 1.0
+      },
+      "selected_network_sha256": "f89898fb5501a63ecf3120f788fee6787e6ed2ba819caf16b741f1c62fb23209",
+      "sparse_export_threshold_t": 1e-07,
+      "members": {
+        "cases/scalar_h215_d_det/input_receipt.json": "b9b878ba281de5733dbbb6f95c446146ed4de75f57a075ec669d01e982a27184",
+        "cases/scalar_h215_d_det/products/scalar_h215_d_det/warehouse_decisions.csv": "a5138e1c42e8e17e3f6219466027e92820ddcf632fd01fcaa293ecff767f428d",
+        "cases/scalar_h215_d_det/products/scalar_h215_d_det/flows.csv": "36c020f12cd13e7a5d01017bc4ba05d7938652e97351a5f69aef5d79c8693cf4",
+        "cases/scalar_h215_d_det/products/scalar_h215_d_det/independent_validation.json": "ab0c707d463cd79a23dcd2752fc9351d974c17dfafe8059ceec6ee04f8860b70"
+      },
+      "inventory_digests_verified": 125,
+      "counts": {
+        "opened": 69,
+        "expanded": 142,
+        "bulk_handling": 4
+      },
+      "positive_flow_records": 16713,
+      "sparse_od_coordinates": 2914,
+      "families": {
+        "OD": {
+          "positive_export_records": 4080,
+          "expected_arc_tonnes": 246625348.2399467
+        },
+        "DD": {
+          "positive_export_records": 4654,
+          "expected_arc_tonnes": 105637499.20932184
+        },
+        "DC": {
+          "positive_export_records": 5393,
+          "expected_arc_tonnes": 244772691.52542225
+        },
+        "OC": {
+          "positive_export_records": 2586,
+          "expected_arc_tonnes": 1127795004.84485
+        }
+      },
+      "investment_csv_sha256": "695070f3ff842deacc3d80f3b1f13fcf30568f1dbc199d6412cf818b3c686390",
+      "local_companions": {
+        "scalar_h215_d_det_flows.csv.gz": "c5d0c7050d9c900d2efa8119ac1553504cfe877d99d2fb526935db06aafe28e5",
+        "scalar_h215_d_det_investments.csv.gz": "713d28cafb3a510a9653984710be6d7d5b3926b56f38d0d0c989c400676dae47",
+        "scalar_h215_d_det_od_matrix.csv.gz": "43a073643c9935903b3262f655a1d45bf8f8b0d729020470461847481c1aeae4"
+      }
+    },
+    {
+      "case": "scalar_h215_d_sto",
+      "population": 215,
+      "mode": "sto",
+      "topology": "D",
+      "solver": "gurobi",
+      "interface": "gurobipy",
+      "threads": 4,
+      "mip_gap": 0.0062371840971292185,
+      "objective": 7355002213066.796,
+      "bound": 7309127710229.105,
+      "archive": "scalar-wd-h215-evidence.tar.gz",
+      "archive_sha256": "fa71bdfbd9ab73a1741de4304958ce3482c1c18cf4ed61ed257cc9153818796c",
+      "workbook_member": "data/processed/policy_population_v020_osrm/warehouses_215/model_input.xlsx",
+      "workbook_sha256": "40edb66585daca9cc393cab1f86bde6d4528a5f34b6afc57260cc1684396da4e",
+      "source_commit": "5713a8909e6a590df8ba35d7510d2b6b01ec42d4",
+      "probabilities": {
+        "oferta_alto__demanda_alto": 0.1111111111111111,
+        "oferta_alto__demanda_baixo": 0.1111111111111111,
+        "oferta_alto__demanda_base": 0.1111111111111111,
+        "oferta_baixo__demanda_alto": 0.1111111111111111,
+        "oferta_baixo__demanda_baixo": 0.1111111111111111,
+        "oferta_baixo__demanda_base": 0.1111111111111111,
+        "oferta_base__demanda_alto": 0.1111111111111111,
+        "oferta_base__demanda_baixo": 0.1111111111111111,
+        "oferta_base__demanda_base": 0.1111111111111111
+      },
+      "selected_network_sha256": "f89898fb5501a63ecf3120f788fee6787e6ed2ba819caf16b741f1c62fb23209",
+      "sparse_export_threshold_t": 1e-07,
+      "members": {
+        "cases/scalar_h215_d_sto/input_receipt.json": "0b52bbf0b2e76d884722d43fdca3d9b40b5bec16d465e2888861dfb6ca4720bb",
+        "cases/scalar_h215_d_sto/products/scalar_h215_d_sto/warehouse_decisions.csv": "dad6360a36deac9c606cf4d441bf26a020d4da6479c0fa7b2ebb6a9f8ae0b85d",
+        "cases/scalar_h215_d_sto/products/scalar_h215_d_sto/flows.csv": "d013d367fb8ad71ca60a856d313703af0ca4dc47b65c6d889cb8efecaa9ddbe8",
+        "cases/scalar_h215_d_sto/products/scalar_h215_d_sto/independent_validation.json": "4627d220d621855fb3eeb6ce97e5da8ed623d8f1bf6bf8da480835939b1d6734"
+      },
+      "inventory_digests_verified": 125,
+      "counts": {
+        "opened": 69,
+        "expanded": 142,
+        "bulk_handling": 4
+      },
+      "positive_flow_records": 151327,
+      "sparse_od_coordinates": 3933,
+      "families": {
+        "OD": {
+          "positive_export_records": 36698,
+          "expected_arc_tonnes": 251548979.44983903
+        },
+        "DD": {
+          "positive_export_records": 42249,
+          "expected_arc_tonnes": 92859992.54768378
+        },
+        "DC": {
+          "positive_export_records": 49237,
+          "expected_arc_tonnes": 249712101.1928384
+        },
+        "OC": {
+          "positive_export_records": 23143,
+          "expected_arc_tonnes": 1122871373.6349578
+        }
+      },
+      "investment_csv_sha256": "cf4f12a80b13589ee5b27eaa1306994d2d81202b33b3313065305d6bb0ea209b",
+      "local_companions": {
+        "scalar_h215_d_sto_flows.csv.gz": "ca7c4000ddcf7d276f3476e60be68224a96cbfd2beb833c5f212e267086aea54",
+        "scalar_h215_d_sto_investments.csv.gz": "28154a52db1438d4b08f450002a0b6f1a70cdd0516875d835469135ac897b35b",
+        "scalar_h215_d_sto_od_matrix.csv.gz": "bac0f89e805351acb0cfac16b6393c8db2fb3f6757e1acc50fd5a03461011581"
+      }
+    },
+    {
+      "case": "pyomo_gurobi_h215_w_native8h_license_v2",
+      "population": 215,
+      "mode": "sto",
+      "topology": "W",
+      "solver": "gurobi",
+      "interface": "pyomo",
+      "threads": 4,
+      "mip_gap": 0.007401594783231128,
+      "objective": 13071396953900.238,
+      "bound": 12974647770396.707,
+      "archive": "pyomo-gurobi-h215-w-native8h-license-v2-evidence.tar.gz",
+      "archive_sha256": "ed880c6ffedff384611fd12b754428f9c0b99ad7885a8aeb0f8a47fa83abfdbc",
+      "workbook_member": "data/processed/policy_population_v020_osrm/warehouses_215/model_input.xlsx",
+      "workbook_sha256": "40edb66585daca9cc393cab1f86bde6d4528a5f34b6afc57260cc1684396da4e",
+      "source_commit": "311015e8527419f9c1c70e7f79a8ddce551a9772",
+      "probabilities": {
+        "oferta_alto__demanda_alto": 0.1111111111111111,
+        "oferta_alto__demanda_baixo": 0.1111111111111111,
+        "oferta_alto__demanda_base": 0.1111111111111111,
+        "oferta_baixo__demanda_alto": 0.1111111111111111,
+        "oferta_baixo__demanda_baixo": 0.1111111111111111,
+        "oferta_baixo__demanda_base": 0.1111111111111111,
+        "oferta_base__demanda_alto": 0.1111111111111111,
+        "oferta_base__demanda_baixo": 0.1111111111111111,
+        "oferta_base__demanda_base": 0.1111111111111111
+      },
+      "selected_network_sha256": "7352445b5c816be485e70358e4abe2b8f2c96d6f3ab05f07ac266cf06b53f6ca",
+      "sparse_export_threshold_t": 1e-07,
+      "members": {
+        "cases/pyomo_gurobi_h215_w_native8h_license_v2/input_receipt.json": "02bcb41c64051c76f62a9deed4aa82ffd4709f01573e9780a0992d56556f1380",
+        "cases/pyomo_gurobi_h215_w_native8h_license_v2/products/pyomo_gurobi_h215_w_native8h_license_v2/warehouse_decisions.csv": "9d3214f94d9830dc5c618b291a06c1cd4d7517ce4c0489ba4a279e835292759b",
+        "cases/pyomo_gurobi_h215_w_native8h_license_v2/products/pyomo_gurobi_h215_w_native8h_license_v2/flows.csv": "3b53291ee225bda188110a6966b2b0f6573bbd826a607d921af8d4a02b50c53c",
+        "cases/pyomo_gurobi_h215_w_native8h_license_v2/products/pyomo_gurobi_h215_w_native8h_license_v2/independent_validation.json": "5b65bb1261db6e2aac2d9ba3e247fa4265780e608be0fd49f22e0ecab1a44c01"
+      },
+      "inventory_digests_verified": 256,
+      "counts": {
+        "opened": 69,
+        "expanded": 75,
+        "bulk_handling": 71
+      },
+      "positive_flow_records": 193525,
+      "sparse_od_coordinates": 4115,
+      "families": {
+        "OD": {
+          "positive_export_records": 68935,
+          "expected_arc_tonnes": 1374420353.0847967
+        },
+        "DD": {
+          "positive_export_records": 30146,
+          "expected_arc_tonnes": 166261943.88204217
+        },
+        "DC": {
+          "positive_export_records": 94444,
+          "expected_arc_tonnes": 1371554638.3828728
+        },
+        "OC": {
+          "positive_export_records": 0,
+          "expected_arc_tonnes": 0
+        }
+      },
+      "investment_csv_sha256": "356d723332eb92d476c8bdc2e6898b6107d54a541f32b6b0bccf27a724c00572",
+      "local_companions": {
+        "pyomo_gurobi_h215_w_native8h_license_v2_flows.csv.gz": "30cb6fdaa23f68b5089317406e91c7ad8cfad3543b1784e52e777b039ebb9072",
+        "pyomo_gurobi_h215_w_native8h_license_v2_investments.csv.gz": "2b84344f3354609f265e2d91383d0c2405734c39c71412f71c1ddfabddb9bca7",
+        "pyomo_gurobi_h215_w_native8h_license_v2_od_matrix.csv.gz": "f76f55e98064b3f12085b22d96f8905e630d3c9b8d8949a908c2a320e200fb29"
+      }
+    },
+    {
+      "case": "scalar_highs_h215_w_native8h_startup_v2",
+      "population": 215,
+      "mode": "sto",
+      "topology": "W",
+      "solver": "highs",
+      "interface": "pyomo",
+      "threads": 4,
+      "mip_gap": 1.9554119122548442e-06,
+      "objective": 12974673141227.254,
+      "bound": 12974647770396.836,
+      "archive": "scalar-highs-h215-w-native8h-startup-v2-evidence.tar.gz",
+      "archive_sha256": "db04224d755cd5720091ddb96fc275bcefc6082431ea4b417a1b90d0fece071b",
+      "workbook_member": "data/processed/policy_population_v020_osrm/warehouses_215/model_input.xlsx",
+      "workbook_sha256": "40edb66585daca9cc393cab1f86bde6d4528a5f34b6afc57260cc1684396da4e",
+      "source_commit": "009119a07eb8c68573cfa105893b9d4a719c5155",
+      "probabilities": {
+        "oferta_alto__demanda_alto": 0.1111111111111111,
+        "oferta_alto__demanda_baixo": 0.1111111111111111,
+        "oferta_alto__demanda_base": 0.1111111111111111,
+        "oferta_baixo__demanda_alto": 0.1111111111111111,
+        "oferta_baixo__demanda_baixo": 0.1111111111111111,
+        "oferta_baixo__demanda_base": 0.1111111111111111,
+        "oferta_base__demanda_alto": 0.1111111111111111,
+        "oferta_base__demanda_baixo": 0.1111111111111111,
+        "oferta_base__demanda_base": 0.1111111111111111
+      },
+      "selected_network_sha256": "7352445b5c816be485e70358e4abe2b8f2c96d6f3ab05f07ac266cf06b53f6ca",
+      "sparse_export_threshold_t": 1e-07,
+      "members": {
+        "cases/scalar_highs_h215_w_native8h_startup_v2/input_receipt.json": "819a1fd49902cdf2b591bfcb0d3bc5b246ac06dd229d206587af59ab547119de",
+        "cases/scalar_highs_h215_w_native8h_startup_v2/products/scalar_highs_h215_w_native8h_startup_v2/warehouse_decisions.csv": "2027aa2da598c1bbc75ef762e61336e1d1a5c42e70309e2e15ed327399084844",
+        "cases/scalar_highs_h215_w_native8h_startup_v2/products/scalar_highs_h215_w_native8h_startup_v2/flows.csv": "c4cddabb2914424e34d6de4b2dcf2d1185f773c536bc16866afb41da29271123",
+        "cases/scalar_highs_h215_w_native8h_startup_v2/products/scalar_highs_h215_w_native8h_startup_v2/independent_validation.json": "1611eeb65ab5e5c6b9037388059495f72432f356f121b4611e8501fe92500604"
+      },
+      "inventory_digests_verified": 97,
+      "counts": {
+        "opened": 69,
+        "expanded": 73,
+        "bulk_handling": 73
+      },
+      "positive_flow_records": 182273,
+      "sparse_od_coordinates": 3880,
+      "families": {
+        "OD": {
+          "positive_export_records": 68279,
+          "expected_arc_tonnes": 1374420353.0847967
+        },
+        "DD": {
+          "positive_export_records": 17597,
+          "expected_arc_tonnes": 77160138.17382954
+        },
+        "DC": {
+          "positive_export_records": 96397,
+          "expected_arc_tonnes": 1371586837.1773267
+        },
+        "OC": {
+          "positive_export_records": 0,
+          "expected_arc_tonnes": 0
+        }
+      },
+      "investment_csv_sha256": "067daab70d7f25eae43a992c243295a056745fa39936bddd19aa08e5201492a4",
+      "local_companions": {
+        "scalar_highs_h215_w_native8h_startup_v2_flows.csv.gz": "37ba325e35d0a7f3e61beb9ab90ec4865b9648c816ceb42507b74edd250fc4fc",
+        "scalar_highs_h215_w_native8h_startup_v2_investments.csv.gz": "eb96670e8e65ee6d32f2fc764e1e1fa2124166938ea9d7c467c300087dddb2af",
+        "scalar_highs_h215_w_native8h_startup_v2_od_matrix.csv.gz": "414196cf0f5ce7ca44cf32b4bce7c24965986d75bb454ca95222f7cffde87282"
+      }
+    }
+  ],
+  "aliases": [
+    {
+      "case": "scalar_h300_t2",
+      "canonical": "scalar_h300_t1",
+      "threads": 2,
+      "identical_original_vectors": {
+        "warehouse_decisions.csv": "47acb1e9ca166874a56a11a13fd66533314bca4634f2577d8118b9c364c96670",
+        "flows.csv": "f8ea87c7a41930ae720992d92358267cc61be06c82726544e42e6bc8b3e9dc71",
+        "inventories.csv": "ffba3a38d563c8d977590e0d3a1aa7cbbc5c70fecacc504b2cfca63b58f36886",
+        "unmet_demand.csv": "09d8b2ed85137c78fb36ea2dab37fe51aed3fcd35a153020be1946225f6eaca6"
+      }
+    },
+    {
+      "case": "scalar_h300_t4",
+      "canonical": "scalar_h300_t1",
+      "threads": 4,
+      "identical_original_vectors": {
+        "warehouse_decisions.csv": "47acb1e9ca166874a56a11a13fd66533314bca4634f2577d8118b9c364c96670",
+        "flows.csv": "f8ea87c7a41930ae720992d92358267cc61be06c82726544e42e6bc8b3e9dc71",
+        "inventories.csv": "ffba3a38d563c8d977590e0d3a1aa7cbbc5c70fecacc504b2cfca63b58f36886",
+        "unmet_demand.csv": "09d8b2ed85137c78fb36ea2dab37fe51aed3fcd35a153020be1946225f6eaca6"
+      }
+    },
+    {
+      "case": "scalar_h300_t8",
+      "canonical": "scalar_h300_t1",
+      "threads": 8,
+      "identical_original_vectors": {
+        "warehouse_decisions.csv": "47acb1e9ca166874a56a11a13fd66533314bca4634f2577d8118b9c364c96670",
+        "flows.csv": "f8ea87c7a41930ae720992d92358267cc61be06c82726544e42e6bc8b3e9dc71",
+        "inventories.csv": "ffba3a38d563c8d977590e0d3a1aa7cbbc5c70fecacc504b2cfca63b58f36886",
+        "unmet_demand.csv": "09d8b2ed85137c78fb36ea2dab37fe51aed3fcd35a153020be1946225f6eaca6"
+      }
+    },
+    {
+      "case": "scalar_h300_t16",
+      "canonical": "scalar_h300_t1",
+      "threads": 16,
+      "identical_original_vectors": {
+        "warehouse_decisions.csv": "47acb1e9ca166874a56a11a13fd66533314bca4634f2577d8118b9c364c96670",
+        "flows.csv": "f8ea87c7a41930ae720992d92358267cc61be06c82726544e42e6bc8b3e9dc71",
+        "inventories.csv": "ffba3a38d563c8d977590e0d3a1aa7cbbc5c70fecacc504b2cfca63b58f36886",
+        "unmet_demand.csv": "09d8b2ed85137c78fb36ea2dab37fe51aed3fcd35a153020be1946225f6eaca6"
+      }
+    }
+  ],
+  "all_distances_bound_to_exact_workbooks": true,
+  "full_resolution_tables_public": false,
+  "scope": "Derived original-export summaries; no optimizer or fresh residual checks"
+}

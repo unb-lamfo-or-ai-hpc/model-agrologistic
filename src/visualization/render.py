@@ -14,6 +14,8 @@ from pathlib import Path
 
 from .geography import STYLES, digest, require
 
+PRESENTATION_VERSION = "ibge-reader-v2-port-star"
+
 
 def primitives(definition, width=1200, height=850, *, publication=False, capacity=False):
     """One layout and legend for every static output format."""
@@ -126,7 +128,7 @@ def primitives(definition, width=1200, height=850, *, publication=False, capacit
             "origin soybean": "Soybean origins",
             "origin corn": "Corn origins",
             "domestic": "Domestic destinations",
-            "export": "Export outlets",
+            "export": "Export ports",
             "existing": "Existing warehouses",
             "candidate": "Candidate sites",
             "opened": "Opened candidates",
@@ -149,6 +151,15 @@ def marker_points(marker):
     r, symbol = marker["size"], marker["symbol"]
     if symbol == "square":
         return [(x - r, y - r), (x + r, y - r), (x + r, y + r), (x - r, y + r)]
+    if symbol == "star":
+        # Explicit five-point vector; the same vertices feed SVG, PDF and PNG.
+        return [
+            (
+                x + r * (1 if i % 2 == 0 else 0.42) * math.cos(-math.pi / 2 + i * math.pi / 5),
+                y + r * (1 if i % 2 == 0 else 0.42) * math.sin(-math.pi / 2 + i * math.pi / 5),
+            )
+            for i in range(10)
+        ]
     if symbol == "diamond":
         return [(x, y - r), (x + r, y), (x, y + r), (x - r, y)]
     if symbol.startswith("triangle"):
@@ -288,6 +299,7 @@ def render(definition, output, *, width=1200, height=850, publication=False, cap
     }
     if publication:
         receipt["presentation"] = "publication"
+        receipt["presentation_version"] = PRESENTATION_VERSION
     if definition.get("cartography"):
         receipt["renderer"] = "browser-free-ibge-albers-v1"
         receipt["cartography_sha256"] = definition["cartography"]["dataset_sha256"]

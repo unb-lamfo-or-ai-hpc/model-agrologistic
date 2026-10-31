@@ -1,0 +1,297 @@
+## E3 h215 DET/W, Gurobi, native gurobipy, 4 threads
+
+![Figure E.1. Investments for h215 DET/W, Gurobi, native gurobipy, 4 threads.](../figures/scalar_h215_det.png){fig-pos="H"}
+
+The Albers equal-area conic projection preserves relative areas on the display surface. Facility coordinates are unchanged. The port stars identify export ports; diamonds identify bulk-handling conversions. The map locates investments, while the linked tables quantify capacity and transport. OSRM road routes are not depicted.
+
+The accepted solution has a relative objective gap of **0.000812%**. It opens 69 candidates, expands 80 existing sites and converts 66 sites for bulk handling.
+
+The [complete warehouse investment list](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/146fbf9ad1d9b14a91b82c04c69d25ba88b14cc7/manuscript/supplement/investments/scalar_h215_det.csv) provides CDA, municipality, UF, role, activation flags, candidate capacity, expansion and bulk-handling basis in tonnes. Existing-site availability is excluded from candidate openings.
+
+| Movement | Positive exported records | Expected arc-tonnes over the horizon |
+|:--|--:|--:|
+| origin-warehouse (OD) | 7,773 | 1,374,420,353.085 |
+| warehouse-warehouse (DD) | 3,339 | 167,041,802.967 |
+| warehouse-destination (DC) | 10,731 | 1,371,457,378.297 |
+| origin-destination (OC) | 0 | 0.000 |
+
+These are network-arc volumes. Adding different movement families would count a consignment at successive legs; their sum is not delivered demand. The full-resolution companion retains 21,843 flow records, while the expected-horizon sparse matrix contains 3,015 positive product/arc coordinates.
+
+The following five largest product/arc entries illustrate the paired flow-distance matrices. They are a selected view, not the complete matrix.
+
+| Family | From | To / role | Product | Expected horizon t | OSRM km |
+|:--|:--|:--|:--|--:|--:|
+| OD | Toledo - PR | 66.0333.0108-8 | Milho | 45,119,038.044 | 279.7462 |
+| OD | Sorriso - MT | 56.F194.0007-8 | Soja | 37,989,237.118 | 30.9958 |
+| OD | Sorriso - MT | 56.F194.0007-8 | Milho | 36,955,955.290 | 30.9958 |
+| DC | 56.F194.0007-8 | Itaituba - PA / export | Milho | 36,649,167.943 | 1,084.3545 |
+| DC | 56.F194.0007-8 | Itaituba - PA / export | Soja | 36,489,237.118 | 1,084.3545 |
+
+![Figure E.2. Added static capacity for h215 DET/W, Gurobi, native gurobipy, 4 threads.](../figures/scalar_h215_det_capacity.png){fig-pos="H"}
+
+Circle area represents added candidate plus expansion storage in tonnes. The Albers equal-area display retains the same original coordinates and national extent as the preceding investment map. Bulk-handling basis is excluded from the circles; it determines handling gains rather than additional static storage.
+
+## E4 h215 STO/W, Gurobi, native gurobipy, 4 threads
+
+![Figure E.3. Investments for h215 STO/W, Gurobi, native gurobipy, 4 threads.](../figures/scalar_h215_sto.png){fig-pos="H"}
+
+The Albers equal-area conic projection preserves relative areas on the display surface. Facility coordinates are unchanged. The port stars identify export ports; diamonds identify bulk-handling conversions. The map locates investments, while the linked tables quantify capacity and transport. OSRM road routes are not depicted.
+
+The accepted solution has a relative objective gap of **0.740159%**. It opens 69 candidates, expands 75 existing sites and converts 71 sites for bulk handling.
+
+The [complete warehouse investment list](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/146fbf9ad1d9b14a91b82c04c69d25ba88b14cc7/manuscript/supplement/investments/scalar_h215_sto.csv) provides CDA, municipality, UF, role, activation flags, candidate capacity, expansion and bulk-handling basis in tonnes. Existing-site availability is excluded from candidate openings.
+
+| Movement | Positive exported records | Expected arc-tonnes over the horizon |
+|:--|--:|--:|
+| origin-warehouse (OD) | 68,943 | 1,374,420,353.085 |
+| warehouse-warehouse (DD) | 30,950 | 165,214,630.554 |
+| warehouse-destination (DC) | 94,595 | 1,371,554,638.383 |
+| origin-destination (OC) | 0 | 0.000 |
+
+These are network-arc volumes. Adding different movement families would count a consignment at successive legs; their sum is not delivered demand. The full-resolution companion retains 194,488 flow records, while the expected-horizon sparse matrix contains 4,090 positive product/arc coordinates.
+
+The following five largest product/arc entries illustrate the paired flow-distance matrices. They are a selected view, not the complete matrix.
+
+| Family | From | To / role | Product | Expected horizon t | OSRM km |
+|:--|:--|:--|:--|--:|--:|
+| OD | Toledo - PR | 66.0333.0108-8 | Milho | 44,337,337.208 | 279.7462 |
+| OD | Sorriso - MT | 56.F194.0007-8 | Soja | 37,682,338.094 | 30.9958 |
+| OD | Sorriso - MT | 56.F194.0007-8 | Milho | 36,820,331.500 | 30.9958 |
+| DC | 56.F194.0007-8 | Itaituba - PA / export | Milho | 36,479,315.850 | 1,084.3545 |
+| DC | 56.F194.0007-8 | Itaituba - PA / export | Soja | 36,249,004.760 | 1,084.3545 |
+
+![Figure E.4. Added static capacity for h215 STO/W, Gurobi, native gurobipy, 4 threads.](../figures/scalar_h215_sto_capacity.png){fig-pos="H"}
+
+Circle area represents added candidate plus expansion storage in tonnes. The Albers equal-area display retains the same original coordinates and national extent as the preceding investment map. Bulk-handling basis is excluded from the circles; it determines handling gains rather than additional static storage.
+
+## E5 h300 STO/W, Gurobi, native gurobipy, 1 thread
+
+![Figure E.5. Investments for h300 STO/W, Gurobi, native gurobipy, 1 thread.](../figures/scalar_h300_t1.png){fig-pos="H"}
+
+The Albers equal-area conic projection preserves relative areas on the display surface. Facility coordinates are unchanged. The port stars identify export ports; diamonds identify bulk-handling conversions. The map locates investments, while the linked tables quantify capacity and transport. OSRM road routes are not depicted.
+
+The accepted solution has a relative objective gap of **0.004119%**. It opens 154 candidates, expands 70 existing sites and converts 76 sites for bulk handling.
+
+The [complete warehouse investment list](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/146fbf9ad1d9b14a91b82c04c69d25ba88b14cc7/manuscript/supplement/investments/scalar_h300_t1.csv) provides CDA, municipality, UF, role, activation flags, candidate capacity, expansion and bulk-handling basis in tonnes. Existing-site availability is excluded from candidate openings.
+
+| Movement | Positive exported records | Expected arc-tonnes over the horizon |
+|:--|--:|--:|
+| origin-warehouse (OD) | 84,572 | 1,374,420,353.085 |
+| warehouse-warehouse (DD) | 33,468 | 189,900,398.314 |
+| warehouse-destination (DC) | 109,474 | 1,371,084,300.466 |
+| origin-destination (OC) | 0 | 0.000 |
+
+These are network-arc volumes. Adding different movement families would count a consignment at successive legs; their sum is not delivered demand. The full-resolution companion retains 227,514 flow records, while the expected-horizon sparse matrix contains 5,058 positive product/arc coordinates.
+
+The following five largest product/arc entries illustrate the paired flow-distance matrices. They are a selected view, not the complete matrix.
+
+| Family | From | To / role | Product | Expected horizon t | OSRM km |
+|:--|:--|:--|:--|--:|--:|
+| OD | Toledo - PR | 66.0333.0108-8 | Milho | 39,287,786.033 | 279.7462 |
+| OD | Sorriso - MT | 56.F194.0007-8 | Soja | 37,193,870.178 | 30.9958 |
+| OD | Sorriso - MT | 56.F194.0007-8 | Milho | 36,544,449.063 | 30.9958 |
+| DC | 56.F194.0007-8 | Itaituba - PA / export | Milho | 36,141,115.356 | 1,084.3545 |
+| DC | 56.F194.0007-8 | Itaituba - PA / export | Soja | 35,693,870.178 | 1,084.3545 |
+
+![Figure E.6. Added static capacity for h300 STO/W, Gurobi, native gurobipy, 1 thread.](../figures/scalar_h300_t1_capacity.png){fig-pos="H"}
+
+Circle area represents added candidate plus expansion storage in tonnes. The Albers equal-area display retains the same original coordinates and national extent as the preceding investment map. Bulk-handling basis is excluded from the circles; it determines handling gains rather than additional static storage.
+
+## E6 h400 STO/W, Gurobi, native gurobipy, 1 thread
+
+![Figure E.7. Investments for h400 STO/W, Gurobi, native gurobipy, 1 thread.](../figures/scalar_h400_t1.png){fig-pos="H"}
+
+The Albers equal-area conic projection preserves relative areas on the display surface. Facility coordinates are unchanged. The port stars identify export ports; diamonds identify bulk-handling conversions. The map locates investments, while the linked tables quantify capacity and transport. OSRM road routes are not depicted.
+
+The accepted solution has a relative objective gap of **0.836784%**. It opens 254 candidates, expands 69 existing sites and converts 77 sites for bulk handling.
+
+The [complete warehouse investment list](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/146fbf9ad1d9b14a91b82c04c69d25ba88b14cc7/manuscript/supplement/investments/scalar_h400_t1.csv) provides CDA, municipality, UF, role, activation flags, candidate capacity, expansion and bulk-handling basis in tonnes. Existing-site availability is excluded from candidate openings.
+
+| Movement | Positive exported records | Expected arc-tonnes over the horizon |
+|:--|--:|--:|
+| origin-warehouse (OD) | 100,664 | 1,374,420,353.085 |
+| warehouse-warehouse (DD) | 40,205 | 200,859,544.376 |
+| warehouse-destination (DC) | 125,724 | 1,370,916,024.951 |
+| origin-destination (OC) | 0 | 0.000 |
+
+These are network-arc volumes. Adding different movement families would count a consignment at successive legs; their sum is not delivered demand. The full-resolution companion retains 266,593 flow records, while the expected-horizon sparse matrix contains 6,143 positive product/arc coordinates.
+
+The following five largest product/arc entries illustrate the paired flow-distance matrices. They are a selected view, not the complete matrix.
+
+| Family | From | To / role | Product | Expected horizon t | OSRM km |
+|:--|:--|:--|:--|--:|--:|
+| OD | Toledo - PR | 66.0333.0108-8 | Milho | 37,524,219.236 | 279.7462 |
+| OD | Sorriso - MT | 56.F194.0007-8 | Soja | 36,677,336.940 | 30.9958 |
+| OD | Sorriso - MT | 56.F194.0007-8 | Milho | 36,383,126.177 | 30.9958 |
+| DC | 56.F194.0007-8 | Itaituba - PA / export | Milho | 36,020,561.649 | 1,084.3545 |
+| DC | 56.F194.0007-8 | Itaituba - PA / export | Soja | 35,213,796.112 | 1,084.3545 |
+
+![Figure E.8. Added static capacity for h400 STO/W, Gurobi, native gurobipy, 1 thread.](../figures/scalar_h400_t1_capacity.png){fig-pos="H"}
+
+Circle area represents added candidate plus expansion storage in tonnes. The Albers equal-area display retains the same original coordinates and national extent as the preceding investment map. Bulk-handling basis is excluded from the circles; it determines handling gains rather than additional static storage.
+
+## E7 h500 STO/W, Gurobi, native gurobipy, 1 thread
+
+![Figure E.9. Investments for h500 STO/W, Gurobi, native gurobipy, 1 thread.](../figures/scalar_h500_t1.png){fig-pos="H"}
+
+The Albers equal-area conic projection preserves relative areas on the display surface. Facility coordinates are unchanged. The port stars identify export ports; diamonds identify bulk-handling conversions. The map locates investments, while the linked tables quantify capacity and transport. OSRM road routes are not depicted.
+
+The accepted solution has a relative objective gap of **0.207432%**. It opens 354 candidates, expands 72 existing sites and converts 74 sites for bulk handling.
+
+The [complete warehouse investment list](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/146fbf9ad1d9b14a91b82c04c69d25ba88b14cc7/manuscript/supplement/investments/scalar_h500_t1.csv) provides CDA, municipality, UF, role, activation flags, candidate capacity, expansion and bulk-handling basis in tonnes. Existing-site availability is excluded from candidate openings.
+
+| Movement | Positive exported records | Expected arc-tonnes over the horizon |
+|:--|--:|--:|
+| origin-warehouse (OD) | 110,385 | 1,374,420,353.085 |
+| warehouse-warehouse (DD) | 44,294 | 209,001,024.443 |
+| warehouse-destination (DC) | 135,106 | 1,370,709,301.045 |
+| origin-destination (OC) | 0 | 0.000 |
+
+These are network-arc volumes. Adding different movement families would count a consignment at successive legs; their sum is not delivered demand. The full-resolution companion retains 289,785 flow records, while the expected-horizon sparse matrix contains 7,023 positive product/arc coordinates.
+
+The following five largest product/arc entries illustrate the paired flow-distance matrices. They are a selected view, not the complete matrix.
+
+| Family | From | To / role | Product | Expected horizon t | OSRM km |
+|:--|:--|:--|:--|--:|--:|
+| OD | Toledo - PR | 66.0333.0108-8 | Milho | 38,378,996.796 | 279.7462 |
+| OD | Sorriso - MT | 56.F194.0007-8 | Soja | 36,347,505.229 | 30.9958 |
+| DC | 56.F194.0007-8 | Itaituba - PA / export | Soja | 34,905,524.715 | 1,084.3545 |
+| OD | Sorriso - MT | 56.F194.0007-8 | Milho | 34,141,365.299 | 30.9958 |
+| DC | 56.F194.0007-8 | Itaituba - PA / export | Milho | 33,715,764.420 | 1,084.3545 |
+
+![Figure E.10. Added static capacity for h500 STO/W, Gurobi, native gurobipy, 1 thread.](../figures/scalar_h500_t1_capacity.png){fig-pos="H"}
+
+Circle area represents added candidate plus expansion storage in tonnes. The Albers equal-area display retains the same original coordinates and national extent as the preceding investment map. Bulk-handling basis is excluded from the circles; it determines handling gains rather than additional static storage.
+
+## E8 h215 DET/D, Gurobi, native gurobipy, 4 threads
+
+![Figure E.11. Investments for h215 DET/D, Gurobi, native gurobipy, 4 threads.](../figures/scalar_h215_d_det.png){fig-pos="H"}
+
+The Albers equal-area conic projection preserves relative areas on the display surface. Facility coordinates are unchanged. The port stars identify export ports; diamonds identify bulk-handling conversions. The map locates investments, while the linked tables quantify capacity and transport. OSRM road routes are not depicted.
+
+The accepted solution has a relative objective gap of **0.552427%**. It opens 69 candidates, expands 142 existing sites and converts 4 sites for bulk handling.
+
+The [complete warehouse investment list](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/146fbf9ad1d9b14a91b82c04c69d25ba88b14cc7/manuscript/supplement/investments/scalar_h215_d_det.csv) provides CDA, municipality, UF, role, activation flags, candidate capacity, expansion and bulk-handling basis in tonnes. Existing-site availability is excluded from candidate openings.
+
+| Movement | Positive exported records | Expected arc-tonnes over the horizon |
+|:--|--:|--:|
+| origin-warehouse (OD) | 4,080 | 246,625,348.240 |
+| warehouse-warehouse (DD) | 4,654 | 105,637,499.209 |
+| warehouse-destination (DC) | 5,393 | 244,772,691.525 |
+| origin-destination (OC) | 2,586 | 1,127,795,004.845 |
+
+These are network-arc volumes. Adding different movement families would count a consignment at successive legs; their sum is not delivered demand. The full-resolution companion retains 16,713 flow records, while the expected-horizon sparse matrix contains 2,914 positive product/arc coordinates.
+
+The following five largest product/arc entries illustrate the paired flow-distance matrices. They are a selected view, not the complete matrix.
+
+| Family | From | To / role | Product | Expected horizon t | OSRM km |
+|:--|:--|:--|:--|--:|--:|
+| OC | Sorriso - MT | Itaituba - PA / export | Soja | 203,616,292.657 | 1,092.5900 |
+| OC | Sorriso - MT | Itaituba - PA / export | Milho | 131,290,493.804 | 1,092.5900 |
+| OC | Tibagi - PR | Paranaguá - PR / export | Soja | 76,138,750.461 | 307.0004 |
+| OC | Tupanciretã - RS | Rio Grande - RS / export | Soja | 59,395,881.979 | 437.8240 |
+| OC | Rio Verde - GO | Santos - SP / export | Soja | 58,128,305.549 | 1,049.2323 |
+
+![Figure E.12. Added static capacity for h215 DET/D, Gurobi, native gurobipy, 4 threads.](../figures/scalar_h215_d_det_capacity.png){fig-pos="H"}
+
+Circle area represents added candidate plus expansion storage in tonnes. The Albers equal-area display retains the same original coordinates and national extent as the preceding investment map. Bulk-handling basis is excluded from the circles; it determines handling gains rather than additional static storage.
+
+## E9 h215 STO/D, Gurobi, native gurobipy, 4 threads
+
+![Figure E.13. Investments for h215 STO/D, Gurobi, native gurobipy, 4 threads.](../figures/scalar_h215_d_sto.png){fig-pos="H"}
+
+The Albers equal-area conic projection preserves relative areas on the display surface. Facility coordinates are unchanged. The port stars identify export ports; diamonds identify bulk-handling conversions. The map locates investments, while the linked tables quantify capacity and transport. OSRM road routes are not depicted.
+
+The accepted solution has a relative objective gap of **0.623718%**. It opens 69 candidates, expands 142 existing sites and converts 4 sites for bulk handling.
+
+The [complete warehouse investment list](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/146fbf9ad1d9b14a91b82c04c69d25ba88b14cc7/manuscript/supplement/investments/scalar_h215_d_sto.csv) provides CDA, municipality, UF, role, activation flags, candidate capacity, expansion and bulk-handling basis in tonnes. Existing-site availability is excluded from candidate openings.
+
+| Movement | Positive exported records | Expected arc-tonnes over the horizon |
+|:--|--:|--:|
+| origin-warehouse (OD) | 36,698 | 251,548,979.450 |
+| warehouse-warehouse (DD) | 42,249 | 92,859,992.548 |
+| warehouse-destination (DC) | 49,237 | 249,712,101.193 |
+| origin-destination (OC) | 23,143 | 1,122,871,373.635 |
+
+These are network-arc volumes. Adding different movement families would count a consignment at successive legs; their sum is not delivered demand. The full-resolution companion retains 151,327 flow records, while the expected-horizon sparse matrix contains 3,933 positive product/arc coordinates.
+
+The following five largest product/arc entries illustrate the paired flow-distance matrices. They are a selected view, not the complete matrix.
+
+| Family | From | To / role | Product | Expected horizon t | OSRM km |
+|:--|:--|:--|:--|--:|--:|
+| OC | Sorriso - MT | Itaituba - PA / export | Soja | 202,957,786.378 | 1,092.5900 |
+| OC | Sorriso - MT | Itaituba - PA / export | Milho | 128,091,894.532 | 1,092.5900 |
+| OC | Tibagi - PR | Paranaguá - PR / export | Soja | 76,021,985.003 | 307.0004 |
+| OC | Tupanciretã - RS | Rio Grande - RS / export | Soja | 59,459,489.217 | 437.8240 |
+| OC | Rio Verde - GO | Santos - SP / export | Soja | 59,092,087.619 | 1,049.2323 |
+
+![Figure E.14. Added static capacity for h215 STO/D, Gurobi, native gurobipy, 4 threads.](../figures/scalar_h215_d_sto_capacity.png){fig-pos="H"}
+
+Circle area represents added candidate plus expansion storage in tonnes. The Albers equal-area display retains the same original coordinates and national extent as the preceding investment map. Bulk-handling basis is excluded from the circles; it determines handling gains rather than additional static storage.
+
+## E10 h215 STO/W, Gurobi, Pyomo/APPSI, 4 threads
+
+![Figure E.15. Investments for h215 STO/W, Gurobi, Pyomo/APPSI, 4 threads.](../figures/pyomo_gurobi_h215_w_native8h_license_v2.png){fig-pos="H"}
+
+The Albers equal-area conic projection preserves relative areas on the display surface. Facility coordinates are unchanged. The port stars identify export ports; diamonds identify bulk-handling conversions. The map locates investments, while the linked tables quantify capacity and transport. OSRM road routes are not depicted.
+
+The accepted solution has a relative objective gap of **0.740159%**. It opens 69 candidates, expands 75 existing sites and converts 71 sites for bulk handling.
+
+The [complete warehouse investment list](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/146fbf9ad1d9b14a91b82c04c69d25ba88b14cc7/manuscript/supplement/investments/pyomo_gurobi_h215_w_native8h_license_v2.csv) provides CDA, municipality, UF, role, activation flags, candidate capacity, expansion and bulk-handling basis in tonnes. Existing-site availability is excluded from candidate openings.
+
+| Movement | Positive exported records | Expected arc-tonnes over the horizon |
+|:--|--:|--:|
+| origin-warehouse (OD) | 68,935 | 1,374,420,353.085 |
+| warehouse-warehouse (DD) | 30,146 | 166,261,943.882 |
+| warehouse-destination (DC) | 94,444 | 1,371,554,638.383 |
+| origin-destination (OC) | 0 | 0.000 |
+
+These are network-arc volumes. Adding different movement families would count a consignment at successive legs; their sum is not delivered demand. The full-resolution companion retains 193,525 flow records, while the expected-horizon sparse matrix contains 4,115 positive product/arc coordinates.
+
+The following five largest product/arc entries illustrate the paired flow-distance matrices. They are a selected view, not the complete matrix.
+
+| Family | From | To / role | Product | Expected horizon t | OSRM km |
+|:--|:--|:--|:--|--:|--:|
+| OD | Toledo - PR | 66.0333.0108-8 | Milho | 44,337,337.208 | 279.7462 |
+| OD | Sorriso - MT | 56.F194.0007-8 | Soja | 37,809,356.051 | 30.9958 |
+| OD | Sorriso - MT | 56.F194.0007-8 | Milho | 36,693,313.543 | 30.9958 |
+| DC | 56.F194.0007-8 | Itaituba - PA / export | Soja | 36,376,022.718 | 1,084.3545 |
+| DC | 56.F194.0007-8 | Itaituba - PA / export | Milho | 36,352,297.893 | 1,084.3545 |
+
+![Figure E.16. Added static capacity for h215 STO/W, Gurobi, Pyomo/APPSI, 4 threads.](../figures/pyomo_gurobi_h215_w_native8h_license_v2_capacity.png){fig-pos="H"}
+
+Circle area represents added candidate plus expansion storage in tonnes. The Albers equal-area display retains the same original coordinates and national extent as the preceding investment map. Bulk-handling basis is excluded from the circles; it determines handling gains rather than additional static storage.
+
+## E11 h215 STO/W, HiGHS, Pyomo/APPSI, 4 threads
+
+![Figure E.17. Investments for h215 STO/W, HiGHS, Pyomo/APPSI, 4 threads.](../figures/scalar_highs_h215_w_native8h_startup_v2.png){fig-pos="H"}
+
+The Albers equal-area conic projection preserves relative areas on the display surface. Facility coordinates are unchanged. The port stars identify export ports; diamonds identify bulk-handling conversions. The map locates investments, while the linked tables quantify capacity and transport. OSRM road routes are not depicted.
+
+The accepted solution has a relative objective gap of **0.000196%**. It opens 69 candidates, expands 73 existing sites and converts 73 sites for bulk handling.
+
+The [complete warehouse investment list](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/146fbf9ad1d9b14a91b82c04c69d25ba88b14cc7/manuscript/supplement/investments/scalar_highs_h215_w_native8h_startup_v2.csv) provides CDA, municipality, UF, role, activation flags, candidate capacity, expansion and bulk-handling basis in tonnes. Existing-site availability is excluded from candidate openings.
+
+| Movement | Positive exported records | Expected arc-tonnes over the horizon |
+|:--|--:|--:|
+| origin-warehouse (OD) | 68,279 | 1,374,420,353.085 |
+| warehouse-warehouse (DD) | 17,597 | 77,160,138.174 |
+| warehouse-destination (DC) | 96,397 | 1,371,586,837.177 |
+| origin-destination (OC) | 0 | 0.000 |
+
+These are network-arc volumes. Adding different movement families would count a consignment at successive legs; their sum is not delivered demand. The full-resolution companion retains 182,273 flow records, while the expected-horizon sparse matrix contains 3,880 positive product/arc coordinates.
+
+The following five largest product/arc entries illustrate the paired flow-distance matrices. They are a selected view, not the complete matrix.
+
+| Family | From | To / role | Product | Expected horizon t | OSRM km |
+|:--|:--|:--|:--|--:|--:|
+| OD | Toledo - PR | 66.0333.0108-8 | Milho | 44,248,444.895 | 279.7462 |
+| OD | Sorriso - MT | 56.F194.0007-8 | Soja | 37,644,913.612 | 30.9958 |
+| OD | Sorriso - MT | 56.F194.0007-8 | Milho | 36,819,569.223 | 30.9958 |
+| DC | 56.F194.0007-8 | Itaituba - PA / export | Milho | 36,425,453.697 | 1,084.3545 |
+| DC | 56.F194.0007-8 | Itaituba - PA / export | Soja | 36,210,245.083 | 1,084.3545 |
+
+![Figure E.18. Added static capacity for h215 STO/W, HiGHS, Pyomo/APPSI, 4 threads.](../figures/scalar_highs_h215_w_native8h_startup_v2_capacity.png){fig-pos="H"}
+
+Circle area represents added candidate plus expansion storage in tonnes. The Albers equal-area display retains the same original coordinates and national extent as the preceding investment map. Bulk-handling basis is excluded from the circles; it determines handling gains rather than additional static storage.
+

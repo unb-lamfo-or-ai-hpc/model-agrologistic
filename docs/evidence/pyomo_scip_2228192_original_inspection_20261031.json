@@ -1,0 +1,182 @@
+{
+  "schema_version": "original-scip-2228192-integrity-v1",
+  "date": "2026-10-31",
+  "archive": "pyomo-scip-h215-w-native8h-evidence.tar.gz",
+  "archive_sha256": "756cd68a1af192306048d4c91bb1c5f7838c4ee0dc9afd053f4e13ccdd11be8b",
+  "inventory_digests_verified": 255,
+  "members_fully_hashed": 256,
+  "original_review": {
+    "accounting": [
+      {
+        "elapsed_seconds": 30173,
+        "exit_code": "0:0",
+        "job_id": "2228192",
+        "max_rss_raw": null,
+        "state": "COMPLETED"
+      },
+      {
+        "elapsed_seconds": 30173,
+        "exit_code": "0:0",
+        "job_id": "2228192.batch",
+        "max_rss_raw": "101796K",
+        "state": "COMPLETED"
+      },
+      {
+        "elapsed_seconds": 30173,
+        "exit_code": "0:0",
+        "job_id": "2228192.extern",
+        "max_rss_raw": "932K",
+        "state": "COMPLETED"
+      },
+      {
+        "elapsed_seconds": 30160,
+        "exit_code": "0:0",
+        "job_id": "2228192.0",
+        "max_rss_raw": "93172652K",
+        "state": "COMPLETED"
+      }
+    ],
+    "additional_cbc_execution_admitted": false,
+    "additional_gurobi_execution_admitted": false,
+    "additional_highs_execution_admitted": false,
+    "additional_scip_execution_admitted": false,
+    "automatic_follow_on_allowed": false,
+    "bound": -1779457702122698.2,
+    "classification": "no_usable_incumbent",
+    "common_gap": null,
+    "common_linear_matrix": {
+      "binary_variables": 307,
+      "linear_constraints": 735577,
+      "nonzeros": 52217866,
+      "schema_version": "ordered-pyomo-linear-matrix-v1",
+      "scope": "Ordered common Pyomo algebra; not a presolved/native matrix fingerprint.",
+      "sha256": "a0c9d863aaeefee2b0a84de47150ec90011dc8eb16be9a7a8c4e491eb2cf1944",
+      "variables": 14054654
+    },
+    "economic_cost": null,
+    "execution_admitted": false,
+    "external_observation": {
+      "errors": [],
+      "largest_interval_seconds": 7.198707078001462,
+      "production_isolation_certified": false,
+      "qualification": "Observed sampled scope only; no unobserved peak or causal overhead.",
+      "sampled_worker_tree_peak_bytes": 95408795648.0,
+      "samples": 5942,
+      "status": "timely_samples"
+    },
+    "h300_admitted": false,
+    "has_usable_incumbent": false,
+    "highs_execution_admitted": false,
+    "interpretation": "One common-form observation; compare attained gaps, full timing and shared-node qualifications before making performance claims.",
+    "job_id": "2228192",
+    "native_counters": {
+      "lp_iterations": 2041958,
+      "nodes": 1
+    },
+    "native_gap": null,
+    "native_status": "timelimit",
+    "objective": null,
+    "operational_error_kind": null,
+    "operational_receipts_closed": true,
+    "original_validation_status": "rejected",
+    "parameter_evidence": {
+      "effective_parameters": {
+        "limits/absgap": 1e-10,
+        "limits/gap": 0.01,
+        "limits/time": 28800.0,
+        "lp/threads": 4,
+        "numerics/feastol": 1e-09,
+        "parallel/maxnthreads": 4,
+        "randomization/lpseed": 0,
+        "randomization/permutationseed": 0,
+        "randomization/randomseedshift": 42,
+        "timing/clocktype": 2
+      },
+      "scope": "Native in-process option introspection"
+    },
+    "penalized_total": null,
+    "production_isolation_certified": false,
+    "quality_target_met": false,
+    "reformulation": {
+      "bounds_sha256": "d3c10c1ae4c3b9540c31792edc7b9ff29332710783f696b96e619e6e7ac7eff7",
+      "candidate_slack_bounds": 74520,
+      "entire_redundant_slack_region_preserved": false,
+      "equivalence": "physical_investment_projection_and_optimal_scalar_value",
+      "maximum_bound": 1580583406.0475163,
+      "nonnegative_candidate_slack_penalties_required": true,
+      "policy": "bounded_scalar_slacks_v1"
+    },
+    "repeats_admitted": false,
+    "solver": "scip",
+    "source_commit": "1b53b24f68b6bcbef2260e39d232464cebb01745",
+    "startup": {
+      "completed_stages": [
+        "bootstrap_identity",
+        "exact_release",
+        "site_initialization",
+        "driver_import",
+        "plan_validation",
+        "source_verification",
+        "runtime_fingerprints",
+        "input_hashes",
+        "tool_verification",
+        "native_identity",
+        "public_qualification",
+        "runtime_receipt"
+      ],
+      "last_stage": "runtime_receipt",
+      "stage_seconds": {
+        "bootstrap_identity": 0.3502294209902175,
+        "driver_import": 0.71672268002294,
+        "exact_release": 0.1055798539891839,
+        "input_hashes": 0.0882133329869248,
+        "native_identity": 0.04444649501238018,
+        "plan_validation": 0.019383202015887946,
+        "public_qualification": 5.577419210982043,
+        "runtime_fingerprints": 1.4771029690164141,
+        "runtime_receipt": 0.28414818504825234,
+        "site_initialization": 0.009261351951863617,
+        "source_verification": 0.3706700260518119,
+        "tool_verification": 0.010042863024864346
+      },
+      "status": "complete"
+    },
+    "status": "pyomo_returned_quality_not_met",
+    "timings": {
+      "artifact_export_seconds": 0.27042801497736946,
+      "data_read_seconds": 9.209616109728813e-07,
+      "end_to_end_seconds": 30071.297984457982,
+      "independent_validation_seconds": 1.1589582089800388,
+      "matrix_identity_seconds": 474.3568404230173,
+      "model_build_seconds": 1030.152857588022,
+      "optimization_seconds": 28801.391870882013,
+      "solve_sequence_wall_seconds": 30051.886256520986,
+      "solver_reported_runtime_seconds": 28800.308305,
+      "solver_transfer_seconds": 411.17318134597735
+    }
+  },
+  "original_validation_status": "rejected",
+  "original_failed_check_count": 41066,
+  "validation_interpretation": "No usable primal vector was returned. Rejected empty products do not establish an infeasible model or a rejected feasible incumbent.",
+  "original_log_facts": {
+    "presolve_seconds": 551.88,
+    "presolved_variables": 12708003,
+    "presolved_binary_variables": 92,
+    "presolved_constraints": 626547,
+    "native_solution_count": 0,
+    "native_iterations": 2041958,
+    "native_nodes": 1
+  },
+  "same_instance_checks": {
+    "workbook_sha256": "40edb66585daca9cc393cab1f86bde6d4528a5f34b6afc57260cc1684396da4e",
+    "warehouse_selection_receipts_equal": true,
+    "mathematical_contracts_equal": true,
+    "scenario_probabilities_equal": true,
+    "selected_network_sha256": "7352445b5c816be485e70358e4abe2b8f2c96d6f3ab05f07ac266cf06b53f6ca",
+    "gurobi_scip_ordered_pyomo_matrix_equal": true,
+    "highs_ordered_matrix_fingerprint_available": false
+  },
+  "scope": "Original transfer/inventory hashes and retained certificates/logs; no extraction, optimizer, fresh residuals or full Git-source replay",
+  "original_inputs_or_archives_modified": false,
+  "additional_execution_admitted": false
+}

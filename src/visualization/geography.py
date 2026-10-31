@@ -24,7 +24,7 @@ STYLES = {
     "origin_soybean": ("#176b42", "triangle-up"),
     "origin_corn": ("#8b6b00", "triangle-down"),
     "domestic": ("#3465a4", "square"),
-    "export": ("#78469b", "diamond"),
+    "export": ("#78469b", "star"),
     "existing": ("#4d4d4d", "circle"),
     "candidate": ("#bdbdbd", "circle-open"),
     "opened": ("#d47700", "circle"),

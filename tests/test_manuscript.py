@@ -192,7 +192,7 @@ def test_ai_declaration_is_before_references(manuscript):
         < article.index("# Declaration of generative AI")
         < article.index("# References")
     )
-    for name in ("Gurobot", "Gemini 3.1 Pro", "5.6 Sol", "6.0 Astra"):
+    for name in ("Gurobot", "Gemini 3.1 Pro", "6.1 Sol", "6.0 Astra"):
         assert name in article
 
 
