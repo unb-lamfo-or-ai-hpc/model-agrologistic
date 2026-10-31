@@ -91,9 +91,9 @@ objective gap. The original independent primal certificates were accepted;
 post-processing their exports does not constitute a new optimization or a
 fresh residual check.
 
-The [configuration and original-export index](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/__APPENDIX_E_SOURCE_SHA__/manuscript/supplement/appendix_e_sources.json),
-[numerical companion inventory](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/__APPENDIX_E_SOURCE_SHA__/manuscript/supplement/appendix_e_summary.json)
-and [reconstruction program](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/__APPENDIX_E_SOURCE_SHA__/scripts/build_appendix_e.py)
+The [configuration and original-export index](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/0788de130253dddc790b179c8831d8ee29dabcbd/manuscript/supplement/appendix_e_sources.json),
+[numerical companion inventory](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/0788de130253dddc790b179c8831d8ee29dabcbd/manuscript/supplement/appendix_e_summary.json)
+and [reconstruction program](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/0788de130253dddc790b179c8831d8ee29dabcbd/scripts/build_appendix_e.py)
 identify the precise versions and aggregation procedure. The complete warehouse
 lists are linked under each configuration. Full-resolution flow-distance tables
 are prepared as compressed CSVs and a separate SQLite database; they are not

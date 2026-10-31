@@ -6,7 +6,7 @@ The Albers equal-area conic projection preserves relative areas on the display s
 
 The accepted solution has a relative objective gap of **0.000812%**. It opens 69 candidates, expands 80 existing sites and converts 66 sites for bulk handling.
 
-The [complete warehouse investment list](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/146fbf9ad1d9b14a91b82c04c69d25ba88b14cc7/manuscript/supplement/investments/scalar_h215_det.csv) provides CDA, municipality, UF, role, activation flags, candidate capacity, expansion and bulk-handling basis in tonnes. Existing-site availability is excluded from candidate openings.
+The [complete warehouse investment list](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/0788de130253dddc790b179c8831d8ee29dabcbd/manuscript/supplement/investments/scalar_h215_det.csv) provides CDA, municipality, UF, role, activation flags, candidate capacity, expansion and bulk-handling basis in tonnes. Existing-site availability is excluded from candidate openings.
 
 | Movement | Positive exported records | Expected arc-tonnes over the horizon |
 |:--|--:|--:|
@@ -39,7 +39,7 @@ The Albers equal-area conic projection preserves relative areas on the display s
 
 The accepted solution has a relative objective gap of **0.740159%**. It opens 69 candidates, expands 75 existing sites and converts 71 sites for bulk handling.
 
-The [complete warehouse investment list](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/146fbf9ad1d9b14a91b82c04c69d25ba88b14cc7/manuscript/supplement/investments/scalar_h215_sto.csv) provides CDA, municipality, UF, role, activation flags, candidate capacity, expansion and bulk-handling basis in tonnes. Existing-site availability is excluded from candidate openings.
+The [complete warehouse investment list](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/0788de130253dddc790b179c8831d8ee29dabcbd/manuscript/supplement/investments/scalar_h215_sto.csv) provides CDA, municipality, UF, role, activation flags, candidate capacity, expansion and bulk-handling basis in tonnes. Existing-site availability is excluded from candidate openings.
 
 | Movement | Positive exported records | Expected arc-tonnes over the horizon |
 |:--|--:|--:|
@@ -72,7 +72,7 @@ The Albers equal-area conic projection preserves relative areas on the display s
 
 The accepted solution has a relative objective gap of **0.004119%**. It opens 154 candidates, expands 70 existing sites and converts 76 sites for bulk handling.
 
-The [complete warehouse investment list](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/146fbf9ad1d9b14a91b82c04c69d25ba88b14cc7/manuscript/supplement/investments/scalar_h300_t1.csv) provides CDA, municipality, UF, role, activation flags, candidate capacity, expansion and bulk-handling basis in tonnes. Existing-site availability is excluded from candidate openings.
+The [complete warehouse investment list](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/0788de130253dddc790b179c8831d8ee29dabcbd/manuscript/supplement/investments/scalar_h300_t1.csv) provides CDA, municipality, UF, role, activation flags, candidate capacity, expansion and bulk-handling basis in tonnes. Existing-site availability is excluded from candidate openings.
 
 | Movement | Positive exported records | Expected arc-tonnes over the horizon |
 |:--|--:|--:|
@@ -105,7 +105,7 @@ The Albers equal-area conic projection preserves relative areas on the display s
 
 The accepted solution has a relative objective gap of **0.836784%**. It opens 254 candidates, expands 69 existing sites and converts 77 sites for bulk handling.
 
-The [complete warehouse investment list](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/146fbf9ad1d9b14a91b82c04c69d25ba88b14cc7/manuscript/supplement/investments/scalar_h400_t1.csv) provides CDA, municipality, UF, role, activation flags, candidate capacity, expansion and bulk-handling basis in tonnes. Existing-site availability is excluded from candidate openings.
+The [complete warehouse investment list](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/0788de130253dddc790b179c8831d8ee29dabcbd/manuscript/supplement/investments/scalar_h400_t1.csv) provides CDA, municipality, UF, role, activation flags, candidate capacity, expansion and bulk-handling basis in tonnes. Existing-site availability is excluded from candidate openings.
 
 | Movement | Positive exported records | Expected arc-tonnes over the horizon |
 |:--|--:|--:|
@@ -138,7 +138,7 @@ The Albers equal-area conic projection preserves relative areas on the display s
 
 The accepted solution has a relative objective gap of **0.207432%**. It opens 354 candidates, expands 72 existing sites and converts 74 sites for bulk handling.
 
-The [complete warehouse investment list](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/146fbf9ad1d9b14a91b82c04c69d25ba88b14cc7/manuscript/supplement/investments/scalar_h500_t1.csv) provides CDA, municipality, UF, role, activation flags, candidate capacity, expansion and bulk-handling basis in tonnes. Existing-site availability is excluded from candidate openings.
+The [complete warehouse investment list](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/0788de130253dddc790b179c8831d8ee29dabcbd/manuscript/supplement/investments/scalar_h500_t1.csv) provides CDA, municipality, UF, role, activation flags, candidate capacity, expansion and bulk-handling basis in tonnes. Existing-site availability is excluded from candidate openings.
 
 | Movement | Positive exported records | Expected arc-tonnes over the horizon |
 |:--|--:|--:|
@@ -171,7 +171,7 @@ The Albers equal-area conic projection preserves relative areas on the display s
 
 The accepted solution has a relative objective gap of **0.552427%**. It opens 69 candidates, expands 142 existing sites and converts 4 sites for bulk handling.
 
-The [complete warehouse investment list](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/146fbf9ad1d9b14a91b82c04c69d25ba88b14cc7/manuscript/supplement/investments/scalar_h215_d_det.csv) provides CDA, municipality, UF, role, activation flags, candidate capacity, expansion and bulk-handling basis in tonnes. Existing-site availability is excluded from candidate openings.
+The [complete warehouse investment list](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/0788de130253dddc790b179c8831d8ee29dabcbd/manuscript/supplement/investments/scalar_h215_d_det.csv) provides CDA, municipality, UF, role, activation flags, candidate capacity, expansion and bulk-handling basis in tonnes. Existing-site availability is excluded from candidate openings.
 
 | Movement | Positive exported records | Expected arc-tonnes over the horizon |
 |:--|--:|--:|
@@ -204,7 +204,7 @@ The Albers equal-area conic projection preserves relative areas on the display s
 
 The accepted solution has a relative objective gap of **0.623718%**. It opens 69 candidates, expands 142 existing sites and converts 4 sites for bulk handling.
 
-The [complete warehouse investment list](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/146fbf9ad1d9b14a91b82c04c69d25ba88b14cc7/manuscript/supplement/investments/scalar_h215_d_sto.csv) provides CDA, municipality, UF, role, activation flags, candidate capacity, expansion and bulk-handling basis in tonnes. Existing-site availability is excluded from candidate openings.
+The [complete warehouse investment list](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/0788de130253dddc790b179c8831d8ee29dabcbd/manuscript/supplement/investments/scalar_h215_d_sto.csv) provides CDA, municipality, UF, role, activation flags, candidate capacity, expansion and bulk-handling basis in tonnes. Existing-site availability is excluded from candidate openings.
 
 | Movement | Positive exported records | Expected arc-tonnes over the horizon |
 |:--|--:|--:|
@@ -237,7 +237,7 @@ The Albers equal-area conic projection preserves relative areas on the display s
 
 The accepted solution has a relative objective gap of **0.740159%**. It opens 69 candidates, expands 75 existing sites and converts 71 sites for bulk handling.
 
-The [complete warehouse investment list](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/146fbf9ad1d9b14a91b82c04c69d25ba88b14cc7/manuscript/supplement/investments/pyomo_gurobi_h215_w_native8h_license_v2.csv) provides CDA, municipality, UF, role, activation flags, candidate capacity, expansion and bulk-handling basis in tonnes. Existing-site availability is excluded from candidate openings.
+The [complete warehouse investment list](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/0788de130253dddc790b179c8831d8ee29dabcbd/manuscript/supplement/investments/pyomo_gurobi_h215_w_native8h_license_v2.csv) provides CDA, municipality, UF, role, activation flags, candidate capacity, expansion and bulk-handling basis in tonnes. Existing-site availability is excluded from candidate openings.
 
 | Movement | Positive exported records | Expected arc-tonnes over the horizon |
 |:--|--:|--:|
@@ -270,7 +270,7 @@ The Albers equal-area conic projection preserves relative areas on the display s
 
 The accepted solution has a relative objective gap of **0.000196%**. It opens 69 candidates, expands 73 existing sites and converts 73 sites for bulk handling.
 
-The [complete warehouse investment list](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/146fbf9ad1d9b14a91b82c04c69d25ba88b14cc7/manuscript/supplement/investments/scalar_highs_h215_w_native8h_startup_v2.csv) provides CDA, municipality, UF, role, activation flags, candidate capacity, expansion and bulk-handling basis in tonnes. Existing-site availability is excluded from candidate openings.
+The [complete warehouse investment list](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/0788de130253dddc790b179c8831d8ee29dabcbd/manuscript/supplement/investments/scalar_highs_h215_w_native8h_startup_v2.csv) provides CDA, municipality, UF, role, activation flags, candidate capacity, expansion and bulk-handling basis in tonnes. Existing-site availability is excluded from candidate openings.
 
 | Movement | Positive exported records | Expected arc-tonnes over the horizon |
 |:--|--:|--:|

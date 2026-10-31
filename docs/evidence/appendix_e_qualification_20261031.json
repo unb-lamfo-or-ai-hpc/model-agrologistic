@@ -94,5 +94,7 @@
   "npad_action": false,
   "full_article_or_supplement_pdf_rendered": false,
   "requested_working_pdfs": "After bibliographic reconciliation, present both PDFs in Codex tabs",
-  "temporary_outputs_uploaded": false
+  "temporary_outputs_uploaded": false,
+  "functional_source_commit": "0788de130253dddc790b179c8831d8ee29dabcbd",
+  "source_pin_qualification": "Reader links target the actual functional commit; no runtime changes in the pinning commit"
 }
