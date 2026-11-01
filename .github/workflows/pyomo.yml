@@ -32,6 +32,8 @@ jobs:
           python -m pip install -e '.[dev,scip,multisolver]' 'pyscipopt==6.2.1'
           python -c 'import importlib.metadata as m; print({k:m.version(k) for k in ("pyomo","highspy","pyscipopt")})'
           cbc -stop
+      - name: Pin the paired scaling qualification runtime
+        run: python -m pip install 'pyomo==6.10.1' 'highspy==1.15.1' 'gurobipy==13.0.3'
       - name: Real public analytical and parity qualification, no HPC
         run: >-
           python -B -m pytest -p no:cacheprovider -q
@@ -44,10 +46,14 @@ jobs:
           tests/test_pyomo_h215_operational.py tests/test_npad_gurobi_license.py
           tests/test_pyomo_gurobi_license_gate.py
           tests/test_pyomo_gurobi_license_v2.py
+          tests/test_pyomo_scaling_contract.py tests/test_pyomo_scaling_operational.py
+          tests/test_pyomo_scaling_parallel.py tests/test_pyomo_scaling_integration.py
           --junitxml=/tmp/pyomo-results.xml --basetemp=/tmp/pyomo-publiccases
       - name: Freeze the NPAD public requalification count and wrapper syntax
         run: |
           bash -n scripts/npad_pyomo_gurobi_h215_w_native8h_license_v2.sh
+          bash -n scripts/npad_pyomo_scaling_public.sh
+          python -B -c 'import pytest; from scripts.qualify_pyomo_scaling import TESTS, EXPECTED_TESTS; hook=type("Counter",(),{"pytest_collection_finish":lambda self,session: (_ for _ in ()).throw(AssertionError("Paired scaling inventory differs")) if len(session.items)!=EXPECTED_TESTS else print("SCALING_PUBLIC_TESTS="+str(len(session.items)))})(); raise SystemExit(pytest.main(["--collect-only","-q","-p","no:cacheprovider",*TESTS],plugins=[hook]))'
           python -B -c 'import pytest; from scripts.qualify_pyomo_gurobi_license_v2 import TESTS; from scripts.pyomo_gurobi_retry_contract import EXPECTED_TESTS; hook=type("Counter",(),{"pytest_collection_finish":lambda self,session: (_ for _ in ()).throw(AssertionError("Public test inventory differs")) if len(session.items)!=EXPECTED_TESTS else print("NPAD_PUBLIC_TESTS="+str(len(session.items)))})(); raise SystemExit(pytest.main(["--collect-only","-q","-p","no:cacheprovider",*TESTS],plugins=[hook]))'
       - name: Reject missing or skipped solver controls
         run: |

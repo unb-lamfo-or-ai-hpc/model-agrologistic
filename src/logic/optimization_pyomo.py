@@ -63,6 +63,9 @@ def settings(config):
     guard = options.pop("pyomo_max_variables", 200000)
     if isinstance(guard, bool) or not isinstance(guard, int) or guard <= 0:
         raise ValueError("Positive integer Pyomo variable guard required.")
+    if "highs_parallel" in options:
+        if SOLVERS[name] != "appsi_highs" or options.pop("highs_parallel") != "on":
+            raise ValueError("Explicit highs_parallel='on' is qualified only for HiGHS.")
     if options or config.compute_iis or config.collect_resource_diagnostics:
         raise ValueError("Unqualified Pyomo options/IIS/resource diagnostics.")
     return SOLVERS[name], guard
@@ -350,6 +353,8 @@ def solve_model_pyomo(data, model_config, solver_config):
                 "random_seed": solver_config.seed or 0,
                 "mip_feasibility_tolerance": 1e-9,
             })
+            if solver_config.solver_options.get("highs_parallel") == "on":
+                adapter.highs_options["parallel"] = "on"
             transfer_started = perf_counter()
             adapter.set_instance(model)
             transfer_seconds = perf_counter() - transfer_started
@@ -372,6 +377,14 @@ def solve_model_pyomo(data, model_config, solver_config):
                 if str(code) != "HighsStatus.kOk":
                     raise RuntimeError("HiGHS effective option unavailable: " + name)
                 effective_options[name] = value
+            if solver_config.solver_options.get("highs_parallel") == "on":
+                code, value = adapter._solver_model.getOptionValue("parallel")
+                if str(code) != "HighsStatus.kOk" or value != "on":
+                    raise RuntimeError("HiGHS parallel option was not applied.")
+                effective_options["parallel"] = value
+            info = adapter._solver_model.getInfo()
+            counters = {"nodes": finite(info.mip_node_count),
+                        "lp_iterations": finite(info.simplex_iteration_count)}
             native_version = adapter._solver_model.version()
             native_runtime = finite(solved.wallclock_time)
             termination = str(solved.termination_condition)
