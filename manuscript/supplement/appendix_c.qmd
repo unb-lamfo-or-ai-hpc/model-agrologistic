@@ -464,5 +464,8 @@ the one-thread solver setting are separate quantities.
 The [source-bound pilot record](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/8c836ecc6d6fb41768884541bdb98b0085421af4/docs/evidence/paired_pyomo_h300_gurobi_2231228_review.json)
 includes the exact input and ordered-algebra fingerprints. A paired
 Gurobi/HiGHS comparison must check these identities after both collections,
-then compare attained quality and timing at the declared scopes. A missing
-companion result supplies no runtime, gap or service observation.
+then compare attained quality and timing at the declared scopes. The returned HiGHS companion has the same identities and passes original
+validation. Its attained gap is 0.0068793848%, native time is 24,086.10 s,
+application time is 26,601.01 s and sampled worker-tree peak is 84.820 GiB.
+The requested parallel option is on, with one permitted solver thread.
+This does not constitute a test of multi-thread efficiency.

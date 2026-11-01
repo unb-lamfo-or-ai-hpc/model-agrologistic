@@ -495,11 +495,10 @@ frozen h300, h400 and h500 W STO inputs, and the same nine scenarios and
 scalar coefficients. Its design crosses two solvers, three populations,
 five thread ceilings (1, 2, 4, 8 and 16) and three repetitions: 90 planned
 calculations. Each has an eight-hour native allowance, a 1% gap target and
-seed 42. HiGHS parallel tree search is enabled in this profile. The Gurobi
-one-thread h300 pilot has returned an independently validated solution;
-the corresponding HiGHS collection is not yet terminal. Progression to the
-remaining pilots and larger populations depends on both solvers' validated
-outcomes, resource observations and operational closure.
+seed 42. HiGHS parallel tree search is enabled in this profile. Both
+one-thread h300 pilots have returned independently validated solutions.
+Progression to the sixteen-thread pilots and larger populations remains
+subject to the declared operational and resource qualification gates.
 
 A fresh process and common algebra control important implementation
 differences, but do not force identical presolved matrices or search paths.
@@ -741,10 +740,10 @@ Their attained gaps differ: 0.740159% for Gurobi and 0.000196% for HiGHS.
 Their native runtimes, 31.54 and 426.70 minutes, therefore cannot be interpreted
 as time to an identical solution quality. The repeated common-Pyomo campaign
 addresses a more controlled comparison across populations and thread counts.
-Its first Gurobi h300 pilot is reported separately: the accepted solution
-has a 0.004105% gap and required 48.23 minutes of native optimization.
-The corresponding HiGHS result remains unavailable at this reporting cutoff;
-no paired runtime ratio or completed repeated comparison is inferred.
+Its first h300 pair is reported separately: Gurobi and HiGHS reached
+0.004105% and 0.006879% gaps in 48.23 and 401.43 native minutes, respectively.
+The common inputs and ordered algebra agree. This first descriptive pair
+does not yet establish repeated-run variability or parallel efficiency.
 
 Future work can examine repeated measurements under controlled resource
 conditions, decomposition methods and sensitivity to the artificial

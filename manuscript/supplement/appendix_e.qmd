@@ -37,8 +37,9 @@ flow, inventory and shortage exports. Their common investment map and flow
 matrices are therefore represented by the single-thread vector; their runtime
 observations remain distinct. The accepted Pyomo Gurobi and HiGHS solutions
 retain their own exported vectors, attained gaps and investment summaries.
-The newly returned common-Pyomo h300 pilot is a separate observation;
-its vector is not represented by the historical h300 map in this atlas.
+The two common-Pyomo h300 pilots are separate observations. Their own
+maps and investment lists follow the historical configurations; their full
+flow-distance companions retain separate source and solution identities.
 
 ## E2 From exported flows to sparse matrices
 
@@ -104,3 +105,5 @@ redistribution conditions follows the availability statement in Appendix D.
 The software license does not by itself establish unrestricted input-data access.
 
 {{< include appendix_e_case_tables.qmd >}}
+
+{{< include appendix_e_paired_h300.qmd >}}

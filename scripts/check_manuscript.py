@@ -458,6 +458,10 @@ def check(*, rendered: bool = False, publication: bool = False) -> None:
     supplement += "\n" + (MANUSCRIPT / "supplement/appendix_e_case_tables.qmd").read_text(
         encoding="utf-8"
     )
+    supplement += "\n" + (
+        MANUSCRIPT / "supplement/appendix_e_paired_h300.qmd"
+    ).read_text(encoding="utf-8")
+    article += "\n" + (MANUSCRIPT / "scaling_pilot_results.qmd").read_text(encoding="utf-8")
     check_reader_audience(article, supplement)
     if re.search(r"(?m)^\$\s*$", supplement):
         raise ValueError("Display mathematics requires double-dollar delimiters")

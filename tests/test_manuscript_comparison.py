@@ -109,8 +109,8 @@ def test_reader_facing_editorial_structure_and_attribution():
     assert not re.search(r"\b(?:SCIP|CBC)\b", discussion + final)
     normalized = " ".join(final.split())
     assert "Separate Pyomo/APPSI Gurobi and HiGHS h215 STO" in normalized
-    assert "first Gurobi h300 pilot is reported separately" in normalized
-    assert "corresponding HiGHS result remains unavailable" in normalized
+    assert "first h300 pair is reported separately" in normalized
+    assert "0.006879%" in normalized
     assert "universal solver frontier" in final
     assert "# Conclusions" not in text and "# Future work:" not in text
     assert "Repository deposition of the licensed input data" not in text

@@ -333,9 +333,11 @@
     {
       "kind": "selected_product_arc_lists",
       "destination": "Zenodo, indexed by input/source/policy/topology/product fingerprint",
-      "state": "planned_export_or_archive_inventory_required",
+      "state": "h300_W_graph_locally_prepared_and_original_fingerprints_verified",
       "qualification": "Do not substitute every materialized OD/DD/DC/OC distance for the selected feasible arc set.",
-      "first_paired_pilot_observation": "Fingerprint retained; no standalone list identified; large result JSON not parsed"
+      "first_paired_pilot_observation": "45240 product-specific directed arcs; compact graph and original plan contract hashes verified",
+      "preparation_receipt": "docs/evidence/h300_selected_graph_release_20261101.json",
+      "remaining_scope": "Other historical populations/topologies still require explicit exports"
     },
     {
       "kind": "accepted_investment_tables",
@@ -345,15 +347,17 @@
     {
       "kind": "accepted_flow_distance_and_inventory_vectors",
       "destination": "Zenodo CSV.gz plus companion SQLite; GitHub dictionary, hashes and small scientific summaries",
-      "state": "local_companions_prepared_in_Appendix_E_work; per-asset_inventory_and_rights_review_pending"
+      "state": "historical_and_two_new_h300_companions_prepared_locally_file_inventory_verified"
     },
     {
       "kind": "paired_campaign_receipts_and_outcomes",
       "destination": "GitHub curated JSON/tables; Zenodo original results, validation, native logs and sanitized resource records",
-      "state": "first_gurobi_h300_original_audited_highs_collection_nonterminal",
+      "state": "both_h300_t1_r1_originals_audited_and_validated",
       "curated_evidence": "docs/evidence/paired_pyomo_h300_gurobi_2231228_review.json",
       "original_archive_uploaded": false,
-      "original_case_file_inventory": "docs/evidence/paired_h300_release_dictionary_20261101.json"
+      "original_case_file_inventory": "docs/evidence/paired_h300_release_dictionary_20261101.json",
+      "paired_evidence": "docs/evidence/paired_h300_first_pair_20261101.json",
+      "highs_case_file_inventory": "docs/evidence/paired_h300_highs_release_dictionary_20261101.json"
     },
     {
       "kind": "routing_container_reproduction_metadata",
@@ -395,5 +399,6 @@
       "raw solver packages",
       "local article/appendix PDFs"
     ]
-  }
+  },
+  "next_release_file_inventory": "data/manifests/zenodo_next_release_inventory_20261101.json"
 }

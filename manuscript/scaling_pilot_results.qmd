@@ -1,46 +1,85 @@
-## First observation from the common-Pyomo scaling campaign
+## First h300 pair from the common-Pyomo scaling campaign
 
-The first returned h300 W STO pilot uses Gurobi 13.0.3 through Pyomo/APPSI,
-one solver thread and seed 42. Its configuration retains the 28,800 s native
-allowance, 1% relative-gap target, automatic presolve and method selection,
-and the numerical tolerances specified in Appendix C. The original solution
-passed independent primal and cost validation. The companion HiGHS calculation
-has no terminal collection at the reporting cutoff.
+The two returned h300 W STO pilots use Gurobi 13.0.3 and HiGHS 1.15.1 through
+Pyomo/APPSI. Both original incumbents passed independent primal and cost
+validation and the prescribed 1% relative-gap criterion. They share the
+same frozen workbook, ordered warehouse selection, selected directed graph,
+scenario probabilities, mathematical contract, bounded-slack policy and
+ordered Pyomo algebra. The hardware-class fingerprints and requested resource
+profiles also agree. This establishes a matched input and formulation basis;
+it does not require identical native presolve or search trajectories.
 
-| Solver / threads / repetition | Collection | Objective, BRL trillion | Common gap, % | Native runtime, min | Application end-to-end, min | Sampled worker-tree peak, GiB |
-|:--|:--|--:|--:|--:|--:|--:|
-| Gurobi / 1 / 1 | Validated, target met | 9.289109 | 0.004105 | 48.229 | 91.794 | 74.535 |
-| HiGHS / 1 / 1 | Not yet terminal | — | — | — | — | — |
+| Experimental control | Gurobi | HiGHS |
+|:--|:--|:--|
+| Interface | Pyomo/APPSI | Pyomo/APPSI |
+| Native time allowance, s | 28,800 | 28,800 |
+| Relative-gap target | 0.01 | 0.01 |
+| Solver threads | 1 | 1 |
+| Seed | Seed=42 | random_seed=42 |
+| Numerical controls | FeasibilityTol=IntFeasTol=1e-9 | mip_feasibility_tolerance=1e-9 |
+| Search control | Automatic methods/presolve/cuts; Heuristics=0.05 | parallel=on |
 
-: First h300 observations under the new common-Pyomo protocol. Unavailable
-HiGHS values are not zero or a failure. {#tbl-scaling-h300-pilot}
+: Settings of the first matched h300 pair. With one permitted thread, enabling
+HiGHS parallel search does not establish multiworker parallel execution.
+{#tbl-scaling-h300-settings}
 
-The Gurobi lower bound is 9.288727295144 trillion BRL. The ordered Pyomo
-algebra contains 25,107,544 variables, including 392 binaries, 1,056,962 linear
-constraints and 94,967,766 nonzeros. Its fingerprint identifies the algebra
-before native presolve; comparison with the companion solver requires that
-solver's own retained input, matrix and bound-policy identities.
+| Solver / threads / repetition | Objective, BRL trillion | Common gap, % | Native runtime, min |
+|:--|--:|--:|--:|
+| Gurobi / 1 / 1 | 9.289109 | 0.004105 | 48.229 |
+| HiGHS / 1 / 1 | 9.289359 | 0.006879 | 401.435 |
 
-The optimizer processed one node and 3,355,126 LP iterations. Although the
-native time allowance was eight hours, it returned after 2,893.71 s with the
-stopping criterion satisfied. Application end-to-end time is 5,507.64 s;
-model construction, transfer, matrix identification and extraction contribute
-additional effort, with some timing regions enclosing others. These clocks
-must not be added as disjoint components. The sampled 74.535 GiB worker-tree
-peak is below the declared 192 GiB allocation, but sampling does not certify
-an instantaneous maximum or production isolation.
+: Attained quality and native time for the first h300 observations under the
+new common-Pyomo protocol. Both original validations were accepted.
+{#tbl-scaling-h300-pilot}
 
-The financial subtotal is 385.502 billion BRL, while artificial penalties
-represent 95.850% of the penalized objective. Expected domestic service is
-91.326%, with 58.787 million t of unmet demand. Expected static exceedance is
-46.444 million tonne-periods, and reception overflow is 33.839 million t.
-Stock exposure accumulated over periods and reception overflow have different
-dimensions and are not added as installed emergency capacity.
+| Solver | Application end-to-end, min | Sampled worker-tree peak, GiB |
+|:--|--:|--:|
+| Gurobi | 91.794 | 74.535 |
+| HiGHS | 443.350 | 84.820 |
 
-The [original source-bound observation and local integrity audit](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/8c836ecc6d6fb41768884541bdb98b0085421af4/docs/evidence/paired_pyomo_h300_gurobi_2231228_review.json)
-retain the objective, bound, input identities, parameter values, original
-validation and timing definitions. This is one observation in the new protocol,
-not an additional repetition of the earlier native-Gurobi h300 sequence.
-Until the companion result and later repetitions are available, it supports
-an attainable-scale observation rather than a paired solver ranking or
-statistical estimate of parallel performance.
+: Application effort and observed memory scope for the same pair.
+{#tbl-scaling-h300-resources}
+
+The lower bounds are 9.288727295144 and 9.288719505216 trillion BRL for
+Gurobi and HiGHS, respectively. Their objective-bound intervals overlap.
+Gurobi returned a smaller incumbent and a tighter attained gap in this pair.
+Both gaps are substantially below the common 1% stopping target, but neither
+is an exact-zero certificate. The observed native-time ratio, HiGHS/Gurobi,
+is 8.32. This is a descriptive ratio for two retained outcomes, not a causal
+speedup or an estimate of runtime variability from repetitions.
+
+The shared ordered algebra has 25,107,544 variables, including 392 binaries,
+1,056,962 linear constraints and 94,967,766 nonzeros. Each solver processed
+one node; Gurobi and HiGHS report 3,355,126 and 3,998,477 LP iterations.
+Construction, solver transfer, matrix identification and extraction add effort
+outside native optimization. Some clocks enclose others and must not be added
+as disjoint components. Sampled process-tree memory, Slurm MaxRSS and the
+192 GiB requested allowance retain their separate meanings; the observations
+do not certify production isolation or an unobserved instantaneous peak.
+
+| Planning diagnostic | Gurobi | HiGHS |
+|:--|--:|--:|
+| Financial subtotal, BRL billion | 385.502 | 385.486 |
+| Artificial penalties, % of objective | 95.850 | 95.850 |
+| Expected domestic service, % | 91.3256 | 91.3252 |
+| Unmet demand, million t | 58.787 | 58.790 |
+| Static exceedance, million tonne-periods | 46.444 | 46.444 |
+| Reception overflow, million t | 33.839 | 33.840 |
+
+: Physical and monetary diagnostics from the original accepted exports.
+{#tbl-scaling-h300-physical}
+
+HiGHS has a slightly lower financial subtotal while Gurobi has the lower
+penalized total. The financial subtotal alone therefore does not order these
+solutions under the modeled objective. Likewise, near agreement in aggregate
+service and costs does not imply identical investments or flows. Appendix E
+retains their separate first-stage lists and directed flow-distance companions.
+Stock exposure and reception overflow have different dimensions and are
+not added as installed emergency capacity.
+
+The [source-bound paired audit](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/083ef96cc99a346204df22551ce0739c10e8a2f7/docs/evidence/paired_h300_first_pair_20261101.json)
+retains original archive identities, matching input/algebra records, effective
+parameters, bounds and measurement scopes. Neither observation is an additional
+repetition of the historical native-Gurobi h300 sequence. Later thread levels
+and repeated measurements remain part of the ongoing campaign, not results
+already supplied by this first pair.

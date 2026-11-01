@@ -20,6 +20,28 @@ def test_missing_render_does_not_create_archive(tmp_path):
     assert not output.exists()
 
 
+def test_paired_tables_are_checksum_bound_and_do_not_expand_allowlist(tmp_path):
+    assert MODULE.paired_investments(tmp_path) == {}
+    folder = tmp_path / "investments"
+    folder.mkdir()
+    data = b"warehouse,open\nexample,1\n"
+    (folder / "h300_w_sto_highs_t1_r1.csv").write_bytes(data)
+    (folder / "unrelated-private.csv").write_bytes(b"private fixture")
+    case = {"case": "h300_w_sto_highs_t1_r1", "sha256": hashlib.sha256(data).hexdigest()}
+    index = tmp_path / "appendix_e_paired_h300_index.json"
+    index.write_text(json.dumps({"cases": [case]}), encoding="utf-8")
+    result = MODULE.paired_investments(tmp_path)
+    assert result["appendix_e_investments_h300_w_sto_highs_t1_r1.csv"] == data
+    assert not any("private" in name for name in result)
+    (folder / "h300_w_sto_highs_t1_r1.csv").write_bytes(b"modified")
+    with pytest.raises(ValueError, match="checksum"):
+        MODULE.paired_investments(tmp_path)
+    case["case"] = "../outside"
+    index.write_text(json.dumps({"cases": [case]}), encoding="utf-8")
+    with pytest.raises(ValueError, match="identity"):
+        MODULE.paired_investments(tmp_path)
+
+
 def test_renamed_appendix_links_to_its_own_pdf(tmp_path):
     spec = importlib.util.spec_from_file_location(
         "assemble", ROOT / "scripts/assemble_manuscript_outputs.py")

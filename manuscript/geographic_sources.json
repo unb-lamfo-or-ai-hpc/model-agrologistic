@@ -22,7 +22,9 @@
     "scalar_h215_d_det_validation": "ab0c707d463cd79a23dcd2752fc9351d974c17dfafe8059ceec6ee04f8860b70",
     "scalar_h215_d_sto_validation": "4627d220d621855fb3eeb6ce97e5da8ed623d8f1bf6bf8da480835939b1d6734",
     "pyomo_gurobi_h215_w_native8h_license_v2_validation": "5b65bb1261db6e2aac2d9ba3e247fa4265780e608be0fd49f22e0ecab1a44c01",
-    "scalar_highs_h215_w_native8h_startup_v2_validation": "1611eeb65ab5e5c6b9037388059495f72432f356f121b4611e8501fe92500604"
+    "scalar_highs_h215_w_native8h_startup_v2_validation": "1611eeb65ab5e5c6b9037388059495f72432f356f121b4611e8501fe92500604",
+    "h300_w_sto_gurobi_t1_r1_validation": "fcc468b116674e84d3eab299cc62e45738041d851357329450f501d45c662b54",
+    "h300_w_sto_highs_t1_r1_validation": "df530f65576e713214e6aa30b560b19023202a6d48518521ca52406cd5fbb3d1"
   },
   "figures": {
     "h500_pending.json": {
@@ -69,6 +71,16 @@
       "figure_sha256": "57812e6a481f9f1560692adf6c78b3242d72ce6e34ca43f7eeac1d4743730f8d",
       "normalized_utf8_sha256": "1d43f2d4c7bb2a15573506a7890709e46229915a7cca59d87ad48f8e86991730",
       "snapshot": "04db0eb7ad5e69fbb94dc118b7b10f0e3b5e66443302bfea51e7988d75da3af7"
+    },
+    "h300_w_sto_gurobi_t1_r1.json": {
+      "figure_sha256": "80aec10443103fa3f769442e4966236b01c5d72af6ee5dc0f4284c4a00ff0166",
+      "normalized_utf8_sha256": "ca741d2d4bddedb25d1f6de62868e3dd05d27972f8942f93bbcbbc8cc58b902b",
+      "snapshot": "30967ef77c725bf5677ffbdf632e25219129cbe42106ea80d61a625f454a4b09"
+    },
+    "h300_w_sto_highs_t1_r1.json": {
+      "figure_sha256": "2bfcde979da86027885dad9ad7aa56fba96cbfc71f6e5dd5244a1aec40feb5da",
+      "normalized_utf8_sha256": "ab6943e7c9623f74ced8f191f55c9c2cbb0028fe5219d31e5e88086e8367764f",
+      "snapshot": "df8cae50c8c677860788759e328ea52107b938f11b0631ff83d21b6aa42b009e"
     }
   },
   "qualification": "Original accepted-certificate and vector post-processing, not fresh residual re-solve",

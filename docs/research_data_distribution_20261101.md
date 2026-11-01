@@ -15,10 +15,10 @@ has not been assigned or published by this revision.
 | External registry and ordered facility selections | Source manifest, counts, hashes and selection code | Original registry, full ordered IDs and population manifests | Original members identified; source-specific rights remain to be reconciled |
 | Runtime h215/h300/h400/h500 workbooks | Catalog and full hashes | Exact XLSX plus materialization sidecar, preserving original hierarchy | Existing local v0.2.0 bytes verified |
 | Complete OSRM matrices | Dictionary, provenance and checksums | CSV.gz tables and exact original Distancias worksheets | Four lossless CSV.gz exports prepared locally |
-| Product-specific selected arcs | Policy code and graph fingerprints | Explicit selected-arc lists, with topology/product/instance identities | Release inventory/export remains to be completed |
+| Product-specific selected arcs | Policy code and graph fingerprints | Explicit selected-arc lists, with topology/product/instance identities | h300 W: 45,240 explicit product arcs prepared; other graph exports remain open |
 | Investments | Small reviewed per-case CSV summaries and figures | Complete decision vectors and source receipts | Existing Appendix E summaries |
-| Flow-distance/inventory vectors | Schema, hashes, aggregation method and small summaries | Full-resolution CSV.gz and companion SQLite | Local companions exist; per-asset deposition inventory/rights remain open |
-| Solver outcomes | Curated original-certificate tables/JSON | Original validated outputs, native logs and sanitized resource records | Historical originals preserved; new Gurobi h300 audited, HiGHS collection pending |
+| Flow-distance/inventory vectors | Schema, hashes, aggregation method and small summaries | Full-resolution CSV.gz and companion SQLite | 41-file preparation inventory verified; asset-specific rights/deposit remain open |
+| Solver outcomes | Curated original-certificate tables/JSON | Original validated outputs, native logs and sanitized resource records | Historical originals preserved; both first common-Pyomo h300 pilots audited |
 | Quarto source and release documents | Article/appendices source, figures, bibliography, release record | Versioned archival copy/related identifier if selected | Pages publication follows a separate approved main PR |
 
 Large data and transient caches do not belong in ordinary Git history.
@@ -110,12 +110,12 @@ not a declaration that the new data release is already downloadable.
 
 ## First paired-campaign return and clean map build
 
-Gurobi2231228 has a locally audited original archive and curated GitHub
-certificate summary. Its complete solution remains in the preserved original
-package; it is not yet part of a new Zenodo deposit. HiGHS2231226 collection
-remains nonterminal. The prior native-Gurobi h300 investment/flow tables do
-not represent this new Pyomo vector. Add each accepted campaign vector to the
-next release inventory under its own source/matrix/options identity.
+Both Gurobi2231228 and HiGHS2231226 have locally audited original archives
+and original accepted primal/cost validations. Their separate full-resolution
+flow-distance companions retain the same frozen graph and distance source.
+They are separate campaign observations, not repetitions of historical cases.
+Small reviewed investment lists and their own map definitions are tracked in
+GitHub; full vectors and original archives remain local.
 
 Both Quarto projects now prepare maps offline from tracked public IBGE and
 source-bound solution definitions through scripts/prepare_document_assets.py.
@@ -135,10 +135,28 @@ accepted original summary. Reception alone has a daily-equivalent value;
 static rows retain a blank in that field. This is export aggregation checking,
 not fresh physical-residual validation or a new optimization.
 
-The original input receipt retains graph9520a303... and the frozen screening
-policy. No standalone selected-arc list was identified in the88 archive
-members. The large result JSON was hashed, not parsed; its possible utility
-for reconstructing the graph was not ruled out. The next data release must
-still provide an explicit admissibility list or a verified reconstruction
-from exact frozen inputs/policy. Positive solution flows cannot replace it.
-No raw case file or new data package was uploaded by this dictionary audit.
+The original archives retain graph9520a303... but contain no standalone
+admissible-arc file. A separate, data-only reconstruction now exports45,240
+product-specific directed arcs:4,440 OD,4,800 DC,36,000 DD and zero OC or
+repair arcs. Both the original graph fingerprint and the full mathematical
+contract fingerprint match. These hashes use their respective original JSON
+encodings; tuple/list representation and pretty/compact encoding must not
+be confused with changes in graph values. The verified third preparation
+preserves the two earlier rejected preparation directories without changing
+original data. Positive solution flows are not used as an admissibility list.
+
+The [file-level next-release inventory](../data/manifests/zenodo_next_release_inventory_20261101.json)
+contains41 verified files totaling450,057,392 bytes:28 historical companions,
+four complete OSRM tables, seven companions for the new pair and two h300
+selected-graph files. Every entry records its proposed destination, exact
+size, SHA-256, units, source receipt and pending asset-specific terms review.
+Historical aliases are explicitly not extra experiments. The exact original
+workbooks and sidecars already belong to v0.2.0; the new inventory does not
+relabel a local derivative as an additional published asset.
+
+The [immutable selected-graph receipt](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/0f63c10eb1abf88318a4d9c6afc75fcac97f6266/docs/evidence/h300_selected_graph_release_20261101.json)
+records the verified reconstruction. Other populations/topologies still need
+explicit graph exports. Sanitized original logs/results/resource records also
+need file-level selection and privacy checks before deposition. Per-asset
+terms, reviewed upload and anonymous downloaded-byte checks remain open.
+No new DOI/version was assigned and none of these new data files was uploaded.

@@ -12,6 +12,26 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def paired_investments(supplement: Path) -> dict[str, bytes]:
+    """Bind optional paired tables to an explicit flat identity and checksum."""
+    index = supplement / "appendix_e_paired_h300_index.json"
+    if not index.is_file():
+        return {}
+    payload = {index.name: index.read_bytes()}
+    for case in json.loads(index.read_text(encoding="utf-8"))["cases"]:
+        identifier = case["case"]
+        if not re.fullmatch(r"[a-z0-9_]+", identifier):
+            raise ValueError("Invalid paired Appendix E identity")
+        name = "appendix_e_investments_" + identifier + ".csv"
+        if name in payload:
+            raise ValueError("Duplicate paired Appendix E identity")
+        data = (supplement / "investments" / (identifier + ".csv")).read_bytes()
+        if hashlib.sha256(data).hexdigest() != case["sha256"]:
+            raise ValueError("Paired Appendix E investment checksum differs")
+        payload[name] = data
+    return payload
+
+
 def package(output: Path, *, root: Path = ROOT) -> None:
     """Allowlist publication assets; preserve prior distributed ZIP files."""
     manuscript = root / "manuscript"
@@ -61,6 +81,7 @@ def package(output: Path, *, root: Path = ROOT) -> None:
                 raise ValueError("Invalid Appendix E configuration identity")
             path = supplement / "investments" / (identifier + ".csv")
             payload["appendix_e_investments_" + identifier + ".csv"] = path.read_bytes()
+    payload.update(paired_investments(supplement))
     for name, path in {
         "appendix_a_original.pdf": supplement / "appendix_a_original.pdf",
         "scalar_evidence.json": manuscript / "scalar_evidence.json",
