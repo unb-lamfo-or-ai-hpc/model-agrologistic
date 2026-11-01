@@ -1,0 +1,302 @@
+{
+  "schema_version": "paired-h300-release-dictionary-v1",
+  "date": "2026-11-01",
+  "archive_sha256": "a07f2629dbdd663dbc0a5549d4cdc5f026c866507a884c1c8cb53c9e277985f1",
+  "job_id": "2231228",
+  "source_commit": "c493be8cd127c5175fc7eb111400229e64b8e3c0",
+  "members": 88,
+  "verified_inventory_digests": 87,
+  "original_member_inventory": [
+    {
+      "member": "cases/h300-w-sto-gurobi-t1-r1/case_outcome.json",
+      "bytes": 2006,
+      "sha256": "84c1a886357a5d9f2da5381c27f5b89fdafd19277784856df60acb1b706f3e04",
+      "access": "original local archive; not newly deposited"
+    },
+    {
+      "member": "cases/h300-w-sto-gurobi-t1-r1/input_receipt.json",
+      "bytes": 113293,
+      "sha256": "cb00c204fdea7839812e6a60149c49871abe0e627f703301e9ec331aca8282ef",
+      "access": "original local archive; not newly deposited"
+    },
+    {
+      "member": "cases/h300-w-sto-gurobi-t1-r1/products/h300-w-sto-gurobi-t1-r1/capacity_gap_by_scenario.csv",
+      "bytes": 2121,
+      "sha256": "5b8aa21459b50f40031e83464f0cb3430de2157a94a6371d2cef8106e0bf6b30",
+      "access": "original local archive; not newly deposited"
+    },
+    {
+      "member": "cases/h300-w-sto-gurobi-t1-r1/products/h300-w-sto-gurobi-t1-r1/emergency_capacity.csv",
+      "bytes": 637634,
+      "sha256": "4d96166e69356d42483dffe9ffcd66df414ad8c4d809265aebe25eb0c8542197",
+      "access": "original local archive; not newly deposited"
+    },
+    {
+      "member": "cases/h300-w-sto-gurobi-t1-r1/products/h300-w-sto-gurobi-t1-r1/emergency_capacity_daily.csv",
+      "bytes": 757463,
+      "sha256": "a8f58125315622f77b5d270b340466353096277a75814006bc5a3ee32f7103a2",
+      "access": "original local archive; not newly deposited"
+    },
+    {
+      "member": "cases/h300-w-sto-gurobi-t1-r1/products/h300-w-sto-gurobi-t1-r1/flows.csv",
+      "bytes": 21367466,
+      "sha256": "fc4a5f081e19e4ab199c575a251e46995145840965ac024c4d9f53bc3742286b",
+      "access": "original local archive; not newly deposited"
+    },
+    {
+      "member": "cases/h300-w-sto-gurobi-t1-r1/products/h300-w-sto-gurobi-t1-r1/independent_validation.json",
+      "bytes": 53165,
+      "sha256": "fcc468b116674e84d3eab299cc62e45738041d851357329450f501d45c662b54",
+      "access": "original local archive; not newly deposited"
+    },
+    {
+      "member": "cases/h300-w-sto-gurobi-t1-r1/products/h300-w-sto-gurobi-t1-r1/inventories.csv",
+      "bytes": 4809180,
+      "sha256": "fb65cf6663cb9b060cd30d71bff67109a0f9cec7aa32cf49c2b6a865d336c7c4",
+      "access": "original local archive; not newly deposited"
+    },
+    {
+      "member": "cases/h300-w-sto-gurobi-t1-r1/products/h300-w-sto-gurobi-t1-r1/investment_saturation.csv",
+      "bytes": 1577,
+      "sha256": "5129fb24c0ab4052a4a986a604390700b401ac7f66c5d50190be85aefb2af503",
+      "access": "original local archive; not newly deposited"
+    },
+    {
+      "member": "cases/h300-w-sto-gurobi-t1-r1/products/h300-w-sto-gurobi-t1-r1/material_balance_by_scenario.csv",
+      "bytes": 1699,
+      "sha256": "28c56a91a74b4fac583252222ab6bf20eceb4f441d715ad0335784ced893649c",
+      "access": "original local archive; not newly deposited"
+    },
+    {
+      "member": "cases/h300-w-sto-gurobi-t1-r1/products/h300-w-sto-gurobi-t1-r1/model_audit.json",
+      "bytes": 28606,
+      "sha256": "0e753534c411680b53745d51a40630b839244286c25677ea91b53319f43fd1eb",
+      "access": "original local archive; not newly deposited"
+    },
+    {
+      "member": "cases/h300-w-sto-gurobi-t1-r1/products/h300-w-sto-gurobi-t1-r1/preflight.json",
+      "bytes": 3801,
+      "sha256": "2329eec19079b4e1a76b891fc9d9e5cf502ffd1913684e98373fa496667f1a4e",
+      "access": "original local archive; not newly deposited"
+    },
+    {
+      "member": "cases/h300-w-sto-gurobi-t1-r1/products/h300-w-sto-gurobi-t1-r1/result.json",
+      "bytes": 85107838,
+      "sha256": "b572dfdc6127b5c64de1c8c961b1f0e71dcc7b12877c18406766c2d889ce4d27",
+      "access": "original local archive; not newly deposited"
+    },
+    {
+      "member": "cases/h300-w-sto-gurobi-t1-r1/products/h300-w-sto-gurobi-t1-r1/run_completion.json",
+      "bytes": 1802,
+      "sha256": "d4e6602176fe210cafcb5efb40c7f60826404fe212e5718f81b6c102357a4686",
+      "access": "original local archive; not newly deposited"
+    },
+    {
+      "member": "cases/h300-w-sto-gurobi-t1-r1/products/h300-w-sto-gurobi-t1-r1/run_summary.json",
+      "bytes": 1752,
+      "sha256": "3f6b25fb12b84768f87761da483d168233733abc5735cdad48dcc86c620accc5",
+      "access": "original local archive; not newly deposited"
+    },
+    {
+      "member": "cases/h300-w-sto-gurobi-t1-r1/products/h300-w-sto-gurobi-t1-r1/scenario_performance.csv",
+      "bytes": 2509,
+      "sha256": "f7c38013dc5cd0955aaafbca325314db6579607af0d3f63380d045069f003215",
+      "access": "original local archive; not newly deposited"
+    },
+    {
+      "member": "cases/h300-w-sto-gurobi-t1-r1/products/h300-w-sto-gurobi-t1-r1/storage_by_scenario.csv",
+      "bytes": 1089,
+      "sha256": "859bb03ee227ec31c1d671a20242c5371a58f6e96ef6a27e106eb72d600d71ea",
+      "access": "original local archive; not newly deposited"
+    },
+    {
+      "member": "cases/h300-w-sto-gurobi-t1-r1/products/h300-w-sto-gurobi-t1-r1/storage_by_warehouse.csv",
+      "bytes": 338227,
+      "sha256": "f3fa90d92f3bb6f06c9b5ddc4f7242f4e8a4e06086aa3c407d149a53ba07d94e",
+      "access": "original local archive; not newly deposited"
+    },
+    {
+      "member": "cases/h300-w-sto-gurobi-t1-r1/products/h300-w-sto-gurobi-t1-r1/unmet_demand.csv",
+      "bytes": 287625,
+      "sha256": "3cfe76c7b660d04fef65e66e1592e7fb1b85259b6ca110f64818a298e830575e",
+      "access": "original local archive; not newly deposited"
+    },
+    {
+      "member": "cases/h300-w-sto-gurobi-t1-r1/products/h300-w-sto-gurobi-t1-r1/warehouse_decisions.csv",
+      "bytes": 20438,
+      "sha256": "47acb1e9ca166874a56a11a13fd66533314bca4634f2577d8118b9c364c96670",
+      "access": "original local archive; not newly deposited"
+    },
+    {
+      "member": "cases/h300-w-sto-gurobi-t1-r1/warehouse_observation.json",
+      "bytes": 567,
+      "sha256": "3bde401fda3ae5aea0b6bd727dec17872f119964ea37ca8da10f3719b32dd8a2",
+      "access": "original local archive; not newly deposited"
+    },
+    {
+      "member": "cases/h300-w-sto-gurobi-t1-r1/warehouse_selection_intent.json",
+      "bytes": 63208,
+      "sha256": "7b509fc61e93e8d9ca912fe248c5e6ec137b5dcac26942b7aee243ac819fe4e6",
+      "access": "original local archive; not newly deposited"
+    },
+    {
+      "member": "cases/h300-w-sto-gurobi-t1-r1/warehouses_observed.csv",
+      "bytes": 14639,
+      "sha256": "796c81e951a2ff09b50cbfdb6efbb6c8e6dbbba367baace1c2ac5c8590c7ca0a",
+      "access": "original local archive; not newly deposited"
+    },
+    {
+      "member": "cases/h300-w-sto-gurobi-t1-r1/warehouses_used.csv",
+      "bytes": 14639,
+      "sha256": "796c81e951a2ff09b50cbfdb6efbb6c8e6dbbba367baace1c2ac5c8590c7ca0a",
+      "access": "original local archive; not newly deposited"
+    },
+    {
+      "member": "cases/h300-w-sto-gurobi-t1-r1/warehouses_used.json",
+      "bytes": 58569,
+      "sha256": "d5609de482fb0b6a3c060c94254c217c0677d8e5c0c4422a0475f32699f11b33",
+      "access": "original local archive; not newly deposited"
+    }
+  ],
+  "csv_dictionary": {
+    "warehouse_decisions.csv": {
+      "rows": 300,
+      "columns": [
+        "warehouse",
+        "is_existing",
+        "is_candidate",
+        "open",
+        "candidate_capacity",
+        "expand",
+        "expansion_capacity",
+        "bulkify",
+        "bulk_capacity",
+        "static_capacity",
+        "effective_static_capacity"
+      ],
+      "original_unit": "activation flags: dimensionless; capacity/bulk basis: t",
+      "sha256": "47acb1e9ca166874a56a11a13fd66533314bca4634f2577d8118b9c364c96670"
+    },
+    "flows.csv": {
+      "rows": 225891,
+      "columns": [
+        "scenario",
+        "route_type",
+        "product",
+        "period",
+        "value",
+        "origin",
+        "warehouse",
+        "customer",
+        "customer_type",
+        "warehouse_from",
+        "warehouse_to"
+      ],
+      "original_unit": "value: t within the indexed period/scenario on one movement leg",
+      "sha256": "fc4a5f081e19e4ab199c575a251e46995145840965ac024c4d9f53bc3742286b"
+    },
+    "inventories.csv": {
+      "rows": 74452,
+      "columns": [
+        "scenario",
+        "warehouse",
+        "product",
+        "period",
+        "value"
+      ],
+      "original_unit": "value: t at end of the indexed warehouse-product-period-scenario",
+      "sha256": "fb65cf6663cb9b060cd30d71bff67109a0f9cec7aa32cf49c2b6a865d336c7c4"
+    },
+    "unmet_demand.csv": {
+      "rows": 3808,
+      "columns": [
+        "scenario",
+        "customer",
+        "product",
+        "period",
+        "value"
+      ],
+      "original_unit": "value: unmet t within the indexed customer-product-period-scenario",
+      "sha256": "3cfe76c7b660d04fef65e66e1592e7fb1b85259b6ca110f64818a298e830575e"
+    },
+    "emergency_capacity.csv": {
+      "rows": 9211,
+      "columns": [
+        "scenario",
+        "warehouse",
+        "period",
+        "capacity_type",
+        "value"
+      ],
+      "original_unit": "static value: stock t at period end; reception value: overflow t within period",
+      "sha256": "4d96166e69356d42483dffe9ffcd66df414ad8c4d809265aebe25eb0c8542197"
+    },
+    "emergency_capacity_daily.csv": {
+      "rows": 9211,
+      "columns": [
+        "scenario",
+        "warehouse",
+        "period",
+        "capacity_type",
+        "value",
+        "days_in_period",
+        "value_tons_per_day"
+      ],
+      "original_unit": "reception value_tons_per_day: t/day; static daily field: blank",
+      "sha256": "a8f58125315622f77b5d270b340466353096277a75814006bc5a3ee32f7103a2"
+    }
+  },
+  "scenario_probabilities": {
+    "oferta_alto__demanda_alto": 0.1111111111111111,
+    "oferta_alto__demanda_baixo": 0.1111111111111111,
+    "oferta_alto__demanda_base": 0.1111111111111111,
+    "oferta_baixo__demanda_alto": 0.1111111111111111,
+    "oferta_baixo__demanda_baixo": 0.1111111111111111,
+    "oferta_baixo__demanda_base": 0.1111111111111111,
+    "oferta_base__demanda_alto": 0.1111111111111111,
+    "oferta_base__demanda_baixo": 0.1111111111111111,
+    "oferta_base__demanda_base": 0.1111111111111111
+  },
+  "positive_flow_families": {
+    "OD": 84468,
+    "DC": 109383,
+    "DD": 32040
+  },
+  "weighted_csv_totals": {
+    "served_domestic_demand": 618925094.0628531,
+    "total_unmet_demand": 58787331.58892084,
+    "emergency_static_capacity": 46444009.173659325,
+    "emergency_reception_capacity": 33839246.522186056
+  },
+  "weighted_totals_match_original_summary": true,
+  "daily_equivalent_checked_for_reception_only": true,
+  "selected_graph": {
+    "sha256": "9520a303457e50e9cbd499654025ed3e639f95724cfe5cfb812c23dbaa5ba3a9",
+    "policy": {
+      "connectivity_export_policy": "one_sink_per_product",
+      "pareto_fraction": 0.2,
+      "route_filter_strategy": "connectivity_preserving_pareto",
+      "route_top_k": null,
+      "use_direct_origin_customer": false,
+      "use_warehouse_transshipment": true
+    },
+    "standalone_arc_list_identified": false,
+    "qualification": "No standalone admissible-arc file identified among archive members. Large result JSON fully hashed, not parsed; no claim that its content cannot help reconstruct the graph."
+  },
+  "next_release": {
+    "status": "metadata_prepared_not_deposited",
+    "original_archive_publication": "not uploaded by this audit",
+    "required": [
+      "source-specific asset terms",
+      "sanitized paths/logs",
+      "explicit selected graph export",
+      "full flow-distance companion with frozen directed OSRM join",
+      "versioned download links and checksum verification"
+    ]
+  },
+  "scope": "Original-file integrity and CSV aggregation checks; no fresh constraint residuals",
+  "large_result_json_parsed": false,
+  "archive_extracted": false,
+  "solver_executed": false,
+  "new_hpc_job": false
+}

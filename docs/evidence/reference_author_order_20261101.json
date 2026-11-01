@@ -1,0 +1,625 @@
+{
+  "schema_version": "ordered-reference-family-audit-v1",
+  "date": "2026-11-01",
+  "scope": "Ordered family-name and author-count comparison to preserved Crossref metadata",
+  "records_checked": 32,
+  "all_checked_match": true,
+  "records": [
+    {
+      "key": "rosa2025",
+      "doi": "10.1590/1806-9649-2025v32e4925",
+      "retained_ordered_families": [
+        "Rosa",
+        "Santos",
+        "Delgrossi",
+        "Reis"
+      ],
+      "registry_ordered_families": [
+        "Rosa",
+        "Santos",
+        "Delgrossi",
+        "Reis"
+      ],
+      "author_count": 4,
+      "normalized_family_order_matches": true
+    },
+    {
+      "key": "reis2023",
+      "doi": "10.3390/logistics7030049",
+      "retained_ordered_families": [
+        "Reis",
+        "Leal",
+        "Thomé"
+      ],
+      "registry_ordered_families": [
+        "Reis",
+        "Leal",
+        "Thomé"
+      ],
+      "author_count": 3,
+      "normalized_family_order_matches": true
+    },
+    {
+      "key": "foulds2005",
+      "doi": "10.1504/IJOR.2005.007434",
+      "retained_ordered_families": [
+        "Foulds"
+      ],
+      "registry_ordered_families": [
+        "Foulds"
+      ],
+      "author_count": 1,
+      "normalized_family_order_matches": true
+    },
+    {
+      "key": "dubke2011",
+      "doi": "10.1590/S0101-74382011000100003",
+      "retained_ordered_families": [
+        "Dubke",
+        "Pizzolato"
+      ],
+      "registry_ordered_families": [
+        "Dubke",
+        "Pizzolato"
+      ],
+      "author_count": 2,
+      "normalized_family_order_matches": true
+    },
+    {
+      "key": "mardaneh2021",
+      "doi": "10.1016/j.knosys.2021.107037",
+      "retained_ordered_families": [
+        "Mardaneh",
+        "Loxton",
+        "Meka",
+        "Gamble"
+      ],
+      "registry_ordered_families": [
+        "Mardaneh",
+        "Loxton",
+        "Meka",
+        "Gamble"
+      ],
+      "author_count": 4,
+      "normalized_family_order_matches": true
+    },
+    {
+      "key": "steiner2017",
+      "doi": "10.1016/j.cie.2017.07.019",
+      "retained_ordered_families": [
+        "Steiner Neto",
+        "Datta",
+        "Arns Steiner",
+        "Canciglieri Júnior",
+        "Figueira",
+        "Detro",
+        "Scarpin"
+      ],
+      "registry_ordered_families": [
+        "Steiner Neto",
+        "Datta",
+        "Arns Steiner",
+        "Canciglieri Júnior",
+        "Figueira",
+        "Detro",
+        "Scarpin"
+      ],
+      "author_count": 7,
+      "normalized_family_order_matches": true
+    },
+    {
+      "key": "maiyar2019",
+      "doi": "10.1016/j.ijpe.2018.07.021",
+      "retained_ordered_families": [
+        "Maiyar",
+        "Thakkar"
+      ],
+      "registry_ordered_families": [
+        "Maiyar",
+        "Thakkar"
+      ],
+      "author_count": 2,
+      "normalized_family_order_matches": true
+    },
+    {
+      "key": "mogale2020",
+      "doi": "10.1007/s10479-020-03664-y",
+      "retained_ordered_families": [
+        "Mogale",
+        "Kumar",
+        "Tiwari"
+      ],
+      "registry_ordered_families": [
+        "Mogale",
+        "Kumar",
+        "Tiwari"
+      ],
+      "author_count": 3,
+      "normalized_family_order_matches": true
+    },
+    {
+      "key": "mogale2023",
+      "doi": "10.1080/00207543.2022.2078746",
+      "retained_ordered_families": [
+        "Mogale",
+        "Ghadge",
+        "Cheikhrouhou",
+        "Tiwari"
+      ],
+      "registry_ordered_families": [
+        "Mogale",
+        "Ghadge",
+        "Cheikhrouhou",
+        "Tiwari"
+      ],
+      "author_count": 4,
+      "normalized_family_order_matches": true
+    },
+    {
+      "key": "granillo2019",
+      "doi": "10.15446/dyna.v86n208.72056",
+      "retained_ordered_families": [
+        "Granillo-Macias",
+        "Gonzalez Hernandez",
+        "Martinez-Flores",
+        "Caballero-Morales",
+        "Olivarez-Benitez"
+      ],
+      "registry_ordered_families": [
+        "Granillo-Macias",
+        "Gonzalez Hernandez",
+        "Martinez-Flores",
+        "Caballero-Morales",
+        "Olivarez-Benitez"
+      ],
+      "author_count": 5,
+      "normalized_family_order_matches": true
+    },
+    {
+      "key": "morais2023",
+      "doi": "10.3390/su15021063",
+      "retained_ordered_families": [
+        "De Morais",
+        "Calil",
+        "De Oliveira",
+        "Saldanha",
+        "Andrey Maia"
+      ],
+      "registry_ordered_families": [
+        "de Morais",
+        "Calil",
+        "de Oliveira",
+        "Saldanha",
+        "Andrey Maia"
+      ],
+      "author_count": 5,
+      "normalized_family_order_matches": true
+    },
+    {
+      "key": "mendoza2021",
+      "doi": "10.1007/978-3-030-86702-7_33",
+      "retained_ordered_families": [
+        "Mendoza-Ortega",
+        "Soto",
+        "Ruiz-Meza",
+        "Salgado",
+        "Torregroza"
+      ],
+      "registry_ordered_families": [
+        "Mendoza-Ortega",
+        "Soto",
+        "Ruiz-Meza",
+        "Salgado",
+        "Torregroza"
+      ],
+      "author_count": 5,
+      "normalized_family_order_matches": true
+    },
+    {
+      "key": "vazquez2021",
+      "doi": "10.1016/j.compchemeng.2021.107223",
+      "retained_ordered_families": [
+        "Zuniga Vazquez",
+        "Sun",
+        "Fan",
+        "Sproul",
+        "Summers",
+        "Quinn",
+        "Khanal",
+        "Gutierrez",
+        "Mealing",
+        "Landis",
+        "Seavert",
+        "Teegerstrom",
+        "Evancho"
+      ],
+      "registry_ordered_families": [
+        "Zuniga Vazquez",
+        "Sun",
+        "Fan",
+        "Sproul",
+        "Summers",
+        "Quinn",
+        "Khanal",
+        "Gutierrez",
+        "Mealing",
+        "Landis",
+        "Seavert",
+        "Teegerstrom",
+        "Evancho"
+      ],
+      "author_count": 13,
+      "normalized_family_order_matches": true
+    },
+    {
+      "key": "anselmino2025",
+      "doi": "10.1016/j.biombioe.2025.107686",
+      "retained_ordered_families": [
+        "Anselmino",
+        "Piedra-Jimenez",
+        "Rodriguez",
+        "Dondo",
+        "Cóccola"
+      ],
+      "registry_ordered_families": [
+        "Anselmino",
+        "Piedra-Jimenez",
+        "Rodriguez",
+        "Dondo",
+        "Cóccola"
+      ],
+      "author_count": 5,
+      "normalized_family_order_matches": true
+    },
+    {
+      "key": "essien2018",
+      "doi": "10.1016/j.compag.2018.02.019",
+      "retained_ordered_families": [
+        "Essien",
+        "Dzisi",
+        "Addo"
+      ],
+      "registry_ordered_families": [
+        "Essien",
+        "Dzisi",
+        "Addo"
+      ],
+      "author_count": 3,
+      "normalized_family_order_matches": true
+    },
+    {
+      "key": "gholamian2017",
+      "doi": "10.1016/j.compag.2017.05.038",
+      "retained_ordered_families": [
+        "Gholamian",
+        "Taghanzadeh"
+      ],
+      "registry_ordered_families": [
+        "Gholamian",
+        "Taghanzadeh"
+      ],
+      "author_count": 2,
+      "normalized_family_order_matches": true
+    },
+    {
+      "key": "pourmohammadi2020",
+      "doi": "10.5267/j.dsl.2020.8.004",
+      "retained_ordered_families": [
+        "Pourmohammadi",
+        "Teimoury",
+        "Gholamian"
+      ],
+      "registry_ordered_families": [
+        "Pourmohammadi",
+        "Teimoury",
+        "Gholamian"
+      ],
+      "author_count": 3,
+      "normalized_family_order_matches": true
+    },
+    {
+      "key": "hosseini2020",
+      "doi": "10.1016/j.compag.2019.105095",
+      "retained_ordered_families": [
+        "Hosseini-Motlagh",
+        "Samani",
+        "Saadi"
+      ],
+      "registry_ordered_families": [
+        "Hosseini-Motlagh",
+        "Samani",
+        "Saadi"
+      ],
+      "author_count": 3,
+      "normalized_family_order_matches": true
+    },
+    {
+      "key": "garima2024",
+      "doi": "10.3390/su162410816",
+      "retained_ordered_families": [
+        "Garima",
+        "Olaru",
+        "Smith",
+        "Siddique"
+      ],
+      "registry_ordered_families": [
+        "Garima",
+        "Olaru",
+        "Smith",
+        "Siddique"
+      ],
+      "author_count": 4,
+      "normalized_family_order_matches": true
+    },
+    {
+      "key": "filippi2022",
+      "doi": "10.3390/logistics6010009",
+      "retained_ordered_families": [
+        "Filippi",
+        "Guarnieri",
+        "Da Cunha",
+        "Wander"
+      ],
+      "registry_ordered_families": [
+        "Filippi",
+        "Guarnieri",
+        "da Cunha",
+        "Wander"
+      ],
+      "author_count": 4,
+      "normalized_family_order_matches": true
+    },
+    {
+      "key": "kussano2012",
+      "doi": "10.1590/S0104-530X2012000300013",
+      "retained_ordered_families": [
+        "Kussano",
+        "Batalha"
+      ],
+      "registry_ordered_families": [
+        "Kussano",
+        "Batalha"
+      ],
+      "author_count": 2,
+      "normalized_family_order_matches": true
+    },
+    {
+      "key": "souza2024",
+      "doi": "10.1590/1806-9479.2022.268622",
+      "retained_ordered_families": [
+        "Souza",
+        "Oliveira",
+        "Souza"
+      ],
+      "registry_ordered_families": [
+        "Souza",
+        "Oliveira",
+        "Souza"
+      ],
+      "author_count": 3,
+      "normalized_family_order_matches": true
+    },
+    {
+      "key": "wang2024",
+      "doi": "10.1016/j.scitotenv.2024.172434",
+      "retained_ordered_families": [
+        "Wang",
+        "Martha",
+        "Liu",
+        "Lima",
+        "Hertel"
+      ],
+      "registry_ordered_families": [
+        "Wang",
+        "Martha",
+        "Liu",
+        "Lima",
+        "Hertel"
+      ],
+      "author_count": 5,
+      "normalized_family_order_matches": true
+    },
+    {
+      "key": "shastri2011",
+      "doi": "10.1016/j.compag.2011.01.006",
+      "retained_ordered_families": [
+        "Shastri",
+        "Hansen",
+        "Rodríguez",
+        "Ting"
+      ],
+      "registry_ordered_families": [
+        "Shastri",
+        "Hansen",
+        "Rodríguez",
+        "Ting"
+      ],
+      "author_count": 4,
+      "normalized_family_order_matches": true
+    },
+    {
+      "key": "knapen2025",
+      "doi": "10.1016/j.compag.2025.110392",
+      "retained_ordered_families": [
+        "Knapen",
+        "de Wit",
+        "Buyukkaya",
+        "Petrou",
+        "Paudel",
+        "Janssen",
+        "Athanasiadis"
+      ],
+      "registry_ordered_families": [
+        "Knapen",
+        "de Wit",
+        "Buyukkaya",
+        "Petrou",
+        "Paudel",
+        "Janssen",
+        "Athanasiadis"
+      ],
+      "author_count": 7,
+      "normalized_family_order_matches": true
+    },
+    {
+      "key": "zhao2012",
+      "doi": "10.1016/j.compag.2012.08.007",
+      "retained_ordered_families": [
+        "Zhao",
+        "Bryan",
+        "King",
+        "Song",
+        "Yu"
+      ],
+      "registry_ordered_families": [
+        "Zhao",
+        "Bryan",
+        "King",
+        "Song",
+        "Yu"
+      ],
+      "author_count": 5,
+      "normalized_family_order_matches": true
+    },
+    {
+      "key": "silva2025pascal",
+      "doi": "10.1109/ACCESS.2025.3639388",
+      "retained_ordered_families": [
+        "Silva",
+        "Silva",
+        "Valderrama",
+        "Xavier-de-Souza"
+      ],
+      "registry_ordered_families": [
+        "Silva",
+        "Silva",
+        "Valderrama",
+        "Xavier-de-Souza"
+      ],
+      "author_count": 4,
+      "normalized_family_order_matches": true
+    },
+    {
+      "key": "huangfu2018",
+      "doi": "10.1007/s12532-017-0130-5",
+      "retained_ordered_families": [
+        "Huangfu",
+        "Hall"
+      ],
+      "registry_ordered_families": [
+        "Huangfu",
+        "Hall"
+      ],
+      "author_count": 2,
+      "normalized_family_order_matches": true
+    },
+    {
+      "key": "birge2011",
+      "doi": "10.1007/978-1-4614-0237-4",
+      "retained_ordered_families": [
+        "Birge",
+        "Louveaux"
+      ],
+      "registry_ordered_families": [
+        "Birge",
+        "Louveaux"
+      ],
+      "author_count": 2,
+      "normalized_family_order_matches": true
+    },
+    {
+      "key": "kaltis2026",
+      "doi": "10.1080/03155986.2025.2540205",
+      "retained_ordered_families": [
+        "Kaltis",
+        "Saharidis"
+      ],
+      "registry_ordered_families": [
+        "Kaltis",
+        "Saharidis"
+      ],
+      "author_count": 2,
+      "normalized_family_order_matches": true
+    },
+    {
+      "key": "page2021",
+      "doi": "10.1136/bmj.n71",
+      "retained_ordered_families": [
+        "Page",
+        "McKenzie",
+        "Bossuyt",
+        "Boutron",
+        "Hoffmann",
+        "Mulrow",
+        "Shamseer",
+        "Tetzlaff",
+        "Akl",
+        "Brennan",
+        "Chou",
+        "Glanville",
+        "Grimshaw",
+        "Hróbjartsson",
+        "Lalu",
+        "Li",
+        "Loder",
+        "Mayo-Wilson",
+        "McDonald",
+        "McGuinness",
+        "Stewart",
+        "Thomas",
+        "Tricco",
+        "Welch",
+        "Whiting",
+        "Moher"
+      ],
+      "registry_ordered_families": [
+        "Page",
+        "McKenzie",
+        "Bossuyt",
+        "Boutron",
+        "Hoffmann",
+        "Mulrow",
+        "Shamseer",
+        "Tetzlaff",
+        "Akl",
+        "Brennan",
+        "Chou",
+        "Glanville",
+        "Grimshaw",
+        "Hróbjartsson",
+        "Lalu",
+        "Li",
+        "Loder",
+        "Mayo-Wilson",
+        "McDonald",
+        "McGuinness",
+        "Stewart",
+        "Thomas",
+        "Tricco",
+        "Welch",
+        "Whiting",
+        "Moher"
+      ],
+      "author_count": 26,
+      "normalized_family_order_matches": true
+    },
+    {
+      "key": "taskiner2021",
+      "doi": "10.3390/logistics5030052",
+      "retained_ordered_families": [
+        "Taşkıner",
+        "Bilgen"
+      ],
+      "registry_ordered_families": [
+        "Taşkıner",
+        "Bilgen"
+      ],
+      "author_count": 2,
+      "normalized_family_order_matches": true
+    }
+  ],
+  "given_name_expansions_or_ORCID_identity_certified": false,
+  "all_38_author_identities_certified": false,
+  "normalization": "Case/diacritic/punctuation/space normalization; retain original spelling in bibliography",
+  "no_author_added_deleted_reordered": true
+}
