@@ -146,6 +146,7 @@ assessment.
 |:--|:--|:--|
 | @essien2018 | Multi-stakeholder grain-storage location and decision support | How do returned investment and service outcomes relate to a certified scalar objective? |
 | @gholamian2017 | Integrated wheat-network planning, including silo location and distribution | What construction, solution and memory requirements accompany explicitly defined extensive-form instances? |
+| @pourmohammadi2020 | Scenario-based location and discrete storage sizing with hard demand fulfillment | How do continuous capacity sizing and penalized shortages change the interpretation of returned plans? |
 | @hosseini2020 | Wheat-network design/redesign with sustainability and resilience concerns | What do the present cost and slack variables support, without adding unmodeled resilience or sustainability outcomes? |
 | @reis2023 | Two-stage tactical soybean LP with purchasing and transport contracts; 243 scenarios | How does shared infrastructure investment differ from tactical contracting under uncertainty? |
 | @shastri2011 | Decomposition and distributed solution of an agricultural MILP | What attainable quality and resource use are observed for the present direct extensive-form solution? |
@@ -289,6 +290,15 @@ simulation in a barley contract-farming network. @mendoza2021 study
 scenario-based facility location, while the adoption scenarios in
 @vazquez2021 concern a different source of uncertainty. They should not be
 classified as interchangeable simply because each uses multiple scenarios.
+
+@pourmohammadi2020 provide a closer stochastic infrastructure precedent:
+six equiprobable supply-demand scenarios, shared choices among four
+facility-capacity levels, and scenario-dependent operation. Their
+assumptions prohibit shortage and include imports, quality blending and
+road/rail transport. The present instance instead sizes capacity
+continuously, represents road movements and permits penalized shortages.
+These differences change the feasible set and the meaning of cost and
+service outcomes.
 
 For soybean tactical planning, @reis2023 adopt a two-stage stochastic linear
 program with first-stage purchasing and contracted transport. Our first stage

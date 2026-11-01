@@ -26,7 +26,8 @@
       },
       "normalized_title_similarity": 1.0,
       "retained_year_in_registry_dates": true,
-      "author_order_fully_reconciled_this_pass": false
+      "author_order_fully_reconciled_this_pass": false,
+      "ordered_family_count_matches_registry": true
     },
     {
       "key": "reis2023",
@@ -46,7 +47,8 @@
       },
       "normalized_title_similarity": 1.0,
       "retained_year_in_registry_dates": true,
-      "author_order_fully_reconciled_this_pass": false
+      "author_order_fully_reconciled_this_pass": false,
+      "ordered_family_count_matches_registry": true
     },
     {
       "key": "foulds2005",
@@ -66,7 +68,8 @@
       },
       "normalized_title_similarity": 1.0,
       "retained_year_in_registry_dates": true,
-      "author_order_fully_reconciled_this_pass": false
+      "author_order_fully_reconciled_this_pass": false,
+      "ordered_family_count_matches_registry": true
     },
     {
       "key": "dubke2011",
@@ -86,7 +89,8 @@
       },
       "normalized_title_similarity": 1.0,
       "retained_year_in_registry_dates": true,
-      "author_order_fully_reconciled_this_pass": false
+      "author_order_fully_reconciled_this_pass": false,
+      "ordered_family_count_matches_registry": true
     },
     {
       "key": "mardaneh2021",
@@ -106,7 +110,8 @@
       },
       "normalized_title_similarity": 1.0,
       "retained_year_in_registry_dates": true,
-      "author_order_fully_reconciled_this_pass": false
+      "author_order_fully_reconciled_this_pass": false,
+      "ordered_family_count_matches_registry": true
     },
     {
       "key": "steiner2017",
@@ -126,7 +131,8 @@
       },
       "normalized_title_similarity": 1.0,
       "retained_year_in_registry_dates": true,
-      "author_order_fully_reconciled_this_pass": false
+      "author_order_fully_reconciled_this_pass": false,
+      "ordered_family_count_matches_registry": true
     },
     {
       "key": "maiyar2019",
@@ -146,7 +152,8 @@
       },
       "normalized_title_similarity": 1.0,
       "retained_year_in_registry_dates": true,
-      "author_order_fully_reconciled_this_pass": false
+      "author_order_fully_reconciled_this_pass": false,
+      "ordered_family_count_matches_registry": true
     },
     {
       "key": "mogale2020",
@@ -167,7 +174,8 @@
       },
       "normalized_title_similarity": 1.0,
       "retained_year_in_registry_dates": true,
-      "author_order_fully_reconciled_this_pass": false
+      "author_order_fully_reconciled_this_pass": false,
+      "ordered_family_count_matches_registry": true
     },
     {
       "key": "mogale2023",
@@ -188,7 +196,8 @@
       },
       "normalized_title_similarity": 1.0,
       "retained_year_in_registry_dates": true,
-      "author_order_fully_reconciled_this_pass": false
+      "author_order_fully_reconciled_this_pass": false,
+      "ordered_family_count_matches_registry": true
     },
     {
       "key": "milanez2026",
@@ -225,7 +234,8 @@
       },
       "normalized_title_similarity": 1.0,
       "retained_year_in_registry_dates": true,
-      "author_order_fully_reconciled_this_pass": false
+      "author_order_fully_reconciled_this_pass": false,
+      "ordered_family_count_matches_registry": true
     },
     {
       "key": "morais2023",
@@ -245,7 +255,8 @@
       },
       "normalized_title_similarity": 1.0,
       "retained_year_in_registry_dates": true,
-      "author_order_fully_reconciled_this_pass": false
+      "author_order_fully_reconciled_this_pass": false,
+      "ordered_family_count_matches_registry": true
     },
     {
       "key": "mendoza2021",
@@ -266,7 +277,8 @@
       },
       "normalized_title_similarity": 1.0,
       "retained_year_in_registry_dates": true,
-      "author_order_fully_reconciled_this_pass": false
+      "author_order_fully_reconciled_this_pass": false,
+      "ordered_family_count_matches_registry": true
     },
     {
       "key": "vazquez2021",
@@ -286,7 +298,8 @@
       },
       "normalized_title_similarity": 1.0,
       "retained_year_in_registry_dates": true,
-      "author_order_fully_reconciled_this_pass": false
+      "author_order_fully_reconciled_this_pass": false,
+      "ordered_family_count_matches_registry": true
     },
     {
       "key": "anselmino2025",
@@ -306,7 +319,8 @@
       },
       "normalized_title_similarity": 1.0,
       "retained_year_in_registry_dates": true,
-      "author_order_fully_reconciled_this_pass": false
+      "author_order_fully_reconciled_this_pass": false,
+      "ordered_family_count_matches_registry": true
     },
     {
       "key": "guimaraes2017",
@@ -348,7 +362,8 @@
       },
       "normalized_title_similarity": 1.0,
       "retained_year_in_registry_dates": true,
-      "author_order_fully_reconciled_this_pass": false
+      "author_order_fully_reconciled_this_pass": false,
+      "ordered_family_count_matches_registry": true
     },
     {
       "key": "gholamian2017",
@@ -368,7 +383,8 @@
       },
       "normalized_title_similarity": 1.0,
       "retained_year_in_registry_dates": true,
-      "author_order_fully_reconciled_this_pass": false
+      "author_order_fully_reconciled_this_pass": false,
+      "ordered_family_count_matches_registry": true
     },
     {
       "key": "pourmohammadi2020",
@@ -389,7 +405,8 @@
       },
       "normalized_title_similarity": 1.0,
       "retained_year_in_registry_dates": true,
-      "author_order_fully_reconciled_this_pass": false
+      "author_order_fully_reconciled_this_pass": false,
+      "ordered_family_count_matches_registry": true
     },
     {
       "key": "hosseini2020",
@@ -409,7 +426,8 @@
       },
       "normalized_title_similarity": 1.0,
       "retained_year_in_registry_dates": true,
-      "author_order_fully_reconciled_this_pass": false
+      "author_order_fully_reconciled_this_pass": false,
+      "ordered_family_count_matches_registry": true
     },
     {
       "key": "garima2024",
@@ -429,7 +447,8 @@
       },
       "normalized_title_similarity": 1.0,
       "retained_year_in_registry_dates": true,
-      "author_order_fully_reconciled_this_pass": false
+      "author_order_fully_reconciled_this_pass": false,
+      "ordered_family_count_matches_registry": true
     },
     {
       "key": "filippi2022",
@@ -449,7 +468,8 @@
       },
       "normalized_title_similarity": 1.0,
       "retained_year_in_registry_dates": true,
-      "author_order_fully_reconciled_this_pass": false
+      "author_order_fully_reconciled_this_pass": false,
+      "ordered_family_count_matches_registry": true
     },
     {
       "key": "kussano2012",
@@ -469,7 +489,8 @@
       },
       "normalized_title_similarity": 1.0,
       "retained_year_in_registry_dates": true,
-      "author_order_fully_reconciled_this_pass": false
+      "author_order_fully_reconciled_this_pass": false,
+      "ordered_family_count_matches_registry": true
     },
     {
       "key": "souza2024",
@@ -489,7 +510,8 @@
       },
       "normalized_title_similarity": 1.0,
       "retained_year_in_registry_dates": true,
-      "author_order_fully_reconciled_this_pass": false
+      "author_order_fully_reconciled_this_pass": false,
+      "ordered_family_count_matches_registry": true
     },
     {
       "key": "wang2024",
@@ -509,7 +531,8 @@
       },
       "normalized_title_similarity": 1.0,
       "retained_year_in_registry_dates": true,
-      "author_order_fully_reconciled_this_pass": false
+      "author_order_fully_reconciled_this_pass": false,
+      "ordered_family_count_matches_registry": true
     },
     {
       "key": "rosa2026thesis",
@@ -538,7 +561,8 @@
       },
       "normalized_title_similarity": 1.0,
       "retained_year_in_registry_dates": true,
-      "author_order_fully_reconciled_this_pass": false
+      "author_order_fully_reconciled_this_pass": false,
+      "ordered_family_count_matches_registry": true
     },
     {
       "key": "knapen2025",
@@ -558,7 +582,8 @@
       },
       "normalized_title_similarity": 1.0,
       "retained_year_in_registry_dates": true,
-      "author_order_fully_reconciled_this_pass": false
+      "author_order_fully_reconciled_this_pass": false,
+      "ordered_family_count_matches_registry": true
     },
     {
       "key": "zhao2012",
@@ -578,7 +603,8 @@
       },
       "normalized_title_similarity": 1.0,
       "retained_year_in_registry_dates": true,
-      "author_order_fully_reconciled_this_pass": false
+      "author_order_fully_reconciled_this_pass": false,
+      "ordered_family_count_matches_registry": true
     },
     {
       "key": "silva2025pascal",
@@ -598,7 +624,8 @@
       },
       "normalized_title_similarity": 1.0,
       "retained_year_in_registry_dates": true,
-      "author_order_fully_reconciled_this_pass": false
+      "author_order_fully_reconciled_this_pass": false,
+      "ordered_family_count_matches_registry": true
     },
     {
       "key": "huangfu2018",
@@ -619,7 +646,8 @@
       },
       "normalized_title_similarity": 1.0,
       "retained_year_in_registry_dates": true,
-      "author_order_fully_reconciled_this_pass": false
+      "author_order_fully_reconciled_this_pass": false,
+      "ordered_family_count_matches_registry": true
     },
     {
       "key": "birge2011",
@@ -639,7 +667,8 @@
       },
       "normalized_title_similarity": 1.0,
       "retained_year_in_registry_dates": true,
-      "author_order_fully_reconciled_this_pass": false
+      "author_order_fully_reconciled_this_pass": false,
+      "ordered_family_count_matches_registry": true
     },
     {
       "key": "kaltis2026",
@@ -660,7 +689,8 @@
       },
       "normalized_title_similarity": 1.0,
       "retained_year_in_registry_dates": true,
-      "author_order_fully_reconciled_this_pass": false
+      "author_order_fully_reconciled_this_pass": false,
+      "ordered_family_count_matches_registry": true
     },
     {
       "key": "celestino2026dataset",
@@ -701,7 +731,8 @@
       },
       "normalized_title_similarity": 1.0,
       "retained_year_in_registry_dates": true,
-      "author_order_fully_reconciled_this_pass": false
+      "author_order_fully_reconciled_this_pass": false,
+      "ordered_family_count_matches_registry": true
     },
     {
       "key": "taskiner2021",
@@ -721,7 +752,15 @@
       },
       "normalized_title_similarity": 1.0,
       "retained_year_in_registry_dates": true,
-      "author_order_fully_reconciled_this_pass": false
+      "author_order_fully_reconciled_this_pass": false,
+      "ordered_family_count_matches_registry": true
     }
-  ]
+  ],
+  "bibliography_metadata_added": {
+    "pourmohammadi2020": {
+      "volume": "9",
+      "number": "4"
+    }
+  },
+  "ordered_family_audit": "docs/evidence/reference_author_order_20261101.json"
 }

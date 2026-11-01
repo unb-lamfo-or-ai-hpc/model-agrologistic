@@ -56,4 +56,5 @@ def test_review_has_real_figures_and_explicit_missing_exports():
     assert "{{< include comparison_results.qmd >}}" not in current
     final = current.split("# Final considerations, limitations and future work", 1)[1]
     assert "The eleven accepted scalar observations" in final
-    assert "These twelve validated observations do not" in final
+    assert "Separate Pyomo/APPSI Gurobi and HiGHS h215 STO" in final
+    assert "first Gurobi h300 pilot is reported separately" in final

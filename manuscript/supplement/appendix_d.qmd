@@ -405,3 +405,39 @@ They retain configuration, product, period and scenario identifiers and the
 source used for aggregation. Access and release status are recorded per
 asset in the catalog; a prepared local file is not presented as an already
 published Zenodo download.
+
+
+## D10 Reading the exported numerical tables
+
+The tables separate shared infrastructure decisions from scenario-specific
+operation. A warehouse decision has no scenario or period index: it applies
+to the complete planning horizon. Flow, stock and shortage rows instead retain
+the original scenario, period and product identifiers. Their `value` fields
+are original quantities, not probability-weighted contributions.
+
+| Original file | Principal coordinates | Meaning of the quantities |
+| --- | --- | --- |
+| warehouse_decisions.csv | Warehouse | Activation flags and installed candidate/expansion tonnes; bulk-handling basis is separate |
+| flows.csv | Scenario, movement family, endpoints, product, period | Tonnes moved on one directed leg within that period |
+| inventories.csv | Scenario, warehouse, product, period | Tonnes held at period end |
+| unmet_demand.csv | Scenario, domestic destination, product, period | Tonnes of unmet period demand |
+| emergency_capacity.csv | Scenario, warehouse, period, capacity_type | Static stock excess or reception-flow overflow, distinguished by type |
+| emergency_capacity_daily.csv | Same coordinates plus days_in_period | Reception overflow divided by operating days; the static daily-equivalent field is blank |
+
+: Table D.7. Original output files and their physical meaning.
+
+The [source-bound file and column dictionary](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/8f33a360d8a1ca3f18c5c7a3aa0eac2cd2ad5a90/docs/evidence/paired_h300_release_dictionary_20261101.json)
+records member paths, byte sizes, SHA-256 values, column names and row counts
+for the returned h300 pilot. The
+[export implementation](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c493be8cd127c5175fc7eb111400229e64b8e3c0/src/logic/experiment_runner.py)
+defines those fields. Its expected-horizon summaries multiply each operational
+row by its scenario probability exactly once and sum over the intended
+coordinates. First-stage investments are not counted once per scenario.
+
+For example, static records contribute to stock exposure in tonne-periods
+when summed over time. Reception records contribute tonnes of overflow, or a
+daily equivalent when each record is divided by its own operating days.
+Neither is automatically an engineering capacity requirement. Blank static
+daily equivalents do not mean that stock excess was zero. Similarly, the
+sparse exported tables do not list every feasible zero-flow arc; Appendix E
+explains the distinction between admissibility and a returned positive flow.

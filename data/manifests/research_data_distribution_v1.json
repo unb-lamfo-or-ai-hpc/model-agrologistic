@@ -334,7 +334,8 @@
       "kind": "selected_product_arc_lists",
       "destination": "Zenodo, indexed by input/source/policy/topology/product fingerprint",
       "state": "planned_export_or_archive_inventory_required",
-      "qualification": "Do not substitute every materialized OD/DD/DC/OC distance for the selected feasible arc set."
+      "qualification": "Do not substitute every materialized OD/DD/DC/OC distance for the selected feasible arc set.",
+      "first_paired_pilot_observation": "Fingerprint retained; no standalone list identified; large result JSON not parsed"
     },
     {
       "kind": "accepted_investment_tables",
@@ -351,7 +352,8 @@
       "destination": "GitHub curated JSON/tables; Zenodo original results, validation, native logs and sanitized resource records",
       "state": "first_gurobi_h300_original_audited_highs_collection_nonterminal",
       "curated_evidence": "docs/evidence/paired_pyomo_h300_gurobi_2231228_review.json",
-      "original_archive_uploaded": false
+      "original_archive_uploaded": false,
+      "original_case_file_inventory": "docs/evidence/paired_h300_release_dictionary_20261101.json"
     },
     {
       "kind": "routing_container_reproduction_metadata",

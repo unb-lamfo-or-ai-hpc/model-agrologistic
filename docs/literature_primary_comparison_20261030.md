@@ -109,7 +109,8 @@ https://ugspace.ug.edu.gh/server/api/core/bitstreams/ba3cff00-501e-4c12-aba8-011
 | Comparison of implementations | Native solver algorithms and modeling interfaces | Separate historical/native and common-Pyomo cohorts; paired matrix/input bindings and repeated controlled profiles |
 | Complementary research method | Human-directed scientific modeling and verification | Inspectable proposal/adoption/check chain; no causal AI-productivity claim |
 
-The active h300 jobs provide no new outcome yet. The 90 planned calculations
+The new Gurobi h300 pilot is retained separately; HiGHS has no terminal
+collection at this cutoff. The 90 planned calculations
 do not become statistical evidence merely through submission. Full-text access
 limits, complete Rosa comparison and unresolved author decisions remain open.
 
@@ -131,3 +132,27 @@ record was added or removed. Registry identity is not full-text scientific
 reconciliation, and complete author-order verification remains open. The
 thesis overlap and other access-limited close precedents retain their open
 statuses. See [the source-specific ledger](evidence/reference_registry_reconciliation_20261101.json).
+
+
+## B3 increment: primary reading and ordered metadata
+
+Pourmohammadi2020, Sections3-5: inspected the publisher PDF and rendered
+pp.540/543. Four capacity levels, six scenarios and hard service distinguish
+this precedent. The extraction ledger records dimensions/software and preserves
+unresolved quality/information-structure interpretation. No cross-paper timing
+ratio is inferred. [Reading ledger](evidence/pourmohammadi2020_primary_reading_20261101.json).
+
+Ordered normalized family names and author counts match the preserved registry
+for all32 Crossref records. This closes that specific comparison, not complete
+given-name, ORCID or whole38-record identity verification. The bibliography
+keeps every existing key, author order and DOI. Only the missing9(4) metadata
+for Pourmohammadi is added from the publisher's issue index/PDF. Records for
+books and book chapters are checked according to their type; absence of a
+journal field is not treated as a missing journal article.
+[Ordered-author audit](evidence/reference_author_order_20261101.json).
+
+Gholamian, Hosseini and Shastri retain preview/abstract-level access in this
+increment. A failed full-text fetch does not establish absence of a method or
+metric. Complete Rosa overlap, remaining source-specific comparison and the
+original review's search/count chronology remain open. Original Appendix A
+and the approved title/question/SO1-SO4 are unchanged.

@@ -1,5 +1,9 @@
 # PR144 checkpoint — 1 November 2026: first h300 return and clean maps
 
+Latest bibliographic/data continuation: [B3/D2 primary-source checkpoint](20261101_B3_D2_primary_sources.md).
+It adds source-specific reading, ordered-author checks and the CSV dictionary;
+the original experimental outcomes below are unchanged.
+
 ## Accepted original and pending companion
 
 Gurobi2231228/h300-w-sto-gurobi-t1-r1 is terminal COMPLETED0:0. Its archive

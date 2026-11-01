@@ -18,7 +18,7 @@ has not been assigned or published by this revision.
 | Product-specific selected arcs | Policy code and graph fingerprints | Explicit selected-arc lists, with topology/product/instance identities | Release inventory/export remains to be completed |
 | Investments | Small reviewed per-case CSV summaries and figures | Complete decision vectors and source receipts | Existing Appendix E summaries |
 | Flow-distance/inventory vectors | Schema, hashes, aggregation method and small summaries | Full-resolution CSV.gz and companion SQLite | Local companions exist; per-asset deposition inventory/rights remain open |
-| Solver outcomes | Curated original-certificate tables/JSON | Original validated outputs, native logs and sanitized resource records | Historical originals preserved; current h300 pair still running |
+| Solver outcomes | Curated original-certificate tables/JSON | Original validated outputs, native logs and sanitized resource records | Historical originals preserved; new Gurobi h300 audited, HiGHS collection pending |
 | Quarto source and release documents | Article/appendices source, figures, bibliography, release record | Versioned archival copy/related identifier if selected | Pages publication follows a separate approved main PR |
 
 Large data and transient caches do not belong in ordinary Git history.
@@ -122,3 +122,23 @@ source-bound solution definitions through scripts/prepare_document_assets.py.
 All active image dependencies are checked; reused map files require matching
 output hashes. Generated previews remain local and full-document PDF review
 is postponed under the current researcher instruction.
+
+
+## Source-bound CSV release dictionary
+
+The [new h300 dictionary](evidence/paired_h300_release_dictionary_20261101.json)
+records all25 case members plus headers, sizes and hashes for the six primary
+CSV families. It rereads225891 flow rows,74452 stock rows,3808 shortage rows,
+300 investment rows and9211 rows in each emergency table. Expected domestic
+deliveries, shortage, stock exposure and reception overflow reproduce the
+accepted original summary. Reception alone has a daily-equivalent value;
+static rows retain a blank in that field. This is export aggregation checking,
+not fresh physical-residual validation or a new optimization.
+
+The original input receipt retains graph9520a303... and the frozen screening
+policy. No standalone selected-arc list was identified in the88 archive
+members. The large result JSON was hashed, not parsed; its possible utility
+for reconstructing the graph was not ruled out. The next data release must
+still provide an explicit admissibility list or a verified reconstruction
+from exact frozen inputs/policy. Positive solution flows cannot replace it.
+No raw case file or new data package was uploaded by this dictionary audit.
