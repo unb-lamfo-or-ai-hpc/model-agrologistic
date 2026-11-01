@@ -198,6 +198,7 @@ that handoff, never develop/latest:
 ```bash
 BASE=/home/vrrcelestino/model-agrologistic-hygiene-audit
 PY=/home/vrrcelestino/venv313/bin/python
+export GRB_LICENSE_FILE=/home/vrrcelestino/model-agrologistic/secrets/gurobi.lic
 SOURCE_SHA=FULL_QUALIFIED_COMMIT
 DRIVER="$BASE/.mvp2-pyomo-scaling-public-v1/source/scripts/pyomo_scaling_campaign.py"
 CAMPAIGN="$BASE/.mvp2-pyomo-scaling-native8h-v1"
