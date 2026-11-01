@@ -110,7 +110,7 @@ not a declaration that the new data release is already downloadable.
 
 ## First paired-campaign return and clean map build
 
-Both Gurobi2231228 and HiGHS2231226 have locally audited original archives
+Both Gurobi 2231228 and HiGHS 2231226 have locally audited original archives
 and original accepted primal/cost validations. Their separate full-resolution
 flow-distance companions retain the same frozen graph and distance source.
 They are separate campaign observations, not repetitions of historical cases.
@@ -127,9 +127,9 @@ is postponed under the current researcher instruction.
 ## Source-bound CSV release dictionary
 
 The [new h300 dictionary](evidence/paired_h300_release_dictionary_20261101.json)
-records all25 case members plus headers, sizes and hashes for the six primary
-CSV families. It rereads225891 flow rows,74452 stock rows,3808 shortage rows,
-300 investment rows and9211 rows in each emergency table. Expected domestic
+records all 25 case members plus headers, sizes and hashes for the six primary
+CSV families. It rereads 225891 flow rows, 74452 stock rows, 3808 shortage rows,
+300 investment rows and 9211 rows in each emergency table. Expected domestic
 deliveries, shortage, stock exposure and reception overflow reproduce the
 accepted original summary. Reception alone has a daily-equivalent value;
 static rows retain a blank in that field. This is export aggregation checking,
@@ -146,7 +146,7 @@ preserves the two earlier rejected preparation directories without changing
 original data. Positive solution flows are not used as an admissibility list.
 
 The [file-level next-release inventory](../data/manifests/zenodo_next_release_inventory_20261101.json)
-contains41 verified files totaling450,057,392 bytes:28 historical companions,
+contains 41 verified files totaling 450,057,392 bytes: 28 historical companions,
 four complete OSRM tables, seven companions for the new pair and two h300
 selected-graph files. Every entry records its proposed destination, exact
 size, SHA-256, units, source receipt and pending asset-specific terms review.
