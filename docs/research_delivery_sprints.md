@@ -1,5 +1,25 @@
 # Nine-scenario research delivery plan
 
+## Active delivery sequence — 1 November 2026
+
+This checkpoint supersedes historical experimental profiles below for the
+current scalar comparison. The approved paired Pyomo campaign uses seed 42,
+Gurobi/HiGHS, 1/2/4/8/16 threads, three repetitions and an 8 h native limit
+with a 1% scalar-gap target. It has 90 planned cells, not 90 completed or
+unconditionally admitted executions.
+
+| Sprint / PR | Current work | Exit requirement |
+| --- | --- | --- |
+| Progressive campaign / merged #147 | Two h300 one-thread pilots submitted: HiGHS 2231226 and Gurobi 2231228; both RUNNING in initial supplied receipts | Collect originals after terminal state; verify solution, effective options, matrix/input identity, CPU class and memory; qualify 16-thread pilots before advancing |
+| Bibliographic and data reconciliation / Draft #144 | In parallel: close-precedent comparison, asset access/rights, reader-facing reproduction detail | Full-text/metadata comparison and explicit thesis overlap; resolved source-specific access/rights or honest limitations |
+| Scientific manuscript qualification / #144 | Agricultural interpretation, selected solver scope, tables/maps/appendices, author decisions and local PDFs | Qualified source/document checks, reconciled develop ancestry, PDF inspection and explicit merge approval |
+| Publication / subsequent PR | Approved develop-to-main synchronization and Quarto/Pages publication | Separate authorized merge; final generated documents agree with frozen evidence |
+
+See the [current checkpoint](checkpoints/20261101_h300_running_editorial.md).
+Do not repeat campaign init or either consumed start; subsequent cells remain
+gated. RUNNING is not a numerical result. Historical hierarchy/10%-gap/SCIP
+plans below are retained as history, not the current campaign contract.
+
 ## Scope and baseline
 
 The accepted thesis-compatible and three-scenario results remain frozen. The new study uses nine scenarios, populations of 215, 300, 400 and 500 hubs, and direct arcs enabled/disabled. The nearest-20% interhub baseline plus explicitly audited directed connectivity repair remains the network contract. Larger populations, Benders and a definitive scalability frontier are outside this delivery cycle.

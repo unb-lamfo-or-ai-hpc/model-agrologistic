@@ -227,13 +227,44 @@ and input guide, subject to their access conditions. Compare full file
 hashes before processing. The runtime workbook, facility order, road
 materialization and experiment definition must belong to the same instance.
 
-The h215 processed workbook is model_input.xlsx under
-data/processed/policy_population_v020_osrm/warehouses_215.
-The h300, h400 and h500 inputs use warehouses_300, warehouses_400 and
-warehouses_500 under data/processed/nine_population_osrm_v1. These identify
-retained experimental inputs, rather than files distributed as GitHub source.
-A newly generated workbook should be recorded separately; changes in spreadsheet
-metadata or recalculated caches can alter its byte identity.
+The deposited input archive contains several workbook generations. For the
+road-distance instances discussed here, select the four members in
+Table D.5. The common filename model_input.xlsx does not distinguish a
+pre-routing workbook from a frozen OSRM input. In the table, P denotes
+data/processed/policy_population_v020_osrm and N denotes
+data/processed/nine_population_osrm_v1; both paths are relative to the archive
+root.
+
+| Instance | Archive member, using the prefixes above | SHA-256 prefix |
+| --- | --- | --- |
+| h215 | P/warehouses_215/model_input.xlsx | `40edb66585da` |
+| h300 | N/warehouses_300/model_input.xlsx | `7761cce77cf9` |
+| h400 | N/warehouses_400/model_input.xlsx | `c30854569977` |
+| h500 | N/warehouses_500/model_input.xlsx | `888fbff42e4f` |
+
+: Table D.5. Exact OSRM workbook members in the version 0.2.0 input archive.
+
+The 12-character prefixes help locate a record; verification requires the
+complete 64-character SHA-256 in the
+[input reproduction guide](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/docs/evidence/appendix_input_reproduction_20261028.json),
+which also records worksheet counts and ordered warehouse identities.
+
+Each workbook directory contains osrm_materialization_audit.json. Reuse it
+with the common warehouse_population_manifest.json and
+warehouse_population_order.csv under
+data/processed/warehouse_population_v020. The candidate registry is the
+separate archive member external-inputs/Warehouses_Existing_Candidate_All.xlsx;
+it supplies the selection pool, rather than replacing a processed workbook
+at execution time.
+
+The complete agrologistic-v020-inputs.zip archive has SHA-256
+`583b04afb49c4cba13c9d0aaa18131e12a18bac1da410cd801616bd0b639811f`.
+Its archive hash and each selected member hash serve different checks:
+the former identifies the package, while the latter binds a calculation to
+its effective input. These processed workbooks are archive members, rather
+than files distributed as GitHub source. A newly generated workbook should
+be recorded separately; changes in spreadsheet metadata or recalculated
+caches can alter its byte identity.
 
 Next verify existing/candidate roles, ordered CDA memberships and the 69
 canonical anchors. Reuse the recorded candidate order and OSRM materialization.
@@ -268,6 +299,13 @@ evidence. A fresh numerical reproduction instead requires newly exported
 decisions and independent residual validation. Alternative optima, solver
 versions and shared-node conditions can produce different decision vectors
 or logs even when objective quality and physical feasibility agree.
+
+Access to a deposited archive and permission to redistribute its components
+are separate questions. Project-authored source code, external facility
+records and OpenStreetMap-derived distances retain their respective terms.
+Readers should retain the accompanying source notices when obtaining or
+reusing the workbooks; the code's MIT license does not relicense every
+worksheet or upstream dataset.
 
 Traceability makes these distinctions inspectable. It does not by itself
 establish economic calibration, unrestricted data access or reproducibility

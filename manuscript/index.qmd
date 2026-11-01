@@ -150,13 +150,20 @@ assessment.
 stopping criteria differ; the rows are not matched runtime comparisons. {#tbl-closest-precedents}
 
 The computational assessment in @reis2023 is an especially relevant
-precedent: their tactical stochastic LP contains 1,987,225 variables and
-2,288,220 constraints, and compares primal simplex, dual simplex and barrier
-algorithms (Section 6.1). Its first-stage decisions concern grain purchasing
-and transport contracts. This evidence motivates distinguishing the decision
-structure of an infrastructure MILP from the numerical size of an agricultural
-LP, and comparing the scope of computational measurements alongside the
-planning question.
+precedent. Their tactical stochastic LP contains 1,987,225 variables and
+2,288,220 constraints across 243 scenarios. Section 6.1 and Table 8 compare
+barrier, dual simplex and primal simplex with CPLEX 20.1, reporting solution
+times of 84.61, 246.9 and 328.91 seconds and peak-memory figures of 2720,
+2131 and 1902, respectively, in the table's stated unit of Mb. Thus, both
+algorithm comparison and memory measurement already have an agricultural
+planning precedent. Their first-stage decisions concern grain purchasing and
+transport contracts; recourse includes spot-market purchases, processing,
+sales and physical flows. The present investment MILP asks a different
+planning question and adds explicit attention to construction, attained
+integer-solution quality and the physical interpretation of the returned
+capacity plan. Different formulations, hardware and measurement definitions
+preclude interpreting the published times or memory figures as matched
+performance baselines.
 
 The empirical contribution is the joint assessment of model structure,
 phase-specific computation, original solution certificates and agricultural

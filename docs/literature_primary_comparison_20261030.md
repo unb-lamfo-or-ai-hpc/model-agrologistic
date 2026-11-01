@@ -58,3 +58,30 @@ remaining retained records using that same schema; verify identifiers/authors/
 years without silently adding or deleting references. Keep inaccessible or
 unverified fields explicit. Final gap/highlights and claims of incremental
 contribution remain subject to this source-specific comparison.
+
+## B3 increment — 1 November 2026
+
+Reis et al. Table 8 (p.18) was checked against the original 26-page PDF,
+including a rendered page, rather than a search snippet. For the same
+243-scenario LP, the three algorithm columns report:
+
+| Algorithm | Solution time, s | Peak Memory, Mb as printed |
+| --- | ---: | ---: |
+| Barrier | 84.61 | 2720 |
+| Dual simplex | 246.9 | 2131 |
+| Primal simplex | 328.91 | 1902 |
+
+The accompanying text identifies AIMMS 4.82, CPLEX 20.1, an i7-7500 at
+2.70 GHz and 8 GB RAM. Section 3.2 and Tables 3-5 distinguish first-stage
+grain/transport contracts from second-stage spot purchases, processing,
+sales, inventories and flows. Their profit objective and fixed-recourse LP
+are not the present penalized infrastructure-investment MILP.
+
+This positively establishes prior measurement of memory as well as runtime
+and algorithm choice. The gap cannot be framed as the first resource-aware
+agricultural optimization study. The manuscript now acknowledges these
+measurements explicitly, preserving the printed memory unit without an
+unsupported MB/MiB conversion. No cross-paper speed or memory ratio is formed.
+Published iteration counts are not used to rank algorithms or validate the
+paper's results. Other access-limited sources retain their prior status;
+this increment does not close the full-text or Rosa-thesis comparison.

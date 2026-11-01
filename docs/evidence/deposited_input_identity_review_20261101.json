@@ -1,0 +1,52 @@
+{
+  "schema_version": "deposited-input-identity-review-v1",
+  "date": "2026-11-01",
+  "scope": "Read-only existing local ZIP and notices; no extraction, solver or routing query",
+  "dataset_doi": "10.5281/zenodo.22751909",
+  "archive": "agrologistic-v020-inputs.zip",
+  "bytes": 30996131,
+  "md5": "79f85dfe638df1c2dfa5cca9cf343d88",
+  "sha256": "583b04afb49c4cba13c9d0aaa18131e12a18bac1da410cd801616bd0b639811f",
+  "frozen_zenodo_file_metadata_match": true,
+  "live_download_availability_reconfirmed": false,
+  "members": [
+    {
+      "population": 215,
+      "member": "data/processed/policy_population_v020_osrm/warehouses_215/model_input.xlsx",
+      "bytes": 2889194,
+      "sha256": "40edb66585daca9cc393cab1f86bde6d4528a5f34b6afc57260cc1684396da4e",
+      "rights_notice": "Source-specific terms to be documented; no blanket MIT assignment",
+      "approved_for_publication_in_original_manifest": null
+    },
+    {
+      "population": 300,
+      "member": "data/processed/nine_population_osrm_v1/warehouses_300/model_input.xlsx",
+      "bytes": 4911854,
+      "sha256": "7761cce77cf93dcba2f617714f0117c1f2ead4de0c3f27149daceba447e0c7d1",
+      "rights_notice": "Source-specific terms to be documented; no blanket MIT assignment",
+      "approved_for_publication_in_original_manifest": null
+    },
+    {
+      "population": 400,
+      "member": "data/processed/nine_population_osrm_v1/warehouses_400/model_input.xlsx",
+      "bytes": 8061648,
+      "sha256": "c3085456997714ef5a8bdbf61e2c9a5e578c2636003947427cf58933d21ceb13",
+      "rights_notice": "Source-specific terms to be documented; no blanket MIT assignment",
+      "approved_for_publication_in_original_manifest": null
+    },
+    {
+      "population": 500,
+      "member": "data/processed/nine_population_osrm_v1/warehouses_500/model_input.xlsx",
+      "bytes": 12058511,
+      "sha256": "888fbff42e4f80817d4d5f0101049495c86c6ed4cda75f00813779dadab41515",
+      "rights_notice": "Source-specific terms to be documented; no blanket MIT assignment",
+      "approved_for_publication_in_original_manifest": null
+    }
+  ],
+  "original_manifest_status": "verified_private_review_copy",
+  "original_manifest_publication_authorized": false,
+  "rights_notice_sha256": "a80ec82ebd6b92e6d3bc16a0f320251610444cc3bfa5d0c03c4ab39cce8949b2",
+  "rights_resolution_complete": false,
+  "qualification": "Byte identity and frozen deposit metadata agree. Original curator-copy notices still withhold blanket publication approval; these checks do not resolve source-specific redistribution authority.",
+  "raw_files_uploaded": false
+}

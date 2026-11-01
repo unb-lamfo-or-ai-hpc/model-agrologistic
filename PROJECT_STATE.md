@@ -1,3 +1,24 @@
+## Active checkpoint — 1 November 2026
+
+Read [the h300/editorial checkpoint](docs/checkpoints/20261101_h300_running_editorial.md)
+and its curated evidence before resuming. PR #147 is merged into develop;
+the operator started h300 HiGHS 2231226 and Gurobi 2231228 from qualified
+source c493be8cd127c5175fc7eb111400229e64b8e3c0. Both are RUNNING in the
+latest supplied initial accounting. No terminal numerical result is known.
+Campaign init and both starts are consumed: preserve originals and never
+repeat them. The 16-thread pilots and h400/h500 remain qualification-gated;
+no automatic follow-on is admitted.
+
+PR #144 continues B3/D2 in parallel. Reis Table 8 confirms prior time and
+peak-memory measurement. Appendix D now identifies all four deposited OSRM
+workbooks by exact member and hash. Byte identity does not close source-specific
+redistribution rights; original curator-copy notices remain unresolved.
+PR #144 remains Draft. Preserve the approved question/objectives, original
+Appendix A, mathematics, maps and accepted evidence. No new article numerical
+result is introduced. Every merge requires explicit approval; NPAD commands
+remain human-only. This active record supersedes older pause/no-experiment
+statements for this approved campaign only.
+
 ## Current active revision — 31 October 2026
 
 The researcher resumed work. SCIP2228192 is terminal COMPLETED0:0; its original

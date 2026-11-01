@@ -29,13 +29,20 @@
       "doi": "10.3390/logistics7030049",
       "url": "https://www.mdpi.com/2305-6290/7/3/49",
       "access": "publisher_full_text_available_targeted_sections_reread",
-      "locators": "Sections 3.1–3.2, 4.2, 6.1 and 7; Table 8",
+      "locators": "Sections 3.1-3.2, pp.6-9; Section 4.2 and Tables 3-5, pp.10-11; Section 6.1/Table 8, p.18; Section 6.2, pp.18-20",
       "model": "Two-stage stochastic linear tactical soybean planning; first-stage grain and transport contracts, operational recourse.",
       "uncertainty": "Purchase/selling prices, foreign demand and crop failure; 243 scenarios reported.",
       "method": "AIMMS 4.82, CPLEX 20.1; primal/dual simplex and barrier comparison.",
-      "scale_quality_resources": "1,987,225 variables and 2,288,220 constraints; 2.70 GHz i7-7500/8 GB; barrier reported as 1 min 24 s. This is an LP, not the present location MILP.",
+      "scale_quality_resources": "Table 8: 243 scenarios, 1,987,225 variables, 2,288,220 constraints; barrier/dual simplex/primal simplex times 84.61/246.9/328.91 s and Peak Memory (Mb as printed) 2720/2131/1902. Section 6.1 identifies AIMMS 4.82, CPLEX 20.1, 2.70-GHz i7-7500 and 8 GB RAM. These are published LP observations, not matched MILP benchmarks.",
       "gap_implication": "Large stochastic agricultural models and algorithm/runtime comparisons already exist. No universal absence claim or cross-paper speed ratio.",
-      "pending": "Read numerical tables/units and the remaining formulation in full before a comprehensive comparative literature table."
+      "pending": "Remaining full-paper reconciliation and exact measurement-boundary comparison; do not infer absence of unextracted settings or validate the published measurements independently.",
+      "review_increment_20261101": {
+        "local_pdf_sha256": "81fe4ba9f14878e10d469b5d423aeb46d4d7d95386439e4168c0520ea30f60da",
+        "pages_in_document": 26,
+        "table_8_page_rendered_and_visually_checked": true,
+        "peak_memory_unit_preserved": "Mb",
+        "absence_claim_permitted": false
+      }
     },
     {
       "key": "gholamian2017",
