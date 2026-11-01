@@ -7,8 +7,9 @@
     "version": "0.2.0",
     "name": "agrologistic-v020-inputs.zip",
     "sha256": "583b04afb49c4cba13c9d0aaa18131e12a18bac1da410cd801616bd0b639811f",
-    "public_access_reconfirmation": "pending",
-    "original_rights_notices_reconciliation": "pending"
+    "public_access_reconfirmation": "Live anonymous Zenodo API succeeded on 2026-11-01; open record and all 12 advertised file sizes/checksums match frozen metadata. Full archive not redownloaded.",
+    "original_rights_notices_reconciliation": "pending",
+    "record_level_license_id": "mit-license"
   },
   "repository_structure": [
     {
@@ -355,6 +356,12 @@
       "destination": "GitHub/Zenodo metadata: PBF/profile/image/SIF hashes, OSRM version/algorithm",
       "state": "retained_in_materialization_audits",
       "qualification": "Container images, PBF and transient caches are not required downloads for solving the frozen matrix instance."
+    },
+    {
+      "kind": "reviewed_manuscript_map_assets",
+      "destination": "GitHub permanent figure assets/build recipe; final Pages documents",
+      "state": "reviewed_local_outputs_exist; clean_checkout_staging_or_generation_wiring_pending",
+      "qualification": "Do not equate local figure QA with a complete publication build. Stage only approved scientific figure assets, not temporary article PDFs."
     }
   ],
   "release_rules": {

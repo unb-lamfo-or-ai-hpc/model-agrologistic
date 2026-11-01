@@ -391,7 +391,7 @@ def test_extended_scip_censoring_cannot_be_erased(manuscript, field, value):
 
 
 def test_highs_gap_percentage_cannot_be_confused_with_fraction(manuscript):
-    path = manuscript / "scip_results.qmd"
+    path = manuscript / "solver_results.qmd"
     path.write_text(
         path.read_text(encoding="utf-8").replace("0.000196", "0.00000196"),
         encoding="utf-8",
@@ -408,3 +408,25 @@ def test_quarto_automatic_reference_labels_cannot_be_duplicated(manuscript):
     )
     with pytest.raises(ValueError, match="automatic cross-reference labels"):
         CHECKER.check()
+
+
+@pytest.mark.parametrize("relative", [
+    "index.qmd", "solver_results.qmd", "supplement/appendix_c.qmd",
+    "supplement/appendix_e_case_tables.qmd",
+])
+@pytest.mark.parametrize("name", ["SCIP", "CBC"])
+def test_excluded_solver_history_cannot_return_to_publication(manuscript, relative, name):
+    path = manuscript / relative
+    path.write_text(path.read_text(encoding="utf-8") + "\n" + name, encoding="utf-8")
+    with pytest.raises(ValueError, match="Reader audience"):
+        CHECKER.check()
+
+
+@pytest.mark.parametrize("solver", ["gurobi", "highs"])
+def test_reader_solver_subset_preserves_original_certificates(manuscript, solver):
+    path = manuscript / "solver_comparison_evidence.json"
+    record = json.loads(path.read_text(encoding="utf-8"))
+    next(row for row in record["observations"] if row["solver"] == solver)["objective"] = 0
+    path.write_text(json.dumps(record), encoding="utf-8")
+    with pytest.raises(ValueError, match="original certificates"):
+        CHECKER.check_reader_solver_comparison()

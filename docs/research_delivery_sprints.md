@@ -2,23 +2,30 @@
 
 ## Active delivery sequence — 1 November 2026
 
-This checkpoint supersedes historical experimental profiles below for the
-current scalar comparison. The approved paired Pyomo campaign uses seed 42,
-Gurobi/HiGHS, 1/2/4/8/16 threads, three repetitions and an 8 h native limit
-with a 1% scalar-gap target. It has 90 planned cells, not 90 completed or
-unconditionally admitted executions.
+This sequence incorporates the researcher's five revised directions. The
+historical experimental plans below remain history, not current settings.
 
-| Sprint / PR | Current work | Exit requirement |
+| Workstream / sprint | Deliverable | Exit criterion / integration |
 | --- | --- | --- |
-| Progressive campaign / merged #147 | Two h300 one-thread pilots submitted: HiGHS 2231226 and Gurobi 2231228; both RUNNING in initial supplied receipts | Collect originals after terminal state; verify solution, effective options, matrix/input identity, CPU class and memory; qualify 16-thread pilots before advancing |
-| Bibliographic and data reconciliation / Draft #144 | In parallel: close-precedent comparison, asset access/rights, reader-facing reproduction detail | Full-text/metadata comparison and explicit thesis overlap; resolved source-specific access/rights or honest limitations |
-| Scientific manuscript qualification / #144 | Agricultural interpretation, selected solver scope, tables/maps/appendices, author decisions and local PDFs | Qualified source/document checks, reconciled develop ancestry, PDF inspection and explicit merge approval |
-| Publication / subsequent PR | Approved develop-to-main synchronization and Quarto/Pages publication | Separate authorized merge; final generated documents agree with frozen evidence |
+| B3 — contribution against Related Work | Source-specific comparison of location, investment, uncertainty, computational methods and measurement, including Rosa thesis | Claims supported against the literature as a whole; full-text limitations explicit; approved question/objectives preserved |
+| D2 + data-deposition sprint | GitHub/Zenodo asset map, exact input/matrix/graph/vector identities, dictionary and source-specific notices | Four original OSRM matrices accessible through the existing deposit; CSV copies prepared; selected-arc/vector inventory and next-version terms/links reviewed |
+| Scientific reader revision / #144 | Gurobi/HiGHS pipelines and parallelism, effective parameters/seeds, quality/physical interpretation and dimensions in article/B-E | No SCIP/CBC history in compiled reader text or editable article package; original A/evidence retained; coherent units and cohort boundaries |
+| Document qualification / #144 | Source/data checks, local Quarto PDFs/TeX, figures/tables/links, citation and dimensional review | Exact-source local checks and visual PDF review; unresolved scientific author decisions addressed; qualified merge approval into develop |
+| Publication / separate develop-to-main PR | Quarto Pages article, appendices, PDF downloads and editable TeX sources | Separate approved merge to main, hash-bound publication receipt, successful manual deployment, public download/hash verification |
 
-See the [current checkpoint](checkpoints/20261101_h300_running_editorial.md).
-Do not repeat campaign init or either consumed start; subsequent cells remain
-gated. RUNNING is not a numerical result. Historical hierarchy/10%-gap/SCIP
-plans below are retained as history, not the current campaign contract.
+The input/deposition work runs in parallel with bibliography and experiments;
+it need not wait for all 90 cells. The current paired Pyomo design crosses
+two solvers, h300/h400/h500, five thread ceilings and three repetitions,
+with seed 42, 8 h native time and a 1% scalar-gap target. It is planned work,
+not 90 admitted/completed results. HiGHS 2231226 and Gurobi 2231228 are RUNNING
+at 01:02:48/01:02:44 in the latest supplied accounting. Preserve claims;
+do not repeat init/start. Collect terminal evidence before admitting further
+pilots or populations. No automatic follow-on.
+
+Read the [reader/data/dimensions checkpoint](checkpoints/20261101_reader_scope_units_data.md)
+and [data distribution plan](research_data_distribution_20261101.md).
+Final Pages publication requires a distinct main PR after the authorized
+develop integration; this planning change authorizes neither merge.
 
 ## Scope and baseline
 

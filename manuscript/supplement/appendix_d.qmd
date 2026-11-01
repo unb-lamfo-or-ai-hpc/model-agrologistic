@@ -51,8 +51,8 @@ inventory is zero where no initial-stock record is supplied.
 
 | Quantity | Meaning | Effective unit |
 | --- | --- | --- |
-| Supply and domestic demand | Grain available or required in a product-period record | t/period |
-| Export limit | Upper bound on optional arrivals at an export destination | t/period |
+| Supply and domestic demand | Grain available or required within a product-period record | t within the period |
+| Export limit | Upper bound on optional arrivals within a period | t within the period |
 | Initial inventory and static capacity | Grain held at a warehouse | t |
 | Reception and shipping rates | Grain that can be handled each operating day | t/day |
 | Freight coefficient | Cost multiplied by grain quantity and directed road distance | BRL/(t km) |
@@ -63,9 +63,10 @@ inventory is zero where no initial-stock record is supplied.
 
 Static capacity limits inventory, whereas reception and shipping limit flows
 within a period. The experiments use 30 operating days per period. Candidate
-and expansion investments add daily reception and shipping capacity at a rate
-of 0.20 per investment-tonne. Bulk-handling conversion uses a factor of 1.0
-and adds handling capacity without adding static storage.
+and expansion investments add 0.20 t/day of reception and shipping capacity
+per investment-tonne, corresponding to a coupling coefficient of
+0.20 day$^{-1}$. Bulk-handling conversion uses 1.0 day$^{-1}$ on its declared
+investment-tonne basis and adds handling capacity without adding static storage.
 
 Two actual gold-workbook records illustrate these distinctions. Existing
 facility CDA 35.0287.0002-6 has static capacity 890 t, reception 5 t/day and
@@ -310,3 +311,97 @@ worksheet or upstream dataset.
 Traceability makes these distinctions inspectable. It does not by itself
 establish economic calibration, unrestricted data access or reproducibility
 under arbitrary computing conditions.
+
+## D8 Dimensional interpretation of the calculation and its outputs
+
+A planning period is one step of the input time grid. The experiments use
+60 such steps and 30 operating days per step. Supply, demand and flow entries
+are quantities of grain within a step, not daily rates. End stock and static
+capacity are quantities held at an instant. Reception and shipping inputs,
+by contrast, are rates in t/day. Multiplying those rates by operating days
+produces the period-tonne limits used in the flow inequalities.
+
+For example, an initial reception rate of 5 t/day permits 150 t in a
+30-day period. Installing 10 t of capacity with a handling gain of
+0.20 day$^{-1}$ adds 2 t/day, hence 60 t of period reception. The same
+conversion is applied to shipping. Bulk-handling investment changes these
+handling rates but does not add static storage. A change from 30 to another
+number of operating days would change the experiment and must be recorded.
+
+Holding tariffs are quoted per tonne per modeled period. The objective uses
+the charge for one period of stock at each time index; the one-period
+duration is implicit in its coefficient. Thus, holding 2 t for each of two
+periods at 45 BRL/(t period) costs 180 BRL. Multiplying again by 30 operating
+days would apply an extra, unsupported time factor. The stock-exceedance
+penalty follows the same per-period assessment, whereas shortage and reception
+overflow are quantities of grain within their periods.
+
+| Reported quantity | Aggregation and unit | Interpretation |
+| --- | --- | --- |
+| Added candidate or expansion capacity | First-stage investment tonnes | Installed storage; charged once across scenarios |
+| Unmet demand | Probability-weighted sum over products, destinations and periods, t | Expected unmet horizon quantity |
+| Stock exceedance | Probability-weighted stock excess summed across periods, t period | Accumulated exposure; not installed capacity |
+| Reception overflow | Probability-weighted excess arrivals summed across periods, t | Period flow; a daily equivalent divides each record by its operating days |
+| Financial subtotal and artificial penalties | Each reconstructed in BRL, then reported separately | Their sum is the scalar objective; physical tonnes are not added to monetary costs |
+| Relative objective gap | Dimensionless fraction; multiplied by 100 when shown as % | A statement about the penalized objective, not a service percentage |
+
+: Table D.6. Dimensions and aggregation scopes of the main outputs.
+
+Four tonnes of stock excess in each of two periods represent 8 t period;
+four tonnes of reception overflow in each period represent 8 t. These
+quantities must not be added and interpreted as 16 t of required installed
+capacity. The historical generic emergency-capacity output field therefore
+does not define a combined physical investment requirement.
+
+Scenario weights average alternative operating trajectories; they do not
+multiply warehouse capacity or create nine successive physical shipments.
+Domestic service is the ratio of probability-weighted served tonnes to
+probability-weighted demand tonnes over the horizon. It is not generally
+the unweighted mean of scenario service percentages. Likewise, adding all
+transport legs counts transshipped grain more than once; endpoint deliveries
+and individual movement families have separate meanings (Appendix E).
+
+OSRM's service returns metres and seconds. Materialization divides road
+length by 1000 once to populate Distancia_km; Duracao_s remains in seconds.
+The MILP uses distance for freight and does not impose transit-time constraints
+from the duration column. A freight rate in BRL/(t km), multiplied by kilometres
+and transported tonnes, gives BRL. The road length follows the fastest route
+under the frozen driving profile, rather than necessarily the shortest route
+by distance, as specified in the
+[OSRM Table API](https://project-osrm.org/docs/v5.24.0/api/#table-service).
+
+Timing tables distinguish seconds from minutes and native from application
+elapsed time. Memory in GiB is bytes divided by $2^{30}$; a decimal GB is
+$10^9$ bytes. Solver-managed memory, sampled process-tree RSS, Slurm MaxRSS
+and requested memory retain their separate scopes.
+
+## D9 Locating source code, distance matrices and solution data
+
+The
+[research-data catalog](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/43acc42ffce0350cbce6fdc4b0632529a503547d/data/manifests/research_data_distribution_v1.json)
+connects repository paths, deposited archive members and prepared distance
+tables to full checksums. Its distribution and access fields distinguish
+an existing file from a proposed release location.
+
+GitHub contains the canonical gold schema, source manifests, mathematical and
+solver code, small reviewed investment CSVs and the metadata needed to identify
+an experiment. The full processed workbooks and directed distance matrices
+belong to the versioned data archive. Table D.5 identifies the original
+workbook members; the catalog also identifies the corresponding seven-column
+distance tables, with endpoint IDs, movement family, kilometres, seconds,
+provider and fallback reason. The complete original worksheets remain the
+reference even when a CSV copy is used for inspection.
+
+Three objects must be distinguished when reproducing a plan: the full road
+distance table, the product-specific selected admissible arcs, and the
+positive flows returned by an optimizer. The distance table precedes route
+screening. A zero or absent exported flow does not determine admissibility.
+A reproduction therefore requires the recorded route policy and selected
+graph identity in addition to the workbook and warehouse order.
+
+Full solution vectors, flow-distance companions, inventory records and original
+validation outputs are organized separately from small article tables.
+They retain configuration, product, period and scenario identifiers and the
+source used for aggregation. Access and release status are recorded per
+asset in the catalog; a prepared local file is not presented as an already
+published Zenodo download.

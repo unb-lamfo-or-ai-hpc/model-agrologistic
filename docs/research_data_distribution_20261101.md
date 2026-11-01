@@ -77,6 +77,16 @@ export. The routing container/PBF need not be rerun to solve the frozen input.
 6. Rebuild tables and figures from those accepted outputs, rather than querying
    today's road network or substituting a fresh candidate sample.
 
+## Current deposit access
+
+An anonymous live API read of Zenodo record 22751909 succeeded on 1 November
+2026. The record reports open access and all 12 advertised file sizes/checksums
+match the frozen metadata, including the 30,996,131-byte input ZIP. The four
+original OSRM matrices are inside that package's processed workbooks; they
+are not absent merely because processed paths are ignored by Git.
+The new CSV.gz copies are local preparation, not additional published assets.
+The full input archive was not redownloaded in this check.
+
 ## Deposition sprint and acceptance
 
 The original local curator-copy notices and frozen published-record metadata

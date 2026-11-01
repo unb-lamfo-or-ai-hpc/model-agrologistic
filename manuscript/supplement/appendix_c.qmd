@@ -37,8 +37,8 @@ which permits direct origin-to-destination movements.
 
 Topology W excludes direct OD movements; topology D permits them alongside
 warehouse-mediated paths. Permission does not require positive direct flow.
-The accepted evidence comprises nine W observations across h215–h500 and two
-additional D observations at h215. The latter form a separate topology comparison,
+The native Gurobi cohort comprises nine W observations across h215–h500 and
+two additional D observations at h215. The latter form a separate topology comparison,
 rather than additional points in the warehouse-only scaling sequence.
 
 ## C2 Shared investment and scenario-dependent operation
@@ -96,9 +96,10 @@ Fixed investment charges $F$ are in BRL and quantity-dependent charges $c$
 are in BRL per investment-tonne. Each transport coefficient combines a
 distance $\ell$ in km and a freight rate $f$ in BRL/(t km), with a receiving
 charge $\tau$ in BRL/t where applicable; $\alpha$ multiplies interwarehouse
-freight. The holding charge $h$ is in BRL/(t period). The three $\lambda$
-coefficients price their respective shortage, stock-exceedance and
-reception-overflow quantities at each period. The scenario weights satisfy
+freight. A holding tariff is quoted in BRL/(t period); the coefficient
+$h$ charges one modeled period of stock, so $hI$ is that period's BRL cost.
+The three $\lambda$ coefficients price their respective shortage,
+stock-exceedance and reception-overflow quantities at each period. The scenario weights satisfy
 $\sum_s\pi_s=1$. Stock and period throughput consequently enter different
 physical checks even when both are measured in tonnes.
 
@@ -119,19 +120,18 @@ days. Static and reception exceedances have separate slacks. Shipping,
 conservation and route eligibility remain hard constraints. For a closed
 candidate, the emergency slacks must also be zero.
 
-## C3 Native Gurobi and SCIP implementations
+## C3 Native Gurobi implementation
 
 Gurobi uses a common extensive-form builder for DET and STO. Its cost construction
 separates six investment components, four transport components, inventory
 holding and three artificial penalties: fourteen components in total.
 The scalar model uses one optimization call under the stated time allowance.
 
-The SCIP backend uses PySCIPOpt to create its own variables, constraints,
-indicator relationships and scalar optimization call. It shares algebraic
-helpers for investment, capacity and costs with the Gurobi implementation;
-calling these helpers does not create a Gurobi environment. Both native
-implementations express the closed-candidate implication using indicators,
-without an arbitrary finite upper bound on an active candidate's slack.
+The native builder expresses closed-candidate implications using indicators.
+An active candidate's redundant slack has no arbitrary imposed upper bound.
+Section C4 explains the bounded representative used for the common Pyomo
+formulation and why the representation must be declared when interpreting
+native and Pyomo results.
 
 Table C.2 links the main formulation to the principal software components.
 The software reading index in Section C7 identifies the implementations.
@@ -157,7 +157,7 @@ below illustrates this separation without requiring a source-code lookup.
 
 The Pyomo implementation
 and its bound derivation
-provide a common scalar formulation for Gurobi, SCIP and HiGHS.
+provide a common scalar formulation for Gurobi and HiGHS.
 It uses the same effective data, investment expressions and physical balances.
 The principal representational difference concerns candidate emergency slacks.
 The native model allows an open candidate's slack to be unbounded above.
@@ -219,10 +219,8 @@ not promise that two solver interfaces will explore the same search tree.
 
 The implementation checks the proof's finite, nonnegative data conditions and
 records the derived bounds' identity and scope. Gurobi and HiGHS use Pyomo's
-APPSI interfaces. The SCIP transfer adapter
-reads the same Pyomo linear expressions and creates the native SCIP variables,
-objective and constraints through PySCIPOpt. It does not rebuild the problem
-with a separate scientific formulation.
+APPSI interfaces. Each receives the reviewed linear expressions, variable
+domains and bounds from this common formulation.
 
 To compare inputs to these adapters, the
 ordered algebra record
@@ -242,7 +240,8 @@ an LP relaxation supplies a bound; branch-and-bound explores remaining
 integer decisions. Parallelism in one part does not imply parallel execution
 of the whole calculation.
 
-HiGHS 1.15.1 introduces a parallel MIP search. Setting `parallel="on"`
+The HiGHS 1.15 series provides an initial parallel MIP implementation,
+included in the 1.15.1 release used here. Setting `parallel="on"`
 allows several workers to explore the tree, including cuts and heuristics
 away from the root. Symmetry detection, clique-table queries and analytic-centre
 calculations also offer parallel work. However, parallel simplex is disabled
@@ -270,6 +269,49 @@ initial incumbent for Gurobi and HiGHS nor guarantees identical parallel
 trajectories. Repeated runs under that fixed seed quantify observed execution
 variation and do not represent independent random problem instances.
 
+### C4.2 A calculation from workbook to validated result
+
+Both Pyomo pipelines follow the same scientific sequence.
+
+1. Read the identified workbook, warehouse order and scenario definition.
+   Convert the source quantities to the effective arrays described in
+   Appendix D and select the product-specific admissible directed arcs.
+2. Build the shared investment block and scenario-dependent balances,
+   capacities and costs. Derive the bounded candidate-slack representation.
+3. Transfer the Pyomo expressions to the native engine through APPSI:
+   gurobipy for Gurobi and highspy for HiGHS. Record requested options and,
+   where retained, native values and the ordered common-algebra fingerprint.
+4. Optimize in a fresh process. Preserve the incumbent, bound, native status
+   and solver runtime even when the target is not attained.
+5. Export decisions, reconstruct costs and check original-unit residuals.
+   Interpret financial cost, artificial penalties, service and capacity
+   exceedances separately.
+
+Pyomo supplies algebra and options; Gurobi still selects its own presolve,
+relaxation methods, cuts and heuristics. In the completed Pyomo observation,
+Method, NodeMethod, Presolve and Cuts were -1 (automatic), Heuristics was
+0.05 and ConcurrentMIP was 1. TimeLimit, MIPGap, Threads, Seed,
+FeasibilityTol and IntFeasTol were explicitly controlled. This is an
+automatic-strategy profile with declared overrides, rather than an untouched
+default configuration. ConcurrentMIP counts independent MIP searches; its
+value of one does not restrict the engine to one worker thread.
+The [native parameter reference](https://docs.gurobi.com/projects/optimizer/en/current/reference/parameters.html)
+defines these controls.
+
+For HiGHS, the thread ceiling and parallel-search option must both be
+reported, as explained in C4.1. Parallelism within a solve differs from
+running two independent Slurm jobs at once. The ongoing campaign allocates
+one node per calculation; its worker affinity, solver thread ceiling and
+allocation CPU count are recorded separately. Neither use of Pyomo nor
+seed 42 makes parallel execution or returned investment vectors identical.
+
+Data preparation, common-model construction, matrix identification, solver
+transfer, native optimization, extraction and independent validation have
+different timing boundaries. Some recorded regions enclose other regions;
+their values must not be added to reconstruct an end-to-end time. The
+microsecond data-read field at an already-loaded model boundary is not the
+time required to read and prepare a large workbook.
+
 ## C5 Checking a returned solution
 
 Independent validation reconstructs the fourteen cost components and evaluates
@@ -296,8 +338,10 @@ proof that nominal capacity and full service can be achieved without slack.
 Consider a teaching example with one product, one operating day, one origin,
 one candidate warehouse and one domestic destination. Two scenarios have
 probability $1/2$. A specified plan opens the warehouse and installs 5 t of
-static capacity at BRL4/t. At that capacity, its reception and shipping rates
-are each 15 t/day. Initial stock and fixed opening cost are zero. Table C.3
+static capacity at BRL4/t. For this teaching example only, a
+handling coefficient of 3 day$^{-1}$ gives reception and shipping rates
+of 15 t/day. The experimental coefficient is specified separately in
+Appendix D. Initial stock and fixed opening cost are zero. Table C.3
 gives the plan's flows and the corresponding end stocks.
 
 | Quantity (t within the period, except end stock in t) | Scenario A | Scenario B |
@@ -361,9 +405,9 @@ Each numerical result remains associated with its original executed source.
 | Task | Repository files |
 | --- | --- |
 | Displayed equations and effective inputs | [formulation.qmd](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/manuscript/formulation.qmd); [mathematical_contract.py](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/src/logic/mathematical_contract.py) |
-| Native Gurobi / native SCIP | [optimization_gurobipy_stochastic.py](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/src/logic/optimization_gurobipy_stochastic.py); [optimization_scip.py](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/src/logic/optimization_scip.py) |
+| Native Gurobi | [optimization_gurobipy_stochastic.py](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/src/logic/optimization_gurobipy_stochastic.py) |
 | Common Pyomo algebra and bounds | [optimization_pyomo.py](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/src/logic/optimization_pyomo.py); [pyomo_bounds.py](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/src/logic/pyomo_bounds.py) |
-| Ordered algebra / SCIP transfer | [pyomo_linear_matrix.py](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/src/logic/pyomo_linear_matrix.py); [pyomo_scip_adapter.py](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/src/logic/pyomo_scip_adapter.py) |
+| Ordered common linear algebra | [pyomo_linear_matrix.py](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/src/logic/pyomo_linear_matrix.py) |
 | Independent residual and cost validation | [solution_validation.py](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/src/logic/solution_validation.py) |
 | GAMS entry points and common equations | [model_det.gms](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/manuscript/supplement/appendix_c/model_det.gms); [model_sto.gms](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/manuscript/supplement/appendix_c/model_sto.gms); [model_common.inc](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/manuscript/supplement/appendix_c/model_common.inc) |
 | Data-only GAMS export and instructions | [export_scalar_gams_data.py](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/scripts/export_scalar_gams_data.py); [README.md](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/manuscript/supplement/appendix_c/README.md) |

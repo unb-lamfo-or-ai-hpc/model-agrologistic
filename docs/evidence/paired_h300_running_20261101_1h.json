@@ -1,0 +1,39 @@
+{
+  "schema_version": "paired-h300-running-accounting-snapshot-v1",
+  "date": "2026-11-01",
+  "source": "operator_message",
+  "prior_receipt": "docs/evidence/paired_pyomo_h300_first_pair_20261101.json",
+  "observations": [
+    {
+      "solver": "highs",
+      "job_id": "2231226",
+      "state": "RUNNING",
+      "elapsed_seconds": 3768,
+      "worker_elapsed_seconds": 3765,
+      "allocation_cpus": 64,
+      "worker_step_cpus": 16,
+      "interim_exit_code": "0:0",
+      "terminal": false,
+      "objective": null,
+      "gap": null,
+      "max_rss": null
+    },
+    {
+      "solver": "gurobi",
+      "job_id": "2231228",
+      "state": "RUNNING",
+      "elapsed_seconds": 3764,
+      "worker_elapsed_seconds": 3759,
+      "allocation_cpus": 64,
+      "worker_step_cpus": 16,
+      "interim_exit_code": "0:0",
+      "terminal": false,
+      "objective": null,
+      "gap": null,
+      "max_rss": null
+    }
+  ],
+  "qualification": "Supplied accounting only, not live monitoring or a native phase/quality result.",
+  "repeat_init_or_start": false,
+  "automatic_follow_on_allowed": false
+}

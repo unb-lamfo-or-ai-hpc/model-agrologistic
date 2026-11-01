@@ -124,7 +124,11 @@ that would make the physical network resilient.
 Decision support also extends beyond optimization. @essien2018 address
 sustainable multi-stakeholder grain storage, while @filippi2022 examine the
 collective-action arrangements of rural warehouse condominiums. These studies
-locate implementation within governance and stakeholder coordination. For a
+locate implementation within governance and stakeholder coordination.
+In the goal-programming formulation of @essien2018, the number of sites is
+prescribed and stakeholder transport targets are normalized in the objective.
+That design emphasis differs from the continuous capacity sizing and shared
+investment with scenario-dependent operation examined here. For a
 public planning tool, candidate opening is therefore interpreted as an option
 for appraisal, rather than a decision that can be executed without land,
 financing, operating agreements or coordination among producers.
@@ -164,6 +168,14 @@ integer-solution quality and the physical interpretation of the returned
 capacity plan. Different formulations, hardware and measurement definitions
 preclude interpreting the published times or memory figures as matched
 performance baselines.
+
+The contribution is assessed against this body of agricultural planning and
+computational literature, including the mathematical foundation in
+@rosa2026thesis. The literature supplies several distinct baselines: location
+and stakeholder objectives, stochastic tactical operation, infrastructure
+design, and computational solution strategies. The evidence must distinguish
+our contribution along these dimensions rather than rely on a single
+predecessor or on model size alone.
 
 The empirical contribution is the joint assessment of model structure,
 phase-specific computation, original solution certificates and agricultural
@@ -323,7 +335,7 @@ levels.
 
 | Computational layer | Published precedent | Present implementation and evidence boundary |
 |:--|:--|:--|
-| Agricultural MILP solution strategy | @shastri2011 | Native Gurobi and SCIP extensive forms; decomposition is not implemented in the evaluated scalar pipeline |
+| Agricultural MILP solution strategy | @shastri2011 | Direct extensive-form solution; decomposition is not implemented in the evaluated scalar pipeline |
 | Distributed agricultural simulation | @knapen2025 | Slurm experiment scheduling, not a distributed scenario solver |
 | Spatial data preparation | @zhao2012 | Versioned OSRM materialization and pair-cache reuse; no matched speedup benchmark |
 | Shared-memory profiling | @silva2025pascal | Separate workflow timings; descriptive single-observation thread contrast, not a controlled scaling estimate |
@@ -429,8 +441,8 @@ values or inconsistent bounds are not assigned a finite accepted gap.
 Native solver conventions are retained separately.
 
 The additional Pyomo implementation separates the algebraic model from the
-optimizer. One scalar formulation is transferred to Gurobi through APPSI and
-gurobipy, to SCIP through a linear PySCIPOpt adapter, or to HiGHS through APPSI.
+optimizer. The same scalar formulation is transferred through Pyomo's APPSI
+interfaces to Gurobi, using gurobipy, or to HiGHS, using highspy.
 Public analytical and Excel-to-validation controls check the adapters against
 the same physical constraints and cost reconstruction. These tests establish
 implementation behavior; they do not constitute additional large-instance
@@ -462,6 +474,26 @@ distinct from the prospective parallel-search campaign. Appendix C explains
 these settings and their interpretation using the
 [versioned parallelism documentation](https://github.com/ERGO-Code/HiGHS/blob/v1.15.1/docs/src/parallel.md)
 and [release notes](https://github.com/ERGO-Code/HiGHS/releases/tag/v1.15.1).
+
+### Common-Pyomo comparison campaign
+
+The ongoing campaign uses the same Pyomo builder for Gurobi and HiGHS, the
+frozen h300, h400 and h500 W STO inputs, and the same nine scenarios and
+scalar coefficients. Its design crosses two solvers, three populations,
+five thread ceilings (1, 2, 4, 8 and 16) and three repetitions: 90 planned
+calculations. Each has an eight-hour native allowance, a 1% gap target and
+seed 42. HiGHS parallel tree search is enabled in this profile. The two
+one-thread h300 pilots have been submitted; progression to the remaining
+pilots and larger populations depends on validated outputs, resource
+observations and operational closure.
+
+A fresh process and common algebra control important implementation
+differences, but do not force identical presolved matrices or search paths.
+The comparison retains objective and bound, attained gap, phase timings,
+memory scope and physical diagnostics for every returned outcome. Repetitions
+with the same seed measure observed execution variability; they are not
+independent draws of the mathematical problem or of solver seeds. Historical
+observations are not counted as repetitions of this new protocol.
 
 ## HPC experimental environment
 
@@ -542,14 +574,16 @@ reconstruction does not establish facility use or recover original flow geometry
 The results proceed from problem dimensions and resource requirements to
 solution quality and agricultural interpretation. The warehouse-only sequence
 and the separate h215 topology comparison retain their original scopes.
-The solver comparison distinguishes accepted Gurobi/HiGHS solutions, normally
-returned time-limited SCIP observations and a separate interrupted attempt.
+The solver comparison concerns independently validated Gurobi and HiGHS
+solutions and their attained quality. The historical native implementation,
+completed Pyomo observations and ongoing repeated campaign have distinct
+experimental scopes.
 
 {{< include scalar_results.qmd >}}
 
 {{< include wd_results.qmd >}}
 
-{{< include scip_results.qmd >}}
+{{< include solver_results.qmd >}}
 
 # Discussion
 
@@ -667,10 +701,10 @@ h215 W DET/STO, five h300 W thread observations, h400/h500 W STO, and the
 separate h215 D DET/STO pair. Together, they support empirical
 computational characterization and an applied interpretation of the returned
 plans, including substantial investment and residual permitted shortages.
-A separate Pyomo/APPSI HiGHS h215 STO solution also passes independent
-validation and the gap target. These twelve validated observations do not
-establish exact optimality, full service, a universal solver frontier or a
-causal thread speedup.
+Separate Pyomo/APPSI Gurobi and HiGHS h215 STO observations also pass
+independent validation and the gap target. These observations do not establish
+exact optimality, full service, a universal solver frontier or a causal thread
+speedup.
 
 At h500, the retained gap is 0.207432%, native runtime is 7654.77 seconds
 and sampled application peak RSS is 111.78 GiB. Domestic service is 91.636%
@@ -687,16 +721,14 @@ current geographic exports. The fixed penalties express the modeled trade-off,
 not observed damages or a demonstrated service policy. Detailed source
 identities and uncertainty about unobserved peaks constrain interpretation.
 
-The scalar SCIP STO h215 W observations reached their four-hour native and
-subsequent eight-hour common-Pyomo limits without usable incumbents. Its original negative outcome and operational
-closure are retained separately from accepted feasible observations.
-The HiGHS observation demonstrates a successful open-source solution to the
-same h215 physical planning problem, using the proved bounded-slack
-representation. Its 0.000196% gap and 426.70-minute native runtime describe
-one returned calculation. The interrupted extended SCIP attempt has no
-terminal numerical result and cannot be pooled with normally returned solves. A fair comparison must
-identify the formulation, interface, data, stopping rule and resource scopes;
-different attained gaps do not represent equal computational tasks.
+The completed Pyomo observations establish that both Gurobi and HiGHS can
+return independently accepted h215 W STO plans under their declared profiles.
+Their attained gaps differ: 0.740159% for Gurobi and 0.000196% for HiGHS.
+Their native runtimes, 31.54 and 426.70 minutes, therefore cannot be interpreted
+as time to an identical solution quality. The repeated common-Pyomo campaign
+addresses a more controlled comparison across populations and thread counts.
+Its submitted pilots are still in progress and contribute no numerical result
+to the present tables.
 
 Future work can examine repeated measurements under controlled resource
 conditions, decomposition methods and sensitivity to the artificial

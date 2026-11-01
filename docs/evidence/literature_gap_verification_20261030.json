@@ -19,10 +19,10 @@
       "locators": "Sections 2.1.1–2.2, pp.127–129; Tables 1–4, pp.129–130",
       "model": "Integrated grain-storage decision support with location, transport, forecasting and goal programming.",
       "uncertainty": "Forecasting is included; this reading does not establish an equivalent two-stage investment/recourse design.",
-      "method": "Weighted goal formulation, prescribed number of selected sites; GAMS 24.8.3 and associated tools.",
+      "method": "Prescribed site count and normalized stakeholder transport goals; Eqs. (1)/(22), Sections 2.1-2.2. Numerical resource fields are not classified as absent from an abstract.",
       "scale_quality_resources": "Ghana case and network alternatives; report only directly extracted quantities, not inferred metric omissions.",
       "gap_implication": "Grain-storage network location and integrated decision support are established; acknowledge this precedent.",
-      "pending": "Compare investment/recourse structure and exact reported computational metrics against current extensive-form scope."
+      "pending": "Continue comparison of decision/quality/resource definitions across the complete Related Work corpus; retain source-specific limits."
     },
     {
       "key": "reis2023",
@@ -114,5 +114,6 @@
     "template_note": "Research-article requirements must not be confused with the shorter application-note limit. No unverified mandatory template migration is proposed."
   },
   "comparison_increment": "docs/literature_primary_comparison_20261030.md",
-  "manuscript_increment": "Closest-precedent paragraph now identifies the verified tactical-LP computational comparison and distinguishes it from location/capacity MILP."
+  "manuscript_increment": "Closest-precedent paragraph now identifies the verified tactical-LP computational comparison and distinguishes it from location/capacity MILP.",
+  "contribution_comparison_scope": "Whole Related Work corpus, including Rosa thesis, with source-specific location, capacity, uncertainty, computational-method and measurement baselines."
 }

@@ -118,14 +118,8 @@ def check_scalar_scip_revision() -> None:
     ):
         raise ValueError("Prospective multisolver scope differs")
     article = (MANUSCRIPT / "index.qmd").read_text(encoding="utf-8")
-    section = (MANUSCRIPT / "scip_results.qmd").read_text(encoding="utf-8")
-    if (
-        "{{< include scip_results.qmd >}}" not in article
-        or "zero solutions" not in section
-        or "14,414.81" not in section
-        or "has no result at this cutoff" in article
-    ):
-        raise ValueError("Scalar SCIP manuscript scope differs")
+    if "{{< include solver_results.qmd >}}" not in article:
+        raise ValueError("Reader solver comparison include differs")
 
 
 def check_highs_and_censored_scip_revision() -> None:
@@ -186,14 +180,39 @@ def check_highs_and_censored_scip_revision() -> None:
         or scip["cancellation_trigger_established"] is not False
     ):
         raise ValueError("Censored SCIP result cannot be promoted")
-    section = (MANUSCRIPT / "scip_results.qmd").read_text(encoding="utf-8")
+    section = (MANUSCRIPT / "solver_results.qmd").read_text(encoding="utf-8")
     row = (
         f"| Pyomo/APPSI HiGHS | {highs['objective'] / 1e12:.6f} | "
         f"{100 * highs['common_gap']:.6f} | "
         f"{highs['timings']['solver_reported_runtime_seconds'] / 60:.2f} |"
     )
-    if row not in section or "rather than another" not in section:
+    if row not in section:
         raise ValueError("HiGHS or censored SCIP manuscript values differ")
+
+
+def check_reader_solver_comparison() -> None:
+    """Bind the reader subset to preserved originals without distributing history."""
+    original = json.loads(
+        (MANUSCRIPT / "pyomo_solver_campaign.json").read_text(encoding="utf-8")
+    )
+    reader = json.loads(
+        (MANUSCRIPT / "solver_comparison_evidence.json").read_text(encoding="utf-8")
+    )
+    expected = [
+        row for row in original["observations"] if row["solver"] in {"gurobi", "highs"}
+    ]
+    if reader["observations"] != expected or len(expected) != 2:
+        raise ValueError("Reader Gurobi/HiGHS original certificates differ")
+    section = (MANUSCRIPT / "solver_results.qmd").read_text(encoding="utf-8")
+    for row in expected:
+        name = "Gurobi" if row["solver"] == "gurobi" else "HiGHS"
+        displayed = (
+            f"| Pyomo/APPSI {name} | {row['objective'] / 1e12:.6f} | "
+            f"{100 * row['common_gap']:.6f} | "
+            f"{row['timings']['solver_reported_runtime_seconds'] / 60:.2f} |"
+        )
+        if displayed not in section:
+            raise ValueError("Reader solver objective/gap/runtime values differ")
 
 
 def check_public_review_approval() -> None:
@@ -276,6 +295,7 @@ def check_reader_audience(article: str, supplement: str) -> None:
     text = article + "\n" + supplement
     forbidden = (
         r"(?i)coauthor|co-author",
+        r"(?i)\b(?:SCIP|CBC|PySCIPOpt|SoPlex)\b",
         r"(?i)working revision|S6-B|S5 is closed|merge approval",
         r"(?i)million-valued",
         r"(?i)(?:penalt|emergency-weight)[^.\n]{0,100}(?:1000000|1,000,000)",
@@ -474,6 +494,7 @@ def check(*, rendered: bool = False, publication: bool = False) -> None:
     check_scalar_revision()
     check_scalar_scip_revision()
     check_highs_and_censored_scip_revision()
+    check_reader_solver_comparison()
     if rendered:
         html = (MANUSCRIPT / "_manuscript/index.html").read_text(encoding="utf-8")
         for extension in ("html", "pdf"):

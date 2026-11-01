@@ -35,8 +35,8 @@ origin-destination movements, and the accepted Pyomo solutions. The h300 runs
 with 1, 2, 4, 8 and 16 solver threads have byte-identical original warehouse,
 flow, inventory and shortage exports. Their common investment map and flow
 matrices are therefore represented by the single-thread vector; their runtime
-observations remain distinct. The eight-hour Pyomo/SCIP observation returned no
-usable incumbent and consequently supplies no investment map or flow matrix.
+observations remain distinct. The accepted Pyomo Gurobi and HiGHS solutions
+retain their own exported vectors, attained gaps and investment summaries.
 
 ## E2 From exported flows to sparse matrices
 

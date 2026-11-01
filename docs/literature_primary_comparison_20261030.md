@@ -85,3 +85,30 @@ unsupported MB/MiB conversion. No cross-paper speed or memory ratio is formed.
 Published iteration counts are not used to rank algorithms or validate the
 paper's results. Other access-limited sources retain their prior status;
 this increment does not close the full-text or Rosa-thesis comparison.
+
+## Contribution baseline and Essien extraction — 1 November 2026
+
+The comparison baseline is the whole Related Work corpus, including Rosa's
+thesis. Thesis overlap is one necessary provenance comparison, not the sole
+boundary of the article's contribution. C1/C2 require evidence against location,
+investment, uncertainty and computational-method precedents together.
+
+Essien et al., Sections 2.1-2.2, Eqs.(1)/(22), pp.127-129: prescribe site count
+and minimize normalized stakeholder transport deviations. Ghana application,
+four stakeholder groups; Matlab R2016b, GAMS 24.8.3 and ArcGIS; Google Distance
+Matrix inputs. This is a positive decision-structure comparison, not a claim
+that an unextracted runtime or memory field is absent. The article now
+distinguishes this scope from continuous capacity sizing with shared investment.
+Primary institutional text:
+https://ugspace.ug.edu.gh/server/api/core/bitstreams/ba3cff00-501e-4c12-aba8-011fe3e7ccb0/content
+
+| Contribution test | Literature baseline | Additional evidence needed here |
+| --- | --- | --- |
+| Computational characterization | Agricultural MILP methods, large tactical LP and published resource measurements | Common formulation, per-phase clocks, quality/bounds, hardware and resource scopes; retain unequal-gap limitations |
+| Agricultural interpretation | Location, stakeholder trade-offs, network investment and uncertainty precedents, including Rosa | Source-bound installed capacities, separate stock/throughput/slack units, service and flow-distance summaries |
+| Comparison of implementations | Native solver algorithms and modeling interfaces | Separate historical/native and common-Pyomo cohorts; paired matrix/input bindings and repeated controlled profiles |
+| Complementary research method | Human-directed scientific modeling and verification | Inspectable proposal/adoption/check chain; no causal AI-productivity claim |
+
+The active h300 jobs provide no new outcome yet. The 90 planned calculations
+do not become statistical evidence merely through submission. Full-text access
+limits, complete Rosa comparison and unresolved author decisions remain open.

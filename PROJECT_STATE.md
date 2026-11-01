@@ -1,3 +1,27 @@
+## Active reader/data/dimensions mandate — 1 November 2026
+
+Read docs/checkpoints/20261101_reader_scope_units_data.md. Compare the
+contribution against the whole Related Work corpus, including Rosa thesis.
+The publication text and editable package focus on Gurobi/HiGHS; preserve
+all excluded solver history and originals as GitHub technical evidence.
+Map source, full OSRM matrices, selected graph and solution vectors separately
+between GitHub metadata/small summaries and Zenodo full data. Four original
+distance worksheets and lossless local CSV.gz exports are verified; the live
+Zenodo API lists the matching open v0.2.0 inputs. Source-specific terms remain
+a separate review. Do not claim the new CSV exports are already published.
+
+Check dimensions, implicit unit-period charges, daily-to-period handling,
+scenario weighting, tonne-period stock exposure, flow tonnes and memory/time
+units. Keep the approved equations/inputs/question/objectives and original
+Appendix A. PR144 merges only into develop after approval; a separate main
+PR must provide Quarto Pages PDF and editable TeX downloads after its own
+approval. Do not refresh historical Pages approval or deploy now.
+
+HiGHS 2231226 and Gurobi 2231228 are RUNNING at 01:02:48/01:02:44 in the latest
+operator accounting. No numerical result is known. Preserve claims and never
+repeat init/start; later cells remain qualification-gated. NPAD commands are
+human-only and every merge requires explicit approval.
+
 ## Active checkpoint — 1 November 2026
 
 Read [the h300/editorial checkpoint](docs/checkpoints/20261101_h300_running_editorial.md)
