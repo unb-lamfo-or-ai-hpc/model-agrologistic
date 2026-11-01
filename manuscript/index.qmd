@@ -1,36 +1,35 @@
 ---
 title: "Computational Scalability of Deterministic and Two-Stage Stochastic MILP Models for Grain-Storage Network Design and Hub Location"
-date: 2026-10-29
+date: 2026-10-30
 abstract: >-
-  Large grain-storage models can be expensive to construct and solve, while solver
-  completion alone does not establish useful planning performance. This study
-  examines model dimensions, resource use and validated solution quality for
-  deterministic and two-stage stochastic mixed-integer linear programs for
-  grain-storage network design. A scalar objective combines investment,
-  expected operating costs and three artificial penalties. Nine Gurobi
-  warehouse-only observations cover a deterministic/stochastic pair at 215
-  facilities, five stochastic thread configurations at 300, and stochastic
-  instances at 400 and 500. All meet a 1% gap criterion. At 500 facilities,
-  the stochastic matrix has 63.4 million variables; the gap is 0.2074%,
-  native runtime is 127.58 minutes and sampled application RSS is 111.78 GiB.
-  Artificial penalties contribute 94.074% of the objective despite extensive
-  investment and incomplete domestic service. Two direct-enabled h215
-  observations reduce penalized costs while worsening service. A separate
-  Pyomo/APPSI HiGHS h215 observation passes independent validation with a
-  0.000196% gap in 426.70 minutes. A four-hour native SCIP observation returns
-  no incumbent; an extended attempt is externally interrupted without a
-  terminal numerical result. Formulation, interface and attained-quality
-  differences preclude causal solver-speed comparisons. The findings connect
-  attainable computational scale to the agricultural meaning of the returned
-  plans. A human-supervised AI workflow documents scientific decisions
-  and verification.
+  Designing grain-storage networks requires decisions about facility location,
+  storage capacity and grain handling before uncertain supply and demand are
+  known. The resulting mixed-integer linear programs can contain millions of
+  operating decisions, making computational requirements central to their use
+  in agricultural planning. This study evaluates deterministic and two-stage
+  stochastic models through model dimensions, construction and optimization
+  time, memory use and independently checked solution quality. Warehouse-only
+  instances contain 215 to 500 facilities, with nine supply–demand scenarios
+  in the stochastic model. The stochastic formulation grows from 14.1 to
+  63.4 million variables across this range. All nine warehouse-only Gurobi
+  observations satisfy the prescribed 1% relative-gap criterion; the
+  500-facility instance reaches a 0.21% gap in approximately 128 minutes of
+  native optimization. The returned stochastic plans allocate capacity
+  investment across the admitted candidate sites, indicating distributed
+  capacity sizing within the available network. Substantial handling and
+  storage exceedances and unmet demand remain in the penalized solutions.
+  The assessment therefore connects attainable computational scale to the
+  physical meaning of the investment and operating decisions. Evaluating
+  solution quality together with service, stock and throughput reveals
+  which conclusions the optimized plans support for grain-storage planning.
 keywords:
   - grain storage
-  - facility location
+  - network design
+  - hub location
+  - mixed-integer linear programming
   - two-stage stochastic programming
   - computational scalability
   - high-performance computing
-  - reproducibility
 ---
 
 # Introduction
@@ -125,7 +124,11 @@ that would make the physical network resilient.
 Decision support also extends beyond optimization. @essien2018 address
 sustainable multi-stakeholder grain storage, while @filippi2022 examine the
 collective-action arrangements of rural warehouse condominiums. These studies
-locate implementation within governance and stakeholder coordination. For a
+locate implementation within governance and stakeholder coordination.
+In the goal-programming formulation of @essien2018, the number of sites is
+prescribed and stakeholder transport targets are normalized in the objective.
+That design emphasis differs from the continuous capacity sizing and shared
+investment with scenario-dependent operation examined here. For a
 public planning tool, candidate opening is therefore interpreted as an option
 for appraisal, rather than a decision that can be executed without land,
 financing, operating agreements or coordination among producers.
@@ -144,11 +147,35 @@ assessment.
 | @essien2018 | Multi-stakeholder grain-storage location and decision support | How do returned investment and service outcomes relate to a certified scalar objective? |
 | @gholamian2017 | Integrated wheat-network planning, including silo location and distribution | What construction, solution and memory requirements accompany explicitly defined extensive-form instances? |
 | @hosseini2020 | Wheat-network design/redesign with sustainability and resilience concerns | What do the present cost and slack variables support, without adding unmodeled resilience or sustainability outcomes? |
-| @reis2023 | Two-stage tactical soybean purchasing and contracted transport | How does shared infrastructure investment differ from tactical contracting under uncertainty? |
+| @reis2023 | Two-stage tactical soybean LP with purchasing and transport contracts; 243 scenarios | How does shared infrastructure investment differ from tactical contracting under uncertainty? |
 | @shastri2011 | Decomposition and distributed solution of an agricultural MILP | What attainable quality and resource use are observed for the present direct extensive-form solution? |
 
 : Closest agricultural and computational precedents. Models, data, hardware and
 stopping criteria differ; the rows are not matched runtime comparisons. {#tbl-closest-precedents}
+
+The computational assessment in @reis2023 is an especially relevant
+precedent. Their tactical stochastic LP contains 1,987,225 variables and
+2,288,220 constraints across 243 scenarios. Section 6.1 and Table 8 compare
+barrier, dual simplex and primal simplex with CPLEX 20.1, reporting solution
+times of 84.61, 246.9 and 328.91 seconds and peak-memory figures of 2720,
+2131 and 1902, respectively, in the table's stated unit of Mb. Thus, both
+algorithm comparison and memory measurement already have an agricultural
+planning precedent. Their first-stage decisions concern grain purchasing and
+transport contracts; recourse includes spot-market purchases, processing,
+sales and physical flows. The present investment MILP asks a different
+planning question and adds explicit attention to construction, attained
+integer-solution quality and the physical interpretation of the returned
+capacity plan. Different formulations, hardware and measurement definitions
+preclude interpreting the published times or memory figures as matched
+performance baselines.
+
+The contribution is assessed against this body of agricultural planning and
+computational literature, including the mathematical foundation in
+@rosa2026thesis. The literature supplies several distinct baselines: location
+and stakeholder objectives, stochastic tactical operation, infrastructure
+design, and computational solution strategies. The evidence must distinguish
+our contribution along these dimensions rather than rely on a single
+predecessor or on model size alone.
 
 The empirical contribution is the joint assessment of model structure,
 phase-specific computation, original solution certificates and agricultural
@@ -179,8 +206,11 @@ It is a substantive difference in the feasible set, not simply a change of indic
 
 Terminal siting in @morais2023 connects location, capacity choices and
 access to railways or waterways. @milanez2026 integrate soybean export
-network design with hub functions and economies of scale. These studies
-motivate reporting storage and transport decisions jointly. Nevertheless,
+network design with hub functions and economies of scale. Their
+BSEC-SLACK variant permits penalized seaport-capacity overflow, and Table 2
+reports CPU time and CPLEX gaps. Penalized capacity relief and computational
+quality reporting therefore have direct precedents. These studies motivate
+reporting storage and transport decisions jointly. Nevertheless,
 the present OSRM road matrix does not implement a multimodal assignment model.
 A port destination is an export outlet, not an explicit maritime voyage; a
 road segment near a railway does not create a rail arc.
@@ -219,7 +249,7 @@ processing, emissions, losses and employment. @mogale2020 include risk and
 post-harvest losses in a green food supply-chain design. @vazquez2021 connect
 supply-chain design to environmental and social impacts; @mogale2023 examine
 social sustainability. Those dimensions are relevant to public planning but
-are not current outputs of Model Agrologistic. We report neither avoided
+are outside the scope of the present formulation. We report neither avoided
 emissions nor jobs created from a reduction in transport distance alone.
 
 The cost evidence available to the present study is strongest at the
@@ -308,7 +338,7 @@ levels.
 
 | Computational layer | Published precedent | Present implementation and evidence boundary |
 |:--|:--|:--|
-| Agricultural MILP solution strategy | @shastri2011 | Native Gurobi and SCIP extensive forms; decomposition is not implemented in the evaluated scalar pipeline |
+| Agricultural MILP solution strategy | @shastri2011 | Direct extensive-form solution; decomposition is not implemented in the evaluated scalar pipeline |
 | Distributed agricultural simulation | @knapen2025 | Slurm experiment scheduling, not a distributed scenario solver |
 | Spatial data preparation | @zhao2012 | Versioned OSRM materialization and pair-cache reuse; no matched speedup benchmark |
 | Shared-memory profiling | @silva2025pascal | Separate workflow timings; descriptive single-observation thread contrast, not a controlled scaling estimate |
@@ -413,14 +443,61 @@ incumbent $z$ and bound $b\le z$. Both zero imply gap zero; missing/nonfinite
 values or inconsistent bounds are not assigned a finite accepted gap.
 Native solver conventions are retained separately.
 
-The additional solver-neutral Pyomo implementation supports HiGHS and CBC on
-public analytical and Excel-to-validation controls. Candidate slack indicators
-use a disclosed bounded representative formulation: nonnegative-cost trimming
-preserves the physical/investment projection and optimal scalar value, while
-excluding redundant oversized slack assignments. Bounds follow cumulative stock
-conservation and hard shipping capacity, including transshipment circulation.
-Its independently validated h215 HiGHS result is reported separately from
-software tests and the Gurobi scaling sequence.
+The additional Pyomo implementation separates the algebraic model from the
+optimizer. The same scalar formulation is transferred through Pyomo's APPSI
+interfaces to Gurobi, using gurobipy, or to HiGHS, using highspy.
+Public analytical and Excel-to-validation controls check the adapters against
+the same physical constraints and cost reconstruction. These tests establish
+implementation behavior; they do not constitute additional large-instance
+performance observations.
+
+Candidate slack indicators use a disclosed bounded representative formulation.
+With nonnegative slack costs, trimming redundant excess preserves the
+physical/investment projection and optimal scalar value. The derived bounds
+follow cumulative stock conservation and hard shipping capacity, including
+transshipment circulation (Appendix C). This equivalence does not imply
+identical native relaxations or search paths. The independently validated
+h215 HiGHS result is reported separately from software qualification and the
+Gurobi scaling sequence.
+
+The modeling interface does not select a common search strategy or initial
+solution for the solvers. Algorithmic defaults are distinguished from explicit
+time, gap, thread, seed and numerical-tolerance settings in each experiment
+record. In particular, the documented seed value 42 controls solver-specific
+pseudorandom choices; it does not supply the same starting incumbent across
+different optimizers.
+
+Parallelism is version specific. In HiGHS 1.15.1, the thread setting limits
+available workers, while `parallel="on"` enables parallel branch-and-bound
+exploration. It does not make every phase parallel: the release disables
+parallel simplex for the LP relaxations within MIP. Consequently, root-LP
+work can limit gains from additional threads. The retained h215 HiGHS
+observation used four threads with parallel tree search disabled; it remains
+distinct from the prospective parallel-search campaign. Appendix C explains
+these settings and their interpretation using the
+[versioned parallelism documentation](https://github.com/ERGO-Code/HiGHS/blob/v1.15.1/docs/src/parallel.md)
+and [release notes](https://github.com/ERGO-Code/HiGHS/releases/tag/v1.15.1).
+
+### Common-Pyomo comparison campaign
+
+The ongoing campaign uses the same Pyomo builder for Gurobi and HiGHS, the
+frozen h300, h400 and h500 W STO inputs, and the same nine scenarios and
+scalar coefficients. Its design crosses two solvers, three populations,
+five thread ceilings (1, 2, 4, 8 and 16) and three repetitions: 90 planned
+calculations. Each has an eight-hour native allowance, a 1% gap target and
+seed 42. HiGHS parallel tree search is enabled in this profile. The Gurobi
+one-thread h300 pilot has returned an independently validated solution;
+the corresponding HiGHS collection is not yet terminal. Progression to the
+remaining pilots and larger populations depends on both solvers' validated
+outcomes, resource observations and operational closure.
+
+A fresh process and common algebra control important implementation
+differences, but do not force identical presolved matrices or search paths.
+The comparison retains objective and bound, attained gap, phase timings,
+memory scope and physical diagnostics for every returned outcome. Repetitions
+with the same seed measure observed execution variability; they are not
+independent draws of the mathematical problem or of solver seeds. Historical
+observations are not counted as repetitions of this new protocol.
 
 ## HPC experimental environment
 
@@ -473,8 +550,12 @@ requests routes or changes the experimental distance cache.
 
 The Dash and static renderers share scientific figure definitions, filters,
 node styles and legends. The static Python renderer uses no browser, GUI,
-Dash server or Kaleido. Coordinates use a declared longitude/latitude display,
-not a metric projection. Existing/candidate availability, candidate activation,
+Dash server or Kaleido. Official IBGE 2023 national and federative-unit vectors
+provide a neutral geographic background. The source SIRGAS 2000 geometries are
+transformed to WGS84 after a topology-preserving simplification; both renderers
+apply the same Albers equal-area display and fixed national extent. Original
+facility coordinates are retained. The cached background is independent of
+facility selection and the road-distance data. Existing/candidate availability, candidate activation,
 positive capacity investment and use by transport/inventory are distinct.
 Product, period and scenario filters are explicit; aggregation across scenarios
 uses the original probabilities.
@@ -485,9 +566,10 @@ locations; positive-flow route geometry is unavailable and is not replaced by
 straight segments. The software accepts separately source-bound OSRM geometry
 for positive routes when it becomes available. Transport incidence and
 quantities remain analyzable from the original vectors without inventing a
-physical road path. The preserved h500 map still shows input availability
-only, despite the newly accepted numerical result; optimized h500 geographic
-layers await a separate source-bound export.
+physical road path. The h500 investment map is reconstructed from its original
+accepted decision CSV and source-bound facility coordinates. Its original
+input-availability map remains separately retained. This investment-only
+reconstruction does not establish facility use or recover original flow geometry.
 
 {{< include human_ai_methodology.qmd >}}
 
@@ -496,14 +578,16 @@ layers await a separate source-bound export.
 The results proceed from problem dimensions and resource requirements to
 solution quality and agricultural interpretation. The warehouse-only sequence
 and the separate h215 topology comparison retain their original scopes.
-The open-source comparison distinguishes a validated HiGHS solution, a
-completed time-limited SCIP observation and an interrupted extended attempt.
+The solver comparison concerns independently validated Gurobi and HiGHS
+solutions and their attained quality. The historical native implementation,
+completed Pyomo observations and ongoing repeated campaign have distinct
+experimental scopes.
 
 {{< include scalar_results.qmd >}}
 
 {{< include wd_results.qmd >}}
 
-{{< include scip_results.qmd >}}
+{{< include solver_results.qmd >}}
 
 # Discussion
 
@@ -621,10 +705,10 @@ h215 W DET/STO, five h300 W thread observations, h400/h500 W STO, and the
 separate h215 D DET/STO pair. Together, they support empirical
 computational characterization and an applied interpretation of the returned
 plans, including substantial investment and residual permitted shortages.
-A separate Pyomo/APPSI HiGHS h215 STO solution also passes independent
-validation and the gap target. These twelve validated observations do not
-establish exact optimality, full service, a universal solver frontier or a
-causal thread speedup.
+Separate Pyomo/APPSI Gurobi and HiGHS h215 STO observations also pass
+independent validation and the gap target. These observations do not establish
+exact optimality, full service, a universal solver frontier or a causal thread
+speedup.
 
 At h500, the retained gap is 0.207432%, native runtime is 7654.77 seconds
 and sampled application peak RSS is 111.78 GiB. Domestic service is 91.636%
@@ -641,16 +725,16 @@ current geographic exports. The fixed penalties express the modeled trade-off,
 not observed damages or a demonstrated service policy. Detailed source
 identities and uncertainty about unobserved peaks constrain interpretation.
 
-The separate scalar SCIP STO h215 W observation reached its four-hour native
-ceiling without an incumbent. Its original negative outcome and operational
-closure are retained separately from accepted feasible observations.
-The HiGHS observation demonstrates a successful open-source solution to the
-same h215 physical planning problem, using the proved bounded-slack
-representation. Its 0.000196% gap and 426.70-minute native runtime describe
-one returned calculation. The interrupted extended SCIP attempt has no
-terminal numerical result and cannot be pooled with normally returned solves. A fair comparison must
-identify the formulation, interface, data, stopping rule and resource scopes;
-different attained gaps do not represent equal computational tasks.
+The completed Pyomo observations establish that both Gurobi and HiGHS can
+return independently accepted h215 W STO plans under their declared profiles.
+Their attained gaps differ: 0.740159% for Gurobi and 0.000196% for HiGHS.
+Their native runtimes, 31.54 and 426.70 minutes, therefore cannot be interpreted
+as time to an identical solution quality. The repeated common-Pyomo campaign
+addresses a more controlled comparison across populations and thread counts.
+Its first Gurobi h300 pilot is reported separately: the accepted solution
+has a 0.004105% gap and required 48.23 minutes of native optimization.
+The corresponding HiGHS result remains unavailable at this reporting cutoff;
+no paired runtime ratio or completed repeated comparison is inferred.
 
 Future work can examine repeated measurements under controlled resource
 conditions, decomposition methods and sensitivity to the artificial
@@ -697,7 +781,7 @@ file-level notices and redistribution conditions.
 During preparation, the authors used Gurobot, Gemini and GPT/ChatGPT systems,
 including ChatGPT Codex, for technical discussion, software development,
 language refinement and visualization. Historical records name Gemini 3.1 Pro
-and Codex models 5.6 Sol and 6.0 Astra where documented; this does not attribute
+and ChatGPT Codex with models 6.1 Sol and 6.0 Astra where documented; this does not attribute
 all work to a verified model/version chronology. The methodological section
 and Appendix B distinguish retained evidence from retrospective accounts.
 The human authors reviewed and edited the content and retain full responsibility

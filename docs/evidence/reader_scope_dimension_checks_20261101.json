@@ -1,0 +1,96 @@
+{
+  "schema_version": "reader-scope-dimension-checks-v1",
+  "date": "2026-11-01",
+  "base_commit": "43acc42ffce0350cbce6fdc4b0632529a503547d",
+  "scope": "Reader text, package allowlist, input identities and original-unit source review; no large optimization or NPAD access",
+  "checks": {
+    "ruff": "passed",
+    "manuscript_integrity": {
+      "accepted": true,
+      "cited_references": 33
+    },
+    "input_source_audit": {
+      "cells": 254,
+      "pinned_github_file_links": 38,
+      "freight_states": 27,
+      "warehouses": 215
+    },
+    "selected_pytest": {
+      "passed": 85,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 23.12
+    },
+    "osrm_csv_preparation": {
+      "populations": [
+        215,
+        300,
+        400,
+        500
+      ],
+      "rows": [
+        63289,
+        113269,
+        190569,
+        287869
+      ],
+      "original_columns": 7,
+      "all_rows_round_trip_verified": true
+    },
+    "quarto_html": {
+      "article_render_exit": 0,
+      "supplement_render_exit": 0,
+      "excluded_history_mentions_in_text": 0,
+      "unresolved_citation_markers": false,
+      "visual_acceptance": false,
+      "warnings": [
+        "Supplement map PNGs missing from temporary checkout; reviewed assets exist outside source tree and must be staged/generated for clean publication build",
+        "External polyfill fetch unavailable in sandbox"
+      ]
+    },
+    "final_package_dependency_rerun": {
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.3,
+      "qualification": "After narrowing figure inclusion to actual TeX dependencies; unused historical figure excluded."
+    },
+    "changed_python_sources_matched_to_locally_tested_contents": true
+  },
+  "dimension_review": {
+    "unchanged_equations_and_numerical_arrays": true,
+    "reviewed": [
+      "tonnes within a period versus t/day input rates",
+      "operating-day handling conversion and day^-1 investment gains",
+      "unit-period holding/stock-exceedance charges",
+      "expected t-period exposure versus t of overflow/shortage",
+      "ratio-of-weighted-totals service metric",
+      "OSRM metres to km, seconds and fastest-route meaning",
+      "dimensionless gap fraction versus percent",
+      "bytes/GiB/decimal GB and timing scopes"
+    ],
+    "source_paths": [
+      "src/logic/optimization_gurobipy_stochastic.py",
+      "src/logic/experiment_runner.py",
+      "src/logic/artur_adapter.py",
+      "src/logic/policy_osrm.py"
+    ],
+    "not_certified": [
+      "Economic calibration",
+      "Complete mathematical theorem verification",
+      "Native solver runtime qualification",
+      "Final visual PDF/Pages publication"
+    ]
+  },
+  "qualification_history": {
+    "initial_guard_test_found_overescaped_regex": true,
+    "resolved_and_negative_tests_passed": true,
+    "licensed_native_tests_not_part_of_final_selected_scope": true,
+    "qualification_of_native_solvers_not_claimed": true
+  },
+  "original_appendix_a_preserved": true,
+  "raw_packages_preserved": true,
+  "new_dataset_release": false,
+  "merge_or_deployment": false
+}

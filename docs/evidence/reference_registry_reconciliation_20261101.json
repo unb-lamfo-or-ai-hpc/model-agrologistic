@@ -1,0 +1,727 @@
+{
+  "schema_version": "reference-registry-reconciliation-v2",
+  "date": "2026-11-01",
+  "scope": "Bibliographic title/identifier/date reconciliation and targeted primary-source reading",
+  "retained_records": 38,
+  "doi_records": 35,
+  "crossref_records_retrieved": 32,
+  "new_or_deleted_bibliography_records": 0,
+  "whole_corpus_full_text_review_complete": false,
+  "records": [
+    {
+      "key": "rosa2025",
+      "type": "article",
+      "bibliography": "references.bib",
+      "title": "Mathematical models for the grain warehouse location problem: a systematic literature review",
+      "doi": "10.1590/1806-9649-2025v32e4925",
+      "year": "2025",
+      "metadata_status": "registry_metadata_retrieved",
+      "registry_url": "https://api.crossref.org/works/10.1590%2F1806-9649-2025v32e4925",
+      "registry_doi": "10.1590/1806-9649-2025v32e4925",
+      "registry_title": "Mathematical models for the grain warehouse location problem: a systematic literature review",
+      "registry_years": {
+        "published": 2025,
+        "published-online": 2025,
+        "issued": 2025
+      },
+      "normalized_title_similarity": 1.0,
+      "retained_year_in_registry_dates": true,
+      "author_order_fully_reconciled_this_pass": false
+    },
+    {
+      "key": "reis2023",
+      "type": "article",
+      "bibliography": "references.bib",
+      "title": "A Two-Stage Stochastic Linear Programming Model for Tactical Planning in the Soybean Supply Chain",
+      "doi": "10.3390/logistics7030049",
+      "year": "2023",
+      "metadata_status": "registry_metadata_retrieved",
+      "registry_url": "https://api.crossref.org/works/10.3390%2Flogistics7030049",
+      "registry_doi": "10.3390/logistics7030049",
+      "registry_title": "A Two-Stage Stochastic Linear Programming Model for Tactical Planning in the Soybean Supply Chain",
+      "registry_years": {
+        "published": 2023,
+        "published-online": 2023,
+        "issued": 2023
+      },
+      "normalized_title_similarity": 1.0,
+      "retained_year_in_registry_dates": true,
+      "author_order_fully_reconciled_this_pass": false
+    },
+    {
+      "key": "foulds2005",
+      "type": "article",
+      "bibliography": "references.bib",
+      "title": "Dynamic network flow models of sustainable grain silo location",
+      "doi": "10.1504/IJOR.2005.007434",
+      "year": "2005",
+      "metadata_status": "registry_metadata_retrieved",
+      "registry_url": "https://api.crossref.org/works/10.1504%2FIJOR.2005.007434",
+      "registry_doi": "10.1504/ijor.2005.007434",
+      "registry_title": "Dynamic network flow models of sustainable grain silo location",
+      "registry_years": {
+        "published": 2005,
+        "published-print": 2005,
+        "issued": 2005
+      },
+      "normalized_title_similarity": 1.0,
+      "retained_year_in_registry_dates": true,
+      "author_order_fully_reconciled_this_pass": false
+    },
+    {
+      "key": "dubke2011",
+      "type": "article",
+      "bibliography": "references.bib",
+      "title": "Location model of specialized terminals for soybean exports in {Brazil}",
+      "doi": "10.1590/S0101-74382011000100003",
+      "year": "2011",
+      "metadata_status": "registry_metadata_retrieved",
+      "registry_url": "https://api.crossref.org/works/10.1590%2FS0101-74382011000100003",
+      "registry_doi": "10.1590/s0101-74382011000100003",
+      "registry_title": "Location model of specialized terminals for soybe an exports in Brazil",
+      "registry_years": {
+        "published": 2011,
+        "published-print": 2011,
+        "issued": 2011
+      },
+      "normalized_title_similarity": 1.0,
+      "retained_year_in_registry_dates": true,
+      "author_order_fully_reconciled_this_pass": false
+    },
+    {
+      "key": "mardaneh2021",
+      "type": "article",
+      "bibliography": "references.bib",
+      "title": "A decision support system for grain harvesting, storage, and distribution logistics",
+      "doi": "10.1016/j.knosys.2021.107037",
+      "year": "2021",
+      "metadata_status": "registry_metadata_retrieved",
+      "registry_url": "https://api.crossref.org/works/10.1016%2Fj.knosys.2021.107037",
+      "registry_doi": "10.1016/j.knosys.2021.107037",
+      "registry_title": "A decision support system for grain harvesting, storage, and distribution logistics",
+      "registry_years": {
+        "published": 2021,
+        "published-print": 2021,
+        "issued": 2021
+      },
+      "normalized_title_similarity": 1.0,
+      "retained_year_in_registry_dates": true,
+      "author_order_fully_reconciled_this_pass": false
+    },
+    {
+      "key": "steiner2017",
+      "type": "article",
+      "bibliography": "references.bib",
+      "title": "A multi-objective genetic algorithm based approach for location of grain silos in {Paraná State of Brazil}",
+      "doi": "10.1016/j.cie.2017.07.019",
+      "year": "2017",
+      "metadata_status": "registry_metadata_retrieved",
+      "registry_url": "https://api.crossref.org/works/10.1016%2Fj.cie.2017.07.019",
+      "registry_doi": "10.1016/j.cie.2017.07.019",
+      "registry_title": "A multi-objective genetic algorithm based approach for location of grain silos in Paraná State of Brazil",
+      "registry_years": {
+        "published": 2017,
+        "published-print": 2017,
+        "issued": 2017
+      },
+      "normalized_title_similarity": 1.0,
+      "retained_year_in_registry_dates": true,
+      "author_order_fully_reconciled_this_pass": false
+    },
+    {
+      "key": "maiyar2019",
+      "type": "article",
+      "bibliography": "references.bib",
+      "title": "Modelling and analysis of intermodal food grain transportation under hub disruption towards sustainability",
+      "doi": "10.1016/j.ijpe.2018.07.021",
+      "year": "2019",
+      "metadata_status": "registry_metadata_retrieved",
+      "registry_url": "https://api.crossref.org/works/10.1016%2Fj.ijpe.2018.07.021",
+      "registry_doi": "10.1016/j.ijpe.2018.07.021",
+      "registry_title": "Modelling and analysis of intermodal food grain transportation under hub disruption towards sustainability",
+      "registry_years": {
+        "published": 2019,
+        "published-print": 2019,
+        "issued": 2019
+      },
+      "normalized_title_similarity": 1.0,
+      "retained_year_in_registry_dates": true,
+      "author_order_fully_reconciled_this_pass": false
+    },
+    {
+      "key": "mogale2020",
+      "type": "article",
+      "bibliography": "references.bib",
+      "title": "Green food supply chain design considering risk and post-harvest losses: a case study",
+      "doi": "10.1007/s10479-020-03664-y",
+      "year": "2020",
+      "metadata_status": "registry_metadata_retrieved",
+      "registry_url": "https://api.crossref.org/works/10.1007%2Fs10479-020-03664-y",
+      "registry_doi": "10.1007/s10479-020-03664-y",
+      "registry_title": "Green food supply chain design considering risk and post-harvest losses: a case study",
+      "registry_years": {
+        "published": 2020,
+        "published-print": 2020,
+        "published-online": 2020,
+        "issued": 2020
+      },
+      "normalized_title_similarity": 1.0,
+      "retained_year_in_registry_dates": true,
+      "author_order_fully_reconciled_this_pass": false
+    },
+    {
+      "key": "mogale2023",
+      "type": "article",
+      "bibliography": "references.bib",
+      "title": "Designing a food supply chain for enhanced social sustainability in developing countries",
+      "doi": "10.1080/00207543.2022.2078746",
+      "year": "2023",
+      "metadata_status": "registry_metadata_retrieved",
+      "registry_url": "https://api.crossref.org/works/10.1080%2F00207543.2022.2078746",
+      "registry_doi": "10.1080/00207543.2022.2078746",
+      "registry_title": "Designing a food supply chain for enhanced social sustainability in developing countries",
+      "registry_years": {
+        "published": 2022,
+        "published-print": 2023,
+        "published-online": 2022,
+        "issued": 2022
+      },
+      "normalized_title_similarity": 1.0,
+      "retained_year_in_registry_dates": true,
+      "author_order_fully_reconciled_this_pass": false
+    },
+    {
+      "key": "milanez2026",
+      "type": "article",
+      "bibliography": "references.bib",
+      "title": "Optimizing the Efficiency of The Soybean Exportation: Impact of Economies of Scale in Location and Network Design",
+      "doi": "10.15728/bbr.2024.1837.en",
+      "year": "2026",
+      "metadata_status": "publisher_full_text_identity_verified",
+      "registry_url": "https://api.crossref.org/works/10.15728%2Fbbr.2024.1837.en",
+      "primary_url": "https://www.scielo.br/j/bbr/a/BB8SXxvqdLYrmLc9LNHHxNv/?format=pdf&lang=en",
+      "identity_locator": "p.1: title, four authors, 2026, volume23, e20241837, DOI",
+      "targeted_full_text_sections": [
+        "Section3, pp.10-13",
+        "Table2, p.13"
+      ],
+      "whole_full_text_review_complete": false
+    },
+    {
+      "key": "granillo2019",
+      "type": "article",
+      "bibliography": "references.bib",
+      "title": "Hybrid model to design a distribution network in contract farming",
+      "doi": "10.15446/dyna.v86n208.72056",
+      "year": "2019",
+      "metadata_status": "registry_metadata_retrieved",
+      "registry_url": "https://api.crossref.org/works/10.15446%2Fdyna.v86n208.72056",
+      "registry_doi": "10.15446/dyna.v86n208.72056",
+      "registry_title": "Hybrid model to design a distribution network in contract farming",
+      "registry_years": {
+        "published": 2019,
+        "published-online": 2019,
+        "issued": 2019
+      },
+      "normalized_title_similarity": 1.0,
+      "retained_year_in_registry_dates": true,
+      "author_order_fully_reconciled_this_pass": false
+    },
+    {
+      "key": "morais2023",
+      "type": "article",
+      "bibliography": "references.bib",
+      "title": "A Sustainable Location Model of Transshipment Terminals Applied to the Expansion Strategies of the Soybean Intermodal Transport Network in the State of {Mato Grosso, Brazil}",
+      "doi": "10.3390/su15021063",
+      "year": "2023",
+      "metadata_status": "registry_metadata_retrieved",
+      "registry_url": "https://api.crossref.org/works/10.3390%2Fsu15021063",
+      "registry_doi": "10.3390/su15021063",
+      "registry_title": "A Sustainable Location Model of Transshipment Terminals Applied to the Expansion Strategies of the Soybean Intermodal Transport Network in the State of Mato Grosso, Brazil",
+      "registry_years": {
+        "published": 2023,
+        "published-online": 2023,
+        "issued": 2023
+      },
+      "normalized_title_similarity": 1.0,
+      "retained_year_in_registry_dates": true,
+      "author_order_fully_reconciled_this_pass": false
+    },
+    {
+      "key": "mendoza2021",
+      "type": "incollection",
+      "bibliography": "references.bib",
+      "title": "Scenario-Based Model for the Location of Multiple Uncapacitated Facilities: Case Study in an Agro-Food Supply Chain",
+      "doi": "10.1007/978-3-030-86702-7_33",
+      "year": "2021",
+      "metadata_status": "registry_metadata_retrieved",
+      "registry_url": "https://api.crossref.org/works/10.1007%2F978-3-030-86702-7_33",
+      "registry_doi": "10.1007/978-3-030-86702-7_33",
+      "registry_title": "Scenario-Based Model for the Location of Multiple Uncapacitated Facilities: Case Study in an Agro-Food Supply Chain",
+      "registry_years": {
+        "published": 2021,
+        "published-print": 2021,
+        "published-online": 2021,
+        "issued": 2021
+      },
+      "normalized_title_similarity": 1.0,
+      "retained_year_in_registry_dates": true,
+      "author_order_fully_reconciled_this_pass": false
+    },
+    {
+      "key": "vazquez2021",
+      "type": "article",
+      "bibliography": "references.bib",
+      "title": "Integrating environmental and social impacts into optimal design of guayule and guar supply chains",
+      "doi": "10.1016/j.compchemeng.2021.107223",
+      "year": "2021",
+      "metadata_status": "registry_metadata_retrieved",
+      "registry_url": "https://api.crossref.org/works/10.1016%2Fj.compchemeng.2021.107223",
+      "registry_doi": "10.1016/j.compchemeng.2021.107223",
+      "registry_title": "Integrating environmental and social impacts into optimal design of guayule and guar supply chains",
+      "registry_years": {
+        "published": 2021,
+        "published-print": 2021,
+        "issued": 2021
+      },
+      "normalized_title_similarity": 1.0,
+      "retained_year_in_registry_dates": true,
+      "author_order_fully_reconciled_this_pass": false
+    },
+    {
+      "key": "anselmino2025",
+      "type": "article",
+      "bibliography": "references.bib",
+      "title": "Strategic Optimization of Short-Rotation Woody Crops for Bioenergy Production",
+      "doi": "10.1016/j.biombioe.2025.107686",
+      "year": "2025",
+      "metadata_status": "registry_metadata_retrieved",
+      "registry_url": "https://api.crossref.org/works/10.1016%2Fj.biombioe.2025.107686",
+      "registry_doi": "10.1016/j.biombioe.2025.107686",
+      "registry_title": "Strategic optimization of short-rotation woody crops for bioenergy production",
+      "registry_years": {
+        "published": 2025,
+        "published-print": 2025,
+        "issued": 2025
+      },
+      "normalized_title_similarity": 1.0,
+      "retained_year_in_registry_dates": true,
+      "author_order_fully_reconciled_this_pass": false
+    },
+    {
+      "key": "guimaraes2017",
+      "type": "article",
+      "bibliography": "references.bib",
+      "title": "A location-allocation model for Logistics Integration Centers",
+      "doi": "10.19272/201706702006",
+      "year": "2017",
+      "metadata_status": "publisher_metadata_identity_verified",
+      "registry_url": "https://api.crossref.org/works/10.19272%2F201706702006",
+      "primary_url": "https://www.libraweb.net/articoli3.php?articolo=201706702006&chiave=201706702&rivista=067",
+      "identity_locator": "title, ordered four authors, volumeXLIV/2, 2017, pp.273-292, DOI",
+      "full_text_read_this_pass": false
+    },
+    {
+      "key": "mascarenhas2014",
+      "type": "article",
+      "bibliography": "references.bib",
+      "title": "Analysis of warehousing network for {Mato Grosso}'s soybeans: applying a localization model",
+      "doi": null,
+      "year": "2014",
+      "metadata_status": "no_DOI_registry_lookup"
+    },
+    {
+      "key": "essien2018",
+      "type": "article",
+      "bibliography": "references.bib",
+      "title": "Decision support system for designing sustainable multi-stakeholder networks of grain storage facilities in developing countries",
+      "doi": "10.1016/j.compag.2018.02.019",
+      "year": "2018",
+      "metadata_status": "registry_metadata_retrieved",
+      "registry_url": "https://api.crossref.org/works/10.1016%2Fj.compag.2018.02.019",
+      "registry_doi": "10.1016/j.compag.2018.02.019",
+      "registry_title": "Decision support system for designing sustainable multi-stakeholder networks of grain storage facilities in developing countries",
+      "registry_years": {
+        "published": 2018,
+        "published-print": 2018,
+        "issued": 2018
+      },
+      "normalized_title_similarity": 1.0,
+      "retained_year_in_registry_dates": true,
+      "author_order_fully_reconciled_this_pass": false
+    },
+    {
+      "key": "gholamian2017",
+      "type": "article",
+      "bibliography": "references.bib",
+      "title": "Integrated network design of wheat supply chain: A real case of Iran",
+      "doi": "10.1016/j.compag.2017.05.038",
+      "year": "2017",
+      "metadata_status": "registry_metadata_retrieved",
+      "registry_url": "https://api.crossref.org/works/10.1016%2Fj.compag.2017.05.038",
+      "registry_doi": "10.1016/j.compag.2017.05.038",
+      "registry_title": "Integrated network design of wheat supply chain: A real case of Iran",
+      "registry_years": {
+        "published": 2017,
+        "published-print": 2017,
+        "issued": 2017
+      },
+      "normalized_title_similarity": 1.0,
+      "retained_year_in_registry_dates": true,
+      "author_order_fully_reconciled_this_pass": false
+    },
+    {
+      "key": "pourmohammadi2020",
+      "type": "article",
+      "bibliography": "references.bib",
+      "title": "A scenario-based stochastic programming approach for designing and planning wheat supply chain (A case study)",
+      "doi": "10.5267/j.dsl.2020.8.004",
+      "year": "2020",
+      "metadata_status": "registry_metadata_retrieved",
+      "registry_url": "https://api.crossref.org/works/10.5267%2Fj.dsl.2020.8.004",
+      "registry_doi": "10.5267/j.dsl.2020.8.004",
+      "registry_title": "A scenario-based stochastic programming approach for designing and planning wheat supply chain (A case study)",
+      "registry_years": {
+        "published": 2020,
+        "published-print": 2020,
+        "published-online": 2020,
+        "issued": 2020
+      },
+      "normalized_title_similarity": 1.0,
+      "retained_year_in_registry_dates": true,
+      "author_order_fully_reconciled_this_pass": false
+    },
+    {
+      "key": "hosseini2020",
+      "type": "article",
+      "bibliography": "references.bib",
+      "title": "A novel hybrid approach for synchronized development of sustainability and resiliency in the wheat network",
+      "doi": "10.1016/j.compag.2019.105095",
+      "year": "2020",
+      "metadata_status": "registry_metadata_retrieved",
+      "registry_url": "https://api.crossref.org/works/10.1016%2Fj.compag.2019.105095",
+      "registry_doi": "10.1016/j.compag.2019.105095",
+      "registry_title": "A novel hybrid approach for synchronized development of sustainability and resiliency in the wheat network",
+      "registry_years": {
+        "published": 2020,
+        "published-print": 2020,
+        "issued": 2020
+      },
+      "normalized_title_similarity": 1.0,
+      "retained_year_in_registry_dates": true,
+      "author_order_fully_reconciled_this_pass": false
+    },
+    {
+      "key": "garima2024",
+      "type": "article",
+      "bibliography": "references.bib",
+      "title": "Decision-Making in Grain Supply Chains for Sustainable Food System",
+      "doi": "10.3390/su162410816",
+      "year": "2024",
+      "metadata_status": "registry_metadata_retrieved",
+      "registry_url": "https://api.crossref.org/works/10.3390%2Fsu162410816",
+      "registry_doi": "10.3390/su162410816",
+      "registry_title": "Decision-Making in Grain Supply Chains for Sustainable Food System",
+      "registry_years": {
+        "published": 2024,
+        "published-online": 2024,
+        "issued": 2024
+      },
+      "normalized_title_similarity": 1.0,
+      "retained_year_in_registry_dates": true,
+      "author_order_fully_reconciled_this_pass": false
+    },
+    {
+      "key": "filippi2022",
+      "type": "article",
+      "bibliography": "references.bib",
+      "title": "The Logic of Collective Action for Rural Warehouse Condominiums",
+      "doi": "10.3390/logistics6010009",
+      "year": "2022",
+      "metadata_status": "registry_metadata_retrieved",
+      "registry_url": "https://api.crossref.org/works/10.3390%2Flogistics6010009",
+      "registry_doi": "10.3390/logistics6010009",
+      "registry_title": "The Logic of Collective Action for Rural Warehouse Condominiums",
+      "registry_years": {
+        "published": 2022,
+        "published-online": 2022,
+        "issued": 2022
+      },
+      "normalized_title_similarity": 1.0,
+      "retained_year_in_registry_dates": true,
+      "author_order_fully_reconciled_this_pass": false
+    },
+    {
+      "key": "kussano2012",
+      "type": "article",
+      "bibliography": "references.bib",
+      "title": "Custos logísticos agroindustriais: avaliação do escoamento da soja em grão do Mato Grosso para o mercado externo",
+      "doi": "10.1590/S0104-530X2012000300013",
+      "year": "2012",
+      "metadata_status": "registry_metadata_retrieved",
+      "registry_url": "https://api.crossref.org/works/10.1590%2FS0104-530X2012000300013",
+      "registry_doi": "10.1590/s0104-530x2012000300013",
+      "registry_title": "Custos logísticos agroindustriais: avaliação do escoamento da soja em grão do Mato Grosso para o mercado externo",
+      "registry_years": {
+        "published": 2012,
+        "published-print": 2012,
+        "issued": 2012
+      },
+      "normalized_title_similarity": 1.0,
+      "retained_year_in_registry_dates": true,
+      "author_order_fully_reconciled_this_pass": false
+    },
+    {
+      "key": "souza2024",
+      "type": "article",
+      "bibliography": "references.bib",
+      "title": "Localização de armazéns agrícolas baseada em análise multicritério espacial",
+      "doi": "10.1590/1806-9479.2022.268622",
+      "year": "2024",
+      "metadata_status": "registry_metadata_retrieved",
+      "registry_url": "https://api.crossref.org/works/10.1590%2F1806-9479.2022.268622",
+      "registry_doi": "10.1590/1806-9479.2022.268622",
+      "registry_title": "Localização de armazéns agrícolas baseada em análise multicritério espacial",
+      "registry_years": {
+        "published": 2024,
+        "published-online": 2024,
+        "issued": 2024
+      },
+      "normalized_title_similarity": 1.0,
+      "retained_year_in_registry_dates": true,
+      "author_order_fully_reconciled_this_pass": false
+    },
+    {
+      "key": "wang2024",
+      "type": "article",
+      "bibliography": "references.bib",
+      "title": "Planned expansion of transportation infrastructure in Brazil has implications for the pattern of agricultural production and carbon emissions",
+      "doi": "10.1016/j.scitotenv.2024.172434",
+      "year": "2024",
+      "metadata_status": "registry_metadata_retrieved",
+      "registry_url": "https://api.crossref.org/works/10.1016%2Fj.scitotenv.2024.172434",
+      "registry_doi": "10.1016/j.scitotenv.2024.172434",
+      "registry_title": "Planned expansion of transportation infrastructure in Brazil has implications for the pattern of agricultural production and carbon emissions",
+      "registry_years": {
+        "published": 2024,
+        "published-print": 2024,
+        "issued": 2024
+      },
+      "normalized_title_similarity": 1.0,
+      "retained_year_in_registry_dates": true,
+      "author_order_fully_reconciled_this_pass": false
+    },
+    {
+      "key": "rosa2026thesis",
+      "type": "phdthesis",
+      "bibliography": "references.bib",
+      "title": "Modelagem matemática e sistemas de apoio à decisão para a logística de alocação e armazenagem de grãos no Brasil",
+      "doi": null,
+      "year": "2026",
+      "metadata_status": "no_DOI_registry_lookup"
+    },
+    {
+      "key": "shastri2011",
+      "type": "article",
+      "bibliography": "references.bib",
+      "title": "A novel decomposition and distributed computing approach for the solution of large scale optimization models",
+      "doi": "10.1016/j.compag.2011.01.006",
+      "year": "2011",
+      "metadata_status": "registry_metadata_retrieved",
+      "registry_url": "https://api.crossref.org/works/10.1016%2Fj.compag.2011.01.006",
+      "registry_doi": "10.1016/j.compag.2011.01.006",
+      "registry_title": "A novel decomposition and distributed computing approach for the solution of large scale optimization models",
+      "registry_years": {
+        "published": 2011,
+        "published-print": 2011,
+        "issued": 2011
+      },
+      "normalized_title_similarity": 1.0,
+      "retained_year_in_registry_dates": true,
+      "author_order_fully_reconciled_this_pass": false
+    },
+    {
+      "key": "knapen2025",
+      "type": "article",
+      "bibliography": "references.bib",
+      "title": "Efficient and scalable crop growth simulations using standard big data and distributed computing technologies",
+      "doi": "10.1016/j.compag.2025.110392",
+      "year": "2025",
+      "metadata_status": "registry_metadata_retrieved",
+      "registry_url": "https://api.crossref.org/works/10.1016%2Fj.compag.2025.110392",
+      "registry_doi": "10.1016/j.compag.2025.110392",
+      "registry_title": "Efficient and scalable crop growth simulations using standard big data and distributed computing technologies",
+      "registry_years": {
+        "published": 2025,
+        "published-print": 2025,
+        "issued": 2025
+      },
+      "normalized_title_similarity": 1.0,
+      "retained_year_in_registry_dates": true,
+      "author_order_fully_reconciled_this_pass": false
+    },
+    {
+      "key": "zhao2012",
+      "type": "article",
+      "bibliography": "references.bib",
+      "title": "Parallelization and optimization of spatial analysis for large scale environmental model data assembly",
+      "doi": "10.1016/j.compag.2012.08.007",
+      "year": "2012",
+      "metadata_status": "registry_metadata_retrieved",
+      "registry_url": "https://api.crossref.org/works/10.1016%2Fj.compag.2012.08.007",
+      "registry_doi": "10.1016/j.compag.2012.08.007",
+      "registry_title": "Parallelization and optimization of spatial analysis for large scale environmental model data assembly",
+      "registry_years": {
+        "published": 2012,
+        "published-print": 2012,
+        "issued": 2012
+      },
+      "normalized_title_similarity": 1.0,
+      "retained_year_in_registry_dates": true,
+      "author_order_fully_reconciled_this_pass": false
+    },
+    {
+      "key": "silva2025pascal",
+      "type": "article",
+      "bibliography": "references.bib",
+      "title": "{PaScal Suite}: A Toolset for Evaluating and Profiling Parallel Scalability in Shared-Memory Programs",
+      "doi": "10.1109/ACCESS.2025.3639388",
+      "year": "2025",
+      "metadata_status": "registry_metadata_retrieved",
+      "registry_url": "https://api.crossref.org/works/10.1109%2FACCESS.2025.3639388",
+      "registry_doi": "10.1109/access.2025.3639388",
+      "registry_title": "PaScal Suite: A Toolset for Evaluating and Profiling Parallel Scalability in Shared-Memory Programs",
+      "registry_years": {
+        "published": 2025,
+        "published-print": 2025,
+        "issued": 2025
+      },
+      "normalized_title_similarity": 1.0,
+      "retained_year_in_registry_dates": true,
+      "author_order_fully_reconciled_this_pass": false
+    },
+    {
+      "key": "huangfu2018",
+      "type": "article",
+      "bibliography": "references.bib",
+      "title": "Parallelizing the dual revised simplex method",
+      "doi": "10.1007/s12532-017-0130-5",
+      "year": "2018",
+      "metadata_status": "registry_metadata_retrieved",
+      "registry_url": "https://api.crossref.org/works/10.1007%2Fs12532-017-0130-5",
+      "registry_doi": "10.1007/s12532-017-0130-5",
+      "registry_title": "Parallelizing the dual revised simplex method",
+      "registry_years": {
+        "published": 2017,
+        "published-print": 2018,
+        "published-online": 2017,
+        "issued": 2017
+      },
+      "normalized_title_similarity": 1.0,
+      "retained_year_in_registry_dates": true,
+      "author_order_fully_reconciled_this_pass": false
+    },
+    {
+      "key": "birge2011",
+      "type": "book",
+      "bibliography": "references.bib",
+      "title": "Introduction to Stochastic Programming",
+      "doi": "10.1007/978-1-4614-0237-4",
+      "year": "2011",
+      "metadata_status": "registry_metadata_retrieved",
+      "registry_url": "https://api.crossref.org/works/10.1007%2F978-1-4614-0237-4",
+      "registry_doi": "10.1007/978-1-4614-0237-4",
+      "registry_title": "Introduction to Stochastic Programming",
+      "registry_years": {
+        "published": 2011,
+        "published-print": 2011,
+        "issued": 2011
+      },
+      "normalized_title_similarity": 1.0,
+      "retained_year_in_registry_dates": true,
+      "author_order_fully_reconciled_this_pass": false
+    },
+    {
+      "key": "kaltis2026",
+      "type": "article",
+      "bibliography": "references.bib",
+      "title": "Literature review on Benders cut selection and a multiple cut generation scheme",
+      "doi": "10.1080/03155986.2025.2540205",
+      "year": "2026",
+      "metadata_status": "registry_metadata_retrieved",
+      "registry_url": "https://api.crossref.org/works/10.1080%2F03155986.2025.2540205",
+      "registry_doi": "10.1080/03155986.2025.2540205",
+      "registry_title": "Literature review on Benders cut selection and a multiple cut generation scheme",
+      "registry_years": {
+        "published": 2025,
+        "published-print": 2026,
+        "published-online": 2025,
+        "issued": 2025
+      },
+      "normalized_title_similarity": 1.0,
+      "retained_year_in_registry_dates": true,
+      "author_order_fully_reconciled_this_pass": false
+    },
+    {
+      "key": "celestino2026dataset",
+      "type": "misc",
+      "bibliography": "references.bib",
+      "title": "Model Agrologistic: Brazilian Grain Logistics Data and Computational Evidence",
+      "doi": "10.5281/zenodo.22751909",
+      "year": "2026",
+      "metadata_status": "zenodo_identity_verified_in_separate_data_access_audit",
+      "registry_url": "https://api.crossref.org/works/10.5281%2Fzenodo.22751909",
+      "primary_url": "https://zenodo.org/api/records/22751909",
+      "qualification": "Not a Crossref DOI; no Crossref record is expected"
+    },
+    {
+      "key": "npad2026",
+      "type": "misc",
+      "bibliography": "references.bib",
+      "title": "Hardware infrastructure",
+      "doi": null,
+      "year": "2026",
+      "metadata_status": "no_DOI_registry_lookup"
+    },
+    {
+      "key": "page2021",
+      "type": "article",
+      "bibliography": "review-methods.bib",
+      "title": "The {PRISMA} 2020 statement: An updated guideline for reporting systematic reviews",
+      "doi": "10.1136/bmj.n71",
+      "year": "2021",
+      "metadata_status": "registry_metadata_retrieved",
+      "registry_url": "https://api.crossref.org/works/10.1136%2Fbmj.n71",
+      "registry_doi": "10.1136/bmj.n71",
+      "registry_title": "The PRISMA 2020 statement: an updated guideline for reporting systematic reviews",
+      "registry_years": {
+        "published": 2021,
+        "published-online": 2021,
+        "issued": 2021
+      },
+      "normalized_title_similarity": 1.0,
+      "retained_year_in_registry_dates": true,
+      "author_order_fully_reconciled_this_pass": false
+    },
+    {
+      "key": "taskiner2021",
+      "type": "article",
+      "bibliography": "review-methods.bib",
+      "title": "Optimization Models for Harvest and Production Planning in Agri-Food Supply Chain: A Systematic Review",
+      "doi": "10.3390/logistics5030052",
+      "year": "2021",
+      "metadata_status": "registry_metadata_retrieved",
+      "registry_url": "https://api.crossref.org/works/10.3390%2Flogistics5030052",
+      "registry_doi": "10.3390/logistics5030052",
+      "registry_title": "Optimization Models for Harvest and Production Planning in Agri-Food Supply Chain: A Systematic Review",
+      "registry_years": {
+        "published": 2021,
+        "published-online": 2021,
+        "issued": 2021
+      },
+      "normalized_title_similarity": 1.0,
+      "retained_year_in_registry_dates": true,
+      "author_order_fully_reconciled_this_pass": false
+    }
+  ]
+}

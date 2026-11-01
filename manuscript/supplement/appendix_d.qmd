@@ -51,8 +51,8 @@ inventory is zero where no initial-stock record is supplied.
 
 | Quantity | Meaning | Effective unit |
 | --- | --- | --- |
-| Supply and domestic demand | Grain available or required in a product-period record | t/period |
-| Export limit | Upper bound on optional arrivals at an export destination | t/period |
+| Supply and domestic demand | Grain available or required within a product-period record | t within the period |
+| Export limit | Upper bound on optional arrivals within a period | t within the period |
 | Initial inventory and static capacity | Grain held at a warehouse | t |
 | Reception and shipping rates | Grain that can be handled each operating day | t/day |
 | Freight coefficient | Cost multiplied by grain quantity and directed road distance | BRL/(t km) |
@@ -63,9 +63,10 @@ inventory is zero where no initial-stock record is supplied.
 
 Static capacity limits inventory, whereas reception and shipping limit flows
 within a period. The experiments use 30 operating days per period. Candidate
-and expansion investments add daily reception and shipping capacity at a rate
-of 0.20 per investment-tonne. Bulk-handling conversion uses a factor of 1.0
-and adds handling capacity without adding static storage.
+and expansion investments add 0.20 t/day of reception and shipping capacity
+per investment-tonne, corresponding to a coupling coefficient of
+0.20 day$^{-1}$. Bulk-handling conversion uses 1.0 day$^{-1}$ on its declared
+investment-tonne basis and adds handling capacity without adding static storage.
 
 Two actual gold-workbook records illustrate these distinctions. Existing
 facility CDA 35.0287.0002-6 has static capacity 890 t, reception 5 t/day and
@@ -227,13 +228,44 @@ and input guide, subject to their access conditions. Compare full file
 hashes before processing. The runtime workbook, facility order, road
 materialization and experiment definition must belong to the same instance.
 
-The h215 processed workbook is model_input.xlsx under
-data/processed/policy_population_v020_osrm/warehouses_215.
-The h300, h400 and h500 inputs use warehouses_300, warehouses_400 and
-warehouses_500 under data/processed/nine_population_osrm_v1. These identify
-retained experimental inputs, rather than files distributed as GitHub source.
-A newly generated workbook should be recorded separately; changes in spreadsheet
-metadata or recalculated caches can alter its byte identity.
+The deposited input archive contains several workbook generations. For the
+road-distance instances discussed here, select the four members in
+Table D.5. The common filename model_input.xlsx does not distinguish a
+pre-routing workbook from a frozen OSRM input. In the table, P denotes
+data/processed/policy_population_v020_osrm and N denotes
+data/processed/nine_population_osrm_v1; both paths are relative to the archive
+root.
+
+| Instance | Archive member, using the prefixes above | SHA-256 prefix |
+| --- | --- | --- |
+| h215 | P/warehouses_215/model_input.xlsx | `40edb66585da` |
+| h300 | N/warehouses_300/model_input.xlsx | `7761cce77cf9` |
+| h400 | N/warehouses_400/model_input.xlsx | `c30854569977` |
+| h500 | N/warehouses_500/model_input.xlsx | `888fbff42e4f` |
+
+: Table D.5. Exact OSRM workbook members in the version 0.2.0 input archive.
+
+The 12-character prefixes help locate a record; verification requires the
+complete 64-character SHA-256 in the
+[input reproduction guide](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/docs/evidence/appendix_input_reproduction_20261028.json),
+which also records worksheet counts and ordered warehouse identities.
+
+Each workbook directory contains osrm_materialization_audit.json. Reuse it
+with the common warehouse_population_manifest.json and
+warehouse_population_order.csv under
+data/processed/warehouse_population_v020. The candidate registry is the
+separate archive member external-inputs/Warehouses_Existing_Candidate_All.xlsx;
+it supplies the selection pool, rather than replacing a processed workbook
+at execution time.
+
+The complete agrologistic-v020-inputs.zip archive has SHA-256
+`583b04afb49c4cba13c9d0aaa18131e12a18bac1da410cd801616bd0b639811f`.
+Its archive hash and each selected member hash serve different checks:
+the former identifies the package, while the latter binds a calculation to
+its effective input. These processed workbooks are archive members, rather
+than files distributed as GitHub source. A newly generated workbook should
+be recorded separately; changes in spreadsheet metadata or recalculated
+caches can alter its byte identity.
 
 Next verify existing/candidate roles, ordered CDA memberships and the 69
 canonical anchors. Reuse the recorded candidate order and OSRM materialization.
@@ -269,6 +301,107 @@ decisions and independent residual validation. Alternative optima, solver
 versions and shared-node conditions can produce different decision vectors
 or logs even when objective quality and physical feasibility agree.
 
+Access to a deposited archive and permission to redistribute its components
+are separate questions. Project-authored source code, external facility
+records and OpenStreetMap-derived distances retain their respective terms.
+Readers should retain the accompanying source notices when obtaining or
+reusing the workbooks; the code's MIT license does not relicense every
+worksheet or upstream dataset.
+
 Traceability makes these distinctions inspectable. It does not by itself
 establish economic calibration, unrestricted data access or reproducibility
 under arbitrary computing conditions.
+
+## D8 Dimensional interpretation of the calculation and its outputs
+
+A planning period is one step of the input time grid. The experiments use
+60 such steps and 30 operating days per step. Supply, demand and flow entries
+are quantities of grain within a step, not daily rates. End stock and static
+capacity are quantities held at an instant. Reception and shipping inputs,
+by contrast, are rates in t/day. Multiplying those rates by operating days
+produces the period-tonne limits used in the flow inequalities.
+
+For example, an initial reception rate of 5 t/day permits 150 t in a
+30-day period. Installing 10 t of capacity with a handling gain of
+0.20 day$^{-1}$ adds 2 t/day, hence 60 t of period reception. The same
+conversion is applied to shipping. Bulk-handling investment changes these
+handling rates but does not add static storage. A change from 30 to another
+number of operating days would change the experiment and must be recorded.
+
+Holding tariffs are quoted per tonne per modeled period. The objective uses
+the charge for one period of stock at each time index; the one-period
+duration is implicit in its coefficient. Thus, holding 2 t for each of two
+periods at 45 BRL/(t period) costs 180 BRL. Multiplying again by 30 operating
+days would apply an extra, unsupported time factor. The stock-exceedance
+penalty follows the same per-period assessment, whereas shortage and reception
+overflow are quantities of grain within their periods.
+
+| Reported quantity | Aggregation and unit | Interpretation |
+| --- | --- | --- |
+| Added candidate or expansion capacity | First-stage investment tonnes | Installed storage; charged once across scenarios |
+| Unmet demand | Probability-weighted sum over products, destinations and periods, t | Expected unmet horizon quantity |
+| Stock exceedance | Probability-weighted stock excess summed across periods, t period | Accumulated exposure; not installed capacity |
+| Reception overflow | Probability-weighted excess arrivals summed across periods, t | Period flow; a daily equivalent divides each record by its operating days |
+| Financial subtotal and artificial penalties | Each reconstructed in BRL, then reported separately | Their sum is the scalar objective; physical tonnes are not added to monetary costs |
+| Relative objective gap | Dimensionless fraction; multiplied by 100 when shown as % | A statement about the penalized objective, not a service percentage |
+
+: Table D.6. Dimensions and aggregation scopes of the main outputs.
+
+Four tonnes of stock excess in each of two periods represent 8 t period;
+four tonnes of reception overflow in each period represent 8 t. These
+quantities must not be added and interpreted as 16 t of required installed
+capacity. The historical generic emergency-capacity output field therefore
+does not define a combined physical investment requirement.
+
+Scenario weights average alternative operating trajectories; they do not
+multiply warehouse capacity or create nine successive physical shipments.
+Domestic service is the ratio of probability-weighted served tonnes to
+probability-weighted demand tonnes over the horizon. It is not generally
+the unweighted mean of scenario service percentages. Likewise, adding all
+transport legs counts transshipped grain more than once; endpoint deliveries
+and individual movement families have separate meanings (Appendix E).
+
+OSRM's service returns metres and seconds. Materialization divides road
+length by 1000 once to populate Distancia_km; Duracao_s remains in seconds.
+The MILP uses distance for freight and does not impose transit-time constraints
+from the duration column. A freight rate in BRL/(t km), multiplied by kilometres
+and transported tonnes, gives BRL. The road length follows the fastest route
+under the frozen driving profile, rather than necessarily the shortest route
+by distance, as specified in the
+[OSRM Table API](https://project-osrm.org/docs/v5.24.0/api/#table-service).
+
+Timing tables distinguish seconds from minutes and native from application
+elapsed time. Memory in GiB is bytes divided by $2^{30}$; a decimal GB is
+$10^9$ bytes. Solver-managed memory, sampled process-tree RSS, Slurm MaxRSS
+and requested memory retain their separate scopes.
+
+## D9 Locating source code, distance matrices and solution data
+
+The
+[research-data catalog](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/43acc42ffce0350cbce6fdc4b0632529a503547d/data/manifests/research_data_distribution_v1.json)
+connects repository paths, deposited archive members and prepared distance
+tables to full checksums. Its distribution and access fields distinguish
+an existing file from a proposed release location.
+
+GitHub contains the canonical gold schema, source manifests, mathematical and
+solver code, small reviewed investment CSVs and the metadata needed to identify
+an experiment. The full processed workbooks and directed distance matrices
+belong to the versioned data archive. Table D.5 identifies the original
+workbook members; the catalog also identifies the corresponding seven-column
+distance tables, with endpoint IDs, movement family, kilometres, seconds,
+provider and fallback reason. The complete original worksheets remain the
+reference even when a CSV copy is used for inspection.
+
+Three objects must be distinguished when reproducing a plan: the full road
+distance table, the product-specific selected admissible arcs, and the
+positive flows returned by an optimizer. The distance table precedes route
+screening. A zero or absent exported flow does not determine admissibility.
+A reproduction therefore requires the recorded route policy and selected
+graph identity in addition to the workbook and warehouse order.
+
+Full solution vectors, flow-distance companions, inventory records and original
+validation outputs are organized separately from small article tables.
+They retain configuration, product, period and scenario identifiers and the
+source used for aggregation. Access and release status are recorded per
+asset in the catalog; a prepared local file is not presented as an already
+published Zenodo download.

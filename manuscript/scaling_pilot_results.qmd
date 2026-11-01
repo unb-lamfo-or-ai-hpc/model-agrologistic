@@ -1,0 +1,46 @@
+## First observation from the common-Pyomo scaling campaign
+
+The first returned h300 W STO pilot uses Gurobi 13.0.3 through Pyomo/APPSI,
+one solver thread and seed 42. Its configuration retains the 28,800 s native
+allowance, 1% relative-gap target, automatic presolve and method selection,
+and the numerical tolerances specified in Appendix C. The original solution
+passed independent primal and cost validation. The companion HiGHS calculation
+has no terminal collection at the reporting cutoff.
+
+| Solver / threads / repetition | Collection | Objective, BRL trillion | Common gap, % | Native runtime, min | Application end-to-end, min | Sampled worker-tree peak, GiB |
+|:--|:--|--:|--:|--:|--:|--:|
+| Gurobi / 1 / 1 | Validated, target met | 9.289109 | 0.004105 | 48.229 | 91.794 | 74.535 |
+| HiGHS / 1 / 1 | Not yet terminal | — | — | — | — | — |
+
+: First h300 observations under the new common-Pyomo protocol. Unavailable
+HiGHS values are not zero or a failure. {#tbl-scaling-h300-pilot}
+
+The Gurobi lower bound is 9.288727295144 trillion BRL. The ordered Pyomo
+algebra contains 25,107,544 variables, including 392 binaries, 1,056,962 linear
+constraints and 94,967,766 nonzeros. Its fingerprint identifies the algebra
+before native presolve; comparison with the companion solver requires that
+solver's own retained input, matrix and bound-policy identities.
+
+The optimizer processed one node and 3,355,126 LP iterations. Although the
+native time allowance was eight hours, it returned after 2,893.71 s with the
+stopping criterion satisfied. Application end-to-end time is 5,507.64 s;
+model construction, transfer, matrix identification and extraction contribute
+additional effort, with some timing regions enclosing others. These clocks
+must not be added as disjoint components. The sampled 74.535 GiB worker-tree
+peak is below the declared 192 GiB allocation, but sampling does not certify
+an instantaneous maximum or production isolation.
+
+The financial subtotal is 385.502 billion BRL, while artificial penalties
+represent 95.850% of the penalized objective. Expected domestic service is
+91.326%, with 58.787 million t of unmet demand. Expected static exceedance is
+46.444 million tonne-periods, and reception overflow is 33.839 million t.
+Stock exposure accumulated over periods and reception overflow have different
+dimensions and are not added as installed emergency capacity.
+
+The [original source-bound observation and local integrity audit](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/8c836ecc6d6fb41768884541bdb98b0085421af4/docs/evidence/paired_pyomo_h300_gurobi_2231228_review.json)
+retain the objective, bound, input identities, parameter values, original
+validation and timing definitions. This is one observation in the new protocol,
+not an additional repetition of the earlier native-Gurobi h300 sequence.
+Until the companion result and later repetitions are available, it supports
+an attainable-scale observation rather than a paired solver ranking or
+statistical estimate of parallel performance.

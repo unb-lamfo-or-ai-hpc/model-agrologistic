@@ -1,0 +1,48 @@
+{
+  "schema_version": "editorial-h300-checkpoint-checks-v1",
+  "date": "2026-11-01",
+  "base_pr": 144,
+  "base_head": "3816578394f5c41d1eebb5f91141e5c6be85486a",
+  "scope": "Local document/source checks and read-only existing input bytes; no solver or HPC",
+  "checks": {
+    "manuscript_integrity": {
+      "exit_code": 0,
+      "cited_references": 33
+    },
+    "appendix_source": {
+      "exit_code": 0,
+      "cells": 254,
+      "pinned_github_file_links": 39,
+      "warehouses": 215,
+      "existing": 146,
+      "candidates": 69,
+      "freight_states": 27
+    },
+    "pytest": {
+      "exit_code": 0,
+      "passed": 65,
+      "seconds": 33.65,
+      "files": [
+        "tests/test_manuscript.py",
+        "tests/test_manuscript_package.py",
+        "tests/test_manuscript_appendix_inputs.py"
+      ]
+    },
+    "input_archive": {
+      "four_workbook_hashes_match": true,
+      "archive_hashes_match": true,
+      "extracted": false
+    },
+    "reis_table_8": {
+      "page": 18,
+      "rendered": true,
+      "visually_inspected": true
+    }
+  },
+  "limitations": [
+    "No final PDF render or publication qualification.",
+    "No optimizer, NPAD access, scheduler submission or follow-on.",
+    "No new pilot numerical outcome or data-rights certification."
+  ],
+  "temporary_artifacts_uploaded": false
+}

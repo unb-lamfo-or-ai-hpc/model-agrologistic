@@ -1,0 +1,50 @@
+{
+  "schema_version": "editorial-B3-D2-source-checks-v1",
+  "date": "2026-10-30",
+  "baseline": "c80dca69c247753d49f06925ec712fcd43bb5a56",
+  "prior_editorial_head": "c611773a062fd5d89390ba0461e3696b318df5ef",
+  "scope": "Source-level reader revision; no solver, NPAD access or new final PDF.",
+  "manuscript_integrity": {
+    "status": "accepted",
+    "cited_references": 33
+  },
+  "appendix_a_original_preserved": true,
+  "source_input_audit": {
+    "worksheets": 14,
+    "original_and_cached_cells": 254,
+    "pinned_links": 37,
+    "warehouse_total": 215,
+    "existing": 146,
+    "candidates": 69,
+    "freight_states": 27,
+    "external_registry_or_processed_bytes_reread": false
+  },
+  "related_document_tests": {
+    "passed": 60,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 15.55
+  },
+  "worked_example": {
+    "purpose": "Illustrative specified feasible plan, not a reported experiment or optimum",
+    "scenario_probabilities": [
+      0.5,
+      0.5
+    ],
+    "shared_investment": 20,
+    "operating_costs": [
+      20,
+      28
+    ],
+    "objective": 44
+  },
+  "remaining": [
+    "Final rendering/visual inspection",
+    "Workflow graphic cleanup",
+    "Full-text gap/thesis comparison",
+    "Complete effective numerical-data presentation/access/rights"
+  ],
+  "scientific_runtime_code_changed_by_editorial_increment": false,
+  "operational_PR145_integrated_in_develop_separately": true
+}

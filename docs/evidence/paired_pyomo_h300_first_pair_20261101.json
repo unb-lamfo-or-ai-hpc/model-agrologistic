@@ -1,0 +1,205 @@
+{
+  "schema_version": "paired-pyomo-h300-initial-receipts-v1",
+  "date": "2026-11-01",
+  "scope": "Operator-supplied initial receipts; no NPAD access or numerical replay",
+  "original_attachment_sha256": "6ad3385a39ff648f6b07dd9afe60193a6312f72445eba51d549f1eb4e4f67fcd",
+  "qualified_source_commit": "c493be8cd127c5175fc7eb111400229e64b8e3c0",
+  "merged_pr": 147,
+  "develop_merge_commit": "8b7d94cf72faedde3850304ecb0271ce841a36d7",
+  "initialization_receipt": {
+    "status": "prepared_no_job",
+    "campaign_sha256": "3cae7c318032108caa936d70b2883f20d055066f89a78e24610f261832763b58",
+    "cells": 90,
+    "first_stage": "four_h300_pilots",
+    "automatic_follow_on_allowed": false
+  },
+  "initial_campaign_status": {
+    "collected": 0,
+    "eligible_unclaimed": [
+      {
+        "id": "h300-w-sto-highs-t1-r1",
+        "population": 300,
+        "solver": "highs",
+        "threads": 1,
+        "repetition": 1,
+        "seed": 42,
+        "native_seconds": 28800,
+        "mip_gap_target": 0.01,
+        "pilot": true
+      },
+      {
+        "id": "h300-w-sto-gurobi-t1-r1",
+        "population": 300,
+        "solver": "gurobi",
+        "threads": 1,
+        "repetition": 1,
+        "seed": 42,
+        "native_seconds": 28800,
+        "mip_gap_target": 0.01,
+        "pilot": true
+      },
+      {
+        "id": "h300-w-sto-gurobi-t16-r1",
+        "population": 300,
+        "solver": "gurobi",
+        "threads": 16,
+        "repetition": 1,
+        "seed": 42,
+        "native_seconds": 28800,
+        "mip_gap_target": 0.01,
+        "pilot": true
+      },
+      {
+        "id": "h300-w-sto-highs-t16-r1",
+        "population": 300,
+        "solver": "highs",
+        "threads": 16,
+        "repetition": 1,
+        "seed": 42,
+        "native_seconds": 28800,
+        "mip_gap_target": 0.01,
+        "pilot": true
+      }
+    ],
+    "automatic_follow_on_allowed": false
+  },
+  "requested_profile": {
+    "topology": "W",
+    "mode": "sto",
+    "seed": 42,
+    "native_seconds": 28800,
+    "slurm_hours": 12,
+    "solver_threads": 1,
+    "repetition": 1,
+    "gap_target": 0.01
+  },
+  "frozen_input_sha256": {
+    "300": {
+      "workbook": "7761cce77cf93dcba2f617714f0117c1f2ead4de0c3f27149daceba447e0c7d1",
+      "population": "4134147f45188d2e8722476dd325b40e584c3746affe99889e045a547d283505",
+      "order": "7a524b2ed69b41481264d8049842b37e27cd3b96cc20d4e96d98eaf2a39e7903",
+      "materialization": "644567aa884296d23629fb4e84befc8accdf19dcf0c8feb7e3c7747ce41e914d"
+    },
+    "400": {
+      "workbook": "c3085456997714ef5a8bdbf61e2c9a5e578c2636003947427cf58933d21ceb13",
+      "population": "4134147f45188d2e8722476dd325b40e584c3746affe99889e045a547d283505",
+      "order": "7a524b2ed69b41481264d8049842b37e27cd3b96cc20d4e96d98eaf2a39e7903",
+      "materialization": "a4ca64408f7e4b374533cbf5d961c13a8ab7aa963f1fbfdec58dd0b925671471"
+    },
+    "500": {
+      "workbook": "888fbff42e4f80817d4d5f0101049495c86c6ed4cda75f00813779dadab41515",
+      "population": "4134147f45188d2e8722476dd325b40e584c3746affe99889e045a547d283505",
+      "order": "7a524b2ed69b41481264d8049842b37e27cd3b96cc20d4e96d98eaf2a39e7903",
+      "materialization": "997d84446de2b6987cd4af0e07e11b2367efd479ad1a4ae3d50cac95e5c4f19a"
+    }
+  },
+  "runtime_inventory": {
+    "versions": {
+      "highspy-extras": null,
+      "pyomo": "6.10.1",
+      "gurobipy": "13.0.3",
+      "highspy": "1.15.1"
+    },
+    "package_sha256": {
+      "pyomo": "27687e1ac7e4d69031dae03f032f31909c14bd9e0a5a8a4da5320c9771385d38",
+      "gurobipy": "ba96aaa122e7cbd585ea5cc1f57a1ab338e7e5a6b1f4ce9cf2f1b43dbabd316b",
+      "highspy": "7d6343d5d4f28811facfc8cdf9a9df5233472f96906d78329dd43a6e9175d62e"
+    },
+    "python": "3.13.15",
+    "python_sha256": "3fbc618126899d87282c1c87a0015a536cb8bb5afd87578f14fafead3d6ca253",
+    "dependencies": {
+      "numpy": "2.5.2",
+      "pandas": "2.3.3",
+      "openpyxl": "3.1.5",
+      "PyYAML": "6.0.3",
+      "pytest": "9.1.1"
+    }
+  },
+  "observations": [
+    {
+      "submission_receipt": {
+        "status": "submitted_one_cell_only",
+        "cell": {
+          "id": "h300-w-sto-highs-t1-r1",
+          "population": 300,
+          "solver": "highs",
+          "threads": 1,
+          "repetition": 1,
+          "seed": 42,
+          "native_seconds": 28800,
+          "mip_gap_target": 0.01,
+          "pilot": true
+        },
+        "job_id": "2231226",
+        "source_commit": "c493be8cd127c5175fc7eb111400229e64b8e3c0",
+        "plan_sha256": "61f0e11f63e5d4e24cf4712538b17a5cffb4df97b25792f7b8542f673a7cf78d",
+        "automatic_follow_on_allowed": false
+      },
+      "latest_supplied_accounting": {
+        "state": "RUNNING",
+        "elapsed_seconds": 45,
+        "allocation_cpus": 64,
+        "worker_step_cpus": 16,
+        "worker_elapsed_seconds": 42,
+        "interim_exit_code": "0:0",
+        "terminal": false
+      },
+      "native_optimization_phase_established": false,
+      "native_parameter_introspection_available": false,
+      "objective": null,
+      "bound": null,
+      "attained_gap": null,
+      "quality_target_met": null,
+      "terminal_resource_peak": null,
+      "common_matrix_sha256": null
+    },
+    {
+      "submission_receipt": {
+        "status": "submitted_one_cell_only",
+        "cell": {
+          "id": "h300-w-sto-gurobi-t1-r1",
+          "population": 300,
+          "solver": "gurobi",
+          "threads": 1,
+          "repetition": 1,
+          "seed": 42,
+          "native_seconds": 28800,
+          "mip_gap_target": 0.01,
+          "pilot": true
+        },
+        "job_id": "2231228",
+        "source_commit": "c493be8cd127c5175fc7eb111400229e64b8e3c0",
+        "plan_sha256": "e4191e8582dd924cdaddfa125d5f608fa7bfae5a2de580803844cf12aaac4782",
+        "automatic_follow_on_allowed": false
+      },
+      "latest_supplied_accounting": {
+        "state": "RUNNING",
+        "elapsed_seconds": 41,
+        "allocation_cpus": 64,
+        "worker_step_cpus": 16,
+        "worker_elapsed_seconds": 36,
+        "interim_exit_code": "0:0",
+        "terminal": false
+      },
+      "native_optimization_phase_established": false,
+      "native_parameter_introspection_available": false,
+      "objective": null,
+      "bound": null,
+      "attained_gap": null,
+      "quality_target_met": null,
+      "terminal_resource_peak": null,
+      "common_matrix_sha256": null
+    }
+  ],
+  "qualification": [
+    "The last supplied accounting supersedes the earlier pending Gurobi snapshot.",
+    "Allocation and worker CPU counts do not prove actual solver thread use.",
+    "RUNNING and interim 0:0 do not establish completion, feasibility or quality.",
+    "Input hashes bind the files; returned matrix and effective options remain to be checked."
+  ],
+  "preserve_originals": true,
+  "repeat_init_allowed": false,
+  "repeat_start_allowed": false,
+  "automatic_follow_on_allowed": false,
+  "next_population_admitted_by_this_record": false
+}

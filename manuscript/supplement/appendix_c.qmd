@@ -11,8 +11,8 @@ explain how those decisions are represented in software and how the resulting
 calculations are checked. A reader can follow three successive questions:
 which input arrays define the case (Appendix D), how the equations become
 variables and constraints (Sections C2–C4), and what makes a returned answer
-acceptable (Section C5). Section C7 gives a practical route through the public
-examples and the separate input-export procedure.
+acceptable (Section C5). Section C7 provides one implementation index and a practical route through
+public examples and the separate input-export procedure.
 
 The deterministic (DET) and stochastic (STO) models use the same economic
 objective and physical relationships. DET evaluates the original deterministic
@@ -37,8 +37,8 @@ which permits direct origin-to-destination movements.
 
 Topology W excludes direct OD movements; topology D permits them alongside
 warehouse-mediated paths. Permission does not require positive direct flow.
-The accepted evidence comprises nine W observations across h215–h500 and two
-additional D observations at h215. The latter form a separate topology comparison,
+The native Gurobi cohort comprises nine W observations across h215–h500 and
+two additional D observations at h215. The latter form a separate topology comparison,
 rather than additional points in the warehouse-only scaling sequence.
 
 ## C2 Shared investment and scenario-dependent operation
@@ -57,6 +57,52 @@ probability-weighted sum of operating and penalty costs. Scenario probabilities
 do not multiply material balances or capacity limits. A scenario's grain must
 still satisfy the physical equations in its original units.
 
+The following expression makes the shared-investment accounting explicit.
+Let $W^N$, $W^X$ and $W^B$ denote candidate, expansion-eligible and
+bulk-handling-eligible facilities; $O$, $W$ and $C^D$ denote origins,
+warehouses and domestic destinations. Products and periods are indexed by
+$P$ and $T$, and $S$ is the scenario set. The first-stage vector is
+$X=(y,z,g,k,e,b)$: the first three entries are activation binaries and the
+remaining entries are the corresponding investment quantities. For each
+scenario, $Y^s$ contains arc flows $x$, end stocks $I$, domestic shortages $u$
+and static/reception exceedances $q^K,q^R$.
+
+The scalar objective and its fourteen components are
+
+$$
+\begin{aligned}
+\min_{X,\{Y^s\}}\ Z={}&C^{INV}(X)
++\sum_{s\in S}\pi_s
+ \left[C^{TR}(Y^s)+C^{HOLD}(Y^s)+C^{PEN}(Y^s)\right],
+\\
+C^{INV}(X)={}&\sum_{w\in W^N}(F^N_wy_w+c^N_wk_w)
+ +\sum_{w\in W^X}(F^X_wz_w+c^X_we_w)
+ +\sum_{w\in W^B}(F^B_wg_w+c^B_wb_w),\\
+C^{TR}(Y)={}&\sum_{t\in T}\sum_{(o,w,p)\in A^{OW}}
+ (f^O_o\ell^{OW}_{ow}+\tau_w)x^{OW}_{owpt}\\
+&+\sum_{t\in T}\sum_{(w,c,p)\in A^{WD}}f^W_w\ell^{WD}_{wc}x^{WD}_{wcpt}\\
+&+\sum_{t\in T}\sum_{(w,v,p)\in A^{WW}}
+ (\alpha f^W_w\ell^{WW}_{wv}+\tau_v)x^{WW}_{wvpt}\\
+&+\sum_{t\in T}\sum_{(o,c,p)\in A^{OD}}f^O_o\ell^{OD}_{oc}x^{OD}_{ocpt},\\
+C^{HOLD}(Y)={}&\sum_{w\in W,p\in P,t\in T}h_{wp}I_{wpt},\\
+C^{PEN}(Y)={}&\sum_{c\in C^D,p\in P,t\in T}\lambda^D_{cp}u_{cpt}
+ +\sum_{w\in W,t\in T}(\lambda^K_wq^K_{wt}+\lambda^R_wq^R_{wt}).
+\end{aligned}
+\tag{C.1}
+$$
+
+In the component expressions, $Y$ denotes one scenario's operating vector.
+Fixed investment charges $F$ are in BRL and quantity-dependent charges $c$
+are in BRL per investment-tonne. Each transport coefficient combines a
+distance $\ell$ in km and a freight rate $f$ in BRL/(t km), with a receiving
+charge $\tau$ in BRL/t where applicable; $\alpha$ multiplies interwarehouse
+freight. A holding tariff is quoted in BRL/(t period); the coefficient
+$h$ charges one modeled period of stock, so $hI$ is that period's BRL cost.
+The three $\lambda$ coefficients price their respective shortage,
+stock-exceedance and reception-overflow quantities at each period. The scenario weights satisfy
+$\sum_s\pi_s=1$. Stock and period throughput consequently enter different
+physical checks even when both are measured in tonnes.
+
 For DET, the original arrays are embedded as one scenario with probability one.
 The resulting solution is projected back to the deterministic output format.
 Thus, DET is neither the solution for a conveniently selected STO realization
@@ -74,25 +120,22 @@ days. Static and reception exceedances have separate slacks. Shipping,
 conservation and route eligibility remain hard constraints. For a closed
 candidate, the emergency slacks must also be zero.
 
-## C3 Native Gurobi and SCIP implementations
+## C3 Native Gurobi implementation
 
 Gurobi uses a common extensive-form builder for DET and STO. Its cost construction
 separates six investment components, four transport components, inventory
 holding and three artificial penalties: fourteen components in total.
 The scalar model uses one optimization call under the stated time allowance.
 
-The SCIP backend uses PySCIPOpt to create its own variables, constraints,
-indicator relationships and scalar optimization call. It shares algebraic
-helpers for investment, capacity and costs with the Gurobi implementation;
-calling these helpers does not create a Gurobi environment. Both native
-implementations express the closed-candidate implication using indicators,
-without an arbitrary finite upper bound on an active candidate's slack.
+The native builder expresses closed-candidate implications using indicators.
+An active candidate's redundant slack has no arbitrary imposed upper bound.
+Section C4 explains the bounded representative used for the common Pyomo
+formulation and why the representation must be declared when interpreting
+native and Pyomo results.
 
 Table C.2 links the main formulation to the principal software components.
-The [pinned software reading snapshot](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/tree/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/src/logic)
-also retains the native reference implementations. Earlier accepted experiments
-keep their own source identities; this reference is a reading aid, not a
-reassignment of their provenance.
+The software reading index in Section C7 identifies the implementations.
+Original experiments retain their own executed versions.
 
 | Main equations | Computational role | Principal implementation |
 | --- | --- | --- |
@@ -105,21 +148,16 @@ reassignment of their provenance.
 
 : Table C.2. Mathematical relationships and their implementation roles.
 
-The [Gurobi extensive-form builder](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/src/logic/optimization_gurobipy_stochastic.py)
-and [native SCIP implementation](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/src/logic/optimization_scip.py)
-can be read alongside the [displayed formulation](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/manuscript/formulation.qmd).
-The [mathematical input contract](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/src/logic/mathematical_contract.py)
-prepares the common effective arrays; the
-[independent solution validator](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/src/logic/solution_validation.py)
-evaluates exported decisions.  A source file defines what
-software can do; the original review for each experiment identifies which
-version actually did it.
+The extensive-form builders implement these relationships; the mathematical
+input contract prepares the effective arrays, and the independent validator
+reconstructs balances and costs from exported decisions. The worked example
+below illustrates this separation without requiring a source-code lookup.
 
 ## C4 Pyomo and the bounded representation of candidate slacks
 
-The [Pyomo implementation](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/src/logic/optimization_pyomo.py)
-and its [bound derivation](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/src/logic/pyomo_bounds.py)
-provide a common scalar formulation for HiGHS and CBC.
+The Pyomo implementation
+and its bound derivation
+provide a common scalar formulation for Gurobi and HiGHS.
 It uses the same effective data, investment expressions and physical balances.
 The principal representational difference concerns candidate emergency slacks.
 The native model allows an open candidate's slack to be unbounded above.
@@ -137,7 +175,7 @@ $$
 M^K_{st}=I^0+\sum_{\tau\leq t}G_{s\tau},
 \qquad
 M^R_{st}=G_{st}+\sum_{w\in W}\overline H_{wt}.
-\tag{C.1}
+\tag{C.2}
 $$
 
 The first bound follows by summing warehouse balances. Interwarehouse flows
@@ -158,7 +196,7 @@ $$
 0\leq q^K_{swt}\leq M^K_{st}y_w,
 \qquad
 0\leq q^R_{swt}\leq M^R_{st}y_w.
-\tag{C.2}
+\tag{C.3}
 $$
 
 When the candidate is closed, these constraints reproduce the native zero-slack
@@ -180,12 +218,99 @@ representative of every feasible physical plan and investment vector. It does
 not promise that two solver interfaces will explore the same search tree.
 
 The implementation checks the proof's finite, nonnegative data conditions and
-records the derived bounds' identity and scope. HiGHS uses the Pyomo APPSI
-interface; CBC uses a solver-process interface. Construction and transfer costs
-can differ between these interfaces and native APIs. Public analytical and
-intermediate-size controls test correctness and operational behavior, but they
-do not predict h215 runtime or memory. Any large-instance comparison must retain
-these formulation, interface and resource differences.
+records the derived bounds' identity and scope. Gurobi and HiGHS use Pyomo's
+APPSI interfaces. Each receives the reviewed linear expressions, variable
+domains and bounds from this common formulation.
+
+To compare inputs to these adapters, the
+ordered algebra record
+includes variable domains and bounds, objective coefficients and constant,
+and constraint coefficients and bounds. Matching records describe the common
+Pyomo algebra before solver transformations; they do not assert identical
+presolved models. Construction, transfer, optimization and validation are
+therefore measured separately. Public analytical and intermediate-size controls
+test correctness and operational behavior, but do not predict h215 runtime
+or memory. Large-instance interpretation must retain these formulation,
+interface and resource scopes.
+
+### C4.1 What parallel execution means in HiGHS 1.15.1
+
+A MILP solution involves several kinds of work. Presolve simplifies the model;
+an LP relaxation supplies a bound; branch-and-bound explores remaining
+integer decisions. Parallelism in one part does not imply parallel execution
+of the whole calculation.
+
+The HiGHS 1.15 series provides an initial parallel MIP implementation,
+included in the 1.15.1 release used here. Setting `parallel="on"`
+allows several workers to explore the tree, including cuts and heuristics
+away from the root. Symmetry detection, clique-table queries and analytic-centre
+calculations also offer parallel work. However, parallel simplex is disabled
+for LP relaxations inside MIP in this release. The parallel capability of a
+standalone LP solver must therefore not be assumed for a MIP's root relaxation.
+These distinctions follow the
+[HiGHS 1.15.1 documentation](https://github.com/ERGO-Code/HiGHS/blob/v1.15.1/docs/src/parallel.md)
+and [release description](https://github.com/ERGO-Code/HiGHS/releases/tag/v1.15.1).
+
+The prospective common-Pyomo profile sets `threads` to 1, 2, 4, 8 or 16,
+`parallel="on"` and `random_seed=42`, with an eight-hour native limit and
+a 1% relative-gap target. Each calculation starts in a fresh process;
+requested options and values returned by the native solver are retained.
+A thread ceiling is not a measurement of active workers. Additional threads
+may provide little benefit when root-relaxation work dominates or memory
+bandwidth limits progress. Actual logs, CPU observations and elapsed times
+must support any parallel-performance claim.
+
+The completed h215 HiGHS observation belongs to a different execution profile:
+its log records four threads, one maximum search worker and parallel search
+off. Its accepted objective and bound remain valid, but its runtime cannot
+establish the performance of the prospective parallel profile. Fixing seed 42
+specifies solver-specific pseudorandom choices; it neither constructs a shared
+initial incumbent for Gurobi and HiGHS nor guarantees identical parallel
+trajectories. Repeated runs under that fixed seed quantify observed execution
+variation and do not represent independent random problem instances.
+
+### C4.2 A calculation from workbook to validated result
+
+Both Pyomo pipelines follow the same scientific sequence.
+
+1. Read the identified workbook, warehouse order and scenario definition.
+   Convert the source quantities to the effective arrays described in
+   Appendix D and select the product-specific admissible directed arcs.
+2. Build the shared investment block and scenario-dependent balances,
+   capacities and costs. Derive the bounded candidate-slack representation.
+3. Transfer the Pyomo expressions to the native engine through APPSI:
+   gurobipy for Gurobi and highspy for HiGHS. Record requested options and,
+   where retained, native values and the ordered common-algebra fingerprint.
+4. Optimize in a fresh process. Preserve the incumbent, bound, native status
+   and solver runtime even when the target is not attained.
+5. Export decisions, reconstruct costs and check original-unit residuals.
+   Interpret financial cost, artificial penalties, service and capacity
+   exceedances separately.
+
+Pyomo supplies algebra and options; Gurobi still selects its own presolve,
+relaxation methods, cuts and heuristics. In the completed Pyomo observation,
+Method, NodeMethod, Presolve and Cuts were -1 (automatic), Heuristics was
+0.05 and ConcurrentMIP was 1. TimeLimit, MIPGap, Threads, Seed,
+FeasibilityTol and IntFeasTol were explicitly controlled. This is an
+automatic-strategy profile with declared overrides, rather than an untouched
+default configuration. ConcurrentMIP counts independent MIP searches; its
+value of one does not restrict the engine to one worker thread.
+The [native parameter reference](https://docs.gurobi.com/projects/optimizer/en/current/reference/parameters.html)
+defines these controls.
+
+For HiGHS, the thread ceiling and parallel-search option must both be
+reported, as explained in C4.1. Parallelism within a solve differs from
+running two independent Slurm jobs at once. The ongoing campaign allocates
+one node per calculation; its worker affinity, solver thread ceiling and
+allocation CPU count are recorded separately. Neither use of Pyomo nor
+seed 42 makes parallel execution or returned investment vectors identical.
+
+Data preparation, common-model construction, matrix identification, solver
+transfer, native optimization, extraction and independent validation have
+different timing boundaries. Some recorded regions enclose other regions;
+their values must not be added to reconstruct an end-to-end time. The
+microsecond data-read field at an already-loaded model boundary is not the
+time required to read and prepare a large workbook.
 
 ## C5 Checking a returned solution
 
@@ -208,15 +333,48 @@ definitions. A small gap for the penalized total remains a statement about that
 total; it is not a relative-accuracy guarantee for the financial subtotal or a
 proof that nominal capacity and full service can be achieved without slack.
 
+### An illustrative balance and objective check
+
+Consider a teaching example with one product, one operating day, one origin,
+one candidate warehouse and one domestic destination. Two scenarios have
+probability $1/2$. A specified plan opens the warehouse and installs 5 t of
+static capacity at BRL4/t. For this teaching example only, a
+handling coefficient of 3 day$^{-1}$ gives reception and shipping rates
+of 15 t/day. The experimental coefficient is specified separately in
+Appendix D. Initial stock and fixed opening cost are zero. Table C.3
+gives the plan's flows and the corresponding end stocks.
+
+| Quantity (t within the period, except end stock in t) | Scenario A | Scenario B |
+| --- | ---: | ---: |
+| Supply and origin-to-warehouse flow | 10 | 14 |
+| Domestic demand and warehouse-to-destination flow | 8 | 12 |
+| End stock | 2 | 2 |
+| Shortage / static exceedance / reception overflow | 0 / 0 / 0 | 0 / 0 / 0 |
+
+: Table C.3. Illustrative scenario balances.
+
+The warehouse balances are $0+10-8=2$ and $0+14-12=2$. End stock is below
+5 t, and each scenario's receipts and shipments are below the daily
+handling limits. A free terminal-stock policy permits the remaining 2 t.
+The example demonstrates checks on a specified feasible plan.
+
+If each transport leg costs BRL1/t, receiving has no additional charge and
+holding costs BRL1/(t period), the operating totals are
+$10+8+2=20$ and $14+12+2=28$ BRL. Shared investment costs $5(4)=20$ BRL,
+so Equation C.1 gives $20+(20+28)/2=44$ BRL. The validator checks the two
+balances separately and reconstructs the same investment, transport and
+holding totals. These illustrative values explain the accounting procedure;
+the experimental input values are reported in Appendix D.
+
 ## C6 GAMS translation and verification limits
 
 The supplement provides
-[model_det.gms](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/manuscript/supplement/appendix_c/model_det.gms) and
-[model_sto.gms](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/manuscript/supplement/appendix_c/model_sto.gms)
+model_det.gms and
+model_sto.gms
 as entry files, with
-[model_common.inc](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/manuscript/supplement/appendix_c/model_common.inc)
+model_common.inc
 containing the shared objective, constraints and domains.
-The [data-only exporter](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/scripts/export_scalar_gams_data.py)
+The data-only exporter
 writes already prepared effective Python inputs to data.inc and
 produces an identifier and checksum record. This avoids manual transcription
 of the large arrays while retaining the mapping to original facilities,
@@ -229,69 +387,82 @@ described by [GAMS](https://www.gams.com/latest/docs/UG_LanguageFeatures.html#UG
 omitting that mapping would change the model. The provided source does not
 replace it with an arbitrary slack bound.
 
-Structural inspection and exporter tests have examined indexing, units,
-costs, scenarios and input preservation. **GAMS compilation and numerical
-parity have not been performed**, and no GAMS performance result is reported. The Python results do not validate the GAMS
-translation by proxy. A future numerical comparison would need to evaluate
-objective components and residuals on the same small input before considering
-large cases; alternative optimal vectors should not be mistaken for a failure
-of equivalence.
+Structural inspection and exporter tests examine indexing, units, costs,
+scenarios and input preservation. **The GAMS translation has not been compiled
+or numerically validated.** Numerical verification requires comparing objective
+components and original-unit residuals on the same small input; alternative
+optimal decision vectors can represent the same scalar value.
 
 
-## C7 A practical route through the implementation
+## C7 Implementation index and reproduction sequence
 
-First read the [software and environment instructions](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/README.md)
-and the [declared Python dependencies](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/pyproject.toml).
-The repository separates reading/building the manuscript, preparing data,
-running an optimizer and validating its output. Installing a solver is not
-necessary to inspect the formulation or reproduce the document. Native Gurobi
-tests require an appropriate Gurobi installation/licence; native SCIP uses
-PySCIPOpt. The [Pyomo guide](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/docs/pyomo_multisolver.md)
-identifies the HiGHS and CBC interfaces and their public qualification scope.
-Software versions recorded by an original experiment remain authoritative for
-that result; the current dependency declaration does not rewrite them.
+Table C.4 groups the principal reading links by scientific task. Paths are
+relative to the repository root: mathematical software is under src/logic,
+executable public examples under tests, and the GAMS translation under
+manuscript/supplement/appendix_c. The links identify a fixed reading snapshot.
+Each numerical result remains associated with its original executed source.
 
-Start numerical verification with small cases whose answers can be checked.
-The [Excel-reader tests](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/tests/test_excel_loader.py)
-show valid input tables, missing-field errors and source-to-model translation.
-The [mathematical-contract tests](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/tests/test_mathematical_contract.py)
-and [scalar-objective tests](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/tests/test_scalar_contract.py)
-check shared investments, scenario weights, units and cost reconstruction.
-They are executable examples, not substitute large-instance data.
-The corresponding [native qualification workflow](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/.github/workflows/scalar-r1.yml)
-and [Pyomo qualification workflow](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/.github/workflows/pyomo.yml)
-identify the tested software environments and fail/skip conditions. A skipped native
-control is not evidence that the absent solver has been checked.
+| Task | Repository files |
+| --- | --- |
+| Displayed equations and effective inputs | [formulation.qmd](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/manuscript/formulation.qmd); [mathematical_contract.py](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/src/logic/mathematical_contract.py) |
+| Native Gurobi | [optimization_gurobipy_stochastic.py](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/src/logic/optimization_gurobipy_stochastic.py) |
+| Common Pyomo algebra and bounds | [optimization_pyomo.py](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/src/logic/optimization_pyomo.py); [pyomo_bounds.py](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/src/logic/pyomo_bounds.py) |
+| Ordered common linear algebra | [pyomo_linear_matrix.py](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/src/logic/pyomo_linear_matrix.py) |
+| Independent residual and cost validation | [solution_validation.py](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/src/logic/solution_validation.py) |
+| GAMS entry points and common equations | [model_det.gms](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/manuscript/supplement/appendix_c/model_det.gms); [model_sto.gms](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/manuscript/supplement/appendix_c/model_sto.gms); [model_common.inc](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/manuscript/supplement/appendix_c/model_common.inc) |
+| Data-only GAMS export and instructions | [export_scalar_gams_data.py](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/scripts/export_scalar_gams_data.py); [README.md](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/manuscript/supplement/appendix_c/README.md) |
+| Public mathematical / Excel examples | [test_scalar_contract.py](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/tests/test_scalar_contract.py); [test_excel_loader.py](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/tests/test_excel_loader.py) |
+| Environment and adapter instructions | [README.md](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/README.md); [pyomo_native_adapters.md](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c80dca69c247753d49f06925ec712fcd43bb5a56/docs/pyomo_native_adapters.md) |
 
-For a reader who has prepared an existing compatible environment, the first
-data-layer check is:
+: Table C.4. Implementation and verification index.
+
+The index separates data preparation, model construction, solver transfer and
+validation. A reader can therefore follow one physical relationship from its
+effective input through the builder to the residual check, rather than treating
+a solver's status as the complete numerical assessment.
+
+Begin with the equations and the small accounting example above. In an
+existing compatible Python environment, public input examples can be examined
+with:
 
 ```bash
 python -m pytest tests/test_excel_loader.py -q
 ```
 
-This runs public examples, rather than reproducing the h215–h500 experiments.
-Inspect failures before proceeding. Numerical controls should establish both
-the objective and physical residuals: for example, a two-scenario input must
-charge one common investment once, while weighting each scenario's operating
-cost by its probability. Agreement of objectives alone can conceal a
-constraint violation or incorrectly duplicated investment.
+Then obtain the exact processed workbook, population and network definition
+described in Appendix D. Record the source, scenario design, solver/interface
+settings and stopping rules for a fresh calculation. Validate the returned
+decisions in original units, reconstruct all fourteen cost components and
+compare the incumbent and bound using the declared gap definition.
 
-Next obtain the exact processed workbook and case definition described in
-Appendix D. If inspecting the GAMS translation, follow its
-[export and validation guide](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/manuscript/supplement/appendix_c/README.md)
-to produce data.inc and data_manifest.json without optimization. The exporter
-takes a version-2 case manifest, a case index, the workbook and its expected
-hash, and a new output directory. Its receipt records effective settings,
-identifier mappings and hashes. This is a reproducible interface description,
-the generated input must still be associated with its source workbook and
-experiment definition.
+For the GAMS translation, the exporter writes already prepared effective arrays
+to data.inc and records identifier mappings and checksums in data_manifest.json.
+Its inputs are a version-2 case manifest, a case index, a workbook and expected
+hash, and a new output directory. The resulting data remain bound to that
+workbook and case. The compilation and numerical-verification boundary is
+stated in Section C6.
 
-For a fresh optimization, retain the source version, exact inputs, topology,
-scenario design, solver/interface settings and resource/stopping rules with the
-new outputs. Then use the independent validator to reconstruct balances,
-eligibility, capacities and all fourteen cost components in original units.
-Compare the new incumbent and bound with the declared gap definition, and report
-the actual scientific and operational outcome, including partial or failed
-results. A later replay of an old certificate cannot serve as that new residual
-check. Large HPC observations remain distinct from these public miniature controls.
+
+
+## C8 Reading the first controlled h300 pilot
+
+The first completed Gurobi pilot uses the common Pyomo formulation with
+`Threads=1`, `Seed=42`, `TimeLimit=28800`, `MIPGap=0.01`,
+`FeasibilityTol=1e-9` and `IntFeasTol=1e-9`. Native introspection records
+`Presolve=Method=NodeMethod=Cuts=-1`, `Heuristics=0.05` and `ConcurrentMIP=1`.
+These values describe automatic strategy with explicit experimental controls.
+They do not prescribe barrier or dual simplex, nor supply an initial incumbent.
+
+Its common gap is 0.0000410522720273419 as a fraction, or 0.0041052272%.
+Native optimization takes 2,893.71 s; application end-to-end time is 5,507.64 s.
+The former is a solver clock and the latter includes application work. Neither
+is the eight-hour allowance or the 5,702 s Slurm allocation duration. The
+74.535 GiB value is a sampled process-tree peak, whereas the 192 GiB value is
+requested memory. Allocated CPUs, the sixteen-ID worker affinity pool and
+the one-thread solver setting are separate quantities.
+
+The [source-bound pilot record](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/8c836ecc6d6fb41768884541bdb98b0085421af4/docs/evidence/paired_pyomo_h300_gurobi_2231228_review.json)
+includes the exact input and ordered-algebra fingerprints. A paired
+Gurobi/HiGHS comparison must check these identities after both collections,
+then compare attained quality and timing at the declared scopes. A missing
+companion result supplies no runtime, gap or service observation.

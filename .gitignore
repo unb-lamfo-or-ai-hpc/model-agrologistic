@@ -48,3 +48,16 @@ examples/ofertas/*
 # Scheduler and temporary artifacts
 slurm-*.out
 *.old
+manuscript/.cartography.sqlite3
+manuscript/figures/scalar_*.png
+manuscript/figures/scalar_*.pdf
+manuscript/figures/scalar_*.svg
+manuscript/figures/scalar_*.json
+manuscript/figures/pyomo_gurobi_*.png
+manuscript/figures/pyomo_gurobi_*.pdf
+manuscript/figures/pyomo_gurobi_*.svg
+manuscript/figures/pyomo_gurobi_*.json
+manuscript/figures/h500_pending.*
+manuscript/figures/s6a_assets.json
+manuscript/figures/document_assets.json
+manuscript/figures/ibge_map_assets.json

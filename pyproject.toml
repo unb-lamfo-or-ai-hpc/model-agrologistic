@@ -71,16 +71,22 @@ dev = [
     "wheel>=0.45,<1",
     "plotly>=6,<7",
     "dash>=3,<4",
-    "reportlab>=4,<5",
-    "pillow>=11,<13",
+    "reportlab>=4,<6",
+    "pillow>=11,<14",
     "pypdf>=5,<7",
+]
+
+cartography-prepare = [
+    "shapely==2.1.2",
+    "pyproj==3.7.2",
+    "pyshp==2.3.1",
 ]
 
 geographic = [
     "plotly>=6,<7",
     "dash>=3,<4",
-    "reportlab>=4,<5",
-    "pillow>=11,<13",
+    "reportlab>=4,<6",
+    "pillow>=11,<14",
     "pypdf>=5,<7",
 ]
 

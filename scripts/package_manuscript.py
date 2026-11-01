@@ -1,4 +1,5 @@
 """Export an editable, flat Elsevier submission/review package with checksums."""
+
 from __future__ import annotations
 
 import argparse
@@ -31,15 +32,10 @@ def package(output: Path, *, root: Path = ROOT) -> None:
         "ELSEVIER_TEMPLATE_NOTICES.md": manuscript / "vendor/ELSEVIER_TEMPLATE_NOTICES.md",
         "quarto-elsevier-LICENSE": manuscript / "vendor/quarto-elsevier-LICENSE",
         "elsevier_provenance.json": manuscript / "elsevier_provenance.json",
-        "comparison_provenance.json": manuscript / "comparison_provenance.json",
-        "evidence_status.json": manuscript / "evidence_status.json",
         "dataset_release.json": manuscript / "dataset_release.json",
     }
     if not (tex / "figures").is_dir():
         raise FileNotFoundError("Render the manuscript before packaging its figures")
-    for figure in sorted((tex / "figures").iterdir()):
-        if figure.is_file() and figure.suffix.lower() in {".png", ".pdf", ".jpg", ".svg"}:
-            files[figure.name] = figure
     payload = {name: path.read_bytes() for name, path in files.items()}
     # Supplement C/D has an explicit flat allowlist, never private generated data.inc.
     for name, path in {
@@ -48,19 +44,26 @@ def package(output: Path, *, root: Path = ROOT) -> None:
         "model_common.inc": supplement / "appendix_c/model_common.inc",
         "appendix_c_readme.md": supplement / "appendix_c/README.md",
         "appendix_d_inventory.json": supplement / "appendix_d_inventory.json",
+        "appendix_e_sources.json": supplement / "appendix_e_sources.json",
+        "appendix_e_summary.json": supplement / "appendix_e_summary.json",
+        "solver_comparison_evidence.json": manuscript / "solver_comparison_evidence.json",
         "input_reproduction_guide.json": (
             root / "docs/evidence/appendix_input_reproduction_20261028.json"
         ),
     }.items():
         if path.is_file():
             payload[name] = path.read_bytes()
+    appendix_index = supplement / "appendix_e_sources.json"
+    if appendix_index.is_file():
+        for case in json.loads(appendix_index.read_text(encoding="utf-8"))["cases"]:
+            identifier = case["case"]
+            if not re.fullmatch(r"[a-z0-9_]+", identifier):
+                raise ValueError("Invalid Appendix E configuration identity")
+            path = supplement / "investments" / (identifier + ".csv")
+            payload["appendix_e_investments_" + identifier + ".csv"] = path.read_bytes()
     for name, path in {
         "appendix_a_original.pdf": supplement / "appendix_a_original.pdf",
         "scalar_evidence.json": manuscript / "scalar_evidence.json",
-        "open_source_comparison_status.json": manuscript / "open_source_comparison_status.json",
-        "scalar_scip_h215_w_2225638_review.json": (
-            root / "docs/evidence/scalar_scip_h215_w_2225638_review.json"
-        ),
         "scalar_wd_h215_2221443_review.json": (
             root / "docs/evidence/scalar_wd_h215_2221443_review.json"
         ),
@@ -71,8 +74,13 @@ def package(output: Path, *, root: Path = ROOT) -> None:
     # Editorial Manager expects a single file level, not figure subdirectories.
     main = payload["main.tex"].decode("utf-8").replace("figures/", "")
     payload["main.tex"] = main.encode("utf-8")
-    payload["supplement.tex"] = payload["supplement.tex"].decode("utf-8").replace(
-        "../figures/", "").replace("figures/", "").encode("utf-8")
+    payload["supplement.tex"] = (
+        payload["supplement.tex"]
+        .decode("utf-8")
+        .replace("../figures/", "")
+        .replace("figures/", "")
+        .encode("utf-8")
+    )
     # The supplement may select PNG while the Elsevier article selects PDF
     # from the same figure definition. Include each actual TeX dependency,
     # not a directory-wide copy of unrelated/private rendering products.
@@ -82,11 +90,17 @@ def package(output: Path, *, root: Path = ROOT) -> None:
             payload[document].decode("utf-8"),
         ):
             if Path(name).name != name or Path(name).suffix.lower() not in {
-                ".pdf", ".png", ".jpg", ".svg"
+                ".pdf",
+                ".png",
+                ".jpg",
+                ".svg",
             }:
                 raise ValueError(f"Nonportable graphic dependency: {name}")
             if name not in payload:
-                payload[name] = (manuscript / "figures" / name).read_bytes()
+                figure = tex / "figures" / name
+                if not figure.is_file():
+                    figure = manuscript / "figures" / name
+                payload[name] = figure.read_bytes()
     payload["README.md"] = (
         b"# Editable Elsevier review project\n\n"
         b"Open main.tex in a TeX distribution or upload this ZIP to Overleaf.\n"
@@ -107,9 +121,13 @@ def package(output: Path, *, root: Path = ROOT) -> None:
         b"styles retain their own license terms, detailed in the included notices.\n"
         b"Journal/preprint submission requires approval of all authors.\n"
     )
-    payload["SHA256SUMS.json"] = (json.dumps({
-        name: hashlib.sha256(content).hexdigest() for name, content in payload.items()
-    }, indent=2) + "\n").encode()
+    payload["SHA256SUMS.json"] = (
+        json.dumps(
+            {name: hashlib.sha256(content).hexdigest() for name, content in payload.items()},
+            indent=2,
+        )
+        + "\n"
+    ).encode()
     output.parent.mkdir(parents=True, exist_ok=True)
     with zipfile.ZipFile(output, "x", compression=zipfile.ZIP_DEFLATED) as archive:
         for name, content in payload.items():

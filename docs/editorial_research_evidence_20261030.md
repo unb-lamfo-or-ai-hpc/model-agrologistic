@@ -1,0 +1,27 @@
+# Research-evidence matrix — 30 October 2026
+
+Technical author-facing source map for the [revision blueprint](editorial_revision_blueprint_20261030.md).
+Original numerical records remain authoritative. This editorial reading does not
+rerun optimization, reread restricted processed inputs or recompute original
+large-instance residuals. “Accepted validation” below refers to the original
+certificate, not a new independent validation performed for this document.
+
+| Claim | Manuscript location | Original job/source | Input identity | Validation evidence | Limitation |
+| --- | --- | --- | --- | --- | --- |
+| Native extensive-form scale grows from 14,054,654 STO variables at h215 to 63,426,344 at h500 | Abstract; R1 | [Scalar results](../manuscript/scalar_results.qmd), original retained Gurobi cohort | Exact instance-specific populations/networks; h215 workbook SHA 40edb665…; h500 888fbff4… | Original per-arm model metadata and scalar cohort records | Populations differ and screened OSRM graphs are not nested; no causal size-only or asymptotic law |
+| h500 reached a 0.207432% gap with accepted original feasibility | R2–R4 | #2220382 / fce341dfff1792d08b20eac132c6ada29f4326d2; [original review](evidence/scalar_h500_2220382_review.json) | h500 workbook SHA 888fbff42e4f80817d4d5f0101049495c86c6ed4cda75f00813779dadab41515 | Objective/bound, original residual certificate, immutable archive SHA 34346c31… | 1%-target acceptance is not exact optimality; 127.58 min native and 111.78 GiB sampled application RSS have different measurement scopes |
+| h500 returned 91.636% domestic service and 94.074% penalty share | R4 | [h500 interpretation](mvp2_scalar_h500_results.md) | Same h500 original W instance and scalar penalties | Original physical summary and reconstructed objective components | Penalized objective is not observed logistics expenditure; storage exceedance and reception exceedance have distinct units |
+| All admitted candidates received positive investment in the reported STO plans | R4 / agricultural discussion | [Scalar decision tables](../manuscript/scalar_results.qmd) | 146 existing plus 69/154/254/354 candidate sites | Retained decision summaries, not input eligibility alone | Supports distributed capacity-sizing interpretation; verify locations/flows before making an optimized map or claiming sparse hub selection |
+| Direct-enabled plans lowered the scalar objective while reducing service | R5 | #2221443; [W/D original review](evidence/scalar_wd_h215_2221443_review.json) | Mode-bound h215 W/D inputs and graph policies | Original per-arm objective/bound, accepted residuals and physical summaries | Different attained gaps and graph modes; no paired causal speedup, stochastic-value or unqualified planning-superiority claim |
+| Pyomo/HiGHS h215 attained common gap 0.000195541% | R6 | #2226536 / 009119a07eb8c68573cfa105893b9d4a719c5155; [original archive inspection](evidence/scalar_highs_h215_2226536_inspection.json) | h215 historical W binding; workbook SHA 40edb66585daca9cc393cab1f86bde6d4528a5f34b6afc57260cc1684396da4e | Original validation accepted, zero failed residual checks; objective 12974673141227.254, bound 12974647770396.836 | Common bounded-slack Pyomo reformulation differs from native reference; original integrity replay is not a fresh solve or residual rerun |
+| Native SCIP four-hour no-incumbent differs from externally censored eight-hour attempt | R6 / limitations | #2225638 and #2226388; [SCIP account](../manuscript/scip_results.qmd) | Original historical h215 W bindings | Native terminal status for the four-hour run; partial controller/accounting records for eight-hour attempt | No incumbent does not prove infeasibility; censored attempt lacks a terminal numerical certificate |
+| Common-Pyomo Gurobi #2228189 failed with a size-limited license before a numerical search result | X3 only; exclude as solver difficulty | [PR #142 audit](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/142); original source 1b53b24f68b6bcbef2260e39d232464cebb01745 | Original W source/plan/input bindings preserved | Original archive SHA 1e39227e78f6350e27243917808a81c1d550b92c1800ef170220e0b527bb8839 | No objective, bound, gap or numerical-performance conclusion |
+| Designated Gurobi license passed a public capacity probe | Technical checkpoint only | #2228385 / fe37669c24895a0bb2a45ff18e99ae7028722c2f; [license evidence](evidence/pyomo_gurobi_license_repair_checks_20261030.json) | Public 2,001-variable/2,001-constraint LP; no private inputs | OPTIMAL, objective 2001; supplied hashes and all Slurm records COMPLETED/0:0 | Neither h215 execution nor private runtime qualification; separate new package/claim required |
+| Common-Pyomo SCIP outcome is pending | R6 placeholder only after original terminal audit | #2228192 / 1b53b24f68b6bcbef2260e39d232464cebb01745 | Existing consumed common-Pyomo W claim | Latest human snapshot RUNNING at 01:31:59 | Historical snapshot, not a current scheduler observation; no terminal metrics inferred |
+
+The original gold source, full population registry and processed experiment
+workbooks are distinct layers. The [source-input audit](evidence/appendix_input_reproduction_20261028.json)
+and [Appendix D inventory](../manuscript/supplement/appendix_d_inventory.json)
+establish existing provenance/coverage; they do not make unavailable external
+bytes publicly reproducible. New scientific claims must identify the precise
+layer and retained validation, rather than relying on matching file names.

@@ -1,0 +1,42 @@
+{
+  "schema_version": "human-requested-pause-20261030-v1",
+  "date": "2026-10-30",
+  "timezone": "America/Fortaleza",
+  "status": "paused_at_researcher_request",
+  "editorial_pr": 144,
+  "branch": "docs/scientific-reader-revision-20261030",
+  "pre_checkpoint_head": "96fcebb1ee6d0a4df52f14dc99a394231903102e",
+  "last_authorized_merge": {
+    "pr": 146,
+    "target": "docs/scientific-reader-revision-20261030",
+    "merge_commit": "96fcebb1ee6d0a4df52f14dc99a394231903102e"
+  },
+  "scip": {
+    "job_id": "2228192",
+    "human_reported_state": "RUNNING",
+    "elapsed": "06:53:11",
+    "step_elapsed": "06:53:07",
+    "terminal_result": false,
+    "repeat_start_allowed": false
+  },
+  "gurobi": {
+    "job_id": "2228514",
+    "original_validation": "accepted",
+    "common_gap": 0.007401594783231128,
+    "evidence_pr": 142
+  },
+  "pending": [
+    "Export ports label and distinct vector symbol",
+    "Exact OSRM road route not depicted annotation",
+    "Individual article maps and Appendix E",
+    "Warehouse investment lists per accepted configuration",
+    "Original solution OD flow matrices with frozen OSRM distances",
+    "Federative Units (UF) capitalization",
+    "Projection explanation in following prose, not visible figure text"
+  ],
+  "implemented_during_checkpoint": false,
+  "new_render": false,
+  "new_hpc_action": false,
+  "merge_authorized_by_this_message": false,
+  "continuation_document": "docs/checkpoints/20261030_pause_appendix_E.md"
+}

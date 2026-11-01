@@ -68,7 +68,8 @@ def check_scalar_revision() -> None:
         or row["original_validation_sha256"] != h500["original_validation_sha256"]
         or row["candidate_capacity_t"] != h500["investment"]["candidate_capacity_tonnes"]
         or row["positive_candidate_investments"] != 354
-        or row["positive_expansions"] != 72 or row["positive_bulkifications"] != 74
+        or row["positive_expansions"] != 72
+        or row["positive_bulkifications"] != 74
     ):
         raise ValueError("Audited original h500 aggregates differ")
     source = MANUSCRIPT / "supplement/appendix_a_original.pdf"
@@ -117,14 +118,8 @@ def check_scalar_scip_revision() -> None:
     ):
         raise ValueError("Prospective multisolver scope differs")
     article = (MANUSCRIPT / "index.qmd").read_text(encoding="utf-8")
-    section = (MANUSCRIPT / "scip_results.qmd").read_text(encoding="utf-8")
-    if (
-        "{{< include scip_results.qmd >}}" not in article
-        or "zero solutions" not in section or "14,414.81" not in section
-        or "has no result at this cutoff" in article
-    ):
-        raise ValueError("Scalar SCIP manuscript scope differs")
-
+    if "{{< include solver_results.qmd >}}" not in article:
+        raise ValueError("Reader solver comparison include differs")
 
 
 def check_highs_and_censored_scip_revision() -> None:
@@ -134,9 +129,16 @@ def check_highs_and_censored_scip_revision() -> None:
     highs = json.loads((evidence / "scalar_highs_h215_2226536_inspection.json").read_text())
     scip = json.loads((evidence / "scalar_scip_h215_2226388_inspection.json").read_text())
     expected = {
-        key: highs[key] for key in (
-            "job_id", "archive_sha256", "source_commit", "objective", "bound",
-            "common_gap", "quality_target_met", "original_validation_status",
+        key: highs[key]
+        for key in (
+            "job_id",
+            "archive_sha256",
+            "source_commit",
+            "objective",
+            "bound",
+            "common_gap",
+            "quality_target_met",
+            "original_validation_status",
         )
     }
     expected["additional_execution_admitted"] = False
@@ -148,7 +150,8 @@ def check_highs_and_censored_scip_revision() -> None:
         or highs["archive_sha256"]
         != "db04224d755cd5720091ddb96fc275bcefc6082431ea4b417a1b90d0fece071b"
         or highs["source_commit"] != "009119a07eb8c68573cfa105893b9d4a719c5155"
-        or not math.isfinite(gap) or not 0 <= gap <= 0.01
+        or not math.isfinite(gap)
+        or not 0 <= gap <= 0.01
         or not math.isclose(gap, highs["common_gap"], rel_tol=1e-8, abs_tol=1e-12)
         or highs["original_validation_status"] != "accepted"
         or highs["validation_failed_check_count"] != 0
@@ -159,7 +162,8 @@ def check_highs_and_censored_scip_revision() -> None:
     ):
         raise ValueError("HiGHS original quality or inspection scope differs")
     expected_scip = {
-        "job_id": scip["job_id"], "archive_sha256": scip["archive_sha256"],
+        "job_id": scip["job_id"],
+        "archive_sha256": scip["archive_sha256"],
         "classification": scip["classification"],
         "native_termination": scip["native_termination"],
         "usable_incumbent": scip["usable_incumbent"],
@@ -176,14 +180,39 @@ def check_highs_and_censored_scip_revision() -> None:
         or scip["cancellation_trigger_established"] is not False
     ):
         raise ValueError("Censored SCIP result cannot be promoted")
-    section = (MANUSCRIPT / "scip_results.qmd").read_text(encoding="utf-8")
+    section = (MANUSCRIPT / "solver_results.qmd").read_text(encoding="utf-8")
     row = (
         f"| Pyomo/APPSI HiGHS | {highs['objective'] / 1e12:.6f} | "
         f"{100 * highs['common_gap']:.6f} | "
         f"{highs['timings']['solver_reported_runtime_seconds'] / 60:.2f} |"
     )
-    if row not in section or "rather than another" not in section:
+    if row not in section:
         raise ValueError("HiGHS or censored SCIP manuscript values differ")
+
+
+def check_reader_solver_comparison() -> None:
+    """Bind the reader subset to preserved originals without distributing history."""
+    original = json.loads(
+        (MANUSCRIPT / "pyomo_solver_campaign.json").read_text(encoding="utf-8")
+    )
+    reader = json.loads(
+        (MANUSCRIPT / "solver_comparison_evidence.json").read_text(encoding="utf-8")
+    )
+    expected = [
+        row for row in original["observations"] if row["solver"] in {"gurobi", "highs"}
+    ]
+    if reader["observations"] != expected or len(expected) != 2:
+        raise ValueError("Reader Gurobi/HiGHS original certificates differ")
+    section = (MANUSCRIPT / "solver_results.qmd").read_text(encoding="utf-8")
+    for row in expected:
+        name = "Gurobi" if row["solver"] == "gurobi" else "HiGHS"
+        displayed = (
+            f"| Pyomo/APPSI {name} | {row['objective'] / 1e12:.6f} | "
+            f"{100 * row['common_gap']:.6f} | "
+            f"{row['timings']['solver_reported_runtime_seconds'] / 60:.2f} |"
+        )
+        if displayed not in section:
+            raise ValueError("Reader solver objective/gap/runtime values differ")
 
 
 def check_public_review_approval() -> None:
@@ -266,6 +295,7 @@ def check_reader_audience(article: str, supplement: str) -> None:
     text = article + "\n" + supplement
     forbidden = (
         r"(?i)coauthor|co-author",
+        r"(?i)\b(?:SCIP|CBC|PySCIPOpt|SoPlex)\b",
         r"(?i)working revision|S6-B|S5 is closed|merge approval",
         r"(?i)million-valued",
         r"(?i)(?:penalt|emergency-weight)[^.\n]{0,100}(?:1000000|1,000,000)",
@@ -352,10 +382,14 @@ def check(*, rendered: bool = False, publication: bool = False) -> None:
     ):
         raise ValueError("AI declaration, Acknowledgements and References order differs")
     intervening = re.findall(
-        r"^# (.+)$", article[article.index(declaration):article.index("# References")],
-        re.MULTILINE)
-    if len(intervening) != 2 or intervening[1] != "Acknowledgements" or any(
-        "{-}" in heading for heading in intervening
+        r"^# (.+)$",
+        article[article.index(declaration) : article.index("# References")],
+        re.MULTILINE,
+    )
+    if (
+        len(intervening) != 2
+        or intervening[1] != "Acknowledgements"
+        or any("{-}" in heading for heading in intervening)
     ):
         raise ValueError("Numbered declaration and Acknowledgements must precede References")
     for required in (
@@ -388,10 +422,12 @@ def check(*, rendered: bool = False, publication: bool = False) -> None:
     ):
         if required not in article:
             raise ValueError(f"Missing scientific context: {required}")
-    labels = re.findall(r"\{#((?:eq|tbl|fig|sec)-[A-Za-z0-9_-]+)\}", article)
+    labels = re.findall(r"\{#((?:eq|tbl|fig|sec)-[A-Za-z0-9_-]+)(?:\s+[^{}]*)?\}", article)
     references = set(re.findall(r"@((?:eq|tbl|fig|sec)-[A-Za-z0-9_-]+)", article))
     if len(labels) != len(set(labels)) or references - set(labels):
         raise ValueError("Duplicate or unresolved mathematical cross-reference")
+    if re.search(r"\b(?:Figure|Figures)\s+@fig-|\b(?:Table|Tables)\s+@tbl-", article):
+        raise ValueError("Do not repeat Quarto automatic cross-reference labels")
     if re.search(r"(?im)^\s*(file|abstract|note)\s*=", bibliography):
         raise ValueError("Private library fields must not be published")
     if "```{" in article:
@@ -415,11 +451,16 @@ def check(*, rendered: bool = False, publication: bool = False) -> None:
     if not 3 <= len(highlights) <= 5 or any(len(line) > 85 for line in highlights):
         raise ValueError("Highlights require 3–5 statements of at most 85 characters")
     supplement = (MANUSCRIPT / "supplement/index.qmd").read_text(encoding="utf-8")
-    for name in ("appendix_c.qmd", "appendix_d.qmd"):
+    for name in ("appendix_c.qmd", "appendix_d.qmd", "appendix_e.qmd"):
         if "{{< include " + name + " >}}" not in supplement:
             raise ValueError("Missing implementation/data appendix include")
         supplement += "\n" + (MANUSCRIPT / "supplement" / name).read_text(encoding="utf-8")
+    supplement += "\n" + (MANUSCRIPT / "supplement/appendix_e_case_tables.qmd").read_text(
+        encoding="utf-8"
+    )
     check_reader_audience(article, supplement)
+    if re.search(r"(?m)^\$\s*$", supplement):
+        raise ValueError("Display mathematics requires double-dollar delimiters")
     review_bib = bibliography + (MANUSCRIPT / "review-methods.bib").read_text(encoding="utf-8")
     review_keys = set(
         re.findall(r"@(?:article|incollection|book|misc|phdthesis)\{([^,]+),", review_bib)
@@ -453,6 +494,7 @@ def check(*, rendered: bool = False, publication: bool = False) -> None:
     check_scalar_revision()
     check_scalar_scip_revision()
     check_highs_and_censored_scip_revision()
+    check_reader_solver_comparison()
     if rendered:
         html = (MANUSCRIPT / "_manuscript/index.html").read_text(encoding="utf-8")
         for extension in ("html", "pdf"):
