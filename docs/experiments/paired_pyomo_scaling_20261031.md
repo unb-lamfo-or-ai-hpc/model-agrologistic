@@ -1,5 +1,12 @@
 # Paired Gurobi–HiGHS scaling campaign
 
+Public software qualification closed on 1 November 2026 at source c493be8c:
+all 111 controls passed without skips, errors or failures. Job 2231201 and its
+owned step ended COMPLETED/0:0. See
+[the original-receipt review](../evidence/pyomo_scaling_public_2231201.json).
+This does not submit or qualify a private population. Merge approval and the
+progressive private pilots remain separate gates.
+
 This prospective protocol uses the same bounded Pyomo scalar extensive form
 for both solvers. It prepares90 fresh observations: two solvers, three warehouse
 populations, five thread ceilings and three temporal repetitions. Original

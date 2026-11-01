@@ -1,3 +1,27 @@
+## Accepted paired Pyomo public qualification — 1 November 2026
+
+The researcher supplied the original reports and terminal accounting for public
+job 2231201, source c493be8c and plan 734621af. All 111 tests passed with zero
+failures, errors or skips. Source/runtime integrity, fresh license capacity,
+16-logical-CPU worker affinity and exclusive allocation were accepted.
+Canonical copies of the result, license and allocation reports reproduce their
+supplied SHA-256 values. Root, batch, extern and owned step all completed with
+exit 0:0 in 35 seconds. The exclusive node allocated 64 logical CPUs; the worker
+step used 16. This is public software qualification, not private population
+memory or performance acceptance. Read
+docs/evidence/pyomo_scaling_public_2231201.json.
+
+The continuation plan is approved; this does not authorize merge. Preserve the
+consumed public claim and every original input/archive. Do not repeat its
+wrapper. Final consolidation changes documentation/evidence only and must
+preserve the executable bytes qualified at c493be8c. Check exact-head CI and
+source closure, mark PR #147 Ready, then request its own explicit merge approval.
+After the authorized merge, provide pinned human CLI for inventory/init and the
+first two fresh h300 pilots: HiGHS at one thread, then Gurobi at one thread.
+The 16-thread pilots follow after terminal collection frees capacity. No private
+start or automatic follow-on is released by this record. All NPAD commands
+remain human-only; local CLI and GitHub editing remain autonomous.
+
 ## Current paired Pyomo scaling preparation — 31 October 2026
 
 The researcher selects common Pyomo for Gurobi and HiGHS, seed42, explicit
