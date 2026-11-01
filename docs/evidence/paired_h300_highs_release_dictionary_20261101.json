@@ -1,0 +1,302 @@
+{
+  "schema_version": "paired-h300-release-dictionary-v1",
+  "date": "2026-11-01",
+  "archive_sha256": "412f4d4d3b7faa7cb913a4da3a537a6804926840fb859bfc22bfd72e11fe702b",
+  "job_id": "2231226",
+  "source_commit": "c493be8cd127c5175fc7eb111400229e64b8e3c0",
+  "members": 87,
+  "verified_inventory_digests": 86,
+  "original_member_inventory": [
+    {
+      "member": "cases/h300-w-sto-highs-t1-r1/case_outcome.json",
+      "bytes": 2000,
+      "sha256": "e3ac99d040b4e200ae4a32fb442b5a4a0e31c60abea1a9a7e73139b673efdb93",
+      "access": "original local archive; not newly deposited"
+    },
+    {
+      "member": "cases/h300-w-sto-highs-t1-r1/input_receipt.json",
+      "bytes": 113322,
+      "sha256": "708f4c09d65d109ff0fea6398cc345f8d09dfabab62dab880aceb81e59ac01a0",
+      "access": "original local archive; not newly deposited"
+    },
+    {
+      "member": "cases/h300-w-sto-highs-t1-r1/products/h300-w-sto-highs-t1-r1/capacity_gap_by_scenario.csv",
+      "bytes": 2077,
+      "sha256": "3fdf051f00a429ba96b82c58acccb6e052c05e7f5ae89a80573d89bd3308e0e3",
+      "access": "original local archive; not newly deposited"
+    },
+    {
+      "member": "cases/h300-w-sto-highs-t1-r1/products/h300-w-sto-highs-t1-r1/emergency_capacity.csv",
+      "bytes": 610276,
+      "sha256": "25f84dc90716da9b397096d46dd8722f70cd3d8366dee6e41b013506b86951e3",
+      "access": "original local archive; not newly deposited"
+    },
+    {
+      "member": "cases/h300-w-sto-highs-t1-r1/products/h300-w-sto-highs-t1-r1/emergency_capacity_daily.csv",
+      "bytes": 727157,
+      "sha256": "d514351890d829cff21149bc6340de8712e9263e5f9c01e92837afd2d8a074e7",
+      "access": "original local archive; not newly deposited"
+    },
+    {
+      "member": "cases/h300-w-sto-highs-t1-r1/products/h300-w-sto-highs-t1-r1/flows.csv",
+      "bytes": 20435914,
+      "sha256": "c0b77669f376172d2797a2eb1293f51a9fc65a5489ec1309d2ebc12ce7e8f77c",
+      "access": "original local archive; not newly deposited"
+    },
+    {
+      "member": "cases/h300-w-sto-highs-t1-r1/products/h300-w-sto-highs-t1-r1/independent_validation.json",
+      "bytes": 53184,
+      "sha256": "df530f65576e713214e6aa30b560b19023202a6d48518521ca52406cd5fbb3d1",
+      "access": "original local archive; not newly deposited"
+    },
+    {
+      "member": "cases/h300-w-sto-highs-t1-r1/products/h300-w-sto-highs-t1-r1/inventories.csv",
+      "bytes": 4756846,
+      "sha256": "281e5b371233d4aeecd5ca8e2a25544713dd4b71a8a2c6d1925a690ddf1f9bc4",
+      "access": "original local archive; not newly deposited"
+    },
+    {
+      "member": "cases/h300-w-sto-highs-t1-r1/products/h300-w-sto-highs-t1-r1/investment_saturation.csv",
+      "bytes": 1584,
+      "sha256": "40e815bef03d0e4932a6a64198389975ef37a54153d5bfd202ce4596b3a9123c",
+      "access": "original local archive; not newly deposited"
+    },
+    {
+      "member": "cases/h300-w-sto-highs-t1-r1/products/h300-w-sto-highs-t1-r1/material_balance_by_scenario.csv",
+      "bytes": 1704,
+      "sha256": "d84c00021a207b1d4ea21010fac786ca6c389dd4dca470b7bfd3fed7c8364e5c",
+      "access": "original local archive; not newly deposited"
+    },
+    {
+      "member": "cases/h300-w-sto-highs-t1-r1/products/h300-w-sto-highs-t1-r1/model_audit.json",
+      "bytes": 28590,
+      "sha256": "9aafe4eb259153b2906a0778a0306a36133ff5a5caad484bedd46dab95425c0f",
+      "access": "original local archive; not newly deposited"
+    },
+    {
+      "member": "cases/h300-w-sto-highs-t1-r1/products/h300-w-sto-highs-t1-r1/preflight.json",
+      "bytes": 3801,
+      "sha256": "3b56bbcb517897d15d9df46bcd08443e3616896383c35e6957a19315cadfe671",
+      "access": "original local archive; not newly deposited"
+    },
+    {
+      "member": "cases/h300-w-sto-highs-t1-r1/products/h300-w-sto-highs-t1-r1/result.json",
+      "bytes": 82083346,
+      "sha256": "634d098a860604402c3de8f18fec9e0579742ec711e4bc182edfa941b061696f",
+      "access": "original local archive; not newly deposited"
+    },
+    {
+      "member": "cases/h300-w-sto-highs-t1-r1/products/h300-w-sto-highs-t1-r1/run_completion.json",
+      "bytes": 1802,
+      "sha256": "5ef9e4d83b40dab05a316571ac58df5e49828b7fc7bf863e518c865ed66a2af5",
+      "access": "original local archive; not newly deposited"
+    },
+    {
+      "member": "cases/h300-w-sto-highs-t1-r1/products/h300-w-sto-highs-t1-r1/run_summary.json",
+      "bytes": 1746,
+      "sha256": "9fa583c36117a3ab969d16a825e0bf0633c28bd1659b684b84f632322f3d46cb",
+      "access": "original local archive; not newly deposited"
+    },
+    {
+      "member": "cases/h300-w-sto-highs-t1-r1/products/h300-w-sto-highs-t1-r1/scenario_performance.csv",
+      "bytes": 2511,
+      "sha256": "b7f2f15e23f38035d1e0b54b7bcfbcf003169e2b336750b4f5aa1cd0b2d4cb6b",
+      "access": "original local archive; not newly deposited"
+    },
+    {
+      "member": "cases/h300-w-sto-highs-t1-r1/products/h300-w-sto-highs-t1-r1/storage_by_scenario.csv",
+      "bytes": 1093,
+      "sha256": "0341f2cc878f85a97db4b46376ad5a1535a78bb8f03743380c3291da65d5b45f",
+      "access": "original local archive; not newly deposited"
+    },
+    {
+      "member": "cases/h300-w-sto-highs-t1-r1/products/h300-w-sto-highs-t1-r1/storage_by_warehouse.csv",
+      "bytes": 338283,
+      "sha256": "b0a294400cfec9f8331734533367bb5681bdbaf535707c547ddf7afaa50583a8",
+      "access": "original local archive; not newly deposited"
+    },
+    {
+      "member": "cases/h300-w-sto-highs-t1-r1/products/h300-w-sto-highs-t1-r1/unmet_demand.csv",
+      "bytes": 287639,
+      "sha256": "022bc2b8931327ad9157b123bce1e4ebdcba49df076e25341ede427489c2be97",
+      "access": "original local archive; not newly deposited"
+    },
+    {
+      "member": "cases/h300-w-sto-highs-t1-r1/products/h300-w-sto-highs-t1-r1/warehouse_decisions.csv",
+      "bytes": 20588,
+      "sha256": "089efbe71864d0512c8f7f368b78df8968ef2b975ddbbdb9c276509578dfe929",
+      "access": "original local archive; not newly deposited"
+    },
+    {
+      "member": "cases/h300-w-sto-highs-t1-r1/warehouse_observation.json",
+      "bytes": 567,
+      "sha256": "3bde401fda3ae5aea0b6bd727dec17872f119964ea37ca8da10f3719b32dd8a2",
+      "access": "original local archive; not newly deposited"
+    },
+    {
+      "member": "cases/h300-w-sto-highs-t1-r1/warehouse_selection_intent.json",
+      "bytes": 63208,
+      "sha256": "7b509fc61e93e8d9ca912fe248c5e6ec137b5dcac26942b7aee243ac819fe4e6",
+      "access": "original local archive; not newly deposited"
+    },
+    {
+      "member": "cases/h300-w-sto-highs-t1-r1/warehouses_observed.csv",
+      "bytes": 14639,
+      "sha256": "796c81e951a2ff09b50cbfdb6efbb6c8e6dbbba367baace1c2ac5c8590c7ca0a",
+      "access": "original local archive; not newly deposited"
+    },
+    {
+      "member": "cases/h300-w-sto-highs-t1-r1/warehouses_used.csv",
+      "bytes": 14639,
+      "sha256": "796c81e951a2ff09b50cbfdb6efbb6c8e6dbbba367baace1c2ac5c8590c7ca0a",
+      "access": "original local archive; not newly deposited"
+    },
+    {
+      "member": "cases/h300-w-sto-highs-t1-r1/warehouses_used.json",
+      "bytes": 58569,
+      "sha256": "d5609de482fb0b6a3c060c94254c217c0677d8e5c0c4422a0475f32699f11b33",
+      "access": "original local archive; not newly deposited"
+    }
+  ],
+  "csv_dictionary": {
+    "warehouse_decisions.csv": {
+      "rows": 300,
+      "columns": [
+        "warehouse",
+        "is_existing",
+        "is_candidate",
+        "open",
+        "candidate_capacity",
+        "expand",
+        "expansion_capacity",
+        "bulkify",
+        "bulk_capacity",
+        "static_capacity",
+        "effective_static_capacity"
+      ],
+      "original_unit": "activation flags: dimensionless; capacity/bulk basis: t",
+      "sha256": "089efbe71864d0512c8f7f368b78df8968ef2b975ddbbdb9c276509578dfe929"
+    },
+    "flows.csv": {
+      "rows": 215100,
+      "columns": [
+        "scenario",
+        "route_type",
+        "product",
+        "period",
+        "value",
+        "origin",
+        "warehouse",
+        "customer",
+        "customer_type",
+        "warehouse_from",
+        "warehouse_to"
+      ],
+      "original_unit": "value: t within the indexed period/scenario on one movement leg",
+      "sha256": "c0b77669f376172d2797a2eb1293f51a9fc65a5489ec1309d2ebc12ce7e8f77c"
+    },
+    "inventories.csv": {
+      "rows": 73651,
+      "columns": [
+        "scenario",
+        "warehouse",
+        "product",
+        "period",
+        "value"
+      ],
+      "original_unit": "value: t at end of the indexed warehouse-product-period-scenario",
+      "sha256": "281e5b371233d4aeecd5ca8e2a25544713dd4b71a8a2c6d1925a690ddf1f9bc4"
+    },
+    "unmet_demand.csv": {
+      "rows": 3808,
+      "columns": [
+        "scenario",
+        "customer",
+        "product",
+        "period",
+        "value"
+      ],
+      "original_unit": "value: unmet t within the indexed customer-product-period-scenario",
+      "sha256": "022bc2b8931327ad9157b123bce1e4ebdcba49df076e25341ede427489c2be97"
+    },
+    "emergency_capacity.csv": {
+      "rows": 8815,
+      "columns": [
+        "scenario",
+        "warehouse",
+        "period",
+        "capacity_type",
+        "value"
+      ],
+      "original_unit": "static value: stock t at period end; reception value: overflow t within period",
+      "sha256": "25f84dc90716da9b397096d46dd8722f70cd3d8366dee6e41b013506b86951e3"
+    },
+    "emergency_capacity_daily.csv": {
+      "rows": 8815,
+      "columns": [
+        "scenario",
+        "warehouse",
+        "period",
+        "capacity_type",
+        "value",
+        "days_in_period",
+        "value_tons_per_day"
+      ],
+      "original_unit": "reception value_tons_per_day: t/day; static daily field: blank",
+      "sha256": "d514351890d829cff21149bc6340de8712e9263e5f9c01e92837afd2d8a074e7"
+    }
+  },
+  "scenario_probabilities": {
+    "oferta_alto__demanda_alto": 0.1111111111111111,
+    "oferta_alto__demanda_baixo": 0.1111111111111111,
+    "oferta_alto__demanda_base": 0.1111111111111111,
+    "oferta_baixo__demanda_alto": 0.1111111111111111,
+    "oferta_baixo__demanda_baixo": 0.1111111111111111,
+    "oferta_baixo__demanda_base": 0.1111111111111111,
+    "oferta_base__demanda_alto": 0.1111111111111111,
+    "oferta_base__demanda_baixo": 0.1111111111111111,
+    "oferta_base__demanda_base": 0.1111111111111111
+  },
+  "positive_flow_families": {
+    "OD": 84328,
+    "DC": 110232,
+    "DD": 20540
+  },
+  "weighted_csv_totals": {
+    "served_domestic_demand": 618922109.1233333,
+    "total_unmet_demand": 58790316.52844521,
+    "emergency_static_capacity": 46443652.132864214,
+    "emergency_reception_capacity": 33839554.795043744
+  },
+  "weighted_totals_match_original_summary": true,
+  "daily_equivalent_checked_for_reception_only": true,
+  "selected_graph": {
+    "sha256": "9520a303457e50e9cbd499654025ed3e639f95724cfe5cfb812c23dbaa5ba3a9",
+    "policy": {
+      "connectivity_export_policy": "one_sink_per_product",
+      "pareto_fraction": 0.2,
+      "route_filter_strategy": "connectivity_preserving_pareto",
+      "route_top_k": null,
+      "use_direct_origin_customer": false,
+      "use_warehouse_transshipment": true
+    },
+    "standalone_arc_list_identified": false,
+    "qualification": "No standalone admissible-arc file identified among archive members. Large result JSON fully hashed, not parsed; no claim that its content cannot help reconstruct the graph."
+  },
+  "next_release": {
+    "status": "metadata_prepared_not_deposited",
+    "original_archive_publication": "not uploaded by this audit",
+    "required": [
+      "source-specific asset terms",
+      "sanitized paths/logs",
+      "explicit selected graph export",
+      "full flow-distance companion with frozen directed OSRM join",
+      "versioned download links and checksum verification"
+    ]
+  },
+  "scope": "Original-file integrity and CSV aggregation checks; no fresh constraint residuals",
+  "large_result_json_parsed": false,
+  "archive_extracted": false,
+  "solver_executed": false,
+  "new_hpc_job": false
+}
