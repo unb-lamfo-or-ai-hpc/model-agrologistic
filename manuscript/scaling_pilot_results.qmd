@@ -83,3 +83,10 @@ parameters, bounds and measurement scopes. Neither observation is an additional
 repetition of the historical native-Gurobi h300 sequence. Later thread levels
 and repeated measurements remain part of the ongoing campaign, not results
 already supplied by this first pair.
+
+The one-thread and 16-thread pilots are the first resource-qualification
+stage of the 90-observation design. The latter have now been submitted for
+both solvers; submission is not a terminal result or a memory qualification.
+Their eventual records will be compared with the one-thread originals before
+the remaining thread levels and larger populations are admitted. No missing
+gap, runtime or physical outcome is inferred from the planned grid.

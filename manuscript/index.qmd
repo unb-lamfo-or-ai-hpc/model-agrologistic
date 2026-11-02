@@ -628,6 +628,44 @@ integer nodes. The measurements do not identify proprietary internal algorithms.
 The practical implication is to report the tested configuration and attainable
 quality, rather than equating more allocated CPUs with more useful parallelism.
 
+## Interpreting the matched solver campaign
+
+The first common-Pyomo h300 pair establishes that both studied solvers can
+return independently accepted plans for the same large agricultural instance.
+Gurobi returned earlier with a smaller attained gap in this pair; HiGHS also
+reached the prescribed quality within its allowance. The observed contrast
+therefore concerns two successful implementations, their attained quality
+and the resources they required. It does not support a general division
+between problems that commercial and open-source software can solve.
+
+The ongoing repeated campaign separates that descriptive observation from
+the questions still to be tested. Within each population, the inputs,
+selected directed graph, scenarios, ordered algebra and resource profile
+remain fixed while the solver and thread ceiling vary. Three temporal runs
+at seed 42 can characterize variability under that fixed-seed protocol;
+they do not sample different random seeds. The first 16-thread h300 pilots
+have been submitted, but their outcomes are not included in the reported
+results. Progression to larger populations depends on observed memory
+headroom and closed validation records. Time-limited, interrupted and
+unexecuted cases remain distinct in the complete experimental grid.
+
+Both completed h300 runs processed one integer node and reported several
+million LP iterations. Those counters motivate examining root processing
+and the continuous relaxation alongside integer search. They do not isolate
+which phase caused the runtime difference. In particular, the version-specific
+HiGHS parallel-search setting does not imply parallel simplex in MIP
+relaxations. Additional configured threads may therefore have limited benefit
+for some workloads. The forthcoming measurements test that possibility rather
+than presupposing a speedup or a preferred thread count.
+
+This comparison complements the investment and uncertainty questions in
+@essien2018, @reis2023 and @pourmohammadi2020, and the capacity-relief and
+computational-quality reporting in @milanez2026. It adds a matched within-study
+connection between model size, verified solution quality, application effort
+and the resulting grain-network decisions. It neither establishes a new
+location formulation nor permits a runtime ranking against those studies,
+whose data, service requirements, representations and equipment differ.
+
 ## Penalty effects and agricultural interpretation
 
 The three slack families enlarge only their encoded demand, static-stock and
@@ -673,6 +711,30 @@ count the same grain through several arcs, so they are not unique production.
 Scenario-weighted logistics aggregates and selected-scenario views answer
 different questions. These distinctions prevent superficially attractive maps
 or totals from overstating service improvements and infrastructure requirements.
+
+For a planning organization, application time matters alongside native solver
+time: model assembly, transfer, extraction and checking all precede a usable
+decision report. In the first matched pair, these complete application times
+are approximately 92 and 443 minutes. Such observations help assess whether
+an available computational environment can support repeated strategic
+analyses within the organization's planning cycle. They do not establish
+real-time decision support, deployment costs or a universal software choice.
+
+The two plans also illustrate why a small MIP gap is only one part of decision
+support. Both open 154 candidates, but the expansion and bulk-handling lists
+differ. Similar aggregate costs and service therefore need not identify one
+unique investment program. Comparing the complete facility-ID lists can
+reveal which recommendations change with the returned incumbent. That is
+sensitivity to computational outcomes under fixed assumptions, rather than
+demonstrated robustness to market, climate or demand uncertainty.
+
+Expected unmet tonnes are weighted across the modeled horizon and scenarios;
+they are not an observed annual national deficit. Likewise, modeled financial
+subtotals are not validated construction bids or realized welfare changes.
+The practical contribution is a traceable way to inspect investment options,
+remaining service limitations and computational requirements together. Turning
+those outputs into a project portfolio requires site and engineering review,
+locally credible costs and an explicit assessment of the service trade-offs.
 
 ## Contribution to agricultural computing
 

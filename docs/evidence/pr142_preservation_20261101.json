@@ -1,0 +1,204 @@
+{
+  "schema_version": "pr142-file-preservation-and-supersession-v1",
+  "date": "2026-11-01",
+  "source_pr": 142,
+  "source_commit": "5c7b1fbfaa042f352548a0d059dad3bb6ab07301",
+  "destination_pr": 144,
+  "preserved_added_files": [
+    {
+      "path": "docs/evidence/h215_consolidation_document_checks_20261030.json",
+      "git_blob": "6b2a7ed0e530040c734e9d711f84952daa20d028",
+      "disposition": "unchanged_historical_predecessor_not_current_reader_prose"
+    },
+    {
+      "path": "docs/evidence/pyomo_gurobi_2228514_original_inspection_20261030.json",
+      "git_blob": "c30e5aaeb28c68b86dcb42ae221750d4015fbc62",
+      "disposition": "unchanged_historical_predecessor_not_current_reader_prose"
+    },
+    {
+      "path": "docs/evidence/pyomo_gurobi_h215_2228189_audit.json",
+      "git_blob": "4328b91b00fdd01cd0c57c023d189a9036d6ad8f",
+      "disposition": "unchanged_historical_predecessor_not_current_reader_prose"
+    },
+    {
+      "path": "docs/evidence/pyomo_h215_comparison_preparation_20261030.json",
+      "git_blob": "caf1d5dbd75a729211f7476bcedd39cf15a46a10",
+      "disposition": "unchanged_historical_predecessor_not_current_reader_prose"
+    },
+    {
+      "path": "docs/evidence/pyomo_h215_submissions_20261030.json",
+      "git_blob": "bd229404736ed371dccc0f8e81a7123c844b4a8c",
+      "disposition": "unchanged_historical_predecessor_not_current_reader_prose"
+    },
+    {
+      "path": "docs/evidence/reader_regression_reconciliation_20261030.json",
+      "git_blob": "ee9817df84f6dca6045cadba82f9195ee74bbed8",
+      "disposition": "unchanged_historical_predecessor_not_current_reader_prose"
+    },
+    {
+      "path": "docs/h215_common_pyomo_comparison_20261030.md",
+      "git_blob": "7750840f61429cd13bba5d422f6781ade258a531",
+      "disposition": "unchanged_historical_predecessor_not_current_reader_prose"
+    },
+    {
+      "path": "docs/mvp2_completion_plan_20261030.md",
+      "git_blob": "36bb57dcbaf57979e985bc917ddd6a91573d7062",
+      "disposition": "unchanged_historical_predecessor_not_current_reader_prose"
+    },
+    {
+      "path": "docs/pyomo_gurobi_h215_2228189_license_failure.md",
+      "git_blob": "ac546866fad796f73dc479b510b5fdd73cb26251",
+      "disposition": "unchanged_historical_predecessor_not_current_reader_prose"
+    }
+  ],
+  "file_disposition": [
+    {
+      "path": "AGENTS.md",
+      "identical_develop": false,
+      "identical_144": false,
+      "exists_144": true
+    },
+    {
+      "path": "PROJECT_STATE.md",
+      "identical_develop": false,
+      "identical_144": false,
+      "exists_144": true
+    },
+    {
+      "path": "docs/article_plan.md",
+      "identical_develop": false,
+      "identical_144": false,
+      "exists_144": true
+    },
+    {
+      "path": "docs/current_status.md",
+      "identical_develop": false,
+      "identical_144": false,
+      "exists_144": true
+    },
+    {
+      "path": "docs/evidence/h215_consolidation_document_checks_20261030.json",
+      "identical_develop": false,
+      "identical_144": false,
+      "exists_144": false
+    },
+    {
+      "path": "docs/evidence/pyomo_gurobi_2228514_original_inspection_20261030.json",
+      "identical_develop": false,
+      "identical_144": false,
+      "exists_144": false
+    },
+    {
+      "path": "docs/evidence/pyomo_gurobi_h215_2228189_audit.json",
+      "identical_develop": false,
+      "identical_144": false,
+      "exists_144": false
+    },
+    {
+      "path": "docs/evidence/pyomo_h215_comparison_preparation_20261030.json",
+      "identical_develop": false,
+      "identical_144": false,
+      "exists_144": false
+    },
+    {
+      "path": "docs/evidence/pyomo_h215_submissions_20261030.json",
+      "identical_develop": false,
+      "identical_144": false,
+      "exists_144": false
+    },
+    {
+      "path": "docs/evidence/reader_regression_reconciliation_20261030.json",
+      "identical_develop": false,
+      "identical_144": false,
+      "exists_144": false
+    },
+    {
+      "path": "docs/h215_common_pyomo_comparison_20261030.md",
+      "identical_develop": false,
+      "identical_144": false,
+      "exists_144": false
+    },
+    {
+      "path": "docs/mvp2_completion_plan_20261028.md",
+      "identical_develop": false,
+      "identical_144": false,
+      "exists_144": true
+    },
+    {
+      "path": "docs/mvp2_completion_plan_20261030.md",
+      "identical_develop": false,
+      "identical_144": false,
+      "exists_144": false
+    },
+    {
+      "path": "docs/mvp2_editorial_parallel_plan_20261028.md",
+      "identical_develop": false,
+      "identical_144": false,
+      "exists_144": true
+    },
+    {
+      "path": "docs/pyomo_gurobi_h215_2228189_license_failure.md",
+      "identical_develop": false,
+      "identical_144": false,
+      "exists_144": false
+    },
+    {
+      "path": "manuscript/README.md",
+      "identical_develop": false,
+      "identical_144": false,
+      "exists_144": true
+    },
+    {
+      "path": "manuscript/index.qmd",
+      "identical_develop": false,
+      "identical_144": false,
+      "exists_144": true
+    },
+    {
+      "path": "manuscript/supplement/appendix_c.qmd",
+      "identical_develop": false,
+      "identical_144": false,
+      "exists_144": true
+    },
+    {
+      "path": "manuscript/supplement/index.qmd",
+      "identical_develop": false,
+      "identical_144": false,
+      "exists_144": true
+    },
+    {
+      "path": "tests/test_manuscript_comparison.py",
+      "identical_develop": true,
+      "identical_144": false,
+      "exists_144": true
+    },
+    {
+      "path": "tests/test_manuscript_partial_results.py",
+      "identical_develop": true,
+      "identical_144": false,
+      "exists_144": true
+    },
+    {
+      "path": "tests/test_optimization_facade.py",
+      "identical_develop": true,
+      "identical_144": true,
+      "exists_144": true
+    },
+    {
+      "path": "tests/test_pyomo_campaign_contract.py",
+      "identical_develop": true,
+      "identical_144": true,
+      "exists_144": true
+    },
+    {
+      "path": "tests/test_wd_terminal_review.py",
+      "identical_develop": true,
+      "identical_144": true,
+      "exists_144": true
+    }
+  ],
+  "old_article_prose_merged": false,
+  "old_branch_deleted": false,
+  "original_HPC_archives_or_source_inputs_modified": false,
+  "publication_scope": "Current Gurobi/HiGHS reader text is maintained separately"
+}

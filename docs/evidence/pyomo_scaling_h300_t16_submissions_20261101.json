@@ -1,0 +1,57 @@
+{
+  "schema_version": "paired-pyomo-h300-t16-human-submission-receipts-v1",
+  "date": "2026-11-01",
+  "source": "Researcher-pasted original CLI receipts and scheduler snapshot",
+  "engine_commit": "c493be8cd127c5175fc7eb111400229e64b8e3c0",
+  "original_t1_anchors_verified_by_human_CLI": true,
+  "originals_preserved": true,
+  "submissions": [
+    {
+      "cell": "h300-w-sto-highs-t16-r1",
+      "job_id": "2231591",
+      "plan_sha256": "925a1de072ce8fd86e4cdfaa675cfe5250d5fd72c1ab4866e8704bac019dc1dc",
+      "solver": "highs",
+      "seed": 42,
+      "threads": 16,
+      "native_seconds": 28800,
+      "target_gap": 0.01,
+      "reported_root_state": "RUNNING",
+      "reported_root_elapsed": "00:00:53",
+      "reported_step_elapsed": "00:00:50",
+      "reported_node": "r1i3n3",
+      "reported_allocated_root_cpus": 64,
+      "reported_worker_step_cpus": 16,
+      "automatic_follow_on_allowed_in_original_receipt": false
+    },
+    {
+      "cell": "h300-w-sto-gurobi-t16-r1",
+      "job_id": "2231593",
+      "plan_sha256": "4be92d10eb6a5e944e0c290f1f50ba8aa3be6eabd681cc2f38386f2d1c397e2d",
+      "solver": "gurobi",
+      "seed": 42,
+      "threads": 16,
+      "native_seconds": 28800,
+      "target_gap": 0.01,
+      "reported_root_state": "RUNNING",
+      "reported_root_elapsed": "00:00:49",
+      "reported_step_elapsed": "00:00:44",
+      "reported_node": "r1i3n4",
+      "reported_allocated_root_cpus": 64,
+      "reported_worker_step_cpus": 16,
+      "automatic_follow_on_allowed_in_original_receipt": false
+    }
+  ],
+  "observed_final_objective_bound_gap_time_memory": null,
+  "terminal_collection_received": false,
+  "16_thread_memory_gate_qualified": false,
+  "future_queue_jobs": {
+    "scientific_new_submissions": 86,
+    "attached_existing_scientific_jobs": 2,
+    "stage_collection_gate_jobs": 6,
+    "final_consolidation_job": 1,
+    "new_submissions": 93,
+    "continuation_graph_total": 95
+  },
+  "Codex_executed_HPC_command_or_repeated_start": false,
+  "PDFs_deferred_by_researcher": true
+}

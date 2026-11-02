@@ -1,0 +1,21 @@
+{
+  "schema_version": "reader-campaign-discussion-increment-v1",
+  "date": "2026-11-01",
+  "parent_editorial_commit": "313f3af8a210cabe4167f0506ad1416553c61d67",
+  "submission_evidence_commit": "f17815e3820ebd6afc9a50d259c1fcd632ad154a",
+  "manuscript_integrity": "accepted;33main citations",
+  "focused_tests": {
+    "passed": 18,
+    "failed": 0,
+    "skipped": 0
+  },
+  "scope": "Matched-pair interpretation, ongoing16-thread pilots, literature and agribusiness meaning; no new terminal observation",
+  "article_sources": {
+    "manuscript/index.qmd": "609b727907295036188d8afa25f0ef8b3b104941dcfc079ddcb83e13e38c0790",
+    "manuscript/scaling_pilot_results.qmd": "6a10237cc98dde11408f17ab3333bafdd6760b3088ff21b6d3e3756fcd5f3b25"
+  },
+  "original_appendix_a_sha256": "859dc52b64b6bcf471f7616182d8cadf2b693dbfd19ad4b9248637b5c231b3ed",
+  "prior_full_document_qualification_not_rerun": true,
+  "new_solver_HPC_execution_or_PDF_generation": false,
+  "original_inputs_or_archives_modified": false
+}
