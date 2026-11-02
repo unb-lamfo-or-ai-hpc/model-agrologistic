@@ -1,59 +1,83 @@
-# Reviewed manuscript deployment
+# Reviewed Quarto Pages publication — 2 November 2026
 
-## Current MVP2 publication sequence — 1 November 2026
+PR144 merged at50a77a7527541a9f00769928164dc71457dbc38c. PR148's finite graph
+was reported released with93newIDs and no repeated pilot. These are source
+integration and submission facts, not new terminal scientific results.
+The original claims, archives and excluded implementation histories remain intact.
 
-PR #144 targets develop and requires its own qualified merge approval.
-A subsequent, separate develop-to-main PR will reconcile the approved
-article/appendices, final data links and source hashes for Quarto publication.
-Earlier public-review authorization below is historical; it does not approve
-the current changed source snapshot or bypass either merge.
+## PR sequence and scope
 
-The publication PR must expose article and complete-appendix HTML/PDF,
-generated article and appendix TeX downloads, and the portable editable
-LaTeX ZIP with bibliography, figures, class/style notices and checksums.
-The existing ZIP already carries main.tex and supplement.tex; any direct
-TeX download links must be created and tested by that publication PR, rather
-than advertised before the files exist. Preserve existing public PDF/ZIP
-addresses or provide compatible aliases. The full ZIP remains necessary
-for compilation; a standalone TeX download omits dependencies.
+The protected-main workflow requires the source branchdevelop and preserves
+every exclusive main commit. PR149 is the Draft develop-to-main promotion.
+PR150 first prepares the publication helpers and source candidate in develop.
+Each merge requires the researcher's explicit approval. Neither PR merge alone
+dispatches publication. Working article/appendix PDFs remain deferred; the
+final approved main workflow renders them once for the public review edition.
 
-Use Quarto's retained TeX outputs, not a hand-transcribed manuscript.
-Confirm original Appendix A inclusion, zero unresolved citations/cross-links,
-readable maps/tables and dimensional labels. Refresh the hash-bound Pages
-approval only after the researcher approves the qualified publication
-snapshot. Run the existing manual main-only publication workflow and record
-the deployed commit/run, anonymous download results and full file hashes.
-No research solver runs in the publication workflow. Local working PDFs
-remain local; final authorized Pages artifacts are public outputs.
+The manuscript retains the bounded bibliographic/source-access reconciliation.
+Zenodo0.2.0isalready public; the41-file derivative inventory is prepared locally
+for a later reviewed version. This publication does not create a new DOI,
+upload data or authorize journal submission. Archive and manuscript identities
+remain separate from one another.
 
-## Historical deployment authorization
+## Fresh source candidate and explicit manual activation
 
-The repository owner authorized integration of PR #33 into `develop` and public
-GitHub Pages deployment on 2 October 2026. This authorization concerns the
-reviewed article, supplementary review and editable coauthor package; it does
-not authorize journal submission, arXiv deposit or publication of the Zenodo
-dataset draft.
+The committed manuscript/pages_approval.json is a fresh unapproved candidate:
+approved=false, no authorized person/date, and hashes of the manuscript and
+publication pipeline. The former approved record is retained byte-for-byte at
+docs/history/pages_approval_before_20261102.json. Its authorization is not reused.
 
-`manuscript/pages_approval.json` binds the authorization to scientific source
-hashes. The publication checker verifies those identities and preserves the
-historical rejected reference certificate. Public document availability is not
-equivalent to scientific acceptance of every configuration or all-author
-approval for journal submission.
+After the qualified promotion is approved and merged, publication remains
+manual: workflowmanuscript-pages.yml onmain, MANUSCRIPT_PAGES_ENABLED=true
+and publish_reviewed_snapshot=true. The runtime activator checks the actual
+checked-out commit, workflow commit/ref, repository, manual acknowledgement
+and run identity, then verifies the source/pipeline hashes. Only that run gets
+an activated approval record. The existing publication checker still requires
+an approved record; the draft candidate fails it until explicit activation.
+The run-scoped record is copied to publication-approval.json and retained with
+the output manifest. A failed or unacknowledged run does not deploy.
 
-Deployment is manual from `main`, requires the explicit reviewed
-snapshot acknowledgement and `MANUSCRIPT_PAGES_ENABLED=true`, renders both
-Quarto projects, checks the assembled outputs and packages the editable sources.
-It uses GitHub's Pages artifact/deployment actions. No research solver executes
-during publication. TeX dependencies are installed through the actual TinyTeX
-binary rather than an assumed runner PATH.
+The activation uses the documented GitHub workflow context and typed input:
+[contexts](https://docs.github.com/en/actions/reference/workflows-and-actions/contexts)
+and [manual inputs](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/trigger-a-workflow).
+It does not capture credential values, change branch protection or grant data/
+journal authorization.
 
-The public output contains `index.html`, `index.pdf`,
-`supplementary-review.html`, `supplementary-review.pdf` and `coauthor-latex.zip`.
-The deployed revision must be recorded with its merge SHA and Actions run ID.
-The deployment uses the current approved `main` revision, without a pinned
-checkout of an earlier `develop` snapshot. Branch history is preserved.
+## Output contract
 
-Remaining submission requirements are recorded separately in
-`cea_submission_checklist.md`; unresolved review chronology and screening counts
-remain disclosed. Credentials are never recorded in repository receipts or
-project checkpoints.
+| File | Role |
+| --- | --- |
+| index.html / index.pdf | Article |
+| supplementary-review.html / supplementary-review.pdf | Complete appendices, including original AppendixA |
+| index.tex | Generated article TeX, byte-identical to main.tex in the portable ZIP |
+| supplementary-review.tex | Generated appendix TeX, byte-identical to supplement.tex in that ZIP |
+| editable-sources.zip | Complete flat TeX project with figures, bibliographies and notices |
+| coauthor-latex.zip | Preserved compatible URL, byte-identical to editable-sources.zip |
+| publication-manifest.json | Source commit, run identity, sizes and SHA-256s of published outputs |
+| publication-approval.json | Run-scoped acknowledged source/pipeline record |
+
+Quarto keep-tex supplies the original generated sources. The existing packager
+flattens their figure paths automatically; the public TeX aliases are extracted
+from that checked ZIP, never hand-transcribed. The PDF files in the ZIP must
+match the public article/appendix PDFs. The original AppendixAchecksum remains
+859dc52b64b6bcf471f7616182d8cadf2b693dbfd19ad4b9248637b5c231b3ed.
+A standalone TeX file is useful for editing but needs the ZIP's dependencies
+for compilation.
+
+Finalization verifies the ZIP member/hash inventory, PDF snapshot identity and
+direct aliases, adds download links to both HTML documents and writes the
+publication manifest. The readonly output check runs before upload/deployment.
+Existing PDF/ZIP addresses remain available. No solver runs in this workflow.
+
+## Post-deployment verification
+
+After the authorized run succeeds, record its exact main commit/run URL, fetch
+the public HTML/PDF/TeX/ZIP/manifest anonymously, and verify downloaded bytes
+against publication-manifest.json. Check the complete AppendixAsequence,
+citations, maps, tables and dimensional labels in the final rendered edition.
+The package's TeX aliases must still match its contained main.tex/supplement.tex.
+Only then report the new Pages edition as deployed and verified.
+
+No final PDF has been rendered or uploaded during preparation. Any preliminary
+HTML checks, fixture ZIPs/PDF headers and source validation have narrower scope.
+Do not relabel those as a deployed edition or all-author journal approval.

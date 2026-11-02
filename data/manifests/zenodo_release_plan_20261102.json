@@ -103,12 +103,14 @@
     "source_qualified_commit": "334827d5e3669b4fcdf2801fd4cea466e5a71d06",
     "scientific_engine_commit": "c493be8cd127c5175fc7eb111400229e64b8e3c0",
     "software_merge_commit": "48e2831693fc4abe0657c82197a2e884a61e99d2",
-    "private_queue_submission_receipt_received": false,
+    "private_queue_submission_receipt_received": true,
     "outputs_to_add_only_after_collection": true,
     "all_90_states_retained": true,
     "missing_metrics_imputed": false,
     "missing_incumbent_vectors_fabricated": false,
-    "followup_release_after_campaign": "Subsequent reviewed dataset version; no completion or version number asserted"
+    "followup_release_after_campaign": "Subsequent reviewed dataset version; no completion or version number asserted",
+    "private_queue_status": "reported_bounded_graph_released",
+    "release_receipt": "docs/evidence/pyomo_serial_release_reported_20261102.json"
   },
   "milestones": [
     {
@@ -151,7 +153,7 @@
   "publication": {
     "reader_pr": 144,
     "target": "develop",
-    "reader_merge_authorization_pending": true,
+    "reader_merge_authorization_pending": false,
     "next_pr": "separate develop-to-main Pages promotion after PR144 merge",
     "main_merge_authorization_pending": true,
     "quarto_outputs": [
@@ -160,6 +162,9 @@
       "editable TeX source ZIP"
     ],
     "pdf_generation_deferred": true,
-    "new_dataset_doi_not_a_current_public_link": true
+    "new_dataset_doi_not_a_current_public_link": true,
+    "reader_merge_commit": "50a77a7527541a9f00769928164dc71457dbc38c",
+    "main_promotion_pr": 149,
+    "publication_preparation_pr": 150
   }
 }

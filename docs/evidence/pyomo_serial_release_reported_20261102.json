@@ -45,8 +45,8 @@
   "original_memory_storage_progression_gates_retained": true,
   "individual_new_job_ids": null,
   "new_job_completion_states": null,
-  "completed_new_scientific_results": 0,
-  "completion_count_scope": "No new scientific result was supplied; zero here means reported new completions, not a live scheduler assertion",
+  "completed_new_scientific_results": null,
+  "completion_count_scope": "No terminal observations for the86new scientific cells were supplied; their completion states remain unknown.",
   "original_queue_hashes": null,
   "independent_live_scheduler_observation": false,
   "do_not_repeat_prepare_submit_or_release": true,
@@ -55,5 +55,6 @@
     "pr144": "50a77a7527541a9f00769928164dc71457dbc38c"
   },
   "zenodo_new_version_published": false,
-  "working_pdfs_still_deferred": true
+  "working_pdfs_still_deferred": true,
+  "new_scientific_result_records_received": 0
 }
