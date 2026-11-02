@@ -1,0 +1,83 @@
+{
+  "schema_version": "clean-map-build-pilot-reader-review-v1",
+  "date": "2026-11-01",
+  "editorial_snapshot_verified_blobs": 725,
+  "editorial_snapshot_commit": "ab2010cee43162aa7748e21ac5a9bbab72b56d07",
+  "qualified_develop_parent": "8b7d94cf72faedde3850304ecb0271ce841a36d7",
+  "qualified_upstream_files_byte_identical": 29,
+  "ruff": "passed",
+  "tests": {
+    "build_and_upstream_pure_controls": {
+      "passed": 105,
+      "skipped": 0
+    },
+    "document_and_pilot_reporting": {
+      "passed": 91,
+      "skipped": 0
+    },
+    "geographic_and_ibge": {
+      "passed": 38,
+      "skipped": 0
+    },
+    "qualification": "Selected groups overlap; do not sum as unique test count. No new NPAD/native Gurobi qualification."
+  },
+  "runtime": {
+    "python_environment": "existing venv313",
+    "pillow": "13.0.0",
+    "reportlab": "5.1.0",
+    "geographic_pdf_test_pypdf": "6.10.0, reused from existing bundled pure-Python library",
+    "packages_installed": false,
+    "environment_created": false
+  },
+  "input_source_audit": {
+    "original_cached_cells": 254,
+    "pinned_github_links": 39
+  },
+  "figures": {
+    "map_designs_generated": 19,
+    "active_image_dependencies_checked": 20,
+    "cached_outputs_sha256_checked": true,
+    "private_inputs_or_network_required": false,
+    "new_visual_sample": "h500 static-capacity PNG; prior full atlas QA retained",
+    "full_pdf_visual_qualification": false
+  },
+  "html": {
+    "article": {
+      "exit_code": 0,
+      "html_sha256": "b3096956f3f63167c779bed9439780224deb931b767a5ef7cd7f5879864b6fbd",
+      "image_count": 13,
+      "mathml_elements": 87,
+      "missing_local_images": 0,
+      "excluded_history_mentions": 0,
+      "unresolved_citations": false,
+      "remote_math_runtime": false
+    },
+    "appendices": {
+      "exit_code": 0,
+      "html_sha256": "96e353237127be8c8d6d4dec587b0c5309191dc23a381082e1c9e3365cd78b08",
+      "image_count": 26,
+      "mathml_elements": 66,
+      "missing_local_images": 0,
+      "excluded_history_mentions": 0,
+      "unresolved_citations": false,
+      "remote_math_runtime": false
+    }
+  },
+  "original_appendix_a_sha256": "859dc52b64b6bcf471f7616182d8cadf2b693dbfd19ad4b9248637b5c231b3ed",
+  "qualification_history": [
+    "An unpinned new appendix link was rejected; the original audit was committed first and both new links pinned to that commit.",
+    "A test fixture copied transient Quarto HTML paths while rendering; transient build outputs are now excluded and the final suite ran before final renders.",
+    "Initial geographic PDF test lacked pypdf in venv313; the full group passed with the existing bundled pure-Python pypdf library, without installation."
+  ],
+  "bibliography": {
+    "retained_records": 38,
+    "crossref_metadata": 32,
+    "journal_identity_fallbacks": 2,
+    "dataset_identity_source": "Zenodo",
+    "whole_corpus_full_text_review_complete": false
+  },
+  "originals_preserved": true,
+  "full_article_or_appendix_pdf_generated": false,
+  "hpc_access_or_new_job": false,
+  "merge_or_pages_deploy": false
+}

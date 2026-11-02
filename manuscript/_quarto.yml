@@ -1,6 +1,7 @@
 project:
   type: manuscript
   output-dir: _manuscript
+  pre-render: python ../scripts/prepare_document_assets.py
   render:
     - index.qmd
 manuscript:
@@ -24,6 +25,7 @@ metadata-files:
 bibliography: references.bib
 format:
   html:
+    html-math-method: mathml
     theme: cosmo
     toc: true
     number-sections: true
@@ -46,3 +48,4 @@ format:
     include-in-header:
       text: |
         \usepackage{orcidlink}
+        \usepackage{float}

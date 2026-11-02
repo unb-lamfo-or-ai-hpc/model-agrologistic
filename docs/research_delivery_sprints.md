@@ -1,5 +1,32 @@
 # Nine-scenario research delivery plan
 
+## Active delivery sequence — 1 November 2026
+
+This sequence incorporates the researcher's five revised directions. The
+historical experimental plans below remain history, not current settings.
+
+| Workstream / sprint | Deliverable | Exit criterion / integration |
+| --- | --- | --- |
+| B3 — contribution against Related Work | Source-specific comparison of location, investment, uncertainty, computational methods and measurement, including Rosa thesis | Claims supported against the literature as a whole; full-text limitations explicit; approved question/objectives preserved |
+| D2 + data-deposition sprint | GitHub/Zenodo asset map, exact input/matrix/graph/vector identities, dictionary and source-specific notices | Four original OSRM matrices accessible through the existing deposit; CSV copies prepared; selected-arc/vector inventory and next-version terms/links reviewed |
+| Scientific reader revision / #144 | Gurobi/HiGHS pipelines and parallelism, effective parameters/seeds, quality/physical interpretation and dimensions in article/B-E | No SCIP/CBC history in compiled reader text or editable article package; original A/evidence retained; coherent units and cohort boundaries |
+| Document qualification / #144 | Source/data checks, local Quarto PDFs/TeX, figures/tables/links, citation and dimensional review | Exact-source local checks and visual PDF review; unresolved scientific author decisions addressed; qualified merge approval into develop |
+| Publication / separate develop-to-main PR | Quarto Pages article, appendices, PDF downloads and editable TeX sources | Separate approved merge to main, hash-bound publication receipt, successful manual deployment, public download/hash verification |
+
+The input/deposition work runs in parallel with bibliography and experiments;
+it need not wait for all 90 cells. The current paired Pyomo design crosses
+two solvers, h300/h400/h500, five thread ceilings and three repetitions,
+with seed 42, 8 h native time and a 1% scalar-gap target. It is planned work,
+not 90 admitted/completed results. HiGHS 2231226 and Gurobi 2231228 are RUNNING
+at 01:02:48/01:02:44 in the latest supplied accounting. Preserve claims;
+do not repeat init/start. Collect terminal evidence before admitting further
+pilots or populations. No automatic follow-on.
+
+Read the [reader/data/dimensions checkpoint](checkpoints/20261101_reader_scope_units_data.md)
+and [data distribution plan](research_data_distribution_20261101.md).
+Final Pages publication requires a distinct main PR after the authorized
+develop integration; this planning change authorizes neither merge.
+
 ## Scope and baseline
 
 The accepted thesis-compatible and three-scenario results remain frozen. The new study uses nine scenarios, populations of 215, 300, 400 and 500 hubs, and direct arcs enabled/disabled. The nearest-20% interhub baseline plus explicitly audited directed connectivity repair remains the network contract. Larger populations, Benders and a definitive scalability frontier are outside this delivery cycle.

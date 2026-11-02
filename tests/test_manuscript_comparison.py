@@ -1,4 +1,4 @@
-"""Keep publication tables traceable to the frozen thirteen-attempt cohort."""
+"""Retain the historical comparison and check the current reader-facing scope."""
 import copy
 import importlib.util
 import json
@@ -36,7 +36,7 @@ def test_every_attempt_retained_and_missing_economics_not_zero():
     assert "not a physical capacity shortfall" in text
 
 
-def test_coauthor_research_questions_do_not_imply_unexecuted_comparisons():
+def test_reader_research_question_does_not_imply_unexecuted_comparisons():
     text = (MODULE.MANUSCRIPT / "index.qmd").read_text(encoding="utf-8")
     abstract = text.split("abstract: >-", 1)[1].split("keywords:", 1)[0]
     assert "rosa2026thesis" not in abstract
@@ -44,7 +44,9 @@ def test_coauthor_research_questions_do_not_imply_unexecuted_comparisons():
     assert "global\nnative TimeLimit of 14,400 seconds" in text
     assert "nine Cartesian scenarios of probability 1/9" in text
     assert "DET uses the original deterministic arrays" in text
-    assert "differences preclude causal solver-speed comparisons" in text
+    solver_text = (MODULE.MANUSCRIPT / "solver_results.qmd").read_text(encoding="utf-8")
+    assert "not matched repeated" in " ".join(solver_text.split())
+    assert "equal attained gaps" in " ".join(solver_text.split())
     status = json.loads((MODULE.MANUSCRIPT / "open_source_comparison_status.json").read_text())
     assert len(status["observations"]) == 1 and not status["highs"]["execution_admitted"]
     observation = status["observations"][0]
@@ -95,16 +97,20 @@ def test_reader_facing_editorial_structure_and_attribution():
     prose = text.replace("@rosa2026thesis", "Rosa (2026)")
     assert not re.search(r"\bthesis\b", prose, re.IGNORECASE)
     abstract = text.split("abstract: >-", 1)[1].split("keywords:", 1)[0]
-    assert "the gap is 0.2074%" in abstract
+    evidence = json.loads((MODULE.MANUSCRIPT / "scalar_evidence.json").read_text())
+    h500 = next(row for row in evidence["observations"] if row["population"] == 500)
+    assert f"{100 * h500['common_gap']:.2f}% gap" in abstract
     assert "63.4 million variables" in abstract
     assert "SoPlex" not in abstract
     discussion, final = text.split("# Discussion\n", 1)[1].split(
         "# Final considerations, limitations and future work", 1)
     assert "@essien2018" in discussion and "@mardaneh2021" in discussion
     assert "All six SCIP attempts terminated without an incumbent" not in discussion
-    assert "separate scalar SCIP STO h215 W" in final
-    assert "interrupted extended SCIP attempt" in final
-    assert "no\nterminal numerical result" in final
+    assert not re.search(r"\b(?:SCIP|CBC)\b", discussion + final)
+    normalized = " ".join(final.split())
+    assert "Separate Pyomo/APPSI Gurobi and HiGHS h215 STO" in normalized
+    assert "first h300 pair is reported separately" in normalized
+    assert "0.006879%" in normalized
     assert "universal solver frontier" in final
     assert "# Conclusions" not in text and "# Future work:" not in text
     assert "Repository deposition of the licensed input data" not in text

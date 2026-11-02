@@ -1,7 +1,7 @@
 Highlights
 
-- Eleven grain-network observations met the declared 1% gap target.
-- A stochastic MILP with 63.4 million variables attained a 0.2074% gap.
-- Construction, native runtime and sampled memory are reported separately.
-- Direct-enabled plans lowered penalized costs but worsened domestic service.
-- Artificial penalties formed 94.074% of the 500-warehouse scalar objective.
+- Grain-network MILPs were assessed from 215 to 500 warehouse sites.
+- Stochastic models grew from 14.1 to 63.4 million variables.
+- All nine warehouse-only observations met a 1% relative-gap target.
+- Returned plans distribute capacity investment across candidate sites.
+- Resources and certified quality are interpreted alongside agricultural outcomes.

@@ -1,0 +1,92 @@
+{
+  "schema_version": "paired-h300-flow-companion-preparation-v1",
+  "date": "2026-11-01",
+  "cases": [
+    {
+      "case": "h300-w-sto-gurobi-t1-r1",
+      "solver": "gurobi",
+      "job_id": "2231228",
+      "archive_sha256": "a07f2629dbdd663dbc0a5549d4cdc5f026c866507a884c1c8cb53c9e277985f1",
+      "source_commit": "c493be8cd127c5175fc7eb111400229e64b8e3c0",
+      "workbook_sha256": "7761cce77cf93dcba2f617714f0117c1f2ead4de0c3f27149daceba447e0c7d1",
+      "selected_network_sha256": "9520a303457e50e9cbd499654025ed3e639f95724cfe5cfb812c23dbaa5ba3a9",
+      "original_members": {
+        "cases/h300-w-sto-gurobi-t1-r1/input_receipt.json": "cb00c204fdea7839812e6a60149c49871abe0e627f703301e9ec331aca8282ef",
+        "cases/h300-w-sto-gurobi-t1-r1/products/h300-w-sto-gurobi-t1-r1/flows.csv": "fc4a5f081e19e4ab199c575a251e46995145840965ac024c4d9f53bc3742286b",
+        "cases/h300-w-sto-gurobi-t1-r1/products/h300-w-sto-gurobi-t1-r1/warehouse_decisions.csv": "47acb1e9ca166874a56a11a13fd66533314bca4634f2577d8118b9c364c96670",
+        "cases/h300-w-sto-gurobi-t1-r1/products/h300-w-sto-gurobi-t1-r1/independent_validation.json": "fcc468b116674e84d3eab299cc62e45738041d851357329450f501d45c662b54"
+      },
+      "inventory_digests_verified": 87,
+      "flow_records": 225891,
+      "sparse_od_coordinates": 5079,
+      "investment_records": 300,
+      "counts": {
+        "opened": 154,
+        "expanded": 70,
+        "bulk_handling": 76
+      }
+    },
+    {
+      "case": "h300-w-sto-highs-t1-r1",
+      "solver": "highs",
+      "job_id": "2231226",
+      "archive_sha256": "412f4d4d3b7faa7cb913a4da3a537a6804926840fb859bfc22bfd72e11fe702b",
+      "source_commit": "c493be8cd127c5175fc7eb111400229e64b8e3c0",
+      "workbook_sha256": "7761cce77cf93dcba2f617714f0117c1f2ead4de0c3f27149daceba447e0c7d1",
+      "selected_network_sha256": "9520a303457e50e9cbd499654025ed3e639f95724cfe5cfb812c23dbaa5ba3a9",
+      "original_members": {
+        "cases/h300-w-sto-highs-t1-r1/input_receipt.json": "708f4c09d65d109ff0fea6398cc345f8d09dfabab62dab880aceb81e59ac01a0",
+        "cases/h300-w-sto-highs-t1-r1/products/h300-w-sto-highs-t1-r1/flows.csv": "c0b77669f376172d2797a2eb1293f51a9fc65a5489ec1309d2ebc12ce7e8f77c",
+        "cases/h300-w-sto-highs-t1-r1/products/h300-w-sto-highs-t1-r1/warehouse_decisions.csv": "089efbe71864d0512c8f7f368b78df8968ef2b975ddbbdb9c276509578dfe929",
+        "cases/h300-w-sto-highs-t1-r1/products/h300-w-sto-highs-t1-r1/independent_validation.json": "df530f65576e713214e6aa30b560b19023202a6d48518521ca52406cd5fbb3d1"
+      },
+      "inventory_digests_verified": 86,
+      "flow_records": 215100,
+      "sparse_od_coordinates": 4902,
+      "investment_records": 300,
+      "counts": {
+        "opened": 154,
+        "expanded": 69,
+        "bulk_handling": 77
+      }
+    }
+  ],
+  "files": {
+    "h300-w-sto-gurobi-t1-r1_flows.csv.gz": {
+      "bytes": 3226214,
+      "sha256": "f5b22dd8ae8d108eb33f2d876a839f6030111988ed10f575ca31296e0c31bf4b"
+    },
+    "h300-w-sto-gurobi-t1-r1_investments.csv.gz": {
+      "bytes": 4630,
+      "sha256": "3ce65d0664db62c20d2512203921794c23ae9de46a42bb404d8c31ecca3f2af5"
+    },
+    "h300-w-sto-gurobi-t1-r1_od_matrix.csv.gz": {
+      "bytes": 83889,
+      "sha256": "dab2dd3205e5d1f6c742d20eb820293aee60cbcd54b95ec2c2bc542fa17b4a63"
+    },
+    "h300-w-sto-highs-t1-r1_flows.csv.gz": {
+      "bytes": 3124490,
+      "sha256": "767f1fb31952bc461ba72b0ceadc6bb5574f9c884ce9117d37b25face15a7ab5"
+    },
+    "h300-w-sto-highs-t1-r1_investments.csv.gz": {
+      "bytes": 4684,
+      "sha256": "8fabf1d9983e316e3881c80dea6f94e6b149aac27a944919d366cc6a8922542f"
+    },
+    "h300-w-sto-highs-t1-r1_od_matrix.csv.gz": {
+      "bytes": 81206,
+      "sha256": "311e05b3dbcdb9a2f546ea4666a289edae77e570316a7e7e6906fefd024e4237"
+    },
+    "h300_pair_flow_distance.sqlite3": {
+      "bytes": 93220864,
+      "sha256": "77ca579727277a0de9a70c097c997cb7b685f4a6218d25a7223f4116461f26ca"
+    }
+  },
+  "distance_join": "Exact movement family and directed endpoint identifiers in the frozen OSRM workbook",
+  "aggregation": "Scenario probability applied once; sum periods; never sum distances",
+  "no_missing_positive_flow_distance": true,
+  "solver_executed": false,
+  "fresh_constraint_residuals_recomputed": false,
+  "network_access": false,
+  "status": "prepared_locally_not_deposited",
+  "source_specific_terms_review": "pending"
+}

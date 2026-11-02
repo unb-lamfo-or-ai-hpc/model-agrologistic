@@ -41,7 +41,7 @@ also evaluates D.
 | $\rho^N,\rho^X,\rho^B$; $\eta^N,\eta^X,\eta^B$ | Daily reception/shipping gains per invested tonne, day$^{-1}$ |
 | $\ell^{OD}_{ow},\ell^{DC}_{wc},\ell^{DD}_{wv},\ell^{OC}_{oc}$ | Directed road distances, km |
 | $f^O_o,f^W_w$; $\alpha$; $\tau_w$ | Freight rates, BRL/(t km); dimensionless interwarehouse multiplier; receiving charge, BRL/t |
-| $h_{wp}$ | Inventory holding charge, BRL/(t period) |
+| $h_{wp}$ | Effective charge for holding one tonne for one modeled period, BRL/t; the source tariff is quoted in BRL/(t period) |
 | $F^N_w,F^X_w,F^B_w$ | Fixed opening, expansion and conversion charges, BRL |
 | $c^N_w,c^X_w,c^B_w$ | Corresponding quantity-dependent investment charges, BRL per investment-tonne |
 | $\lambda^D_{cp},\lambda^K_w,\lambda^R_w$ | Shortage, stock-exceedance and reception-overflow weights; BRL per corresponding slack tonne at its period |
@@ -72,6 +72,10 @@ does not represent repeated investment over successive periods.
 
 Costs are undiscounted BRL totals over the horizon. Receiving handling
 is part of the OD/DD unit transport/handling cost and is charged once at receipt.
+Per-period holding and stock-exceedance coefficients charge one modeled period
+at each time index; that unit-period duration is implicit in D1. Daily handling
+rates instead require the explicit operating-day factor in the capacity rows.
+Appendix D provides the dimensional crosswalk and worked conversions.
 
 $$
 \begin{aligned}

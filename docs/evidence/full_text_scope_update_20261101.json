@@ -1,0 +1,68 @@
+{
+  "schema_version": "full-text-access-and-claim-scope-update-v1",
+  "date": "2026-11-01",
+  "retained_records": 38,
+  "main_cited": 33,
+  "whole_corpus_full_text_read": false,
+  "readable_primary_texts_targeted": [
+    {
+      "key": "essien2018",
+      "scope": "Sections2.1-2.2, equation1, pages127-129"
+    },
+    {
+      "key": "reis2023",
+      "scope": "Sections3,4,6 and Table8"
+    },
+    {
+      "key": "milanez2026",
+      "scope": "Pages12-13, BSEC-SLACK and CPU/gap reporting"
+    },
+    {
+      "key": "pourmohammadi2020",
+      "scope": "Sections3-5, conclusions and references; source-bound existing reading ledger"
+    }
+  ],
+  "access_limited": [
+    {
+      "key": "gholamian2017",
+      "scope": "publisher preview; no newly obtained full text"
+    },
+    {
+      "key": "hosseini2020",
+      "scope": "publisher preview; no newly obtained full text"
+    },
+    {
+      "key": "shastri2011",
+      "scope": "institutional/publisher abstract; no newly obtained full text"
+    },
+    {
+      "key": "rosa2026thesis",
+      "scope": "institutional abstract; full chapter/table overlap unresolved"
+    }
+  ],
+  "access_failures_are_not_feature_absence": true,
+  "bibliographic_metadata_is_not_full_text_validation": true,
+  "retained_reference_keys_DOIs_authors_unchanged": true,
+  "scope_of_contribution": "All Related Work precedents including Rosa; bounded empirical study, not first stochastic grain MILP",
+  "comparison_basis": "Within-project matched inputs/algebra; no cross-paper causal runtime ratio",
+  "style_source": {
+    "title": "Efficient matheuristic and flow-based formulation for the multi-product Production Routing Problem with heterogeneous fleet",
+    "authors": [
+      "Lucas Porporatto",
+      "Yanina Fumero",
+      "Gabriela Corsano"
+    ],
+    "role": "Presentation reference, not new scientific evidence for the present experiments",
+    "reading_scope": "Model presentation, worked case and separate cost/physical/benchmark tables",
+    "application": "Compact separated configuration, quality/time, resource and physical tables",
+    "copied_prose_or_imported_performance_claims": false,
+    "added_to_retained_bibliography": false,
+    "original_pdf_sha256": "2cae4e1d369ad5e9b832f62e9b3e76a1ed464222473e160640fc23799cafcfd2"
+  },
+  "remaining": [
+    "Full-text/source-specific claim validation where access is limited",
+    "Rosa chapter/table overlap and original review-search chronology",
+    "Given-name/ORCID identities beyond normalized ordered family-name matches"
+  ],
+  "PDF_generated_or_source_full_text_uploaded": false
+}

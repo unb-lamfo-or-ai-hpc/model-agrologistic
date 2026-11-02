@@ -1,0 +1,173 @@
+{
+  "schema_version": "paired-h300-first-observations-v1",
+  "date": "2026-11-01",
+  "source_commit": "c493be8cd127c5175fc7eb111400229e64b8e3c0",
+  "campaign_sha256": "3cae7c318032108caa936d70b2883f20d055066f89a78e24610f261832763b58",
+  "binding_fields_identical": [
+    "campaign_sha256",
+    "source_commit",
+    "profile",
+    "input_binding",
+    "matrix_sha256",
+    "common_linear_matrix",
+    "bounds_sha256",
+    "reformulation",
+    "worker_affinity_logical_cpus",
+    "hardware_class_sha256"
+  ],
+  "shared_bindings": {
+    "campaign_sha256": "3cae7c318032108caa936d70b2883f20d055066f89a78e24610f261832763b58",
+    "source_commit": "c493be8cd127c5175fc7eb111400229e64b8e3c0",
+    "profile": {
+      "allocated_logical_cpus_requested": 24,
+      "build_input_seconds_per_arm": 7200,
+      "contingency_seconds": 1800,
+      "exclusive_node_requested": true,
+      "expanded_transfer_bytes": 4294967296,
+      "late_return_export_seconds_per_arm": 1800,
+      "max_regular_members": 4096,
+      "memory_mib": 196608,
+      "native_time_limit_seconds_per_arm": 28800,
+      "setup_cleanup_seconds": 1800,
+      "slurm_wall_seconds": 43200,
+      "step_seconds": 39600,
+      "validation_seconds_per_arm": 1800,
+      "worker_affinity_logical_cpus": 16
+    },
+    "input_binding": {
+      "loader_sha256": "50619925e726d6c0a0afaf65bd962c44eef55499043c5f1ed28b05ae4436c635",
+      "mathematical_contract_sha256": "709c0a55608de197c7d280949f04e31b0cd6b1019bef162fcd2184c083c113f8",
+      "model_sha256": "d66a64b13e5c56d7c0cf0b8f04204950986dcd2b1781b23478fc71938a1eb70f",
+      "scenario_probabilities_sha256": "7980996471c6559a9c522f31eaa858ac5e3f95cee4a4c00f0c9fc6081018c2af",
+      "warehouse_selection_sha256": "d5609de482fb0b6a3c060c94254c217c0677d8e5c0c4422a0475f32699f11b33",
+      "workbook_sha256": "7761cce77cf93dcba2f617714f0117c1f2ead4de0c3f27149daceba447e0c7d1"
+    },
+    "matrix_sha256": "b3c92c54f12ad710fffc4983a832c4e503a5b84e4615c51abcf61a1c0927e1ed",
+    "common_linear_matrix": {
+      "binary_variables": 392,
+      "linear_constraints": 1056962,
+      "nonzeros": 94967766,
+      "schema_version": "ordered-pyomo-linear-matrix-v1",
+      "scope": "Ordered common Pyomo algebra; not a presolved/native matrix fingerprint.",
+      "sha256": "b3c92c54f12ad710fffc4983a832c4e503a5b84e4615c51abcf61a1c0927e1ed",
+      "variables": 25107544
+    },
+    "bounds_sha256": "2154ded9cd9c78a2f8e88303c7148499da1e5985e74d53c8a69f37f6e890e04e",
+    "reformulation": {
+      "bounds_sha256": "2154ded9cd9c78a2f8e88303c7148499da1e5985e74d53c8a69f37f6e890e04e",
+      "candidate_slack_bounds": 166320,
+      "entire_redundant_slack_region_preserved": false,
+      "equivalence": "physical_investment_projection_and_optimal_scalar_value",
+      "maximum_bound": 1580583406.0475163,
+      "nonnegative_candidate_slack_penalties_required": true,
+      "policy": "bounded_scalar_slacks_v1"
+    },
+    "worker_affinity_logical_cpus": 16,
+    "hardware_class_sha256": "32629b1e2a3e3eb680f7f45d987f722fbd913f557e4c3dc8a3e0902b4bae0260"
+  },
+  "observations": [
+    {
+      "job_id": "2231228",
+      "solver": "gurobi",
+      "archive_sha256": "a07f2629dbdd663dbc0a5549d4cdc5f026c866507a884c1c8cb53c9e277985f1",
+      "objective": 9289108634158.756,
+      "bound": 9288727295144.215,
+      "common_gap_fraction": 4.10522720273419e-05,
+      "common_gap_percent": 0.00410522720273419,
+      "native_minutes": 48.22852579752604,
+      "end_to_end_minutes": 91.79402054931658,
+      "sampled_worker_tree_peak_gib": 74.5351791381836,
+      "effective_parameters": {
+        "ConcurrentMIP": 1,
+        "Cuts": -1,
+        "FeasibilityTol": 1e-09,
+        "Heuristics": 0.05,
+        "IntFeasTol": 1e-09,
+        "MIPGap": 0.01,
+        "Method": -1,
+        "NodeMethod": -1,
+        "Presolve": -1,
+        "Seed": 42,
+        "Threads": 1,
+        "TimeLimit": 28800
+      },
+      "native_counters": {
+        "lp_iterations": 3355126.0,
+        "nodes": 1.0
+      },
+      "physical_summary": {
+        "domestic_service_level": 0.9132562288017908,
+        "minimum_scenario_service_level": 0.8942854906195927,
+        "maximum_scenario_service_level": 0.9393998925596366,
+        "total_domestic_demand": 677712425.6517739,
+        "served_domestic_demand": 618925094.0628531,
+        "total_unmet_demand": 58787331.58892084,
+        "emergency_static_capacity": 46444009.173659325,
+        "emergency_reception_capacity": 33839246.522186056,
+        "penalty_cost_share": 0.9584995396194145
+      },
+      "economic_cost": 385502284842.86163,
+      "original_validation": "accepted",
+      "fresh_constraint_residuals_recomputed": false
+    },
+    {
+      "job_id": "2231226",
+      "solver": "highs",
+      "archive_sha256": "412f4d4d3b7faa7cb913a4da3a537a6804926840fb859bfc22bfd72e11fe702b",
+      "objective": 9289358555936.28,
+      "bound": 9288719505216.031,
+      "common_gap_fraction": 6.87938479713077e-05,
+      "common_gap_percent": 0.006879384797130771,
+      "native_minutes": 401.4349554936091,
+      "end_to_end_minutes": 443.35010391750063,
+      "sampled_worker_tree_peak_gib": 84.81952285766602,
+      "effective_parameters": {
+        "mip_feasibility_tolerance": 1e-09,
+        "mip_rel_gap": 0.01,
+        "parallel": "on",
+        "random_seed": 42,
+        "threads": 1,
+        "time_limit": 28800
+      },
+      "native_counters": {
+        "lp_iterations": 3998477.0,
+        "nodes": 1.0
+      },
+      "physical_summary": {
+        "domestic_service_level": 0.9132518243679764,
+        "minimum_scenario_service_level": 0.8942813871794377,
+        "maximum_scenario_service_level": 0.9393921817037271,
+        "total_domestic_demand": 677712425.6517786,
+        "served_domestic_demand": 618922109.1233333,
+        "total_unmet_demand": 58790316.52844521,
+        "emergency_static_capacity": 46443652.132864214,
+        "emergency_reception_capacity": 33839554.795043744,
+        "penalty_cost_share": 0.9585024354158402
+      },
+      "economic_cost": 385485756620.3832,
+      "original_validation": "accepted",
+      "fresh_constraint_residuals_recomputed": false
+    }
+  ],
+  "objective_bound_intervals_overlap": true,
+  "descriptive_native_runtime_ratio_highs_over_gurobi": 8.32359996195864,
+  "ratio_qualification": "One observation per solver at unequal attained gaps; not causal speedup or an estimate of variability",
+  "single_thread_pilots_below_sampled_memory_gate": true,
+  "sixteen_thread_pilots_qualified": false,
+  "next_population_admitted": false,
+  "automatic_follow_on_allowed": false,
+  "new_job_submitted": false,
+  "unrelated_accounting": {
+    "reported_host": "dgx-dasci",
+    "reported_jobs": [
+      3729,
+      3730,
+      3731,
+      3732,
+      3733,
+      3734
+    ],
+    "association_to_this_NPAD_campaign_verified": false,
+    "included_in_comparison": false
+  }
+}

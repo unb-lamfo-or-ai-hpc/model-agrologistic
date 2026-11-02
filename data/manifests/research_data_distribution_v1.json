@@ -1,0 +1,404 @@
+{
+  "schema_version": "research-data-distribution-catalog-v1",
+  "date": "2026-11-01",
+  "status": "prepared_metadata_and_local_distance_exports_not_a_new_deposit",
+  "source_archive": {
+    "dataset_doi": "10.5281/zenodo.22751909",
+    "version": "0.2.0",
+    "name": "agrologistic-v020-inputs.zip",
+    "sha256": "583b04afb49c4cba13c9d0aaa18131e12a18bac1da410cd801616bd0b639811f",
+    "public_access_reconfirmation": "Live anonymous Zenodo API succeeded on 2026-11-01; open record and all 12 advertised file sizes/checksums match frozen metadata. Full archive not redownloaded.",
+    "original_rights_notices_reconciliation": "pending",
+    "record_level_license_id": "mit-license"
+  },
+  "repository_structure": [
+    {
+      "path": "data/templates/model_agrologistic_padrao_ouro.xlsx",
+      "role": "Canonical schema and source values; not an OSRM runtime workbook",
+      "distribution": "existing_GitHub_file"
+    },
+    {
+      "path": "data/manifests/warehouse_population_source_v020.json",
+      "role": "External registry identity, structure and provenance",
+      "distribution": "existing_GitHub_metadata"
+    },
+    {
+      "path": "docs/evidence/appendix_input_reproduction_20261028.json",
+      "role": "Full original workbook hashes, facility counts and effective input mapping",
+      "distribution": "existing_GitHub_metadata"
+    },
+    {
+      "path": "data/manifests/research_data_distribution_v1.json",
+      "role": "This catalog: source/archive/export placement and access state",
+      "distribution": "GitHub_metadata"
+    },
+    {
+      "path": "docs/research_data_distribution_20261101.md",
+      "role": "Data dictionary, preparation/deposition plan and reader navigation",
+      "distribution": "GitHub_documentation"
+    },
+    {
+      "path": "src/logic/osrm.py",
+      "role": "OSRM service/cache, distances in metres",
+      "distribution": "existing_GitHub_code"
+    },
+    {
+      "path": "src/logic/artur_adapter.py",
+      "role": "Materialized Distancias sheet, metre-to-kilometre conversion",
+      "distribution": "existing_GitHub_code"
+    },
+    {
+      "path": "src/logic/policy_osrm.py",
+      "role": "Workbook materialization and provenance audit",
+      "distribution": "existing_GitHub_code"
+    },
+    {
+      "path": "src/logic/route_filtering.py",
+      "role": "Product-specific selected-arc policy; full distance tables do not define admissibility",
+      "distribution": "existing_GitHub_code"
+    },
+    {
+      "path": "src/logic/optimization_pyomo.py",
+      "role": "Common Gurobi/HiGHS formulation",
+      "distribution": "existing_GitHub_code"
+    },
+    {
+      "path": "src/logic/solution_validation.py",
+      "role": "Original-unit residual and cost checks",
+      "distribution": "existing_GitHub_code"
+    }
+  ],
+  "distance_assets": [
+    {
+      "population": 215,
+      "workbook_member": "data/processed/policy_population_v020_osrm/warehouses_215/model_input.xlsx",
+      "workbook_sha256": "40edb66585daca9cc393cab1f86bde6d4528a5f34b6afc57260cc1684396da4e",
+      "audit_member": "data/processed/policy_population_v020_osrm/warehouses_215/osrm_materialization_audit.json",
+      "audit_sha256": "3ed582e8a8f1131fc52d634370ace58bfdc078d257c75362421e2f77484d3b9a",
+      "distance_sheet": "Distancias",
+      "columns": [
+        "Tipo_Arco",
+        "Origem",
+        "Destino",
+        "Distancia_km",
+        "Duracao_s",
+        "Fonte_Distancia",
+        "Motivo_Fallback"
+      ],
+      "distance_unit": "km",
+      "duration_unit": "s",
+      "empty_csv_field_represents": "original empty cell",
+      "rows": 63289,
+      "rows_by_family": {
+        "OD": 7955,
+        "DC": 7955,
+        "DD": 46010,
+        "OC": 1369
+      },
+      "csv_gz_filename": "osrm_h215_distances_km.csv.gz",
+      "csv_gz_sha256": "174190f3fd2832d0855c59054f6dc8c8120aca5e9bc7d4f173d701da7971a62c",
+      "csv_gz_bytes": 679880,
+      "exact_distance_round_trip_verified": true,
+      "distance_provenance": {
+        "provider": "osrm",
+        "distance_method": "osrm_table_fastest_route_with_audited_haversine_fallback",
+        "profile": "driving",
+        "dataset_id": "pbf:brazil-260901@sha256:95c432ac3219338bbc7d4f5f7d20a5de709348ea928f656efd34609a51319fde;osrm:v6.0.0;oci:sha256:5116c66d814485be70bc7b239be890e4d36f62b1025a2f1c8139c20fa2697309;sif:sha256:1d6d8c47996ee31d1d2282433e13a94a1d48e9b218912fdf39741bf3b5b05249;profile:driving@sha256:9809a111a8fc8c465c2d6ef3208938a2a7c35fab0d3cda407ffa7ff187a96477;algorithm:MLD",
+        "osrm_data_versions": [
+          "brazil-260901-osrm-v6.0.0-driving-mld"
+        ],
+        "osrm_request_count": 0,
+        "osrm_cache_hit_count": 63504,
+        "osrm_cache_miss_count": 0,
+        "osrm_cache_write_count": 0,
+        "osrm_negative_distance_normalization_count": 4,
+        "route_count": 63289,
+        "route_count_by_arc_type": {
+          "DD": 46010,
+          "OD": 7955,
+          "DC": 7955,
+          "OC": 1369
+        },
+        "route_count_by_source": {
+          "osrm": 63289
+        },
+        "fallback_count": 0,
+        "fallback_count_by_reason": {}
+      },
+      "publication_status": "prepared_locally_not_uploaded",
+      "proposed_zenodo_member": "osrm/osrm_h215_distances_km.csv.gz",
+      "delivery": "Zenodo full table; GitHub catalog/hash/dictionary",
+      "dataset_and_container_provenance_preserved": true
+    },
+    {
+      "population": 300,
+      "workbook_member": "data/processed/nine_population_osrm_v1/warehouses_300/model_input.xlsx",
+      "workbook_sha256": "7761cce77cf93dcba2f617714f0117c1f2ead4de0c3f27149daceba447e0c7d1",
+      "audit_member": "data/processed/nine_population_osrm_v1/warehouses_300/osrm_materialization_audit.json",
+      "audit_sha256": "644567aa884296d23629fb4e84befc8accdf19dcf0c8feb7e3c7747ce41e914d",
+      "distance_sheet": "Distancias",
+      "columns": [
+        "Tipo_Arco",
+        "Origem",
+        "Destino",
+        "Distancia_km",
+        "Duracao_s",
+        "Fonte_Distancia",
+        "Motivo_Fallback"
+      ],
+      "distance_unit": "km",
+      "duration_unit": "s",
+      "empty_csv_field_represents": "original empty cell",
+      "rows": 113269,
+      "rows_by_family": {
+        "OD": 11100,
+        "DC": 11100,
+        "DD": 89700,
+        "OC": 1369
+      },
+      "csv_gz_filename": "osrm_h300_distances_km.csv.gz",
+      "csv_gz_sha256": "80f77a8c150ec6e76b87edc99b8a96a94af5e6dc046d070c54b8c48f26ce6156",
+      "csv_gz_bytes": 1318036,
+      "exact_distance_round_trip_verified": true,
+      "distance_provenance": {
+        "provider": "osrm",
+        "distance_method": "osrm_table_fastest_route_with_audited_haversine_fallback",
+        "profile": "driving",
+        "dataset_id": "pbf:brazil-260901@sha256:95c432ac3219338bbc7d4f5f7d20a5de709348ea928f656efd34609a51319fde;osrm:v6.0.0;oci:sha256:5116c66d814485be70bc7b239be890e4d36f62b1025a2f1c8139c20fa2697309;sif:sha256:1d6d8c47996ee31d1d2282433e13a94a1d48e9b218912fdf39741bf3b5b05249;profile:driving@sha256:9809a111a8fc8c465c2d6ef3208938a2a7c35fab0d3cda407ffa7ff187a96477;algorithm:MLD",
+        "osrm_data_versions": [
+          "brazil-260901-osrm-v6.0.0-driving-mld"
+        ],
+        "osrm_request_count": 0,
+        "osrm_cache_hit_count": 113569,
+        "osrm_cache_miss_count": 0,
+        "osrm_cache_write_count": 0,
+        "osrm_negative_distance_normalization_count": 4,
+        "route_count": 113269,
+        "route_count_by_arc_type": {
+          "DD": 89700,
+          "OD": 11100,
+          "DC": 11100,
+          "OC": 1369
+        },
+        "route_count_by_source": {
+          "osrm": 113269
+        },
+        "fallback_count": 0,
+        "fallback_count_by_reason": {}
+      },
+      "publication_status": "prepared_locally_not_uploaded",
+      "proposed_zenodo_member": "osrm/osrm_h300_distances_km.csv.gz",
+      "delivery": "Zenodo full table; GitHub catalog/hash/dictionary",
+      "dataset_and_container_provenance_preserved": true
+    },
+    {
+      "population": 400,
+      "workbook_member": "data/processed/nine_population_osrm_v1/warehouses_400/model_input.xlsx",
+      "workbook_sha256": "c3085456997714ef5a8bdbf61e2c9a5e578c2636003947427cf58933d21ceb13",
+      "audit_member": "data/processed/nine_population_osrm_v1/warehouses_400/osrm_materialization_audit.json",
+      "audit_sha256": "a4ca64408f7e4b374533cbf5d961c13a8ab7aa963f1fbfdec58dd0b925671471",
+      "distance_sheet": "Distancias",
+      "columns": [
+        "Tipo_Arco",
+        "Origem",
+        "Destino",
+        "Distancia_km",
+        "Duracao_s",
+        "Fonte_Distancia",
+        "Motivo_Fallback"
+      ],
+      "distance_unit": "km",
+      "duration_unit": "s",
+      "empty_csv_field_represents": "original empty cell",
+      "rows": 190569,
+      "rows_by_family": {
+        "OD": 14800,
+        "DC": 14800,
+        "DD": 159600,
+        "OC": 1369
+      },
+      "csv_gz_filename": "osrm_h400_distances_km.csv.gz",
+      "csv_gz_sha256": "dfcaeeac383491888db97465235b8636b6830a4ce8b28015bfa466283276d4bf",
+      "csv_gz_bytes": 2309796,
+      "exact_distance_round_trip_verified": true,
+      "distance_provenance": {
+        "provider": "osrm",
+        "distance_method": "osrm_table_fastest_route_with_audited_haversine_fallback",
+        "profile": "driving",
+        "dataset_id": "pbf:brazil-260901@sha256:95c432ac3219338bbc7d4f5f7d20a5de709348ea928f656efd34609a51319fde;osrm:v6.0.0;oci:sha256:5116c66d814485be70bc7b239be890e4d36f62b1025a2f1c8139c20fa2697309;sif:sha256:1d6d8c47996ee31d1d2282433e13a94a1d48e9b218912fdf39741bf3b5b05249;profile:driving@sha256:9809a111a8fc8c465c2d6ef3208938a2a7c35fab0d3cda407ffa7ff187a96477;algorithm:MLD",
+        "osrm_data_versions": [
+          "brazil-260901-osrm-v6.0.0-driving-mld"
+        ],
+        "osrm_request_count": 0,
+        "osrm_cache_hit_count": 190969,
+        "osrm_cache_miss_count": 0,
+        "osrm_cache_write_count": 0,
+        "osrm_negative_distance_normalization_count": 6,
+        "route_count": 190569,
+        "route_count_by_arc_type": {
+          "DD": 159600,
+          "OD": 14800,
+          "DC": 14800,
+          "OC": 1369
+        },
+        "route_count_by_source": {
+          "osrm": 190569
+        },
+        "fallback_count": 0,
+        "fallback_count_by_reason": {}
+      },
+      "publication_status": "prepared_locally_not_uploaded",
+      "proposed_zenodo_member": "osrm/osrm_h400_distances_km.csv.gz",
+      "delivery": "Zenodo full table; GitHub catalog/hash/dictionary",
+      "dataset_and_container_provenance_preserved": true
+    },
+    {
+      "population": 500,
+      "workbook_member": "data/processed/nine_population_osrm_v1/warehouses_500/model_input.xlsx",
+      "workbook_sha256": "888fbff42e4f80817d4d5f0101049495c86c6ed4cda75f00813779dadab41515",
+      "audit_member": "data/processed/nine_population_osrm_v1/warehouses_500/osrm_materialization_audit.json",
+      "audit_sha256": "997d84446de2b6987cd4af0e07e11b2367efd479ad1a4ae3d50cac95e5c4f19a",
+      "distance_sheet": "Distancias",
+      "columns": [
+        "Tipo_Arco",
+        "Origem",
+        "Destino",
+        "Distancia_km",
+        "Duracao_s",
+        "Fonte_Distancia",
+        "Motivo_Fallback"
+      ],
+      "distance_unit": "km",
+      "duration_unit": "s",
+      "empty_csv_field_represents": "original empty cell",
+      "rows": 287869,
+      "rows_by_family": {
+        "OD": 18500,
+        "DC": 18500,
+        "DD": 249500,
+        "OC": 1369
+      },
+      "csv_gz_filename": "osrm_h500_distances_km.csv.gz",
+      "csv_gz_sha256": "84ac2bfd7b96f8d324bf7352cc8a605e7924acfe7e354a3ecda53af05a583dca",
+      "csv_gz_bytes": 3623012,
+      "exact_distance_round_trip_verified": true,
+      "distance_provenance": {
+        "provider": "osrm",
+        "distance_method": "osrm_table_fastest_route_with_audited_haversine_fallback",
+        "profile": "driving",
+        "dataset_id": "pbf:brazil-260901@sha256:95c432ac3219338bbc7d4f5f7d20a5de709348ea928f656efd34609a51319fde;osrm:v6.0.0;oci:sha256:5116c66d814485be70bc7b239be890e4d36f62b1025a2f1c8139c20fa2697309;sif:sha256:1d6d8c47996ee31d1d2282433e13a94a1d48e9b218912fdf39741bf3b5b05249;profile:driving@sha256:9809a111a8fc8c465c2d6ef3208938a2a7c35fab0d3cda407ffa7ff187a96477;algorithm:MLD",
+        "osrm_data_versions": [
+          "brazil-260901-osrm-v6.0.0-driving-mld"
+        ],
+        "osrm_request_count": 0,
+        "osrm_cache_hit_count": 288369,
+        "osrm_cache_miss_count": 0,
+        "osrm_cache_write_count": 0,
+        "osrm_negative_distance_normalization_count": 6,
+        "route_count": 287869,
+        "route_count_by_arc_type": {
+          "DD": 249500,
+          "OD": 18500,
+          "DC": 18500,
+          "OC": 1369
+        },
+        "route_count_by_source": {
+          "osrm": 287869
+        },
+        "fallback_count": 0,
+        "fallback_count_by_reason": {}
+      },
+      "publication_status": "prepared_locally_not_uploaded",
+      "proposed_zenodo_member": "osrm/osrm_h500_distances_km.csv.gz",
+      "delivery": "Zenodo full table; GitHub catalog/hash/dictionary",
+      "dataset_and_container_provenance_preserved": true
+    }
+  ],
+  "additional_assets": [
+    {
+      "kind": "runtime_workbooks_and_materialization_sidecars",
+      "source_members": "Use each distance asset's exact workbook_member and audit_member",
+      "destination": "Zenodo next reviewed version, retain original directory hierarchy",
+      "state": "exact_original_bytes_already_in_local_v020_archive"
+    },
+    {
+      "kind": "population_manifest_and_order",
+      "source_members": [
+        "data/processed/warehouse_population_v020/warehouse_population_manifest.json",
+        "data/processed/warehouse_population_v020/warehouse_population_order.csv"
+      ],
+      "destination": "Zenodo; GitHub identities and counts",
+      "state": "original_archive_members_identified"
+    },
+    {
+      "kind": "selected_product_arc_lists",
+      "destination": "Zenodo, indexed by input/source/policy/topology/product fingerprint",
+      "state": "h300_W_graph_locally_prepared_and_original_fingerprints_verified",
+      "qualification": "Do not substitute every materialized OD/DD/DC/OC distance for the selected feasible arc set.",
+      "first_paired_pilot_observation": "45240 product-specific directed arcs; compact graph and original plan contract hashes verified",
+      "preparation_receipt": "docs/evidence/h300_selected_graph_release_20261101.json",
+      "remaining_scope": "Other historical populations/topologies still require explicit exports"
+    },
+    {
+      "kind": "accepted_investment_tables",
+      "destination": "GitHub small reviewed CSV summaries; Zenodo complete vectors and receipts",
+      "state": "existing_GitHub_supplement_investments"
+    },
+    {
+      "kind": "accepted_flow_distance_and_inventory_vectors",
+      "destination": "Zenodo CSV.gz plus companion SQLite; GitHub dictionary, hashes and small scientific summaries",
+      "state": "historical_and_two_new_h300_companions_prepared_locally_file_inventory_verified"
+    },
+    {
+      "kind": "paired_campaign_receipts_and_outcomes",
+      "destination": "GitHub curated JSON/tables; Zenodo original results, validation, native logs and sanitized resource records",
+      "state": "both_h300_t1_r1_originals_audited_and_validated",
+      "curated_evidence": "docs/evidence/paired_pyomo_h300_gurobi_2231228_review.json",
+      "original_archive_uploaded": false,
+      "original_case_file_inventory": "docs/evidence/paired_h300_release_dictionary_20261101.json",
+      "paired_evidence": "docs/evidence/paired_h300_first_pair_20261101.json",
+      "highs_case_file_inventory": "docs/evidence/paired_h300_highs_release_dictionary_20261101.json"
+    },
+    {
+      "kind": "routing_container_reproduction_metadata",
+      "destination": "GitHub/Zenodo metadata: PBF/profile/image/SIF hashes, OSRM version/algorithm",
+      "state": "retained_in_materialization_audits",
+      "qualification": "Container images, PBF and transient caches are not required downloads for solving the frozen matrix instance."
+    },
+    {
+      "kind": "reviewed_manuscript_map_assets",
+      "destination": "GitHub permanent figure assets/build recipe; final Pages documents",
+      "state": "clean_snapshot_generation_wired_and_image_dependencies_verified",
+      "qualification": "Do not equate local figure QA with a complete publication build. Stage only approved scientific figure assets, not temporary article PDFs.",
+      "build_entry": "scripts/prepare_document_assets.py"
+    }
+  ],
+  "release_rules": {
+    "existing_version_immutable": true,
+    "next_version_identifier": "not_assigned",
+    "no_new_deposit_claim": true,
+    "mandatory": [
+      "README and DATA_DICTIONARY",
+      "file-level inventory: path, bytes, SHA-256, units, source, rights/access status",
+      "full distances AND selected graph identities",
+      "per-cohort source/options/validation bindings",
+      "source-specific redistribution review",
+      "anonymously tested links and checksum verification after publication"
+    ],
+    "not_in_GitHub": [
+      "large complete routing matrices",
+      "full optimization vectors",
+      "binary evidence tarballs",
+      "transient SQLite caches",
+      "container images or PBF",
+      "credentials or license files"
+    ],
+    "not_uploaded_in_this_revision": [
+      "original workbooks",
+      "distance CSV.gz",
+      "raw solver packages",
+      "local article/appendix PDFs"
+    ]
+  },
+  "next_release_file_inventory": "data/manifests/zenodo_next_release_inventory_20261101.json"
+}

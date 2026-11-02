@@ -1,0 +1,30 @@
+{
+  "schema_version": "documentary-exit-checks-v1",
+  "date": "2026-11-02",
+  "scope": "Reader navigation, current status, inventory/source receipts, original units and unchanged scientific text",
+  "focused_tests": {
+    "tests": 21,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "main_cited_references": 33,
+  "input_cells_checked": 254,
+  "pinned_input_links_checked": 44,
+  "new_local_readme_links_verified": 16,
+  "prepared_inventory_files": 41,
+  "prepared_inventory_bytes": 450057392,
+  "original_appendix_a_sha256": "859dc52b64b6bcf471f7616182d8cadf2b693dbfd19ad4b9248637b5c231b3ed",
+  "published_sources_sha256_utf8_lf": {
+    "AGENTS.md": "60bdd8e6f7801646a3bc1aadec247e3b2e365b8ad2c855dca3599d2b68b678aa",
+    "PROJECT_STATE.md": "3593c61c5e58f1669ad99a64dad71b22fee187168a9faa3e2f0a801a268470f0",
+    "docs/current_status.md": "9ca2e892c043cce7856429853f1cbe2ff8f9edb5cddeb1cfe199a8cdd0b78401",
+    "docs/article_plan.md": "d2da9a1e5be356aa46ca008a107beaa4fcf15de6a9bff18078335f38dff0a359",
+    "manuscript/README.md": "57e5de29452d6c50800936fc340a74337a599a624ebecd5ff1a3d39d8a1308b5",
+    "docs/checkpoints/20261102_documentation_exit_matrix.md": "bc2e74f3d98798287d87c1b21df696e3dbc01af8cec2fd60529169119cd6b770",
+    "data/manifests/zenodo_release_readiness_20261102.json": "3070de1ad7fe4405854912996f77981b113f395c5311251a9ddc3e7776dac4fd"
+  },
+  "new_asset_bytes_or_Gurobi16_archive_reread": false,
+  "all_literature_full_texts_read": false,
+  "new_solver_or_HPC_or_PDF_execution": false
+}

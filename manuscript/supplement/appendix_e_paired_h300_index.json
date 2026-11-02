@@ -1,0 +1,15 @@
+{
+  "schema_version": "appendix-e-paired-h300-investment-index-v1",
+  "cases": [
+    {
+      "case": "h300_w_sto_gurobi_t1_r1",
+      "job_id": "2231228",
+      "sha256": "4b303a92ff2e862b166be1730fa8ca888c7a35914cd985e5be8361521d96db3a"
+    },
+    {
+      "case": "h300_w_sto_highs_t1_r1",
+      "job_id": "2231226",
+      "sha256": "caae5b3a67575e36a0c6cb2bc2e5555d6b3d72a034a1ab447f79658fb412d848"
+    }
+  ]
+}

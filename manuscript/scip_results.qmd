@@ -59,7 +59,7 @@ scalar value, rather than identical redundant slack regions or solver search.
 HiGHS returned a feasible solution that passed the original independent
 validation, with no failed checks at the stated tolerances. The
 [experiment and certificate record](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/ad2ded8132bf5171be65c0113b3d0026c22b2e7b/docs/evidence/scalar_highs_h215_2226536_inspection.json)
-retains the source, input, validation and resource identities. Table
+retains the source, input, validation and resource identities.
 @tbl-highs-h215 compares the returned objective, attained gap and native runtime
 with the earlier Gurobi observation.
 
@@ -104,3 +104,72 @@ difficulty and a successful open-source solution at h215. They support neither
 a general impossibility claim for open-source software nor a causal ranking
 of solver performance. The earlier HiGHS initialization failure is retained
 as an operational record and supplies no numerical performance observation.
+
+### Common Pyomo h215 formulation: Gurobi and SCIP
+
+The subsequent Gurobi and SCIP observations used the same ordered Pyomo linear
+matrix: 14,054,654 variables, 307 binaries, 735,577 constraints and 52,217,866
+nonzeros. Their matrix fingerprints agree. The exact workbook, ordered warehouse
+selection, screened directed network, scenario probabilities and scalar contract
+also agree with the retained HiGHS input receipts. This establishes instance
+identity more precisely than a common h215 label. The earlier HiGHS record has
+no ordered-matrix fingerprint, although its model dimensions and bounded-slack
+policy agree; it remains a separately qualified observation.
+
+| Setting | Gurobi / APPSI | SCIP / PySCIPOpt transfer | HiGHS / APPSI |
+|:--|:--|:--|:--|
+| Native version | 13.0.3 | 10.0.2 | 1.15.1 |
+| Pyomo version | 6.10.1 | 6.10.1 | 6.10.1 |
+| Native time allowance, s | 28,800 | 28,800 | 28,800 |
+| Relative MIP gap target | 0.01 | 0.01 | 0.01 |
+| Thread ceiling | 4 | 4 | 4 |
+| Randomization | Seed = 42 | randomseedshift = 42; lpseed = 0; permutationseed = 0 | random_seed = 42 |
+| Primal feasibility tolerance | 1e-9 | 1e-9 | MIP feasibility = 1e-9 |
+
+: Effective configuration of the original Pyomo h215 STO/W observations. Thread
+ceilings do not establish simultaneous use of all requested cores. {#tbl-pyomo-settings}
+
+For Gurobi, recorded Method, NodeMethod, Presolve and Cuts are -1; Heuristics is
+0.05 and ConcurrentMIP is 1. Algorithm selection remains automatic, while the
+thread, time, seed, gap and feasibility settings are explicit overrides. This
+is therefore an automatic-strategy configuration with declared overrides,
+rather than an untouched default configuration. Pyomo supplies the model and
+options to the native engine; it does not replace its algorithm selection.
+The same integer seed identifies different solver-specific randomization
+mechanisms. It does not impose a common initial solution, guarantee identical
+search paths across solvers or remove hardware and parallel-execution effects.
+
+| Implementation | Objective, BRL trillion | Common gap, % | Native runtime, min | Application end-to-end, min | Sampled worker-tree peak, GiB |
+|:--|--:|--:|--:|--:|--:|
+| Pyomo/Gurobi | 13.071397 | 0.740159 | 31.544 | 55.621 | 55.390 |
+| Pyomo/SCIP | Unavailable | Not computable | 480.005 | 501.188 | 88.856 |
+| Pyomo/HiGHS | 12.974673 | 0.000196 | 426.700 | 441.202 | 55.218 |
+
+: Attained quality and distinct observed timing/resource scopes. Gurobi and
+HiGHS passed their original independent primal validation; SCIP returned zero
+solutions at its native time limit. {#tbl-pyomo-outcomes}
+
+SCIP completed its presolve in 551.88 seconds, leaving 12,708,003 variables
+(92 binary) and 626,547 constraints. Its native terminal report records one
+processed node, 2,041,958 LP iterations and zero solutions after 28,800.31
+seconds. It therefore provides no feasible objective or computable relative
+gap. The retained dual bound is -1.77946e15 BRL; it is not an economic estimate.
+The rejected empty exports are consistent with the absence of a usable primal
+vector and do not prove model infeasibility.
+
+These records show that presolve left a very large continuous problem and the
+search did not progress beyond the first processed node. They do not isolate
+the causal contribution of LP algorithm, numerical scaling, heuristics,
+memory bandwidth or shared-node load, nor establish root-LP completion.
+Matrix size and observed work explain the computational burden descriptively;
+they do not establish an intrinsic complexity class from this single run.
+
+Gurobi and HiGHS both satisfy the 1% target, but their attained gaps differ
+substantially. Gurobi's earlier return is not a measurement of the time it
+would require to attain HiGHS's much tighter gap. Conversely, the successful
+HiGHS solution rules out a blanket claim of open-source inability at this
+scale. All observations use finite budgets and uncontrolled shared-node
+conditions. Native time, application elapsed time and sampled memory retain
+their separate definitions; neither nominal thread settings nor one run
+establish a causal performance ranking. Appendix E gives the corresponding
+accepted investment and flow summaries.

@@ -20,7 +20,11 @@ SPEC.loader.exec_module(CHECKER)
 def manuscript(tmp_path, monkeypatch):
     destination = tmp_path / "manuscript"
     shutil.copytree(
-        ROOT / "manuscript", destination, ignore=shutil.ignore_patterns("_manuscript", ".quarto")
+        ROOT / "manuscript", destination,
+        ignore=shutil.ignore_patterns(
+            "_manuscript", "_supplement", ".quarto", "site_libs", "*_files",
+            "*.html", ".cartography.sqlite3",
+        ),
     )
     # Construct a reviewed test snapshot, not a production publication approval.
     approval_path = destination / "pages_approval.json"
@@ -192,7 +196,7 @@ def test_ai_declaration_is_before_references(manuscript):
         < article.index("# Declaration of generative AI")
         < article.index("# References")
     )
-    for name in ("Gurobot", "Gemini 3.1 Pro", "5.6 Sol", "6.0 Astra"):
+    for name in ("Gurobot", "Gemini 3.1 Pro", "6.1 Sol", "6.0 Astra"):
         assert name in article
 
 
@@ -211,6 +215,23 @@ def test_unresolved_equation_is_rejected(manuscript):
     path.write_text(path.read_text(encoding="utf-8") + "\n@eq-invented", encoding="utf-8")
     with pytest.raises(ValueError, match="mathematical cross-reference"):
         CHECKER.check()
+
+
+@pytest.mark.parametrize("change", ("valid", "duplicate", "unresolved"))
+def test_figure_placement_attributes_preserve_cross_reference_checks(manuscript, change):
+    path = manuscript / "human_ai_methodology.qmd"
+    text = path.read_text(encoding="utf-8")
+    assert '{#fig-human-ai fig-pos="H"}' in text
+    if change == "duplicate":
+        text += '\n![Duplicate](figures/human_ai_workflow.png){#fig-human-ai fig-pos="H"}\n'
+    elif change == "unresolved":
+        text += "\nSee @fig-missing-placement.\n"
+    path.write_text(text, encoding="utf-8")
+    if change == "valid":
+        CHECKER.check()
+    else:
+        with pytest.raises(ValueError, match="mathematical cross-reference"):
+            CHECKER.check()
 
 
 def test_benchmark_is_not_labeled_as_verified_slr(manuscript):
@@ -265,6 +286,15 @@ def test_original_review_bytes_remain_authoritative(manuscript):
     assert "[NAME OF TOOL" not in text
 
 
+def test_malformed_supplement_display_math_is_rejected(manuscript):
+    path = manuscript / "supplement/appendix_c.qmd"
+    text = path.read_text(encoding="utf-8")
+    assert "\n$$\n" in text
+    path.write_text(text.replace("\n$$\n", "\n$\n", 1), encoding="utf-8")
+    with pytest.raises(ValueError, match="Display mathematics"):
+        CHECKER.check()
+
+
 @pytest.mark.parametrize(
     "internal_text",
     [
@@ -304,6 +334,7 @@ def test_hardware_and_preliminary_results_are_distinguished(manuscript):
     assert "Native Runtime" in article or "native Runtime" in article or "native runtime" in article
     assert "retained" in article and "MILP" in article
 
+
 @pytest.mark.parametrize("mutation", ["objective", "service", "gap", "source", "admission"])
 def test_scalar_scip_negative_result_cannot_be_promoted(manuscript, mutation):
     path = manuscript / "open_source_comparison_status.json"
@@ -327,8 +358,11 @@ def test_scalar_scip_negative_result_cannot_be_promoted(manuscript, mutation):
 @pytest.mark.parametrize(
     "field,value",
     [
-        ("objective", 0), ("bound", 0), ("common_gap", 0),
-        ("archive_sha256", "0" * 64), ("source_commit", "0" * 40),
+        ("objective", 0),
+        ("bound", 0),
+        ("common_gap", 0),
+        ("archive_sha256", "0" * 64),
+        ("source_commit", "0" * 40),
         ("original_validation_status", "rejected"),
         ("additional_execution_admitted", True),
     ],
@@ -345,7 +379,8 @@ def test_highs_original_certificate_cannot_drift(manuscript, field, value):
 @pytest.mark.parametrize(
     "field,value",
     [
-        ("native_termination", "timelimit"), ("usable_incumbent", False),
+        ("native_termination", "timelimit"),
+        ("usable_incumbent", False),
         ("classification", "no_usable_incumbent"),
         ("operational_receipts_closed", True),
     ],
@@ -360,10 +395,42 @@ def test_extended_scip_censoring_cannot_be_erased(manuscript, field, value):
 
 
 def test_highs_gap_percentage_cannot_be_confused_with_fraction(manuscript):
-    path = manuscript / "scip_results.qmd"
+    path = manuscript / "solver_results.qmd"
     path.write_text(
         path.read_text(encoding="utf-8").replace("0.000196", "0.00000196"),
         encoding="utf-8",
     )
     with pytest.raises(ValueError, match="manuscript values"):
         CHECKER.check_highs_and_censored_scip_revision()
+
+
+def test_quarto_automatic_reference_labels_cannot_be_duplicated(manuscript):
+    path = manuscript / "index.qmd"
+    path.write_text(
+        path.read_text(encoding="utf-8") + "\nFigure @fig-map-h215\n",
+        encoding="utf-8",
+    )
+    with pytest.raises(ValueError, match="automatic cross-reference labels"):
+        CHECKER.check()
+
+
+@pytest.mark.parametrize("relative", [
+    "index.qmd", "solver_results.qmd", "supplement/appendix_c.qmd",
+    "supplement/appendix_e_case_tables.qmd",
+])
+@pytest.mark.parametrize("name", ["SCIP", "CBC"])
+def test_excluded_solver_history_cannot_return_to_publication(manuscript, relative, name):
+    path = manuscript / relative
+    path.write_text(path.read_text(encoding="utf-8") + "\n" + name, encoding="utf-8")
+    with pytest.raises(ValueError, match="Reader audience"):
+        CHECKER.check()
+
+
+@pytest.mark.parametrize("solver", ["gurobi", "highs"])
+def test_reader_solver_subset_preserves_original_certificates(manuscript, solver):
+    path = manuscript / "solver_comparison_evidence.json"
+    record = json.loads(path.read_text(encoding="utf-8"))
+    next(row for row in record["observations"] if row["solver"] == solver)["objective"] = 0
+    path.write_text(json.dumps(record), encoding="utf-8")
+    with pytest.raises(ValueError, match="original certificates"):
+        CHECKER.check_reader_solver_comparison()

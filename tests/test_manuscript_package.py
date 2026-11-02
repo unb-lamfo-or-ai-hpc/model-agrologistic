@@ -20,6 +20,28 @@ def test_missing_render_does_not_create_archive(tmp_path):
     assert not output.exists()
 
 
+def test_paired_tables_are_checksum_bound_and_do_not_expand_allowlist(tmp_path):
+    assert MODULE.paired_investments(tmp_path) == {}
+    folder = tmp_path / "investments"
+    folder.mkdir()
+    data = b"warehouse,open\nexample,1\n"
+    (folder / "h300_w_sto_highs_t1_r1.csv").write_bytes(data)
+    (folder / "unrelated-private.csv").write_bytes(b"private fixture")
+    case = {"case": "h300_w_sto_highs_t1_r1", "sha256": hashlib.sha256(data).hexdigest()}
+    index = tmp_path / "appendix_e_paired_h300_index.json"
+    index.write_text(json.dumps({"cases": [case]}), encoding="utf-8")
+    result = MODULE.paired_investments(tmp_path)
+    assert result["appendix_e_investments_h300_w_sto_highs_t1_r1.csv"] == data
+    assert not any("private" in name for name in result)
+    (folder / "h300_w_sto_highs_t1_r1.csv").write_bytes(b"modified")
+    with pytest.raises(ValueError, match="checksum"):
+        MODULE.paired_investments(tmp_path)
+    case["case"] = "../outside"
+    index.write_text(json.dumps({"cases": [case]}), encoding="utf-8")
+    with pytest.raises(ValueError, match="identity"):
+        MODULE.paired_investments(tmp_path)
+
+
 def test_renamed_appendix_links_to_its_own_pdf(tmp_path):
     spec = importlib.util.spec_from_file_location(
         "assemble", ROOT / "scripts/assemble_manuscript_outputs.py")
@@ -57,6 +79,7 @@ def test_allowlisted_portable_package_and_checksums(tmp_path):
         "manuscript/dataset_release.json",
         "manuscript/_manuscript/_tex/figures/pipeline.png",
         "manuscript/_manuscript/_tex/figures/private.log",
+        "manuscript/_manuscript/_tex/figures/unused-solver-history.png",
         "manuscript/_manuscript/credentials.txt",
         "manuscript/figures/human_ai_workflow.png",
         "manuscript/supplement/appendix_c/model_det.gms",
@@ -65,11 +88,18 @@ def test_allowlisted_portable_package_and_checksums(tmp_path):
         "manuscript/supplement/appendix_c/README.md",
         "manuscript/supplement/appendix_d_inventory.json",
         "manuscript/supplement/appendix_c/data.inc",
+        "manuscript/open_source_comparison_status.json",
+        "manuscript/pyomo_solver_campaign.json",
+        "manuscript/solver_comparison_evidence.json",
+        "docs/evidence/scalar_scip_h215_w_2225638_review.json",
     ]
     for name in paths:
         path = tmp_path / name
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text("test fixture", encoding="utf-8")
+    (tmp_path / "manuscript/_manuscript/_tex/index.tex").write_text(
+        r"\includegraphics{figures/pipeline.png}", encoding="utf-8",
+    )
     (tmp_path / "manuscript/supplement/index.tex").write_text(
         r"\includegraphics[keepaspectratio]{../figures/human_ai_workflow.png}",
         encoding="utf-8",
@@ -84,6 +114,13 @@ def test_allowlisted_portable_package_and_checksums(tmp_path):
         assert {"model_det.gms", "model_sto.gms", "model_common.inc",
                 "appendix_c_readme.md", "appendix_d_inventory.json"} <= set(names)
         assert "data.inc" not in names
+        assert "unused-solver-history.png" not in names
+        assert "solver_comparison_evidence.json" in names
+        assert not any("scip" in name.lower() for name in names)
+        assert "open_source_comparison_status.json" not in names
+        assert "pyomo_solver_campaign.json" not in names
+        assert "comparison_provenance.json" not in names
+        assert "evidence_status.json" not in names
         assert "../figures/" not in archive.read("supplement.tex").decode()
         assert all("/" not in name for name in names)
         assert not any("private" in name or "credentials" in name for name in names)

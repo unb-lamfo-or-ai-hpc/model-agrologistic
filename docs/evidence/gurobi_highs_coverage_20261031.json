@@ -1,0 +1,145 @@
+{
+  "schema_version": "gurobi-highs-proposed-campaign-coverage-v1",
+  "date": "2026-10-31",
+  "scope": "Original audited receipts plus proposed experiment design; no execution admitted",
+  "h215": {
+    "gurobi_native": {
+      "W_DET": {
+        "threads": 4,
+        "n": 1
+      },
+      "W_STO": {
+        "threads": 4,
+        "n": 1
+      },
+      "D_DET": {
+        "threads": 4,
+        "n": 1
+      },
+      "D_STO": {
+        "threads": 4,
+        "n": 1
+      }
+    },
+    "gurobi_pyomo": {
+      "W_STO": {
+        "threads": 4,
+        "n": 1
+      }
+    },
+    "highs_pyomo": {
+      "W_STO": {
+        "threads": 4,
+        "n": 1
+      }
+    },
+    "missing_highs_cases": [
+      "W_DET",
+      "D_DET",
+      "D_STO"
+    ]
+  },
+  "historical_larger_populations": [
+    {
+      "population": 300,
+      "topology": "W",
+      "mode": "sto",
+      "solver": "gurobi",
+      "backend": "gurobipy",
+      "thread_levels": [
+        1,
+        2,
+        4,
+        8,
+        16
+      ],
+      "n_per_level": 1,
+      "native_time_limit_seconds": 14400,
+      "seed": 42,
+      "gap_target": 0.01
+    },
+    {
+      "population": 400,
+      "topology": "W",
+      "mode": "sto",
+      "solver": "gurobi",
+      "backend": "gurobipy",
+      "thread_levels": [
+        1
+      ],
+      "n_per_level": 1,
+      "native_time_limit_seconds": 14400,
+      "seed": 42,
+      "gap_target": 0.01
+    },
+    {
+      "population": 500,
+      "topology": "W",
+      "mode": "sto",
+      "solver": "gurobi",
+      "backend": "gurobipy",
+      "thread_levels": [
+        1
+      ],
+      "n_per_level": 1,
+      "native_time_limit_seconds": 14400,
+      "seed": 42,
+      "gap_target": 0.01
+    }
+  ],
+  "proposed_grid": {
+    "solvers": [
+      "gurobi",
+      "highs"
+    ],
+    "populations": [
+      300,
+      400,
+      500
+    ],
+    "mode": "sto",
+    "topology": "W",
+    "thread_levels": [
+      1,
+      2,
+      4,
+      8,
+      16
+    ],
+    "repetitions_per_cell": 3,
+    "seed": 42,
+    "cells": 30,
+    "fresh_runs": 90,
+    "native_seconds_per_run": 28800,
+    "provisional_job_seconds_per_run": 43200,
+    "preferred_common_backend": "pyomo",
+    "highs_parallel_proposal": "on",
+    "pilot_admission_pending": true,
+    "complete_h215_additional_runs": 3,
+    "total_with_h215": 93
+  },
+  "budgets": {
+    "aggregate_native_hours": 720,
+    "aggregate_provisional_application_hours": 1080,
+    "one_lane_days_if_all_job_envelopes_used": 45,
+    "two_lane_days_if_all_job_envelopes_used": 22.5,
+    "queue_time_included": false,
+    "deadline_guaranteed": false
+  },
+  "highs_16_threads": {
+    "upstream_v1151_option_accepts": true,
+    "npad_public_capability_checked": false,
+    "actual_parallel_use_guaranteed": false,
+    "current_adapter_exposes_parallel_option": false,
+    "current_h215_pyomo_variable_guard": 16000000
+  },
+  "historical_native_variables": {
+    "h300": 25107544,
+    "h400": 42106944,
+    "h500": 63426344
+  },
+  "statistical_scope": "Three temporal repetitions at fixed seed42 on three network instances; no random-seed robustness or90-independent-instance claim",
+  "manuscript_changed_by_this_plan": false,
+  "execution_admitted": false,
+  "merge_performed": false
+}

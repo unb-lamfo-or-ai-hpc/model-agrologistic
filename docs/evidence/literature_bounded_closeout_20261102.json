@@ -1,0 +1,56 @@
+{
+  "schema_version": "bounded-literature-reconciliation-closeout-v1",
+  "date": "2026-11-02",
+  "retained_records": 38,
+  "main_cited_records": 33,
+  "bibliography_records_added_or_deleted": 0,
+  "title_doi_year_registry_receipt": "docs/evidence/reference_registry_reconciliation_20261101.json",
+  "ordered_family_audit": "docs/evidence/reference_author_order_20261101.json",
+  "ordered_family_records_checked": 32,
+  "all_checked_family_orders_match": true,
+  "full_text_scope_receipt": "docs/evidence/full_text_scope_update_20261101.json",
+  "whole_corpus_full_text_read": false,
+  "original_appendix_a_sha256": "859dc52b64b6bcf471f7616182d8cadf2b693dbfd19ad4b9248637b5c231b3ed",
+  "original_appendix_a_modified": false,
+  "contribution_baseline": "Entire Related Work corpus, including Rosa; bounded empirical characterization with matched within-project cohorts and agricultural interpretation",
+  "claims_excluded": [
+    "first stochastic grain-location model",
+    "new mathematical formulation based solely on implementation/size",
+    "matched runtime rankings against unrelated published instances",
+    "no feature exists in an inaccessible paper",
+    "causal solver/thread speedup from the first observations"
+  ],
+  "primary_access_refresh": [
+    {
+      "key": "rosa2026thesis",
+      "url": "https://sigaa.unb.br/sigaa/public/programa/noticias_desc.jsf?id=853&lc=pt_BR&noticia=23891799",
+      "access_obtained": "public institutional title and abstract; no complete206-page text",
+      "full_equation_chapter_table_overlap_verified": false
+    },
+    {
+      "key": "gholamian2017",
+      "url": "https://www.sciencedirect.com/science/article/pii/S016816991630919X",
+      "access_obtained": "publisher indexed abstract/highlights; no newly obtained full text",
+      "interpretation": "Integrated wheat infrastructure/distribution, blending, transport and export precedent; detailed comparison remains access-limited"
+    },
+    {
+      "key": "shastri2011",
+      "url": "https://experts.illinois.edu/en/publications/a-novel-decomposition-and-distributed-computing-approach-for-the-/",
+      "access_obtained": "institutional abstract and citation metadata",
+      "interpretation": "Prior agricultural MILP decomposition/distributed solution; no cross-paper causal runtime comparison"
+    },
+    {
+      "key": "hosseini2020",
+      "url": "https://www.sciencedirect.com/science/article/pii/S0168169919315479",
+      "access_obtained": "no new full text; direct current fetch denied; earlier preview scope retained"
+    }
+  ],
+  "current_editorial_scope": "Close the documented reconciliation of retained metadata and supported claims; do not certify unavailable complete texts or original search chronology",
+  "remaining_author_source_facts": [
+    "Exact chapter/table overlap with complete Rosa text",
+    "Original Appendix A search chronology/screening record; preserved as supplied",
+    "Given-name and ORCID identities beyond retained ordered family-name checks"
+  ],
+  "remaining_facts_recast_as_model_or_data_changes": false,
+  "source_full_texts_uploaded": false
+}
