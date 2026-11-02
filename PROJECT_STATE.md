@@ -1,3 +1,27 @@
+## Current documentation and campaign checkpoint — 2 November 2026
+
+This header supersedes the stale current/running/publication instructions below;
+older dated records remain historical evidence. Read
+docs/checkpoints/20261102_documentation_exit_matrix.md and manuscript/README.md.
+Both h300 one-thread archives are audited and accepted. Gurobi2231593/t16 has
+an accepted human-reported collection; its new archive has not been inspected
+locally here. HiGHS2231591 is RUNNING03:13:11/step03:13:08 and the original
+collector returns nonterminal_or_accounting_pending. Never repeat init/start.
+
+PR148 public-v2 job2231675 passed dependency/license/allocation/quota/source
+checks but rejected with four pytest collection errors. It is not qualification
+acceptance. A fresh-v3 importlib repair is being qualified, reusing the completed
+probes without submitting or releasing them again. All originals remain intact.
+PR144 preserves author-approved title/question/SO1–SO4, mathematics, units and
+Appendix A. Current discussion compares against the full Related Work corpus;
+38 records retained/33 main citations does not mean all full texts were read.
+The41-file next-Zenodo inventory remains prepared locally, not deposited.
+
+PDFs remain explicitly deferred. All NPAD commands stay human-executed; every
+merge needs separate approval. PR144→develop and the later main/Pages promotion
+are distinct steps, with PDF/TeX generation only when no longer deferred and
+the publication workflow authorized. No old Pages approval is reused.
+
 ## Current h300 return and PR144 continuation — 1 November 2026
 
 Read docs/checkpoints/20261101_h300_return_clean_maps.md and its original
