@@ -104,6 +104,14 @@ currently public GitHub downloads. Access to their processed-source data and
 redistribution conditions follows the availability statement in Appendix D.
 The software license does not by itself establish unrestricted input-data access.
 
+The versioned delivery sequence in Appendix D11 applies to these companions:
+the present GitHub indices identify their contents and original sources,
+while the planned Zenodo version will provide reviewed full-resolution files.
+They are currently prepared locally, not newly deposited. Original coordinate
+rows and scenario weights remain available in the companions rather than
+being replaced by a rendered map. Later campaign records without a usable
+incumbent have no investment map or flow matrix to contribute.
+
 {{< include appendix_e_case_tables.qmd >}}
 
 {{< include appendix_e_paired_h300.qmd >}}

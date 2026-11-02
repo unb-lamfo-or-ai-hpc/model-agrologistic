@@ -1,3 +1,18 @@
+## Merged serial controller and bounded reader/data closeout — 2 November 2026
+
+PR148 is merged into develop at48e2831693fc4abe0657c82197a2e884a61e99d2;
+public2231948 accepted248tests. The human launch recipe reuses all four
+pilots and prepares93newsubmissions with48GiB budget subject to fresh quota.
+No private release receipt is received yet; no start is repeated.
+
+PR144 now explicitly describes the bounded bibliographic access scope and
+Zenodo's existing open0.2.0 versus the41-file planned next release. Article,
+Appendices B–E and the data plan retain identities, units and absent outcomes.
+The canonical current snapshot is docs/current_status.md; prior status/plan
+logs are preserved in docs/history. Original Appendix A and the qualified
+solver/controller bytes remain unchanged. Every merge needs approval.
+PDFs remain deferred; a separate main/Pages PR follows PR144's approved merge.
+
 ## Latest collected h300 pilots and pending public qualification — 2 November 2026
 
 Read docs/checkpoints/20261102_four_h300_pilots_collected.md. This update

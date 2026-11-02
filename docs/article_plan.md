@@ -1,198 +1,38 @@
-## Latest collected h300 pilots and pending public qualification — 2 November 2026
+# Reader revision and release sequence — 2 November 2026
 
-Read docs/checkpoints/20261102_four_h300_pilots_collected.md. This update
-supersedes older RUNNING/no-result statements for HiGHS2231591. All four
-h300 pilots are collected. HiGHS16 is a clean native time-limit return without
-a usable incumbent, objective or gap; preserve both original validation labels
-and operational closure. Do not infer infeasibility, fabricate a plan/map or
-replace nulls by zero/100%. The original gate accepts regular censoring; its
-pure metadata replay is not archive inspection or live admission. No R1 retry
-or removal of HiGHS arms is authorized. New t16 archives still need local audit.
+This plan supersedes the historical article plan preserved under
+[history](history/article_plan_before_20261102_closeout.md). It retains the
+approved title, research question, SO1–SO4, mathematics and original Appendix A.
 
-Public-v3 job2231948/source334827d5 has been submitted, plan8e4947a8. The last
-supplied accounting was RUNNING104s; final result/XML were not yet available.
-Require248 passing tests with zero failures/errors/skips and preserved original
-sources/runtime/receipts before Ready/merge. The closed probes were attached
-without release/submission. Keep v1/v2 outcomes unchanged. PDFs stay deferred,
-every merge needs approval and every NPAD command is human-executed. The
-finite private queue remains unsubmitted and unreleased.
+1. **Campaign software — completed merge:** PR148/develop48e28316 retains the
+   qualified controller334827d5 and unchanged scientific enginec493be8c.
+   Public248tests accepted; all four h300 pilots stay consumed. The human
+   NPAD recipe prepares and releases93newIDs with current quota and all gates.
+   Record actual submission/release receipts when received; never infer them.
+2. **Reader revision — PR144:** finish the text/source/units/data reconciliation
+   and clean-checkout qualification. The current article reports audited
+   retained cohorts and a prospective90-cell analysis; four pilot outcomes
+   do not establish three repetitions per setting. Excluded solver history
+   stays on GitHub.
+3. **Bibliographic scope:** retain38records/33main citations and original author
+   order/keys. Distinguish metadata, abstract/preview and targeted full-text
+   support. Explicitly retain the four access limits and original search/
+   chapter-overlap facts; do not certify unavailable reading or global novelty.
+4. **Versioned data:** cite existing open0.2.0 and the41-file prepared inventory.
+   Article data availability and AppendixD11/E explain GitHub metadata versus
+   large Zenodo tables/graphs/solutions. Complete per-asset review before a
+   proposed0.3.0; publish and verify actual downloaded bytes before adding a
+   new DOI. Future campaign data retain all90states with missing values intact.
+5. **Develop consolidation:** request approval for a concrete Ready PR144 head
+   with final source/CI scope and remaining scientific/access limitations.
+6. **Main/Pages:** only after PR144merges, open a separate promotion PR. Qualify
+   its Quarto snapshot and final article/appendix PDFs plus editable TeX ZIP
+   when their generation is authorized. Refresh the publication receipt,
+   request the separate merge and verify the deployed download paths.
+7. **Campaign synthesis:** later original-archive audits and a results PR compare
+   matching cells, native/application times, quality, memory and censoring.
+   Fixed-seed repetitions measure observed execution variation. No missing
+   result is imputed or successful-case subset presented as the full campaign.
 
-## Current documentation and campaign checkpoint — 2 November 2026
-
-This header supersedes the stale current/running/publication instructions below;
-older dated records remain historical evidence. Read
-docs/checkpoints/20261102_documentation_exit_matrix.md and manuscript/README.md.
-Both h300 one-thread archives are audited and accepted. Gurobi2231593/t16 has
-an accepted human-reported collection; its new archive has not been inspected
-locally here. HiGHS2231591 is RUNNING03:13:11/step03:13:08 and the original
-collector returns nonterminal_or_accounting_pending. Never repeat init/start.
-
-PR148 public-v2 job2231675 passed dependency/license/allocation/quota/source
-checks but rejected with four pytest collection errors. It is not qualification
-acceptance. A fresh-v3 importlib repair is being qualified, reusing the completed
-probes without submitting or releasing them again. All originals remain intact.
-PR144 preserves author-approved title/question/SO1–SO4, mathematics, units and
-Appendix A. Current discussion compares against the full Related Work corpus;
-38 records retained/33 main citations does not mean all full texts were read.
-The41-file next-Zenodo inventory remains prepared locally, not deposited.
-
-PDFs remain explicitly deferred. All NPAD commands stay human-executed; every
-merge needs separate approval. PR144→develop and the later main/Pages promotion
-are distinct steps, with PDF/TeX generation only when no longer deferred and
-the publication workflow authorized. No old Pages approval is reused.
-
-# Article plan and editorial boundaries
-
-23October CURRENT: PR120 is merged and the researcher now requests public S6-A
-review via Pages after qualified develop/main reconciliation. The approved
-snapshot includes the separately accepted h215 W/D comparison, without changing
-the eight-observation W scalability cohort or its original certificates. D
-reduces penalized objectives but lowers service; keep that trade-off explicit.
-Appendices A–D and GAMS-parity limitations are preserved. This supersedes old
-draft/publication holds below, not final coauthor approval or S6-B/submission.
-See [current completion plan](mvp2_completion_handoff_20261023.md). This chat pauses
-until at least16Nov; S5/h500, SCIP disposition and editorial rounds remain open.
-
-22October resumed direction: the expanded supplied mandate now authorizes
-editing the SAME draft PR120, including implementation/data Appendices C/D and
-numbered disclosure/Acknowledgements/References. Read
-[current delivery record](s6a_20261022/mandate_and_delivery.md). The hold below
-is historical for editing, but merge/publication/submission remain unauthorized.
-Independent documentary W/D audit PR124 is separately qualified; its proposed
-D executions are not admitted. Project01/chat01.01 handoff is deferred until
-both workstreams finish here and the maintainer reviews the resulting mandate.
-
-## Current editorial hold —22 October2026
-
-PR120 contains the integrated scalar article/supplements/geographic package
-qualified at1f45d02 on21October, but the maintainer now explicitly requires
-DRAFT pending an expanded coauthor-review round. No merge, further substantive
-editorial revision, Ready promotion, Pages publication or submission follows this
-handoff. Preserve the working revision and original review material; resume when
-the maintainer supplies the next comments/direction. The single approved title,
-RQ, SO1–SO4, fixed scalar model and complete Appendix A remain the starting point.
-See [current mandate](s6a_20261021/README.md) and
-[completion sequence](mvp2_completion_handoff_20261022.md). Earlier statements
-reserving all incorporation to S6-B were superseded by the21October explicit
-authorization to replace manuscript/index.qmd ON the editorial branch, not develop.
-Do not restore historical MVP1/hierarchy numerics as current scalar results.
-
-## S6-A preparation authorized in parallel —20 October2026
-
-The [current coauthor-review package](s6a_20261020/README.md) assesses the supplied
-annotated PDF with all146 response records, a scalar formulation proposal,
-revised outline/prose and results/supplement inventory. The researcher explicitly
-requests this separate PR while scalar h300 runs. Authorship identification of
-individual comments is omitted. The reviewed version and current manuscript
-remain preserved; incorporation of the proposed revisions is the later S6-B
-editorial step. Existing accepted h215 DET/STO supports the deterministic role;
-agricultural maps/decisions need original vectors and geographic inputs.
-
-Use scalar investment plus expected operations and three fixed penalties as the
-active formulation. Main Results foreground actual scalar experiments, with
-historical MVP1/hierarchical MVP2 retained only for stated context/supplement.
-Remove EVPI/VSS and detailed unimplemented Benders material in S6-B. The original
-planning table below is a preserved earlier framework; the detailed current
-outline and acceptance criteria are in the linked S6-A package.
-
-## Scalar editorial decision — 19 October2026
-
-The [approved scalar contract](mvp2_scalar_contract.md) replaces the scientific
-framing of new MVP2 results: DET/STO economic MILP scalability, no hierarchical
-contribution or EVPI/VSS calculation. R1 updates this plan, NOT the coauthor-reviewed
-article, figures, appendix or published Pages. S6-A consolidates scalar evidence;
-S6-B revises the manuscript coherently, removes the excluded section and preserves
-review history. Historical MVP1/S1/S2 outcomes are contextual, not scalar results.
-
-Prepared 9 October 2026 from the [checkpoint](../PROJECT_STATE.md) and
-[reconciled roadmap](mvp2_hpc_roadmap.md). This is planning only: no article,
-appendix, figures or presentation is edited by the portable-memory PR.
-Computers and Electronics in Agriculture is the intended journal, subject to
-coauthor approval and demonstrated agricultural/computational contribution.
-
-## Authoritative version before S6
-
-The [public manuscript](https://unb-lamfo-or-ai-hpc.github.io/model-agrologistic/)
-and [repository manuscript guide](../manuscript/README.md) are discoverable
-references, not proof that either is the exact version last emailed to coauthors.
-Identify that URL/version and applicable comments before integration. Respect
-the review freeze. Preserve the full systematic review as appendix/supplement;
-confirm its authoritative source rather than replacing it with an unverified
-AI condensation. Human coauthor review governs scientific changes and final LaTeX.
-
-## Proposed synthesis at S6
-
-| Part | Required content and boundary |
-| --- | --- |
-| Introduction | Agricultural strategic planning context, scientific gap, question and objectives; distinguish tactical flows from operational deployment |
-| Related work | Position storage/network planning under uncertainty and computational reproducibility; keep the full systematic review in the appendix |
-| Formulation | Deterministic and two-stage stochastic lineage, indices/units, shared investments, recourse, service/capacity/economic hierarchy and slacks |
-| Computational method | Data/routes, dimensions/nonzeros, runtime/algorithm identities, hardware, budgets, independent validation and acceptance criteria |
-| Results | Frozen MVP1 thirteen-attempt cohort plus distinct accepted MVP2 evidence; retain partial/failure/blocked outcomes and denominators |
-| Discussion | Phase-specific LP/MIP bottlenecks, memory, effective parallelism, quality/runtime/core-hour trade-offs and the empirical frontier |
-| Limitations/conclusions | Agricultural relevance and computational scope; no universal solver ranking, operational certification or asymptotic complexity proof |
-| Appendix/reproducibility | Full review, supplementary contracts, evidence/figure provenance, exact code/input/runtime identities and adverse outcomes |
-
-Explain technical terms before using them: feasible incumbent, bound, MIP gap,
-hierarchical degradation, root LP, RSS, solver memory, cgroup/Slurm accounting,
-threads versus allocated CPUs, diagnostic censoring and core-hours. Accessible
-language must retain measurement scope and numerical caveats.
-
-## Evidence to reconcile, not overwrite
-
-- MVP1: thirteen attempts (seven Gurobi, six SCIP/SoPlex), including four
-  quality-certified Gurobi attempts, partial h400 outcomes and SCIP no-incumbent
-  runs. No-incumbent is not infeasibility. Historical method/resources differ.
-- S1: three h215 pairs, separately reviewed h300 baseline, one descriptive h300
-  pair and one direct-enabled h400 control. Compaction remains optional/default-off;
-  there is no demonstrated causal performance gain. A newer accepted h400 control
-  does not erase the earlier failed/partial profiles.
-- S2: use only subsequently audited thread/operational evidence, including
-  no-benefit or bounded negative outcomes. Miniature software qualification and
-  blocked containment inputs must not become production speedup claims.
-- Existing SCIP/h215 and S5/h500: report only actually admitted/audited outcomes,
-  distinguishing construction, feasible-incumbent and full-hierarchy frontiers.
-  Do not manufacture adverse outcomes to demonstrate difficulty.
-
-The [S1 ledger](mvp2_sprint1_closure.md),
-[MVP1 comparison](evidence/sprint_c_final_20260920/comparison_summary.md) and
-[experimental protocol](experiment_protocol.md) provide the entry points.
-Avoid cross-policy/cross-runtime comparisons presented as controlled acceleration.
-Emergency-capacity reliance and penalty costs do not support financial impact
-or infrastructure procurement claims without separate substantive analysis.
-
-## Agreed exclusions and coauthor requirements
-
-S3 new solvers and S4 decomposition are cancelled. Mention decomposition only
-briefly as future work, not an unfinished required contribution. Revisit the
-existing SCIP backend after S2 under the bounded roadmap; do not introduce a
-new solver campaign. Section 3.8, "Value of information and stochasticity", and
-EVPI/VSS will be removed at S6; these calculations are not remaining MVP2 work.
-Existing manuscript text is deliberately unchanged now.
-
-Prioritize coherence, accessible definitions, explicit units, homogeneous
-comparisons and a substantial computational/HPC discussion. HPC relevance must
-come from measured algorithm/resource behavior in agricultural decision support,
-not simply using a cluster. Keep missing telemetry, censoring, shared-node/order
-effects, allowed objective degradation and unqualified equivalence visible.
-
-## Two editorial deliverables, later decisions
-
-1. Editorial PR: identify the coauthor-reviewed version, reconcile audited
-   evidence/comments, revise framing/discussion and apply the EVPI/VSS exclusion.
-   Human review precedes final manuscript incorporation.
-2. Packaging PR: reconcile appendix, figures/tidy sources, complete/adverse
-   evidence inventory, route/cache provenance and an exact-code release manifest.
-   Preserve the frozen MVP1 artifacts.
-
-Maintainer planning update, 13 October 2026: main/develop synchronization no longer
-belongs to S2 closure. After S6-A consolidation and review of the S6-B article,
-identify the accepted revision and consistent evidence/reproducibility inventory,
-then qualify the [final protected-branch integration](mvp2_hpc_roadmap.md#final-post-article-review-gate--protected-main-reconciliation).
-Inspect exclusive history, exact heads, scope and effective checks; request each
-merge only after its PR is Ready. This does not edit or replace the coauthor-reviewed
-manuscript, freeze a new article version, or authorize any merge now.
-
-Release/tag, final Zenodo deposit, public deployment, preprint and journal
-submission require their own later decisions. This file promises no submission
-date, acceptance, automatically synchronized chat history or experimental outcome.
+Temporary review PDFs and raw HPC archives remain local. No solver/job, data
+deposit, main deployment or new PDF follows from this documentary plan.

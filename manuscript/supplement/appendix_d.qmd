@@ -455,3 +455,47 @@ and [file-level release inventory](https://github.com/unb-lamfo-or-ai-hpc/model-
 distinguish these locally prepared files from the existing published deposit.
 They identify the graph separately from the two positive-flow companions;
 they do not claim that a new Zenodo download is already available.
+
+## D11 Versioned data release plan
+
+The existing Zenodo dataset, version 0.2.0
+[@celestino2026dataset], remains the cited public historical release.
+Its current [public metadata](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/82c2c19ce619f1251043829b10a4702ac88a7cdd/docs/evidence/zenodo_public_metadata_20261102.json)
+lists twelve files with open access. Rechecking those metadata is distinct from
+downloading every archive again or extending its contents.
+
+The [next-version plan](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/82c2c19ce619f1251043829b10a4702ac88a7cdd/data/manifests/zenodo_release_plan_20261102.json)
+links the existing release to the
+[initial 41-file inventory](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/82c2c19ce619f1251043829b10a4702ac88a7cdd/data/manifests/zenodo_next_release_inventory_20261101.json)
+and its [readiness register](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/82c2c19ce619f1251043829b10a4702ac88a7cdd/data/manifests/zenodo_release_readiness_20261102.json).
+These 450,057,392 bytes are prepared locally. They comprise 28 historical
+companions, four complete directed road-distance tables, seven companions
+for the matched h300 pair and two files describing its selected admissible
+graph. No new DOI, upload or anonymous download of these derivatives has
+been completed. Further population graphs and reviewed original outputs
+are separately identified preparation tasks.
+
+| Data object | GitHub role | Versioned numerical archive role |
+| --- | --- | --- |
+| Model and experimental protocol | Source, tests, settings and exact software versions | Link each dataset version to the executed source and environment |
+| Inputs and complete directed distances | Gold schema, source members, materialization audits and checksums | Preserve original workbooks and provide full endpoint/family distance tables |
+| Selected admissible network | Screening policy, counts and graph/contract identities | Export the product-specific admissibility mask separately from complete distances |
+| Accepted investment and operating decisions | Small lists and reviewed figures/tables | Full coordinate tables and SQLite companions with period/scenario/product identities |
+| Computational outcome | Configuration/status tables and evidence references | Reviewed native/validation/timing/resource records, including censored and unsuccessful outcomes |
+
+: Table D.8. Complementary repository and versioned-data delivery roles.
+
+Before a new version is published, each asset requires its source notices,
+attribution and private-field review, exact byte size and SHA-256, coordinate
+and unit dictionary, and the source used to derive any aggregate.
+Sanitized copies receive new identities and an omission/source mapping;
+original experimental packages remain unchanged. Software licensing does
+not replace the applicable notices for upstream datasets.
+
+The release sequence is preparation, asset review, publication of a new
+version related to 0.2.0, and anonymous download verification against the
+manifest. A new DOI or download URL enters the article only after those
+steps. A later campaign release will account for all 90 configurations and
+the products actually returned, including time censoring, execution failure
+and non-execution. Missing decisions or objective values are not fabricated.
+The current prepared inventory is not a claim that the campaign is complete.

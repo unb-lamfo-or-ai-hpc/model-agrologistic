@@ -109,6 +109,15 @@ dimensions. [Appendix A](https://unb-lamfo-or-ai-hpc.github.io/model-agrologisti
 provides the search strategy, selection record and
 the complete researcher-supplied literature review.
 
+The original review is retained as supplied. The present positioning separates
+bibliographic identification from targeted reading of accessible primary texts.
+Where only an abstract or publisher preview was available, the comparison is
+limited to its stated scope; unavailable detail is not evidence that a modeling
+or computational feature is absent. The
+[source-access record](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/82c2c19ce619f1251043829b10a4702ac88a7cdd/docs/evidence/literature_bounded_closeout_20261102.json)
+identifies those limits, including the distinction between the acknowledged
+mathematical foundation and a complete chapter-by-chapter comparison.
+
 Integrated wheat-network design in @gholamian2017 links infrastructure choices
 to the organization of the supply chain. Scenario-based wheat planning in
 @pourmohammadi2020 and sustainable, resilient network design in
@@ -846,6 +855,21 @@ source identities; no claim is made that every new raw archive is included in
 that earlier deposit. Project-authored code is MIT. OpenStreetMap-derived
 databases retain ODbL terms, while external inputs retain their applicable
 file-level notices and redistribution conditions.
+
+A follow-up versioned Zenodo release is planned for the complete directed
+distance tables, selected admissible graphs and source-bound solution
+companions used in the expanded analysis. Its
+[initial file inventory](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/82c2c19ce619f1251043829b10a4702ac88a7cdd/data/manifests/zenodo_next_release_inventory_20261101.json)
+contains 41 locally prepared assets totaling 450,057,392 bytes; it is not a
+newly published data deposit or complete coverage of the 90-cell campaign.
+The [release plan](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/82c2c19ce619f1251043829b10a4702ac88a7cdd/data/manifests/zenodo_release_plan_20261102.json)
+separates asset preparation, source-specific notices and private-field review,
+new-version publication and verification of anonymously downloaded bytes.
+Only after that verification will a new DOI and numerical download links be
+reported. Appendix D11 specifies the GitHub/Zenodo distribution and Appendix E
+identifies the investment and flow-distance companions. Later campaign
+outcomes will retain all configuration states, including censoring and
+non-execution, without filling absent objectives or decision vectors.
 
 # Declaration of generative AI and AI-assisted technologies in the manuscript preparation process
 

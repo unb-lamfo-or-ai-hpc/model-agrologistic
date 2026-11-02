@@ -14,7 +14,7 @@ experimental method and results. The appendices provide complementary detail:
 | Appendix | Purpose | Source |
 | --- | --- | --- |
 | A | Original systematic literature review | [Preserved PDF](supplement/appendix_a_original.pdf) |
-| B | Human-supervised AI assistance and verification | [Supplement, B1–B7](supplement/index.qmd) |
+| B | Human-supervised AI assistance and verification | [Supplement, B1–B6](supplement/index.qmd) |
 | C | Implementations, solver interfaces, parallelism and independent validation | [Appendix C](supplement/appendix_c.qmd) |
 | D | Input sources, actual coefficients, units, facility selection and OSRM preparation | [Appendix D](supplement/appendix_d.qmd) |
 | E | Individual investment maps, facility lists and flow-distance matrices | [Appendix E](supplement/appendix_e.qmd) |
@@ -82,3 +82,9 @@ The [current documentation exit matrix](../docs/checkpoints/20261102_documentati
 records completed checks and remaining source/data/publication work. Historical
 editorial and execution notes remain in Git history and the repository's dated
 checkpoints, outside this reader guide.
+
+The [versioned data release plan](../data/manifests/zenodo_release_plan_20261102.json)
+and [current Zenodo guide](../docs/mvp_release_and_zenodo.md) separate the existing
+open0.2.0 from locally prepared next-version assets. AppendixD11 andE carry
+that distinction into the reader text. Prepared companions do not imply a
+new public download, and the90-cell campaign is not reported as complete.

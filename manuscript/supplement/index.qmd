@@ -160,6 +160,14 @@ Tests verify specified properties and examples; they do not establish general
 correctness or substitute for substantive modeling judgment. Restricted inputs
 can also limit independent reconstruction of a large experiment.
 
+The literature reconciliation separately checks bibliographic identity,
+ordered family names where registry metadata were available, and claims
+supported by accessible primary passages. It does not certify a full-text
+rereading of all 38 retained records. Abstract- or preview-level access does
+not establish that an unreported feature is absent. The complete supplied
+Appendix A remains unchanged; the present article's comparison is bounded
+by the source-access record and its acknowledged mathematical provenance.
+
 The study has no controlled comparison for measuring time saved, productivity
 or error reductions caused by AI assistance. Its methodological contribution
 is the inspectable connection between proposals, human decisions,

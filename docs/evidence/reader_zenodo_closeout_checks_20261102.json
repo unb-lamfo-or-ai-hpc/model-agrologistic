@@ -1,0 +1,80 @@
+{
+  "schema_version": "reader-closeout-zenodo-checks-v1",
+  "date": "2026-11-02",
+  "scope": "Local metadata/source/dimensional/link checks; no fresh private residuals, solver, HPC, Quarto render or PDF",
+  "tracked_ruff_status": "passed_project_policy",
+  "tracked_python_files": 246,
+  "temporary_authoring_helpers_excluded_from_repository_lint": true,
+  "manuscript_integrity": "accepted",
+  "main_cited_references": 33,
+  "original_and_cached_gold_cells_checked": 254,
+  "pinned_appendix_source_links_checked": 49,
+  "focused_tests": {
+    "tests": 21,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "data_release_contract": {
+    "prepared_assets": 41,
+    "prepared_bytes": 450057392,
+    "new_deposit": false,
+    "original_appendix_a_sha256": "859dc52b64b6bcf471f7616182d8cadf2b693dbfd19ad4b9248637b5c231b3ed",
+    "focused_tests": 21,
+    "protected_blobs": [
+      {
+        "path": "manuscript/comparison_provenance.json",
+        "git_blob": "b5627dc738e4a9ae52a07f5df95776228903bc65",
+        "sha256": "06000cc3e03b4d34c1392b56edfe28bab818b59eb19d7f01a44617c3fc6f16af"
+      },
+      {
+        "path": "manuscript/figures/runtime_memory_comparison.pdf",
+        "git_blob": "1d2816b79288be60aa6a4e672a5a44cfbd5f9d49",
+        "sha256": "771317edad5752c43fa5429c6ae8bdbfb23530f813a02b35ed285b821b8f45aa"
+      },
+      {
+        "path": "manuscript/figures/human_ai_workflow.svg",
+        "git_blob": "15a7f952e57275bcf211ea5b09bfdd6b79b8906f",
+        "sha256": "32170563b7976df601941876ccd945adae2a41dd1aecd46c66e67f3cc87371e4"
+      },
+      {
+        "path": "manuscript/supplement/appendix_e_paired_h300_index.json",
+        "git_blob": "0f5ea5c0144c58af8d036ee011b3e0773ce59f3c",
+        "sha256": "3fd693594fd2d0738dc7b51430c5d4a9ee257ce4fae205a17da268d82384b1ae"
+      }
+    ],
+    "pdf_generated": false,
+    "solver_or_HPC_executed": false
+  },
+  "qualified_controller_files_integrated": 10,
+  "original_engine_paths_preserved": 273,
+  "source_access_limits_explicit": true,
+  "proposed_zenodo_release_published": false,
+  "pdf_generated": false,
+  "full_html_or_pdf_render_repeated_in_this_increment": false,
+  "clean_checkout_CI_repair": {
+    "first_commit": "82c2c19ce619f1251043829b10a4702ac88a7cdd",
+    "failed_runs": [
+      41454324635,
+      41454324603
+    ],
+    "failure_stage": "Git clean-checkout guard before native tests; two source-bound CRLF artifacts seen as normalized changes",
+    "secondary_failure": "Missing XML artifact upload follows the guard stop; not another solver/test failure",
+    "fix": "Explicit -text attributes preserve four original source-bound artifacts; no artifact blob changes",
+    "tests_not_run_in_failed_jobs": true,
+    "retained_full_CI_after_fix": "pending"
+  },
+  "ruff_policy": "Explicit tracked paths with --force-exclude respect existing project legacy exclusions; no file was modified by lint",
+  "prior_local_lint_attempts": [
+    {
+      "scope": "Whole temporary authoring directory",
+      "outcome": "Rejected untracked helper formatting; helpers are not published repository source"
+    },
+    {
+      "scope": "All246tracked Python paths without force-exclude",
+      "outcome": "Explicit paths overrode existing exclusions and reported91legacy diagnostics; no changes applied"
+    }
+  ],
+  "bash_launch_syntax_check": "passed_bash_n_only",
+  "original_guide_preservation_git_blob": "1843ec46912f5bbf5db67eb41019effe153331b0"
+}
