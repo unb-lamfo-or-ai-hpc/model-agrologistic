@@ -11,11 +11,16 @@
   },
   "scope": "Matched-pair interpretation, ongoing16-thread pilots, literature and agribusiness meaning; no new terminal observation",
   "article_sources": {
-    "manuscript/index.qmd": "609b727907295036188d8afa25f0ef8b3b104941dcfc079ddcb83e13e38c0790",
-    "manuscript/scaling_pilot_results.qmd": "6a10237cc98dde11408f17ab3333bafdd6760b3088ff21b6d3e3756fcd5f3b25"
+    "manuscript/index.qmd": "6a187cec0469b6753df768fa6b67a0590be2791da23f7cf8970f8716420c74b3",
+    "manuscript/scaling_pilot_results.qmd": "54bcb0ef473908d5abddf6b71e4aae8dd8a0918516e21084143594503376c3af"
   },
   "original_appendix_a_sha256": "859dc52b64b6bcf471f7616182d8cadf2b693dbfd19ad4b9248637b5c231b3ed",
   "prior_full_document_qualification_not_rerun": true,
   "new_solver_HPC_execution_or_PDF_generation": false,
-  "original_inputs_or_archives_modified": false
+  "original_inputs_or_archives_modified": false,
+  "local_windows_source_sha256_before_LF_normalization": {
+    "manuscript/index.qmd": "609b727907295036188d8afa25f0ef8b3b104941dcfc079ddcb83e13e38c0790",
+    "manuscript/scaling_pilot_results.qmd": "6a10237cc98dde11408f17ab3333bafdd6760b3088ff21b6d3e3756fcd5f3b25"
+  },
+  "published_source_encoding": "UTF-8 LF; parser-equivalent to the checked Windows sources"
 }
