@@ -691,6 +691,15 @@ def test_storage_stop_precedes_scientific_model_construction(context, monkeypatc
 def test_mixed_source_collection_uses_published_packages_without_cross_root_shadowing(tmp_path):
     """Reproduce the four actual collection errors; importlib collects both trees."""
     engine = Path(os.environ.get("AGRO_SERIAL_TEST_ENGINE_ROOT", ROOT))
+    original = tmp_path / "original"
+    # CI's current checkout already has the new modules. Reconstruct the old
+    # package namespace without altering either input tree or solver sources.
+    for path in (engine / "tests").rglob("*.py"):
+        if path.name.startswith("test_pyomo_serial_"):
+            continue
+        target = original / "tests" / path.relative_to(engine / "tests")
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(path, target)
     shadow = tmp_path / "controller"
     for name in Q.FILES:
         target = shadow / name
@@ -708,14 +717,15 @@ def test_mixed_source_collection_uses_published_packages_without_cross_root_shad
         raise AssertionError(name)
 
     old = literal(engine / "scripts/qualify_pyomo_scaling.py", "TESTS")
-    selected = [str(engine / name) for name in old]
+    selected = [str(original / name) for name in old]
     selected += [
         str(shadow / name)
         for name in literal(ROOT / "scripts/qualify_pyomo_serial.py", "NEW_TESTS")
     ]
     expected = 111 + literal(ROOT / "scripts/qualify_pyomo_serial.py", "NEW_EXPECTED_TESTS")
     bootstrap = (
-        "import sys;sys.path.insert(0,sys.argv.pop(1));import pytest;"
+        "import sys;sys.path.insert(0,sys.argv.pop(1));"
+        "sys.path.insert(0,sys.argv.pop(1));import pytest;"
         "raise SystemExit(pytest.main(sys.argv[1:]))"
     )
     for mode in ("prepend", "importlib"):
@@ -727,6 +737,7 @@ def test_mixed_source_collection_uses_published_packages_without_cross_root_shad
             "-c",
             bootstrap,
             str(engine),
+            str(original),
             *selected,
             "--collect-only",
             "-q",

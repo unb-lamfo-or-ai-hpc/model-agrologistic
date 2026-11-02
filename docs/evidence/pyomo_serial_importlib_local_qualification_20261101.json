@@ -6,7 +6,7 @@
     "errors": 0,
     "skipped": 0
   },
-  "elapsed_seconds": 152.689,
+  "elapsed_seconds": 166.94,
   "ruff": "passed with repository config/Ruff0.16.6",
   "scope": "Local controller/quota fixtures and two-root collection; no native solve or NPAD",
   "mixed_source_negative_control": "Default prepend reproduces four new-test package import failures",
@@ -20,7 +20,7 @@
     "scripts/pyomo_serial_storage.py": "b6ed67eff404760365d03c55a2e3cbfccd96d831476a721352bd3a1ffb84d363",
     "scripts/qualify_pyomo_serial.py": "d49f96675f36024300472e93b2c92c60a4111793a4fb0a2249c9fb0f1135002b",
     "tests/test_pyomo_serial_collection.py": "6d6e7cbdad274b45551c530654ea8488453a3a012a4f09e9c403a8a2d432a3ee",
-    "tests/test_pyomo_serial_queue.py": "3209d24980a10c307a9d0a423d84f316796e80e04ee77ffd33a73c143eb90fb0",
+    "tests/test_pyomo_serial_queue.py": "76e85da2c49c4e16aa3ff14c09934d1a059c915a9d34037131b3b3a351372d1e",
     "tests/test_pyomo_serial_smoke.py": "0e488063058c45a70735e099e968b56950d3d81332a169bdea66b9ffe572e2e6",
     "tests/test_pyomo_serial_storage.py": "b305016e42c216fe8cce71edbad0c5db486ce8a9fb5be9adc338743ffe504be8",
     "experiments/pyomo_scaling_serial_schedule_v1.json": "901ab3484cd7a81880f5f9d284a826de1eaa8772515dee699305fa0451fb644e"
@@ -28,5 +28,8 @@
   "engine_commit": "c493be8cd127c5175fc7eb111400229e64b8e3c0",
   "engine_entry_sha256": "27d90f396d50a6778ca7ccb0bf2f11878186ef58e343128aabedcb1057b4ec2d",
   "private_execution_admitted": false,
-  "pdfs_generated": false
+  "pdfs_generated": false,
+  "date": "2026-11-02",
+  "mixed_source_fixture": "Reconstruct original tests namespace excluding new serial modules; works with qualified-old and current-CI source trees",
+  "prior_ci_failure": "41380372968: negative fixture assumed new modules absent in current CI checkout; corrected without changing runtime importlib repair"
 }
