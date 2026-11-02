@@ -23,7 +23,14 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.13'
-      - run: python scripts/check_manuscript.py --publication
+      - name: Activate the acknowledged exact main snapshot for this run
+        env:
+          PAGES_REVIEWED_SNAPSHOT: ${{ inputs.publish_reviewed_snapshot }}
+          MANUSCRIPT_PAGES_ENABLED: ${{ vars.MANUSCRIPT_PAGES_ENABLED }}
+          PAGES_WORKFLOW_REF: ${{ github.workflow_ref }}
+          PAGES_WORKFLOW_SHA: ${{ github.workflow_sha }}
+        run: python -B scripts/pages_publication.py activate
+      - run: python -B scripts/check_manuscript.py --publication
       - uses: quarto-dev/quarto-actions/setup@v2
         with:
           version: '1.10.18'
@@ -47,9 +54,11 @@ jobs:
       - run: python scripts/assemble_manuscript_outputs.py
       - run: python scripts/check_manuscript.py --rendered
       - run: python scripts/package_manuscript.py --output manuscript/_manuscript/coauthor-latex.zip
+      - run: python -B scripts/pages_publication.py finalize
+      - run: python -B scripts/pages_publication.py check
       - uses: actions/upload-artifact@v4
         with:
-          name: published-s6a-review-package
+          name: published-reviewed-manuscript
           path: manuscript/_manuscript/
           if-no-files-found: error
           retention-days: 30

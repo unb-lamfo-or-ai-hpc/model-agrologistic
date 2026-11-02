@@ -316,7 +316,8 @@ time required to read and prepare a large workbook.
 
 The campaign design crosses two solvers, three warehouse populations
 (h300, h400 and h500), five thread ceilings (1, 2, 4, 8 and 16) and three
-temporal repetitions: 90 configurations in total. Every configuration retains
+temporal repetitions: 90 planned runs across 30 solver-population-thread
+settings. Every run retains
 seed 42, a 28,800-second native limit and a 1% target for the scalar objective.
 The first h300 observations remain a separate matched cohort from the
 historical native Gurobi results; a new campaign cell does not retroactively
@@ -344,7 +345,7 @@ A regular time limit without an incumbent remains a censored outcome, with
 no incumbent objective, service plan or incumbent-based gap. Interrupted or
 inconsistent execution closes progression and preserves the evidence.
 Neither kind of outcome is silently retried or replaced by a different solver.
-Final consolidation retains all 90 configuration states. Three repetitions
+Final consolidation retains all 90 run states. Three repetitions
 under a fixed seed describe execution variation for that protocol; they
 do not sample independent problem scenarios or establish a general thread
 optimum. Complete repeated-run performance estimates await the corresponding

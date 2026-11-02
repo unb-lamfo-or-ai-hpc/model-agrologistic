@@ -499,6 +499,13 @@ and [release notes](https://github.com/ERGO-Code/HiGHS/releases/tag/v1.15.1).
 
 ### Common-Pyomo comparison campaign
 
+The campaign comprises 30 solver-population-thread settings with three
+temporal repetitions, giving 90 planned runs. Its finite scheduler graph
+has been released for progressive execution, reusing the four collected
+h300 pilot reports. The tables here retain the audited first one-thread
+pair; terminal observations for the remaining runs are reported separately
+as they become available. Submission or release is not completion of a run.
+
 The ongoing campaign uses the same Pyomo builder for Gurobi and HiGHS, the
 frozen h300, h400 and h500 W STO inputs, and the same nine scenarios and
 scalar coefficients. Its design crosses two solvers, three populations,
@@ -506,8 +513,10 @@ five thread ceilings (1, 2, 4, 8 and 16) and three repetitions: 90 planned
 calculations. Each has an eight-hour native allowance, a 1% gap target and
 seed 42. HiGHS parallel tree search is enabled in this profile. Both
 one-thread h300 pilots have returned independently validated solutions.
-Progression to the sixteen-thread pilots and larger populations remains
-subject to the declared operational and resource qualification gates.
+Reports for the sixteen-thread h300 pilots have also been collected;
+their retained status records remain separate from the audited pair shown
+here. Progression to larger populations remains subject to the declared
+operational and resource qualification gates.
 
 A fresh process and common algebra control important implementation
 differences, but do not force identical presolved matrices or search paths.
@@ -523,12 +532,12 @@ The experiments use NPAD/UFRN's Intel shared-memory infrastructure under Slurm
 [@npad2026]. Retained runtime receipts identify Intel Xeon E5-2698 v3 CPUs,
 Python 3.13 and Gurobi 13.0.3. The scalar allocations request 24 logical CPUs
 and 192 GiB. Gurobi's SoftMemLimit is 160 decimal GB; it is not a process-RSS
-ceiling. The h300 worker affinity pool contains 16 logical CPU IDs across
+ceiling. The historical native h300 worker affinity pool contains 16 logical CPU IDs across
 12 physical cores, including SMT siblings. It does not represent disabled
 hyperthreading or sixteen physical cores. Solver threads, affinity and allocated
 logical CPUs are distinct resource scopes.
 
-Reservations are 14 hours for the h215 pair, 30 hours for the five-arm h300
+Historical native reservations are 14 hours for the h215 pair, 30 hours for the five-arm h300
 block, and eight hours each for h400 and h500. Reservation time is not measured
 optimizer time. Current models solve within one allocated node, and the
 reported scalar blocks run serially. Distributing independent experiments
@@ -844,6 +853,13 @@ The supplementary material is accessible as
 and [PDF](https://unb-lamfo-or-ai-hpc.github.io/model-agrologistic/supplementary-review.pdf).
 Exact source snapshots and data identities are given in the linked repository.
 
+The editable [article TeX](https://unb-lamfo-or-ai-hpc.github.io/model-agrologistic/index.tex)
+and [appendix TeX](https://unb-lamfo-or-ai-hpc.github.io/model-agrologistic/supplementary-review.tex)
+are generated from the Quarto sources. Their figures, bibliography, class files
+and notices accompany the [complete editable project](https://unb-lamfo-or-ai-hpc.github.io/model-agrologistic/editable-sources.zip).
+The individual TeX downloads are intended for editing; compilation requires
+those accompanying dependencies.
+
 ## Data availability
 
 The research dataset is publicly available in Zenodo, version 0.2.0
@@ -862,7 +878,7 @@ companions used in the expanded analysis. Its
 [initial file inventory](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/82c2c19ce619f1251043829b10a4702ac88a7cdd/data/manifests/zenodo_next_release_inventory_20261101.json)
 contains 41 locally prepared assets totaling 450,057,392 bytes; it is not a
 newly published data deposit or complete coverage of the 90-cell campaign.
-The [release plan](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/82c2c19ce619f1251043829b10a4702ac88a7cdd/data/manifests/zenodo_release_plan_20261102.json)
+The [release plan](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/2c1ad568bbc8eb0ee45b42ad59b5a3a442e0ab3c/data/manifests/zenodo_release_plan_20261102.json)
 separates asset preparation, source-specific notices and private-field review,
 new-version publication and verification of anonymously downloaded bytes.
 Only after that verification will a new DOI and numerical download links be
