@@ -1,3 +1,22 @@
+## Latest collected h300 pilots and pending public qualification — 2 November 2026
+
+Read docs/checkpoints/20261102_four_h300_pilots_collected.md. This update
+supersedes older RUNNING/no-result statements for HiGHS2231591. All four
+h300 pilots are collected. HiGHS16 is a clean native time-limit return without
+a usable incumbent, objective or gap; preserve both original validation labels
+and operational closure. Do not infer infeasibility, fabricate a plan/map or
+replace nulls by zero/100%. The original gate accepts regular censoring; its
+pure metadata replay is not archive inspection or live admission. No R1 retry
+or removal of HiGHS arms is authorized. New t16 archives still need local audit.
+
+Public-v3 job2231948/source334827d5 has been submitted, plan8e4947a8. The last
+supplied accounting was RUNNING104s; final result/XML were not yet available.
+Require248 passing tests with zero failures/errors/skips and preserved original
+sources/runtime/receipts before Ready/merge. The closed probes were attached
+without release/submission. Keep v1/v2 outcomes unchanged. PDFs stay deferred,
+every merge needs approval and every NPAD command is human-executed. The
+finite private queue remains unsubmitted and unreleased.
+
 ## Mixed-source collection repair — 1 November 2026
 
 Public job2231675/source63543161 rejected during pytest collection, with four
