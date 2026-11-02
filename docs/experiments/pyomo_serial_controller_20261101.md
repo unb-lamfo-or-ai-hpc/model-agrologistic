@@ -1,13 +1,14 @@
-> Current update: public-v3 job2231948 completed/0:0 in124s. The final248-test
-> reports are still pending. Follow the [current continuation checkpoint](../checkpoints/20261102_public_v3_terminal_next_steps.md);
-> v1/v2 sections below are preserved history and must not be repeated.
+> Public-v3 job2231948 is accepted:248tests, zero failures/errors/skips,
+> preserved-source/runtime/receipts closure and completed Slurm accounting.
+> See [the accepted checkpoint](../checkpoints/20261102_serial_v3_accepted.md).
+> V1/v2 recovery instructions below are historical and must not be repeated.
 
 # Finite serial controller: implementation and qualification
 
 The new controller supplements the 95-node plan around the unchanged c493be8c
 engine. It retains the same workers, algebra, inputs, stopping criteria and
-independent validation. Public NPAD qualification and explicit merge approval
-remain pending. PDFs are deferred.
+independent validation. Public NPAD v3 qualification is accepted; explicit merge approval and final-head
+CI remain required. PDFs are deferred.
 
 ## Finite scope and original evidence
 
