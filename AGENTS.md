@@ -1,3 +1,115 @@
+## Accepted public serial qualification — 2 November 2026
+
+Job2231948/source334827d5/plan8e4947a8 passed248tests with zero failures,
+errors or skips. Sources/runtime/engine/original receipts, dependency probes,
+fresh license and exclusive allocation were accepted. All terminal Slurm
+records completed/0:0 in124s. Three canonical JSON copies reproduce the human
+SHA-256s exactly; XML/smoke digests are retained as reported. Read
+docs/evidence/pyomo_serial_public_2231948_accepted_20261102.json.
+
+This supersedes older pending-public-v3 statements, not the preserved v1/v2
+rejections. Ten controller/schedule blobs and273original engine paths remain
+unchanged from their qualified sources. Before Ready, check final exact-head CI;
+then request PR148's own merge approval. After an authorized verified merge,
+supply pinned human-only finite-queue CLI. No private queue has been submitted
+or released and no pilot is restarted. Keep population/storage gates and
+honest censoring. PR144 progresses independently; PDFs remain deferred and
+every merge requires separate authorization.
+
+## Public v3 terminal accounting received — 2 November 2026
+
+Job2231948 is COMPLETED/0:0 in all supplied Slurm records, elapsed124s;
+the exclusive root allocated64 logical CPUs and the worker step16. This
+supersedes the earlier RUNNING104s snapshot. Final result/XML contents and
+hashes are still pending; scheduler success alone is not acceptance of248tests.
+Read docs/evidence/pyomo_serial_public_2231948_terminal_20261102.json.
+The ten controller/schedule blobs match candidate334827d5; all273 original
+engine paths checked match c493be8c, and all five checks at head85273a2e passed.
+Keep PR148 Draft until the actual public reports close qualification. Preserve
+v1/v2 and all four pilots. No private queue is submitted or released. Every
+merge requires approval, NPAD commands are human-only, and PDFs stay deferred.
+
+## Latest collected h300 pilots and pending public qualification — 2 November 2026
+
+Read docs/checkpoints/20261102_four_h300_pilots_collected.md. This update
+supersedes older RUNNING/no-result statements for HiGHS2231591. All four
+h300 pilots are collected. HiGHS16 is a clean native time-limit return without
+a usable incumbent, objective or gap; preserve both original validation labels
+and operational closure. Do not infer infeasibility, fabricate a plan/map or
+replace nulls by zero/100%. The original gate accepts regular censoring; its
+pure metadata replay is not archive inspection or live admission. No R1 retry
+or removal of HiGHS arms is authorized. New t16 archives still need local audit.
+
+Public-v3 job2231948/source334827d5 has been submitted, plan8e4947a8. The last
+supplied accounting was RUNNING104s; final result/XML were not yet available.
+Require248 passing tests with zero failures/errors/skips and preserved original
+sources/runtime/receipts before Ready/merge. The closed probes were attached
+without release/submission. Keep v1/v2 outcomes unchanged. PDFs stay deferred,
+every merge needs approval and every NPAD command is human-executed. The
+finite private queue remains unsubmitted and unreleased.
+
+## Mixed-source collection repair — 1 November 2026
+
+Public job2231675/source63543161 rejected during pytest collection, with four
+ModuleNotFoundError entries for the new tests package. Preserve the rejected
+result and v1/v2 namespaces. Its dependencies, license, allocation, quota and
+original-byte checks passed; that is not acceptance of the243-test suite.
+The default package-import collision was reproduced locally with both source
+trees and the published tests/__init__.py marker. Importlib collection resolves
+it without copying tests into or changing the c493be8c engine.
+
+V3 requires248 tests (111 original+137 current), fresh license and source/runtime
+closure. Attach the completed probes as immutable evidence; never submit or
+release them again. Only one new human-submitted public qualification job is
+prepared. V1/v2 source/receipts remain checked before and after. Keep PR148 Draft
+until accepted NPAD evidence and exact-head CI. All merges remain explicitly
+approved, all NPAD commands human-only, and PDFs deferred. HiGHS2231591 latest
+snapshot is RUNNING03:13:11; its collect returned nonterminal/accounting pending.
+
+## Confirmed NPAD recovery and storage revision — 1 November 2026
+
+Read docs/checkpoints/20261101_serial_recovery_v2.md. The v1 failure is the
+exact equivalent held-node representation1-1 versus1, not wrong requested
+time/CPU/memory. Preserve v1 plan40e4a0a5 and all original receipts. Recover
+only existing probes2231659–2231663 into a fresh public-v2 claim; no duplicate
+probes, old-source overwrite or automatic recovery retry. Qualify243 public
+tests with zero skips/failures/errors, actual dependencies and original-source
+preservation. Local132 passing tests do not establish NPAD acceptance.
+
+The32GiB initial planning minimum and live quota/growth admission supersede
+the unmeasured768GiB worst-case provision. Do not exceed personal soft quota,
+delete originals, impose file limits on the solver or promise all90cells fit.
+Scientific enginec493be8c, profile and validation remain unchanged. Human
+Gurobi2231593 collection is accepted but this increment has not reread its
+archive; HiGHS2231591 is not terminal in the latest supplied snapshot.
+PDFs remain deferred. PR148 remains Draft pending v2 qualification and CI;
+every merge needs its own approval and every NPAD command stays human-only.
+
+## Finite serial continuation mandate — 1 November 2026
+
+The researcher authorizes autonomous implementation and qualification of PR #148,
+with PDFs deferred and human-only NPAD execution. Read
+`docs/experiments/pyomo_serial_controller_20261101.md` and the dated checkpoint.
+Attach existing h300/t16 pilots HiGHS 2231591 and Gurobi 2231593; never repeat
+start or rewrite consumed claims. Their last supplied state is RUNNING.
+The graph requires 93 new submissions: 86 scientific solves, six stage controls
+and one final consolidation. Original t1 anchors and c493be8c engine bytes,
+scientific inputs, profiles, tolerances and validation remain unchanged.
+
+The newly authorized serial mechanism submits held jobs from human login only,
+verifies the complete graph and releases once. This bounded workflow supersedes
+earlier blanket no-follow-on language only for the newly qualified serial
+namespace; original receipt flags remain intact. No compute sbatch, automatic
+retry, resource escalation or solver replacement. Require a declared storage
+budget, exclusive allocations, population gates and honest censoring.
+Public qualification must pass 209 tests without failure/error/skip plus five
+live tiny Slurm probes; local 98 passing controls are not NPAD acceptance.
+The public native job waits for the existing Gurobi pilot when necessary.
+Keep PR #148 Draft until accepted public receipts, source closure and exact-head
+CI. Obtain its own explicit merge approval before private queue CLI release.
+PR #144 progresses independently on reader-facing literature/data discussion.
+No PDF, deposit, main/develop merge or temporary-cloud artifact is implied.
+
 ## Accepted paired Pyomo public qualification — 1 November 2026
 
 The researcher supplied the original reports and terminal accounting for public
@@ -1002,3 +1114,4 @@ The initial portable-memory proposal was independently integrated as PR #64.
 Its tracked files are part of develop and a later develop-to-main promotion
 unless an explicit, reviewed scope decision changes that promotion. The final
 post-article-review integration gate must inspect that scope; no implicit exclusion.
+

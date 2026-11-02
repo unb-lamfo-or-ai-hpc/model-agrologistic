@@ -1,0 +1,60 @@
+{
+  "affinity_logical_cpus": 16,
+  "counts": {
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0,
+    "tests": 248
+  },
+  "dependency_smoke": {
+    "after": {
+      "exit_code": "0:0",
+      "job_id": "2231663",
+      "state": "COMPLETED"
+    },
+    "any": {
+      "exit_code": "0:0",
+      "job_id": "2231661",
+      "state": "COMPLETED"
+    },
+    "blocked": {
+      "exit_code": "0:0",
+      "job_id": "2231660",
+      "state": "CANCELLED"
+    },
+    "fail": {
+      "exit_code": "1:0",
+      "job_id": "2231659",
+      "state": "FAILED"
+    },
+    "ok": {
+      "exit_code": "0:0",
+      "job_id": "2231662",
+      "state": "COMPLETED"
+    }
+  },
+  "dependency_smoke_accepted": true,
+  "engine_sources_verified_after": true,
+  "exclusive_allocation_verified": true,
+  "job_id": "2231948",
+  "license_capacity_accepted": true,
+  "original_receipts_verified_after": true,
+  "plan_sha256": "8e4947a89b0fd76dbaa1549c31ba1afcb9cbe964c63fd41e212102ad2dabc4d4",
+  "private_execution_admitted": false,
+  "pytest_exit": 0,
+  "runtime_verified_after": true,
+  "source_commit": "334827d5e3669b4fcdf2801fd4cea466e5a71d06",
+  "source_verified_after": true,
+  "status": "accepted",
+  "storage_observation": {
+    "available_lower_bytes": 68364009472,
+    "filesystem": "userhome:/home",
+    "filesystem_free_bytes": 14751925010432,
+    "hard_raw": "1000G",
+    "limit_lower_bytes": 106300440576,
+    "qualification": "Rounded quota bounded conservatively; no grace/overage assumed.",
+    "soft_raw": "100G",
+    "used_raw": "36178M",
+    "used_upper_bytes": 37936431104
+  }
+}

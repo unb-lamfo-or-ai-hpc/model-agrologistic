@@ -1,0 +1,81 @@
+{
+  "schema_version": "pyomo-serial-probe-node-range-diagnosis-v1",
+  "evidence_basis": "Human read-only original held-job diagnostic; structured field excerpt, not a new full raw dump",
+  "original_plan_sha256": "40e4a0a5256c481b825475421bf11852fb4c40cba117806ba626e95413e30e1c",
+  "source_commit": "35d8468d805d320e22de87565beb74b0f32e77bd",
+  "markers": {
+    "smoke-intent.json": true,
+    "smoke-jobs.json": false,
+    "smoke-release-intent.json": false,
+    "smoke-release-response.json": false,
+    "qualification-dependency.txt": false,
+    "submission-intent": false,
+    "submitted-job.txt": false,
+    "result.json": false
+  },
+  "probes": [
+    {
+      "label": "fail",
+      "job_id": "2231659",
+      "dependency": null,
+      "job_sha256": "136a5df7fc54377a6abd4d296e31f43c45d16ddcfca7039b04e69ac8a73851be",
+      "intent_sha256": "409a6f537e00f350d875a9424e36c051a5f2a56bc0ff6a1c96324ce267d0c07a",
+      "response_sha256": "0591e4918ded435fbb6ee5cd64cbcecb463bdeb48d4354fe538440c212818252"
+    },
+    {
+      "label": "blocked",
+      "job_id": "2231660",
+      "dependency": "afterok:2231659",
+      "job_sha256": "9e29f67280062f651bdd08991c98b28544ca0f04446a146667d35a6872bddfa1",
+      "intent_sha256": "b81a1156576f15404facb2933ffe45e22fc2ad15909cbd0291f8c458365fdfed",
+      "response_sha256": "246b8802e7fdfcdcea2dfd7056602331801131d9c615f4313efa2dab41b844d6"
+    },
+    {
+      "label": "any",
+      "job_id": "2231661",
+      "dependency": "afterany:2231659",
+      "job_sha256": "8197fff8d5ff1443f43b093e63fb06d30685e6684460a24747fc421eb756eb41",
+      "intent_sha256": "50772fb6672fe9dd5a78007a7824effd8718390da3db547afa2f90c96c99adb3",
+      "response_sha256": "ef99308e0e0c4c798f9c6b4145f013af01470ee7dc619f47d5a6ef235c7db6ca"
+    },
+    {
+      "label": "ok",
+      "job_id": "2231662",
+      "dependency": null,
+      "job_sha256": "b3226f4ebf1055c3d5a208a2a50ec520d9bc94d53e8ac07d010c39f3a102b17c",
+      "intent_sha256": "d2e8927e2009be3c5dd9ee142458852a7840b5cba76352c9155f887aa14ef578",
+      "response_sha256": "e9216b2026bf0475f32b8e489d4286bab4939a14aa352d30fd842e00afe2ac07"
+    },
+    {
+      "label": "after",
+      "job_id": "2231663",
+      "dependency": "afterok:2231662:2231661",
+      "job_sha256": "2583d8387e9a22ac14f00bac3da439ae250241bbf57663a376bfd64e6920bceb",
+      "intent_sha256": "990f83deee3ed530e98b1a1f7771f6ff69f4cdd5590a53f81d1c2f5fb7ef7a28",
+      "response_sha256": "ecacf1a98b2d2cac707629561215a142663a5590d9846bd4fc65d92fb95270b1"
+    }
+  ],
+  "common_fields": {
+    "JobState": "PENDING",
+    "Reason": "JobHeldUser",
+    "Priority": "0",
+    "NumNodes": "1-1",
+    "NumCPUs": "1",
+    "TimeLimit": "00:05:00",
+    "MinMemoryNode": "1G",
+    "Requeue": "0",
+    "Start": "Unknown",
+    "ElapsedRaw": "0",
+    "AllocCPUS": "1"
+  },
+  "confirmed_cause": "NumNodes string1-1 is an exact one-node pending request; old verifier accepted only1",
+  "resolution": "Accept exactly1 or1-1, reject wider ranges; preserve v1 and recover the same five probes under v2",
+  "storage_claim_sizes_kib": {
+    "h300-w-sto-gurobi-t1-r1": 116796,
+    "h300-w-sto-highs-t1-r1": 113088,
+    "h300-w-sto-gurobi-t16-r1": 117024,
+    "h300-w-sto-highs-t16-r1": 808
+  },
+  "highs_t16_size_nonterminal": true,
+  "no_probe_released_by_this_diagnostic": true
+}
