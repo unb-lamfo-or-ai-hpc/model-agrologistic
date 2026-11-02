@@ -59,3 +59,14 @@ approval and actual PDF/TeXdownload validation when generation is permitted.
 PDFs remain deferred now; no former Pages authorization is reused. Final
 scientific/coauthor approval, new data publication and journal submission remain
 distinct from this bounded editorial/software closeout.
+
+### Nested-attribute precedence correction
+
+The root-only preservation update atb7d68139 still stopped the same two CI
+jobs before tests because manuscript/.gitattributes overrode that root policy.
+The final exceptions are now in that nearest attributes file. A temporary
+local Git fixture reproduced the same two changed paths with the old policy
+and a clean diff with the preserving policy, including the original workflow
+.git/info exceptions. No clone/network or artifact-content rewrite was used.
+The original SVG/index and historical artifact blobs remain unchanged.
+Exact-head CI after this correction remains the acceptance check.

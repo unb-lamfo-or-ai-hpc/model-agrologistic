@@ -56,13 +56,32 @@
     "first_commit": "82c2c19ce619f1251043829b10a4702ac88a7cdd",
     "failed_runs": [
       41454324635,
-      41454324603
+      41454324603,
+      41456373579,
+      41456373498
     ],
     "failure_stage": "Git clean-checkout guard before native tests; two source-bound CRLF artifacts seen as normalized changes",
     "secondary_failure": "Missing XML artifact upload follows the guard stop; not another solver/test failure",
     "fix": "Explicit -text attributes preserve four original source-bound artifacts; no artifact blob changes",
     "tests_not_run_in_failed_jobs": true,
-    "retained_full_CI_after_fix": "pending"
+    "retained_full_CI_after_fix": "pending",
+    "root_only_fix_insufficient": true,
+    "final_fix": "Explicit -text exceptions in manuscript/.gitattributes, which overrides the root policy; original blobs unchanged",
+    "local_git_fixture": {
+      "scope": "Temporary git init fixture, no clone or network; original workflow .git/info exceptions reproduced",
+      "negative_original_policy": [
+        "manuscript/figures/human_ai_workflow.svg",
+        "manuscript/supplement/appendix_e_paired_h300_index.json"
+      ],
+      "positive_policy_clean": true,
+      "four_artifact_blobs_rewritten": false,
+      "attributes": [
+        "manuscript/comparison_provenance.json: text: unset",
+        "manuscript/figures/runtime_memory_comparison.pdf: text: unset",
+        "manuscript/figures/human_ai_workflow.svg: text: unset",
+        "manuscript/supplement/appendix_e_paired_h300_index.json: text: unset"
+      ]
+    }
   },
   "ruff_policy": "Explicit tracked paths with --force-exclude respect existing project legacy exclusions; no file was modified by lint",
   "prior_local_lint_attempts": [

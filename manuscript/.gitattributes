@@ -1,3 +1,9 @@
 * text eol=lf
 *.png binary
 *.pdf binary
+
+# Preserve source-bound artifact bytes; do not normalize their historical CRLF.
+/comparison_provenance.json -text
+/figures/runtime_memory_comparison.pdf -text
+/figures/human_ai_workflow.svg -text
+/supplement/appendix_e_paired_h300_index.json -text
