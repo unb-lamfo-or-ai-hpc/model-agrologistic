@@ -1,3 +1,16 @@
+## Public v3 terminal accounting received — 2 November 2026
+
+Job2231948 is COMPLETED/0:0 in all supplied Slurm records, elapsed124s;
+the exclusive root allocated64 logical CPUs and the worker step16. This
+supersedes the earlier RUNNING104s snapshot. Final result/XML contents and
+hashes are still pending; scheduler success alone is not acceptance of248tests.
+Read docs/evidence/pyomo_serial_public_2231948_terminal_20261102.json.
+The ten controller/schedule blobs match candidate334827d5; all273 original
+engine paths checked match c493be8c, and all five checks at head85273a2e passed.
+Keep PR148 Draft until the actual public reports close qualification. Preserve
+v1/v2 and all four pilots. No private queue is submitted or released. Every
+merge requires approval, NPAD commands are human-only, and PDFs stay deferred.
+
 ## Latest collected h300 pilots and pending public qualification — 2 November 2026
 
 Read docs/checkpoints/20261102_four_h300_pilots_collected.md. This update

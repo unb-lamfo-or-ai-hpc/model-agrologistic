@@ -1,3 +1,7 @@
+> Current update: public-v3 job2231948 completed/0:0 in124s. The final248-test
+> reports are still pending. Follow the [current continuation checkpoint](../checkpoints/20261102_public_v3_terminal_next_steps.md);
+> v1/v2 sections below are preserved history and must not be repeated.
+
 # Finite serial controller: implementation and qualification
 
 The new controller supplements the 95-node plan around the unchanged c493be8c
@@ -9,10 +13,10 @@ remain pending. PDFs are deferred.
 
 Both h300/t1/r1 observations are collected. The researcher has submitted the
 h300/t16/r1 pilots: HiGHS 2231591 (plan 925a1de0) and Gurobi 2231593
-(plan 4be92d10). Gurobi2231593 has a human-reported accepted collection; HiGHS2231591 remains
-RUNNING and its collector reports a nonterminal state. No HiGHS terminal
-quality, runtime or memory result is inferred. Original plan/job receipts are attached;
-neither pilot is submitted again.
+(plan 4be92d10). Both are now collected: Gurobi2231593 returned an accepted
+incumbent; HiGHS2231591 returned a regular time limit without a usable incumbent.
+Its objective/gap remain absent. Local audits of the new t16 archives remain
+pending. Original plan/job receipts are attached; neither pilot is submitted again.
 
 The graph has 95 nodes: two existing pilots, 86 future scientific solves,
 six collection/gate controls and one final consolidation. Thus 93 new jobs are

@@ -1,0 +1,49 @@
+{
+  "schema_version": "pyomo-serial-public-terminal-accounting-v1",
+  "date": "2026-11-02",
+  "scope": "Human-supplied sacct table; no original report bytes read in this increment",
+  "job_id": "2231948",
+  "source_commit_expected": "334827d5e3669b4fcdf2801fd4cea466e5a71d06",
+  "plan_sha256_expected": "8e4947a89b0fd76dbaa1549c31ba1afcb9cbe964c63fd41e212102ad2dabc4d4",
+  "accounting": [
+    {
+      "job_id": "2231948",
+      "state": "COMPLETED",
+      "elapsed_seconds": 124,
+      "exit_code": "0:0",
+      "max_rss_raw": null,
+      "allocated_logical_cpus": 64
+    },
+    {
+      "job_id": "2231948.batch",
+      "state": "COMPLETED",
+      "elapsed_seconds": 124,
+      "exit_code": "0:0",
+      "max_rss_raw": "9068K",
+      "allocated_logical_cpus": 64
+    },
+    {
+      "job_id": "2231948.extern",
+      "state": "COMPLETED",
+      "elapsed_seconds": 124,
+      "exit_code": "0:0",
+      "max_rss_raw": "924K",
+      "allocated_logical_cpus": 64
+    },
+    {
+      "job_id": "2231948.0",
+      "state": "COMPLETED",
+      "elapsed_seconds": 124,
+      "exit_code": "0:0",
+      "max_rss_raw": "159392K",
+      "allocated_logical_cpus": 16
+    }
+  ],
+  "suite_result_received": false,
+  "expected_test_count": 248,
+  "qualification_status": "terminal_accounting_received_reports_pending",
+  "private_queue_submitted": false,
+  "private_queue_released": false,
+  "prior_rejected_attempts_preserved": true,
+  "pdfs_deferred": true
+}
