@@ -7,7 +7,7 @@
   "journal_submission_authorized": false,
   "previous_approval_record": "docs/history/pages_approval_before_20261102.json",
   "publication_pipeline_sha256": {
-    ".github/workflows/manuscript-pages.yml": "933e35dbd0fb75dc04dd9bf6d234c3b2477fad359e4f7483b731353852dda855",
+    ".github/workflows/manuscript-pages.yml": "0aeff666882270816dd6e0f3b6d0bc15f56edb0cedc5cac14f86c61a6f44f210",
     "scripts/assemble_manuscript_outputs.py": "449125d9ad71af93dd3beade5fe73196eb6878c4e1afff145b738079ffdf70eb",
     "scripts/build_s6a_assets.py": "41796f59e9ab7352e6674f873b9a105f553c3cbeaa57929f0aa526d4575a553c",
     "scripts/build_scalar_manuscript.py": "ee204674dcd2edf34202578c1be712badb88fb80485303901efa0ededc3d0434",

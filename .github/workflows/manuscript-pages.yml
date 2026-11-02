@@ -58,7 +58,7 @@ jobs:
       - run: python -B scripts/pages_publication.py check
       - uses: actions/upload-artifact@v4
         with:
-          name: published-reviewed-manuscript
+          name: published-s6a-review-package
           path: manuscript/_manuscript/
           if-no-files-found: error
           retention-days: 30
