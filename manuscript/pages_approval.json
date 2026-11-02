@@ -14,7 +14,7 @@
     "scripts/build_wd_manuscript.py": "ea68a054c854a08594bc7bc8c238d7b367c383744a07ece1b825c536edef963d",
     "scripts/check_manuscript.py": "eb970199c7b8ac515d72a75cbd4b97cfe5f183cb7771978b28cfe4a40b088847",
     "scripts/package_manuscript.py": "7b3041e58f08e355bd5c509a0ef3a69d42f37b501381337e6141b7931d2dfa2c",
-    "scripts/pages_publication.py": "94f7c62b992b7cea0f8c5d2a62f18b25b9fe106a3f003a07ea3dd0964bf94d22",
+    "scripts/pages_publication.py": "02b815947d58356c5f5fce440f3c3cd157f30fd2cd6af9ff75afdc194b865446",
     "scripts/prepare_document_assets.py": "d905daa7f2f74854393e2835b92a3348dca8fd346600b8fa18f42fc43275a778",
     "src/visualization/geography.py": "b885c54401f6af5ba3c00844108d2a91ebac2cde02f9d151269e2f94d2df4a4d",
     "src/visualization/render.py": "1234f963bfab3afc8cfd1246c48f514dcef02c13189721cced7ddb451b2f0a67"

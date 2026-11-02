@@ -63,3 +63,14 @@ The researcher is pausing and may reply later. Keep evidence and concrete
 reviewable results saved. Do not interrupt for optional confirmations,
 automatic retries, absent scientific outcomes or work that can proceed
 independently. Every required merge remains an explicit user decision.
+
+## Final incremental checks
+
+The original batch passed116cases; the final28-case increment covers all23
+publication cases and five existing workflow-contract cases. Their XML identity
+union is122unique cases, zero failures/errors/skips. The cosmetic Actions
+artifact rename was reverted after the retained contract caught it; its failed
+run remains recorded. The final helper inserts the download footer at the last
+real closing body, preserving an embedded script's body literal. Source and
+pipeline candidate hashes were regenerated after both corrections. These are
+source/fixture checks, not actual manuscript rendering or deployment.

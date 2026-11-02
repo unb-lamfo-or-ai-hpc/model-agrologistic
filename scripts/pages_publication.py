@@ -237,7 +237,8 @@ def finalize(root: Path = ROOT) -> dict:
         html = path.read_text(encoding="utf-8")
         require("</body>" in html, "Rendered HTML body missing.")
         if links not in html:
-            path.write_text(html.replace("</body>", links + "\n</body>"), encoding="utf-8")
+            body, end, trailing = html.rpartition("</body>")
+            path.write_text(body + links + "\n" + end + trailing, encoding="utf-8")
     manifest = {
         "schema_version": "reviewed-pages-downloads-v1",
         "source_commit": approval["activation"]["source_commit"],

@@ -180,6 +180,20 @@ def test_stale_pdf_snapshot_prevents_download_generation(rendered):
     assert not (output / "publication-manifest.json").exists()
 
 
+def test_embedded_body_literal_is_not_rewritten(rendered):
+    root, _ = rendered
+    output = root / "manuscript/_manuscript"
+    embedded = '<script>const template = "</body>";</script>'
+    (output / "index.html").write_text(
+        "<html><head>" + embedded + "</head><body>article</body></html>",
+        encoding="utf-8",
+    )
+    PAGES.finalize(root)
+    html = (output / "index.html").read_text(encoding="utf-8")
+    assert embedded in html
+    assert html.count('aria-label="Editable document downloads"') == 1
+
+
 def test_changed_download_is_detected(rendered):
     root, _ = rendered
     PAGES.finalize(root)
