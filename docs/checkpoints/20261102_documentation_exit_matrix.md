@@ -1,7 +1,8 @@
 > Terminal update: all four h300 pilots are now collected; HiGHS16 is censored
 > without an incumbent. The rows below retain their earlier documentary snapshot;
 > use [the four-pilot checkpoint](20261102_four_h300_pilots_collected.md) for current
-> outcomes. Public-v3 job2231948 remains unqualified until its final report arrives.
+> outcomes. Public-v3 job2231948 completed/0:0 in124s; qualification remains
+> pending its final248-test report. See [the next-step checkpoint](20261102_public_v3_terminal_next_steps.md).
 
 # Documentation exit matrix and continuation — 2 November 2026
 
@@ -14,9 +15,9 @@ cloud previews. No scientific input, model, result vector or Appendix A changed.
 | Reader exposition | B/C/D explain staged decisions, pipelines, effective numerical values, units and checks; E separates maps, ID lists and flow-distance matrices | New final visual inspection is deferred with PDFs | Preserve original A and reader-facing scope |
 | Literature |38 retained records,33 main citations; claim/source matrix and targeted accessible primary passages | Four access-limited sources, full Rosa chapter/table overlap and original search chronology | Retain explicit access levels; no absent-feature or new-algorithm inference |
 | First h300 pair | Both original t1 archives/inventories/certificates inspected; shared algebra, data, bounds and hardware verified | No repeated-run variance or causal speedup yet | Keep quality, native/application clocks and physical decisions separate |
-| t16 progress | Gurobi2231593 original collection accepted; latest HiGHS2231591 snapshot RUNNING03:13:11 | Local Gurobi t16 archive audit and terminal HiGHS collection | No result imputation or repeated start |
+| t16 progress | Both original t16 collections received; Gurobi accepted incumbent, HiGHS regular time censoring without incumbent | Local audits of both t16 packages | Preserve null objective/gap and original validation labels; no repeated start |
 | Data/Zenodo |41 prepared files,450057392bytes, unique names, checksums and four source-receipt links mapped | Asset-specific attribution/terms/privacy, other graph exports, sanitized originals and deposition | New file-readiness register preserves local-preparation versus public-access states |
-| Serial operations | Public dependencies, license, quota and preserved-byte checks passed in v2 | Job2231675 test collection rejected; v3 importlib repair requires public qualification and exact-source CI | Reuse closed probes without release/submission; one new public main job only |
+| Serial operations | V2 infrastructure/probes preserved; v3 job2231948 completed/0:0; ten controller and273original engine blobs match; current five CI checks passed | Final v3 report/XML and source/runtime/originals closure before248-test acceptance | No new qualification submission; then explicit merge approval and human finite-queue CLI |
 | Publication | Separate article/supplement Quarto configs, offline maps and PDF/TeX delivery paths defined | PDFs/TeX regeneration and final publication checks are deferred | PR144→develop and a distinct develop→main/Pages PR, each approved |
 
 ## Data dictionary and dimensional review
