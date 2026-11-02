@@ -5,7 +5,7 @@ set -euo pipefail
 umask 077
 BASE=/home/vrrcelestino/model-agrologistic-hygiene-audit
 PY=/home/vrrcelestino/venv313/bin/python
-SOURCE_SHA=8f1a9c9a6f8cfbe25d92648c3c306b7300d7d0c1
+SOURCE_SHA=334827d5e3669b4fcdf2801fd4cea466e5a71d06
 PUBLIC="$BASE/.mvp2-pyomo-scaling-serial-public-v3"
 test -d "$BASE"
 test -x "$PY"

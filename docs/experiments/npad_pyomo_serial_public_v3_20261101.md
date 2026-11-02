@@ -1,4 +1,4 @@
-# Public serial qualification v3: isolated test imports
+# Public serial qualification v3: isolated test imports — 2 November 2026
 
 Job2231675 is preserved as rejected: infrastructure checks passed but four new
 test modules could not be collected because the original `tests` package was
@@ -6,7 +6,7 @@ already loaded from another source tree. The same four errors were reproduced
 locally with the published package marker. `--import-mode=importlib` collects
 both trees without moving tests into, or changing, the qualified engine.
 
-Code: `8f1a9c9a6f8cfbe25d92648c3c306b7300d7d0c1`; engine:c493be8c unchanged.
+Code: `334827d5e3669b4fcdf2801fd4cea466e5a71d06`; engine:c493be8c unchanged.
 Ruff and137 local tests passed; public acceptance requires248 tests without
 failures/errors/skips (111 original native+137 current controls).
 
@@ -17,7 +17,7 @@ release or cancel any probe, and does not repeat a scientific start. Only one
 new public qualification job is submitted. It uses the existing environment,
 16logicalCPUs/32GiB/45min and a fresh public license-capacity check.
 
-Wrapper SHA-256:`1344e33c9163e06294e3908d650e61ff06d8449ea1c5da448fbd6ce74e660842`; `bash -n` passed.
+Wrapper SHA-256:`ab1b5400b8003a45dc15c95e655720f383eefe1f551bd0f1fc6746302fde3e01`; `bash -n` passed.
 Existing v3 or any ambiguous response means preserve/inspect, never retry.
 
 ```bash
@@ -28,7 +28,7 @@ set -euo pipefail
 umask 077
 BASE=/home/vrrcelestino/model-agrologistic-hygiene-audit
 PY=/home/vrrcelestino/venv313/bin/python
-SOURCE_SHA=8f1a9c9a6f8cfbe25d92648c3c306b7300d7d0c1
+SOURCE_SHA=334827d5e3669b4fcdf2801fd4cea466e5a71d06
 PUBLIC="$BASE/.mvp2-pyomo-scaling-serial-public-v3"
 test -d "$BASE"
 test -x "$PY"
