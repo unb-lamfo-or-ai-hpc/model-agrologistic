@@ -1,3 +1,8 @@
+> Terminal update: all four h300 pilots are now collected; HiGHS16 is censored
+> without an incumbent. The rows below retain their earlier documentary snapshot;
+> use [the four-pilot checkpoint](20261102_four_h300_pilots_collected.md) for current
+> outcomes. Public-v3 job2231948 remains unqualified until its final report arrives.
+
 # Documentation exit matrix and continuation — 2 November 2026
 
 This is the current repository checkpoint; historical status headers below it
