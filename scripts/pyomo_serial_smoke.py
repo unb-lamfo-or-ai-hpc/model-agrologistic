@@ -49,6 +49,87 @@ ORIGINAL_PROBES = {
     ),
 }
 
+V2_SOURCE = "63543161f2fc6864a157b9f68b6a9347c65813a9"
+V2_RECEIPTS = {
+    "plan.json": "3e8197c7f45a0fb0d69f7bb39f5faa2145343264e9264d3db69d104a1a59c5d0",
+    "result.json": "7010375299430e7c13edc92514ccc2026a971366a0a6a630ffa28a84e2929dfa",
+    "qualification.xml": "36fd4cc835b1bb867956dcc86f7fc30d1c5cc40fa73fa84eef85450f142465dc",
+    "license-capability.json": "3f17360c239e5a2e7a056b36e336d24ac5b2709b46ff2fc45bc017968d5b4f42",
+    "public-allocation.json": "5605a7fb6775a47259add78737adc81b76b2f8451325ddccfafc63cd1dd702ae",
+    "smoke-jobs.json": "3f71850af950c6c67df38ff14540806a9bb3e29a1f8e86989ecdc74ea5acbea7",
+}
+
+
+def predecessor_files(q):
+    origin = q.BASE / ".mvp2-pyomo-scaling-serial-public-v2"
+    q.require(origin.is_dir() and not origin.is_symlink(), "Preserved v2 public claim required.")
+    paths = {str(origin / name): value for name, value in V2_RECEIPTS.items()}
+    q.require(all(q.digest(p) == h for p, h in paths.items()), "Original v2 receipt changed.")
+    result = q.read(origin / "result.json")
+    q.require(
+        result["source_commit"] == V2_SOURCE
+        and result["job_id"] == "2231675"
+        and result["plan_sha256"] == V2_RECEIPTS["plan.json"]
+        and result["status"] == "rejected"
+        and result["pytest_exit"] == 2
+        and result["counts"] == {"tests": 4, "errors": 4, "failures": 0, "skipped": 0}
+        and result["dependency_smoke_accepted"] is True
+        and result["original_receipts_verified_after"] is True
+        and result["private_execution_admitted"] is False,
+        "The preserved v2 rejected outcome must not be relabeled as accepted.",
+    )
+    return paths
+
+
+def attach_terminal(q, claim, sha, *, command=None):
+    """Reuse completed probes as evidence; never submit, release, or cancel them."""
+    command = command or q.run
+    q.login()
+    q.require(
+        claim == q.PUBLIC and q.ROOT == claim / "source", "Fresh v3 qualification source required."
+    )
+    plan = q.read(claim / "plan.json")
+    q.require(plan["source_commit"] == sha, "V3 source differs.")
+    q.verify_sources(q.ROOT, plan["controller_files"])
+    original = original_files(q)
+    predecessor = predecessor_files(q)
+    q.require(
+        original == plan["recovered_original_receipts"]
+        and predecessor == plan["predecessor_receipts"],
+        "Preserved probe/source binding differs.",
+    )
+    q.require(
+        not (claim / "terminal-probe-intent.json").exists(), "Existing attachment: never repeat."
+    )
+    q.write(claim / "terminal-probe-intent.json", {"predecessor_receipts": predecessor})
+    v2 = q.BASE / ".mvp2-pyomo-scaling-serial-public-v2"
+    with (claim / "smoke-jobs.json").open("xb") as stream:
+        stream.write(q.regular(v2 / "smoke-jobs.json").read_bytes())
+    closed = q.accounting("2231675", command=command)
+    q.require(closed["state"] == "FAILED" and closed["exit_code"] == "1:0", "V2 job not closed.")
+    proof = verify(q, claim, command=command)
+    q.write(
+        claim / "terminal-probe-proof.json",
+        {
+            "states": proof,
+            "predecessor_receipts": predecessor,
+            "new_probe_submissions": 0,
+            "probe_releases": 0,
+        },
+    )
+    gurobi = q.ATTACHED["h300-w-sto-gurobi-t16-r1"][0]
+    state = q.accounting(gurobi, command=command)
+    dependency = "afterany:" + gurobi if state["state"] not in q.TERMINAL else ""
+    with (claim / "qualification-dependency.txt").open("x", encoding="utf-8") as stream:
+        stream.write(dependency + "\n")
+    return {
+        "status": "completed_original_probes_attached_without_release_or_submission",
+        "job_ids": [row[0] for row in ORIGINAL_PROBES.values()],
+        "new_probe_submissions": 0,
+        "probe_releases": 0,
+        "private_execution_admitted": False,
+    }
+
 
 def original_files(q):
     origin = q.BASE / ORIGINAL_BASENAME

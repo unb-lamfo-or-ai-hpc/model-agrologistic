@@ -9,8 +9,9 @@ remain pending. PDFs are deferred.
 
 Both h300/t1/r1 observations are collected. The researcher has submitted the
 h300/t16/r1 pilots: HiGHS 2231591 (plan 925a1de0) and Gurobi 2231593
-(plan 4be92d10). Their last supplied snapshot is RUNNING. No terminal quality,
-runtime or memory result is inferred. Original plan/job receipts are attached;
+(plan 4be92d10). Gurobi2231593 has a human-reported accepted collection; HiGHS2231591 remains
+RUNNING and its collector reports a nonterminal state. No HiGHS terminal
+quality, runtime or memory result is inferred. Original plan/job receipts are attached;
 neither pilot is submitted again.
 
 The graph has 95 nodes: two existing pilots, 86 future scientific solves,
@@ -118,3 +119,16 @@ Only then provide private prepare/submit/release CLI with a declared storage
 budget. A finite queue can continue after logout, subject to preemption,
 operational, memory and storage gates. Missing cells remain unexecuted or censored
 as appropriate and are never imputed or automatically retried. PDFs are deferred.
+
+
+## Superseding v3 collection repair
+
+The v2 probe recovery succeeded and main job2231675 completed infrastructure
+checks but rejected during test collection: the original tests package shadowed
+four new modules from the separate source tree. V3 preserves that rejection,
+uses importlib collection and adds a real two-root package regression.
+All137 local tests pass. Public acceptance requires248 cases without failures,
+errors or skips. The five probes are already terminal and are only attached as
+source-bound proof; no new submission or release of those IDs is permitted.
+Only a new main public job is submitted. The previous v2 recovery section is
+historical context and must not be repeated. PDFs remain deferred.

@@ -1,3 +1,21 @@
+## Mixed-source collection repair — 1 November 2026
+
+Public job2231675/source63543161 rejected during pytest collection, with four
+ModuleNotFoundError entries for the new tests package. Preserve the rejected
+result and v1/v2 namespaces. Its dependencies, license, allocation, quota and
+original-byte checks passed; that is not acceptance of the243-test suite.
+The default package-import collision was reproduced locally with both source
+trees and the published tests/__init__.py marker. Importlib collection resolves
+it without copying tests into or changing the c493be8c engine.
+
+V3 requires248 tests (111 original+137 current), fresh license and source/runtime
+closure. Attach the completed probes as immutable evidence; never submit or
+release them again. Only one new human-submitted public qualification job is
+prepared. V1/v2 source/receipts remain checked before and after. Keep PR148 Draft
+until accepted NPAD evidence and exact-head CI. All merges remain explicitly
+approved, all NPAD commands human-only, and PDFs deferred. HiGHS2231591 latest
+snapshot is RUNNING03:13:11; its collect returned nonterminal/accounting pending.
+
 ## Confirmed NPAD recovery and storage revision — 1 November 2026
 
 Read docs/checkpoints/20261101_serial_recovery_v2.md. The v1 failure is the

@@ -1,10 +1,12 @@
 """Finite graph, held submission, source compatibility and failure ownership."""
 
+import ast
 import copy
 import hashlib
 import importlib.util
 import json
 import os
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -684,3 +686,74 @@ def test_storage_stop_precedes_scientific_model_construction(context, monkeypatc
     with pytest.raises(ValueError, match="Storage reserve reached"):
         Q.health(context.queue, "a" * 40, node["id"])
     assert not (directory / "health.json").exists()
+
+
+def test_mixed_source_collection_uses_published_packages_without_cross_root_shadowing(tmp_path):
+    """Reproduce the four actual collection errors; importlib collects both trees."""
+    engine = Path(os.environ.get("AGRO_SERIAL_TEST_ENGINE_ROOT", ROOT))
+    shadow = tmp_path / "controller"
+    for name in Q.FILES:
+        target = shadow / name
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(ROOT / name, target)
+    # Sparse local edits lack this marker; published archives include it.
+    shutil.copyfile(engine / "tests/__init__.py", shadow / "tests/__init__.py")
+
+    def literal(path, name):
+        for node in ast.parse(path.read_text(encoding="utf-8")).body:
+            if isinstance(node, ast.Assign) and any(
+                isinstance(target, ast.Name) and target.id == name for target in node.targets
+            ):
+                return ast.literal_eval(node.value)
+        raise AssertionError(name)
+
+    old = literal(engine / "scripts/qualify_pyomo_scaling.py", "TESTS")
+    selected = [str(engine / name) for name in old]
+    selected += [
+        str(shadow / name)
+        for name in literal(ROOT / "scripts/qualify_pyomo_serial.py", "NEW_TESTS")
+    ]
+    expected = 111 + literal(ROOT / "scripts/qualify_pyomo_serial.py", "NEW_EXPECTED_TESTS")
+    bootstrap = (
+        "import sys;sys.path.insert(0,sys.argv.pop(1));import pytest;"
+        "raise SystemExit(pytest.main(sys.argv[1:]))"
+    )
+    for mode in ("prepend", "importlib"):
+        xml = tmp_path / (mode + ".xml")
+        argv = [
+            sys.executable,
+            "-B",
+            "-I",
+            "-c",
+            bootstrap,
+            str(engine),
+            *selected,
+            "--collect-only",
+            "-q",
+            "--tb=short",
+            "-o",
+            "addopts=",
+            "-p",
+            "no:cacheprovider",
+            "--import-mode=" + mode,
+            "--junitxml",
+            str(xml),
+        ]
+        env = dict(
+            os.environ,
+            PYTEST_DISABLE_PLUGIN_AUTOLOAD="1",
+            PYTEST_ADDOPTS="",
+            PYTHONDONTWRITEBYTECODE="1",
+        )
+        outcome = subprocess.run(
+            argv, cwd=tmp_path, env=env, capture_output=True, text=True, timeout=120, check=False
+        )
+        (tmp_path / (mode + ".log")).write_text(outcome.stdout + outcome.stderr, encoding="utf-8")
+        if mode == "prepend":
+            assert outcome.returncode == 2, outcome.stdout[-10000:]
+            assert (
+                "ModuleNotFoundError: No module named 'tests.test_pyomo_serial_" in outcome.stdout
+            )
+        else:
+            assert outcome.returncode == 0, outcome.stdout[-10000:]
+            assert f"{expected} tests collected" in outcome.stdout

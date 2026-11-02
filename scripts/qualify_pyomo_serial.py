@@ -24,7 +24,7 @@ NEW_TESTS = (
     "tests/test_pyomo_serial_smoke.py",
     "tests/test_pyomo_serial_storage.py",
 )
-NEW_EXPECTED_TESTS = 132
+NEW_EXPECTED_TESTS = 137
 
 
 def preserved(engine):
@@ -65,10 +65,16 @@ def prepare(claim, archive, sha):
     q.require(runtime == old_plan["runtime"], "Existing qualified runtime changed.")
     originals = preserved(engine)
     recovered = smoke.original_files(q)
+    predecessor = smoke.predecessor_files(q)
+    v2 = q.BASE / ".mvp2-pyomo-scaling-serial-public-v2"
+    v2_plan = q.read(v2 / "plan.json")
+    engine.verify_source(v2 / "source", v2_plan["source_files"])
     origin = q.BASE / smoke.ORIGINAL_BASENAME
     original_plan = q.read(origin / "plan.json")
     engine.verify_source(origin / "source", original_plan["source_files"])
     originals.update(recovered)
+    originals.update(predecessor)
+    originals.update({str(v2 / "source" / p): h for p, h in v2_plan["source_files"].items()})
     originals.update(
         {str(origin / "source" / p): h for p, h in original_plan["source_files"].items()}
     )
@@ -84,7 +90,7 @@ def prepare(claim, archive, sha):
     )
     controller_files = q.source_files(source)
     plan = {
-        "schema_version": "pyomo-serial-public-v2",
+        "schema_version": "pyomo-serial-public-v3",
         "source_commit": sha,
         "source_files": files,
         "controller_files": controller_files,
@@ -92,6 +98,7 @@ def prepare(claim, archive, sha):
         "runtime": runtime,
         "original_receipts": originals,
         "recovered_original_receipts": recovered,
+        "predecessor_receipts": predecessor,
         "storage_at_prepare": storage_at_prepare,
         "engine_source_files": old_plan["source_files"],
         "engine_commit": q.ENGINE_SHA,
@@ -225,6 +232,7 @@ def run(claim, sha):
                 *tests,
                 "-q",
                 "--tb=short",
+                "--import-mode=importlib",
                 "-o",
                 "addopts=",
                 "-p",
@@ -274,7 +282,7 @@ def run(claim, sha):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("action", choices=("prepare", "recover", "run"))
+    parser.add_argument("action", choices=("prepare", "attach-terminal", "run"))
     parser.add_argument("--claim", type=Path, default=q.PUBLIC)
     parser.add_argument("--source-archive", type=Path)
     parser.add_argument("--source-sha", required=True)
@@ -283,8 +291,8 @@ def main():
         q.require(args.source_archive is not None, "Pinned source archive required.")
         print(json.dumps(prepare(args.claim, args.source_archive, args.source_sha), indent=2))
         return 0
-    if args.action == "recover":
-        print(json.dumps(smoke.recover(q, args.claim, args.source_sha), indent=2))
+    if args.action == "attach-terminal":
+        print(json.dumps(smoke.attach_terminal(q, args.claim, args.source_sha), indent=2))
         return 0
     return run(args.claim, args.source_sha)
 

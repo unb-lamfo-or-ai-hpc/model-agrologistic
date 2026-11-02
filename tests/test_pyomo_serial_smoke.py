@@ -352,3 +352,65 @@ def test_recovered_script_or_origin_receipt_mutation_rejects_live_qualification(
     (recovery.origin / "smoke/any/batch.sh").write_bytes(b"mutated after release")
     with pytest.raises(ValueError, match="script drift"):
         S.verify(Q, recovery.public, command=scheduler)
+
+
+@pytest.mark.parametrize("fault", [None, "predecessor", "probe", "closure"])
+def test_completed_probe_attachment_never_submits_or_releases_again(recovery, monkeypatch, fault):
+    v2 = Q.BASE / ".mvp2-pyomo-scaling-serial-public-v2"
+    v2.mkdir()
+    result = {
+        "source_commit": S.V2_SOURCE,
+        "job_id": "2231675",
+        "plan_sha256": "fixture",
+        "status": "rejected",
+        "pytest_exit": 2,
+        "counts": {"tests": 4, "errors": 4, "failures": 0, "skipped": 0},
+        "dependency_smoke_accepted": True,
+        "original_receipts_verified_after": True,
+        "private_execution_admitted": False,
+    }
+    Q.write(v2 / "plan.json", {})
+    result["plan_sha256"] = Q.digest(v2 / "plan.json")
+    Q.write(v2 / "result.json", result)
+    for name in ("qualification.xml", "license-capability.json", "public-allocation.json"):
+        (v2 / name).write_bytes(b"bound public fixture\n")
+    receipts = {
+        label: {
+            **Q.read(recovery.origin / "smoke" / label / "job.json"),
+            "original_directory": str(recovery.origin / "smoke" / label),
+        }
+        for label in S.ORIGINAL_PROBES
+    }
+    Q.write(v2 / "smoke-jobs.json", receipts)
+    hashes = {name: Q.digest(v2 / name) for name in S.V2_RECEIPTS}
+    monkeypatch.setattr(S, "V2_RECEIPTS", hashes)
+    plan = Q.read(recovery.public / "plan.json")
+    plan["predecessor_receipts"] = S.predecessor_files(Q)
+    (recovery.public / "plan.json").unlink()
+    Q.write(recovery.public / "plan.json", plan)
+    scheduler = Scheduler(recovery)
+    if fault == "predecessor":
+        (v2 / "result.json").write_bytes(b"changed")
+    if fault == "probe":
+        scheduler.bad_afterany = True
+
+    def command(argv):
+        if argv[0] == "sacct" and argv[2] == "2231675":
+            state = "COMPLETED" if fault == "closure" else "FAILED"
+            return SimpleNamespace(returncode=0, stdout=f"2231675|{state}|1:0|26|\n", stderr="")
+        return scheduler(argv)
+
+    if fault:
+        with pytest.raises(ValueError):
+            S.attach_terminal(Q, recovery.public, "a" * 40, command=command)
+    else:
+        outcome = S.attach_terminal(Q, recovery.public, "a" * 40, command=command)
+        assert outcome["new_probe_submissions"] == outcome["probe_releases"] == 0
+        assert (recovery.public / "smoke-jobs.json").read_bytes() == (
+            v2 / "smoke-jobs.json"
+        ).read_bytes()
+        with pytest.raises(ValueError, match="Existing attachment"):
+            S.attach_terminal(Q, recovery.public, "a" * 40, command=command)
+    assert not any(
+        row[0] == "sbatch" or row[:2] == ["scontrol", "release"] for row in scheduler.calls
+    )
