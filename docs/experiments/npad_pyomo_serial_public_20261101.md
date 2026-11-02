@@ -1,3 +1,8 @@
+> Historical v1 recipe: the attempt is consumed and its five probes remain bound
+> to original receipts. Do not rerun this block. Use the [public-v2 recovery](npad_pyomo_serial_public_recovery_v2_20261101.md),
+> which releases those same probes after corrected verification. This file preserves
+> the original instructions and is not a fresh admission.
+
 # Public NPAD serial-controller qualification — pinned recipe
 
 Run this block once from the NPAD login shell, using the existing venv313. It launches five tiny dependency probes and one public native qualification job. It does not construct a population model, repeat any pilot start, install packages or release the private serial queue. One probe intentionally fails and its afterok child must be cancelled without execution; these are expected control outcomes. The native job waits for Gurobi 2231593 if that job remains active. An existing claim or ambiguous submission must be preserved and reported, not retried.
