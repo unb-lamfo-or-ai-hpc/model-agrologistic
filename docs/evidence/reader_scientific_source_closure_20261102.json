@@ -1,0 +1,139 @@
+{
+  "schema_version": "reader-scientific-source-closure-v1",
+  "date": "2026-11-02",
+  "checked_reader_head": "37e4b8aa5306ee644b40a7b3f335b448c6291eb8",
+  "merged_operational_commit": "48e2831693fc4abe0657c82197a2e884a61e99d2",
+  "scientific_engine_commit": "c493be8cd127c5175fc7eb111400229e64b8e3c0",
+  "qualified_controller_commit": "334827d5e3669b4fcdf2801fd4cea466e5a71d06",
+  "qualified_controller_files": [
+    {
+      "path": "scripts/pyomo_serial_queue.py",
+      "qualified_git_blob": "9fc2ad1852971897a8b67ac869c2f6a02d8b2d56",
+      "current_git_blob": "9fc2ad1852971897a8b67ac869c2f6a02d8b2d56",
+      "identical": true
+    },
+    {
+      "path": "scripts/pyomo_serial_collection.py",
+      "qualified_git_blob": "84a8bd40c00c4802fa9110a5e0501d1c62eb84be",
+      "current_git_blob": "84a8bd40c00c4802fa9110a5e0501d1c62eb84be",
+      "identical": true
+    },
+    {
+      "path": "scripts/qualify_pyomo_serial.py",
+      "qualified_git_blob": "ea93a1d793b82a93c0a990be9cc35c7c3dbfe6dc",
+      "current_git_blob": "ea93a1d793b82a93c0a990be9cc35c7c3dbfe6dc",
+      "identical": true
+    },
+    {
+      "path": "scripts/pyomo_serial_smoke.py",
+      "qualified_git_blob": "da52cc945c7b7863f22198ca1b027112b112839b",
+      "current_git_blob": "da52cc945c7b7863f22198ca1b027112b112839b",
+      "identical": true
+    },
+    {
+      "path": "scripts/pyomo_serial_storage.py",
+      "qualified_git_blob": "48414bd5907c08eb01e2198c0031b43bb636923f",
+      "current_git_blob": "48414bd5907c08eb01e2198c0031b43bb636923f",
+      "identical": true
+    },
+    {
+      "path": "tests/test_pyomo_serial_queue.py",
+      "qualified_git_blob": "d08d7b426e42812abff5266cba04f256fdeb4d0c",
+      "current_git_blob": "d08d7b426e42812abff5266cba04f256fdeb4d0c",
+      "identical": true
+    },
+    {
+      "path": "tests/test_pyomo_serial_collection.py",
+      "qualified_git_blob": "60470f87943a790be0aea464b4403f0263d2c0cb",
+      "current_git_blob": "60470f87943a790be0aea464b4403f0263d2c0cb",
+      "identical": true
+    },
+    {
+      "path": "tests/test_pyomo_serial_smoke.py",
+      "qualified_git_blob": "15904ac56dcd6a8c005bb88b2232047818818d21",
+      "current_git_blob": "15904ac56dcd6a8c005bb88b2232047818818d21",
+      "identical": true
+    },
+    {
+      "path": "tests/test_pyomo_serial_storage.py",
+      "qualified_git_blob": "e29be5475efb8d048f67de214920c78fda1405bd",
+      "current_git_blob": "e29be5475efb8d048f67de214920c78fda1405bd",
+      "identical": true
+    },
+    {
+      "path": "experiments/pyomo_scaling_serial_schedule_v1.json",
+      "qualified_git_blob": "bb8463f26f6f1ea2424214c23679e38340314a42",
+      "current_git_blob": "bb8463f26f6f1ea2424214c23679e38340314a42",
+      "identical": true
+    }
+  ],
+  "source_logic_files_checked": 38,
+  "source_logic_files_matching_original": 38,
+  "all_original_path_scope_checked": 273,
+  "all_original_paths_matching": 261,
+  "reader_document_visualization_configuration_differences": [
+    {
+      "path": "pyproject.toml",
+      "original": "cc8f3f0608b832ef53cc08641d16ee386a1eee88",
+      "reader": "dcf562954089348ce4d02e273d3ce57b4072412d"
+    },
+    {
+      "path": "scripts/build_s6a_assets.py",
+      "original": "c552bea7a0eccd9d47ba1726fbe55c0117f6e01d",
+      "reader": "9955ba0624c83c07814efc4185b791e01b5a171a"
+    },
+    {
+      "path": "scripts/build_scalar_manuscript.py",
+      "original": "a072e907bf847f3268bed084c3dfff1a65d94937",
+      "reader": "ab18ac33aed475712bcbc537cb2a238565894a8b"
+    },
+    {
+      "path": "scripts/check_manuscript.py",
+      "original": "a3b4add4af7f77455a829dfb5a5cb2060b835f8c",
+      "reader": "cb39ff12fec75ff7488f77ca2e147e77d03cd38b"
+    },
+    {
+      "path": "scripts/package_manuscript.py",
+      "original": "ae92c4240176a35ae555a1347a5ae2d5356e5a39",
+      "reader": "13f8df38853f5c32e573f7007af4b83c311769be"
+    },
+    {
+      "path": "src/visualization/geography.py",
+      "original": "04bbbf5544a8b82097533a71997fbd6a44351b9d",
+      "reader": "5823d833e94cc41feb3d70484bf0e57e1a8e5bbb"
+    },
+    {
+      "path": "src/visualization/render.py",
+      "original": "8dfdd64365f65b8b3cfa33265a28511a02d67061",
+      "reader": "06d1d784857aa25ac2c731f0138f62877aaa3b38"
+    },
+    {
+      "path": "tests/test_geographic_visualization.py",
+      "original": "c509823b5122eac9df6d29dda03633cf2eee96b7",
+      "reader": "4f2d05566f463835999cb56a8e922aeeb497b56c"
+    },
+    {
+      "path": "tests/test_manuscript.py",
+      "original": "c88f6d7e4927fe493b7e0e10af9d024f8a12b5c4",
+      "reader": "b440e7af89b0bc32b862bbdb92214187b34dfc77"
+    },
+    {
+      "path": "tests/test_manuscript_comparison.py",
+      "original": "5ef406650b80b041673e0f78443f9c7891349ffa",
+      "reader": "a14ec494d8d3cbb4e2426e59f520cba7192c50c8"
+    },
+    {
+      "path": "tests/test_manuscript_package.py",
+      "original": "0d78626c464638f290302b875c6534ac889d7d8e",
+      "reader": "79bce2cdb42cddc2047c0be109b323be66a9c352"
+    },
+    {
+      "path": "tests/test_manuscript_partial_results.py",
+      "original": "777fad3ad7840af46e646e15b24e001b63f86827",
+      "reader": "2c920e775392cea295c54edac8149dbde5f8cc54"
+    }
+  ],
+  "original_NPAD_engine_tree_replaced": false,
+  "private_CLI_uses_original_engine_and_qualified_public_source": true,
+  "original_appendix_A_and_four_protected_artifacts_unchanged": true
+}

@@ -47,7 +47,7 @@
     "solver_or_HPC_executed": false
   },
   "qualified_controller_files_integrated": 10,
-  "original_engine_paths_preserved": 273,
+  "original_engine_paths_preserved": 261,
   "source_access_limits_explicit": true,
   "proposed_zenodo_release_published": false,
   "pdf_generated": false,
@@ -95,5 +95,70 @@
     }
   ],
   "bash_launch_syntax_check": "passed_bash_n_only",
-  "original_guide_preservation_git_blob": "1843ec46912f5bbf5db67eb41019effe153331b0"
+  "original_guide_preservation_git_blob": "1843ec46912f5bbf5db67eb41019effe153331b0",
+  "original_engine_paths_checked": 273,
+  "reader_editorial_visualization_paths_differing_from_engine": [
+    {
+      "path": "pyproject.toml",
+      "original": "cc8f3f0608b832ef53cc08641d16ee386a1eee88",
+      "reader": "dcf562954089348ce4d02e273d3ce57b4072412d"
+    },
+    {
+      "path": "scripts/build_s6a_assets.py",
+      "original": "c552bea7a0eccd9d47ba1726fbe55c0117f6e01d",
+      "reader": "9955ba0624c83c07814efc4185b791e01b5a171a"
+    },
+    {
+      "path": "scripts/build_scalar_manuscript.py",
+      "original": "a072e907bf847f3268bed084c3dfff1a65d94937",
+      "reader": "ab18ac33aed475712bcbc537cb2a238565894a8b"
+    },
+    {
+      "path": "scripts/check_manuscript.py",
+      "original": "a3b4add4af7f77455a829dfb5a5cb2060b835f8c",
+      "reader": "cb39ff12fec75ff7488f77ca2e147e77d03cd38b"
+    },
+    {
+      "path": "scripts/package_manuscript.py",
+      "original": "ae92c4240176a35ae555a1347a5ae2d5356e5a39",
+      "reader": "13f8df38853f5c32e573f7007af4b83c311769be"
+    },
+    {
+      "path": "src/visualization/geography.py",
+      "original": "04bbbf5544a8b82097533a71997fbd6a44351b9d",
+      "reader": "5823d833e94cc41feb3d70484bf0e57e1a8e5bbb"
+    },
+    {
+      "path": "src/visualization/render.py",
+      "original": "8dfdd64365f65b8b3cfa33265a28511a02d67061",
+      "reader": "06d1d784857aa25ac2c731f0138f62877aaa3b38"
+    },
+    {
+      "path": "tests/test_geographic_visualization.py",
+      "original": "c509823b5122eac9df6d29dda03633cf2eee96b7",
+      "reader": "4f2d05566f463835999cb56a8e922aeeb497b56c"
+    },
+    {
+      "path": "tests/test_manuscript.py",
+      "original": "c88f6d7e4927fe493b7e0e10af9d024f8a12b5c4",
+      "reader": "b440e7af89b0bc32b862bbdb92214187b34dfc77"
+    },
+    {
+      "path": "tests/test_manuscript_comparison.py",
+      "original": "5ef406650b80b041673e0f78443f9c7891349ffa",
+      "reader": "a14ec494d8d3cbb4e2426e59f520cba7192c50c8"
+    },
+    {
+      "path": "tests/test_manuscript_package.py",
+      "original": "0d78626c464638f290302b875c6534ac889d7d8e",
+      "reader": "79bce2cdb42cddc2047c0be109b323be66a9c352"
+    },
+    {
+      "path": "tests/test_manuscript_partial_results.py",
+      "original": "777fad3ad7840af46e646e15b24e001b63f86827",
+      "reader": "2c920e775392cea295c54edac8149dbde5f8cc54"
+    }
+  ],
+  "engine_scope_clarification": "The reader branch intentionally differs in12 pre-existing document/visualization/configuration paths. All original src/logic scientific files and unchanged operational drivers remain preserved; the human CLI uses the immutable original NPAD engine tree rather than the reader staging directory.",
+  "README_relative_links_checked": 18
 }
