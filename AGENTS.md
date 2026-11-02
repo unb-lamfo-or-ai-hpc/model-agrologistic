@@ -1,3 +1,28 @@
+## Finite serial continuation mandate — 1 November 2026
+
+The researcher authorizes autonomous implementation and qualification of PR #148,
+with PDFs deferred and human-only NPAD execution. Read
+`docs/experiments/pyomo_serial_controller_20261101.md` and the dated checkpoint.
+Attach existing h300/t16 pilots HiGHS 2231591 and Gurobi 2231593; never repeat
+start or rewrite consumed claims. Their last supplied state is RUNNING.
+The graph requires 93 new submissions: 86 scientific solves, six stage controls
+and one final consolidation. Original t1 anchors and c493be8c engine bytes,
+scientific inputs, profiles, tolerances and validation remain unchanged.
+
+The newly authorized serial mechanism submits held jobs from human login only,
+verifies the complete graph and releases once. This bounded workflow supersedes
+earlier blanket no-follow-on language only for the newly qualified serial
+namespace; original receipt flags remain intact. No compute sbatch, automatic
+retry, resource escalation or solver replacement. Require a declared storage
+budget, exclusive allocations, population gates and honest censoring.
+Public qualification must pass 209 tests without failure/error/skip plus five
+live tiny Slurm probes; local 98 passing controls are not NPAD acceptance.
+The public native job waits for the existing Gurobi pilot when necessary.
+Keep PR #148 Draft until accepted public receipts, source closure and exact-head
+CI. Obtain its own explicit merge approval before private queue CLI release.
+PR #144 progresses independently on reader-facing literature/data discussion.
+No PDF, deposit, main/develop merge or temporary-cloud artifact is implied.
+
 ## Accepted paired Pyomo public qualification — 1 November 2026
 
 The researcher supplied the original reports and terminal accounting for public
@@ -1002,3 +1027,4 @@ The initial portable-memory proposal was independently integrated as PR #64.
 Its tracked files are part of develop and a later develop-to-main promotion
 unless an explicit, reviewed scope decision changes that promotion. The final
 post-article-review integration gate must inspect that scope; no implicit exclusion.
+
