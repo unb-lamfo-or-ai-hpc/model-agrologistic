@@ -1,3 +1,21 @@
+## Accepted public serial qualification — 2 November 2026
+
+Job2231948/source334827d5/plan8e4947a8 passed248tests with zero failures,
+errors or skips. Sources/runtime/engine/original receipts, dependency probes,
+fresh license and exclusive allocation were accepted. All terminal Slurm
+records completed/0:0 in124s. Three canonical JSON copies reproduce the human
+SHA-256s exactly; XML/smoke digests are retained as reported. Read
+docs/evidence/pyomo_serial_public_2231948_accepted_20261102.json.
+
+This supersedes older pending-public-v3 statements, not the preserved v1/v2
+rejections. Ten controller/schedule blobs and273original engine paths remain
+unchanged from their qualified sources. Before Ready, check final exact-head CI;
+then request PR148's own merge approval. After an authorized verified merge,
+supply pinned human-only finite-queue CLI. No private queue has been submitted
+or released and no pilot is restarted. Keep population/storage gates and
+honest censoring. PR144 progresses independently; PDFs remain deferred and
+every merge requires separate authorization.
+
 ## Public v3 terminal accounting received — 2 November 2026
 
 Job2231948 is COMPLETED/0:0 in all supplied Slurm records, elapsed124s;

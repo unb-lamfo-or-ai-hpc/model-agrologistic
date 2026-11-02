@@ -1,0 +1,143 @@
+{
+  "schema_version": "pyomo-serial-public-qualification-accepted-v1",
+  "date": "2026-11-02",
+  "status": "accepted",
+  "scope": "Original human-supplied NPAD reports, byte-identical canonical JSON reconstructions and terminal accounting; no private model execution",
+  "job_id": "2231948",
+  "source_commit": "334827d5e3669b4fcdf2801fd4cea466e5a71d06",
+  "claim_basename": ".mvp2-pyomo-scaling-serial-public-v3",
+  "plan_sha256": "8e4947a89b0fd76dbaa1549c31ba1afcb9cbe964c63fd41e212102ad2dabc4d4",
+  "reported_file_sha256": {
+    "plan.json": "8e4947a89b0fd76dbaa1549c31ba1afcb9cbe964c63fd41e212102ad2dabc4d4",
+    "result.json": "f8ae47e8dd17b29e124287ee29a560e3b85d55d17f4ffc4c2375a784b94a4f9c",
+    "qualification.xml": "8f338710d283ec2f7f833059e5e1fe9e99ac5f35370c33cb6b2c9f6ff79913a6",
+    "license-capability.json": "e9bc2c3683cb0cc3cf271ac91ed5fafcbcfb286c21e2e85f77634e23685bac2a",
+    "public-allocation.json": "ecd43ec32c738516baff6594bda8fbc7b82ac9c902cd2fd7749d40b8a615459c",
+    "smoke-jobs.json": "3f71850af950c6c67df38ff14540806a9bb3e29a1f8e86989ecdc74ea5acbea7"
+  },
+  "byte_identical_json_copies": [
+    {
+      "path": "docs/evidence/pyomo_serial_public_2231948/result.json",
+      "sha256": "f8ae47e8dd17b29e124287ee29a560e3b85d55d17f4ffc4c2375a784b94a4f9c",
+      "expected_sha256_matched": true
+    },
+    {
+      "path": "docs/evidence/pyomo_serial_public_2231948/license-capability.json",
+      "sha256": "e9bc2c3683cb0cc3cf271ac91ed5fafcbcfb286c21e2e85f77634e23685bac2a",
+      "expected_sha256_matched": true
+    },
+    {
+      "path": "docs/evidence/pyomo_serial_public_2231948/public-allocation.json",
+      "sha256": "ecd43ec32c738516baff6594bda8fbc7b82ac9c902cd2fd7749d40b8a615459c",
+      "expected_sha256_matched": true
+    }
+  ],
+  "xml_and_smoke_scope": "Digests and accepted result fields supplied by researcher; original XML and smoke-jobs bytes not copied or reread locally in this increment.",
+  "counts": {
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0,
+    "tests": 248
+  },
+  "pytest_exit": 0,
+  "integrity_and_infrastructure": {
+    "dependency_smoke_accepted": true,
+    "engine_sources_verified_after": true,
+    "exclusive_allocation_verified": true,
+    "license_capacity_accepted": true,
+    "original_receipts_verified_after": true,
+    "runtime_verified_after": true,
+    "source_verified_after": true,
+    "worker_affinity_logical_cpus": 16
+  },
+  "accounting": [
+    {
+      "job_id": "2231948",
+      "state": "COMPLETED",
+      "elapsed_seconds": 124,
+      "exit_code": "0:0",
+      "max_rss_raw": null,
+      "allocated_logical_cpus": 64
+    },
+    {
+      "job_id": "2231948.batch",
+      "state": "COMPLETED",
+      "elapsed_seconds": 124,
+      "exit_code": "0:0",
+      "max_rss_raw": "9068K",
+      "allocated_logical_cpus": 64
+    },
+    {
+      "job_id": "2231948.extern",
+      "state": "COMPLETED",
+      "elapsed_seconds": 124,
+      "exit_code": "0:0",
+      "max_rss_raw": "924K",
+      "allocated_logical_cpus": 64
+    },
+    {
+      "job_id": "2231948.0",
+      "state": "COMPLETED",
+      "elapsed_seconds": 124,
+      "exit_code": "0:0",
+      "max_rss_raw": "159392K",
+      "allocated_logical_cpus": 16
+    }
+  ],
+  "allocation_snapshot_scope": "The original public-allocation.json is a startup RUNNING snapshot; later terminal sacct records close the same job.",
+  "code_closure": {
+    "checked_head": "a196b8988675443e043e48e6da411617663dcf83",
+    "controller_files_matching_qualified_candidate": 10,
+    "original_engine_paths_matching_c493be8c": 273,
+    "details": "docs/evidence/pyomo_serial_source_closure_20261102.json",
+    "head_ci_runs": [
+      {
+        "name": "Quality",
+        "id": 41446355319,
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "a196b8988675443e043e48e6da411617663dcf83"
+      },
+      {
+        "name": "Pyomo multisolver qualification",
+        "id": 41446355293,
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "a196b8988675443e043e48e6da411617663dcf83"
+      },
+      {
+        "name": "Scalar R1 qualification",
+        "id": 41446355206,
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "a196b8988675443e043e48e6da411617663dcf83"
+      },
+      {
+        "name": "Resource and lifecycle analytical qualification",
+        "id": 41446355205,
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "a196b8988675443e043e48e6da411617663dcf83"
+      },
+      {
+        "name": "SCIP analytical qualification",
+        "id": 41446355194,
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "a196b8988675443e043e48e6da411617663dcf83"
+      }
+    ]
+  },
+  "predecessors": {
+    "v1_outcome": "preserved_rejected_held_profile_representation",
+    "v2_job_id": "2231675",
+    "v2_outcome": "preserved_rejected_pytest_collection",
+    "original_probes_resubmitted": 0,
+    "original_probes_released_again_in_v3": 0
+  },
+  "private_execution_admitted": false,
+  "private_queue_submitted": false,
+  "private_queue_released": false,
+  "merge_authorization_pending": true,
+  "pdfs_deferred": true
+}
