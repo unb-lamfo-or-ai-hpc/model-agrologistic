@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
 import re
 from pathlib import Path
 
@@ -20,9 +21,9 @@ def check_scalar_revision() -> None:
     if record["penalty_rates"] != {"unmet": 90000, "static": 45000, "reception": 45000}:
         raise ValueError("Frozen scalar penalties differ")
     rows = record["observations"]
-    if len(rows) != 8 or len({r["case"] for r in rows}) != 8:
+    if len(rows) != 9 or len({r["case"] for r in rows}) != 9:
         raise ValueError("Scalar cohort differs")
-    for population, job in [(215, "2217990"), (300, "2218193"), (400, "2219884")]:
+    for population, job in [(215, "2217990"), (300, "2218193"), (400, "2219884"), (500, "2220382")]:
         original = json.loads(
             (ROOT / "docs/evidence" / f"scalar_h{population}_{job}_review.json").read_text()
         )
@@ -51,11 +52,167 @@ def check_scalar_revision() -> None:
                 for k in ("objective", "bound", "economic_cost", "artificial_penalties")
             ):
                 raise ValueError("Scalar cost or bound differs")
-    if record["h500"]["terminal_result_available"] is not False:
-        raise ValueError("No terminal h500 evidence in this revision")
+    h500 = json.loads((ROOT / "docs/evidence/scalar_h500_2220382_review.json").read_text())
+    if (
+        record["h500"]["terminal_result_available"] is not True
+        or record["h500"]["archive_sha256"] != h500["archive_sha256"]
+        or record["h500"]["source_commit"] != h500["source_commit"]
+        or record["h500"]["plan_sha256"] != h500["plan_sha256"]
+    ):
+        raise ValueError("Accepted original h500 provenance differs")
+    row = next(r for r in rows if r["population"] == 500)
+    if (
+        row["matrix"] != h500["matrix"]
+        or row["reconstructed_costs"] != h500["reconstructed_costs"]
+        or row["physical_diagnostics"] != h500["arms"][0]["physical_diagnostics"]
+        or row["original_validation_sha256"] != h500["original_validation_sha256"]
+        or row["candidate_capacity_t"] != h500["investment"]["candidate_capacity_tonnes"]
+        or row["positive_candidate_investments"] != 354
+        or row["positive_expansions"] != 72
+        or row["positive_bulkifications"] != 74
+    ):
+        raise ValueError("Audited original h500 aggregates differ")
     source = MANUSCRIPT / "supplement/appendix_a_original.pdf"
     if hashlib.sha256(source.read_bytes()).hexdigest() != APPENDIX_SHA:
         raise ValueError("Complete original Appendix A checksum differs")
+
+
+def check_scalar_scip_revision() -> None:
+    """Keep the original no-incumbent observation separate and reject invented KPIs."""
+    status = json.loads((MANUSCRIPT / "open_source_comparison_status.json").read_text())
+    original = json.loads(
+        (ROOT / "docs/evidence/scalar_scip_h215_w_2225638_review.json").read_text()
+    )
+    fields = (
+        "job_id",
+        "source_commit",
+        "plan_sha256",
+        "archive_sha256",
+        "classification",
+        "native_status",
+        "solution_count",
+        "has_usable_incumbent",
+        "quality_target_met",
+        "operational_receipts_closed",
+        "original_validation_status",
+        "objective",
+        "bound",
+        "economic_cost",
+        "penalized_total",
+        "common_gap",
+        "native_gap",
+        "timings",
+        "backend",
+        "resource_observations",
+    )
+    expected = {key: original[key] for key in fields}
+    if status["observations"] != [expected]:
+        raise ValueError("Original scalar SCIP observation differs")
+    if (
+        status["highs"]["execution_admitted"] is not False
+        or status["longer_scip"]["execution_admitted"] is not False
+        or status["longer_scip"]["predecessor_archive_sha256"] != original["archive_sha256"]
+        or status["multisolver"]["pyomo_implemented"] is not True
+        or status["multisolver"]["public_miniature_solvers"] != ["HiGHS", "CBC"]
+        or status["multisolver"]["h215_execution_admitted"] is not False
+    ):
+        raise ValueError("Prospective multisolver scope differs")
+    article = (MANUSCRIPT / "index.qmd").read_text(encoding="utf-8")
+    if "{{< include solver_results.qmd >}}" not in article:
+        raise ValueError("Reader solver comparison include differs")
+
+
+def check_highs_and_censored_scip_revision() -> None:
+    """Bind new observations to original certificates and preserve missing results."""
+    status = json.loads((MANUSCRIPT / "open_source_comparison_status.json").read_text())
+    evidence = ROOT / "docs/evidence"
+    highs = json.loads((evidence / "scalar_highs_h215_2226536_inspection.json").read_text())
+    scip = json.loads((evidence / "scalar_scip_h215_2226388_inspection.json").read_text())
+    expected = {
+        key: highs[key]
+        for key in (
+            "job_id",
+            "archive_sha256",
+            "source_commit",
+            "objective",
+            "bound",
+            "common_gap",
+            "quality_target_met",
+            "original_validation_status",
+        )
+    }
+    expected["additional_execution_admitted"] = False
+    if status.get("highs_observation") != expected:
+        raise ValueError("HiGHS original certificate differs")
+    gap = abs(highs["objective"] - highs["bound"]) / abs(highs["objective"])
+    if (
+        highs["job_id"] != "2226536"
+        or highs["archive_sha256"]
+        != "db04224d755cd5720091ddb96fc275bcefc6082431ea4b417a1b90d0fece071b"
+        or highs["source_commit"] != "009119a07eb8c68573cfa105893b9d4a719c5155"
+        or not math.isfinite(gap)
+        or not 0 <= gap <= 0.01
+        or not math.isclose(gap, highs["common_gap"], rel_tol=1e-8, abs_tol=1e-12)
+        or highs["original_validation_status"] != "accepted"
+        or highs["validation_failed_check_count"] != 0
+        or highs["original_operational_receipts_closed"] is not True
+        or highs["historical_W_input_binding_matches"] is not True
+        or highs["additional_execution_admitted"] is not False
+        or highs["fresh_private_input_residuals_recomputed"] is not False
+    ):
+        raise ValueError("HiGHS original quality or inspection scope differs")
+    expected_scip = {
+        "job_id": scip["job_id"],
+        "archive_sha256": scip["archive_sha256"],
+        "classification": scip["classification"],
+        "native_termination": scip["native_termination"],
+        "usable_incumbent": scip["usable_incumbent"],
+        "operational_receipts_closed": scip["operational_receipts_closed"],
+    }
+    if (
+        status["longer_scip"].get("observation") != expected_scip
+        or scip["job_id"] != "2226388"
+        or scip["classification"] != "build_or_execution_incomplete"
+        or scip["native_termination"] is not None
+        or scip["usable_incumbent"] is not None
+        or scip["native_terminal_present"] is not False
+        or scip["operational_receipts_closed"] is not False
+        or scip["cancellation_trigger_established"] is not False
+    ):
+        raise ValueError("Censored SCIP result cannot be promoted")
+    section = (MANUSCRIPT / "solver_results.qmd").read_text(encoding="utf-8")
+    row = (
+        f"| Pyomo/APPSI HiGHS | {highs['objective'] / 1e12:.6f} | "
+        f"{100 * highs['common_gap']:.6f} | "
+        f"{highs['timings']['solver_reported_runtime_seconds'] / 60:.2f} |"
+    )
+    if row not in section:
+        raise ValueError("HiGHS or censored SCIP manuscript values differ")
+
+
+def check_reader_solver_comparison() -> None:
+    """Bind the reader subset to preserved originals without distributing history."""
+    original = json.loads(
+        (MANUSCRIPT / "pyomo_solver_campaign.json").read_text(encoding="utf-8")
+    )
+    reader = json.loads(
+        (MANUSCRIPT / "solver_comparison_evidence.json").read_text(encoding="utf-8")
+    )
+    expected = [
+        row for row in original["observations"] if row["solver"] in {"gurobi", "highs"}
+    ]
+    if reader["observations"] != expected or len(expected) != 2:
+        raise ValueError("Reader Gurobi/HiGHS original certificates differ")
+    section = (MANUSCRIPT / "solver_results.qmd").read_text(encoding="utf-8")
+    for row in expected:
+        name = "Gurobi" if row["solver"] == "gurobi" else "HiGHS"
+        displayed = (
+            f"| Pyomo/APPSI {name} | {row['objective'] / 1e12:.6f} | "
+            f"{100 * row['common_gap']:.6f} | "
+            f"{row['timings']['solver_reported_runtime_seconds'] / 60:.2f} |"
+        )
+        if displayed not in section:
+            raise ValueError("Reader solver objective/gap/runtime values differ")
 
 
 def check_public_review_approval() -> None:
@@ -133,6 +290,23 @@ def check_dataset_release(article: str) -> None:
         raise ValueError("Data availability must match the published dataset receipt")
 
 
+def check_reader_audience(article: str, supplement: str) -> None:
+    """Keep internal review directions and unused legacy penalties out of the paper."""
+    text = article + "\n" + supplement
+    forbidden = (
+        r"(?i)coauthor|co-author",
+        r"(?i)\b(?:SCIP|CBC|PySCIPOpt|SoPlex)\b",
+        r"(?i)working revision|S6-B|S5 is closed|merge approval",
+        r"(?i)million-valued",
+        r"(?i)(?:penalt|emergency-weight)[^.\n]{0,100}(?:1000000|1,000,000)",
+        r"(?i)(?:1000000|1,000,000)[^.\n]{0,100}penalt",
+    )
+    if any(re.search(pattern, text) for pattern in forbidden):
+        raise ValueError(
+            "Reader audience: internal editorial history belongs in repository records"
+        )
+
+
 def check(*, rendered: bool = False, publication: bool = False) -> None:
     """Fail on unresolved citations, changed vendor files or unsafe publication."""
     article = (MANUSCRIPT / "index.qmd").read_text(encoding="utf-8")
@@ -208,10 +382,14 @@ def check(*, rendered: bool = False, publication: bool = False) -> None:
     ):
         raise ValueError("AI declaration, Acknowledgements and References order differs")
     intervening = re.findall(
-        r"^# (.+)$", article[article.index(declaration):article.index("# References")],
-        re.MULTILINE)
-    if len(intervening) != 2 or intervening[1] != "Acknowledgements" or any(
-        "{-}" in heading for heading in intervening
+        r"^# (.+)$",
+        article[article.index(declaration) : article.index("# References")],
+        re.MULTILINE,
+    )
+    if (
+        len(intervening) != 2
+        or intervening[1] != "Acknowledgements"
+        or any("{-}" in heading for heading in intervening)
     ):
         raise ValueError("Numbered declaration and Acknowledgements must precede References")
     for required in (
@@ -244,10 +422,12 @@ def check(*, rendered: bool = False, publication: bool = False) -> None:
     ):
         if required not in article:
             raise ValueError(f"Missing scientific context: {required}")
-    labels = re.findall(r"\{#((?:eq|tbl|fig|sec)-[A-Za-z0-9_-]+)\}", article)
+    labels = re.findall(r"\{#((?:eq|tbl|fig|sec)-[A-Za-z0-9_-]+)(?:\s+[^{}]*)?\}", article)
     references = set(re.findall(r"@((?:eq|tbl|fig|sec)-[A-Za-z0-9_-]+)", article))
     if len(labels) != len(set(labels)) or references - set(labels):
         raise ValueError("Duplicate or unresolved mathematical cross-reference")
+    if re.search(r"\b(?:Figure|Figures)\s+@fig-|\b(?:Table|Tables)\s+@tbl-", article):
+        raise ValueError("Do not repeat Quarto automatic cross-reference labels")
     if re.search(r"(?im)^\s*(file|abstract|note)\s*=", bibliography):
         raise ValueError("Private library fields must not be published")
     if "```{" in article:
@@ -271,10 +451,20 @@ def check(*, rendered: bool = False, publication: bool = False) -> None:
     if not 3 <= len(highlights) <= 5 or any(len(line) > 85 for line in highlights):
         raise ValueError("Highlights require 3–5 statements of at most 85 characters")
     supplement = (MANUSCRIPT / "supplement/index.qmd").read_text(encoding="utf-8")
-    for name in ("appendix_c.qmd", "appendix_d.qmd"):
+    for name in ("appendix_c.qmd", "appendix_d.qmd", "appendix_e.qmd"):
         if "{{< include " + name + " >}}" not in supplement:
             raise ValueError("Missing implementation/data appendix include")
         supplement += "\n" + (MANUSCRIPT / "supplement" / name).read_text(encoding="utf-8")
+    supplement += "\n" + (MANUSCRIPT / "supplement/appendix_e_case_tables.qmd").read_text(
+        encoding="utf-8"
+    )
+    supplement += "\n" + (
+        MANUSCRIPT / "supplement/appendix_e_paired_h300.qmd"
+    ).read_text(encoding="utf-8")
+    article += "\n" + (MANUSCRIPT / "scaling_pilot_results.qmd").read_text(encoding="utf-8")
+    check_reader_audience(article, supplement)
+    if re.search(r"(?m)^\$\s*$", supplement):
+        raise ValueError("Display mathematics requires double-dollar delimiters")
     review_bib = bibliography + (MANUSCRIPT / "review-methods.bib").read_text(encoding="utf-8")
     review_keys = set(
         re.findall(r"@(?:article|incollection|book|misc|phdthesis)\{([^,]+),", review_bib)
@@ -291,10 +481,8 @@ def check(*, rendered: bool = False, publication: bool = False) -> None:
     if evidence["final_four_level_status"] != "accepted":
         if evidence["publication_ready"] or evidence["numeric_results_included"]:
             raise ValueError("Pending evidence cannot be labeled publication-ready")
-        normalized_article = " ".join(article.split())
-        for required in ("100%", "did not execute its economic pass", "report remains rejected"):
-            if required not in normalized_article:
-                raise ValueError("The negative experimental outcome must remain explicit")
+        # Historical rejected cohorts stay in evidence_status/comparison records.
+        # They are not editorial instructions for the current scalar article.
         if evidence.get("running_job") is not None:
             raise ValueError("Closed evidence must not report a running job")
     comparison = json.loads((MANUSCRIPT / "comparison_provenance.json").read_text())
@@ -308,6 +496,9 @@ def check(*, rendered: bool = False, publication: bool = False) -> None:
         if hashlib.sha256((MANUSCRIPT / relative).read_bytes()).hexdigest() != digest:
             raise ValueError(f"Generated comparison checksum mismatch: {relative}")
     check_scalar_revision()
+    check_scalar_scip_revision()
+    check_highs_and_censored_scip_revision()
+    check_reader_solver_comparison()
     if rendered:
         html = (MANUSCRIPT / "_manuscript/index.html").read_text(encoding="utf-8")
         for extension in ("html", "pdf"):

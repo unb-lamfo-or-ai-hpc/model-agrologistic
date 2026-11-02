@@ -1,0 +1,216 @@
+warehouse,municipality,uf,role,candidate_capacity_t,expansion_capacity_t,bulk_capacity_t,open,expand,bulkify
+35.0287.0002-6,Rio Branco,AC,existing,0.0,0.0,890.0,0,0,1
+36.0287.0002-4,Maceió,AL,existing,0.0,1607.5,0.0,0,1,0
+36.0287.0016-4,Palmeira dos Índios,AL,existing,0.0,800.0,0.0,0,1,0
+37.0287.0022-7,Manaus,AM,existing,0.0,675.0,0.0,0,1,0
+37.0287.0023-5,Manaus,AM,existing,0.0,525.0,0.0,0,1,0
+39.0287.0002-9,Irecê,BA,existing,0.0,0.0,2670.0,0,0,1
+39.0287.0003-7,Irecê,BA,existing,0.0,0.0,2670.0,0,0,1
+39.0287.0004-5,Irecê,BA,existing,0.0,0.0,2670.0,0,0,1
+39.0287.0005-3,Irecê,BA,existing,0.0,0.0,2670.0,0,0,1
+39.0287.0014-2,Irecê,BA,existing,0.0,0.0,6090.0,0,0,1
+39.0287.0015-0,Irecê,BA,existing,0.0,0.0,6320.0,0,0,1
+39.0287.0028-2,Ribeira do Pombal,BA,existing,0.0,0.0,3540.0,0,0,1
+39.0287.0032-0,Itaberaba,BA,existing,0.0,0.0,2030.0,0,0,1
+45.0287.0009-0,Crateús,CE,existing,0.0,0.0,3300.0,0,0,1
+45.0287.0031-7,Iguatu,CE,existing,0.0,0.0,3500.0,0,0,1
+45.0287.0038-4,Juazeiro do Norte,CE,existing,0.0,0.0,4900.0,0,0,1
+45.0287.0061-9,Senador Pompeu,CE,existing,0.0,0.0,3200.0,0,0,1
+45.0287.0062-7,Sobral,CE,existing,0.0,0.0,4800.0,0,0,1
+45.0287.0093-7,Russas,CE,existing,0.0,0.0,3500.0,0,0,1
+45.0287.0109-7,Maracanaú,CE,existing,0.0,0.0,6300.0,0,0,1
+45.0287.0129-1,Maracanaú,CE,existing,0.0,0.0,8800.0,0,0,1
+45.0287.0132-1,Maracanaú,CE,existing,0.0,0.0,6300.0,0,0,1
+45.0287.0141-0,Maracanaú,CE,existing,0.0,0.0,8800.0,0,0,1
+45.0287.0156-9,Icó,CE,existing,0.0,0.0,3000.0,0,0,1
+46.0287.0001-3,Brasília,DF,existing,0.0,0.0,8350.0,0,0,1
+46.0287.0004-8,Brasília,DF,existing,0.0,6450.0,0.0,0,1,0
+46.0287.0005-6,Brasília,DF,existing,0.0,0.0,7800.0,0,0,1
+46.0287.0007-2,Brasília,DF,existing,0.0,0.0,6200.0,0,0,1
+46.0287.0009-9,Brasília,DF,existing,0.0,0.0,14900.0,0,0,1
+47.0287.0007-0,Colatina,ES,existing,0.0,730.0,0.0,0,1,0
+47.0287.0011-9,Colatina,ES,existing,0.0,10205.0,0.0,0,1,0
+47.0287.0015-1,Cachoeiro de Itapemirim,ES,existing,0.0,6875.0,0.0,0,1,0
+47.0287.0017-8,Colatina,ES,existing,0.0,7715.0,0.0,0,1,0
+48.0287.0056-7,Pontalina,GO,existing,0.0,3500.0,0.0,0,1,0
+48.0287.0064-8,Rio Verde,GO,existing,0.0,10265.0,0.0,0,1,0
+48.0287.0068-0,Rio Verde,GO,existing,0.0,0.0,7750.0,0,0,1
+48.0287.0245-4,São Luís de Montes Belos,GO,existing,0.0,3500.0,0.0,0,1,0
+48.0287.0279-9,Goiânia,GO,existing,0.0,0.0,6700.0,0,0,1
+49.0287.0212-6,Imperatriz,MA,existing,0.0,2125.0,0.0,0,1,0
+49.0287.0213-4,Imperatriz,MA,existing,0.0,2125.0,0.0,0,1,0
+49.0287.0214-2,Imperatriz,MA,existing,0.0,2125.0,0.0,0,1,0
+49.0287.0215-0,Imperatriz,MA,existing,0.0,2125.0,0.0,0,1,0
+49.0287.0221-5,Imperatriz,MA,existing,0.0,0.0,7000.0,0,0,1
+49.0287.0224-0,São Luís,MA,existing,0.0,0.0,4500.0,0,0,1
+54.0287.0001-4,Uberlândia,MG,existing,0.0,0.0,6000.0,0,0,1
+54.0287.0002-2,Uberlândia,MG,existing,0.0,4500.0,0.0,0,1,0
+54.0287.0003-0,Uberlândia,MG,existing,0.0,0.0,12000.0,0,0,1
+54.0287.0004-9,Uberlândia,MG,existing,0.0,0.0,6000.0,0,0,1
+54.0287.0005-7,Uberlândia,MG,existing,0.0,24450.0,0.0,0,1,0
+54.0287.0006-5,Uberaba,MG,existing,0.0,6450.0,0.0,0,1,0
+54.0287.0012-0,Montes Claros,MG,existing,0.0,0.0,2200.0,0,0,1
+54.0287.0018-9,São Sebastião do Paraíso,MG,existing,0.0,0.0,10300.0,0,0,1
+54.0287.0019-7,Varginha,MG,existing,0.0,0.0,24600.0,0,0,1
+54.0287.0021-9,Campos Altos,MG,existing,0.0,0.0,10000.0,0,0,1
+54.0287.0022-7,Perdões,MG,existing,0.0,0.0,10000.0,0,0,1
+54.0287.0024-3,Montes Claros,MG,existing,0.0,0.0,3600.0,0,0,1
+54.0287.0025-1,Montes Claros,MG,existing,0.0,0.0,4100.0,0,0,1
+54.0287.0038-3,Uberlândia,MG,existing,0.0,25000.0,0.0,0,1,0
+55.0287.0010-1,Campo Grande,MS,existing,0.0,0.0,3500.0,0,0,1
+55.0287.0011-0,Campo Grande,MS,existing,0.0,4000.0,0.0,0,1,0
+55.0287.0040-3,Campo Grande,MS,existing,0.0,6450.0,0.0,0,1,0
+55.0287.0196-5,Campo Grande,MS,existing,0.0,0.0,2600.0,0,0,1
+56.0287.0024-0,Sorriso,MT,existing,0.0,1225.0,0.0,0,1,0
+56.0287.0045-2,Rondonópolis,MT,existing,0.0,2500.0,0.0,0,1,0
+56.0287.0062-2,Sorriso,MT,existing,0.0,1225.0,0.0,0,1,0
+56.0287.0067-3,Rondonópolis,MT,existing,0.0,0.0,2400.0,0,0,1
+56.0287.0068-1,Rondonópolis,MT,existing,0.0,0.0,2400.0,0,0,1
+56.0287.0069-0,Rondonópolis,MT,existing,0.0,0.0,2400.0,0,0,1
+56.0287.0080-0,Rondonópolis,MT,existing,0.0,3450.0,0.0,0,1,0
+56.0287.0082-7,Rondonópolis,MT,existing,0.0,3450.0,0.0,0,1,0
+56.0287.0083-5,Rondonópolis,MT,existing,0.0,3450.0,0.0,0,1,0
+56.0287.0094-0,Rondonópolis,MT,existing,0.0,3450.0,0.0,0,1,0
+56.0287.0096-7,Rondonópolis,MT,existing,0.0,3450.0,0.0,0,1,0
+56.0287.0099-1,Sorriso,MT,existing,0.0,3450.0,0.0,0,1,0
+56.0287.0100-9,Sorriso,MT,existing,0.0,3450.0,0.0,0,1,0
+56.0287.0203-0,Sorriso,MT,existing,0.0,2125.0,0.0,0,1,0
+56.0287.0204-8,Rondonópolis,MT,existing,0.0,0.0,3600.0,0,0,1
+56.0287.0214-5,Rondonópolis,MT,existing,0.0,0.0,2300.0,0,0,1
+57.0287.0044-2,Ananindeua,PA,existing,0.0,0.0,2800.0,0,0,1
+57.0287.0063-9,Ananindeua,PA,existing,0.0,0.0,8900.0,0,0,1
+57.0287.0070-1,Ananindeua,PA,existing,0.0,0.0,8900.0,0,0,1
+58.0287.0005-0,Campina Grande,PB,existing,0.0,1750.0,0.0,0,1,0
+58.0287.0021-1,Monteiro,PB,existing,0.0,0.0,3500.0,0,0,1
+58.0287.0049-1,Patos,PB,existing,0.0,0.0,2800.0,0,0,1
+58.0287.0050-5,João Pessoa,PB,existing,0.0,2225.0,0.0,0,1,0
+59.0287.0018-0,Recife,PE,existing,0.0,900.0,0.0,0,1,0
+59.0287.0041-4,Recife,PE,existing,0.0,1225.0,0.0,0,1,0
+59.0287.0042-2,Recife,PE,existing,0.0,4525.0,0.0,0,1,0
+59.0287.0044-9,Arcoverde,PE,existing,0.0,0.0,1800.0,0,0,1
+65.0287.0034-6,Picos,PI,existing,0.0,0.0,3200.0,0,0,1
+65.0287.0042-7,Teresina,PI,existing,0.0,0.0,4100.0,0,0,1
+65.0287.0054-0,Floriano,PI,existing,0.0,0.0,4300.0,0,0,1
+65.0287.0110-5,Teresina,PI,existing,0.0,0.0,4200.0,0,0,1
+65.0287.0121-0,Parnaíba,PI,existing,0.0,0.0,4100.0,0,0,1
+66.0287.0030-1,Ponta Grossa,PR,existing,0.0,12500.0,0.0,0,1,0
+66.0287.0052-2,Ponta Grossa,PR,existing,0.0,18750.0,0.0,0,1,0
+66.0287.0056-5,Ponta Grossa,PR,existing,0.0,12500.0,0.0,0,1,0
+66.0287.0059-0,Ponta Grossa,PR,existing,0.0,18750.0,0.0,0,1,0
+66.0287.0061-1,Cambé,PR,existing,0.0,6450.0,0.0,0,1,0
+66.0287.0064-6,Ponta Grossa,PR,existing,0.0,18750.0,0.0,0,1,0
+66.0287.0067-0,Ponta Grossa,PR,existing,0.0,18750.0,0.0,0,1,0
+66.0287.0068-9,Ponta Grossa,PR,existing,0.0,5000.0,0.0,0,1,0
+66.0287.0077-8,Rolândia,PR,existing,0.0,0.0,55300.0,0,0,1
+68.0287.0001-4,Açu,RN,existing,0.0,0.0,3200.0,0,0,1
+68.0287.0009-0,Currais Novos,RN,existing,0.0,875.0,0.0,0,1,0
+68.0287.0016-2,Mossoró,RN,existing,0.0,0.0,3200.0,0,0,1
+68.0287.0053-7,Natal,RN,existing,0.0,2200.0,0.0,0,1,0
+68.0287.0054-5,Natal,RN,existing,0.0,1250.0,0.0,0,1,0
+68.0287.0057-0,Caicó,RN,existing,0.0,0.0,3000.0,0,0,1
+68.0287.0086-3,Umarizal,RN,existing,0.0,0.0,3500.0,0,0,1
+69.0287.0033-0,Porto Velho,RO,existing,0.0,0.0,7110.0,0,0,1
+69.0287.0131-0,Cacoal,RO,existing,0.0,0.0,3500.0,0,0,1
+69.0287.0132-9,Cacoal,RO,existing,0.0,0.0,2200.0,0,0,1
+75.0287.0003-3,Boa Vista,RR,existing,0.0,875.0,0.0,0,1,0
+75.0287.0013-0,Boa Vista,RR,existing,0.0,400.0,0.0,0,1,0
+75.0287.0014-9,Boa Vista,RR,existing,0.0,500.0,0.0,0,1,0
+75.0287.0018-1,Boa Vista,RR,existing,0.0,400.0,0.0,0,1,0
+76.0287.0237-9,Canoas,RS,existing,0.0,0.0,16630.0,0,0,1
+76.1276.0003-5,São Pedro do Sul,RS,existing,0.0,13850.0,0.0,0,1,0
+76.5641.0003-0,Dom Pedrito,RS,existing,0.0,3005.0,0.0,0,1,0
+76.5641.0004-8,Dom Pedrito,RS,existing,0.0,5972.5,0.0,0,1,0
+76.6026.0001-4,Uruguaiana,RS,existing,0.0,2007.75,0.0,0,1,0
+76.6026.0002-2,Uruguaiana,RS,existing,0.0,1023.5,0.0,0,1,0
+76.7556.0008-8,Caseiros,RS,existing,0.0,747.5,0.0,0,1,0
+76.7556.0009-6,Caseiros,RS,existing,0.0,2930.0,0.0,0,1,0
+76.7556.0017-7,Lagoa Vermelha,RS,existing,0.0,8485.0,0.0,0,1,0
+76.8280.0003-4,Mata,RS,existing,0.0,4630.0,0.0,0,1,0
+76.8711.0002-9,Cacequi,RS,existing,0.0,907.5,0.0,0,1,0
+76.8855.0001-6,São Vicente do Sul,RS,existing,0.0,4097.5,0.0,0,1,0
+76.8855.0002-4,São Vicente do Sul,RS,existing,0.0,0.0,1960.0,0,0,1
+76.9370.0001-9,Rosário do Sul,RS,existing,0.0,1065.0,0.0,0,1,0
+76.9370.0002-7,Rosário do Sul,RS,existing,0.0,2287.5,0.0,0,1,0
+76.9862.0003-4,São Borja,RS,existing,0.0,9165.0,0.0,0,1,0
+76.9862.0004-2,São Borja,RS,existing,0.0,3702.5,0.0,0,1,0
+76.C543.0001-6,São Borja,RS,existing,0.0,4707.5,0.0,0,1,0
+76.C543.0002-4,São Borja,RS,existing,0.0,9100.0,0.0,0,1,0
+76.E585.0001-3,Cruzeiro do Sul,RS,existing,0.0,5480.0,0.0,0,1,0
+76.F503.0002-5,Eldorado do Sul,RS,existing,0.0,7047.5,0.0,0,1,0
+77.0287.0008-0,São José,SC,existing,0.0,1217.5,0.0,0,1,0
+77.0287.0009-9,São José,SC,existing,0.0,0.0,1400.0,0,0,1
+77.0287.0010-2,São José,SC,existing,0.0,0.0,900.0,0,0,1
+78.0287.0002-0,Itabaiana,SE,existing,0.0,800.0,0.0,0,1,0
+79.0287.0012-5,Garça,SP,existing,0.0,0.0,16200.0,0,0,1
+79.0287.0020-6,Bernardino de Campos,SP,existing,0.0,0.0,33900.0,0,0,1
+80.0287.0013-7,Formoso do Araguaia,TO,existing,0.0,0.0,4000.0,0,0,1
+80.0287.0017-0,Formoso do Araguaia,TO,existing,0.0,7000.0,0.0,0,1,0
+39.E052.0002-9,Jaborandi-Ba,BA,candidate,134450.0,0.0,0.0,1,0,0
+79.6753.0015-5,Tarumã-Sp,SP,candidate,16310.0,0.0,0.0,1,0,0
+48.8790.0004-4,Anápolis-Go,GO,candidate,42000.0,0.0,0.0,1,0,0
+79.G590.0003-9,Santos-Sp,SP,candidate,307079.0,0.0,0.0,1,0,0
+79.0466.0007-2,Itaberá-Sp,SP,candidate,14432.0,0.0,0.0,1,0,0
+48.7963.0012-1,Caiapônia-Go,GO,candidate,50390.0,0.0,0.0,1,0,0
+39.E386.0004-2,Correntina-Ba,BA,candidate,14450.0,0.0,0.0,1,0,0
+56.8634.0002-2,Sorriso-Mt,MT,candidate,58320.0,0.0,0.0,1,0,0
+54.C642.0006-4,Uberlândia-Mg,MG,candidate,231360.0,0.0,0.0,1,0,0
+54.8634.0003-4,Machado-Mg,MG,candidate,60300.0,0.0,0.0,1,0,0
+76.D598.0001-9,Santa cruz do sul-Rs,RS,candidate,115360.0,0.0,0.0,1,0,0
+56.9691.0002-2,Barra do bugres-Mt,MT,candidate,63202.0,0.0,0.0,1,0,0
+39.A473.0003-2,São desidério-Ba,BA,candidate,15300.0,0.0,0.0,1,0,0
+56.8643.0053-6,Sinop-Mt,MT,candidate,67880.0,0.0,0.0,1,0,0
+56.8643.0032-3,Sorriso-Mt,MT,candidate,105190.0,0.0,0.0,1,0,0
+56.0000.1622-0,Rondonópolis-Mt,MT,candidate,60000.0,0.0,0.0,1,0,0
+39.G015.0003-0,Salvador-Ba,BA,candidate,141380.0,0.0,0.0,1,0,0
+39.0000.0997-6,São desidério-Ba,BA,candidate,30000.0,0.0,0.0,1,0,0
+39.G730.0005-0,Barreiras-Ba,BA,candidate,9240.0,0.0,0.0,1,0,0
+65.7651.0004-0,Baixa grande do ribeiro-Pi,PI,candidate,63420.0,0.0,0.0,1,0,0
+79.G448.0001-8,Arujá-Sp,SP,candidate,60750.0,0.0,0.0,1,0,0
+55.F764.0005-9,Dourados-Ms,MS,candidate,161880.0,0.0,0.0,1,0,0
+56.F091.0002-0,Alto garças-Mt,MT,candidate,80620.0,0.0,0.0,1,0,0
+56.F194.0007-8,Sorriso-Mt,MT,candidate,300000.0,0.0,0.0,1,0,0
+56.8643.0051-0,Feliz natal-Mt,MT,candidate,69850.0,0.0,0.0,1,0,0
+48.G253.0002-1,Cabeceiras-Go,GO,candidate,60240.0,0.0,0.0,1,0,0
+38.F781.0001-0,Santana-Ap,AP,candidate,163487.8777330014,0.0,0.0,1,0,0
+56.D757.0002-9,Campo novo do parecis-Mt,MT,candidate,153860.0,0.0,0.0,1,0,0
+56.F194.0012-4,Nova ubiratã-Mt,MT,candidate,260000.0,0.0,0.0,1,0,0
+66.6923.0006-9,Paranaguá-Pr,PR,candidate,98350.0,0.0,0.0,1,0,0
+66.0446.0091-0,Medianeira-Pr,PR,candidate,177930.0,0.0,0.0,1,0,0
+76.1685.0037-0,Rio grande-Rs,RS,candidate,178050.0,0.0,0.0,1,0,0
+55.8684.0004-9,Dourados-Ms,MS,candidate,162740.0,0.0,0.0,1,0,0
+79.0300.0254-5,São paulo-Sp,SP,candidate,57240.0,0.0,0.0,1,0,0
+79.F828.0001-0,Mogi guaçu-Sp,SP,candidate,18000.0,0.0,0.0,1,0,0
+79.6753.0006-6,Maracaí-Sp,SP,candidate,23330.0,0.0,0.0,1,0,0
+79.C376.0001-0,Guarujá-Sp,SP,candidate,216000.0,0.0,0.0,1,0,0
+66.0333.0108-8,Guarapuava-Pr,PR,candidate,265800.0,0.0,0.0,1,0,0
+47.9481.0001-6,Vitória-Es,ES,candidate,43280.0,0.0,0.0,1,0,0
+48.F619.0001-5,Aparecida de goiânia-Go,GO,candidate,15140.0,0.0,0.0,1,0,0
+66.3566.0009-5,Ponta grossa-Pr,PR,candidate,99180.0,0.0,0.0,1,0,0
+79.6753.0009-0,Tarumã-Sp,SP,candidate,26870.0,0.0,0.0,1,0,0
+76.B753.0001-3,Santa cruz do sul-Rs,RS,candidate,34640.0,0.0,0.0,1,0,0
+79.G239.0002-1,Cajamar-Sp,SP,candidate,75000.0,0.0,0.0,1,0,0
+76.1812.0005-8,São borja-Rs,RS,candidate,232820.0,0.0,0.0,1,0,0
+48.F852.0001-3,Indiara-Go,GO,candidate,14010.0,0.0,0.0,1,0,0
+55.F764.0001-6,Dourados-Ms,MS,candidate,218780.0,0.0,0.0,1,0,0
+66.0461.0181-3,Maringá-Pr,PR,candidate,195000.0,0.0,0.0,1,0,0
+76.0399.0006-1,Alegrete-Rs,RS,candidate,87200.0,0.0,0.0,1,0,0
+65.D826.0001-7,Baixa grande do ribeiro-Pi,PI,candidate,38230.0,0.0,0.0,1,0,0
+79.6690.0001-3,Barueri-Sp,SP,candidate,133340.0,0.0,0.0,1,0,0
+56.F764.0001-4,Nova mutum-Mt,MT,candidate,208070.0,0.0,0.0,1,0,0
+79.0300.0255-3,Araraquara-Sp,SP,candidate,58320.0,0.0,0.0,1,0,0
+79.6296.0003-6,Paraguaçu paulista-Sp,SP,candidate,16200.0,0.0,0.0,1,0,0
+55.6751.0001-9,Maracaju-Ms,MS,candidate,214910.0,0.0,0.0,1,0,0
+56.9180.0007-1,Itanhangá-Mt,MT,candidate,69410.0,0.0,0.0,1,0,0
+49.7195.0008-0,São luís-Ma,MA,candidate,40473.0,0.0,0.0,1,0,0
+76.1685.0023-0,Rio grande-Rs,RS,candidate,284280.0,0.0,0.0,1,0,0
+56.7681.0005-0,Cuiabá-Mt,MT,candidate,73430.0,0.0,0.0,1,0,0
+56.A873.0015-7,Nova ubiratã-Mt,MT,candidate,66800.0,0.0,0.0,1,0,0
+56.5104.0097-9,Alta floresta-Mt,MT,candidate,67550.0,0.0,0.0,1,0,0
+56.8643.0044-7,Brasnorte-Mt,MT,candidate,67920.0,0.0,0.0,1,0,0
+76.9474.0002-8,Passo fundo-Rs,RS,candidate,142790.0,0.0,0.0,1,0,0
+39.G811.0001-7,Luís eduardo magalhães-Ba,BA,candidate,80480.0,0.0,0.0,1,0,0
+66.4902.0002-0,Clevelândia-Pr,PR,candidate,41680.0,0.0,0.0,1,0,0
+79.G438.0001-4,Guarulhos-Sp,SP,candidate,90000.0,0.0,0.0,1,0,0
+56.6158.0003-9,Campo verde-Mt,MT,candidate,61490.0,0.0,0.0,1,0,0
+79.G140.0001-3,Itaberá-Sp,SP,candidate,300000.0,0.0,0.0,1,0,0
+76.6628.0006-0,Itaqui-Rs,RS,candidate,175838.0,0.0,0.0,1,0,0

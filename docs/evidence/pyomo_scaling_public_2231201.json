@@ -1,0 +1,126 @@
+{
+  "accounting": [
+    {
+      "allocated_logical_cpus": 64,
+      "elapsed_seconds": 35,
+      "exit_code": "0:0",
+      "job_id": "2231201",
+      "max_rss_raw": null,
+      "state": "COMPLETED"
+    },
+    {
+      "allocated_logical_cpus": 64,
+      "elapsed_seconds": 35,
+      "exit_code": "0:0",
+      "job_id": "2231201.batch",
+      "max_rss_raw": "9080K",
+      "state": "COMPLETED"
+    },
+    {
+      "allocated_logical_cpus": 64,
+      "elapsed_seconds": 35,
+      "exit_code": "0:0",
+      "job_id": "2231201.extern",
+      "max_rss_raw": "928K",
+      "state": "COMPLETED"
+    },
+    {
+      "allocated_logical_cpus": 16,
+      "elapsed_seconds": 35,
+      "exit_code": "0:0",
+      "job_id": "2231201.0",
+      "max_rss_raw": "235972K",
+      "state": "COMPLETED"
+    }
+  ],
+  "allocation_owner_and_profile_replay": "accepted",
+  "allocation_selected": {
+    "Account": "sxdsouza",
+    "CPUs/Task": "16",
+    "JobId": "2231201",
+    "JobState": "RUNNING",
+    "MinMemoryNode": "32G",
+    "NodeList": "r1i3n3",
+    "NumCPUs": "64",
+    "NumNodes": "1",
+    "NumTasks": "1",
+    "OverSubscribe": "NO",
+    "Partition": "intel-256",
+    "QOS": "preempt",
+    "Requeue": "0",
+    "Restarts": "0",
+    "TimeLimit": "00:45:00"
+  },
+  "automatic_follow_on_allowed": false,
+  "canonical_report_hashes_matched": [
+    "result.json",
+    "license-capability.json",
+    "public-allocation.json"
+  ],
+  "claim": ".mvp2-pyomo-scaling-public-v1",
+  "continuation_plan_approved": true,
+  "job_id": "2231201",
+  "license_capability": {
+    "compute_identity": {
+      "job_id": "2231201",
+      "step_id": "0"
+    },
+    "created_at_utc": "2026-11-01T12:52:54.215321+00:00",
+    "environment_scope": "gurobipy_default_environment_as_used_by_appsi",
+    "gurobi_version": [
+      13,
+      0,
+      3
+    ],
+    "large_model_construction_allowed": true,
+    "objective_value": 2001.0,
+    "private_input_accessed": false,
+    "probe_constraint_count": 2001,
+    "probe_variable_count": 2001,
+    "qualification": "Public license capacity only; no h215 or performance acceptance.",
+    "schema_version": "pyomo-gurobi-default-license-v1",
+    "solver_status_code": 2,
+    "status": "accepted"
+  },
+  "merge_authorized": false,
+  "operational_receipts_closed": true,
+  "original_hashes_reported": {
+    "license-capability.json": "1f4ea3ecddbf7ee7748218d3d54efd2ad6b5a7a100b7b185944dd946a4bffa7e",
+    "plan.json": "734621af63ce1d048d69eb69f72c86fc5bc0bf4a619f8d8daf9c29fd36080478",
+    "public-allocation.json": "b5db25baa12e63af8fb5e9bb714d32ed2d437344fd52e1316b1d7fe4adabe1d4",
+    "qualification.xml": "a6517e8cc856187088707acd45e0d7c75f799e81e56255ae8fbeb8db31162af1",
+    "result.json": "f8d5ac4852697099d2fa80a085cc38748675e4e3c297a8d3a12db4678e37f041"
+  },
+  "plan_and_xml_full_bytes_independently_reread": false,
+  "preserve_originals": true,
+  "private_start_released": false,
+  "provenance": "Original report text, hashes and sacct supplied by the researcher; canonical report replay, no agent NPAD access or new solve.",
+  "qualification_scope": "Public analytical/operational controls and license capacity only; no private model or resource extrapolation.",
+  "recorded_on": "2026-11-01",
+  "result": {
+    "affinity_logical_cpus": 16,
+    "counts": {
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "tests": 111
+    },
+    "exclusive_allocation_verified": true,
+    "job_id": "2231201",
+    "license_capacity_accepted": true,
+    "plan_sha256": "734621af63ce1d048d69eb69f72c86fc5bc0bf4a619f8d8daf9c29fd36080478",
+    "private_execution_admitted": false,
+    "pytest_exit": 0,
+    "runtime_verified_after": true,
+    "source_commit": "c493be8cd127c5175fc7eb111400229e64b8e3c0",
+    "source_verified_after": true,
+    "status": "accepted"
+  },
+  "scheduler_test_only": {
+    "job_submitted": false,
+    "reported_id": "2231200"
+  },
+  "schema_version": "paired-pyomo-public-qualification-human-receipt-v1",
+  "source_commit": "c493be8cd127c5175fc7eb111400229e64b8e3c0",
+  "status": "accepted_public_qualification_and_closed_scheduler_receipts"
+}

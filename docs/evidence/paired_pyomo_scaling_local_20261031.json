@@ -1,0 +1,34 @@
+{
+  "base_develop": "dd92b95762084e4e8fa934ca4b1f238337bebce7",
+  "bash_syntax": "Exact final wrapper passed bash -n; nothing executed",
+  "date": "2026-10-31",
+  "local_new_controls": {
+    "failures": 0,
+    "passed": 105,
+    "skip_reason": "Local Gurobi license unavailable; error code10009. No NPAD acceptance inferred.",
+    "skipped": 6
+  },
+  "local_related_regression": {
+    "failed_control": "tests/test_pyomo_campaign_contract.py::test_real_public_native_settings_match_operational_contract[gurobi]",
+    "failure_reason": "Existing local Gurobi license unavailable; preserve result, qualify with license on NPAD.",
+    "failures": 1,
+    "passed": 259,
+    "skipped": 34
+  },
+  "original_input_preflight": {
+    "native_modules_loaded": [],
+    "new_optimization_performed": false,
+    "populations": [
+      300,
+      400,
+      500
+    ],
+    "report": "docs/evidence/paired_pyomo_scaling_input_preflight_20261031.json",
+    "status": "accepted_original_bindings"
+  },
+  "original_scientific_native_sources": "unchanged; common Pyomo algebra/bounds unchanged; explicit parallel option/readback and HiGHS counters added",
+  "public_npad_status": "not_executed_pending_human_cli",
+  "pyomo_build_model_ast_unchanged": true,
+  "raw_packages_uploaded": false,
+  "ruff": "passed"
+}

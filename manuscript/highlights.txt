@@ -1,7 +1,7 @@
 Highlights
 
-- Scalar MILPs link grain-storage investment to uncertain logistics.
-- Audited network screening preserves multi-hop interwarehouse connectivity.
-- Independent checks distinguish feasible plans from certified solver outcomes.
-- Eight accepted scalar observations meet the declared 1% global-gap target.
-- Construction, memory and attained quality characterize computational scale.
+- Grain-network MILPs were assessed from 215 to 500 warehouse sites.
+- Stochastic models grew from 14.1 to 63.4 million variables.
+- All nine warehouse-only observations met a 1% relative-gap target.
+- Returned plans distribute capacity investment across candidate sites.
+- Resources and certified quality are interpreted alongside agricultural outcomes.

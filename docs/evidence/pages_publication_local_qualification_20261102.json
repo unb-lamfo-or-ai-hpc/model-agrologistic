@@ -1,0 +1,66 @@
+{
+  "schema_version": "pages-publication-local-qualification-v2",
+  "date": "2026-11-02",
+  "source_snapshot": {
+    "source_commit": "50a77a7527541a9f00769928164dc71457dbc38c",
+    "files_verified": 853,
+    "archive_sha256": "7e968d4bfe80b2f08e665f20ff5ac2421287720092b77e10122451cc17887677",
+    "destination": "C:\\Users\\cvict\\.codex\\visualizations\\2026\\10\\26\\01a1787d-b1c3-7c50-af28-11077f90999c\\pages-publication-prep-20261102\\source",
+    "clone_or_solver_or_HPC": false
+  },
+  "checks": {
+    "source_files_bound": 111,
+    "publication_pipeline_files_bound": 11,
+    "approval_state": "pending_false",
+    "manual_main_only_workflow": true,
+    "unit_and_document_tests": 116,
+    "intentional_unapproved_publication_check": "rejected_as_expected",
+    "original_appendix_a_sha256": "859dc52b64b6bcf471f7616182d8cadf2b693dbfd19ad4b9248637b5c231b3ed",
+    "PDF_or_HTML_render_performed": false,
+    "deployment_performed": false
+  },
+  "ruff": "passed_on_modified_python_sources",
+  "document_integrity": {
+    "main_cited_references": 33,
+    "gold_cells_checked": 254,
+    "pinned_appendix_links_checked": 49
+  },
+  "new_publication_unit_cases": 23,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "working_PDF_or_full_HTML_render_performed": false,
+  "actual_Quarto_output_compilation_performed": false,
+  "deployment_performed": false,
+  "scientific_solver_or_HPC_run_performed": false,
+  "fixture_PDFs_only": true,
+  "queue_state": "reported_bounded_graph_released_93_new_jobs",
+  "individual_new_jobs_or_terminal_states_independently_read": false,
+  "old_pages_approval_preserved_by_git_blob": true,
+  "source_manifest_approved": false,
+  "authority_scope": "Candidate only; actual enabled manual main workflow acknowledgement is required for activation.",
+  "main_promotion_pr": 149,
+  "preparation_pr": 150,
+  "main_merge_approval_pending": true,
+  "historical_batch_cases": 116,
+  "focused_qualification": {
+    "runs": [
+      {
+        "file": "pages-focused-controls-final.xml",
+        "sha256": "3a0e31592629ea2fee481f810388e19ca9391448461f88582be8c5ec732d7875",
+        "tests": 116
+      },
+      {
+        "file": "pages-publication-final-increment.xml",
+        "sha256": "bd3ca949cf3457eb5fd13409c79d22de69411ec589a20c86b28f814dde0f5b19",
+        "tests": 28
+      }
+    ],
+    "unique_cases": 122,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0
+  },
+  "compatibility_correction": "Preserved original published-s6a-review-package Actions artifact contract after failing41480319201",
+  "HTML_embedded_script_body_literal_preserved": true
+}

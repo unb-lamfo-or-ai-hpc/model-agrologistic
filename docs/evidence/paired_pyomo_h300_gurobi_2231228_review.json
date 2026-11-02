@@ -1,0 +1,401 @@
+{
+  "schema_version": "paired-h300-gurobi-original-inspection-v1",
+  "date": "2026-11-01",
+  "archive_sha256": "a07f2629dbdd663dbc0a5549d4cdc5f026c866507a884c1c8cb53c9e277985f1",
+  "archive_bytes": 5208166,
+  "members": 88,
+  "expanded_bytes": 114115261,
+  "inventory_digests_verified": 87,
+  "source_files_verified": 675,
+  "completion_artifact_digests_verified": 17,
+  "observation": {
+    "accounting": [
+      {
+        "elapsed_seconds": 5702,
+        "exit_code": "0:0",
+        "job_id": "2231228",
+        "max_rss_raw": null,
+        "state": "COMPLETED"
+      },
+      {
+        "elapsed_seconds": 5702,
+        "exit_code": "0:0",
+        "job_id": "2231228.batch",
+        "max_rss_raw": "409632K",
+        "state": "COMPLETED"
+      },
+      {
+        "elapsed_seconds": 5702,
+        "exit_code": "0:0",
+        "job_id": "2231228.extern",
+        "max_rss_raw": "932K",
+        "state": "COMPLETED"
+      },
+      {
+        "elapsed_seconds": 5689,
+        "exit_code": "0:0",
+        "job_id": "2231228.0",
+        "max_rss_raw": "78128852K",
+        "state": "COMPLETED"
+      }
+    ],
+    "automatic_follow_on_allowed": false,
+    "bound": 9288727295144.215,
+    "bounds_sha256": "2154ded9cd9c78a2f8e88303c7148499da1e5985e74d53c8a69f37f6e890e04e",
+    "campaign_sha256": "3cae7c318032108caa936d70b2883f20d055066f89a78e24610f261832763b58",
+    "cell": {
+      "id": "h300-w-sto-gurobi-t1-r1",
+      "mip_gap_target": 0.01,
+      "native_seconds": 28800,
+      "pilot": true,
+      "population": 300,
+      "repetition": 1,
+      "seed": 42,
+      "solver": "gurobi",
+      "threads": 1
+    },
+    "classification": "validated_feasible",
+    "common_gap": 4.10522720273419e-05,
+    "common_linear_matrix": {
+      "binary_variables": 392,
+      "linear_constraints": 1056962,
+      "nonzeros": 94967766,
+      "schema_version": "ordered-pyomo-linear-matrix-v1",
+      "scope": "Ordered common Pyomo algebra; not a presolved/native matrix fingerprint.",
+      "sha256": "b3c92c54f12ad710fffc4983a832c4e503a5b84e4615c51abcf61a1c0927e1ed",
+      "variables": 25107544
+    },
+    "economic_cost": 385502284842.86163,
+    "effective_parameters": {
+      "ConcurrentMIP": 1,
+      "Cuts": -1,
+      "FeasibilityTol": 1e-09,
+      "Heuristics": 0.05,
+      "IntFeasTol": 1e-09,
+      "MIPGap": 0.01,
+      "Method": -1,
+      "NodeMethod": -1,
+      "Presolve": -1,
+      "Seed": 42,
+      "Threads": 1,
+      "TimeLimit": 28800
+    },
+    "hardware_class_sha256": "32629b1e2a3e3eb680f7f45d987f722fbd913f557e4c3dc8a3e0902b4bae0260",
+    "has_usable_incumbent": true,
+    "incumbent_validation_rejected": false,
+    "input_binding": {
+      "loader_sha256": "50619925e726d6c0a0afaf65bd962c44eef55499043c5f1ed28b05ae4436c635",
+      "mathematical_contract_sha256": "709c0a55608de197c7d280949f04e31b0cd6b1019bef162fcd2184c083c113f8",
+      "model_sha256": "d66a64b13e5c56d7c0cf0b8f04204950986dcd2b1781b23478fc71938a1eb70f",
+      "scenario_probabilities_sha256": "7980996471c6559a9c522f31eaa858ac5e3f95cee4a4c00f0c9fc6081018c2af",
+      "warehouse_selection_sha256": "d5609de482fb0b6a3c060c94254c217c0677d8e5c0c4422a0475f32699f11b33",
+      "workbook_sha256": "7761cce77cf93dcba2f617714f0117c1f2ead4de0c3f27149daceba447e0c7d1"
+    },
+    "job_id": "2231228",
+    "matrix_sha256": "b3c92c54f12ad710fffc4983a832c4e503a5b84e4615c51abcf61a1c0927e1ed",
+    "native_counters": {
+      "lp_iterations": 3355126.0,
+      "nodes": 1.0
+    },
+    "native_gap": 4.105227202902391e-05,
+    "native_result_returned": true,
+    "native_status": "TerminationCondition.optimal",
+    "objective": 9289108634158.756,
+    "operational_receipts_closed": true,
+    "original_validation_status": "accepted",
+    "penalized_total": 9289108634158.756,
+    "plan_sha256": "e4191e8582dd924cdaddfa125d5f608fa7bfae5a2de580803844cf12aaac4782",
+    "profile": {
+      "allocated_logical_cpus_requested": 24,
+      "build_input_seconds_per_arm": 7200,
+      "contingency_seconds": 1800,
+      "exclusive_node_requested": true,
+      "expanded_transfer_bytes": 4294967296,
+      "late_return_export_seconds_per_arm": 1800,
+      "max_regular_members": 4096,
+      "memory_mib": 196608,
+      "native_time_limit_seconds_per_arm": 28800,
+      "setup_cleanup_seconds": 1800,
+      "slurm_wall_seconds": 43200,
+      "step_seconds": 39600,
+      "validation_seconds_per_arm": 1800,
+      "worker_affinity_logical_cpus": 16
+    },
+    "quality_target_met": true,
+    "reformulation": {
+      "bounds_sha256": "2154ded9cd9c78a2f8e88303c7148499da1e5985e74d53c8a69f37f6e890e04e",
+      "candidate_slack_bounds": 166320,
+      "entire_redundant_slack_region_preserved": false,
+      "equivalence": "physical_investment_projection_and_optimal_scalar_value",
+      "maximum_bound": 1580583406.0475163,
+      "nonnegative_candidate_slack_penalties_required": true,
+      "policy": "bounded_scalar_slacks_v1"
+    },
+    "resource_observation": {
+      "errors": [],
+      "largest_interval_seconds": 7.978899346024264,
+      "production_isolation_certified": false,
+      "qualification": "Observed sampled scope only; no unobserved peak or causal overhead.",
+      "sampled_worker_tree_peak_bytes": 80031539200.0,
+      "samples": 1122,
+      "status": "timely_samples"
+    },
+    "source_commit": "c493be8cd127c5175fc7eb111400229e64b8e3c0",
+    "startup": {
+      "completed_stages": [
+        "bootstrap_identity",
+        "exact_release",
+        "site_initialization",
+        "driver_import",
+        "plan_validation",
+        "source_verification",
+        "runtime_fingerprints",
+        "input_hashes",
+        "tool_verification",
+        "native_identity",
+        "public_qualification",
+        "runtime_receipt"
+      ],
+      "last_stage": "runtime_receipt",
+      "stage_seconds": {
+        "bootstrap_identity": 0.0787677179905586,
+        "driver_import": 0.08963781903730705,
+        "exact_release": 0.1016036180080846,
+        "input_hashes": 0.024644000048283488,
+        "native_identity": 1.4911061119637452,
+        "plan_validation": 0.43228263402124867,
+        "public_qualification": 0.006216275971382856,
+        "runtime_fingerprints": 0.8803277550032362,
+        "runtime_receipt": 0.0027415920048952103,
+        "site_initialization": 0.004494955996051431,
+        "source_verification": 0.2704329189728014,
+        "tool_verification": 0.026690747996326536
+      },
+      "status": "complete"
+    },
+    "status": "observation_collected",
+    "timings": {
+      "artifact_export_seconds": 5.277081537991762,
+      "data_read_seconds": 9.430223144590855e-07,
+      "end_to_end_seconds": 5507.641232958995,
+      "independent_validation_seconds": 3.506721579004079,
+      "matrix_identity_seconds": 833.2583950670087,
+      "model_build_seconds": 1991.211567653052,
+      "optimization_seconds": 2956.1683861700003,
+      "result_extraction_seconds": 408.2344456980354,
+      "solve_sequence_wall_seconds": 5461.092628979997,
+      "solver_reported_runtime_seconds": 2893.7115478515625,
+      "solver_transfer_seconds": 895.4173691140022
+    },
+    "worker_affinity_logical_cpus": 16
+  },
+  "original_validation": {
+    "status": "accepted",
+    "failed_check_count": 0,
+    "validator_version": "mvp2-scalar-independent-residuals-v1",
+    "absolute_tolerance": 1e-05,
+    "relative_tolerance": 1e-08,
+    "families": {
+      "binary_decision": {
+        "checked": 900,
+        "failed": 0,
+        "max_residual": 0.0
+      },
+      "binary_upper": {
+        "checked": 900,
+        "failed": 0,
+        "max_residual": 0.0
+      },
+      "bulkification_bound": {
+        "checked": 300,
+        "failed": 0,
+        "max_residual": 0.0
+      },
+      "bulkification_eligibility": {
+        "checked": 300,
+        "failed": 0,
+        "max_residual": 0.0
+      },
+      "candidate_activation": {
+        "checked": 154,
+        "failed": 0,
+        "max_residual": 0.0
+      },
+      "candidate_zero_base": {
+        "checked": 462,
+        "failed": 0,
+        "max_residual": 0.0
+      },
+      "cost_reconstruction": {
+        "checked": 14,
+        "failed": 0,
+        "max_residual": 0.017608642578125
+      },
+      "decision_complete": {
+        "checked": 300,
+        "failed": 0,
+        "max_residual": 0.0
+      },
+      "decision_indices": {
+        "checked": 300,
+        "failed": 0,
+        "max_residual": 0.0
+      },
+      "domestic_balance": {
+        "checked": 29160,
+        "failed": 0,
+        "max_residual": 4.2391548049636185e-09
+      },
+      "duplicate_decision": {
+        "checked": 300,
+        "failed": 0,
+        "max_residual": 0.0
+      },
+      "duplicate_flow": {
+        "checked": 225891,
+        "failed": 0,
+        "max_residual": 0.0
+      },
+      "duplicate_record": {
+        "checked": 87471,
+        "failed": 0,
+        "max_residual": 0.0
+      },
+      "existing_active": {
+        "checked": 146,
+        "failed": 0,
+        "max_residual": 0.0
+      },
+      "expansion_bound": {
+        "checked": 300,
+        "failed": 0,
+        "max_residual": 0.0
+      },
+      "expansion_eligibility": {
+        "checked": 300,
+        "failed": 0,
+        "max_residual": 0.0
+      },
+      "export_bound": {
+        "checked": 10800,
+        "failed": 0,
+        "max_residual": 0.0
+      },
+      "finite_nonnegative": {
+        "checked": 620982,
+        "failed": 0,
+        "max_residual": 0.0
+      },
+      "flow_indices": {
+        "checked": 225891,
+        "failed": 0,
+        "max_residual": 0.0
+      },
+      "frozen_network": {
+        "checked": 1,
+        "failed": 0,
+        "max_residual": 0.0
+      },
+      "inventory_balance": {
+        "checked": 324000,
+        "failed": 0,
+        "max_residual": 7.275957614183426e-10
+      },
+      "investment_activation": {
+        "checked": 300,
+        "failed": 0,
+        "max_residual": 0.0
+      },
+      "noncandidate_capacity": {
+        "checked": 146,
+        "failed": 0,
+        "max_residual": 0.0
+      },
+      "objective_reconstruction": {
+        "checked": 1,
+        "failed": 0,
+        "max_residual": 0.009765625
+      },
+      "probabilities": {
+        "checked": 1,
+        "failed": 0,
+        "max_residual": 0.0
+      },
+      "reception_capacity": {
+        "checked": 162000,
+        "failed": 0,
+        "max_residual": 3.637978807091713e-10
+      },
+      "record_indices": {
+        "checked": 87471,
+        "failed": 0,
+        "max_residual": 0.0
+      },
+      "scenario_set": {
+        "checked": 1,
+        "failed": 0,
+        "max_residual": 0.0
+      },
+      "shipping_capacity": {
+        "checked": 162000,
+        "failed": 0,
+        "max_residual": 2.3283064365386963e-10
+      },
+      "static_capacity": {
+        "checked": 162000,
+        "failed": 0,
+        "max_residual": 9.094947017729282e-11
+      },
+      "supply_balance": {
+        "checked": 39960,
+        "failed": 0,
+        "max_residual": 4.2391548049636185e-09
+      },
+      "usable_incumbent": {
+        "checked": 1,
+        "failed": 0,
+        "max_residual": 0.0
+      }
+    },
+    "reconstructed_costs": {
+      "bulkification_fixed": 0.0,
+      "bulkification_variable": 264685200.0,
+      "candidate_capacity": 10653518750.0,
+      "emergency_reception": 1522766093498.3743,
+      "emergency_static": 2089980412814.676,
+      "expansion_fixed": 0.0,
+      "expansion_variable": 341470125.0,
+      "opening": 0.0,
+      "storage": 13664193946.047527,
+      "transport_dc": 215788304171.64493,
+      "transport_dd": 12812631372.016937,
+      "transport_oc": 0.0,
+      "transport_od": 131977481278.16476,
+      "unmet_demand": 5290859843002.842
+    }
+  },
+  "physical_summary": {
+    "domestic_service_level": 0.9132562288017908,
+    "minimum_scenario_service_level": 0.8942854906195927,
+    "maximum_scenario_service_level": 0.9393998925596366,
+    "total_domestic_demand": 677712425.6517739,
+    "served_domestic_demand": 618925094.0628531,
+    "total_unmet_demand": 58787331.58892084,
+    "emergency_static_capacity": 46444009.173659325,
+    "emergency_reception_capacity": 33839246.522186056,
+    "penalty_cost_share": 0.9584995396194145
+  },
+  "recomputed_gap": 4.10522720273419e-05,
+  "local_frozen_workbook_sha256_match": true,
+  "large_result_json": {
+    "bytes": 85107838,
+    "sha256": "b572dfdc6127b5c64de1c8c961b1f0e71dcc7b12877c18406766c2d889ce4d27",
+    "fully_hashed": true,
+    "parsed": false
+  },
+  "scope": "Original integrity/source/input/certificate arithmetic; no extraction or execution",
+  "fresh_residuals_recomputed": false,
+  "solver_executed": false,
+  "additional_cell_started": false,
+  "automatic_follow_on_allowed": false
+}

@@ -1,0 +1,536 @@
+{
+  "schema_version": "zenodo-preparation-file-inventory-v1",
+  "date": "2026-11-01",
+  "status": "prepared_verified_local_files_not_a_new_deposit",
+  "files": [
+    {
+      "proposed_member": "historical-companions/appendix_e.sqlite3",
+      "category": "accepted_historical_vectors",
+      "bytes": 319369216,
+      "sha256": "bf9cd01828cdb31507e26b91fa2b020f52556577612a977a69d27ead0cae75e2",
+      "source_receipt": "manuscript/supplement/appendix_e_sources.json",
+      "units": "Investments t; period flows t; expected OD t and OSRM km; SQLite per-table units",
+      "delivery_state": "prepared_locally_not_deposited",
+      "access_rights_review": "pending_asset_specific_terms",
+      "new_download_url": null
+    },
+    {
+      "proposed_member": "historical-companions/pyomo_gurobi_h215_w_native8h_license_v2_flows.csv.gz",
+      "category": "accepted_historical_vectors",
+      "bytes": 2985032,
+      "sha256": "30cb6fdaa23f68b5089317406e91c7ad8cfad3543b1784e52e777b039ebb9072",
+      "source_receipt": "manuscript/supplement/appendix_e_sources.json",
+      "units": "Investments t; period flows t; expected OD t and OSRM km; SQLite per-table units",
+      "delivery_state": "prepared_locally_not_deposited",
+      "access_rights_review": "pending_asset_specific_terms",
+      "new_download_url": null
+    },
+    {
+      "proposed_member": "historical-companions/pyomo_gurobi_h215_w_native8h_license_v2_investments.csv.gz",
+      "category": "accepted_historical_vectors",
+      "bytes": 3265,
+      "sha256": "2b84344f3354609f265e2d91383d0c2405734c39c71412f71c1ddfabddb9bca7",
+      "source_receipt": "manuscript/supplement/appendix_e_sources.json",
+      "units": "Investments t; period flows t; expected OD t and OSRM km; SQLite per-table units",
+      "delivery_state": "prepared_locally_not_deposited",
+      "access_rights_review": "pending_asset_specific_terms",
+      "new_download_url": null
+    },
+    {
+      "proposed_member": "historical-companions/pyomo_gurobi_h215_w_native8h_license_v2_od_matrix.csv.gz",
+      "category": "accepted_historical_vectors",
+      "bytes": 68294,
+      "sha256": "f76f55e98064b3f12085b22d96f8905e630d3c9b8d8949a908c2a320e200fb29",
+      "source_receipt": "manuscript/supplement/appendix_e_sources.json",
+      "units": "Investments t; period flows t; expected OD t and OSRM km; SQLite per-table units",
+      "delivery_state": "prepared_locally_not_deposited",
+      "access_rights_review": "pending_asset_specific_terms",
+      "new_download_url": null
+    },
+    {
+      "proposed_member": "historical-companions/scalar_h215_det_flows.csv.gz",
+      "category": "accepted_historical_vectors",
+      "bytes": 253840,
+      "sha256": "e78fb751d6d9a9ffe49ad81a5f822552072b298c4a593c1f02066089183341bf",
+      "source_receipt": "manuscript/supplement/appendix_e_sources.json",
+      "units": "Investments t; period flows t; expected OD t and OSRM km; SQLite per-table units",
+      "delivery_state": "prepared_locally_not_deposited",
+      "access_rights_review": "pending_asset_specific_terms",
+      "new_download_url": null
+    },
+    {
+      "proposed_member": "historical-companions/scalar_h215_det_investments.csv.gz",
+      "category": "accepted_historical_vectors",
+      "bytes": 3265,
+      "sha256": "6ebaeac682ab785d8eaeb18e5262e5922ac539bd33d81820619ce00d3c9ec55b",
+      "source_receipt": "manuscript/supplement/appendix_e_sources.json",
+      "units": "Investments t; period flows t; expected OD t and OSRM km; SQLite per-table units",
+      "delivery_state": "prepared_locally_not_deposited",
+      "access_rights_review": "pending_asset_specific_terms",
+      "new_download_url": null
+    },
+    {
+      "proposed_member": "historical-companions/scalar_h215_det_od_matrix.csv.gz",
+      "category": "accepted_historical_vectors",
+      "bytes": 46471,
+      "sha256": "bc2d338b9535a0cc4a1dcb49d0b08bd979a15e48743497c78d20541bde32e853",
+      "source_receipt": "manuscript/supplement/appendix_e_sources.json",
+      "units": "Investments t; period flows t; expected OD t and OSRM km; SQLite per-table units",
+      "delivery_state": "prepared_locally_not_deposited",
+      "access_rights_review": "pending_asset_specific_terms",
+      "new_download_url": null
+    },
+    {
+      "proposed_member": "historical-companions/scalar_h215_d_det_flows.csv.gz",
+      "category": "accepted_historical_vectors",
+      "bytes": 181091,
+      "sha256": "c5d0c7050d9c900d2efa8119ac1553504cfe877d99d2fb526935db06aafe28e5",
+      "source_receipt": "manuscript/supplement/appendix_e_sources.json",
+      "units": "Investments t; period flows t; expected OD t and OSRM km; SQLite per-table units",
+      "delivery_state": "prepared_locally_not_deposited",
+      "access_rights_review": "pending_asset_specific_terms",
+      "new_download_url": null
+    },
+    {
+      "proposed_member": "historical-companions/scalar_h215_d_det_investments.csv.gz",
+      "category": "accepted_historical_vectors",
+      "bytes": 3227,
+      "sha256": "713d28cafb3a510a9653984710be6d7d5b3926b56f38d0d0c989c400676dae47",
+      "source_receipt": "manuscript/supplement/appendix_e_sources.json",
+      "units": "Investments t; period flows t; expected OD t and OSRM km; SQLite per-table units",
+      "delivery_state": "prepared_locally_not_deposited",
+      "access_rights_review": "pending_asset_specific_terms",
+      "new_download_url": null
+    },
+    {
+      "proposed_member": "historical-companions/scalar_h215_d_det_od_matrix.csv.gz",
+      "category": "accepted_historical_vectors",
+      "bytes": 40665,
+      "sha256": "43a073643c9935903b3262f655a1d45bf8f8b0d729020470461847481c1aeae4",
+      "source_receipt": "manuscript/supplement/appendix_e_sources.json",
+      "units": "Investments t; period flows t; expected OD t and OSRM km; SQLite per-table units",
+      "delivery_state": "prepared_locally_not_deposited",
+      "access_rights_review": "pending_asset_specific_terms",
+      "new_download_url": null
+    },
+    {
+      "proposed_member": "historical-companions/scalar_h215_d_sto_flows.csv.gz",
+      "category": "accepted_historical_vectors",
+      "bytes": 2117183,
+      "sha256": "ca7c4000ddcf7d276f3476e60be68224a96cbfd2beb833c5f212e267086aea54",
+      "source_receipt": "manuscript/supplement/appendix_e_sources.json",
+      "units": "Investments t; period flows t; expected OD t and OSRM km; SQLite per-table units",
+      "delivery_state": "prepared_locally_not_deposited",
+      "access_rights_review": "pending_asset_specific_terms",
+      "new_download_url": null
+    },
+    {
+      "proposed_member": "historical-companions/scalar_h215_d_sto_investments.csv.gz",
+      "category": "accepted_historical_vectors",
+      "bytes": 3227,
+      "sha256": "28154a52db1438d4b08f450002a0b6f1a70cdd0516875d835469135ac897b35b",
+      "source_receipt": "manuscript/supplement/appendix_e_sources.json",
+      "units": "Investments t; period flows t; expected OD t and OSRM km; SQLite per-table units",
+      "delivery_state": "prepared_locally_not_deposited",
+      "access_rights_review": "pending_asset_specific_terms",
+      "new_download_url": null
+    },
+    {
+      "proposed_member": "historical-companions/scalar_h215_d_sto_od_matrix.csv.gz",
+      "category": "accepted_historical_vectors",
+      "bytes": 62576,
+      "sha256": "bac0f89e805351acb0cfac16b6393c8db2fb3f6757e1acc50fd5a03461011581",
+      "source_receipt": "manuscript/supplement/appendix_e_sources.json",
+      "units": "Investments t; period flows t; expected OD t and OSRM km; SQLite per-table units",
+      "delivery_state": "prepared_locally_not_deposited",
+      "access_rights_review": "pending_asset_specific_terms",
+      "new_download_url": null
+    },
+    {
+      "proposed_member": "historical-companions/scalar_h215_sto_flows.csv.gz",
+      "category": "accepted_historical_vectors",
+      "bytes": 2992584,
+      "sha256": "442e9baffc34dd31c3ea5a6c2ea181d508b9f90509602d395682cbcb50b7b091",
+      "source_receipt": "manuscript/supplement/appendix_e_sources.json",
+      "units": "Investments t; period flows t; expected OD t and OSRM km; SQLite per-table units",
+      "delivery_state": "prepared_locally_not_deposited",
+      "access_rights_review": "pending_asset_specific_terms",
+      "new_download_url": null
+    },
+    {
+      "proposed_member": "historical-companions/scalar_h215_sto_investments.csv.gz",
+      "category": "accepted_historical_vectors",
+      "bytes": 3266,
+      "sha256": "70ad49783b685da36f8ef40713fc8841f1466eda5abf2e791e443abdc520ad7c",
+      "source_receipt": "manuscript/supplement/appendix_e_sources.json",
+      "units": "Investments t; period flows t; expected OD t and OSRM km; SQLite per-table units",
+      "delivery_state": "prepared_locally_not_deposited",
+      "access_rights_review": "pending_asset_specific_terms",
+      "new_download_url": null
+    },
+    {
+      "proposed_member": "historical-companions/scalar_h215_sto_od_matrix.csv.gz",
+      "category": "accepted_historical_vectors",
+      "bytes": 66895,
+      "sha256": "d12a28cb696eaac55261a1e229d575e8729542d24a2f81d0bfb5214a23958ca2",
+      "source_receipt": "manuscript/supplement/appendix_e_sources.json",
+      "units": "Investments t; period flows t; expected OD t and OSRM km; SQLite per-table units",
+      "delivery_state": "prepared_locally_not_deposited",
+      "access_rights_review": "pending_asset_specific_terms",
+      "new_download_url": null
+    },
+    {
+      "proposed_member": "historical-companions/scalar_h300_t1_flows.csv.gz",
+      "category": "accepted_historical_vectors",
+      "bytes": 3235021,
+      "sha256": "10d6b75afc89c78ba89ed59f83955c216cdd41f2c25544afb5a37d0aea14a103",
+      "source_receipt": "manuscript/supplement/appendix_e_sources.json",
+      "units": "Investments t; period flows t; expected OD t and OSRM km; SQLite per-table units",
+      "delivery_state": "prepared_locally_not_deposited",
+      "access_rights_review": "pending_asset_specific_terms",
+      "new_download_url": null
+    },
+    {
+      "proposed_member": "historical-companions/scalar_h300_t1_investments.csv.gz",
+      "category": "accepted_historical_vectors",
+      "bytes": 4630,
+      "sha256": "3ce65d0664db62c20d2512203921794c23ae9de46a42bb404d8c31ecca3f2af5",
+      "source_receipt": "manuscript/supplement/appendix_e_sources.json",
+      "units": "Investments t; period flows t; expected OD t and OSRM km; SQLite per-table units",
+      "delivery_state": "prepared_locally_not_deposited",
+      "access_rights_review": "pending_asset_specific_terms",
+      "new_download_url": null
+    },
+    {
+      "proposed_member": "historical-companions/scalar_h300_t1_od_matrix.csv.gz",
+      "category": "accepted_historical_vectors",
+      "bytes": 82252,
+      "sha256": "f2d6713d0d95e8c927b80d042bcc40e2716b8c5fe31e8ba3ad73b8a8cf6d6c47",
+      "source_receipt": "manuscript/supplement/appendix_e_sources.json",
+      "units": "Investments t; period flows t; expected OD t and OSRM km; SQLite per-table units",
+      "delivery_state": "prepared_locally_not_deposited",
+      "access_rights_review": "pending_asset_specific_terms",
+      "new_download_url": null
+    },
+    {
+      "proposed_member": "historical-companions/scalar_h400_t1_flows.csv.gz",
+      "category": "accepted_historical_vectors",
+      "bytes": 3534503,
+      "sha256": "001648888a4d15f5a9319d1fd35e41ad19a735e6c6124436894a6a7daf3aaac4",
+      "source_receipt": "manuscript/supplement/appendix_e_sources.json",
+      "units": "Investments t; period flows t; expected OD t and OSRM km; SQLite per-table units",
+      "delivery_state": "prepared_locally_not_deposited",
+      "access_rights_review": "pending_asset_specific_terms",
+      "new_download_url": null
+    },
+    {
+      "proposed_member": "historical-companions/scalar_h400_t1_investments.csv.gz",
+      "category": "accepted_historical_vectors",
+      "bytes": 6161,
+      "sha256": "73232f9382cf0429e62a019c94d015e0149893168d153c7c93eec0db15e5ab18",
+      "source_receipt": "manuscript/supplement/appendix_e_sources.json",
+      "units": "Investments t; period flows t; expected OD t and OSRM km; SQLite per-table units",
+      "delivery_state": "prepared_locally_not_deposited",
+      "access_rights_review": "pending_asset_specific_terms",
+      "new_download_url": null
+    },
+    {
+      "proposed_member": "historical-companions/scalar_h400_t1_od_matrix.csv.gz",
+      "category": "accepted_historical_vectors",
+      "bytes": 99578,
+      "sha256": "fa394ce4f439c3d8df6caff71add3d8acfaf718abcc539819a97d3c6fa541239",
+      "source_receipt": "manuscript/supplement/appendix_e_sources.json",
+      "units": "Investments t; period flows t; expected OD t and OSRM km; SQLite per-table units",
+      "delivery_state": "prepared_locally_not_deposited",
+      "access_rights_review": "pending_asset_specific_terms",
+      "new_download_url": null
+    },
+    {
+      "proposed_member": "historical-companions/scalar_h500_t1_flows.csv.gz",
+      "category": "accepted_historical_vectors",
+      "bytes": 3717505,
+      "sha256": "14bcb42272d57fb361084b36aab2511bd15b2787cc9922829c13677464321541",
+      "source_receipt": "manuscript/supplement/appendix_e_sources.json",
+      "units": "Investments t; period flows t; expected OD t and OSRM km; SQLite per-table units",
+      "delivery_state": "prepared_locally_not_deposited",
+      "access_rights_review": "pending_asset_specific_terms",
+      "new_download_url": null
+    },
+    {
+      "proposed_member": "historical-companions/scalar_h500_t1_investments.csv.gz",
+      "category": "accepted_historical_vectors",
+      "bytes": 7684,
+      "sha256": "998cdd97e59707109138b36d0cc2d69609383e45f006b14a3c2ffd3fb64271a9",
+      "source_receipt": "manuscript/supplement/appendix_e_sources.json",
+      "units": "Investments t; period flows t; expected OD t and OSRM km; SQLite per-table units",
+      "delivery_state": "prepared_locally_not_deposited",
+      "access_rights_review": "pending_asset_specific_terms",
+      "new_download_url": null
+    },
+    {
+      "proposed_member": "historical-companions/scalar_h500_t1_od_matrix.csv.gz",
+      "category": "accepted_historical_vectors",
+      "bytes": 115320,
+      "sha256": "b24dfcd8446dcc7e952136e6b2cf1c0cb6fcb0f6a3145d49ca4ee4fe300178ca",
+      "source_receipt": "manuscript/supplement/appendix_e_sources.json",
+      "units": "Investments t; period flows t; expected OD t and OSRM km; SQLite per-table units",
+      "delivery_state": "prepared_locally_not_deposited",
+      "access_rights_review": "pending_asset_specific_terms",
+      "new_download_url": null
+    },
+    {
+      "proposed_member": "historical-companions/scalar_highs_h215_w_native8h_startup_v2_flows.csv.gz",
+      "category": "accepted_historical_vectors",
+      "bytes": 2905167,
+      "sha256": "37ba325e35d0a7f3e61beb9ab90ec4865b9648c816ceb42507b74edd250fc4fc",
+      "source_receipt": "manuscript/supplement/appendix_e_sources.json",
+      "units": "Investments t; period flows t; expected OD t and OSRM km; SQLite per-table units",
+      "delivery_state": "prepared_locally_not_deposited",
+      "access_rights_review": "pending_asset_specific_terms",
+      "new_download_url": null
+    },
+    {
+      "proposed_member": "historical-companions/scalar_highs_h215_w_native8h_startup_v2_investments.csv.gz",
+      "category": "accepted_historical_vectors",
+      "bytes": 3300,
+      "sha256": "eb96670e8e65ee6d32f2fc764e1e1fa2124166938ea9d7c467c300087dddb2af",
+      "source_receipt": "manuscript/supplement/appendix_e_sources.json",
+      "units": "Investments t; period flows t; expected OD t and OSRM km; SQLite per-table units",
+      "delivery_state": "prepared_locally_not_deposited",
+      "access_rights_review": "pending_asset_specific_terms",
+      "new_download_url": null
+    },
+    {
+      "proposed_member": "historical-companions/scalar_highs_h215_w_native8h_startup_v2_od_matrix.csv.gz",
+      "category": "accepted_historical_vectors",
+      "bytes": 65017,
+      "sha256": "414196cf0f5ce7ca44cf32b4bce7c24965986d75bb454ca95222f7cffde87282",
+      "source_receipt": "manuscript/supplement/appendix_e_sources.json",
+      "units": "Investments t; period flows t; expected OD t and OSRM km; SQLite per-table units",
+      "delivery_state": "prepared_locally_not_deposited",
+      "access_rights_review": "pending_asset_specific_terms",
+      "new_download_url": null
+    },
+    {
+      "proposed_member": "osrm/osrm_h215_distances_km.csv.gz",
+      "category": "complete_OSRM_distance_table",
+      "bytes": 679880,
+      "sha256": "174190f3fd2832d0855c59054f6dc8c8120aca5e9bc7d4f173d701da7971a62c",
+      "source_receipt": "data/manifests/research_data_distribution_v1.json",
+      "units": "Directed OSRM km; travel duration s; original endpoint text",
+      "delivery_state": "prepared_locally_not_deposited",
+      "access_rights_review": "pending_asset_specific_terms",
+      "new_download_url": null
+    },
+    {
+      "proposed_member": "osrm/osrm_h300_distances_km.csv.gz",
+      "category": "complete_OSRM_distance_table",
+      "bytes": 1318036,
+      "sha256": "80f77a8c150ec6e76b87edc99b8a96a94af5e6dc046d070c54b8c48f26ce6156",
+      "source_receipt": "data/manifests/research_data_distribution_v1.json",
+      "units": "Directed OSRM km; travel duration s; original endpoint text",
+      "delivery_state": "prepared_locally_not_deposited",
+      "access_rights_review": "pending_asset_specific_terms",
+      "new_download_url": null
+    },
+    {
+      "proposed_member": "osrm/osrm_h400_distances_km.csv.gz",
+      "category": "complete_OSRM_distance_table",
+      "bytes": 2309796,
+      "sha256": "dfcaeeac383491888db97465235b8636b6830a4ce8b28015bfa466283276d4bf",
+      "source_receipt": "data/manifests/research_data_distribution_v1.json",
+      "units": "Directed OSRM km; travel duration s; original endpoint text",
+      "delivery_state": "prepared_locally_not_deposited",
+      "access_rights_review": "pending_asset_specific_terms",
+      "new_download_url": null
+    },
+    {
+      "proposed_member": "osrm/osrm_h500_distances_km.csv.gz",
+      "category": "complete_OSRM_distance_table",
+      "bytes": 3623012,
+      "sha256": "84ac2bfd7b96f8d324bf7352cc8a605e7924acfe7e354a3ecda53af05a583dca",
+      "source_receipt": "data/manifests/research_data_distribution_v1.json",
+      "units": "Directed OSRM km; travel duration s; original endpoint text",
+      "delivery_state": "prepared_locally_not_deposited",
+      "access_rights_review": "pending_asset_specific_terms",
+      "new_download_url": null
+    },
+    {
+      "proposed_member": "paired-h300/h300-w-sto-gurobi-t1-r1_flows.csv.gz",
+      "category": "paired_h300_solution_companion",
+      "bytes": 3226214,
+      "sha256": "f5b22dd8ae8d108eb33f2d876a839f6030111988ed10f575ca31296e0c31bf4b",
+      "source_receipt": "docs/evidence/paired_h300_flow_companions_20261101.json",
+      "units": "Directed OSRM km; investments t; period flow t or expected-horizon t, as named",
+      "delivery_state": "prepared_locally_not_deposited",
+      "access_rights_review": "pending_asset_specific_terms",
+      "new_download_url": null
+    },
+    {
+      "proposed_member": "paired-h300/h300-w-sto-gurobi-t1-r1_investments.csv.gz",
+      "category": "paired_h300_solution_companion",
+      "bytes": 4630,
+      "sha256": "3ce65d0664db62c20d2512203921794c23ae9de46a42bb404d8c31ecca3f2af5",
+      "source_receipt": "docs/evidence/paired_h300_flow_companions_20261101.json",
+      "units": "Directed OSRM km; investments t; period flow t or expected-horizon t, as named",
+      "delivery_state": "prepared_locally_not_deposited",
+      "access_rights_review": "pending_asset_specific_terms",
+      "new_download_url": null
+    },
+    {
+      "proposed_member": "paired-h300/h300-w-sto-gurobi-t1-r1_od_matrix.csv.gz",
+      "category": "paired_h300_solution_companion",
+      "bytes": 83889,
+      "sha256": "dab2dd3205e5d1f6c742d20eb820293aee60cbcd54b95ec2c2bc542fa17b4a63",
+      "source_receipt": "docs/evidence/paired_h300_flow_companions_20261101.json",
+      "units": "Directed OSRM km; investments t; period flow t or expected-horizon t, as named",
+      "delivery_state": "prepared_locally_not_deposited",
+      "access_rights_review": "pending_asset_specific_terms",
+      "new_download_url": null
+    },
+    {
+      "proposed_member": "paired-h300/h300-w-sto-highs-t1-r1_flows.csv.gz",
+      "category": "paired_h300_solution_companion",
+      "bytes": 3124490,
+      "sha256": "767f1fb31952bc461ba72b0ceadc6bb5574f9c884ce9117d37b25face15a7ab5",
+      "source_receipt": "docs/evidence/paired_h300_flow_companions_20261101.json",
+      "units": "Directed OSRM km; investments t; period flow t or expected-horizon t, as named",
+      "delivery_state": "prepared_locally_not_deposited",
+      "access_rights_review": "pending_asset_specific_terms",
+      "new_download_url": null
+    },
+    {
+      "proposed_member": "paired-h300/h300-w-sto-highs-t1-r1_investments.csv.gz",
+      "category": "paired_h300_solution_companion",
+      "bytes": 4684,
+      "sha256": "8fabf1d9983e316e3881c80dea6f94e6b149aac27a944919d366cc6a8922542f",
+      "source_receipt": "docs/evidence/paired_h300_flow_companions_20261101.json",
+      "units": "Directed OSRM km; investments t; period flow t or expected-horizon t, as named",
+      "delivery_state": "prepared_locally_not_deposited",
+      "access_rights_review": "pending_asset_specific_terms",
+      "new_download_url": null
+    },
+    {
+      "proposed_member": "paired-h300/h300-w-sto-highs-t1-r1_od_matrix.csv.gz",
+      "category": "paired_h300_solution_companion",
+      "bytes": 81206,
+      "sha256": "311e05b3dbcdb9a2f546ea4666a289edae77e570316a7e7e6906fefd024e4237",
+      "source_receipt": "docs/evidence/paired_h300_flow_companions_20261101.json",
+      "units": "Directed OSRM km; investments t; period flow t or expected-horizon t, as named",
+      "delivery_state": "prepared_locally_not_deposited",
+      "access_rights_review": "pending_asset_specific_terms",
+      "new_download_url": null
+    },
+    {
+      "proposed_member": "paired-h300/h300_pair_flow_distance.sqlite3",
+      "category": "paired_h300_solution_companion",
+      "bytes": 93220864,
+      "sha256": "77ca579727277a0de9a70c097c997cb7b685f4a6218d25a7223f4116461f26ca",
+      "source_receipt": "docs/evidence/paired_h300_flow_companions_20261101.json",
+      "units": "Directed OSRM km; investments t; period flow t or expected-horizon t, as named",
+      "delivery_state": "prepared_locally_not_deposited",
+      "access_rights_review": "pending_asset_specific_terms",
+      "new_download_url": null
+    },
+    {
+      "proposed_member": "paired-h300/h300_W_selected_arcs.csv.gz",
+      "category": "h300_selected_product_graph",
+      "bytes": 266939,
+      "sha256": "acd90e7ea89ec6154d542f11c380f7ffe7b438e4c7ad4681c3b522f25b7fe655",
+      "source_receipt": "docs/evidence/h300_selected_graph_release_20261101.json",
+      "units": "Directed OSRM km; investments t; period flow t or expected-horizon t, as named",
+      "delivery_state": "prepared_locally_not_deposited",
+      "access_rights_review": "pending_asset_specific_terms",
+      "new_download_url": null
+    },
+    {
+      "proposed_member": "paired-h300/h300_W_selected_graph.json.gz",
+      "category": "h300_selected_product_graph",
+      "bytes": 137517,
+      "sha256": "7eeb43663e9f5c9a7bbc48998cad49be702dc336e57a1d983e5e81f608f707c2",
+      "source_receipt": "docs/evidence/h300_selected_graph_release_20261101.json",
+      "units": "Directed OSRM km; investments t; period flow t or expected-horizon t, as named",
+      "delivery_state": "prepared_locally_not_deposited",
+      "access_rights_review": "pending_asset_specific_terms",
+      "new_download_url": null
+    }
+  ],
+  "file_count": 41,
+  "compressed_total_bytes": 450057392,
+  "existing_input_deposit": {
+    "dataset_doi": "10.5281/zenodo.22751909",
+    "version": "0.2.0",
+    "name": "agrologistic-v020-inputs.zip",
+    "sha256": "583b04afb49c4cba13c9d0aaa18131e12a18bac1da410cd801616bd0b639811f",
+    "public_access_reconfirmation": "Live anonymous Zenodo API succeeded on 2026-11-01; open record and all 12 advertised file sizes/checksums match frozen metadata. Full archive not redownloaded.",
+    "original_rights_notices_reconciliation": "pending",
+    "record_level_license_id": "mit-license"
+  },
+  "historical_companion_cases": [
+    "scalar_h215_det",
+    "scalar_h215_sto",
+    "scalar_h300_t1",
+    "scalar_h400_t1",
+    "scalar_h500_t1",
+    "scalar_h215_d_det",
+    "scalar_h215_d_sto",
+    "pyomo_gurobi_h215_w_native8h_license_v2",
+    "scalar_highs_h215_w_native8h_startup_v2"
+  ],
+  "historical_aliases": [
+    {
+      "case": "scalar_h300_t2",
+      "canonical": "scalar_h300_t1",
+      "threads": 2,
+      "identical_original_vectors": {
+        "warehouse_decisions.csv": "47acb1e9ca166874a56a11a13fd66533314bca4634f2577d8118b9c364c96670",
+        "flows.csv": "f8ea87c7a41930ae720992d92358267cc61be06c82726544e42e6bc8b3e9dc71",
+        "inventories.csv": "ffba3a38d563c8d977590e0d3a1aa7cbbc5c70fecacc504b2cfca63b58f36886",
+        "unmet_demand.csv": "09d8b2ed85137c78fb36ea2dab37fe51aed3fcd35a153020be1946225f6eaca6"
+      }
+    },
+    {
+      "case": "scalar_h300_t4",
+      "canonical": "scalar_h300_t1",
+      "threads": 4,
+      "identical_original_vectors": {
+        "warehouse_decisions.csv": "47acb1e9ca166874a56a11a13fd66533314bca4634f2577d8118b9c364c96670",
+        "flows.csv": "f8ea87c7a41930ae720992d92358267cc61be06c82726544e42e6bc8b3e9dc71",
+        "inventories.csv": "ffba3a38d563c8d977590e0d3a1aa7cbbc5c70fecacc504b2cfca63b58f36886",
+        "unmet_demand.csv": "09d8b2ed85137c78fb36ea2dab37fe51aed3fcd35a153020be1946225f6eaca6"
+      }
+    },
+    {
+      "case": "scalar_h300_t8",
+      "canonical": "scalar_h300_t1",
+      "threads": 8,
+      "identical_original_vectors": {
+        "warehouse_decisions.csv": "47acb1e9ca166874a56a11a13fd66533314bca4634f2577d8118b9c364c96670",
+        "flows.csv": "f8ea87c7a41930ae720992d92358267cc61be06c82726544e42e6bc8b3e9dc71",
+        "inventories.csv": "ffba3a38d563c8d977590e0d3a1aa7cbbc5c70fecacc504b2cfca63b58f36886",
+        "unmet_demand.csv": "09d8b2ed85137c78fb36ea2dab37fe51aed3fcd35a153020be1946225f6eaca6"
+      }
+    },
+    {
+      "case": "scalar_h300_t16",
+      "canonical": "scalar_h300_t1",
+      "threads": 16,
+      "identical_original_vectors": {
+        "warehouse_decisions.csv": "47acb1e9ca166874a56a11a13fd66533314bca4634f2577d8118b9c364c96670",
+        "flows.csv": "f8ea87c7a41930ae720992d92358267cc61be06c82726544e42e6bc8b3e9dc71",
+        "inventories.csv": "ffba3a38d563c8d977590e0d3a1aa7cbbc5c70fecacc504b2cfca63b58f36886",
+        "unmet_demand.csv": "09d8b2ed85137c78fb36ea2dab37fe51aed3fcd35a153020be1946225f6eaca6"
+      }
+    }
+  ],
+  "aliases_are_not_new_runs": true,
+  "new_DOI_or_version_assigned": false,
+  "new_files_uploaded": false,
+  "original_archives_modified": false,
+  "pending": [
+    "Per-asset rights and privacy review, including OSM-derived database terms",
+    "Selected admissibility exports for other historical inputs/topologies",
+    "Sanitized original outputs/native logs/resource records with file-level inventory",
+    "Reviewed next-version deposition and anonymous full-download hash verification"
+  ]
+}

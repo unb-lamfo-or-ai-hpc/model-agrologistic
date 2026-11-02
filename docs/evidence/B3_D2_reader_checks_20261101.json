@@ -1,0 +1,69 @@
+{
+  "schema_version": "B3-D2-reader-qualification-v1",
+  "date": "2026-11-01",
+  "parent_editorial_commit": "7b04cf0a544ab094c707127152c127b8bf8fa15e",
+  "immutable_new_evidence_commit": "8f33a360d8a1ca3f18c5c7a3aa0eac2cd2ad5a90",
+  "scope": "Primary-source reading, bibliographic metadata, original CSV aggregation and reader text",
+  "ruff": "passed",
+  "scalar_and_WD_tables": "unchanged and verified",
+  "tests": {
+    "passed": 90,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "groups": [
+      "78 document/package/input/pilot-reporting",
+      "12 historical-comparison/partial-result"
+    ],
+    "qualification": "Separate nonoverlapping modules; no new native/NPAD qualification"
+  },
+  "input_audit": {
+    "cells": 254,
+    "pinned_links": 41
+  },
+  "html": {
+    "article": {
+      "exit": 0,
+      "images": 13,
+      "mathml": 87,
+      "missing_images": 0,
+      "unresolved_citations": false,
+      "excluded_solver_history_mentions": 0,
+      "sha256": "79c6fe28a8aeab27ce5ba0517d0a138cadad19f93f5dbe69e519c85934b33385"
+    },
+    "appendices": {
+      "exit": 0,
+      "images": 26,
+      "mathml": 66,
+      "missing_images": 0,
+      "unresolved_citations": false,
+      "excluded_solver_history_mentions": 0,
+      "sha256": "b141fc098fb2e31909ad604ebe29c795902b2cedd3df6b90a2f49b689f06301d"
+    }
+  },
+  "bibliography": {
+    "main_records": 36,
+    "method_records": 2,
+    "main_cited": 33,
+    "ordered_family_count_registry_matches": 32,
+    "added_records_authors_or_DOIs": false,
+    "completed_existing_fields": {
+      "pourmohammadi2020": [
+        "volume9",
+        "issue4"
+      ]
+    },
+    "all38_full_texts_reviewed": false,
+    "given_name_ORCID_identity_complete": false
+  },
+  "original_appendix_a_sha256": "859dc52b64b6bcf471f7616182d8cadf2b693dbfd19ad4b9248637b5c231b3ed",
+  "qualified_upstream_files_unchanged": 29,
+  "original_h300_archive_preserved": true,
+  "csv_aggregation_audit": "docs/evidence/paired_h300_release_dictionary_20261101.json",
+  "fresh_constraint_residuals": false,
+  "new_solver_or_HPC_execution": false,
+  "latest_human_HiGHS_status": "RUNNING07:10:37; no new terminal observation",
+  "full_article_appendix_PDF_generated": false,
+  "merge_or_Pages_or_new_data_deposit": false,
+  "qualification_history": "Three stale prose assertions required obsolete article sentences/excluded history; aligned to current approved reader scope while historical certificate/table controls remain."
+}

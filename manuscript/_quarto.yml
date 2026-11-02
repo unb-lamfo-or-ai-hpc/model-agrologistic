@@ -1,6 +1,7 @@
 project:
   type: manuscript
   output-dir: _manuscript
+  pre-render: python ../scripts/prepare_document_assets.py
   render:
     - index.qmd
 manuscript:
@@ -15,6 +16,10 @@ manuscript:
       href: https://unb-lamfo-or-ai-hpc.github.io/model-agrologistic/supplementary-review.pdf
     - text: Editable LaTeX project (ZIP)
       href: https://unb-lamfo-or-ai-hpc.github.io/model-agrologistic/coauthor-latex.zip
+    - text: Article TeX (dependencies in ZIP)
+      href: https://unb-lamfo-or-ai-hpc.github.io/model-agrologistic/index.tex
+    - text: Appendix TeX (dependencies in ZIP)
+      href: https://unb-lamfo-or-ai-hpc.github.io/model-agrologistic/supplementary-review.tex
 execute:
   enabled: false
   freeze: auto
@@ -24,6 +29,7 @@ metadata-files:
 bibliography: references.bib
 format:
   html:
+    html-math-method: mathml
     theme: cosmo
     toc: true
     number-sections: true
@@ -46,3 +52,4 @@ format:
     include-in-header:
       text: |
         \usepackage{orcidlink}
+        \usepackage{float}

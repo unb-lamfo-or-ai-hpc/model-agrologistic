@@ -1,0 +1,84 @@
+{
+  "schema_version": "zenodo-public-api-recheck-v1",
+  "date": "2026-11-01",
+  "url": "https://zenodo.org/api/records/22751909",
+  "record_id": 22751909,
+  "doi": "10.5281/zenodo.22751909",
+  "access_right": "open",
+  "record_level_license_id": "mit-license",
+  "anonymous_metadata_request_succeeded": true,
+  "file_count": 12,
+  "files": [
+    {
+      "key": "README.md",
+      "size": 3361,
+      "checksum": "md5:df64ac782cba1422122df1961311d243"
+    },
+    {
+      "key": "metadata-review.json",
+      "size": 1589,
+      "checksum": "md5:60a6627b16221fa5ccef2e0f4e0f8838"
+    },
+    {
+      "key": "agrologistic-v020-comparative-evidence.zip",
+      "size": 197328,
+      "checksum": "md5:50f649644b9705bafba0005a1679516a"
+    },
+    {
+      "key": "download_manifest.json",
+      "size": 678254,
+      "checksum": "md5:f5fc5a2185829e539f3ec518b924a824"
+    },
+    {
+      "key": "agrologistic-v020-run-artifacts.zip",
+      "size": 64233474,
+      "checksum": "md5:7f0d0e0012894510896104f356e59606"
+    },
+    {
+      "key": "agrologistic-v020-osrm-audits.zip",
+      "size": 48752,
+      "checksum": "md5:a064afa47e2c3060b3645f60ebcd1fcb"
+    },
+    {
+      "key": "agrologistic-v020-inventory-reports.zip",
+      "size": 359736,
+      "checksum": "md5:bb03bdf827341ec064eae92479798d63"
+    },
+    {
+      "key": "SHA256SUMS.txt",
+      "size": 762,
+      "checksum": "md5:6d2c0cb5e455e4630b8da954d178efbf"
+    },
+    {
+      "key": "agrologistic-v020-reference-evidence.zip",
+      "size": 2680657,
+      "checksum": "md5:d970c5f7c34eaaf49dafbb0fce21c727"
+    },
+    {
+      "key": "agrologistic-v020-inputs.zip",
+      "size": 30996131,
+      "checksum": "md5:79f85dfe638df1c2dfa5cca9cf343d88"
+    },
+    {
+      "key": "LICENSES-REVIEW.txt",
+      "size": 544,
+      "checksum": "md5:6a707f1a594a2dd8a75947e9c595a584"
+    },
+    {
+      "key": "README.txt",
+      "size": 632,
+      "checksum": "md5:9bec400cbb3a99726d70b271a663bac8"
+    }
+  ],
+  "frozen_metadata_matches": true,
+  "inputs_archive": {
+    "key": "agrologistic-v020-inputs.zip",
+    "size": 30996131,
+    "checksum": "md5:79f85dfe638df1c2dfa5cca9cf343d88",
+    "local_archive_sha256": "583b04afb49c4cba13c9d0aaa18131e12a18bac1da410cd801616bd0b639811f",
+    "contains_four_original_osrm_workbooks_verified_locally": true
+  },
+  "qualification": "Live public API access and the advertised file inventory were reconfirmed. This request did not redownload the full archive or independently resolve source-specific rights. Root record MIT/open metadata coexist with original per-asset/curator-copy notices; do not infer blanket upstream relicensing.",
+  "new_csv_exports_uploaded": false,
+  "solver_or_npad_access": false
+}

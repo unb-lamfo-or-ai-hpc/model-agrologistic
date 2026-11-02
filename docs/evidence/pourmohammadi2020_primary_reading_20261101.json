@@ -1,0 +1,42 @@
+{
+  "schema_version": "targeted-primary-reading-v1",
+  "date": "2026-11-01",
+  "key": "pourmohammadi2020",
+  "doi": "10.5267/j.dsl.2020.8.004",
+  "primary_pdf_url": "https://www.growingscience.com/dsl/Vol9/dsl_2020_24.pdf",
+  "pdf_sha256": "246ebb215c4a4598e6bd5c0d97ed474b5488fdcd92c24883d40af66bc501de62",
+  "pages": 10,
+  "targeted_sections": "Sections3-5, pp.539-544; Eqs.(1),(11),(12),(15); Tables2,5",
+  "pages_visually_checked": [
+    540,
+    543
+  ],
+  "facts": {
+    "capacity_levels_t": [
+      50000,
+      100000,
+      150000,
+      200000
+    ],
+    "scenario_count": 6,
+    "scenario_probability": "1/6",
+    "horizon_months": 12,
+    "geographic_aggregation": "31 provinces",
+    "location_binary": "Shared across scenarios; capacity level selected",
+    "shortage": "Prohibited",
+    "additional_scope": [
+      "imports",
+      "quality blending",
+      "rail/road"
+    ],
+    "published_variables": 837103,
+    "published_equations": 25411,
+    "software": "GAMS24.1.2/CPLEX",
+    "declared_hardware": "i7-5500U2.40GHz/8GB"
+  },
+  "interpretation": "Capacity discretization and hard service differ from continuous sizing and penalized shortages here. No matched runtime ratio.",
+  "interpretation_limit": "Section5 says expected value approach; do not infer a measured VSS or fully verified information structure from that phrase.",
+  "remaining_quality_fields": "Native gap, bound, timing definitions and scenario-solution interpretation not fully reconciled",
+  "whole_paper_scientific_reconciliation_complete": false,
+  "original_appendix_a_modified": false
+}

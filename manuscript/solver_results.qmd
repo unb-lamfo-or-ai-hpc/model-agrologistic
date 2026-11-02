@@ -1,0 +1,82 @@
+## Gurobi and HiGHS: attained quality and computational effort
+
+The completed h215 W STO calculations use the same frozen workbook,
+ordered warehouses, selected directed network, nine equiprobable scenarios
+and scalar coefficients. Both Pyomo pipelines use the bounded candidate-slack
+representation of Appendix C. This gives a more specific comparison basis
+than the h215 label alone. The earlier HiGHS record has no ordered-algebra
+fingerprint; its retained input bindings, model dimensions and bound policy
+agree with the common formulation, but an unrecorded fingerprint is not
+inferred retrospectively.
+
+| Setting | Gurobi / APPSI | HiGHS / APPSI |
+|:--|:--|:--|
+| Native version | 13.0.3 | 1.15.1 |
+| Pyomo version | 6.10.1 | 6.10.1 |
+| Native time allowance, s | 28,800 | 28,800 |
+| Relative MIP gap target | 0.01 | 0.01 |
+| Thread ceiling | 4 | 4 |
+| Seed setting | Seed = 42 | random_seed = 42 |
+| Feasibility controls | FeasibilityTol and IntFeasTol = 1e-9 | mip_feasibility_tolerance = 1e-9 |
+
+: Effective configurations of the completed Pyomo h215 W STO observations.
+The historical HiGHS log records parallel tree search off; this differs from
+the ongoing parallel-search campaign. {#tbl-pyomo-settings}
+
+The Gurobi calculation supplied an ordered pre-solve algebra fingerprint
+for 14,054,654 variables, 307 binaries, 735,577 linear constraints and
+52,217,866 nonzeros. The earlier HiGHS model has the same dimensions.
+Matching dimensions alone do not prove identical coefficients or identical
+native presolved models. Original input and mathematical-contract checks
+therefore accompany the dimensional comparison.
+
+Both returned incumbents passed their original independent primal
+validation and the prescribed 1% scalar-gap criterion.
+
+| Implementation | Objective, BRL trillion | Common gap, % | Native runtime, min |
+|:--|--:|--:|--:|
+| Pyomo/APPSI Gurobi | 13.071397 | 0.740159 | 31.54 |
+| Pyomo/APPSI HiGHS | 12.974673 | 0.000196 | 426.70 |
+
+: Attained scalar quality and native computation time for the two completed
+Pyomo observations. These are separate single runs, not matched repeated
+measurements at equal attained gaps. {#tbl-highs-h215}
+
+| Implementation | Application end-to-end, min | Sampled worker-tree peak, GiB |
+|:--|--:|--:|
+| Pyomo/APPSI Gurobi | 55.621 | 55.390 |
+| Pyomo/APPSI HiGHS | 441.202 | 55.218 |
+
+: Observed application time and sampled process-tree memory. Sampling can miss
+an instantaneous peak; these values are distinct from requested memory and
+native solver-managed memory. {#tbl-pyomo-outcomes}
+
+Gurobi's lower bound was 12.974647770397 trillion BRL; the HiGHS lower bound
+was 12.974647770397 trillion BRL at the shown precision. HiGHS's smaller
+incumbent is compatible with the Gurobi interval. Its much tighter attained
+gap does not imply that Gurobi would need its reported runtime to attain
+that same quality, or that HiGHS would need its full observed time to attain
+only the 1% threshold. The comparison reports the outcomes actually
+retained, rather than interpolating unobserved stopping times.
+
+The HiGHS financial subtotal is 393.331 billion BRL, domestic service is
+92.3284%, and artificial penalties account for 96.9685% of its objective.
+Thus, a near-zero scalar gap coexists with substantial modeled shortages
+and capacity exceedances. Objective precision, financial interpretation
+and physical service answer different questions.
+
+The HiGHS log records one processed node and 2,901,682 LP iterations.
+Its four-thread ceiling coexisted with one maximum search worker and
+parallel search off. These observations illustrate why a thread setting is
+not itself a measure of parallel work. The native Gurobi cohort in the
+preceding section uses a different implementation and original time profile;
+it is not pooled with the repeated common-Pyomo campaign.
+
+The [retained HiGHS input and validation record](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/ad2ded8132bf5171be65c0113b3d0026c22b2e7b/docs/evidence/scalar_highs_h215_2226536_inspection.json)
+and the original source-bound experiment records retain the certificate
+scope. Appendix E presents the corresponding accepted investment and flow
+summaries. The new common-Pyomo scaling cohort is reported separately below.
+
+
+
+{{< include scaling_pilot_results.qmd >}}

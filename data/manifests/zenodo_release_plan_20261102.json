@@ -1,0 +1,170 @@
+{
+  "schema_version": "model-agrologistic-versioned-data-release-plan-v1",
+  "date": "2026-11-02",
+  "status": "planned_not_deposited",
+  "existing_release": {
+    "record_id": 22751909,
+    "version": "0.2.0",
+    "doi": "10.5281/zenodo.22751909",
+    "url": "https://zenodo.org/records/22751909",
+    "api_url": "https://zenodo.org/api/records/22751909",
+    "api_access_right": "open",
+    "api_file_count": 12,
+    "metadata_refreshed_on": "2026-11-02",
+    "file_bytes_redownloaded_in_this_increment": false,
+    "preserved_unchanged": true,
+    "receipt": "docs/evidence/zenodo_public_metadata_20261102.json"
+  },
+  "next_release": {
+    "candidate_version": "0.3.0",
+    "candidate_version_only": true,
+    "registered_version": null,
+    "new_record_id": null,
+    "new_doi": null,
+    "new_public_download_url": null,
+    "files_uploaded": false,
+    "published": false,
+    "existing_version_overwritten": false
+  },
+  "initial_prepared_inventory": {
+    "path": "data/manifests/zenodo_next_release_inventory_20261101.json",
+    "file_count": 41,
+    "bytes": 450057392,
+    "readiness_register": "data/manifests/zenodo_release_readiness_20261102.json",
+    "scope": "28 historical companions, four complete road-distance tables, seven matched h300 companions and two selected-h300 graph files",
+    "all_assets_ready_for_deposit": false,
+    "prepared_bytes_reread_in_this_increment": false,
+    "excludes_uncollected_or_unprepared_campaign_outputs": true
+  },
+  "distribution": [
+    {
+      "location": "GitHub",
+      "contents": [
+        "versioned source, analytical tests and experiment definitions",
+        "small reviewed tables and warehouse decision lists",
+        "file/column dictionaries, units, hashes, provenance and data-release inventories",
+        "operational history, including unsuccessful attempts and excluded solver history"
+      ],
+      "purpose": "Inspect code, metadata and evidence without uploading large temporary archives"
+    },
+    {
+      "location": "Zenodo existing0.2.0",
+      "contents": [
+        "original published input, OSRM audit and historical evidence archives identified by record metadata"
+      ],
+      "purpose": "Retain the already cited immutable historical source release"
+    },
+    {
+      "location": "Zenodo planned next version",
+      "contents": [
+        "complete directed OSRM distance tables with endpoint/family/provider identities",
+        "selected admissible graphs separately from complete distances and returned positive flows",
+        "source-bound flow/investment/inventory/shortage tables and SQLite companions",
+        "reviewed original validation and resource/timing records where distributable",
+        "README, column/unit dictionary, per-asset notices and SHA256 manifest"
+      ],
+      "purpose": "Provide reusable large numerical assets with exact software/cohort bindings"
+    }
+  ],
+  "asset_requirements": [
+    "configuration and case ID; original source commit and input/selection/scenario fingerprints",
+    "complete distances, selected graph and solution output identified as different objects",
+    "product/period/scenario coordinates and scenario weights, investment tonnes, flow tonnes, stock tonne-period exposure, OSRM km and seconds",
+    "byte size and SHA256; alias and aggregation scope",
+    "source-specific attribution/reuse notices and private-field review",
+    "newly sanitized copies get their own hash and an omission/source mapping; originals remain untouched"
+  ],
+  "campaign": {
+    "solvers": [
+      "gurobi",
+      "highs"
+    ],
+    "interface": "common Pyomo/APPSI",
+    "populations": [
+      300,
+      400,
+      500
+    ],
+    "topology": "W",
+    "mode": "STO",
+    "threads": [
+      1,
+      2,
+      4,
+      8,
+      16
+    ],
+    "seed": 42,
+    "temporal_repetitions": 3,
+    "total_cells": 90,
+    "collected_pilots": 4,
+    "new_scientific_jobs_planned": 86,
+    "serial_graph_new_submissions": 93,
+    "source_qualified_commit": "334827d5e3669b4fcdf2801fd4cea466e5a71d06",
+    "scientific_engine_commit": "c493be8cd127c5175fc7eb111400229e64b8e3c0",
+    "software_merge_commit": "48e2831693fc4abe0657c82197a2e884a61e99d2",
+    "private_queue_submission_receipt_received": true,
+    "outputs_to_add_only_after_collection": true,
+    "all_90_states_retained": true,
+    "missing_metrics_imputed": false,
+    "missing_incumbent_vectors_fabricated": false,
+    "followup_release_after_campaign": "Subsequent reviewed dataset version; no completion or version number asserted",
+    "private_queue_status": "reported_bounded_graph_released",
+    "release_receipt": "docs/evidence/pyomo_serial_release_reported_20261102.json"
+  },
+  "milestones": [
+    {
+      "id": "R0",
+      "state": "completed_metadata_verified",
+      "deliverable": "Preserve/cite existing0.2.0; verify its current open record metadata",
+      "gate": "Do not relabel new companions as existing0.2.0 members"
+    },
+    {
+      "id": "R1",
+      "state": "initial_assets_prepared_locally",
+      "deliverable": "Freeze the41-file initial inventory, provenance and column/unit dictionary",
+      "gate": "Finish remaining selected graph and reviewed original-output inventories; retain explicit omissions"
+    },
+    {
+      "id": "R2",
+      "state": "pending_per_asset_review",
+      "deliverable": "Review source notices, attribution and private fields; freeze the intended software/manuscript snapshot",
+      "gate": "No blanket MIT relicense or unfiltered original HPC archive/full-text upload"
+    },
+    {
+      "id": "R3",
+      "state": "not_started",
+      "deliverable": "Create a new version linked to0.2.0; upload only the reviewed files and manifest",
+      "gate": "New DOI/download links enter manuscript only after publication and verification"
+    },
+    {
+      "id": "R4",
+      "state": "not_started",
+      "deliverable": "Verify anonymously downloaded files, SHA256s, archive members and reader-facing dictionaries",
+      "gate": "Check actual downloaded bytes, not merely the server metadata"
+    },
+    {
+      "id": "R5",
+      "state": "future_after_campaign_collection",
+      "deliverable": "Version all90cell states, configuration/result tables and distributable original records",
+      "gate": "Retain censoring/failure/non-execution; no successful-case filtering"
+    }
+  ],
+  "publication": {
+    "reader_pr": 144,
+    "target": "develop",
+    "reader_merge_authorization_pending": false,
+    "next_pr": "separate develop-to-main Pages promotion after PR144 merge",
+    "main_merge_authorization_pending": true,
+    "quarto_outputs": [
+      "article HTML/PDF",
+      "appendices HTML/PDF",
+      "editable TeX source ZIP"
+    ],
+    "pdf_generation_deferred": true,
+    "new_dataset_doi_not_a_current_public_link": true,
+    "reader_merge_commit": "50a77a7527541a9f00769928164dc71457dbc38c",
+    "main_promotion_pr": 149,
+    "publication_preparation_pr": 150
+  }
+}

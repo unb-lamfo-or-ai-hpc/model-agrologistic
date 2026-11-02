@@ -1,119 +1,90 @@
-# Scientific manuscript — integrated scalar revision
+# Reading and reproducing the scientific manuscript
 
-23October current authority: PR120 is merged; the researcher explicitly requests
-the current S6-A as a public coauthor REVIEW snapshot after normal develop/main
-reconciliation. This supersedes the older draft/publication holds below, not
-final approval or journal submission. The separate h215 W/D Results section
-adds two accepted D observations, keeps the original eight W scaling observations
-unchanged and reports lower penalized cost BUT worse service. S5/h500 terminal
-evidence, further coauthor rounds and S6-B remain open. Check pages_approval.json
-and the actual deployment receipt; CI/merge alone is not publication.
+The article is **Computational Scalability of Deterministic and Two-Stage
+Stochastic MILP Models for Grain-Storage Network Design and Hub Location**.
+Its authoritative sources are [the article](index.qmd) and
+[the supplementary material](supplement/index.qmd). The source currently under
+review must be distinguished from the version published on GitHub Pages.
 
-The approved article is **Computational Scalability of Deterministic and
-Two-Stage Stochastic MILP Models for Grain-Storage Network Design and Hub
-Location**. PR120 implements the researcher's final21October mandate on the
-existing editorial branch. It does not authorize merge, deployment or submission.
+## Reading route
 
-The22October extension adds Appendix C (actual Python/Gurobi/SCIP crosswalk,
-shared reviewable GAMS translation and effective-input exporter) and Appendix D
-(source cells, units, transformation rules, source hashes and actual population
-nesting/order). GAMS compilation and numerical parity are explicitly unperformed;
-the tool is unavailable. The AI declaration, supplied NPAD Acknowledgements and
-References are consecutive numbered sections. No scientific code, model, penalty,
-certificate or live HPC claim is changed. PR120 remains draft during review.
+The article introduces the planning decisions, literature context, formulation,
+experimental method and results. The appendices provide complementary detail:
 
-## Evidence boundary
+| Appendix | Purpose | Source |
+| --- | --- | --- |
+| A | Original systematic literature review | [Preserved PDF](supplement/appendix_a_original.pdf) |
+| B | Human-supervised AI assistance and verification | [Supplement, B1–B6](supplement/index.qmd) |
+| C | Implementations, solver interfaces, parallelism and independent validation | [Appendix C](supplement/appendix_c.qmd) |
+| D | Input sources, actual coefficients, units, facility selection and OSRM preparation | [Appendix D](supplement/appendix_d.qmd) |
+| E | Individual investment maps, facility lists and flow-distance matrices | [Appendix E](supplement/appendix_e.qmd) |
 
-The active Results section uses eight accepted scalar observations: h215
-DET/STO, five h300 thread levels and h400 STO. Original source/job/input hashes,
-penalties and residual tolerances remain frozen. `scalar_evidence.json` and its
-generated `scalar_results.qmd` retain original certificate identities; later
-replay/post-processing is not fresh private-input residual revalidation.
-h500 job2220382 is pending in the last supplied snapshot, not a numerical result.
-No causal thread speedup, full service, exact zero-gap proof or financial
-interpretation of artificial penalties is claimed.
+Appendix A is the preserved researcher-supplied original. The
+[source-reading ledger](../docs/literature_full_text_update_20261101.md)
+distinguishes full-text passages, previews and metadata; unavailable text is
+not evidence that a feature or prior contribution is absent.
 
-The old thirteen-attempt comparison, ten-reference results, failed capacity-pass
-trial, original certificates and their figures remain unchanged historical
-cohorts. `comparison_results.qmd`, `historical_reference_results.md`,
-`comparison_provenance.json`, `results_snapshot.json` and
-`evidence_status.json` must not be pooled with or relabelled as scalar evidence.
-SCIP/h215 remains a separate decision; S3/S4 and EVPI/VSS remain excluded.
+## Data and reproducibility
 
-## Reproduce the document
+Start with the [input reproduction guide](../docs/evidence/appendix_input_reproduction_20261028.json)
+and [data distribution catalog](../data/manifests/research_data_distribution_v1.json).
+The gold workbook provides the reference schema and values. The candidate
+registry, exact runtime workbook, facility order, materialized road distances,
+selected product-specific graph and scenario design have separate identities.
+An equal filename or facility count does not establish the same experiment.
 
-Use a clean checkout, Python3.13 with the declared geographic/document
-dependencies, Quarto1.10.18, TinyTeX with pdfpages and the existing declared
-template packages, and rsvg-convert for the shared workflow SVG:
+Use the [existing v0.2.0 dataset](https://doi.org/10.5281/zenodo.22751909)
+and the catalog's exact archive members and hashes. New flow-distance companions
+and selected-graph exports are identified in the
+[next-release inventory](../data/manifests/zenodo_next_release_inventory_20261101.json).
+Prepared local files are not additional public downloads. The
+[release-readiness register](../data/manifests/zenodo_release_readiness_20261102.json)
+keeps file identity, source attribution, access review and publication state
+separate. Complete distance matrices, admissible arcs and positive solution
+flows serve different purposes and cannot substitute for one another.
 
-```bash
-python scripts/build_manuscript_comparison.py --check
-python -m scripts.build_scalar_manuscript --check
-python -m scripts.build_s6a_assets
-python scripts/check_manuscript.py
-quarto render manuscript
-quarto render manuscript/supplement
-python scripts/assemble_manuscript_outputs.py
-python scripts/check_manuscript.py --rendered
-python scripts/package_manuscript.py --output manuscript/_manuscript/coauthor-latex.zip
-```
+Appendix D explains tonnes per period, daily handling rates, operating days,
+tonne-period stock exposure, currency coefficients and scenario aggregation.
+Appendix E retains directed endpoint IDs and exact OSRM kilometres. Summing
+flows over transport legs does not measure unique delivered tonnes.
 
-No solver, licence, NPAD connection, map tiles, OSRM request or browser is used
-by the build. The existing manuscript CI installs declared dependencies and
-renders the article and supplement. Source and generated-asset hashes are
-recorded in `figures/s6a_assets.json`; scientific map definitions and full
-source identities are in `maps/` and `geographic_sources.json`.
-Use fresh outputs when changing render code; scientific map export preserves
-prior outputs rather than silently overwriting receipts.
+## Computational evidence
 
-Outputs are `_manuscript/index.html`, `index.pdf`,
-`supplementary-review.html`, `supplementary-review.pdf` and the original
-`appendix_a_original.pdf`. The flat coauthor ZIP contains editable LaTeX,
-bibliographies, figures, notices and checksums. Use a new ZIP filename for each
-review; the packager preserves earlier archives.
+The native Gurobi cohort and the common-Pyomo campaign are separate observations.
+The current article includes the independently inspected first h300 one-thread
+Gurobi/HiGHS pair. Later collection receipts are tracked separately until their
+package inspection is complete. Every result binds inputs, settings, original
+validation, attained gap, timing scopes and resource observations; a small MIP
+gap alone does not establish full service or a unique investment plan.
 
-## Geographic preparation
+The common formulation uses APPSI interfaces to Gurobi and HiGHS. Appendix C
+distinguishes configured thread ceilings from measured resource use and explains
+why equal seed values do not create equal solver trajectories. The ongoing
+90-cell design has its own progressive qualification and immutable receipts.
 
-See [the full local/headless guide](../docs/s6a_20261021/geographic_reproducibility.md).
-An explicit preparation step reads original frozen XLSX/accepted archives and
-writes a separate geographic SQLite. Dash and headless PNG/PDF/SVG open it
-read-only and share scientific figure definitions, styles and filters.
-Original coordinates and coincident node roles are retained. The supplied
-distance matrices lack road polylines; no straight connections are invented.
-h500 shows input availability, never inferred optimized decisions.
+## Document build and publication
 
-## Models, literature and Human–AI account
+Document rendering is separate from optimization: Quarto execution is disabled
+and document assets are prepared offline from tracked definitions. See
+[the article configuration](_quarto.yml),
+[the supplement configuration](supplement/_quarto.yml) and
+[asset preparation](../scripts/prepare_document_assets.py).
+Rendering a document does not start a solver or an HPC job.
 
-`formulation.qmd` presents full scalar DET/STO objectives, constraints, domains,
-units and interpretation. The code crosswalk and C01–C22 response are in
-[the integrated review record](../docs/s6a_20261021/integrated_revision_crosswalk.md).
-Rosa's mathematical foundation is credited. The historical Benders audit is
-retained as unimplemented historical material, not an active method.
+For the current development cycle, full-document PDFs and editable-package
+regeneration are deferred. Technical checks and publication preparation can
+proceed without claiming new rendered documents. Promotion to develop and the
+separate main/Pages publication remain distinct reviewed steps. Final Pages
+delivery includes article/supplement PDFs and editable TeX downloads after the
+authorized publication build.
 
-Appendix A incorporates all19 pages of the supplied review byte-for-byte,
-SHA256859dc52b64b6bcf471f7616182d8cadf2b693dbfd19ad4b9248637b5c231b3ed.
-Original search arithmetic and date issues are documented, not silently
-corrected. Appendix B contains ten Human–AI sections; the main article has a
-bounded methodological passage, concise activity table and the same editable
-workflow figure. Retrospective AI accounts are not independent execution logs.
+The [current documentation exit matrix](../docs/checkpoints/20261102_documentation_exit_matrix.md)
+records completed checks and remaining source/data/publication work. Historical
+editorial and execution notes remain in Git history and the repository's dated
+checkpoints, outside this reader guide.
 
-The retained bibliography/citation-selection provenance is unchanged; only
-actually cited records are required in the rendered reference list. Public
-bibliographic identifiers, not private library notes, are published. Seven
-authors' approved metadata remains in `authors.json`, without new CRediT or
-individual-reviewer responsibility assignments.
-
-## Rights, publication and final review
-
-The pinned Elsevier extension0.4.5, vendored files and their checksum/rights
-notices are preserved. Original project code is MIT; external data and
-OpenStreetMap-derived databases retain their applicable terms. The published
-Zenodo0.2.0 receipt does not assert that all later scalar archives are deposited.
-
-The old hash-bound Pages approval must reject this revised source. Merge into
-develop does not deploy the draft or authorize journal/arXiv submission. Coauthor
-review, declarations, rights and final submission authorization remain necessary.
-The original146 annotation locators are unchanged; the17 unexplained marks and
-historical source/build reconciliation are administratively closed as directed,
-not newly verified or interpreted. Final main/develop integration follows
-article review, not this editorial preparation.
+The [versioned data release plan](../data/manifests/zenodo_release_plan_20261102.json)
+and [current Zenodo guide](../docs/mvp_release_and_zenodo.md) separate the existing
+open0.2.0 from locally prepared next-version assets. AppendixD11 andE carry
+that distinction into the reader text. Prepared companions do not imply a
+new public download, and the90-cell campaign is not reported as complete.

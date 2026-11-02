@@ -1,0 +1,11 @@
+{
+  "schema_version": "pages-workflow-compatibility-repair-v1",
+  "date": "2026-11-02",
+  "original_candidate": "ea38fd5f6657727c01844413fd1b2681bf3c5833",
+  "failed_run": 41480319201,
+  "failed_case": "tests/test_wd_terminal_review.py::test_pages_build_includes_current_supplement_dependencies",
+  "cause": "Cosmetic artifact rename broke the retained workflow contract",
+  "correction": "Keep published-s6a-review-package as the existing Actions artifact name; direct URL aliases and snapshot checks unchanged",
+  "source_candidate_regenerated": true,
+  "scientific_inputs_or_jobs_changed": false
+}

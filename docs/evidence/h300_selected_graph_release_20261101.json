@@ -1,0 +1,38 @@
+{
+  "schema_version": "h300-selected-graph-release-preparation-v1",
+  "date": "2026-11-01",
+  "source_commit": "c493be8cd127c5175fc7eb111400229e64b8e3c0",
+  "workbook_sha256": "7761cce77cf93dcba2f617714f0117c1f2ead4de0c3f27149daceba447e0c7d1",
+  "original_graph_sha256": "9520a303457e50e9cbd499654025ed3e639f95724cfe5cfb812c23dbaa5ba3a9",
+  "canonical_graph_hash_matches_original": true,
+  "mathematical_contract_matches_original": true,
+  "original_contract_plan_encoding_sha256": "709c0a55608de197c7d280949f04e31b0cd6b1019bef162fcd2184c083c113f8",
+  "route_counts": {
+    "od": 4440,
+    "dc": 4800,
+    "dd": 36000,
+    "oc": 0,
+    "repair_od": 0,
+    "repair_dc": 0,
+    "repair_dd": 0,
+    "repair_oc": 0
+  },
+  "selected_arc_csv_rows": 45240,
+  "unit": "Directed OSRM km; product-specific admissibility; repair flag dimensionless",
+  "files": {
+    "h300_W_selected_arcs.csv.gz": {
+      "bytes": 266939,
+      "sha256": "acd90e7ea89ec6154d542f11c380f7ffe7b438e4c7ad4681c3b522f25b7fe655"
+    },
+    "h300_W_selected_graph.json.gz": {
+      "bytes": 137517,
+      "sha256": "7eeb43663e9f5c9a7bbc48998cad49be702dc336e57a1d983e5e81f608f707c2"
+    }
+  },
+  "solver_imported_or_model_built": false,
+  "routing_or_network_access": false,
+  "fresh_optimization_or_residual_validation": false,
+  "publication_status": "prepared_locally_not_deposited",
+  "source_specific_terms_review": "pending",
+  "originals_modified": false
+}

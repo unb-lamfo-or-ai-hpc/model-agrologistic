@@ -1,6 +1,7 @@
 project:
   type: default
   output-dir: _supplement
+  pre-render: python ../../scripts/prepare_document_assets.py
   render:
     - index.qmd
 metadata-files:
@@ -10,20 +11,27 @@ execute:
   enabled: false
 format:
   html:
+    html-math-method: mathml
     embed-resources: true
-    number-sections: true
+    number-sections: false
   pdf:
+    filters:
+      - ../vector-figures.lua
     documentclass: article
     fontsize: 11pt
     papersize: a4
     pdf-engine: pdflatex
     latex-auto-install: false
     keep-tex: true
-    number-sections: true
+    number-sections: false
     cite-method: citeproc
     geometry:
       - margin=25mm
     include-in-header:
       text: |
         \usepackage{pdfpages}
+        \usepackage{float}
         \usepackage{xurl}
+        \usepackage{caption}
+        \captionsetup[table]{labelformat=empty}
+        \captionsetup[figure]{labelformat=empty}

@@ -1,0 +1,902 @@
+{
+  "schema_version": "appendix-input-reproduction-v1",
+  "date": "2026-10-28",
+  "reading_commit": "b60be06bcf0fd3c5b9b6a1b7ccb9b3e6d4f81497",
+  "purpose": "Reader-facing source-to-executed-input guide. Original inputs, accepted certificates and scientific code are unchanged.",
+  "public_gold": {
+    "repository_path": "data/templates/model_agrologistic_padrao_ouro.xlsx",
+    "sha256": "de3bdc51b2c338194a5013165bec2884b68784fb207ae8c762984a1b44856082",
+    "worksheet_count": 14,
+    "structural_counts": {
+      "origins": 37,
+      "warehouses": 215,
+      "existing": 146,
+      "candidates": 69,
+      "domestic_destination_roles": 27,
+      "export_roles": 10,
+      "products": 2,
+      "periods": 60
+    },
+    "status": "Registered canonical expanded gold workbook; not an OSRM-materialized runtime workbook."
+  },
+  "registry": {
+    "name": "Warehouses_Existing_Candidate_All.xlsx",
+    "sha256": "0d19865ac72eca0706960d10b6dbd1647a4951378a831715e39af8029ecb77f2",
+    "archive_member": "external-inputs/Warehouses_Existing_Candidate_All.xlsx",
+    "sheet": "Sheet1",
+    "rows": 18086,
+    "columns": 13,
+    "existing": 146,
+    "candidates": 17940,
+    "eligible_candidates": 17939,
+    "excluded_nonpositive_capacity": 1,
+    "embedded_in_git": false,
+    "qualification": "Identity and counts from the registered original audit; complete workbook is an external deposited input, not reread from the HPC or local machine here."
+  },
+  "external_deposit": {
+    "doi": "10.5281/zenodo.22751909",
+    "version": "0.2.0",
+    "archive": "agrologistic-v020-inputs.zip",
+    "archive_md5": "79f85dfe638df1c2dfa5cca9cf343d88",
+    "qualification": "Deposited archive inventory is distinct from later raw solver packages; applicable source notices remain in force."
+  },
+  "same_name_reference_copies": {
+    "gold_sha256": "2fc994ac1d3b11e20941c1e3285d210d0bc97beae7ff55ca2df9bf110cf235ca",
+    "registry_sha256": "bb5e8bf6eb0a33876c25b8e2a9f6a23ebdcad75ceb1d6b27c4ae9d55e148ddfa",
+    "replacement_authorized": false,
+    "qualification": "Read-only inspection20October found matching CDA memberships but different bytes; no whole-workbook equality or substitution for the registered inputs.",
+    "gold_name": "model_agrologistic_padrao_ouro.xlsx",
+    "registry_name": "Warehouses_Existing_Candidate_All (1).xlsx"
+  },
+  "processed_workbooks": [
+    {
+      "population": 300,
+      "archive_member": "data/processed/nine_population_osrm_v1/warehouses_300/model_input.xlsx",
+      "sha256": "7761cce77cf93dcba2f617714f0117c1f2ead4de0c3f27149daceba447e0c7d1",
+      "existing": 146,
+      "candidate": 154,
+      "ordered_ids_sha256": "7b5cd76aadd3fa623861e7171fbc697bea0072b6d001fd6cfc3fa6f38adb27d2"
+    },
+    {
+      "population": 400,
+      "archive_member": "data/processed/nine_population_osrm_v1/warehouses_400/model_input.xlsx",
+      "sha256": "c3085456997714ef5a8bdbf61e2c9a5e578c2636003947427cf58933d21ceb13",
+      "existing": 146,
+      "candidate": 254,
+      "ordered_ids_sha256": "c6acae04410dd82e80dcece0af972c2a1ed7d194c16eab26c572e45a1aae4ce8"
+    },
+    {
+      "population": 500,
+      "archive_member": "data/processed/nine_population_osrm_v1/warehouses_500/model_input.xlsx",
+      "sha256": "888fbff42e4f80817d4d5f0101049495c86c6ed4cda75f00813779dadab41515",
+      "existing": 146,
+      "candidate": 354,
+      "ordered_ids_sha256": "9eed78fc7632433e9f898eca37c0b6409d7139474b4dcb61e888c5b936333ca4"
+    },
+    {
+      "population": 215,
+      "archive_member": "data/processed/policy_population_v020_osrm/warehouses_215/model_input.xlsx",
+      "sha256": "40edb66585daca9cc393cab1f86bde6d4528a5f34b6afc57260cc1684396da4e",
+      "existing": 146,
+      "candidate": 69,
+      "ordered_ids_sha256": "dd03e71b04c1e70eeee6a54eedd9c35ecb459b46b4335843bd021f9bc8aa5a02"
+    }
+  ],
+  "reference_cells": [
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "A1",
+      "original": "Parametro",
+      "cached": "Parametro"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "B1",
+      "original": "Valor",
+      "cached": "Valor"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "C1",
+      "original": "Unidade",
+      "cached": "Unidade"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "D1",
+      "original": "Fonte_Parametro",
+      "cached": "Fonte_Parametro"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "A2",
+      "original": "candidate_capacity_mode",
+      "cached": "candidate_capacity_mode"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "B2",
+      "original": "SCALABLE",
+      "cached": "SCALABLE"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "D2",
+      "original": "Decisão de modelagem",
+      "cached": "Decisão de modelagem"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "A3",
+      "original": "candidate_cost_policy",
+      "cached": "candidate_cost_policy"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "B3",
+      "original": "DERIVED_VARIABLE_FROM_TOTAL",
+      "cached": "DERIVED_VARIABLE_FROM_TOTAL"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "D3",
+      "original": "Decisão de transição",
+      "cached": "Decisão de transição"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "A4",
+      "original": "unmet_demand_penalty",
+      "cached": "unmet_demand_penalty"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "B4",
+      "original": 1000000,
+      "cached": 1000000
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "C4",
+      "original": "R$/t",
+      "cached": "R$/t"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "D4",
+      "original": "Sintético",
+      "cached": "Sintético"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "A5",
+      "original": "emergency_static_capacity_penalty",
+      "cached": "emergency_static_capacity_penalty"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "B5",
+      "original": 1000000,
+      "cached": 1000000
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "C5",
+      "original": "R$/t",
+      "cached": "R$/t"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "D5",
+      "original": "Sintético",
+      "cached": "Sintético"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "A6",
+      "original": "emergency_reception_capacity_penalty",
+      "cached": "emergency_reception_capacity_penalty"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "B6",
+      "original": 1000000,
+      "cached": 1000000
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "C6",
+      "original": "R$/t",
+      "cached": "R$/t"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "D6",
+      "original": "Sintético",
+      "cached": "Sintético"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "A7",
+      "original": "export_limit_rule",
+      "cached": "export_limit_rule"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "B7",
+      "original": "AUTO_OFERTA_TOTAL_PRODUTO_PERIODO",
+      "cached": "AUTO_OFERTA_TOTAL_PRODUTO_PERIODO"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "D7",
+      "original": "Tese do Artur",
+      "cached": "Tese do Artur"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "A8",
+      "original": "days_per_period",
+      "cached": "days_per_period"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "B8",
+      "original": 30,
+      "cached": 30
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "C8",
+      "original": "dias/período",
+      "cached": "dias/período"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "D8",
+      "original": "Sintético/A confirmar",
+      "cached": "Sintético/A confirmar"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "A9",
+      "original": "expansion_capacity_fraction_default",
+      "cached": "expansion_capacity_fraction_default"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "B9",
+      "original": 0.25,
+      "cached": 0.25
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "C9",
+      "original": "fração",
+      "cached": "fração"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "D9",
+      "original": "Sintético",
+      "cached": "Sintético"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "A10",
+      "original": "expansion_cost_default",
+      "cached": "expansion_cost_default"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "B10",
+      "original": "=AVERAGE(Custo_Invest!B4:C4)",
+      "cached": null
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "C10",
+      "original": "R$/t",
+      "cached": "R$/t"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "D10",
+      "original": "Derivado_de_Custo_Invest",
+      "cached": "Derivado_de_Custo_Invest"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "A11",
+      "original": "bulkification_cost_default",
+      "cached": "bulkification_cost_default"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "B11",
+      "original": "=AVERAGE(Custo_Invest!B5:C5)",
+      "cached": null
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "C11",
+      "original": "R$/t",
+      "cached": "R$/t"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "D11",
+      "original": "Derivado_de_Custo_Invest",
+      "cached": "Derivado_de_Custo_Invest"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "A12",
+      "original": "distance_source_default",
+      "cached": "distance_source_default"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "B12",
+      "original": "HAVERSINE",
+      "cached": "HAVERSINE"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "D12",
+      "original": "Decisão operacional",
+      "cached": "Decisão operacional"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "A13",
+      "original": "route_filter_strategy",
+      "cached": "route_filter_strategy"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "B13",
+      "original": "NONE",
+      "cached": "NONE"
+    },
+    {
+      "sheet": "Parametros_Modelo",
+      "cell": "D13",
+      "original": "Decisão operacional",
+      "cached": "Decisão operacional"
+    },
+    {
+      "sheet": "Cenarios",
+      "cell": "A1",
+      "original": "Cenario",
+      "cached": "Cenario"
+    },
+    {
+      "sheet": "Cenarios",
+      "cell": "B1",
+      "original": "Probabilidade",
+      "cached": "Probabilidade"
+    },
+    {
+      "sheet": "Cenarios",
+      "cell": "C1",
+      "original": "Ativo",
+      "cached": "Ativo"
+    },
+    {
+      "sheet": "Cenarios",
+      "cell": "D1",
+      "original": "Multiplicador_Oferta",
+      "cached": "Multiplicador_Oferta"
+    },
+    {
+      "sheet": "Cenarios",
+      "cell": "A2",
+      "original": "base",
+      "cached": "base"
+    },
+    {
+      "sheet": "Cenarios",
+      "cell": "B2",
+      "original": 1,
+      "cached": 1
+    },
+    {
+      "sheet": "Cenarios",
+      "cell": "C2",
+      "original": "SIM",
+      "cached": "SIM"
+    },
+    {
+      "sheet": "Cenarios",
+      "cell": "D2",
+      "original": 1,
+      "cached": 1
+    },
+    {
+      "sheet": "Cenarios",
+      "cell": "A3",
+      "original": "baixo",
+      "cached": "baixo"
+    },
+    {
+      "sheet": "Cenarios",
+      "cell": "B3",
+      "original": 0.25,
+      "cached": 0.25
+    },
+    {
+      "sheet": "Cenarios",
+      "cell": "C3",
+      "original": "NAO",
+      "cached": "NAO"
+    },
+    {
+      "sheet": "Cenarios",
+      "cell": "D3",
+      "original": 0.85,
+      "cached": 0.85
+    },
+    {
+      "sheet": "Cenarios",
+      "cell": "A4",
+      "original": "alto",
+      "cached": "alto"
+    },
+    {
+      "sheet": "Cenarios",
+      "cell": "B4",
+      "original": 0.25,
+      "cached": 0.25
+    },
+    {
+      "sheet": "Cenarios",
+      "cell": "C4",
+      "original": "NAO",
+      "cached": "NAO"
+    },
+    {
+      "sheet": "Cenarios",
+      "cell": "D4",
+      "original": 1.15,
+      "cached": 1.15
+    },
+    {
+      "sheet": "Custo_Invest",
+      "cell": "A1",
+      "original": "Tipo",
+      "cached": "Tipo"
+    },
+    {
+      "sheet": "Custo_Invest",
+      "cell": "B1",
+      "original": "Custo Baixo (R$/t)",
+      "cached": "Custo Baixo (R$/t)"
+    },
+    {
+      "sheet": "Custo_Invest",
+      "cell": "C1",
+      "original": "Custo Alto (R$/t)",
+      "cached": "Custo Alto (R$/t)"
+    },
+    {
+      "sheet": "Custo_Invest",
+      "cell": "D1",
+      "original": "Custo Médio (R$/t)",
+      "cached": "Custo Médio (R$/t)"
+    },
+    {
+      "sheet": "Custo_Invest",
+      "cell": "A2",
+      "original": "Novo Armazém Convencional",
+      "cached": "Novo Armazém Convencional"
+    },
+    {
+      "sheet": "Custo_Invest",
+      "cell": "B2",
+      "original": 1000,
+      "cached": 1000
+    },
+    {
+      "sheet": "Custo_Invest",
+      "cell": "C2",
+      "original": 1500,
+      "cached": 1500
+    },
+    {
+      "sheet": "Custo_Invest",
+      "cell": "D2",
+      "original": "=AVERAGE(B2:C2)",
+      "cached": null
+    },
+    {
+      "sheet": "Custo_Invest",
+      "cell": "A3",
+      "original": "Novo Silo Metálico",
+      "cached": "Novo Silo Metálico"
+    },
+    {
+      "sheet": "Custo_Invest",
+      "cell": "B3",
+      "original": 785,
+      "cached": 785
+    },
+    {
+      "sheet": "Custo_Invest",
+      "cell": "C3",
+      "original": 1310,
+      "cached": 1310
+    },
+    {
+      "sheet": "Custo_Invest",
+      "cell": "D3",
+      "original": "=AVERAGE(B3:C3)",
+      "cached": null
+    },
+    {
+      "sheet": "Custo_Invest",
+      "cell": "A4",
+      "original": "Expansão",
+      "cached": "Expansão"
+    },
+    {
+      "sheet": "Custo_Invest",
+      "cell": "B4",
+      "original": 600,
+      "cached": 600
+    },
+    {
+      "sheet": "Custo_Invest",
+      "cell": "C4",
+      "original": 1200,
+      "cached": 1200
+    },
+    {
+      "sheet": "Custo_Invest",
+      "cell": "D4",
+      "original": "=AVERAGE(B4:C4)",
+      "cached": null
+    },
+    {
+      "sheet": "Custo_Invest",
+      "cell": "A5",
+      "original": "Granelização",
+      "cached": "Granelização"
+    },
+    {
+      "sheet": "Custo_Invest",
+      "cell": "B5",
+      "original": 380,
+      "cached": 380
+    },
+    {
+      "sheet": "Custo_Invest",
+      "cell": "C5",
+      "original": 660,
+      "cached": 660
+    },
+    {
+      "sheet": "Custo_Invest",
+      "cell": "D5",
+      "original": "=AVERAGE(B5:C5)",
+      "cached": null
+    },
+    {
+      "sheet": "Tarifa_Armz",
+      "cell": "A1",
+      "original": "Produto",
+      "cached": "Produto"
+    },
+    {
+      "sheet": "Tarifa_Armz",
+      "cell": "B1",
+      "original": "Armazenar_Publico",
+      "cached": "Armazenar_Publico"
+    },
+    {
+      "sheet": "Tarifa_Armz",
+      "cell": "C1",
+      "original": "Armazenar_Privado",
+      "cached": "Armazenar_Privado"
+    },
+    {
+      "sheet": "Tarifa_Armz",
+      "cell": "D1",
+      "original": "Fonte_Parametro",
+      "cached": "Fonte_Parametro"
+    },
+    {
+      "sheet": "Tarifa_Armz",
+      "cell": "A2",
+      "original": "Outros",
+      "cached": "Outros"
+    },
+    {
+      "sheet": "Tarifa_Armz",
+      "cell": "B2",
+      "original": 50,
+      "cached": 50
+    },
+    {
+      "sheet": "Tarifa_Armz",
+      "cell": "C2",
+      "original": 50,
+      "cached": 50
+    },
+    {
+      "sheet": "Tarifa_Armz",
+      "cell": "D2",
+      "original": "Informado",
+      "cached": "Informado"
+    },
+    {
+      "sheet": "Tarifa_Armz",
+      "cell": "A3",
+      "original": "Soja",
+      "cached": "Soja"
+    },
+    {
+      "sheet": "Tarifa_Armz",
+      "cell": "B3",
+      "original": 45,
+      "cached": 45
+    },
+    {
+      "sheet": "Tarifa_Armz",
+      "cell": "C3",
+      "original": 45,
+      "cached": 45
+    },
+    {
+      "sheet": "Tarifa_Armz",
+      "cell": "D3",
+      "original": "Informado",
+      "cached": "Informado"
+    },
+    {
+      "sheet": "Tarifa_Armz",
+      "cell": "A4",
+      "original": "Milho",
+      "cached": "Milho"
+    },
+    {
+      "sheet": "Tarifa_Armz",
+      "cell": "B4",
+      "original": 48,
+      "cached": 48
+    },
+    {
+      "sheet": "Tarifa_Armz",
+      "cell": "C4",
+      "original": 48,
+      "cached": 48
+    },
+    {
+      "sheet": "Tarifa_Armz",
+      "cell": "D4",
+      "original": "Informado",
+      "cached": "Informado"
+    }
+  ],
+  "freight_brl_per_tonne_km": [
+    {
+      "state": "AC",
+      "value": 0.2648
+    },
+    {
+      "state": "AL",
+      "value": 0.2648
+    },
+    {
+      "state": "AP",
+      "value": 0.2648
+    },
+    {
+      "state": "AM",
+      "value": 0.1969
+    },
+    {
+      "state": "BA",
+      "value": 0.2584
+    },
+    {
+      "state": "CE",
+      "value": 0.2648
+    },
+    {
+      "state": "DF",
+      "value": 0.294
+    },
+    {
+      "state": "ES",
+      "value": 0.2648
+    },
+    {
+      "state": "GO",
+      "value": 0.3682
+    },
+    {
+      "state": "MA",
+      "value": 0.2943
+    },
+    {
+      "state": "MT",
+      "value": 0.1842
+    },
+    {
+      "state": "MS",
+      "value": 0.2174
+    },
+    {
+      "state": "MG",
+      "value": 0.3971
+    },
+    {
+      "state": "PA",
+      "value": 0.2648
+    },
+    {
+      "state": "PB",
+      "value": 0.2648
+    },
+    {
+      "state": "PR",
+      "value": 0.312
+    },
+    {
+      "state": "PE",
+      "value": 0.2004
+    },
+    {
+      "state": "PI",
+      "value": 0.2979
+    },
+    {
+      "state": "RJ",
+      "value": 0.2648
+    },
+    {
+      "state": "RN",
+      "value": 0.2648
+    },
+    {
+      "state": "RS",
+      "value": 0.3408
+    },
+    {
+      "state": "RO",
+      "value": 0.3346
+    },
+    {
+      "state": "RR",
+      "value": 0.2648
+    },
+    {
+      "state": "SC",
+      "value": 0.4014
+    },
+    {
+      "state": "SP",
+      "value": 0.3279
+    },
+    {
+      "state": "SE",
+      "value": 0.2648
+    },
+    {
+      "state": "TO",
+      "value": 0.3826
+    }
+  ],
+  "source_investment_cost_ranges_brl_per_tonne": [
+    {
+      "label": "Novo Armazém Convencional",
+      "low": 1000,
+      "high": 1500,
+      "arithmetic_mean": 1250
+    },
+    {
+      "label": "Novo Silo Metálico",
+      "low": 785,
+      "high": 1310,
+      "arithmetic_mean": 1047.5
+    },
+    {
+      "label": "Expansão",
+      "low": 600,
+      "high": 1200,
+      "arithmetic_mean": 900
+    },
+    {
+      "label": "Granelização",
+      "low": 380,
+      "high": 660,
+      "arithmetic_mean": 520
+    }
+  ],
+  "source_holding_brl_per_tonne_period": {
+    "Soja": {
+      "public": 45,
+      "private": 45
+    },
+    "Milho": {
+      "public": 48,
+      "private": 48
+    },
+    "Outros": {
+      "public": 50,
+      "private": 50
+    }
+  },
+  "executed_scalar_contract": {
+    "penalty_rates": {
+      "unmet": 90000,
+      "static": 45000,
+      "reception": 45000
+    },
+    "days_per_period": 30,
+    "candidate_capacity_mode": "scalable",
+    "candidate_cost_policy": "variable_from_total",
+    "penalty_policy": "thesis_dynamic",
+    "capacity_coupling_policy": "daily_factors",
+    "candidate_daily_factors": {
+      "reception": 0.2,
+      "shipping": 0.2
+    },
+    "expansion_daily_factors": {
+      "reception": 0.2,
+      "shipping": 0.2
+    },
+    "bulk_conversion_daily_factors": {
+      "reception": 1,
+      "shipping": 1
+    },
+    "terminal_inventory_policy": "free",
+    "interhub_factor": 1,
+    "route_filter": "connectivity_preserving_pareto",
+    "pareto_fraction": 0.2,
+    "export_policy": "one_sink_per_product",
+    "supply_levels": [
+      0.85,
+      1,
+      1.15
+    ],
+    "demand_levels": [
+      0.95,
+      1,
+      1.05
+    ],
+    "stochastic_scenarios": 9,
+    "stochastic_probability": "1/9",
+    "warehouse_only_direct_arcs": false,
+    "direct_enabled_pair": "h215 DET/STO only",
+    "absolute_tolerance": 0.00001,
+    "relative_tolerance": 1e-8
+  },
+  "population_protocol": {
+    "seed": "model-agrologistic-v020-warehouse-population-v1",
+    "manifest_sha256": "4134147f45188d2e8722476dd325b40e584c3746affe99889e045a547d283505",
+    "original_order_sha256": "7a524b2ed69b41481264d8049842b37e27cd3b96cc20d4e96d98eaf2a39e7903",
+    "intermediate_order_sha256": "001b11a69551492170e25dd820565a53461257055818ca895af38530ccf10c43",
+    "new_candidates_from_registry_at_h300": 85,
+    "new_candidates_from_registry_at_h400": 185,
+    "new_candidates_from_registry_at_h500": 285
+  },
+  "evidence": {
+    "h215_input": "docs/evidence/scalar_h215_input_20261020.json",
+    "original_population_lineage": "docs/evidence/scalar_h300_population_lineage_20261020.json",
+    "wd_input_comparison": "docs/evidence/scalar_wd_h215_input_inspection_20261022.json",
+    "h400_result": "docs/evidence/scalar_h400_2219884_review.json",
+    "h500_result": "docs/evidence/scalar_h500_2220382_review.json",
+    "source_inventory": "manuscript/supplement/appendix_d_inventory.json"
+  },
+  "complete_large_input_regeneration_certified": false,
+  "unpublished_new_execution": false,
+  "h500_original_output": {
+    "available": true,
+    "job_id": "2220382",
+    "accepted_on": "2026-10-27",
+    "review": "docs/evidence/scalar_h500_2220382_review.json",
+    "qualification": "Supersedes the older inventory's pre-S5 false availability flag without modifying that dated source inventory."
+  }
+}

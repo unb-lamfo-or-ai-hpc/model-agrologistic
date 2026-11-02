@@ -1,0 +1,82 @@
+{
+  "schema_version": "parallel-solver-human-checkpoint-v2",
+  "observation_date": "2026-10-28",
+  "observed_at_utc": null,
+  "basis": "Researcher-supplied NPAD CLI and sacct snapshot; no agent HPC access",
+  "software_merges": {
+    "pr136": "79bfdb18aa318470625ec5aa1c4a81f7c3af684e",
+    "pr137": "fbbcee3dc9a4dfd6ade5d0d7b1a1d253744207c6"
+  },
+  "attempts": [
+    {
+      "solver": "native_SCIP",
+      "job_id": "2226388",
+      "source_commit": "82cb58ff6975662a7b576e7c6c0d5589539e635c",
+      "plan_sha256": "acf55202643b97f6c6679ecc9c2a99754c4939a32a00d034c72228964f7cf49a",
+      "claim": ".mvp2-scalar-scip-h215-w-native8h-v1",
+      "claim_consumed": true,
+      "last_supplied_root_state": "RUNNING",
+      "root_elapsed_seconds": 7301,
+      "root_exit_code": "0:0",
+      "allocated_logical_cpus": 24,
+      "numeric_step": {
+        "job_id": "2226388.0",
+        "state": "RUNNING",
+        "elapsed_seconds": 7281,
+        "exit_code": "0:0",
+        "allocated_logical_cpus": 16,
+        "max_rss_raw": null
+      },
+      "terminal_evidence_received": false,
+      "scientific_outcome": null
+    },
+    {
+      "solver": "Pyomo_APPSI_HiGHS",
+      "job_id": "2226536",
+      "source_commit": "009119a07eb8c68573cfa105893b9d4a719c5155",
+      "plan_sha256": "a369659f2573866860a18ba444e386e7a2f5a1242ac62583efe8a3a7a5e35e01",
+      "claim": ".mvp2-scalar-highs-h215-w-native8h-startup-v2",
+      "claim_consumed": true,
+      "submission_status": "submitted_one_scalar_highs_W_only",
+      "driver_exit": 0,
+      "raw_tracked_sources_reported": 601,
+      "login_regression": {
+        "tests": 44,
+        "failures": 0,
+        "seconds": 13.82
+      },
+      "last_supplied_root_state": "RUNNING",
+      "root_elapsed_seconds": 141,
+      "root_exit_code": "0:0",
+      "allocated_logical_cpus": 24,
+      "numeric_step": {
+        "job_id": "2226536.0",
+        "state": "RUNNING",
+        "elapsed_seconds": 138,
+        "exit_code": "0:0",
+        "allocated_logical_cpus": 16,
+        "max_rss_raw": null
+      },
+      "terminal_evidence_received": false,
+      "scientific_outcome": null,
+      "cli_directory": "scalar-highs-h215-w-native8h-startup-cli-NLPxySwj",
+      "bootstrap_directory": "scalar-highs-h215-w-native8h-startup-driver-Oe3VHYuP",
+      "startup_receipts_received": false,
+      "interpretation": "A running numeric step beyond 45s is consistent with the startup repair; scheduler state alone does not establish exact release, completed provenance checks, population build or native optimization."
+    }
+  ],
+  "preserved_original_highs": {
+    "job_id": "2226407",
+    "claim": ".mvp2-scalar-highs-h215-w-native8h-v1",
+    "archive_sha256": "2816e35c0d06774bfe197310b97e57b14dc01e7b88d530fbbb73c08633914f42",
+    "audit": "docs/evidence/highs_h215_2226407_startup_audit.json",
+    "classification": "build_or_execution_incomplete",
+    "native_population_solve_evidenced": false
+  },
+  "previous_accepted_gurobi_observations": 11,
+  "previous_audited_scip_no_incumbent_observations": 1,
+  "additional_execution_admitted": false,
+  "automatic_retry_allowed": false,
+  "next_human_step": "When terminal, collect each same job using its pinned original wrapper, then transfer archive and checksum through MobaXterm. Never repeat start.",
+  "parallel_editorial_work": "Reconcile HAI-LIT-AGRO-2026-01 against current develop; literature claim/evidence matrix, article positioning, highlights and documentation."
+}

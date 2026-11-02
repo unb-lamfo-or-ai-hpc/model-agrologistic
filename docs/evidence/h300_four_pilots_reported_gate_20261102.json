@@ -1,0 +1,48 @@
+{
+  "schema_version": "reported-four-h300-pilots-gate-replay-v1",
+  "date": "2026-11-02",
+  "scope": "Pure unchanged c493be8c metadata predicate on two audited t1 records and two human-reported t16 collections; no archive audit, solver, scheduler or live admission",
+  "original_gate_result": {
+    "population": 300,
+    "status": "observed_pilots_qualified",
+    "pilot_ids": [
+      "h300-w-sto-gurobi-t1-r1",
+      "h300-w-sto-gurobi-t16-r1",
+      "h300-w-sto-highs-t1-r1",
+      "h300-w-sto-highs-t16-r1"
+    ],
+    "matrix_and_bounds": [
+      "b3c92c54f12ad710fffc4983a832c4e503a5b84e4615c51abcf61a1c0927e1ed",
+      "2154ded9cd9c78a2f8e88303c7148499da1e5985e74d53c8a69f37f6e890e04e"
+    ],
+    "hardware_class_sha256": "32629b1e2a3e3eb680f7f45d987f722fbd913f557e4c3dc8a3e0902b4bae0260",
+    "automatic_follow_on_allowed": false
+  },
+  "no_incumbent_row_preserved": true,
+  "source_engine": "c493be8cd127c5175fc7eb111400229e64b8e3c0",
+  "maximum_sampled_peak_gib": 103.35916137695312,
+  "required_memory_headroom_fraction": 0.2,
+  "resource_limit_gib": 192,
+  "metadata_predicate_satisfied": true,
+  "live_admission": false,
+  "private_execution_admitted": false,
+  "archive_inspection_pending_for": [
+    "h300-w-sto-gurobi-t16-r1",
+    "h300-w-sto-highs-t16-r1"
+  ],
+  "public_v3": {
+    "job_id": "2231948",
+    "source_commit": "334827d5e3669b4fcdf2801fd4cea466e5a71d06",
+    "plan_sha256": "8e4947a89b0fd76dbaa1549c31ba1afcb9cbe964c63fd41e212102ad2dabc4d4",
+    "expected_tests": 248,
+    "last_accounting_state": "RUNNING",
+    "elapsed_seconds": 104,
+    "final_result_received": false,
+    "received_hashes": {
+      "license-capability.json": "e9bc2c3683cb0cc3cf271ac91ed5fafcbcfb286c21e2e85f77634e23685bac2a",
+      "public-allocation.json": "ecd43ec32c738516baff6594bda8fbc7b82ac9c902cd2fd7749d40b8a615459c",
+      "smoke-jobs.json": "3f71850af950c6c67df38ff14540806a9bb3e29a1f8e86989ecdc74ea5acbea7"
+    }
+  },
+  "pdfs_generated": false
+}

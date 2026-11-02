@@ -1,0 +1,49 @@
+{
+  "schema_version": "pr138-local-preservation-and-cleanup-v1",
+  "date": "2026-10-29",
+  "evidence": "Researcher-supplied PowerShell result; final run independently lists no artifacts via GitHub connector",
+  "source_commit": "5966c08e3fca8ff84d67b88d4d8526ac0a1ae2dc",
+  "workflow_run_id": 40791273903,
+  "pdfs": [
+    {
+      "file": "article-pr138.pdf",
+      "sha256": "d24e14c264ae6cc9b3cb79f1cff92b5d7ea8e35362dfae8f9e5f223c058b2716"
+    },
+    {
+      "file": "appendices-pr138.pdf",
+      "sha256": "43e8dd2d96d066f9c243ac6c5e058b9cad196f240f4efe48584d002d60de19b6"
+    }
+  ],
+  "local_hash_verification_reported": true,
+  "local_bytes_independently_reread_by_agent": false,
+  "deleted_document_artifact_ids": [
+    12856938031,
+    12860131386,
+    12860810536,
+    12860706467,
+    12860397411,
+    12860701599,
+    12860527117,
+    12860277725,
+    12860946151,
+    12860682141,
+    12859524527,
+    12861310621,
+    12861300743,
+    12860647976,
+    12859914297,
+    12862235087,
+    12861651541,
+    12861013520,
+    12861013510,
+    12861946512,
+    12861936692,
+    12861652121,
+    12861268320
+  ],
+  "repeat_script_result": "404 querying an already removed artifact; not new data loss",
+  "final_run_artifact_list_empty": true,
+  "provider_physical_blob_erasure_independently_attested": false,
+  "scientific_packages_deleted": false,
+  "final_main_pages_pdfs_generated": false
+}

@@ -1,4 +1,748 @@
+## Serial graph released; publication preparation — 2 November 2026
+
+The researcher reports prepared_no_new_job, all_new_jobs_submitted_held and
+bounded_graph_released for the same serial-v1queue:93newIDs and two attached
+t16jobs, with no automatic retry/extra submission. The two t1anchors and two
+t16pilots are reused. Preserve every original claim; never repeat prepare,
+submit, release or a consumed start. Individual new job IDs, queue file hashes
+and live completion states have not been supplied; do not infer solve results.
+Read docs/evidence/pyomo_serial_release_reported_20261102.json.
+
+PR144 merged into develop at50a77a7527541a9f00769928164dc71457dbc38c.
+The main promotion is PR149 (head must be develop under the existing ancestry
+workflow). Publication preparation must enter develop through its own approved
+PR before PR149isReady. Preserve current source/bibliographic/data scope and
+original AppendixA; Zenodo0.2.0ispublic and the new version remains planned.
+Working PDFs remain deferred; final authorized Quarto outputs belong to the
+main-only publication workflow. Every merge still requires explicit approval.
+
+## PR148 merged; reader/data closeout in progress — 2 November 2026
+
+PR148 merged into develop at48e2831693fc4abe0657c82197a2e884a61e99d2.
+Its ten qualified controller/schedule blobs are preserved; public2231948
+accepted248tests. The pinned human launch recipe prepares/submits/releases93new
+jobs with48GiB declared budget subject to fresh quota, reusing all four pilots.
+No private submission/release receipt has been received yet. Never infer one
+from the recipe, and never repeat a consumed start or ambiguous release.
+
+PR144 integrates the merged operational files by original Git blobs, preserving
+its author-approved manuscript and Appendix A. Read the current Zenodo guide
+and data/manifests/zenodo_release_plan_20261102.json. Existing0.2.0 is published
+open; the41-file derivative inventory is locally prepared and reviewed as a
+planned new version, not an existing download. Source-specific access/terms and
+complete-text limits remain explicit. Keep excluded solver history on GitHub.
+Every merge requires approval. PDFs remain deferred; prepare a separate main
+promotion only after PR144's authorized develop merge, with fresh Quarto
+snapshot approval and actual final PDF/TeX download verification when permitted.
+
+## Accepted public serial qualification — 2 November 2026
+
+Job2231948/source334827d5/plan8e4947a8 passed248tests with zero failures,
+errors or skips. Sources/runtime/engine/original receipts, dependency probes,
+fresh license and exclusive allocation were accepted. All terminal Slurm
+records completed/0:0 in124s. Three canonical JSON copies reproduce the human
+SHA-256s exactly; XML/smoke digests are retained as reported. Read
+docs/evidence/pyomo_serial_public_2231948_accepted_20261102.json.
+
+This supersedes older pending-public-v3 statements, not the preserved v1/v2
+rejections. Ten controller/schedule blobs and273original engine paths remain
+unchanged from their qualified sources. Before Ready, check final exact-head CI;
+then request PR148's own merge approval. After an authorized verified merge,
+supply pinned human-only finite-queue CLI. No private queue has been submitted
+or released and no pilot is restarted. Keep population/storage gates and
+honest censoring. PR144 progresses independently; PDFs remain deferred and
+every merge requires separate authorization.
+
+## Public v3 terminal accounting received — 2 November 2026
+
+Job2231948 is COMPLETED/0:0 in all supplied Slurm records, elapsed124s;
+the exclusive root allocated64 logical CPUs and the worker step16. This
+supersedes the earlier RUNNING104s snapshot. Final result/XML contents and
+hashes are still pending; scheduler success alone is not acceptance of248tests.
+Read docs/evidence/pyomo_serial_public_2231948_terminal_20261102.json.
+The ten controller/schedule blobs match candidate334827d5; all273 original
+engine paths checked match c493be8c, and all five checks at head85273a2e passed.
+Keep PR148 Draft until the actual public reports close qualification. Preserve
+v1/v2 and all four pilots. No private queue is submitted or released. Every
+merge requires approval, NPAD commands are human-only, and PDFs stay deferred.
+
+## Latest collected h300 pilots and pending public qualification — 2 November 2026
+
+Read docs/checkpoints/20261102_four_h300_pilots_collected.md. This update
+supersedes older RUNNING/no-result statements for HiGHS2231591. All four
+h300 pilots are collected. HiGHS16 is a clean native time-limit return without
+a usable incumbent, objective or gap; preserve both original validation labels
+and operational closure. Do not infer infeasibility, fabricate a plan/map or
+replace nulls by zero/100%. The original gate accepts regular censoring; its
+pure metadata replay is not archive inspection or live admission. No R1 retry
+or removal of HiGHS arms is authorized. New t16 archives still need local audit.
+
+Public-v3 job2231948/source334827d5 has been submitted, plan8e4947a8. The last
+supplied accounting was RUNNING104s; final result/XML were not yet available.
+Require248 passing tests with zero failures/errors/skips and preserved original
+sources/runtime/receipts before Ready/merge. The closed probes were attached
+without release/submission. Keep v1/v2 outcomes unchanged. PDFs stay deferred,
+every merge needs approval and every NPAD command is human-executed. The
+finite private queue remains unsubmitted and unreleased.
+
+## Current documentation and campaign checkpoint — 2 November 2026
+
+This header supersedes the stale current/running/publication instructions below;
+older dated records remain historical evidence. Read
+docs/checkpoints/20261102_documentation_exit_matrix.md and manuscript/README.md.
+Both h300 one-thread archives are audited and accepted. Gurobi2231593/t16 has
+an accepted human-reported collection; its new archive has not been inspected
+locally here. HiGHS2231591 is RUNNING03:13:11/step03:13:08 and the original
+collector returns nonterminal_or_accounting_pending. Never repeat init/start.
+
+PR148 public-v2 job2231675 passed dependency/license/allocation/quota/source
+checks but rejected with four pytest collection errors. It is not qualification
+acceptance. A fresh-v3 importlib repair is being qualified, reusing the completed
+probes without submitting or releasing them again. All originals remain intact.
+PR144 preserves author-approved title/question/SO1–SO4, mathematics, units and
+Appendix A. Current discussion compares against the full Related Work corpus;
+38 records retained/33 main citations does not mean all full texts were read.
+The41-file next-Zenodo inventory remains prepared locally, not deposited.
+
+PDFs remain explicitly deferred. All NPAD commands stay human-executed; every
+merge needs separate approval. PR144→develop and the later main/Pages promotion
+are distinct steps, with PDF/TeX generation only when no longer deferred and
+the publication workflow authorized. No old Pages approval is reused.
+
+## Current h300 return and PR144 continuation — 1 November 2026
+
+Read docs/checkpoints/20261101_h300_return_clean_maps.md and its original
+Gurobi2231228 audit. The Gurobi h300 one-thread pilot is validated, gap
+0.0041052272%, native2893.711548s, end-to-end5507.641233s. HiGHS2231226 latest
+collection is nonterminal_or_accounting_pending; its numerical outcome is
+unknown. Preserve all original claims/archives; never repeat init/start.
+The remaining h300 pilots and h400/h500 remain qualification-gated.
+
+PR144 now integrates the qualified develop source/tests from PR145/147
+without changing their executable bytes. Clean offline map generation is
+wired into both Quarto pre-render entries, with output-hash checks; HTML
+uses MathML. Bibliographic metadata reconciliation and targeted Milanez
+full-text reading advance B3, but do not close the full corpus/thesis review.
+Preserve approved author directions, original Appendix A, math and inputs.
+
+Full article/appendix PDFs are explicitly postponed until pilot results and
+the next-experiment plan are included and bibliographic review is ready.
+Temporary outputs stay local. Every merge requires approval; all NPAD
+commands remain human-only. PR144 stays Draft. This current record supersedes
+older running/no-result, missing-map and immediate-PDF instructions below.
+
 # Model Agrologistic: agent working agreement
+
+## Active reader/data/dimensions mandate — 1 November 2026
+
+Read docs/checkpoints/20261101_reader_scope_units_data.md. Compare the
+contribution against the whole Related Work corpus, including Rosa thesis.
+The publication text and editable package focus on Gurobi/HiGHS; preserve
+all excluded solver history and originals as GitHub technical evidence.
+Map source, full OSRM matrices, selected graph and solution vectors separately
+between GitHub metadata/small summaries and Zenodo full data. Four original
+distance worksheets and lossless local CSV.gz exports are verified; the live
+Zenodo API lists the matching open v0.2.0 inputs. Source-specific terms remain
+a separate review. Do not claim the new CSV exports are already published.
+
+Check dimensions, implicit unit-period charges, daily-to-period handling,
+scenario weighting, tonne-period stock exposure, flow tonnes and memory/time
+units. Keep the approved equations/inputs/question/objectives and original
+Appendix A. PR144 merges only into develop after approval; a separate main
+PR must provide Quarto Pages PDF and editable TeX downloads after its own
+approval. Do not refresh historical Pages approval or deploy now.
+
+HiGHS 2231226 and Gurobi 2231228 are RUNNING at 01:02:48/01:02:44 in the latest
+operator accounting. No numerical result is known. Preserve claims and never
+repeat init/start; later cells remain qualification-gated. NPAD commands are
+human-only and every merge requires explicit approval.
+
+## Active checkpoint — 1 November 2026
+
+Read [the h300/editorial checkpoint](docs/checkpoints/20261101_h300_running_editorial.md)
+and its curated evidence before resuming. PR #147 is merged into develop;
+the operator started h300 HiGHS 2231226 and Gurobi 2231228 from qualified
+source c493be8cd127c5175fc7eb111400229e64b8e3c0. Both are RUNNING in the
+latest supplied initial accounting. No terminal numerical result is known.
+Campaign init and both starts are consumed: preserve originals and never
+repeat them. The 16-thread pilots and h400/h500 remain qualification-gated;
+no automatic follow-on is admitted.
+
+PR #144 continues B3/D2 in parallel. Reis Table 8 confirms prior time and
+peak-memory measurement. Appendix D now identifies all four deposited OSRM
+workbooks by exact member and hash. Byte identity does not close source-specific
+redistribution rights; original curator-copy notices remain unresolved.
+PR #144 remains Draft. Preserve the approved question/objectives, original
+Appendix A, mathematics, maps and accepted evidence. No new article numerical
+result is introduced. Every merge requires explicit approval; NPAD commands
+remain human-only. This active record supersedes older pause/no-experiment
+statements for this approved campaign only.
+
+## Current active revision — 31 October 2026
+
+The researcher resumed work. SCIP2228192 is terminal COMPLETED0:0; its original
+archive and255inventory hashes were verified. Native timelimit28800.308305s,
+zero solutions, no objective or computable gap. Preserve the original negative
+result; do not infer infeasibility or repeat start. Gurobi/SCIP ordered Pyomo
+matrix and exact h215W input/warehouse/network/scenario receipts agree.
+
+Read docs/checkpoints/20261031_scip_appendix_E.md. The five map corrections and
+AppendixE are implemented: distinct Export ports stars, exact OSRM annotation,
+Federative Units (UF), individual maps and projection explanation in following
+prose. Nine accepted solutions have source-bound investment lists; complete
+local flow-distance companions use exact frozen OSRM workbooks, includingh500.
+Full-resolution companions remain local under the existing data-rights gate.
+Original AppendixA, optimizer/input/solver code, old maps and archives remain
+preserved. Local110tests and19figure-design QA passed; no new HPC/solver/CI run.
+
+The article declaration uses “ChatGPT Codex with models 6.1 Sol and 6.0 Astra”.
+After completing bibliographic reconciliation, generate updated LOCAL working
+PDFs of both article and appendices and present them in Codex tabs, as requested.
+Do not claim this bibliographic/data/author review complete. PR144 remainsDraft;
+reconcile with newer develop/PR145 before final qualification. Every merge needs
+explicit approval; every NPAD command remains human-only. No new experiment.
+This active checkpoint supersedes the historical pause immediately below.
+
+## Current researcher-requested pause — 30 October 2026
+
+The researcher requests PAUSE after recording the latest cartographic corrections
+and Appendix E scope. Read docs/checkpoints/20261030_pause_appendix_E.md first on
+resume. These changes are pending; no corrected atlas or Appendix E is claimed.
+Next: distinguish Export ports with a different vector symbol; use the exact
+annotation “OSRM road route not depicted”; capitalize Federative Units (UF);
+remove the visible Albers wording and explain the projection in following prose.
+Keep article maps individual. Add Appendix E with individual maps, opened/
+expanded/bulk-handling warehouse lists, and source-bound original solution OD
+flows with exact frozen OSRM distances for each accepted reported configuration.
+Do not confuse gap-qualified solutions with exact optima, activation with capacity
+or use, or distance matrices with route geometry. h500's current reconstructed
+snapshot is investment-only; bind its original flows/distances before OD export.
+
+PR146 is merged into PR144 at96fcebb1. PR144 remains Draft. Latest human SCIP2228192
+snapshot is RUNNING06:53:11,step06:53:07; no terminal result or new action. Gurobi2228514
+original evidence is accepted in PR142. Preserve all originals, never repeat start.
+Stop after saving this checkpoint; resume only when the researcher returns.
+Every NPAD action is human-only; every merge requires explicit approval.
+
+## Current IBGE cartography and bounded editorial qualification — 30 October 2026
+
+PR146 is a separate functional increment stacked on PR144. It adds verified IBGE
+2023 reference geometry (distributed in 2024), all 27 UFs, a reusable SQLite context,
+one shared Albers display and eleven static map designs. Original coordinates,
+identifiers, scientific inputs, mathematical/solver code and accepted certificates
+are preserved. The original h500 availability map remains; a separate investment-only
+snapshot is reconstructed from the original accepted h500 CSV and 69 inventory hashes.
+Capacity-circle area represents added candidate plus expansion static tonnes;
+bulk-handling basis, operational use and service remain distinct.
+
+The latest 01.01 review is adopted as a bounded follow-up, not a new structural
+rewrite or experimental campaign. Sources correct duplicated Quarto labels and add
+the documented hierarchical-to-scalar supervision episode. Preserve the approved
+literal research question and original Appendix A until explicit author decisions.
+Close-precedent/thesis review, effective-data access/rights and final author math
+review remain open. Read docs/evidence/editorial_followup_disposition_20261030.json.
+
+Gurobi2228514 is now COMPLETED 0:0. Its original archive ed880c6f, transfer sidecar,
+256 inventory digests and accepted zero-failure certificate were inspected locally;
+common gap0.7401594783%, native runtime1892.650729 s. Evidence remains separately
+in PR142. SCIP2228192 was last human-reported RUNNING05:15:06. No start is repeated.
+Interpret attained gaps, phases and shared-node qualifications together.
+
+Ruff and103 focused document/geographic tests passed with no skips. All11 map PDFs,
+SVGs and300-dpi PNGs are local; no article/supplement PDF was rerendered or uploaded.
+GIS/Plotly/Dash qualification used temporary wheels, with existing environments
+unchanged. NPAD actions remain human-only; every merge needs explicit approval.
+Reconcile the older editorial ancestry with newer develop before final integration.
+
+## Current local PDF review request and running jobs — 30 October 2026
+
+The researcher explicitly requests new local article/supplement PDFs from PR144.
+Generate working Quarto previews only in approved local temporary directories;
+no cloud PDF upload, Pages deployment, merge or publication is authorized.
+This working-review request supersedes an interpretation that all local PDFs
+must await main; final publication PDFs still require authorized main integration.
+Gurobi2228514/source311015e8/planece5de8d has consumed the new license-v2 claim;
+human receipt reports124login passes and RUNNING00:00:25,step00:00:23.
+SCIP2228192 latest human snapshot RUNNING03:20:20,step03:20:16. Preserve both
+claims/originals and never repeat start. No numerical outcome is inferred.
+Read docs/evidence/pyomo_running_2228192_2228514_20261030.json.
+Preserve approved scientific/author directions, all original evidence and
+AppendixA. Keep publication prose for readers. Review rendered pages and links,
+save source/QA metadata in PR144, and keep temporary PDFs local.
+
+## Current parallel checkpoint after PR145 merge — 30 October 2026
+
+PR145 was explicitly authorized and merged atdd92b95762084e4e8fa934ca4b1f238337bebce7.
+Public Gurobi qualification2228483/source6983f76f passed355tests with0skips,
+fresh license capacity and preserved originals verified after. Final head311015e8
+passed all5CI checks with executable bytes unchanged from that qualified source.
+The pinned human new-claim h215 Gurobi/Pyomo start has been supplied; no private
+submission/job identity is reported yet. Never repeat an old start or interfere
+with SCIP2228192 (latest human RUNNING03:06:56,step03:06:52).
+PR144 independently advances B3 primary-source comparison and D2's full scalar
+objective, worked accounting/balance example and central implementation index.
+60document regressions and254cell/37link audit passed. Keep approved question,
+author directions, original evidence and AppendixA unchanged. Full-text/thesis
+comparison, graphic cleanup and complete D numerical data/access remain open.
+This editorial branch does not change scientific/runtime code. Its older base
+must be reconciled with develop's PR145 changes before final Ready review.
+Read docs/editorial_revision_progress_20261030.md. Every NPAD action remains
+human-only; every merge needs explicit approval; no automatic experiment/follow-on.
+
+## Current scientific/editorial revision — 30 October 2026
+
+The researcher supplies a new 01.01 mandate and two annotated historical PDFs.
+Read docs/editorial_revision_blueprint_20261030.md first: all24 annotations have
+individual dispositions; B3/D2 advance independently of X3. Preserve approved
+title/literal RQ, SO1–SO4, Rosa attribution, model/data/solver settings, original
+evidence and the19-page AppendixA PDF. Publication prose is for journal readers.
+Keep author decisions, hashes, meetings, job/PR administration and CBC capability
+only in technical GitHub records. Show actual numerical input coverage without
+claiming public reproduction of unavailable processed/registry bytes.
+PR143 is explicitly authorized and merged atc80dca69; public license proof is
+accepted, not a new h215 admission. Keep PR142's original failure audit and
+SCIP2228192 independent; its latest supplied RUNNING snapshot is not terminal.
+No new HPC experiment or solver/formulation change under this editorial mandate.
+A separately qualified new Gurobi package/claim remains a distinct operational
+follow-up. Every NPAD action is manual, every merge separately authorized.
+No native GUI, new local clone/environment or temporary cloud PDF; local CLI is
+autonomous in approved temporary directories. Final PDFs follow authorized main
+integration through Quarto/Pages. Keep this editorial package DRAFT until B3/D2/
+A2 acceptance, scientific author decisions and proportionate final checks.
+This current section supersedes conflicting historical editorial snapshots.
+
+## Current closed public license qualification — 30 October 2026
+
+The researcher supplied complete existing records for public job 2228385,
+step 0: accepted default-environment LP capacity, 2001 variables/rows,
+objective 2001, native status 2, Gurobi 13.0.3, no private input.
+source-identity.txt selects fe37669c; both public code hashes match the
+pinned recipe. The reconstructed posted report matches its supplied original
+SHA-256 a2a8aaa52f262f7cee2829efb19736973146653ce51b7d8b1dd33f480e2d3223.
+Root, batch, extern and step all COMPLETED 0:0 in 3 seconds with one CPU.
+Read docs/evidence/pyomo_gurobi_license_public_2228385_reported.json.
+Public capacity and operational receipts are closed. Final evidence-only
+commits do not change the qualified runtime. Finish exact-head review/CI,
+mark PR143 ready and request its OWN explicit merge approval. No merge or
+new private admission is authorized by these records. A future Gurobi h215
+attempt still requires separately reviewed source qualification and a fresh
+claim; never repeat an original start. Preserve Gurobi 2228189 and independent
+SCIP 2228192 (still RUNNING in the supplied 01:31:59 snapshot).
+All NPAD actions remain manual. No CBC/HiGHS or SCIP repeat is admitted.
+
+
+## Current Gurobi license failure repair — 30 October 2026
+
+Original common-Pyomo Gurobi job2228189 failed with a size-limited license at
+native optimize; it returned no numerical result or native search certificate.
+PR142 preserves the audit and original archive SHA1e39227e. The researcher
+confirmed the existing file /home/vrrcelestino/model-agrologistic/secrets/gurobi.lic.
+Select it explicitly only for prospective Gurobi starts; verify default-env
+capacity on compute before private construction. Never read/hash/upload license
+contents or expose native startup/exception text. Preserve old source/claim/archive
+and independent SCIP2228192; no start/retry, solver tuning or private release.
+This separate repair remains DRAFT until Linux CI and a manual public NPAD
+capacity check. Old qualification does not qualify changed execution bytes.
+Future private execution requires separately reviewed qualification/new claim.
+Read docs/pyomo_gurobi_license_admission_20261030.md. All NPAD actions remain
+manual; every merge needs separate explicit approval. Local CLI is autonomous
+in approved temporary directories, no new local clone/environment or GUI.
+
+## Current accepted operational qualification — 30 October 2026
+
+Human original receipts for public job2227480/source57204e0b/planceeb6d10
+report282passed in71.02s,0failures/errors/skips, source_verified_after=true;
+root/batch/extern/step COMPLETED0:0 in76s. Read
+docs/evidence/pyomo_qualification_2227480.json and its review MD. Original file
+hashes are supplied and recorded; no independent raw-package audit is claimed.
+Actual NPAD CBC2.10.13 static binary rejects threads: CANCEL only CBC h215.
+Keep its original capability evidence; do not downgrade threads, replace/install
+a binary or mislabel this as numerical failure. Gurobi/SCIP remain proposed.
+Scientific/runtime/test/launcher bytes remain qualified at57204e0b; subsequent
+commits are evidence/docs only. Finish review, mark PR141 Ready and request
+its OWN explicit merge authorization. Only after authorized merge provide
+pinned manual starts for the two eligible new h215 W claims. No merge/private
+job is authorized by the qualification itself; no old claim or HiGHS restart.
+At campaign completion deliver both configuration and outcome comparison
+tables with effective settings/default-strategy/seed42 qualifications, input/
+matrix identity, gaps/validation, timing/resources and cancelled/negative rows.
+Every NPAD action remains human-only. GitHub/local CLI autonomy remains scoped;
+no new local clone/environment, native GUI, cloud PDF or automatic follow-on.
+
+
+## Current resumption and comparison deliverable — 30 October 2026
+
+The researcher explicitly resumes after the historical pause below, requesting
+read-only collection of original qualification job2227480, never resubmission.
+Supplied sacct shows root/batch/extern/step COMPLETED0:0 in76s with4CPUs.
+This is scheduler closure; test counts/result.json and CBC capability remain
+pending original receipt review. Preserve source57204e0b/planceeb6d10/claim.
+Keep Gurobi/SCIP; cancel only CBC h215 if its actual NPAD receipt rejects threads.
+Do not infer CBC Linux capability from Windows or zero scheduler exit alone.
+Keep PR141 DRAFT until full qualification review and its own merge approval.
+No agent NPAD access, solver invocation, automatic retry or private job release.
+Read docs/checkpoints/20261030_resume_pr141.json. At campaign completion, deliver
+both comparative CONFIGURATION and RESULT tables, with effective parameters,
+seed/default-strategy qualifications, input/matrix identity, gaps, original
+validation, timing/resource scopes, and negative/censored/cancelled cases.
+Separate new common-Pyomo and historical native-reference cohorts; preserve
+HiGHS without restart. Local CLI remains autonomous; NPAD stays human-only.
+
+
+## Current explicit pause — 29 October 2026
+
+The researcher requests a saved checkpoint/continuation plan and then a pause.
+Read docs/checkpoints/20261029_pause_pr141.md and its JSON. Public qualification
+job2227480/source57204e0b/planceeb6d10 was reported submitted; result.json was
+absent at the supplied read. Scheduler state, test outcome and CBC capability
+are UNKNOWN. Do not repeat submission or infer success/failure/thread support.
+If actual NPAD CBC rejects threads, cancel only its h215 arm; retain Gurobi/SCIP
+subject to normal qualification. PR141 stays DRAFT, no merge authorization.
+Do not develop further execution code, request new CLI, merge, submit/cancel
+jobs or follow up automatically until the researcher explicitly resumes.
+The existing public job may continue independently; no NPAD job is cancelled
+by this conversational pause. Local/remote original packages remain preserved.
+
+
+## Current operational preparation after PR140 merge — 29 October 2026
+
+PR140 was explicitly authorized and merged at40f33d7cc13d516cd6b130f00398590840131904.
+Prepare the separate common-form h215 STO/W operational PR for Gurobi and SCIP,
+plus CBC only if the verified Linux binary accepts threads. The researcher
+explicitly permits cancelling CBC otherwise; do not block Gurobi/SCIP or call
+this a numerical failure. Preserve all original data, 38 scientific source
+files, claims and historical HiGHS/native results. No HiGHS restart or fallback.
+Read docs/mvp2_pyomo_h215_operational.md. Public operational qualification is
+pending: 282 tests, zero failures/errors/skips, exact source/predecessor/CBC
+integrity and explicit capability decision. Keep this operational PR DRAFT
+until the manual NPAD qualification and final review. Its own merge requires
+new explicit authorization; PR140 authorization does not transfer. Then give
+separately pinned manual starts for eligible new claims, never a solver sweep.
+Local CLI/Ruff in approved temporary directories is autonomous. No new local
+clone/environment or native GUI; every NPAD action remains researcher-only.
+
+
+## Current completed adapter qualification — 29 October 2026
+
+Public NPAD qualification-v2/job2227458/sourcef166f60c/plandc41c8b7 passed
+all168tests with0failures/errors/skips, source verified after and original v1
+predecessor preserved. This completes public Gurobi/SCIP/HiGHS/CBC adapter
+qualification. Keep original job2227457 REJECTED; its sole issue was the login
+test's inherited Slurm environment, fixed in the test only with an additional
+compute refusal control. No runtime guard or scientific rule was relaxed.
+PR140's final record changes only docs/evidence/working agreement; request
+its own explicit merge. It does NOT admit private h215 execution. Next prepare
+a separate operational package/PR for one NEW h215 STO/W8h arm each for Pyomo
+Gurobi, SCIP and CBC, with own source/plans/claims, startup/resource/phase/
+terminal/collection controls and frozen W input/OSRM/membership contract.
+Local code/Ruff are autonomous; NPAD and each merge remain human gates.
+
+## Current Pyomo adapter implementation — 29 October 2026
+
+PR139 was explicitly authorized and merged at8740dc5771ae87b95e49c649abad0a8deb4631da.
+This separate PR adds Gurobi/APPSI and a PySCIPOpt transfer adapter for the SAME
+bounded Pyomo extensive form used by HiGHS/CBC, with a common ordered matrix
+identity, native settings/counters and cleanup. Native scientific builders and
+all historical artifacts remain unchanged. Windows public controls passed;
+Linux/public compute qualification is pending. Keep this PR DRAFT until its
+own target qualification. Never treat local tiny tests as h215 admission.
+Human NPAD inventory confirms the four Python packages, but CBC is absent.
+A verified official static CBC is prepared only under the dedicated audit path;
+scripts/qualify_pyomo_adapters.py prepares exact-source PUBLIC compute tests
+without submitting a scheduler job. Every NPAD command is manual.
+Then prepare ONE fresh h215 STO/W8h observation each for Pyomo Gurobi, SCIP,
+CBC with own claims/source/plan; existing HiGHS is preserved, never restarted.
+Local PowerShell/Ruff/code are autonomous in approved temporary directories,
+existing venv313 only. No native GUI or new clone/environment. Each merge still
+requires explicit researcher approval; no cloud temporary outputs or publish.
+
+## Current local CLI autonomy — 29 October 2026
+
+The researcher now explicitly authorizes Codex to execute local PowerShell,
+Ruff and necessary code/downloads in the approved temporary directories.
+This supersedes earlier human-only local CLI language. Use the existing venv313
+interpreter explicitly; no new clone or environment. Native GUI apps remain
+outside the workflow. Ask for credentials when necessary, and keep every NPAD
+interaction human-only. Every merge still needs explicit authorization.
+PR139 sourceaf60e234 passed Ruff, generated-table/source/appendix checks and
+60tests. Original evidence, code/math/input and AppendixA bytes are preserved.
+Final PDFs follow Quarto/Pages after separately approved main merge; do not
+create cloud temporary artifacts. Full-text bibliography remains a disclosed
+separate workstream. Complete this PR before the next adapter PR.
+
+## Current required delivery order — 29 October 2026
+
+The researcher explicitly requests: finish PR139 and preserve evidence first;
+then a new PR for Pyomo Gurobi/SCIP adapters and new h215 STO/W observations
+using Pyomo Gurobi, SCIP and CBC. The optional-benchmark position below is
+superseded by this scoped preparation request. Preserve the existing HiGHS
+result without restarting it. Read
+docs/mvp2_pyomo_three_solver_execution_plan_20261029.md.
+Qualify the current exact head through the researcher's manual local checks;
+request PR139 merge only when ready. Every later merge remains separately
+approved and all HPC/necessary PowerShell CLI stays human-only. No new local
+clone/environment, native desktop app, automatic cloud output or old claim retry.
+Seed42 documents solver-specific randomness, not a shared initial solution.
+Do not silently force presolve/LP/heuristic choices to claim reproducibility.
+
+## Current resumption: solver comparison reassessment — 29 October 2026
+
+The researcher explicitly resumed work after the historical pause below.
+Reassess same-instance identity, SCIP difficulty and HiGHS attained gap, and
+plan a scientifically defensible commercial/open-source comparison. Read
+docs/h215_solver_comparison_reassessment_20261029.md and
+docs/prompts/project01_h215_solver_comparison_20261029.md.
+This instruction supersedes the pause for the requested analysis/planning.
+Keep PR139 draft; source/document qualification remains pending.
+No new HPC run, start/retry, package installation, native desktop app,
+automatic cloud workflow or merge is authorized by this reassessment.
+Continue through Codex tabs/GitHub connector; necessary CLI stays manual.
+Distinguish native SCIP4h no incumbent from censored SCIP8h. HiGHS solved the
+same scientific h215 STO/W input/network with a disclosed different formulation;
+its common gap is0.000195541%, not1%. Original claims/certificates stay unchanged.
+
+## Historical pause by researcher — 29 October 2026
+
+The researcher requested a pause after saving this checkpoint. Keep PR139 draft.
+Read docs/checkpoints/20261029_pause_pr139.md and its JSON before resuming.
+Do not continue work, request CLI execution, merge, publish, install or run jobs
+until a new researcher instruction. No automatic follow-up is scheduled.
+
+
+## Current journal-reader/local-output mandate — 29 October 2026
+
+PR138 is merged at0351caeb7c10e08405c37793dcf340389f03b1b8. Revise all
+article/supplement prose for future journal readers: no coauthor instructions,
+sprint administration, unused legacy source-penalty cells or stale job snapshots.
+Preserve their technical record, mathematical/scientific content and original
+Appendix A. Keep effective values and didactic reproducibility links.
+
+No new temporary cloud outputs. Use only the researcher's .codex or named
+Temp Codex directory for local temporary files. Do not upload working PDFs or temporary files to GitHub. Final PDFs are for
+Quarto/GitHub Pages after a separately authorized main merge. Verify local
+copies before deleting obsolete cloud artifacts; never delete original HPC
+packages or Git blobs needed by history.
+Use Codex tabs and GitHub connector. Native desktop apps are forbidden; obtain
+manual PowerShell intervention for necessary local CLI. Do not modify the local
+clone, install packages or create an environment.
+
+Human terminal collect reports HiGHS2226536 quality_target_met/accepted and
+SCIP2226388 forensic_partial. Independently audit the new original packages
+before manuscript evidence promotion. Preserve all claims and source versions.
+No start/retry/new HPC execution. See docs/journal_reader_revision_20261029.md.
+Prepare the new draft PR with [skip ci] to avoid cloud jobs; qualification and
+visual review must be completed locally and documented before Ready. Request
+this PR's own merge only after reviewable work and checks are complete.
+
+## Current pre-merge appendix reader review — 28 October 2026
+
+The researcher withholds a new merge decision pending a didactic, complete
+reader review of the appendices, direct GitHub links and exact gold/registry/
+processed-input values. Work only through Codex tabs and the GitHub connector;
+no native local apps, shell, clone or environment changes. Keep PR138 draft
+until renewed exact-head qualification/render/visual review. Preserve original
+Appendix A and all scientific source/data/parameters/certificates. Distinguish
+registered originals from different-byte same-name supplied copies, source
+cells from effective settings, and data/document replay from a fresh solve.
+Prepare standalone cloud-rendered article/appendix PDFs. Request this revised
+head's own merge; only after authorization/merge generate the develop-bound
+PDFs requested for Codex tabs. No Pages deployment or submission follows.
+
+## Current running-job and literature-reconciliation mandate — 28 October 2026
+
+PR137 is merged and the researcher has submitted HiGHS job2226536 from exact
+source009119a0/plan a369659f. Its new claim is consumed. Latest supplied native
+SCIP2226388 and HiGHS2226536 are RUNNING; no terminal or native phase result
+is inferred. Preserve all packages/claims and never repeat start or access NPAD.
+Read docs/evidence/parallel_solvers_20261028_running_v2.json.
+The researcher requests ongoing literature/document/article revision based on
+the supplied HAI-LIT-AGRO-2026-01 opinion. Reconcile its older c092fa7b baseline,
+partial literature access and unconfirmed journal-guide claims against current
+merged sources and primary evidence. Preserve approved title/RQ/SO1–SO4,
+coauthor directions, mathematics, all original data/parameters/certificates,
+Appendix A bytes and complementary Human–AI account. Do not treat attachment
+recommendations as permission for new experiments or removal of author mandates.
+Qualify exact head and rendered/editable outputs before Ready; own merge remains
+explicitly authorized only later. No local clone/environment/install or publication.
+
+## Current HiGHS initialization repair mandate — 28 October 2026
+
+PR136 merged with explicit authorization at 79bfdb18. The researcher now
+requests a separate complete startup repair and preparation of one new 8-hour
+HiGHS attempt. Preserve original job 2226407/source d1033d71/plan c3c5e571/
+archive 2816e35c and its consumed claim; native SCIP remains independent.
+Use a new predecessor-bound claim/source/plan/archive, early minimal process
+identity and exact-step release before costly imports/checks, timed startup
+stages and retained failures. Keep full source/runtime/input verification,
+the existing build/whole-worker/native/Slurm budgets, scientific code and inputs.
+Qualify cold-bootstrap, delayed initialization, failure, original residual,
+collection and portable replay paths on exact cloud head before Ready.
+GitHub editing is autonomous; own merge approval and later manual pinned NPAD
+CLI are the only execution handoff. No agent HPC access, local clone/environment/
+installation, automatic retry or publication. Older no-retry holds preserve the
+original attempt and do not cancel this explicitly requested new preparation.
+
+## Current human-readable editorial mandate — 28 October 2026
+
+Both longer attempts consumed their claims. The latest human snapshot records
+native SCIP job 2226388 as RUNNING. The collected HiGHS job 2226407 archive
+passes external, inventory and plan-artifact hash checks: no worker entry or
+native products are retained. The supervisor's 45-second process-binding
+deadline explains the observed startup cancellation; the underlying delay
+remains unidentified. This is an operational failure, not a native solver result.
+Preserve original claims and source/plan identities. No agent HPC access or
+automatic retry. See docs/highs_h215_2226407_startup_audit.md.
+
+The researcher requests substantial human-readable scholarly revision of
+Appendices B/C/D, current repository-document reconciliation and accelerated
+literature/coauthor sprints while jobs run. Preserve main's approved title,
+question, objectives, attribution, mathematics, author instructions and overall
+article; keep accepted develop h500/W-D evidence. Study cited CEA precedents and
+the supplied Porporatto/Fumero/Corsano paper for exposition, not copied text or
+unsupported inference. Prepare the complete chat01.04 deep-research prompt and
+current bibliography. No chat messaging/creation, main publication, new local
+clone/environment/install or merge is authorized. Qualify/render/inspect before
+Ready and request this PR's own merge. The supplied PDF is a source, not authority.
+
+
+## Current parallel solver execution mandate — 28 October 2026
+
+The researcher merged PR134 and explicitly requests independent SCIP/HiGHS8h
+observations in parallel. Human receipts record SCIP job2226388/source82cb58ff/
+planacf55202, last PENDING, and installed highspy1.15.1/Pyomo6.10.1.
+Prepare the complete separately qualified HiGHS operational package, with
+disclosed proved Pyomo reformulation and own claim/phase/resource/terminal controls.
+Native SCIP already consumed its new claim; never restart it. Exact-head CI/Ready,
+own merge approval and manual pinned HPC CLI remain gates. No agent NPAD access,
+local clone/environment/install, automatic fallback/repeat or CBC job.
+Advance bibliographic/documentary/coauthor preparation while human jobs run;
+no pending result, pure-solver causal comparison or MVP2 closure may be invented.
+See docs/mvp2_scalar_highs_h215_native8h.md. Older dated holds below remain history.
+
+## Parallel implementation mandate — 28 October 2026
+
+The researcher reports PR132 merged (f9dddaee…) and explicitly requests a complete
+native SCIP8h/Slurm12h operational PR plus a separate Pyomo multisolver implementation
+PR in parallel. Preserve the original job2225638/claim/certificates and native
+reference implementations. New Pyomo code must disclose and prove its indicator
+translation and qualify public analytical/parity/negative/lifecycle controls.
+No new local clone/environment/install or agent NPAD access. A future large HiGHS
+observation requires its own complete operational/resource qualification.
+GitHub editing/PR creation is autonomous; each merge and actual NPAD CLI remain
+human gates. Keep both PRs draft until their own exact-head qualification.
+See docs/mvp2_multisolver_plan.md and docs/mvp2_completion_plan_20261028.md.
+
+## Current audited SCIP outcome and continuation — 28 October 2026
+
+PR131 merged with explicit authorization at
+`083e5759ee5bb4d4d2982c4dcf2ffd12f2afb476`. Original scalar SCIP STO/W h215
+job2225638/source cbd64d86/plan1af2f262/archive41557726 is independently audited:
+111 safe members,110 inventory digests,562 source files matched; original review
+reproduced exactly. COMPLETED0:0 is operational closure; native timelimit,
+zero solutions and no_usable_incumbent are the scientific outcome.
+No objective/economics/service/gap is available. The accepted feasible Gurobi
+inventory stays eleven; this negative SCIP observation is separate. S5 stays closed.
+
+The researcher now explicitly requests a longer SCIP window and planning other
+free solvers/HiGHS plus an agnostic multisolver implementation. Plan native8h/
+Slurm12h with unchanged input/science/memory/thread ceilings, a new predecessor-
+bound claim and full separately qualified operational PR. The original claim,
+source/plan and false follow-on flags remain unchanged. PySCIPOpt is native;
+Pyomo is currently only an unimplemented stub. Plan Pyomo DET/STO, indicator/
+bound proof, HiGHS then conditional CBC qualification; no solver sweep is released.
+This scoped new request supersedes older blanket no-repeat/no-new-backend
+planning holds, not the cancelled broad S3/S4 campaign or original certificates.
+
+Resource samples have a near-full-solve gap; do not infer continuous utilization,
+root-LP completion, proven observer slowdown, production isolation or smaller safe
+allocation. See the current result, completion plan and multisolver architecture.
+GitHub editing is autonomous; own merge and human NPAD CLI remain researcher gates.
+No local clone/environment/package change or new execution in this checkpoint PR.
+S6-A/coauthor work and S6-B remain open; no final publication/submission follows.
+
+See [SCIP original outcome](docs/mvp2_scalar_scip_h215_w_results.md),
+[revised sprint/PR plan](docs/mvp2_completion_plan_20261028.md) and
+[multisolver design](docs/mvp2_multisolver_plan.md).
+
+
+## Current continuation after S5 closure — 27 October 2026
+
+PR130 merged with explicit researcher authorization at
+`b031c3d1014df433020a6bb98534b9b9d8de4ffb`; S5 is closed. Eleven accepted
+scalar observations (nine W scaling plus two D h215) retain their originals.
+The researcher now requests ONE scalar SCIP STO h215 W test and parallel
+documentation/manuscript reconciliation including original h500. See
+[the complete new protocol](docs/mvp2_scalar_scip_h215_w.md).
+
+Prepare/qualify the one-shot8h/192GiB/24logical-CPU reservation, four-thread
+ceiling, native14400s/common1% target, exact-step/phase controls and terminal
+positive/negative evidence. Keep source/scenarios/penalties/units/tolerances and
+historical controls unchanged. HiGHS is a conditional separately qualified
+future option, not an automatic fallback. No predicted failure or generalized
+open-source inability is a result. Merge approval and actual NPAD CLI remain
+researcher-only. Development is GitHub-only; no local clone/environment change.
+S6-A/coauthor revision and S6-B remain open; no publication/submission follows.
+
+This current human mandate supersedes PR130's earlier no-manuscript-change
+boundary and pending-SCIP decision ONLY for this new preparation/editorial work.
+Do not alter scientific src, old runtime/launchers, claims or certificates.
+Run exact-head native/analytical/quality/document CI and inspect rendered outputs
+before Ready; request this PR's own merge. Only the later pinned human CLI may
+run the one observation. Preserve every failed/no-incumbent/censored outcome
+as well as success. Do not install packages or create local clones/environments.
+
+## Original h500 terminal audit and S5 consolidation 27 October 2026
+
+The researcher supplies the original h500 archive/checksum and explicitly
+requests its independent audit and ONE complete S5 consolidation PR, with
+autonomous GitHub changes and explicit authorization only for merge. Develop
+through GitHub; do not edit the local clone or install/create environments.
+Local temporary files are disposable audit inputs only. All NPAD interaction
+remains researcher-only, transfer through MobaXterm, no scp/SSH-key request.
+
+The transferred original independently reproduces h500_quality_target_met:
+job 2220382/source fce341df/plan 1f57d230/archive 34346c31…, original accepted
+residuals, 0.20743206% gap and complete phase/owned-step/resource closure.
+All 70 safe members / 69 inventory hashes and 478 source identities match. This
+supersedes the 26 October not-executed statement with original evidence; preserve
+all dated history/claims/certificates. No additional h500 execution is necessary.
+
+Consolidate the read-only reviewer, redacted evidence, S5 report and active
+checkpoint/planning in ONE PR. Qualify focused/related and existing exact-head
+native/analytical/quality CI before Ready; request its OWN merge. On authorized
+merge S5 closes; scalar inventory becomes 11 observations, not replications.
+Do not modify scientific src/inputs, old runtime/launchers/certificates,
+penalties 90000/45000/45000, tolerances 1e-5/1e-8, scenarios or units.
+Do not execute archive code or represent replay/aggregate arithmetic as fresh
+private-input residual validation. Keep raw evidence, row IDs and secrets
+outside Git. See [S5 results](docs/mvp2_scalar_h500_results.md).
+
+SCIP/h215 requires a separate decision, not automatic implementation/cancellation.
+S6-A/coauthor synthesis and S6-B remain open. No manuscript/map change, new
+headroom gate/h600, release/deposition/submission or automatic follow-on.
+
+## Current resumption mandate 26 October 2026
+
+The researcher confirms that h500 has NOT been executed. Earlier references to
+job2220382, source fce341df and a RUNNING h500 are unverified handover claims,
+not proof of submission, a consumed claim or a result. There is no h500 terminal
+archive to request. Preserve the dated records and reconcile any actual receipts
+through the researcher's manual inspection; never delete/reset an existing claim.
+
+The researcher authorizes the next complete resumption/requalification PR.
+Develop on a dedicated GitHub branch targeting develop; do not edit the local
+clone or install/create local environments. The local Temp Codex directory is
+temporary-only. Record work in GitHub and Codex. All NPAD interactions, including
+inspection/status/submission/collection, are human-only. Transfer via MobaXterm;
+do not use scp or request an SSH key.
+
+All new NPAD outputs belong below the existing model-agrologistic-hygiene-audit
+or another dedicated sibling whose name begins model-agrologistic. Never write
+in the researcher's home root or the preserved model-agrologistic input checkout.
+Reuse the integrated PR123 h500 package, retain the scientific/resource contract,
+qualify exact-head Linux CI, then request this PR's own merge. Preparation and
+Ready do not authorize a job. See
+[the complete current delivery](docs/mvp2_resume_h500_20261026.md).
 
 ## Review publication and terminal W/D handoff —23 October2026
 

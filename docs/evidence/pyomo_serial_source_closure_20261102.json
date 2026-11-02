@@ -1,0 +1,148 @@
+{
+  "schema_version": "pyomo-serial-source-tree-closure-v1",
+  "date": "2026-11-02",
+  "scope": "Git blob equality and existing exact-head GitHub Actions; no new local or NPAD test execution",
+  "candidate_commit": "334827d5e3669b4fcdf2801fd4cea466e5a71d06",
+  "checked_head": "85273a2e73e14f600729ae8bae10b4a85a3bb4f0",
+  "controller_files": [
+    {
+      "path": "scripts/pyomo_serial_queue.py",
+      "qualified_git_blob": "9fc2ad1852971897a8b67ac869c2f6a02d8b2d56",
+      "current_git_blob": "9fc2ad1852971897a8b67ac869c2f6a02d8b2d56",
+      "identical": true
+    },
+    {
+      "path": "scripts/pyomo_serial_collection.py",
+      "qualified_git_blob": "84a8bd40c00c4802fa9110a5e0501d1c62eb84be",
+      "current_git_blob": "84a8bd40c00c4802fa9110a5e0501d1c62eb84be",
+      "identical": true
+    },
+    {
+      "path": "scripts/qualify_pyomo_serial.py",
+      "qualified_git_blob": "ea93a1d793b82a93c0a990be9cc35c7c3dbfe6dc",
+      "current_git_blob": "ea93a1d793b82a93c0a990be9cc35c7c3dbfe6dc",
+      "identical": true
+    },
+    {
+      "path": "scripts/pyomo_serial_smoke.py",
+      "qualified_git_blob": "da52cc945c7b7863f22198ca1b027112b112839b",
+      "current_git_blob": "da52cc945c7b7863f22198ca1b027112b112839b",
+      "identical": true
+    },
+    {
+      "path": "scripts/pyomo_serial_storage.py",
+      "qualified_git_blob": "48414bd5907c08eb01e2198c0031b43bb636923f",
+      "current_git_blob": "48414bd5907c08eb01e2198c0031b43bb636923f",
+      "identical": true
+    },
+    {
+      "path": "tests/test_pyomo_serial_queue.py",
+      "qualified_git_blob": "d08d7b426e42812abff5266cba04f256fdeb4d0c",
+      "current_git_blob": "d08d7b426e42812abff5266cba04f256fdeb4d0c",
+      "identical": true
+    },
+    {
+      "path": "tests/test_pyomo_serial_collection.py",
+      "qualified_git_blob": "60470f87943a790be0aea464b4403f0263d2c0cb",
+      "current_git_blob": "60470f87943a790be0aea464b4403f0263d2c0cb",
+      "identical": true
+    },
+    {
+      "path": "tests/test_pyomo_serial_smoke.py",
+      "qualified_git_blob": "15904ac56dcd6a8c005bb88b2232047818818d21",
+      "current_git_blob": "15904ac56dcd6a8c005bb88b2232047818818d21",
+      "identical": true
+    },
+    {
+      "path": "tests/test_pyomo_serial_storage.py",
+      "qualified_git_blob": "e29be5475efb8d048f67de214920c78fda1405bd",
+      "current_git_blob": "e29be5475efb8d048f67de214920c78fda1405bd",
+      "identical": true
+    },
+    {
+      "path": "experiments/pyomo_scaling_serial_schedule_v1.json",
+      "qualified_git_blob": "bb8463f26f6f1ea2424214c23679e38340314a42",
+      "current_git_blob": "bb8463f26f6f1ea2424214c23679e38340314a42",
+      "identical": true
+    }
+  ],
+  "removed_paths_since_candidate": [],
+  "original_engine_commit": "c493be8cd127c5175fc7eb111400229e64b8e3c0",
+  "original_engine_path_scope": "src/, scripts/, tests/, experiments/, pyproject.toml; original tracked blobs only",
+  "original_engine_files_checked": 273,
+  "original_engine_mismatches": [],
+  "changed_paths_since_candidate": [
+    {
+      "path": "AGENTS.md",
+      "sha": "2bfb1c8668a5bc438ce57d8c6806afb721b653df"
+    },
+    {
+      "path": "docs/checkpoints/20261102_four_h300_pilots_collected.md",
+      "sha": "d41987d179f14a06bfccaae2d0eb3ce63c7dfe5f"
+    },
+    {
+      "path": "docs/evidence/h300_four_pilots_configurations_20261102.csv",
+      "sha": "eee43443aa3bb4a913939eeff5fcfeade7ec9eff"
+    },
+    {
+      "path": "docs/evidence/h300_four_pilots_reported_gate_20261102.json",
+      "sha": "076fbab11f98da867f4828a473d35985a1f14b26"
+    },
+    {
+      "path": "docs/evidence/h300_four_pilots_results_20261102.csv",
+      "sha": "d16c7ef85e4dc5842a7896d283ed2f7daa437f8f"
+    },
+    {
+      "path": "docs/evidence/pyomo_scaling_h300_highs_t16_reported_20261102.json",
+      "sha": "64b985e64b9e6521300a2fdaa040d729c734bd09"
+    },
+    {
+      "path": "docs/experiments/npad_pyomo_serial_public_v3_20261101.md",
+      "sha": "66b2ec094e96d24e38fb47a7a7b77036469bfd7e"
+    },
+    {
+      "path": "scripts/npad_pyomo_serial_public_v3.sh",
+      "sha": "50bb6d254fe92a44942713961e780dc85fa195bd"
+    }
+  ],
+  "bootstrap_exception": "The changed v3 public wrapper is pinned separately at a52f74e55d1038c8e528b8b844ff6cad6e3a260f; it is not a changed controller or scientific worker.",
+  "ci_checks": [
+    {
+      "name": "SCIP analytical qualification",
+      "id": 41442426011,
+      "head_sha": "85273a2e73e14f600729ae8bae10b4a85a3bb4f0",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Resource and lifecycle analytical qualification",
+      "id": 41442426030,
+      "head_sha": "85273a2e73e14f600729ae8bae10b4a85a3bb4f0",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Pyomo multisolver qualification",
+      "id": 41442425954,
+      "head_sha": "85273a2e73e14f600729ae8bae10b4a85a3bb4f0",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Scalar R1 qualification",
+      "id": 41442426086,
+      "head_sha": "85273a2e73e14f600729ae8bae10b4a85a3bb4f0",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Quality",
+      "id": 41442426067,
+      "head_sha": "85273a2e73e14f600729ae8bae10b4a85a3bb4f0",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "npad_qualification_acceptance": "pending final248-test report and source/runtime/original closure",
+  "merge_authorized": false
+}

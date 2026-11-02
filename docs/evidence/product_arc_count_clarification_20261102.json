@@ -1,0 +1,25 @@
+{
+  "schema_version": "directed-product-arc-count-clarification-v1",
+  "date": "2026-11-02",
+  "source_receipt": "docs/evidence/h300_selected_graph_release_20261101.json",
+  "counted_object": "(movement family, directed endpoints, product)",
+  "rows": 45240,
+  "scope": "Total across both products before period/scenario expansion",
+  "family_counts": {
+    "od": 4440,
+    "dc": 4800,
+    "dd": 36000,
+    "oc": 0
+  },
+  "counts_sum_verified": true,
+  "model_or_selected_graph_or_values_changed": false,
+  "manuscript_integrity": "accepted;33cited",
+  "focused_checks": {
+    "passed": 21,
+    "failed": 0,
+    "skipped": 0
+  },
+  "input_cells_checked": 254,
+  "pinned_links_checked": 44,
+  "PDF_or_solver_or_HPC_execution": false
+}

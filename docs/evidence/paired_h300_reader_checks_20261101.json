@@ -1,0 +1,78 @@
+{
+  "schema_version": "paired-h300-reader-qualification-v1",
+  "date": "2026-11-01",
+  "parent_editorial_commit": "df4e6b0d7d3b7842a7be77d4bd33ff458ba7629e",
+  "immutable_pair_evidence_commit": "083ef96cc99a346204df22551ce0739c10e8a2f7",
+  "immutable_release_metadata_commit": "0f63c10eb1abf88318a4d9c6afc75fcac97f6266",
+  "ruff": "passed",
+  "original_scalar_and_WD_tables": "verified_unchanged",
+  "tests": {
+    "unique_cases_passed": 138,
+    "unresolved_failures": 0,
+    "skipped": 0,
+    "initial_run": {
+      "passed": 137,
+      "failed": 1,
+      "failure": "Existing map-PDF reader fixture lacked optional pypdf in venv313"
+    },
+    "targeted_rerun": {
+      "passed": 1,
+      "failed": 0,
+      "environment": "Reused bundled pypdf through appended import path; no package installation"
+    },
+    "new_solver_or_NPAD_qualification": false
+  },
+  "input_audit": {
+    "cells": 254,
+    "pinned_file_links": 44
+  },
+  "html_only": {
+    "article": {
+      "sha256": "608c547f931b32165d5d4c72d4b06e257f28ddc2052df9c5e4f48d16be919673",
+      "mathml_elements": 87,
+      "images": 13,
+      "missing_images": 0,
+      "unresolved_citations": false,
+      "excluded_solver_history_mentions": 0,
+      "render_exit": 0
+    },
+    "appendices": {
+      "sha256": "382dd25456249b47806ab1fc06870a187a918423ef066425769c10cc82970921",
+      "mathml_elements": 66,
+      "images": 30,
+      "missing_images": 0,
+      "unresolved_citations": false,
+      "excluded_solver_history_mentions": 0,
+      "render_exit": 0
+    }
+  },
+  "map_definitions": 12,
+  "active_image_dependencies": 24,
+  "new_pair_raster_hashes": {
+    "h300_w_sto_gurobi_t1_r1.png": "5ee34b68f38ab8fc7bbe99b743c4ba2da005734d68b2712db443a1009d481993",
+    "h300_w_sto_gurobi_t1_r1_capacity.png": "d718ff178965d5fadb4a0089dd6a67abd858c46facd92429e798f20651b160d4",
+    "h300_w_sto_highs_t1_r1.png": "5ee34b68f38ab8fc7bbe99b743c4ba2da005734d68b2712db443a1009d481993",
+    "h300_w_sto_highs_t1_r1_capacity.png": "d718ff178965d5fadb4a0089dd6a67abd858c46facd92429e798f20651b160d4"
+  },
+  "visual_review": "HiGHS investment/capacity PNGs inspected; corresponding Gurobi rasters have identical hashes. Separate per-ID source definitions and investment amounts verified in tests.",
+  "coincident_symbol_limit": "National maps may mask distinct facility decisions; case lists and ID-based records remain authoritative.",
+  "upstream_runtime_files_byte_identical": 29,
+  "original_appendix_a_sha256": "859dc52b64b6bcf471f7616182d8cadf2b693dbfd19ad4b9248637b5c231b3ed",
+  "original_archives_modified": false,
+  "fresh_constraint_residuals_or_optimization": false,
+  "zenodo_preparation": {
+    "files": 41,
+    "bytes": 450057392,
+    "new_deposit_or_DOI": false,
+    "rights_review_complete": false
+  },
+  "bibliography": {
+    "retained": 38,
+    "main_cited": 33,
+    "all_full_texts_reviewed": false,
+    "new_keys_DOIs_authors": false
+  },
+  "full_article_or_appendix_PDF_generated": false,
+  "PDF_generation_waiting_for_user_authorization": true,
+  "merge_or_Pages_publication": false
+}

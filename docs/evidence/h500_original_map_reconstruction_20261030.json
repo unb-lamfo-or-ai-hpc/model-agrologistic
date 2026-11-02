@@ -1,0 +1,19 @@
+{
+  "original_archive_sha256": "34346c318b0335e70c56984d8394dd9d00a4ca4ee7d004149c3d3f154cbf2238",
+  "inventory_digests_verified": 69,
+  "validation_sha256": "2c548b960d38ab13488e31c00fe5da8e58551392d5f568dcb4bc11afb5bebe2a",
+  "decisions_sha256": "4caef8867035fa20f87eea939f52820f42c96aab73beade69fee48251d18a3d4",
+  "coordinate_definition_sha256": "b933b13260c860cded4aaf10ba05ab61c395d37b24280314ef12f1be8959e7d9",
+  "coordinate_workbook_bytes_reread": false,
+  "warehouses": 500,
+  "candidates_opened": 354,
+  "positive_candidate_investments": 354,
+  "positive_expansions": 72,
+  "positive_bulkifications": 74,
+  "added_candidate_static_capacity_t": 10992729.0,
+  "added_expansion_static_capacity_t": 389176.25,
+  "source_snapshot": "219a80011f3844dd10648298ae103912dd8f8d115fbe87aead385f1ec26c171c",
+  "derived_snapshot": "d83c3126d124c1fb11793814271842f1601557d89017a8739a1b3c88252e61da",
+  "fresh_residual_validation_performed": false,
+  "solver_executed": false
+}

@@ -1,5 +1,41 @@
 # R5: consolidated h400 evidence and one-arm h500 operational qualification
 
+## Current S5 terminal audit 27 October 2026
+
+Original h500 job 2220382/source fce341df has been independently replayed from the
+transferred archive: h500_quality_target_met, original validation accepted,
+gap 0.20743206%, full operational/resource closure. Archive SHA25634346c31…;
+all 70 safe members / 69 inventory digests and 478 original-source file identities match.
+The26October “not executed”/first-start guidance below is superseded by this
+original evidence. Preserve that dated correction and the old receipts; never
+restart/reset the claim. See [the S5 closure report](mvp2_scalar_h500_results.md).
+
+S5 closes on this consolidation PR's authorized merge. Eleven scalar observations
+are accounted for (nine W plus two D), not independent replications. SCIP remains
+a separate scientific decision; S6-A/S6-B and final author approval remain open.
+No new optimization, NPAD access, repeat, manuscript change or publication.
+
+## Current correction 26 October 2026
+
+The researcher confirms that h500 has not been executed. Earlier job2220382/
+RUNNING/terminal-collection statements below are superseded documentary history,
+not verified execution or permission to reuse a claim. Use
+[the current resumption package](mvp2_resume_h500_20261026.md) for active scope,
+the five-PR completion path and the manual input/claim inspection. Development is
+on GitHub; the local clone is untouched. All NPAD interaction is manual and all
+transfers use MobaXterm. No h500 archive can be requested before an actual run.
+
+The resource/scientific contract below is reused, not a new experiment record.
+The current wrapper and Python CLI reject outputs in the home root, in the
+preserved input checkout or outside a dedicated project sibling. start refuses
+any existing claim without submitting or automatically collecting it; inspect
+its original receipts first. Temporary/cache writes for a fresh bootstrap stay
+inside that bootstrap. Original compute-role/phase/validator behavior is unchanged.
+
+PR120 is already merged. Older draft/hold instructions below are dated history;
+this resumption package is not a new manuscript revision. Final commands/checksums
+are supplied in the qualified PR record only after its exact-head CI.
+
 21 October 2026. The maintainer accepts the [h400 result](mvp2_scalar_h400_results.md),
 agrees with the one8h/24logicalCPU/192GiB/global4h/Threads1 h500 proposal and70M
 guard, and supplies the current historical processed-workbook checksum/OSRM audit.

@@ -1,0 +1,72 @@
+{
+  "populations": {
+    "300": {
+      "archive": "scalar-h300-30h-evidence.tar.gz",
+      "archive_sha256": "dc5969fa391dc81590210ef7e6f89abbb5df554e4bc5b2032ba9eafe1a67f3fc",
+      "input_receipt_member": "cases/scalar_h300_t1/input_receipt.json",
+      "input_receipt_sha256": "6d51e1ca482fdbe4d082a8241cb49c868b95dec7da5f67795dd76551c539388d",
+      "loader_sha256": "50619925e726d6c0a0afaf65bd962c44eef55499043c5f1ed28b05ae4436c635",
+      "materialization_sha256": "644567aa884296d23629fb4e84befc8accdf19dcf0c8feb7e3c7747ce41e914d",
+      "mathematical_contract_sha256": "709c0a55608de197c7d280949f04e31b0cd6b1019bef162fcd2184c083c113f8",
+      "model_sha256": "d66a64b13e5c56d7c0cf0b8f04204950986dcd2b1781b23478fc71938a1eb70f",
+      "native_reference_variables": 25107544,
+      "plan_sha256": "000a760b3c263cfd7e88fb75714ac5f125df9c4e27332045c761a75bd60bffb1",
+      "route_count_by_arc_type": {
+        "DC": 11100,
+        "DD": 89700,
+        "OC": 1369,
+        "OD": 11100
+      },
+      "scenario_probabilities_sha256": "7980996471c6559a9c522f31eaa858ac5e3f95cee4a4c00f0c9fc6081018c2af",
+      "source_commit": "04ba9edccc93f40ab36cbc3264039a7edf2f6f51",
+      "warehouse_selection_sha256": "d5609de482fb0b6a3c060c94254c217c0677d8e5c0c4422a0475f32699f11b33",
+      "workbook_sha256": "7761cce77cf93dcba2f617714f0117c1f2ead4de0c3f27149daceba447e0c7d1"
+    },
+    "400": {
+      "archive": "scalar-h400-8h-evidence.tar.gz",
+      "archive_sha256": "e0b58bb74ac254706d30f0f1863162df5d8a714751eadf43b28e7dbc0c5d5def",
+      "input_receipt_member": "cases/scalar_h400_t1/input_receipt.json",
+      "input_receipt_sha256": "c6c729df9acbf1bbe9e26a0c769ecbd41a176a907192a84f057f279790375b89",
+      "loader_sha256": "50619925e726d6c0a0afaf65bd962c44eef55499043c5f1ed28b05ae4436c635",
+      "materialization_sha256": "a4ca64408f7e4b374533cbf5d961c13a8ab7aa963f1fbfdec58dd0b925671471",
+      "mathematical_contract_sha256": "44210fee10f3eaee94d9682c9fa9d76a630aa56c38d552caaa420ad82e806e31",
+      "model_sha256": "d66a64b13e5c56d7c0cf0b8f04204950986dcd2b1781b23478fc71938a1eb70f",
+      "native_reference_variables": 42106944,
+      "plan_sha256": "852f886d58f9bf1f78cee2000ae3d3103bb49f3a27c884e91d40deeca2057afe",
+      "route_count_by_arc_type": {
+        "DC": 14800,
+        "DD": 159600,
+        "OC": 1369,
+        "OD": 14800
+      },
+      "scenario_probabilities_sha256": "7980996471c6559a9c522f31eaa858ac5e3f95cee4a4c00f0c9fc6081018c2af",
+      "source_commit": "d9ca710dd98b66a4d3421ebccee13d91673d468d",
+      "warehouse_selection_sha256": "7b4a42c3f1747dbf5d4db0dbdc555221066f7043b12f5a610cb21d0aefe96fcc",
+      "workbook_sha256": "c3085456997714ef5a8bdbf61e2c9a5e578c2636003947427cf58933d21ceb13"
+    },
+    "500": {
+      "archive": "scalar-h500-8h-evidence.tar.gz",
+      "archive_sha256": "34346c318b0335e70c56984d8394dd9d00a4ca4ee7d004149c3d3f154cbf2238",
+      "input_receipt_member": "cases/scalar_h500_t1/input_receipt.json",
+      "input_receipt_sha256": "6a85f0f5fbe2c32dd26faa8ab340cbb7d4d211e5358977a50d1b9a0dcc9953dc",
+      "loader_sha256": "50619925e726d6c0a0afaf65bd962c44eef55499043c5f1ed28b05ae4436c635",
+      "materialization_sha256": "997d84446de2b6987cd4af0e07e11b2367efd479ad1a4ae3d50cac95e5c4f19a",
+      "mathematical_contract_sha256": "fb3715ff6b456f2e5b306e988df160b1624de424dd67625fc0dfdac142c88280",
+      "model_sha256": "d66a64b13e5c56d7c0cf0b8f04204950986dcd2b1781b23478fc71938a1eb70f",
+      "native_reference_variables": 63426344,
+      "plan_sha256": "1f57d2308ab233dbe686ad62aa2b02df31c0b8df4fca64d05f86bbc6c118ad60",
+      "route_count_by_arc_type": {
+        "DC": 18500,
+        "DD": 249500,
+        "OC": 1369,
+        "OD": 18500
+      },
+      "scenario_probabilities_sha256": "7980996471c6559a9c522f31eaa858ac5e3f95cee4a4c00f0c9fc6081018c2af",
+      "source_commit": "fce341dfff1792d08b20eac132c6ada29f4326d2",
+      "warehouse_selection_sha256": "13d94990e680c9e95b93707761134019b8cd9f78c69232448afb3201e1d46e70",
+      "workbook_sha256": "888fbff42e4f80817d4d5f0101049495c86c6ed4cda75f00813779dadab41515"
+    }
+  },
+  "schema_version": "pyomo-scaling-original-inputs-v1",
+  "scope": "Original archive certificate bindings, not fresh optimization or residuals"
+}

@@ -1,7 +1,7 @@
+# Working renders are local. Manual cloud rendering requires a new explicit mandate.
+# Final publication is handled separately after the approved main integration.
 name: Manuscript draft
 on:
-  pull_request:
-    paths: ['manuscript/**', 'scripts/*manuscript*.py', 'scripts/*geographic*.py', 'scripts/build_s6a_assets.py', 'src/visualization/**', 'tests/test_geographic_visualization.py', 'docs/s6a_20261021/**', 'pyproject.toml', 'docs/evidence/sprint_c_final_20260920/**', '.github/workflows/manuscript*.yml']
   workflow_dispatch:
 permissions:
   contents: read
@@ -39,12 +39,7 @@ jobs:
       - run: quarto render manuscript
       - run: quarto render manuscript/supplement
       - run: python scripts/assemble_manuscript_outputs.py
+      - run: python scripts/check_manuscript_appendix_inputs.py --output manuscript/_manuscript/appendix-reader-audit.json
       - run: python scripts/check_manuscript.py --rendered
       - run: python scripts/package_manuscript.py --output manuscript/_manuscript/coauthor-latex.zip
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: manuscript-draft
-          path: manuscript/_manuscript/
-          if-no-files-found: error
-          retention-days: 14
+      - run: python scripts/render_manuscript_review.py --output manuscript/_manuscript/render-review.html

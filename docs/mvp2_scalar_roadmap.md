@@ -1,5 +1,81 @@
 # Scalar MVP2 roadmap — 19 October 2026
 
+## Current audited SCIP outcome and continuation — 28 October 2026
+
+PR131 merged with explicit authorization at
+`083e5759ee5bb4d4d2982c4dcf2ffd12f2afb476`. Original scalar SCIP STO/W h215
+job2225638/source cbd64d86/plan1af2f262/archive41557726 is independently audited:
+111 safe members,110 inventory digests,562 source files matched; original review
+reproduced exactly. COMPLETED0:0 is operational closure; native timelimit,
+zero solutions and no_usable_incumbent are the scientific outcome.
+No objective/economics/service/gap is available. The accepted feasible Gurobi
+inventory stays eleven; this negative SCIP observation is separate. S5 stays closed.
+
+The researcher now explicitly requests a longer SCIP window and planning other
+free solvers/HiGHS plus an agnostic multisolver implementation. Plan native8h/
+Slurm12h with unchanged input/science/memory/thread ceilings, a new predecessor-
+bound claim and full separately qualified operational PR. The original claim,
+source/plan and false follow-on flags remain unchanged. PySCIPOpt is native;
+Pyomo is currently only an unimplemented stub. Plan Pyomo DET/STO, indicator/
+bound proof, HiGHS then conditional CBC qualification; no solver sweep is released.
+This scoped new request supersedes older blanket no-repeat/no-new-backend
+planning holds, not the cancelled broad S3/S4 campaign or original certificates.
+
+Resource samples have a near-full-solve gap; do not infer continuous utilization,
+root-LP completion, proven observer slowdown, production isolation or smaller safe
+allocation. See the current result, completion plan and multisolver architecture.
+GitHub editing is autonomous; own merge and human NPAD CLI remain researcher gates.
+No local clone/environment/package change or new execution in this checkpoint PR.
+S6-A/coauthor work and S6-B remain open; no final publication/submission follows.
+
+See [SCIP original outcome](mvp2_scalar_scip_h215_w_results.md),
+[revised sprint/PR plan](mvp2_completion_plan_20261028.md) and
+[multisolver design](mvp2_multisolver_plan.md).
+
+
+## Current continuation after S5 closure — 27 October 2026
+
+PR130 merged with explicit researcher authorization at
+`b031c3d1014df433020a6bb98534b9b9d8de4ffb`; S5 is closed. Eleven accepted
+scalar observations (nine W scaling plus two D h215) retain their originals.
+The researcher now requests ONE scalar SCIP STO h215 W test and parallel
+documentation/manuscript reconciliation including original h500. See
+[the complete new protocol](mvp2_scalar_scip_h215_w.md).
+
+Prepare/qualify the one-shot8h/192GiB/24logical-CPU reservation, four-thread
+ceiling, native14400s/common1% target, exact-step/phase controls and terminal
+positive/negative evidence. Keep source/scenarios/penalties/units/tolerances and
+historical controls unchanged. HiGHS is a conditional separately qualified
+future option, not an automatic fallback. No predicted failure or generalized
+open-source inability is a result. Merge approval and actual NPAD CLI remain
+researcher-only. Development is GitHub-only; no local clone/environment change.
+S6-A/coauthor revision and S6-B remain open; no publication/submission follows.
+
+## Current S5 terminal audit 27 October 2026
+
+Original h500 job 2220382/source fce341df has been independently replayed from the
+transferred archive: h500_quality_target_met, original validation accepted,
+gap 0.20743206%, full operational/resource closure. Archive SHA25634346c31…;
+all 70 safe members / 69 inventory digests and 478 original-source file identities match.
+The26October “not executed”/first-start guidance below is superseded by this
+original evidence. Preserve that dated correction and the old receipts; never
+restart/reset the claim. See [the S5 closure report](mvp2_scalar_h500_results.md).
+
+S5 closes on this consolidation PR's authorized merge. Eleven scalar observations
+are accounted for (nine W plus two D), not independent replications. SCIP remains
+a separate scientific decision; S6-A/S6-B and final author approval remain open.
+No new optimization, NPAD access, repeat, manuscript change or publication.
+
+## Current correction 26 October 2026
+
+The researcher confirms that h500 has not been executed. Earlier job2220382/
+RUNNING/terminal-collection statements below are superseded documentary history,
+not verified execution or permission to reuse a claim. Use
+[the current resumption package](mvp2_resume_h500_20261026.md) for active scope,
+the five-PR completion path and the manual input/claim inspection. Development is
+on GitHub; the local clone is untouched. All NPAD interaction is manual and all
+transfers use MobaXterm. No h500 archive can be requested before an actual run.
+
 23October CURRENT: see [the complete revised plan](mvp2_completion_handoff_20261023.md).
 The bounded h215 W/D phase is accepted and closed on original D job2221443
 receipts plus historical W; no further experiment is indispensable. S5/h500

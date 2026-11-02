@@ -1,0 +1,68 @@
+{
+  "schema_version": "pyomo-serial-public-hold-failure-v1",
+  "evidence_basis": "Human-pasted NPAD CLI; source control flow inspected; no live cluster access",
+  "source_commit": "35d8468d805d320e22de87565beb74b0f32e77bd",
+  "claim_basename": ".mvp2-pyomo-scaling-serial-public-v1",
+  "plan_sha256": "40e4a0a5256c481b825475421bf11852fb4c40cba117806ba626e95413e30e1c",
+  "bootstrap_hashes_accepted": [
+    "pyomo_serial_queue.py",
+    "pyomo_serial_smoke.py",
+    "qualify_pyomo_serial.py"
+  ],
+  "preparation_status": "prepared_public_serial_controls_only",
+  "expected_tests": 209,
+  "tests_executed_in_this_attempt": false,
+  "stage": "verify_pending on held public probes",
+  "error_kind": "ValueError",
+  "message": "Held time/CPU/memory profile differs.",
+  "cause": "Unresolved; actual scontrol resource fields and probe IDs requested read-only",
+  "probe_jobs_created_before_verification_by_source_flow": 5,
+  "release_command_reached_by_source_flow": false,
+  "main_qualification_submission_reached_by_shell_flow": false,
+  "actual_probe_scheduler_state_verified": false,
+  "original_claim_preserved": true,
+  "private_execution_admitted": false,
+  "pdfs_generated": false,
+  "quota_observation": {
+    "used_raw": "36090M",
+    "soft_raw": "100G",
+    "hard_raw": "1000G",
+    "grace_displayed": false,
+    "shared_free_raw": "13T",
+    "qualification": "Human quota output; no interpretation of grace duration or authorization to exceed soft quota"
+  },
+  "storage_plan_status": "768-GiB conservative budget not reconciled with the 100G soft quota; private release remains gated",
+  "scientific_scheduler_snapshot": [
+    {
+      "job_id": "2231591",
+      "solver": "highs",
+      "threads": 16,
+      "population": 300,
+      "state": "RUNNING",
+      "elapsed_seconds": 8695,
+      "step_elapsed_seconds": 8692,
+      "root_alloc_cpus": 64,
+      "step_alloc_cpus": 16
+    },
+    {
+      "job_id": "2231593",
+      "solver": "gurobi",
+      "threads": 16,
+      "population": 300,
+      "state": "COMPLETED",
+      "exit_code": "0:0",
+      "elapsed_seconds": 7120,
+      "step_elapsed_seconds": 7099,
+      "step_max_rss_raw": "108104240K",
+      "root_alloc_cpus": 64,
+      "step_alloc_cpus": 16,
+      "mathematical_quality": "Not yet collected or accepted by this receipt"
+    }
+  ],
+  "next_steps": [
+    "Read-only diagnostics of the same five probes",
+    "Identify exact resource representation/mismatch without weakening requested profile",
+    "Preserve v1 claim and all held-job receipts; no repeated smoke/prepare",
+    "Reconcile personal storage budget before private queue release"
+  ]
+}

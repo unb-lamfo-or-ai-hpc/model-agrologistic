@@ -1,0 +1,69 @@
+name: Pyomo multisolver qualification
+on:
+  pull_request:
+    branches: [develop, main]
+permissions:
+  contents: read
+jobs:
+  pyomo-multisolver:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      PYTHONNOUSERSITE: '1'
+      PYTHONDONTWRITEBYTECODE: '1'
+      AGRO_REQUIRE_PYOMO_SOLVERS: '1'
+      AGRO_REQUIRE_NATIVE_SOLVERS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - name: Preserve original historical bytes without line-ending normalization
+        run: |
+          printf '%s\n' '/manuscript/comparison_provenance.json -text' '/manuscript/figures/runtime_memory_comparison.pdf -text' >> .git/info/attributes
+          git diff --exit-code
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install only cloud qualification dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes coinor-cbc
+          python -m pip install -e '.[dev,scip,multisolver]' 'pyscipopt==6.2.1'
+          python -c 'import importlib.metadata as m; print({k:m.version(k) for k in ("pyomo","highspy","pyscipopt")})'
+          cbc -stop
+      - name: Pin the paired scaling qualification runtime
+        run: python -m pip install 'pyomo==6.10.1' 'highspy==1.15.1' 'gurobipy==13.0.3'
+      - name: Real public analytical and parity qualification, no HPC
+        run: >-
+          python -B -m pytest -p no:cacheprovider -q
+          tests/test_pyomo_multisolver.py tests/test_optimization_facade.py
+          tests/test_scalar_highs_h215_8h.py tests/test_scalar_highs_math.py
+          tests/test_scalar_highs_h215_8h_native.py
+          tests/test_scalar_highs_h215_8h_startup.py
+          tests/test_scalar_highs_h215_8h_startup_native.py
+          tests/test_pyomo_solver_adapters.py tests/test_pyomo_campaign_contract.py
+          tests/test_pyomo_h215_operational.py tests/test_npad_gurobi_license.py
+          tests/test_pyomo_gurobi_license_gate.py
+          tests/test_pyomo_gurobi_license_v2.py
+          tests/test_pyomo_scaling_contract.py tests/test_pyomo_scaling_operational.py
+          tests/test_pyomo_scaling_parallel.py tests/test_pyomo_scaling_integration.py
+          --junitxml=/tmp/pyomo-results.xml --basetemp=/tmp/pyomo-publiccases
+      - name: Freeze the NPAD public requalification count and wrapper syntax
+        run: |
+          bash -n scripts/npad_pyomo_gurobi_h215_w_native8h_license_v2.sh
+          bash -n scripts/npad_pyomo_scaling_public.sh
+          python -B -c 'import pytest; from scripts.qualify_pyomo_scaling import TESTS, EXPECTED_TESTS; hook=type("Counter",(),{"pytest_collection_finish":lambda self,session: (_ for _ in ()).throw(AssertionError("Paired scaling inventory differs")) if len(session.items)!=EXPECTED_TESTS else print("SCALING_PUBLIC_TESTS="+str(len(session.items)))})(); raise SystemExit(pytest.main(["--collect-only","-q","-p","no:cacheprovider",*TESTS],plugins=[hook]))'
+          python -B -c 'import pytest; from scripts.qualify_pyomo_gurobi_license_v2 import TESTS; from scripts.pyomo_gurobi_retry_contract import EXPECTED_TESTS; hook=type("Counter",(),{"pytest_collection_finish":lambda self,session: (_ for _ in ()).throw(AssertionError("Public test inventory differs")) if len(session.items)!=EXPECTED_TESTS else print("NPAD_PUBLIC_TESTS="+str(len(session.items)))})(); raise SystemExit(pytest.main(["--collect-only","-q","-p","no:cacheprovider",*TESTS],plugins=[hook]))'
+      - name: Reject missing or skipped solver controls
+        run: |
+          python -B -c 'import xml.etree.ElementTree as e; s=list(e.parse("/tmp/pyomo-results.xml").getroot().iter("testsuite")); assert s and all(int(x.get(k,0))==0 for x in s for k in ("errors","failures","skipped"))'
+          git diff --exit-code
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pyomo-multisolver-results
+          path: |
+            /tmp/pyomo-results.xml
+            /tmp/pyomo-publiccases/**/medium-resource-receipt.json
+          if-no-files-found: error

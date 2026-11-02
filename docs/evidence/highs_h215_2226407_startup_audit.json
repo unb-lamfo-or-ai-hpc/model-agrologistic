@@ -1,0 +1,55 @@
+{
+  "schema_version": "highs-original-startup-audit-v1",
+  "audit_date": "2026-10-28",
+  "job_id": "2226407",
+  "source_commit": "d1033d713904e4fd8c81859f4ee76f1d05462858",
+  "plan_sha256": "c3c5e571fa2aa39578c3f368dee780d4f8c8cc87cc9553b7ca4bcabf67d63f61",
+  "archive": {
+    "file": "scalar-highs-h215-w-native8h-evidence.tar.gz",
+    "sha256": "2816e35c0d06774bfe197310b97e57b14dc01e7b88d530fbbb73c08633914f42",
+    "safe_regular_unique_members": 25,
+    "inventory_hashes_verified": 24,
+    "expanded_bytes": 327934
+  },
+  "verified": [
+    "External SHA256 matches transferred checksum and supplied collection output",
+    "25 safe, unique regular archive members; no extraction or archive code execution",
+    "24 complete inventory SHA256 entries",
+    "Plan artifact hashes and job/source/plan digest binding",
+    "Recorded Pyomo6.10.1/highspy1.15.1 and resource profile",
+    "Terminal accounting and absent entry/release/native/product records"
+  ],
+  "source_inventory": {
+    "recorded_files": 587,
+    "all_587_remote_source_bytes_independently_compared": false
+  },
+  "controller": {
+    "recorded_error_kind": "ValueError",
+    "entry_deadline_seconds_in_pinned_source": 45,
+    "observer_elapsed_seconds": 45.3083604729909,
+    "entry": null,
+    "samples": 0
+  },
+  "original_review": {
+    "status": "highs_forensic_partial_preserved",
+    "classification": "build_or_execution_incomplete",
+    "operational_receipts_closed": false,
+    "operational_error_kind": "KeyError",
+    "product_review_error_kind": "KeyError"
+  },
+  "finding": "The preserved controller cannot bind a worker without its entry receipt. Cancellation is consistent with the explicit 45s startup guard; underlying import/provenance/dependency/filesystem delay is not measured.",
+  "not_established": [
+    "HiGHS native invocation",
+    "Population model construction",
+    "Solver numerical failure",
+    "Resource exhaustion or out-of-memory",
+    "Private-input infeasibility",
+    "Eight-hour no-incumbent result"
+  ],
+  "original_review_reexecuted": false,
+  "fresh_private_input_validation": false,
+  "native_solver_run": false,
+  "additional_execution_admitted": false,
+  "automatic_retry_allowed": false,
+  "next": "Qualify any startup-protocol repair separately, preserving the original attempt and recording slow-start stage timings before a separately authorized manual run."
+}

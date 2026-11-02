@@ -1,0 +1,27 @@
+{
+  "schema_version": "highs-startup-v2-preparation",
+  "date": "2026-10-28",
+  "original": {
+    "job_id": "2226407",
+    "source_commit": "d1033d713904e4fd8c81859f4ee76f1d05462858",
+    "plan_sha256": "c3c5e571fa2aa39578c3f368dee780d4f8c8cc87cc9553b7ca4bcabf67d63f61",
+    "archive_sha256": "2816e35c0d06774bfe197310b97e57b14dc01e7b88d530fbbb73c08633914f42",
+    "preserved": true
+  },
+  "new_claim": ".mvp2-scalar-highs-h215-w-native8h-startup-v2",
+  "new_execution_observed": false,
+  "native_seconds": 28800,
+  "build_including_startup_seconds": 3600,
+  "whole_worker_seconds": 35100,
+  "slurm_seconds": 43200,
+  "memory_gib": 192,
+  "allocation_logical_cpus": 24,
+  "numeric_affinity_cpus": 16,
+  "solver_threads": 4,
+  "full_provenance_before_population": true,
+  "bootstrap_before_site_and_application_imports": true,
+  "unbound_entry_deadline_changed": false,
+  "automatic_retry_allowed": false,
+  "status": "preparation_requires_exact_head_qualification_and_own_merge",
+  "human_cli_required": true
+}

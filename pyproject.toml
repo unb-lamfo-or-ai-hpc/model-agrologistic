@@ -71,16 +71,22 @@ dev = [
     "wheel>=0.45,<1",
     "plotly>=6,<7",
     "dash>=3,<4",
-    "reportlab>=4,<5",
-    "pillow>=11,<13",
+    "reportlab>=4,<6",
+    "pillow>=11,<14",
     "pypdf>=5,<7",
+]
+
+cartography-prepare = [
+    "shapely==2.1.2",
+    "pyproj==3.7.2",
+    "pyshp==2.3.1",
 ]
 
 geographic = [
     "plotly>=6,<7",
     "dash>=3,<4",
-    "reportlab>=4,<5",
-    "pillow>=11,<13",
+    "reportlab>=4,<6",
+    "pillow>=11,<14",
     "pypdf>=5,<7",
 ]
 
@@ -95,6 +101,11 @@ gurobi = [
 
 pyomo = [
     "pyomo>=6.10,<7",
+]
+
+multisolver = [
+    "pyomo==6.10.1",
+    "highspy==1.15.1",
 ]
 
 scip = [
@@ -120,7 +131,8 @@ all = [
     "importlib-resources>=6,<7",
     "matplotlib>=3.9,<4",
     "mypy>=1.13,<2",
-    "pyomo>=6.10,<7",
+    "pyomo==6.10.1",
+    "highspy==1.15.1",
     "pyscipopt>=6.2,<7",
     "pytest>=8.0,<10",
     "pyyaml>=6.0,<7",
