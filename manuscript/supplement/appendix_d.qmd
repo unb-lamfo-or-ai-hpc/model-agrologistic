@@ -445,7 +445,9 @@ explains the distinction between admissibility and a returned positive flow.
 
 For the first matched h300 pair, a data-only reconstruction from the exact
 workbook and executed policy provides 45,240 product-specific admissible arcs.
-The counts are 4,440 origin-to-warehouse,4,800 warehouse-to-destination and
+This is the total number of directed endpoint-product records across both
+products, before expansion over operating periods and scenarios. The counts
+are 4,440 origin-to-warehouse, 4,800 warehouse-to-destination and
 36,000 warehouse-to-warehouse arcs, with no direct or repair arcs. Its graph
 and mathematical-contract fingerprints match both original input receipts.
 The [selected-graph receipt](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/0f63c10eb1abf88318a4d9c6afc75fcac97f6266/docs/evidence/h300_selected_graph_release_20261101.json)

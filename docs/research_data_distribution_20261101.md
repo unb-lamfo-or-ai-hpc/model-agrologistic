@@ -136,8 +136,9 @@ static rows retain a blank in that field. This is export aggregation checking,
 not fresh physical-residual validation or a new optimization.
 
 The original archives retain graph9520a303... but contain no standalone
-admissible-arc file. A separate, data-only reconstruction now exports45,240
-product-specific directed arcs:4,440 OD,4,800 DC,36,000 DD and zero OC or
+admissible-arc file. A separate, data-only reconstruction exports 45,240
+directed endpoint-product records across both products, before period/scenario
+expansion: 4,440 OD, 4,800 DC, 36,000 DD and zero OC or
 repair arcs. Both the original graph fingerprint and the full mathematical
 contract fingerprint match. These hashes use their respective original JSON
 encodings; tuple/list representation and pretty/compact encoding must not
