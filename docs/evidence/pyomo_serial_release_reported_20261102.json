@@ -1,0 +1,60 @@
+{
+  "schema_version": "pyomo-serial-human-release-receipt-v1",
+  "date": "2026-11-02",
+  "scope": "Researcher-supplied prepare/submit/release CLI output; original queue bytes and individual new job IDs not reread in this increment",
+  "queue": "/home/vrrcelestino/model-agrologistic-hygiene-audit/.mvp2-pyomo-scaling-serial-v1",
+  "qualified_controller_commit_from_pinned_command": "334827d5e3669b4fcdf2801fd4cea466e5a71d06",
+  "scientific_engine_commit": "c493be8cd127c5175fc7eb111400229e64b8e3c0",
+  "public_qualification_job": "2231948",
+  "preflight": "PUBLIC_V3_AND_10_CONTROLLER_FILES=VERIFIED; NO_NEW_JOB_YET",
+  "prepare": {
+    "status": "prepared_no_new_job",
+    "new_jobs": 93,
+    "attached_jobs": {
+      "solve:h300-w-sto-highs-t16-r1": "2231591",
+      "solve:h300-w-sto-gurobi-t16-r1": "2231593"
+    }
+  },
+  "submit": {
+    "status": "all_new_jobs_submitted_held",
+    "new_jobs": 93,
+    "attached_jobs": 2,
+    "release_performed": false
+  },
+  "release": {
+    "status": "bounded_graph_released",
+    "new_jobs": 93,
+    "attached_jobs": 2,
+    "automatic_retry_or_extra_submissions": false
+  },
+  "anchors_preserved": [
+    {
+      "cell": "h300-w-sto-highs-t1-r1",
+      "job_id": "2231226"
+    },
+    {
+      "cell": "h300-w-sto-gurobi-t1-r1",
+      "job_id": "2231228"
+    }
+  ],
+  "new_scientific_cells": 86,
+  "control_jobs": 6,
+  "final_consolidation_jobs": 1,
+  "scientific_pilots_restarted": false,
+  "declared_output_budget_gib_from_pinned_command": 48,
+  "original_memory_storage_progression_gates_retained": true,
+  "individual_new_job_ids": null,
+  "new_job_completion_states": null,
+  "completed_new_scientific_results": null,
+  "completion_count_scope": "No terminal observations for the86new scientific cells were supplied; their completion states remain unknown.",
+  "original_queue_hashes": null,
+  "independent_live_scheduler_observation": false,
+  "do_not_repeat_prepare_submit_or_release": true,
+  "merge_records": {
+    "pr148": "48e2831693fc4abe0657c82197a2e884a61e99d2",
+    "pr144": "50a77a7527541a9f00769928164dc71457dbc38c"
+  },
+  "zenodo_new_version_published": false,
+  "working_pdfs_still_deferred": true,
+  "new_scientific_result_records_received": 0
+}

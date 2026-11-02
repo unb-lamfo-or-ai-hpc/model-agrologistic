@@ -29,6 +29,8 @@ def manuscript(tmp_path, monkeypatch):
     # Construct a reviewed test snapshot, not a production publication approval.
     approval_path = destination / "pages_approval.json"
     approval = json.loads(approval_path.read_text())
+    approval["approved"] = True
+    approval["authorized_by"] = "repository_owner"
     approval["source_sha256"] = {
         name: hashlib.sha256((destination / name).read_bytes()).hexdigest()
         for name in approval["source_sha256"]

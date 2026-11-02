@@ -16,6 +16,10 @@ manuscript:
       href: https://unb-lamfo-or-ai-hpc.github.io/model-agrologistic/supplementary-review.pdf
     - text: Editable LaTeX project (ZIP)
       href: https://unb-lamfo-or-ai-hpc.github.io/model-agrologistic/coauthor-latex.zip
+    - text: Article TeX (dependencies in ZIP)
+      href: https://unb-lamfo-or-ai-hpc.github.io/model-agrologistic/index.tex
+    - text: Appendix TeX (dependencies in ZIP)
+      href: https://unb-lamfo-or-ai-hpc.github.io/model-agrologistic/supplementary-review.tex
 execute:
   enabled: false
   freeze: auto

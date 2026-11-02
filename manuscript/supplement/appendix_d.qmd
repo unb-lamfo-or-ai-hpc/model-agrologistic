@@ -464,7 +464,7 @@ Its current [public metadata](https://github.com/unb-lamfo-or-ai-hpc/model-agrol
 lists twelve files with open access. Rechecking those metadata is distinct from
 downloading every archive again or extending its contents.
 
-The [next-version plan](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/82c2c19ce619f1251043829b10a4702ac88a7cdd/data/manifests/zenodo_release_plan_20261102.json)
+The [next-version plan](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/2c1ad568bbc8eb0ee45b42ad59b5a3a442e0ab3c/data/manifests/zenodo_release_plan_20261102.json)
 links the existing release to the
 [initial 41-file inventory](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/82c2c19ce619f1251043829b10a4702ac88a7cdd/data/manifests/zenodo_next_release_inventory_20261101.json)
 and its [readiness register](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/82c2c19ce619f1251043829b10a4702ac88a7cdd/data/manifests/zenodo_release_readiness_20261102.json).
@@ -495,7 +495,7 @@ not replace the applicable notices for upstream datasets.
 The release sequence is preparation, asset review, publication of a new
 version related to 0.2.0, and anonymous download verification against the
 manifest. A new DOI or download URL enters the article only after those
-steps. A later campaign release will account for all 90 configurations and
+steps. A later campaign release will account for all 90 runs and
 the products actually returned, including time censoring, execution failure
 and non-execution. Missing decisions or objective values are not fabricated.
 The current prepared inventory is not a claim that the campaign is complete.
