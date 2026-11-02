@@ -1,3 +1,22 @@
+## PR148 merged; reader/data closeout in progress — 2 November 2026
+
+PR148 merged into develop at48e2831693fc4abe0657c82197a2e884a61e99d2.
+Its ten qualified controller/schedule blobs are preserved; public2231948
+accepted248tests. The pinned human launch recipe prepares/submits/releases93new
+jobs with48GiB declared budget subject to fresh quota, reusing all four pilots.
+No private submission/release receipt has been received yet. Never infer one
+from the recipe, and never repeat a consumed start or ambiguous release.
+
+PR144 integrates the merged operational files by original Git blobs, preserving
+its author-approved manuscript and Appendix A. Read the current Zenodo guide
+and data/manifests/zenodo_release_plan_20261102.json. Existing0.2.0 is published
+open; the41-file derivative inventory is locally prepared and reviewed as a
+planned new version, not an existing download. Source-specific access/terms and
+complete-text limits remain explicit. Keep excluded solver history on GitHub.
+Every merge requires approval. PDFs remain deferred; prepare a separate main
+promotion only after PR144's authorized develop merge, with fresh Quarto
+snapshot approval and actual final PDF/TeX download verification when permitted.
+
 ## Accepted public serial qualification — 2 November 2026
 
 Job2231948/source334827d5/plan8e4947a8 passed248tests with zero failures,

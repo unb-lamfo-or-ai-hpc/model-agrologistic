@@ -1,0 +1,101 @@
+{
+  "schema_version": "npad-serial-public-v2-rejection-v1",
+  "source_commit": "63543161f2fc6864a157b9f68b6a9347c65813a9",
+  "job_id": "2231675",
+  "status": "rejected",
+  "plan_sha256": "3e8197c7f45a0fb0d69f7bb39f5faa2145343264e9264d3db69d104a1a59c5d0",
+  "receipts_sha256": {
+    "result.json": "7010375299430e7c13edc92514ccc2026a971366a0a6a630ffa28a84e2929dfa",
+    "qualification.xml": "36fd4cc835b1bb867956dcc86f7fc30d1c5cc40fa73fa84eef85450f142465dc",
+    "license-capability.json": "3f17360c239e5a2e7a056b36e336d24ac5b2709b46ff2fc45bc017968d5b4f42",
+    "public-allocation.json": "5605a7fb6775a47259add78737adc81b76b2f8451325ddccfafc63cd1dd702ae",
+    "smoke-jobs.json": "3f71850af950c6c67df38ff14540806a9bb3e29a1f8e86989ecdc74ea5acbea7"
+  },
+  "pytest_exit": 2,
+  "machine_counts": {
+    "tests": 4,
+    "errors": 4,
+    "failures": 0,
+    "skipped": 0
+  },
+  "expected_tests": 243,
+  "test_function_execution_started": false,
+  "collection_errors": [
+    {
+      "kind": "ModuleNotFoundError",
+      "module": "tests.test_pyomo_serial_queue",
+      "phase": "collection"
+    },
+    {
+      "kind": "ModuleNotFoundError",
+      "module": "tests.test_pyomo_serial_collection",
+      "phase": "collection"
+    },
+    {
+      "kind": "ModuleNotFoundError",
+      "module": "tests.test_pyomo_serial_smoke",
+      "phase": "collection"
+    },
+    {
+      "kind": "ModuleNotFoundError",
+      "module": "tests.test_pyomo_serial_storage",
+      "phase": "collection"
+    }
+  ],
+  "cause": "Default pytest package resolution reused original source/tests package while collecting new modules from a different source tree",
+  "dependency_smoke_accepted": true,
+  "probe_states": {
+    "2231659": "FAILED/1:0 intentional",
+    "2231660": "CANCELLED/0:0 never started; AllocCPUS1 is not execution proof",
+    "2231661": "COMPLETED/0:0",
+    "2231662": "COMPLETED/0:0",
+    "2231663": "COMPLETED/0:0"
+  },
+  "license_capacity_accepted": true,
+  "exclusive_allocation_verified": true,
+  "affinity_logical_cpus": 16,
+  "source_verified_after": true,
+  "engine_sources_verified_after": true,
+  "runtime_verified_after": true,
+  "original_receipts_verified_after": true,
+  "storage_observation": {
+    "filesystem": "userhome:/home",
+    "used_raw": "36149M",
+    "soft_raw": "100G",
+    "hard_raw": "1000G",
+    "used_upper_bytes": 37906022400,
+    "limit_lower_bytes": 106300440576,
+    "available_lower_bytes": 68394418176,
+    "filesystem_free_bytes": 14020475092992,
+    "qualification": "Rounded quota bounded conservatively; no grace/overage assumed."
+  },
+  "accounting": {
+    "root": {
+      "state": "FAILED",
+      "elapsed_seconds": 26,
+      "exit_code": "1:0",
+      "alloc_cpus": 64
+    },
+    "step": {
+      "id": "2231675.0",
+      "state": "FAILED",
+      "elapsed_seconds": 26,
+      "exit_code": "1:0",
+      "alloc_cpus": 16,
+      "max_rss_raw": "110268K"
+    }
+  },
+  "human_scope": "Original report hashes and bounded XML/log diagnostic; no raw package uploaded",
+  "remediation": "Fresh v3 claim and importlib test collection; reuse completed probes without release or submission",
+  "private_execution_admitted": false,
+  "pdfs_generated": false,
+  "latest_scientific_snapshot": {
+    "job_id": "2231591",
+    "state": "RUNNING",
+    "elapsed_seconds": 11591,
+    "step_elapsed_seconds": 11588,
+    "last_collect_status": "nonterminal_or_accounting_pending",
+    "source_engine_sha256": "27d90f396d50a6778ca7ccb0bf2f11878186ef58e343128aabedcb1057b4ec2d",
+    "numerical_result_known": false
+  }
+}
