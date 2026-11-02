@@ -1,0 +1,30 @@
+{
+  "schema_version": "pyomo-serial-recovery-local-qualification-v2",
+  "scope": "Local simulated scheduler/quota and public fixtures; no optimization or NPAD",
+  "counts": {
+    "tests": 132,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "ruff": "passed with repository config/Ruff0.16.6",
+  "elapsed_seconds": 119.775,
+  "controller_files_sha256_utf8_lf": {
+    "scripts/pyomo_serial_queue.py": "38bd7b97a346c0973554ea8ea2e3226ed82cdf3f27f807f7a7d8460de790225e",
+    "scripts/pyomo_serial_collection.py": "5b0905089d1dbb71959ef286c7a5b1f0ce34b1fa5f59ed01a671000e921baad6",
+    "scripts/qualify_pyomo_serial.py": "a58e3d36b6f376f1ef2616e9fe7a97bbf968779d459a601a418e04f9dad948a0",
+    "scripts/pyomo_serial_smoke.py": "4505cee2a1ba7280808733f12f1dc63ec75f6c301b407c454a25acf1a86dc2e9",
+    "scripts/pyomo_serial_storage.py": "b6ed67eff404760365d03c55a2e3cbfccd96d831476a721352bd3a1ffb84d363",
+    "tests/test_pyomo_serial_queue.py": "fce0362badacfa7a42d42b3562b298517b7158e11fb39189271b5db10c1345cd",
+    "tests/test_pyomo_serial_collection.py": "6d6e7cbdad274b45551c530654ea8488453a3a012a4f09e9c403a8a2d432a3ee",
+    "tests/test_pyomo_serial_smoke.py": "bf92f3c16c8f0f0af2f72b12dd745f17c14687bdcef52082e9a05a59579f9cd2",
+    "tests/test_pyomo_serial_storage.py": "b305016e42c216fe8cce71edbad0c5db486ce8a9fb5be9adc338743ffe504be8",
+    "experiments/pyomo_scaling_serial_schedule_v1.json": "901ab3484cd7a81880f5f9d284a826de1eaa8772515dee699305fa0451fb644e"
+  },
+  "unchanged_engine_commit": "c493be8cd127c5175fc7eb111400229e64b8e3c0",
+  "unchanged_engine_entry_sha256": "27d90f396d50a6778ca7ccb0bf2f11878186ef58e343128aabedcb1057b4ec2d",
+  "npad_expected_tests": 243,
+  "npad_qualification": "pending; same five existing probes and one new main job",
+  "private_execution_admitted": false,
+  "pdfs_generated": false
+}

@@ -1,3 +1,22 @@
+## Confirmed NPAD recovery and storage revision — 1 November 2026
+
+Read docs/checkpoints/20261101_serial_recovery_v2.md. The v1 failure is the
+exact equivalent held-node representation1-1 versus1, not wrong requested
+time/CPU/memory. Preserve v1 plan40e4a0a5 and all original receipts. Recover
+only existing probes2231659–2231663 into a fresh public-v2 claim; no duplicate
+probes, old-source overwrite or automatic recovery retry. Qualify243 public
+tests with zero skips/failures/errors, actual dependencies and original-source
+preservation. Local132 passing tests do not establish NPAD acceptance.
+
+The32GiB initial planning minimum and live quota/growth admission supersede
+the unmeasured768GiB worst-case provision. Do not exceed personal soft quota,
+delete originals, impose file limits on the solver or promise all90cells fit.
+Scientific enginec493be8c, profile and validation remain unchanged. Human
+Gurobi2231593 collection is accepted but this increment has not reread its
+archive; HiGHS2231591 is not terminal in the latest supplied snapshot.
+PDFs remain deferred. PR148 remains Draft pending v2 qualification and CI;
+every merge needs its own approval and every NPAD command stays human-only.
+
 ## Finite serial continuation mandate — 1 November 2026
 
 The researcher authorizes autonomous implementation and qualification of PR #148,

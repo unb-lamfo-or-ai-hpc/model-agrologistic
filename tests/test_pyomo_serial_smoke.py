@@ -3,7 +3,7 @@
 import importlib.util
 import json
 import sys
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from types import SimpleNamespace
 
 import pytest
@@ -48,6 +48,8 @@ class Scheduler:
         self.bad_afterany = False
         self.blocked_allocated = False
         self.existing_gurobi_state = "COMPLETED"
+        self.release_rc = 0
+        self.nodes = "1-1"
 
     def __call__(self, argv):
         self.calls.append(argv)
@@ -61,11 +63,11 @@ class Scheduler:
                 stderr="",
             )
         if argv[:2] == ["scontrol", "release"]:
-            return SimpleNamespace(returncode=0, stdout="", stderr="")
+            return SimpleNamespace(returncode=self.release_rc, stdout="", stderr="")
         if argv[0] == "scontrol":
             job_id = argv[-1]
             for label, *_ in S.SMOKE:
-                directory = self.ctx.public / "smoke" / label
+                directory = getattr(self.ctx, "origin", self.ctx.public) / "smoke" / label
                 p = directory / "job.json"
                 if p.is_file():
                     job = Q.read(p)
@@ -94,7 +96,7 @@ class Scheduler:
                             "Dependency": dependency,
                             "TimeLimit": "00:05:00",
                             "MinMemoryNode": "1G",
-                            "NumNodes": "1",
+                            "NumNodes": self.nodes,
                             "NumCPUs": "1",
                         }
                         return SimpleNamespace(returncode=0, stdout=json.dumps(fields), stderr="")
@@ -112,7 +114,7 @@ class Scheduler:
                 line = (
                     f"{job_id}|2026-11-01T00:00:01|1|1\n"
                     if self.blocked_allocated
-                    else f"{job_id}|Unknown|0|0\n"
+                    else f"{job_id}|Unknown|0|1\n"
                 )
                 return SimpleNamespace(returncode=0, stdout=line, stderr="")
             state = (
@@ -185,3 +187,168 @@ def test_native_public_qualification_waits_for_active_gurobi_without_releasing_i
     assert (result["qualification_waits_for_existing_gurobi"] == "2231593") is (state == "RUNNING")
     released = next(a for a in scheduler.calls if a[:2] == ["scontrol", "release"])
     assert "2231593" not in released[2]
+
+
+@pytest.fixture
+def recovery(context, tmp_path, monkeypatch):
+    monkeypatch.setattr(Q, "BASE", tmp_path)
+    origin = tmp_path / S.ORIGINAL_BASENAME
+    origin.mkdir()
+    Q.write(origin / "plan.json", {"source_commit": S.ORIGINAL_SOURCE})
+    monkeypatch.setattr(S, "ORIGINAL_PLAN_SHA", Q.digest(origin / "plan.json"))
+    Q.write(
+        origin / "smoke-intent.json",
+        {
+            "source_commit": S.ORIGINAL_SOURCE,
+            "jobs": 5,
+            "private_execution_admitted": False,
+        },
+    )
+    npad = (
+        PurePosixPath("/home/vrrcelestino/model-agrologistic-hygiene-audit") / S.ORIGINAL_BASENAME
+    )
+    for label, parent, condition, code in S.SMOKE:
+        directory = origin / "smoke" / label
+        directory.mkdir(parents=True)
+        script = directory / "batch.sh"
+        script.write_text(
+            "#!/bin/bash\nset -eu\nprintf 'PUBLIC_DEPENDENCY_SMOKE\\n'\n" + f"exit {code}\n",
+            encoding="utf-8",
+            newline="\n",
+        )
+        labels = (parent,) if isinstance(parent, str) else parent
+        dependency = (
+            condition + ":" + ":".join(S.ORIGINAL_PROBES[k][0] for k in labels) if labels else None
+        )
+        node = dict(
+            wall_seconds=300,
+            requested_cpus=1,
+            memory_mib=1024,
+            exclusive=False,
+            kind="public_metadata_smoke",
+        )
+        receipt = dict(
+            job_id=S.ORIGINAL_PROBES[label][0],
+            dependency=dependency,
+            label=label,
+            node=node,
+            script_sha256=Q.digest(script),
+        )
+        Q.write(directory / "job.json", receipt)
+        path = npad / "smoke" / label
+        argv = [
+            "sbatch",
+            "--parsable",
+            "--hold",
+            "--kill-on-invalid-dep=yes",
+            *Q.scheduler_args(node, None),
+            "--job-name=serial-public-" + label,
+            "--chdir=" + str(path),
+            "--output=" + str(path / "slurm.out"),
+            "--error=" + str(path / "slurm.err"),
+        ]
+        if dependency:
+            argv.append("--dependency=" + dependency)
+        argv.append(str(path / "batch.sh"))
+        Q.write(directory / "submission-intent.json", {"argv": argv})
+        Q.write(
+            directory / "submission-response.json",
+            {
+                "returncode": 0,
+                "stdout": receipt["job_id"] + "\n",
+                "stderr": "",
+            },
+        )
+    files = S.original_files(Q)  # Checks all15 real human-supplied receipt hashes.
+    (context.public / "plan.json").unlink()
+    Q.write(
+        context.public / "plan.json",
+        {
+            "source_commit": "a" * 40,
+            "controller_files": {},
+            "recovered_original_receipts": files,
+        },
+    )
+    context.origin = origin
+    return context
+
+
+@pytest.mark.parametrize(
+    "nodes,accepted",
+    [
+        ("1", True),
+        ("1-1", True),
+        ("0", False),
+        ("0-1", False),
+        ("1-2", False),
+        ("2", False),
+        ("1-1-1", False),
+        (None, False),
+    ],
+)
+def test_actual_pending_single_node_range_is_equivalent_but_not_a_wider_request(
+    recovery, nodes, accepted
+):
+    scheduler = Scheduler(recovery)
+    scheduler.nodes = nodes
+    if accepted:
+        S.recover(Q, recovery.public, "a" * 40, command=scheduler)
+        assert S.verify(Q, recovery.public, command=scheduler)["blocked"]["state"] == "CANCELLED"
+    else:
+        with pytest.raises(ValueError, match="time/CPU/memory"):
+            S.recover(Q, recovery.public, "a" * 40, command=scheduler)
+        assert not any(a[:2] == ["scontrol", "release"] for a in scheduler.calls)
+    assert not scheduler.jobs
+
+
+def test_recovery_releases_same_five_jobs_once_with_original_bytes_unchanged(recovery):
+    before = S.original_files(Q)
+    scheduler = Scheduler(recovery)
+    result = S.recover(Q, recovery.public, "a" * 40, command=scheduler)
+    assert result["job_ids"] == [row[0] for row in S.ORIGINAL_PROBES.values()]
+    assert not scheduler.jobs
+    assert S.original_files(Q) == before
+    assert not (recovery.origin / "smoke-release-intent.json").exists()
+    with pytest.raises(ValueError, match="Existing recovery intent"):
+        S.recover(Q, recovery.public, "a" * 40, command=scheduler)
+    assert len([a for a in scheduler.calls if a[:2] == ["scontrol", "release"]]) == 1
+
+
+@pytest.mark.parametrize(
+    "fault", ["receipt", "script", "old_progress", "plan_binding", "query", "release"]
+)
+def test_recovery_fails_closed_on_drift_or_uncertain_release(recovery, fault):
+    scheduler = Scheduler(recovery)
+    command = scheduler
+    if fault == "receipt":
+        (recovery.origin / "smoke/fail/job.json").write_bytes(b"changed")
+    elif fault == "script":
+        (recovery.origin / "smoke/any/batch.sh").write_bytes(b"changed")
+    elif fault == "old_progress":
+        Q.write(recovery.origin / "smoke-release-intent.json", {})
+    elif fault == "plan_binding":
+        plan = Q.read(recovery.public / "plan.json")
+        plan["recovered_original_receipts"] = {}
+        (recovery.public / "plan.json").unlink()
+        Q.write(recovery.public / "plan.json", plan)
+    elif fault == "query":
+
+        def command(argv):
+            if argv[:2] == ["scontrol", "-o"]:
+                return SimpleNamespace(returncode=1, stdout="", stderr="unavailable")
+            return scheduler(argv)
+    else:
+        scheduler.release_rc = 1
+    with pytest.raises(ValueError):
+        S.recover(Q, recovery.public, "a" * 40, command=command)
+    assert not scheduler.jobs
+    if fault != "release":
+        assert not any(a[:2] == ["scontrol", "release"] for a in scheduler.calls)
+
+
+def test_recovered_script_or_origin_receipt_mutation_rejects_live_qualification(recovery):
+    scheduler = Scheduler(recovery)
+    S.recover(Q, recovery.public, "a" * 40, command=scheduler)
+    (recovery.origin / "smoke/any/batch.sh").write_bytes(b"mutated after release")
+    with pytest.raises(ValueError, match="script drift"):
+        S.verify(Q, recovery.public, command=scheduler)

@@ -28,11 +28,22 @@ New plans remain accepted by the original loader and record controller identity
 separately from engine identity. Planned order is not an actual submission.
 
 The human CLI must declare a storage budget supported by quota or site
-information. The planning minimum is 768 GiB: up to 352 GiB of archival members,
-an allowance for their compressed archives and 64 GiB reserve. Filesystem free
-space must also cover the declared budget. This neither discovers a personal
-quota nor guarantees native solver scratch consumption. Shared 12T free space
-does not prove personal quota.
+information. The initial planning minimum is now 32 GiB, superseding the earlier 768-GiB
+worst-case archive-cap calculation. Completed h300 claims consume about
+110–114 MiB each, including collection. At the largest observed size, 90 such
+claims would occupy about 10.04 GiB; larger-population output is not measured
+yet. Thus 32 GiB is a conservative starting allowance, not a completion promise.
+
+Preparation observes the actual campaign filesystem and personal soft/hard
+quotas with df -P and quota -s. Rounded usage is bounded upward and limits
+downward by one displayed unit. It requires the declared budget plus 8 GiB
+outside reserve below both the soft and hard limit; no grace or hard-limit
+overage is assumed. Before each new construction and each collection, the
+controller checks aggregate campaign growth and keeps 16 GiB of live reserve,
+plus the outside reserve in currently available quota/free space. Reaching a
+reserve stops further admission and preserves all existing outputs. Nothing
+deletes files, changes quotas, redirects evidence or imposes solver file limits.
+These checks do not bound active solver scratch or other jobs' future writes.
 
 Submission creates 93 held jobs and retains intentions, responses, IDs and
 dependencies. Rejection or ambiguous response stops submission without retry
@@ -73,27 +84,37 @@ Final consolidation retains all 90 configuration/result rows, including failure,
 censoring and non-execution. Missing metrics remain missing. Outputs stay in the
 NPAD claim without automatic upload or PDF generation.
 
-## Public qualification
+## Public qualification v2 and preserved v1
 
-Five tiny jobs (one CPU, 1 GiB, five minutes each) are submitted held and verified
-before release. One deliberately fails. Its afterok child must be cancelled
-without execution; its afterany child must run. A separate branch checks afterok
-with two predecessors. These expected negative states are scheduler controls,
-not MILP results.
+The original public v1 stopped before releasing its five held probes because
+Slurm represented one requested node as NumNodes=1-1, while the verifier accepted
+only 1. The exact equivalent values 1 and 1-1 are now accepted; wider or malformed
+ranges are rejected. All other owner/resource/dependency checks remain active.
 
-The main public job uses 16 logical CPUs, 32 GiB and 45 minutes and depends on
-the probes. If Gurobi 2231593 remains active, it also waits for that job to avoid
-unqualified concurrent license use. Submission is human login only.
+Use a new public-v2 claim and source. The recovery verifies the original v1 plan,
+all 15 supplied receipt hashes, five script hashes, absent release/main-job
+markers, current ownership, hold, resources and dependencies. It releases only
+the existing probe IDs 2231659–2231663, once. It never submits replacement probes,
+overwrites v1, or resumes v1's stale executable. New recovery records are written
+only in v2. Ambiguity preserves the same IDs and prevents automatic retry.
 
-Acceptance requires **209 tests, zero failures, errors or skips**: 111 original
-public native controls plus 98 new controls. Fresh public license capacity,
-affinity, allocation, live dependencies, both source components, runtime and
-original receipts are checked. No population solve, installation or pilot
-restart occurs. The 98 passing local tests use simulated scheduler/numerical
-fixtures and do not replace public NPAD qualification.
+One existing probe deliberately fails. Its afterok child must be cancelled
+without starting; the afterany child and two-parent branch must complete.
+NPAD reports requested CPUs in sacct even for a never-started job, so CPU count
+alone is not execution proof. Cancellation requires unknown start, zero elapsed
+time and no batch/step records. The requested/allocated CPU field is retained.
+
+Only one new public qualification job is submitted, with 16 logical CPUs,
+32 GiB and 45 minutes, after the probes. It also waits for Gurobi 2231593 if
+still active, avoiding unqualified concurrent license use. Submission and release
+are human login only. Acceptance requires **243 tests with zero failures, errors
+or skips**: 111 original native public controls plus 132 current controller tests.
+Local Ruff and all 132 tests passed. Actual Slurm recovery, quota observations,
+source/runtime integrity, license capacity and preservation still require NPAD
+qualification. No population solve or pilot restart belongs to this package.
 
 After accepted receipts, source closure and CI, request PR #148 merge approval.
-Only then provide pinned private prepare/submit/release CLI with a declared
-storage budget. The queue can continue after logout. Preemption, failure or a
-rejected gate may prevent continuation; missing cells are not completed samples
-and are not automatically retried.
+Only then provide private prepare/submit/release CLI with a declared storage
+budget. A finite queue can continue after logout, subject to preemption,
+operational, memory and storage gates. Missing cells remain unexecuted or censored
+as appropriate and are never imputed or automatically retried. PDFs are deferred.

@@ -22,8 +22,9 @@ NEW_TESTS = (
     "tests/test_pyomo_serial_queue.py",
     "tests/test_pyomo_serial_collection.py",
     "tests/test_pyomo_serial_smoke.py",
+    "tests/test_pyomo_serial_storage.py",
 )
-NEW_EXPECTED_TESTS = 98
+NEW_EXPECTED_TESTS = 132
 
 
 def preserved(engine):
@@ -63,6 +64,16 @@ def prepare(claim, archive, sha):
     runtime = engine.environment()
     q.require(runtime == old_plan["runtime"], "Existing qualified runtime changed.")
     originals = preserved(engine)
+    recovered = smoke.original_files(q)
+    origin = q.BASE / smoke.ORIGINAL_BASENAME
+    original_plan = q.read(origin / "plan.json")
+    engine.verify_source(origin / "source", original_plan["source_files"])
+    originals.update(recovered)
+    originals.update(
+        {str(origin / "source" / p): h for p, h in original_plan["source_files"].items()}
+    )
+    storage = q.storage_module()
+    storage_at_prepare = storage.observe(q.BASE, command=q.run)
     claim.mkdir(mode=0o700)
     source = claim / "source"
     source.mkdir()
@@ -73,13 +84,15 @@ def prepare(claim, archive, sha):
     )
     controller_files = q.source_files(source)
     plan = {
-        "schema_version": "pyomo-serial-public-v1",
+        "schema_version": "pyomo-serial-public-v2",
         "source_commit": sha,
         "source_files": files,
         "controller_files": controller_files,
         "source_archive_sha256": q.digest(archive),
         "runtime": runtime,
         "original_receipts": originals,
+        "recovered_original_receipts": recovered,
+        "storage_at_prepare": storage_at_prepare,
         "engine_source_files": old_plan["source_files"],
         "engine_commit": q.ENGINE_SHA,
         "python": sys.executable,
@@ -158,6 +171,7 @@ def run(claim, sha):
             "Frozen public test selection differs.",
         )
         engine.verify_source(q.ROOT, plan["source_files"])
+        result["storage_observation"] = q.storage_module().observe(q.BASE, command=q.run)
         engine.verify_source(q.ENGINE_ROOT, plan["engine_source_files"])
         q.require(engine.environment() == plan["runtime"], "Public runtime differs.")
         q.require(len(os.sched_getaffinity(0)) == 16, "Public16-logical-CPU pool required.")
@@ -260,7 +274,7 @@ def run(claim, sha):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("action", choices=("prepare", "smoke", "run"))
+    parser.add_argument("action", choices=("prepare", "recover", "run"))
     parser.add_argument("--claim", type=Path, default=q.PUBLIC)
     parser.add_argument("--source-archive", type=Path)
     parser.add_argument("--source-sha", required=True)
@@ -269,8 +283,8 @@ def main():
         q.require(args.source_archive is not None, "Pinned source archive required.")
         print(json.dumps(prepare(args.claim, args.source_archive, args.source_sha), indent=2))
         return 0
-    if args.action == "smoke":
-        print(json.dumps(smoke.submit(q, args.claim, args.source_sha), indent=2))
+    if args.action == "recover":
+        print(json.dumps(smoke.recover(q, args.claim, args.source_sha), indent=2))
         return 0
     return run(args.claim, args.source_sha)
 

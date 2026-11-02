@@ -38,6 +38,7 @@ def context(tmp_path, monkeypatch):
     monkeypatch.setattr(q, "CAMPAIGN", campaign)
     monkeypatch.setattr(q.os, "getuid", lambda: 123, raising=False)
     monkeypatch.setattr(q, "login", lambda: None)
+    monkeypatch.setattr(q, "check_storage", lambda manifest: None)
     graph = q.schedule()
     attached = {
         "solve:" + cell: {
@@ -657,7 +658,7 @@ def test_login_action_rejects_compute_even_on_correct_python(monkeypatch):
         Q.login()
 
 
-@pytest.mark.parametrize("budget", [None, 0, 767])
+@pytest.mark.parametrize("budget", [None, 0, 31])
 def test_full_queue_requires_explicit_output_budget_before_claim_creation(
     tmp_path, monkeypatch, budget
 ):
@@ -667,3 +668,19 @@ def test_full_queue_requires_explicit_output_budget_before_claim_creation(
     with pytest.raises(ValueError, match="usable output/archive budget"):
         Q.prepare(queue, "a" * 40, storage_budget_gib=budget)
     assert not queue.exists()
+
+
+def test_storage_stop_precedes_scientific_model_construction(context, monkeypatch):
+    node = next(n for n in context.graph["jobs"] if n["kind"] == "scientific_solve")
+    directory = Q.node_directory(context.queue, node)
+    monkeypatch.setattr(
+        Q, "compute_context", lambda *a: (context.manifest, context.engine, {}, node, directory)
+    )
+
+    def stopped(manifest):
+        raise ValueError("Storage reserve reached")
+
+    monkeypatch.setattr(Q, "check_storage", stopped)
+    with pytest.raises(ValueError, match="Storage reserve reached"):
+        Q.health(context.queue, "a" * 40, node["id"])
+    assert not (directory / "health.json").exists()

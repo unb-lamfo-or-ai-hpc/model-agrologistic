@@ -15,7 +15,6 @@ import os
 import platform
 import re
 import shlex
-import shutil
 import subprocess
 import sys
 import time
@@ -28,7 +27,7 @@ BASE = Path("/home/vrrcelestino/model-agrologistic-hygiene-audit")
 ENGINE_ROOT = BASE / ".mvp2-pyomo-scaling-public-v1/source"
 CAMPAIGN = BASE / ".mvp2-pyomo-scaling-native8h-v1"
 QUEUE = BASE / ".mvp2-pyomo-scaling-serial-v1"
-PUBLIC = BASE / ".mvp2-pyomo-scaling-serial-public-v1"
+PUBLIC = BASE / ".mvp2-pyomo-scaling-serial-public-v2"
 ENGINE_SHA = "c493be8cd127c5175fc7eb111400229e64b8e3c0"
 ENGINE_DRIVER_SHA = "27d90f396d50a6778ca7ccb0bf2f11878186ef58e343128aabedcb1057b4ec2d"
 CAMPAIGN_SHA = "3cae7c318032108caa936d70b2883f20d055066f89a78e24610f261832763b58"
@@ -38,9 +37,11 @@ FILES = (
     "scripts/pyomo_serial_collection.py",
     "scripts/qualify_pyomo_serial.py",
     "scripts/pyomo_serial_smoke.py",
+    "scripts/pyomo_serial_storage.py",
     "tests/test_pyomo_serial_queue.py",
     "tests/test_pyomo_serial_collection.py",
     "tests/test_pyomo_serial_smoke.py",
+    "tests/test_pyomo_serial_storage.py",
     SCHEDULE,
 )
 ATTACHED = {
@@ -149,6 +150,19 @@ def load_engine():
 
 def source_files(root=ROOT):
     return {name: digest(root / name) for name in FILES}
+
+
+def storage_module():
+    scripts = str(ROOT / "scripts")
+    if scripts not in sys.path:
+        sys.path.insert(0, scripts)
+    import pyomo_serial_storage
+
+    return pyomo_serial_storage
+
+
+def check_storage(manifest):
+    storage_module().check_growth(BASE, CAMPAIGN, manifest, command=run)
 
 
 def verify_sources(root, expected):
@@ -375,11 +389,11 @@ def prepare(queue, sha, *, storage_budget_gib=None):
     location(queue)
     require(not queue.exists(), "Existing serial claim preserved; never prepare again.")
     require(
-        type(storage_budget_gib) is int and storage_budget_gib >= 768,
-        "Confirm at least768GiB usable output/archive budget from quota/site information.",
+        type(storage_budget_gib) is int and storage_budget_gib >= 32,
+        "Confirm at least32GiB usable output/archive budget from quota/site information.",
     )
-    free_bytes = shutil.disk_usage(BASE).free
-    require(free_bytes >= storage_budget_gib * 1024**3, "Filesystem lacks declared storage budget.")
+    storage = storage_module()
+    initial_storage = storage.check_initial(BASE, storage_budget_gib, command=run)
     engine = load_engine()
     qualification, result = verify_qualification(engine, sha)
     closed_public = accounting(result["job_id"])
@@ -456,9 +470,12 @@ def prepare(queue, sha, *, storage_budget_gib=None):
         "created_at_utc": datetime.now(UTC).isoformat(),
         "unbounded_or_compute_submission_allowed": False,
         "storage_budget_gib_confirmed_in_human_CLI": storage_budget_gib,
-        "filesystem_free_bytes_at_prepare": free_bytes,
+        "storage_at_prepare": initial_storage,
+        "campaign_allocated_bytes_at_prepare": storage.directory_usage(CAMPAIGN),
         "storage_projection_basis": (
-            "88x4GiB original members plus archives and64GiB reserve; scratch not certified"
+            "Measured h300 claims about114MiB;32GiB planning minimum,16GiB live reserve;"
+            " quota and aggregate growth checked before further construction/collection;"
+            " not a guarantee that all90cells fit or a bound on native scratch"
         ),
     }
     write(queue / "queue.json", manifest)
@@ -661,7 +678,7 @@ def verify_pending(fields, job, node, directory, uid, satisfied=()):
     memory = fields.get("MinMemoryNode")
     require(
         fields.get("TimeLimit") == expected_time
-        and fields.get("NumNodes") == "1"
+        and fields.get("NumNodes") in {"1", "1-1"}
         and fields.get("NumCPUs", "").isdigit()
         and int(fields["NumCPUs"]) >= node["requested_cpus"]
         and memory in {str(node["memory_mib"]) + "M", str(node["memory_mib"] // 1024) + "G"},
@@ -816,6 +833,7 @@ def healthy_observation(row):
 
 def health(queue, sha, identity):
     manifest, engine, _, node, directory = compute_context(queue, sha, identity)
+    check_storage(manifest)
     require(node["kind"] == "scientific_solve", "Scientific preflight only.")
     item = engine.c.select(node["cell"])
     prior = required_pilots(engine, item)
@@ -924,7 +942,8 @@ def batch(queue, sha, identity):
 
 
 def collect_stage(queue, sha, identity):
-    _, engine, _, node, directory = compute_context(queue, sha, identity)
+    manifest, engine, _, node, directory = compute_context(queue, sha, identity)
+    check_storage(manifest)
     require(
         node["kind"] in {"pilot_collection_and_gate", "population_collection"},
         "Finite collection stage required.",
@@ -940,6 +959,7 @@ def collect_stage(queue, sha, identity):
     stage_deadline = time.monotonic() + node["wall_seconds"] - 900
     for cell in node["cells"]:
         try:
+            check_storage(manifest)
             require(time.monotonic() < stage_deadline, "Collection stage reserve reached.")
             deadline = min(time.monotonic() + 300, stage_deadline)
             while True:

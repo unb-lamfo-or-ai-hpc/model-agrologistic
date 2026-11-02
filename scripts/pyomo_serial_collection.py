@@ -72,7 +72,8 @@ def collect(engine, claim: Path, source: str, *, command):
             and len(lines) == 1
             and len(lines[0]) >= 4
             and lines[0][1] in {"", "Unknown", "None", "N/A"}
-            and lines[0][2:4] == ["0", "0"]
+            and lines[0][2] == "0"
+            and lines[0][3].isdigit()
         ):
             return {"status": "nonterminal_or_accounting_pending", "job_id": job["job_id"]}
         # No batch/worker ever ran. Keep this queue status outside original
@@ -88,7 +89,11 @@ def collect(engine, claim: Path, source: str, *, command):
             "objective": None,
             "bound": None,
             "common_gap": None,
-            "never_allocated_proof": {"raw": proof.stdout, "query_returncode": 0},
+            "never_started_proof": {
+                "raw": proof.stdout,
+                "query_returncode": 0,
+                "cpu_field_not_used_as_execution_proof": True,
+            },
         }
     wanted = {job["job_id"], job["job_id"] + ".batch"}
     if entry_path.exists():
