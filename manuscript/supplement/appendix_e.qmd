@@ -23,11 +23,12 @@ separately in the complete lists, allowing activation without material capacity
 to be distinguished from a positive investment. This display threshold does
 not replace the original feasibility tolerances.
 
-Each map is presented individually. All maps use the same national extent and
-IBGE boundary dataset, with attribution retained in the image. The paragraph
-following each figure explains its projection and interpretation. Companion
-capacity views use circle area proportional to added candidate plus expansion
-storage, measured in tonnes. Original facility coordinates are retained.
+The individual maps share the national extent, IBGE boundaries and
+Albers equal-area projection. Map lines delineate study areas and do not
+necessarily depict accepted national boundaries. Capacity views use
+circle area proportional to added candidate and expansion storage, in
+tonnes. The OSRM road distances are interpreted through the flow-distance
+tables. The maps show facility positions and investments.
 
 The configurations comprise the deterministic and stochastic warehouse-only
 plans, the larger stochastic populations, the two h215 plans permitting direct
@@ -102,7 +103,11 @@ lists are linked under each configuration. Full-resolution flow-distance tables
 are prepared as compressed CSVs and a separate SQLite database; they are not
 currently public GitHub downloads. Access to their processed-source data and
 redistribution conditions follows the availability statement in Appendix D.
-The software license does not by itself establish unrestricted input-data access.
+The routing pair cache supports workbook preparation. The geographic
+SQLite binds coordinates and decisions for the maps. The separate
+numerical SQLite organizes sparse flows and directed distances from the
+accepted exports and frozen workbook. These stores serve different
+stages and carry separate source identities.
 
 The versioned delivery sequence in Appendix D11 applies to these companions:
 the present GitHub indices identify their contents and original sources,

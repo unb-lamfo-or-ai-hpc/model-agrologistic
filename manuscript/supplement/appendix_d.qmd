@@ -193,6 +193,19 @@ to warehouse count alone.
 
 ## D5 Road distances, network selection and scenarios
 
+The retained audits bind the Brazil OpenStreetMap extract `brazil-260901`
+to its PBF SHA-256
+`95c432ac3219338bbc7d4f5f7d20a5de709348ea928f656efd34609a51319fde`.
+The [NPAD materialization workflow](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/965ca52777a5899163af72c9630e591b82c61de8/scripts/materialize_policy_osrm_population.slurm)
+records Singularity 3.7.1, OSRM 6.0.0, the OCI and SIF image digests and the
+driving-profile digest. It extracts, partitions and customizes the fixed
+road network for multilevel Dijkstra routing. OSRM Table responses give
+directed distances in metres, which are converted to kilometres for the
+workbook. The ordered coordinate pair, dataset and profile identify a
+cache entry. The historical workbooks can reuse those entries directly.
+The [materialization audit index](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/965ca52777a5899163af72c9630e591b82c61de8/docs/evidence/osrm_release_preparation_20261101.json)
+binds the original dataset and each frozen workbook.
+
 OSRM materialization supplies directed road distances for the fixed Brazil
 road dataset and driving profile. The retained h215, h300, h400 and h500
 workbooks contain respectively 63289, 113269, 190569 and 287869 directed
@@ -456,24 +469,20 @@ distinguish these locally prepared files from the existing published deposit.
 They identify the graph separately from the two positive-flow companions;
 they do not claim that a new Zenodo download is already available.
 
-## D11 Versioned data release plan
+## D11 Data access and versioned evidence
 
-The existing Zenodo dataset, version 0.2.0
-[@celestino2026dataset], remains the cited public historical release.
-Its current [public metadata](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/82c2c19ce619f1251043829b10a4702ac88a7cdd/docs/evidence/zenodo_public_metadata_20261102.json)
-lists twelve files with open access. Rechecking those metadata is distinct from
-downloading every archive again or extending its contents.
+Zenodo 0.2.0 [@celestino2026dataset] is the public release cited in the
+article. It contains the historical inputs, population records, road audits
+and inventories listed in the [deposit record](https://doi.org/10.5281/zenodo.22751909).
+Complete derivative distance tables, admissible graphs and solution
+companions have separate source identities. Their access status and
+redistribution conditions are recorded in the
+[repository inventory](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/2c1ad568bbc8eb0ee45b42ad59b5a3a442e0ab3c/data/manifests/zenodo_release_plan_20261102.json).
+The derivative files remain in preparation, with source notices and
+private-field checks before public deposit.
 
-The [next-version plan](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/2c1ad568bbc8eb0ee45b42ad59b5a3a442e0ab3c/data/manifests/zenodo_release_plan_20261102.json)
-links the existing release to the
-[initial 41-file inventory](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/82c2c19ce619f1251043829b10a4702ac88a7cdd/data/manifests/zenodo_next_release_inventory_20261101.json)
-and its [readiness register](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/82c2c19ce619f1251043829b10a4702ac88a7cdd/data/manifests/zenodo_release_readiness_20261102.json).
-These 450,057,392 bytes are prepared locally. They comprise 28 historical
-companions, four complete directed road-distance tables, seven companions
-for the matched h300 pair and two files describing its selected admissible
-graph. No new DOI, upload or anonymous download of these derivatives has
-been completed. Further population graphs and reviewed original outputs
-are separately identified preparation tasks.
+Table D.8 distinguishes repository metadata from the versioned numerical
+records they describe.
 
 | Data object | GitHub role | Versioned numerical archive role |
 | --- | --- | --- |
@@ -485,17 +494,7 @@ are separately identified preparation tasks.
 
 : Table D.8. Complementary repository and versioned-data delivery roles.
 
-Before a new version is published, each asset requires its source notices,
-attribution and private-field review, exact byte size and SHA-256, coordinate
-and unit dictionary, and the source used to derive any aggregate.
-Sanitized copies receive new identities and an omission/source mapping;
-original experimental packages remain unchanged. Software licensing does
-not replace the applicable notices for upstream datasets.
-
-The release sequence is preparation, asset review, publication of a new
-version related to 0.2.0, and anonymous download verification against the
-manifest. A new DOI or download URL enters the article only after those
-steps. A later campaign release will account for all 90 runs and
-the products actually returned, including time censoring, execution failure
-and non-execution. Missing decisions or objective values are not fabricated.
-The current prepared inventory is not a claim that the campaign is complete.
+Source-specific terms govern sharing of external inputs and their
+derivatives. The software license applies to the project code. Published
+data, review summaries and experimental originals retain their own
+identifiers and access conditions.

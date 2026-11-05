@@ -1,0 +1,1363 @@
+{
+  "schema_version": "partial-pyomo-terminal-readback-review-v1",
+  "report_sha256": "42ecf0c5a2857c9998fc9e32e689d4d8cea3612c4be4a9fd174a9c72227d0a00",
+  "read_at_utc": "2026-11-05T20:39:43.143598+00:00",
+  "controller_commit": "334827d5e3669b4fcdf2801fd4cea466e5a71d06",
+  "engine_commit": "c493be8cd127c5175fc7eb111400229e64b8e3c0",
+  "queue_sha256": "d329b320321687298d2a63cb5bec12b5e1d599687c9a47ac9070bca9360f8199",
+  "submitted_sha256": "3d24c7dfd1c5c0096b6a908742d29929506c3ccb9986c930437bb53a3787ffa1",
+  "released_sha256": "2f77561e3596915fc4fd254e576187b38fdda6b313ae5c5c0235223adefbb150",
+  "scheduler_counts_new_jobs": {
+    "COMPLETED": 23,
+    "RUNNING": 1,
+    "PENDING": 69
+  },
+  "solve_evidence_counts": {
+    "official_collection_receipt": 2,
+    "terminal_preview_awaiting_official_collection": 22,
+    "no_collected_result_visible": 64
+  },
+  "observed_matrix_sha256": "b3c92c54f12ad710fffc4983a832c4e503a5b84e4615c51abcf61a1c0927e1ed",
+  "collection_scope": "Readback of existing metadata. Original archives and remaining stage receipts require the scheduled official collection. Preview validation labels were copied from the original validation metadata.",
+  "accepted_h300_pilot_stage": {
+    "job_id": "2232351",
+    "stage_result_sha256": "34235016c06a8ee1f119c7a6cafa30f862f12c796824ff74d0f41847f4b97339",
+    "population_gate": {
+      "automatic_follow_on_allowed": false,
+      "hardware_class_sha256": "32629b1e2a3e3eb680f7f45d987f722fbd913f557e4c3dc8a3e0902b4bae0260",
+      "matrix_and_bounds": [
+        "b3c92c54f12ad710fffc4983a832c4e503a5b84e4615c51abcf61a1c0927e1ed",
+        "2154ded9cd9c78a2f8e88303c7148499da1e5985e74d53c8a69f37f6e890e04e"
+      ],
+      "pilot_ids": [
+        "h300-w-sto-gurobi-t1-r1",
+        "h300-w-sto-gurobi-t16-r1",
+        "h300-w-sto-highs-t1-r1",
+        "h300-w-sto-highs-t16-r1"
+      ],
+      "population": 300,
+      "status": "observed_pilots_qualified"
+    }
+  },
+  "existing_official_pilots": [
+    {
+      "job_id": "2231593",
+      "cell": "h300-w-sto-gurobi-t16-r1",
+      "collection_sha256": "e83da34b7a950ab04f6d57fa80bd34b3d10d82657ba8431409427be181b8e69d",
+      "archive_sha256_reported": "38aa69a792041fcdf4353f8678e665376e566c1b0b675ddad3c600722b5e021a",
+      "classification": "validated_feasible",
+      "objective": 9289108634158.754,
+      "bound": 9288725890686.93,
+      "common_gap": 0.00004120346600498994,
+      "timings": {
+        "artifact_export_seconds": 5.238687187025789,
+        "data_read_seconds": 0.0000015110126696527004,
+        "end_to_end_seconds": 6905.039427854004,
+        "independent_validation_seconds": 3.3878627360099927,
+        "matrix_identity_seconds": 843.9513373219525,
+        "model_build_seconds": 1980.7228910310077,
+        "optimization_seconds": 4374.919429937028,
+        "result_extraction_seconds": 402.33109200699255,
+        "solve_sequence_wall_seconds": 6858.985240072012,
+        "solver_reported_runtime_seconds": 4313.900642871857,
+        "solver_transfer_seconds": 879.225403917022
+      },
+      "operational_receipts_closed": true
+    },
+    {
+      "job_id": "2231591",
+      "cell": "h300-w-sto-highs-t16-r1",
+      "collection_sha256": "1094a600732aeecceee9cc7f9e818fbe63bdd172b7a7b39fba0d23659ebd9b70",
+      "archive_sha256_reported": "8cf39b689d5ff375f3fd3bedfc06194688a4cba54a4580434cfad465582b05ae",
+      "classification": "no_usable_incumbent",
+      "objective": null,
+      "bound": 3917886.5099487305,
+      "common_gap": null,
+      "timings": {
+        "artifact_export_seconds": 0.22357100807130337,
+        "data_read_seconds": 0.0000012647360563278198,
+        "end_to_end_seconds": 30760.235435188748,
+        "independent_validation_seconds": 4.6412554839625955,
+        "matrix_identity_seconds": 827.5331652797759,
+        "model_build_seconds": 1805.2995544821024,
+        "optimization_seconds": 28910.174210201018,
+        "solve_sequence_wall_seconds": 30718.1447260594,
+        "solver_reported_runtime_seconds": 28837.772685050964,
+        "solver_transfer_seconds": 713.1152957016602
+      },
+      "operational_receipts_closed": true
+    }
+  ],
+  "h300_cells_awaiting_terminal_products": [
+    {
+      "job_id": "2232371",
+      "cell": "h300-w-sto-highs-t16-r3",
+      "accounting": {
+        "state": "RUNNING",
+        "elapsed_raw": "8805",
+        "exit_code": "0:0",
+        "max_rss_raw": null,
+        "alloc_cpus": "64"
+      }
+    },
+    {
+      "job_id": "2232372",
+      "cell": "h300-w-sto-highs-t1-r3",
+      "accounting": {
+        "state": "PENDING",
+        "elapsed_raw": "0",
+        "exit_code": "0:0",
+        "max_rss_raw": null,
+        "alloc_cpus": "24"
+      }
+    },
+    {
+      "job_id": "2232374",
+      "cell": "h300-w-sto-highs-t2-r3",
+      "accounting": {
+        "state": "PENDING",
+        "elapsed_raw": "0",
+        "exit_code": "0:0",
+        "max_rss_raw": null,
+        "alloc_cpus": "24"
+      }
+    },
+    {
+      "job_id": "2232377",
+      "cell": "h300-w-sto-highs-t4-r3",
+      "accounting": {
+        "state": "PENDING",
+        "elapsed_raw": "0",
+        "exit_code": "0:0",
+        "max_rss_raw": null,
+        "alloc_cpus": "24"
+      }
+    }
+  ],
+  "preview_groups": [
+    {
+      "solver": "gurobi",
+      "thread_ceiling": 1,
+      "preview_rows": 2,
+      "validation_accepted": 2,
+      "validated_and_gap_at_most_1_percent": 2,
+      "limit_without_incumbent": 0,
+      "native_minutes_range": [
+        48.151295348008475,
+        61.49851496616999
+      ],
+      "native_minutes_median": 54.82490515708923
+    },
+    {
+      "solver": "gurobi",
+      "thread_ceiling": 2,
+      "preview_rows": 3,
+      "validation_accepted": 3,
+      "validated_and_gap_at_most_1_percent": 3,
+      "limit_without_incumbent": 0,
+      "native_minutes_range": [
+        51.92620436747869,
+        68.59573641618093
+      ],
+      "native_minutes_median": 66.17820023298263
+    },
+    {
+      "solver": "gurobi",
+      "thread_ceiling": 4,
+      "preview_rows": 3,
+      "validation_accepted": 3,
+      "validated_and_gap_at_most_1_percent": 3,
+      "limit_without_incumbent": 0,
+      "native_minutes_range": [
+        56.399374981721245,
+        76.9850925008456
+      ],
+      "native_minutes_median": 65.13922623395919
+    },
+    {
+      "solver": "gurobi",
+      "thread_ceiling": 8,
+      "preview_rows": 3,
+      "validation_accepted": 3,
+      "validated_and_gap_at_most_1_percent": 3,
+      "limit_without_incumbent": 0,
+      "native_minutes_range": [
+        93.11091423432032,
+        93.85243190129599
+      ],
+      "native_minutes_median": 93.29199345111847
+    },
+    {
+      "solver": "gurobi",
+      "thread_ceiling": 16,
+      "preview_rows": 2,
+      "validation_accepted": 2,
+      "validated_and_gap_at_most_1_percent": 2,
+      "limit_without_incumbent": 0,
+      "native_minutes_range": [
+        96.39476133187613,
+        101.34123151699701
+      ],
+      "native_minutes_median": 98.86799642443657
+    },
+    {
+      "solver": "highs",
+      "thread_ceiling": 1,
+      "preview_rows": 1,
+      "validation_accepted": 1,
+      "validated_and_gap_at_most_1_percent": 1,
+      "limit_without_incumbent": 0,
+      "native_minutes_range": [
+        392.37361133495966,
+        392.37361133495966
+      ],
+      "native_minutes_median": 392.37361133495966
+    },
+    {
+      "solver": "highs",
+      "thread_ceiling": 2,
+      "preview_rows": 2,
+      "validation_accepted": 0,
+      "validated_and_gap_at_most_1_percent": 0,
+      "limit_without_incumbent": 2,
+      "native_minutes_range": [
+        480.6207251429558,
+        480.7913243611654
+      ],
+      "native_minutes_median": 480.70602475206056
+    },
+    {
+      "solver": "highs",
+      "thread_ceiling": 4,
+      "preview_rows": 2,
+      "validation_accepted": 0,
+      "validated_and_gap_at_most_1_percent": 0,
+      "limit_without_incumbent": 2,
+      "native_minutes_range": [
+        480.6114964763323,
+        480.7993088801702
+      ],
+      "native_minutes_median": 480.7054026782513
+    },
+    {
+      "solver": "highs",
+      "thread_ceiling": 8,
+      "preview_rows": 3,
+      "validation_accepted": 0,
+      "validated_and_gap_at_most_1_percent": 0,
+      "limit_without_incumbent": 3,
+      "native_minutes_range": [
+        480.6159083286921,
+        480.6295882264773
+      ],
+      "native_minutes_median": 480.6179335196813
+    },
+    {
+      "solver": "highs",
+      "thread_ceiling": 16,
+      "preview_rows": 1,
+      "validation_accepted": 0,
+      "validated_and_gap_at_most_1_percent": 0,
+      "limit_without_incumbent": 1,
+      "native_minutes_range": [
+        480.60435694853464,
+        480.60435694853464
+      ],
+      "native_minutes_median": 480.60435694853464
+    }
+  ],
+  "preview_rows": [
+    {
+      "job_id": "2232352",
+      "cell": "h300-w-sto-highs-t4-r1",
+      "solver": "highs",
+      "thread_ceiling": 4,
+      "repetition": 1,
+      "source_scope": "terminal_preview_awaiting_official_collection",
+      "scheduler": {
+        "state": "COMPLETED",
+        "elapsed_raw": "31299",
+        "exit_code": "0:0",
+        "max_rss_raw": null,
+        "alloc_cpus": "64"
+      },
+      "worker_steps": {
+        "2232352.0": {
+          "state": "COMPLETED",
+          "elapsed_raw": "31291",
+          "exit_code": "0:0",
+          "max_rss_raw": "93196520K",
+          "alloc_cpus": "16"
+        }
+      },
+      "native_termination": "TerminationCondition.maxTimeLimit",
+      "validation": {
+        "status": "rejected",
+        "failed_check_count": 41151
+      },
+      "objective_brl": null,
+      "dual_bound_brl": 3917886.5099487305,
+      "native_gap": null,
+      "common_gap_recomputed": null,
+      "native_runtime_seconds": 28847.95853281021,
+      "phase_timings": {
+        "matrix_identity_seconds": 921.7237836588174,
+        "model_build_seconds": 2099.5829951511696,
+        "optimization_seconds": 28963.013463022187,
+        "solver_reported_runtime_seconds": 28847.95853281021,
+        "solver_transfer_seconds": 858.856412306428
+      },
+      "ordered_matrix_sha256": "b3c92c54f12ad710fffc4983a832c4e503a5b84e4615c51abcf61a1c0927e1ed",
+      "metadata_sha256": {
+        "job": "7fb9b9c684a72471ba3f44f844714db0c8c2b3b72963884c0c25e19b2f6dbb3d",
+        "native": "72171a3bad7a741ce811480f860277704b49bef1f7b0f28df0adab813ad1d083",
+        "completion": "4ac986b77cb945885c5fad7df2c2bf8ae16563e25c68ca2403af2aa5164ad494",
+        "validation": "c28fd9d10efaab7a8cf67c4495413c15166195f0f5f50d346a13b975e15c7330",
+        "summary": "8ad14f7772c71ff1f0267c86ece6681b3c5db13f81e7aa82f89d972518cbc1a4"
+      }
+    },
+    {
+      "job_id": "2232353",
+      "cell": "h300-w-sto-gurobi-t4-r1",
+      "solver": "gurobi",
+      "thread_ceiling": 4,
+      "repetition": 1,
+      "source_scope": "terminal_preview_awaiting_official_collection",
+      "scheduler": {
+        "state": "COMPLETED",
+        "elapsed_raw": "6997",
+        "exit_code": "0:0",
+        "max_rss_raw": null,
+        "alloc_cpus": "64"
+      },
+      "worker_steps": {
+        "2232353.0": {
+          "state": "COMPLETED",
+          "elapsed_raw": "6967",
+          "exit_code": "0:0",
+          "max_rss_raw": "105750520K",
+          "alloc_cpus": "16"
+        }
+      },
+      "native_termination": "TerminationCondition.optimal",
+      "validation": {
+        "status": "accepted",
+        "failed_check_count": 0
+      },
+      "objective_brl": 9289108634158.756,
+      "dual_bound_brl": 9288725916082.922,
+      "native_gap": 0.00004120073205199956,
+      "common_gap_recomputed": 0.000041200732051579056,
+      "native_runtime_seconds": 3908.353574037552,
+      "phase_timings": {
+        "matrix_identity_seconds": 921.0703629559721,
+        "model_build_seconds": 2231.8094817160163,
+        "optimization_seconds": 3984.070568441006,
+        "result_extraction_seconds": 410.7322105469648,
+        "solver_reported_runtime_seconds": 3908.353574037552,
+        "solver_transfer_seconds": 1032.086639998015
+      },
+      "ordered_matrix_sha256": "b3c92c54f12ad710fffc4983a832c4e503a5b84e4615c51abcf61a1c0927e1ed",
+      "metadata_sha256": {
+        "job": "6a4eefd33c94c41b5571b4989d2bc6d314fc55e04be36e7fcb1a5d0a8640fd35",
+        "native": "5f965c9f42c8310b987dd0603ea734682ecd6fb665174012bf9e6ed93e7b381f",
+        "completion": "b0a5c8765527be1b2c1f52843f7680d04cbc627b9ccf6055edf5b7d82a8e378b",
+        "validation": "6e3f4e230a964cf6b09fb665b4bb4fdfa9ab5d2edf287000f355b6a27d532f1c",
+        "summary": "87275c0a6eba8e93e7fb870d7be4c63f0b994b2464a9644efd6573134a159331"
+      }
+    },
+    {
+      "job_id": "2232354",
+      "cell": "h300-w-sto-highs-t2-r1",
+      "solver": "highs",
+      "thread_ceiling": 2,
+      "repetition": 1,
+      "source_scope": "terminal_preview_awaiting_official_collection",
+      "scheduler": {
+        "state": "COMPLETED",
+        "elapsed_raw": "30958",
+        "exit_code": "0:0",
+        "max_rss_raw": null,
+        "alloc_cpus": "64"
+      },
+      "worker_steps": {
+        "2232354.0": {
+          "state": "COMPLETED",
+          "elapsed_raw": "30944",
+          "exit_code": "0:0",
+          "max_rss_raw": "91183452K",
+          "alloc_cpus": "16"
+        }
+      },
+      "native_termination": "TerminationCondition.maxTimeLimit",
+      "validation": {
+        "status": "rejected",
+        "failed_check_count": 41151
+      },
+      "objective_brl": null,
+      "dual_bound_brl": 3917886.5099487305,
+      "native_gap": null,
+      "common_gap_recomputed": null,
+      "native_runtime_seconds": 28847.479461669922,
+      "phase_timings": {
+        "matrix_identity_seconds": 847.5576854357496,
+        "model_build_seconds": 1824.5007219519466,
+        "optimization_seconds": 28918.716346944682,
+        "solver_reported_runtime_seconds": 28847.479461669922,
+        "solver_transfer_seconds": 715.5490665463731
+      },
+      "ordered_matrix_sha256": "b3c92c54f12ad710fffc4983a832c4e503a5b84e4615c51abcf61a1c0927e1ed",
+      "metadata_sha256": {
+        "job": "6a3c90ccfcb2ca13c8b9fedba255985f800948ab5a492e0cb03b3ffcc709e63a",
+        "native": "b9de7de89c52345c2e118b9088d6a7eb39cd637c2ae5f6731ed965940d9fd4a8",
+        "completion": "3682fe94d0efb197f66ccf66d29301965c1fa734c114dc469c30eb94f070023b",
+        "validation": "8754277cdefb199b402c5cd04a4d877a54a36b56eeea2d6d55edc5ea8c6c1415",
+        "summary": "cec28a00c90c4878e78ca79a96baff0984facbe905c245be87dcb27c0a35b1f5"
+      }
+    },
+    {
+      "job_id": "2232355",
+      "cell": "h300-w-sto-gurobi-t2-r1",
+      "solver": "gurobi",
+      "thread_ceiling": 2,
+      "repetition": 1,
+      "source_scope": "terminal_preview_awaiting_official_collection",
+      "scheduler": {
+        "state": "COMPLETED",
+        "elapsed_raw": "6734",
+        "exit_code": "0:0",
+        "max_rss_raw": null,
+        "alloc_cpus": "64"
+      },
+      "worker_steps": {
+        "2232355.0": {
+          "state": "COMPLETED",
+          "elapsed_raw": "6715",
+          "exit_code": "0:0",
+          "max_rss_raw": "86516836K",
+          "alloc_cpus": "16"
+        }
+      },
+      "native_termination": "TerminationCondition.optimal",
+      "validation": {
+        "status": "accepted",
+        "failed_check_count": 0
+      },
+      "objective_brl": 9289108634158.756,
+      "dual_bound_brl": 9288725763408.1,
+      "native_gap": 0.00004121716794808298,
+      "common_gap_recomputed": 0.000041217167947452226,
+      "native_runtime_seconds": 3970.692013978958,
+      "phase_timings": {
+        "matrix_identity_seconds": 835.5192965050228,
+        "model_build_seconds": 1934.2469450029312,
+        "optimization_seconds": 4024.955363044981,
+        "result_extraction_seconds": 424.66752945107874,
+        "solver_reported_runtime_seconds": 3970.692013978958,
+        "solver_transfer_seconds": 848.9577916479902
+      },
+      "ordered_matrix_sha256": "b3c92c54f12ad710fffc4983a832c4e503a5b84e4615c51abcf61a1c0927e1ed",
+      "metadata_sha256": {
+        "job": "dc0d27dffe1562d93cfe8e445f8642b996ef90bb699f4e41178cbbaecfc26798",
+        "native": "d228229051a9f3d2869076ff47869c98b50230a628f06ab9d39a16bfc3456d19",
+        "completion": "c81fb4185b310b6cb141489923fa6cd02f2479ebecbb3d43bbc2a380a2d90276",
+        "validation": "25bc8c39ac21abad6a6289893f7720b225a4a98290b3279b78189b612c65acaf",
+        "summary": "1a21b4fbf5fe2a368a81f759098cefc3f960bda0d656eca3254983aec41dc26f"
+      }
+    },
+    {
+      "job_id": "2232356",
+      "cell": "h300-w-sto-gurobi-t8-r1",
+      "solver": "gurobi",
+      "thread_ceiling": 8,
+      "repetition": 1,
+      "source_scope": "terminal_preview_awaiting_official_collection",
+      "scheduler": {
+        "state": "COMPLETED",
+        "elapsed_raw": "8342",
+        "exit_code": "0:0",
+        "max_rss_raw": null,
+        "alloc_cpus": "64"
+      },
+      "worker_steps": {
+        "2232356.0": {
+          "state": "COMPLETED",
+          "elapsed_raw": "8327",
+          "exit_code": "0:0",
+          "max_rss_raw": "101194500K",
+          "alloc_cpus": "16"
+        }
+      },
+      "native_termination": "TerminationCondition.optimal",
+      "validation": {
+        "status": "accepted",
+        "failed_check_count": 0
+      },
+      "objective_brl": 9289108634158.754,
+      "dual_bound_brl": 9288725890686.93,
+      "native_gap": 0.00004120346600477969,
+      "common_gap_recomputed": 0.00004120346600498994,
+      "native_runtime_seconds": 5597.519607067108,
+      "phase_timings": {
+        "matrix_identity_seconds": 837.4572597829392,
+        "model_build_seconds": 1938.5620708080241,
+        "optimization_seconds": 5651.409413064946,
+        "result_extraction_seconds": 417.19752742594574,
+        "solver_reported_runtime_seconds": 5597.519607067108,
+        "solver_transfer_seconds": 852.0781706990674
+      },
+      "ordered_matrix_sha256": "b3c92c54f12ad710fffc4983a832c4e503a5b84e4615c51abcf61a1c0927e1ed",
+      "metadata_sha256": {
+        "job": "891def772d27e68dba3d2883d74db4d5bf1528663e120676a4f224b273e68550",
+        "native": "c7187eeb52ec5c3fec4fdbec1d571fdbb53d20d3375f5636fd85f5d11730a46f",
+        "completion": "e997147617bed46a6b8d2c29299011a225a8872db5761a810e34c089ff5e1901",
+        "validation": "6c0c2ab8300dd7e04f11d626f510e21bec45a264ff0c5b401fb3fbb491cf78d7",
+        "summary": "4f55453bb8576de536279a39f417d46ce01a127ee8c8353f6520f22cf68731ba"
+      }
+    },
+    {
+      "job_id": "2232357",
+      "cell": "h300-w-sto-highs-t8-r1",
+      "solver": "highs",
+      "thread_ceiling": 8,
+      "repetition": 1,
+      "source_scope": "terminal_preview_awaiting_official_collection",
+      "scheduler": {
+        "state": "COMPLETED",
+        "elapsed_raw": "30963",
+        "exit_code": "0:0",
+        "max_rss_raw": null,
+        "alloc_cpus": "64"
+      },
+      "worker_steps": {
+        "2232357.0": {
+          "state": "COMPLETED",
+          "elapsed_raw": "30946",
+          "exit_code": "0:0",
+          "max_rss_raw": "91539660K",
+          "alloc_cpus": "16"
+        }
+      },
+      "native_termination": "TerminationCondition.maxTimeLimit",
+      "validation": {
+        "status": "rejected",
+        "failed_check_count": 41151
+      },
+      "objective_brl": null,
+      "dual_bound_brl": 3917886.5099487305,
+      "native_gap": null,
+      "common_gap_recomputed": null,
+      "native_runtime_seconds": 28837.076011180878,
+      "phase_timings": {
+        "matrix_identity_seconds": 864.5313974809833,
+        "model_build_seconds": 1843.2675130259013,
+        "optimization_seconds": 28909.376414985047,
+        "solver_reported_runtime_seconds": 28837.076011180878,
+        "solver_transfer_seconds": 713.735517374007
+      },
+      "ordered_matrix_sha256": "b3c92c54f12ad710fffc4983a832c4e503a5b84e4615c51abcf61a1c0927e1ed",
+      "metadata_sha256": {
+        "job": "512f9792e209e5c0e6160f1c48d0c4eec401ac74882a77bbf88f525704f32208",
+        "native": "8e82c34c284abe896e70de4fdf26973d4077356b848f9eeafb3917173b0d0421",
+        "completion": "b0b8ee53a518e4f951809f5e69f580ebfcebd43467841210eeffc1e151addc5e",
+        "validation": "a7274a8e7db08aa39109d0a5ee737b55e662d439dffaa607132bc3f1de6931ed",
+        "summary": "16ec6980708740cc40ea6c06e1f8ab25631addcc2fbedaa265c97a235703a723"
+      }
+    },
+    {
+      "job_id": "2232358",
+      "cell": "h300-w-sto-highs-t2-r2",
+      "solver": "highs",
+      "thread_ceiling": 2,
+      "repetition": 2,
+      "source_scope": "terminal_preview_awaiting_official_collection",
+      "scheduler": {
+        "state": "COMPLETED",
+        "elapsed_raw": "30918",
+        "exit_code": "0:0",
+        "max_rss_raw": null,
+        "alloc_cpus": "64"
+      },
+      "worker_steps": {
+        "2232358.0": {
+          "state": "COMPLETED",
+          "elapsed_raw": "30884",
+          "exit_code": "0:0",
+          "max_rss_raw": "93311576K",
+          "alloc_cpus": "16"
+        }
+      },
+      "native_termination": "TerminationCondition.maxTimeLimit",
+      "validation": {
+        "status": "rejected",
+        "failed_check_count": 41151
+      },
+      "objective_brl": null,
+      "dual_bound_brl": 3917886.5099487305,
+      "native_gap": null,
+      "common_gap_recomputed": null,
+      "native_runtime_seconds": 28837.243508577347,
+      "phase_timings": {
+        "matrix_identity_seconds": 825.8332382540684,
+        "model_build_seconds": 1781.4745553979883,
+        "optimization_seconds": 28910.009768566,
+        "solver_reported_runtime_seconds": 28837.243508577347,
+        "solver_transfer_seconds": 699.2000364870764
+      },
+      "ordered_matrix_sha256": "b3c92c54f12ad710fffc4983a832c4e503a5b84e4615c51abcf61a1c0927e1ed",
+      "metadata_sha256": {
+        "job": "3a3b9cb928bf9ec85c6c51e2f1eb95f5bd9c222c1083fe8297961ce6367cde9d",
+        "native": "22e9f1b04dfa99575d638d51cabe10a1d9fe83ec73edc91e6745aa3a858b28bd",
+        "completion": "dd39224fc96c942c0d470615a0e578aadf6f9f445ed9000c5add8008d2a25d05",
+        "validation": "82dd487a8cfa186b052ecb35176cfadaae5ef73474608582412504cb15c60623",
+        "summary": "5b28c3dd8721f5f839f59f5ef48efda97303151787db1141963c99c9144da42d"
+      }
+    },
+    {
+      "job_id": "2232359",
+      "cell": "h300-w-sto-gurobi-t2-r2",
+      "solver": "gurobi",
+      "thread_ceiling": 2,
+      "repetition": 2,
+      "source_scope": "terminal_preview_awaiting_official_collection",
+      "scheduler": {
+        "state": "COMPLETED",
+        "elapsed_raw": "6864",
+        "exit_code": "0:0",
+        "max_rss_raw": null,
+        "alloc_cpus": "64"
+      },
+      "worker_steps": {
+        "2232359.0": {
+          "state": "COMPLETED",
+          "elapsed_raw": "6852",
+          "exit_code": "0:0",
+          "max_rss_raw": "86522052K",
+          "alloc_cpus": "16"
+        }
+      },
+      "native_termination": "TerminationCondition.optimal",
+      "validation": {
+        "status": "accepted",
+        "failed_check_count": 0
+      },
+      "objective_brl": 9289108634158.756,
+      "dual_bound_brl": 9288725763408.1,
+      "native_gap": 0.00004121716794808298,
+      "common_gap_recomputed": 0.000041217167947452226,
+      "native_runtime_seconds": 4115.744184970856,
+      "phase_timings": {
+        "matrix_identity_seconds": 840.9735412119189,
+        "model_build_seconds": 1936.3777618720196,
+        "optimization_seconds": 4169.757211421966,
+        "result_extraction_seconds": 425.8611719229957,
+        "solver_reported_runtime_seconds": 4115.744184970856,
+        "solver_transfer_seconds": 846.8093647449277
+      },
+      "ordered_matrix_sha256": "b3c92c54f12ad710fffc4983a832c4e503a5b84e4615c51abcf61a1c0927e1ed",
+      "metadata_sha256": {
+        "job": "3d95e86a62e5f9a558b3a8d328a1385a2c2f95e4bfce7c07e48e89baf2e6a592",
+        "native": "9555ba80423ad9812946622516595fb0b7abcb1baf14b93ffb7bf43f85f2c4ad",
+        "completion": "34f0f66653a2e4b5f3dde67a95de25ea16b5e98d7c7bc23b07a8686f6989cc00",
+        "validation": "ffe277fa23fb2a9621e967cf8456531fbedd8fa7e8e13aae364f8b63c661a2b7",
+        "summary": "2e5da49f0f3ccfe9ecc8ec4883fab8c56a90d6eb74c2c5e3c20c6f3da490175e"
+      }
+    },
+    {
+      "job_id": "2232360",
+      "cell": "h300-w-sto-gurobi-t4-r2",
+      "solver": "gurobi",
+      "thread_ceiling": 4,
+      "repetition": 2,
+      "source_scope": "terminal_preview_awaiting_official_collection",
+      "scheduler": {
+        "state": "COMPLETED",
+        "elapsed_raw": "7406",
+        "exit_code": "0:0",
+        "max_rss_raw": null,
+        "alloc_cpus": "64"
+      },
+      "worker_steps": {
+        "2232360.0": {
+          "state": "COMPLETED",
+          "elapsed_raw": "7393",
+          "exit_code": "0:0",
+          "max_rss_raw": "103988448K",
+          "alloc_cpus": "16"
+        }
+      },
+      "native_termination": "TerminationCondition.optimal",
+      "validation": {
+        "status": "accepted",
+        "failed_check_count": 0
+      },
+      "objective_brl": 9289108634158.756,
+      "dual_bound_brl": 9288725916082.922,
+      "native_gap": 0.00004120073205199956,
+      "common_gap_recomputed": 0.000041200732051579056,
+      "native_runtime_seconds": 4619.1055500507355,
+      "phase_timings": {
+        "matrix_identity_seconds": 854.3977126709651,
+        "model_build_seconds": 1973.7983777249465,
+        "optimization_seconds": 4673.891655202024,
+        "result_extraction_seconds": 422.62501877197064,
+        "solver_reported_runtime_seconds": 4619.1055500507355,
+        "solver_transfer_seconds": 862.7080434920499
+      },
+      "ordered_matrix_sha256": "b3c92c54f12ad710fffc4983a832c4e503a5b84e4615c51abcf61a1c0927e1ed",
+      "metadata_sha256": {
+        "job": "cf36ebed04a08ce76a5c36ac7c6642b2fbd44d03563d5deb30be98f11f8d3aa7",
+        "native": "aec88d57d42ebd10be1cad12a3c60a659eb3bed312c001a32221205e25fc123f",
+        "completion": "2a80156db7737dda247a671bad78766b9e787ebfcda3082c36f840767f234583",
+        "validation": "784f0b8d79e584dd3494ff12f7fe37c45ef7572720670dbb56d560c524f31520",
+        "summary": "581a4c9fe8c3e67da14b0d316382292253317d2d5a91df196192f83d93516c43"
+      }
+    },
+    {
+      "job_id": "2232361",
+      "cell": "h300-w-sto-highs-t4-r2",
+      "solver": "highs",
+      "thread_ceiling": 4,
+      "repetition": 2,
+      "source_scope": "terminal_preview_awaiting_official_collection",
+      "scheduler": {
+        "state": "COMPLETED",
+        "elapsed_raw": "30916",
+        "exit_code": "0:0",
+        "max_rss_raw": null,
+        "alloc_cpus": "64"
+      },
+      "worker_steps": {
+        "2232361.0": {
+          "state": "COMPLETED",
+          "elapsed_raw": "30898",
+          "exit_code": "0:0",
+          "max_rss_raw": "93500328K",
+          "alloc_cpus": "16"
+        }
+      },
+      "native_termination": "TerminationCondition.maxTimeLimit",
+      "validation": {
+        "status": "rejected",
+        "failed_check_count": 41151
+      },
+      "objective_brl": null,
+      "dual_bound_brl": 3917886.5099487305,
+      "native_gap": null,
+      "common_gap_recomputed": null,
+      "native_runtime_seconds": 28836.68978857994,
+      "phase_timings": {
+        "matrix_identity_seconds": 846.6650977600366,
+        "model_build_seconds": 1801.3093584829476,
+        "optimization_seconds": 28906.791102511925,
+        "solver_reported_runtime_seconds": 28836.68978857994,
+        "solver_transfer_seconds": 697.4565606879769
+      },
+      "ordered_matrix_sha256": "b3c92c54f12ad710fffc4983a832c4e503a5b84e4615c51abcf61a1c0927e1ed",
+      "metadata_sha256": {
+        "job": "1a63ab4bb3b00b89faed5716457637cae3d829c1d6db3f902d70d03223fb2f56",
+        "native": "e91c12154253c6497bb4320134e63fd4a7440cc4a9e3fe95e63726776ba0106e",
+        "completion": "29776e34bcd6874106afee301e4a8ff14db5881e533fa8aaf30a21cf01d47a29",
+        "validation": "5d7f3077d0a879de425f091062e0ecb6a63de9dd814aeebc4f1251c11d3c0b19",
+        "summary": "0206199478fc4f86a0eb5ddbb7591bcf0b07de7b98b5de1d230bcf9538003afd"
+      }
+    },
+    {
+      "job_id": "2232362",
+      "cell": "h300-w-sto-highs-t16-r2",
+      "solver": "highs",
+      "thread_ceiling": 16,
+      "repetition": 2,
+      "source_scope": "terminal_preview_awaiting_official_collection",
+      "scheduler": {
+        "state": "COMPLETED",
+        "elapsed_raw": "30936",
+        "exit_code": "0:0",
+        "max_rss_raw": null,
+        "alloc_cpus": "64"
+      },
+      "worker_steps": {
+        "2232362.0": {
+          "state": "COMPLETED",
+          "elapsed_raw": "30916",
+          "exit_code": "0:0",
+          "max_rss_raw": "86601824K",
+          "alloc_cpus": "16"
+        }
+      },
+      "native_termination": "TerminationCondition.maxTimeLimit",
+      "validation": {
+        "status": "rejected",
+        "failed_check_count": 41151
+      },
+      "objective_brl": null,
+      "dual_bound_brl": 3917886.5099487305,
+      "native_gap": null,
+      "common_gap_recomputed": null,
+      "native_runtime_seconds": 28836.26141691208,
+      "phase_timings": {
+        "matrix_identity_seconds": 865.7510623659473,
+        "model_build_seconds": 1820.4081600790378,
+        "optimization_seconds": 28907.797323909006,
+        "solver_reported_runtime_seconds": 28836.26141691208,
+        "solver_transfer_seconds": 697.2778176310239
+      },
+      "ordered_matrix_sha256": "b3c92c54f12ad710fffc4983a832c4e503a5b84e4615c51abcf61a1c0927e1ed",
+      "metadata_sha256": {
+        "job": "c3ad71c58bf9eecbe1681bc19cbff57420fd09b6ca6331e1979e9aafb4425136",
+        "native": "69db9669134abcdddb2aa291a2a381262c02a0c2ab900fc39cc71a7b28eb8d22",
+        "completion": "958e862065c6fd057554f9feb439933c0161c5c328464c02ad2ef33cbe804897",
+        "validation": "158424ec71a45116c605ce97f8fe40f1239ee53f5d71dba025f8e2d366a0b6a9",
+        "summary": "6dc9e2a147994a66b7c79b2624a211c25858e107f19637efc5880179f45fcb2c"
+      }
+    },
+    {
+      "job_id": "2232363",
+      "cell": "h300-w-sto-gurobi-t16-r2",
+      "solver": "gurobi",
+      "thread_ceiling": 16,
+      "repetition": 2,
+      "source_scope": "terminal_preview_awaiting_official_collection",
+      "scheduler": {
+        "state": "COMPLETED",
+        "elapsed_raw": "8890",
+        "exit_code": "0:0",
+        "max_rss_raw": null,
+        "alloc_cpus": "64"
+      },
+      "worker_steps": {
+        "2232363.0": {
+          "state": "COMPLETED",
+          "elapsed_raw": "8866",
+          "exit_code": "0:0",
+          "max_rss_raw": "102066088K",
+          "alloc_cpus": "16"
+        }
+      },
+      "native_termination": "TerminationCondition.optimal",
+      "validation": {
+        "status": "accepted",
+        "failed_check_count": 0
+      },
+      "objective_brl": 9289108634158.754,
+      "dual_bound_brl": 9288725890686.93,
+      "native_gap": 0.00004120346600477969,
+      "common_gap_recomputed": 0.00004120346600498994,
+      "native_runtime_seconds": 6080.473891019821,
+      "phase_timings": {
+        "matrix_identity_seconds": 856.6697063070023,
+        "model_build_seconds": 1980.179960226058,
+        "optimization_seconds": 6135.479844111949,
+        "result_extraction_seconds": 421.12430877401493,
+        "solver_reported_runtime_seconds": 6080.473891019821,
+        "solver_transfer_seconds": 868.5267380429432
+      },
+      "ordered_matrix_sha256": "b3c92c54f12ad710fffc4983a832c4e503a5b84e4615c51abcf61a1c0927e1ed",
+      "metadata_sha256": {
+        "job": "3ba135290e6cd3c768adc60b581fa4eb1f14d60f9e17b88db25b8f20352088b3",
+        "native": "48360e30876ea69afd38814b0cbc2ab81a141fdb3661dbbf7b69fc7b7fb3a274",
+        "completion": "4ac5569fb9c26afde631dc977f5428519fb3bdcebf39c9c2e79bc0833e8116c2",
+        "validation": "e8634e82e8cdb1e6511f1fd89006da69a2128002d9e63e61ac56548df1ac7a6d",
+        "summary": "f36b82c095f50d2a50da91afd9bcbbbf9a5cd284e7c6e2c80b732bb44cc99d73"
+      }
+    },
+    {
+      "job_id": "2232364",
+      "cell": "h300-w-sto-highs-t8-r2",
+      "solver": "highs",
+      "thread_ceiling": 8,
+      "repetition": 2,
+      "source_scope": "terminal_preview_awaiting_official_collection",
+      "scheduler": {
+        "state": "COMPLETED",
+        "elapsed_raw": "30961",
+        "exit_code": "0:0",
+        "max_rss_raw": null,
+        "alloc_cpus": "64"
+      },
+      "worker_steps": {
+        "2232364.0": {
+          "state": "COMPLETED",
+          "elapsed_raw": "30943",
+          "exit_code": "0:0",
+          "max_rss_raw": "86416724K",
+          "alloc_cpus": "16"
+        }
+      },
+      "native_termination": "TerminationCondition.maxTimeLimit",
+      "validation": {
+        "status": "rejected",
+        "failed_check_count": 41151
+      },
+      "objective_brl": null,
+      "dual_bound_brl": 3917886.5099487305,
+      "native_gap": null,
+      "common_gap_recomputed": null,
+      "native_runtime_seconds": 28837.77529358864,
+      "phase_timings": {
+        "matrix_identity_seconds": 875.8445657659322,
+        "model_build_seconds": 1836.748828289099,
+        "optimization_seconds": 28909.236655125977,
+        "solver_reported_runtime_seconds": 28837.77529358864,
+        "solver_transfer_seconds": 701.5622020970332
+      },
+      "ordered_matrix_sha256": "b3c92c54f12ad710fffc4983a832c4e503a5b84e4615c51abcf61a1c0927e1ed",
+      "metadata_sha256": {
+        "job": "a112b3deb85404e382e46503de9dffd838d495fda9b8b1ef3cc1bdb6cfc7570b",
+        "native": "f3b937128ab84ec13545f0256c54ea4f8172776719bef224eb179d1712211077",
+        "completion": "9fb0d066520cc242ba68936e3f59e54f1faad47550f3d9b0fa1ba868a50431ff",
+        "validation": "7f6f1abe725329f6e7385ff209657a0239eb337e6ff6dab9cba22434212040b3",
+        "summary": "d42f41c042c20105311b1fbc7957ac7d682c834164c87073b8885a5a470b7296"
+      }
+    },
+    {
+      "job_id": "2232365",
+      "cell": "h300-w-sto-gurobi-t8-r2",
+      "solver": "gurobi",
+      "thread_ceiling": 8,
+      "repetition": 2,
+      "source_scope": "terminal_preview_awaiting_official_collection",
+      "scheduler": {
+        "state": "COMPLETED",
+        "elapsed_raw": "8341",
+        "exit_code": "0:0",
+        "max_rss_raw": null,
+        "alloc_cpus": "64"
+      },
+      "worker_steps": {
+        "2232365.0": {
+          "state": "COMPLETED",
+          "elapsed_raw": "8321",
+          "exit_code": "0:0",
+          "max_rss_raw": "101987568K",
+          "alloc_cpus": "16"
+        }
+      },
+      "native_termination": "TerminationCondition.optimal",
+      "validation": {
+        "status": "accepted",
+        "failed_check_count": 0
+      },
+      "objective_brl": 9289108634158.754,
+      "dual_bound_brl": 9288725890686.93,
+      "native_gap": 0.00004120346600477969,
+      "common_gap_recomputed": 0.00004120346600498994,
+      "native_runtime_seconds": 5586.654854059219,
+      "phase_timings": {
+        "matrix_identity_seconds": 837.7384114629822,
+        "model_build_seconds": 1936.49296124198,
+        "optimization_seconds": 5640.935797955026,
+        "result_extraction_seconds": 418.5293467619922,
+        "solver_reported_runtime_seconds": 5586.654854059219,
+        "solver_transfer_seconds": 848.5265800569905
+      },
+      "ordered_matrix_sha256": "b3c92c54f12ad710fffc4983a832c4e503a5b84e4615c51abcf61a1c0927e1ed",
+      "metadata_sha256": {
+        "job": "e378438bb87da39d69b92c735c4c6f2c0090297d502b8724ee49e417654a1ddd",
+        "native": "93bb2ce28eff76997a5a0f81df3398ba98796919c4e5f856e9359050c982f155",
+        "completion": "7dbd1384ba62f8ee84a325f74b68f7f14a33d8cee87e706743b91fe15affdbc5",
+        "validation": "31f8fff02b93f9775d6e4980eaa54797e1fef5da01f4f283279aeae1ffccb1f5",
+        "summary": "372b7e622824d1f3e1253c92bd08862d8aee247ce05fdfd2fbc772b47dbd1052"
+      }
+    },
+    {
+      "job_id": "2232366",
+      "cell": "h300-w-sto-gurobi-t1-r2",
+      "solver": "gurobi",
+      "thread_ceiling": 1,
+      "repetition": 2,
+      "source_scope": "terminal_preview_awaiting_official_collection",
+      "scheduler": {
+        "state": "COMPLETED",
+        "elapsed_raw": "6532",
+        "exit_code": "0:0",
+        "max_rss_raw": null,
+        "alloc_cpus": "64"
+      },
+      "worker_steps": {
+        "2232366.0": {
+          "state": "COMPLETED",
+          "elapsed_raw": "6519",
+          "exit_code": "0:0",
+          "max_rss_raw": "77791440K",
+          "alloc_cpus": "16"
+        }
+      },
+      "native_termination": "TerminationCondition.optimal",
+      "validation": {
+        "status": "accepted",
+        "failed_check_count": 0
+      },
+      "objective_brl": 9289108634158.756,
+      "dual_bound_brl": 9288727295144.215,
+      "native_gap": 0.00004105227202902391,
+      "common_gap_recomputed": 0.0000410522720273419,
+      "native_runtime_seconds": 3689.9108979701996,
+      "phase_timings": {
+        "matrix_identity_seconds": 890.0390181880211,
+        "model_build_seconds": 2008.046234615962,
+        "optimization_seconds": 3744.6840708489763,
+        "result_extraction_seconds": 446.8320823580725,
+        "solver_reported_runtime_seconds": 3689.9108979701996,
+        "solver_transfer_seconds": 864.0234420839697
+      },
+      "ordered_matrix_sha256": "b3c92c54f12ad710fffc4983a832c4e503a5b84e4615c51abcf61a1c0927e1ed",
+      "metadata_sha256": {
+        "job": "a9116b6f64a0e3e97696747464385dcfa86d7d35da4dec0630a427247639d627",
+        "native": "827b4ba56df3c2ec506abf3351d5f31bd8b768d9696ab7f20e489ca8d9e97c41",
+        "completion": "4f0d03cc171cf486e6849646ecbcdf2a9e2814e5c7d616e46ebff5a69219f76a",
+        "validation": "4eadf245819f8caab616f954c673ff9e272116dd1e2fd7ba1831519c0e733315",
+        "summary": "13effe7125e6c0669f1ae65475f607bd0f5f70fe871450824f65d71381faf207"
+      }
+    },
+    {
+      "job_id": "2232367",
+      "cell": "h300-w-sto-highs-t1-r2",
+      "solver": "highs",
+      "thread_ceiling": 1,
+      "repetition": 2,
+      "source_scope": "terminal_preview_awaiting_official_collection",
+      "scheduler": {
+        "state": "COMPLETED",
+        "elapsed_raw": "26199",
+        "exit_code": "0:0",
+        "max_rss_raw": null,
+        "alloc_cpus": "64"
+      },
+      "worker_steps": {
+        "2232367.0": {
+          "state": "COMPLETED",
+          "elapsed_raw": "26178",
+          "exit_code": "0:0",
+          "max_rss_raw": "86590132K",
+          "alloc_cpus": "16"
+        }
+      },
+      "native_termination": "TerminationCondition.optimal",
+      "validation": {
+        "status": "accepted",
+        "failed_check_count": 0
+      },
+      "objective_brl": 9289358555936.28,
+      "dual_bound_brl": 9288719505216.031,
+      "native_gap": 0.0000687938479713077,
+      "common_gap_recomputed": 0.0000687938479713077,
+      "native_runtime_seconds": 23542.41668009758,
+      "phase_timings": {
+        "matrix_identity_seconds": 828.5926572669996,
+        "model_build_seconds": 1814.0403164189775,
+        "optimization_seconds": 23615.555046572932,
+        "result_extraction_seconds": 418.0133765169885,
+        "solver_reported_runtime_seconds": 23542.41668009758,
+        "solver_transfer_seconds": 720.3141197590157
+      },
+      "ordered_matrix_sha256": "b3c92c54f12ad710fffc4983a832c4e503a5b84e4615c51abcf61a1c0927e1ed",
+      "metadata_sha256": {
+        "job": "29f268706ac5c1615fede3942061440d1cf8c141631c30e1e35d1834fd07fa39",
+        "native": "28808d673eaa7dd677335e7a6eba5719d10f322c4a3261c10e85bd46bb050a4d",
+        "completion": "7c4f60343e256a5e0a7b424f2c33c893eadc8d47f56e21f601f85e1ed77d85b5",
+        "validation": "bc0805cfc52ab883876ffa81215b3f81c862865fbb3f3c7ac2a9d71cc5efa3b3",
+        "summary": "941882e590c9213d8d5dd5a83f4e96eb090cde1a4613c151798bfb68def57bc9"
+      }
+    },
+    {
+      "job_id": "2232368",
+      "cell": "h300-w-sto-highs-t8-r3",
+      "solver": "highs",
+      "thread_ceiling": 8,
+      "repetition": 3,
+      "source_scope": "terminal_preview_awaiting_official_collection",
+      "scheduler": {
+        "state": "COMPLETED",
+        "elapsed_raw": "30948",
+        "exit_code": "0:0",
+        "max_rss_raw": null,
+        "alloc_cpus": "64"
+      },
+      "worker_steps": {
+        "2232368.0": {
+          "state": "COMPLETED",
+          "elapsed_raw": "30917",
+          "exit_code": "0:0",
+          "max_rss_raw": "90128328K",
+          "alloc_cpus": "16"
+        }
+      },
+      "native_termination": "TerminationCondition.maxTimeLimit",
+      "validation": {
+        "status": "rejected",
+        "failed_check_count": 41151
+      },
+      "objective_brl": null,
+      "dual_bound_brl": 3917886.5099487305,
+      "native_gap": null,
+      "common_gap_recomputed": null,
+      "native_runtime_seconds": 28836.954499721527,
+      "phase_timings": {
+        "matrix_identity_seconds": 851.2152881020447,
+        "model_build_seconds": 1810.4634549859911,
+        "optimization_seconds": 28908.257401057053,
+        "solver_reported_runtime_seconds": 28836.954499721527,
+        "solver_transfer_seconds": 700.8051179869799
+      },
+      "ordered_matrix_sha256": "b3c92c54f12ad710fffc4983a832c4e503a5b84e4615c51abcf61a1c0927e1ed",
+      "metadata_sha256": {
+        "job": "dfe795b9828c727f9b05b5c89219837f0f101ed3da6409750dec72ccc3ed9a5d",
+        "native": "7956e5f1b48e2ab88ee96a80e1e831a644b0141d962bbffa6092e848e4459ff2",
+        "completion": "ba31d81c2f5d5e204116c1932c9bc2e5dc18abe9d531e1ac886695e8ed4c36e2",
+        "validation": "cc51166b26712887b3d62fce8fa155d581d85219c9f3e0b8d7097bddb1c2f8cf",
+        "summary": "79d1bd58c7aa9a3058bf6ad616d2903bfa6d0b3325f5791ab27b2993f120ec7a"
+      }
+    },
+    {
+      "job_id": "2232369",
+      "cell": "h300-w-sto-gurobi-t8-r3",
+      "solver": "gurobi",
+      "thread_ceiling": 8,
+      "repetition": 3,
+      "source_scope": "terminal_preview_awaiting_official_collection",
+      "scheduler": {
+        "state": "COMPLETED",
+        "elapsed_raw": "8448",
+        "exit_code": "0:0",
+        "max_rss_raw": null,
+        "alloc_cpus": "64"
+      },
+      "worker_steps": {
+        "2232369.0": {
+          "state": "COMPLETED",
+          "elapsed_raw": "8436",
+          "exit_code": "0:0",
+          "max_rss_raw": "102295736K",
+          "alloc_cpus": "16"
+        }
+      },
+      "native_termination": "TerminationCondition.optimal",
+      "validation": {
+        "status": "accepted",
+        "failed_check_count": 0
+      },
+      "objective_brl": 9289108634158.754,
+      "dual_bound_brl": 9288725890686.93,
+      "native_gap": 0.00004120346600477969,
+      "common_gap_recomputed": 0.00004120346600498994,
+      "native_runtime_seconds": 5631.145914077759,
+      "phase_timings": {
+        "matrix_identity_seconds": 887.2192134810612,
+        "model_build_seconds": 2008.4548393320292,
+        "optimization_seconds": 5686.456194425002,
+        "result_extraction_seconds": 421.60278161789756,
+        "solver_reported_runtime_seconds": 5631.145914077759,
+        "solver_transfer_seconds": 873.1521255680127
+      },
+      "ordered_matrix_sha256": "b3c92c54f12ad710fffc4983a832c4e503a5b84e4615c51abcf61a1c0927e1ed",
+      "metadata_sha256": {
+        "job": "42e70803372b61fc37ed093c9f87745dfbb630136349d735c83996018be7a80c",
+        "native": "9189d31fe628894d231b6df1e09a764afbd52091d567b202d7a736c71e8b0891",
+        "completion": "5d297ecd199d583f090234c0e32c1c03cfcb5d0eef39ec2cece8b3fd5bb07c16",
+        "validation": "8da3b5116b3fdae3e78dd19162fc1be8c5e04b47bb5ced4a546273fdbc0e486b",
+        "summary": "6643cadc1b7d4b2322bbed27a9e3b518c83929e4b574fedd9f2f4ee742900587"
+      }
+    },
+    {
+      "job_id": "2232370",
+      "cell": "h300-w-sto-gurobi-t16-r3",
+      "solver": "gurobi",
+      "thread_ceiling": 16,
+      "repetition": 3,
+      "source_scope": "terminal_preview_awaiting_official_collection",
+      "scheduler": {
+        "state": "COMPLETED",
+        "elapsed_raw": "8673",
+        "exit_code": "0:0",
+        "max_rss_raw": null,
+        "alloc_cpus": "64"
+      },
+      "worker_steps": {
+        "2232370.0": {
+          "state": "COMPLETED",
+          "elapsed_raw": "8656",
+          "exit_code": "0:0",
+          "max_rss_raw": "105873648K",
+          "alloc_cpus": "16"
+        }
+      },
+      "native_termination": "TerminationCondition.optimal",
+      "validation": {
+        "status": "accepted",
+        "failed_check_count": 0
+      },
+      "objective_brl": 9289108634158.754,
+      "dual_bound_brl": 9288725890686.93,
+      "native_gap": 0.00004120346600477969,
+      "common_gap_recomputed": 0.00004120346600498994,
+      "native_runtime_seconds": 5783.685679912567,
+      "phase_timings": {
+        "matrix_identity_seconds": 881.1093153869733,
+        "model_build_seconds": 2043.8438458321616,
+        "optimization_seconds": 5846.051211898215,
+        "result_extraction_seconds": 426.66313325148076,
+        "solver_reported_runtime_seconds": 5783.685679912567,
+        "solver_transfer_seconds": 900.8209245521575
+      },
+      "ordered_matrix_sha256": "b3c92c54f12ad710fffc4983a832c4e503a5b84e4615c51abcf61a1c0927e1ed",
+      "metadata_sha256": {
+        "job": "76fe5b97d42e8bcfef335ee5d5c56185a1d2c49e002993524bc03321dfe5d2ad",
+        "native": "74b81b358db80c21ecd7246a8be89208e8b316f101bf9f59cf6751f1463ee043",
+        "completion": "5db9223282e7ed5cb00c8be98595bad685fea38e2ddbd6502839a1be950c2b0b",
+        "validation": "be82e975f228c6b7e08e8c45836e00aa2ef1b7f51a24536db9e0678472eeb8c5",
+        "summary": "76d1f097e7b81c52d364837084cc165378d318b0cedb6d48e4adf0440da5bc7a"
+      }
+    },
+    {
+      "job_id": "2232373",
+      "cell": "h300-w-sto-gurobi-t1-r3",
+      "solver": "gurobi",
+      "thread_ceiling": 1,
+      "repetition": 3,
+      "source_scope": "terminal_preview_awaiting_official_collection",
+      "scheduler": {
+        "state": "COMPLETED",
+        "elapsed_raw": "5741",
+        "exit_code": "0:0",
+        "max_rss_raw": null,
+        "alloc_cpus": "64"
+      },
+      "worker_steps": {
+        "2232373.0": {
+          "state": "COMPLETED",
+          "elapsed_raw": "5710",
+          "exit_code": "0:0",
+          "max_rss_raw": "76239652K",
+          "alloc_cpus": "16"
+        }
+      },
+      "native_termination": "TerminationCondition.optimal",
+      "validation": {
+        "status": "accepted",
+        "failed_check_count": 0
+      },
+      "objective_brl": 9289108634158.756,
+      "dual_bound_brl": 9288727295144.215,
+      "native_gap": 0.00004105227202902391,
+      "common_gap_recomputed": 0.0000410522720273419,
+      "native_runtime_seconds": 2889.0777208805084,
+      "phase_timings": {
+        "matrix_identity_seconds": 826.9368132138625,
+        "model_build_seconds": 1986.4905291981995,
+        "optimization_seconds": 2951.5282177645713,
+        "result_extraction_seconds": 427.99213028047234,
+        "solver_reported_runtime_seconds": 2889.0777208805084,
+        "solver_transfer_seconds": 896.9808177864179
+      },
+      "ordered_matrix_sha256": "b3c92c54f12ad710fffc4983a832c4e503a5b84e4615c51abcf61a1c0927e1ed",
+      "metadata_sha256": {
+        "job": "3adde2d255b429775a5290e11a248e2ebfd77c76bb72382026aea4bcf8d517aa",
+        "native": "90eacf627da9198c4cc2d8c561846b69eed71d2df0614b8b65a3b45b0c0dddb0",
+        "completion": "2ea5e5fd8f54e11b491acb37d714212aa268dd5c42c80b70978c0120ff468e78",
+        "validation": "1b9bd4b937edc2972ba77a74294a8aebd0089856f6e37025ef0241370153dac4",
+        "summary": "f61ea9b3e13cc8e5ea9898621a0ff8958c5e534c58b6dc3ce29bf915db372ea4"
+      }
+    },
+    {
+      "job_id": "2232375",
+      "cell": "h300-w-sto-gurobi-t2-r3",
+      "solver": "gurobi",
+      "thread_ceiling": 2,
+      "repetition": 3,
+      "source_scope": "terminal_preview_awaiting_official_collection",
+      "scheduler": {
+        "state": "COMPLETED",
+        "elapsed_raw": "5981",
+        "exit_code": "0:0",
+        "max_rss_raw": null,
+        "alloc_cpus": "64"
+      },
+      "worker_steps": {
+        "2232375.0": {
+          "state": "COMPLETED",
+          "elapsed_raw": "5959",
+          "exit_code": "0:0",
+          "max_rss_raw": "86675556K",
+          "alloc_cpus": "16"
+        }
+      },
+      "native_termination": "TerminationCondition.optimal",
+      "validation": {
+        "status": "accepted",
+        "failed_check_count": 0
+      },
+      "objective_brl": 9289108634158.756,
+      "dual_bound_brl": 9288725763408.1,
+      "native_gap": 0.00004121716794808298,
+      "common_gap_recomputed": 0.000041217167947452226,
+      "native_runtime_seconds": 3115.5722620487213,
+      "phase_timings": {
+        "matrix_identity_seconds": 853.4092579288408,
+        "model_build_seconds": 2012.543819651939,
+        "optimization_seconds": 3177.1392530892044,
+        "result_extraction_seconds": 422.7474396014586,
+        "solver_reported_runtime_seconds": 3115.5722620487213,
+        "solver_transfer_seconds": 895.4969783350825
+      },
+      "ordered_matrix_sha256": "b3c92c54f12ad710fffc4983a832c4e503a5b84e4615c51abcf61a1c0927e1ed",
+      "metadata_sha256": {
+        "job": "8a8ca71b349dba5071a339c26adc45341d841594f0f91a10a4dce5e13f8ce434",
+        "native": "e9f3fdb3ff042b205100e4c003951a2b84e478db098d5d247cb2721ea1632603",
+        "completion": "789dad8e90bd0c399db416caf64018f0caeda2635c1c4102725b395f781a52ef",
+        "validation": "45af4e07c96909c862875b57d2a8ffd28c965764fb824c0d6d171e3a02a8ec26",
+        "summary": "4f80aabff26f6a14a80fb311683aa834a23c9b493ee534e610c93fbd2fc43004"
+      }
+    },
+    {
+      "job_id": "2232376",
+      "cell": "h300-w-sto-gurobi-t4-r3",
+      "solver": "gurobi",
+      "thread_ceiling": 4,
+      "repetition": 3,
+      "source_scope": "terminal_preview_awaiting_official_collection",
+      "scheduler": {
+        "state": "COMPLETED",
+        "elapsed_raw": "6235",
+        "exit_code": "0:0",
+        "max_rss_raw": null,
+        "alloc_cpus": "64"
+      },
+      "worker_steps": {
+        "2232376.0": {
+          "state": "COMPLETED",
+          "elapsed_raw": "6208",
+          "exit_code": "0:0",
+          "max_rss_raw": "102948140K",
+          "alloc_cpus": "16"
+        }
+      },
+      "native_termination": "TerminationCondition.optimal",
+      "validation": {
+        "status": "accepted",
+        "failed_check_count": 0
+      },
+      "objective_brl": 9289108634158.756,
+      "dual_bound_brl": 9288725916082.922,
+      "native_gap": 0.00004120073205199956,
+      "common_gap_recomputed": 0.000041200732051579056,
+      "native_runtime_seconds": 3383.9624989032745,
+      "phase_timings": {
+        "matrix_identity_seconds": 829.9445130331442,
+        "model_build_seconds": 1994.2316949348897,
+        "optimization_seconds": 3446.058121997863,
+        "result_extraction_seconds": 422.416599993594,
+        "solver_reported_runtime_seconds": 3383.9624989032745,
+        "solver_transfer_seconds": 897.9268762413412
+      },
+      "ordered_matrix_sha256": "b3c92c54f12ad710fffc4983a832c4e503a5b84e4615c51abcf61a1c0927e1ed",
+      "metadata_sha256": {
+        "job": "b12fc25ee8adaa1c8c18e0b8038f5185700ee99469fda0ac82f8a29c084c8d68",
+        "native": "f6d9d7fdca618a4e1e24bcb83ea41a64f1e3b6c9e32799ea953e1a2ed1d7dd91",
+        "completion": "11ae3db72cf8363f6919577d36f78a43c2406a26c0b92aa12d630d32b2e0fe2e",
+        "validation": "e0f66440e90d6c5019589561e9f22bf6421a313a54d72ca2f078ac237f429cbe",
+        "summary": "dcbb3fd2e702e440fb8e47e4a915de8cd8cd535fc42530c0194394777db98e87"
+      }
+    }
+  ]
+}

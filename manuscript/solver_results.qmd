@@ -76,7 +76,3 @@ The [retained HiGHS input and validation record](https://github.com/unb-lamfo-or
 and the original source-bound experiment records retain the certificate
 scope. Appendix E presents the corresponding accepted investment and flow
 summaries. The new common-Pyomo scaling cohort is reported separately below.
-
-
-
-{{< include scaling_pilot_results.qmd >}}
