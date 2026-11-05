@@ -30,6 +30,11 @@ collection, final cohort comparison and later population outcomes remain
 pending. The individual result rows preserve original validation status,
 runtime phase definitions, worker accounting and file digests.
 
+The [final campaign comparison plan](pyomo_scaling_comparison_plan_20261105.md)
+specifies the evidence join, outcome categories, timing comparisons and
+tables to populate after PR #148 finishes. The experimental scope is the
+released campaign.
+
 The source revision keeps the equations, active penalties, approved question
 and objectives, validated individual vector artwork and original Appendix A.
 The Figure 2 units are explicit in the article and its existing panels.
