@@ -174,6 +174,11 @@ is the inspectable connection between proposals, human decisions,
 implementations and numerical evidence. The authors retain responsibility for
 all assumptions, reported results and conclusions.
 
+The [source-access record](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/82c2c19ce619f1251043829b10a4702ac88a7cdd/docs/evidence/literature_bounded_closeout_20261102.json)
+documents which comparisons use full passages, publisher previews or
+bibliographic metadata. It records the limits of access for the
+specific claims discussed in Related Work.
+
 {{< include appendix_c.qmd >}}
 
 {{< include appendix_d.qmd >}}

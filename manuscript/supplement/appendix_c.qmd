@@ -483,7 +483,7 @@ stated in Section C6.
 
 
 
-## C8 Reading the first controlled h300 pilot
+## C8 Interpreting the h300 pilots and partial observations
 
 The first completed Gurobi pilot uses the common Pyomo formulation with
 `Threads=1`, `Seed=42`, `TimeLimit=28800`, `MIPGap=0.01`,
@@ -508,3 +508,53 @@ validation. Its attained gap is 0.0068793848%, native time is 24,086.10 s,
 application time is 26,601.01 s and sampled worker-tree peak is 84.820 GiB.
 The requested parallel option is on, with one permitted solver thread.
 This does not constitute a test of multi-thread efficiency.
+
+The collected 16-thread Gurobi pilot returned a validated incumbent with
+a 0.004120% common gap in 71.90 native minutes. The collected 16-thread
+HiGHS pilot reached the native time limit without a usable incumbent.
+Its incumbent objective and gap are unavailable. These two receipts
+belong to the pilot stage and are separate from the 22 additional
+terminal previews below.
+
+### C8.1 Preliminary terminal metadata from the repeated campaign
+
+The 5 November 2026 readback linked terminal metadata to 22 h300 W STO
+cells. Their ordered matrix fingerprints match the h300 pilot-stage
+receipt. The readback checked the original validation and summary hashes
+against the corresponding completion receipts. Archive collection and full
+operational closure for these cells remain pending. Table C.5 reports the
+previews separately from the four earlier pilots.
+
+| Solver | Thread ceiling | Previews | Validation accepted | Time limit without incumbent | Native minutes, median (range) |
+| :-- | --: | --: | --: | --: | --: |
+| Gurobi | 1 | 2 | 2 | 0 | 54.82 (48.15–61.50) |
+| Gurobi | 2 | 3 | 3 | 0 | 66.18 (51.93–68.60) |
+| Gurobi | 4 | 3 | 3 | 0 | 65.14 (56.40–76.99) |
+| Gurobi | 8 | 3 | 3 | 0 | 93.29 (93.11–93.85) |
+| Gurobi | 16 | 2 | 2 | 0 | 98.87 (96.39–101.34) |
+| HiGHS | 1 | 1 | 1 | 0 | 392.37 |
+| HiGHS | 2 | 2 | 0 | 2 | 480.71 (480.62–480.79) |
+| HiGHS | 4 | 2 | 0 | 2 | 480.71 (480.61–480.80) |
+| HiGHS | 8 | 3 | 0 | 3 | 480.62 (480.62–480.63) |
+| HiGHS | 16 | 1 | 0 | 1 | 480.60 |
+
+: Table C.5. Preliminary native outcomes for h300 W STO. The last column gives
+the observed median and range, or the individual value for a single preview.
+Time-limited runtimes describe censoring. The original eight-hour allowance
+and the solver-reported terminal time are distinct fields.
+
+The 13 Gurobi previews with accepted validation attain relative gaps of
+approximately 0.004105–0.004122%. The one-thread HiGHS preview with accepted
+validation attains 0.006879%. The eight HiGHS previews without an incumbent
+retain the recorded dual bound and absent objective and gap. They provide
+evidence about the observed stopping condition. The mathematical
+feasibility of the instance is established independently by the validated
+solutions from the same modeled instance.
+
+The recorded durations are descriptive. The previews have unequal
+coverage, and time to a common quality target is unavailable in these
+records. Four further h300 cells were awaiting terminal products.
+The [source-bound readback review](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/dc59fca89d2b437c5066bedca1e6d45eb70cc141/docs/evidence/pyomo_partial_readback_review_20261105.json)
+retains per-cell objectives, bounds, runtime phases, validation states and
+metadata digests. Full archive review will determine which observations
+support comparisons of equivalent work and stopping criteria.

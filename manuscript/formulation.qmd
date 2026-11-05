@@ -10,17 +10,17 @@ scheduling. Domestic demand has a shortage variable; exports are optional outlet
 with their declared upper bounds. All supply must leave its origin. Initial
 inventory is supplied, and terminal inventory is free within the constraints.
 
-The notation tables integrate sets, coefficients, units and domains. An absent
-arc has no flow variable; quantities for ineligible investment types are zero.
-Scenarios weight recourse costs, never the physical balance or capacity limits.
+@tbl-sets defines the sets, @tbl-parameters gives the coefficients and
+their units, and @tbl-variables gives the decisions and their domains.
+Flows are defined on admissible arcs. Ineligible investment quantities
+are zero. Each scenario satisfies the physical balances and capacity
+limits. Scenario probabilities weight the recourse costs.
 
-The equations retain the implementation's legacy arc superscripts for an
-unambiguous code crosswalk: OD means Origin–Warehouse, DC Warehouse–Destination,
-DD Warehouse–Warehouse and OC direct Origin–Destination. Appendix C presents
-these scientifically as OW, WD, WW and OD, respectively, without renaming any
-experimental record. W disables direct OC; D permits it in addition to mediated
-routes. The warehouse-only scaling sequence evaluates W; the separate h215 comparison
-also evaluates D.
+The arc families connect origins to warehouses, warehouses to destinations,
+and warehouses to other warehouses. Configuration D also allows direct
+origin-to-destination movements. The warehouse-only sequence uses
+configuration W. Appendix C gives the exact crosswalk between these
+families and the symbols in the equations.
 
 | Symbol | Definition |
 |:--|:--|
@@ -63,10 +63,14 @@ also evaluates D.
 
 : Decisions and derived expressions. {#tbl-variables}
 
-Candidates have zero initial static and handling capacities in the evaluated
-daily-factor configuration. Bulk-handling conversion adds handling rates, not
-static storage. Investment is made before the first planning period; the model
-does not represent repeated investment over successive periods.
+Candidates have zero initial static and handling capacity. Opening a
+candidate or expanding an existing warehouse can add static capacity,
+measured in tonnes of grain that can be held at a given time. Bulk-handling
+conversion raises the daily reception and shipping rates of an eligible
+warehouse. These rates are expressed in tonnes per day and converted to
+period limits. A warehouse can therefore handle more arrivals and departures
+while retaining the same limit on grain held in storage. The model makes
+these investments once, before the first planning period.
 
 ## Deterministic model
 

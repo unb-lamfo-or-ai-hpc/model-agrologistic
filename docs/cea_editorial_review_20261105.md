@@ -2,7 +2,41 @@
 
 5 November 2026. Review baseline is `965ca52777a5899163af72c9630e591b82c61de8` on develop. The public Quarto edition derives from main `3df439d29224b3501c6896605de4402813208052`. The numbered pages below identify comments in the 35-page coauthor PDF. Proposed targets use the current Quarto sources.
 
-The assessment and proposed text are review documents. The draft PR implements the request to open an editorial review against develop. The R01 and R02 texts await author approval before insertion. The scope is editorial and documentary. It requires no changes to the mathematical contract, experimental design or effective data, and no new experiment.
+## Implementation update
+
+The researcher approved implementation of R01 and R02 while preserving the
+central question. The following assessment documents the original review
+baseline. The article and supplementary sources now implement its approved
+prose changes. The contribution table maps the original objectives to C1–C3.
+R01 uses author–year links to the three primary institutional documents.
+Their reference-list entries are separate from the verified Zotero citation
+ledger. All numbered main-text figures and tables have a preceding citation.
+
+The matching SHA-256 of the operator report establishes byte identity.
+The reviewed report contains 95 graph jobs, of which 93 were new and two
+were attached 16-thread pilots. The new-job accounting is 23 completed,
+one running and 69 pending. Two pilot collector receipts were already
+known. All 22 additional terminal previews have the h300 ordered matrix
+fingerprint and metadata digests. Thirteen Gurobi previews and one HiGHS
+preview have accepted original validation with finite incumbent-based gaps
+within 1%. Eight HiGHS previews reached the native limit without an incumbent.
+They retain the original bound and null objective and gap. The accepted
+h300 pilot gate and the subsequent campaign previews have separate scopes.
+[Reviewed per-cell metadata](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/dc59fca89d2b437c5066bedca1e6d45eb70cc141/docs/evidence/pyomo_partial_readback_review_20261105.json)
+
+The article discusses the preliminary pattern. Appendix C records counts
+and native timing ranges by solver and thread ceiling. Full archive
+collection, final cohort comparison and later population outcomes remain
+pending. The individual result rows preserve original validation status,
+runtime phase definitions, worker accounting and file digests.
+
+The source revision keeps the equations, active penalties, approved question
+and objectives, validated individual vector artwork and original Appendix A.
+The Figure 2 units are explicit in the article and its existing panels.
+The proposed artwork layout refinements remain optional. Existing evidence
+tables, original archives and the released campaign remain the sources of
+the reported quantities.
+
 
 ## A. Already resolved
 
@@ -131,22 +165,30 @@ Relevant links. [manuscript/index.qmd:529](https://github.com/unb-lamfo-or-ai-hp
 
 ## D. Journal compliance
 
-Use the journal Guide for Authors at submission. The direct guide returned HTTP 403 in this review. The repository retains its 2 October guide-based audit. The requirement checks below use the supplied mandate, that audit, the present source package and accessible official Elsevier policies. Current journal-specific wording and submission form requirements remain to be confirmed, particularly the exact map note and declaration placement. [Journal guide](https://www.sciencedirect.com/journal/computers-and-electronics-in-agriculture/publish/guide-for-authors) · [docs/cea_submission_checklist.md](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/965ca52777a5899163af72c9630e591b82c61de8/docs/cea_submission_checklist.md) · [Elsevier Option C](https://www.elsevier.com/researcher/author/tools-and-resources/research-data/data-guidelines) · [Elsevier publishing ethics](https://www.elsevier.com/about/policies-and-standards/publishing-ethics)
+The researcher supplied a 17-page copy of the journal's Guide for Authors
+dated 3 November 2026 (SHA-256 `c7274252f5668a84029e28f4b7e0206af4b0c4f3ba26c8120a68fefeecce35ae`). It confirms the technology-advancement criterion,
+editable source and table requirements, separate figure and highlight
+files, the Option C deposit and data-statement requirements, the
+jurisdictional note for maps, CRediT, competing interests, funding and
+the generative-AI declaration. The manuscript uses the guide's map note
+in Methods and Appendix E. The guide also asks for disclosure in the
+caption when generative AI created an image. The authors should verify
+the applicable captions and contributor declarations before submission.
+[Journal guide](https://www.sciencedirect.com/journal/computers-and-electronics-in-agriculture/publish/guide-for-authors) · [Elsevier Option C](https://www.elsevier.com/researcher/author/tools-and-resources/research-data/data-guidelines)
 
 | Submission item | Present evidence and required disposition |
 | --- | --- |
 | Original research and computing contribution | C1–C3 are explicit. Prioritize empirical links between structural scale, validation and operational interpretation. Retain the original formulation attribution. |
 | Abstract, keywords and highlights | Source abstract 185 whitespace-delimited words. Seven English keywords. Five separate highlights, 59–80 characters excluding bullet markers, also in the editable package. |
 | Editable source, individual artwork, captions and supplements | `main.tex`, `supplement.tex`, editable tables and separate vector figures are present. Keep figures individually named, referenced in order and legible at publication size. Existing Appendix A PDF is the original supplemental record. Figures 3–6 already have separate captions, case IDs and following interpretation. Review the figure reference sequence and units again only after approved layout changes. |
-| Cartographic neutrality | IBGE attribution, national extent and projection are documented. Proposed caption/Methods note for author confirmation under the guide: “Administrative boundaries are shown for geographic reference and do not imply a position on jurisdictional claims.” |
+| Cartographic neutrality | IBGE attribution, national extent and projection are documented. The required study-area boundary note is included in Methods and Appendix E. |
 | Data statement | Cite the public 0.2.0 DOI and specify its coverage. For unavailable material, give the actual applicable access, redistribution or confidentiality reason. Next-version preparation has its own inventory and has not been published. Preserve full detail in D/E and the repository. |
 | Declarations, affiliations and approval | AI statement, author metadata and correspondence are present. Confirm complete affiliations/postal details, CRediT roles, funding and sponsor role, competing interests and all-coauthor approval with the researchers. The acknowledgment of NPAD access is not a funding declaration. |
 | Optional | Graphical abstract and a separate workflow diagram are desirable only if they improve communication. The existing Figure 1 has a different scope and the six-step prose is sufficient for this proposed revision. |
 
 ## E. Author decisions
 
-1. Approve the proposed Introduction treatment, including R01 and any optional grammar-only change to the formal question. Decide whether the SO–C mapping belongs in Table 1.
-2. Approve the R02 editorial package, including the figure caption/route-note disposition, and the scientific scope of any partial campaign results that can be supported when collector receipts arrive.
-3. Confirm final author metadata, roles, funding, conflicts, coauthor approval and the precise data-access explanations used for submission.
+1. Confirm final author metadata, CRediT roles, funding and sponsor involvement, competing interests and all-author approval.
+2. Confirm the precise data-access explanations and any image-specific AI disclosures required for the final submission package.
 
 **Future work.** Cohort summaries and any comparable strong-scaling analysis depend on the already running campaign and the existing evidence review. A later dataset version depends on separate authorization and asset-level rights review.
