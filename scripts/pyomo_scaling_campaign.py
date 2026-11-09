@@ -26,7 +26,10 @@ if str(ROOT) not in sys.path:
 
 from scripts import mvp2_scalar_r3a as r
 from scripts import mvp2_scalar_r3a_operational as o
+from scripts import pyomo_h400_e1 as e1
+from scripts import pyomo_h400_e1_memory as e1_memory
 from scripts import pyomo_scaling_contract as c
+from scripts import pyomo_serial_storage as storage
 from scripts import pyomo_worker_bootstrap as bootstrap
 from scripts.qualify_pyomo_scaling import accepted, digest, environment, verify_source, write_json
 from scripts.scip_external_observer import ExternalObserver, review_external
@@ -60,17 +63,42 @@ def login():
 
 def campaign_location(directory):
     c.require(
-        directory.name == c.CAMPAIGN
+        directory.name in {c.CAMPAIGN, e1_memory.CAMPAIGN}
         and not directory.is_symlink()
         and directory.parent.resolve() == BASE,
         "Dedicated new campaign below audit base.",
     )
 
 
+def e1_campaign(directory):
+    return directory.name == e1_memory.CAMPAIGN
+
+
+def campaign_cells(directory):
+    return list(e1.CASES) if e1_campaign(directory) else c.cells()
+
+
+def campaign_limit(directory):
+    return 1 if e1_campaign(directory) else c.MAX_CONCURRENT
+
+
+def qualification(directory):
+    return BASE / (e1_memory.QUALIFICATION if e1_campaign(directory) else c.QUALIFICATION)
+
+
+def e1_storage(directory):
+    return storage.check_growth(
+        BASE, directory,
+        {"storage_budget_gib_confirmed_in_human_CLI": 32, "campaign_allocated_bytes_at_prepare": 0},
+        command=r.r2.command,
+    )
+
+
 def run_location(claim):
     campaign_location(claim.parent)
     c.require(
-        not claim.is_symlink() and claim.name == c.select(claim.name)["id"],
+        not claim.is_symlink()
+        and any(claim.name == item["id"] for item in campaign_cells(claim.parent)),
         "Dedicated immutable run claim required.",
     )
 
@@ -138,9 +166,10 @@ def init(directory, sha, inputs):
     login()
     campaign_location(directory)
     c.require(not directory.exists(), "Preserve existing campaign; init cannot reset it.")
-    qualified = BASE / c.QUALIFICATION
+    qualified = qualification(directory)
     plan, result = read(qualified / "plan.json"), read(qualified / "result.json")
-    accepted(plan, result)
+    is_e1 = e1_campaign(directory)
+    accepted(plan, result, e1_profile=is_e1)
     public_query = r.r2.command(
         [
             "sacct",
@@ -169,9 +198,8 @@ def init(directory, sha, inputs):
     )
     verify_source(ROOT, plan["source_files"])
     c.require(environment() == plan["runtime"], "Qualified runtime differs.")
-    c.require(
-        set(inputs) == {str(p) for p in c.POPULATIONS}, "All three frozen populations required."
-    )
+    populations = {str(item["population"]) for item in campaign_cells(directory)}
+    c.require(set(inputs) == populations, "Exact frozen population input set required.")
     frozen = {
         p: {k: str(regular(v).absolute()) for k, v in paths.items()} for p, paths in inputs.items()
     }
@@ -201,19 +229,22 @@ def init(directory, sha, inputs):
         "profile": c.PROFILE,
         "tools": tools,
         "tool_sha256": tools_sha,
-        "cells": c.cells(),
+        "cells": campaign_cells(directory),
         "schedule_seed": c.SCHEDULE_SEED,
-        "max_concurrent": c.MAX_CONCURRENT,
+        "max_concurrent": campaign_limit(directory),
         "automatic_follow_on_allowed": False,
         "automatic_retry_allowed": False,
     }
+    if is_e1:
+        manifest["e1_public_probe_receipts"] = e1_memory.public_probe_evidence(BASE, ROOT)
+        manifest["e1_storage_at_prepare"] = storage.check_initial(BASE, 32, command=r.r2.command)
     directory.mkdir(mode=0o700)
     write_json(directory / "campaign.json", manifest)
     return {
         "status": "prepared_no_job",
         "campaign_sha256": c.digest(manifest),
-        "cells": len(c.cells()),
-        "first_stage": "four_h300_pilots",
+        "cells": len(manifest["cells"]),
+        "first_stage": "four_h400_e1_pilots" if is_e1 else "four_h300_pilots",
         "automatic_follow_on_allowed": False,
     }
 
@@ -228,18 +259,18 @@ def load_campaign(directory, sha, *, expensive=True):
         and Path(plan["source_root"]) == ROOT
         and Path(plan["python"]) == Path(sys.executable)
         and plan["profile"] == c.PROFILE
-        and plan["cells"] == c.cells()
+        and plan["cells"] == campaign_cells(directory)
         and plan["schedule_seed"] == c.SCHEDULE_SEED
-        and plan["max_concurrent"] == c.MAX_CONCURRENT
+        and plan["max_concurrent"] == campaign_limit(directory)
         and plan["automatic_follow_on_allowed"] is False
         and plan["automatic_retry_allowed"] is False,
         "Frozen campaign drift.",
     )
-    qualified = BASE / c.QUALIFICATION
+    qualified = qualification(directory)
     for name, expected in plan["public_receipts"].items():
         c.require(digest(regular(qualified / name)) == expected, "Public qualification drift.")
     public = read(qualified / "plan.json")
-    accepted(public, read(qualified / "result.json"))
+    accepted(public, read(qualified / "result.json"), e1_profile=e1_campaign(directory))
     c.require(
         public["source_files"] == plan["source_files"] and public["runtime"] == plan["runtime"],
         "Qualification source/runtime differs.",
@@ -247,6 +278,11 @@ def load_campaign(directory, sha, *, expensive=True):
     if expensive:
         verify_source(ROOT, plan["source_files"])
         c.require(environment() == plan["runtime"], "Runtime changed after qualification.")
+        if e1_campaign(directory):
+            c.require(
+                e1_memory.public_probe_evidence(BASE, ROOT) == plan["e1_public_probe_receipts"],
+                "Preserved public E1 cgroup evidence differs.",
+            )
     return plan
 
 
@@ -305,7 +341,7 @@ def archive_report(claim, marker):
 
 def observations(directory):
     result = []
-    for item in c.cells():
+    for item in campaign_cells(directory):
         claim = directory / item["id"]
         if (claim / "collection.json").exists():
             result.append(archive_report(claim, read(claim / "collection.json")))
@@ -326,7 +362,7 @@ def submission_lock(directory):
 
 def capacity(directory, command):
     active = []
-    for item in c.cells():
+    for item in campaign_cells(directory):
         claim = directory / item["id"]
         if not claim.exists():
             continue
@@ -350,8 +386,28 @@ def capacity(directory, command):
         root = next((row for row in rows if row["job_id"] == job["job_id"]), None)
         if root is None or root["state"] not in r.r2.TERMINAL:
             active.append(job["job_id"])
-    c.require(len(active) < c.MAX_CONCURRENT, "Two campaign jobs already active or uncertain.")
+    message = (
+        "An E1 campaign job is already active or uncertain."
+        if e1_campaign(directory) else "Two campaign jobs already active or uncertain."
+    )
+    c.require(len(active) < campaign_limit(directory), message)
     return active
+
+
+def admit_cell(directory, item, prior, campaign):
+    if not e1_campaign(directory):
+        return c.admit(item, prior, c.digest(campaign))
+    schedule = [cell["id"] for cell in campaign["cells"]]
+    c.require(item["id"] in schedule, "Only the four E1 pilots are admitted.")
+    previous = schedule[:schedule.index(item["id"])]
+    if previous:
+        proof = e1.evaluate(
+            {name: e1.read_cell(directory, name) for name in previous},
+            c.digest(campaign),
+            campaign["source_commit"],
+            prefix=True,
+        )
+        c.require(proof["status"] == "e1_resource_criteria_met", "Prior E1 pilot did not qualify.")
 
 
 def scheduler_arguments():
@@ -377,9 +433,11 @@ def start(directory, sha, identity, acknowledged, *, command=r.r2.command):
     item, claim = c.select(identity), directory / identity
     c.require(not claim.exists() and not claim.is_symlink(), "Existing claim: collect only.")
     with submission_lock(directory):
-        prior = observations(directory)
-        c.admit(item, prior, c.digest(campaign))
+        prior = [] if e1_campaign(directory) else observations(directory)
+        admit_cell(directory, item, prior, campaign)
         capacity(directory, command)
+        if e1_campaign(directory):
+            storage_receipt = e1_storage(directory)
         inputs = campaign["inputs"][str(item["population"])]
         check_inputs(item["population"], inputs)
         selected = selection(item["population"], inputs)
@@ -403,16 +461,18 @@ def start(directory, sha, identity, acknowledged, *, command=r.r2.command):
             "cases": [r.spec_payload(c.specification(item, inputs["workbook"]))],
             "created_at_utc": datetime.now(UTC).isoformat(),
             "planned_schedule_index": next(
-                i for i, value in enumerate(c.cells()) if value["id"] == identity
+                i for i, value in enumerate(campaign_cells(directory)) if value["id"] == identity
             ),
             "actual_submission_index": sum(
-                (directory / value["id"]).exists() for value in c.cells()
+                (directory / value["id"]).exists() for value in campaign_cells(directory)
             ),
         }
         claim.mkdir(mode=0o700)
         write_json(claim / "plan.json", plan)
         write_json(claim / "campaign.json", campaign)
         write_json(claim / "warehouse_selection.json", selected)
+        if e1_campaign(directory):
+            write_json(claim / "e1_storage_at_admission.json", storage_receipt)
         write_json(
             claim / "admission.json",
             {
@@ -504,7 +564,7 @@ def batch(claim, sha):
         "automatic_follow_on_allowed": False,
     }
     try:
-        _, campaign = load_run(claim, sha)
+        plan, campaign = load_run(claim, sha)
         deadline = time.monotonic() + 30
         while not (claim / "job.json").exists() and time.monotonic() < deadline:
             time.sleep(0.1)
@@ -518,6 +578,11 @@ def batch(claim, sha):
         c.require(query.returncode == 0, "Allocation query failed.")
         allocated = allocation(query.stdout, job["job_id"], os.getuid())
         write_json(claim / "allocation.json", allocated)
+        guard = None
+        if e1_campaign(claim.parent):
+            write_json(claim / "e1_storage_at_compute.json", e1_storage(claim.parent))
+            guard = e1_memory.JobMemoryGuard(job["job_id"])
+            write_json(claim / "e1_memory_initial.json", guard.initial)
 
         def invoke(action, directory, source, *extra):
             c.require(action == "worker", "Worker-only supervisor dispatch.")
@@ -539,14 +604,14 @@ def batch(claim, sha):
                 (directory / "control/sto/review.out").open("xb") as out,
                 (directory / "control/sto/review.err").open("xb") as err,
             ):
-                process = subprocess.run(
-                    invocation("review", directory, source),
-                    stdout=out,
-                    stderr=err,
-                    timeout=remaining,
-                    check=False,
-                )
-            c.require(process.returncode == 0, "Original product review failed.")
+                argv = invocation("review", directory, source)
+                if guard is None:
+                    code = subprocess.run(
+                        argv, stdout=out, stderr=err, timeout=remaining, check=False,
+                    ).returncode
+                else:
+                    code = guard.run_review(argv, out, err, remaining)
+            c.require(code == 0, "Original product review failed.")
 
         observer = ExternalObserver(claim, job)
         try:
@@ -563,9 +628,31 @@ def batch(claim, sha):
                 whole_arm_seconds=c.PROFILE["step_seconds"],
                 phase_profile=c.PROFILE,
                 sleep=observer.sleep,
+                health_check=None if guard is None else guard.check,
             )
         finally:
-            observer.finish()
+            try:
+                observer.finish()
+            finally:
+                if guard is not None:
+                    memory = guard.receipt()
+                    native = claim / "control/sto/native_terminal.json"
+                    metadata = read(native)["metadata"] if native.is_file() else {}
+                    write_json(
+                        claim / "memory_receipt.json",
+                        {
+                            **memory, **job, "campaign_sha256": plan["campaign_sha256"],
+                            "solver_interface": metadata.get("pyomo_solver_interface"),
+                            "solver_versions": metadata.get("solver_versions"),
+                            "highs_native_version": metadata.get("highs_native_version"),
+                        },
+                    )
+        if guard is not None:
+            c.require(
+                not memory["guard_triggered"] and memory["peak_bytes"] <= guard.limit
+                and memory["final_snapshot"]["status"] == "cgroup_memory_capabilities_present",
+                "E1 memory gate stopped or rejected the allocation.",
+            )
         c.require(result["status"] == "closed_feasible_arm", "Owned step not closed.")
         load_run(claim, sha)
         outcome.update(status="one_observation_returned", source_verified_after=True)
@@ -643,6 +730,12 @@ def worker(claim, sha, *, entry, startup):
             },
         ),
     )
+    if e1_campaign(claim.parent):
+        c.require(
+            read(control / "runtime.json")["hardware_class_sha256"] == e1.ORIGINAL_HARDWARE,
+            "E1 historical hardware class differs before model construction.",
+        )
+        e1_memory.check_worker(claim, entry["job_id"])
     run_case(claim, plan, inputs, entry)
     load_run(claim, sha)
 
@@ -1056,7 +1149,7 @@ def collect(claim, sha, *, command=r.r2.command):
 
 
 def tables(directory, sha, output):
-    """All90 planned cells remain visible; failures/timeouts are never dropped."""
+    """All planned cells remain visible, including failures and time limits."""
     login()
     manifest = load_campaign(directory, sha)
     observed = {row["cell"]["id"]: row for row in observations(directory)}
@@ -1066,7 +1159,8 @@ def tables(directory, sha, output):
     )
     output.mkdir()
     configs, results = [], []
-    for item in c.cells():
+    cells = campaign_cells(directory)
+    for item in cells:
         configs.append(
             {
                 **item,
@@ -1120,7 +1214,7 @@ def tables(directory, sha, output):
     write_json(output / "observations.json", list(observed.values()))
     return {
         "status": "comparative_tables_written",
-        "planned_cells": 90,
+        "planned_cells": len(cells),
         "collected": len(observed),
         "output": str(output),
         "scope": "Descriptive temporal repetitions; no automatic significance claim.",
@@ -1151,6 +1245,8 @@ def main():
         }
     elif args.action == "init":
         inputs = default_inputs() if args.inputs is None else read(args.inputs)
+        if args.inputs is None and e1_campaign(args.directory):
+            inputs = {"400": inputs["400"]}
         result = init(args.directory, args.source_sha, inputs)
     elif args.action == "start":
         result = start(args.directory, args.source_sha, args.cell, args.acknowledge_one_cell)
@@ -1159,13 +1255,13 @@ def main():
         campaign = load_campaign(args.directory, args.source_sha)
         observed = observations(args.directory)
         pending = []
-        for item in c.cells():
+        for item in campaign_cells(args.directory):
             if (args.directory / item["id"]).exists():
                 continue
             try:
-                c.admit(item, observed, c.digest(campaign))
+                admit_cell(args.directory, item, observed, campaign)
                 pending.append(item)
-            except ValueError:
+            except (ValueError, FileNotFoundError):
                 pass
         result = {
             "collected": len(observed),

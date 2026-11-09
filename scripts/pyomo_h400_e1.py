@@ -25,6 +25,7 @@ ORIGINAL_CAMPAIGN = "3cae7c318032108caa936d70b2883f20d055066f89a78e24610f2618327
 ORIGINAL_JOBS = {"2232379", "2232380", "2232381", "2232382"}
 ORIGINAL_MATRIX = "d90f1121a75817702db52fa0d190642433feb66d111743811fca2c653b649330"
 ORIGINAL_BOUNDS = "8d0d3951b7ab2fd6e0ef1c99c088d6cf1864bffbe599f032965c9d3aab598eed"
+ORIGINAL_HARDWARE = "32629b1e2a3e3eb680f7f45d987f722fbd913f557e4c3dc8a3e0902b4bae0260"
 CASES = (
     contract.cell(400, "gurobi", 1, 1),
     contract.cell(400, "highs", 1, 1),
@@ -139,14 +140,15 @@ def check_memory(row, memory):
     }
 
 
-def evaluate(records, campaign_sha, source_sha):
+def evaluate(records, campaign_sha, source_sha, *, prefix=False):
     require(
         hex_digest(campaign_sha) and campaign_sha != ORIGINAL_CAMPAIGN
         and re.fullmatch(r"[0-9a-f]{40}", source_sha) is not None,
         "A distinct E1 campaign and exact source identity are required.",
     )
-    expected = {cell["id"]: cell for cell in CASES}
-    require(len(records) == 4 and set(records) == set(expected), "Four exact E1 cells required.")
+    require(0 < len(records) <= 4 if prefix else len(records) == 4, "Four exact E1 cells required.")
+    expected = {cell["id"]: cell for cell in CASES[:len(records)]}
+    require(set(records) == set(expected), "E1 records must follow the frozen pilot order.")
     reference = contract.reference(400)
     results, jobs, bindings = {}, set(), set()
     for identity, cell in expected.items():
@@ -170,14 +172,20 @@ def evaluate(records, campaign_sha, source_sha):
             row["input_binding"] == {k: reference[k] for k in INPUT_FIELDS},
             "Original h400 inputs differ.",
         )
-        binding = tuple(row[key] for key in ("matrix_sha256", "bounds_sha256", "hardware_class_sha256"))
-        require(all(hex_digest(digest) for digest in binding), "Missing matrix, bounds or hardware digest.")
+        binding = tuple(
+            row[key] for key in ("matrix_sha256", "bounds_sha256", "hardware_class_sha256")
+        )
+        require(
+            all(hex_digest(digest) for digest in binding),
+            "Missing matrix, bounds or hardware digest.",
+        )
         bindings.add(binding)
         matrix, reformulation = row["common_linear_matrix"], row["reformulation"]
         require(
             matrix["sha256"] == binding[0] == ORIGINAL_MATRIX
-            and reformulation["bounds_sha256"] == binding[1] == ORIGINAL_BOUNDS,
-            "Matrix or bounds receipt differs.",
+            and reformulation["bounds_sha256"] == binding[1] == ORIGINAL_BOUNDS
+            and binding[2] == ORIGINAL_HARDWARE,
+            "Matrix or bounds receipt differs, or historical hardware class differs.",
         )
         contract.effective_parameters(cell, {
             "pyomo_solver_interface": memory["solver_interface"],
@@ -221,45 +229,46 @@ def json_receipt(path, root):
 
 
 def read_bundle(directory):
+    return {cell["id"]: read_cell(directory, cell["id"]) for cell in CASES}
+
+
+def read_cell(directory, identity):
     root = directory.resolve(strict=True)
-    records = {}
-    for cell in CASES:
-        path = root / cell["id"]
-        require(path.is_dir() and not path.is_symlink(), "Missing or linked E1 cell directory.")
-        marker = json_receipt(path / "collection.json", root)
-        memory = json_receipt(path / "memory_receipt.json", root)
-        archive = regular(path / "evidence.tar.gz", root)
-        with archive.open("rb") as stream:
+    path = root / identity
+    require(path.is_dir() and not path.is_symlink(), "Missing or linked E1 cell directory.")
+    marker = json_receipt(path / "collection.json", root)
+    memory = json_receipt(path / "memory_receipt.json", root)
+    archive = regular(path / "evidence.tar.gz", root)
+    with archive.open("rb") as stream:
+        require(
+            hashlib.file_digest(stream, "sha256").hexdigest() == marker["sha256"],
+            "E1 evidence archive hash differs.",
+        )
+    with tarfile.open(archive, "r:gz") as tar:
+        members = {name: [] for name in ("campaign_observation.json", "memory_receipt.json")}
+        expanded = 0
+        for count, member in enumerate(tar, 1):
+            expanded += member.size
             require(
-                hashlib.file_digest(stream, "sha256").hexdigest() == marker["sha256"],
-                "E1 evidence archive hash differs.",
+                count <= contract.PROFILE["max_regular_members"]
+                and expanded <= contract.PROFILE["expanded_transfer_bytes"],
+                "E1 archive exceeds its declared bounds.",
             )
-        with tarfile.open(archive, "r:gz") as tar:
-            members = {name: [] for name in ("campaign_observation.json", "memory_receipt.json")}
-            expanded = 0
-            for count, member in enumerate(tar, 1):
-                expanded += member.size
-                require(
-                    count <= contract.PROFILE["max_regular_members"]
-                    and expanded <= contract.PROFILE["expanded_transfer_bytes"],
-                    "E1 archive exceeds its declared bounds.",
-                )
-                if member.name in members:
-                    members[member.name].append(member)
-            require(
-                all(
-                    len(items) == 1 and items[0].isfile() and items[0].size <= 1024**2
-                    for items in members.values()
-                ),
-                "Unique bounded archived observation and memory receipt required.",
-            )
-            with tar.extractfile(members["campaign_observation.json"][0]) as stream:
-                observation = json.load(stream)
-            with tar.extractfile(members["memory_receipt.json"][0]) as stream:
-                require(json.load(stream) == memory, "Archive and memory receipt disagree.")
-        require(observation == marker["observation"], "Archive and collection receipt disagree.")
-        records[cell["id"]] = observation, memory
-    return records
+            if member.name in members:
+                members[member.name].append(member)
+        require(
+            all(
+                len(items) == 1 and items[0].isfile() and items[0].size <= 1024**2
+                for items in members.values()
+            ),
+            "Unique bounded archived observation and memory receipt required.",
+        )
+        with tar.extractfile(members["campaign_observation.json"][0]) as stream:
+            observation = json.load(stream)
+        with tar.extractfile(members["memory_receipt.json"][0]) as stream:
+            require(json.load(stream) == memory, "Archive and memory receipt disagree.")
+    require(observation == marker["observation"], "Archive and collection receipt disagree.")
+    return observation, memory
 
 
 def main():

@@ -41,7 +41,7 @@ def records():
             "incumbent_validation_rejected": False, "worker_affinity_logical_cpus": 16,
             "input_binding": {k: binding[k] for k in e1.INPUT_FIELDS},
             "matrix_sha256": e1.ORIGINAL_MATRIX, "bounds_sha256": e1.ORIGINAL_BOUNDS,
-            "hardware_class_sha256": "c" * 64,
+            "hardware_class_sha256": e1.ORIGINAL_HARDWARE,
             "common_linear_matrix": {
                 "sha256": e1.ORIGINAL_MATRIX, "variables": 42106944,
                 "schema_version": "ordered-pyomo-linear-matrix-v1",
@@ -63,7 +63,9 @@ def records():
             "common_gap": 0.005 if gurobi else None, "quality_target_met": gurobi,
             "resource_observation": {
                 "status": "timely_samples",
-                "sampled_worker_tree_peak_bytes": 172052795392 if gurobi and t == 16 else 140*e1.GIB,
+                "sampled_worker_tree_peak_bytes": (
+                    172052795392 if gurobi and t == 16 else 140 * e1.GIB
+                ),
             },
         }
         memory = {

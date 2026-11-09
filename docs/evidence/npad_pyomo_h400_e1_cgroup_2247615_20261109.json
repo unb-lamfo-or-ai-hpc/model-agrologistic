@@ -1,0 +1,40 @@
+{
+  "job_id": "2247615",
+  "source_commit": "3cee6d3647442806cadc177222b94d34ca1e0799",
+  "probe_sha256": "ef83c74203685da4d7a41908305aa0bed74ee9f5c05fe0020e37d64d68bc3559",
+  "claim_basename": ".mvp2-pyomo-h400-e1-cgroup-public-v2",
+  "transferred_logs": {
+    "slurm-2247615.out": {
+      "bytes": 3178,
+      "sha256": "1610e225a7364fd6a76f03f5d509cdc189c67d9d2d189e58063e0d84475002e4"
+    },
+    "slurm-2247615.err": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "terminal_sacct": {
+    "job": ["COMPLETED", 9, "0:0", "192G", 64],
+    "batch": ["COMPLETED", 9, "0:0", null, 64],
+    "extern": ["COMPLETED", 9, "0:0", null, 64],
+    "step_0": ["COMPLETED", 0, "0:0", null, 16]
+  },
+  "controller": "cgroup_v1",
+  "batch_and_step_share_job_cgroup": true,
+  "effective_member_limit_bytes": 206158430208,
+  "worker_affinity_logical_cpus": 16,
+  "exercise": {
+    "threshold_bytes": 58675200,
+    "trigger_bytes": 165613568,
+    "child_exit": -15
+  },
+  "final_job_memory_events": {"failcnt": 0, "under_oom": 0, "oom_kill": 0},
+  "public_memory_capability_and_disposable_child_guard": "accepted",
+  "checksum_readback": {
+    "v1_stderr_manifest_warning": "One mistyped 63-character digest was skipped by non-strict sha256sum. Correct digest recomputed from transferred bytes.",
+    "strict_on_cluster_readback": "verified_four_logs_and_v2_probe",
+    "source_identity_sha256": "f979dd552f1921dc9cf062592e4fd4962adb8617329658a0c6ff32f02afc467c",
+    "source_identity_contents_verified": true
+  },
+  "private_execution_admitted": false
+}

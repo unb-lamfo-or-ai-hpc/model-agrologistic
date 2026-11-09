@@ -22,8 +22,8 @@ for NAME in slurm-2247610.out slurm-2247610.err; do
 done
 printf '%s  %s\n' \
     '22644dc041c6117a816703168e72f26e4564a61b29ebef39cd0e240bfefc8e52' "$V1/slurm-2247610.out" \
-    'c15307834fb77656d0465d2667a8a62f564f7c97febe532104e7de677c426d8' "$V1/slurm-2247610.err" \
-    | sha256sum -c -
+    'c15307834fb77656d0465d2667a8a62f564f7c97fefbe532104e7de677c426d8' "$V1/slurm-2247610.err" \
+    | sha256sum --strict -c -
 
 mkdir "$CLAIM"
 printf 'PRESERVE_CLAIM=%s\n' "$CLAIM"

@@ -10,7 +10,7 @@
     },
     "slurm-2247610.err": {
       "bytes": 53,
-      "sha256": "c15307834fb77656d0465d2667a8a62f564f7c97febe532104e7de677c426d8"
+      "sha256": "c15307834fb77656d0465d2667a8a62f564f7c97fefbe532104e7de677c426d8"
     }
   },
   "memberships": {
@@ -19,7 +19,12 @@
   },
   "diagnosis": "Both processes lack the 0:: entry expected by the v2-only parser. The active memory controller version, effective limit and CPU affinity were not measured.",
   "step_exit_reported_by_srun": 1,
-  "terminal_sacct_received": false,
+  "terminal_sacct": {
+    "job": ["FAILED", 4, "1:0", "192G", 64],
+    "batch": ["FAILED", 4, "1:0", null, 64],
+    "extern": ["COMPLETED", 4, "0:0", null, 64],
+    "step_0": ["FAILED", 0, "1:0", null, 16]
+  },
   "qualified": false,
   "private_execution_admitted": false
 }

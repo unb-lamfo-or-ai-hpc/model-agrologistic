@@ -103,7 +103,9 @@ def memory_snapshot(version, mount, job, member):
         and counters_clear
     )
     return {
-        "status": "cgroup_memory_capabilities_present" if ready else "cgroup_memory_profile_differs",
+        "status": (
+            "cgroup_memory_capabilities_present" if ready else "cgroup_memory_profile_differs"
+        ),
         "controller": version,
         "job_cgroup": job_key,
         "member_cgroup": str(member),

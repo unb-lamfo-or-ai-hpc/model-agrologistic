@@ -19,6 +19,7 @@ HERE = Path(__file__).resolve().parents[1]
 if str(HERE) not in sys.path:
     sys.path.insert(0, str(HERE))
 
+from scripts import pyomo_h400_e1_memory as e1_memory
 from scripts import pyomo_scaling_contract as c
 from scripts.qualify_pyomo_gurobi_license_v2 import (
     digest,
@@ -33,6 +34,13 @@ TESTS = (
     "tests/test_pyomo_scaling_integration.py",
 )
 EXPECTED_TESTS = 111
+E1_TESTS = (
+    *TESTS,
+    "tests/test_pyomo_h400_e1.py",
+    "tests/test_npad_pyomo_h400_e1_cgroup_probe.py",
+    "tests/test_pyomo_h400_e1_integration.py",
+)
+EXPECTED_E1_TESTS = 151
 PUBLIC_PROFILE = {"logical_cpus": 16, "memory_mib": 32768, "wall_seconds": 2700, "exclusive": True}
 
 
@@ -80,25 +88,26 @@ def environment():
 def location(claim):
     base = Path("/home/vrrcelestino/model-agrologistic-hygiene-audit")
     c.require(
-        not claim.is_symlink() and claim.parent.resolve() == base and claim.name == c.QUALIFICATION,
+        not claim.is_symlink() and claim.parent.resolve() == base
+        and claim.name in {c.QUALIFICATION, e1_memory.QUALIFICATION},
         "Dedicated public qualification only.",
     )
     return claim.absolute()
 
 
-def accepted(plan, result):
+def accepted(plan, result, *, e1_profile=False):
+    tests, count = (E1_TESTS, EXPECTED_E1_TESTS) if e1_profile else (TESTS, EXPECTED_TESTS)
     c.require(
-        EXPECTED_TESTS > 0
-        and plan["schema_version"] == c.SCHEMA + "-public"
-        and plan["expected_tests"] == EXPECTED_TESTS
-        and plan["tests"] == list(TESTS)
+        plan["schema_version"] == c.SCHEMA + ("-e1-public" if e1_profile else "-public")
+        and plan["expected_tests"] == count
+        and plan["tests"] == list(tests)
         and plan["public_profile"] == PUBLIC_PROFILE
         and result["source_commit"] == plan["source_commit"]
         and result["plan_sha256"] == c.digest(plan)
         and re.fullmatch(r"[1-9][0-9]*", result["job_id"])
         and result["status"] == "accepted"
         and result["pytest_exit"] == 0
-        and result["counts"] == {"tests": EXPECTED_TESTS, "failures": 0, "errors": 0, "skipped": 0}
+        and result["counts"] == {"tests": count, "failures": 0, "errors": 0, "skipped": 0}
         and result["source_verified_after"] is True
         and result["license_capacity_accepted"] is True
         and result["runtime_verified_after"] is True
@@ -107,6 +116,12 @@ def accepted(plan, result):
         and result["private_execution_admitted"] is False,
         "Exact public qualification not accepted.",
     )
+    if e1_profile:
+        c.require(
+            bool(plan.get("e1_public_probe_receipts"))
+            and result.get("e1_public_probe_receipts_verified_after") is True,
+            "Preserved E1 probe bytes were not verified.",
+        )
     return result
 
 
@@ -120,7 +135,10 @@ def prepare(claim, archive, sha):
     )
     c.require(not claim.exists(), "Preserve existing public claim; never resubmit.")
     runtime = environment()
-    c.require(EXPECTED_TESTS > 0, "Public test count not frozen.")
+    e1_profile = claim.name == e1_memory.QUALIFICATION
+    tests, count = (E1_TESTS, EXPECTED_E1_TESTS) if e1_profile else (TESTS, EXPECTED_TESTS)
+    proof = e1_memory.public_probe_evidence(claim.parent, HERE) if e1_profile else None
+    c.require(count > 0, "Public test count not frozen.")
     claim.mkdir(mode=0o700)
     source = claim / "source"
     source.mkdir()
@@ -130,17 +148,19 @@ def prepare(claim, archive, sha):
         "Downloaded preparer/source archive differ.",
     )
     plan = {
-        "schema_version": c.SCHEMA + "-public",
+        "schema_version": c.SCHEMA + ("-e1-public" if e1_profile else "-public"),
         "source_commit": sha,
         "source_files": files,
         "source_archive_sha256": digest(archive),
         "runtime": runtime,
         "python": sys.executable,
-        "tests": list(TESTS),
-        "expected_tests": EXPECTED_TESTS,
+        "tests": list(tests),
+        "expected_tests": count,
         "public_profile": PUBLIC_PROFILE,
         "private_execution_admitted": False,
     }
+    if proof is not None:
+        plan["e1_public_probe_receipts"] = proof
     write_json(claim / "plan.json", plan)
     argv = [
         sys.executable,
@@ -259,13 +279,15 @@ def run(claim, sha):
     claim = location(claim)
     source = claim / "source"
     plan = json.loads((claim / "plan.json").read_bytes())
+    e1_profile = claim.name == e1_memory.QUALIFICATION
+    tests, count = (E1_TESTS, EXPECTED_E1_TESTS) if e1_profile else (TESTS, EXPECTED_TESTS)
     c.require(
         HERE == source
         and plan["source_commit"] == sha
         and re.fullmatch(r"[1-9][0-9]*", os.environ.get("SLURM_JOB_ID", ""))
         and os.environ.get("SLURM_STEP_ID", "").isdigit()
-        and plan["tests"] == list(TESTS)
-        and plan["expected_tests"] == EXPECTED_TESTS,
+        and plan["tests"] == list(tests)
+        and plan["expected_tests"] == count,
         "Compute qualification source/job binding differs.",
     )
     verify_source(source, plan["source_files"])
@@ -331,7 +353,7 @@ def run(claim, sha):
         xml = claim / "qualification.xml"
         code = pytest.main(
             [
-                *TESTS,
+                *tests,
                 "-q",
                 "--tb=short",
                 "-p",
@@ -351,10 +373,15 @@ def run(claim, sha):
             },
         )
         verify_source(source, plan["source_files"])
+        if e1_profile:
+            record["e1_public_probe_receipts_verified_after"] = (
+                e1_memory.public_probe_evidence(claim.parent, source)
+                == plan["e1_public_probe_receipts"]
+            )
         record["source_verified_after"] = True
         record["runtime_verified_after"] = environment() == plan["runtime"]
         record["status"] = "accepted"
-        accepted(plan, record)
+        accepted(plan, record, e1_profile=e1_profile)
     except Exception as error:
         record.update(status="rejected", error_kind=type(error).__name__)
     write_json(claim / "result.json", record)

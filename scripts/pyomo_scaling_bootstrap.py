@@ -35,13 +35,22 @@ def identity(
     started,
     audit_base=Path("/home/vrrcelestino/model-agrologistic-hygiene-audit"),
 ):
+    original = (
+        claim.parent.name == ".mvp2-pyomo-scaling-native8h-v1"
+        and root == audit_base / ".mvp2-pyomo-scaling-public-v1/source"
+        and re.fullmatch(r"h(300|400|500)-w-sto-(gurobi|highs)-t(1|2|4|8|16)-r[123]", claim.name)
+    )
+    e1 = (
+        claim.parent.name == ".mvp2-pyomo-h400-e1-native8h-v1"
+        and root == audit_base / ".mvp2-pyomo-h400-e1-public-v1/source"
+        and re.fullmatch(r"h400-w-sto-(gurobi|highs)-t(1|16)-r1", claim.name)
+    )
     require(
         re.fullmatch(r"[0-9a-f]{40}", sha)
-        and re.fullmatch(r"h(300|400|500)-w-sto-(gurobi|highs)-t(1|2|4|8|16)-r[123]", claim.name)
+        and (original or e1)
         and not claim.is_symlink()
-        and claim.parent.name == ".mvp2-pyomo-scaling-native8h-v1"
         and claim.parent.parent == audit_base
-        and root == claim.parent.parent / ".mvp2-pyomo-scaling-public-v1/source",
+        and not claim.parent.is_symlink(),
         "Dedicated qualified source/run claim required.",
     )
     control = claim / "control/sto"

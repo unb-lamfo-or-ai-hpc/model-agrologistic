@@ -10,6 +10,12 @@ test -d "$BASE"
 test -x "$PY"
 test -z "${SLURM_JOB_ID:-}"
 CLAIM="$BASE/.mvp2-pyomo-scaling-public-v1"
+if [[ ${2:-} == --e1 ]]; then
+  CLAIM="$BASE/.mvp2-pyomo-h400-e1-public-v1"
+elif [[ $# -ne 1 ]]; then
+  printf 'Unexpected public qualification profile\n' >&2
+  exit 2
+fi
 if [[ -e "$CLAIM" || -L "$CLAIM" ]]; then
   printf 'PRESERVE_EXISTING_PUBLIC_CLAIM=%s; do not submit again\n' "$CLAIM"
   exit 2
@@ -65,4 +71,6 @@ JOB=${SUBMITTED%%;*}
 printf 'PUBLIC_QUALIFICATION_JOB=%s\nPRESERVE_CLAIM=%s\n' "$JOB" "$CLAIM"
 printf 'STATUS_COMMAND=sacct -j %s --format=JobID,State,Elapsed,ExitCode,MaxRSS,AllocCPUs\n' "$JOB"
 printf 'REPORT_COMMAND=cat %s/result.json\n' "$CLAIM"
+printf 'HASH_COMMAND=sha256sum %s/plan.json %s/result.json %s/qualification.xml %s/license-capability.json %s/public-allocation.json\n' \
+  "$CLAIM" "$CLAIM" "$CLAIM" "$CLAIM" "$CLAIM"
 printf 'PUBLIC_16_CPU_CONTROLS_ONLY; NO_PRIVATE_START_OR_AUTOMATIC_RETRY\n'
