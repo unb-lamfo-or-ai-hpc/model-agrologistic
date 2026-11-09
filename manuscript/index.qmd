@@ -14,7 +14,9 @@ abstract: >-
   63.4 million variables across this range. All nine warehouse-only Gurobi
   observations satisfy the prescribed 1% relative-gap criterion; the
   500-facility instance reaches a 0.21% gap in approximately 128 minutes of
-  native optimization. The returned stochastic plans allocate capacity
+  native optimization. In the common-Pyomo h300 experiment, Gurobi reached
+  the 1% target in all 15 runs and HiGHS reached it in three one-thread runs.
+  The returned stochastic plans allocate capacity
   investment across the admitted candidate sites, indicating distributed
   capacity sizing within the available network. Substantial handling and
   storage exceedances and unmet demand remain in the penalized solutions.
@@ -459,8 +461,8 @@ logical CPUs are distinct resource scopes.
 
 For the common-Pyomo campaign the profile requests an exclusive node and
 192 GiB for a 12-hour allocation. The h300 worker affinity is 16 logical
-CPU IDs. Active roots in the partial scheduler record show 64 allocated
-logical CPUs for those jobs. Solver thread ceilings are settings within
+CPU IDs. Scheduler accounting records 64 allocated logical CPUs at the
+job level for the scientific jobs. Solver thread ceilings are settings within
 this envelope. The runtime and hardware receipts identify the conditions
 for each numerical observation.
 
@@ -588,21 +590,24 @@ separate repeated observations for studying the effect of thread settings.
 
 ## Interpreting the matched solver campaign
 
-The first common-Pyomo h300 pair establishes that both studied solvers can
-return independently accepted plans for the same large agricultural instance.
-Gurobi returned earlier with a smaller attained gap in this pair; HiGHS also
-reached the prescribed quality within its allowance. The observed contrast
-therefore concerns two successful implementations, their attained quality
-and the resources they required. It does not support a general division
-between problems that commercial and open-source software can solve.
+The repeated h300 W STO experiment provides a fixed-instance comparison
+of solution quality and effort. At one thread, both solvers reached the
+1% target in all three repetitions. Median native terminal times were
+48.23 minutes for Gurobi and 401.43 minutes for HiGHS. The median
+end-to-end times were 91.97 and 443.35 minutes, respectively. These clocks
+describe termination under the common stopping policy. For Gurobi, the
+one-thread setting had the lowest median native terminal time. At the
+four higher thread ceilings, HiGHS's twelve runs ended
+without a usable solution under the experimental budget. Appendix C
+reports the achieved gaps, ranges and resource measurements.
 
-The common-Pyomo campaign reached scheduler completion for all 30 h300
-runs and the four h400 pilots. Appendix C records the coverage of the
-planned grid and the evidence available for assessing each outcome.
-
-Both one-thread h300 pilots processed one integer node and reported
-several million LP iterations. These counters make root processing and
-the continuous relaxation relevant when interpreting the recorded effort.
+The four h400 pilots share an ordered Pyomo matrix with 42.1 million
+variables, compared with 25.1 million in h300. Both Gurobi pilots
+returned validated solutions with a 0.836784% common gap. Their common
+economic subtotal was BRL 381.573 billion. Both HiGHS pilots reached
+the native time limit without a usable solution. The repeated
+comparison therefore covers h300, with pilot evidence at h400.
+The native Gurobi scale series provides the separate h500 results.
 
 The study complements the tactical resource measurements of @reis2023
 by linking computation to long-lived warehouse investments and
@@ -729,10 +734,11 @@ domestic service of 91.636% and the separate capacity diagnostics
 help assess the conditions under which that plan would operate.
 
 Gurobi and HiGHS returned independently validated Pyomo plans for h215
-W STO and for the first matched h300 W STO pair. The two experiments
-report native runtime, attained gap and memory under their declared
-profiles. The common-Pyomo campaign's achieved coverage bounds the
-population and thread comparisons.
+W STO and for the first matched h300 W STO pair. The repeated h300
+comparison adds evidence across five thread ceilings. Two validated
+Gurobi pilots extend the common-Pyomo evidence to h400. The pilot
+coverage at h400 and the absence of Pyomo runs at h500 limit
+comparisons across populations.
 
 The scenarios represent controlled supply and demand variations.
 Limitations include the finite compute budgets, one observation per

@@ -15,7 +15,7 @@
       "operational_receipts_closed": true,
       "timings": {
         "artifact_export_seconds": 4.646642392996,
-        "data_read_seconds": 9.20990714803338e-7,
+        "data_read_seconds": 9.20990714803338e-07,
         "end_to_end_seconds": 3337.2631384849956,
         "independent_validation_seconds": 2.7073931820050348,
         "matrix_identity_seconds": 471.6022234180127,
@@ -39,9 +39,9 @@
         "effective_parameters": {
           "ConcurrentMIP": 1,
           "Cuts": -1,
-          "FeasibilityTol": 1e-9,
+          "FeasibilityTol": 1e-09,
           "Heuristics": 0.05,
-          "IntFeasTol": 1e-9,
+          "IntFeasTol": 1e-09,
           "MIPGap": 0.01,
           "Method": -1,
           "NodeMethod": -1,
@@ -75,15 +75,15 @@
       "native_status": "TerminationCondition.optimal",
       "objective": 12974673141227.254,
       "bound": 12974647770396.836,
-      "common_gap": 0.0000019554119122548442,
-      "native_gap": 0.0000019554119124053776,
+      "common_gap": 1.9554119122548442e-06,
+      "native_gap": 1.9554119124053776e-06,
       "has_usable_incumbent": true,
       "original_validation_status": "accepted",
       "quality_target_met": true,
       "operational_receipts_closed": true,
       "timings": {
         "artifact_export_seconds": 4.24237070500385,
-        "data_read_seconds": 8.660135790705681e-7,
+        "data_read_seconds": 8.660135790705681e-07,
         "end_to_end_seconds": 26472.144112541006,
         "independent_validation_seconds": 2.557164429978002,
         "model_build_seconds": 539.2928379200021,
@@ -110,7 +110,7 @@
       "archive_sha256": "db04224d755cd5720091ddb96fc275bcefc6082431ea4b417a1b90d0fece071b",
       "sampled_worker_tree_peak_bytes": 59290374144,
       "effective_parameters": {
-        "mip_feasibility_tolerance": 1e-9,
+        "mip_feasibility_tolerance": 1e-09,
         "mip_rel_gap": 0.01,
         "random_seed": 42,
         "threads": 4,
@@ -119,14 +119,12 @@
     }
   ],
   "qualification": "Two original h215 W STO observations with unequal attained gaps and separately retained measurement scopes; no causal speedup or new execution.",
-  "ongoing_campaign": {
-    "status": "pilots_running_in_last_supplied_accounting",
-    "source_commit": "c493be8cd127c5175fc7eb111400229e64b8e3c0",
-    "job_ids": [
-      "2231226",
-      "2231228"
-    ],
-    "outcomes_available": false
+  "repeated_campaign": {
+    "status": "terminal_grid_reconciled",
+    "planned_cells": 90,
+    "validated_at_target": 20,
+    "without_usable_incumbent": 14,
+    "not_executed": 56,
+    "reconciliation_record": "docs/evidence/pyomo_serial_final_export_20261109/reconciliation.json"
   }
 }
-

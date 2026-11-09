@@ -1,0 +1,790 @@
+{
+  "schema_version": "pyomo-serial-final-reconciliation-v1",
+  "controller_commit": "334827d5e3669b4fcdf2801fd4cea466e5a71d06",
+  "engine_commit": "c493be8cd127c5175fc7eb111400229e64b8e3c0",
+  "final_export_job": 2232443,
+  "verified_transfer_members": 32,
+  "transfer_manifest_sha256": "6c1fccba05ff60c18b617a18a8a32777a43b5b9715078807715d5cf1c8ab13d3",
+  "source_file_sha256": {
+    "final_result.json": "2bc4d11ceed3b3ad943b352c82c6563f781a54b357baeb0172dd0e2a1f9af96b",
+    "configurations.csv": "3e2ec326760855d6494e3cc461ca344de853600c5c876356571f59efb0a98af5",
+    "results.csv": "64a158effa6c1c0fcc7d3fffbcc31b5f52f61c416adfe03acd74262a2f796619"
+  },
+  "transfer_member_sha256": {
+    "control/job.json": "401421bdab3315059d636fe9aebfcb7c61448320d3a0b23b5d9843d0267a50e2",
+    "control/slurm.err": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "control/slurm.out": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "control/stage_result.json": "f90071c0666f4a406808b86f05e0d6a493c734f8823307266367ce4ee433f984",
+    "final/configurations.csv": "3e2ec326760855d6494e3cc461ca344de853600c5c876356571f59efb0a98af5",
+    "final/final_result.json": "2bc4d11ceed3b3ad943b352c82c6563f781a54b357baeb0172dd0e2a1f9af96b",
+    "final/results.csv": "64a158effa6c1c0fcc7d3fffbcc31b5f52f61c416adfe03acd74262a2f796619",
+    "final/SHA256SUMS": "3d7eded24db867c46d84d34829d0380e0c5fcae51b2e6fd72f0ddf0486789e32",
+    "pilots/h400-w-sto-gurobi-t16-r1/campaign_observation.json": "8d2b4df2531a7a4ee1f4a568ac8f88d26ccde42d3a3875a2c884bd95abb692e0",
+    "pilots/h400-w-sto-gurobi-t16-r1/collection.json": "20c6dfec57157dd18ce3b2d1f9ea72e3fb074a0d901f8a104e84d4b1aa0e27f5",
+    "pilots/h400-w-sto-gurobi-t16-r1/evidence.tar.gz.sha256": "cc547cc0d59543f4e34fd0255fe08dbd1507fdbe099214632dc644ffc72d69e2",
+    "pilots/h400-w-sto-gurobi-t16-r1/h400-w-sto-gurobi-t16-r1.json": "20c6dfec57157dd18ce3b2d1f9ea72e3fb074a0d901f8a104e84d4b1aa0e27f5",
+    "pilots/h400-w-sto-gurobi-t16-r1/job.json": "cddefe91e0d9a8442957f4f7385b059ce550c52c1eee49f54598603b64527ef6",
+    "pilots/h400-w-sto-gurobi-t16-r1/plan.json": "52247345155a96f5dda8d9d5d2dfe533217e152782fb22e16ec48e67c740b871",
+    "pilots/h400-w-sto-gurobi-t1-r1/campaign_observation.json": "7a5831e0c9cb73fce3d7fd0ba78758e35492190649fdda7fffdaa3b228c924e3",
+    "pilots/h400-w-sto-gurobi-t1-r1/collection.json": "5e4a877d343f84362013836e3a8f5e2d651b63b75d3c78c524ced8b6e0eb3ba1",
+    "pilots/h400-w-sto-gurobi-t1-r1/evidence.tar.gz.sha256": "d6570a5b6295cbf99a54c3e440db0cea1e839cc06eb3ed3218e62d290cbcf523",
+    "pilots/h400-w-sto-gurobi-t1-r1/h400-w-sto-gurobi-t1-r1.json": "5e4a877d343f84362013836e3a8f5e2d651b63b75d3c78c524ced8b6e0eb3ba1",
+    "pilots/h400-w-sto-gurobi-t1-r1/job.json": "4135d52489a94e2056e8a032ba2e75032482cb2f05e388c8af563bf733d0a730",
+    "pilots/h400-w-sto-gurobi-t1-r1/plan.json": "12525febc2d2e4c1abdec2fa4542a1bfdbdbf4a091a7147f5ee7700398e2dfac",
+    "pilots/h400-w-sto-highs-t16-r1/campaign_observation.json": "8406b3271f73fa5634af91bf0aa37c6925064d5a7b22f5114c30b9967311be0e",
+    "pilots/h400-w-sto-highs-t16-r1/collection.json": "f1a2cf152267187c2b7a2135ebfe5ab4622f562a7fd8fed1a9a938d054e5df3b",
+    "pilots/h400-w-sto-highs-t16-r1/evidence.tar.gz.sha256": "571eed8aced82754ddfde89a2447cc87df709fb7766f85b6ef3ac716e7c480c6",
+    "pilots/h400-w-sto-highs-t16-r1/h400-w-sto-highs-t16-r1.json": "f1a2cf152267187c2b7a2135ebfe5ab4622f562a7fd8fed1a9a938d054e5df3b",
+    "pilots/h400-w-sto-highs-t16-r1/job.json": "e564b00ed30a00c443769471b3b55ce63da1c186bdb1591d6d146afe3678ef2e",
+    "pilots/h400-w-sto-highs-t16-r1/plan.json": "8774a1e96ca7b39d157d4fd0ade07d0be623abaf17688722e74f9b3e2d4ae5e2",
+    "pilots/h400-w-sto-highs-t1-r1/campaign_observation.json": "f74787502fc71de03f126a5369fa75d06a4b3989ded0edc955a360f738a0cf43",
+    "pilots/h400-w-sto-highs-t1-r1/collection.json": "8349546c02bd5d22764705347f622b71e1d5d77e90c98d1df6170f7803f74b5b",
+    "pilots/h400-w-sto-highs-t1-r1/evidence.tar.gz.sha256": "7afa6b1b30472fe64d42bc6c3e4bdb9300f8be98dc33a27944265749f94d3ca3",
+    "pilots/h400-w-sto-highs-t1-r1/h400-w-sto-highs-t1-r1.json": "8349546c02bd5d22764705347f622b71e1d5d77e90c98d1df6170f7803f74b5b",
+    "pilots/h400-w-sto-highs-t1-r1/job.json": "aad4f83bb47c0d46776f82c0afa73a0bc790c101fb726c9405e558d9f6845c2e",
+    "pilots/h400-w-sto-highs-t1-r1/plan.json": "498c5313be21cceb0c2e68f182353ad8a5a3263afa529c58b1c5e1886e6a8557"
+  },
+  "grid_rows": 90,
+  "classification_counts": {
+    "validated_feasible": 20,
+    "no_usable_incumbent": 14,
+    "not_executed": 56
+  },
+  "archive_scope": "NPAD final consolidation checked original archive identities and observations. This local reconciliation checked transferred bytes, ledgers and four pilot receipt sets. Full pilot archives and a fresh primal revalidation are outside this transfer.",
+  "h400_gate": {
+    "job_id": "2232383",
+    "status": "rejected",
+    "reported_error_kind": "ValueError",
+    "replayed_error": "Pilot lacks observed 20% memory headroom; preserve and revise profile.",
+    "memory_budget_gib": 192,
+    "max_peak_gib": 153.60000000000002,
+    "exceeding_cells": [
+      "h400-w-sto-gurobi-t16-r1"
+    ],
+    "shared_matrix": {
+      "binary_variables": 492,
+      "linear_constraints": 1435062,
+      "nonzeros": 161245766,
+      "schema_version": "ordered-pyomo-linear-matrix-v1",
+      "scope": "Ordered common Pyomo algebra; not a presolved/native matrix fingerprint.",
+      "sha256": "d90f1121a75817702db52fa0d190642433feb66d111743811fca2c653b649330",
+      "variables": 42106944
+    },
+    "shared_bounds_sha256": "8d0d3951b7ab2fd6e0ef1c99c088d6cf1864bffbe599f032965c9d3aab598eed",
+    "shared_hardware_class_sha256": "32629b1e2a3e3eb680f7f45d987f722fbd913f557e4c3dc8a3e0902b4bae0260",
+    "pilot_receipts": [
+      {
+        "id": "h400-w-sto-gurobi-t1-r1",
+        "job_id": "2232379",
+        "archive_sha256_reported": "0704c41c9559267a7834924b461451ce291cd1831f14def357b07af194f7cf13",
+        "native_status": "TerminationCondition.optimal",
+        "classification": "validated_feasible",
+        "objective": 7593395049302.771,
+        "bound": 7529854702083.351,
+        "common_gap": 0.008367844265557499,
+        "economic_cost": 381572750892.53174,
+        "timings": {
+          "artifact_export_seconds": 5.763885968946852,
+          "data_read_seconds": 8.370261639356613e-07,
+          "end_to_end_seconds": 8309.00565388205,
+          "independent_validation_seconds": 4.29506002611015,
+          "matrix_identity_seconds": 1395.1028244950576,
+          "model_build_seconds": 3345.053424283047,
+          "optimization_seconds": 4003.7405365970917,
+          "result_extraction_seconds": 697.8251949789701,
+          "solve_sequence_wall_seconds": 8229.217664010008,
+          "solver_reported_runtime_seconds": 3898.9548709392548,
+          "solver_transfer_seconds": 1488.7074097199365
+        },
+        "sampled_worker_tree_peak_bytes": 121771442176.0,
+        "sampling_status": "timely_samples",
+        "worker_affinity_logical_cpus": 16,
+        "effective_parameters": {
+          "ConcurrentMIP": 1,
+          "Cuts": -1,
+          "FeasibilityTol": 1e-09,
+          "Heuristics": 0.05,
+          "IntFeasTol": 1e-09,
+          "MIPGap": 0.01,
+          "Method": -1,
+          "NodeMethod": -1,
+          "Presolve": -1,
+          "Seed": 42,
+          "Threads": 1,
+          "TimeLimit": 28800
+        }
+      },
+      {
+        "id": "h400-w-sto-gurobi-t16-r1",
+        "job_id": "2232382",
+        "archive_sha256_reported": "bbec050eb0c0a69044bbe6f8c50ef02645ee6bace0a71984eac4fc597fd5f3a1",
+        "native_status": "TerminationCondition.optimal",
+        "classification": "validated_feasible",
+        "objective": 7593395049302.771,
+        "bound": 7529854702083.227,
+        "common_gap": 0.008367844265573831,
+        "economic_cost": 381572750892.53174,
+        "timings": {
+          "artifact_export_seconds": 5.6770958279957995,
+          "data_read_seconds": 9.040813893079758e-07,
+          "end_to_end_seconds": 12319.802300512092,
+          "independent_validation_seconds": 4.426432725973427,
+          "matrix_identity_seconds": 1455.646560206893,
+          "model_build_seconds": 3392.7202341089724,
+          "optimization_seconds": 7940.063346312963,
+          "result_extraction_seconds": 715.4384266659617,
+          "solve_sequence_wall_seconds": 12241.545313248993,
+          "solver_reported_runtime_seconds": 7834.093806028366,
+          "solver_transfer_seconds": 1500.7329055470182
+        },
+        "sampled_worker_tree_peak_bytes": 172052795392.0,
+        "sampling_status": "timely_samples",
+        "worker_affinity_logical_cpus": 16,
+        "effective_parameters": {
+          "ConcurrentMIP": 1,
+          "Cuts": -1,
+          "FeasibilityTol": 1e-09,
+          "Heuristics": 0.05,
+          "IntFeasTol": 1e-09,
+          "MIPGap": 0.01,
+          "Method": -1,
+          "NodeMethod": -1,
+          "Presolve": -1,
+          "Seed": 42,
+          "Threads": 16,
+          "TimeLimit": 28800
+        }
+      },
+      {
+        "id": "h400-w-sto-highs-t1-r1",
+        "job_id": "2232380",
+        "archive_sha256_reported": "d3785d74a0ca0ba165e4fa4a796f8822965a46f6b25e248fc161834476da5894",
+        "native_status": "TerminationCondition.maxTimeLimit",
+        "classification": "no_usable_incumbent",
+        "objective": null,
+        "bound": 3917886.5099487305,
+        "common_gap": null,
+        "economic_cost": null,
+        "timings": {
+          "artifact_export_seconds": 0.1508587159914896,
+          "data_read_seconds": 8.50064679980278e-07,
+          "end_to_end_seconds": 32108.303648425965,
+          "independent_validation_seconds": 4.463990193908103,
+          "matrix_identity_seconds": 1417.8844490479678,
+          "model_build_seconds": 3049.501549881068,
+          "optimization_seconds": 28980.011777493986,
+          "solve_sequence_wall_seconds": 32035.2315303419,
+          "solver_reported_runtime_seconds": 28862.670971393585,
+          "solver_transfer_seconds": 1182.4036495519103
+        },
+        "sampled_worker_tree_peak_bytes": 135694925824.0,
+        "sampling_status": "timely_samples",
+        "worker_affinity_logical_cpus": 16,
+        "effective_parameters": {
+          "mip_feasibility_tolerance": 1e-09,
+          "mip_rel_gap": 0.01,
+          "parallel": "on",
+          "random_seed": 42,
+          "threads": 1,
+          "time_limit": 28800
+        }
+      },
+      {
+        "id": "h400-w-sto-highs-t16-r1",
+        "job_id": "2232381",
+        "archive_sha256_reported": "ed1df9ef40f5a7cbd300ee0e4a87060f438d84a517f04904c008e433dcf6be80",
+        "native_status": "TerminationCondition.maxTimeLimit",
+        "classification": "no_usable_incumbent",
+        "objective": null,
+        "bound": 3917886.5099487305,
+        "common_gap": null,
+        "economic_cost": null,
+        "timings": {
+          "artifact_export_seconds": 0.15017215721309185,
+          "data_read_seconds": 8.419156074523926e-07,
+          "end_to_end_seconds": 32578.030339786783,
+          "independent_validation_seconds": 4.901673037558794,
+          "matrix_identity_seconds": 1573.8507343307137,
+          "model_build_seconds": 3403.9435919653624,
+          "optimization_seconds": 29087.382521638647,
+          "solve_sequence_wall_seconds": 32501.26411351841,
+          "solver_reported_runtime_seconds": 28906.730991125107,
+          "solver_transfer_seconds": 1369.671703595668
+        },
+        "sampled_worker_tree_peak_bytes": 162033172480.0,
+        "sampling_status": "timely_samples",
+        "worker_affinity_logical_cpus": 16,
+        "effective_parameters": {
+          "mip_feasibility_tolerance": 1e-09,
+          "mip_rel_gap": 0.01,
+          "parallel": "on",
+          "random_seed": 42,
+          "threads": 16,
+          "time_limit": 28800
+        }
+      }
+    ]
+  },
+  "configuration_summaries": [
+    {
+      "population": 300,
+      "solver": "gurobi",
+      "threads": 1,
+      "at_target": 3,
+      "without_usable_incumbent": 0,
+      "not_executed": 0,
+      "native_minutes": {
+        "median": 48.22852579752604,
+        "min": 48.151295348008475,
+        "max": 61.49851496616999
+      },
+      "end_to_end_minutes": {
+        "median": 91.97445390049057,
+        "min": 91.79402054931658,
+        "max": 105.89541939376504
+      },
+      "sampled_peak_gib": {
+        "median": 74.41920471191406,
+        "min": 74.20503234863281,
+        "max": 74.5351791381836
+      },
+      "gap_percent": {
+        "median": 0.00410522720273419,
+        "min": 0.00410522720273419,
+        "max": 0.00410522720273419
+      }
+    },
+    {
+      "population": 300,
+      "solver": "gurobi",
+      "threads": 2,
+      "at_target": 3,
+      "without_usable_incumbent": 0,
+      "not_executed": 0,
+      "native_minutes": {
+        "median": 66.17820023298263,
+        "min": 51.92620436747869,
+        "max": 68.59573641618093
+      },
+      "end_to_end_minutes": {
+        "median": 108.94408930841794,
+        "min": 96.10280783576891,
+        "max": 111.41850200228315
+      },
+      "sampled_peak_gib": {
+        "median": 82.51388549804688,
+        "min": 82.50891876220703,
+        "max": 82.6602897644043
+      },
+      "gap_percent": {
+        "median": 0.004121716794745223,
+        "min": 0.004121716794745223,
+        "max": 0.004121716794745223
+      }
+    },
+    {
+      "population": 300,
+      "solver": "gurobi",
+      "threads": 4,
+      "at_target": 3,
+      "without_usable_incumbent": 0,
+      "not_executed": 0,
+      "native_minutes": {
+        "median": 65.13922623395919,
+        "min": 56.399374981721245,
+        "max": 76.9850925008456
+      },
+      "end_to_end_minutes": {
+        "median": 113.14381615929888,
+        "min": 100.24073018495304,
+        "max": 120.38914240881762
+      },
+      "sampled_peak_gib": {
+        "median": 100.6539535522461,
+        "min": 99.3530502319336,
+        "max": 100.85513687133789
+      },
+      "gap_percent": {
+        "median": 0.0041200732051579056,
+        "min": 0.0041200732051579056,
+        "max": 0.0041200732051579056
+      }
+    },
+    {
+      "population": 300,
+      "solver": "gurobi",
+      "threads": 8,
+      "at_target": 3,
+      "without_usable_incumbent": 0,
+      "not_executed": 0,
+      "native_minutes": {
+        "median": 93.29199345111847,
+        "min": 93.11091423432032,
+        "max": 93.85243190129599
+      },
+      "end_to_end_minutes": {
+        "median": 136.00417803156694,
+        "min": 135.8245357887664,
+        "max": 137.84650649591737
+      },
+      "sampled_peak_gib": {
+        "median": 99.5150375366211,
+        "min": 99.50238800048828,
+        "max": 100.77572631835938
+      },
+      "gap_percent": {
+        "median": 0.004120346600498994,
+        "min": 0.004120346600498994,
+        "max": 0.004120346600498994
+      }
+    },
+    {
+      "population": 300,
+      "solver": "gurobi",
+      "threads": 16,
+      "at_target": 3,
+      "without_usable_incumbent": 0,
+      "not_executed": 0,
+      "native_minutes": {
+        "median": 96.39476133187613,
+        "min": 71.89834404786428,
+        "max": 101.34123151699701
+      },
+      "end_to_end_minutes": {
+        "median": 141.1526306717191,
+        "min": 115.08399046423341,
+        "max": 144.86583205535038
+      },
+      "sampled_peak_gib": {
+        "median": 100.87760543823242,
+        "min": 100.2586555480957,
+        "max": 103.35916137695312
+      },
+      "gap_percent": {
+        "median": 0.004120346600498994,
+        "min": 0.004120346600498994,
+        "max": 0.004120346600498994
+      }
+    },
+    {
+      "population": 300,
+      "solver": "highs",
+      "threads": 1,
+      "at_target": 3,
+      "without_usable_incumbent": 0,
+      "not_executed": 0,
+      "native_minutes": {
+        "median": 401.4349554936091,
+        "min": 392.37361133495966,
+        "max": 404.08098726272584
+      },
+      "end_to_end_minutes": {
+        "median": 443.35010391750063,
+        "min": 433.5461013612163,
+        "max": 444.567369682433
+      },
+      "sampled_peak_gib": {
+        "median": 84.81952285766602,
+        "min": 84.26156234741211,
+        "max": 85.14886856079102
+      },
+      "gap_percent": {
+        "median": 0.00687938479713077,
+        "min": 0.00687938479713077,
+        "max": 0.00687938479713077
+      }
+    },
+    {
+      "population": 300,
+      "solver": "highs",
+      "threads": 2,
+      "at_target": 0,
+      "without_usable_incumbent": 3,
+      "not_executed": 0,
+      "native_minutes": {
+        "median": 480.7913243611654,
+        "min": 480.6207251429558,
+        "max": 480.82584104537966
+      },
+      "end_to_end_minutes": {
+        "median": 513.1426625681265,
+        "min": 512.2613633682835,
+        "max": 514.5376462723439
+      },
+      "sampled_peak_gib": {
+        "median": 89.49861145019531,
+        "min": 89.48109436035156,
+        "max": 90.29097366333008
+      },
+      "gap_percent": null
+    },
+    {
+      "population": 300,
+      "solver": "highs",
+      "threads": 4,
+      "at_target": 0,
+      "without_usable_incumbent": 3,
+      "not_executed": 0,
+      "native_minutes": {
+        "median": 480.6114964763323,
+        "min": 480.60398770570754,
+        "max": 480.7993088801702
+      },
+      "end_to_end_minutes": {
+        "median": 513.0417489032649,
+        "min": 512.5189171207331,
+        "max": 518.6283604649205
+      },
+      "sampled_peak_gib": {
+        "median": 90.68424224853516,
+        "min": 90.32455825805664,
+        "max": 90.89443969726562
+      },
+      "gap_percent": null
+    },
+    {
+      "population": 300,
+      "solver": "highs",
+      "threads": 8,
+      "at_target": 0,
+      "without_usable_incumbent": 3,
+      "not_executed": 0,
+      "native_minutes": {
+        "median": 480.6179335196813,
+        "min": 480.6159083286921,
+        "max": 480.6295882264773
+      },
+      "end_to_end_minutes": {
+        "median": 513.159563946916,
+        "min": 512.7087713649341,
+        "max": 513.3542411830839
+      },
+      "sampled_peak_gib": {
+        "median": 90.52069091796875,
+        "min": 88.9725112915039,
+        "max": 91.23773956298828
+      },
+      "gap_percent": null
+    },
+    {
+      "population": 300,
+      "solver": "highs",
+      "threads": 16,
+      "at_target": 0,
+      "without_usable_incumbent": 3,
+      "not_executed": 0,
+      "native_minutes": {
+        "median": 480.60435694853464,
+        "min": 480.6031866788864,
+        "max": 480.6295447508494
+      },
+      "end_to_end_minutes": {
+        "median": 512.777210006467,
+        "min": 512.6705905864791,
+        "max": 512.8534055137677
+      },
+      "sampled_peak_gib": {
+        "median": 90.39179611206055,
+        "min": 90.2599983215332,
+        "max": 90.49938583374023
+      },
+      "gap_percent": null
+    },
+    {
+      "population": 400,
+      "solver": "gurobi",
+      "threads": 1,
+      "at_target": 1,
+      "without_usable_incumbent": 0,
+      "not_executed": 2,
+      "native_minutes": {
+        "median": 64.98258118232091,
+        "min": 64.98258118232091,
+        "max": 64.98258118232091
+      },
+      "end_to_end_minutes": {
+        "median": 138.48342756470083,
+        "min": 138.48342756470083,
+        "max": 138.48342756470083
+      },
+      "sampled_peak_gib": {
+        "median": 113.40849304199219,
+        "min": 113.40849304199219,
+        "max": 113.40849304199219
+      },
+      "gap_percent": {
+        "median": 0.8367844265557499,
+        "min": 0.8367844265557499,
+        "max": 0.8367844265557499
+      }
+    },
+    {
+      "population": 400,
+      "solver": "gurobi",
+      "threads": 2,
+      "at_target": 0,
+      "without_usable_incumbent": 0,
+      "not_executed": 3,
+      "native_minutes": null,
+      "end_to_end_minutes": null,
+      "sampled_peak_gib": null,
+      "gap_percent": null
+    },
+    {
+      "population": 400,
+      "solver": "gurobi",
+      "threads": 4,
+      "at_target": 0,
+      "without_usable_incumbent": 0,
+      "not_executed": 3,
+      "native_minutes": null,
+      "end_to_end_minutes": null,
+      "sampled_peak_gib": null,
+      "gap_percent": null
+    },
+    {
+      "population": 400,
+      "solver": "gurobi",
+      "threads": 8,
+      "at_target": 0,
+      "without_usable_incumbent": 0,
+      "not_executed": 3,
+      "native_minutes": null,
+      "end_to_end_minutes": null,
+      "sampled_peak_gib": null,
+      "gap_percent": null
+    },
+    {
+      "population": 400,
+      "solver": "gurobi",
+      "threads": 16,
+      "at_target": 1,
+      "without_usable_incumbent": 0,
+      "not_executed": 2,
+      "native_minutes": {
+        "median": 130.56823010047276,
+        "min": 130.56823010047276,
+        "max": 130.56823010047276
+      },
+      "end_to_end_minutes": {
+        "median": 205.3300383418682,
+        "min": 205.3300383418682,
+        "max": 205.3300383418682
+      },
+      "sampled_peak_gib": {
+        "median": 160.23665237426758,
+        "min": 160.23665237426758,
+        "max": 160.23665237426758
+      },
+      "gap_percent": {
+        "median": 0.8367844265573832,
+        "min": 0.8367844265573832,
+        "max": 0.8367844265573832
+      }
+    },
+    {
+      "population": 400,
+      "solver": "highs",
+      "threads": 1,
+      "at_target": 0,
+      "without_usable_incumbent": 1,
+      "not_executed": 2,
+      "native_minutes": {
+        "median": 481.0445161898931,
+        "min": 481.0445161898931,
+        "max": 481.0445161898931
+      },
+      "end_to_end_minutes": {
+        "median": 535.1383941404328,
+        "min": 535.1383941404328,
+        "max": 535.1383941404328
+      },
+      "sampled_peak_gib": {
+        "median": 126.37574768066406,
+        "min": 126.37574768066406,
+        "max": 126.37574768066406
+      },
+      "gap_percent": null
+    },
+    {
+      "population": 400,
+      "solver": "highs",
+      "threads": 2,
+      "at_target": 0,
+      "without_usable_incumbent": 0,
+      "not_executed": 3,
+      "native_minutes": null,
+      "end_to_end_minutes": null,
+      "sampled_peak_gib": null,
+      "gap_percent": null
+    },
+    {
+      "population": 400,
+      "solver": "highs",
+      "threads": 4,
+      "at_target": 0,
+      "without_usable_incumbent": 0,
+      "not_executed": 3,
+      "native_minutes": null,
+      "end_to_end_minutes": null,
+      "sampled_peak_gib": null,
+      "gap_percent": null
+    },
+    {
+      "population": 400,
+      "solver": "highs",
+      "threads": 8,
+      "at_target": 0,
+      "without_usable_incumbent": 0,
+      "not_executed": 3,
+      "native_minutes": null,
+      "end_to_end_minutes": null,
+      "sampled_peak_gib": null,
+      "gap_percent": null
+    },
+    {
+      "population": 400,
+      "solver": "highs",
+      "threads": 16,
+      "at_target": 0,
+      "without_usable_incumbent": 1,
+      "not_executed": 2,
+      "native_minutes": {
+        "median": 481.7788498520851,
+        "min": 481.7788498520851,
+        "max": 481.7788498520851
+      },
+      "end_to_end_minutes": {
+        "median": 542.9671723297797,
+        "min": 542.9671723297797,
+        "max": 542.9671723297797
+      },
+      "sampled_peak_gib": {
+        "median": 150.9051513671875,
+        "min": 150.9051513671875,
+        "max": 150.9051513671875
+      },
+      "gap_percent": null
+    },
+    {
+      "population": 500,
+      "solver": "gurobi",
+      "threads": 1,
+      "at_target": 0,
+      "without_usable_incumbent": 0,
+      "not_executed": 3,
+      "native_minutes": null,
+      "end_to_end_minutes": null,
+      "sampled_peak_gib": null,
+      "gap_percent": null
+    },
+    {
+      "population": 500,
+      "solver": "gurobi",
+      "threads": 2,
+      "at_target": 0,
+      "without_usable_incumbent": 0,
+      "not_executed": 3,
+      "native_minutes": null,
+      "end_to_end_minutes": null,
+      "sampled_peak_gib": null,
+      "gap_percent": null
+    },
+    {
+      "population": 500,
+      "solver": "gurobi",
+      "threads": 4,
+      "at_target": 0,
+      "without_usable_incumbent": 0,
+      "not_executed": 3,
+      "native_minutes": null,
+      "end_to_end_minutes": null,
+      "sampled_peak_gib": null,
+      "gap_percent": null
+    },
+    {
+      "population": 500,
+      "solver": "gurobi",
+      "threads": 8,
+      "at_target": 0,
+      "without_usable_incumbent": 0,
+      "not_executed": 3,
+      "native_minutes": null,
+      "end_to_end_minutes": null,
+      "sampled_peak_gib": null,
+      "gap_percent": null
+    },
+    {
+      "population": 500,
+      "solver": "gurobi",
+      "threads": 16,
+      "at_target": 0,
+      "without_usable_incumbent": 0,
+      "not_executed": 3,
+      "native_minutes": null,
+      "end_to_end_minutes": null,
+      "sampled_peak_gib": null,
+      "gap_percent": null
+    },
+    {
+      "population": 500,
+      "solver": "highs",
+      "threads": 1,
+      "at_target": 0,
+      "without_usable_incumbent": 0,
+      "not_executed": 3,
+      "native_minutes": null,
+      "end_to_end_minutes": null,
+      "sampled_peak_gib": null,
+      "gap_percent": null
+    },
+    {
+      "population": 500,
+      "solver": "highs",
+      "threads": 2,
+      "at_target": 0,
+      "without_usable_incumbent": 0,
+      "not_executed": 3,
+      "native_minutes": null,
+      "end_to_end_minutes": null,
+      "sampled_peak_gib": null,
+      "gap_percent": null
+    },
+    {
+      "population": 500,
+      "solver": "highs",
+      "threads": 4,
+      "at_target": 0,
+      "without_usable_incumbent": 0,
+      "not_executed": 3,
+      "native_minutes": null,
+      "end_to_end_minutes": null,
+      "sampled_peak_gib": null,
+      "gap_percent": null
+    },
+    {
+      "population": 500,
+      "solver": "highs",
+      "threads": 8,
+      "at_target": 0,
+      "without_usable_incumbent": 0,
+      "not_executed": 3,
+      "native_minutes": null,
+      "end_to_end_minutes": null,
+      "sampled_peak_gib": null,
+      "gap_percent": null
+    },
+    {
+      "population": 500,
+      "solver": "highs",
+      "threads": 16,
+      "at_target": 0,
+      "without_usable_incumbent": 0,
+      "not_executed": 3,
+      "native_minutes": null,
+      "end_to_end_minutes": null,
+      "sampled_peak_gib": null,
+      "gap_percent": null
+    }
+  ]
+}

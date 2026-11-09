@@ -13,3 +13,6 @@
 /manuscript/figures/runtime_memory_comparison.pdf -text
 /manuscript/figures/human_ai_workflow.svg -text
 /manuscript/supplement/appendix_e_paired_h300_index.json -text
+
+# Preserve the original NPAD final export bytes.
+/docs/evidence/pyomo_serial_final_export_20261109/* -text
