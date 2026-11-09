@@ -1,0 +1,25 @@
+{
+  "job_id": "2247610",
+  "source_commit": "862f9d3e33715942855a9b6331cdc8f8542d46fb",
+  "probe_sha256": "f269e090aa930f004da42c7556bbb2721e03394486e032505e554a0e19203867",
+  "claim_basename": ".mvp2-pyomo-h400-e1-cgroup-public-v1",
+  "transferred_logs": {
+    "slurm-2247610.out": {
+      "bytes": 390,
+      "sha256": "22644dc041c6117a816703168e72f26e4564a61b29ebef39cd0e240bfefc8e52"
+    },
+    "slurm-2247610.err": {
+      "bytes": 53,
+      "sha256": "c15307834fb77656d0465d2667a8a62f564f7c97febe532104e7de677c426d8"
+    }
+  },
+  "memberships": {
+    "batch": "cgroup_memory_probe_unavailable",
+    "step_0": "cgroup_memory_probe_unavailable"
+  },
+  "diagnosis": "Both processes lack the 0:: entry expected by the v2-only parser. The active memory controller version, effective limit and CPU affinity were not measured.",
+  "step_exit_reported_by_srun": 1,
+  "terminal_sacct_received": false,
+  "qualified": false,
+  "private_execution_admitted": false
+}

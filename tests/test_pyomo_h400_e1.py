@@ -122,6 +122,23 @@ def test_memory_receipt_requires_exact_scope_and_no_oom(records, field, bad):
         e1.evaluate(records, CAMPAIGN, SOURCE)
 
 
+@pytest.mark.parametrize("case", ["clean", "limit_hit", "mixed_scope"])
+def test_controller_specific_v1_receipts(records, case):
+    for _, memory in list(records.values())[int(case == "mixed_scope"):]:
+        memory.update(
+            scope="slurm_job_cgroup_v1",
+            failcnt_delta=int(case == "limit_hit"),
+            under_oom_at_end=0,
+        )
+        del memory["oom_delta"]
+    if case == "clean":
+        assert e1.evaluate(records, CAMPAIGN, SOURCE)["status"] == "e1_resource_criteria_met"
+        return
+    match = "job-cgroup receipt" if case == "limit_hit" else "controller differs"
+    with pytest.raises(ValueError, match=match):
+        e1.evaluate(records, CAMPAIGN, SOURCE)
+
+
 def test_rejects_original_campaign_or_reused_job(records):
     with pytest.raises(ValueError, match="distinct E1"):
         e1.evaluate(records, e1.ORIGINAL_CAMPAIGN, SOURCE)

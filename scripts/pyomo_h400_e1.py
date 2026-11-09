@@ -112,20 +112,25 @@ def check_memory(row, memory):
         and type(worker) in {int, float} and math.isfinite(worker) and worker > 0,
         "Timely worker-tree memory observation required.",
     )
+    scope = memory["scope"]
+    counters = {
+        "slurm_job_cgroup_v1": ("failcnt_delta", "under_oom_at_end", "oom_kill_delta"),
+        "slurm_job_cgroup_v2": ("oom_delta", "oom_kill_delta"),
+    }
     require(
-        memory["scope"] == "slurm_job_cgroup_v2"
+        scope in counters
         and memory["job_id"] == row["job_id"]
         and memory["campaign_sha256"] == row["campaign_sha256"]
         and memory["source_commit"] == row["source_commit"]
         and memory["effective_limit_bytes"] == MEMORY_BYTES
         and type(job) is int and job > 0
-        and type(memory["oom_delta"]) is int and memory["oom_delta"] == 0
-        and type(memory["oom_kill_delta"]) is int and memory["oom_kill_delta"] == 0
+        and all(type(memory.get(key)) is int and memory[key] == 0 for key in counters[scope])
         and memory["guard_triggered"] is False,
         "Owned 192 GiB job-cgroup receipt without memory termination required.",
     )
     caps = limits()
     return {
+        "job_memory_scope": scope,
         "worker_peak_bytes": worker,
         "job_peak_bytes": job,
         "baseline_worker_passed": worker <= caps["baseline_worker_peak_bytes"],
@@ -188,6 +193,10 @@ def evaluate(records, campaign_sha, source_sha):
             **check_memory(row, memory),
         }
     require(len(bindings) == 1, "Matrix, bounds or hardware differs across pilots.")
+    require(
+        len({result["job_memory_scope"] for result in results.values()}) == 1,
+        "Memory controller differs across pilots.",
+    )
     passed = all(r["e1_worker_passed"] and r["e1_job_passed"] for r in results.values())
     return {
         "status": "e1_resource_criteria_met" if passed else "e1_resource_criteria_rejected",
