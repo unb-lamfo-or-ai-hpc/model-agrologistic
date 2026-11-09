@@ -12,7 +12,7 @@ from scripts import pyomo_h400_e1 as e1
 from scripts.pyomo_scaling_contract import encoded, require
 
 CAMPAIGN = ".mvp2-pyomo-h400-e1-native8h-v1"
-QUALIFICATION = ".mvp2-pyomo-h400-e1-public-v1"
+QUALIFICATION = ".mvp2-pyomo-h400-e1-public-v2"
 SCOPES = {"cgroup_v1": "slurm_job_cgroup_v1", "cgroup_v2": "slurm_job_cgroup_v2"}
 EVENTS = {
     "cgroup_v1": {"oom_kill": "oom_kill_delta", "failcnt": "failcnt_delta"},
@@ -120,6 +120,11 @@ class JobMemoryGuard:
         if self.version == "cgroup_v1":
             result["under_oom_at_end"] = end_events["under_oom"]
         return result
+
+    def clock(self):
+        """Read the supervisor's monotonic clock after checking the E1 memory scope."""
+        self.check()
+        return time.monotonic()
 
     def run_review(self, argv, out, err, remaining):
         deadline = time.monotonic() + remaining

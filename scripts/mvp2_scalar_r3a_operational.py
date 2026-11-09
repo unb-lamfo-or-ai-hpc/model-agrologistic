@@ -746,7 +746,6 @@ def supervise(
     bind_step=step_binding,
     whole_arm_seconds=None,
     phase_profile=None,
-    health_check=None,
 ):
     limits = PROFILE if phase_profile is None else phase_profile
     step_seconds = sum(
@@ -784,8 +783,6 @@ def supervise(
         )
         try:
             while process.poll() is None:
-                if health_check is not None:
-                    health_check()
                 elapsed = clock() - begun
                 if entry is None and (control / "entry.json").exists():
                     entry = r.r2.read(control / "entry.json")

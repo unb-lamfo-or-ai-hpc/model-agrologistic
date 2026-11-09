@@ -42,7 +42,7 @@ def identity(
     )
     e1 = (
         claim.parent.name == ".mvp2-pyomo-h400-e1-native8h-v1"
-        and root == audit_base / ".mvp2-pyomo-h400-e1-public-v1/source"
+        and root == audit_base / ".mvp2-pyomo-h400-e1-public-v2/source"
         and re.fullmatch(r"h400-w-sto-(gurobi|highs)-t(1|16)-r1", claim.name)
     )
     require(

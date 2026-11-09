@@ -29,7 +29,7 @@ def test_guard_latches_and_allows_exact_step_cleanup(monkeypatch):
     monkeypatch.setattr(memory.probe, "memory_snapshot", getter)
     guard = memory.JobMemoryGuard("41", scope=lambda _: ("cgroup_v1", None, None, None))
     with pytest.raises(ValueError, match="owned step"):
-        guard.check()
+        guard.clock()
     guard.check()
     assert getter.call_count == 3
     assert guard.receipt()["guard_triggered"] is True
@@ -53,12 +53,12 @@ def test_supervisor_signals_only_the_bound_step_on_memory_guard(tmp_path, monkey
         returncode=0, stderr="",
         stdout="StepId=41.0 UserId=1271 CPUs=16 Nodes=1 Tasks=1 State=RUNNING NodeList=node",
     ))
-    health_check = Mock(side_effect=[None, ValueError("Memory threshold")])
+    clock = Mock(side_effect=[0.0, 0.0, ValueError("Memory threshold")])
     outcome = controller.supervise(
         tmp_path, job["source_commit"], "sto", {"NodeList": "node", "UserId": "user(1271)"}, job,
-        command=command, popen=popen, clock=lambda: 0, sleep=lambda _: None,
+        command=command, popen=popen, clock=clock, sleep=lambda _: None,
         step_cpus=16, bind_step=lambda *args: controller.step_binding(*args, cpus=16),
-        health_check=health_check, reviewer=lambda *_: pytest.fail("No product review"),
+        reviewer=lambda *_: pytest.fail("No product review"),
     )
     assert [call.args[0] for call in command.call_args_list] == [
         ["scontrol", "-o", "show", "step", "41.0"], ["scancel", "--signal=TERM", "41.0"],

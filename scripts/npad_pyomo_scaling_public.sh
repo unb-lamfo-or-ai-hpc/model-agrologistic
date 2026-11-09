@@ -11,7 +11,7 @@ test -x "$PY"
 test -z "${SLURM_JOB_ID:-}"
 CLAIM="$BASE/.mvp2-pyomo-scaling-public-v1"
 if [[ ${2:-} == --e1 ]]; then
-  CLAIM="$BASE/.mvp2-pyomo-h400-e1-public-v1"
+  CLAIM="$BASE/.mvp2-pyomo-h400-e1-public-v2"
 elif [[ $# -ne 1 ]]; then
   printf 'Unexpected public qualification profile\n' >&2
   exit 2

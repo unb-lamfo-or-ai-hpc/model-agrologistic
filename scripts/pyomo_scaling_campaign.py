@@ -628,7 +628,7 @@ def batch(claim, sha):
                 whole_arm_seconds=c.PROFILE["step_seconds"],
                 phase_profile=c.PROFILE,
                 sleep=observer.sleep,
-                health_check=None if guard is None else guard.check,
+                clock=time.monotonic if guard is None else guard.clock,
             )
         finally:
             try:
