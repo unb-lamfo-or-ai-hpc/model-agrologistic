@@ -1,0 +1,48 @@
+{
+  "schema_version": "pyomo-serial-terminal-readback-v1",
+  "operator_report_date": "2026-11-09",
+  "provenance": "Operator-pasted NPAD status and checksum output; archived numerical results await transfer.",
+  "controller_commit": "334827d5e3669b4fcdf2801fd4cea466e5a71d06",
+  "scheduler_counts_graph": {
+    "COMPLETED": 35,
+    "CANCELLED": 56,
+    "FAILED": 4
+  },
+  "scheduler_solve_coverage_including_external_anchors": {
+    "300": {
+      "planned": 30,
+      "completed": 30,
+      "cancelled": 0
+    },
+    "400": {
+      "planned": 30,
+      "completed": 4,
+      "cancelled": 26
+    },
+    "500": {
+      "planned": 30,
+      "completed": 0,
+      "cancelled": 30
+    }
+  },
+  "failed_controls": {
+    "h400-pilots": 2232383,
+    "h400-remaining": 2232410,
+    "h500-pilots": 2232415,
+    "h500-remaining": 2232442
+  },
+  "final_export_job": 2232443,
+  "final_export_reported_sha256": {
+    "final_result.json": "2bc4d11ceed3b3ad943b352c82c6563f781a54b357baeb0172dd0e2a1f9af96b",
+    "configurations.csv": "3e2ec326760855d6494e3cc461ca344de853600c5c876356571f59efb0a98af5",
+    "results.csv": "64a158effa6c1c0fcc7d3fffbcc31b5f52f61c416adfe03acd74262a2f796619"
+  },
+  "h400_pilot_job_ids": [
+    2232379,
+    2232380,
+    2232381,
+    2232382
+  ],
+  "first_control_failure_cause": null,
+  "local_final_exports_verified": false
+}

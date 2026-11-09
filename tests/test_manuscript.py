@@ -256,8 +256,9 @@ def test_editorial_source_is_not_manuscript_content(manuscript):
 
 def test_scalar_scope_does_not_restore_cancelled_methods(manuscript):
     article = (manuscript / "index.qmd").read_text(encoding="utf-8")
-    assert "Experiments using different objectives or stopping rules are excluded" in article
-    assert "one observation per thread level" in article
+    assert "{{< include comparison_results.qmd >}}" not in article
+    assert "{{< include scip_results.qmd >}}" not in article
+    assert "one observation per thread level" in " ".join(article.split())
     assert "original h500" in (manuscript / "scalar_results.qmd").read_text()
     assert "0.207432" in (manuscript / "scalar_results.qmd").read_text()
     assert (manuscript / "supplement/appendix_a_original.pdf").read_bytes().startswith(b"%PDF-")

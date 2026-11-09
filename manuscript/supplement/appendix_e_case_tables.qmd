@@ -2,8 +2,6 @@
 
 ![Figure E.1. Investments for h215 DET/W, Gurobi, native gurobipy, 4 threads.](../figures/scalar_h215_det.png){fig-pos="H"}
 
-The Albers equal-area conic projection preserves relative areas on the display surface. Facility coordinates are unchanged. The port stars identify export ports; diamonds identify bulk-handling conversions. The map locates investments, while the linked tables quantify capacity and transport. OSRM road routes are not depicted.
-
 The accepted solution has a relative objective gap of **0.000812%**. It opens 69 candidates, expands 80 existing sites and converts 66 sites for bulk handling.
 
 The [complete warehouse investment list](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/0788de130253dddc790b179c8831d8ee29dabcbd/manuscript/supplement/investments/scalar_h215_det.csv) provides CDA, municipality, UF, role, activation flags, candidate capacity, expansion and bulk-handling basis in tonnes. Existing-site availability is excluded from candidate openings.
@@ -29,13 +27,11 @@ The following five largest product/arc entries illustrate the paired flow-distan
 
 ![Figure E.2. Added static capacity for h215 DET/W, Gurobi, native gurobipy, 4 threads.](../figures/scalar_h215_det_capacity.png){fig-pos="H"}
 
-Circle area represents added candidate plus expansion storage in tonnes. The Albers equal-area display retains the same original coordinates and national extent as the preceding investment map. Bulk-handling basis is excluded from the circles; it determines handling gains rather than additional static storage.
+Circle area represents added candidate plus expansion storage in tonnes. Bulk-handling basis is excluded from the circles; it determines handling gains rather than additional static storage.
 
 ## E4 h215 STO/W, Gurobi, native gurobipy, 4 threads
 
 ![Figure E.3. Investments for h215 STO/W, Gurobi, native gurobipy, 4 threads.](../figures/scalar_h215_sto.png){fig-pos="H"}
-
-The Albers equal-area conic projection preserves relative areas on the display surface. Facility coordinates are unchanged. The port stars identify export ports; diamonds identify bulk-handling conversions. The map locates investments, while the linked tables quantify capacity and transport. OSRM road routes are not depicted.
 
 The accepted solution has a relative objective gap of **0.740159%**. It opens 69 candidates, expands 75 existing sites and converts 71 sites for bulk handling.
 
@@ -62,13 +58,11 @@ The following five largest product/arc entries illustrate the paired flow-distan
 
 ![Figure E.4. Added static capacity for h215 STO/W, Gurobi, native gurobipy, 4 threads.](../figures/scalar_h215_sto_capacity.png){fig-pos="H"}
 
-Circle area represents added candidate plus expansion storage in tonnes. The Albers equal-area display retains the same original coordinates and national extent as the preceding investment map. Bulk-handling basis is excluded from the circles; it determines handling gains rather than additional static storage.
+Circle area represents added candidate plus expansion storage in tonnes. Bulk-handling basis is excluded from the circles; it determines handling gains rather than additional static storage.
 
 ## E5 h300 STO/W, Gurobi, native gurobipy, 1 thread
 
 ![Figure E.5. Investments for h300 STO/W, Gurobi, native gurobipy, 1 thread.](../figures/scalar_h300_t1.png){fig-pos="H"}
-
-The Albers equal-area conic projection preserves relative areas on the display surface. Facility coordinates are unchanged. The port stars identify export ports; diamonds identify bulk-handling conversions. The map locates investments, while the linked tables quantify capacity and transport. OSRM road routes are not depicted.
 
 The accepted solution has a relative objective gap of **0.004119%**. It opens 154 candidates, expands 70 existing sites and converts 76 sites for bulk handling.
 
@@ -95,13 +89,11 @@ The following five largest product/arc entries illustrate the paired flow-distan
 
 ![Figure E.6. Added static capacity for h300 STO/W, Gurobi, native gurobipy, 1 thread.](../figures/scalar_h300_t1_capacity.png){fig-pos="H"}
 
-Circle area represents added candidate plus expansion storage in tonnes. The Albers equal-area display retains the same original coordinates and national extent as the preceding investment map. Bulk-handling basis is excluded from the circles; it determines handling gains rather than additional static storage.
+Circle area represents added candidate plus expansion storage in tonnes. Bulk-handling basis is excluded from the circles; it determines handling gains rather than additional static storage.
 
 ## E6 h400 STO/W, Gurobi, native gurobipy, 1 thread
 
 ![Figure E.7. Investments for h400 STO/W, Gurobi, native gurobipy, 1 thread.](../figures/scalar_h400_t1.png){fig-pos="H"}
-
-The Albers equal-area conic projection preserves relative areas on the display surface. Facility coordinates are unchanged. The port stars identify export ports; diamonds identify bulk-handling conversions. The map locates investments, while the linked tables quantify capacity and transport. OSRM road routes are not depicted.
 
 The accepted solution has a relative objective gap of **0.836784%**. It opens 254 candidates, expands 69 existing sites and converts 77 sites for bulk handling.
 
@@ -128,13 +120,11 @@ The following five largest product/arc entries illustrate the paired flow-distan
 
 ![Figure E.8. Added static capacity for h400 STO/W, Gurobi, native gurobipy, 1 thread.](../figures/scalar_h400_t1_capacity.png){fig-pos="H"}
 
-Circle area represents added candidate plus expansion storage in tonnes. The Albers equal-area display retains the same original coordinates and national extent as the preceding investment map. Bulk-handling basis is excluded from the circles; it determines handling gains rather than additional static storage.
+Circle area represents added candidate plus expansion storage in tonnes. Bulk-handling basis is excluded from the circles; it determines handling gains rather than additional static storage.
 
 ## E7 h500 STO/W, Gurobi, native gurobipy, 1 thread
 
 ![Figure E.9. Investments for h500 STO/W, Gurobi, native gurobipy, 1 thread.](../figures/scalar_h500_t1.png){fig-pos="H"}
-
-The Albers equal-area conic projection preserves relative areas on the display surface. Facility coordinates are unchanged. The port stars identify export ports; diamonds identify bulk-handling conversions. The map locates investments, while the linked tables quantify capacity and transport. OSRM road routes are not depicted.
 
 The accepted solution has a relative objective gap of **0.207432%**. It opens 354 candidates, expands 72 existing sites and converts 74 sites for bulk handling.
 
@@ -161,13 +151,11 @@ The following five largest product/arc entries illustrate the paired flow-distan
 
 ![Figure E.10. Added static capacity for h500 STO/W, Gurobi, native gurobipy, 1 thread.](../figures/scalar_h500_t1_capacity.png){fig-pos="H"}
 
-Circle area represents added candidate plus expansion storage in tonnes. The Albers equal-area display retains the same original coordinates and national extent as the preceding investment map. Bulk-handling basis is excluded from the circles; it determines handling gains rather than additional static storage.
+Circle area represents added candidate plus expansion storage in tonnes. Bulk-handling basis is excluded from the circles; it determines handling gains rather than additional static storage.
 
 ## E8 h215 DET/D, Gurobi, native gurobipy, 4 threads
 
 ![Figure E.11. Investments for h215 DET/D, Gurobi, native gurobipy, 4 threads.](../figures/scalar_h215_d_det.png){fig-pos="H"}
-
-The Albers equal-area conic projection preserves relative areas on the display surface. Facility coordinates are unchanged. The port stars identify export ports; diamonds identify bulk-handling conversions. The map locates investments, while the linked tables quantify capacity and transport. OSRM road routes are not depicted.
 
 The accepted solution has a relative objective gap of **0.552427%**. It opens 69 candidates, expands 142 existing sites and converts 4 sites for bulk handling.
 
@@ -194,13 +182,11 @@ The following five largest product/arc entries illustrate the paired flow-distan
 
 ![Figure E.12. Added static capacity for h215 DET/D, Gurobi, native gurobipy, 4 threads.](../figures/scalar_h215_d_det_capacity.png){fig-pos="H"}
 
-Circle area represents added candidate plus expansion storage in tonnes. The Albers equal-area display retains the same original coordinates and national extent as the preceding investment map. Bulk-handling basis is excluded from the circles; it determines handling gains rather than additional static storage.
+Circle area represents added candidate plus expansion storage in tonnes. Bulk-handling basis is excluded from the circles; it determines handling gains rather than additional static storage.
 
 ## E9 h215 STO/D, Gurobi, native gurobipy, 4 threads
 
 ![Figure E.13. Investments for h215 STO/D, Gurobi, native gurobipy, 4 threads.](../figures/scalar_h215_d_sto.png){fig-pos="H"}
-
-The Albers equal-area conic projection preserves relative areas on the display surface. Facility coordinates are unchanged. The port stars identify export ports; diamonds identify bulk-handling conversions. The map locates investments, while the linked tables quantify capacity and transport. OSRM road routes are not depicted.
 
 The accepted solution has a relative objective gap of **0.623718%**. It opens 69 candidates, expands 142 existing sites and converts 4 sites for bulk handling.
 
@@ -227,13 +213,11 @@ The following five largest product/arc entries illustrate the paired flow-distan
 
 ![Figure E.14. Added static capacity for h215 STO/D, Gurobi, native gurobipy, 4 threads.](../figures/scalar_h215_d_sto_capacity.png){fig-pos="H"}
 
-Circle area represents added candidate plus expansion storage in tonnes. The Albers equal-area display retains the same original coordinates and national extent as the preceding investment map. Bulk-handling basis is excluded from the circles; it determines handling gains rather than additional static storage.
+Circle area represents added candidate plus expansion storage in tonnes. Bulk-handling basis is excluded from the circles; it determines handling gains rather than additional static storage.
 
 ## E10 h215 STO/W, Gurobi, Pyomo/APPSI, 4 threads
 
 ![Figure E.15. Investments for h215 STO/W, Gurobi, Pyomo/APPSI, 4 threads.](../figures/pyomo_gurobi_h215_w_native8h_license_v2.png){fig-pos="H"}
-
-The Albers equal-area conic projection preserves relative areas on the display surface. Facility coordinates are unchanged. The port stars identify export ports; diamonds identify bulk-handling conversions. The map locates investments, while the linked tables quantify capacity and transport. OSRM road routes are not depicted.
 
 The accepted solution has a relative objective gap of **0.740159%**. It opens 69 candidates, expands 75 existing sites and converts 71 sites for bulk handling.
 
@@ -260,13 +244,11 @@ The following five largest product/arc entries illustrate the paired flow-distan
 
 ![Figure E.16. Added static capacity for h215 STO/W, Gurobi, Pyomo/APPSI, 4 threads.](../figures/pyomo_gurobi_h215_w_native8h_license_v2_capacity.png){fig-pos="H"}
 
-Circle area represents added candidate plus expansion storage in tonnes. The Albers equal-area display retains the same original coordinates and national extent as the preceding investment map. Bulk-handling basis is excluded from the circles; it determines handling gains rather than additional static storage.
+Circle area represents added candidate plus expansion storage in tonnes. Bulk-handling basis is excluded from the circles; it determines handling gains rather than additional static storage.
 
 ## E11 h215 STO/W, HiGHS, Pyomo/APPSI, 4 threads
 
 ![Figure E.17. Investments for h215 STO/W, HiGHS, Pyomo/APPSI, 4 threads.](../figures/scalar_highs_h215_w_native8h_startup_v2.png){fig-pos="H"}
-
-The Albers equal-area conic projection preserves relative areas on the display surface. Facility coordinates are unchanged. The port stars identify export ports; diamonds identify bulk-handling conversions. The map locates investments, while the linked tables quantify capacity and transport. OSRM road routes are not depicted.
 
 The accepted solution has a relative objective gap of **0.000196%**. It opens 69 candidates, expands 73 existing sites and converts 73 sites for bulk handling.
 
@@ -293,5 +275,5 @@ The following five largest product/arc entries illustrate the paired flow-distan
 
 ![Figure E.18. Added static capacity for h215 STO/W, HiGHS, Pyomo/APPSI, 4 threads.](../figures/scalar_highs_h215_w_native8h_startup_v2_capacity.png){fig-pos="H"}
 
-Circle area represents added candidate plus expansion storage in tonnes. The Albers equal-area display retains the same original coordinates and national extent as the preceding investment map. Bulk-handling basis is excluded from the circles; it determines handling gains rather than additional static storage.
+Circle area represents added candidate plus expansion storage in tonnes. Bulk-handling basis is excluded from the circles; it determines handling gains rather than additional static storage.
 

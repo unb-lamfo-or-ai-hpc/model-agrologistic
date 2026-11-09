@@ -2,6 +2,16 @@
 
 ## D1 Data sources and scope
 
+Reproduce the four tested instances from the processed `model_input.xlsx`
+members listed in Table D.5. All four share the same supply, demand, model
+parameters, scenario inputs and freight, storage and investment cost
+tables. The 146 existing warehouses and the 69 h215 candidates are
+retained across all four workbooks; h300, h400 and h500 contain 154, 254
+and 354 candidates, respectively. The identifier `CDA` distinguishes a
+warehouse in the registry and its processed workbook. The selection
+record provides the ordered membership for that population. The
+historical sources below document how the inputs were constructed.
+
 An experimental instance combines a facility population, supply and demand
 over time, investment and operating costs, capacity rules, road distances and
 an uncertainty design. This appendix describes these inputs and the

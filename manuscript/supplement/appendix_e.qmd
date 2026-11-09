@@ -27,8 +27,10 @@ The individual maps share the national extent, IBGE boundaries and
 Albers equal-area projection. Map lines delineate study areas and do not
 necessarily depict accepted national boundaries. Capacity views use
 circle area proportional to added candidate and expansion storage, in
-tonnes. The OSRM road distances are interpreted through the flow-distance
-tables. The maps show facility positions and investments.
+tonnes. OSRM road distances were calculated and stored in the processed workbooks
+listed in Appendix D. The flow-distance tables associate those values with
+the exported flows. The maps show facility positions and investments and
+omit route lines for legibility.
 
 The configurations comprise the deterministic and stochastic warehouse-only
 plans, the larger stochastic populations, the two h215 plans permitting direct

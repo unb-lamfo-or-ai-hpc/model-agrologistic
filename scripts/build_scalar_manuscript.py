@@ -31,12 +31,10 @@ def results(record):
         return f"h{r['population']} {r['mode'].upper()}"
 
     text = [
-        "## Accepted scalar cohort and computational dimensions\n",
-        "All nine warehouse-only scalar observations meet the 1% global-gap target "
-        "and pass independent feasibility validation. The original h500 result extends "
-        "the reported sequence to 500 facilities. Two separate h215 D observations bring "
-        "the Gurobi cohort to eleven; they are distinct configurations rather than "
-        "eleven independent replications.\n",
+"## Native Gurobi computation across warehouse populations\n",
+        "The original h500 result extends the W STO series to 500 sites. "
+        "The representative native results use the validated h215 DET/STO "
+        "observations and the one-thread W STO observations at h300, h400 and h500.\n",
         "| Instance | Variables | Binary | Linear constraints | Matrix nonzeros |",
         "|:--|--:|--:|--:|--:|",
     ]
@@ -95,20 +93,19 @@ def results(record):
             f"{r['common_gap'] * 100:.6f} |"
         )
     text += [
-        "\n: Display order differs from execution order 4/1/8/2/16. This is one cold "
-        "observation per level, not a causal scaling experiment. {#tbl-scalar-threads}\n",
+        "\n: Native gurobipy results for h300 W STO, one observation per thread setting. "
+        "{#tbl-scalar-threads}\n",
         "All five h300 objectives and best bounds coincide; their original warehouse, "
         "flow, inventory and shortage CSVs are byte-identical across arms. Native Runtime "
         "ranges from 47.14 to 67.61 minutes and sampled application RSS from 46.35 to 78.37 GiB. "
-        "This establishes identical exported vectors in this block, not a unique optimum.\n",
+        "The single-thread run had the lowest recorded time and sampled memory.\n",
         "@fig-scalar-threads compares the observed runtime and sampled memory "
         "for these five configurations.\n",
         "![Thread-count observations at 300 sites.]"
         '(figures/scalar_threads.png){#fig-scalar-threads fig-pos="H"}\n',
-        "The single-thread observation has the lowest recorded runtime and memory "
-        "in this block. The five configurations returned identical exported plans; "
-        "the observations describe this execution sequence rather than a replicated "
-        "estimate of parallel speedup.\n",
+    ]
+    computation = text
+    text = [
         "## Investment and operational interpretation across populations\n",
         "| Instance | One-time investment, BRL billion | Transport, BRL billion | "
         "Inventory holding, BRL billion |",
@@ -188,16 +185,18 @@ def results(record):
         "{#tbl-scalar-physical}\n",
         "Across the returned STO plans, additional candidate sites accompany more "
         "installed candidate capacity and greater one-time investment, while the "
-        "transport and holding components are lower. This is a descriptive comparison "
-        "of separately screened models and feasible incumbents, not a causal savings "
-        "estimate. Domestic service is not monotone across populations. Lower stock "
-        "and reception exceedances can coexist with substantial unmet demand; a lower "
-        "penalized total is not improvement in every service component.\n",
+        "transport and holding components are lower. For example, from h300 to h500, "
+        "investment increases from BRL 11.26 to 14.32 billion and transport costs fall "
+        "from BRL 360.58 to 346.07 billion in the returned plans. The physical diagnostics "
+        "show how those plans balance unmet demand and capacity exceedances.\n",
         "### Geographic interpretation\n",
-        "@fig-map-h215, @fig-map-h300 and @fig-map-h400 locate the facilities "
-        "and investments in the returned stochastic plans. Origin products and "
-        "domestic/export destinations are distinguished. Coincident facilities retain "
-        "their original identities.\n",
+        "@fig-map-h215, @fig-map-h300, @fig-map-h400 and @fig-map-h500 locate the "
+        "investments in the W STO plans. The maps share the Albers equal-area conic "
+        "projection and retain original facility coordinates. The inputs share the "
+        "model and economic parameters while expanding the set of candidates. "
+        "The maps show investment locations; route lines are omitted for legibility. "
+        "Appendix D identifies the stored OSRM distances, and Appendix E links them "
+        "to the positive flows in the returned plans.\n",
     ]
     for population, case in [
         (215, "scalar_h215_sto"),
@@ -208,37 +207,15 @@ def results(record):
             f"![Stochastic plan at {population} warehouse sites.]"
             f'(figures/{case}.png){{#fig-map-h{population} fig-pos="H"}}\n'
         )
-        text.append(
-            "The Albers equal-area conic projection preserves relative areas on the "
-            "display surface. Original facility coordinates are retained; the display "
-            "projection does not determine OSRM road distances. "
-            f"The {population}-site map shows the spatial distribution of the returned "
-            "investment decisions. The accompanying capacity and service tables quantify "
-            "their consequences. The screened networks differ across populations, so "
-            "the map is interpreted together with those model-specific results.\n"
-        )
     text += [
-        "@fig-map-h500 shows the investments reconstructed from the original accepted "
-        "h500 decision vector.\n",
         "![Stochastic investments at 500 warehouse sites.]"
         '(figures/scalar_h500_t1.png){#fig-map-h500 fig-pos="H"}\n',
-        "The Albers equal-area conic projection preserves relative areas on the "
-        "display surface. Original facility coordinates are retained; the projection "
-        "does not determine OSRM road distances. The original h500 vector assigns "
-        "positive capacity to all 354 candidates, "
-        "expands 72 existing sites and converts 74 for bulk handling. These location "
-        "decisions do not establish equal operational importance or use. The companion "
-        "capacity maps use circle area to show added candidate and expansion storage "
-        "in tonnes, excluding bulk-handling investment basis. OSRM road routes are "
-        "not depicted. Appendix E associates the accepted flow vectors with the "
-        "original OSRM distances.\n",
-        "The local read-only dashboard provides the corresponding DET/STO, population, "
-        "incremental-membership, product, period and scenario filters, preserving "
-        "coincident identifiers. Its ability to display a flow requires original "
-        "positive-flow evidence and source-bound road geometry. Geography alone is "
-        "not a validation of the agricultural plan.\n",
+        "The original h500 decision vector assigns positive capacity to 354 candidates, "
+        "expands 72 existing sites and converts 74 for bulk handling. Appendix E "
+        "provides the capacity maps and distinguishes these investment decisions "
+        "from the operating flows.\n",
     ]
-    return "\n".join(text)
+    return "\n".join(text + computation)
 
 
 def main(argv=None):

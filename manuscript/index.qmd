@@ -350,151 +350,101 @@ scenario has a separate operating trajectory [@birge2011].
 
 ## Data lineage and network construction
 
-Input workbooks, materialization audits, exact included warehouse IDs and
-selection records are frozen with each attempt. The populations contain
-146 existing facilities and respectively 69, 154, 254 and 354
-candidate sites at h215, h300, h400 and h500. The canonical 69 candidate anchors
-are retained; additional candidates follow the original deterministic,
-proportionally stratified order across state, warehouse type and static-capacity
-quartile. The selection seed and source/anchor/ranking hashes are preserved.
-Included candidates are investment options, not decisions made by the optimizer.
+The study examines one grain-storage network design problem at four instance
+sizes. The instances share supply and demand data, a 60-period planning
+horizon, scenario inputs, model parameters and the tables of freight,
+storage and investment costs. All four retain the same 146 existing
+warehouses. Each larger instance adds candidate locations where a new
+warehouse may be opened and retains the candidates of the smaller instance.
+@tbl-warehouse-populations shows how the sets expand.
 
-The processed input workbooks contain 37 distinct supply-location identifiers
-for soybean and corn, 27 domestic-capital destinations and ten export-destination
-roles. A city may have both domestic and export roles. The counts refer to input entities and their respective roles.
-Coordinates are retained exactly and coincident identifiers remain distinct.
-The accepted exported solutions use nine export destinations with positive
-transport. This does not redefine the ten available export options.
+| Instance | Existing warehouses | Candidate locations | Total sites |
+|:--|--:|--:|--:|
+| h215 | 146 | 69 | 215 |
+| h300 | 146 | 154 | 300 |
+| h400 | 146 | 254 | 400 |
+| h500 | 146 | 354 | 500 |
 
-Road distances come from the frozen Brazilian OpenStreetMap extract
-`brazil-260901`. The recorded NPAD materialization workflow uses OSRM 6.0.0
-in Singularity with a driving profile and the multilevel Dijkstra algorithm.
-OSRM's Table API supplies directed lengths in metres along the configured
-fastest routes. The pair cache reuses distances for the same dataset,
-profile and ordered coordinates, and the frozen workbooks retain distances
-in kilometres. Appendix D gives the dataset and container identities and
-identifies the audited cache and workbook inputs.
+: Warehouse populations in the four processed inputs. {#tbl-warehouse-populations}
 
-The h215, h300, h400 and h500 workbooks record 63,289, 113,269, 190,569 and
-287,869 directed road pairs, all from OSRM. The MILP selects a subset of
-product-eligible arcs and retains eligible pairs for connectivity repairs.
-A larger population can change the screened graph even when the warehouse
-memberships are nested.
+Each processed input workbook combines the common data with the warehouse
+list and directed road distances for one instance. A facility identifier
+distinguishes warehouses, including those that share coordinates. The
+selection record lists the facilities in the instance and records the
+stratified ranking used to add candidates. The optimizer chooses which of
+the available sites to open, expand or convert to bulk handling. Appendix D
+identifies the four effective workbooks, their warehouse lists and the
+source data used to construct them.
 
-DET uses the original deterministic arrays. STO combines three supply and three
-demand multiplier levels into nine Cartesian scenarios of probability 1/9.
-These are controlled experimental scenarios, not fitted event frequencies or
-a forecast validation. The low/base/high supply factors are 0.85/1/1.15 and
-the domestic-demand factors are 0.95/1/1.05, read from the frozen workbook.
-Every supply level is crossed with every demand level; the nine combinations
-each receive probability 1/9. The models have two products and 60 ordered planning
-periods. All warehouse-only scalability cases disable direct origin-to-customer
-arcs; the separate h215 D comparison enables them. Optional memory compaction
-is disabled in both cohorts. The objective is an undiscounted BRL total
-over the declared horizon. No verified common price year, inflation adjustment,
-currency conversion or discount rate is introduced.
+The inputs include 37 distinct supply-location identifiers for soybean and
+corn, 27 domestic-capital destinations and ten export-destination roles.
+A city may hold both a domestic and an export role. The processed workbooks
+store 63,289, 113,269, 190,569 and 287,869 directed road distances in
+kilometres for h215, h300, h400 and h500, respectively. OSRM computed the
+distances from a common Brazilian OpenStreetMap extract and driving profile.
+The model uses a subset of routes eligible for each product. As candidates
+are added, the set of admissible arcs and the dimensions of the MILP can
+change. Appendix D documents the distance calculation and arc selection.
+
+DET uses the original supply and demand arrays. STO crosses three supply
+levels (0.85, 1 and 1.15 times the base supply) with three domestic-demand
+levels (0.95, 1 and 1.05 times the base demand). Each of the nine resulting
+scenarios has probability 1/9. The objective measures an undiscounted BRL
+total over the 60 periods.
 
 ## Experimental and validation protocol
 
-Each run starts from a frozen workbook and ordered warehouse population.
-The input stage derives the effective costs, scenario trajectories and
-product-specific network. The builder constructs the MILP for the declared
-solver and stopping settings. After solution, the workflow exports decisions
-and records phase times and memory. Independent checks reconstruct balances
-and costs in their original units. The solution and bound then support the
-interpretation of service, stock and throughput. Appendix C details the
-common Pyomo implementation.
+For each instance, the model selects warehouse openings and expansions,
+assigns capacity and plans the movement and storage of grain. We report
+investment, transport and inventory-holding costs. We use unmet demand
+and the two capacity exceedances to assess how closely the returned plan
+meets the modeled operating conditions.
 
-The warehouse-only scalar cohort comprises nine accepted observations: h215
-DET/STO, the h300 thread sequence 4, 1, 8, 2, 16, and h400/h500 STO with one
-thread each. The separate h215 D DET/STO observations bring the scalar inventory
-to eleven; they are not eleven independent replications. Each uses a global
-native TimeLimit of 14,400 seconds, MIPGap 0.01, Seed 42 and penalties of
-90000 BRL/t for domestic shortage and 45000 BRL/t for each of the two
-capacity-exceedance terms, with their period units defined in Appendix D. The h215 pair uses four solver threads.
-The h300 levels are cold serial observations in one reservation, without
-replication or randomized order. The one-thread h400 and h500 configurations were selected using the
-descriptive h300 observations; that selection does not establish a generally
-optimal thread count. Here cold means a fresh native model without an incumbent warm
-start; operating-system caches and shared-node load were not controlled.
-Original decisions, bounds and independent validation records were retained
-for each observation. Subsequent integrity checks verify those records without
-constituting new optimization runs.
+The h215 case provides the reference scale for comparison with the
+formulation of @rosa2026thesis. It crosses DET and STO with two network
+configurations. W routes grain through warehouses; D also permits direct
+origin-to-customer deliveries. The native Gurobi comparisons use four
+solver threads. The h215 W STO runs through Pyomo provide a separate
+Gurobi–HiGHS comparison with the settings in Appendix C.
 
-Software qualification precedes experimental acceptance. Analytical examples
-check objective reconstruction, investment charged once, deterministic/singleton
-equivalence, probability weighting, slack units, connectivity and activation.
-Licensed miniature tests establish implementation behavior at their tested scope;
-they are not large-instance results. Experiments use fixed source versions and declared resource limits.
-The research records retain partial and failed attempts as well as successful
-calculations.
+The native Python implementation builds and solves the model directly
+with gurobipy. The native scale comparison uses W STO at h215, h300, h400
+and h500. The h300 experiment includes one observation at each of 1, 2, 4,
+8 and 16 threads, and the larger native cases have one thread each.
+The common-Pyomo campaign applies one experimental design to h300, h400
+and h500 W STO: two solvers, five thread ceilings and three repetitions
+per combination, with seed 42, an eight-hour native time limit and a 1%
+gap target. Pyomo builds the model once per run and passes the same
+algebra for a given instance through APPSI to Gurobi or HiGHS. Appendix C
+records the settings and outcome coverage for each experiment.
 
-Independent original-unit validation reconstructs objective components and
-checks the exported decisions against the encoded constraints, retaining
-absolute 1e-5 and relative 1e-8 tolerances. An original accepted certificate
-is distinct from a later portable integrity replay. The latter verifies
-retained evidence and arithmetic; a fresh reproduction must validate newly
-exported decisions against its input. Scheduler completion, incumbent existence, model feasibility and
-attainment of the scalar quality criterion are reported separately.
-Failure to find an incumbent within a resource budget is not a proof of
-mathematical infeasibility. A time- or memory-censored result does not
-demonstrate a speedup over another censored result.
-For minimization, the common relative gap is $(z-b)/|z|$ for finite nonzero
-incumbent $z$ and bound $b\le z$. Both zero imply gap zero; missing/nonfinite
-values or inconsistent bounds are not assigned a finite accepted gap.
-Native solver conventions are retained separately.
+An independent check reconstructs costs and tests the exported decisions
+in their original units. It uses an absolute tolerance of $10^{-5}$ and a
+relative tolerance of $10^{-8}$ scaled to the quantities compared.
+For minimization, the common relative gap is $(z-b)/|z|$ for finite
+nonzero incumbent objective $z$ and finite lower bound $b\le z$. The gap
+is zero if both values are zero. It is unavailable for other zero
+incumbents, missing or nonfinite values, or inconsistent bounds.
+The gap measures the quality of the objective that includes the penalties.
 
-The additional Pyomo implementation separates the algebraic model from the
-optimizer. The same scalar formulation is transferred through Pyomo's APPSI
-interfaces to Gurobi, using gurobipy, or to HiGHS, using highspy.
-Public analytical and Excel-to-validation controls check the adapters against
-the same physical constraints and cost reconstruction. These tests establish
-implementation behavior; they do not constitute additional large-instance
-performance observations.
+## Solver parallelism and reproducibility
 
-Candidate slack indicators use a disclosed bounded representative formulation.
-With nonnegative slack costs, trimming redundant excess preserves the
-physical/investment projection and optimal scalar value. The derived bounds
-follow cumulative stock conservation and hard shipping capacity, including
-transshipment circulation (Appendix C). This equivalence does not imply
-identical native relaxations or search paths. The independently validated
-h215 HiGHS result is reported separately from software qualification and the
-Gurobi scaling sequence.
+The common-Pyomo campaign sets the solver thread ceiling to 1, 2, 4, 8
+or 16. Gurobi uses one MIP search (`ConcurrentMIP=1`) with parallel
+algorithms that can use the specified threads. HiGHS 1.15.1 uses
+`parallel="on"` to enable parallel tree search within its thread ceiling.
+In that version, the simplex solver used for the LP relaxations inside
+the MIP runs serially. The computational effect of extra threads
+therefore depends on where each solver spends its time.
 
-The modeling interface does not select a common search strategy or initial
-solution for the solvers. Algorithmic defaults are distinguished from explicit
-time, gap, thread, seed and numerical-tolerance settings in each experiment
-record. In particular, the documented seed value 42 controls solver-specific
-pseudorandom choices; it does not supply the same starting incumbent across
-different optimizers.
-
-Parallelism is version specific. In HiGHS 1.15.1, the thread setting limits
-available workers, while `parallel="on"` enables parallel branch-and-bound
-exploration. It does not make every phase parallel: the release disables
-parallel simplex for the LP relaxations within MIP. Consequently, root-LP
-work can limit gains from additional threads. The retained h215 HiGHS
-observation used four threads with parallel tree search disabled; it remains
-distinct from the prospective parallel-search campaign. Appendix C explains
-these settings and their interpretation using the
-[versioned parallelism documentation](https://github.com/ERGO-Code/HiGHS/blob/v1.15.1/docs/src/parallel.md)
-and [release notes](https://github.com/ERGO-Code/HiGHS/releases/tag/v1.15.1).
-
-### Common-Pyomo comparison campaign
-
-The campaign uses the common Pyomo builder with Gurobi and HiGHS on the
-frozen h300, h400 and h500 W STO instances. Two solvers, three populations,
-five thread ceilings (1, 2, 4, 8 and 16) and three temporal repetitions give
-90 planned runs. Each run has an eight-hour native allowance, a 1% gap
-target and seed 42. This HiGHS profile enables parallel tree search.
-An independent process starts each run. Thread settings can change search
-trajectories even with a fixed seed. The repetitions describe execution
-variability on the same instance and seed. The historical observations form
-separate cohorts.
-
-The first one-thread h300 pair has audited evidence. The 16-thread pilots
-also have collector receipts, and Appendix C distinguishes them from the
-later preliminary terminal records. Progression across populations follows
-the existing resource and validation criteria.
+In branch-and-bound, the solver chooses a subproblem to explore, solves
+its relaxation and uses the resulting bound and candidate solutions to
+guide the next steps. The seed fixes the initialization of a solver's
+pseudo-random choices. Branching, node selection, cuts and heuristics
+also depend on the evolving search state. Thread settings can change
+that state and the resulting trajectory. A time limit can stop repeated
+runs at different points in their search. Appendix C explains the two
+parallel modes, the settings used and how to interpret the repetitions.
 
 ## HPC experimental environment
 
@@ -562,86 +512,53 @@ jobs concern independent executions. Throughput would count specified
 completed work per unit elapsed time over a stated allocation and
 observation window.
 
-## Geographic interpretation and figure preparation
+## Geographic figures
 
-A separate persistent geographic SQLite binds entity identities, coordinates,
-nested memberships, accepted decision records and available OSRM road geometry
-to source hashes. Preparation is explicit; local Plotly Dash callbacks and
-Linux headless PDF/PNG/SVG rendering open it read-only. Content-derived snapshot
-keys reuse unchanged data. Neither viewing nor rendering invokes an optimizer,
-requests routes or changes the experimental distance cache.
-
-The Dash and static renderers share scientific figure definitions, filters,
-node styles and legends. The static Python renderer uses no browser, GUI,
-Dash server or Kaleido. Official IBGE 2023 national and federative-unit vectors
-provide a neutral geographic background. The source SIRGAS 2000 geometries are
-transformed to WGS84 after a topology-preserving simplification; both renderers
-apply the same Albers equal-area display and fixed national extent. Original
-facility coordinates are retained. The cached background is independent of
-facility selection and the road-distance data. Map lines delineate study
-areas and do not necessarily depict accepted national boundaries.
-Existing/candidate availability, candidate activation,
-positive capacity investment and use by transport/inventory are distinct.
-Product, period and scenario filters are explicit; aggregation across scenarios
-uses the original probabilities.
-
-The supplied road-distance workbooks do not contain route polylines.
-Accordingly, the prepared scientific maps show verified node and investment
-locations; positive-flow route geometry is unavailable and is not replaced by
-straight segments. The software accepts separately source-bound OSRM geometry
-for positive routes when it becomes available. Transport incidence and
-quantities remain analyzable from the original vectors without inventing a
-physical road path. The h500 investment map is reconstructed from its original
-accepted decision CSV and source-bound facility coordinates. Its original
-input-availability map remains separately retained. This investment-only
-reconstruction does not establish facility use or recover original flow geometry.
+The maps display facility positions and the investments returned by the
+model on national and federative-unit boundaries from IBGE. Map lines
+delineate study areas and do not necessarily depict accepted national
+boundaries. Appendix E explains the symbols and links the exported flows
+to their stored OSRM road distances.
 
 {{< include human_ai_methodology.qmd >}}
 
 # Results
 
-The results proceed from problem dimensions and resource requirements to
-solution quality and agricultural interpretation. The warehouse-only sequence
-and the separate h215 topology comparison retain their original scopes.
-The solver comparison concerns independently validated Gurobi and HiGHS
-solutions and their attained quality. The historical native implementation,
-completed Pyomo observations and ongoing repeated campaign have distinct
-experimental scopes.
+The h215 results show how planning under uncertainty and allowing direct
+deliveries change warehouse investments and economic costs. The W STO
+series then shows how the plans change as the same network design
+problem is evaluated with more candidate locations. The solver
+comparisons use the Pyomo runs and are reported separately.
 
-For the warehouse-only cohort, @tbl-scalar-size gives the matrix dimensions.
-@tbl-scalar-resources and @tbl-scalar-quality report computational effort
-and attained quality. @tbl-scalar-threads and @fig-scalar-threads compare
-the five historical h300 observations. The figure shows native runtime in
-minutes and sampled application RSS in GiB against configured solver threads.
-
-@tbl-scalar-financial-components separates investment and operating costs.
-@tbl-scalar-investments and @tbl-scalar-quantities describe the types and
-sizes of investments. @tbl-scalar-physical gives the corresponding service,
-stock exceedance and reception overflow.
-
-{{< include scalar_results.qmd >}}
-
-Across the warehouse-only stochastic maps, the positive candidate capacity
-rises from 7.38 million tonnes at h215 to 10.99 million tonnes at h500.
-Static expansion stays near 0.38–0.39 million tonnes and the bulk-handling
-basis varies across the four populations. Reception overflow falls from
-67.84 to 4.08 million tonnes over the modeled horizon while domestic
-service remains near 92%. Read together, the maps and quantities show how
-the returned plans distribute additional storage across candidates while
-handling and service retain distinct operating constraints.
-
-@tbl-wd-h215 compares the h215 warehouse-only and direct-enabled cases
+@tbl-wd-h215 compares the h215 warehouse-only and direct-enabled plans
 under deterministic and stochastic planning.
 
 {{< include wd_results.qmd >}}
 
-For the h215 Pyomo runs, @tbl-pyomo-settings gives the effective settings,
-@tbl-highs-h215 gives solution quality and native time, and @tbl-pyomo-outcomes
-gives application time and sampled memory. The first common-Pyomo h300 pair
-is reported separately. @tbl-scaling-h300-settings identifies its settings,
-@tbl-scaling-h300-pilot and @tbl-scaling-h300-resources summarize its
-computational outcomes, and @tbl-scaling-h300-physical presents its
-agricultural diagnostics.
+@tbl-scalar-financial-components separates investment and operating costs.
+@tbl-scalar-investments and @tbl-scalar-quantities report the locations
+and quantities of investments. @tbl-scalar-physical gives the
+corresponding service, stock and reception diagnostics.
+@tbl-scalar-size, @tbl-scalar-resources and @tbl-scalar-quality describe
+the computational size, effort and solution quality of the native runs.
+@tbl-scalar-threads and @fig-scalar-threads summarize the five native h300
+settings by solver thread count.
+
+{{< include scalar_results.qmd >}}
+
+Across the W STO plans, positive candidate capacity rises from 7.38
+million tonnes at h215 to 10.99 million tonnes at h500. Static expansion
+stays near 0.38–0.39 million tonnes. The added storage is concentrated in
+new candidate warehouses, while handling capacity and domestic service
+describe separate aspects of the plans.
+
+For the h215 Pyomo runs, @tbl-pyomo-settings gives the settings,
+@tbl-highs-h215 gives solution quality and native time, and
+@tbl-pyomo-outcomes gives application time and sampled memory.
+For the first common-Pyomo h300 pair, @tbl-scaling-h300-settings
+identifies the settings, @tbl-scaling-h300-pilot and
+@tbl-scaling-h300-resources summarize computational outcomes, and
+@tbl-scaling-h300-physical presents operating diagnostics.
 
 {{< include solver_results.qmd >}}
 
@@ -664,15 +581,10 @@ cause of runtime or objective changes. Larger feasible choice sets do not
 guarantee a better attained incumbent at a finite cutoff; changing screening
 can also break feasible-set nesting.
 
-Within the h300 block, all five exported decision vectors and objectives are
-identical while time and memory differ. One thread is fastest and least
-memory-intensive in this observed sequence. Fixed order, shared-node workload,
-SMT, nonexclusive resources and one observation per level prevent causal speedup,
-parallel-efficiency or universal thread-ranking claims. Large continuous
-relaxations, memory traffic, presolve and degeneracy can matter even with few
-integer nodes. The measurements do not identify proprietary internal algorithms.
-The practical implication is to report the tested configuration and attainable
-quality, rather than equating more allocated CPUs with more useful parallelism.
+Within the native h300 block, the five thread settings returned identical
+exported plans. The single-thread observation had the lowest native time
+and sampled memory in that block. The common-Pyomo campaign provides
+separate repeated observations for studying the effect of thread settings.
 
 ## Interpreting the matched solver campaign
 
@@ -684,22 +596,13 @@ therefore concerns two successful implementations, their attained quality
 and the resources they required. It does not support a general division
 between problems that commercial and open-source software can solve.
 
-The preliminary h300 terminal records in Appendix C extend the descriptive
-comparison. All 13 Gurobi previews and the one-thread HiGHS preview record
-accepted independent validation and gaps within 1%. Eight HiGHS previews
-at higher thread ceilings reached the native time limit without an incumbent.
-The preview set has unequal coverage across settings and awaits archive
-collection. Its observed runtimes and censoring motivate separate reporting
-of quality and effort by solver and thread ceiling.
+The common-Pyomo campaign reached scheduler completion for all 30 h300
+runs and the four h400 pilots. Appendix C records the coverage of the
+planned grid and the evidence available for assessing each outcome.
 
-Both completed h300 runs processed one integer node and reported several
-million LP iterations. Those counters motivate examining root processing
-and the continuous relaxation alongside integer search. They do not isolate
-which phase caused the runtime difference. In particular, the version-specific
-HiGHS parallel-search setting does not imply parallel simplex in MIP
-relaxations. Additional configured threads may therefore have limited benefit
-for some workloads. The forthcoming measurements test that possibility rather
-than presupposing a speedup or a preferred thread count.
+Both one-thread h300 pilots processed one integer node and reported
+several million LP iterations. These counters make root processing and
+the continuous relaxation relevant when interpreting the recorded effort.
 
 The study complements the tactical resource measurements of @reis2023
 by linking computation to long-lived warehouse investments and
@@ -817,41 +720,25 @@ and agricultural assessment.
 
 # Final considerations, limitations and future work
 
-The eleven accepted scalar observations meet the declared 1% global-gap target:
-h215 W DET/STO, five h300 W thread observations, h400/h500 W STO, and the
-separate h215 D DET/STO pair. Together, they support empirical
-computational characterization and an applied interpretation of the returned
-plans, including substantial investment and residual permitted shortages.
-Separate Pyomo/APPSI Gurobi and HiGHS h215 STO observations also pass
-independent validation and the gap target. These observations do not establish
-exact optimality, full service, a universal solver frontier or a causal thread
-speedup.
+Eleven validated native Gurobi observations met the 1% gap target.
+These results link candidate availability to investment and operating
+costs. The W STO h500 plan assigns positive capacity
+to 354 candidate sites, expands 72 existing warehouses and converts
+74 for bulk handling. Its attained gap is 0.207432%. The modeled
+domestic service of 91.636% and the separate capacity diagnostics
+help assess the conditions under which that plan would operate.
 
-At h500, the retained gap is 0.207432%, native runtime is 7654.77 seconds
-and sampled application peak RSS is 111.78 GiB. Domestic service is 91.636%
-and artificial penalties account for 94.074% of the scalar objective. All
-354 included candidates receive positive capacity. These results support
-bounded empirical feasibility and quality, not full service, economic-subtotal
-precision or a causal population-size effect. Experiments using different objectives or stopping rules are excluded from
-this scalar comparison.
+Gurobi and HiGHS returned independently validated Pyomo plans for h215
+W STO and for the first matched h300 W STO pair. The two experiments
+report native runtime, attained gap and memory under their declared
+profiles. The common-Pyomo campaign's achieved coverage bounds the
+population and thread comparisons.
 
-Limitations include controlled rather than empirically fitted scenarios,
-finite resource budgets, one observation per thread level, shared-node load,
-incomplete physical cost calibration and unavailable road polylines in the
-current geographic exports. The fixed penalties express the modeled trade-off,
-not observed damages or a demonstrated service policy. Detailed source
-identities and uncertainty about unobserved peaks constrain interpretation.
-
-The completed Pyomo observations establish that both Gurobi and HiGHS can
-return independently accepted h215 W STO plans under their declared profiles.
-Their attained gaps differ: 0.740159% for Gurobi and 0.000196% for HiGHS.
-Their native runtimes, 31.54 and 426.70 minutes, therefore cannot be interpreted
-as time to an identical solution quality. The repeated common-Pyomo campaign
-addresses a more controlled comparison across populations and thread counts.
-Its first h300 pair is reported separately: Gurobi and HiGHS reached
-0.004105% and 0.006879% gaps in 48.23 and 401.43 native minutes, respectively.
-The common inputs and ordered algebra agree. This first descriptive pair
-does not yet establish repeated-run variability or parallel efficiency.
+The scenarios represent controlled supply and demand variations.
+Limitations include the finite compute budgets, one observation per
+thread level in the historical native h300 block, shared-node load and
+uncontrolled cache state for that block, and incomplete calibration of
+physical costs and penalties.
 
 Future work can examine repeated measurements under controlled resource
 conditions, decomposition methods and sensitivity to the artificial
@@ -893,14 +780,13 @@ those accompanying dependencies.
 The research dataset is publicly available in Zenodo, version 0.2.0
 [@celestino2026dataset], at
 [10.5281/zenodo.22751909](https://doi.org/10.5281/zenodo.22751909).
-It contains selected historical inputs, population records, road audits
-and evidence inventories. Appendices D and E identify the additional
-source-bound workbooks, model inputs, decision vectors and flow-distance
-companions and distinguish their access status. Distribution of external
-inputs and derivatives depends on their file-level source and
-redistribution terms. Additional research records awaiting rights or
-access review are identified in the repository inventories. OpenStreetMap
-derivatives retain ODbL terms, and project-authored code is MIT.
+The [processed input archive](https://zenodo.org/records/22751909/files/agrologistic-v020-inputs.zip?download=1)
+contains the four effective workbooks. Appendix D lists the exact members
+and checksums for h215, h300, h400 and h500. Appendices D and E identify
+the decision vectors and flow-distance companions and explain how to
+access them. OpenStreetMap derivatives retain ODbL terms, and
+project-authored code is MIT. File-level access and redistribution
+conditions are recorded in the dataset inventories.
 
 # Declaration of generative AI and AI-assisted technologies in the manuscript preparation process
 

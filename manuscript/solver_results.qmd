@@ -1,4 +1,4 @@
-## Gurobi and HiGHS: attained quality and computational effort
+## h215 W STO with the common Pyomo implementation
 
 The completed h215 W STO calculations use the same frozen workbook,
 ordered warehouses, selected directed network, nine equiprobable scenarios
@@ -21,7 +21,7 @@ inferred retrospectively.
 
 : Effective configurations of the completed Pyomo h215 W STO observations.
 The historical HiGHS log records parallel tree search off; this differs from
-the ongoing parallel-search campaign. {#tbl-pyomo-settings}
+the h300–h500 parallel-search profile. {#tbl-pyomo-settings}
 
 The Gurobi calculation supplied an ordered pre-solve algebra fingerprint
 for 14,054,654 variables, 307 binaries, 735,577 linear constraints and

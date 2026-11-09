@@ -153,11 +153,6 @@ def build(receipt_path, cache, source_ref):
             f"## E{index + 2} {label}\n",
             f"![Figure E.{2 * index - 1}. Investments for {label}.]"
             f'(../figures/{identifier}.png){{fig-pos="H"}}\n',
-            "The Albers equal-area conic projection preserves relative areas on the "
-            "display surface. Facility coordinates are unchanged. The port stars "
-            "identify export ports; diamonds identify bulk-handling conversions. "
-            "The map locates investments, while the linked tables quantify "
-            "capacity and transport. OSRM road routes are not depicted.\n",
             "The accepted solution has a relative objective gap of "
             f"**{case['mip_gap'] * 100:.6f}%**. "
             f"It opens {case['counts']['opened']} candidates, "
@@ -199,8 +194,7 @@ def build(receipt_path, cache, source_ref):
             f"\n![Figure E.{2 * index}. Added static capacity for {label}.]"
             f'(../figures/{identifier}_capacity.png){{fig-pos="H"}}\n',
             "Circle area represents added candidate plus expansion storage in tonnes. "
-            "The Albers equal-area display retains the same original coordinates and "
-            "national extent as the preceding investment map. Bulk-handling basis is "
+            "Bulk-handling basis is "
             "excluded from the circles; it determines handling gains rather than "
             "additional static storage.\n",
         ]

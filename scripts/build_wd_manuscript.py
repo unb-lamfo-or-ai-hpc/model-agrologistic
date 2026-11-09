@@ -13,14 +13,9 @@ def results(record):
     assert record["penalty_rates"] == {"unmet": 90000, "static": 45000, "reception": 45000}
     lines = [
         "## h215 comparison of warehouse-only and direct-enabled networks\n",
-        "This separate comparison adds two accepted D observations to the nine-observation "
-        "warehouse-only scalability cohort above. W forbids direct origin-to-customer arcs; "
-        "D permits them in addition to warehouse-mediated routes. The same frozen h215 input, "
-        "215-member population, common OD/DC/DD arcs, costs, indexed penalties, original DET "
-        "arrays and nine equiprobable STO scenarios were checked. D adds 592 OC arcs and "
-        "35,520 DET/319,680 STO flow variables. Both use four solver threads and a global "
-        "14,400-second ceiling per arm, MIPGap=0.01 and the same scientific implementation. "
-        "W job2217990 is a historical control, not a contemporaneous runtime replicate.\n",
+        "The h215 comparison uses one set of sites, input data and costs in all four cases. "
+        "D adds direct origin-to-customer routes to the warehouse routes shared with W. "
+        "The native gurobipy runs used four solver threads; Appendix C gives their settings.\n",
         "| Mode/topology | Objective, BRL trillion | Economic subtotal, BRL billion | "
         "Gap, % | Native Runtime, min | Domestic service, % |",
         "|:--|--:|--:|--:|--:|--:|",
@@ -39,38 +34,16 @@ def results(record):
     lines += [
         "\n: Original validated h215 W/D observations. Optimal native status means the "
         "configured gap criterion, not exact zero-gap optimality. {#tbl-wd-h215}\n",
-        "The returned D penalized objectives are 35.82% lower in DET and 43.73% lower in STO. "
-        "D incumbents are below the corresponding W lower bounds, supporting strict "
-        "penalized-objective improvement under the checked network/cost conditions. "
-        "The bound intervals bracket the exact penalized-optimum reduction at "
-        "35.819–36.175% (DET) and 43.313–44.083% (STO), conditional on the retained valid "
-        "bounds. These are mathematical bounds, not statistical confidence intervals.\n",
-        "The economic subtotals of the returned plans are 13.11%/13.66% lower, but the "
-        "optimizer does not minimize that subtotal alone. Domestic service falls from "
-        "91.861% to 89.896% in DET and from 92.267% to 89.857% in STO; expected total "
-        "shortage increases from 55.16 to 68.48 million tonnes and from 52.40 to 68.74 "
-        "million tonnes, respectively. D sharply reduces reception/storage exceedance "
-        "penalties while allowing a different shortage trade-off. Lower penalized cost "
-        "is therefore not improved service, no-slack feasibility or an investment "
-        "recommendation.\n",
-        "Direct routes account for 82.17%/81.81% of expected OC+DC destination arrivals "
-        "in DET/STO, not of all produced grain or distinct network-arc movements. All 69 "
-        "candidates still receive positive capacity. Positive expansion occurs at 142 sites "
-        "in each D plan, versus 80/75 in W; bulkification falls from 66/71 sites to four. "
-        "The returned hub-location decisions remain distributed, not a sparse few-hub network.\n",
-        "D has more variables: 1,597,694 DET and 14,374,334 STO, compared with "
-        "1,562,174/14,054,654 in W. Native runtimes are 103.93/2,582.59 seconds in D "
-        "versus 122.51/2,445.52 in W. Different attained gaps, historical timing, a single "
-        "observation per cell and uncontrolled shared-system effects preclude causal "
-        "speedup or a universal complexity claim. Artificial penalties remain about "
-        "95.39%/95.38% of D totals. Their unchanged weights influence routing, investments, "
-        "relaxation/search and the reported penalized gap; a 1% total gap is not a 1% "
-        "economic-subtotal or service certificate.\n",
-        "Independent validation reconstructs the objective and checks physical feasibility "
-        "for both D plans. The comparison evaluates the same h215 data and common network "
-        "components, with direct routes added only in D. Its bound-based cost comparison "
-        "and service deterioration should be interpreted jointly; neither implies that "
-        "the returned plans can operate without the permitted shortages or exceedances.\n",
+        "The direct-enabled plans reduce economic costs by 13.11% in DET and 13.66% in STO. "
+        "All 69 candidates receive positive capacity in W and D. With direct deliveries, "
+        "142 existing sites are expanded in each plan, compared with 80 in DET W and "
+        "75 in STO W. Four existing sites are converted for bulk handling in each D plan, "
+        "compared with 66 and 71 in the corresponding W plans.\n",
+        "Direct routes carry 82.17% of destination arrivals in DET D and 81.81% in STO D. "
+        "Domestic service declines from 91.861% to 89.896% in DET and from 92.267% to "
+        "89.857% in STO. The D plans therefore combine lower economic costs and more "
+        "static expansion with greater unmet domestic demand. Appendix C gives the "
+        "associated bounds and effort measurements.\n",
     ]
     return "\n".join(lines)
 

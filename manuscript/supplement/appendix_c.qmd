@@ -120,7 +120,33 @@ days. Static and reception exceedances have separate slacks. Shipping,
 conservation and route eligibility remain hard constraints. For a closed
 candidate, the emergency slacks must also be zero.
 
-## C3 Native Gurobi implementation
+## C3 Native gurobipy implementation
+
+This implementation builds and solves the extensive form directly through
+the Gurobi Python API. It supplies the historical W STO scale series and
+the h215 W/D comparisons. The native runs used a 14,400-second solver
+limit, a 1% relative-gap target and seed 42. The h215 W/D comparisons used
+four threads. The h300 W STO block contains one observation at each of
+1, 2, 4, 8 and 16 threads, and the h400 and h500 W STO observations used
+one thread. The original h300 runs shared one reservation, with fixed
+execution order and uncontrolled cache state and shared-system load.
+This block describes the tested configurations.
+
+The h215 W/D comparison shares the original input workbook, the
+warehouse population, costs, scenario data and common route families.
+D adds 592 direct origin-to-customer arcs, equivalent to 35,520 DET
+or 319,680 STO flow variables. The validated D incumbents are below
+the corresponding W lower bounds. The retained bound intervals bracket
+the reduction in the optimal penalized objective at 35.819–36.175%
+for DET and 43.313–44.083% for STO. The intervals are mathematical
+bounds on the penalized objective. Expected shortages increase from
+55.16 to 68.48 million tonnes in DET and from 52.40 to 68.74 million
+tonnes in STO. Artificial penalties account for approximately 95.39%
+and 95.38% of the corresponding D totals. The original h215 runs
+record native times of 103.93 and 2,582.59 seconds for D and 122.51
+and 2,445.52 seconds for W in DET and STO, respectively. The separate
+runs have different attained gaps and describe their own effort.
+The W records provide the historical control for the topology comparison.
 
 Gurobi uses a common extensive-form builder for DET and STO. Its cost construction
 separates six investment components, four transport components, inventory
@@ -233,7 +259,24 @@ test correctness and operational behavior, but do not predict h215 runtime
 or memory. Large-instance interpretation must retain these formulation,
 interface and resource scopes.
 
-### C4.1 What parallel execution means in HiGHS 1.15.1
+### C4.1 Parallel search and repeatability
+
+Gurobi's [Threads and ConcurrentMIP settings](https://docs.gurobi.com/projects/optimizer/en/current/reference/parameters.html#concurrentmip)
+control different aspects of execution. A setting of `ConcurrentMIP=1`
+uses one MIP search, whose parallel algorithms can use the permitted
+threads. Higher concurrent-MIP settings divide the thread budget among
+independent MIP searches. The common-Pyomo campaign used one search.
+
+The solver seed initializes its pseudo-random choices. Branch selection,
+node order, cuts and heuristics also respond to the model and the evolving
+search state. Thread count can change the trajectory at the same seed.
+Gurobi describes repeatability for fixed model and settings on the same
+system, subject to time-dependent stopping and algorithm choices
+([technical note](https://support.gurobi.com/hc/en-us/articles/360031636051-Is-Gurobi-deterministic)).
+The time-limited repetitions at seed 42 characterize observed execution
+variation for the declared settings.
+
+#### Parallel tree search in HiGHS 1.15.1
 
 A MILP solution involves several kinds of work. Presolve simplifies the model;
 an LP relaxation supplies a bound; branch-and-bound explores remaining
@@ -345,7 +388,16 @@ A regular time limit without an incumbent remains a censored outcome, with
 no incumbent objective, service plan or incumbent-based gap. Interrupted or
 inconsistent execution closes progression and preserves the evidence.
 Neither kind of outcome is silently retried or replaced by a different solver.
-Final consolidation retains all 90 run states. Three repetitions
+Final consolidation retains all 90 run states. The NPAD scheduler
+readback reports completion for the 30 h300 runs and four h400 pilots,
+with the two h300 anchor jobs accounted for outside the finite graph.
+The graph reports 35 completed jobs, 56 cancelled solve jobs and four
+failed control jobs. The h400 pilot-stage control was the first reported
+failure; the remaining 26 h400 and 30 h500 solve jobs were cancelled.
+The final consolidation job completed and reported three file digests.
+Scientific outcomes for the completed runs require reconciliation with
+those exports and their original receipts. See the
+[scheduler and transfer receipt](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/docs/editorial-reconciliation-20261105/docs/evidence/pyomo_serial_final_export_readback_20261109.json). Three repetitions
 under a fixed seed describe execution variation for that protocol; they
 do not sample independent problem scenarios or establish a general thread
 optimum. Complete repeated-run performance estimates await the corresponding
@@ -357,7 +409,10 @@ Independent validation reconstructs the fourteen cost components and evaluates
 the original physical and investment constraints from the exported decisions.
 It uses absolute tolerance $10^{-5}$ and relative tolerance $10^{-8}$, together
 with the explicit sparse-export rounding allowance. Local constraints are
-examined individually; national balance alone is insufficient.
+examined individually. For a check with left and right sides $L$ and $R$,
+the tolerance is $10^{-5}+10^{-8}\max(|L|,|R|)$ plus the applicable
+export-rounding allowance. The residual is $|L-R|$ for an equality
+and $\max(0,L-R)$ for an upper-bound inequality.
 
 Three outcomes must remain distinct. A usable incumbent supplies decisions that
 can be checked. An accepted incumbent also passes the independent residual and
@@ -521,8 +576,8 @@ terminal previews below.
 The 5 November 2026 readback linked terminal metadata to 22 h300 W STO
 cells. Their ordered matrix fingerprints match the h300 pilot-stage
 receipt. The readback checked the original validation and summary hashes
-against the corresponding completion receipts. Archive collection and full
-operational closure for these cells remain pending. Table C.5 reports the
+against the corresponding completion receipts. At the time of that readback, archive collection and full operational
+closure for these cells were pending. Table C.5 reports the
 previews separately from the four earlier pilots.
 
 | Solver | Thread ceiling | Previews | Validation accepted | Time limit without incumbent | Native minutes, median (range) |

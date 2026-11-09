@@ -38,11 +38,15 @@ def test_original_terminal_quality_and_comparison_intervals():
 def test_frozen_wd_table_and_interpretation():
     text = b.results(record())
     assert (ROOT / "manuscript/wd_results.qmd").read_text(encoding="utf-8") == text
+    assert "Domestic service declines" in text
+    assert "greater unmet domestic demand" in text
+    appendix = (ROOT / "manuscript/supplement/appendix_c.qmd").read_text(encoding="utf-8")
     for phrase in (
-        "service falls", "shortage increases", "not statistical confidence",
-        "historical control", "Independent validation reconstructs", "no-slack",
+        "historical control",
+        "bounds on the penalized objective",
+        "Independent validation reconstructs",
     ):
-        assert phrase in text
+        assert phrase in appendix
     assert "S6-B" not in text
     article = (ROOT / "manuscript/index.qmd").read_text(encoding="utf-8")
     assert "{{< include wd_results.qmd >}}" in article

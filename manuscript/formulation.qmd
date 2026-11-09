@@ -72,7 +72,7 @@ period limits. A warehouse can therefore handle more arrivals and departures
 while retaining the same limit on grain held in storage. The model makes
 these investments once, before the first planning period.
 
-## Deterministic model
+## Deterministic model (DET)
 
 Costs are undiscounted BRL totals over the horizon. Receiving handling
 is part of the OD/DD unit transport/handling cost and is charged once at receipt.
@@ -175,7 +175,7 @@ to period tonnes. Shipping has no slack. D10 preserves the native activation
 indicators. D11 completes the domains. No zero terminal-stock constraint or new
 minimum positive investment is introduced.
 
-## Two-stage stochastic model
+## Two-stage stochastic model (STO)
 
 Choose $X=(y,z,g,k,e,b)$ once before uncertainty, imposing D2/D3 and its domains
 once. For each $s\in S$, instantiate $Y^s=(x^s,I^s,u^s,q^{K,s},q^{R,s})$. All routes,
@@ -243,28 +243,20 @@ two-stage formulation, without progressive information revelation or multistage
 nonanticipativity. DET uses its original deterministic arrays with $|S|=1$, $\pi=1$
 in this same builder. It is not the average of the nine STO trajectories.
 
-## Penalty weights and physical interpretation
+## Operational slacks and penalties
 
-The accepted experiments freeze $\lambda^D=90000$, $\lambda^K=45000$, $\lambda^R=45000$
-on their declared units. Static exceedance is stock tonnes at a period, so its
-sum over time is labelled tonne-periods. Reception overflow is tonnes during a
-period, and $q^R/d_t$ is a derived daily equivalent. It is never multiplied by
-operating days again in the penalty. These are artificial model weights,
-separate from investment and operating expenditure. Slack enlarges the set
-permitted by its specific constraint, but shipping/connectivity/activation can
-still prevent feasibility. Neither smaller runtime nor full service follows
-from changing a penalty coefficient; coefficients remain fixed here.
+The model records unmet domestic demand, stock above static storage
+capacity, and arrivals above reception capacity using separate slack
+variables. They measure where the returned plan departs from the
+modeled operating conditions. The objective adds these penalties to
+investment, transport and inventory-holding costs. We report the
+economic subtotal and each physical diagnostic separately.
 
-The native implementations retain D10/S8 as indicator restrictions. The Pyomo
-implementation instead uses finite bounds derived from stock conservation and
-hard shipping capacity. As proved in Appendix C, that representation preserves
-the physical and investment projection and optimal scalar value under its
-stated nonnegativity conditions, while removing redundant oversized slacks.
-Penalty coefficients and activation bounds serve different mathematical roles.
+The accepted experiments use $\lambda^D=90000$ BRL per tonne of unmet
+demand, $\lambda^K=45000$ BRL per tonne of stock exceedance per period
+and $\lambda^R=45000$ BRL per tonne of reception overflow. Stock
+exceedance accumulated over the horizon is reported in tonne-periods.
+Unmet demand and excess arrivals are period flows summed in tonnes.
+Appendix C describes how the implementations link these slacks to
+candidate activation. Appendix D provides the unit conversions.
 
-No arbitrary lower investment bound is added. A zero-cost activation can be one
-with a zero quantity; report binary activation and positive-capacity/positive-flow
-counts separately. This does not make the original MILP an LP. Independent
-validation continues to check every indexed balance, activation, capacity and
-cost reconstruction, with original tolerances. An aggregate material-balance
-identity can appear as a supplementary diagnostic only.
