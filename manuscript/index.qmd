@@ -746,12 +746,20 @@ thread level in the historical native h300 block, shared-node load and
 uncontrolled cache state for that block, and incomplete calibration of
 physical costs and penalties.
 
-Future work can examine repeated measurements under controlled resource
-conditions, decomposition methods and sensitivity to the artificial
-coefficients. Agricultural application also requires better calibration of
-investment and operating costs, scrutiny of location suitability and explicit
-service requirements. These extensions address the limits of the present
-computational and planning evidence.
+## Future work
+
+A follow-up computational study would first qualify a revised memory
+profile on matched h400 pilots and then complete the repeated h400
+comparison. Progression to h500 would depend on a separate pilot
+qualification at that size. The design would keep the effective input
+data, optimization model and stopping criteria fixed, and record the
+resource profile for each comparison. Appendix C describes the stages
+and their acceptance criteria.
+
+A separate planning study could calibrate investment and operating
+costs, assess site suitability and examine sensitivity to penalties
+and service requirements. Those changes would define a new model
+comparison with the current plans as its reference.
 
 # Reproducibility and availability
 

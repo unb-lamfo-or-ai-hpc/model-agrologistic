@@ -624,3 +624,32 @@ pilot times are individual observations. The comparison across
 populations therefore uses repeated Pyomo evidence at h300, individual
 Pyomo evidence at h400, and a separate historical native Gurobi series
 through h500.
+
+## C9 Future work: resource qualification and population extension
+
+The consolidated campaign is the reference record for future comparisons.
+Its h300 repetitions, h400 pilot outcomes and unexecuted cells retain
+their original run identifiers. Follow-up measurements would have new
+identifiers and an explicit link to the applicable instance and resource
+profile.
+
+| Stage | Proposed work | Evidence required to proceed |
+|:--|:--|:--|
+| Resource qualification | Confirm the memory and storage available on comparable nodes and qualify a matched h400 pilot block at one and sixteen threads for both solvers. | Common input, algebra and options verified. All four runs return interpretable outcomes and satisfy the sampled worker-tree memory reserve, affinity and operational checks. |
+| Repeated h400 comparison | Complete the h400 thread grid under a common qualified profile. If the profile changes, establish a matched baseline before computing ratios. | Report validation, attained gaps, censoring, native and end-to-end times and memory with the corresponding resource profile. |
+| h500 extension | Qualify h500 pilots independently, then extend repetitions if the pilots satisfy the resource and validation criteria. | Size-specific evidence for observed memory and operational closure. Preserve all outcome states, including any cells still awaiting execution. |
+| Reproducibility and planning extension | Tie each manuscript claim to the relevant input, matrix, result and verification record. Review permissions and package reproducible data and code. Evaluate agricultural calibration in a separate study. | Reproducible artifacts and file-level access terms. A declared comparison baseline for changes to costs, penalties or service. |
+
+The h400 gate requires a sampled peak of at most 80% of the requested
+memory. The observed 160.24 GiB implies a request of at least 200.30 GiB
+for that same peak to satisfy the existing reserve. This arithmetic is
+a starting point for resource qualification. Future peaks depend on
+the runtime profile and must be measured on the proposed allocation.
+
+A follow-up benchmark would retain Gurobi and HiGHS, seed 42, the 1%
+common gap target and the eight-hour native allowance unless a new
+protocol is declared. At a fixed population, a time ratio uses
+comparable validated observations and consistent clock definitions.
+Across populations, changes in the instance and screened graph define
+a problem-size comparison. In both cases the analysis reports the
+number of observations contributing to each statistic.
