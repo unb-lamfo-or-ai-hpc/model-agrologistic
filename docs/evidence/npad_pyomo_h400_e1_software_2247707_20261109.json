@@ -1,0 +1,82 @@
+{
+  "affinity_logical_cpus": 16,
+  "counts": {
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0,
+    "tests": 151
+  },
+  "e1_public_probe_receipts_verified_after": true,
+  "exclusive_allocation_verified": true,
+  "job_id": "2247707",
+  "license_capacity_accepted": true,
+  "plan_sha256": "7a343d2bc3ce9792db5b9b03a1fa10b7eb6dbe64949340b4ca6b9009094033de",
+  "private_execution_admitted": false,
+  "pytest_exit": 0,
+  "runtime_verified_after": true,
+  "source_commit": "9dbfe04b81d80ae6a9ee4a9136b6f198d2180662",
+  "source_verified_after": true,
+  "status": "accepted",
+  "claim_basename": ".mvp2-pyomo-h400-e1-public-v2",
+  "pytest_seconds": 20.94,
+  "terminal_sacct": {
+    "job": [
+      "COMPLETED",
+      28,
+      "0:0",
+      null,
+      64
+    ],
+    "batch": [
+      "COMPLETED",
+      28,
+      "0:0",
+      "9064K",
+      64
+    ],
+    "extern": [
+      "COMPLETED",
+      28,
+      "0:0",
+      "948K",
+      64
+    ],
+    "step_0": [
+      "COMPLETED",
+      27,
+      "0:0",
+      "225376K",
+      16
+    ]
+  },
+  "transferred_files": {
+    "result.json": {
+      "bytes": 574,
+      "sha256": "3a39799b494cd4612ad95fbf226cd9a4d753856612f99ac1f1fa500ea3513511"
+    },
+    "slurm-2247707.out": {
+      "bytes": 787,
+      "sha256": "a699120269c4bc95be26954f2c71e484d103bdee85e2acf6a8e3e1fded4d771c"
+    },
+    "slurm-2247707.err": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "npad_sha256": {
+    "plan.json": "7a343d2bc3ce9792db5b9b03a1fa10b7eb6dbe64949340b4ca6b9009094033de",
+    "result.json": "3a39799b494cd4612ad95fbf226cd9a4d753856612f99ac1f1fa500ea3513511",
+    "qualification.xml": "db88ed8dbff686e7fc4699f7f67450b59a861210d663cfa3034dc42d57fb50ad",
+    "license-capability.json": "5257c1f3aece1386c30ef9d865d5425065e771ccef00315c914e653400d91f03",
+    "public-allocation.json": "63da9eff0e41fb259e152c9f4ca74eedfe2d5c7ae5b12d95c26b1427567b31a7"
+  },
+  "github_ci_at_source": {
+    "pyomo-multisolver": "success",
+    "native-scip": "success",
+    "scalar-native": "success",
+    "analytical": "success",
+    "test": "success"
+  },
+  "historical_supervisor_git_blob": "01689bd30aa12ed06263391f33511ea8b204d35f",
+  "qualification_scope": "Public E1 software and preserved cgroup receipts at the exact source. The four h400 pilot runs require a separate human launch after approved merge."
+}

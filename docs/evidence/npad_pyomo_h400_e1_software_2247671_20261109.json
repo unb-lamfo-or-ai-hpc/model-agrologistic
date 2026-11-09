@@ -1,0 +1,52 @@
+{
+  "job_id": "2247671",
+  "source_commit": "aa0d9310288ad496ff24d530b2c030bb6bd53566",
+  "plan_sha256": "e7d99700cee90bd6ca2f16782f94f56420bb43c71aa4c62991957acdb2ff3bb7",
+  "claim_basename": ".mvp2-pyomo-h400-e1-public-v1",
+  "status": "accepted",
+  "pytest_exit": 0,
+  "counts": {"tests": 151, "failures": 0, "errors": 0, "skipped": 0},
+  "pytest_seconds": 39.94,
+  "affinity_logical_cpus": 16,
+  "source_verified_after": true,
+  "runtime_verified_after": true,
+  "license_capacity_accepted": true,
+  "exclusive_allocation_verified": true,
+  "e1_public_probe_receipts_verified_after": true,
+  "transferred_files": {
+    "result.json": {
+      "bytes": 574,
+      "sha256": "8698c81c204ee0e93365f5495f89bb988b0f99217beda7b9e7097c70216df3f3"
+    },
+    "slurm-2247671.out": {
+      "bytes": 787,
+      "sha256": "d2a9d5a423236013f52beae67200962a4e91b69b7dab484beb66f91ff25ccbcd"
+    },
+    "slurm-2247671.err": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "terminal_sacct": {
+    "job": ["COMPLETED", 51, "0:0", null, 64],
+    "batch": ["COMPLETED", 51, "0:0", "9032K", 64],
+    "extern": ["COMPLETED", 51, "0:0", "924K", 64],
+    "step_0": ["COMPLETED", 51, "0:0", "198984K", 16]
+  },
+  "npad_sha256": {
+    "plan.json": "e7d99700cee90bd6ca2f16782f94f56420bb43c71aa4c62991957acdb2ff3bb7",
+    "result.json": "8698c81c204ee0e93365f5495f89bb988b0f99217beda7b9e7097c70216df3f3",
+    "qualification.xml": "75d54b8a43b986a15266f5105270c24cb3da1a9728dbd3fcf5e69ed5b3fae021",
+    "license-capability.json": "de1a26586c587dd4762eba55efc636870b40386d6c8193f1036e028c7caf6efa",
+    "public-allocation.json": "1c32261b6afb98a106d46831f1b86afede85ae711d5c7e8cb89da0c36974efa4"
+  },
+  "github_ci_at_source": {
+    "native-scip": "success",
+    "analytical": "success",
+    "scalar-native": "historical_supervisor_byte_check_failed",
+    "pyomo-multisolver": "historical_supervisor_byte_check_failed",
+    "test": "historical_supervisor_byte_check_failed"
+  },
+  "qualification_scope": "Public software tests for this exact source. The protected historical supervisor needs restoration and public qualification of the resulting E1 source.",
+  "private_execution_admitted": false
+}
