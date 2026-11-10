@@ -140,15 +140,18 @@ def check_memory(row, memory):
     }
 
 
-def evaluate(records, campaign_sha, source_sha, *, prefix=False):
+def evaluate(records, campaign_sha, source_sha, *, prefix=False, cases=CASES, excluded_jobs=()):
     require(
         hex_digest(campaign_sha) and campaign_sha != ORIGINAL_CAMPAIGN
         and re.fullmatch(r"[0-9a-f]{40}", source_sha) is not None,
         "A distinct E1 campaign and exact source identity are required.",
     )
-    require(0 < len(records) <= 4 if prefix else len(records) == 4, "Four exact E1 cells required.")
-    expected = {cell["id"]: cell for cell in CASES[:len(records)]}
-    require(set(records) == set(expected), "E1 records must follow the frozen pilot order.")
+    count = len(records)
+    require(
+        0 < count <= len(cases) if prefix else count == len(cases), "Exact h400 cells required."
+    )
+    expected = {cell["id"]: cell for cell in cases[:count]}
+    require(set(records) == set(expected), "Records must follow the frozen h400 cell order.")
     reference = contract.reference(400)
     results, jobs, bindings = {}, set(), set()
     for identity, cell in expected.items():
@@ -156,7 +159,7 @@ def evaluate(records, campaign_sha, source_sha, *, prefix=False):
         job_id = row["job_id"]
         require(
             isinstance(job_id, str) and re.fullmatch(r"[1-9][0-9]*", job_id)
-            and job_id not in jobs and job_id not in ORIGINAL_JOBS
+            and job_id not in jobs and job_id not in ORIGINAL_JOBS and job_id not in excluded_jobs
             and row["cell"] == cell and row["source_commit"] == source_sha
             and row["campaign_sha256"] == campaign_sha
             and row["profile"] == contract.PROFILE

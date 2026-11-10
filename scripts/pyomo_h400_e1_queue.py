@@ -102,10 +102,10 @@ def workdir(node):
     return CAMPAIGN / node["cell"] if node["kind"] == "scientific_solve" else QUEUE / node["id"]
 
 
-def batch_text(identity, controller_sha):
+def batch_text(identity, controller_sha, *, script=None, extra=()):
     argv = [
-        sys.executable, "-B", "-I", str(SCRIPT), "compute",
-        "--controller-sha256", controller_sha, "--node", identity,
+        sys.executable, "-B", "-I", str(SCRIPT if script is None else script), "compute",
+        "--controller-sha256", controller_sha, "--node", identity, *extra,
     ]
     return (
         "#!/bin/bash\nset -euo pipefail\n"
@@ -116,18 +116,22 @@ def batch_text(identity, controller_sha):
     )
 
 
-def prepare_run(engine, serial, campaign, node, storage):
+def prepare_run(
+    engine, serial, campaign, node, storage, *,
+    directory=None, source=ENGINE_SHA, campaign_sha=None, index=None,
+):
     cell = next(item for item in campaign["cells"] if item["id"] == node["cell"])
     inputs = campaign["inputs"]["400"]
     selected = engine.selection(400, inputs)
-    directory = workdir(node)
+    directory = workdir(node) if directory is None else directory
     directory.mkdir(mode=0o700)
-    index = CELLS.index(cell["id"])
+    index = CELLS.index(cell["id"]) if index is None else index
+    campaign_sha = CAMPAIGN_SHA if campaign_sha is None else campaign_sha
     plan = {
         "schema_version": engine.c.SCHEMA + "-run",
-        "cell": cell, "source_commit": ENGINE_SHA, "source_root": str(engine.ROOT),
+        "cell": cell, "source_commit": source, "source_root": str(engine.ROOT),
         "claim_path": str(directory), "profile": campaign["profile"],
-        "campaign_sha256": CAMPAIGN_SHA, "selection_sha256": engine.c.digest(selected),
+        "campaign_sha256": campaign_sha, "selection_sha256": engine.c.digest(selected),
         "cases": [engine.r.spec_payload(engine.c.specification(cell, inputs["workbook"]))],
         "created_at_utc": datetime.now(UTC).isoformat(),
         "planned_schedule_index": index, "actual_submission_index": index,
@@ -136,23 +140,26 @@ def prepare_run(engine, serial, campaign, node, storage):
     serial.write(directory / "campaign.json", campaign)
     serial.write(directory / "warehouse_selection.json", selected)
     serial.write(directory / "e1_storage_at_admission.json", storage)
-    engine.load_run(directory, ENGINE_SHA)
+    engine.load_run(directory, source)
 
 
 def dependency(node, receipts, attached_terminal):
     parent = node["parent"]
-    if parent == "solve-1" and attached_terminal:
+    if parent is None or parent == "solve-1" and attached_terminal:
         return None
     return f"{node['condition']}:{job_id(receipts[parent]['job_id'])}"
 
 
-def submit_node(engine, serial, node, receipts, attached_terminal, command):
-    directory = workdir(node)
+def submit_node(
+    engine, serial, node, receipts, attached_terminal, command, *,
+    directory=None, source=ENGINE_SHA, job_prefix="h400-e1-",
+):
+    directory = workdir(node) if directory is None else directory
     dep = dependency(node, receipts, attached_terminal)
     argv = [
         "sbatch", "--parsable", "--hold", "--kill-on-invalid-dep=yes",
         *serial.scheduler_args(node, engine),
-        "--job-name=h400-e1-" + node["id"],
+        "--job-name=" + job_prefix + node["id"],
         "--chdir=" + str(directory),
         "--output=" + str(directory / "slurm.out"),
         "--error=" + str(directory / "slurm.err"),
@@ -177,21 +184,25 @@ def submit_node(engine, serial, node, receipts, attached_terminal, command):
     }
     if node["kind"] == "scientific_solve":
         serial.write(directory / "job.json", {
-            "job_id": identifier, "source_commit": ENGINE_SHA,
+            "job_id": identifier, "source_commit": source,
             "plan_sha256": digest(directory / "plan.json"),
         })
     return receipt
 
 
-def release(engine, serial, nodes, receipts, command):
+def release(
+    engine, serial, nodes, receipts, command, *,
+    queue=None, directory_of=workdir, expected_count=7, attached_first=True,
+):
+    queue = QUEUE if queue is None else queue
     for node in nodes:
         receipt = receipts[node["id"]]
-        directory = workdir(node)
+        directory = directory_of(node)
         require(digest(directory / "batch.sh") == receipt["batch_sha256"], "Batch drift.")
         query = command(["scontrol", "-o", "show", "job", receipt["job_id"]])
         require(query.returncode == 0, "Held job unavailable.")
         satisfied = set()
-        if node["parent"] == "solve-1" and receipt["dependency"]:
+        if attached_first and node["parent"] == "solve-1" and receipt["dependency"]:
             original = receipts["solve-1"]["job_id"]
             if serial.accounting(original, command=command)["state"] in serial.TERMINAL:
                 satisfied.add(("afterany", original))
@@ -199,15 +210,15 @@ def release(engine, serial, nodes, receipts, command):
             engine.o.fields(query.stdout), receipt, node, directory, os.getuid(), satisfied,
         )
     ids = [receipts[node["id"]]["job_id"] for node in nodes]
-    require(len(ids) == len(graph()) == 7, "Incomplete continuation graph.")
-    serial.write(QUEUE / "release_intent.json", {"job_ids": ids})
+    require(len(ids) == expected_count, "Incomplete continuation graph.")
+    serial.write(queue / "release_intent.json", {"job_ids": ids})
     response = command(["scontrol", "release", ",".join(ids)])
-    serial.write(QUEUE / "release_response.json", {
+    serial.write(queue / "release_response.json", {
         "returncode": response.returncode, "stdout": response.stdout, "stderr": response.stderr,
     })
     require(response.returncode == 0, "Release uncertain. Preserve queue.")
-    serial.write(QUEUE / "released.json", {
-        "job_ids": ids, "queue_sha256": digest(QUEUE / "queue.json"),
+    serial.write(queue / "released.json", {
+        "job_ids": ids, "queue_sha256": digest(queue / "queue.json"),
     })
 
 
@@ -261,27 +272,33 @@ def submit(engine, serial, first, controller_sha, *, command):
     return {"status": "released", "new_jobs": 7, "jobs": receipts, "queue": str(QUEUE)}
 
 
-def collect_gate(engine, serial, collector, node, directory):
+def collect_gate(
+    engine, serial, collector, node, directory, *, campaign=None, source=ENGINE_SHA, audit=None,
+):
+    campaign = CAMPAIGN if campaign is None else campaign
     deadline = time.monotonic() + 300
     report = {"cell": node["cell"], "status": "rejected"}
     try:
-        engine.e1_storage(CAMPAIGN)
+        engine.e1_storage(campaign)
         while True:
             saved = collector.collect(
-                engine, CAMPAIGN / node["cell"], ENGINE_SHA, command=serial.run,
+                engine, campaign / node["cell"], source, command=serial.run,
             )
             if saved.get("status") != "nonterminal_or_accounting_pending":
                 break
             require(time.monotonic() < deadline, "Bounded accounting wait exhausted.")
             time.sleep(5)
-        prefix = CELLS[:CELLS.index(node["cell"]) + 1]
         report["collection_status"] = saved.get(
             "status", saved.get("observation", {}).get("status"),
         )
-        proof = engine.e1.evaluate(
-            {cell: engine.e1.read_cell(CAMPAIGN, cell) for cell in prefix},
-            CAMPAIGN_SHA, ENGINE_SHA, prefix=len(prefix) < len(CELLS),
-        )
+        if audit is None:
+            prefix = CELLS[:CELLS.index(node["cell"]) + 1]
+            proof = engine.e1.evaluate(
+                {cell: engine.e1.read_cell(campaign, cell) for cell in prefix},
+                CAMPAIGN_SHA, source, prefix=len(prefix) < len(CELLS),
+            )
+        else:
+            proof = audit()
         report["proof"] = proof
         require(proof["status"] == "e1_resource_criteria_met", "E1 gate rejected.")
         report["status"] = "accepted"

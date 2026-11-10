@@ -28,6 +28,7 @@ from scripts import mvp2_scalar_r3a as r
 from scripts import mvp2_scalar_r3a_operational as o
 from scripts import pyomo_h400_e1 as e1
 from scripts import pyomo_h400_e1_memory as e1_memory
+from scripts import pyomo_h400_e2 as e2
 from scripts import pyomo_scaling_contract as c
 from scripts import pyomo_serial_storage as storage
 from scripts import pyomo_worker_bootstrap as bootstrap
@@ -63,7 +64,7 @@ def login():
 
 def campaign_location(directory):
     c.require(
-        directory.name in {c.CAMPAIGN, e1_memory.CAMPAIGN}
+        directory.name in {c.CAMPAIGN, e1_memory.CAMPAIGN, e2.CAMPAIGN}
         and not directory.is_symlink()
         and directory.parent.resolve() == BASE,
         "Dedicated new campaign below audit base.",
@@ -74,22 +75,38 @@ def e1_campaign(directory):
     return directory.name == e1_memory.CAMPAIGN
 
 
+def e2_campaign(directory):
+    return directory.name == e2.CAMPAIGN
+
+
+def h400_campaign(directory):
+    return e1_campaign(directory) or e2_campaign(directory)
+
+
 def campaign_cells(directory):
+    if e2_campaign(directory):
+        return list(e2.CASES)
     return list(e1.CASES) if e1_campaign(directory) else c.cells()
 
 
 def campaign_limit(directory):
-    return 1 if e1_campaign(directory) else c.MAX_CONCURRENT
+    return 1 if h400_campaign(directory) else c.MAX_CONCURRENT
 
 
 def qualification(directory):
+    if e2_campaign(directory):
+        return BASE / e2.QUALIFICATION
     return BASE / (e1_memory.QUALIFICATION if e1_campaign(directory) else c.QUALIFICATION)
 
 
 def e1_storage(directory):
+    budget = e2.STORAGE_GIB if e2_campaign(directory) else 32
     return storage.check_growth(
         BASE, directory,
-        {"storage_budget_gib_confirmed_in_human_CLI": 32, "campaign_allocated_bytes_at_prepare": 0},
+        {
+            "storage_budget_gib_confirmed_in_human_CLI": budget,
+            "campaign_allocated_bytes_at_prepare": 0,
+        },
         command=r.r2.command,
     )
 
@@ -168,8 +185,8 @@ def init(directory, sha, inputs):
     c.require(not directory.exists(), "Preserve existing campaign; init cannot reset it.")
     qualified = qualification(directory)
     plan, result = read(qualified / "plan.json"), read(qualified / "result.json")
-    is_e1 = e1_campaign(directory)
-    accepted(plan, result, e1_profile=is_e1)
+    is_e1, is_e2 = e1_campaign(directory), e2_campaign(directory)
+    accepted(plan, result, e1_profile=is_e1, e2_profile=is_e2)
     public_query = r.r2.command(
         [
             "sacct",
@@ -235,16 +252,26 @@ def init(directory, sha, inputs):
         "automatic_follow_on_allowed": False,
         "automatic_retry_allowed": False,
     }
-    if is_e1:
+    first_stage = "four_h300_pilots"
+    if is_e1 or is_e2:
+        budget = e2.STORAGE_GIB if is_e2 else 32
         manifest["e1_public_probe_receipts"] = e1_memory.public_probe_evidence(BASE, ROOT)
-        manifest["e1_storage_at_prepare"] = storage.check_initial(BASE, 32, command=r.r2.command)
+        manifest["e1_storage_at_prepare"] = storage.check_initial(
+            BASE, budget, command=r.r2.command,
+        )
+        first_stage = "four_h400_e1_pilots"
+    if is_e2:
+        manifest["e2_predecessor"] = e2.predecessor(BASE, digest=digest, read=read, audit=True)
+        prior = read(BASE / e2.E1_CAMPAIGN / "campaign.json")
+        c.require(prior["runtime"] == plan["runtime"], "E2 runtime differs from the closed E1.")
+        first_stage = "six_h400_e2_pilots"
     directory.mkdir(mode=0o700)
     write_json(directory / "campaign.json", manifest)
     return {
         "status": "prepared_no_job",
         "campaign_sha256": c.digest(manifest),
         "cells": len(manifest["cells"]),
-        "first_stage": "four_h400_e1_pilots" if is_e1 else "four_h300_pilots",
+        "first_stage": first_stage,
         "automatic_follow_on_allowed": False,
     }
 
@@ -270,7 +297,10 @@ def load_campaign(directory, sha, *, expensive=True):
     for name, expected in plan["public_receipts"].items():
         c.require(digest(regular(qualified / name)) == expected, "Public qualification drift.")
     public = read(qualified / "plan.json")
-    accepted(public, read(qualified / "result.json"), e1_profile=e1_campaign(directory))
+    accepted(
+        public, read(qualified / "result.json"),
+        e1_profile=e1_campaign(directory), e2_profile=e2_campaign(directory),
+    )
     c.require(
         public["source_files"] == plan["source_files"] and public["runtime"] == plan["runtime"],
         "Qualification source/runtime differs.",
@@ -278,10 +308,15 @@ def load_campaign(directory, sha, *, expensive=True):
     if expensive:
         verify_source(ROOT, plan["source_files"])
         c.require(environment() == plan["runtime"], "Runtime changed after qualification.")
-        if e1_campaign(directory):
+        if h400_campaign(directory):
             c.require(
                 e1_memory.public_probe_evidence(BASE, ROOT) == plan["e1_public_probe_receipts"],
                 "Preserved public E1 cgroup evidence differs.",
+            )
+        if e2_campaign(directory):
+            c.require(
+                e2.predecessor(BASE, digest=digest, read=read) == plan["e2_predecessor"],
+                "Preserved E1 predecessor differs.",
             )
     return plan
 
@@ -388,26 +423,33 @@ def capacity(directory, command):
             active.append(job["job_id"])
     message = (
         "An E1 campaign job is already active or uncertain."
-        if e1_campaign(directory) else "Two campaign jobs already active or uncertain."
+        if h400_campaign(directory) else "Two campaign jobs already active or uncertain."
     )
     c.require(len(active) < campaign_limit(directory), message)
     return active
 
 
+def h400_review(directory, campaign, count):
+    cases = campaign_cells(directory)
+    policy = {"cases": cases, "excluded_jobs": e2.E1_SOLVE_JOBS} if e2_campaign(directory) else {}
+    return e1.evaluate(
+        {cell["id"]: e1.read_cell(directory, cell["id"]) for cell in cases[:count]},
+        c.digest(campaign), campaign["source_commit"], prefix=count < len(cases), **policy,
+    )
+
+
 def admit_cell(directory, item, prior, campaign):
-    if not e1_campaign(directory):
+    if not h400_campaign(directory):
         return c.admit(item, prior, c.digest(campaign))
     schedule = [cell["id"] for cell in campaign["cells"]]
-    c.require(item["id"] in schedule, "Only the four E1 pilots are admitted.")
-    previous = schedule[:schedule.index(item["id"])]
+    c.require(item["id"] in schedule, "Only the frozen h400 campaign cells are admitted.")
+    previous = schedule.index(item["id"])
     if previous:
-        proof = e1.evaluate(
-            {name: e1.read_cell(directory, name) for name in previous},
-            c.digest(campaign),
-            campaign["source_commit"],
-            prefix=True,
+        proof = h400_review(directory, campaign, previous)
+        scope = "E2" if e2_campaign(directory) else "E1"
+        c.require(
+            proof["status"] == "e1_resource_criteria_met", f"Prior {scope} pilot did not qualify."
         )
-        c.require(proof["status"] == "e1_resource_criteria_met", "Prior E1 pilot did not qualify.")
 
 
 def scheduler_arguments():
@@ -427,6 +469,7 @@ def scheduler_arguments():
 
 def start(directory, sha, identity, acknowledged, *, command=r.r2.command):
     login()
+    c.require(not e2_campaign(directory), "E2 submissions require the finite E2 queue.")
     c.require(acknowledged, "Explicit one-cell human acknowledgement required.")
     campaign = load_campaign(directory, sha)
     verify_tools(campaign)
@@ -579,7 +622,7 @@ def batch(claim, sha):
         allocated = allocation(query.stdout, job["job_id"], os.getuid())
         write_json(claim / "allocation.json", allocated)
         guard = None
-        if e1_campaign(claim.parent):
+        if h400_campaign(claim.parent):
             write_json(claim / "e1_storage_at_compute.json", e1_storage(claim.parent))
             guard = e1_memory.JobMemoryGuard(job["job_id"])
             write_json(claim / "e1_memory_initial.json", guard.initial)
@@ -730,7 +773,7 @@ def worker(claim, sha, *, entry, startup):
             },
         ),
     )
-    if e1_campaign(claim.parent):
+    if h400_campaign(claim.parent):
         c.require(
             read(control / "runtime.json")["hardware_class_sha256"] == e1.ORIGINAL_HARDWARE,
             "E1 historical hardware class differs before model construction.",
@@ -1245,7 +1288,7 @@ def main():
         }
     elif args.action == "init":
         inputs = default_inputs() if args.inputs is None else read(args.inputs)
-        if args.inputs is None and e1_campaign(args.directory):
+        if args.inputs is None and h400_campaign(args.directory):
             inputs = {"400": inputs["400"]}
         result = init(args.directory, args.source_sha, inputs)
     elif args.action == "start":

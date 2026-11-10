@@ -1,0 +1,71 @@
+{
+  "source_commit": "a4abdf79549ccafc2c2e1db9728e3e3e4d482c7f",
+  "job_id": "2250093",
+  "plan_sha256": "9298cd8f339268612ee0c4a32d81b7590a7bfc8ac01b148ebe093e997bc633c0",
+  "status": "accepted",
+  "pytest_exit": 0,
+  "counts": {
+    "tests": 172,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "source_verified_after": true,
+  "runtime_verified_after": true,
+  "license_capacity_accepted": true,
+  "exclusive_allocation_verified": true,
+  "private_execution_admitted": false,
+  "affinity_logical_cpus": 16,
+  "e1_public_probe_receipts_verified_after": true,
+  "claim_basename": ".mvp2-pyomo-h400-e2-public-v1",
+  "terminal_sacct": {
+    "job": [
+      "COMPLETED",
+      51,
+      "0:0",
+      null,
+      64
+    ],
+    "batch": [
+      "COMPLETED",
+      51,
+      "0:0",
+      "9048K",
+      64
+    ],
+    "extern": [
+      "COMPLETED",
+      51,
+      "0:0",
+      "948K",
+      64
+    ],
+    "step_0": [
+      "COMPLETED",
+      50,
+      "0:0",
+      "250704K",
+      16
+    ]
+  },
+  "npad_sha256": {
+    "plan.json": "9298cd8f339268612ee0c4a32d81b7590a7bfc8ac01b148ebe093e997bc633c0",
+    "result.json": "5d55bd51305f6a050fc7429400d075f97d508ebd829990435a3c19157fbb29e2",
+    "qualification.xml": "03e1738ef11c83295121426503d51bd41c1bb62c7431ed9469b935ff5df5b20f",
+    "license-capability.json": "7b33813e2042d259ff946fa106cec676135f50c66e29371fa6c85f8a5e249a1c",
+    "public-allocation.json": "356df2cc33a6149ba47c36e276be6b2961e47079f1ae6946d4966a5fdbcd8974"
+  },
+  "result_provenance": {
+    "method": "Reconstructed the canonical acceptance record using the exact qualified source. All 574 bytes are bound by the operator-reported NPAD SHA-256.",
+    "bytes": 574,
+    "sha256_matched": true
+  },
+  "github_ci_at_source": {
+    "scalar-native": "success",
+    "analytical": "success",
+    "pyomo-multisolver": "success",
+    "test": "success",
+    "native-scip": "success"
+  },
+  "qualification_scope": "Public E2 controls. The six private solves and six collection jobs require separately approved human launch."
+}

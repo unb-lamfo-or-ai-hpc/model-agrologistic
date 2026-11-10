@@ -45,9 +45,14 @@ def identity(
         and root == audit_base / ".mvp2-pyomo-h400-e1-public-v2/source"
         and re.fullmatch(r"h400-w-sto-(gurobi|highs)-t(1|16)-r1", claim.name)
     )
+    e2 = (
+        claim.parent.name == ".mvp2-pyomo-h400-e2-native8h-v1"
+        and root == audit_base / ".mvp2-pyomo-h400-e2-public-v1/source"
+        and re.fullmatch(r"h400-w-sto-(gurobi|highs)-t(2|4|8)-r1", claim.name)
+    )
     require(
         re.fullmatch(r"[0-9a-f]{40}", sha)
-        and (original or e1)
+        and (original or e1 or e2)
         and not claim.is_symlink()
         and claim.parent.parent == audit_base
         and not claim.parent.is_symlink(),
