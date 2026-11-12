@@ -129,6 +129,62 @@ facility outputs remains pending. If only an aggregate can be
 released, preserve the original privately and give the reviewed
 derivative its own hash and source mapping.
 
+## SICARM terms and proposed Zenodo contents
+
+Conab identifies CDA as a warehouse lookup key and describes searches by
+operator or owner. Its open-data page states that Conab is outside the
+scope of Decree 8.777/2016. The Digital Government Act sets reuse
+principles for public-service and active-transparency data within its
+scope, subject to personal-data principles. The official pages reviewed
+establish the consultation route. The interactive lookup timed out
+during verification. The review did not locate terms tied to the exact
+historical extract, the supplied workbook or its CDA crosswalk. A CDA
+identifies a facility. Linking the facility to other attributes can
+identify a natural person in some records. Before sharing facility-level
+files, trace the historical extract and its reuse terms, and verify the
+scope of any terms covering the supplied workbook and its linked fields.
+[Conab SICARM](https://www.gov.br/conab/pt-br/atuacao/armazenagem/saiba-mais-sobre-o-cadastro) ·
+[Conab open-data scope](https://www.gov.br/conab/pt-br/acesso-a-informacao/dados-abertos) ·
+[Conab storage portal](https://www.gov.br/conab/pt-br/atuacao/armazenagem) ·
+[Digital Government Act, arts. 2 and 29](https://www2.camara.leg.br/legin/fed/lei/2021/lei-14129-29-marco-2021-791203-normaatualizada-pl.html) ·
+[LGPD, arts. 5 and 12](https://www2.camara.leg.br/legin/fed/lei/2018/lei-13709-14-agosto-2018-787077-normaatualizada-pl.html)
+
+| Exact files in the inventory | Count | Proposed route |
+| --- | ---: | --- |
+| Investment tables | 11 | Prepare public aggregates by case, decision type and state or region. Preserve separate counts and capacity totals for opening, expansion and bulk handling. |
+| Positive-flow and origin–destination tables | 22 | Prepare public aggregates by case, product, directed movement family and coarse origin/destination region. Preserve the probability weighting of expected flows and label each distance statistic, its weight and denominator. |
+| Complete directed distance tables | 4 | Keep the original endpoint matrices in controlled project custody for exact reproduction. Consider separate coverage and distance summaries by arc family and broad geography under applicable road-data terms. |
+| Selected h300 graph, CSV and JSON | 2 | Keep both serializations of the same exact graph in controlled project custody. Optional public summaries can report arc counts by product and movement family and counts of connectivity repairs where disclosure permits. |
+| Mixed SQLite companions | 2 | Keep both originals in controlled project custody. Prefer the reviewed aggregate CSVs for public use. Build a separate SQLite from approved aggregate rows if that format is needed. |
+
+The public package proposal consists of the README, field dictionary,
+provenance, source notices, safe file identities and separately reviewed
+aggregate tables. The 33 source tables proposed for aggregation stay
+in custody alongside the eight exact reproduction files. Omit CDA,
+surrogate facility keys, exact endpoints and fine coordinates from the
+aggregates. Review small or dominant groups and differences between
+overlapping tables and already accessible material, including maps and
+the v0.2.0 deposit. Coarsen or omit groups that expose an individual
+facility. Give each derivative its own SHA-256, aggregation description
+and mapping to the source hash. Aggregates support verification of
+reported summaries. Exact network and run reproduction requires the
+corresponding original inputs.
+
+Keep the registry workbook and any crosswalk in controlled project
+custody for this release proposal. Zenodo supports restricted files
+with public metadata and owner-managed requests. Consider that option
+only for files whose terms permit third-party transfer. For
+OSM-derived data, document the source and attribution, determine whether
+the output is a Produced Work or a Derivative Database, and fulfil any
+applicable share-alike and access obligations. Preserve the licence
+rights for any ODbL component served through access control. Keep mixed
+originals in custody when their source terms cannot be reconciled for
+distribution. The existing v0.2.0 deposit provides a provenance reference
+and does not establish new rights for these files.
+[Zenodo visibility](https://help.zenodo.org/docs/about/whats-changed/) ·
+[Zenodo access requests](https://help.zenodo.org/docs/share/access-requests/request-access/) ·
+[ODbL 1.0, §§2.4 and 4.2–4.8](https://opendatacommons.org/licenses/odbl/1-0/)
+
 The [distribution dictionary](research_data_distribution_20261101.md)
 and Appendix D supply the field semantics. In the new release dictionary,
 use the observed schemas in the inventory to retain these distinctions:

@@ -138,7 +138,14 @@
     "odbl": "https://opendatacommons.org/licenses/odbl/1-0/",
     "osm_attribution": "https://osmfoundation.org/wiki/Licence/Attribution_Guidelines",
     "geofabrik": "https://download.geofabrik.de/technical.html",
-    "conab_sicarm": "https://www.gov.br/conab/pt-br/atuacao/armazenagem/saiba-mais-sobre-o-cadastro"
+    "conab_sicarm": "https://www.gov.br/conab/pt-br/atuacao/armazenagem/saiba-mais-sobre-o-cadastro",
+    "conab_open_data_scope": "https://www.gov.br/conab/pt-br/acesso-a-informacao/dados-abertos",
+    "conab_storage_portal": "https://www.gov.br/conab/pt-br/atuacao/armazenagem",
+    "conab_privacy_terms": "https://www.gov.br/conab/pt-br/acesso-a-informacao/lei-geral-de-protecao-de-dados-pessoais/termos-de-uso-da-politica-de-protecao-de-dados-pessoais-da-conab",
+    "brazil_digital_government_law": "https://www2.camara.leg.br/legin/fed/lei/2021/lei-14129-29-marco-2021-791203-normaatualizada-pl.html",
+    "brazil_lgpd": "https://www2.camara.leg.br/legin/fed/lei/2018/lei-13709-14-agosto-2018-787077-normaatualizada-pl.html",
+    "zenodo_record_visibility": "https://help.zenodo.org/docs/about/whats-changed/",
+    "zenodo_access_requests": "https://help.zenodo.org/docs/share/access-requests/request-access/"
   },
   "files": [
     {
@@ -223,7 +230,11 @@
         "Model Agrologistic computed decisions or audit metadata"
       ],
       "proposed_disposition": "hold_for_asset_specific_release_decision",
-      "review_action": "Review combined rights and metadata fields; rebuild any approved derivative from reviewed logical rows with a fresh checksum."
+      "review_action": "Review combined rights and metadata fields; rebuild any approved derivative from reviewed logical rows with a fresh checksum.",
+      "zenodo_release_proposal": {
+        "route": "controlled_original_for_exact_reproduction",
+        "policy": "mixed_sqlite_companion"
+      }
     },
     {
       "proposed_member": "historical-companions/pyomo_gurobi_h215_w_native8h_license_v2_flows.csv.gz",
@@ -256,7 +267,11 @@
         "Model Agrologistic computed decisions or audit metadata"
       ],
       "proposed_disposition": "hold_for_asset_specific_release_decision",
-      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved."
+      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "flow_distance_output"
+      }
     },
     {
       "proposed_member": "historical-companions/pyomo_gurobi_h215_w_native8h_license_v2_investments.csv.gz",
@@ -286,7 +301,11 @@
         "Model Agrologistic computed decisions or audit metadata"
       ],
       "proposed_disposition": "hold_for_asset_specific_release_decision",
-      "review_action": "Confirm redistribution of facility keys and site-level modeled decisions. Preserve role and capacity units if approved."
+      "review_action": "Confirm redistribution of facility keys and site-level modeled decisions. Preserve role and capacity units if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "investment_table"
+      }
     },
     {
       "proposed_member": "historical-companions/pyomo_gurobi_h215_w_native8h_license_v2_od_matrix.csv.gz",
@@ -314,7 +333,11 @@
         "Model Agrologistic computed decisions or audit metadata"
       ],
       "proposed_disposition": "hold_for_asset_specific_release_decision",
-      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved."
+      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "flow_distance_output"
+      }
     },
     {
       "proposed_member": "historical-companions/scalar_h215_det_flows.csv.gz",
@@ -347,7 +370,11 @@
         "Model Agrologistic computed decisions or audit metadata"
       ],
       "proposed_disposition": "hold_for_asset_specific_release_decision",
-      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved."
+      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "flow_distance_output"
+      }
     },
     {
       "proposed_member": "historical-companions/scalar_h215_det_investments.csv.gz",
@@ -377,7 +404,11 @@
         "Model Agrologistic computed decisions or audit metadata"
       ],
       "proposed_disposition": "hold_for_asset_specific_release_decision",
-      "review_action": "Confirm redistribution of facility keys and site-level modeled decisions. Preserve role and capacity units if approved."
+      "review_action": "Confirm redistribution of facility keys and site-level modeled decisions. Preserve role and capacity units if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "investment_table"
+      }
     },
     {
       "proposed_member": "historical-companions/scalar_h215_det_od_matrix.csv.gz",
@@ -405,7 +436,11 @@
         "Model Agrologistic computed decisions or audit metadata"
       ],
       "proposed_disposition": "hold_for_asset_specific_release_decision",
-      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved."
+      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "flow_distance_output"
+      }
     },
     {
       "proposed_member": "historical-companions/scalar_h215_d_det_flows.csv.gz",
@@ -438,7 +473,11 @@
         "Model Agrologistic computed decisions or audit metadata"
       ],
       "proposed_disposition": "hold_for_asset_specific_release_decision",
-      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved."
+      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "flow_distance_output"
+      }
     },
     {
       "proposed_member": "historical-companions/scalar_h215_d_det_investments.csv.gz",
@@ -468,7 +507,11 @@
         "Model Agrologistic computed decisions or audit metadata"
       ],
       "proposed_disposition": "hold_for_asset_specific_release_decision",
-      "review_action": "Confirm redistribution of facility keys and site-level modeled decisions. Preserve role and capacity units if approved."
+      "review_action": "Confirm redistribution of facility keys and site-level modeled decisions. Preserve role and capacity units if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "investment_table"
+      }
     },
     {
       "proposed_member": "historical-companions/scalar_h215_d_det_od_matrix.csv.gz",
@@ -496,7 +539,11 @@
         "Model Agrologistic computed decisions or audit metadata"
       ],
       "proposed_disposition": "hold_for_asset_specific_release_decision",
-      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved."
+      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "flow_distance_output"
+      }
     },
     {
       "proposed_member": "historical-companions/scalar_h215_d_sto_flows.csv.gz",
@@ -529,7 +576,11 @@
         "Model Agrologistic computed decisions or audit metadata"
       ],
       "proposed_disposition": "hold_for_asset_specific_release_decision",
-      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved."
+      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "flow_distance_output"
+      }
     },
     {
       "proposed_member": "historical-companions/scalar_h215_d_sto_investments.csv.gz",
@@ -559,7 +610,11 @@
         "Model Agrologistic computed decisions or audit metadata"
       ],
       "proposed_disposition": "hold_for_asset_specific_release_decision",
-      "review_action": "Confirm redistribution of facility keys and site-level modeled decisions. Preserve role and capacity units if approved."
+      "review_action": "Confirm redistribution of facility keys and site-level modeled decisions. Preserve role and capacity units if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "investment_table"
+      }
     },
     {
       "proposed_member": "historical-companions/scalar_h215_d_sto_od_matrix.csv.gz",
@@ -587,7 +642,11 @@
         "Model Agrologistic computed decisions or audit metadata"
       ],
       "proposed_disposition": "hold_for_asset_specific_release_decision",
-      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved."
+      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "flow_distance_output"
+      }
     },
     {
       "proposed_member": "historical-companions/scalar_h215_sto_flows.csv.gz",
@@ -620,7 +679,11 @@
         "Model Agrologistic computed decisions or audit metadata"
       ],
       "proposed_disposition": "hold_for_asset_specific_release_decision",
-      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved."
+      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "flow_distance_output"
+      }
     },
     {
       "proposed_member": "historical-companions/scalar_h215_sto_investments.csv.gz",
@@ -650,7 +713,11 @@
         "Model Agrologistic computed decisions or audit metadata"
       ],
       "proposed_disposition": "hold_for_asset_specific_release_decision",
-      "review_action": "Confirm redistribution of facility keys and site-level modeled decisions. Preserve role and capacity units if approved."
+      "review_action": "Confirm redistribution of facility keys and site-level modeled decisions. Preserve role and capacity units if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "investment_table"
+      }
     },
     {
       "proposed_member": "historical-companions/scalar_h215_sto_od_matrix.csv.gz",
@@ -678,7 +745,11 @@
         "Model Agrologistic computed decisions or audit metadata"
       ],
       "proposed_disposition": "hold_for_asset_specific_release_decision",
-      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved."
+      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "flow_distance_output"
+      }
     },
     {
       "proposed_member": "historical-companions/scalar_h300_t1_flows.csv.gz",
@@ -711,7 +782,11 @@
         "Model Agrologistic computed decisions or audit metadata"
       ],
       "proposed_disposition": "hold_for_asset_specific_release_decision",
-      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved."
+      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "flow_distance_output"
+      }
     },
     {
       "proposed_member": "historical-companions/scalar_h300_t1_investments.csv.gz",
@@ -741,7 +816,11 @@
         "Model Agrologistic computed decisions or audit metadata"
       ],
       "proposed_disposition": "hold_for_asset_specific_release_decision",
-      "review_action": "Confirm redistribution of facility keys and site-level modeled decisions. Preserve role and capacity units if approved."
+      "review_action": "Confirm redistribution of facility keys and site-level modeled decisions. Preserve role and capacity units if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "investment_table"
+      }
     },
     {
       "proposed_member": "historical-companions/scalar_h300_t1_od_matrix.csv.gz",
@@ -769,7 +848,11 @@
         "Model Agrologistic computed decisions or audit metadata"
       ],
       "proposed_disposition": "hold_for_asset_specific_release_decision",
-      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved."
+      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "flow_distance_output"
+      }
     },
     {
       "proposed_member": "historical-companions/scalar_h400_t1_flows.csv.gz",
@@ -802,7 +885,11 @@
         "Model Agrologistic computed decisions or audit metadata"
       ],
       "proposed_disposition": "hold_for_asset_specific_release_decision",
-      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved."
+      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "flow_distance_output"
+      }
     },
     {
       "proposed_member": "historical-companions/scalar_h400_t1_investments.csv.gz",
@@ -832,7 +919,11 @@
         "Model Agrologistic computed decisions or audit metadata"
       ],
       "proposed_disposition": "hold_for_asset_specific_release_decision",
-      "review_action": "Confirm redistribution of facility keys and site-level modeled decisions. Preserve role and capacity units if approved."
+      "review_action": "Confirm redistribution of facility keys and site-level modeled decisions. Preserve role and capacity units if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "investment_table"
+      }
     },
     {
       "proposed_member": "historical-companions/scalar_h400_t1_od_matrix.csv.gz",
@@ -860,7 +951,11 @@
         "Model Agrologistic computed decisions or audit metadata"
       ],
       "proposed_disposition": "hold_for_asset_specific_release_decision",
-      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved."
+      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "flow_distance_output"
+      }
     },
     {
       "proposed_member": "historical-companions/scalar_h500_t1_flows.csv.gz",
@@ -893,7 +988,11 @@
         "Model Agrologistic computed decisions or audit metadata"
       ],
       "proposed_disposition": "hold_for_asset_specific_release_decision",
-      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved."
+      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "flow_distance_output"
+      }
     },
     {
       "proposed_member": "historical-companions/scalar_h500_t1_investments.csv.gz",
@@ -923,7 +1022,11 @@
         "Model Agrologistic computed decisions or audit metadata"
       ],
       "proposed_disposition": "hold_for_asset_specific_release_decision",
-      "review_action": "Confirm redistribution of facility keys and site-level modeled decisions. Preserve role and capacity units if approved."
+      "review_action": "Confirm redistribution of facility keys and site-level modeled decisions. Preserve role and capacity units if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "investment_table"
+      }
     },
     {
       "proposed_member": "historical-companions/scalar_h500_t1_od_matrix.csv.gz",
@@ -951,7 +1054,11 @@
         "Model Agrologistic computed decisions or audit metadata"
       ],
       "proposed_disposition": "hold_for_asset_specific_release_decision",
-      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved."
+      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "flow_distance_output"
+      }
     },
     {
       "proposed_member": "historical-companions/scalar_highs_h215_w_native8h_startup_v2_flows.csv.gz",
@@ -984,7 +1091,11 @@
         "Model Agrologistic computed decisions or audit metadata"
       ],
       "proposed_disposition": "hold_for_asset_specific_release_decision",
-      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved."
+      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "flow_distance_output"
+      }
     },
     {
       "proposed_member": "historical-companions/scalar_highs_h215_w_native8h_startup_v2_investments.csv.gz",
@@ -1014,7 +1125,11 @@
         "Model Agrologistic computed decisions or audit metadata"
       ],
       "proposed_disposition": "hold_for_asset_specific_release_decision",
-      "review_action": "Confirm redistribution of facility keys and site-level modeled decisions. Preserve role and capacity units if approved."
+      "review_action": "Confirm redistribution of facility keys and site-level modeled decisions. Preserve role and capacity units if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "investment_table"
+      }
     },
     {
       "proposed_member": "historical-companions/scalar_highs_h215_w_native8h_startup_v2_od_matrix.csv.gz",
@@ -1042,7 +1157,11 @@
         "Model Agrologistic computed decisions or audit metadata"
       ],
       "proposed_disposition": "hold_for_asset_specific_release_decision",
-      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved."
+      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "flow_distance_output"
+      }
     },
     {
       "proposed_member": "osrm/osrm_h215_distances_km.csv.gz",
@@ -1069,7 +1188,11 @@
         "OpenStreetMap road data via Geofabrik and OSRM"
       ],
       "proposed_disposition": "hold_for_asset_specific_release_decision",
-      "review_action": "Document OSM attribution and ODbL classification; confirm redistribution of joined external endpoint identifiers."
+      "review_action": "Document OSM attribution and ODbL classification; confirm redistribution of joined external endpoint identifiers.",
+      "zenodo_release_proposal": {
+        "route": "controlled_original_for_exact_reproduction",
+        "policy": "complete_distance_table"
+      }
     },
     {
       "proposed_member": "osrm/osrm_h300_distances_km.csv.gz",
@@ -1096,7 +1219,11 @@
         "OpenStreetMap road data via Geofabrik and OSRM"
       ],
       "proposed_disposition": "hold_for_asset_specific_release_decision",
-      "review_action": "Document OSM attribution and ODbL classification; confirm redistribution of joined external endpoint identifiers."
+      "review_action": "Document OSM attribution and ODbL classification; confirm redistribution of joined external endpoint identifiers.",
+      "zenodo_release_proposal": {
+        "route": "controlled_original_for_exact_reproduction",
+        "policy": "complete_distance_table"
+      }
     },
     {
       "proposed_member": "osrm/osrm_h400_distances_km.csv.gz",
@@ -1123,7 +1250,11 @@
         "OpenStreetMap road data via Geofabrik and OSRM"
       ],
       "proposed_disposition": "hold_for_asset_specific_release_decision",
-      "review_action": "Document OSM attribution and ODbL classification; confirm redistribution of joined external endpoint identifiers."
+      "review_action": "Document OSM attribution and ODbL classification; confirm redistribution of joined external endpoint identifiers.",
+      "zenodo_release_proposal": {
+        "route": "controlled_original_for_exact_reproduction",
+        "policy": "complete_distance_table"
+      }
     },
     {
       "proposed_member": "osrm/osrm_h500_distances_km.csv.gz",
@@ -1150,7 +1281,11 @@
         "OpenStreetMap road data via Geofabrik and OSRM"
       ],
       "proposed_disposition": "hold_for_asset_specific_release_decision",
-      "review_action": "Document OSM attribution and ODbL classification; confirm redistribution of joined external endpoint identifiers."
+      "review_action": "Document OSM attribution and ODbL classification; confirm redistribution of joined external endpoint identifiers.",
+      "zenodo_release_proposal": {
+        "route": "controlled_original_for_exact_reproduction",
+        "policy": "complete_distance_table"
+      }
     },
     {
       "proposed_member": "paired-h300/h300-w-sto-gurobi-t1-r1_flows.csv.gz",
@@ -1183,7 +1318,11 @@
         "Model Agrologistic computed decisions or audit metadata"
       ],
       "proposed_disposition": "hold_for_asset_specific_release_decision",
-      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved."
+      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "flow_distance_output"
+      }
     },
     {
       "proposed_member": "paired-h300/h300-w-sto-gurobi-t1-r1_investments.csv.gz",
@@ -1213,7 +1352,11 @@
         "Model Agrologistic computed decisions or audit metadata"
       ],
       "proposed_disposition": "hold_for_asset_specific_release_decision",
-      "review_action": "Confirm redistribution of facility keys and site-level modeled decisions. Preserve role and capacity units if approved."
+      "review_action": "Confirm redistribution of facility keys and site-level modeled decisions. Preserve role and capacity units if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "investment_table"
+      }
     },
     {
       "proposed_member": "paired-h300/h300-w-sto-gurobi-t1-r1_od_matrix.csv.gz",
@@ -1241,7 +1384,11 @@
         "Model Agrologistic computed decisions or audit metadata"
       ],
       "proposed_disposition": "hold_for_asset_specific_release_decision",
-      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved."
+      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "flow_distance_output"
+      }
     },
     {
       "proposed_member": "paired-h300/h300-w-sto-highs-t1-r1_flows.csv.gz",
@@ -1274,7 +1421,11 @@
         "Model Agrologistic computed decisions or audit metadata"
       ],
       "proposed_disposition": "hold_for_asset_specific_release_decision",
-      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved."
+      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "flow_distance_output"
+      }
     },
     {
       "proposed_member": "paired-h300/h300-w-sto-highs-t1-r1_investments.csv.gz",
@@ -1304,7 +1455,11 @@
         "Model Agrologistic computed decisions or audit metadata"
       ],
       "proposed_disposition": "hold_for_asset_specific_release_decision",
-      "review_action": "Confirm redistribution of facility keys and site-level modeled decisions. Preserve role and capacity units if approved."
+      "review_action": "Confirm redistribution of facility keys and site-level modeled decisions. Preserve role and capacity units if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "investment_table"
+      }
     },
     {
       "proposed_member": "paired-h300/h300-w-sto-highs-t1-r1_od_matrix.csv.gz",
@@ -1332,7 +1487,11 @@
         "Model Agrologistic computed decisions or audit metadata"
       ],
       "proposed_disposition": "hold_for_asset_specific_release_decision",
-      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved."
+      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "flow_distance_output"
+      }
     },
     {
       "proposed_member": "paired-h300/h300_pair_flow_distance.sqlite3",
@@ -1369,7 +1528,11 @@
         "Model Agrologistic computed decisions or audit metadata"
       ],
       "proposed_disposition": "hold_for_asset_specific_release_decision",
-      "review_action": "Review combined rights and metadata fields; rebuild any approved derivative from reviewed logical rows with a fresh checksum."
+      "review_action": "Review combined rights and metadata fields; rebuild any approved derivative from reviewed logical rows with a fresh checksum.",
+      "zenodo_release_proposal": {
+        "route": "controlled_original_for_exact_reproduction",
+        "policy": "mixed_sqlite_companion"
+      }
     },
     {
       "proposed_member": "paired-h300/h300_W_selected_arcs.csv.gz",
@@ -1395,7 +1558,11 @@
         "OpenStreetMap road data via Geofabrik and OSRM"
       ],
       "proposed_disposition": "hold_for_asset_specific_release_decision",
-      "review_action": "Document OSRM distance lineage and screening provenance; confirm redistribution of external endpoints and added terms."
+      "review_action": "Document OSRM distance lineage and screening provenance; confirm redistribution of external endpoints and added terms.",
+      "zenodo_release_proposal": {
+        "route": "controlled_original_for_exact_reproduction",
+        "policy": "admissible_graph"
+      }
     },
     {
       "proposed_member": "paired-h300/h300_W_selected_graph.json.gz",
@@ -1422,7 +1589,58 @@
         "OpenStreetMap road data via Geofabrik and OSRM"
       ],
       "proposed_disposition": "hold_for_asset_specific_release_decision",
-      "review_action": "Document OSRM distance lineage and screening provenance; confirm redistribution of external endpoints and added terms."
+      "review_action": "Document OSRM distance lineage and screening provenance; confirm redistribution of external endpoints and added terms.",
+      "zenodo_release_proposal": {
+        "route": "controlled_original_for_exact_reproduction",
+        "policy": "admissible_graph"
+      }
     }
-  ]
+  ],
+  "sicarm_redistribution_review": {
+    "reviewed_on": "2026-11-12",
+    "registry_input": "external-inputs/Warehouses_Existing_Candidate_All.xlsx",
+    "finding": "Conab documents public consultation by CDA and states that it is outside the scope of Decree 8.777/2016. The terms reviewed do not establish redistribution of the exact historical workbook, its CDA crosswalk or facility-linked research outputs.",
+    "evidence_limit": "The interactive lookup timed out during source verification. The official SICARM description and storage portal establish the consultation route. No versioned licence or release terms for the exact extract were located.",
+    "minimum_source_evidence": "Record the original extract or publication, version or date, applicable field-level reuse terms, and terms for the supplied workbook and CDA crosswalk. Determine whether joined attributes can identify natural persons before sharing facility-level data.",
+    "public_documentation_candidate": [
+      "README without private paths or identifiers",
+      "schema and field dictionary without record examples containing facility keys",
+      "provenance links and applicable attribution",
+      "SHA-256 and public source/release identities"
+    ],
+    "original_payload_open_candidates": 0,
+    "originals_in_controlled_custody": 41,
+    "source_files_proposed_for_aggregate_derivation": 33,
+    "exact_reproduction_assets_in_controlled_custody": 8,
+    "aggregate_review": "Review proposed tables together with existing maps, summaries and the existing deposit for singleton or dominant groups and reconstruction by differencing. Coarsen or omit revealing groups, remove stable and surrogate facility keys, preserve units and denominators, and hash derivatives separately.",
+    "restricted_access_scope": "Keep originals in project custody. A future restricted record is a delivery option only where the rights permit transfer and its access terms preserve applicable ODbL rights. Keep mixed-rights originals outside the public package when terms cannot be reconciled.",
+    "roadmap_only": true,
+    "file_group_policies": {
+      "mixed_sqlite_companion": {
+        "route": "controlled_original_for_exact_reproduction",
+        "aggregate": "Use reviewed aggregate CSV tables first. If a public SQLite companion is useful, construct a new database only from approved aggregate rows.",
+        "original": "controlled_project_custody"
+      },
+      "flow_distance_output": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "aggregate": "Positive flow totals and distance summaries by case, product, directed movement family and coarse origin/destination region. Preserve weighting, units and the statistic denominator.",
+        "original": "controlled_project_custody"
+      },
+      "investment_table": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "aggregate": "Counts and capacity totals by case, decision type and UF or region. Preserve separate opening, expansion and bulk-handling measures.",
+        "original": "controlled_project_custody"
+      },
+      "complete_distance_table": {
+        "route": "controlled_original_for_exact_reproduction",
+        "aggregate": "Optional directed distance coverage and distribution statistics by arc family and broad geography, subject to the applicable road-data terms.",
+        "original": "controlled_project_custody"
+      },
+      "admissible_graph": {
+        "route": "controlled_original_for_exact_reproduction",
+        "aggregate": "Optional directed arc counts by product and movement family, with repair counts where disclosure permits.",
+        "original": "controlled_project_custody"
+      }
+    }
+  }
 }
