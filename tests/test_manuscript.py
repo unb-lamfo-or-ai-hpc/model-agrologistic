@@ -258,9 +258,10 @@ def test_scalar_scope_does_not_restore_cancelled_methods(manuscript):
     article = (manuscript / "index.qmd").read_text(encoding="utf-8")
     assert "{{< include comparison_results.qmd >}}" not in article
     assert "{{< include scip_results.qmd >}}" not in article
-    assert "one observation per thread level" in " ".join(article.split())
-    assert "original h500" in (manuscript / "scalar_results.qmd").read_text()
-    assert "0.207432" in (manuscript / "scalar_results.qmd").read_text()
+    native_results = (manuscript / "scalar_results.qmd").read_text(encoding="utf-8")
+    assert "one observation per thread setting" in native_results
+    assert "original h500" in native_results
+    assert "0.207432" in native_results
     assert (manuscript / "supplement/appendix_a_original.pdf").read_bytes().startswith(b"%PDF-")
     # An empty pagecommand removes pdfpages' default empty style and overlays
     # supplement page numbers on the preserved original pages.

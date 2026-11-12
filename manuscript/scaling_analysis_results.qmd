@@ -1,0 +1,94 @@
+## Computational growth across warehouse populations
+
+The native Gurobi records separate two changes in the workload. At h215 W,
+the move from DET to STO expands the matrix from 1.56 to 14.05 million
+variables and from 5.79 to 52.07 million nonzeros, about ninefold in both
+cases. The 307 binary variables are shared investment decisions in STO.
+With four threads in both observations, native time rises from 2.04 to
+40.76 min and sampled application RSS from 5.54 to 43.13 GiB. The attained
+gaps are 0.000812% and 0.740159%, respectively. These are observed effort
+ratios for different formulations and attained gaps.
+
+Across the W STO series, h215 to h500 increases the number of variables by
+4.51 times and matrix nonzeros by 4.69 times. Model build time grows by
+4.56 times, native time by 3.13 times and sampled application RSS by 2.59
+times. The h215 observation used four threads. The h300, h400 and h500
+observations used one. Over this one-thread subset, h300 to h500 increases
+variables by 2.53 times, matrix nonzeros by 2.58 times, native time by 2.71
+times and RSS by 2.41 times. The h500 incumbent satisfies the target with
+an attained gap of 0.207432% after 127.58 min of native time and 152.72 min
+end-to-end. The scale-up comparisons use the historical native cohort
+in @tbl-scalar-size, @tbl-scalar-resources and @tbl-scalar-quality.
+
+## Fixed-instance scaling and attainment in common Pyomo
+
+All 30 h300 W STO cells returned terminal observations. The two solvers
+received the same ordered Pyomo matrix, with 25.11 million variables and
+94.97 million nonzeros. The comparison uses three temporal repetitions
+per solver and thread ceiling, the common 1% relative-gap target and
+an eight-hour native time limit. @tbl-h300-repeated summarizes the
+median terminal clocks and the count of independently validated
+incumbents meeting the target. Appendix C reports the full ranges, gaps
+and sampled worker-tree memory.
+
+| Threads | Gurobi at target | Gurobi native / end-to-end, min | HiGHS at target | HiGHS native / end-to-end, min |
+|--:|--:|--:|--:|--:|
+| 1 | 3/3 | 48.23 / 91.97 | 3/3 | 401.43 / 443.35 |
+| 2 | 3/3 | 66.18 / 108.94 | 0/3 | 480.79 / 513.14 |
+| 4 | 3/3 | 65.14 / 113.14 | 0/3 | 480.61 / 513.04 |
+| 8 | 3/3 | 93.29 / 136.00 | 0/3 | 480.62 / 513.16 |
+| 16 | 3/3 | 96.39 / 141.15 | 0/3 | 480.60 / 512.78 |
+
+: Common-Pyomo h300 W STO attainment and median times to termination. HiGHS medians at 2–16 threads describe time-limit returns without a usable incumbent. {#tbl-h300-repeated}
+
+At one thread, the HiGHS-to-Gurobi ratio of median terminal time is
+8.32 for the native clock and 4.82 end-to-end. The respective
+attained gaps are 0.006879% and 0.004105%. At the other four settings,
+all 12 HiGHS repetitions reached the limit without a usable incumbent.
+For these cells the time to a validated target is unobserved and the
+incumbent-based gaps are unavailable. Native times slightly above
+480 min are observed terminal readings under the configured budget.
+
+All Gurobi runs reached the target, with attained gaps between 0.004105%
+and 0.004122%. @tbl-h300-scaling gives the strong-scaling indicators for
+the fixed problem under this stopping policy. They use the median of
+three runs per ceiling and the corresponding one-thread median. Efficiency
+is normalized by the solver thread ceiling. The observed clocks measure
+termination; the time of first reaching the target was not recorded.
+
+| Threads | Native speedup | Native efficiency, % | End-to-end speedup | End-to-end efficiency, % |
+|--:|--:|--:|--:|--:|
+| 1 | 1.000 | 100.0 | 1.000 | 100.0 |
+| 2 | 0.729 | 36.4 | 0.844 | 42.2 |
+| 4 | 0.740 | 18.5 | 0.813 | 20.3 |
+| 8 | 0.517 | 6.5 | 0.676 | 8.5 |
+| 16 | 0.500 | 3.1 | 0.652 | 4.1 |
+
+: Descriptive Gurobi h300 strong-scaling indicators based on median terminal times under the shared stopping policy. {#tbl-h300-scaling}
+
+Each multithreaded Gurobi setting takes longer than the one-thread
+setting on both median clocks. At 16 threads the median native time
+is approximately double and the end-to-end time is 1.53 times the
+one-thread value. The sampled worker-tree peak rises from 74.42 GiB
+at one thread to 100.88 GiB at 16. At two and four threads the
+native-time ranges overlap the one-thread range. At eight and
+sixteen threads they lie entirely above it in the three observed
+repetitions. The per-setting ranges characterize this run block.
+
+## Evidence at h400 and coverage of h500
+
+The original h400 common-Pyomo pilots expand the ordered matrix from
+25.11 to 42.11 million variables and from 94.97 to 161.25 million
+nonzeros. Gurobi at 1 and 16 threads returned the same reported
+penalized objective, BRL 7.593395 trillion, the same economic subtotal,
+BRL 381.573 billion, and a 0.836784% gap. Their native times were
+64.98 and 130.57 min, with sampled worker-tree peaks of 113.41 and
+160.24 GiB. The two HiGHS pilots reached the time limit without a
+usable incumbent. Appendix C records these four observations and the
+memory headroom check that ended progression in the original campaign.
+
+Of the original 90 planned cells, 20 met the target with validated
+incumbents, 14 returned without a usable incumbent, and 56 were cancelled
+before execution. The cancelled cells include 26 h400 and all 30 h500
+cells. The historical native h500 solution therefore remains the
+largest validated solution in the reported computational series.

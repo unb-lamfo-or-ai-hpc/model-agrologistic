@@ -44,6 +44,18 @@ The two common-Pyomo h300 pilots are separate observations. Their own
 maps and investment lists follow the historical configurations; their full
 flow-distance companions retain separate source and solution identities.
 
+To compare returned investment plans, join the two lists on the
+original facility ID and retain a separate column for each investment
+type and its quantity. The first matched h300 pair opens 154 candidates
+in each solution, and the opening sets coincide. The positive
+expansion sets contain 70 sites for Gurobi and 69 for HiGHS, with 69
+shared sites. The positive bulk-handling sets contain 76 and 77 sites,
+respectively, with 76 shared sites. These counts use the stated
+$10^{-7}$ t threshold and identify common sites, with capacities
+retained separately in the lists. The repeated timing grid in Appendix C describes
+solver observations. The maps here describe the particular accepted
+vectors linked to each figure.
+
 ## E2 From exported flows to sparse matrices
 
 Let $x^{k}_{ijpts}$ denote the exported tonnes on directed movement family $k$,

@@ -2,30 +2,32 @@
 title: "Computational Scalability of Deterministic and Two-Stage Stochastic MILP Models for Grain-Storage Network Design and Hub Location"
 date: 2026-10-30
 abstract: >-
-  Brazilian grain production reached 352 million metric tons in the 2024/25 crop
-  year, while national static storage capacity remains below 65% of that volume and
-  logistics depend on a non-optimized network. Brazilian investments in
-  high-performance computing (HPC) infrastructure support agricultural research.
-  Designing grain-storage networks requires
+  Brazilian grain production reached 352 million metric tons in the 2024/25 crop year,
+  while national static storage capacity remains below 65% of that volume and
+  logistics depend on a non-optimized network. Brazilian government has investment
+  plans for high performance computing (HPC) infrastructure with the intent to
+  prioritize agricultural research. Designing grain-storage networks requires
   decisions about facility location, storage capacity and grain handling before
   uncertain supply and demand are known. The resulting mixed-integer linear
-  programs (MILPs) can contain millions of variables, making
-  computational requirements central to their use in agricultural planning. This
-  study evaluates deterministic and two-stage stochastic models through computing
-  upscale, speedup, efficiency and scaling assessment of MILP solution in HPC.
-  Warehouse-only instances contain 215, 300, 400 and 500 facilities, with nine
-  supply–demand scenarios in the stochastic model. The stochastic formulation grows
-  from 14.1 to 63.4 million variables across this range. All nine warehouse-only
-  native Gurobi observations satisfy the 1% relative-gap criterion. The
-  500-facility instance reaches a 0.21% gap in approximately 128 minutes of native
-  optimization. In the common Pyomo h300 experiment, a commercial solver (Gurobi)
-  reached the 1% target in all 15 runs and an open-source solver (HiGHS) reached it
-  in three one-thread runs. The returned stochastic plans allocate capacity
-  investment across the admitted candidate sites, indicating distributed capacity
-  sizing within the available network. However, substantial handling and storage
-  exceedances and unmet demand remain in the returned plans. Joint evaluation of
-  computation, solution quality and investment decisions informs the use of HPC
-  for grain-storage planning.
+  programming (MILP) can contain millions of strategic decisions, making computational
+  requirements central to their use in agricultural planning. This study evaluates
+  deterministic and two-stage stochastic models through computing upscale, speedup,
+  efficiency and scaling assessment of MILP solution in HPC. Warehouse-only instances
+  contain 215, 300, 400 and 500 facilities, with nine supply–demand scenarios in the
+  stochastic model. The stochastic formulation grows from 14.1 to 63.4 million
+  variables across this range. All nine warehouse-only observations satisfy the
+  prescribed 1% relative-gap criterion; the larger 500-facility instance reaches a
+  0.21% gap in approximately 128 minutes of native optimization. In the common Pyomo
+  h300 experiment, a commercial solver (Gurobi) reached the 1% target in all 15 runs
+  and a open-source solver (HiGHS) reached it in three one-thread runs. The returned
+  stochastic plans allocate capacity investment across the admitted candidate sites,
+  indicating distributed capacity sizing within the available network. However,
+  substantial handling and storage exceedances and unmet demand are necessary to
+  maintain solutions feasibility. The assessment of computational scale to solve the
+  investment and strategic logistic decisions of the grain-storage network problem
+  provide insights about the contribution of HPC to agriculture research. Evaluating
+  solution quality together with computation metrics provide decision support about
+  optimized plans for grain-storage planning.
 keywords:
   - grain storage
   - network design
@@ -476,9 +478,12 @@ to their stored OSRM road distances.
 
 # Results
 
-This section presents the computing upscale, speedup, efficiency and scaling
-assessment of MILP solution in HPC for the h215, h300, h400 and h500 instances, as
-described in the previous section.
+The h215 comparison examines the effect of direct deliveries and
+scenario-dependent operation. The historical native W STO series
+then traces how investment choices and computational effort change
+as candidate sites are added. The repeated common-Pyomo experiments
+provide a fixed-instance comparison of thread ceilings at h300,
+followed by pilot evidence at h400.
 
 {{< include wd_results.qmd >}}
 
@@ -486,201 +491,162 @@ described in the previous section.
 
 {{< include solver_results.qmd >}}
 
+{{< include scaling_analysis_results.qmd >}}
+
 {{< include scaling_pilot_results.qmd >}}
 
 # Discussion
 
-## Computational scale and attainable solution quality
+## What scales with the planning problem
 
-Each accepted scalar observation pairs an independently validated feasible
-incumbent with a finite bound and an attained relative gap within the
-prescribed 1% tolerance. The reported gap quantifies the remaining
-uncertainty in the penalized objective at termination.
+The h215 results show the cost of introducing scenario-dependent
+operation while retaining the same shared investment binaries. The
+near-ninefold expansion in variables and nonzeros accompanies a
+twentyfold increase in the observed native time. Matrix size gives a
+direct measure of formulation size and helps explain storage and build
+requirements. Search and LP work also depend on the coefficients,
+bounds, incumbent path and attained stopping gap.
 
-The h300 one-thread, h400 and h500 observations connect increasing matrix dimensions
-to higher observed construction time, optimizer time and memory. The expanded
-warehouse set also changes retained routes and available investment choices.
-Consequently, these observations cannot isolate population size as the sole
-cause of runtime or objective changes. Larger feasible choice sets do not
-guarantee a better attained incumbent at a finite cutoff; changing screening
-can also break feasible-set nesting.
+In the native one-thread STO series, the increasing build times and
+RSS from h300 to h500 are directly relevant to sizing a workstation
+or HPC allocation. The higher effort buys a different planning
+choice set, with additional candidate sites and different admissible
+routes. Population, arcs and available decisions change jointly.
+This is problem-size scale-up. Classical weak scaling would require a
+design that maintains approximately constant workload per resource.
 
-Within the native h300 block, the five thread settings returned identical
-exported plans. The single-thread observation had the lowest native time
-and sampled memory in that block. The common-Pyomo campaign provides
-separate repeated observations for studying the effect of thread settings.
+## Thread ceilings, terminal effort and usable plans
 
-## Interpreting the matched solver campaign
+The common-Pyomo h300 block shows why a solver thread setting should be
+evaluated jointly with the quality of the returned solution. The
+Gurobi comparison has complete target attainment and closely aligned
+attained gaps across the five settings. One thread delivered the
+lowest median time on both clocks, with less sampled memory than the
+higher settings. The gap between native and end-to-end ratios matters
+for practitioners who need a validated investment report. Build,
+transfer and checking contribute to that elapsed time. The observations
+measure neither CPU utilization nor a causal allocation of time to
+parallel overhead.
 
-The repeated h300 W STO experiment provides a fixed-instance comparison
-of solution quality and effort. At one thread, both solvers reached the
-1% target in all three repetitions. Median native terminal times were
-48.23 minutes for Gurobi and 401.43 minutes for HiGHS. The median
-end-to-end times were 91.97 and 443.35 minutes, respectively. These clocks
-describe termination under the common stopping policy. For Gurobi, the
-one-thread setting had the lowest median native terminal time. At the
-four higher thread ceilings, HiGHS's twelve runs ended
-without a usable solution under the experimental budget. Appendix C
-reports the achieved gaps, ranges and resource measurements.
+At one thread both solvers delivered usable h300 plans. At the higher
+ceilings, HiGHS returned only a bound within the observed budget.
+Treating those terminal times as times to solution would reverse the
+scientific meaning of the comparison. The useful result is the observed
+attainment contrast at a fixed size, together with the bound,
+termination state and resource use. These fixed-seed repetitions
+characterize variability on the same instance and protocol. They do
+not sample independent planning problems or establish a general solver
+ranking.
 
-The four h400 pilots share an ordered Pyomo matrix with 42.1 million
-variables, compared with 25.1 million in h300. Both Gurobi pilots
-returned validated solutions with a 0.836784% common gap. Their common
-economic subtotal was BRL 381.573 billion. Both HiGHS pilots reached
-the native time limit without a usable solution. The repeated
-comparison therefore covers h300, with pilot evidence at h400.
-The native Gurobi scale series provides the separate h500 results.
+The h400 pilot comparison adds an operational constraint. An accepted
+incumbent can coexist with insufficient memory reserve for progression.
+The original 16-thread Gurobi pilot satisfied the numerical target and
+exceeded the progression gate's sampled-peak ceiling. A study that
+reports only accepted gaps would miss this distinction. The subsequent
+h400 runs use separate receipts and monitoring and are documented as
+such in Appendix C. Reliable comparisons across these runs depend on
+the resource profile and complete validation records.
 
-The study complements the tactical resource measurements of @reis2023
-by linking computation to long-lived warehouse investments and
-scenario-dependent flows. The discrete sizing and demand fulfillment of
-@pourmohammadi2020 clarify how continuous sizing and penalized shortage
-change the interpretation of a capacity plan. The overflow mechanism
-examined by @milanez2026 provides a precedent for reporting capacity
-relief alongside a numerical gap. Here the gap pertains to the penalized
-objective, and the independent service and exceedance measures describe
-its operational consequences. The computational comparison uses the
-matched instances within this study.
+## Implications for grain-storage investment
 
-## Penalty effects and agricultural interpretation
+The native W STO plans show a shift in expenditure as the candidate
+set grows. From h215 to h500, the returned one-time investment increases
+from BRL 9.82 billion to 14.32 billion while transport decreases from
+BRL 367.14 billion to 346.07 billion. The economic subtotal falls from
+BRL 393.90 billion to 373.17 billion. Installed candidate capacity
+increases from 7.38 to 10.99 million tonnes. The h500 incumbent allocates
+capacity across all 354 candidate locations. That distribution reflects
+the encoded costs, routing and service trade-offs and would require
+site-level validation before implementation.
 
-The three slack families enlarge only their encoded demand, static-stock and
-reception constraints. Shipping, route eligibility, activation and conservation
-remain hard. Positive slack is compatible with an accepted solution to this
-model; it is not evidence that the corresponding physical network can operate
-without additional measures. Nor does it prove that a no-slack model is
-infeasible. A penalty magnitude cannot establish a monotonic runtime effect
-or demonstrate that slack caused rapid convergence.
+The h215 W/D results illustrate why economic expenditure and service
+should be read together. With direct deliveries, the returned D plans
+have economic subtotals 13.11% lower in DET and 13.66% lower in STO.
+Domestic service falls by 1.97 and 2.41 percentage points, respectively.
+Direct deliveries bypass some warehouse handling and stock, while the
+optimization trades off shortage and capacity penalties under the same
+weights. In the native W STO series, service also varies nonmonotonically
+as the candidate set expands. Lower expenditure alone is therefore an
+incomplete basis for selecting an investment program.
 
-Artificial penalties account for approximately 94--97% of the reported scalar totals.
-This concentration makes the global gap a certificate about the penalized total, not
-a 1%-accurate economic subtotal or a service guarantee. Investment/operating
-expenditure, artificial penalties and physical shortages or exceedances therefore
-remain separately visible. The same coefficients and numerical validation criteria
-are used throughout the reported cohort.
+Artificial penalties represent roughly 94–97% of the native W/D
+penalized objectives. A certified gap applies to the penalized total.
+The economic subtotal, delivered grain and the three physical slack
+measures remain separate. A planner can use those diagnostics to
+identify where a returned investment plan depends on unmet demand or
+capacity exceedance. Stock summed over time is measured in
+tonne-periods, whereas reception overflow is measured in tonnes.
 
-The W/D comparison makes this distinction concrete. Direct delivery can
-bypass warehouse reception and storage, allowing the scalar objective to
-balance lower capacity-related penalties against a different domestic-shortage
-outcome. In the returned D plans, lower penalized costs coexist with more
-unmet domestic demand. The model permits that trade-off because shortage and
-capacity exceedance have explicit weights; it does not impose full domestic
-service as a hard requirement. A decision-maker would therefore need to assess
-the service and investment consequences jointly. Introducing a service floor
-or recalibrating penalties would be a new model-policy study, rather than a
-reinterpretation of the existing certificates.
+The first common-Pyomo h300 pair further shows how similar aggregate
+outcomes can hide different investments. Both solutions open the same
+154 candidates and report domestic service close to 91.33%. They
+share 69 expansion sites and 76 bulk-handling sites. The Gurobi plan
+adds one expansion to the shared set. The HiGHS plan adds one
+bulk-handling conversion to the shared set.
+Appendix E retains the individual facility identifiers, capacities and
+directed flows, which are the evidence needed to identify decisions
+that are consistent between the two plans.
 
-All included candidates receive positive capacity in the accepted vectors.
-The plans are consequently not sparse selections of a few hubs. Under the
-frozen cost translation, available options and penalty trade-offs, adding
-candidate locations broadens distributed investment and operating opportunities.
-Existing-site expansion and bulkification provide additional, distinct choices.
-The model's extensive investment and remaining slack identify limits of the
-encoded planning system; they are not a ready-to-build public investment program.
-Engineering suitability, finance, contracts, quality and governance remain
-outside the mathematical abstraction.
+## Relationship to agricultural computing research
 
-Static exceedance summed over time is expressed in tonne-periods, not installed
-tonnes. Reception overflow is tonnes within periods and can be divided by
-operating days only for a derived daily equivalent. Transport-leg totals may
-count the same grain through several arcs, so they are not unique production.
-Scenario-weighted logistics aggregates and selected-scenario views answer
-different questions. These distinctions prevent superficially attractive maps
-or totals from overstating service improvements and infrastructure requirements.
+The evidence complements the tactical effort measurements of @reis2023
+by linking construction, solver effort and memory to long-lived
+warehouse investment. The discrete sizing and demand fulfillment in
+@pourmohammadi2020 frame the different implications of continuous sizing
+and penalized domestic shortage here. The capacity-relief mechanism
+in @milanez2026 motivates reporting operational quantities alongside
+the numerical certificate. The distributed decomposition in
+@shastri2011 addresses a related computational burden using a different
+solution strategy. The present measurements characterize direct
+extensive-form solution under declared configurations and supply
+a reproducible comparison within the study.
 
-For a planning organization, application time matters alongside native solver
-time: model assembly, transfer, extraction and checking all precede a usable
-decision report. In the first matched pair, these complete application times
-are approximately 92 and 443 minutes. Such observations help assess whether
-an available computational environment can support repeated strategic
-analyses within the organization's planning cycle. They do not establish
-real-time decision support, deployment costs or a universal software choice.
-
-The two plans also illustrate why a small MIP gap is only one part of decision
-support. Both open 154 candidates, but the expansion and bulk-handling lists
-differ. Similar aggregate costs and service therefore need not identify one
-unique investment program. Comparing the complete facility-ID lists can
-reveal which recommendations change with the returned incumbent. That is
-sensitivity to computational outcomes under fixed assumptions, rather than
-demonstrated robustness to market, climate or demand uncertainty.
-
-Expected unmet tonnes are weighted across the modeled horizon and scenarios;
-they are not an observed annual national deficit. Likewise, modeled financial
-subtotals are not validated construction bids or realized welfare changes.
-The practical contribution is a traceable way to inspect investment options,
-remaining service limitations and computational requirements together. Turning
-those outputs into a project portfolio requires site and engineering review,
-locally credible costs and an explicit assessment of the service trade-offs.
-
-## Contribution to agricultural computing
-
-The computational contribution lies in connecting strategic grain-network
-structure to observed construction effort, memory requirements, attainable
-quality and the interpretation of returned plans. It complements the location
-and decision-support questions in @essien2018 and @gholamian2017 and the
-uncertainty concerns in @hosseini2020 and @reis2023. Their existence rules out
-a generic novelty claim based only on combining location and uncertainty.
-
-The comparison with @shastri2011 is methodological: decomposition and distributed
-optimization address computational burden through a solution strategy, whereas
-this cohort examines a direct extensive-form implementation. Its times cannot
-be ranked against theirs without a matched model, data, equipment and stopping
-rule. Distributed simulation and spatial-processing studies likewise concern
-different workloads. The present observations support a configuration-specific
-assessment of attainable scale and resource use, with original feasibility and
-bound information, rather than an algorithmic superiority claim.
-
-C2 adds a related planning lesson. A quality-qualified penalized objective can
-coexist with substantial shortages and capacity exceedances, and the
-direct-enabled plans can reduce that objective while worsening domestic service.
-This is useful information about the encoded trade-off, but it does not convert
-uncalibrated artificial weights into observed economic damages or prove that
-the plans are ready for implementation.
-
-Integrated decision support requires connecting model outputs to their operational
-and institutional meaning [@mardaneh2021]. The complementary Human--AI account
-documents how scientific assumptions and computational proposals were supervised and
-checked; it does not quantify productivity or independently accredit the assistants.
-Appendix B retains that methodological detail while the article's central claim
-remains the bounded computational and agricultural assessment.
+The complementary human-supervised workflow links each computational
+claim to an input, execution and validation record. Appendix B
+describes the decisions and checks that make this evidence traceable.
+The primary contribution remains the joint characterization of
+computational requirements and grain-storage decisions.
 
 # Final considerations, limitations and future work
 
 Eleven validated native Gurobi observations met the 1% gap target.
-These results link candidate availability to investment and operating
-costs. The W STO h500 plan assigns positive capacity
-to 354 candidate sites, expands 72 existing warehouses and converts
-74 for bulk handling. Its attained gap is 0.207432%. The modeled
-domestic service of 91.636% and the separate capacity diagnostics
-help assess the conditions under which that plan would operate.
+The native W STO series reached 63.43 million variables and 244.04
+million nonzeros at h500. Its returned plan assigns capacity to 354
+candidate sites, expands 72 existing warehouses and converts 74 for
+bulk handling. The attained gap is 0.207432% and modeled domestic
+service is 91.636%. The reported investment, costs and physical
+diagnostics make the planning trade-offs inspectable.
 
 Gurobi and HiGHS returned independently validated Pyomo plans for h215
-W STO and for the first matched h300 W STO pair. The repeated h300
-comparison adds evidence across five thread ceilings. Two validated
-Gurobi pilots extend the common-Pyomo evidence to h400. The pilot
-coverage at h400 and the absence of Pyomo runs at h500 limit
-comparisons across populations.
+W STO and for the first matched h300 W STO pair. Across the complete
+h300 repetition grid, Gurobi met the target in 15 of 15 runs and HiGHS
+in three of 15. The Gurobi one-thread median was lowest on both timing
+clocks. At 16 threads the nominal native efficiency was 3.1% relative
+to the one-thread baseline. These indicators describe a fixed-instance
+comparison with the declared options and gap policy. The h400 evidence
+is at pilot scale and the h500 computational result comes from the
+historical native implementation.
 
-The scenarios represent controlled supply and demand variations.
-Limitations include the finite compute budgets, one observation per
-thread level in the historical native h300 block, shared-node load and
-uncontrolled cache state for that block, and incomplete calibration of
-physical costs and penalties.
+The main limitations are the fixed sets of instances and scenarios,
+three temporal repetitions per repeated setting, finite compute
+budgets and incomplete coverage at the larger sizes. The investment
+conclusions also depend on the represented sites, costs, period
+structure and penalties. Decision support for implementation requires
+credible local costs, site suitability and explicit service
+requirements.
 
 ## Future work
 
-A follow-up computational study would first qualify a revised memory
-profile on matched h400 pilots and then complete the repeated h400
-comparison. Progression to h500 would depend on a separate pilot
-qualification at that size. The design would keep the effective input
-data, optimization model and stopping criteria fixed, and record the
-resource profile for each comparison. Appendix C describes the stages
-and their acceptance criteria.
+Use the completed h400 qualification pilots and the final verified E2
+receipts to assess coverage of the five thread settings under the 192 GiB
+profile. Quantify repeated h400 performance when comparable observations
+are available. Progression to h500 depends on a separate resource
+qualification. Retain the matrix, stopping, timing and memory identities
+needed for each comparison, as specified in Appendix C.
 
-A separate planning study could calibrate investment and operating
-costs, assess site suitability and examine sensitivity to penalties
-and service requirements. Those changes would define a new model
-comparison with the current plans as its reference.
+A separate planning study could test calibrated costs and service
+requirements. That comparison would evaluate how the resulting
+investments change relative to the present plans.
 
 # Reproducibility and availability
 

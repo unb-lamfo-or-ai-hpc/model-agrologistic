@@ -1,4 +1,4 @@
-## Common-Pyomo campaign and the first h300 pair
+## Planning diagnostics from the first h300 pair
 
 The two returned h300 W STO pilots use Gurobi 13.0.3 and HiGHS 1.15.1 through
 Pyomo/APPSI. Both original incumbents passed independent primal and cost
@@ -87,6 +87,6 @@ not added as installed emergency capacity.
 The [source-bound paired audit](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/083ef96cc99a346204df22551ce0739c10e8a2f7/docs/evidence/paired_h300_first_pair_20261101.json)
 retains original archive identities, matching input/algebra records, effective
 parameters, bounds and measurement scopes.
-Appendix C presents the consolidated campaign results and identifies
-the original one-thread pair within the h300 repetition grid.
+Appendix C identifies this pair within the h300 repetition grid and
+gives the full timing, gap and memory ranges for each setting.
 

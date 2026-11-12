@@ -39,7 +39,8 @@ def test_pilot_gap_and_financial_scope_match_original_certificate(solver, job):
 def test_pair_retains_cohort_and_dimensional_boundaries():
     text = (ROOT / "manuscript/scaling_pilot_results.qmd").read_text(encoding="utf-8")
     assert "| HiGHS / 1 / 1 | 9.289359 | 0.006879 | 401.435 |" in text
-    assert "is an additional" in text
+    assert "same frozen workbook" in text
+    assert "within the h300 repetition grid" in text
     assert "tonne-periods" in text
     assert "not added as installed emergency capacity" in text
 

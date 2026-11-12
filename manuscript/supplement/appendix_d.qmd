@@ -481,6 +481,14 @@ they do not claim that a new Zenodo download is already available.
 
 ## D11 Data access and versioned evidence
 
+Reproducing the population comparison requires the ordered warehouse
+list and the effective workbook for each case. The shared 60-month
+input horizon defines the period totals reported in the article.
+The nine STO scenario probabilities weight those totals to give
+expected values. In the DET case the single scenario has probability
+one. National annual production and installed storage statistics
+provide external context and have their own reporting dates and units.
+
 Zenodo 0.2.0 [@celestino2026dataset] is the public release cited in the
 article. It contains the historical inputs, population records, road audits
 and inventories listed in the [deposit record](https://doi.org/10.5281/zenodo.22751909).

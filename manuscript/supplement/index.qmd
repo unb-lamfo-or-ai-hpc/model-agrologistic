@@ -147,6 +147,13 @@ connects its input and source identities to the objective, bound, original
 validation and resource observations. Appendices C and D explain the
 corresponding implementation and data.
 
+The h300 comparison in Appendix C joins planned cells to their
+terminal observations before calculating medians and attainment.
+Operational receipts record whether each job completed and produced a
+traceable return. Numerical validation checks the incumbent when one
+is available. This distinction allows time-limit returns and cancelled
+cells to remain visible alongside the validated solutions.
+
 An integrity replay checks consistency of retained records and their hashes.
 It does not rerun the optimizer or recompute residuals against unavailable
 inputs. A fresh numerical reproduction must generate new decisions and apply
