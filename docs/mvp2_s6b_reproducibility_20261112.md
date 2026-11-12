@@ -212,13 +212,100 @@ opening, expansion and bulk handling.
 
 The 11 investment lists already on the published branch were checked
 against the original local investment rows. All matched. This confirms
-one overlap with material already accessible to readers. Review the
-combined disclosure scope with the maps, flow tables and the v0.2.0
-deposit before distribution, and confirm the applicable road-data terms.
+one overlap with material already accessible to readers. The joint disclosure review below tests the overlap with the maps,
+flow tables and the v0.2.0 deposit.
 The [asset review](../data/manifests/mvp2_s6b_zenodo_asset_review_20261112.json)
 records the validation receipt hashes. The aggregate CSVs and detailed
 receipts are retained locally.
 [Published investment lists](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/tree/main/manuscript/supplement/investments)
+
+## Joint disclosure review and final supplement proposal
+
+The review pinned the published GitHub sources at `3df439d29224b3501c6896605de4402813208052`
+and verified 19 blobs. An anonymous Zenodo API read listed 12 open files
+for v0.2.0. All 12 were checked by size and MD5 against local copies or
+fresh public downloads. The deposited inventory and comparative archive
+were checked for overlaps. No SHA-256 match was found for the 33 candidate
+CSV.gz files or the 22 original flow and decision vectors in the
+822-entry selection manifest. The comparative archive contains evidence
+summaries, documentation and figures. The older run archive still
+contains site-level outputs for other configurations.
+[Published GitHub snapshot](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/tree/3df439d29224b3501c6896605de4402813208052) ·
+[Zenodo v0.2.0](https://doi.org/10.5281/zenodo.22751909)
+
+| Public material | Overlap confirmed in the local review |
+| --- | --- |
+| Investment lists and maps | All 11 investment lists match their local source rows. All 3,090 map warehouse case rows match the corresponding investment identifiers and UF. The deposited registry links those rows, representing 500 distinct warehouses, to a populated operator field. |
+| Map JSON and workbook distances | Four map definitions contain 12,366 route totals in their missing-geometry metadata. All match directed local totals across products. The figures omit route lines. All 50,152 local positive OD rows have matching distances in the four frozen deposited workbooks. |
+| Appendix E flow tables | All 36 published movement totals and 45 illustrative product/arc rows reconcile. The 62 candidate flow rows reconcile with the originals. The local support and concentration screen still passes after removing known illustrative terms, including in a sensitivity check that treats single-product routes as known when confirmed by the originals. |
+| Complementary disclosure | In three case/movement groups, releasing the retained product row would let a reader infer the suppressed product's tonnes by subtracting from the published total, within the public table's rounding precision. Keep the candidate flow CSV out of this supplement. |
+
+The v0.2.0 record reports MIT at the record level. Its own
+`LICENSES-REVIEW.txt` reserves source-specific terms for workbooks,
+registry-derived selections and OSM data. The four frozen road matrices
+and the operator registry are already accessible within that deposit.
+Use the existing version DOI to cite those inputs. The historical
+record's licensing and visibility should be reviewed as a separate
+curatorial decision.
+
+### Road-data terms
+
+The frozen source is the Geofabrik Brazil extract dated 1 September
+2026, processed by OSRM 6.0.0 with the driving profile and MLD. Credit
+OpenStreetMap contributors and identify the extract, routing configuration
+and applicable ODbL 1.0 wherever the road-derived material is used. The
+public investment table contains model decisions and capacity totals,
+with no OSM distances, geometry or endpoint attributes. The project
+licence can cover the project-authored table and documentation to the
+extent the project holds those rights. A map's IBGE boundary layer has
+its own attribution requirements.
+[Source and configuration](research_data_distribution_20261101.md) ·
+[Project licensing](../LICENSING.md) ·
+[Geofabrik extracts](https://download.geofabrik.de/technical.html) ·
+[OSMF attribution guidance](https://osmfoundation.org/wiki/Licence/Attribution_Guidelines)
+
+The ODbL classification depends on the data actually distributed.
+A fixed table of national statistics is a plausible Produced Work under
+the OSMF guidance when it cannot be used to extract a substantial part
+of the source data. This is a provisional assessment for the flow
+statistics. If the statistics are publicly used from a Derivative
+Database, sections 4.4(c) and 4.6 still apply to that database. Where
+applicable, provide a machine-readable copy of the entire derivative
+or the complete alterations or method, including additional contents,
+under the applicable terms. A routing recipe alone is insufficient
+if the necessary inputs are unavailable to recipients.
+
+Treat the systematic endpoint-level matrices, selected arcs with
+distances and mixed SQLite as requiring file-level review before any
+distribution. Assess whether each database is an ODbL Derivative
+Database or contains a distinct ODbL component. Preserve the licence
+and notices for any such component. Sections 2.4 and 4.5 leave separate
+rights in individual contents and separable databases in place.
+Section 4.7 permits authentication where recipients retain their ODbL
+rights. Access control cannot resolve incompatible terms on embedded
+SICARM or workbook data. Leave the originals in project custody
+while those terms are unresolved.
+[ODbL 1.0, §§2.4, 4.2–4.8](https://opendatacommons.org/licenses/odbl/1-0/) ·
+[OSMF Produced Work guidance](https://osmfoundation.org/wiki/Licence/Community_Guidelines/Produced_Work_-_Guideline)
+
+### Proposed Zenodo supplement
+
+| File or group | Proposed disposition |
+| --- | --- |
+| `README.md` and `DATA_DICTIONARY.md` | Document the release scope, units, numerical definitions, coverage and omission policy. Link the exact input DOI and code revision. |
+| `investments-national.csv` | Include the 11 validated national rows for 8 cases after release authorization. The quantities are reproducible from the same investment lists already accessible on GitHub. Include the project licence for the original compilation. |
+| `PROVENANCE.json`, `RIGHTS.md` and `SHA256SUMS.txt` | Record public source identities, per-file scope and terms, attribution and hashes of the final package. Use a purpose-built public manifest with no facility identifiers, private paths or unpublished values. |
+| `flows.csv` | Keep the 62 locally validated rows in project custody for this supplement. A later data release can consider the screened statistics and the relevant ODbL fulfilment together. |
+| Original registry, route-bearing map JSON, exact matrices and graphs, positive flows and SQLite | Reference the existing public sources where relevant. Keep the local source corpus and its full audit in project custody. Exclude copies of these assets from this supplement. |
+
+Use a separate dataset record linked to v0.2.0 with the relation
+`IsSupplementTo`. The supplement has a narrower purpose than the
+historical input and evidence archive. Cite the version DOI of v0.2.0
+for exact inputs. A later release authorization should identify the
+approved package and any change to the historical record separately.
+[Zenodo licensing](https://help.zenodo.org/docs/deposit/describe-records/licenses/) ·
+[Zenodo relations](https://help.zenodo.org/guides/search/) ·
+[Existing v0.2.0 deposit](https://doi.org/10.5281/zenodo.22751909)
 
 The [distribution dictionary](research_data_distribution_20261101.md)
 and Appendix D supply the field semantics. In the new release dictionary,

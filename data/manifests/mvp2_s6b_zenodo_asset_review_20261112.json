@@ -1678,6 +1678,62 @@
         "comparisons": "Within each retained grouping, screen single cells and case-pair differences. Screen origins and destinations separately for expected tonnes and tonne-kilometres."
       },
       "distribution_scope": "Local files only. Further joint review with already accessible maps, flow tables and the v0.2.0 deposit, plus road-data terms for any public derivative."
+    },
+    "public_overlap_and_package_proposal": {
+      "status": "reviewed_proposal_pending_release_authorization",
+      "audit_receipt_sha256": "9198713c45e7c71a5b7e23f9b55934540186973b222945b451e27e2394b8636f",
+      "main_commit": "3df439d29224b3501c6896605de4402813208052",
+      "public_git_blobs_verified": 19,
+      "zenodo": {
+        "doi": "10.5281/zenodo.22751909",
+        "files_verified": 12,
+        "access": "open",
+        "record_level_license": "mit-license",
+        "source_selection_entries": 822,
+        "candidate_csv_gz_hash_matches": 0,
+        "original_vector_hash_matches": 0,
+        "original_vectors_compared": 22,
+        "comparative_archive_members_reviewed": 19
+      },
+      "verified_public_overlap": {
+        "published_investment_lists_matching_source": 11,
+        "map_warehouse_case_rows_joinable_to_deposited_operator": 3090,
+        "distinct_map_warehouses_joinable_to_deposited_operator": 500,
+        "map_json_cases_with_route_totals": 4,
+        "map_route_totals_reconciled": 12366,
+        "od_rows_with_deposited_distance_match": 50152,
+        "published_movement_totals_reconciled": 36,
+        "published_product_arc_examples_reconciled": 45,
+        "retained_flow_rows_cross_checked": 62,
+        "retained_flow_rows_passing_known_terms_residual_screen": 62,
+        "case_movement_groups_with_suppressed_product_inferable_from_published_total": 3
+      },
+      "proposal": {
+        "type": "separate_supplementary_dataset",
+        "relation_to_source": "IsSupplementTo",
+        "files": [
+          "README.md",
+          "DATA_DICTIONARY.md",
+          "investments-national.csv",
+          "PROVENANCE.json",
+          "RIGHTS.md",
+          "SHA256SUMS.txt"
+        ],
+        "investment_rows": 11,
+        "investment_cases": 8,
+        "local_only_flow_rows": 62,
+        "full_resolution_files_to_redeposit": 0
+      },
+      "road_data_review": {
+        "source": "Geofabrik Brazil 2026-09-01, OSRM 6.0.0 driving MLD",
+        "aggregate_flow_classification": "Potential Produced Work. Applicability of ODbL 4.4(c) and 4.6 remains tied to any upstream Derivative Database publicly used through the output.",
+        "exact_matrix_graph_and_mixed_database": "Separate rights and derivative-database assessment before any redistribution. Preserve applicable ODbL terms and preserve SICARM access limits.",
+        "sources": [
+          "https://opendatacommons.org/licenses/odbl/1-0/",
+          "https://osmfoundation.org/wiki/Licence/Community_Guidelines/Produced_Work_-_Guideline",
+          "https://osmfoundation.org/wiki/Licence/Attribution_Guidelines"
+        ]
+      }
     }
   }
 }
