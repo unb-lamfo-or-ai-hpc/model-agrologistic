@@ -281,8 +281,10 @@ separate archive member external-inputs/Warehouses_Existing_Candidate_All.xlsx;
 it supplies the selection pool, rather than replacing a processed workbook
 at execution time.
 
-The complete agrologistic-v020-inputs.zip archive has SHA-256
-`583b04afb49c4cba13c9d0aaa18131e12a18bac1da410cd801616bd0b639811f`.
+The SHA-256 for the complete agrologistic-v020-inputs.zip archive is
+
+`583b04afb49c4cba13c9d0aaa18131e12a18bac1da410cd801616bd0b639811f`
+
 Its archive hash and each selected member hash serve different checks:
 the former identifies the package, while the latter binds a calculation to
 its effective input. These processed workbooks are archive members, rather
