@@ -262,5 +262,42 @@
       "verified_on": "2026-10-03",
       "publication_receipt": "dataset_release.json"
     }
+  ],
+  "author_revision_records": [
+    {
+      "citation_key": "basso_agriculture_2024",
+      "metadata_source": "Author-reviewed manuscript bibliography",
+      "doi": "10.3389/fsufs.2023.1296337"
+    },
+    {
+      "citation_key": "conab_portal_2026a",
+      "metadata_source": "Author-reviewed manuscript bibliography",
+      "url": "https://www.gov.br/conab/pt-br/atuacao/armazenagem"
+    },
+    {
+      "citation_key": "conab_portal_2026b",
+      "metadata_source": "Author-reviewed manuscript bibliography",
+      "url": "https://portaldeinformacoes.conab.gov.br/download-arquivos.html"
+    },
+    {
+      "citation_key": "mcti2025pbia",
+      "metadata_source": "Author-reviewed manuscript bibliography",
+      "url": "https://www.gov.br/mcti/pt-br/acompanhe-o-mcti/transformacaodigital/plano-brasileiro-de-inteligencia-artificial-pbia-_vf.pdf"
+    },
+    {
+      "citation_key": "lncc2026supercomputador",
+      "metadata_source": "Author-reviewed manuscript bibliography",
+      "url": "https://www.gov.br/lncc/pt-br/assuntos/noticias/ultimas-noticias-1/lncc-conduz-implantacao-de-supercomputador-de-inteligencia-artificial-que-ampliara-a-capacidade-computacional-do-brasil"
+    },
+    {
+      "citation_key": "embrapa2024datacenter",
+      "metadata_source": "Author-reviewed manuscript bibliography",
+      "url": "https://www.embrapa.br/en/busca-de-noticias/-/noticia/93647060/recursos-do-novo-pac-sao-aplicados-na-modernizacao-do-data-center-para-pdi-da-embrapa"
+    },
+    {
+      "citation_key": "pera2026",
+      "metadata_source": "Author-reviewed manuscript bibliography",
+      "url": "https://repositorio.usp.br/item/003328052"
+    }
   ]
 }

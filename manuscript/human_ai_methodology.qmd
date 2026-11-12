@@ -20,4 +20,3 @@ reconstruction then supported assessment of the returned decisions. Each result
 was associated with its source, inputs, solver configuration and validation
 record. Human scientific judgment connected this evidence to conclusions about
 computational requirements and agricultural planning.
-

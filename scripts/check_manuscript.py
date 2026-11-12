@@ -365,7 +365,15 @@ def check(*, rendered: bool = False, publication: bool = False) -> None:
         or "membership_verified" in external[0]
     ):
         raise ValueError("Dataset citation provenance must not imply Zotero membership")
-    selected = selection["records"] + external
+    author_records = selection.get("author_revision_records", [])
+    if any(
+        row.get("metadata_source") != "Author-reviewed manuscript bibliography"
+        or "zotero_item_key" in row
+        or "membership_verified" in row
+        for row in author_records
+    ):
+        raise ValueError("Author-supplied citation provenance must not imply Zotero membership")
+    selected = selection["records"] + external + author_records
     if len(selected) != len(keys) or {row["citation_key"] for row in selected} != set(keys):
         raise ValueError("Citation provenance must map exactly the retained bibliography")
     for row in selected:
@@ -376,22 +384,22 @@ def check(*, rendered: bool = False, publication: bool = False) -> None:
     acknowledgements = "# Acknowledgements"
     if not (
         article.index("# Reproducibility and availability")
-        < article.index(declaration)
         < article.index(acknowledgements)
+        < article.index(declaration)
         < article.index("# References")
     ):
-        raise ValueError("AI declaration, Acknowledgements and References order differs")
+        raise ValueError("Acknowledgements, AI declaration and References order differs")
     intervening = re.findall(
         r"^# (.+)$",
-        article[article.index(declaration) : article.index("# References")],
+        article[article.index(acknowledgements) : article.index("# References")],
         re.MULTILINE,
     )
     if (
         len(intervening) != 2
-        or intervening[1] != "Acknowledgements"
+        or not intervening[1].startswith(declaration.removeprefix("# "))
         or any("{-}" in heading for heading in intervening)
     ):
-        raise ValueError("Numbered declaration and Acknowledgements must precede References")
+        raise ValueError("Numbered Acknowledgements and declaration must precede References")
     for required in (
         "## Deterministic model",
         "## Two-stage stochastic model",

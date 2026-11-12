@@ -81,8 +81,7 @@ at each time index; that unit-period duration is implicit in D1. Daily handling
 rates instead require the explicit operating-day factor in the capacity rows.
 Appendix D provides the dimensional crosswalk and worked conversions.
 
-$$
-\begin{aligned}
+$$\begin{aligned}
 \min_{X,Y}\ Z_D={}&C^{INV}(X)+C^{TR}(Y)+C^{HOLD}(Y)+C^{PEN}(Y), &&\text{(D1)}\\
 C^{INV}(X)={}&\sum_{w\in W^N}(F^N_wy_w+c^N_wk_w)
  +\sum_{w\in W^X}(F^X_wz_w+c^X_we_w)
@@ -96,11 +95,9 @@ C^{TR}(Y)={}&\sum_{t\in T}\sum_{(o,w,p)\in A^{OD}}
 C^{HOLD}(Y)={}&\sum_{w\in W,p\in P,t\in T}h_{wp}I_{wpt},\\
 C^{PEN}(Y)={}&\sum_{c\in C^D,p\in P,t\in T}\lambda^D_{cp}u_{cpt}
  +\sum_{w\in W,t\in T}(\lambda^K_wq^K_{wt}+\lambda^R_wq^R_{wt}).
-\end{aligned}
-$$
+\end{aligned}$$
 
-$$
-\begin{aligned}
+$$\begin{aligned}
 0\le k_w&\le\overline k_wy_w &&\forall w\in W^N, &&\text{(D2)}\\
 0\le e_w&\le\overline e_wz_w,\quad z_w\le A_w &&\forall w\in W^X,\\
 0\le b_w&\le\overline b_wg_w,\quad g_w\le A_w &&\forall w\in W^B,\\
@@ -108,11 +105,9 @@ z_w+g_w&\le A_w &&\forall w\in W^X\cap W^B,\\
 K_w(X)&=K^0_w+k_w+e_w &&\forall w\in W, &&\text{(D3)}\\
 R_w(X)&=R^0_w+\rho^Nk_w+\rho^Xe_w+\rho^Bb_w &&\forall w\in W,\\
 H_w(X)&=H^0_w+\eta^Nk_w+\eta^Xe_w+\eta^Bb_w &&\forall w\in W,
-\end{aligned}
-$$
+\end{aligned}$$
 
-$$
-\begin{aligned}
+$$\begin{aligned}
 \sum_{w:(o,w,p)\in A^{OD}}x^{OD}_{owpt}
  +\sum_{c:(o,c,p)\in A^{OC}}x^{OC}_{ocpt}
  &=a_{opt} &&\text{(D4)}\\
@@ -127,11 +122,9 @@ B^{out}_{wpt}&=\sum_{c:(w,c,p)\in A^{DC}}x^{DC}_{wcpt}
 I_{wpt}&=I_{wp,t-1}+B^{in}_{wpt}-B^{out}_{wpt},\quad I_{wp,0}=I^0_{wp}
  &&\text{(D6)}\\
  &\quad\forall(w,p,t)\in W\times P\times T.
-\end{aligned}
-$$
+\end{aligned}$$
 
-$$
-\begin{aligned}
+$$\begin{aligned}
 \sum_{w:(w,c,p)\in A^{DC}}x^{DC}_{wcpt}
  +\sum_{o:(o,c,p)\in A^{OC}}x^{OC}_{ocpt}+u_{cpt}
  &=D_{cpt} &&\text{(D7)}\\
@@ -140,19 +133,16 @@ $$
  +\sum_{o:(o,c,p)\in A^{OC}}x^{OC}_{ocpt}
  &\le E_{cpt} &&\text{(D8)}\\
  &\quad\forall(c,p,t)\in C^X\times P\times T.
-\end{aligned}
-$$
+\end{aligned}$$
 
-$$
-\begin{aligned}
+$$\begin{aligned}
 \sum_{p\in P}I_{wpt}&\le K_w(X)+q^K_{wt} &&\forall(w,t)\in W\times T, &&\text{(D9)}\\
 \sum_{p\in P}B^{in}_{wpt}&\le d_tR_w(X)+q^R_{wt} &&\forall(w,t)\in W\times T,\\
 \sum_{p\in P}B^{out}_{wpt}&\le d_tH_w(X) &&\forall(w,t)\in W\times T,\\
 y_w=0&\Longrightarrow q^K_{wt}=q^R_{wt}=0
  &&\forall(w,t)\in W^N\times T, &&\text{(D10)}\\
 y_w,z_w,g_w&\in\{0,1\};\quad k_w,e_w,b_w,x,I,u,q^K,q^R\ge0 &&\text{(D11)}
-\end{aligned}
-$$
+\end{aligned}$$
 
 The domains in D11 are specified as follows: $y_w\in\{0,1\}$ for all $w\in W^N$,
 $z_w\in\{0,1\}$ for all $w\in W^X$ and $g_w\in\{0,1\}$ for all $w\in W^B$.
@@ -182,16 +172,13 @@ once. For each $s\in S$, instantiate $Y^s=(x^s,I^s,u^s,q^{K,s},q^{R,s})$. All ro
 investment costs, operating-day factors and penalty coefficients stay fixed.
 The first-stage vector is common to every scenario.
 
-$$
-\begin{aligned}
+$$\begin{aligned}
 \min_{X,\{Y^s\}_{s\in S}} Z_{STO}={}&C^{INV}(X)\\
 &+\sum_{s\in S}\pi_s
  [C^{TR}(Y^s)+C^{HOLD}(Y^s)+C^{PEN}(Y^s)]. &&\text{(S1)}
-\end{aligned}
-$$
+\end{aligned}$$
 
-$$
-\begin{aligned}
+$$\begin{aligned}
 \sum_{w:(o,w,p)\in A^{OD}}x^{OD,s}_{owpt}
  +\sum_{c:(o,c,p)\in A^{OC}}x^{OC,s}_{ocpt}
  &=a^s_{opt} &&\text{(S2)}\\
@@ -206,11 +193,9 @@ B^{out,s}_{wpt}&=\sum_{c:(w,c,p)\in A^{DC}}x^{DC,s}_{wcpt}
 I^s_{wpt}&=I^s_{wp,t-1}+B^{in,s}_{wpt}-B^{out,s}_{wpt},\quad I^s_{wp,0}=I^0_{wp}
  &&\text{(S4)}\\
  &\quad\forall(w,p,t,s)\in W\times P\times T\times S.
-\end{aligned}
-$$
+\end{aligned}$$
 
-$$
-\begin{aligned}
+$$\begin{aligned}
 \sum_{w:(w,c,p)\in A^{DC}}x^{DC,s}_{wcpt}
  +\sum_{o:(o,c,p)\in A^{OC}}x^{OC,s}_{ocpt}+u^s_{cpt}
  &=D^s_{cpt} &&\text{(S5)}\\
@@ -219,11 +204,9 @@ $$
  +\sum_{o:(o,c,p)\in A^{OC}}x^{OC,s}_{ocpt}
  &\le E^s_{cpt} &&\text{(S6)}\\
  &\quad\forall(c,p,t,s)\in C^X\times P\times T\times S.
-\end{aligned}
-$$
+\end{aligned}$$
 
-$$
-\begin{aligned}
+$$\begin{aligned}
 \sum_{p\in P}I^s_{wpt}&\le K_w(X)+q^{K,s}_{wt}
  &&\forall(w,t,s)\in W\times T\times S, &&\text{(S7)}\\
 \sum_{p\in P}B^{in,s}_{wpt}&\le d_tR_w(X)+q^{R,s}_{wt}
@@ -233,24 +216,22 @@ $$
 y_w=0&\Longrightarrow q^{K,s}_{wt}=q^{R,s}_{wt}=0
  &&\forall(w,t,s)\in W^N\times T\times S, &&\text{(S8)}\\
 Y^s&\ge0 &&\forall s\in S. &&\text{(S9)}
-\end{aligned}
-$$
+\end{aligned}$$
 
-S1 applies probabilities only to recourse costs. S2–S9 are the full scenario
-system; D2/D3 and common X enforce nonanticipativity. The realised scenario gives
-its whole operating trajectory to recourse. Sixty periods therefore remain a
-two-stage formulation, without progressive information revelation or multistage
+S1 applies probabilities only to recourse costs. S2--S9 are the full scenario system;
+D2/D3 and common X enforce nonanticipativity. The realised scenario gives its whole
+operating trajectory to recourse. Sixty periods therefore remain a two-stage
+formulation, without progressive information revelation or multistage
 nonanticipativity. DET uses its original deterministic arrays with $|S|=1$, $\pi=1$
 in this same builder. It is not the average of the nine STO trajectories.
 
 ## Operational slacks and penalties
 
-The model records unmet domestic demand, stock above static storage
-capacity, and arrivals above reception capacity using separate slack
-variables. They measure where the returned plan departs from the
-modeled operating conditions. The objective adds these penalties to
-investment, transport and inventory-holding costs. We report the
-economic subtotal and each physical diagnostic separately.
+The model records unmet domestic demand, stock above static storage capacity, and
+arrivals above reception capacity using separate slack variables. They measure where
+the returned plan departs from the modeled operating conditions. The objective adds
+these penalties to investment, transport and inventory-holding costs. The study
+reports the economic subtotal and each physical diagnostic separately.
 
 The accepted experiments use $\lambda^D=90000$ BRL per tonne of unmet
 demand, $\lambda^K=45000$ BRL per tonne of stock exceedance per period
@@ -259,4 +240,3 @@ exceedance accumulated over the horizon is reported in tonne-periods.
 Unmet demand and excess arrivals are period flows summed in tonnes.
 Appendix C describes how the implementations link these slacks to
 candidate activation. Appendix D provides the unit conversions.
-

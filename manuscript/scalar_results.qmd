@@ -1,5 +1,9 @@
 ## Investment and operational interpretation across populations
 
+@tbl-scalar-financial-components separates investment and operating costs. Investment
+is charged once; STO operation is scenario-weighted over the horizon. No
+annualization, currency conversion or price-year adjustment is applied.
+
 | Instance | One-time investment, BRL billion | Transport, BRL billion | Inventory holding, BRL billion |
 |:--|--:|--:|--:|
 | h215 DET | 9.848 | 364.960 | 15.002 |
@@ -8,7 +12,12 @@
 | h400 STO | 12.539 | 356.123 | 12.911 |
 | h500 STO | 14.318 | 346.074 | 12.781 |
 
-: Reconstructed financial components, excluding artificial penalties. Investment is charged once; STO operation is scenario-weighted over the horizon. No annualization, currency conversion or price-year adjustment is applied. {#tbl-scalar-financial-components}
+: Reconstructed financial components, excluding penalties. {#tbl-scalar-financial-components}
+
+@tbl-scalar-investments and @tbl-scalar-quantities report the locations and
+quantities of investments. Counts are obtained from the accepted original decision
+vectors, using a display threshold of 1e-8 t for h215--h400 and 1e-7 t for the
+original h500 aggregate. Existing availability is not counted as candidate opening.
 
 | Instance | Available candidates | Candidates with positive capacity | Expanded existing sites | Bulkified existing sites |
 |:--|--:|--:|--:|--:|
@@ -18,7 +27,10 @@
 | h400 STO | 254 | 254 | 69 | 77 |
 | h500 STO | 354 | 354 | 72 | 74 |
 
-: Counts from the accepted original decision vectors, using a display threshold of 1e-8 t for h215–h400 and 1e-7 t for the original h500 aggregate. Existing availability is not counted as candidate opening. {#tbl-scalar-investments}
+: Counts from the accepted original decision vectors. {#tbl-scalar-investments}
+
+The bulkification basis determines handling-rate gains; it is not additional static
+storage.
 
 | Instance | Candidate capacity, million t | Static expansion, million t | Bulkification investment basis, million t |
 |:--|--:|--:|--:|
@@ -28,9 +40,11 @@
 | h400 STO | 9.552150 | 0.385596 | 0.484270 |
 | h500 STO | 10.992729 | 0.389176 | 0.437018 |
 
-: Investment quantities. The bulkification basis determines handling-rate gains; it is not additional static storage. {#tbl-scalar-quantities}
+: Investment quantities. {#tbl-scalar-quantities}
 
-All included candidates are activated and receive positive capacity through h500. The h500 aggregate records 354 candidate investments, 72 positive expansions and 74 positive bulk conversions. The original h215–h400 vector audits additionally establish positive transport at every included warehouse and nine used export roles; those two geographic-use findings are not extrapolated to the h500 aggregate. These are returned plan characteristics, not uniqueness or infrastructure feasibility.
+@tbl-scalar-physical gives the corresponding service, stock and reception
+diagnostics. STO quantities are probability-weighted, not unweighted sums over nine
+scenarios.
 
 | Instance | Domestic service, % | Unmet demand, million t | Stock exceedance, million t period | Reception overflow, million t |
 |:--|--:|--:|--:|--:|
@@ -40,25 +54,41 @@ All included candidates are activated and receive positive capacity through h500
 | h400 STO | 91.3304 | 58.7551 | 26.2548 | 16.4977 |
 | h500 STO | 91.6360 | 56.6840 | 14.2025 | 4.0754 |
 
-: Physical diagnostics over the declared horizon. STO quantities are probability-weighted, not unweighted sums over nine scenarios. {#tbl-scalar-physical}
+: Physical diagnostics over the declared horizon. {#tbl-scalar-physical}
+
+All included candidates are activated and receive positive capacity through h500. The
+h500 aggregate records 354 candidate investments, 72 positive expansions and 74
+positive bulk conversions. The original h215--h400 vector audits additionally
+establish positive transport at every included warehouse and nine used export roles;
+those two geographic-use findings are not extrapolated to the h500 aggregate. These
+are returned plan characteristics, not uniqueness or infrastructure feasibility.
 
 Across the returned STO plans, additional candidate sites accompany more installed candidate capacity and greater one-time investment, while the transport and holding components are lower. For example, from h300 to h500, investment increases from BRL 11.26 to 14.32 billion and transport costs fall from BRL 360.58 to 346.07 billion in the returned plans. The physical diagnostics show how those plans balance unmet demand and capacity exceedances.
+
+Besides, across the W STO plans, positive candidate capacity rises from 7.38 million
+tonnes at h215 to 10.99 million tonnes at h500. Static expansion stays near
+0.38--0.39 million tonnes. The added storage is concentrated in new candidate
+warehouses, while handling capacity and domestic service describe separate aspects of
+the plans.
 
 ### Geographic interpretation
 
 @fig-map-h215, @fig-map-h300, @fig-map-h400 and @fig-map-h500 locate the investments in the W STO plans. The maps share the Albers equal-area conic projection and retain original facility coordinates. The inputs share the model and economic parameters while expanding the set of candidates. The maps show investment locations; route lines are omitted for legibility. Appendix D identifies the stored OSRM distances, and Appendix E links them to the positive flows in the returned plans.
 
-![Stochastic plan at 215 warehouse sites.](figures/scalar_h215_sto.png){#fig-map-h215 fig-pos="H"}
+![Stochastic plan at 215 warehouse sites.](figures/scalar_h215_sto.png){#fig-map-h215 fig-pos="h"}
 
 ![Stochastic plan at 300 warehouse sites.](figures/scalar_h300_t1.png){#fig-map-h300 fig-pos="H"}
 
-![Stochastic plan at 400 warehouse sites.](figures/scalar_h400_t1.png){#fig-map-h400 fig-pos="H"}
+![Stochastic plan at 400 warehouse sites.](figures/scalar_h400_t1.png){#fig-map-h400 fig-pos="h"}
 
 ![Stochastic investments at 500 warehouse sites.](figures/scalar_h500_t1.png){#fig-map-h500 fig-pos="H"}
 
 The original h500 decision vector assigns positive capacity to 354 candidates, expands 72 existing sites and converts 74 for bulk handling. Appendix E provides the capacity maps and distinguishes these investment decisions from the operating flows.
 
 ## Native Gurobi computation across warehouse populations
+
+@tbl-scalar-size, @tbl-scalar-resources and @tbl-scalar-quality describe the
+computational size, effort and solution quality of the native runs.
 
 The original h500 result extends the W STO series to 500 sites. The representative native results use the validated h215 DET/STO observations and the one-thread W STO observations at h300, h400 and h500.
 
@@ -70,7 +100,10 @@ The original h500 result extends the W STO series to 500 sites. The representati
 | h400 STO | 42,106,944 | 492 | 1,160,742 | 160,697,126 |
 | h500 STO | 63,426,344 | 592 | 1,430,842 | 244,039,126 |
 
-: Original model dimensions. General indicator constraints are additional and remain separately recorded; binary counts are included in integer counts. {#tbl-scalar-size}
+: Original model dimensions. {#tbl-scalar-size}
+
+General indicator constraints are additional and remain separately recorded; binary
+counts are included in integer counts.
 
 | Instance | Native Runtime, min | Build, min | Application end-to-end, min | Sampled application RSS, GiB |
 |:--|--:|--:|--:|--:|
@@ -80,7 +113,10 @@ The original h500 result extends the W STO series to 500 sites. The representati
 | h400 STO | 70.46 | 11.87 | 87.02 | 72.34 |
 | h500 STO | 127.58 | 18.16 | 152.72 | 111.78 |
 
-: Measured phases and memory scopes. Allocation elapsed, Slurm MaxRSS and solver-managed memory are different measurements. {#tbl-scalar-resources}
+: Measured phases and memory scopes. {#tbl-scalar-resources}
+
+Allocation elapsed, Slurm MaxRSS and solver-managed memory are different
+measurements.
 
 | Instance | Penalized objective, BRL trillion | Economic subtotal, BRL billion | Artificial penalties, % | Global gap, % |
 |:--|--:|--:|--:|--:|
@@ -90,9 +126,14 @@ The original h500 result extends the W STO series to 500 sites. The representati
 | h400 STO | 7.593395 | 381.573 | 94.975 | 0.836784 |
 | h500 STO | 6.297240 | 373.173 | 94.074 | 0.207432 |
 
-: Scalar solution quality and cost composition. Native optimal status denotes the configured gap criterion, not exact zero-gap proof. {#tbl-scalar-quality}
+: Scalar solution quality and cost composition. {#tbl-scalar-quality}
+
+Native optimal status denotes the configured gap criterion, not exact zero-gap proof.
 
 ## Descriptive thread observations at h300
+
+@tbl-scalar-threads and @fig-scalar-threads summarize the five native h300 settings
+by solver thread count.
 
 | Solver threads | Native Runtime, min | Sampled application RSS, GiB | Global gap, % |
 |--:|--:|--:|--:|
@@ -104,9 +145,11 @@ The original h500 result extends the W STO series to 500 sites. The representati
 
 : Native gurobipy results for h300 W STO, one observation per thread setting. {#tbl-scalar-threads}
 
-All five h300 objectives and best bounds coincide; their original warehouse, flow, inventory and shortage CSVs are byte-identical across arms. Native Runtime ranges from 47.14 to 67.61 minutes and sampled application RSS from 46.35 to 78.37 GiB. The single-thread run had the lowest recorded time and sampled memory.
+All five h300 objectives and best bounds coincide; their original warehouse, flow,
+inventory and shortage CSVs are byte-identical across arms. Native Runtime ranges
+from 47.14 to 67.61 minutes and sampled application RSS from 46.35 to 78.37 GiB. The
+single-thread run had the lowest recorded time and sampled memory.
+@fig-scalar-threads compares the observed runtime and sampled memory for these five
+configurations.
 
-@fig-scalar-threads compares the observed runtime and sampled memory for these five configurations.
-
-![Thread-count observations at 300 sites.](figures/scalar_threads.png){#fig-scalar-threads fig-pos="H"}
-
+![Thread-count observations at 300 sites.](figures/scalar_threads.png){#fig-scalar-threads fig-pos="h"}

@@ -9,6 +9,11 @@ ordered Pyomo algebra. The hardware-class fingerprints and requested resource
 profiles also agree. This establishes a matched input and formulation basis;
 it does not require identical native presolve or search trajectories.
 
+For the first common-Pyomo h300 pair, @tbl-scaling-h300-settings identifies the
+settings, @tbl-scaling-h300-pilot and @tbl-scaling-h300-resources summarize
+computational outcomes, and @tbl-scaling-h300-physical presents operating
+diagnostics.
+
 | Experimental control | Gurobi | HiGHS |
 |:--|:--|:--|
 | Interface | Pyomo/APPSI | Pyomo/APPSI |
@@ -19,18 +24,20 @@ it does not require identical native presolve or search trajectories.
 | Numerical controls | FeasibilityTol=IntFeasTol=1e-9 | mip_feasibility_tolerance=1e-9 |
 | Search control | Automatic methods/presolve/cuts; Heuristics=0.05 | parallel=on |
 
-: Settings of the first matched h300 pair. With one permitted thread, enabling
-HiGHS parallel search does not establish multiworker parallel execution.
-{#tbl-scaling-h300-settings}
+: Settings of the first matched h300 pair. {#tbl-scaling-h300-settings}
+
+With one permitted thread, enabling HiGHS parallel search does not establish
+multiworker parallel execution.
 
 | Solver / threads / repetition | Objective, BRL trillion | Common gap, % | Native runtime, min |
 |:--|--:|--:|--:|
 | Gurobi / 1 / 1 | 9.289109 | 0.004105 | 48.229 |
 | HiGHS / 1 / 1 | 9.289359 | 0.006879 | 401.435 |
 
-: Attained quality and native time for the first h300 observations under the
-new common-Pyomo protocol. Both original validations were accepted.
-{#tbl-scaling-h300-pilot}
+: Computational outcomes for the first h300 observations under common-Pyomo protocol. {#tbl-scaling-h300-pilot}
+
+Attained quality and native time for the first h300 observations under the new
+common-Pyomo protocol. Both original validations were accepted.
 
 | Solver | Application end-to-end, min | Sampled worker-tree peak, GiB |
 |:--|--:|--:|
@@ -82,3 +89,4 @@ retains original archive identities, matching input/algebra records, effective
 parameters, bounds and measurement scopes.
 Appendix C presents the consolidated campaign results and identifies
 the original one-thread pair within the h300 repetition grid.
+

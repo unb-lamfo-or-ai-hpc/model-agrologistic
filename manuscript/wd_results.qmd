@@ -1,6 +1,16 @@
 ## h215 comparison of warehouse-only and direct-enabled networks
 
-The h215 comparison uses one set of sites, input data and costs in all four cases. D adds direct origin-to-customer routes to the warehouse routes shared with W. The native gurobipy runs used four solver threads; Appendix C gives their settings.
+The h215 comparison uses one set of sites, input data and costs in all four cases. D
+adds direct origin-to-customer routes to the warehouse routes shared with W. The
+native gurobipy runs used four solver threads. Appendix C gives their settings.
+
+The h215 results show how planning under uncertainty and allowing direct deliveries
+change warehouse investments and economic costs. The W STO series then shows how the
+plans change as the same network design problem is evaluated with more candidate
+locations. The solver comparisons use the Pyomo runs and are reported separately.
+@tbl-wd-h215 compares the h215 warehouse-only and direct-enabled plans under
+deterministic and stochastic planning. Optimal native status means the configured gap
+criterion, not exact zero-gap optimality.
 
 | Mode/topology | Objective, BRL trillion | Economic subtotal, BRL billion | Gap, % | Native Runtime, min | Domestic service, % |
 |:--|--:|--:|--:|--:|--:|
@@ -9,8 +19,15 @@ The h215 comparison uses one set of sites, input data and costs in all four case
 | STO W | 13.071397 | 393.902 | 0.740159 | 40.76 | 92.267 |
 | STO D | 7.355002 | 340.109 | 0.623718 | 43.04 | 89.857 |
 
-: Original validated h215 W/D observations. Optimal native status means the configured gap criterion, not exact zero-gap optimality. {#tbl-wd-h215}
+: Original validated h215 W/D observations. {#tbl-wd-h215}
 
-The direct-enabled plans reduce economic costs by 13.11% in DET and 13.66% in STO. All 69 candidates receive positive capacity in W and D. With direct deliveries, 142 existing sites are expanded in each plan, compared with 80 in DET W and 75 in STO W. Four existing sites are converted for bulk handling in each D plan, compared with 66 and 71 in the corresponding W plans.
+Note that the economic subtotal is only in the order of 3% for W and 5% for D of the
+objective function value, due to the significant penalties included. The
+direct-enabled plans reduce economic costs by 13.11% in DET and 13.66% in STO. All 69
+candidates receive positive capacity in W and D. With direct deliveries, 142 existing
+sites are expanded in each plan, compared with 80 in DET W and 75 in STO W. Four
+existing sites are converted for bulk handling in each D plan, compared with 66 and
+71 in the corresponding W plans.
 
 Direct routes carry 82.17% of destination arrivals in DET D and 81.81% in STO D. Domestic service declines from 91.861% to 89.896% in DET and from 92.267% to 89.857% in STO. The D plans therefore combine lower economic costs and more static expansion with greater unmet domestic demand. Appendix C gives the associated bounds and effort measurements.
+
