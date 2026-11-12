@@ -1733,6 +1733,26 @@
           "https://osmfoundation.org/wiki/Licence/Community_Guidelines/Produced_Work_-_Guideline",
           "https://osmfoundation.org/wiki/Licence/Attribution_Guidelines"
         ]
+      },
+      "local_package": {
+        "status": "validated_local_package",
+        "archive": "agrologistic-mvp2-national-investments.zip",
+        "archive_sha256": "60bb0fb6af957e7842ea18ef45a75d37e4e1ff3dbd4e75274939c80288bf25ae",
+        "validation_receipt_sha256": "d42b08970fe68e18e626b20376869537e3269cde7c2b385f8252e926e4a81bb4",
+        "files": [
+          "DATA_DICTIONARY.md",
+          "LICENSE",
+          "PROVENANCE.json",
+          "README.md",
+          "RIGHTS.md",
+          "SHA256SUMS.txt",
+          "investments-national.csv"
+        ],
+        "public_investment_lists_verified": 11,
+        "investment_rows_independently_recalculated": 11,
+        "cases_represented": 8,
+        "flow_payload_included": false,
+        "deposit_status": "not_submitted"
       }
     }
   }

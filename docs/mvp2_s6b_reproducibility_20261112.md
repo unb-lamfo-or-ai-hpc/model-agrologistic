@@ -307,6 +307,23 @@ approved package and any change to the historical record separately.
 [Zenodo relations](https://help.zenodo.org/guides/search/) ·
 [Existing v0.2.0 deposit](https://doi.org/10.5281/zenodo.22751909)
 
+### Verified local package
+
+The local ZIP `agrologistic-mvp2-national-investments.zip` contains the six proposed
+files and the project `LICENSE`. The 11 national investment rows
+were recalculated using decimal arithmetic from the corresponding public
+decision lists. All 11 input lists and the licence matched the pinned
+Git blob identities. The package passed ZIP integrity, member
+allowlist and SHA-256 checks. It contains no flow, road-distance,
+facility-key or coordinate payload.
+
+The ZIP SHA-256 is
+`60bb0fb6af957e7842ea18ef45a75d37e4e1ff3dbd4e75274939c80288bf25ae`.
+The [asset review](../data/manifests/mvp2_s6b_zenodo_asset_review_20261112.json)
+records the validation-receipt hash and exact package membership.
+The archive and validation receipt remain in the local workspace.
+The historical DOI continues to identify the v0.2.0 record.
+
 The [distribution dictionary](research_data_distribution_20261101.md)
 and Appendix D supply the field semantics. In the new release dictionary,
 use the observed schemas in the inventory to retain these distinctions:
