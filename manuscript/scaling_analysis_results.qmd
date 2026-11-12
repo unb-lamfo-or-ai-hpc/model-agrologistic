@@ -77,18 +77,44 @@ repetitions. The per-setting ranges characterize this run block.
 
 ## Evidence at h400 and coverage of h500
 
-The original h400 common-Pyomo pilots expand the ordered matrix from
-25.11 to 42.11 million variables and from 94.97 to 161.25 million
-nonzeros. Gurobi at 1 and 16 threads returned the same reported
-penalized objective, BRL 7.593395 trillion, the same economic subtotal,
-BRL 381.573 billion, and a 0.836784% gap. Their native times were
-64.98 and 130.57 min, with sampled worker-tree peaks of 113.41 and
-160.24 GiB. The two HiGHS pilots reached the time limit without a
-usable incumbent. Appendix C records these four observations and the
-memory headroom check that ended progression in the original campaign.
+The h400 common-Pyomo matrix contains 42.11 million variables and
+161.25 million nonzeros, compared with 25.11 million and 94.97 million
+at h300. The E1 and E2 follow-up runs complete one observation per
+solver and thread ceiling at h400 W STO. The ten receipts bind the
+same inputs, ordered matrix, bounds and hardware class to the 192 GiB
+profile and eight-hour native budget. E1 supplies one and sixteen
+threads, and E2 supplies two, four and eight. Appendix C distinguishes
+these observations from the original h400 pilots.
 
-Of the original 90 planned cells, 20 met the target with validated
-incumbents, 14 returned without a usable incumbent, and 56 were cancelled
-before execution. The cancelled cells include 26 h400 and all 30 h500
-cells. The historical native h500 solution therefore remains the
-largest validated solution in the reported computational series.
+Gurobi reached the 1% target in all five configurations. Each returned
+the same reported penalized objective, BRL 7.593395 trillion, and
+economic subtotal, BRL 381.573 billion. The attained gaps agree to six
+decimal places at 0.836784%. HiGHS reached the time limit without a
+usable incumbent at every thread ceiling. Its native terminal times
+range from 481.13 to 481.39 min. Its incumbent objectives and gaps are
+unavailable. @tbl-h400-followup reports both terminal clocks and
+Gurobi's descriptive speedup relative to the E1 one-thread observation.
+
+| Threads | Gurobi native / end-to-end, min | Gurobi native / end-to-end speedup | HiGHS native / end-to-end, min |
+|--:|--:|--:|--:|
+| 1 | 87.36 / 162.60 | 1.000 / 1.000 | 481.13 / 534.88 |
+| 2 | 80.03 / 154.83 | 1.092 / 1.050 | 481.39 / 535.59 |
+| 4 | 139.63 / 214.98 | 0.626 / 0.756 | 481.35 / 536.08 |
+| 8 | 150.36 / 226.35 | 0.581 / 0.718 | 481.37 / 536.96 |
+| 16 | 134.60 / 207.78 | 0.649 / 0.783 | 481.28 / 534.81 |
+
+: h400 W STO terminal clocks and Gurobi speedup in the E1–E2 follow-up. All Gurobi runs reached the target. All HiGHS times describe censoring without a usable incumbent. Each setting has one observation. {#tbl-h400-followup}
+
+The two-thread Gurobi run had the lowest observed time on both clocks,
+with nominal efficiencies of 54.6% native and 52.5% end-to-end.
+Its sampled worker-tree peak was 133.13 GiB compared with 113.31 GiB
+at one thread. Across both solvers the largest sampled worker-tree
+and job-cgroup peaks were 162.99 and 163.45 GiB, respectively, both
+from Gurobi at sixteen threads. Both were within the follow-up gate
+limits. Appendix C reports the two memory measurements for each cell.
+
+The original 90-cell campaign remains a separate record. It retained
+20 validated target attainments and 14 observations without usable
+incumbents. The remaining 56 cells, including 26 at h400 and all 30
+at h500, were cancelled before execution. The native h500 solution
+remains the largest validated instance in the reported series.

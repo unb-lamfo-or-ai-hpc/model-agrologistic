@@ -483,7 +483,7 @@ scenario-dependent operation. The historical native W STO series
 then traces how investment choices and computational effort change
 as candidate sites are added. The repeated common-Pyomo experiments
 provide a fixed-instance comparison of thread ceilings at h300,
-followed by pilot evidence at h400.
+followed by a complete single-repetition thread grid at h400.
 
 {{< include wd_results.qmd >}}
 
@@ -538,14 +538,25 @@ characterize variability on the same instance and protocol. They do
 not sample independent planning problems or establish a general solver
 ranking.
 
-The h400 pilot comparison adds an operational constraint. An accepted
-incumbent can coexist with insufficient memory reserve for progression.
-The original 16-thread Gurobi pilot satisfied the numerical target and
-exceeded the progression gate's sampled-peak ceiling. A study that
-reports only accepted gaps would miss this distinction. The subsequent
-h400 runs use separate receipts and monitoring and are documented as
-such in Appendix C. Reliable comparisons across these runs depend on
-the resource profile and complete validation records.
+At h400, the two-thread Gurobi observation took 8.4% less native time
+and 4.8% less end-to-end time than the one-thread observation, while
+the sampled worker peak increased by 19.82 GiB. The 4-, 8- and
+16-thread observations were slower on both clocks. The repeated h300
+grid and the single-repetition h400 grid therefore give different
+rankings of the one- and two-thread settings. Repeated h400 runs
+would be needed to estimate whether its observed two-thread advantage
+persists. HiGHS reached the budget without a usable incumbent at all
+five ceilings, so the h400 solver contrast concerns attainment as well
+as effort.
+
+The original h400 gate rejected progression because the sampled
+worker-tree peak exceeded its ceiling, although the incumbent met
+the numerical target. The subsequent E1–E2 runs passed their own
+worker and cgroup criteria at the same 192 GiB allocation. The largest
+sampled worker peak was within 0.21 GiB of its follow-up ceiling.
+Appendix C gives the scope and limits for each observation. A completed
+single repetition provides evidence for those runs and leaves the
+memory requirements of repetitions and h500 open.
 
 ## Implications for grain-storage investment
 
@@ -623,8 +634,11 @@ h300 repetition grid, Gurobi met the target in 15 of 15 runs and HiGHS
 in three of 15. The Gurobi one-thread median was lowest on both timing
 clocks. At 16 threads the nominal native efficiency was 3.1% relative
 to the one-thread baseline. These indicators describe a fixed-instance
-comparison with the declared options and gap policy. The h400 evidence
-is at pilot scale and the h500 computational result comes from the
+comparison with the declared options and gap policy. The complete
+h400 E1–E2 grid contains one observation per setting. Gurobi attained
+the target in all five runs and HiGHS reached its time limit without
+a usable incumbent in all five. The fastest observed Gurobi setting
+was two threads. The h500 computational result comes from the
 historical native implementation.
 
 The main limitations are the fixed sets of instances and scenarios,
@@ -637,12 +651,11 @@ requirements.
 
 ## Future work
 
-Use the completed h400 qualification pilots and the final verified E2
-receipts to assess coverage of the five thread settings under the 192 GiB
-profile. Quantify repeated h400 performance when comparable observations
-are available. Progression to h500 depends on a separate resource
-qualification. Retain the matrix, stopping, timing and memory identities
-needed for each comparison, as specified in Appendix C.
+Repeat the h400 thread grid under comparable conditions to quantify
+variability in time, attainment and memory headroom. Progression to
+h500 depends on a separate resource qualification. Retain the matrix,
+stopping, timing and memory identities needed for each comparison,
+as specified in Appendix C.
 
 A separate planning study could test calibrated costs and service
 requirements. That comparison would evaluate how the resulting

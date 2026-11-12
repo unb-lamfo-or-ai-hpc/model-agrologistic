@@ -16,3 +16,4 @@
 
 # Preserve the original NPAD final export bytes.
 /docs/evidence/pyomo_serial_final_export_20261109/* -text
+/docs/evidence/h400_e1_e2_final_20261112/* -text

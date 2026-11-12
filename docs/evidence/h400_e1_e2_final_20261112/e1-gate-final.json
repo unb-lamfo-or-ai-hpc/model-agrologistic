@@ -1,0 +1,57 @@
+{
+  "cell": "h400-w-sto-gurobi-t16-r1",
+  "collection_status": "observation_collected",
+  "proof": {
+    "automatic_follow_on_allowed": false,
+    "cells": {
+      "h400-w-sto-gurobi-t1-r1": {
+        "baseline_worker_passed": true,
+        "e1_job_passed": true,
+        "e1_worker_passed": true,
+        "job_id": "2247718",
+        "job_memory_scope": "slurm_job_cgroup_v1",
+        "job_peak_bytes": 122005307392,
+        "outcome": "validated_at_target",
+        "worker_peak_bytes": 121662705664.0
+      },
+      "h400-w-sto-gurobi-t16-r1": {
+        "baseline_worker_passed": false,
+        "e1_job_passed": true,
+        "e1_worker_passed": true,
+        "job_id": "2247727",
+        "job_memory_scope": "slurm_job_cgroup_v1",
+        "job_peak_bytes": 175506063360,
+        "outcome": "validated_at_target",
+        "worker_peak_bytes": 175006220288.0
+      },
+      "h400-w-sto-highs-t1-r1": {
+        "baseline_worker_passed": true,
+        "e1_job_passed": true,
+        "e1_worker_passed": true,
+        "job_id": "2247723",
+        "job_memory_scope": "slurm_job_cgroup_v1",
+        "job_peak_bytes": 135959625728,
+        "outcome": "time_limit_without_incumbent",
+        "worker_peak_bytes": 134027862016.0
+      },
+      "h400-w-sto-highs-t16-r1": {
+        "baseline_worker_passed": true,
+        "e1_job_passed": true,
+        "e1_worker_passed": true,
+        "job_id": "2247725",
+        "job_memory_scope": "slurm_job_cgroup_v1",
+        "job_peak_bytes": 162691489792,
+        "outcome": "time_limit_without_incumbent",
+        "worker_peak_bytes": 160710520832.0
+      }
+    },
+    "limits": {
+      "allocation_bytes": 206158430208,
+      "baseline_worker_peak_bytes": 164926744166,
+      "e1_job_peak_bytes": 185542587187,
+      "e1_worker_peak_bytes": 175234665676
+    },
+    "status": "e1_resource_criteria_met"
+  },
+  "status": "accepted"
+}

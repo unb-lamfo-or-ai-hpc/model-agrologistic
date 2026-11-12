@@ -636,43 +636,55 @@ through h500.
 
 ## C9 h400 follow-up evidence and population extension
 
-The original h400 gate in C8.2 used a sampled worker-tree peak limit of
-153.60 GiB, equal to 80% of the 192 GiB allocation. Its decision applies
-to the original campaign. The subsequent E1 qualification kept the
-192 GiB request and recorded a separate cgroup memory receipt alongside
-worker-tree sampling. The recorded gates concern operational progression.
-An observation without a usable incumbent can satisfy an operational
-gate.
+The original gate in C8.2 used a sampled worker-tree peak ceiling of
+153.60 GiB, equal to 80% of the 192 GiB allocation. The E1 and E2
+follow-up kept the 192 GiB request and checked both sampled worker-tree
+RSS and the Slurm job cgroup v1 peak. The applicable ceilings were
+163.20 and 172.80 GiB, respectively. The monitored scopes have
+different meanings from the Slurm step MaxRSS.
 
-The operator's checksummed E1 readback for the four h400 pilots is
-summarized in Table C.8. All four gates accepted their respective
-operational receipts. The figures below are the sampled worker-tree
-peaks in the reported tables. The accepted Gurobi incumbents have an
-attained gap of 0.836784%. HiGHS returned no usable incumbent at
-either ceiling.
+The [verified follow-up readback](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/docs/editorial-reconciliation-20261105/docs/evidence/h400_e1_e2_final_20261112/verification.json)
+binds the original E1 closing gate, the six accepted E2 gates, the
+collection and memory receipts, and the [ten-cell comparison CSV](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/docs/editorial-reconciliation-20261105/docs/evidence/h400_e1_e2_final_20261112/h400-e1-e2.csv).
+The E1 and E2 run identifiers remain distinct. Their shared ordered
+matrix, bounds, hardware class and input fingerprints permit a
+descriptive comparison under the follow-up profile. The original full
+archives remain in the NPAD claims.
 
-| Solver | Threads | Job | At target | Native time, min | End-to-end, min | Sampled peak, GiB |
-|:--|--:|--:|:--|--:|--:|--:|
-| Gurobi | 1 | 2247718 | Yes | 87.36 | 162.60 | 113.31 |
-| HiGHS | 1 | 2247723 | No | 481.13 | 534.88 | 124.82 |
-| HiGHS | 16 | 2247725 | No | 481.28 | 534.81 | 149.67 |
-| Gurobi | 16 | 2247727 | Yes | 134.60 | 207.78 | 162.99 |
+| Solver | Threads | Stage / job | Native, min | End-to-end, min | Worker peak, GiB | Cgroup peak, GiB |
+|:--|--:|:--|--:|--:|--:|--:|
+| Gurobi | 1 | E1 / 2247718 | 87.36 | 162.60 | 113.31 | 113.63 |
+| Gurobi | 2 | E2 / 2250119 | 80.03 | 154.83 | 133.13 | 133.46 |
+| Gurobi | 4 | E2 / 2250123 | 139.63 | 214.98 | 162.10 | 162.89 |
+| Gurobi | 8 | E2 / 2250127 | 150.36 | 226.35 | 161.47 | 162.94 |
+| Gurobi | 16 | E1 / 2247727 | 134.60 | 207.78 | 162.99 | 163.45 |
+| HiGHS | 1 | E1 / 2247723 | 481.13 | 534.88 | 124.82 | 126.62 |
+| HiGHS | 2 | E2 / 2250121 | 481.39 | 535.59 | 151.33 | 151.76 |
+| HiGHS | 4 | E2 / 2250125 | 481.35 | 536.08 | 150.27 | 151.65 |
+| HiGHS | 8 | E2 / 2250129 | 481.37 | 536.96 | 151.28 | 151.68 |
+| HiGHS | 16 | E1 / 2247725 | 481.28 | 534.81 | 149.67 | 151.52 |
 
-: Table C.8. Operator-reported E1 follow-up pilots. The E1 queue and the original PR #148 campaign have distinct execution records.
+: Table C.8. h400 follow-up terminal times and memory peaks. Gurobi returned a validated incumbent at the 1% target for every ceiling. HiGHS reached the time limit without a usable incumbent in every run.
 
-The [E1 queue protocol](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/153)
-describes automatic collection and gate evaluation. The
-[E2 queue](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/154)
-adds one observation per solver at 2, 4 and 8 threads. The E2 numerical
-receipts are pending review. Scheduler completion records allocation
-termination; the collectors establish incumbent status, validation, gap,
-timing and memory scope. The E1 follow-up pilots and E2 settings must
-be checked against their profiles before computing any combined ratios.
-A completed thread grid with one observation per setting still gives
-pilot coverage.
+The five Gurobi gaps round to 0.836784% and the reported incumbent
+objective and economic subtotal coincide across the grid. HiGHS has a
+finite reported lower bound of BRL 3,917,886.51 in each return, with
+empty incumbent objective and gap fields. The ten cells passed their
+operational criteria, including the applicable memory ceilings and the
+cgroup counter checks. The closest sampled worker peak was within
+0.21 GiB of its ceiling. This small margin concerns the observed run
+and matters when planning repetitions.
 
-The h500 extension would qualify its own profile and preserve the
-effective inputs, ordered matrix identity, solver options, native time
-budget and declared validation target. If an allocation or monitor
-profile changes, retain the profile identity alongside the observation
-and report separately any cohorts that lack a comparable baseline.
+The Gurobi ratios use the single E1 one-thread observation separately
+for each clock. Dividing each ratio by the configured thread ceiling
+gives native efficiencies of 100.0%, 54.6%, 15.6%, 7.3% and 4.1%,
+and end-to-end efficiencies of 100.0%, 52.5%, 18.9%, 9.0% and 4.9%,
+in ascending thread order. These are descriptive ratios of terminal
+clocks. The HiGHS returns supply attainment, timing and resource
+observations for all five settings, with no validated baseline for a
+speedup calculation.
+
+A future repeated h400 comparison would quantify variability at each
+thread ceiling. The h500 extension would qualify its own resource
+profile and retain the effective inputs, ordered matrix identity,
+solver options, time budget and validation criteria for each cell.

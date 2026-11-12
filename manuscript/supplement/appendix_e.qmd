@@ -54,7 +54,11 @@ respectively, with 76 shared sites. These counts use the stated
 $10^{-7}$ t threshold and identify common sites, with capacities
 retained separately in the lists. The repeated timing grid in Appendix C describes
 solver observations. The maps here describe the particular accepted
-vectors linked to each figure.
+vectors linked to each figure. The h400 E1–E2 follow-up contributes
+computational receipts in Appendix C. The h400 map and flow summaries
+here retain their original native Gurobi vector. Equal reported
+objective values in the follow-up grid do not establish identical
+facility-level decisions.
 
 ## E2 From exported flows to sparse matrices
 
