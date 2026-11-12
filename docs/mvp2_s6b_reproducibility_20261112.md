@@ -71,14 +71,63 @@ GitHub evidence, and state which original records remain restricted.
 | First matched h300 flow, investment and OD companions, including their SQLite database | 7 | Bind each file to its solver, job, original archive and validation result. Review any private fields and upstream terms. |
 | Selected h300 graph in CSV and JSON | 2 | Retain the graph and screening fingerprints and the connectivity-repair indicator. Record the actual file aliases if the package layout changes. |
 
+## Reconciled document hashes and candidate review
+
 All **41 candidate files (450,057,392 bytes)** were rehashed against the
-existing file inventory. The old readiness register lists a different
-SHA-256 for its inventory and for three supporting documents than the
-bytes observed at the pinned revision. The new manifest records both
-values. The 41 asset names, sizes and digests agree between the
-historical lists and the local files. Reconcile the four document
-references before treating the old readiness register as a byte
-manifest for a release.
+existing file inventory. The [asset review](../data/manifests/mvp2_s6b_zenodo_asset_review_20261112.json)
+records the four original readiness hashes, the exact Git blob SHA-256s
+and their document revisions. Normalizing each pinned document's line
+endings and writing them as CRLF reproduces the corresponding historical
+hash exactly. Parsed JSON is identical for each pair. The two h300
+preparation receipts also match the historical hashes on disk. Use the
+pinned Git blob digests for repository verification and the original
+asset digests for file verification.
+
+The field review read every CSV record, the graph JSON values, and all
+logical rows and embedded JSON values in the two SQLite files. The
+report identifies fields and counts without copying record values.
+The scan found zero matches for the tested contact, document-number,
+credential and infrastructure patterns, and zero direct private field
+names under the field-name rules. The inspected graph values and
+SQLite metadata were included in that count.
+The logical SQLite review covers live schema and rows. If a derivative
+SQLite file is approved, build it from the reviewed rows so residual
+pages from an original database are outside the output.
+
+All **41 files contain at least one facility identifier** that matches
+a CDA in the exact archived registry workbook. The join was performed
+locally. The archived registry has an `Armazenador` field. CONAB
+documents consultation by CDA, including queries that
+can associate the unit with the registered operator or owner. A key
+may therefore support linkage even when its file contains no direct
+contact field. Treat municipality, UF, site-level capacities and
+modeled decisions with the facility key as linked attributes.
+[CONAB SICARM](https://www.gov.br/conab/pt-br/atuacao/armazenagem/saiba-mais-sobre-o-cadastro)
+
+The file review maps each candidate to its upstream terms and
+remaining decision. The four full distance tables, the two admissible
+graph files, the flow-distance outputs and the SQLite companions all
+carry OSM-derived distances. Their notices should credit OpenStreetMap
+contributors and identify the Geofabrik extract, OSRM processing and
+the frozen source workbook. For the public release, determine which
+database terms apply to each asset, including the applicable ODbL
+notice and access terms for derivative databases. The investment-only
+files carry the registry keys and modeled decisions. The model code's
+MIT terms apply to project-owned material within the scope recorded in
+[LICENSING.md](../LICENSING.md).
+[OSMF attribution guidance](https://osmfoundation.org/wiki/Licence/Attribution_Guidelines) ·
+[Geofabrik extracts](https://download.geofabrik.de/technical.html) ·
+[ODbL 1.0, §§4.2–4.6](https://opendatacommons.org/licenses/odbl/1-0/)
+
+Proposed road-data notice for review: “Road distances derived from
+© OpenStreetMap contributors’ data, distributed through Geofabrik
+and processed with OSRM. OpenStreetMap data are available under the
+Open Database License (ODbL) 1.0.” Include the license and source
+links alongside the affected files. Confirmation of the terms for
+the exact SICARM-derived workbook and the disclosure of linked
+facility outputs remains pending. If only an aggregate can be
+released, preserve the original privately and give the reviewed
+derivative its own hash and source mapping.
 
 The [distribution dictionary](research_data_distribution_20261101.md)
 and Appendix D supply the field semantics. In the new release dictionary,

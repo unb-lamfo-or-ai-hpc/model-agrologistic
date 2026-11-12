@@ -542,7 +542,19 @@
       "paired-h300": 9
     },
     "total_bytes": 450057392,
-    "rights_review": "pending"
+    "rights_review": "sources_mapped_asset_specific_clearance_pending",
+    "hash_reconciliation": {
+      "status": "four_legacy_hashes_reproduced_by_crlf_conversion",
+      "active_reference_scheme": "exact_git_blob_bytes",
+      "details": "mvp2_s6b_zenodo_asset_review_20261112.json"
+    },
+    "private_fields_review": {
+      "status": "logical_payload_review_complete",
+      "files_scanned": 41,
+      "files_linkable_to_source_registry": 41,
+      "files_with_heuristic_hits": 0,
+      "details": "mvp2_s6b_zenodo_asset_review_20261112.json"
+    }
   },
   "observed_schemas": {
     "appendix_e.sqlite3": {
@@ -751,7 +763,7 @@
     "planned_version_label": "0.3.0",
     "registered_record_id": null,
     "new_doi": null,
-    "asset_specific_rights_and_private_field_review": "pending",
+    "asset_specific_rights_and_private_field_review": "logical_payload_review_complete_release_clearance_pending",
     "new_deposit_created": false,
     "new_files_uploaded": false,
     "hpc_jobs_submitted": false
