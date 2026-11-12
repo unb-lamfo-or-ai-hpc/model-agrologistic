@@ -185,6 +185,41 @@ and does not establish new rights for these files.
 [Zenodo access requests](https://help.zenodo.org/docs/share/access-requests/request-access/) ·
 [ODbL 1.0, §§2.4 and 4.2–4.8](https://opendatacommons.org/licenses/odbl/1-0/)
 
+## Local validation of the investment and flow aggregates
+
+The local build verified the SHA-256 of all 33 source files before and
+after processing. It accounted for 11 cases, with 3,090 investment rows,
+1,985,052 positive-flow coordinates and 50,152 sparse origin–destination
+rows. Flow coordinates were reconciled to the directed origin–destination
+rows by case, endpoint pair, destination role and product, using
+probability-weighted tonnes and the original OSRM distance. An independent
+decimal calculation verified the values in all retained output rows.
+
+| Local candidate | Cases represented | Rows retained | Nonzero national rows withheld |
+| --- | ---: | ---: | ---: |
+| Investment counts and capacity by decision type | 8 | 11 | 22 |
+| Expected tonnes, tonne-kilometres and weighted mean road distance by product and directed movement family | 11 | 62 | 8 |
+
+The screening tried macroregions and fell back to national groupings.
+It used at least five contributing units and a maximum 80% share for
+any one unit, both for individual groups and for same-group differences
+between pairs of cases. For flows, these checks considered origins and
+destinations separately for both tonnes and tonne-kilometres. The flow
+statistics describe directed network legs. The distance mean uses
+expected tonnes on those legs as its denominator. Investment counts
+refer to active binary decisions, and capacity remains separate for
+opening, expansion and bulk handling.
+
+The 11 investment lists already on the published branch were checked
+against the original local investment rows. All matched. This confirms
+one overlap with material already accessible to readers. Review the
+combined disclosure scope with the maps, flow tables and the v0.2.0
+deposit before distribution, and confirm the applicable road-data terms.
+The [asset review](../data/manifests/mvp2_s6b_zenodo_asset_review_20261112.json)
+records the validation receipt hashes. The aggregate CSVs and detailed
+receipts are retained locally.
+[Published investment lists](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/tree/main/manuscript/supplement/investments)
+
 The [distribution dictionary](research_data_distribution_20261101.md)
 and Appendix D supply the field semantics. In the new release dictionary,
 use the observed schemas in the inventory to retain these distinctions:

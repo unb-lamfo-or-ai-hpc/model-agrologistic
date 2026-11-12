@@ -1641,6 +1641,43 @@
         "aggregate": "Optional directed arc counts by product and movement family, with repair counts where disclosure permits.",
         "original": "controlled_project_custody"
       }
+    },
+    "local_aggregate_validation": {
+      "status": "validated_locally_pending_distribution_review",
+      "original_payloads_verified_before_and_after": 33,
+      "cases_processed": 11,
+      "source_rows": {
+        "flows": 1985052,
+        "investments": 3090,
+        "od_matrix": 50152
+      },
+      "max_flow_to_od_absolute_delta_t": 2.980232238769531e-7,
+      "numeric_verification": {
+        "status": "passed_independent_decimal_reduction",
+        "receipt_sha256": "59402629867adc43376cf9f752e898d25694c48878782b153e97901e460e95fb"
+      },
+      "local_validation_manifest_sha256": "86df966bcd9a36bbe62e0b01184f6e4ef081847acf971a4d38b983426f66e256",
+      "local_checksum_manifest_members": 5,
+      "candidates": {
+        "investment": {
+          "retained_rows": 11,
+          "cases_with_retained_rows": 8,
+          "withheld_nonzero_national_rows": 22
+        },
+        "flow": {
+          "retained_rows": 62,
+          "cases_with_retained_rows": 11,
+          "withheld_nonzero_national_rows": 8
+        }
+      },
+      "retained_geographic_resolution": "national_only",
+      "existing_github_investment_lists_matching_source_rows": 11,
+      "disclosure_screen": {
+        "minimum_contributing_units": 5,
+        "maximum_single_unit_absolute_share": 0.8,
+        "comparisons": "Within each retained grouping, screen single cells and case-pair differences. Screen origins and destinations separately for expected tonnes and tonne-kilometres."
+      },
+      "distribution_scope": "Local files only. Further joint review with already accessible maps, flow tables and the v0.2.0 deposit, plus road-data terms for any public derivative."
     }
   }
 }
