@@ -436,7 +436,7 @@ the directed interwarehouse graph can contain $|W|(|W|-1)$ arcs. A fixed retaine
 fraction therefore does not eliminate quadratic network growth. These are
 structural matrix counts, not an asymptotic algorithmic-complexity proof.
 
-Native runtime, model-construction wall time, application optimization wall time,
+The native runtime, model-construction wall time, application optimization wall time,
 extraction, validation, export and application end-to-end time are separate clocks.
 Allocation elapsed includes additional staging and control. The microsecond data-read
 fields at an already-loaded model layer are not large-workbook ETL timings. The study
