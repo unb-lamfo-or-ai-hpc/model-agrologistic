@@ -1,0 +1,36 @@
+# Appendix F. Research data, provenance and access
+
+## F1. Frozen input data
+
+The [versioned Agrologistic v0.2.0 record](https://doi.org/10.5281/zenodo.22751909)
+contains the historical input archive. Appendix D identifies the workbooks,
+their SHA-256 digests, the warehouse populations and the directed OSRM
+distances used for each model size. Cite the version DOI and match the
+workbook digest to the experimental record before comparing results.
+The terms applicable to the original registry and OpenStreetMap-derived
+road data are documented separately from the software licence.
+
+## F2. National investment summaries
+
+The proposed companion dataset contains national summaries of candidate
+opening, existing-site expansion and bulk-handling conversion. It contains
+11 case–decision rows across eight configurations. The data dictionary
+distinguishes the binary activation count from modeled capacity in metric
+tonnes. Each value can be recomputed from the corresponding GitHub investment
+list. The package documents coverage, source identities, field definitions,
+licence scope and checksums.
+
+The companion dataset has been prepared and verified locally and is
+awaiting deposit. The v0.2.0 DOI identifies the historical inputs.
+The GitHub investment lists provide the source values for the
+national summaries.
+
+## F3. Full-resolution outputs
+
+The full positive-flow tables, endpoint-level distance exports, selected
+graphs and SQLite companions are outside the proposed deposit. The
+national investment summaries support verification of those totals.
+Exact numerical reproduction uses the input, network, model and execution
+records identified in Appendices C–E. The release documentation records
+access and rights by asset. Full-resolution transfers depend on the
+applicable third-party terms and disclosure review.

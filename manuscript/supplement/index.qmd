@@ -2,10 +2,14 @@
 title: "Supplementary material"
 subtitle: "Computational Scalability of Deterministic and Two-Stage Stochastic MILP Models for Grain-Storage Network Design and Hub Location"
 date: 2026-10-30
+toc: true
+toc-depth: 1
 bibliography:
   - ../references.bib
   - ../review-methods.bib
 ---
+
+Appendices A–F accompany the article. They cover the literature review, human-supervised AI-assisted research, model implementation, experimental data, geographic decisions and flows, and research data access.
 
 # Appendix A — Systematic Literature Review of Grain Facility-Location Models
 
@@ -78,25 +82,7 @@ assumption or implementation.
 
 : Table B.1. Research phases and their application.
 
-The example distinguishes a shared investment from repeated recourse decisions.
-A capacity investment is made once, before the scenario is known. Each
-scenario then has its own flow, inventory and shortage decisions. Consequently,
-scenario probabilities weight operating costs, while investment enters the
-objective once and physical balances retain their original units.
-
-A substantive redirection concerned the objective itself. Early experiments
-used a hierarchical formulation in which capacity-related and economic
-criteria had different priorities. Reviewing the interpretation of those
-outputs led the researchers to adopt the single scalar objective reported
-here: investment is counted once, operating costs are probability weighted,
-and the three artificial penalties remain explicit. The earlier experiments
-were retained as a separate historical cohort rather than relabeled as scalar
-results. This change concerned the scientific question expressed by the model,
-not merely whether the program executed successfully. The
-[retained formulation history](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/2dbd780b1dfdc77d8e31f164e5d3bcc3b2708410/docs/mvp2_completion_handoff_20261022.md)
-links the archived hierarchy and scalar contract. The episode illustrates
-human responsibility for accepting a model interpretation; it does not
-measure an AI assistant's productivity or independent scientific judgment.
+An illustrative example concerns a change to the research objective. Early experiments used a hierarchical formulation that assigned different priorities to capacity and economic criteria. The researchers adopted the single objective reported here after reviewing those outputs. Investment is counted once, operating costs are weighted by scenario probability, and the three artificial penalties remain explicit. The [formulation history](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/2dbd780b1dfdc77d8e31f164e5d3bcc3b2708410/docs/mvp2_completion_handoff_20261022.md) links the archived hierarchy and the scalar contract. The episode illustrates human responsibility for accepting a model interpretation.
 
 ## B4 Four levels of verification
 
@@ -131,26 +117,7 @@ capacity indicators explain the physical consequences of the plan.
 
 ## B5 Traceability of a computational result
 
-For each experiment, the retained record identifies the source version,
-input workbook, facility population, scenario design, solver settings,
-resource limits, decisions and validation outcome. This association permits
-another researcher to connect a numerical table to the calculation that
-produced it. Partial and failed attempts are retained alongside successful
-ones to avoid selective reporting.
-
-The [mathematical contract](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/docs/mvp2_scalar_contract.md),
-[implementation](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/src/logic/optimization_gurobipy_stochastic.py) and
-[independent validator](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/src/logic/solution_validation.py)
-provide a concrete route from assumptions to checked decisions. For example,
-the [h500 experiment record](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/docs/evidence/scalar_h500_2220382_review.json)
-connects its input and source identities to the objective, bound, original
-validation and resource observations. Appendices C and D explain the
-corresponding implementation and data.
-
-An integrity replay checks consistency of retained records and their hashes.
-It does not rerun the optimizer or recompute residuals against unavailable
-inputs. A fresh numerical reproduction must generate new decisions and apply
-the independent validation procedure to them.
+For each experiment, the retained record identifies the source version, input workbook, facility population, scenario design, solver settings, resource limits, decisions and validation outcome. Another researcher can use this record to connect a numerical table to the calculation that produced it. Partial and failed attempts are retained alongside successful ones. An integrity replay checks consistency of retained records and their hashes. A fresh numerical reproduction generates new decisions and applies the independent validation procedure to them.
 
 ## B6 Limitations
 
@@ -180,3 +147,5 @@ all assumptions, reported results and conclusions.
 
 {{< include appendix_e.qmd >}}
 
+
+{{< include appendix_f.qmd >}}

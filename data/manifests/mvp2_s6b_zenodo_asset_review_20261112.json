@@ -1,0 +1,1759 @@
+{
+  "schema_version": "mvp2-s6b-zenodo-asset-review-v1",
+  "date": "2026-11-12",
+  "asset_identity_manifest": "mvp2_s6b_reproducibility_inventory_20261112.json",
+  "hash_reconciliation": {
+    "historical_register": "zenodo_release_readiness_20261102.json",
+    "authoritative_for_repository_verification": "SHA-256 of exact Git blob bytes, by pinned document revision",
+    "historical_record_retained": true,
+    "entries": [
+      {
+        "path": "data/manifests/zenodo_next_release_inventory_20261101.json",
+        "document_revision": "0f63c10eb1abf88318a4d9c6afc75fcac97f6266",
+        "git_blob": "fd02911db90e97e9af3731a000245c8751b1777f",
+        "pinned_byte_sha256": "516aa242ccaaf39addb425c30744b02a681e2890859241da2a3ebd47641631bf",
+        "legacy_readiness_sha256": "777ad552a7f0e532a1afbc43e9f7336ab66059667f874e57151f6e8c695ea9d7",
+        "pinned_crlf_lines": 535,
+        "pinned_lf_only_lines": 1,
+        "historical_encoding_reproduced": "Normalize existing CRLF to LF, then encode all line endings as CRLF.",
+        "same_parsed_json": true,
+        "local_exact_legacy_copy_found": true,
+        "original_preparation_receipt_matches_legacy": false
+      },
+      {
+        "path": "data/manifests/research_data_distribution_v1.json",
+        "document_revision": "e0b938a5e2f81bfde419394b7ed221f41d15797d",
+        "git_blob": "1e16ff3e131aca778f4ff85c9cabb9b395c3fa25",
+        "pinned_byte_sha256": "e4eead575a058cf1d7870b6041a1b791cc09f812064d82453a8dc2643beabc3a",
+        "legacy_readiness_sha256": "b4ee3eb180f733eb3d7dd8a82aa38edb44a10b2f5ac227c2dc6f62c588bd41bc",
+        "pinned_crlf_lines": 0,
+        "pinned_lf_only_lines": 404,
+        "historical_encoding_reproduced": "Normalize existing CRLF to LF, then encode all line endings as CRLF.",
+        "same_parsed_json": true,
+        "local_exact_legacy_copy_found": true,
+        "original_preparation_receipt_matches_legacy": false
+      },
+      {
+        "path": "docs/evidence/paired_h300_flow_companions_20261101.json",
+        "document_revision": "083ef96cc99a346204df22551ce0739c10e8a2f7",
+        "git_blob": "9b1b96499e60fc6db9f4bf2b545a6ecba71419b4",
+        "pinned_byte_sha256": "b0a77a89a0b04efc2de7594426e505d18220ef5e016d5ecad83ca15683900077",
+        "legacy_readiness_sha256": "d15ed0c7d3a5c55db45f7b7359e229ab773b9f8827773f8a5fb8239519491ced",
+        "pinned_crlf_lines": 0,
+        "pinned_lf_only_lines": 92,
+        "historical_encoding_reproduced": "Normalize existing CRLF to LF, then encode all line endings as CRLF.",
+        "same_parsed_json": true,
+        "local_exact_legacy_copy_found": true,
+        "original_preparation_receipt_matches_legacy": true
+      },
+      {
+        "path": "docs/evidence/h300_selected_graph_release_20261101.json",
+        "document_revision": "0f63c10eb1abf88318a4d9c6afc75fcac97f6266",
+        "git_blob": "0908f3197f932d56c431060fc495580bbef830e2",
+        "pinned_byte_sha256": "2585e5e3078ca80e7d9e70984f55094be653ed3feb60e5ee60bad2b390216efc",
+        "legacy_readiness_sha256": "afefca05398de1e9bbd703b0e234c66722b6fd9326195419b72738c14255740a",
+        "pinned_crlf_lines": 37,
+        "pinned_lf_only_lines": 1,
+        "historical_encoding_reproduced": "Normalize existing CRLF to LF, then encode all line endings as CRLF.",
+        "same_parsed_json": true,
+        "local_exact_legacy_copy_found": true,
+        "original_preparation_receipt_matches_legacy": true
+      }
+    ]
+  },
+  "payload_review": {
+    "files_reviewed": 41,
+    "files_by_format": {
+      "sqlite3": 2,
+      "csv.gz": 38,
+      "json.gz": 1
+    },
+    "csv_rows_scanned": 2738530,
+    "sqlite_logical_rows_scanned": 1987551,
+    "graph_records_scanned": 45240,
+    "content_scope": "All CSV records, all graph JSON string leaves, all logical SQLite rows, schema objects and embedded JSON values. Declared numeric CSV columns checked for numeric/Boolean shape.",
+    "excluded_scope": "SQLite freelist and residual page bytes, inference of personal identity from joined datasets, rights clearance for any asset.",
+    "pattern_types": [
+      "email",
+      "credential",
+      "private_path",
+      "ip_address",
+      "formatted_cpf_cnpj",
+      "formatted_telephone",
+      "signed_url"
+    ],
+    "files_with_heuristic_hits": 0,
+    "registry_linkage_test": {
+      "registry_sha256": "0d19865ac72eca0706960d10b6dbd1647a4951378a831715e39af8029ecb77f2",
+      "unique_registry_identifiers": 18086,
+      "linkable_members": 41,
+      "matched_unique_identifiers_per_member": {
+        "historical-companions/appendix_e.sqlite3": 500,
+        "historical-companions/pyomo_gurobi_h215_w_native8h_license_v2_flows.csv.gz": 215,
+        "historical-companions/pyomo_gurobi_h215_w_native8h_license_v2_investments.csv.gz": 215,
+        "historical-companions/pyomo_gurobi_h215_w_native8h_license_v2_od_matrix.csv.gz": 215,
+        "historical-companions/scalar_h215_det_flows.csv.gz": 215,
+        "historical-companions/scalar_h215_det_investments.csv.gz": 215,
+        "historical-companions/scalar_h215_det_od_matrix.csv.gz": 215,
+        "historical-companions/scalar_h215_d_det_flows.csv.gz": 215,
+        "historical-companions/scalar_h215_d_det_investments.csv.gz": 215,
+        "historical-companions/scalar_h215_d_det_od_matrix.csv.gz": 215,
+        "historical-companions/scalar_h215_d_sto_flows.csv.gz": 215,
+        "historical-companions/scalar_h215_d_sto_investments.csv.gz": 215,
+        "historical-companions/scalar_h215_d_sto_od_matrix.csv.gz": 215,
+        "historical-companions/scalar_h215_sto_flows.csv.gz": 215,
+        "historical-companions/scalar_h215_sto_investments.csv.gz": 215,
+        "historical-companions/scalar_h215_sto_od_matrix.csv.gz": 215,
+        "historical-companions/scalar_h300_t1_flows.csv.gz": 300,
+        "historical-companions/scalar_h300_t1_investments.csv.gz": 300,
+        "historical-companions/scalar_h300_t1_od_matrix.csv.gz": 300,
+        "historical-companions/scalar_h400_t1_flows.csv.gz": 400,
+        "historical-companions/scalar_h400_t1_investments.csv.gz": 400,
+        "historical-companions/scalar_h400_t1_od_matrix.csv.gz": 400,
+        "historical-companions/scalar_h500_t1_flows.csv.gz": 500,
+        "historical-companions/scalar_h500_t1_investments.csv.gz": 500,
+        "historical-companions/scalar_h500_t1_od_matrix.csv.gz": 500,
+        "historical-companions/scalar_highs_h215_w_native8h_startup_v2_flows.csv.gz": 215,
+        "historical-companions/scalar_highs_h215_w_native8h_startup_v2_investments.csv.gz": 215,
+        "historical-companions/scalar_highs_h215_w_native8h_startup_v2_od_matrix.csv.gz": 215,
+        "osrm/osrm_h215_distances_km.csv.gz": 215,
+        "osrm/osrm_h300_distances_km.csv.gz": 300,
+        "osrm/osrm_h400_distances_km.csv.gz": 400,
+        "osrm/osrm_h500_distances_km.csv.gz": 500,
+        "paired-h300/h300-w-sto-gurobi-t1-r1_flows.csv.gz": 300,
+        "paired-h300/h300-w-sto-gurobi-t1-r1_investments.csv.gz": 300,
+        "paired-h300/h300-w-sto-gurobi-t1-r1_od_matrix.csv.gz": 300,
+        "paired-h300/h300-w-sto-highs-t1-r1_flows.csv.gz": 300,
+        "paired-h300/h300-w-sto-highs-t1-r1_investments.csv.gz": 300,
+        "paired-h300/h300-w-sto-highs-t1-r1_od_matrix.csv.gz": 300,
+        "paired-h300/h300_pair_flow_distance.sqlite3": 300,
+        "paired-h300/h300_W_selected_arcs.csv.gz": 300,
+        "paired-h300/h300_W_selected_graph.json.gz": 300
+      }
+    },
+    "asset_release_clearance_count": 0
+  },
+  "rights_sources": {
+    "repository_licensing": "LICENSING.md",
+    "odbl": "https://opendatacommons.org/licenses/odbl/1-0/",
+    "osm_attribution": "https://osmfoundation.org/wiki/Licence/Attribution_Guidelines",
+    "geofabrik": "https://download.geofabrik.de/technical.html",
+    "conab_sicarm": "https://www.gov.br/conab/pt-br/atuacao/armazenagem/saiba-mais-sobre-o-cadastro",
+    "conab_open_data_scope": "https://www.gov.br/conab/pt-br/acesso-a-informacao/dados-abertos",
+    "conab_storage_portal": "https://www.gov.br/conab/pt-br/atuacao/armazenagem",
+    "conab_privacy_terms": "https://www.gov.br/conab/pt-br/acesso-a-informacao/lei-geral-de-protecao-de-dados-pessoais/termos-de-uso-da-politica-de-protecao-de-dados-pessoais-da-conab",
+    "brazil_digital_government_law": "https://www2.camara.leg.br/legin/fed/lei/2021/lei-14129-29-marco-2021-791203-normaatualizada-pl.html",
+    "brazil_lgpd": "https://www2.camara.leg.br/legin/fed/lei/2018/lei-13709-14-agosto-2018-787077-normaatualizada-pl.html",
+    "zenodo_record_visibility": "https://help.zenodo.org/docs/about/whats-changed/",
+    "zenodo_access_requests": "https://help.zenodo.org/docs/share/access-requests/request-access/"
+  },
+  "files": [
+    {
+      "proposed_member": "historical-companions/appendix_e.sqlite3",
+      "sha256": "bf9cd01828cdb31507e26b91fa2b020f52556577612a977a69d27ead0cae75e2",
+      "scope": {
+        "format": "sqlite3",
+        "tables": {
+          "configurations": {
+            "columns": [
+              "case_id",
+              "metadata_json"
+            ],
+            "rows": 9
+          },
+          "investments": {
+            "columns": [
+              "case_id",
+              "warehouse",
+              "record_json"
+            ],
+            "rows": 2490
+          },
+          "flows": {
+            "columns": [
+              "case_id",
+              "route_type",
+              "origin",
+              "destination",
+              "destination_role",
+              "product",
+              "period",
+              "scenario",
+              "probability",
+              "tonnes",
+              "osrm_km"
+            ],
+            "rows": 1544061
+          }
+        },
+        "embedded_json_fields": [
+          "configurations.metadata_json.archive",
+          "configurations.metadata_json.archive_sha256",
+          "configurations.metadata_json.bound",
+          "configurations.metadata_json.case",
+          "configurations.metadata_json.interface",
+          "configurations.metadata_json.members",
+          "configurations.metadata_json.members.*",
+          "configurations.metadata_json.mip_gap",
+          "configurations.metadata_json.mode",
+          "configurations.metadata_json.objective",
+          "configurations.metadata_json.population",
+          "configurations.metadata_json.probabilities",
+          "configurations.metadata_json.probabilities.*",
+          "configurations.metadata_json.selected_network_sha256",
+          "configurations.metadata_json.solver",
+          "configurations.metadata_json.source_commit",
+          "configurations.metadata_json.sparse_export_threshold_t",
+          "configurations.metadata_json.threads",
+          "configurations.metadata_json.topology",
+          "configurations.metadata_json.workbook_member",
+          "configurations.metadata_json.workbook_sha256",
+          "investments.record_json.bulk_capacity_t",
+          "investments.record_json.bulkify",
+          "investments.record_json.candidate_capacity_t",
+          "investments.record_json.expand",
+          "investments.record_json.expansion_capacity_t",
+          "investments.record_json.municipality",
+          "investments.record_json.open",
+          "investments.record_json.role",
+          "investments.record_json.uf",
+          "investments.record_json.warehouse"
+        ]
+      },
+      "pattern_hits": [],
+      "explicit_private_field_names": [],
+      "registry_linkage_count": 500,
+      "rights_group": "mixed_sqlite_companion",
+      "rights_sources": [
+        "External SICARM/Conab-derived research workbook and stable facility keys",
+        "OpenStreetMap road data via Geofabrik and OSRM",
+        "Model Agrologistic computed decisions or audit metadata"
+      ],
+      "proposed_disposition": "hold_for_asset_specific_release_decision",
+      "review_action": "Review combined rights and metadata fields; rebuild any approved derivative from reviewed logical rows with a fresh checksum.",
+      "zenodo_release_proposal": {
+        "route": "controlled_original_for_exact_reproduction",
+        "policy": "mixed_sqlite_companion"
+      }
+    },
+    {
+      "proposed_member": "historical-companions/pyomo_gurobi_h215_w_native8h_license_v2_flows.csv.gz",
+      "sha256": "30cb6fdaa23f68b5089317406e91c7ad8cfad3543b1784e52e777b039ebb9072",
+      "scope": {
+        "format": "csv.gz",
+        "rows": 193525,
+        "columns": [
+          "route_type",
+          "movement",
+          "origin",
+          "destination",
+          "destination_role",
+          "product",
+          "period",
+          "scenario",
+          "probability",
+          "tonnes",
+          "osrm_km",
+          "expected_tonnes"
+        ]
+      },
+      "pattern_hits": [],
+      "explicit_private_field_names": [],
+      "registry_linkage_count": 215,
+      "rights_group": "flow_distance_output",
+      "rights_sources": [
+        "External SICARM/Conab-derived research workbook and stable facility keys",
+        "OpenStreetMap road data via Geofabrik and OSRM",
+        "Model Agrologistic computed decisions or audit metadata"
+      ],
+      "proposed_disposition": "hold_for_asset_specific_release_decision",
+      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "flow_distance_output"
+      }
+    },
+    {
+      "proposed_member": "historical-companions/pyomo_gurobi_h215_w_native8h_license_v2_investments.csv.gz",
+      "sha256": "2b84344f3354609f265e2d91383d0c2405734c39c71412f71c1ddfabddb9bca7",
+      "scope": {
+        "format": "csv.gz",
+        "rows": 215,
+        "columns": [
+          "warehouse",
+          "municipality",
+          "uf",
+          "role",
+          "candidate_capacity_t",
+          "expansion_capacity_t",
+          "bulk_capacity_t",
+          "open",
+          "expand",
+          "bulkify"
+        ]
+      },
+      "pattern_hits": [],
+      "explicit_private_field_names": [],
+      "registry_linkage_count": 215,
+      "rights_group": "investment_table",
+      "rights_sources": [
+        "External SICARM/Conab-derived research workbook and stable facility keys",
+        "Model Agrologistic computed decisions or audit metadata"
+      ],
+      "proposed_disposition": "hold_for_asset_specific_release_decision",
+      "review_action": "Confirm redistribution of facility keys and site-level modeled decisions. Preserve role and capacity units if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "investment_table"
+      }
+    },
+    {
+      "proposed_member": "historical-companions/pyomo_gurobi_h215_w_native8h_license_v2_od_matrix.csv.gz",
+      "sha256": "f76f55e98064b3f12085b22d96f8905e630d3c9b8d8949a908c2a320e200fb29",
+      "scope": {
+        "format": "csv.gz",
+        "rows": 4115,
+        "columns": [
+          "route_type",
+          "origin",
+          "destination",
+          "destination_role",
+          "product",
+          "expected_horizon_tonnes",
+          "osrm_km"
+        ]
+      },
+      "pattern_hits": [],
+      "explicit_private_field_names": [],
+      "registry_linkage_count": 215,
+      "rights_group": "flow_distance_output",
+      "rights_sources": [
+        "External SICARM/Conab-derived research workbook and stable facility keys",
+        "OpenStreetMap road data via Geofabrik and OSRM",
+        "Model Agrologistic computed decisions or audit metadata"
+      ],
+      "proposed_disposition": "hold_for_asset_specific_release_decision",
+      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "flow_distance_output"
+      }
+    },
+    {
+      "proposed_member": "historical-companions/scalar_h215_det_flows.csv.gz",
+      "sha256": "e78fb751d6d9a9ffe49ad81a5f822552072b298c4a593c1f02066089183341bf",
+      "scope": {
+        "format": "csv.gz",
+        "rows": 21843,
+        "columns": [
+          "route_type",
+          "movement",
+          "origin",
+          "destination",
+          "destination_role",
+          "product",
+          "period",
+          "scenario",
+          "probability",
+          "tonnes",
+          "osrm_km",
+          "expected_tonnes"
+        ]
+      },
+      "pattern_hits": [],
+      "explicit_private_field_names": [],
+      "registry_linkage_count": 215,
+      "rights_group": "flow_distance_output",
+      "rights_sources": [
+        "External SICARM/Conab-derived research workbook and stable facility keys",
+        "OpenStreetMap road data via Geofabrik and OSRM",
+        "Model Agrologistic computed decisions or audit metadata"
+      ],
+      "proposed_disposition": "hold_for_asset_specific_release_decision",
+      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "flow_distance_output"
+      }
+    },
+    {
+      "proposed_member": "historical-companions/scalar_h215_det_investments.csv.gz",
+      "sha256": "6ebaeac682ab785d8eaeb18e5262e5922ac539bd33d81820619ce00d3c9ec55b",
+      "scope": {
+        "format": "csv.gz",
+        "rows": 215,
+        "columns": [
+          "warehouse",
+          "municipality",
+          "uf",
+          "role",
+          "candidate_capacity_t",
+          "expansion_capacity_t",
+          "bulk_capacity_t",
+          "open",
+          "expand",
+          "bulkify"
+        ]
+      },
+      "pattern_hits": [],
+      "explicit_private_field_names": [],
+      "registry_linkage_count": 215,
+      "rights_group": "investment_table",
+      "rights_sources": [
+        "External SICARM/Conab-derived research workbook and stable facility keys",
+        "Model Agrologistic computed decisions or audit metadata"
+      ],
+      "proposed_disposition": "hold_for_asset_specific_release_decision",
+      "review_action": "Confirm redistribution of facility keys and site-level modeled decisions. Preserve role and capacity units if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "investment_table"
+      }
+    },
+    {
+      "proposed_member": "historical-companions/scalar_h215_det_od_matrix.csv.gz",
+      "sha256": "bc2d338b9535a0cc4a1dcb49d0b08bd979a15e48743497c78d20541bde32e853",
+      "scope": {
+        "format": "csv.gz",
+        "rows": 3015,
+        "columns": [
+          "route_type",
+          "origin",
+          "destination",
+          "destination_role",
+          "product",
+          "expected_horizon_tonnes",
+          "osrm_km"
+        ]
+      },
+      "pattern_hits": [],
+      "explicit_private_field_names": [],
+      "registry_linkage_count": 215,
+      "rights_group": "flow_distance_output",
+      "rights_sources": [
+        "External SICARM/Conab-derived research workbook and stable facility keys",
+        "OpenStreetMap road data via Geofabrik and OSRM",
+        "Model Agrologistic computed decisions or audit metadata"
+      ],
+      "proposed_disposition": "hold_for_asset_specific_release_decision",
+      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "flow_distance_output"
+      }
+    },
+    {
+      "proposed_member": "historical-companions/scalar_h215_d_det_flows.csv.gz",
+      "sha256": "c5d0c7050d9c900d2efa8119ac1553504cfe877d99d2fb526935db06aafe28e5",
+      "scope": {
+        "format": "csv.gz",
+        "rows": 16713,
+        "columns": [
+          "route_type",
+          "movement",
+          "origin",
+          "destination",
+          "destination_role",
+          "product",
+          "period",
+          "scenario",
+          "probability",
+          "tonnes",
+          "osrm_km",
+          "expected_tonnes"
+        ]
+      },
+      "pattern_hits": [],
+      "explicit_private_field_names": [],
+      "registry_linkage_count": 215,
+      "rights_group": "flow_distance_output",
+      "rights_sources": [
+        "External SICARM/Conab-derived research workbook and stable facility keys",
+        "OpenStreetMap road data via Geofabrik and OSRM",
+        "Model Agrologistic computed decisions or audit metadata"
+      ],
+      "proposed_disposition": "hold_for_asset_specific_release_decision",
+      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "flow_distance_output"
+      }
+    },
+    {
+      "proposed_member": "historical-companions/scalar_h215_d_det_investments.csv.gz",
+      "sha256": "713d28cafb3a510a9653984710be6d7d5b3926b56f38d0d0c989c400676dae47",
+      "scope": {
+        "format": "csv.gz",
+        "rows": 215,
+        "columns": [
+          "warehouse",
+          "municipality",
+          "uf",
+          "role",
+          "candidate_capacity_t",
+          "expansion_capacity_t",
+          "bulk_capacity_t",
+          "open",
+          "expand",
+          "bulkify"
+        ]
+      },
+      "pattern_hits": [],
+      "explicit_private_field_names": [],
+      "registry_linkage_count": 215,
+      "rights_group": "investment_table",
+      "rights_sources": [
+        "External SICARM/Conab-derived research workbook and stable facility keys",
+        "Model Agrologistic computed decisions or audit metadata"
+      ],
+      "proposed_disposition": "hold_for_asset_specific_release_decision",
+      "review_action": "Confirm redistribution of facility keys and site-level modeled decisions. Preserve role and capacity units if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "investment_table"
+      }
+    },
+    {
+      "proposed_member": "historical-companions/scalar_h215_d_det_od_matrix.csv.gz",
+      "sha256": "43a073643c9935903b3262f655a1d45bf8f8b0d729020470461847481c1aeae4",
+      "scope": {
+        "format": "csv.gz",
+        "rows": 2914,
+        "columns": [
+          "route_type",
+          "origin",
+          "destination",
+          "destination_role",
+          "product",
+          "expected_horizon_tonnes",
+          "osrm_km"
+        ]
+      },
+      "pattern_hits": [],
+      "explicit_private_field_names": [],
+      "registry_linkage_count": 215,
+      "rights_group": "flow_distance_output",
+      "rights_sources": [
+        "External SICARM/Conab-derived research workbook and stable facility keys",
+        "OpenStreetMap road data via Geofabrik and OSRM",
+        "Model Agrologistic computed decisions or audit metadata"
+      ],
+      "proposed_disposition": "hold_for_asset_specific_release_decision",
+      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "flow_distance_output"
+      }
+    },
+    {
+      "proposed_member": "historical-companions/scalar_h215_d_sto_flows.csv.gz",
+      "sha256": "ca7c4000ddcf7d276f3476e60be68224a96cbfd2beb833c5f212e267086aea54",
+      "scope": {
+        "format": "csv.gz",
+        "rows": 151327,
+        "columns": [
+          "route_type",
+          "movement",
+          "origin",
+          "destination",
+          "destination_role",
+          "product",
+          "period",
+          "scenario",
+          "probability",
+          "tonnes",
+          "osrm_km",
+          "expected_tonnes"
+        ]
+      },
+      "pattern_hits": [],
+      "explicit_private_field_names": [],
+      "registry_linkage_count": 215,
+      "rights_group": "flow_distance_output",
+      "rights_sources": [
+        "External SICARM/Conab-derived research workbook and stable facility keys",
+        "OpenStreetMap road data via Geofabrik and OSRM",
+        "Model Agrologistic computed decisions or audit metadata"
+      ],
+      "proposed_disposition": "hold_for_asset_specific_release_decision",
+      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "flow_distance_output"
+      }
+    },
+    {
+      "proposed_member": "historical-companions/scalar_h215_d_sto_investments.csv.gz",
+      "sha256": "28154a52db1438d4b08f450002a0b6f1a70cdd0516875d835469135ac897b35b",
+      "scope": {
+        "format": "csv.gz",
+        "rows": 215,
+        "columns": [
+          "warehouse",
+          "municipality",
+          "uf",
+          "role",
+          "candidate_capacity_t",
+          "expansion_capacity_t",
+          "bulk_capacity_t",
+          "open",
+          "expand",
+          "bulkify"
+        ]
+      },
+      "pattern_hits": [],
+      "explicit_private_field_names": [],
+      "registry_linkage_count": 215,
+      "rights_group": "investment_table",
+      "rights_sources": [
+        "External SICARM/Conab-derived research workbook and stable facility keys",
+        "Model Agrologistic computed decisions or audit metadata"
+      ],
+      "proposed_disposition": "hold_for_asset_specific_release_decision",
+      "review_action": "Confirm redistribution of facility keys and site-level modeled decisions. Preserve role and capacity units if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "investment_table"
+      }
+    },
+    {
+      "proposed_member": "historical-companions/scalar_h215_d_sto_od_matrix.csv.gz",
+      "sha256": "bac0f89e805351acb0cfac16b6393c8db2fb3f6757e1acc50fd5a03461011581",
+      "scope": {
+        "format": "csv.gz",
+        "rows": 3933,
+        "columns": [
+          "route_type",
+          "origin",
+          "destination",
+          "destination_role",
+          "product",
+          "expected_horizon_tonnes",
+          "osrm_km"
+        ]
+      },
+      "pattern_hits": [],
+      "explicit_private_field_names": [],
+      "registry_linkage_count": 215,
+      "rights_group": "flow_distance_output",
+      "rights_sources": [
+        "External SICARM/Conab-derived research workbook and stable facility keys",
+        "OpenStreetMap road data via Geofabrik and OSRM",
+        "Model Agrologistic computed decisions or audit metadata"
+      ],
+      "proposed_disposition": "hold_for_asset_specific_release_decision",
+      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "flow_distance_output"
+      }
+    },
+    {
+      "proposed_member": "historical-companions/scalar_h215_sto_flows.csv.gz",
+      "sha256": "442e9baffc34dd31c3ea5a6c2ea181d508b9f90509602d395682cbcb50b7b091",
+      "scope": {
+        "format": "csv.gz",
+        "rows": 194488,
+        "columns": [
+          "route_type",
+          "movement",
+          "origin",
+          "destination",
+          "destination_role",
+          "product",
+          "period",
+          "scenario",
+          "probability",
+          "tonnes",
+          "osrm_km",
+          "expected_tonnes"
+        ]
+      },
+      "pattern_hits": [],
+      "explicit_private_field_names": [],
+      "registry_linkage_count": 215,
+      "rights_group": "flow_distance_output",
+      "rights_sources": [
+        "External SICARM/Conab-derived research workbook and stable facility keys",
+        "OpenStreetMap road data via Geofabrik and OSRM",
+        "Model Agrologistic computed decisions or audit metadata"
+      ],
+      "proposed_disposition": "hold_for_asset_specific_release_decision",
+      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "flow_distance_output"
+      }
+    },
+    {
+      "proposed_member": "historical-companions/scalar_h215_sto_investments.csv.gz",
+      "sha256": "70ad49783b685da36f8ef40713fc8841f1466eda5abf2e791e443abdc520ad7c",
+      "scope": {
+        "format": "csv.gz",
+        "rows": 215,
+        "columns": [
+          "warehouse",
+          "municipality",
+          "uf",
+          "role",
+          "candidate_capacity_t",
+          "expansion_capacity_t",
+          "bulk_capacity_t",
+          "open",
+          "expand",
+          "bulkify"
+        ]
+      },
+      "pattern_hits": [],
+      "explicit_private_field_names": [],
+      "registry_linkage_count": 215,
+      "rights_group": "investment_table",
+      "rights_sources": [
+        "External SICARM/Conab-derived research workbook and stable facility keys",
+        "Model Agrologistic computed decisions or audit metadata"
+      ],
+      "proposed_disposition": "hold_for_asset_specific_release_decision",
+      "review_action": "Confirm redistribution of facility keys and site-level modeled decisions. Preserve role and capacity units if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "investment_table"
+      }
+    },
+    {
+      "proposed_member": "historical-companions/scalar_h215_sto_od_matrix.csv.gz",
+      "sha256": "d12a28cb696eaac55261a1e229d575e8729542d24a2f81d0bfb5214a23958ca2",
+      "scope": {
+        "format": "csv.gz",
+        "rows": 4090,
+        "columns": [
+          "route_type",
+          "origin",
+          "destination",
+          "destination_role",
+          "product",
+          "expected_horizon_tonnes",
+          "osrm_km"
+        ]
+      },
+      "pattern_hits": [],
+      "explicit_private_field_names": [],
+      "registry_linkage_count": 215,
+      "rights_group": "flow_distance_output",
+      "rights_sources": [
+        "External SICARM/Conab-derived research workbook and stable facility keys",
+        "OpenStreetMap road data via Geofabrik and OSRM",
+        "Model Agrologistic computed decisions or audit metadata"
+      ],
+      "proposed_disposition": "hold_for_asset_specific_release_decision",
+      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "flow_distance_output"
+      }
+    },
+    {
+      "proposed_member": "historical-companions/scalar_h300_t1_flows.csv.gz",
+      "sha256": "10d6b75afc89c78ba89ed59f83955c216cdd41f2c25544afb5a37d0aea14a103",
+      "scope": {
+        "format": "csv.gz",
+        "rows": 227514,
+        "columns": [
+          "route_type",
+          "movement",
+          "origin",
+          "destination",
+          "destination_role",
+          "product",
+          "period",
+          "scenario",
+          "probability",
+          "tonnes",
+          "osrm_km",
+          "expected_tonnes"
+        ]
+      },
+      "pattern_hits": [],
+      "explicit_private_field_names": [],
+      "registry_linkage_count": 300,
+      "rights_group": "flow_distance_output",
+      "rights_sources": [
+        "External SICARM/Conab-derived research workbook and stable facility keys",
+        "OpenStreetMap road data via Geofabrik and OSRM",
+        "Model Agrologistic computed decisions or audit metadata"
+      ],
+      "proposed_disposition": "hold_for_asset_specific_release_decision",
+      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "flow_distance_output"
+      }
+    },
+    {
+      "proposed_member": "historical-companions/scalar_h300_t1_investments.csv.gz",
+      "sha256": "3ce65d0664db62c20d2512203921794c23ae9de46a42bb404d8c31ecca3f2af5",
+      "scope": {
+        "format": "csv.gz",
+        "rows": 300,
+        "columns": [
+          "warehouse",
+          "municipality",
+          "uf",
+          "role",
+          "candidate_capacity_t",
+          "expansion_capacity_t",
+          "bulk_capacity_t",
+          "open",
+          "expand",
+          "bulkify"
+        ]
+      },
+      "pattern_hits": [],
+      "explicit_private_field_names": [],
+      "registry_linkage_count": 300,
+      "rights_group": "investment_table",
+      "rights_sources": [
+        "External SICARM/Conab-derived research workbook and stable facility keys",
+        "Model Agrologistic computed decisions or audit metadata"
+      ],
+      "proposed_disposition": "hold_for_asset_specific_release_decision",
+      "review_action": "Confirm redistribution of facility keys and site-level modeled decisions. Preserve role and capacity units if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "investment_table"
+      }
+    },
+    {
+      "proposed_member": "historical-companions/scalar_h300_t1_od_matrix.csv.gz",
+      "sha256": "f2d6713d0d95e8c927b80d042bcc40e2716b8c5fe31e8ba3ad73b8a8cf6d6c47",
+      "scope": {
+        "format": "csv.gz",
+        "rows": 5058,
+        "columns": [
+          "route_type",
+          "origin",
+          "destination",
+          "destination_role",
+          "product",
+          "expected_horizon_tonnes",
+          "osrm_km"
+        ]
+      },
+      "pattern_hits": [],
+      "explicit_private_field_names": [],
+      "registry_linkage_count": 300,
+      "rights_group": "flow_distance_output",
+      "rights_sources": [
+        "External SICARM/Conab-derived research workbook and stable facility keys",
+        "OpenStreetMap road data via Geofabrik and OSRM",
+        "Model Agrologistic computed decisions or audit metadata"
+      ],
+      "proposed_disposition": "hold_for_asset_specific_release_decision",
+      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "flow_distance_output"
+      }
+    },
+    {
+      "proposed_member": "historical-companions/scalar_h400_t1_flows.csv.gz",
+      "sha256": "001648888a4d15f5a9319d1fd35e41ad19a735e6c6124436894a6a7daf3aaac4",
+      "scope": {
+        "format": "csv.gz",
+        "rows": 266593,
+        "columns": [
+          "route_type",
+          "movement",
+          "origin",
+          "destination",
+          "destination_role",
+          "product",
+          "period",
+          "scenario",
+          "probability",
+          "tonnes",
+          "osrm_km",
+          "expected_tonnes"
+        ]
+      },
+      "pattern_hits": [],
+      "explicit_private_field_names": [],
+      "registry_linkage_count": 400,
+      "rights_group": "flow_distance_output",
+      "rights_sources": [
+        "External SICARM/Conab-derived research workbook and stable facility keys",
+        "OpenStreetMap road data via Geofabrik and OSRM",
+        "Model Agrologistic computed decisions or audit metadata"
+      ],
+      "proposed_disposition": "hold_for_asset_specific_release_decision",
+      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "flow_distance_output"
+      }
+    },
+    {
+      "proposed_member": "historical-companions/scalar_h400_t1_investments.csv.gz",
+      "sha256": "73232f9382cf0429e62a019c94d015e0149893168d153c7c93eec0db15e5ab18",
+      "scope": {
+        "format": "csv.gz",
+        "rows": 400,
+        "columns": [
+          "warehouse",
+          "municipality",
+          "uf",
+          "role",
+          "candidate_capacity_t",
+          "expansion_capacity_t",
+          "bulk_capacity_t",
+          "open",
+          "expand",
+          "bulkify"
+        ]
+      },
+      "pattern_hits": [],
+      "explicit_private_field_names": [],
+      "registry_linkage_count": 400,
+      "rights_group": "investment_table",
+      "rights_sources": [
+        "External SICARM/Conab-derived research workbook and stable facility keys",
+        "Model Agrologistic computed decisions or audit metadata"
+      ],
+      "proposed_disposition": "hold_for_asset_specific_release_decision",
+      "review_action": "Confirm redistribution of facility keys and site-level modeled decisions. Preserve role and capacity units if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "investment_table"
+      }
+    },
+    {
+      "proposed_member": "historical-companions/scalar_h400_t1_od_matrix.csv.gz",
+      "sha256": "fa394ce4f439c3d8df6caff71add3d8acfaf718abcc539819a97d3c6fa541239",
+      "scope": {
+        "format": "csv.gz",
+        "rows": 6143,
+        "columns": [
+          "route_type",
+          "origin",
+          "destination",
+          "destination_role",
+          "product",
+          "expected_horizon_tonnes",
+          "osrm_km"
+        ]
+      },
+      "pattern_hits": [],
+      "explicit_private_field_names": [],
+      "registry_linkage_count": 400,
+      "rights_group": "flow_distance_output",
+      "rights_sources": [
+        "External SICARM/Conab-derived research workbook and stable facility keys",
+        "OpenStreetMap road data via Geofabrik and OSRM",
+        "Model Agrologistic computed decisions or audit metadata"
+      ],
+      "proposed_disposition": "hold_for_asset_specific_release_decision",
+      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "flow_distance_output"
+      }
+    },
+    {
+      "proposed_member": "historical-companions/scalar_h500_t1_flows.csv.gz",
+      "sha256": "14bcb42272d57fb361084b36aab2511bd15b2787cc9922829c13677464321541",
+      "scope": {
+        "format": "csv.gz",
+        "rows": 289785,
+        "columns": [
+          "route_type",
+          "movement",
+          "origin",
+          "destination",
+          "destination_role",
+          "product",
+          "period",
+          "scenario",
+          "probability",
+          "tonnes",
+          "osrm_km",
+          "expected_tonnes"
+        ]
+      },
+      "pattern_hits": [],
+      "explicit_private_field_names": [],
+      "registry_linkage_count": 500,
+      "rights_group": "flow_distance_output",
+      "rights_sources": [
+        "External SICARM/Conab-derived research workbook and stable facility keys",
+        "OpenStreetMap road data via Geofabrik and OSRM",
+        "Model Agrologistic computed decisions or audit metadata"
+      ],
+      "proposed_disposition": "hold_for_asset_specific_release_decision",
+      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "flow_distance_output"
+      }
+    },
+    {
+      "proposed_member": "historical-companions/scalar_h500_t1_investments.csv.gz",
+      "sha256": "998cdd97e59707109138b36d0cc2d69609383e45f006b14a3c2ffd3fb64271a9",
+      "scope": {
+        "format": "csv.gz",
+        "rows": 500,
+        "columns": [
+          "warehouse",
+          "municipality",
+          "uf",
+          "role",
+          "candidate_capacity_t",
+          "expansion_capacity_t",
+          "bulk_capacity_t",
+          "open",
+          "expand",
+          "bulkify"
+        ]
+      },
+      "pattern_hits": [],
+      "explicit_private_field_names": [],
+      "registry_linkage_count": 500,
+      "rights_group": "investment_table",
+      "rights_sources": [
+        "External SICARM/Conab-derived research workbook and stable facility keys",
+        "Model Agrologistic computed decisions or audit metadata"
+      ],
+      "proposed_disposition": "hold_for_asset_specific_release_decision",
+      "review_action": "Confirm redistribution of facility keys and site-level modeled decisions. Preserve role and capacity units if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "investment_table"
+      }
+    },
+    {
+      "proposed_member": "historical-companions/scalar_h500_t1_od_matrix.csv.gz",
+      "sha256": "b24dfcd8446dcc7e952136e6b2cf1c0cb6fcb0f6a3145d49ca4ee4fe300178ca",
+      "scope": {
+        "format": "csv.gz",
+        "rows": 7023,
+        "columns": [
+          "route_type",
+          "origin",
+          "destination",
+          "destination_role",
+          "product",
+          "expected_horizon_tonnes",
+          "osrm_km"
+        ]
+      },
+      "pattern_hits": [],
+      "explicit_private_field_names": [],
+      "registry_linkage_count": 500,
+      "rights_group": "flow_distance_output",
+      "rights_sources": [
+        "External SICARM/Conab-derived research workbook and stable facility keys",
+        "OpenStreetMap road data via Geofabrik and OSRM",
+        "Model Agrologistic computed decisions or audit metadata"
+      ],
+      "proposed_disposition": "hold_for_asset_specific_release_decision",
+      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "flow_distance_output"
+      }
+    },
+    {
+      "proposed_member": "historical-companions/scalar_highs_h215_w_native8h_startup_v2_flows.csv.gz",
+      "sha256": "37ba325e35d0a7f3e61beb9ab90ec4865b9648c816ceb42507b74edd250fc4fc",
+      "scope": {
+        "format": "csv.gz",
+        "rows": 182273,
+        "columns": [
+          "route_type",
+          "movement",
+          "origin",
+          "destination",
+          "destination_role",
+          "product",
+          "period",
+          "scenario",
+          "probability",
+          "tonnes",
+          "osrm_km",
+          "expected_tonnes"
+        ]
+      },
+      "pattern_hits": [],
+      "explicit_private_field_names": [],
+      "registry_linkage_count": 215,
+      "rights_group": "flow_distance_output",
+      "rights_sources": [
+        "External SICARM/Conab-derived research workbook and stable facility keys",
+        "OpenStreetMap road data via Geofabrik and OSRM",
+        "Model Agrologistic computed decisions or audit metadata"
+      ],
+      "proposed_disposition": "hold_for_asset_specific_release_decision",
+      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "flow_distance_output"
+      }
+    },
+    {
+      "proposed_member": "historical-companions/scalar_highs_h215_w_native8h_startup_v2_investments.csv.gz",
+      "sha256": "eb96670e8e65ee6d32f2fc764e1e1fa2124166938ea9d7c467c300087dddb2af",
+      "scope": {
+        "format": "csv.gz",
+        "rows": 215,
+        "columns": [
+          "warehouse",
+          "municipality",
+          "uf",
+          "role",
+          "candidate_capacity_t",
+          "expansion_capacity_t",
+          "bulk_capacity_t",
+          "open",
+          "expand",
+          "bulkify"
+        ]
+      },
+      "pattern_hits": [],
+      "explicit_private_field_names": [],
+      "registry_linkage_count": 215,
+      "rights_group": "investment_table",
+      "rights_sources": [
+        "External SICARM/Conab-derived research workbook and stable facility keys",
+        "Model Agrologistic computed decisions or audit metadata"
+      ],
+      "proposed_disposition": "hold_for_asset_specific_release_decision",
+      "review_action": "Confirm redistribution of facility keys and site-level modeled decisions. Preserve role and capacity units if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "investment_table"
+      }
+    },
+    {
+      "proposed_member": "historical-companions/scalar_highs_h215_w_native8h_startup_v2_od_matrix.csv.gz",
+      "sha256": "414196cf0f5ce7ca44cf32b4bce7c24965986d75bb454ca95222f7cffde87282",
+      "scope": {
+        "format": "csv.gz",
+        "rows": 3880,
+        "columns": [
+          "route_type",
+          "origin",
+          "destination",
+          "destination_role",
+          "product",
+          "expected_horizon_tonnes",
+          "osrm_km"
+        ]
+      },
+      "pattern_hits": [],
+      "explicit_private_field_names": [],
+      "registry_linkage_count": 215,
+      "rights_group": "flow_distance_output",
+      "rights_sources": [
+        "External SICARM/Conab-derived research workbook and stable facility keys",
+        "OpenStreetMap road data via Geofabrik and OSRM",
+        "Model Agrologistic computed decisions or audit metadata"
+      ],
+      "proposed_disposition": "hold_for_asset_specific_release_decision",
+      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "flow_distance_output"
+      }
+    },
+    {
+      "proposed_member": "osrm/osrm_h215_distances_km.csv.gz",
+      "sha256": "174190f3fd2832d0855c59054f6dc8c8120aca5e9bc7d4f173d701da7971a62c",
+      "scope": {
+        "format": "csv.gz",
+        "rows": 63289,
+        "columns": [
+          "Tipo_Arco",
+          "Origem",
+          "Destino",
+          "Distancia_km",
+          "Duracao_s",
+          "Fonte_Distancia",
+          "Motivo_Fallback"
+        ]
+      },
+      "pattern_hits": [],
+      "explicit_private_field_names": [],
+      "registry_linkage_count": 215,
+      "rights_group": "complete_distance_table",
+      "rights_sources": [
+        "External SICARM/Conab-derived research workbook and stable facility keys",
+        "OpenStreetMap road data via Geofabrik and OSRM"
+      ],
+      "proposed_disposition": "hold_for_asset_specific_release_decision",
+      "review_action": "Document OSM attribution and ODbL classification; confirm redistribution of joined external endpoint identifiers.",
+      "zenodo_release_proposal": {
+        "route": "controlled_original_for_exact_reproduction",
+        "policy": "complete_distance_table"
+      }
+    },
+    {
+      "proposed_member": "osrm/osrm_h300_distances_km.csv.gz",
+      "sha256": "80f77a8c150ec6e76b87edc99b8a96a94af5e6dc046d070c54b8c48f26ce6156",
+      "scope": {
+        "format": "csv.gz",
+        "rows": 113269,
+        "columns": [
+          "Tipo_Arco",
+          "Origem",
+          "Destino",
+          "Distancia_km",
+          "Duracao_s",
+          "Fonte_Distancia",
+          "Motivo_Fallback"
+        ]
+      },
+      "pattern_hits": [],
+      "explicit_private_field_names": [],
+      "registry_linkage_count": 300,
+      "rights_group": "complete_distance_table",
+      "rights_sources": [
+        "External SICARM/Conab-derived research workbook and stable facility keys",
+        "OpenStreetMap road data via Geofabrik and OSRM"
+      ],
+      "proposed_disposition": "hold_for_asset_specific_release_decision",
+      "review_action": "Document OSM attribution and ODbL classification; confirm redistribution of joined external endpoint identifiers.",
+      "zenodo_release_proposal": {
+        "route": "controlled_original_for_exact_reproduction",
+        "policy": "complete_distance_table"
+      }
+    },
+    {
+      "proposed_member": "osrm/osrm_h400_distances_km.csv.gz",
+      "sha256": "dfcaeeac383491888db97465235b8636b6830a4ce8b28015bfa466283276d4bf",
+      "scope": {
+        "format": "csv.gz",
+        "rows": 190569,
+        "columns": [
+          "Tipo_Arco",
+          "Origem",
+          "Destino",
+          "Distancia_km",
+          "Duracao_s",
+          "Fonte_Distancia",
+          "Motivo_Fallback"
+        ]
+      },
+      "pattern_hits": [],
+      "explicit_private_field_names": [],
+      "registry_linkage_count": 400,
+      "rights_group": "complete_distance_table",
+      "rights_sources": [
+        "External SICARM/Conab-derived research workbook and stable facility keys",
+        "OpenStreetMap road data via Geofabrik and OSRM"
+      ],
+      "proposed_disposition": "hold_for_asset_specific_release_decision",
+      "review_action": "Document OSM attribution and ODbL classification; confirm redistribution of joined external endpoint identifiers.",
+      "zenodo_release_proposal": {
+        "route": "controlled_original_for_exact_reproduction",
+        "policy": "complete_distance_table"
+      }
+    },
+    {
+      "proposed_member": "osrm/osrm_h500_distances_km.csv.gz",
+      "sha256": "84ac2bfd7b96f8d324bf7352cc8a605e7924acfe7e354a3ecda53af05a583dca",
+      "scope": {
+        "format": "csv.gz",
+        "rows": 287869,
+        "columns": [
+          "Tipo_Arco",
+          "Origem",
+          "Destino",
+          "Distancia_km",
+          "Duracao_s",
+          "Fonte_Distancia",
+          "Motivo_Fallback"
+        ]
+      },
+      "pattern_hits": [],
+      "explicit_private_field_names": [],
+      "registry_linkage_count": 500,
+      "rights_group": "complete_distance_table",
+      "rights_sources": [
+        "External SICARM/Conab-derived research workbook and stable facility keys",
+        "OpenStreetMap road data via Geofabrik and OSRM"
+      ],
+      "proposed_disposition": "hold_for_asset_specific_release_decision",
+      "review_action": "Document OSM attribution and ODbL classification; confirm redistribution of joined external endpoint identifiers.",
+      "zenodo_release_proposal": {
+        "route": "controlled_original_for_exact_reproduction",
+        "policy": "complete_distance_table"
+      }
+    },
+    {
+      "proposed_member": "paired-h300/h300-w-sto-gurobi-t1-r1_flows.csv.gz",
+      "sha256": "f5b22dd8ae8d108eb33f2d876a839f6030111988ed10f575ca31296e0c31bf4b",
+      "scope": {
+        "format": "csv.gz",
+        "rows": 225891,
+        "columns": [
+          "route_type",
+          "movement",
+          "origin",
+          "destination",
+          "destination_role",
+          "product",
+          "period",
+          "scenario",
+          "probability",
+          "tonnes",
+          "osrm_km",
+          "expected_tonnes"
+        ]
+      },
+      "pattern_hits": [],
+      "explicit_private_field_names": [],
+      "registry_linkage_count": 300,
+      "rights_group": "flow_distance_output",
+      "rights_sources": [
+        "External SICARM/Conab-derived research workbook and stable facility keys",
+        "OpenStreetMap road data via Geofabrik and OSRM",
+        "Model Agrologistic computed decisions or audit metadata"
+      ],
+      "proposed_disposition": "hold_for_asset_specific_release_decision",
+      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "flow_distance_output"
+      }
+    },
+    {
+      "proposed_member": "paired-h300/h300-w-sto-gurobi-t1-r1_investments.csv.gz",
+      "sha256": "3ce65d0664db62c20d2512203921794c23ae9de46a42bb404d8c31ecca3f2af5",
+      "scope": {
+        "format": "csv.gz",
+        "rows": 300,
+        "columns": [
+          "warehouse",
+          "municipality",
+          "uf",
+          "role",
+          "candidate_capacity_t",
+          "expansion_capacity_t",
+          "bulk_capacity_t",
+          "open",
+          "expand",
+          "bulkify"
+        ]
+      },
+      "pattern_hits": [],
+      "explicit_private_field_names": [],
+      "registry_linkage_count": 300,
+      "rights_group": "investment_table",
+      "rights_sources": [
+        "External SICARM/Conab-derived research workbook and stable facility keys",
+        "Model Agrologistic computed decisions or audit metadata"
+      ],
+      "proposed_disposition": "hold_for_asset_specific_release_decision",
+      "review_action": "Confirm redistribution of facility keys and site-level modeled decisions. Preserve role and capacity units if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "investment_table"
+      }
+    },
+    {
+      "proposed_member": "paired-h300/h300-w-sto-gurobi-t1-r1_od_matrix.csv.gz",
+      "sha256": "dab2dd3205e5d1f6c742d20eb820293aee60cbcd54b95ec2c2bc542fa17b4a63",
+      "scope": {
+        "format": "csv.gz",
+        "rows": 5079,
+        "columns": [
+          "route_type",
+          "origin",
+          "destination",
+          "destination_role",
+          "product",
+          "expected_horizon_tonnes",
+          "osrm_km"
+        ]
+      },
+      "pattern_hits": [],
+      "explicit_private_field_names": [],
+      "registry_linkage_count": 300,
+      "rights_group": "flow_distance_output",
+      "rights_sources": [
+        "External SICARM/Conab-derived research workbook and stable facility keys",
+        "OpenStreetMap road data via Geofabrik and OSRM",
+        "Model Agrologistic computed decisions or audit metadata"
+      ],
+      "proposed_disposition": "hold_for_asset_specific_release_decision",
+      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "flow_distance_output"
+      }
+    },
+    {
+      "proposed_member": "paired-h300/h300-w-sto-highs-t1-r1_flows.csv.gz",
+      "sha256": "767f1fb31952bc461ba72b0ceadc6bb5574f9c884ce9117d37b25face15a7ab5",
+      "scope": {
+        "format": "csv.gz",
+        "rows": 215100,
+        "columns": [
+          "route_type",
+          "movement",
+          "origin",
+          "destination",
+          "destination_role",
+          "product",
+          "period",
+          "scenario",
+          "probability",
+          "tonnes",
+          "osrm_km",
+          "expected_tonnes"
+        ]
+      },
+      "pattern_hits": [],
+      "explicit_private_field_names": [],
+      "registry_linkage_count": 300,
+      "rights_group": "flow_distance_output",
+      "rights_sources": [
+        "External SICARM/Conab-derived research workbook and stable facility keys",
+        "OpenStreetMap road data via Geofabrik and OSRM",
+        "Model Agrologistic computed decisions or audit metadata"
+      ],
+      "proposed_disposition": "hold_for_asset_specific_release_decision",
+      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "flow_distance_output"
+      }
+    },
+    {
+      "proposed_member": "paired-h300/h300-w-sto-highs-t1-r1_investments.csv.gz",
+      "sha256": "8fabf1d9983e316e3881c80dea6f94e6b149aac27a944919d366cc6a8922542f",
+      "scope": {
+        "format": "csv.gz",
+        "rows": 300,
+        "columns": [
+          "warehouse",
+          "municipality",
+          "uf",
+          "role",
+          "candidate_capacity_t",
+          "expansion_capacity_t",
+          "bulk_capacity_t",
+          "open",
+          "expand",
+          "bulkify"
+        ]
+      },
+      "pattern_hits": [],
+      "explicit_private_field_names": [],
+      "registry_linkage_count": 300,
+      "rights_group": "investment_table",
+      "rights_sources": [
+        "External SICARM/Conab-derived research workbook and stable facility keys",
+        "Model Agrologistic computed decisions or audit metadata"
+      ],
+      "proposed_disposition": "hold_for_asset_specific_release_decision",
+      "review_action": "Confirm redistribution of facility keys and site-level modeled decisions. Preserve role and capacity units if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "investment_table"
+      }
+    },
+    {
+      "proposed_member": "paired-h300/h300-w-sto-highs-t1-r1_od_matrix.csv.gz",
+      "sha256": "311e05b3dbcdb9a2f546ea4666a289edae77e570316a7e7e6906fefd024e4237",
+      "scope": {
+        "format": "csv.gz",
+        "rows": 4902,
+        "columns": [
+          "route_type",
+          "origin",
+          "destination",
+          "destination_role",
+          "product",
+          "expected_horizon_tonnes",
+          "osrm_km"
+        ]
+      },
+      "pattern_hits": [],
+      "explicit_private_field_names": [],
+      "registry_linkage_count": 300,
+      "rights_group": "flow_distance_output",
+      "rights_sources": [
+        "External SICARM/Conab-derived research workbook and stable facility keys",
+        "OpenStreetMap road data via Geofabrik and OSRM",
+        "Model Agrologistic computed decisions or audit metadata"
+      ],
+      "proposed_disposition": "hold_for_asset_specific_release_decision",
+      "review_action": "Confirm upstream terms for facility keys and OSM-derived distances. Preserve directed keys, units and aggregation scope if approved.",
+      "zenodo_release_proposal": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "policy": "flow_distance_output"
+      }
+    },
+    {
+      "proposed_member": "paired-h300/h300_pair_flow_distance.sqlite3",
+      "sha256": "77ca579727277a0de9a70c097c997cb7b685f4a6218d25a7223f4116461f26ca",
+      "scope": {
+        "format": "sqlite3",
+        "tables": {
+          "flows": {
+            "columns": [
+              "case_id",
+              "route_type",
+              "origin",
+              "destination",
+              "role",
+              "product",
+              "period",
+              "scenario",
+              "probability",
+              "tonnes",
+              "osrm_km"
+            ],
+            "rows": 440991
+          }
+        },
+        "embedded_json_fields": []
+      },
+      "pattern_hits": [],
+      "explicit_private_field_names": [],
+      "registry_linkage_count": 300,
+      "rights_group": "mixed_sqlite_companion",
+      "rights_sources": [
+        "External SICARM/Conab-derived research workbook and stable facility keys",
+        "OpenStreetMap road data via Geofabrik and OSRM",
+        "Model Agrologistic computed decisions or audit metadata"
+      ],
+      "proposed_disposition": "hold_for_asset_specific_release_decision",
+      "review_action": "Review combined rights and metadata fields; rebuild any approved derivative from reviewed logical rows with a fresh checksum.",
+      "zenodo_release_proposal": {
+        "route": "controlled_original_for_exact_reproduction",
+        "policy": "mixed_sqlite_companion"
+      }
+    },
+    {
+      "proposed_member": "paired-h300/h300_W_selected_arcs.csv.gz",
+      "sha256": "acd90e7ea89ec6154d542f11c380f7ffe7b438e4c7ad4681c3b522f25b7fe655",
+      "scope": {
+        "format": "csv.gz",
+        "rows": 45240,
+        "columns": [
+          "route_type",
+          "origin",
+          "destination",
+          "product",
+          "osrm_km",
+          "connectivity_repair"
+        ]
+      },
+      "pattern_hits": [],
+      "explicit_private_field_names": [],
+      "registry_linkage_count": 300,
+      "rights_group": "admissible_graph",
+      "rights_sources": [
+        "External SICARM/Conab-derived research workbook and stable facility keys",
+        "OpenStreetMap road data via Geofabrik and OSRM"
+      ],
+      "proposed_disposition": "hold_for_asset_specific_release_decision",
+      "review_action": "Document OSRM distance lineage and screening provenance; confirm redistribution of external endpoints and added terms.",
+      "zenodo_release_proposal": {
+        "route": "controlled_original_for_exact_reproduction",
+        "policy": "admissible_graph"
+      }
+    },
+    {
+      "proposed_member": "paired-h300/h300_W_selected_graph.json.gz",
+      "sha256": "7eeb43663e9f5c9a7bbc48998cad49be702dc336e57a1d983e5e81f608f707c2",
+      "scope": {
+        "format": "json.gz",
+        "arc_counts": {
+          "dc": 4800,
+          "dd": 36000,
+          "oc": 0,
+          "od": 4440,
+          "repair_dc": 0,
+          "repair_dd": 0,
+          "repair_oc": 0,
+          "repair_od": 0
+        }
+      },
+      "pattern_hits": [],
+      "explicit_private_field_names": [],
+      "registry_linkage_count": 300,
+      "rights_group": "admissible_graph",
+      "rights_sources": [
+        "External SICARM/Conab-derived research workbook and stable facility keys",
+        "OpenStreetMap road data via Geofabrik and OSRM"
+      ],
+      "proposed_disposition": "hold_for_asset_specific_release_decision",
+      "review_action": "Document OSRM distance lineage and screening provenance; confirm redistribution of external endpoints and added terms.",
+      "zenodo_release_proposal": {
+        "route": "controlled_original_for_exact_reproduction",
+        "policy": "admissible_graph"
+      }
+    }
+  ],
+  "sicarm_redistribution_review": {
+    "reviewed_on": "2026-11-12",
+    "registry_input": "external-inputs/Warehouses_Existing_Candidate_All.xlsx",
+    "finding": "Conab documents public consultation by CDA and states that it is outside the scope of Decree 8.777/2016. The terms reviewed do not establish redistribution of the exact historical workbook, its CDA crosswalk or facility-linked research outputs.",
+    "evidence_limit": "The interactive lookup timed out during source verification. The official SICARM description and storage portal establish the consultation route. No versioned licence or release terms for the exact extract were located.",
+    "minimum_source_evidence": "Record the original extract or publication, version or date, applicable field-level reuse terms, and terms for the supplied workbook and CDA crosswalk. Determine whether joined attributes can identify natural persons before sharing facility-level data.",
+    "public_documentation_candidate": [
+      "README without private paths or identifiers",
+      "schema and field dictionary without record examples containing facility keys",
+      "provenance links and applicable attribution",
+      "SHA-256 and public source/release identities"
+    ],
+    "original_payload_open_candidates": 0,
+    "originals_in_controlled_custody": 41,
+    "source_files_proposed_for_aggregate_derivation": 33,
+    "exact_reproduction_assets_in_controlled_custody": 8,
+    "aggregate_review": "Review proposed tables together with existing maps, summaries and the existing deposit for singleton or dominant groups and reconstruction by differencing. Coarsen or omit revealing groups, remove stable and surrogate facility keys, preserve units and denominators, and hash derivatives separately.",
+    "restricted_access_scope": "Keep originals in project custody. A future restricted record is a delivery option only where the rights permit transfer and its access terms preserve applicable ODbL rights. Keep mixed-rights originals outside the public package when terms cannot be reconciled.",
+    "roadmap_only": true,
+    "file_group_policies": {
+      "mixed_sqlite_companion": {
+        "route": "controlled_original_for_exact_reproduction",
+        "aggregate": "Use reviewed aggregate CSV tables first. If a public SQLite companion is useful, construct a new database only from approved aggregate rows.",
+        "original": "controlled_project_custody"
+      },
+      "flow_distance_output": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "aggregate": "Positive flow totals and distance summaries by case, product, directed movement family and coarse origin/destination region. Preserve weighting, units and the statistic denominator.",
+        "original": "controlled_project_custody"
+      },
+      "investment_table": {
+        "route": "aggregate_for_public_zenodo_candidate",
+        "aggregate": "Counts and capacity totals by case, decision type and UF or region. Preserve separate opening, expansion and bulk-handling measures.",
+        "original": "controlled_project_custody"
+      },
+      "complete_distance_table": {
+        "route": "controlled_original_for_exact_reproduction",
+        "aggregate": "Optional directed distance coverage and distribution statistics by arc family and broad geography, subject to the applicable road-data terms.",
+        "original": "controlled_project_custody"
+      },
+      "admissible_graph": {
+        "route": "controlled_original_for_exact_reproduction",
+        "aggregate": "Optional directed arc counts by product and movement family, with repair counts where disclosure permits.",
+        "original": "controlled_project_custody"
+      }
+    },
+    "local_aggregate_validation": {
+      "status": "validated_locally_pending_distribution_review",
+      "original_payloads_verified_before_and_after": 33,
+      "cases_processed": 11,
+      "source_rows": {
+        "flows": 1985052,
+        "investments": 3090,
+        "od_matrix": 50152
+      },
+      "max_flow_to_od_absolute_delta_t": 2.980232238769531e-7,
+      "numeric_verification": {
+        "status": "passed_independent_decimal_reduction",
+        "receipt_sha256": "59402629867adc43376cf9f752e898d25694c48878782b153e97901e460e95fb"
+      },
+      "local_validation_manifest_sha256": "86df966bcd9a36bbe62e0b01184f6e4ef081847acf971a4d38b983426f66e256",
+      "local_checksum_manifest_members": 5,
+      "candidates": {
+        "investment": {
+          "retained_rows": 11,
+          "cases_with_retained_rows": 8,
+          "withheld_nonzero_national_rows": 22
+        },
+        "flow": {
+          "retained_rows": 62,
+          "cases_with_retained_rows": 11,
+          "withheld_nonzero_national_rows": 8
+        }
+      },
+      "retained_geographic_resolution": "national_only",
+      "existing_github_investment_lists_matching_source_rows": 11,
+      "disclosure_screen": {
+        "minimum_contributing_units": 5,
+        "maximum_single_unit_absolute_share": 0.8,
+        "comparisons": "Within each retained grouping, screen single cells and case-pair differences. Screen origins and destinations separately for expected tonnes and tonne-kilometres."
+      },
+      "distribution_scope": "Local files only. Further joint review with already accessible maps, flow tables and the v0.2.0 deposit, plus road-data terms for any public derivative."
+    },
+    "public_overlap_and_package_proposal": {
+      "status": "reviewed_proposal_pending_release_authorization",
+      "audit_receipt_sha256": "9198713c45e7c71a5b7e23f9b55934540186973b222945b451e27e2394b8636f",
+      "main_commit": "3df439d29224b3501c6896605de4402813208052",
+      "public_git_blobs_verified": 19,
+      "zenodo": {
+        "doi": "10.5281/zenodo.22751909",
+        "files_verified": 12,
+        "access": "open",
+        "record_level_license": "mit-license",
+        "source_selection_entries": 822,
+        "candidate_csv_gz_hash_matches": 0,
+        "original_vector_hash_matches": 0,
+        "original_vectors_compared": 22,
+        "comparative_archive_members_reviewed": 19
+      },
+      "verified_public_overlap": {
+        "published_investment_lists_matching_source": 11,
+        "map_warehouse_case_rows_joinable_to_deposited_operator": 3090,
+        "distinct_map_warehouses_joinable_to_deposited_operator": 500,
+        "map_json_cases_with_route_totals": 4,
+        "map_route_totals_reconciled": 12366,
+        "od_rows_with_deposited_distance_match": 50152,
+        "published_movement_totals_reconciled": 36,
+        "published_product_arc_examples_reconciled": 45,
+        "retained_flow_rows_cross_checked": 62,
+        "retained_flow_rows_passing_known_terms_residual_screen": 62,
+        "case_movement_groups_with_suppressed_product_inferable_from_published_total": 3
+      },
+      "proposal": {
+        "type": "separate_supplementary_dataset",
+        "relation_to_source": "IsSupplementTo",
+        "files": [
+          "README.md",
+          "DATA_DICTIONARY.md",
+          "investments-national.csv",
+          "PROVENANCE.json",
+          "RIGHTS.md",
+          "SHA256SUMS.txt"
+        ],
+        "investment_rows": 11,
+        "investment_cases": 8,
+        "local_only_flow_rows": 62,
+        "full_resolution_files_to_redeposit": 0
+      },
+      "road_data_review": {
+        "source": "Geofabrik Brazil 2026-09-01, OSRM 6.0.0 driving MLD",
+        "aggregate_flow_classification": "Potential Produced Work. Applicability of ODbL 4.4(c) and 4.6 remains tied to any upstream Derivative Database publicly used through the output.",
+        "exact_matrix_graph_and_mixed_database": "Separate rights and derivative-database assessment before any redistribution. Preserve applicable ODbL terms and preserve SICARM access limits.",
+        "sources": [
+          "https://opendatacommons.org/licenses/odbl/1-0/",
+          "https://osmfoundation.org/wiki/Licence/Community_Guidelines/Produced_Work_-_Guideline",
+          "https://osmfoundation.org/wiki/Licence/Attribution_Guidelines"
+        ]
+      },
+      "local_package": {
+        "status": "validated_local_package",
+        "archive": "agrologistic-mvp2-national-investments.zip",
+        "archive_sha256": "60bb0fb6af957e7842ea18ef45a75d37e4e1ff3dbd4e75274939c80288bf25ae",
+        "validation_receipt_sha256": "d42b08970fe68e18e626b20376869537e3269cde7c2b385f8252e926e4a81bb4",
+        "files": [
+          "DATA_DICTIONARY.md",
+          "LICENSE",
+          "PROVENANCE.json",
+          "README.md",
+          "RIGHTS.md",
+          "SHA256SUMS.txt",
+          "investments-national.csv"
+        ],
+        "public_investment_lists_verified": 11,
+        "investment_rows_independently_recalculated": 11,
+        "cases_represented": 8,
+        "flow_payload_included": false,
+        "deposit_status": "not_submitted"
+      }
+    }
+  }
+}
