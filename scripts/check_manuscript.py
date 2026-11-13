@@ -117,9 +117,6 @@ def check_scalar_scip_revision() -> None:
         or status["multisolver"]["h215_execution_admitted"] is not False
     ):
         raise ValueError("Prospective multisolver scope differs")
-    article = (MANUSCRIPT / "index.qmd").read_text(encoding="utf-8")
-    if "{{< include solver_results.qmd >}}" not in article:
-        raise ValueError("Reader solver comparison include differs")
 
 
 def check_highs_and_censored_scip_revision() -> None:
@@ -295,7 +292,7 @@ def check_reader_audience(article: str, supplement: str) -> None:
     text = article + "\n" + supplement
     forbidden = (
         r"(?i)coauthor|co-author",
-        r"(?i)\b(?:SCIP|CBC|PySCIPOpt|SoPlex)\b",
+        r"(?i)\b(?:HiGHS|SCIP|CBC|PySCIPOpt|SoPlex)\b",
         r"(?i)working revision|S6-B|S5 is closed|merge approval",
         r"(?i)million-valued",
         r"(?i)(?:penalt|emergency-weight)[^.\n]{0,100}(?:1000000|1,000,000)",
@@ -349,7 +346,7 @@ def check(*, rendered: bool = False, publication: bool = False) -> None:
     )
     if any(row["email"] not in email_lines for row in records):
         raise ValueError("SBC email block omits an author")
-    keys = re.findall(r"@(?:article|incollection|book|misc|phdthesis)\{([^,]+),", bibliography)
+    keys = re.findall(r"@(?:article|incollection|book|misc|phdthesis|techreport)\{([^,]+),", bibliography)
     cited = set(re.findall(r"(?<!\w)@([A-Za-z][A-Za-z0-9_-]*)", article))
     cited = {key for key in cited if not key.startswith(("eq-", "tbl-", "fig-", "sec-"))}
     if len(keys) != len(set(keys)) or cited - set(keys):
@@ -451,7 +448,7 @@ def check(*, rendered: bool = False, publication: bool = False) -> None:
     if not 3 <= len(highlights) <= 5 or any(len(line) > 85 for line in highlights):
         raise ValueError("Highlights require 3–5 statements of at most 85 characters")
     supplement = (MANUSCRIPT / "supplement/index.qmd").read_text(encoding="utf-8")
-    for name in ("appendix_c.qmd", "appendix_d.qmd", "appendix_e.qmd"):
+    for name in ("appendix_c.qmd", "appendix_d.qmd", "appendix_e.qmd", "appendix_f.qmd"):
         if "{{< include " + name + " >}}" not in supplement:
             raise ValueError("Missing implementation/data appendix include")
         supplement += "\n" + (MANUSCRIPT / "supplement" / name).read_text(encoding="utf-8")
@@ -461,13 +458,12 @@ def check(*, rendered: bool = False, publication: bool = False) -> None:
     supplement += "\n" + (
         MANUSCRIPT / "supplement/appendix_e_paired_h300.qmd"
     ).read_text(encoding="utf-8")
-    article += "\n" + (MANUSCRIPT / "scaling_pilot_results.qmd").read_text(encoding="utf-8")
     check_reader_audience(article, supplement)
     if re.search(r"(?m)^\$\s*$", supplement):
         raise ValueError("Display mathematics requires double-dollar delimiters")
     review_bib = bibliography + (MANUSCRIPT / "review-methods.bib").read_text(encoding="utf-8")
     review_keys = set(
-        re.findall(r"@(?:article|incollection|book|misc|phdthesis)\{([^,]+),", review_bib)
+        re.findall(r"@(?:article|incollection|book|misc|phdthesis|techreport)\{([^,]+),", review_bib)
     )
     review_cited = {
         key

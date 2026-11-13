@@ -2,26 +2,23 @@
 title: "Computational Scalability of Deterministic and Two-Stage Stochastic MILP Models for Grain-Storage Network Design and Hub Location"
 date: 2026-10-30
 abstract: >-
-  Designing grain-storage networks requires decisions about facility location,
-  storage capacity and grain handling before uncertain supply and demand are
-  known. The resulting mixed-integer linear programs can contain millions of
-  operating decisions, making computational requirements central to their use
-  in agricultural planning. This study evaluates deterministic and two-stage
-  stochastic models through model dimensions, construction and optimization
-  time, memory use and independently checked solution quality. Warehouse-only
-  instances contain 215 to 500 facilities, with nine supply–demand scenarios
-  in the stochastic model. The stochastic formulation grows from 14.1 to
-  63.4 million variables across this range. All nine warehouse-only Gurobi
-  observations satisfy the prescribed 1% relative-gap criterion; the
-  500-facility instance reaches a 0.21% gap in approximately 128 minutes of
-  native optimization. The returned stochastic plans allocate capacity
-  investment across the admitted candidate sites, indicating distributed
-  capacity sizing within the available network. Substantial handling and
-  storage exceedances and unmet demand remain in the penalized solutions.
-  The assessment therefore connects attainable computational scale to the
-  physical meaning of the investment and operating decisions. Evaluating
-  solution quality together with service, stock and throughput reveals
-  which conclusions the optimized plans support for grain-storage planning.
+  Designing grain-storage networks requires choosing facility locations and capacity
+  before supply and demand are known. We evaluate the computational scalability
+  of deterministic and two-stage stochastic mixed-integer linear programming
+  models for this problem on high-performance computing systems. Native gurobipy
+  experiments characterize model growth and validated investment decisions for
+  215 to 500 facilities. A 500-facility stochastic instance reaches 63.4 million
+  variables and returns a validated plan with a 0.21% relative gap after about
+  128 minutes of solver time. Complementary Pyomo/APPSI experiments with Gurobi
+  meet the 1% target in all 15 repeated h300 runs under the historical settings.
+  The lowest median termination time occurs at one solver thread. The planned
+  controlled h300 study compares dual simplex, barrier, deterministic concurrent
+  optimization and primal-dual hybrid gradient at fixed solution quality and
+  measured physical-core allocations. It also examines whether searching for
+  incumbents before the root relaxation improves time to a usable solution.
+  The returned investment plans distribute capacity across candidate sites,
+  with service and capacity exceedances reported alongside economic costs.
+
 keywords:
   - grain storage
   - network design
@@ -34,113 +31,112 @@ keywords:
 
 # Introduction
 
-Grain-storage infrastructure connects harvest-season arrivals to demand and
-export outlets over time. Its design requires both location and capacity
-decisions: sufficient storage stock does not imply adequate reception or shipping
-throughput. Adding candidate sites enlarges the discrete investment space and
-the directed logistics network. Products, planning periods and uncertainty
-scenarios replicate continuous operating decisions, increasing the matrix that
-must be constructed, held in memory and optimized.
+Brazilian agribusiness generates nearly a quarter of the national gross domestic
+product and accounts for over 40 percent of national exports
+[@basso_agriculture_2024]. Supported by technological intensification and total
+factor productivity growth over several decades, national grain production reached
+352 million metric tons in the 2024/25 crop year, mainly due to soybean and maize
+yields destined for both domestic and international markets [@conab_portal_2026b;
+@mascarenhas2014]. However, national static storage capacity remains below 65% of
+that volume [@conab_portal_2026a] and logistics depend on a non-optimized network.
+
+Brazil's Artificial Intelligence Plan identifies high-performance computing
+infrastructure and technical capacity as priorities for research and innovation
+[@mcti2025pbia]. The National Laboratory for Scientific Computing is developing a
+separate AI-oriented supercomputing installation in Macaíba, Rio Grande do Norte
+[@lncc2026supercomputador]. Research in agricultural operational and logistic
+efficiencies are included as priority topics to be addressed from infrastructure
+investments [@pera2026]. Embrapa's AgroDigital initiative has acquired
+high-performance computing and GPU servers to support research that requires
+substantial data processing and storage [@embrapa2024datacenter]. These initiatives
+illustrate the importance of high performance computing (HPC) infrastructure across
+this research domain.
+
+Grain-storage networks connect seasonal harvests with demand distributed across
+places and periods. Choosing where to open or expand warehouses affects how much
+grain can be held, how quickly it can be received and dispatched, and which markets
+the network can serve. Grain-storage planning raises a specific computational
+problem. The selection of warehouse sites and the sizing of storage and handling
+capacity combine discrete investment choices with flows that vary across products,
+periods and scenarios. A larger network increases the number of decisions and can
+place substantial demands on model construction, memory and solution time. This study
+uses experiments at an HPC infrastructure to examine the conditions under which
+deterministic and two-stage stochastic mixed-integer linear programs yield
+optimization plans for soybean and corn storage networks. The analysis relates
+measured computation metrics and attainable solution quality to the investment and
+strategic decisions that the models return.
 
 Grain-storage location and integrated network design are established research
 topics [@essien2018; @gholamian2017]. Agricultural network uncertainty has also
 been addressed through wheat-network design and tactical soybean planning
 [@hosseini2020; @reis2023]. Decomposition and distributed computing already
 provide computational precedents in agricultural MILP [@shastri2011].
-The question addressed here is therefore specific: how do extensive-form model
-dimensions, the resources used to construct and solve them, and certified
-solution quality relate to the agricultural plans actually returned?
-Answering this question requires examining resource use and decision quality
-together; a large variable count or a successful solver exit is insufficient.
+The study connects the effort needed to construct and solve these models with
+the certified quality and agricultural implications of the plans they return.
 
-This study builds on the mathematical foundation of @rosa2026thesis.
-Its opening, expansion and bulk-handling decisions retain that attribution.
-The present assessment concerns the explicitly defined scalar implementation
-and its retained computational cohort; earlier model versions, objectives and
-results are not pooled with these observations. Its focus
-is computational operations research for grain-storage network design, rather
-than the mere availability of a mathematical formulation or commercial solver.
-The central question is: **How computational scalability affects the optimal
-resolution of grain-storage network design and hub location models?** Here
-*optimal resolution* concerns the quality attainable when solving the MILP.
-It includes exact optimality, feasible incumbents with certified gaps,
-resource-censored results and no-incumbent outcomes; it does not presume that
-every optimization proves an exact optimum.
+The research question is **How do problem size, the algorithm used for the root
+relaxation, incumbent heuristics and physical-core allocation affect the cost of
+obtaining independently validated grain-storage network plans at a prescribed
+MILP gap?**
 
-The general objective is to investigate the effects of computational scalability
-in the resolution of grain-storage network design and hub location models.
-Four specific objectives organize the investigation.
+The general objective is to characterize these effects on HPC using Gurobi and
+to interpret the investment and operational decisions in the returned plans.
 
-| Objective | Scope |
-|:--|:--|
-| SO1 Mathematical modeling | Implement deterministic and two-stage stochastic MILPs for warehouse location, capacity investment and grain-network operation |
-| SO2 Computational scalability | Measure model construction, memory, optimization time, allocated resources and attainable solution quality as warehouse populations increase |
-| SO3 Agricultural interpretation | Interpret validated location, capacity-investment and grain-distribution decisions across h215, h300, h400 and h500 when accepted outputs are available |
-| SO4 Complementary methodology | Document human-supervised AI assistance, scientific decision provenance, verification and reproducibility |
+The specific objectives seek three distinct contributions. C1
+characterizes observed matrix dimensions, construction and solution effort, memory
+and certified gaps across the evaluated populations. C2 interprets the returned
+investment and operating decisions by separating financial costs, artificial
+penalties, domestic service and capacity exceedances. C3 documents human-supervised
+AI assistance and verification as a complementary account of research practice,
+detailed in Appendix B. @tbl-objectives links the four specific objectives to the
+contributions they support.
+
+| Specific Objective | Scope | Contribution |
+|:--|:--|:--|
+| SO1 Mathematical modeling | Implement deterministic and two-stage stochastic MILPs for warehouse location, capacity investment and grain-network operation | C1, C2 |
+| SO2 Computational scalability | Measure how population, root algorithm, heuristic profile and physical-core allocation affect time, memory and attainment | C1 |
+| SO3 Agricultural interpretation | Interpret validated location, capacity-investment and grain-distribution decisions across h215, h300, h400 and h500 | C2 |
+| SO4 Complementary methodology | Document human-supervised AI assistance, scientific decision provenance, verification and reproducibility | C3 |
 
 : Research objectives. {#tbl-objectives}
 
-The contributions have three distinct roles. C1 characterizes observed matrix
-dimensions, construction and solution effort, memory and certified gaps across
-the evaluated populations. C2 interprets the returned investment and operating
-decisions by separating financial costs, artificial penalties, domestic service
-and capacity exceedances. C3 documents human-supervised AI assistance and
-verification as a complementary account of research practice, detailed in
-Appendix B.
-
-The accepted observations support these bounded empirical and interpretative
-claims. They do not establish a new generic MILP algorithm, a parallel scaling
-law or a universal solver frontier. In particular, the original h500 observation
-supplies a retained solution, bound and resource record at that scale; one
-observation cannot establish general performance across other networks or data.
+The next section situates these objectives in agricultural planning and computational
+optimization. The methods and results then connect the model, resource measurements
+and independently checked solutions to storage-network decisions.
 
 # Related work and research positioning
 
 ## Grain-storage planning as an integrated decision problem
 
-The systematic review by @rosa2025 places grain-warehouse location within a
-broader family of mathematical planning models. Complementarily, @garima2024
-organize grain supply-chain decision research around operational complexity,
-risk, infrastructure, stakeholders and solution methods. Together, these
-perspectives show why adding sites to a location model is insufficient: a
-strategic design must connect storage, seasonal handling and access to markets.
-The following synthesis compares published approaches along these substantive
-dimensions. [Appendix A](https://unb-lamfo-or-ai-hpc.github.io/model-agrologistic/supplementary-review.html)
-provides the search strategy, selection record and
-the complete researcher-supplied literature review.
+The systematic review by @rosa2025 places grain-warehouse location within a broader
+family of mathematical planning models. Complementarily, @garima2024 organize grain
+supply-chain decision research around operational complexity, risk, infrastructure,
+stakeholders and solution methods. Together, these perspectives show why adding sites
+to a location model is insufficient: a strategic design must connect storage,
+seasonal handling and access to markets. The following synthesis compares published
+approaches along these substantive dimensions. [Appendix
+A](https://unb-lamfo-or-ai-hpc.github.io/model-agrologistic/supplementary-review.html)
+provides the search strategy, selection record and the complete systematic literature
+review.
 
-The original review is retained as supplied. The present positioning separates
-bibliographic identification from targeted reading of accessible primary texts.
-Where only an abstract or publisher preview was available, the comparison is
-limited to its stated scope; unavailable detail is not evidence that a modeling
-or computational feature is absent. The
-[source-access record](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/82c2c19ce619f1251043829b10a4702ac88a7cdd/docs/evidence/literature_bounded_closeout_20261102.json)
-identifies those limits, including the distinction between the acknowledged
-mathematical foundation and a complete chapter-by-chapter comparison.
+Integrated wheat-network design in @gholamian2017 links infrastructure choices to the
+organization of the supply chain. Scenario-based wheat planning in @pourmohammadi2020
+and sustainable resilient network design in @hosseini2020 extend this perspective to
+uncertain conditions and competing performance concerns. These contributions motivate
+an integrated treatment, but their commodity systems, constraints and objectives
+cannot be transferred unchanged to a Brazilian grain-storage network. In particular,
+resilience to disruption, seasonal variation and a numerical relaxation of capacity
+are different concepts. A slack preserves a mathematical solution; it does not by
+itself provide the transport, temporary equipment or institutional arrangements that
+would make the physical network resilient.
 
-Integrated wheat-network design in @gholamian2017 links infrastructure choices
-to the organization of the supply chain. Scenario-based wheat planning in
-@pourmohammadi2020 and sustainable, resilient network design in
-@hosseini2020 extend this perspective to uncertain conditions and competing
-performance concerns. These contributions motivate an integrated treatment,
-but their commodity systems, constraints and objectives cannot be transferred
-unchanged to a Brazilian grain-storage network. In particular, resilience to
-disruption, seasonal variation and a numerical relaxation of capacity are
-different concepts. A slack preserves a mathematical solution; it does not by
-itself provide the transport, temporary equipment or institutional arrangements
-that would make the physical network resilient.
-
-Decision support also extends beyond optimization. @essien2018 address
-sustainable multi-stakeholder grain storage, while @filippi2022 examine the
-collective-action arrangements of rural warehouse condominiums. These studies
-locate implementation within governance and stakeholder coordination.
-In the goal-programming formulation of @essien2018, the number of sites is
-prescribed and stakeholder transport targets are normalized in the objective.
-That design emphasis differs from the continuous capacity sizing and shared
-investment with scenario-dependent operation examined here. For a
-public planning tool, candidate opening is therefore interpreted as an option
-for appraisal, rather than a decision that can be executed without land,
-financing, operating agreements or coordination among producers.
+@essien2018 address stakeholder objectives in grain-storage planning, and
+@filippi2022 examine the governance of rural warehouse condominiums. In the
+goal-programming model of @essien2018, the number of sites is prescribed and
+stakeholder transport targets enter the objective. Here the model sizes
+capacity and links investment to scenario-dependent operation. Land access,
+financing and operating agreements remain part of the appraisal of any
+candidate location.
 
 ## Closest precedents and the scope of the empirical question
 
@@ -151,7 +147,7 @@ The studies differ in decision horizon, infrastructure choices and solution
 method. These distinctions determine which aspects can inform the present
 assessment.
 
-| Precedent | Established decision or computational emphasis | Question examined here |
+| Precedent | Established decision or computational emphasis | Research question examined |
 |:--|:--|:--|
 | @essien2018 | Multi-stakeholder grain-storage location and decision support | How do returned investment and service outcomes relate to a certified scalar objective? |
 | @gholamian2017 | Integrated wheat-network planning, including silo location and distribution | What construction, solution and memory requirements accompany explicitly defined extensive-form instances? |
@@ -160,73 +156,42 @@ assessment.
 | @reis2023 | Two-stage tactical soybean LP with purchasing and transport contracts; 243 scenarios | How does shared infrastructure investment differ from tactical contracting under uncertainty? |
 | @shastri2011 | Decomposition and distributed solution of an agricultural MILP | What attainable quality and resource use are observed for the present direct extensive-form solution? |
 
-: Closest agricultural and computational precedents. Models, data, hardware and
-stopping criteria differ; the rows are not matched runtime comparisons. {#tbl-closest-precedents}
+: Closest agricultural and computational precedents. {#tbl-closest-precedents}
 
-The computational assessment in @reis2023 is an especially relevant
-precedent. Their tactical stochastic LP contains 1,987,225 variables and
-2,288,220 constraints across 243 scenarios. Section 6.1 and Table 8 compare
-barrier, dual simplex and primal simplex with CPLEX 20.1, reporting solution
-times of 84.61, 246.9 and 328.91 seconds and peak-memory figures of 2720,
-2131 and 1902, respectively, in the table's stated unit of Mb. Thus, both
-algorithm comparison and memory measurement already have an agricultural
-planning precedent. Their first-stage decisions concern grain purchasing and
-transport contracts; recourse includes spot-market purchases, processing,
-sales and physical flows. The present investment MILP asks a different
-planning question and adds explicit attention to construction, attained
-integer-solution quality and the physical interpretation of the returned
-capacity plan. Different formulations, hardware and measurement definitions
-preclude interpreting the published times or memory figures as matched
-performance baselines.
-
-The contribution is assessed against this body of agricultural planning and
-computational literature, including the mathematical foundation in
-@rosa2026thesis. The literature supplies several distinct baselines: location
-and stakeholder objectives, stochastic tactical operation, infrastructure
-design, and computational solution strategies. The evidence must distinguish
-our contribution along these dimensions rather than rely on a single
-predecessor or on model size alone.
-
-The empirical contribution is the joint assessment of model structure,
-phase-specific computation, original solution certificates and agricultural
-consequences in a traceable cohort. This is a delimited research question,
-not a claim that agricultural scalability or stochastic location has not been
-studied. The relation to Rosa's grain-storage research remains foundational
-[@rosa2026thesis]; a different software version or a larger instance does not
-by itself establish mathematical originality.
+These studies motivate distinct comparisons. Discrete sizing and hard demand
+fulfillment in @pourmohammadi2020 clarify how continuous capacity choices and
+penalized shortage affect the interpretation of a returned plan. @hosseini2020 treat
+sustainability and resilience as modeled concerns. @shastri2011 evaluate
+decomposition and distributed solution. This study asks a different planning question
+and adds explicit attention to construction, attained integer-solution quality,
+computation resorces use and the physical interpretation of the returned capacity
+plan for grain-storage strategic decisions.
 
 ## Network representation and decision horizons
 
-The foundational dynamic-network perspective connects storage investment to
-flows across time rather than treating a silo solely as a point on a map
-[@foulds2005]. In a Brazilian soybean setting, @mascarenhas2014 study
-warehousing location with road and intermodal export connections. The
-distinction is consequential: a throughput facility that transfers arrivals
-onward is not interchangeable with a warehouse that carries inventory between
-months. Static stock capacity, annual throughput and vehicle capacity must
-therefore remain separate dimensions in a benchmark.
+Dynamic-network models connect storage investment to grain flows over time
+[@foulds2005]. In a Brazilian soybean setting, @mascarenhas2014 study warehousing
+location with road and intermodal export connections. The distinction is
+consequential: a throughput facility that transfers arrivals onward is not
+interchangeable with a warehouse that carries inventory between months. Static stock
+capacity, annual throughput and vehicle capacity must therefore remain separate
+dimensions in a benchmark. The logistics-integration-center formulation of
+@guimaraes2017 preserves origin-destination demand relationships. By contrast, the
+present model conserves each product but does not retain an origin label after it
+enters a warehouse. Product from different origins can satisfy the same customer's
+demand. This assumption is appropriate for a fungible-commodity planning abstraction,
+but not for tracing contracts, quality lots or individual consignments.
 
-The logistics-integration-center formulation of @guimaraes2017 preserves
-origin-destination demand relationships. By contrast, the present model
-conserves each product but does not retain an origin label after it enters a
-warehouse. Product from different origins can satisfy the same customer's
-demand. This assumption is appropriate for a fungible-commodity planning
-abstraction, but not for tracing contracts, quality lots or individual consignments.
-It is a substantive difference in the feasible set, not simply a change of indices.
-
-Terminal siting in @morais2023 connects location, capacity choices and
-access to railways or waterways. @milanez2026 integrate soybean export
-network design with hub functions and economies of scale. Their
-BSEC-SLACK variant permits penalized seaport-capacity overflow, and Table 2
-reports CPU time and CPLEX gaps. Penalized capacity relief and computational
-quality reporting therefore have direct precedents. These studies motivate
-reporting storage and transport decisions jointly. Nevertheless,
-the present OSRM road matrix does not implement a multimodal assignment model.
-A port destination is an export outlet, not an explicit maritime voyage; a
-road segment near a railway does not create a rail arc.
-
-@tbl-literature summarizes the selected studies and the modeling distinctions
-that determine whether their results are comparable.
+Terminal siting in @morais2023 connects location, capacity choices and access to
+railways or waterways. @milanez2026 integrate soybean export network design with hub
+functions and economies of scale. One variant permits seaport-capacity overflow at a
+penalty, reporting CPU time and optimality gaps. Penalized capacity relief and
+computational quality reporting therefore have direct precedents. These studies
+motivate reporting storage and transport decisions together. Multimodal models also
+represent modal transfers and transport beyond those outlets. The present network
+represents road movements to domestic destinations and export ports. @tbl-literature
+summarizes the selected agricultural network-design studies, their modeling
+distinctions and implications for comparbility.
 
 | Study | Network and decision emphasis | Comparison implication |
 |:--|:--|:--|
@@ -240,312 +205,228 @@ that determine whether their results are comparable.
 | @vazquez2021 | Guayule/guar supply-chain design with sustainability criteria | Processing yields and sustainability constraints change comparability |
 | @mogale2020 | Multi-echelon grain network with risk and losses | Losses and discrete transport resources require additional balances |
 
-: Selected agricultural network-design studies and their implications for
-comparability. The studies address different commodities and decision scopes. {#tbl-literature}
+: Selected agricultural network-design studies. {#tbl-literature}
 
 ## Parameters, decisions and objective functions
 
-Economic formulations typically connect fixed facility choices to continuous
-material flows. The opening variable controls whether infrastructure can be
-used, while installed capacity determines how much can be stored or handled.
-A benchmark must distinguish a fixed-size site choice from scalable capacity:
-both may contain a binary opening variable, but their investment feasible
-sets differ. Counting producing regions or candidate sites is not an integer
-decision variable unless the optimizer actually selects that count.
+Economic formulations typically connect fixed facility choices to continuous material
+flows. The opening variable controls whether infrastructure can be used, while
+installed capacity determines how much can be stored or handled. A benchmark must
+distinguish a fixed-size site choice from scalable capacity: both may contain a
+binary opening variable, but their investment feasible sets differ. Counting
+producing regions or candidate sites is not an integer decision variable unless the
+optimizer actually selects that count. Agricultural models also differ in the
+economic boundary. While some consider freight and construction alone, others include
+freight, inventory, processing, emissions, losses and employment in the objective.
+@mogale2020 include risk and post-harvest losses in a green food supply-chain design.
+@vazquez2021 connect supply-chain design to environmental and social impacts;
+@mogale2023 examine social sustainability. Those dimensions are relevant to public
+planning but are outside the scope of the present formulation.
 
-Agricultural models also differ in the economic boundary. Freight and
-construction alone do not represent the same objective as freight, inventory,
-processing, emissions, losses and employment. @mogale2020 include risk and
-post-harvest losses in a green food supply-chain design. @vazquez2021 connect
-supply-chain design to environmental and social impacts; @mogale2023 examine
-social sustainability. Those dimensions are relevant to public planning but
-are outside the scope of the present formulation. We report neither avoided
-emissions nor jobs created from a reduction in transport distance alone.
-
-The cost evidence available to the present study is strongest at the
-capacity-unit level. Introducing an arbitrary fixed construction charge on
-top of a whole-project cost per tonne would risk counting part of the project
-twice. Conversely, registry placeholders equal to zero do not establish that
-investment is free. The data translation must state whether a quoted total
-cost is represented by a fixed term, a capacity-proportional term, or a
-documented decomposition. Sensitivity to uncertain investment costs is a
-future economic analysis, not something to conceal through a large shortage
-penalty.
-
-Brazilian logistics costs also depend on more than distance. @kussano2012
-analyze soybean export logistics using a broader cost accounting boundary,
-including factors that can alter the ranking of modal alternatives. Accordingly,
-OSRM distances in this study are inputs to a declared freight approximation,
-not observed generalized logistics costs. Congestion, taxes, service contracts
-and seasonally changing tariffs remain possible sources of divergence between
-the least-cost modeled route and actual grain movements.
-
-Spatial suitability and network optimization are complementary rather than
-substitutable. @souza2024 use spatial multicriteria analysis for agricultural
-warehouse location; such screening can constrain the candidate set before a
-flow model allocates capacity. The present candidate population preserves
-geographic and facility-type diversity but does not replace environmental,
-land-use or engineering suitability assessment. Similarly, the wider
-agricultural and carbon implications of Brazilian transport infrastructure
-examined by @wang2024 lie outside a freight-and-storage objective. A shorter
-modeled route cannot be interpreted automatically as a net environmental gain.
+Logistics costs depend on more than distance. @kussano2012 analyze soybean export
+logistics using a broader cost accounting boundary, including factors that can alter
+the ranking of modal alternatives. Accordingly, road-network distances associate
+freight approximation based on modeled loads and unit transport costs. Congestion,
+taxes, service contracts and seasonally changing tariffs remain possible sources of
+divergence between the least-cost modeled route and actual grain movements. Spatial
+suitability and network optimization are complementary rather than substitutable.
+@souza2024 use spatial multicriteria analysis for agricultural warehouse location;
+such screening can constrain the candidate set before a flow model allocates
+capacity. The present candidate population preserves geographic and facility-type
+diversity but does not replace environmental, land-use or engineering suitability
+assessment. Similarly, the wider agricultural and carbon implications of Brazilian
+transport infrastructure examined by @wang2024 lie outside a freight-and-storage
+objective. A shorter modeled route cannot be interpreted automatically as a net
+environmental gain.
 
 ## Uncertainty and strategic interpretation
 
-Uncertainty can enter a model through simulation, scenarios, robust
-constraints or probabilistic objectives. These approaches answer different
-questions. @granillo2019 combine a deterministic optimization model with
-simulation in a barley contract-farming network. @mendoza2021 study
-scenario-based facility location, while the adoption scenarios in
-@vazquez2021 concern a different source of uncertainty. They should not be
-classified as interchangeable simply because each uses multiple scenarios.
-
-@pourmohammadi2020 provide a closer stochastic infrastructure precedent:
-six equiprobable supply-demand scenarios, shared choices among four
-facility-capacity levels, and scenario-dependent operation. Their
-assumptions prohibit shortage and include imports, quality blending and
-road/rail transport. The present instance instead sizes capacity
-continuously, represents road movements and permits penalized shortages.
-These differences change the feasible set and the meaning of cost and
-service outcomes.
-
-For soybean tactical planning, @reis2023 adopt a two-stage stochastic linear
-program with first-stage purchasing and contracted transport. Our first stage
-instead concerns long-lived warehouse decisions. The monetary gains in the
-tactical study cannot serve as numerical validation of a strategic investment
-model. Likewise, disruption and emergency-hub decisions in @maiyar2019 are
-distinct from an emergency *slack*: the former represents a modeled physical
-option, while the latter measures violation of nominal capacity.
-
-Integrated decision support links planning horizons rather than treating
-optimization in isolation [@mardaneh2021]. The joint crop-establishment,
-harvesting and network-design perspective of @anselmino2025 provides another
-example, in bioenergy rather than grain storage. Such work motivates clear
-interfaces between data preparation, strategic investment and operational
-evaluation. It does not imply that harvest scheduling or crop establishment
-has been implemented in this demonstrator.
+Uncertainty can enter a model through simulation, scenarios, robust constraints or
+probabilistic objectives. These approaches answer different questions. @granillo2019
+combine a deterministic optimization model with simulation in a barley
+contract-farming network. @mendoza2021 study scenario-based facility location, while
+the adoption scenarios in @vazquez2021 concern a different source of uncertainty.
+@pourmohammadi2020 provide a closer stochastic infrastructure precedent: six
+equiprobable supply-demand scenarios, shared choices among four facility-capacity
+levels, and scenario-dependent operation. Their assumptions prohibit shortage and
+include imports, quality blending and road/rail transport. The present research
+instead sizes capacity continuously, represents road movements and permits penalized
+shortages. These differences change the feasible set and the meaning of optimal cost
+outcomes. @maiyar2019 model emergency hubs as physical options for disruptions. The
+slacks used in the present study quantify excess demand on nominal capacity within
+the modeled network. Integrated decision support links planning horizons and
+optimization [@mardaneh2021]. The joint crop-establishment, harvesting and
+network-design perspective of @anselmino2025 provides another example, in bioenergy
+rather than grain storage. Such work motivates clear interfaces between data
+preparation, strategic investment and network evaluation.
 
 ## Computational approaches in agricultural systems
 
-@shastri2011 address a large agricultural optimization model through a
-decomposition and distributed-computing approach to BioFeed, a biomass supply
-planning problem. This is direct precedent for treating computational solution
-strategy, rather than the use of a commercial optimizer alone, as a research
-contribution. Our current extensive-form implementation does not reproduce
-their decomposition or establish superiority over it.
-
-@knapen2025 use standard big-data and distributed-computing technologies for
-scalable crop-growth simulations. Their application illustrates a different
-parallelization opportunity: distributing simulation work is not equivalent to
-solving a MILP whose scenarios share first-stage integer decisions. @zhao2012
-study parallelization and optimization of spatial analysis for environmental
-model-data assembly. This distinction supports measuring data preparation
-separately from the numerical solver rather than attributing all elapsed time
-to optimization.
-
-Shared-memory performance also requires explicit measurement. The PaScal Suite
-of @silva2025pascal provides tools for evaluating and profiling parallel
-scalability. Work on parallel dual revised simplex by @huangfu2018 shows that
-parallelism may be organized within and across iterations. These references
-motivate region-level timings and controlled thread-count experiments; they
-do not imply that PaScal is integrated here or identify Gurobi's proprietary
-internal algorithms.
-
-@tbl-computational-literature relates the agricultural planning problem to
-computational approaches at the optimization, simulation and data-processing
-levels.
+@shastri2011 address a large agricultural optimization model through a decomposition
+and distributed-computing approach to BioFeed, a biomass supply planning problem.
+This is direct precedent for treating computational solution strategy, rather than
+the use of a commercial optimizer alone, as a research contribution. @knapen2025 use
+standard big-data and distributed-computing technologies for scalable crop-growth
+simulations. Their application illustrates a different parallelization opportunity:
+distributing simulation work is not equivalent to solving a MILP whose scenarios
+share first-stage integer decisions. @zhao2012 study parallelization and optimization
+of spatial analysis for environmental model-data assembly. This distinction supports
+measuring data preparation separately from the numerical solver rather than
+attributing all elapsed time to optimization. @tbl-computational-literature relates
+the agricultural planning problem to computational approaches at the optimization,
+simulation and data-processing levels.
 
 | Computational layer | Published precedent | Present implementation and evidence boundary |
 |:--|:--|:--|
 | Agricultural MILP solution strategy | @shastri2011 | Direct extensive-form solution; decomposition is not implemented in the evaluated scalar pipeline |
 | Distributed agricultural simulation | @knapen2025 | Slurm experiment scheduling, not a distributed scenario solver |
 | Spatial data preparation | @zhao2012 | Versioned OSRM materialization and pair-cache reuse; no matched speedup benchmark |
-| Shared-memory profiling | @silva2025pascal | Separate workflow timings; descriptive single-observation thread contrast, not a controlled scaling estimate |
-| LP parallel algorithms | @huangfu2018 | Solver method and thread settings recorded, without claims about proprietary internals |
 
-: Computational precedents and the boundaries of the present contribution.
-These studies address different workloads and are not runtime baselines for
-the present instances. {#tbl-computational-literature}
+: Computational approaches for agricultural planning. {#tbl-computational-literature}
 
+## Root relaxation and incumbent search in large MILPs
+
+For an extensive-form stochastic MILP, a small number of investment binaries
+can coexist with millions of continuous recourse variables. The initial LP
+relaxation supplies a bound and may dominate the effort even when few tree
+nodes are explored. Gurobi 13 provides dual simplex, barrier, deterministic
+concurrent LP and primal-dual hybrid gradient (PDHG) as root algorithm choices.
+Barrier requires matrix factorization and can spend substantial time in
+crossover. First-order PDHG methods instead use sparse matrix-vector products
+and require convergence and residual checks. Applegate et al. describe the
+role of presolve, preconditioning and restarting in practical large-scale LP.
+Their results motivate a comparison of algorithms for the root relaxation of
+the agricultural MILP under the same stopping and validation criteria.
+[Applegate et al. (2021)](https://proceedings.neurips.cc/paper/2021/hash/a8fbbd3b11424ce032ba813493d95ad7-Abstract.html).
+
+Feasible-solution heuristics address a different stage of the computation.
+Gurobi's NoRel searches for an incumbent before solving the initial relaxation.
+The standard heuristic effort parameter governs feasible-solution searches
+throughout the MIP. Comparing these settings with a shared gap target shows
+whether an earlier incumbent also reduces total certification time.
+[Gurobi 13 parameter reference](https://docs.gurobi.com/projects/optimizer/en/13.0/reference/parameters.html).
 
 # Materials and methods
 
-The evaluated formulation is a single scalar economic MILP. Investment is shared
-across scenarios and charged once; recourse costs are probability weighted.
-The stochastic interpretation follows the two-stage distinction between
-here-and-now and recourse decisions [@birge2011]. A multi-period operating
-trajectory is not a multistage information process. The evaluated objective is scalar, and the operating trajectories have a
-two-stage information structure.
+The investment formulation follows @rosa2026thesis in its treatment of facility
+opening, expansion and bulk-handling conversion. Bulk-handling conversion is usually
+implemented with additional equipment and process improvements rather than capacity
+expansion. The objective function accounts for investments once and weights recourse
+costs by scenario probability. Investment decisions are shared across scenarios, and
+each scenario has a separate operating trajectory [@birge2011].
 
 {{< include formulation.qmd >}}
 
 ## Data lineage and network construction
 
-Input workbooks, materialization audits, exact included warehouse IDs and
-selection records are frozen with each attempt. The populations contain
-146 protected existing facilities and respectively 69, 154, 254 and 354
-candidate sites at h215, h300, h400 and h500. The canonical 69 candidate anchors
-are retained; additional candidates follow the original deterministic,
-proportionally stratified order across state, warehouse type and static-capacity
-quartile. The selection seed and source/anchor/ranking hashes are preserved.
-Included candidates are investment options, not decisions made by the optimizer.
+The study examines one grain-storage network design problem at four instance
+sizes. The instances share supply and demand data, a 60-period planning
+horizon, scenario inputs, model parameters and the tables of freight,
+storage and investment costs. All four retain the same 146 existing
+warehouses. Each larger instance adds candidate locations where a new
+warehouse may be opened and retains the candidates of the smaller instance.
+@tbl-warehouse-populations shows how the sets expand.
 
-The processed input workbooks contain 37 distinct supply-location identifiers
-for soybean and corn, 27 domestic-capital destinations and ten export-destination
-roles. A city may have both domestic and export roles. The counts refer to input entities and their respective roles.
-Coordinates are retained exactly and coincident identifiers remain distinct.
-The accepted exported solutions use nine export destinations with positive
-transport. This does not redefine the ten available export options.
+| Instance | Existing warehouses | Candidate locations | Total sites |
+|:--|--:|--:|--:|
+| h215 | 146 | 69 | 215 |
+| h300 | 146 | 154 | 300 |
+| h400 | 146 | 254 | 400 |
+| h500 | 146 | 354 | 500 |
 
-Road distances were materialized with OSRM's driving profile and the versioned
-Brazil network. These are lengths along the configured fastest routes, not
-observed grain journeys, multimodal assignments or a shortest-distance guarantee.
-The historical h215/h300/h400/h500 audits respectively record 63,289, 113,269,
-190,569 and 287,869 directed road pairs, with no Haversine fallback in these
-workbooks. These are materialized pairs, not the arcs retained by the MILP.
-The selection policy retains a grouped fraction of interwarehouse routes and
-audits connectivity repairs using eligible existing pairs. Reapplying screening
-at a larger population need not preserve a nested retained network even when
-the warehouse memberships are nested.
+: Warehouse populations in the four processed inputs. {#tbl-warehouse-populations}
 
-DET uses the original deterministic arrays. STO combines three supply and three
-demand multiplier levels into nine Cartesian scenarios of probability 1/9.
-These are controlled experimental scenarios, not fitted event frequencies or
-a forecast validation. The low/base/high supply factors are 0.85/1/1.15 and
-the domestic-demand factors are 0.95/1/1.05, read from the frozen workbook.
-Every supply level is crossed with every demand level; the nine combinations
-each receive probability 1/9. The models have two products and 60 ordered planning
-periods. All warehouse-only scalability cases disable direct origin-to-customer
-arcs; the separate h215 D comparison enables them. Optional memory compaction
-is disabled in both cohorts. The objective is an undiscounted BRL total
-over the declared horizon. No verified common price year, inflation adjustment,
-currency conversion or discount rate is introduced.
+Each processed input workbook combines the common data with the warehouse
+list and directed road distances for one instance. A facility identifier
+distinguishes warehouses, including those that share coordinates. The
+selection record lists the facilities in the instance and records the
+stratified ranking used to add candidates. The optimizer chooses which of
+the available sites to open, expand or convert to bulk handling. Appendix D
+identifies the four effective workbooks, their warehouse lists and the
+source data used to construct them.
+
+The inputs include 37 distinct supply-location identifiers for soybean and
+corn, 27 domestic-capital destinations and ten export-destination roles.
+A city may hold both a domestic and an export role. The processed workbooks
+store 63,289, 113,269, 190,569 and 287,869 directed road distances in
+kilometres for h215, h300, h400 and h500, respectively. OSRM computed the
+distances from a common Brazilian OpenStreetMap extract and driving profile.
+The model uses a subset of routes eligible for each product. As candidates
+are added, the set of admissible arcs and the dimensions of the MILP can
+change. Appendix D documents the distance calculation and arc selection.
+
+DET uses the original supply and demand arrays. STO crosses three supply
+levels (0.85, 1 and 1.15 times the base supply) with three domestic-demand
+levels (0.95, 1 and 1.05 times the base demand). Each of the nine resulting
+scenarios has probability 1/9. The objective measures an undiscounted BRL
+total over the 60 periods.
 
 ## Experimental and validation protocol
 
-The warehouse-only scalar cohort comprises nine accepted observations: h215
-DET/STO, the h300 thread sequence 4, 1, 8, 2, 16, and h400/h500 STO with one
-thread each. The separate h215 D DET/STO observations bring the scalar inventory
-to eleven; they are not eleven independent replications. Each uses a global
-native TimeLimit of 14,400 seconds, MIPGap 0.01, Seed 42 and penalties of
-90000 BRL/t for domestic shortage and 45000 BRL/t for each of the two
-capacity-exceedance terms, with their period units defined in Appendix D. The h215 pair uses four solver threads.
-The h300 levels are cold serial observations in one reservation, without
-replication or randomized order. The one-thread h400 and h500 configurations were selected using the
-descriptive h300 observations; that selection does not establish a generally
-optimal thread count. Here cold means a fresh native model without an incumbent warm
-start; operating-system caches and shared-node load were not controlled.
-Original decisions, bounds and independent validation records were retained
-for each observation. Subsequent integrity checks verify those records without
-constituting new optimization runs.
+For each instance, the model selects warehouse openings and expansions, assigns
+capacity and plans the movement and storage of grain. The study reports investment,
+transport and inventory-holding costs. Unmet demand and the two capacity exceedances
+are used to assess how closely the returned plan meets the modeled operating
+conditions.
 
-Software qualification precedes experimental acceptance. Analytical examples
-check objective reconstruction, investment charged once, deterministic/singleton
-equivalence, probability weighting, slack units, connectivity and activation.
-Licensed miniature tests establish implementation behavior at their tested scope;
-they are not large-instance results. Experiments use fixed source versions and declared resource limits.
-The research records retain partial and failed attempts as well as successful
-calculations.
+The h215 case provides the reference scale for comparison with @rosa2026thesis.
+It crosses DET and STO with W, which routes grain through warehouses, and D,
+which also permits direct deliveries. Native gurobipy[^author-4] builds and
+solves the model directly. The native W STO series spans h215 through h500.
+Pyomo[^author-2] builds the bounded formulation in Appendix C and passes it to
+Gurobi[^author-1] through APPSI[^author-5]. The historical Pyomo evidence
+includes three repetitions per thread ceiling at h300 and one per ceiling at
+h400. Appendix C documents the cohorts and their resource profiles.
 
-Independent original-unit validation reconstructs objective components and
-checks the exported decisions against the encoded constraints, retaining
-absolute 1e-5 and relative 1e-8 tolerances. An original accepted certificate
-is distinct from a later portable integrity replay. The latter verifies
-retained evidence and arithmetic; a fresh reproduction must validate newly
-exported decisions against its input. Scheduler completion, incumbent existence, model feasibility and
-attainment of the scalar quality criterion are reported separately.
-Failure to find an incumbent within a resource budget is not a proof of
-mathematical infeasibility. A time- or memory-censored result does not
-demonstrate a speedup over another censored result.
-For minimization, the common relative gap is $(z-b)/|z|$ for finite nonzero
-incumbent $z$ and bound $b\le z$. Both zero imply gap zero; missing/nonfinite
-values or inconsistent bounds are not assigned a finite accepted gap.
-Native solver conventions are retained separately.
+An independent check reconstructs costs and tests the exported decisions
+in their original units. It uses an absolute tolerance of $10^{-5}$ and a
+relative tolerance of $10^{-8}$ scaled to the quantities compared.
+For minimization, the common relative gap is $(z-b)/|z|$ for finite
+nonzero incumbent objective $z$ and finite lower bound $b\le z$. The gap
+is zero if both values are zero. It is unavailable for other zero
+incumbents, missing or nonfinite values, or inconsistent bounds.
+The gap measures the quality of the objective that includes the penalties.
 
-The additional Pyomo implementation separates the algebraic model from the
-optimizer. The same scalar formulation is transferred through Pyomo's APPSI
-interfaces to Gurobi, using gurobipy, or to HiGHS, using highspy.
-Public analytical and Excel-to-validation controls check the adapters against
-the same physical constraints and cost reconstruction. These tests establish
-implementation behavior; they do not constitute additional large-instance
-performance observations.
+## Solver parallelism and reproducibility
 
-Candidate slack indicators use a disclosed bounded representative formulation.
-With nonnegative slack costs, trimming redundant excess preserves the
-physical/investment projection and optimal scalar value. The derived bounds
-follow cumulative stock conservation and hard shipping capacity, including
-transshipment circulation (Appendix C). This equivalence does not imply
-identical native relaxations or search paths. The independently validated
-h215 HiGHS result is reported separately from software qualification and the
-Gurobi scaling sequence.
-
-The modeling interface does not select a common search strategy or initial
-solution for the solvers. Algorithmic defaults are distinguished from explicit
-time, gap, thread, seed and numerical-tolerance settings in each experiment
-record. In particular, the documented seed value 42 controls solver-specific
-pseudorandom choices; it does not supply the same starting incumbent across
-different optimizers.
-
-Parallelism is version specific. In HiGHS 1.15.1, the thread setting limits
-available workers, while `parallel="on"` enables parallel branch-and-bound
-exploration. It does not make every phase parallel: the release disables
-parallel simplex for the LP relaxations within MIP. Consequently, root-LP
-work can limit gains from additional threads. The retained h215 HiGHS
-observation used four threads with parallel tree search disabled; it remains
-distinct from the prospective parallel-search campaign. Appendix C explains
-these settings and their interpretation using the
-[versioned parallelism documentation](https://github.com/ERGO-Code/HiGHS/blob/v1.15.1/docs/src/parallel.md)
-and [release notes](https://github.com/ERGO-Code/HiGHS/releases/tag/v1.15.1).
-
-### Common-Pyomo comparison campaign
-
-The campaign comprises 30 solver-population-thread settings with three
-temporal repetitions, giving 90 planned runs. Its finite scheduler graph
-has been released for progressive execution, reusing the four collected
-h300 pilot reports. The tables here retain the audited first one-thread
-pair; terminal observations for the remaining runs are reported separately
-as they become available. Submission or release is not completion of a run.
-
-The ongoing campaign uses the same Pyomo builder for Gurobi and HiGHS, the
-frozen h300, h400 and h500 W STO inputs, and the same nine scenarios and
-scalar coefficients. Its design crosses two solvers, three populations,
-five thread ceilings (1, 2, 4, 8 and 16) and three repetitions: 90 planned
-calculations. Each has an eight-hour native allowance, a 1% gap target and
-seed 42. HiGHS parallel tree search is enabled in this profile. Both
-one-thread h300 pilots have returned independently validated solutions.
-Reports for the sixteen-thread h300 pilots have also been collected;
-their retained status records remain separate from the audited pair shown
-here. Progression to larger populations remains subject to the declared
-operational and resource qualification gates.
-
-A fresh process and common algebra control important implementation
-differences, but do not force identical presolved matrices or search paths.
-The comparison retains objective and bound, attained gap, phase timings,
-memory scope and physical diagnostics for every returned outcome. Repetitions
-with the same seed measure observed execution variability; they are not
-independent draws of the mathematical problem or of solver seeds. Historical
-observations are not counted as repetitions of this new protocol.
+The planned h300 W STO factorial compares four root methods, three heuristic
+profiles and solver thread ceilings of 1, 2, 4, 8 and 16. Each repetition uses
+distinct physical cores within a verified socket, Gurobi 13.0.3, 192 GiB, seed
+42, an eight-hour solver budget and the common 1% target. The heuristic profiles
+are the default effort, disabled standard heuristics, and default effort with
+a fixed NoRel work budget. Presolve, cuts and the single MIP search are held
+constant. Records distinguish time to the first incumbent, time to the gap
+target where observed, and completion of independent validation. Effective
+algorithms, including the concurrent winner where logged, are retained with
+memory and Slurm receipts. Three temporal blocks characterize run variation on
+one instance.
 
 ## HPC experimental environment
 
-The experiments use NPAD/UFRN's Intel shared-memory infrastructure under Slurm
-[@npad2026]. Retained runtime receipts identify Intel Xeon E5-2698 v3 CPUs,
-Python 3.13 and Gurobi 13.0.3. The scalar allocations request 24 logical CPUs
-and 192 GiB. Gurobi's SoftMemLimit is 160 decimal GB; it is not a process-RSS
-ceiling. The historical native h300 worker affinity pool contains 16 logical CPU IDs across
-12 physical cores, including SMT siblings. It does not represent disabled
-hyperthreading or sixteen physical cores. Solver threads, affinity and allocated
-logical CPUs are distinct resource scopes.
+The high-performance computing (HPC) experiments use NPAD/UFRN's Intel shared-memory
+infrastructure under Slurm [@npad2026]. Retained runtime receipts identify Intel Xeon
+E5-2698 v3 CPUs, Python 3.13 and Gurobi 13.0.3. The scalar allocations request 24
+logical CPUs and 192 GiB. Gurobi's SoftMemLimit is 160 GB, but this is not a
+process-RSS ceiling. The historical native h300 worker affinity pool contains 16
+logical CPU IDs across 12 physical cores, including SMT siblings. Solver threads,
+affinity and allocated logical CPUs are distinct registered resource scopes.
 
-Historical native reservations are 14 hours for the h215 pair, 30 hours for the five-arm h300
-block, and eight hours each for h400 and h500. Reservation time is not measured
-optimizer time. Current models solve within one allocated node, and the
-reported scalar blocks run serially. Distributing independent experiments
-through scheduler arrays would not make an individual model a distributed MILP
-solve; no multi-node speedup is claimed. Network preparation, construction
-and post-processing are CPU workloads outside the primary optimization call.
-No GPU acceleration or use of the InfiniBand fabric by a distributed MILP
-algorithm is asserted.
+For the common-Pyomo campaign the profile requests an exclusive node and
+192 GiB for a 12-hour allocation. The h300 worker affinity is 16 logical
+CPU IDs. Scheduler accounting records 64 allocated logical CPUs at the
+job level for the scientific jobs. Solver thread ceilings are settings within
+this envelope. The runtime and hardware receipts identify the conditions
+for each numerical observation.
+
+Historical native reservations are 14 hours for the h215 pair, 30 hours for the
+five-arm h300 block, and eight hours each for h400 and h500. Reservation time is not
+measured optimizer time. Current models solve within one allocated node, and the
+reported scalar blocks run serially. Distributing independent experiments through
+scheduler arrays could not make an individual model a distributed MILP solve; no
+multi-node speedup has been claimed. Network preparation, construction and
+post-processing are CPU workloads outside the primary optimization call. No GPU
+acceleration or use of the InfiniBand fabric by a distributed MILP algorithm was
+asserted.
 
 ## Model size, memory and performance measurement
 
@@ -556,297 +437,220 @@ the directed interwarehouse graph can contain $|W|(|W|-1)$ arcs. A fixed retaine
 fraction therefore does not eliminate quadratic network growth. These are
 structural matrix counts, not an asymptotic algorithmic-complexity proof.
 
-Native Runtime, model-construction wall time, application optimization wall
-time, extraction, validation, export and application end-to-end time are
-separate clocks. Allocation elapsed includes additional staging and control.
-The microsecond data-read fields at an already-loaded model layer are not
-large-workbook ETL timings. We do not reconstruct missing phases by subtracting
-overlapping clocks. Memory labels distinguish sampled application RSS,
-solver-managed memory and Slurm step MaxRSS. Sampling may miss an instantaneous
-peak; requested memory and allocated CPU-hour products are not measured
-consumption or billing.
+The native runtime, model-construction wall time, application optimization wall time,
+extraction, validation, export and application end-to-end time are separate clocks.
+Allocation elapsed includes additional staging and control. The microsecond data-read
+fields at an already-loaded model layer are not large-workbook ETL timings. The study
+does not reconstruct missing phases by subtracting overlapping clocks. Memory labels
+distinguish sampled application RSS, solver-managed memory and Slurm step MaxRSS.
+Sampling may miss an instantaneous peak; requested memory and allocated CPU-hour
+products are not measured consumption or billing.
 
-## Geographic interpretation and figure preparation
+For a fixed instance and solver, strong scaling varies resources while
+holding the problem fixed. With comparable work, timing and quality
+criteria, speedup is $S(p)=T(1)/T(p)$ and parallel efficiency is
+$E(p)=S(p)/p$ for a $p$-fold resource setting relative to the baseline.
+In this study a ratio normalized by the configured thread ceiling measures
+performance relative to that setting. Effective CPU utilization requires
+a separate measurement. A time-to-target comparison uses the recorded time
+when a common quality threshold is first attained. Terminal runtime also
+includes work up to the observed stopping condition.
 
-A separate persistent geographic SQLite binds entity identities, coordinates,
-nested memberships, accepted decision records and available OSRM road geometry
-to source hashes. Preparation is explicit; local Plotly Dash callbacks and
-Linux headless PDF/PNG/SVG rendering open it read-only. Content-derived snapshot
-keys reuse unchanged data. Neither viewing nor rendering invokes an optimizer,
-requests routes or changes the experimental distance cache.
+Across populations the experiment evaluates problem-size and resource
+scaling. The selected graph and the number of nonzeros change
+nonproportionally, while classical weak scaling keeps the workload per
+resource approximately constant. Nonzeros per thread describe structural
+load. Solver parallelism concerns work within one solve. Concurrent Slurm
+jobs concern independent executions. Throughput would count specified
+completed work per unit elapsed time over a stated allocation and
+observation window.
 
-The Dash and static renderers share scientific figure definitions, filters,
-node styles and legends. The static Python renderer uses no browser, GUI,
-Dash server or Kaleido. Official IBGE 2023 national and federative-unit vectors
-provide a neutral geographic background. The source SIRGAS 2000 geometries are
-transformed to WGS84 after a topology-preserving simplification; both renderers
-apply the same Albers equal-area display and fixed national extent. Original
-facility coordinates are retained. The cached background is independent of
-facility selection and the road-distance data. Existing/candidate availability, candidate activation,
-positive capacity investment and use by transport/inventory are distinct.
-Product, period and scenario filters are explicit; aggregation across scenarios
-uses the original probabilities.
+## Geographic figures
 
-The supplied road-distance workbooks do not contain route polylines.
-Accordingly, the prepared scientific maps show verified node and investment
-locations; positive-flow route geometry is unavailable and is not replaced by
-straight segments. The software accepts separately source-bound OSRM geometry
-for positive routes when it becomes available. Transport incidence and
-quantities remain analyzable from the original vectors without inventing a
-physical road path. The h500 investment map is reconstructed from its original
-accepted decision CSV and source-bound facility coordinates. Its original
-input-availability map remains separately retained. This investment-only
-reconstruction does not establish facility use or recover original flow geometry.
+The maps display facility positions and the investments returned by the
+model on national and federative-unit boundaries from IBGE. Map lines
+delineate study areas and do not necessarily depict accepted national
+boundaries. Appendix E explains the symbols and links the exported flows
+to their stored OSRM road distances.
 
 {{< include human_ai_methodology.qmd >}}
 
 # Results
 
-The results proceed from problem dimensions and resource requirements to
-solution quality and agricultural interpretation. The warehouse-only sequence
-and the separate h215 topology comparison retain their original scopes.
-The solver comparison concerns independently validated Gurobi and HiGHS
-solutions and their attained quality. The historical native implementation,
-completed Pyomo observations and ongoing repeated campaign have distinct
-experimental scopes.
-
-{{< include scalar_results.qmd >}}
+The h215 comparison examines the effect of direct deliveries and
+scenario-dependent operation. The historical native W STO series
+then traces how investment choices and computational effort change
+as candidate sites are added. The repeated common-Pyomo experiments
+provide a fixed-instance comparison of thread ceilings at h300,
+followed by a complete single-repetition thread grid at h400.
 
 {{< include wd_results.qmd >}}
 
-{{< include solver_results.qmd >}}
+{{< include scalar_results.qmd >}}
+
+
+
+{{< include scaling_analysis_results.qmd >}}
+
+
 
 # Discussion
 
-## Computational scale and attainable solution quality
+## What scales with the planning problem
 
-The scalar observations demonstrate that accepted large-model computation can
-be achieved under the declared resource and quality contract. This is stronger
-than successful model construction or a scheduler exit code: every reported
-accepted case retains an original feasible solution and a finite objective
-bound meeting the configured gap target. It remains weaker than exact zero-gap
-optimality. A native status labelled optimal under MIPGap=0.01 does not remove
-the attained nonzero gap.
+The h215 results show the cost of introducing scenario-dependent
+operation while retaining the same shared investment binaries. The
+near-ninefold expansion in variables and nonzeros accompanies a
+twentyfold increase in the observed native time. Matrix size gives a
+direct measure of formulation size and helps explain storage and build
+requirements. Search and LP work also depend on the coefficients,
+bounds, incumbent path and attained stopping gap.
 
-The h300 one-thread, h400 and h500 observations connect increasing matrix dimensions
-to higher observed construction time, optimizer time and memory. The expanded
-warehouse set also changes retained routes and available investment choices.
-Consequently, these observations cannot isolate population size as the sole
-cause of runtime or objective changes. Larger feasible choice sets do not
-guarantee a better attained incumbent at a finite cutoff; changing screening
-can also break feasible-set nesting.
+In the native one-thread STO series, the increasing build times and
+RSS from h300 to h500 are directly relevant to sizing a workstation
+or HPC allocation. The higher effort buys a different planning
+choice set, with additional candidate sites and different admissible
+routes. Population, arcs and available decisions change jointly.
+This is problem-size scale-up. Classical weak scaling would require a
+design that maintains approximately constant workload per resource.
 
-Within the h300 block, all five exported decision vectors and objectives are
-identical while time and memory differ. One thread is fastest and least
-memory-intensive in this observed sequence. Fixed order, shared-node workload,
-SMT, nonexclusive resources and one observation per level prevent causal speedup,
-parallel-efficiency or universal thread-ranking claims. Large continuous
-relaxations, memory traffic, presolve and degeneracy can matter even with few
-integer nodes. The measurements do not identify proprietary internal algorithms.
-The practical implication is to report the tested configuration and attainable
-quality, rather than equating more allocated CPUs with more useful parallelism.
+## Thread ceilings, terminal effort and usable plans
 
-## Interpreting the matched solver campaign
+The common-Pyomo h300 block shows why a solver thread setting should be
+evaluated jointly with the quality of the returned solution. The
+Gurobi comparison has complete target attainment and closely aligned
+attained gaps across the five settings. One thread delivered the
+lowest median time on both clocks, with less sampled memory than the
+higher settings. The gap between native and end-to-end ratios matters
+for practitioners who need a validated investment report. Build,
+transfer and checking contribute to that elapsed time. The observations
+measure neither CPU utilization nor a causal allocation of time to
+parallel overhead.
 
-The first common-Pyomo h300 pair establishes that both studied solvers can
-return independently accepted plans for the same large agricultural instance.
-Gurobi returned earlier with a smaller attained gap in this pair; HiGHS also
-reached the prescribed quality within its allowance. The observed contrast
-therefore concerns two successful implementations, their attained quality
-and the resources they required. It does not support a general division
-between problems that commercial and open-source software can solve.
+At h400, the two-thread Gurobi observation took 8.4% less native time and
+4.8% less end-to-end time than the one-thread observation, with a sampled
+worker peak 19.82 GiB higher. The 4-, 8- and 16-thread observations took longer.
+Repeated h400 runs would show whether the observed two-thread advantage
+persists. In all 15 h300 runs the search processed one node. In the concurrent
+runs the dual simplex won the initial LP and the measured CPU activity
+increased with the thread ceiling. The historical affinity mapped 16 logical
+CPUs to eight physical cores. The planned experiment controls placement and
+the choice of algorithm to measure their relationship with solution time.
 
-The ongoing repeated campaign separates that descriptive observation from
-the questions still to be tested. Within each population, the inputs,
-selected directed graph, scenarios, ordered algebra and resource profile
-remain fixed while the solver and thread ceiling vary. Three temporal runs
-at seed 42 can characterize variability under that fixed-seed protocol;
-they do not sample different random seeds. The first 16-thread h300 pilots
-have been submitted, but their outcomes are not included in the reported
-results. Progression to larger populations depends on observed memory
-headroom and closed validation records. Time-limited, interrupted and
-unexecuted cases remain distinct in the complete experimental grid.
+The original h400 gate rejected progression because the sampled
+worker-tree peak exceeded its ceiling, although the incumbent met
+the numerical target. The subsequent E1–E2 runs passed their own
+worker and cgroup criteria at the same 192 GiB allocation. The largest
+sampled worker peak was within 0.21 GiB of its follow-up ceiling.
+Appendix C gives the scope and limits for each observation. A completed
+single repetition provides evidence for those runs and leaves the
+memory requirements of repetitions and h500 open.
 
-Both completed h300 runs processed one integer node and reported several
-million LP iterations. Those counters motivate examining root processing
-and the continuous relaxation alongside integer search. They do not isolate
-which phase caused the runtime difference. In particular, the version-specific
-HiGHS parallel-search setting does not imply parallel simplex in MIP
-relaxations. Additional configured threads may therefore have limited benefit
-for some workloads. The forthcoming measurements test that possibility rather
-than presupposing a speedup or a preferred thread count.
+## Implications for grain-storage investment
 
-This comparison complements the investment and uncertainty questions in
-@essien2018, @reis2023 and @pourmohammadi2020, and the capacity-relief and
-computational-quality reporting in @milanez2026. It adds a matched within-study
-connection between model size, verified solution quality, application effort
-and the resulting grain-network decisions. It neither establishes a new
-location formulation nor permits a runtime ranking against those studies,
-whose data, service requirements, representations and equipment differ.
+The native W STO plans show a shift in expenditure as the candidate
+set grows. From h215 to h500, the returned one-time investment increases
+from BRL 9.82 billion to 14.32 billion while transport decreases from
+BRL 367.14 billion to 346.07 billion. The economic subtotal falls from
+BRL 393.90 billion to 373.17 billion. Installed candidate capacity
+increases from 7.38 to 10.99 million tonnes. The h500 incumbent allocates
+capacity across all 354 candidate locations. That distribution reflects
+the encoded costs, routing and service trade-offs and would require
+site-level validation before implementation.
 
-## Penalty effects and agricultural interpretation
+The h215 W/D results illustrate why economic expenditure and service
+should be read together. With direct deliveries, the returned D plans
+have economic subtotals 13.11% lower in DET and 13.66% lower in STO.
+Domestic service falls by 1.97 and 2.41 percentage points, respectively.
+Direct deliveries bypass some warehouse handling and stock, while the
+optimization trades off shortage and capacity penalties under the same
+weights. In the native W STO series, service also varies nonmonotonically
+as the candidate set expands. Lower expenditure alone is therefore an
+incomplete basis for selecting an investment program.
 
-The three slack families enlarge only their encoded demand, static-stock and
-reception constraints. Shipping, route eligibility, activation and conservation
-remain hard. Positive slack is compatible with an accepted solution to this
-model; it is not evidence that the corresponding physical network can operate
-without additional measures. Nor does it prove that a no-slack model is
-infeasible. A penalty magnitude cannot establish a monotonic runtime effect
-or demonstrate that slack caused rapid convergence.
+Artificial penalties represent roughly 94–97% of the native W/D
+penalized objectives. A certified gap applies to the penalized total.
+The economic subtotal, delivered grain and the three physical slack
+measures remain separate. A planner can use those diagnostics to
+identify where a returned investment plan depends on unmet demand or
+capacity exceedance. Stock summed over time is measured in
+tonne-periods, whereas reception overflow is measured in tonnes.
 
-Artificial penalties account for approximately 94–97% of the reported scalar
-totals. This concentration makes the global gap a certificate about the
-penalized total, not a 1%-accurate economic subtotal or a service guarantee.
-Investment/operating expenditure, artificial penalties and physical shortages
-or exceedances therefore remain separately visible. The same coefficients and numerical validation criteria are used throughout
-the reported cohort.
+The one-thread h300 Pyomo plan opens 154 candidates, with 70 expansions and
+76 bulk-handling conversions at the reporting threshold. Appendix E links the
+specific investment vector, capacities and directed flows to that observation.
 
-The W/D comparison makes this distinction concrete. Direct delivery can
-bypass warehouse reception and storage, allowing the scalar objective to
-balance lower capacity-related penalties against a different domestic-shortage
-outcome. In the returned D plans, lower penalized costs coexist with more
-unmet domestic demand. The model permits that trade-off because shortage and
-capacity exceedance have explicit weights; it does not impose full domestic
-service as a hard requirement. A decision-maker would therefore need to assess
-the service and investment consequences jointly. Introducing a service floor
-or recalibrating penalties would be a new model-policy study, rather than a
-reinterpretation of the existing certificates.
+## Relationship to agricultural computing research
 
-All included candidates receive positive capacity in the accepted vectors.
-The plans are consequently not sparse selections of a few hubs. Under the
-frozen cost translation, available options and penalty trade-offs, adding
-candidate locations broadens distributed investment and operating opportunities.
-Existing-site expansion and bulkification provide additional, distinct choices.
-The model's extensive investment and remaining slack identify limits of the
-encoded planning system; they are not a ready-to-build public investment program.
-Engineering suitability, finance, contracts, quality and governance remain
-outside the mathematical abstraction.
+The evidence complements the tactical effort measurements of @reis2023
+by linking construction, solver effort and memory to long-lived
+warehouse investment. The discrete sizing and demand fulfillment in
+@pourmohammadi2020 frame the different implications of continuous sizing
+and penalized domestic shortage here. The capacity-relief mechanism
+in @milanez2026 motivates reporting operational quantities alongside
+the numerical certificate. The distributed decomposition in
+@shastri2011 addresses a related computational burden using a different
+solution strategy. The present measurements characterize direct
+extensive-form solution under declared configurations and supply
+a reproducible comparison within the study.
 
-Static exceedance summed over time is expressed in tonne-periods, not installed
-tonnes. Reception overflow is tonnes within periods and can be divided by
-operating days only for a derived daily equivalent. Transport-leg totals may
-count the same grain through several arcs, so they are not unique production.
-Scenario-weighted logistics aggregates and selected-scenario views answer
-different questions. These distinctions prevent superficially attractive maps
-or totals from overstating service improvements and infrastructure requirements.
-
-For a planning organization, application time matters alongside native solver
-time: model assembly, transfer, extraction and checking all precede a usable
-decision report. In the first matched pair, these complete application times
-are approximately 92 and 443 minutes. Such observations help assess whether
-an available computational environment can support repeated strategic
-analyses within the organization's planning cycle. They do not establish
-real-time decision support, deployment costs or a universal software choice.
-
-The two plans also illustrate why a small MIP gap is only one part of decision
-support. Both open 154 candidates, but the expansion and bulk-handling lists
-differ. Similar aggregate costs and service therefore need not identify one
-unique investment program. Comparing the complete facility-ID lists can
-reveal which recommendations change with the returned incumbent. That is
-sensitivity to computational outcomes under fixed assumptions, rather than
-demonstrated robustness to market, climate or demand uncertainty.
-
-Expected unmet tonnes are weighted across the modeled horizon and scenarios;
-they are not an observed annual national deficit. Likewise, modeled financial
-subtotals are not validated construction bids or realized welfare changes.
-The practical contribution is a traceable way to inspect investment options,
-remaining service limitations and computational requirements together. Turning
-those outputs into a project portfolio requires site and engineering review,
-locally credible costs and an explicit assessment of the service trade-offs.
-
-## Contribution to agricultural computing
-
-The computational contribution lies in connecting strategic grain-network
-structure to observed construction effort, memory requirements, attainable
-quality and the interpretation of returned plans. It complements the location
-and decision-support questions in @essien2018 and @gholamian2017 and the
-uncertainty concerns in @hosseini2020 and @reis2023. Their existence rules out
-a generic novelty claim based only on combining location and uncertainty.
-
-The comparison with @shastri2011 is methodological: decomposition and distributed
-optimization address computational burden through a solution strategy, whereas
-this cohort examines a direct extensive-form implementation. Its times cannot
-be ranked against theirs without a matched model, data, equipment and stopping
-rule. Distributed simulation and spatial-processing studies likewise concern
-different workloads. The present observations support a configuration-specific
-assessment of attainable scale and resource use, with original feasibility and
-bound information, rather than an algorithmic superiority claim.
-
-C2 adds a related planning lesson. A quality-qualified penalized objective can
-coexist with substantial shortages and capacity exceedances, and the
-direct-enabled plans can reduce that objective while worsening domestic service.
-This is useful information about the encoded trade-off, but it does not convert
-uncalibrated artificial weights into observed economic damages or prove that
-the plans are ready for implementation.
-
-Integrated decision support requires connecting model outputs to their
-operational and institutional meaning [@mardaneh2021]. The complementary
-Human–AI account documents how scientific assumptions and computational
-proposals were supervised and checked; it does not quantify productivity or
-independently accredit the assistants. Appendix B retains that methodological
-detail while the article's central claim remains the bounded computational
-and agricultural assessment.
+The complementary human-supervised workflow links each computational
+claim to an input, execution and validation record. Appendix B
+describes the decisions and checks that make this evidence traceable.
+The primary contribution remains the joint characterization of
+computational requirements and grain-storage decisions.
 
 # Final considerations, limitations and future work
 
-The eleven accepted scalar observations meet the declared 1% global-gap target:
-h215 W DET/STO, five h300 W thread observations, h400/h500 W STO, and the
-separate h215 D DET/STO pair. Together, they support empirical
-computational characterization and an applied interpretation of the returned
-plans, including substantial investment and residual permitted shortages.
-Separate Pyomo/APPSI Gurobi and HiGHS h215 STO observations also pass
-independent validation and the gap target. These observations do not establish
-exact optimality, full service, a universal solver frontier or a causal thread
-speedup.
+Eleven validated native Gurobi observations met the 1% gap target.
+The native W STO series reached 63.43 million variables and 244.04
+million nonzeros at h500. Its returned plan assigns capacity to 354
+candidate sites, expands 72 existing warehouses and converts 74 for
+bulk handling. The attained gap is 0.207432% and modeled domestic
+service is 91.636%. The reported investment, costs and physical
+diagnostics make the planning trade-offs inspectable.
 
-At h500, the retained gap is 0.207432%, native runtime is 7654.77 seconds
-and sampled application peak RSS is 111.78 GiB. Domestic service is 91.636%
-and artificial penalties account for 94.074% of the scalar objective. All
-354 included candidates receive positive capacity. These results support
-bounded empirical feasibility and quality, not full service, economic-subtotal
-precision or a causal population-size effect. Experiments using different objectives or stopping rules are excluded from
-this scalar comparison.
+The h300 Gurobi Pyomo grid met the target in all 15 runs under the historical
+settings. The one-thread median was lowest on both clocks. The h400 follow-up
+met the target in all five runs and its fastest observed setting used two
+threads. The h500 result comes from the native implementation. These records
+establish the reference points for comparing the root methods and heuristic
+profiles.
 
-Limitations include controlled rather than empirically fitted scenarios,
-finite resource budgets, one observation per thread level, shared-node load,
-incomplete physical cost calibration and unavailable road polylines in the
-current geographic exports. The fixed penalties express the modeled trade-off,
-not observed damages or a demonstrated service policy. Detailed source
-identities and uncertainty about unobserved peaks constrain interpretation.
+The main limitations are the fixed sets of instances and scenarios,
+three temporal repetitions per repeated setting, finite compute
+budgets and incomplete coverage at the larger sizes. The investment
+conclusions also depend on the represented sites, costs, period
+structure and penalties. Decision support for implementation requires
+credible local costs, site suitability and explicit service
+requirements.
 
-The completed Pyomo observations establish that both Gurobi and HiGHS can
-return independently accepted h215 W STO plans under their declared profiles.
-Their attained gaps differ: 0.740159% for Gurobi and 0.000196% for HiGHS.
-Their native runtimes, 31.54 and 426.70 minutes, therefore cannot be interpreted
-as time to an identical solution quality. The repeated common-Pyomo campaign
-addresses a more controlled comparison across populations and thread counts.
-Its first h300 pair is reported separately: Gurobi and HiGHS reached
-0.004105% and 0.006879% gaps in 48.23 and 401.43 native minutes, respectively.
-The common inputs and ordered algebra agree. This first descriptive pair
-does not yet establish repeated-run variability or parallel efficiency.
+## Future work
 
-Future work can examine repeated measurements under controlled resource
-conditions, decomposition methods and sensitivity to the artificial
-coefficients. Agricultural application also requires better calibration of
-investment and operating costs, scrutiny of location suitability and explicit
-service requirements. These extensions address the limits of the present
-computational and planning evidence.
+The controlled h300 campaign will test whether changing the root algorithm or
+incumbent search reduces time to the validated target at fixed memory. Further
+h400 repetitions and h500 comparisons depend on the measured resource
+requirements and phase timings.
+
+A separate planning study could test calibrated costs and service
+requirements. That comparison would evaluate how the resulting
+investments change relative to the present plans.
 
 # Reproducibility and availability
 
 The source code, experiment definitions and numerical records are available in
-[Model Agrologistic](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic).
-Each experimental record identifies the source version, input, warehouse
-population, settings, decisions and original validation. A later integrity
-check does not change the identities of the executed software or its results.
+[GitHub repository](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic). Each
+experimental record identifies the source version, input, warehouse population,
+settings, decisions and original validation. A later integrity check does not change
+the identities of the executed software or its results.
 
-The article and supplementary material are written in Quarto and can be
-rendered without an optimizer or HPC credentials. Appendix A presents the
-literature review; Appendix B explains AI-assisted research and verification;
-Appendix C describes the Python implementations, independent validation and
-GAMS translation; Appendix D specifies input data and effective parameters.
-GAMS compilation and numerical parity have not been verified. The Python
-results therefore do not constitute numerical validation of that translation.
+The article and supplementary material are written in Quarto[^author-6] and can be
+rendered without an optimizer or HPC credentials. Appendix A presents the literature
+review; Appendix B explains AI-assisted research and verification; Appendix C
+describes the Python implementations, independent validation and GAMS[^author-7]
+translation; Appendix D specifies input data and effective parameters. GAMS
+compilation and numerical parity have not been verified. The Python results therefore
+do not constitute numerical validation of that translation.
 
 The supplementary material is accessible as
 [HTML](https://unb-lamfo-or-ai-hpc.github.io/model-agrologistic/supplementary-review.html)
@@ -865,27 +669,13 @@ those accompanying dependencies.
 The research dataset is publicly available in Zenodo, version 0.2.0
 [@celestino2026dataset], at
 [10.5281/zenodo.22751909](https://doi.org/10.5281/zenodo.22751909).
-It contains selected historical inputs, population records, road audits and
-evidence inventories. Current scalar certificates retain their separate
-source identities; no claim is made that every new raw archive is included in
-that earlier deposit. Project-authored code is MIT. OpenStreetMap-derived
-databases retain ODbL terms, while external inputs retain their applicable
-file-level notices and redistribution conditions.
-
-A follow-up versioned Zenodo release is planned for the complete directed
-distance tables, selected admissible graphs and source-bound solution
-companions used in the expanded analysis. Its
-[initial file inventory](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/82c2c19ce619f1251043829b10a4702ac88a7cdd/data/manifests/zenodo_next_release_inventory_20261101.json)
-contains 41 locally prepared assets totaling 450,057,392 bytes; it is not a
-newly published data deposit or complete coverage of the 90-cell campaign.
-The [release plan](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/2c1ad568bbc8eb0ee45b42ad59b5a3a442e0ab3c/data/manifests/zenodo_release_plan_20261102.json)
-separates asset preparation, source-specific notices and private-field review,
-new-version publication and verification of anonymously downloaded bytes.
-Only after that verification will a new DOI and numerical download links be
-reported. Appendix D11 specifies the GitHub/Zenodo distribution and Appendix E
-identifies the investment and flow-distance companions. Later campaign
-outcomes will retain all configuration states, including censoring and
-non-execution, without filling absent objectives or decision vectors.
+The [processed input archive](https://zenodo.org/records/22751909/files/agrologistic-v020-inputs.zip?download=1)
+contains the four effective workbooks. Appendix D lists the exact members
+and checksums for h215, h300, h400 and h500. Appendices D and E identify
+the decision vectors and flow-distance companions and explain how to
+access them. OpenStreetMap derivatives retain ODbL terms, and
+project-authored code is MIT. File-level access and redistribution
+conditions are recorded in the dataset inventories. Appendix F describes the prepared Gurobi investment companion and access to original records.
 
 # Declaration of generative AI and AI-assisted technologies in the manuscript preparation process
 
@@ -909,3 +699,16 @@ research.
 
 ::: {#refs}
 :::
+
+[^author-1]: <https://www.gurobi.com/>
+
+[^author-2]: <https://www.pyomo.org/>
+
+
+[^author-4]: <https://pypi.org/project/gurobipy/>
+
+[^author-5]: <https://pyomo.readthedocs.io/en/stable/reference/topical/appsi/appsi.html>
+
+[^author-6]: <https://quarto.org/>
+
+[^author-7]: <https://www.gams.com/products/solvers/>
