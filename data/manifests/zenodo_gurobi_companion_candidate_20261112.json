@@ -1,0 +1,18 @@
+{
+  "status": "prepared_locally",
+  "input_doi": "10.5281/zenodo.22751909",
+  "scope": "national Gurobi investment aggregates",
+  "cases": 7,
+  "rows": 10,
+  "archive_sha256": "28b39757b37efad30ac56d868d0235ad81b56d9b7ea13358892c860518fa5b9a",
+  "files": {
+    "DATA_DICTIONARY.md": "ad44313abcfa8bfbc045c8c1fff52123109cde186416b2f3fa37440b03dac6a2",
+    "investments-national.csv": "fb30792f331c59a6b4557ac5930c2a31550d3f4d0a5a7c3b730f43d4e7d2c64e",
+    "LICENSE": "e607392e016bdf0ab8206ebac9146a31a575b849b50a9a6306da8f1a14704764",
+    "PROVENANCE.json": "437775ed3c53cf16a79efe3034e1e0329cbaf9f6281f74d7516d2db1a2a75d9c",
+    "README.md": "c2bb2617abf935290ef71ce2aca91a314eba6a002cc2815085bd8a1b5b282a88",
+    "RIGHTS.md": "1c774d1236d219909b9bd151f28f9c94faa16ea66218fe130f86bb98813e265b",
+    "SHA256SUMS.txt": "6d4d25f832353f1fc715b5b29de1c1ecddde03e14229cc909d818dd2bd7c1dca"
+  },
+  "full_resolution_flows": "custody"
+}

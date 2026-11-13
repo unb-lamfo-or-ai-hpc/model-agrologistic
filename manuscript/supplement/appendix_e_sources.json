@@ -272,42 +272,6 @@
         "cases/pyomo_gurobi_h215_w_native8h_license_v2/products/pyomo_gurobi_h215_w_native8h_license_v2/flows.csv": "3b53291ee225bda188110a6966b2b0f6573bbd826a607d921af8d4a02b50c53c",
         "cases/pyomo_gurobi_h215_w_native8h_license_v2/products/pyomo_gurobi_h215_w_native8h_license_v2/independent_validation.json": "5b65bb1261db6e2aac2d9ba3e247fa4265780e608be0fd49f22e0ecab1a44c01"
       }
-    },
-    {
-      "case": "scalar_highs_h215_w_native8h_startup_v2",
-      "population": 215,
-      "mode": "sto",
-      "topology": "W",
-      "solver": "highs",
-      "interface": "pyomo",
-      "threads": 4,
-      "mip_gap": 1.9554119122548442e-06,
-      "objective": 12974673141227.254,
-      "bound": 12974647770396.836,
-      "archive": "scalar-highs-h215-w-native8h-startup-v2-evidence.tar.gz",
-      "archive_sha256": "db04224d755cd5720091ddb96fc275bcefc6082431ea4b417a1b90d0fece071b",
-      "workbook_member": "data/processed/policy_population_v020_osrm/warehouses_215/model_input.xlsx",
-      "workbook_sha256": "40edb66585daca9cc393cab1f86bde6d4528a5f34b6afc57260cc1684396da4e",
-      "source_commit": "009119a07eb8c68573cfa105893b9d4a719c5155",
-      "probabilities": {
-        "oferta_alto__demanda_alto": 0.1111111111111111,
-        "oferta_alto__demanda_baixo": 0.1111111111111111,
-        "oferta_alto__demanda_base": 0.1111111111111111,
-        "oferta_baixo__demanda_alto": 0.1111111111111111,
-        "oferta_baixo__demanda_baixo": 0.1111111111111111,
-        "oferta_baixo__demanda_base": 0.1111111111111111,
-        "oferta_base__demanda_alto": 0.1111111111111111,
-        "oferta_base__demanda_baixo": 0.1111111111111111,
-        "oferta_base__demanda_base": 0.1111111111111111
-      },
-      "selected_network_sha256": "7352445b5c816be485e70358e4abe2b8f2c96d6f3ab05f07ac266cf06b53f6ca",
-      "sparse_export_threshold_t": 1e-07,
-      "members": {
-        "cases/scalar_highs_h215_w_native8h_startup_v2/input_receipt.json": "819a1fd49902cdf2b591bfcb0d3bc5b246ac06dd229d206587af59ab547119de",
-        "cases/scalar_highs_h215_w_native8h_startup_v2/products/scalar_highs_h215_w_native8h_startup_v2/warehouse_decisions.csv": "2027aa2da598c1bbc75ef762e61336e1d1a5c42e70309e2e15ed327399084844",
-        "cases/scalar_highs_h215_w_native8h_startup_v2/products/scalar_highs_h215_w_native8h_startup_v2/flows.csv": "c4cddabb2914424e34d6de4b2dcf2d1185f773c536bc16866afb41da29271123",
-        "cases/scalar_highs_h215_w_native8h_startup_v2/products/scalar_highs_h215_w_native8h_startup_v2/independent_validation.json": "1611eeb65ab5e5c6b9037388059495f72432f356f121b4611e8501fe92500604"
-      }
     }
   ],
   "aliases": [

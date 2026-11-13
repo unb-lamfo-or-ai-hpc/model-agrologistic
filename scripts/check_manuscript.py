@@ -346,7 +346,8 @@ def check(*, rendered: bool = False, publication: bool = False) -> None:
     )
     if any(row["email"] not in email_lines for row in records):
         raise ValueError("SBC email block omits an author")
-    keys = re.findall(r"@(?:article|incollection|book|misc|phdthesis|techreport)\{([^,]+),", bibliography)
+    bib_entry = r"@(?:article|incollection|book|misc|phdthesis|techreport)\{([^,]+),"
+    keys = re.findall(bib_entry, bibliography)
     cited = set(re.findall(r"(?<!\w)@([A-Za-z][A-Za-z0-9_-]*)", article))
     cited = {key for key in cited if not key.startswith(("eq-", "tbl-", "fig-", "sec-"))}
     if len(keys) != len(set(keys)) or cited - set(keys):
@@ -462,9 +463,7 @@ def check(*, rendered: bool = False, publication: bool = False) -> None:
     if re.search(r"(?m)^\$\s*$", supplement):
         raise ValueError("Display mathematics requires double-dollar delimiters")
     review_bib = bibliography + (MANUSCRIPT / "review-methods.bib").read_text(encoding="utf-8")
-    review_keys = set(
-        re.findall(r"@(?:article|incollection|book|misc|phdthesis|techreport)\{([^,]+),", review_bib)
-    )
+    review_keys = set(re.findall(bib_entry, review_bib))
     review_cited = {
         key
         for key in re.findall(r"(?<!\w)@([A-Za-z][A-Za-z0-9_-]*)", supplement)
