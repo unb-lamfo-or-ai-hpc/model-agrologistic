@@ -111,7 +111,33 @@ days. Static and reception exceedances have separate slacks. Shipping,
 conservation and route eligibility remain hard constraints. For a closed
 candidate, the emergency slacks must also be zero.
 
-## C3 Native Gurobi implementation
+## C3 Native gurobipy implementation
+
+This implementation builds and solves the extensive form directly through
+the Gurobi Python API. It supplies the historical W STO scale series and
+the h215 W/D comparisons. The native runs used a 14,400-second solver
+limit, a 1% relative-gap target and seed 42. The h215 W/D comparisons used
+four threads. The h300 W STO block contains one observation at each of
+1, 2, 4, 8 and 16 threads, and the h400 and h500 W STO observations used
+one thread. The original h300 runs shared one reservation, with fixed
+execution order and uncontrolled cache state and shared-system load.
+This block describes the tested configurations.
+
+The h215 W/D comparison shares the original input workbook, the
+warehouse population, costs, scenario data and common route families.
+D adds 592 direct origin-to-customer arcs, equivalent to 35,520 DET
+or 319,680 STO flow variables. The validated D incumbents are below
+the corresponding W lower bounds. The retained bound intervals bracket
+the reduction in the optimal penalized objective at 35.819–36.175%
+for DET and 43.313–44.083% for STO. The intervals are mathematical
+bounds on the penalized objective. Expected shortages increase from
+55.16 to 68.48 million tonnes in DET and from 52.40 to 68.74 million
+tonnes in STO. Artificial penalties account for approximately 95.39%
+and 95.38% of the corresponding D totals. The original h215 runs
+record native times of 103.93 and 2,582.59 seconds for D and 122.51
+and 2,445.52 seconds for W in DET and STO, respectively. The separate
+runs have different attained gaps and describe their own effort.
+The W records provide the historical control for the topology comparison.
 
 Gurobi uses a common extensive-form builder for DET and STO. Its cost construction
 separates six investment components, four transport components, inventory
@@ -148,7 +174,7 @@ below illustrates this separation without requiring a source-code lookup.
 
 The Pyomo implementation
 and its bound derivation
-provide a common scalar formulation for Gurobi and HiGHS.
+provide a scalar formulation for Gurobi through APPSI.
 It uses the same effective data, investment expressions and physical balances.
 The principal representational difference concerns candidate emergency slacks.
 The native model allows an open candidate's slack to be unbounded above.
@@ -209,8 +235,7 @@ representative of every feasible physical plan and investment vector. It does
 not promise that two solver interfaces will explore the same search tree.
 
 The implementation checks the proof's finite, nonnegative data conditions and
-records the derived bounds' identity and scope. Gurobi and HiGHS use Pyomo's
-APPSI interfaces. Each receives the reviewed linear expressions, variable
+records the derived bounds' identity and scope. Gurobi uses Pyomo's APPSI interface. Each receives the reviewed linear expressions, variable
 domains and bounds from this common formulation.
 
 To compare inputs to these adapters, the
@@ -224,123 +249,21 @@ test correctness and operational behavior, but do not predict h215 runtime
 or memory. Large-instance interpretation must retain these formulation,
 interface and resource scopes.
 
-### C4.1 What parallel execution means in HiGHS 1.15.1
+### C4.1 Root algorithms and evidence
 
-A MILP solution involves several kinds of work. Presolve simplifies the model;
-an LP relaxation supplies a bound; branch-and-bound explores remaining
-integer decisions. Parallelism in one part does not imply parallel execution
-of the whole calculation.
+The historical experiments vary the solver thread ceiling with automatic
+root selection. The proposed h300 grid fixes the method explicitly at dual
+simplex, barrier, deterministic concurrent LP or PDHG. Standard heuristic
+effort and the NoRel work budget define the three profiles in Methods. The
+initial LP method, crossover and remaining root processing are timed as
+reported by the solver. The final incumbent is validated independently.
 
-The HiGHS 1.15 series provides an initial parallel MIP implementation,
-included in the 1.15.1 release used here. Setting `parallel="on"`
-allows several workers to explore the tree, including cuts and heuristics
-away from the root. Symmetry detection, clique-table queries and analytic-centre
-calculations also offer parallel work. However, parallel simplex is disabled
-for LP relaxations inside MIP in this release. The parallel capability of a
-standalone LP solver must therefore not be assumed for a MIP's root relaxation.
-These distinctions follow the
-[HiGHS 1.15.1 documentation](https://github.com/ERGO-Code/HiGHS/blob/v1.15.1/docs/src/parallel.md)
-and [release description](https://github.com/ERGO-Code/HiGHS/releases/tag/v1.15.1).
+### C4.2 From workbook to validated result
 
-The common-Pyomo campaign profile sets `threads` to 1, 2, 4, 8 or 16,
-`parallel="on"` and `random_seed=42`, with an eight-hour native limit and
-a 1% relative-gap target. Each calculation starts in a fresh process;
-requested options and values returned by the native solver are retained.
-A thread ceiling is not a measurement of active workers. Additional threads
-may provide little benefit when root-relaxation work dominates or memory
-bandwidth limits progress. Actual logs, CPU observations and elapsed times
-must support any parallel-performance claim.
-
-The completed h215 HiGHS observation belongs to a different execution profile:
-its log records four threads, one maximum search worker and parallel search
-off. Its accepted objective and bound remain valid, but its runtime cannot
-establish the performance of the prospective parallel profile. Fixing seed 42
-specifies solver-specific pseudorandom choices; it neither constructs a shared
-initial incumbent for Gurobi and HiGHS nor guarantees identical parallel
-trajectories. Repeated runs under that fixed seed quantify observed execution
-variation and do not represent independent random problem instances.
-
-### C4.2 A calculation from workbook to validated result
-
-Both Pyomo pipelines follow the same scientific sequence.
-
-1. Read the identified workbook, warehouse order and scenario definition.
-   Convert the source quantities to the effective arrays described in
-   Appendix D and select the product-specific admissible directed arcs.
-2. Build the shared investment block and scenario-dependent balances,
-   capacities and costs. Derive the bounded candidate-slack representation.
-3. Transfer the Pyomo expressions to the native engine through APPSI:
-   gurobipy for Gurobi and highspy for HiGHS. Record requested options and,
-   where retained, native values and the ordered common-algebra fingerprint.
-4. Optimize in a fresh process. Preserve the incumbent, bound, native status
-   and solver runtime even when the target is not attained.
-5. Export decisions, reconstruct costs and check original-unit residuals.
-   Interpret financial cost, artificial penalties, service and capacity
-   exceedances separately.
-
-Pyomo supplies algebra and options; Gurobi still selects its own presolve,
-relaxation methods, cuts and heuristics. In the completed Pyomo observation,
-Method, NodeMethod, Presolve and Cuts were -1 (automatic), Heuristics was
-0.05 and ConcurrentMIP was 1. TimeLimit, MIPGap, Threads, Seed,
-FeasibilityTol and IntFeasTol were explicitly controlled. This is an
-automatic-strategy profile with declared overrides, rather than an untouched
-default configuration. ConcurrentMIP counts independent MIP searches; its
-value of one does not restrict the engine to one worker thread.
-The [native parameter reference](https://docs.gurobi.com/projects/optimizer/en/current/reference/parameters.html)
-defines these controls.
-
-For HiGHS, the thread ceiling and parallel-search option must both be
-reported, as explained in C4.1. Parallelism within a solve differs from
-running two independent Slurm jobs at once. The common-Pyomo campaign protocol allocates
-one node per calculation; its worker affinity, solver thread ceiling and
-allocation CPU count are recorded separately. Neither use of Pyomo nor
-seed 42 makes parallel execution or returned investment vectors identical.
-
-Data preparation, common-model construction, matrix identification, solver
-transfer, native optimization, extraction and independent validation have
-different timing boundaries. Some recorded regions enclose other regions;
-their values must not be added to reconstruct an end-to-end time. The
-microsecond data-read field at an already-loaded model boundary is not the
-time required to read and prepare a large workbook.
-
-### C4.3 Finite campaign and progressive population qualification
-
-The campaign design crosses two solvers, three warehouse populations
-(h300, h400 and h500), five thread ceilings (1, 2, 4, 8 and 16) and three
-temporal repetitions: 90 planned runs across 30 solver-population-thread
-settings. Every run retains
-seed 42, a 28,800-second native limit and a 1% target for the scalar objective.
-The first h300 observations remain a separate matched cohort from the
-historical native Gurobi results; a new campaign cell does not retroactively
-replicate or replace a historical observation.
-
-The [finite schedule](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/82c2c19ce619f1251043829b10a4702ac88a7cdd/experiments/pyomo_scaling_serial_schedule_v1.json)
-defines one ordered sequence per solver. Parallel independent jobs and
-parallel work inside a solver are different levels of concurrency.
-Each scientific job requests an exclusive node and 192 GiB for a 12-hour
-workflow envelope. Its worker affinity contains 16 logical CPU IDs; the
-solver thread ceiling varies by configuration and the scheduler's allocation
-count is recorded separately. A thread ceiling of one therefore does not
-mean that only one logical CPU was allocated to the complete workflow.
-
-At each population, the one- and sixteen-thread pilots for both solvers
-precede the remaining configurations. Advancement checks the recorded
-inputs, ordered algebra, derived bounds, hardware class and operational
-closure. The sampled worker-tree peak must retain 20% headroom relative
-to the requested memory. Live output-growth and personal-quota checks
-separately protect the evidence reserve. Public analytical qualification
-checks software and dependency behavior; it does not predict the memory
-requirements of an unexecuted population.
-
-A regular time limit without an incumbent remains a censored outcome, with
-no incumbent objective, service plan or incumbent-based gap. Interrupted or
-inconsistent execution closes progression and preserves the evidence.
-Neither kind of outcome is silently retried or replaced by a different solver.
-Final consolidation retains all 90 run states. Three repetitions
-under a fixed seed describe execution variation for that protocol; they
-do not sample independent problem scenarios or establish a general thread
-optimum. Complete repeated-run performance estimates await the corresponding
-collected results.
+Read the ordered warehouse population and workbook from Appendix D, build
+the scalar model, capture the ordered matrix fingerprint, solve with the
+recorded parameter values, and validate the exported decisions in original
+units. Preserve Slurm accounting, topology, memory receipts and each log.
 
 ## C5 Checking a returned solution
 
@@ -348,7 +271,10 @@ Independent validation reconstructs the fourteen cost components and evaluates
 the original physical and investment constraints from the exported decisions.
 It uses absolute tolerance $10^{-5}$ and relative tolerance $10^{-8}$, together
 with the explicit sparse-export rounding allowance. Local constraints are
-examined individually; national balance alone is insufficient.
+examined individually. For a check with left and right sides $L$ and $R$,
+the tolerance is $10^{-5}+10^{-8}\max(|L|,|R|)$ plus the applicable
+export-rounding allowance. The residual is $|L-R|$ for an equality
+and $\max(0,L-R)$ for an upper-bound inequality.
 
 Three outcomes must remain distinct. A usable incumbent supplies decisions that
 can be checked. An accepted incumbent also passes the independent residual and
@@ -472,30 +398,30 @@ hash, and a new output directory. The resulting data remain bound to that
 workbook and case. The compilation and numerical-verification boundary is
 stated in Section C6.
 
+## C8 Historical h300 Gurobi observations
 
+All 15 runs reached the 1% target. Their gap was between 0.004105% and
+0.004122%. The first table reports medians and ranges over three temporal
+repetitions per thread ceiling. The clocks measure termination.
 
-## C8 Reading the first controlled h300 pilot
+| Solver | Threads | At target | Without incumbent | Gap, % | Native, min | End-to-end, min | Sampled worker peak, GiB |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| Gurobi | 1 | 3 | 0 | 0.004105 (0.004105–0.004105) | 48.23 (48.15–61.50) | 91.97 (91.79–105.90) | 74.42 (74.21–74.54) |
+| Gurobi | 2 | 3 | 0 | 0.004122 (0.004122–0.004122) | 66.18 (51.93–68.60) | 108.94 (96.10–111.42) | 82.51 (82.51–82.66) |
+| Gurobi | 4 | 3 | 0 | 0.004120 (0.004120–0.004120) | 65.14 (56.40–76.99) | 113.14 (100.24–120.39) | 100.65 (99.35–100.86) |
+| Gurobi | 8 | 3 | 0 | 0.004120 (0.004120–0.004120) | 93.29 (93.11–93.85) | 136.00 (135.82–137.85) | 99.52 (99.50–100.78) |
+| Gurobi | 16 | 3 | 0 | 0.004120 (0.004120–0.004120) | 96.39 (71.90–101.34) | 141.15 (115.08–144.87) | 100.88 (100.26–103.36) |
 
-The first completed Gurobi pilot uses the common Pyomo formulation with
-`Threads=1`, `Seed=42`, `TimeLimit=28800`, `MIPGap=0.01`,
-`FeasibilityTol=1e-9` and `IntFeasTol=1e-9`. Native introspection records
-`Presolve=Method=NodeMethod=Cuts=-1`, `Heuristics=0.05` and `ConcurrentMIP=1`.
-These values describe automatic strategy with explicit experimental controls.
-They do not prescribe barrier or dual simplex, nor supply an initial incumbent.
+## C9 Historical h400 Gurobi follow-up
 
-Its common gap is 0.0000410522720273419 as a fraction, or 0.0041052272%.
-Native optimization takes 2,893.71 s; application end-to-end time is 5,507.64 s.
-The former is a solver clock and the latter includes application work. Neither
-is the eight-hour allowance or the 5,702 s Slurm allocation duration. The
-74.535 GiB value is a sampled process-tree peak, whereas the 192 GiB value is
-requested memory. Allocated CPUs, the sixteen-ID worker affinity pool and
-the one-thread solver setting are separate quantities.
+The E1–E2 series has one validated run at each thread ceiling at 192 GiB.
+The original objective and economic subtotal agree at the reported precision.
+Table C.8 gives both the sampled worker tree and the cgroup memory peak.
 
-The [source-bound pilot record](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/8c836ecc6d6fb41768884541bdb98b0085421af4/docs/evidence/paired_pyomo_h300_gurobi_2231228_review.json)
-includes the exact input and ordered-algebra fingerprints. A paired
-Gurobi/HiGHS comparison must check these identities after both collections,
-then compare attained quality and timing at the declared scopes. The returned HiGHS companion has the same identities and passes original
-validation. Its attained gap is 0.0068793848%, native time is 24,086.10 s,
-application time is 26,601.01 s and sampled worker-tree peak is 84.820 GiB.
-The requested parallel option is on, with one permitted solver thread.
-This does not constitute a test of multi-thread efficiency.
+| Solver | Threads | Stage / job | Native, min | End-to-end, min | Sampled worker peak, GiB | Cgroup peak, GiB |
+|---|---:|---|---:|---:|---:|---:|
+| Gurobi | 1 | E1 / 2247718 | 87.36 | 162.60 | 113.31 | 113.63 |
+| Gurobi | 2 | E2 / 2250119 | 80.03 | 154.83 | 133.13 | 133.46 |
+| Gurobi | 4 | E2 / 2250123 | 139.63 | 214.98 | 162.10 | 162.89 |
+| Gurobi | 8 | E2 / 2250127 | 150.36 | 226.35 | 161.47 | 162.94 |
+| Gurobi | 16 | E1 / 2247727 | 134.60 | 207.78 | 162.99 | 163.45 |

@@ -41,9 +41,9 @@ def test_reader_research_question_does_not_imply_unexecuted_comparisons():
     abstract = text.split("abstract: >-", 1)[1].split("keywords:", 1)[0]
     assert "rosa2026thesis" not in abstract
     assert "Artur" not in abstract
-    assert "global\nnative TimeLimit of 14,400 seconds" in text
-    assert "nine Cartesian scenarios of probability 1/9" in text
-    assert "DET uses the original deterministic arrays" in text
+    assert "The planned h300 W STO factorial" in text
+    assert "an eight-hour solver budget" in text
+    assert "DET" in text and "STO" in text
     solver_text = (MODULE.MANUSCRIPT / "solver_results.qmd").read_text(encoding="utf-8")
     assert "not matched repeated" in " ".join(solver_text.split())
     assert "equal attained gaps" in " ".join(solver_text.split())
@@ -84,7 +84,7 @@ def test_literature_and_authorship_retained():
     text = (manuscript / "index.qmd").read_text(encoding="utf-8")
     assert "# Related work and research positioning" in text
     assert "# Final considerations, limitations and future work" in text
-    assert "does not quantify productivity" in text
+    assert "human-supervised" in text.lower()
     assert "SCIP is a reserved extension" not in text
     authors = json.loads((manuscript / "authors.json").read_text(encoding="utf-8"))
     assert len(authors["author"]) == 7
@@ -92,26 +92,25 @@ def test_literature_and_authorship_retained():
 
 def test_reader_facing_editorial_structure_and_attribution():
     text = (MODULE.MANUSCRIPT / "index.qmd").read_text(encoding="utf-8")
-    assert "The central question is:" in text
+    assert "The research question is" in text
     # Keep the citation key and correct bibliography type, not repeated prose labels.
     prose = text.replace("@rosa2026thesis", "Rosa (2026)")
     assert not re.search(r"\bthesis\b", prose, re.IGNORECASE)
     abstract = text.split("abstract: >-", 1)[1].split("keywords:", 1)[0]
     evidence = json.loads((MODULE.MANUSCRIPT / "scalar_evidence.json").read_text())
     h500 = next(row for row in evidence["observations"] if row["population"] == 500)
-    assert f"{100 * h500['common_gap']:.2f}% gap" in abstract
-    assert "63.4 million variables" in abstract
+    assert f"{100 * h500['common_gap']:.2f}% relative gap" in abstract
+    assert "63.4 million variables" in " ".join(abstract.split())
     assert "SoPlex" not in abstract
     discussion, final = text.split("# Discussion\n", 1)[1].split(
         "# Final considerations, limitations and future work", 1)
-    assert "@essien2018" in discussion and "@mardaneh2021" in discussion
+    assert "@reis2023" in discussion and "@shastri2011" in discussion
     assert "All six SCIP attempts terminated without an incumbent" not in discussion
     assert not re.search(r"\b(?:SCIP|CBC)\b", discussion + final)
     normalized = " ".join(final.split())
-    assert "Separate Pyomo/APPSI Gurobi and HiGHS h215 STO" in normalized
-    assert "first h300 pair is reported separately" in normalized
-    assert "0.006879%" in normalized
-    assert "universal solver frontier" in final
+    assert "met the target in all 15 runs" in normalized
+    assert "The controlled h300 campaign will test" in normalized
+    assert "HiGHS" not in discussion + final
     assert "# Conclusions" not in text and "# Future work:" not in text
     assert "Repository deposition of the licensed input data" not in text
     assert "subject to contributor rights" not in text

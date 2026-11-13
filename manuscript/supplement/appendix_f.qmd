@@ -14,7 +14,7 @@ road data are documented separately from the software licence.
 
 The proposed companion dataset contains national summaries of candidate
 opening, existing-site expansion and bulk-handling conversion. It contains
-11 case–decision rows across eight configurations. The data dictionary
+10 case–decision rows across seven Gurobi configurations. The data dictionary
 distinguishes the binary activation count from modeled capacity in metric
 tonnes. Each value can be recomputed from the corresponding GitHub investment
 list. The package documents coverage, source identities, field definitions,

@@ -427,7 +427,7 @@ are original quantities, not probability-weighted contributions.
 
 The [source-bound file and column dictionary](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/8f33a360d8a1ca3f18c5c7a3aa0eac2cd2ad5a90/docs/evidence/paired_h300_release_dictionary_20261101.json)
 records member paths, byte sizes, SHA-256 values, column names and row counts
-for the Gurobi h300 pilot. The separate [HiGHS dictionary](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/083ef96cc99a346204df22551ce0739c10e8a2f7/docs/evidence/paired_h300_highs_release_dictionary_20261101.json) binds the companion output. The
+for the Gurobi h300 pilot. The
 [export implementation](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/c493be8cd127c5175fc7eb111400229e64b8e3c0/src/logic/experiment_runner.py)
 defines those fields. Its expected-horizon summaries multiply each operational
 row by its scenario probability exactly once and sum over the intended
@@ -442,59 +442,22 @@ sparse exported tables do not list every feasible zero-flow arc; Appendix E
 explains the distinction between admissibility and a returned positive flow.
 
 
-For the first matched h300 pair, a data-only reconstruction from the exact
+For the one-thread Gurobi h300 run, a data-only reconstruction from the exact
 workbook and executed policy provides 45,240 product-specific admissible arcs.
 This is the total number of directed endpoint-product records across both
 products, before expansion over operating periods and scenarios. The counts
 are 4,440 origin-to-warehouse, 4,800 warehouse-to-destination and
 36,000 warehouse-to-warehouse arcs, with no direct or repair arcs. Its graph
-and mathematical-contract fingerprints match both original input receipts.
+and mathematical-contract fingerprints match the original input receipt.
 The [selected-graph receipt](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/0f63c10eb1abf88318a4d9c6afc75fcac97f6266/docs/evidence/h300_selected_graph_release_20261101.json)
 and [file-level release inventory](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/0f63c10eb1abf88318a4d9c6afc75fcac97f6266/data/manifests/zenodo_next_release_inventory_20261101.json)
 distinguish these locally prepared files from the existing published deposit.
-They identify the graph separately from the two positive-flow companions;
+They identify the graph separately from the positive-flow companion;
 they do not claim that a new Zenodo download is already available.
 
-## D11 Versioned data release plan
+## D11 Versioned data and access
 
-The existing Zenodo dataset, version 0.2.0
-[@celestino2026dataset], remains the cited public historical release.
-Its current [public metadata](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/82c2c19ce619f1251043829b10a4702ac88a7cdd/docs/evidence/zenodo_public_metadata_20261102.json)
-lists twelve files with open access. Rechecking those metadata is distinct from
-downloading every archive again or extending its contents.
-
-The [next-version plan](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/2c1ad568bbc8eb0ee45b42ad59b5a3a442e0ab3c/data/manifests/zenodo_release_plan_20261102.json)
-links the existing release to the
-[initial 41-file inventory](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/82c2c19ce619f1251043829b10a4702ac88a7cdd/data/manifests/zenodo_next_release_inventory_20261101.json)
-and its [readiness register](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/82c2c19ce619f1251043829b10a4702ac88a7cdd/data/manifests/zenodo_release_readiness_20261102.json).
-These 450,057,392 bytes are prepared locally. They comprise 28 historical
-companions, four complete directed road-distance tables, seven companions
-for the matched h300 pair and two files describing its selected admissible
-graph. No new DOI, upload or anonymous download of these derivatives has
-been completed. Further population graphs and reviewed original outputs
-are separately identified preparation tasks.
-
-| Data object | GitHub role | Versioned numerical archive role |
-| --- | --- | --- |
-| Model and experimental protocol | Source, tests, settings and exact software versions | Link each dataset version to the executed source and environment |
-| Inputs and complete directed distances | Gold schema, source members, materialization audits and checksums | Preserve original workbooks and provide full endpoint/family distance tables |
-| Selected admissible network | Screening policy, counts and graph/contract identities | Export the product-specific admissibility mask separately from complete distances |
-| Accepted investment and operating decisions | Small lists and reviewed figures/tables | Full coordinate tables and SQLite companions with period/scenario/product identities |
-| Computational outcome | Configuration/status tables and evidence references | Reviewed native/validation/timing/resource records, including censored and unsuccessful outcomes |
-
-: Table D.8. Complementary repository and versioned-data delivery roles.
-
-Before a new version is published, each asset requires its source notices,
-attribution and private-field review, exact byte size and SHA-256, coordinate
-and unit dictionary, and the source used to derive any aggregate.
-Sanitized copies receive new identities and an omission/source mapping;
-original experimental packages remain unchanged. Software licensing does
-not replace the applicable notices for upstream datasets.
-
-The release sequence is preparation, asset review, publication of a new
-version related to 0.2.0, and anonymous download verification against the
-manifest. A new DOI or download URL enters the article only after those
-steps. A later campaign release will account for all 90 runs and
-the products actually returned, including time censoring, execution failure
-and non-execution. Missing decisions or objective values are not fabricated.
-The current prepared inventory is not a claim that the campaign is complete.
+Appendix F identifies the public input deposit and the proposed companion
+with national Gurobi investment summaries. Detailed flows, graphs, distances
+and SQLite outputs are held in custody under the asset-specific access
+conditions. Tables D.5–D.7 identify the numerical inputs and output fields.

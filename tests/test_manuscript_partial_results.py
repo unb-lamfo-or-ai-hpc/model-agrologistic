@@ -55,6 +55,6 @@ def test_review_has_real_figures_and_explicit_missing_exports():
     assert "{{< include scalar_results.qmd >}}" in current
     assert "{{< include comparison_results.qmd >}}" not in current
     final = current.split("# Final considerations, limitations and future work", 1)[1]
-    assert "The eleven accepted scalar observations" in final
-    assert "Separate Pyomo/APPSI Gurobi and HiGHS h215 STO" in final
-    assert "first h300 pair is reported separately" in final
+    assert "Eleven validated native Gurobi observations" in final
+    assert "The h300 Gurobi Pyomo grid" in final
+    assert "The controlled h300 campaign" in final

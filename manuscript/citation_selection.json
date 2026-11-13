@@ -46,13 +46,6 @@
       "metadata_source": "Existing Zotero item and corresponding author's UFRN publication list"
     },
     {
-      "citation_key": "huangfu2018",
-      "zotero_item_key": "PS7AL5DB",
-      "doi": "10.1007/s12532-017-0130-5",
-      "membership_verified": true,
-      "metadata_source": "Existing Zotero item and Springer journal record"
-    },
-    {
       "citation_key": "rosa2025",
       "zotero_item_key": "TFD29N7F",
       "doi": "10.1590/1806-9649-2025v32e4925",
@@ -249,6 +242,34 @@
       "url": "https://npad.ufrn.br/npad/hardware",
       "membership_verified": true,
       "metadata_source": "Official NPAD hardware page"
+    },
+    {
+      "citation_key": "mcti2025pbia",
+      "url": "https://www.gov.br/mcti/pt-br/acompanhe-o-mcti/transformacaodigital/plano-brasileiro-de-inteligencia-artificial"
+    },
+    {
+      "citation_key": "basso_agriculture_2024",
+      "doi": "10.3389/fsufs.2023.1296337"
+    },
+    {
+      "citation_key": "conab_portal_2026a",
+      "url": "https://www.gov.br/conab/pt-br/atuacao/armazenagem"
+    },
+    {
+      "citation_key": "conab_portal_2026b",
+      "url": "https://portaldeinformacoes.conab.gov.br/download-arquivos.html"
+    },
+    {
+      "citation_key": "pera2026",
+      "doi": "10.11606/9788571331099"
+    },
+    {
+      "citation_key": "lncc2026supercomputador",
+      "url": "https://www.gov.br/lncc/pt-br/assuntos/noticias/ultimas-noticias-1/lncc-conduz-implantacao-de-supercomputador-de-inteligencia-artificial-que-ampliara-a-capacidade-computacional-do-brasil"
+    },
+    {
+      "citation_key": "embrapa2024datacenter",
+      "url": "https://www.embrapa.br/en/busca-de-noticias/-/noticia/93647060/recursos-do-novo-pac-sao-aplicados-na-modernizacao-do-data-center-para-pdi-da-embrapa"
     }
   ],
   "collection_note": "All 35 cited records verified through the local API on 2026-09-13. Four existing computational references gained collection membership; the thesis and Zhao article were created after deduplication. Other memberships were preserved.",
