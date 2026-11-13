@@ -1,0 +1,28 @@
+{
+  "date": "2026-11-12",
+  "editorial_snapshot": "f8ee519b45477c593930692e71601cf1f406896e",
+  "editorial_branch": "docs/editorial-reconciliation-20261105",
+  "disposition": "Historical review superseded by Gurobi-only editorial scope. Keep branch and all evidence.",
+  "scope": {
+    "gpu": "closed",
+    "highs_and_scip": "GitHub historical evidence only",
+    "zenodo": "prepare Gurobi-only candidate; no deposit",
+    "h300": {
+      "methods": [
+        1,
+        2,
+        4,
+        6
+      ],
+      "threads": [
+        1,
+        2,
+        4,
+        8,
+        16
+      ],
+      "memory_gib": 192,
+      "device": "CPU"
+    }
+  }
+}
