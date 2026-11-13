@@ -8,18 +8,9 @@ investment are chosen before supply and demand are realized. Grain movements,
 inventory and the permitted shortages or capacity exceedances are then
 determined for each operating trajectory. The purpose of this appendix is to
 explain how those decisions are represented in software and how the resulting
-calculations are checked. A reader can follow three successive questions:
-which input arrays define the case (Appendix D), how the equations become
-variables and constraints (Sections C2–C4), and what makes a returned answer
-acceptable (Section C5). Section C7 provides one implementation index and a practical route through
-public examples and the separate input-export procedure.
+calculations are checked. Sections C2–C4 explain how the equations become variables and constraints. Section C5 describes how a returned solution is evaluated. Section C7 indexes the implementations and explains the public examples and input-export procedure. Appendix D describes the arrays that define each instance.
 
-The deterministic (DET) and stochastic (STO) models use the same economic
-objective and physical relationships. DET evaluates the original deterministic
-supply and demand arrays. STO represents nine complete supply-demand
-trajectories with a common investment vector and scenario-dependent operation.
-The presence of 60 operating periods does not make this a multistage model:
-the information structure has two decision stages.
+The deterministic (DET) and stochastic (STO) models use the same economic objective and physical relationships. DET evaluates the original deterministic supply and demand arrays. STO represents nine complete supply-demand trajectories with a common investment vector and scenario-dependent operation. The model covers 60 operating periods with two information stages.
 
 Table C.1 relates the transport notation to the identifiers retained in the
 implementation. In the legacy Python labels, D denotes the Portuguese

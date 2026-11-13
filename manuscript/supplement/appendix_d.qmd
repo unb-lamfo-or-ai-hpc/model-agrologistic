@@ -25,8 +25,7 @@ The external registry and ignored processed workbooks are not embedded in the
 Git repository. Full file identities, worksheet inventories and experimental
 input paths are listed in the
 [input reproduction guide](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/1b54023f4e0c0c27aba64883b1e9cf25817ad0f8/docs/evidence/appendix_input_reproduction_20261028.json).
-Readers should compare those identities before using a downloaded workbook;
-a matching filename or facility count alone does not identify an input.
+Appendix F identifies the versioned inputs, companion dataset and access conditions.
 
 The gold workbook contains 14 worksheets and 215 facility records:
 146 existing warehouses and 69 candidates. Its Warehouses sheet has 25 columns.
