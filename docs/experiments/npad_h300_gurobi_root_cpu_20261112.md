@@ -1,58 +1,65 @@
-# h300 Gurobi root LP campaign on NPAD
+# h300 Gurobi CPU campaign on NPAD
 
-The frozen h300 W STO matrix is evaluated with Gurobi 13.0.3 and Pyomo/APPSI 6.10.1. The matrix and four input files are checked against the earlier campaign before construction and optimization. Native gurobipy observations remain a separate reference cohort.
+The 180 frozen h300 W STO cells cross Method 1, 2, 4 and 6, physical-core
+ceilings of 1, 2, 4, 8 and 16, and three heuristic profiles. The profiles
+use default effort, standard heuristic effort zero, and default effort
+with NoRelHeurWork=600. Each of three temporal blocks has 60 cells.
+Gurobi 13.0.3 uses CPU, 192 GiB on an exclusive intel-256 node, eight
+hours of solver time and the existing independent validator.
 
-| Factor | Levels |
-| --- | --- |
-| Initial LP algorithm | 1 dual simplex, 2 barrier, 4 deterministic concurrent, 6 PDHG |
-| Heuristic profile | Standard effort 0.05; standard effort 0; effort 0.05 with NoRel work limit 600 |
-| Solver threads | 1, 2, 4, 8, 16 |
-| Repetition | Three temporal blocks, each with a seeded permutation of 60 cells |
+The original v1 claim and job 2252602 are historical evidence. The v1
+public job failed because Git was unavailable on the compute node, and
+the 180-task array was rejected by the per-user QoS submission limit.
+The v2 launcher uses a pinned source archive and records source hashes
+on the login node. Compute verifies those hashes with Python. The
+three 60-task blocks are submitted individually after the preceding
+block reaches terminal accounting. Each array runs at concurrency one.
+The scheduler remains authoritative for the effective limits. The prior
+observed submission limit was 100 under preempt.
 
-The work limit is in Gurobi work units. It does not specify a duration or equal CPU expenditure across thread ceilings. The standard effort of zero is a control for the Heuristics parameter. Presolve, cuts and all other specialized heuristics use their existing defaults. ConcurrentMIP is 1. PDHGGPU is 0. PDHGMIPHeur parameters are outside the pinned 13.0 experiment.
-
-Each cell reserves 192 GiB on one exclusive intel-256 node. The allocation must expose 16 distinct physical cores on one socket. The process and its children inherit a mask of the selected number of physical cores, with one logical CPU per core. The solver budget is eight hours. A 12-hour allocation includes construction, validation and export. The cgroup guard samples the whole job and stops the owned worker when it reaches the E1 job threshold. SoftMemLimit is a separate Gurobi limit of 160 decimal GB. The analysis uses the original solution validator and the 1% common MIP gap.
-
-The plan has 180 solves in one Slurm array with concurrency capped at one. Slurm controls the order in which array tasks run. The scheduler dependency admits the array after a public job checks the 192 GiB cgroup, physical affinity, license capacity, version and the method/heuristic settings on small models. Treat missing, failed, censored and validated outcomes separately. Array task failures remain visible and do not trigger retries. A conservative storage check runs before and after every task. 48 GiB is the default campaign budget with the existing external reserve. Review current quota and maximum array size before launch.
-
-## NPAD operator commands
-
-Execute from the login node. Set SOURCE to the full reviewed commit of this PR. The workflow makes one fresh claim under the audit directory. The submit command stages the public control and the held array, then releases the array with the public job dependency. Keep the printed job IDs and the path to this checkout.
+Run the qualification with a new source directory under the audit root.
+Use the full commit and SHA-256 from the operator handoff.
 
 ```bash
+(
 set -euo pipefail
 umask 077
 BASE=/home/vrrcelestino/model-agrologistic-hygiene-audit
 PY=/home/vrrcelestino/venv313/bin/python
-SOURCE='<full reviewed 40-character commit>'
+SOURCE='<full commit>'
+ARCHIVE_SHA='<archive sha256>'
 test -d "$BASE"
-[[ "$SOURCE" =~ ^[a-f0-9]{40}$ ]]
-mkdir -p "$BASE"
-SRC=$(mktemp -d "$BASE/h300-root-cpu-source-XXXXXXXX")
-git -C "$SRC" init -q
-git -C "$SRC" fetch --depth=1 https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic.git "$SOURCE"
-git -C "$SRC" checkout --detach FETCH_HEAD
-test "$(git -C "$SRC" rev-parse HEAD)" = "$SOURCE"
-sinfo -p intel-256 -N -o '%N %T %c %m'
-scontrol show config | awk '/MaxArraySize|MaxJobCount|MaxSubmitJobs/'
-quota -s
-"$PY" -B -I "$SRC/scripts/h300_gurobi_root_campaign.py" plan > "$SRC/grid.json"
+BOOT=$(mktemp -d "$BASE/h300-root-cpu-v2-source-XXXXXXXX")
+SRC="$BOOT/source"
+mkdir "$SRC"
+curl --fail --location --retry 0 --connect-timeout 20 --max-time 120 \
+  "https://codeload.github.com/unb-lamfo-or-ai-hpc/model-agrologistic/tar.gz/$SOURCE" \
+  -o "$BOOT/source.tar.gz"
+printf '%s  %s\n' "$ARCHIVE_SHA" "$BOOT/source.tar.gz" | sha256sum --strict -c -
+tar -xzf "$BOOT/source.tar.gz" --strip-components=1 -C "$SRC"
+printf '%s\n' "$SOURCE" > "$SRC/source-identity.txt"
+printf 'PRESERVE_SOURCE=%s\n' "$SRC"
 "$PY" -B -I "$SRC/scripts/h300_gurobi_root_campaign.py" submit "$SOURCE" --budget-gib 48
+)
 ```
 
-Use the same checkout and source SHA for readback. If launch is interrupted or reports an error, preserve the claim and inspect its submission receipts before any further scheduler action.
+After public qualification passes with accepted JSON and terminal
+accounting, submit block 1. After all 60 tasks are terminal, submit
+block 2. Repeat for block 3.
 
 ```bash
-BASE=/home/vrrcelestino/model-agrologistic-hygiene-audit
-PY=/home/vrrcelestino/venv313/bin/python
-CLAIM="$BASE/.mvp2-h300-gurobi-root-cpu-v1"
-cat "$CLAIM/submission.json"
-test ! -f "$CLAIM/qualification.json" || cat "$CLAIM/qualification.json"
-OUT=$(mktemp -d "$BASE/h300-root-cpu-readback-XXXXXXXX")
+"$PY" -B -I "$SRC/scripts/h300_gurobi_root_campaign.py" block "$SOURCE" 1
+```
+
+The corresponding invocations for subsequent blocks use 2 and 3.
+A block's durable intent prevents duplicate submission. Preserve its
+receipts if a scheduler response or release is uncertain. The report
+can be taken before any array has been accepted and includes accounting
+for all accepted blocks.
+
+```bash
+OUT=$(mktemp -d "$BASE/h300-root-cpu-v2-readback-XXXXXXXX")
 "$PY" -B -I "$SRC/scripts/h300_gurobi_root_campaign.py" report "$SOURCE" \
   > "$OUT/configurations.csv" 2> "$OUT/accounting.txt"
 sha256sum "$OUT/configurations.csv" "$OUT/accounting.txt"
 ```
-
-The summary reports final objective, bound, common gap, validation, timing and cgroup memory where observed. Native logs remain in each cell directory and provide root relaxation and incumbent events at logged precision. A log event can supply a time to a recorded incumbent or gap. Its interpretation still depends on which exported solution was independently validated. Compare speedup against the one-thread run of the same method and heuristic profile. Report the full-MIP and root clocks, memory and the count attaining the common target together.
-

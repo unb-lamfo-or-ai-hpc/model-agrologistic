@@ -29,7 +29,8 @@ from scripts.probe_npad_gurobi_license import (  # noqa: E402
 from scripts.pyomo_h400_e1_memory import JobMemoryGuard  # noqa: E402
 
 BASE = campaign.BASE
-CLAIM = BASE / ".mvp2-h300-gurobi-root-cpu-v1"
+CLAIM = BASE / ".mvp2-h300-gurobi-root-cpu-v2"
+BLOCK_SIZE = 60
 PYTHON = Path("/home/vrrcelestino/venv313/bin/python")
 MATRIX = "b3c92c54f12ad710fffc4983a832c4e503a5b84e4615c51abcf61a1c0927e1ed"
 PROFILES = {
@@ -84,14 +85,32 @@ def capture(argv, **kwargs):
     return result.stdout.strip()
 
 
-def check_source(sha):
+def source_inventory(sha):
     require(re.fullmatch(r"[a-f0-9]{40}", sha), "Expected full source commit.")
-    require(capture(["git", "rev-parse", "HEAD"], cwd=ROOT) == sha, "Source differs.")
+    require(ROOT.is_relative_to(BASE.resolve()), "Use source under the NPAD audit directory.")
+    marker = campaign.regular(ROOT / "source-identity.txt").read_text(encoding="ascii").strip()
+    require(marker == sha, "Source archive identity differs.")
+    return {
+        "source_commit": sha,
+        "files": {
+            path.relative_to(ROOT).as_posix(): campaign.digest(campaign.regular(path))
+            for path in sorted(ROOT.rglob("*")) if path.is_file()
+        },
+    }
+
+
+def check_source(sha):
+    plan = read(CLAIM / "plan.json")
+    inventory = plan["source_inventory"]
     require(
-        not capture(["git", "status", "--porcelain", "--untracked-files=no"], cwd=ROOT),
-        "Tracked source differs.",
+        sha == plan["source"] == inventory["source_commit"]
+        and str(ROOT) == plan["source_root"], "Prepared source identity differs.",
     )
-    require(ROOT.is_relative_to(BASE.resolve()), "Use a checkout under the NPAD audit directory.")
+    campaign.r.r2.verify_source(inventory, root=ROOT)
+
+
+def block_receipt(directory, task):
+    return read(directory / f"block-{task // BLOCK_SIZE + 1}.json")
 
 
 def topology(count):
@@ -146,6 +165,7 @@ def qualify(directory):
                 require(model.Status == gp.GRB.OPTIMAL and abs(model.ObjVal - 1) < 1e-8,
                         f"Public control failed for method {method}, {name}.")
     memory.check()
+    check_source(read(directory / "plan.json")["source"])
     write(directory / "qualification.json", {
         "source": read(directory / "plan.json")["source"],
         "job_id": os.environ["SLURM_JOB_ID"], "status": "accepted",
@@ -189,7 +209,7 @@ def execute(directory, task):
     qualified = read(directory / "qualification.json")
     require(qualified["status"] == "accepted" and qualified["source"] == plan["source"],
             "Matching public qualification required.")
-    require(qualified["job_id"] == read(directory / "submission.json")["public_job"],
+    require(qualified["job_id"] == read(directory / "public-job.json")["public_job"],
             "Public job receipt differs.")
     leaf = directory / plan["rows"][task]["id"]
     leaf.mkdir(mode=0o700)
@@ -219,6 +239,7 @@ def execute(directory, task):
                     process.wait()
             write(leaf / "memory.json", guard.receipt())
         require(process.returncode == 0, "Worker failed. Inspect its original receipts.")
+    check_source(plan["source"])
     storage.check_growth(BASE, directory, plan, command=COMMAND)
 
 
@@ -233,45 +254,107 @@ def submit(sha, budget):
     partition = capture(["scontrol", "show", "partition", "intel-256"])
     require("State=UP" in partition, "intel-256 is unavailable.")
     require(BASE.is_dir() and not BASE.is_symlink(), "NPAD audit directory differs.")
+    inventory = source_inventory(sha)
     CLAIM.mkdir(mode=0o700)
     write(CLAIM / "plan.json", {
+        "source_inventory": inventory, "source_root": str(ROOT),
         "source": sha, "rows": schedule(), "inputs": inputs, "input_sha256": hashes,
         "initial_storage": space, "storage_budget_gib_confirmed_in_human_CLI": budget,
         "campaign_allocated_bytes_at_prepare": 0,
     })
-    flags = [*campaign.scheduler_arguments(), "--threads-per-core=1",
-             f"--chdir={CLAIM}", f"--output={CLAIM}/slurm-%j.out",
-             f"--error={CLAIM}/slurm-%j.err", "--parsable"]
+    write(CLAIM / "public-intent.json", {"source": sha, "purpose": "public qualification"})
+    public = scheduler_submit(
+        "h300-root-public-v2", ("--time=00:15:00",), sha, "qualify"
+    )
+    write(CLAIM / "public-job.json", {"public_job": public})
+    print(json.dumps({"public_job": public, "claim": str(CLAIM)}, indent=2))
+
+
+def scheduler_submit(name, flags, sha, action):
     exports = f"export GRB_LICENSE_FILE={shlex.quote(LICENSE_FILE)}; "
     entry = shlex.join([str(PYTHON), "-B", "-I", str(Path(__file__).resolve())])
     srun = (
         "srun --ntasks=1 --cpus-per-task=16 --threads-per-core=1 "
         "--distribution=block:block --cpu-bind=cores"
     )
-    public = capture([
-        "sbatch", *flags, "--time=00:15:00", "--job-name=h300-root-public",
-        "--wrap", f"{exports}{srun} {entry} qualify {sha}",
-    ]).split(";")[0]
-    require(public.isdecimal(), "Ambiguous qualification submission. Preserve claim and reconcile.")
-    write(CLAIM / "public-job.json", {"public_job": public})
+    command = f"{exports}{srun} {entry} {action} {sha}"
+    if action == "execute":
+        command += ' "$SLURM_ARRAY_TASK_ID"'
     job = capture([
-        "sbatch", *flags, "--hold", f"--dependency=afterok:{public}",
-        "--kill-on-invalid-dep=yes", f"--array=0-{len(schedule()) - 1}%1",
-        "--job-name=h300-root-factorial",
-        "--wrap", f'{exports}{srun} {entry} execute {sha} "$SLURM_ARRAY_TASK_ID"',
+        "sbatch", *campaign.scheduler_arguments(), "--threads-per-core=1",
+        f"--chdir={CLAIM}", f"--output={CLAIM}/slurm-%j.out",
+        f"--error={CLAIM}/slurm-%j.err", "--parsable", f"--job-name={name}",
+        *flags, "--wrap", command,
     ]).split(";")[0]
-    require(job.isdecimal(), "Ambiguous array submission. Preserve claim and reconcile.")
-    write(CLAIM / "submission.json", {"public_job": public, "array_job": job})
-    capture(["scontrol", "release", job])
-    write(CLAIM / "release.json", {"array_job": job, "dependency": f"afterok:{public}"})
-    print(json.dumps({"public_job": public, "array_job": job, "claim": str(CLAIM),
-                      "array_tasks": len(schedule())}, indent=2))
+    require(job.isdecimal(), "Ambiguous submission. Preserve receipts and reconcile.")
+    return job
+
+
+def accounting(job):
+    raw = capture(["sacct", "-j", job, "-n", "-P", "--format=JobID%40,State%60,ExitCode"])
+    return {
+        identity.strip(): [state.strip(), exit_code.strip()]
+        for identity, state, exit_code in (line.split("|") for line in raw.splitlines())
+    }
+
+
+def submit_block(sha, block):
+    campaign.login()
+    require(block in (1, 2, 3), "Select block 1, 2, or 3.")
+    path = CLAIM / f"block-{block}.json"
+    intent = CLAIM / f"block-{block}-intent.json"
+    with campaign.submission_lock(CLAIM):
+        require(not path.exists() and not intent.exists(), "Block already attempted.")
+        public = read(CLAIM / "public-job.json")["public_job"]
+        qualified = read(CLAIM / "qualification.json")
+        records = accounting(public)
+        require(
+            qualified["source"] == sha and qualified["job_id"] == public
+            and qualified["status"] == "accepted"
+            and all(records.get(key) == ["COMPLETED", "0:0"]
+                    for key in (public, public + ".batch", public + ".0")),
+            "Public qualification is not closed and accepted.",
+        )
+        if block > 1:
+            previous = read(CLAIM / f"block-{block - 1}.json")["array_job"]
+            records = accounting(previous)
+            first = (block - 2) * BLOCK_SIZE
+            terminal = {
+                "COMPLETED", "FAILED", "CANCELLED", "TIMEOUT", "OUT_OF_MEMORY",
+                "NODE_FAIL", "PREEMPTED", "BOOT_FAIL", "DEADLINE", "REVOKED",
+            }
+            require(all(
+                records.get(f"{previous}_{index}", [""])[0].split(" ", 1)[0].rstrip("+")
+                in terminal for index in range(first, first + BLOCK_SIZE)
+            ), "Previous block accounting is incomplete or still active.")
+        storage.check_growth(BASE, CLAIM, read(CLAIM / "plan.json"), command=COMMAND)
+        active = capture(["squeue", "-r", "-h", "-u", str(os.getuid()), "-o", "%i"])
+        require(
+            len(active.splitlines()) + BLOCK_SIZE <= 95,
+            "Current user queue leaves too few slots for a 60-task block.",
+        )
+        first = (block - 1) * BLOCK_SIZE
+        last = first + BLOCK_SIZE - 1
+        write(intent, {"block": block, "first": first, "last": last, "source": sha})
+        job = scheduler_submit(
+            f"h300-root-block-{block}",
+            ("--hold", f"--array={first}-{last}%1"),
+            sha, "execute",
+        )
+        write(path, {"block": block, "array_job": job, "public_job": public})
+        capture(["scontrol", "release", job])
+        write(CLAIM / f"block-{block}-release.json", {"array_job": job})
+    print(json.dumps({"block": block, "array_job": job, "claim": str(CLAIM)}, indent=2))
 
 
 def report():
-    submission = read(CLAIM / "submission.json")
+    jobs = [read(CLAIM / "public-job.json")["public_job"]]
+    for block in (1, 2, 3):
+        receipt = CLAIM / f"block-{block}.json"
+        if receipt.is_file():
+            jobs.append(read(receipt)["array_job"])
     plan = read(CLAIM / "plan.json")
-    print(capture(["sacct", "-j", f"{submission['public_job']},{submission['array_job']}",
+    print(capture(["sacct", "-j", ",".join(jobs),
                    "-P", "--format=JobIDRaw,State,ElapsedRaw,ExitCode,MaxRSS,AllocCPUS"]),
           file=sys.stderr)
     writer = csv.writer(sys.stdout)
@@ -310,7 +393,7 @@ def report():
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
-        "action", choices=("plan", "submit", "qualify", "execute", "worker", "report")
+        "action", choices=("plan", "submit", "block", "qualify", "execute", "worker", "report")
     )
     parser.add_argument("source", nargs="?")
     parser.add_argument("index", nargs="?", type=int)
@@ -319,11 +402,14 @@ def main():
     if args.action == "plan":
         print(json.dumps(schedule(), indent=2))
         return
+    if args.action == "submit":
+        submit(args.source or "", args.budget_gib)
+        return
     check_source(args.source or "")
     if args.action == "report":
         report()
-    elif args.action == "submit":
-        submit(args.source, args.budget_gib)
+    elif args.action == "block":
+        submit_block(args.source, args.index)
     else:
         require(os.environ.get("SLURM_JOB_ID"), "Compute action requires Slurm.")
         if args.action == "qualify":
@@ -333,11 +419,10 @@ def main():
                     "Array index outside the frozen grid.")
             require(os.environ.get("SLURM_ARRAY_TASK_ID") == str(args.index),
                     "Array task identity differs.")
-            array_job = read(CLAIM / "submission.json")["array_job"]
+            array_job = block_receipt(CLAIM, args.index)["array_job"]
             require(os.environ.get("SLURM_ARRAY_JOB_ID") == array_job, "Array job differs.")
             (execute if args.action == "execute" else worker)(CLAIM, args.index)
 
 
 if __name__ == "__main__":
     main()
-
