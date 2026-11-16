@@ -1,6 +1,6 @@
 ## C11 Partial h300 root-method experiment
 
-The operator readback contains 28 terminal tasks of the first 60-task block. One task was running and 31 were pending. The receipt join matched all terminal rows to Slurm and confirmed that their worker affinity exposed the prescribed number of distinct physical cores. The five memory-guard stops have zero deltas for the reported cgroup OOM-kill and failure counters. The two error statuss returned no usable incumbent. Their underlying termination codes require the full receipts or native log tails.
+The operator readback contains 28 terminal tasks of the first 60-task block. One task was running and 31 were pending. The receipt join matched all terminal rows to Slurm and confirmed that their worker affinity exposed the prescribed number of distinct physical cores. The five memory-guard stops have zero deltas for the reported cgroup OOM-kill and failure counters. The two tasks with error status returned no usable incumbent. Their underlying termination codes require the full receipts or native log tails.
 
 | Method | Profile | Terminal | Validated | Time limit | Guard stop | Error return |
 |:--|:--|--:|--:|--:|--:|--:|

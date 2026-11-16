@@ -96,8 +96,8 @@ The native h500 solution remains the largest validated instance in this series.
 The first readback of the CPU-only h300 experiment contains 28 terminal
 tasks of the first 60-task block. Sixteen returned independently validated
 incumbents within the 1% target, five reached the time limit without an
-incumbent, five stopped at the job memory guard, and two returned an
-error status without a usable incumbent. Appendix C11 reports each case
+incumbent, five stopped at the job memory guard, and two returned
+with an error status and no usable incumbent. Appendix C11 reports each case
 and separates Slurm completion from numerical attainment.
 
 | Root method | Validated | Time limit | Memory guard | Error return |
