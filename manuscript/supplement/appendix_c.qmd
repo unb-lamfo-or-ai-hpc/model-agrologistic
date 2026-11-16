@@ -425,3 +425,5 @@ Table C.8 gives both the sampled worker tree and the cgroup memory peak.
 | Gurobi | 4 | E2 / 2250123 | 139.63 | 214.98 | 162.10 | 162.89 |
 | Gurobi | 8 | E2 / 2250127 | 150.36 | 226.35 | 161.47 | 162.94 |
 | Gurobi | 16 | E1 / 2247727 | 134.60 | 207.78 | 162.99 | 163.45 |
+
+{{< include appendix_c_network_utilization.qmd >}}
