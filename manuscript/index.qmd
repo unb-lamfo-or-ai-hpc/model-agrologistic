@@ -11,7 +11,7 @@ abstract: >-
   variables and returns a validated plan with a 0.21% relative gap after about
   128 minutes of solver time. Complementary Pyomo/APPSI experiments with Gurobi
   meet the 1% target in all 15 repeated h300 runs under the historical settings.
-  The lowest median termination time occurs at one solver thread. The planned
+  The lowest median termination time occurs at one solver thread. The ongoing
   controlled h300 study compares dual simplex, barrier, deterministic concurrent
   optimization and primal-dual hybrid gradient at fixed solution quality and
   measured physical-core allocations. It also examines whether searching for
@@ -389,7 +389,7 @@ The gap measures the quality of the objective that includes the penalties.
 
 ## Solver parallelism and reproducibility
 
-The planned h300 W STO factorial compares four root methods, three heuristic
+The h300 W STO factorial compares four root methods, three heuristic
 profiles and solver thread ceilings of 1, 2, 4, 8 and 16. Each repetition uses
 distinct physical cores within a verified socket, Gurobi 13.0.3, 192 GiB, seed
 42, an eight-hour solver budget and the common 1% target. The heuristic profiles
@@ -534,8 +534,12 @@ Repeated h400 runs would show whether the observed two-thread advantage
 persists. In all 15 h300 runs the search processed one node. In the concurrent
 runs the dual simplex won the initial LP and the measured CPU activity
 increased with the thread ceiling. The historical affinity mapped 16 logical
-CPUs to eight physical cores. The planned experiment controls placement and
-the choice of algorithm to measure their relationship with solution time.
+CPUs to eight physical cores. The ongoing experiment controls placement and the choice of algorithm. In its
+first readback, disabling standard heuristics led to observed searches of up to
+47 nodes, while the accepted standard-profile runs closed at one node. The
+memory guard stopped five observed NoRel tasks at eight or sixteen cores.
+This pattern motivates examining incumbent progress and memory along with root
+time when the remaining configurations become available.
 
 The original h400 gate rejected progression because the sampled
 worker-tree peak exceeded its ceiling, although the incumbent met
@@ -627,8 +631,8 @@ requirements.
 
 ## Future work
 
-The controlled h300 campaign will test whether changing the root algorithm or
-incumbent search reduces time to the validated target at fixed memory. Further
+Completion of the controlled h300 campaign will show whether the observed differences
+in root time, incumbent attainment and memory persist across the temporal blocks. Further
 h400 repetitions and h500 comparisons depend on the measured resource
 requirements and phase timings.
 

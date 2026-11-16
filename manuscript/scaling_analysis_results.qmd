@@ -89,3 +89,30 @@ from Gurobi at sixteen threads. Both were within the follow-up gate
 limits. Appendix C reports the two memory measurements for each cell.
 
 The native h500 solution remains the largest validated instance in this series.
+
+
+## Initial results with explicit root method and physical cores
+
+The first readback of the CPU-only h300 experiment contains 28 terminal
+tasks of the first 60-task block. Sixteen returned independently validated
+incumbents within the 1% target, five reached the time limit without an
+incumbent, five stopped at the job memory guard, and two returned an
+error status without a usable incumbent. Appendix C11 reports each case
+and separates Slurm completion from numerical attainment.
+
+| Root method | Validated | Time limit | Memory guard | Error return |
+|:--|--:|--:|--:|--:|
+| 1, dual simplex | 4 | 0 | 0 | 0 |
+| 2, barrier | 5 | 0 | 2 | 1 |
+| 4, deterministic concurrent | 6 | 0 | 2 | 1 |
+| 6, PDHG | 1 | 5 | 1 | 0 |
+
+: Partial outcomes from the first h300 block. Counts describe unequal coverage across methods and heuristic profiles. {#tbl-h300-root-partial}
+
+Under standard heuristics, barrier root time was 122.3, 94.9 and 68.4 min
+at 1, 2 and 8 cores, respectively. The corresponding native terminal times
+were 137.8, 114.6 and 85.3 min. The accepted 16-core PDHG run took 312.9 min
+of native time. Five other PDHG tasks reached the eight-hour limit in
+the root relaxation. These timings are single observations for the
+reported settings. The completed blocks will support repeatability
+and scaling comparisons.

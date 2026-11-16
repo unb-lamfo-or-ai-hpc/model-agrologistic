@@ -41,7 +41,7 @@ def test_reader_research_question_does_not_imply_unexecuted_comparisons():
     abstract = text.split("abstract: >-", 1)[1].split("keywords:", 1)[0]
     assert "rosa2026thesis" not in abstract
     assert "Artur" not in abstract
-    assert "The planned h300 W STO factorial" in text
+    assert "The h300 W STO factorial" in text
     assert "an eight-hour solver budget" in text
     assert "DET" in text and "STO" in text
     solver_text = (MODULE.MANUSCRIPT / "solver_results.qmd").read_text(encoding="utf-8")
@@ -109,7 +109,7 @@ def test_reader_facing_editorial_structure_and_attribution():
     assert not re.search(r"\b(?:SCIP|CBC)\b", discussion + final)
     normalized = " ".join(final.split())
     assert "met the target in all 15 runs" in normalized
-    assert "The controlled h300 campaign will test" in normalized
+    assert "Completion of the controlled h300 campaign will show" in normalized
     assert "HiGHS" not in discussion + final
     assert "# Conclusions" not in text and "# Future work:" not in text
     assert "Repository deposition of the licensed input data" not in text
