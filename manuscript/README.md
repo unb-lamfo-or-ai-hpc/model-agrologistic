@@ -2,9 +2,15 @@
 
 The article is **Computational Scalability of Deterministic and Two-Stage
 Stochastic MILP Models for Grain-Storage Network Design and Hub Location**.
-Its authoritative sources are [the article](index.qmd) and
-[the supplementary material](supplement/index.qmd). The source currently under
-review must be distinguished from the version published on GitHub Pages.
+The PR #156 coauthor revision uses the researcher-supplied LaTeX as its
+editorial source. Read the [revised article](author-review/main.tex),
+[revised appendices](author-review/supplement.tex) and
+[revision record](author-review/README.md).
+
+The [Quarto article](index.qmd) and
+[Quarto supplements](supplement/index.qmd) are the sources for the existing
+GitHub Pages workflow. Reconcile the author-reviewed LaTeX with those sources
+before advancing the publication snapshot.
 
 ## Reading route
 
