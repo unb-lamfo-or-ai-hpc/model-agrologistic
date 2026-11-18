@@ -1,0 +1,48 @@
+{
+  "status": "accepted_derived_registry_and_bundle",
+  "original_registry_rows": 18086,
+  "original_registry_values_preserved": true,
+  "populations": {
+    "215": {
+      "total": 215,
+      "existing": 146,
+      "candidates": 69,
+      "source_capacity_limit_differences": 0,
+      "membership_order_match": true
+    },
+    "300": {
+      "total": 300,
+      "existing": 146,
+      "candidates": 154,
+      "source_capacity_limit_differences": 0,
+      "membership_order_match": true
+    },
+    "400": {
+      "total": 400,
+      "existing": 146,
+      "candidates": 254,
+      "source_capacity_limit_differences": 0,
+      "membership_order_match": true
+    },
+    "500": {
+      "total": 500,
+      "existing": 146,
+      "candidates": 354,
+      "source_capacity_limit_differences": 0,
+      "membership_order_match": true
+    }
+  },
+  "effective_cases": {
+    "215:det": "fed875c1d239fc0282eeaf5b8656ed6511facd328f81b926698863a9f3b2fd3b",
+    "215:sto": "b2f44950d3b6f9b5185e033a29993b6a0b94805543e09046c5d5c8603826be53",
+    "300:sto": "eb66de76a7ed5031be428d437a9f8a1c7aad72e800f8267e36da88678fb2d759",
+    "400:sto": "899d0d8a0952af75012411f3c785f1fa5ac215417e4a8c8a4b99d0220d34c84f",
+    "500:sto": "0fa80c3dac61bba7248b1f28821c89944a8f5cede34d3e98b660d7fd2b7a0cfe"
+  },
+  "registry_xlsx_sha256": "f39c2f29862aecb9a64fd0d37548eb788e402c805a5db6def6c5ec8a351d25bc",
+  "bundle_manifest_sha256": "cfee936a62fa9a98d5a5c86967fc202ebf1b7a03509c2af5b13db6607f3e97b6",
+  "solver_calls": 0,
+  "comparison": "Cell values with empty/null equivalence; not XLSX ZIP bytes",
+  "effective_xlsx_sha256": "d5babec48bb40a61843ccb4e7c9c059429b4d8ac32cefec945fda4e4fb84c917",
+  "visual_review": "All 20 worksheet previews inspected; no formula errors reported"
+}

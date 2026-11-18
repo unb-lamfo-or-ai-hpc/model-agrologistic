@@ -1,0 +1,18 @@
+{
+  "schema": "agrologistic-calibration-hypotheses-v1",
+  "baseline_replacement_allowed": false,
+  "hypotheses": [
+    {"id": "H-F1", "equation": "c(d)=r*d", "status": "historical functional form", "unit": "BRL/t", "coefficient_source": "effective baseline maps; not newly calibrated"},
+    {"id": "H-F2", "equation": "c(d)=a+b*d", "status": "proposed; not implemented or calibrated", "a": null, "b": null},
+    {"id": "H-F3", "equation": "empirical route or distance-band cost", "status": "requires adequate empirical evidence", "coefficients": null}
+  ],
+  "unresolved": [
+    "Bibliographic harmonization of supply/demand series 2021-2025",
+    "Economic equivalence of storage coefficients 45/48 BRL/(t period)",
+    "Empirical investment-cost calibration by technology",
+    "Reception/shipping rate units and typology",
+    "Observed exports are not physical port-capacity limits"
+  ],
+  "osrm_distance_policy": "fixed historical directed distances; no recalculation",
+  "linear_model_boundary": "Any future approved arc cost is precomputed from fixed distances"
+}

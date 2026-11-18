@@ -1,3 +1,14 @@
+## Effective baseline and parametric preparation — 18 November 2026
+
+The active data-only implementation follows the researcher mandate and its
+GitHub-governance addendum. Read docs/effective_data_contract_v1.md and
+docs/checkpoints/20261118_effective_baseline_implementation.md for actual local
+qualification status, pending scientific scopes and the unchanged array2252608.
+PR156 remains Draft. No historical sources, manuscripts or campaign parameters
+are changed; no new optimizer/HPC execution, merge or publication is authorized.
+Original/effective/scenario layers and explicit neutral parameters are prepared
+in an independent reviewed PR to develop. Prior snapshots below are historical.
+
 ## Merged serial controller and bounded reader/data closeout — 2 November 2026
 
 PR148 is merged into develop at48e2831693fc4abe0657c82197a2e884a61e99d2;

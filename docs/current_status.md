@@ -1,4 +1,15 @@
-# Current project status — 2 November 2026
+# Current project status — 18 November 2026
+
+The active addition is the data-only effective-baseline implementation. Read
+[the checkpoint](checkpoints/20261118_effective_baseline_implementation.md),
+[data contract](effective_data_contract_v1.md) and
+[scientific decisions](decisions/20261118_effective_baseline.md).
+PR156 remains Draft; its author-reviewed files and array2252608 are unchanged.
+The new GitHub-governance addendum authorizes reviewed PRs to develop, not merge,
+new optimizer/HPC execution or publication. Data/algebra qualification is distinct
+from numerical reproduction. Prior dated snapshots below remain historical.
+
+## Historical snapshot — 2 November 2026
 
 PR144 merged into develop at50a77a7527541a9f00769928164dc71457dbc38c.
 The reader text, maps, AppendixE, dimensional discussion, bounded bibliography
