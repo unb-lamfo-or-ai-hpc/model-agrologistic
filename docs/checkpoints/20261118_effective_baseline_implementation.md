@@ -64,9 +64,11 @@ Original/private workbooks, full derived tables and support records stay local.
 The pinned source manifest binds the five original loader receipts and their
 qualified effective input identities before a future seed can be accepted.
 
-Existing CI workflows call optimizers. The Draft PR therefore uses [skip ci]
-to respect the data-only boundary. No CI/merge requirement is waived or marked
-passed. Full native CI remains a later authorized step.
+The original commit used [skip ci] to respect the data-only boundary. A subsequent
+researcher instruction authorizes solver-free CI organization, final-source test
+repetition and policy proposals. Read
+[the follow-up](20261118_effective_policy_ci_followup.md) for current evidence.
+Native qualification is not inferred from solver-free tests.
 
 ## Next owner/actions
 

@@ -1,3 +1,11 @@
+## Policy proposals and solver-free CI follow-up — 18 November 2026
+
+PR158 remains Draft, with beta/alpha scopes and sensitivity levels proposed only.
+Read docs/effective_beta_alpha_proposal.md and
+docs/checkpoints/20261118_effective_policy_ci_followup.md. The researcher authorizes
+repeat final-source tests, solver-free CI routing and a merge-readiness checklist,
+not policy activation, HPC execution or merge. PR156 remains unchanged and Draft.
+
 ## Effective baseline and parametric preparation — 18 November 2026
 
 The active data-only implementation follows the researcher mandate and its

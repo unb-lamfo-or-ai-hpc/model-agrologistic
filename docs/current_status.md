@@ -1,5 +1,12 @@
 # Current project status — 18 November 2026
 
+PR158's policy/CI follow-up is documented in
+[the proposals](effective_beta_alpha_proposal.md),
+[CI/readiness](effective_ci_and_merge_readiness.md) and
+[the current checkpoint](checkpoints/20261118_effective_policy_ci_followup.md).
+Both PR156 and PR158 stay Draft. beta/alpha and positive fixed costs remain
+disabled. No optimization, new HPC job or merge is authorized.
+
 The active addition is the data-only effective-baseline implementation. Read
 [the checkpoint](checkpoints/20261118_effective_baseline_implementation.md),
 [data contract](effective_data_contract_v1.md) and

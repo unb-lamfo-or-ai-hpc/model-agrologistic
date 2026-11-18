@@ -81,12 +81,13 @@ the corrected independent registry render and final data export succeeded.
 
 ## GitHub qualification boundary
 
-Existing PR workflows invoke native optimizers even for small analytical tests.
-The data-only mandate prohibits new optimizations. The draft implementation PR
-therefore uses `[skip ci]` in its head commit and records local non-optimization
-tests. Required checks may remain pending; this is NOT a green full CI gate and
-does not authorize Ready/merge. No workflow or branch-protection setting changes.
-Later full qualification requires an explicit resolution of that execution scope.
+The original implementation commit used `[skip ci]` because existing PR workflows
+invoke native optimizers even for small analytical tests. The researcher then
+authorized a [solver-free CI route](effective_ci_and_merge_readiness.md).
+The follow-up classifies exact changed paths and routes data/document-only work
+to a bounded explicit test inventory. Native qualification steps are retained
+and remain applicable to changes outside that data scope. No branch-protection
+setting is changed, and a skipped native job is never called native acceptance.
 
 The redacted evidence receipt and local artifact manifest distinguish verified
 data/algebra from unsolved numerical outcomes. Large CSVs, workbooks, registry

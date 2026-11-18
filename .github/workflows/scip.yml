@@ -6,7 +6,11 @@ on:
 permissions:
   contents: read
 jobs:
+  scope:
+    uses: ./.github/workflows/ci-scope.yml
   native-scip:
+    needs: scope
+    if: needs.scope.outputs.data_only != 'true'
     runs-on: ubuntu-latest
     env:
       PYTHONNOUSERSITE: '1'

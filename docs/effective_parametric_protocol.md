@@ -30,7 +30,11 @@ specification, implementation modules and resulting effective-input identity.
 
 Multipliers must be finite and nonnegative. Positive absolute fixed costs and
 active beta/alpha are rejected pending scientific approval. No numerical
-sensitivity levels or calibration coefficients are selected by this PR.
+sensitivity levels or calibration coefficients are activated by this PR.
+The [scope and level proposal](effective_beta_alpha_proposal.md) now supplies
+candidate values for researcher review. Its separate
+[proposal JSON](../experiments/effective_sensitivity_proposal_v1.json) is not read
+by the executable scenario interface or any campaign controller.
 
 ## Proposed service/export equations: not executable
 
@@ -71,7 +75,7 @@ Observed export quantities are not physical port-capacity ceilings.
 
 ## Future experimental order, subject to separate approval
 
-1. Close h215 DET/W and STO/W effective-data/algebra equivalence.
+1. Preserve the accepted h215 DET/W and nine-block STO/W data/algebra certificate.
 2. Approve beta/alpha scopes, fixed-cost assumptions and justified sensitivity levels.
 3. Prepare a bounded h215 protocol and resource budget for researcher review.
 4. After execution approval, run baseline and isolated sensitivities; then selected

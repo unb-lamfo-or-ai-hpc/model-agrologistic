@@ -37,8 +37,9 @@ submission or treat scheduler completion as accepted scientific output.
 - Reject non-neutral beta/alpha and positive fixed-cost overrides pending approval.
 - Store full private derived artifacts locally; publish only code/schema/redacted receipts.
 - Check STO algebra by all full-horizon scenario blocks to fit local32GiB RAM.
-- Keep existing optimizer-calling CI suspended for this draft using the documented
-  commit-message mechanism; no required check is waived or relabeled as passed.
+- The first implementation commit suspended optimizer-calling CI with its commit
+  message. The subsequent researcher request authorizes scoped solver-free CI,
+  repeat tests and policy proposals; native tests/branch protections are retained.
 
 Evidence status is recorded separately from these authorizations in the local
 qualification report and redacted GitHub receipt. This document authorizes no
