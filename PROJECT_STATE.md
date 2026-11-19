@@ -1,3 +1,30 @@
+## Approved optional policy implementation — 18 November 2026
+
+The researcher approved beta/alpha scopes/levels and implementation in PR158,
+with neutral defaults, independent validation and no optimization/HPC/merge.
+Read docs/checkpoints/20261118_effective_policy_implementation.md and
+docs/effective_h215_policy_reference.md. PR156/158 remain Draft. Prior proposal
+approval statuses below are superseded only by this explicit scoped decision.
+
+## Policy proposals and solver-free CI follow-up — 18 November 2026
+
+PR158 remains Draft, with beta/alpha scopes and sensitivity levels proposed only.
+Read docs/effective_beta_alpha_proposal.md and
+docs/checkpoints/20261118_effective_policy_ci_followup.md. The researcher authorizes
+repeat final-source tests, solver-free CI routing and a merge-readiness checklist,
+not policy activation, HPC execution or merge. PR156 remains unchanged and Draft.
+
+## Effective baseline and parametric preparation — 18 November 2026
+
+The active data-only implementation follows the researcher mandate and its
+GitHub-governance addendum. Read docs/effective_data_contract_v1.md and
+docs/checkpoints/20261118_effective_baseline_implementation.md for actual local
+qualification status, pending scientific scopes and the unchanged array2252608.
+PR156 remains Draft. No historical sources, manuscripts or campaign parameters
+are changed; no new optimizer/HPC execution, merge or publication is authorized.
+Original/effective/scenario layers and explicit neutral parameters are prepared
+in an independent reviewed PR to develop. Prior snapshots below are historical.
+
 ## Merged serial controller and bounded reader/data closeout — 2 November 2026
 
 PR148 is merged into develop at48e2831693fc4abe0657c82197a2e884a61e99d2;

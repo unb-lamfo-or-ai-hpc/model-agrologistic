@@ -1,0 +1,176 @@
+{
+  "status": "accepted_data_and_algebra",
+  "solver_calls": 0,
+  "source_modules": {
+    "optimization_pyomo.py": "e25875baaf9657501d27994d6402cee71bdddfefd52a78797040a47ae222cd74",
+    "optimization_gurobipy.py": "f157f912e3ca6300ed37ac618e53a636163425d48fd01c5833212d1e7701a9c7",
+    "optimization_gurobipy_stochastic.py": "fff62e382f364348d0c0c465b4db700a873909fde63ebf5b9eaef6e3d3625c82",
+    "mathematical_contract.py": "06c8f8c180f08dada45a01e6278c224b380e4f461f00bc2e0c1c59612b3cca6d",
+    "pyomo_bounds.py": "d2b9cc04c1bb113df2f20635bf85542e6136e61c6fb9f4084f32e24834690dab",
+    "pyomo_linear_matrix.py": "eeef3b1a68ef991de5a3974045da85de586c142d1a01098da862c0b291836db3",
+    "route_filtering.py": "6492bab99c1d8657cc67133a9d4bbb8a7eec8bc8c114ceb4bf29a4182a7d978d"
+  },
+  "workbook_sha256": "40edb66585daca9cc393cab1f86bde6d4528a5f34b6afc57260cc1684396da4e",
+  "modes": {
+    "det": {
+      "status": "accepted",
+      "historical_effective_inputs": "fed875c1d239fc0282eeaf5b8656ed6511facd328f81b926698863a9f3b2fd3b",
+      "csv_effective_inputs": "fed875c1d239fc0282eeaf5b8656ed6511facd328f81b926698863a9f3b2fd3b",
+      "blocks": {
+        "deterministic": {
+          "status": "accepted",
+          "qualification_key": "6395e09d56f631799ffd661f63f6f52ae355af8adf70b40c70563e110270a39d",
+          "matrix": {
+            "schema_version": "ordered-pyomo-linear-matrix-v1",
+            "sha256": "0b644e6198b8395faf2769ef531ae4a9ec208731d269260ca0dac8b5ef2ee86f",
+            "variables": 1562174,
+            "binary_variables": 307,
+            "linear_constraints": 82297,
+            "nonzeros": 5802906,
+            "scope": "Ordered common Pyomo algebra; not a presolved/native matrix fingerprint."
+          },
+          "solver_calls": 0
+        }
+      },
+      "scope": "Full DET matrix"
+    },
+    "sto": {
+      "status": "accepted",
+      "historical_effective_inputs": "b2f44950d3b6f9b5185e033a29993b6a0b94805543e09046c5d5c8603826be53",
+      "csv_effective_inputs": "b2f44950d3b6f9b5185e033a29993b6a0b94805543e09046c5d5c8603826be53",
+      "blocks": {
+        "oferta_baixo__demanda_baixo": {
+          "status": "accepted",
+          "qualification_key": "ade9618877d5ec5b345613b73128d1d919f95a2e892dadac368b411aa8b88d9e",
+          "matrix": {
+            "schema_version": "ordered-pyomo-linear-matrix-v1",
+            "sha256": "470e1c520e1e21e3d2fe013a36e09d115b53dae729bd849d93b2f056c53f8927",
+            "variables": 1562174,
+            "binary_variables": 307,
+            "linear_constraints": 82297,
+            "nonzeros": 5802906,
+            "scope": "Ordered common Pyomo algebra; not a presolved/native matrix fingerprint."
+          },
+          "solver_calls": 0
+        },
+        "oferta_baixo__demanda_base": {
+          "status": "accepted",
+          "qualification_key": "82a67c69a1857adc0f28c481d6c1b3209c94f3c3eb510808b0f1f90051a9d6e1",
+          "matrix": {
+            "schema_version": "ordered-pyomo-linear-matrix-v1",
+            "sha256": "f70c8f389ab9f6c966274896380d98ba77552cb1adc7ea17a0d701a998856050",
+            "variables": 1562174,
+            "binary_variables": 307,
+            "linear_constraints": 82297,
+            "nonzeros": 5802906,
+            "scope": "Ordered common Pyomo algebra; not a presolved/native matrix fingerprint."
+          },
+          "solver_calls": 0
+        },
+        "oferta_baixo__demanda_alto": {
+          "status": "accepted",
+          "qualification_key": "6006b3cded3f94ae0a5a320d5bc9be43a4ba47d6535847a2f51005789dbcbb72",
+          "matrix": {
+            "schema_version": "ordered-pyomo-linear-matrix-v1",
+            "sha256": "101ec2932567ba3d48b29b00950a508364aed31664b0d36dcb6d9c3d402f5e9b",
+            "variables": 1562174,
+            "binary_variables": 307,
+            "linear_constraints": 82297,
+            "nonzeros": 5802906,
+            "scope": "Ordered common Pyomo algebra; not a presolved/native matrix fingerprint."
+          },
+          "solver_calls": 0
+        },
+        "oferta_base__demanda_baixo": {
+          "status": "accepted",
+          "qualification_key": "2e325da043e0a1f2ebc0194fc05a1b5e48d05d79d1aac27df8ac911679ac1727",
+          "matrix": {
+            "schema_version": "ordered-pyomo-linear-matrix-v1",
+            "sha256": "bfce565ccdae11711db9b8e9a5da00e43e174a9952806cd2525c62dccff055a9",
+            "variables": 1562174,
+            "binary_variables": 307,
+            "linear_constraints": 82297,
+            "nonzeros": 5802906,
+            "scope": "Ordered common Pyomo algebra; not a presolved/native matrix fingerprint."
+          },
+          "solver_calls": 0
+        },
+        "oferta_base__demanda_base": {
+          "status": "accepted",
+          "qualification_key": "48dad7bd37177ce01d6d67ab30827906708dd74b2f650712714f819dfc48d58e",
+          "matrix": {
+            "schema_version": "ordered-pyomo-linear-matrix-v1",
+            "sha256": "f25430c999e70edc8d9bd441ef71551344ab97e70754f6c246d44c22b0bfbecf",
+            "variables": 1562174,
+            "binary_variables": 307,
+            "linear_constraints": 82297,
+            "nonzeros": 5802906,
+            "scope": "Ordered common Pyomo algebra; not a presolved/native matrix fingerprint."
+          },
+          "solver_calls": 0
+        },
+        "oferta_base__demanda_alto": {
+          "status": "accepted",
+          "qualification_key": "34d78543e167515140b60c26ad4a195834a6d4dea55ec43fd2faf4a115327210",
+          "matrix": {
+            "schema_version": "ordered-pyomo-linear-matrix-v1",
+            "sha256": "248cc90fabac28cc29ca402faa20c30846da6ddfdc31e661ac6d416a93de65f1",
+            "variables": 1562174,
+            "binary_variables": 307,
+            "linear_constraints": 82297,
+            "nonzeros": 5802906,
+            "scope": "Ordered common Pyomo algebra; not a presolved/native matrix fingerprint."
+          },
+          "solver_calls": 0
+        },
+        "oferta_alto__demanda_baixo": {
+          "status": "accepted",
+          "qualification_key": "50d9a55ce503dae552fb290ef8fe18707cffa8bce5b5f70da0b09fdb5b0634d9",
+          "matrix": {
+            "schema_version": "ordered-pyomo-linear-matrix-v1",
+            "sha256": "efcfc004f3630adcc00854d78ab7a0b29095951235f4bb64068871d2168c40ea",
+            "variables": 1562174,
+            "binary_variables": 307,
+            "linear_constraints": 82297,
+            "nonzeros": 5802906,
+            "scope": "Ordered common Pyomo algebra; not a presolved/native matrix fingerprint."
+          },
+          "solver_calls": 0
+        },
+        "oferta_alto__demanda_base": {
+          "status": "accepted",
+          "qualification_key": "82a29e90f6c725684f88de0784131ddfec96db5ea1aee828cfc76606f142fc4e",
+          "matrix": {
+            "schema_version": "ordered-pyomo-linear-matrix-v1",
+            "sha256": "15677ad078a66075a909c9dbb5361bc3e25ad3e03a4bbdabca70313c636b2e13",
+            "variables": 1562174,
+            "binary_variables": 307,
+            "linear_constraints": 82297,
+            "nonzeros": 5802906,
+            "scope": "Ordered common Pyomo algebra; not a presolved/native matrix fingerprint."
+          },
+          "solver_calls": 0
+        },
+        "oferta_alto__demanda_alto": {
+          "status": "accepted",
+          "qualification_key": "22e1fb3baf5d33ed5258b3062c9dc98a8e232f2cf122fa3d89230cf639213e88",
+          "matrix": {
+            "schema_version": "ordered-pyomo-linear-matrix-v1",
+            "sha256": "472cb328fcd863494cae41fbf4d4921b4dd17cfad8a0f14e500671355ad33b12",
+            "variables": 1562174,
+            "binary_variables": 307,
+            "linear_constraints": 82297,
+            "nonzeros": 5802906,
+            "scope": "Ordered common Pyomo algebra; not a presolved/native matrix fingerprint."
+          },
+          "solver_calls": 0
+        }
+      },
+      "scope": "All nine full-horizon STO scenario blocks and shared first-stage algebra"
+    }
+  },
+  "elapsed_seconds": 2553.475161800001,
+  "optimization_reproduced": false,
+  "full_sto_ordered_matrix_hash_rebuilt": false,
+  "sto_equivalence": "Exact blockwise algebra equality through the unchanged builder; shared first-stage costs are counted once in the full formulation"
+}

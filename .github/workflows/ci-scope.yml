@@ -1,0 +1,25 @@
+name: Change scope routing
+on:
+  workflow_call:
+    outputs:
+      data_only:
+        description: Whether only effective-data and documentary paths changed
+        value: ${{ jobs.detect.outputs.data_only }}
+permissions:
+  contents: read
+jobs:
+  detect:
+    runs-on: ubuntu-latest
+    outputs:
+      data_only: ${{ steps.scope.outputs.data_only }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - id: scope
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: python scripts/effective_ci_scope.py --base "$BASE_SHA" --head "$HEAD_SHA" --github-output "$GITHUB_OUTPUT"
