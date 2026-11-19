@@ -10,7 +10,11 @@ permissions:
   contents: read
 
 jobs:
+  scope:
+    uses: ./.github/workflows/ci-scope.yml
   test:
+    needs: scope
+    if: needs.scope.outputs.data_only != 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 20
 

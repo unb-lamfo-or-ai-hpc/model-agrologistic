@@ -1,0 +1,16 @@
+{
+  "scenario_id": "baseline",
+  "multipliers": {
+    "existing_static": 1, "existing_reception": 1, "existing_shipping": 1,
+    "candidate_limit": 1, "expansion_limit": 1, "bulk_limit": 1,
+    "freight": 1, "opening_variable": 1, "expansion_variable": 1,
+    "bulk_variable": 1, "storage": 1, "shortage_penalty": 1,
+    "stock_penalty": 1, "reception_penalty": 1, "delta_D": 1
+  },
+  "fixed_absolute": {
+    "opening_fixed_cost": null, "expand_fixed_cost": null, "bulk_fixed_cost": null
+  },
+  "beta": null,
+  "alpha": null,
+  "justification": "Neutral historical baseline; no sensitivity levels or new constraints activated."
+}

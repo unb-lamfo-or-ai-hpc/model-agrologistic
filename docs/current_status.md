@@ -1,4 +1,28 @@
-# Current project status — 2 November 2026
+# Current project status — 18 November 2026
+
+The current researcher authorization is [optional policy implementation](effective_policy_implementation.md)
+in PR158 after [historical product/scenario readback](effective_h215_policy_reference.md).
+Scopes/levels are approved; null baseline defaults stay unchanged. Use effective
+construction/validation entry points for policies. Both PRs remain Draft, with
+no new solver/HPC execution or merge. This supersedes the proposal-only status below.
+
+PR158's policy/CI follow-up is documented in
+[the proposals](effective_beta_alpha_proposal.md),
+[CI/readiness](effective_ci_and_merge_readiness.md) and
+[the current checkpoint](checkpoints/20261118_effective_policy_ci_followup.md).
+Both PR156 and PR158 stay Draft. beta/alpha and positive fixed costs remain
+disabled. No optimization, new HPC job or merge is authorized.
+
+The active addition is the data-only effective-baseline implementation. Read
+[the checkpoint](checkpoints/20261118_effective_baseline_implementation.md),
+[data contract](effective_data_contract_v1.md) and
+[scientific decisions](decisions/20261118_effective_baseline.md).
+PR156 remains Draft; its author-reviewed files and array2252608 are unchanged.
+The new GitHub-governance addendum authorizes reviewed PRs to develop, not merge,
+new optimizer/HPC execution or publication. Data/algebra qualification is distinct
+from numerical reproduction. Prior dated snapshots below remain historical.
+
+## Historical snapshot — 2 November 2026
 
 PR144 merged into develop at50a77a7527541a9f00769928164dc71457dbc38c.
 The reader text, maps, AppendixE, dimensional discussion, bounded bibliography

@@ -13,6 +13,7 @@ dist/
 *.egg-info/
 
 # Local environments and editor state
+node_modules/
 .env
 .envrc
 .venv/

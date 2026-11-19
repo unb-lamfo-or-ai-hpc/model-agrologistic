@@ -1,0 +1,57 @@
+{
+  "status": "accepted_original_W_catalog",
+  "files": {
+    "h215-W-network.csv.gz": "248b6906b5122f6a905a94c9dc04ce02414346cd50768583406d92cb7240e650",
+    "h300-W-network.csv.gz": "7790db1e94306d72fe52cb4c0a9aa1952e5e88acaab53cd4fa21290bb2ddabe0",
+    "h400-W-network.csv.gz": "54550af054d658556fac3624680abc6a87dac1c1153b87b2fcd2498e02b786cb",
+    "h500-W-network.csv.gz": "4dff377abe994562eca11489865968092c85b65f37139348783ea4a8f330a318"
+  },
+  "source_workbooks": {
+    "215": "40edb66585daca9cc393cab1f86bde6d4528a5f34b6afc57260cc1684396da4e",
+    "300": "7761cce77cf93dcba2f617714f0117c1f2ead4de0c3f27149daceba447e0c7d1",
+    "400": "c3085456997714ef5a8bdbf61e2c9a5e578c2636003947427cf58933d21ceb13",
+    "500": "888fbff42e4f80817d4d5f0101049495c86c6ed4cda75f00813779dadab41515"
+  },
+  "controls": {
+    "215": {
+      "OW": 15910,
+      "inactive": 98728,
+      "missing_distance": 0,
+      "zero_distance": 572,
+      "active": 25112,
+      "WD": 15910,
+      "WW": 92020
+    },
+    "300": {
+      "OW": 22200,
+      "inactive": 178560,
+      "missing_distance": 0,
+      "zero_distance": 580,
+      "active": 45240,
+      "WD": 22200,
+      "WW": 179400
+    },
+    "400": {
+      "OW": 29600,
+      "inactive": 302080,
+      "missing_distance": 0,
+      "zero_distance": 600,
+      "active": 76320,
+      "WD": 29600,
+      "WW": 319200
+    },
+    "500": {
+      "OW": 37000,
+      "inactive": 457600,
+      "missing_distance": 0,
+      "zero_distance": 600,
+      "active": 115400,
+      "WD": 37000,
+      "WW": 499000
+    }
+  },
+  "universe": "All original directed OW/WD/WW pairs times products; WW excludes self loops",
+  "runtime_graph": "Only immutable selected arcs.csv enters ModelData",
+  "routing_requests": 0,
+  "distance_recalculations": 0
+}

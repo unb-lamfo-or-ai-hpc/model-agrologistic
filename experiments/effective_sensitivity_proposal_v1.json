@@ -1,0 +1,54 @@
+{
+  "status": "approved_scopes_and_levels_no_execution",
+  "approval": "Researcher approved scopes/levels and implementation in PR158; no execution or merge",
+  "executable": false,
+  "population": 215,
+  "topology": "W",
+  "modes": ["det", "sto"],
+  "baseline_controls": {"beta": null, "alpha": null, "multipliers": 1},
+  "beta": {
+    "scope": "Each product and scenario, summed over customers and all 60 periods",
+    "domain": [0, 1],
+    "screening_levels": [0.90, 0.95],
+    "deferred_stress_levels": [0.98, 1.0],
+    "meaning": "Minimum delivered fraction of delta_D-scaled domestic demand; not a probability"
+  },
+  "alpha": {
+    "scope": "Each product and scenario, summed over export destinations and all 60 periods",
+    "denominator": "Sum of exogenous supply for the same product, scenario and horizon",
+    "domain": [0, 1],
+    "screening_levels": [0.60, 0.50],
+    "deferred_stress_levels": [0.40, 0.25, 0.0],
+    "meaning": "Upper exported fraction; no export minimum; original destination-period upper bounds retained"
+  },
+  "multipliers": {
+    "existing_static": [0.75, 1.25],
+    "existing_reception": [0.75, 1.25],
+    "existing_shipping": [0.75, 1.25],
+    "candidate_limit": [0.75, 1.25],
+    "expansion_limit": [0.75, 1.25],
+    "bulk_limit": [0.75, 1.25],
+    "freight": [0.90, 1.10],
+    "opening_variable": [0.90, 1.10],
+    "expansion_variable": [0.90, 1.10],
+    "bulk_variable": [0.90, 1.10],
+    "storage": [0.90, 1.10],
+    "shortage_penalty": [0.50, 2.0],
+    "stock_penalty": [0.50, 2.0],
+    "reception_penalty": [0.50, 2.0],
+    "delta_D": [0.90, 1.10]
+  },
+  "design": {
+    "kind": "Staged controlled contrasts, then selected interactions; not global sensitivity indices",
+    "full_factorial": false,
+    "first_stage_nonbaseline_cases_per_mode": 34,
+    "first_stage_baselines_per_mode": 1,
+    "first_stage_candidate_observations_both_modes": 70,
+    "stochastic_scenarios_are_not_separate_runs": true,
+    "interactions": ["beta with alpha", "existing_shipping with investment ceilings", "delta_D with alpha"],
+    "interaction_levels": "Choose from first-stage evidence after separate approval",
+    "resource_budget": "Not assigned; no queue, job or execution authorization"
+  },
+  "absolute_fixed_costs": "Remain zero; positive values require empirical basis and approval",
+  "level_basis": "Researcher-review diagnostic perturbations, not calibrated uncertainty or confidence intervals"
+}
