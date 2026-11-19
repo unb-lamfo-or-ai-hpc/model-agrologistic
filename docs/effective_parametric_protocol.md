@@ -28,15 +28,15 @@ specification, implementation modules and resulting effective-input identity.
 | Absolute fixed-cost fields |null; historical zeros retained| Proposed opening/expansion/bulk fields |
 | beta, alpha |null; disabled| Proposed additional constraints |
 
-Multipliers must be finite and nonnegative. Positive absolute fixed costs and
-active beta/alpha are rejected pending scientific approval. No numerical
-sensitivity levels or calibration coefficients are activated by this PR.
-The [scope and level proposal](effective_beta_alpha_proposal.md) now supplies
-candidate values for researcher review. Its separate
-[proposal JSON](../experiments/effective_sensitivity_proposal_v1.json) is not read
-by the executable scenario interface or any campaign controller.
+Multipliers must be finite and nonnegative. beta/alpha scopes and the proposed
+levels were subsequently approved by the researcher for optional implementation
+in this PR. See [the implementation contract](effective_policy_implementation.md).
+Positive absolute fixed costs remain rejected. The neutral template remains
+unchanged; no control is enabled by default and no experiment is run. The separate
+[approved level menu](../experiments/effective_sensitivity_proposal_v1.json) is
+non-executable and is not read by any campaign controller.
 
-## Proposed service/export equations: not executable
+## Approved optional service/export equations
 
 Domestic balance remains deliveries+u=delta_D D0. The proposed horizon-aggregated
 per-product/scenario floor is:
@@ -45,7 +45,7 @@ per-product/scenario floor is:
 \sum_{c,t}u_{scpt}\le(1-\beta_{ps})\sum_{c,t}\delta_D D^0_{scpt}.
 \]
 
-Its scope requires author approval. It allows temporal/geographic compensation;
+Its approved scope allows temporal/geographic compensation;
 destination/period floors would be different scientific constraints. Zero demand
 requires a defined reporting convention rather than division by zero.
 
@@ -55,7 +55,7 @@ Proposed export control:
 \sum_{c\in C^X,t}x^{export}_{cspt}\le\alpha_{ps}\sum_{o,t}a_{ospt}.
 \]
 
-Its temporal scope still requires approval. Retain historical per-destination,
+Its approved temporal scope is the full horizon. Retain historical per-destination,
 product, period upper bounds. The existing automatic rule assigns supply total
 to EACH export destination; it is not a global observed-export or port-capacity
 constraint. Domestic demand changes never silently change these export bounds.
@@ -76,7 +76,7 @@ Observed export quantities are not physical port-capacity ceilings.
 ## Future experimental order, subject to separate approval
 
 1. Preserve the accepted h215 DET/W and nine-block STO/W data/algebra certificate.
-2. Approve beta/alpha scopes, fixed-cost assumptions and justified sensitivity levels.
+2. Preserve approved beta/alpha scopes/levels; resolve empirical fixed costs and budget separately.
 3. Prepare a bounded h215 protocol and resource budget for researcher review.
 4. After execution approval, run baseline and isolated sensitivities; then selected
    interactions: K/R/H, investible limits/throughput, demand/export, cost/penalties.

@@ -1,3 +1,11 @@
+## Approved optional policy implementation — 18 November 2026
+
+The researcher approved beta/alpha scopes/levels and implementation in PR158,
+with neutral defaults, independent validation and no optimization/HPC/merge.
+Read docs/checkpoints/20261118_effective_policy_implementation.md and
+docs/effective_h215_policy_reference.md. PR156/158 remain Draft. Prior proposal
+approval statuses below are superseded only by this explicit scoped decision.
+
 ## Policy proposals and solver-free CI follow-up — 18 November 2026
 
 PR158 remains Draft, with beta/alpha scopes and sensitivity levels proposed only.

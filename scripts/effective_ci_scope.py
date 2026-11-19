@@ -15,6 +15,8 @@ RUNTIME_PATHS = {
     "scripts/check_effective_contract.py", "scripts/no_solver_guard.py",
     "tests/test_effective_baseline.py", "tests/test_effective_ci.py",
     "tests/test_effective_proposal.py",
+    "src/logic/effective_policy.py", "src/logic/effective_policy_validation.py",
+    "scripts/summarize_effective_policy_reference.py", "tests/test_effective_policy.py",
 }
 CONTROL_PATHS = {
     ".gitignore", "PROJECT_STATE.md",

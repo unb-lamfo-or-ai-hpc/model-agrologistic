@@ -10,12 +10,20 @@
 - Version code, documentation and redacted evidence in PRs to develop.
 - Keep PR156 Draft and array2252608 unchanged.
 
+## Subsequent approved policy implementation
+
+The researcher approved the full-horizon, per-product/scenario beta/alpha scopes
+and proposed levels, explicitly requesting implementation in PR158. This overrides
+the earlier separate-PR suggestion. The [policy implementation](../effective_policy_implementation.md)
+reuses the existing builder, preserves null defaults and adds independent checks.
+No solver/HPC execution, merge or manuscript change is authorized.
+
 ## Pending scientific decisions
 
-1. beta: service-floor aggregation across periods/customers within product/scenario.
-2. alpha: temporal scope and supply denominator of the additional export ceiling.
-3. Positive fixed costs, empirical calibration, dynamic-capacity sensitivity
-   interpretation and numerical sensitivity levels.
+1. Positive absolute fixed costs and empirical calibration by technology.
+2. Future execution package, resource budget and numerical qualification.
+3. Any annual/local service policy or alternative export denominator beyond the
+   approved horizon scope.
 
 ## Preserved restrictions
 

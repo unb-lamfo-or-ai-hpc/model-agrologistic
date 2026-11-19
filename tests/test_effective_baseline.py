@@ -122,8 +122,8 @@ def test_demand_quantity_does_not_change_export_limits_or_penalties():
 @pytest.mark.parametrize(
     "kwargs",
     [
-        {"beta": 0.9},
-        {"alpha": 0.5},
+        {"beta": 1.1},
+        {"alpha": -0.1},
         {"fixed_absolute": {"opening_fixed_cost": 1}},
         {"multipliers": {"unknown": 1}},
         {"multipliers": {"freight": float("nan")}},

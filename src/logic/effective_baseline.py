@@ -598,6 +598,14 @@ def build_effective_model(data, config, *, max_variables=200000):
     expected = data.metadata.get("effective_baseline", {}).get("input_sha256")
     if validate(data, config) != expected:
         raise ValueError("Data changed after sealing; prepare an identified scenario.")
+    from src.logic.parametric_scenarios import verify_scenario_record
+
+    controls = verify_scenario_record(data, config)
     from src.logic.optimization_pyomo import build_model
 
-    return build_model(data, config, max_variables=max_variables)
+    built = build_model(data, config, max_variables=max_variables)
+    if controls["beta"] or controls["alpha"]:
+        from src.logic.effective_policy import attach_policy_constraints
+
+        attach_policy_constraints(built, controls, data.metadata["effective_baseline"])
+    return built

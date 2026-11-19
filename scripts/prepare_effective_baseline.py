@@ -130,7 +130,10 @@ def workbook_payload(stage):
                 ["baseline", "Historical effective values, not empirical recalibration"],
                 ["objective", "Investment once + expected operations + three separate penalties"],
                 ["network", "W; original complete OSRM matrices remain identified at source"],
-                ["pending", "beta/alpha scopes and positive absolute fixed costs await approval"],
+                [
+                    "pending",
+                    "Positive fixed costs, calibration and experiment execution await approval",
+                ],
                 [
                     "originals",
                     "Original values remain in the immutable, hash-identified source workbooks",

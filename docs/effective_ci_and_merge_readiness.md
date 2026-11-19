@@ -12,6 +12,11 @@ an explicit alternative, preserving each retained native qualification workflow.
 It does not change branch protection, merge policy, experimental solver settings
 or the historical 2252608 campaign. Do not use `[skip ci]` on the follow-up head.
 
+The subsequent researcher authorization also permits optional beta/alpha policy
+implementation in this same PR. Read [its contract](effective_policy_implementation.md).
+The reviewed effective-pipeline modules are included in this construction-only
+route; core historical/native builders remain outside the routing allowlist.
+
 ## Routing design
 
 `effective_ci_scope.py` compares full base/head commit SHAs with rename detection
@@ -61,10 +66,10 @@ implementation is preserved; cloud CI does not rebuild that large private matrix
 | --- | --- |
 | Original/effective/scenario separation; penalty/ceiling independence | Implemented; existing regression controls |
 | h215 DET and all nine STO block equivalence | Accepted existing receipt; no new optimization |
-| beta/alpha/fixed-cost activation blocked; neutral template unchanged | Executable interface unchanged; negative activation tests |
-| Scientific runtime/campaign/article sources unchanged by follow-up | Inspect final diff against c9fe8bc and original protected sources |
-| Final-code test repetition and source identity | 86 tests passed twice; identical source inventories; [receipt](evidence/effective_policy_ci_20261118.json) |
-| Ruff, Node syntax, offline packaging | Passed locally; 48 wheel modules match; no dependency installation locally |
+| beta/alpha explicit opt-in; fixed-cost override blocked; neutral template unchanged | Approved optional entry points; null defaults and exact neutral-matrix regression |
+| Core historical builders/validator, campaign/article sources unchanged | Reviewed optional effective-pipeline extension; inspect final protected-source diff |
+| Final-code test repetition and source identity | Current [implementation receipt](evidence/effective_policy_implementation_20261118.json); earlier 86-test receipt preserved |
+| Ruff, Node syntax, offline packaging | Current implementation receipt; no dependency installation locally |
 | Exact-head cloud solver-free CI | Inspect [current PR158 checks](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/pull/158/checks); actual confirmation belongs to the current PR review |
 | Retained native qualification steps/protections | Preserved; data-route skips are not numerical qualification |
 | No private data or machine paths in GitHub additions | Inspect staged diff and redacted evidence |

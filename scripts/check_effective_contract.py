@@ -21,6 +21,7 @@ TESTS = (
     "tests/test_warehouse_population.py", "tests/test_warehouse_workbook.py",
     "tests/test_route_filtering.py", "tests/test_effective_ci.py",
     "tests/test_effective_proposal.py",
+    "tests/test_effective_policy.py",
 )
 
 

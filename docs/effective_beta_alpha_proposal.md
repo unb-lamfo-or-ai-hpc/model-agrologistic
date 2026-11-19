@@ -1,5 +1,11 @@
 # Proposed service, export and sensitivity scopes — 18 November 2026
 
+**Subsequent researcher decision:** scopes and levels below are approved for
+optional implementation in PR158. See [the implementation](effective_policy_implementation.md)
+and [historical disaggregation](effective_h215_policy_reference.md). The original
+proposal below is retained as decision provenance; its pending-approval wording
+is superseded by that decision. No optimization/HPC execution or merge is approved.
+
 ## Decision status and evidence
 
 This is a proposal for researcher approval, not an activated mathematical change.

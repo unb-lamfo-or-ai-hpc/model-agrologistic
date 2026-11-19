@@ -1,5 +1,11 @@
 # Current project status — 18 November 2026
 
+The current researcher authorization is [optional policy implementation](effective_policy_implementation.md)
+in PR158 after [historical product/scenario readback](effective_h215_policy_reference.md).
+Scopes/levels are approved; null baseline defaults stay unchanged. Use effective
+construction/validation entry points for policies. Both PRs remain Draft, with
+no new solver/HPC execution or merge. This supersedes the proposal-only status below.
+
 PR158's policy/CI follow-up is documented in
 [the proposals](effective_beta_alpha_proposal.md),
 [CI/readiness](effective_ci_and_merge_readiness.md) and

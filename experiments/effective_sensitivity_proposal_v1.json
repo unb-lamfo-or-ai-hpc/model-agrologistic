@@ -1,5 +1,6 @@
 {
-  "status": "proposal_awaiting_researcher_approval",
+  "status": "approved_scopes_and_levels_no_execution",
+  "approval": "Researcher approved scopes/levels and implementation in PR158; no execution or merge",
   "executable": false,
   "population": 215,
   "topology": "W",
