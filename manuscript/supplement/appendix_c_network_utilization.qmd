@@ -1,0 +1,127 @@
+## C10 Network utilization, model size and objective certificates
+
+The tables report Gurobi incumbents from the historical native and Pyomo/APPSI cohorts. DET and STO denote deterministic and stochastic formulations. W routes flow through warehouses and D also permits direct delivery. T denotes the solver thread ceiling. Matrix counts refer to the original MILP, including any formulation-specific rows before presolve. Network nodes count origin, warehouse and destination roles. Arcs count directed family and product coordinates before period and scenario expansion. Used arcs count coordinates with positive exported flow in at least one period and scenario.
+
+Nonzero continuous entries use the retained export threshold of $10^{-7}$ and cover flow, inventory, unmet demand, capacity slack and installed capacities. Binary counts exclude the availability flag of existing warehouses. ND indicates that the required vector or certificate was unavailable in the retrieved evidence. The economic subtotal is evaluated on the incumbent and has no separate optimality certificate. The same penalized MILP bound cannot be used as an economic-objective bound. LP in the notes identifies the observed initial root-relaxation time.
+
+The h300 Pyomo logs report one explored node for all fifteen observations, with the root LP objective printed at approximately BRL 9.28872 trillion. The matching incumbent has a penalized objective of approximately BRL 9.28911 trillion. The archived solution vector measures incumbent sparsity. The root LP logs record the objective, iterations and time.
+
+The [historical scalar evidence](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/f8ee519b45477c593930692e71601cf1f406896e/manuscript/scalar_evidence.json) binds the native observations to their archived certificates and output hashes. The [h300 admissibility record](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/0f63c10eb1abf88318a4d9c6afc75fcac97f6266/docs/evidence/h300_selected_graph_release_20261101.json) identifies the selected graph separately from the exported flows.
+
+In the native stochastic W series, used arcs rise from 4,090 to 7,023 from h215 to h500, while the share falls from 16.29% to 6.09%. The available arc set expands faster than the observed set used at least once.
+
+### h215
+
+**Model and network**
+
+| Configuration | Rows | Columns | Nonzeros | Network nodes | Arcs | Used arcs (%) | B&B nodes |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| DET W / Native / 4T | 74,017 | 1,562,174 | 5,786,346 | 289 | 25,112 | 12.01 | 1 |
+| STO W / Native / 4T | 661,057 | 14,054,654 | 52,068,826 | 289 | 25,112 | 16.29 | 1 |
+| DET D / Native / 4T | 74,017 | 1,597,694 | 5,857,386 | 289 | 25,704 | 11.34 | 1 |
+| STO D / Native / 4T | 661,057 | 14,374,334 | 52,708,186 | 289 | 25,704 | 15.30 | 1 |
+| STO W / Pyomo / 4T | 735,577 | 14,054,654 | 52,217,866 | 289 | 25,112 | 16.39 | 1 |
+
+**Incumbent, certificate and variable usage**
+
+| Configuration | Total objective (BRL tn) | Total gap (%) | Economic cost (BRL bn) | Economic gap (%) | Integers | Nonzero integers (%) | Continuous | Nonzero continuous (%) | Notes |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| DET W / Native / 4T | 11.437342 | 0.000812 | 389.810 | ND | 307 | 70.03 | 1,561,867 | 1.962 | Full vector |
+| STO W / Native / 4T | 13.071397 | 0.740159 | 393.902 | ND | 307 | 70.03 | 14,054,347 | 1.954 | Full vector |
+| DET D / Native / 4T | 7.340492 | 0.552427 | 338.715 | ND | 307 | 70.03 | 1,597,387 | 1.449 | Full vector |
+| STO D / Native / 4T | 7.355002 | 0.623718 | 340.109 | ND | 307 | 70.03 | 14,374,027 | 1.451 | Full vector |
+| STO W / Pyomo / 4T | 13.071397 | 0.740159 | 393.902 | ND | 307 | 70.03 | 14,054,347 | 1.946 | Full vector |
+
+### h300
+
+**Model and network**
+
+| Configuration | Rows | Columns | Nonzeros | Network nodes | Arcs | Used arcs (%) | B&B nodes |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| STO W / Native / 1T | 890,642 | 25,107,544 | 94,635,126 | 374 | 45,240 | 11.18 | 1 |
+| STO W / Native / 2T | 890,642 | 25,107,544 | 94,635,126 | 374 | 45,240 | 11.18 | 1 |
+| STO W / Native / 4T | 890,642 | 25,107,544 | 94,635,126 | 374 | 45,240 | 11.18 | 1 |
+| STO W / Native / 8T | 890,642 | 25,107,544 | 94,635,126 | 374 | 45,240 | 11.18 | 1 |
+| STO W / Native / 16T | 890,642 | 25,107,544 | 94,635,126 | 374 | 45,240 | 11.18 | 1 |
+| STO W / Pyomo / 1T r1 | 1,056,962 | 25,107,544 | 94,967,766 | 374 | 45,240 | 11.23 | 1 |
+| STO W / Pyomo / 1T r2 | 1,056,962 | 25,107,544 | 94,967,766 | 374 | 45,240 | ND | 1 |
+| STO W / Pyomo / 1T r3 | 1,056,962 | 25,107,544 | 94,967,766 | 374 | 45,240 | ND | 1 |
+| STO W / Pyomo / 2T r1 | 1,056,962 | 25,107,544 | 94,967,766 | 374 | 45,240 | ND | 1 |
+| STO W / Pyomo / 2T r2 | 1,056,962 | 25,107,544 | 94,967,766 | 374 | 45,240 | ND | 1 |
+| STO W / Pyomo / 2T r3 | 1,056,962 | 25,107,544 | 94,967,766 | 374 | 45,240 | ND | 1 |
+| STO W / Pyomo / 4T r1 | 1,056,962 | 25,107,544 | 94,967,766 | 374 | 45,240 | ND | 1 |
+| STO W / Pyomo / 4T r2 | 1,056,962 | 25,107,544 | 94,967,766 | 374 | 45,240 | ND | 1 |
+| STO W / Pyomo / 4T r3 | 1,056,962 | 25,107,544 | 94,967,766 | 374 | 45,240 | ND | 1 |
+| STO W / Pyomo / 8T r1 | 1,056,962 | 25,107,544 | 94,967,766 | 374 | 45,240 | ND | 1 |
+| STO W / Pyomo / 8T r2 | 1,056,962 | 25,107,544 | 94,967,766 | 374 | 45,240 | ND | 1 |
+| STO W / Pyomo / 8T r3 | 1,056,962 | 25,107,544 | 94,967,766 | 374 | 45,240 | ND | 1 |
+| STO W / Pyomo / 16T r1 | 1,056,962 | 25,107,544 | 94,967,766 | 374 | 45,240 | ND | 1 |
+| STO W / Pyomo / 16T r2 | 1,056,962 | 25,107,544 | 94,967,766 | 374 | 45,240 | ND | 1 |
+| STO W / Pyomo / 16T r3 | 1,056,962 | 25,107,544 | 94,967,766 | 374 | 45,240 | ND | 1 |
+
+**Incumbent, certificate and variable usage**
+
+| Configuration | Total objective (BRL tn) | Total gap (%) | Economic cost (BRL bn) | Economic gap (%) | Integers | Nonzero integers (%) | Continuous | Nonzero continuous (%) | Notes |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| STO W / Native / 1T | 9.289109 | 0.004119 | 385.502 | ND | 392 | 76.53 | 25,107,152 | 1.256 | Full vector |
+| STO W / Native / 2T | 9.289109 | 0.004119 | 385.502 | ND | 392 | 76.53 | 25,107,152 | 1.256 | Full vector |
+| STO W / Native / 4T | 9.289109 | 0.004119 | 385.502 | ND | 392 | 76.53 | 25,107,152 | 1.256 | Full vector |
+| STO W / Native / 8T | 9.289109 | 0.004119 | 385.502 | ND | 392 | 76.53 | 25,107,152 | 1.256 | Full vector |
+| STO W / Native / 16T | 9.289109 | 0.004119 | 385.502 | ND | 392 | 76.53 | 25,107,152 | 1.256 | Full vector |
+| STO W / Pyomo / 1T r1 | 9.289109 | 0.004105 | 385.502 | ND | 392 | 76.53 | 25,107,152 | 1.249 | Full vector · 2231228 · LP 29.0 min |
+| STO W / Pyomo / 1T r2 | 9.289109 | 0.004105 | 385.502 | ND | 392 | ND | 25,107,152 | ND | Vector ND · 2232366 · LP 37.3 min |
+| STO W / Pyomo / 1T r3 | 9.289109 | 0.004105 | 385.502 | ND | 392 | ND | 25,107,152 | ND | Vector ND · 2232373 · LP 28.9 min |
+| STO W / Pyomo / 2T r1 | 9.289109 | 0.004122 | 385.502 | ND | 392 | ND | 25,107,152 | ND | Vector ND · 2232355 · LP 46.7 min |
+| STO W / Pyomo / 2T r2 | 9.289109 | 0.004122 | 385.502 | ND | 392 | ND | 25,107,152 | ND | Vector ND · 2232359 · LP 48.7 min |
+| STO W / Pyomo / 2T r3 | 9.289109 | 0.004122 | 385.502 | ND | 392 | ND | 25,107,152 | ND | Vector ND · 2232375 · LP 36.3 min |
+| STO W / Pyomo / 4T r1 | 9.289109 | 0.004120 | 385.502 | ND | 392 | ND | 25,107,152 | ND | Vector ND · 2232353 · LP 45.8 min |
+| STO W / Pyomo / 4T r2 | 9.289109 | 0.004120 | 385.502 | ND | 392 | ND | 25,107,152 | ND | Vector ND · 2232360 · LP 55.3 min |
+| STO W / Pyomo / 4T r3 | 9.289109 | 0.004120 | 385.502 | ND | 392 | ND | 25,107,152 | ND | Vector ND · 2232376 · LP 39.5 min |
+| STO W / Pyomo / 8T r1 | 9.289109 | 0.004120 | 385.502 | ND | 392 | ND | 25,107,152 | ND | Vector ND · 2232356 · LP 71.1 min |
+| STO W / Pyomo / 8T r2 | 9.289109 | 0.004120 | 385.502 | ND | 392 | ND | 25,107,152 | ND | Vector ND · 2232365 · LP 70.7 min |
+| STO W / Pyomo / 8T r3 | 9.289109 | 0.004120 | 385.502 | ND | 392 | ND | 25,107,152 | ND | Vector ND · 2232369 · LP 71.2 min |
+| STO W / Pyomo / 16T r1 | 9.289109 | 0.004120 | 385.502 | ND | 392 | ND | 25,107,152 | ND | Vector ND · 2231593 · LP 54.3 min |
+| STO W / Pyomo / 16T r2 | 9.289109 | 0.004120 | 385.502 | ND | 392 | ND | 25,107,152 | ND | Vector ND · 2232363 · LP 78.7 min |
+| STO W / Pyomo / 16T r3 | 9.289109 | 0.004120 | 385.502 | ND | 392 | ND | 25,107,152 | ND | Vector ND · 2232370 · LP 77.0 min |
+
+### h400
+
+**Model and network**
+
+| Configuration | Rows | Columns | Nonzeros | Network nodes | Arcs | Used arcs (%) | B&B nodes |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| STO W / Native / 1T | 1,160,742 | 42,106,944 | 160,697,126 | 474 | 76,320 | 8.05 | 1 |
+| STO W / Pyomo / 1T E1 | 1,435,062 | 42,106,944 | 161,245,766 | 474 | 76,320 | ND | 1 |
+| STO W / Pyomo / 1T PR148 | 1,435,062 | 42,106,944 | 161,245,766 | 474 | 76,320 | ND | 1 |
+| STO W / Pyomo / 2T E2 | 1,435,062 | 42,106,944 | 161,245,766 | 474 | 76,320 | ND | 1 |
+| STO W / Pyomo / 4T E2 | 1,435,062 | 42,106,944 | 161,245,766 | 474 | 76,320 | ND | 1 |
+| STO W / Pyomo / 8T E2 | 1,435,062 | 42,106,944 | 161,245,766 | 474 | 76,320 | ND | 1 |
+| STO W / Pyomo / 16T E1 | 1,435,062 | 42,106,944 | 161,245,766 | 474 | 76,320 | ND | 1 |
+| STO W / Pyomo / 16T PR148 | 1,435,062 | 42,106,944 | 161,245,766 | 474 | 76,320 | ND | 1 |
+
+**Incumbent, certificate and variable usage**
+
+| Configuration | Total objective (BRL tn) | Total gap (%) | Economic cost (BRL bn) | Economic gap (%) | Integers | Nonzero integers (%) | Continuous | Nonzero continuous (%) | Notes |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| STO W / Native / 1T | 7.593395 | 0.836784 | 381.573 | ND | 492 | 81.30 | 42,106,452 | 0.875 | Full vector |
+| STO W / Pyomo / 1T E1 | 7.593395 | 0.836784 | 381.573 | ND | 492 | ND | 42,106,452 | ND | Vector ND · 2247718 |
+| STO W / Pyomo / 1T PR148 | 7.593395 | 0.836784 | 381.573 | ND | 492 | ND | 42,106,452 | ND | Vector ND · 2232379 |
+| STO W / Pyomo / 2T E2 | 7.593395 | 0.836784 | 381.573 | ND | 492 | ND | 42,106,452 | ND | Vector ND · 2250119 |
+| STO W / Pyomo / 4T E2 | 7.593395 | 0.836784 | 381.573 | ND | 492 | ND | 42,106,452 | ND | Vector ND · 2250123 |
+| STO W / Pyomo / 8T E2 | 7.593395 | 0.836784 | 381.573 | ND | 492 | ND | 42,106,452 | ND | Vector ND · 2250127 |
+| STO W / Pyomo / 16T E1 | 7.593395 | 0.836784 | 381.573 | ND | 492 | ND | 42,106,452 | ND | Vector ND · 2247727 |
+| STO W / Pyomo / 16T PR148 | 7.593395 | 0.836784 | 381.573 | ND | 492 | ND | 42,106,452 | ND | Vector ND · 2232382 |
+
+### h500
+
+**Model and network**
+
+| Configuration | Rows | Columns | Nonzeros | Network nodes | Arcs | Used arcs (%) | B&B nodes |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| STO W / Native / 1T | 1,430,842 | 63,426,344 | 244,039,126 | 574 | 115,400 | 6.09 | 1 |
+
+**Incumbent, certificate and variable usage**
+
+| Configuration | Total objective (BRL tn) | Total gap (%) | Economic cost (BRL bn) | Economic gap (%) | Integers | Nonzero integers (%) | Continuous | Nonzero continuous (%) | Notes |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| STO W / Native / 1T | 6.297240 | 0.207432 | 373.173 | ND | 592 | 84.46 | 63,425,752 | 0.630 | Full vector |
