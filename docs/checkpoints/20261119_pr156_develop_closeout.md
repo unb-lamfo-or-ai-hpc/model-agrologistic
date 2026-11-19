@@ -18,6 +18,12 @@ controlled h300 campaign". The test now verifies that the campaign remains in
 the Future work subsection without depending on capitalization or that prefix.
 No publication prose or scientific result was changed to satisfy the test.
 
+The integrated Quality job44545590014 then exposed a missing construction
+dependency: the general dev-only installation did not include Pyomo, which
+the newly merged effective-policy tests import. Quality now installs
+Pyomo6.10.1 explicitly, matching the effective-data workflow and current
+construction environment. No solver test is removed, skipped or weakened.
+
 The 89 focused manuscript/package/partial-evidence tests passed locally without
 solver execution; repository Ruff passed. Final exact-head CI is reviewed in
 PR156 before merge. The original failed CI records remain available.
