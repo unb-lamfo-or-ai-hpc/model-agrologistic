@@ -22,6 +22,7 @@ TESTS = (
     "tests/test_route_filtering.py", "tests/test_effective_ci.py",
     "tests/test_effective_proposal.py",
     "tests/test_effective_policy.py",
+    "tests/test_effective_h215_preparation.py",
 )
 
 

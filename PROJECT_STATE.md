@@ -1,3 +1,12 @@
+## PR158 merged; h215 policy qualification prepared — 19 November 2026
+
+Explicitly authorized merge into develop: b0a6b6849770a05eddca9f4a860246eabb5374da.
+Read docs/checkpoints/20261119_h215_policy_preparation.md and
+docs/h215_policy_experimental_protocol.md. The new preparation branch specifies
+18 prospective DET/STO observations and48 tiny public controls. No qualification
+or private job has been submitted. PR156 and the new preparation PR stay Draft.
+Historical status below is superseded by this scoped authorization only.
+
 ## Approved optional policy implementation — 18 November 2026
 
 The researcher approved beta/alpha scopes/levels and implementation in PR158,
