@@ -57,4 +57,5 @@ def test_review_has_real_figures_and_explicit_missing_exports():
     final = current.split("# Final considerations, limitations and future work", 1)[1]
     assert "Eleven validated native Gurobi observations" in final
     assert "The h300 Gurobi Pyomo grid" in final
-    assert "The controlled h300 campaign" in final
+    future = final.split("## Future work", 1)[1].lower()
+    assert "controlled h300 campaign" in future
