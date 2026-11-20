@@ -3,7 +3,7 @@
   "recorded_on": "2026-11-20",
   "mandate": "AGRO-MVP3-GRB14",
   "inspected_develop_commit": "245bb3894a3bb0adc34275e8f3eaff6fe3378455",
-  "scope": "One future operator-executed real h215 DET/W compatibility job; no comparison",
+  "scope": "One submitted operator-executed real h215 DET/W compatibility job; no comparison",
   "gurobipy_target": "14.0.0",
   "optimization_parameter_overrides": {
     "TimeLimit": 300
@@ -12,8 +12,8 @@
   "historical_environment_unchanged": true,
   "correct_npad_environment_receipt_received": true,
   "environment_clone_performed": true,
-  "license_session_opened": false,
-  "hpc_job_submitted": false,
+  "license_session_opened": null,
+  "hpc_job_submitted": true,
   "compatibility_verdict": "pending_execution",
   "manuscript_changed": false,
   "automatic_retry": false,
@@ -48,5 +48,10 @@
   "environment_clone_evidence_scope": "Operator-reported original preparation result; no independent NPAD access",
   "environment_clone_accepted_as_reported": true,
   "single_job_prepared": true,
-  "cli_submission_authorized": false
+  "cli_submission_authorized": true,
+  "submitted_job_id": "2278573",
+  "last_operator_reported_state": "PENDING",
+  "last_operator_reported_reason": "Resources",
+  "native_execution_evidence_received": false,
+  "current_receipt": "docs/evidence/gurobi14_h215_2278573_submitted_20261120.json"
 }

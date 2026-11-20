@@ -1,5 +1,32 @@
 # Gurobi14 compatibility checkpoint — 20 November 2026
 
+## Operator update: submitted job and partial array accounting
+
+The researcher authorized and submitted exactly one compatibility job, **2278573**,
+from source `72fd9f52e1b439b46576d7d33cfaf928a63a51df`. Its last reported
+state is PENDING (Resources). The original collector correctly returned
+nonterminal_or_accounting_pending. Preparation's prepared_no_job preceded the
+single submission; its fresh claim and submission/release are now consumed.
+Do not repeat preparation, submission, release or cloning. The reported plan
+SHA-256 has 64 hexadecimal characters and is retained verbatim; no independent
+NPAD byte/hash inspection is claimed. WLS acceptance and native results remain
+unknown. See [submission receipt](../evidence/gurobi14_h215_2278573_submitted_20261120.json).
+
+The subsequent attached sacct snapshot covers the original h300 array2252608:
+49 COMPLETED, 7 FAILED (tasks6,17,19,21,24,44,54; exit1:0), task56 RUNNING
+04:37:32 and tasks57–59 still pending in the preceding full-range queue record.
+The attachment abbreviates the pending range and does not refresh job2278573.
+Scheduler completion is separate from scientific acceptance; failure causes
+require original logs. Preserve the original array without retries or changes.
+Its final collection is not yet ready. The attachment SHA-256 and task counts
+are retained in the receipt. No original computational result is modified.
+
+All seven workflows passed at the pinned execution source72fd9f52, including
+18 solver-free controls. This evidence-only follow-up does not requalify an
+actual WLS/native run. PR160 remains Draft; GO/NO-GO and merge remain pending.
+
+## Earlier preparation context (superseded where updated above)
+
 The researcher resumed after the short pause, supplied a successful original clone
 report and requested autonomy, with authorization requested only for CLI execution
 or merge. The preserved source environment is13.0.3; the clone loads14.0.0 under
