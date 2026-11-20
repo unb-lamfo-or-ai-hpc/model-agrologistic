@@ -1,3 +1,32 @@
+# Checkpoint: approved shared106 baseline and new v2 preparation
+
+The researcher adopts the exact reviewed106-distribution inventory as a separate
+prospective baseline. The original69 clone ledger, failed job2278573 and consumed
+v1 claim remain unchanged. The fresh claim is
+`/home/vrrcelestino/model-agrologistic-hygiene-audit/.mvp3-gurobi14-h215-compat-v2-shared106`.
+
+Prepared scope: one human-run CPU-only h215 DET/W compatibility job,192GiB,
+one wall hour, native defaults with TimeLimit=300 only, no automatic retry.
+Preparation freezes the approved installed versions and METADATA hashes.
+The worker verifies them before construction and after validation.
+No package installation, editable-metadata refresh, environment rollback or
+modification is performed. Codex has not submitted a job or opened WLS.
+
+All35 local solver-free controls and Ruff passed. Exact-head Linux CI and its
+archive hash must be checked before the human launch handoff. PR160 stays Draft;
+no merge is authorized. Actual GO/NO-GO awaits the new original receipts.
+This section supersedes earlier pending-baseline/no-new-job authorization wording
+only for this new v2 test.
+
+The latest XLSX artifacts are candidate MVP3 input sources. The supplied PR158
+review ZIP has53 verified ledger entries without mismatch. Its current NPAD
+counterparts and the OSRM SQLite still require explicit reconciliation; matching
+filenames are insufficient. See
+[the input work package](../mvp3_input_reconciliation_20261120.md).
+This compatibility test continues to use the qualified historical h215 input.
+
+---
+
 # Gurobi14 compatibility checkpoint — 20 November 2026
 
 ## Original failure audited; recording correction prepared

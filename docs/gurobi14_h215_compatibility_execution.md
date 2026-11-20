@@ -1,10 +1,39 @@
 # Single h215 DET/W compatibility test: Gurobi 14
 
-Status on 20 November 2026: the authorized job2278573 failed during receipt
-serialization before optimize entry. Its original archive is locally audited.
-See the [failure analysis and prospective correction](gurobi14_h215_2278573_failure_analysis.md).
-The historical execution source and claim remain preserved. PR160 remains Draft;
-this repair does not authorize another job or modification of the shared prefix.
+## Prospective v2: separately approved shared inventory
+
+On 20 November 2026 the researcher explicitly adopted the reviewed current
+106-distribution inventory as a new prospective baseline and requested one new
+human-executed h215 DET/W compatibility test. PR160 remains Draft; no merge is
+authorized. This supersedes earlier pending-baseline/unauthorized-repeat wording
+for the new v2 claim only. The failed job2278573, executed source72fd9f52,
+original 69-package clone ledger and consumed v1 claim remain unchanged.
+
+The approved complete name/version map is
+[experiments/gurobi14_shared106_inventory_20261120.json](../experiments/gurobi14_shared106_inventory_20261120.json).
+It comes from the locally hash-verified archive containing the current metadata
+snapshot, not from an inferred package count or an inventory at the old job start.
+The old receipt-serialization failure is analyzed
+[separately](gurobi14_h215_2278573_failure_analysis.md).
+
+Preparation reads installed distribution metadata, verifies all106 names/versions,
+Python3.13.15, the historical cloned interpreter hash and selected prefix.
+It writes runtime-baseline.json exclusively inside the fresh
+.mvp3-gurobi14-h215-compat-v2-shared106 claim under the audit project.
+The plan binds this receipt and the original clone ledger separately.
+Before construction and after validation, the worker checks the frozen versions
+and per-package METADATA hashes again. Duplicate installed names, changed versions
+or metadata stop acceptance. This attests installed metadata, not every installed
+package byte or hardware-library ABI. Concurrent external package modifications
+are not repaired, rolled back or accepted automatically.
+
+No installation, editable-metadata refresh, cloning or credential change is part
+of the launcher. Installed Torch/CUDA distributions remain in the inventory;
+they are not imported for preparation or used by the CPU-only experiment.
+The only solver option remains TimeLimit=300. The compatibility input remains the
+qualified historical workbook; adopting the new runtime inventory does not
+qualify the MVP3 data chain. See the separate
+[input-reconciliation work package](mvp3_input_reconciliation_20261120.md).
 
 ## Purpose and fixed scope
 
@@ -53,7 +82,8 @@ modified. The new interpreter is the researcher-selected venv313_g14 clone.
 
 1. Fetch the reviewed launcher and pinned source archive below the dedicated audit
    project, with exact SHA-256 checks; no Git is required on NPAD.
-2. Preparation checks the original clone ledger, preserves it, copies the three
+2. Preparation checks and preserves the original clone ledger, freezes the
+   separately approved shared106 runtime metadata, copies the three
    byte-identical historical input files into a fresh compatibility claim, and
    writes a source inventory, immutable plan and batch file. It does not load a
    model or open the license on the login node.
@@ -116,11 +146,10 @@ validation details and the designated license identity. GitHub receives a redact
 summary and hashes after review, not private inputs, solution vectors, credentials
 or unrestricted logs. The clone itself is never recreated by this launcher.
 
-The shared prefix was subsequently expanded from69 to106 distributions by the
-other project's authorized installation. The original guard still requires its
-exact frozen baseline. A prospective environment identity requires separate review;
-do not overwrite the original clone ledger, alter the shared environment, relax
-the guard or reuse the consumed compatibility claim to enable a repeat.
+The separate shared106 baseline is now explicitly authorized for this v2 test.
+The original69 clone ledger remains provenance, not the current installed map.
+The launcher refuses an existing v2 claim; an uncertain submission or release
+requires receipt review, with no automatic retry.
 
 ## Verification before the CLI handoff
 

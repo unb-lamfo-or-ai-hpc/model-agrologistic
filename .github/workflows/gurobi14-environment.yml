@@ -2,6 +2,8 @@ name: Gurobi 14 environment preparation without solver
 on:
   pull_request:
     paths:
+      - experiments/gurobi14_shared106_inventory_20261120.json
+      - tests/test_gurobi14_shared_inventory.py
       - scripts/npad_gurobi14_clone.sh
       - scripts/gurobi14_h215_compat.py
       - scripts/collect_gurobi14_2278573.sh

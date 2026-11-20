@@ -12,7 +12,7 @@ EXPECTED_LICENSE_ID=${3:?Designated license identity required; never pass creden
 [[ "$EXPECTED_LICENSE_ID" =~ ^[0-9]+$ ]]
 BASE=/home/vrrcelestino/model-agrologistic-hygiene-audit
 PY=/home/vrrcelestino/venv313_g14/bin/python
-C="$BASE/.mvp3-gurobi14-h215-compat-v1"
+C="$BASE/.mvp3-gurobi14-h215-compat-v2-shared106"
 test -z "${SLURM_JOB_ID:-}"
 test -d "$BASE"
 test -x "$PY"

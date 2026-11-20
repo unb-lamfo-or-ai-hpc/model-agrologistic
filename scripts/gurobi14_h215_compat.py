@@ -27,7 +27,8 @@ from pathlib import Path, PurePosixPath
 
 ROOT = Path(__file__).resolve().parents[1]
 BASE = Path("/home/vrrcelestino/model-agrologistic-hygiene-audit")
-CLAIM = BASE / ".mvp3-gurobi14-h215-compat-v1"
+CLAIM = BASE / ".mvp3-gurobi14-h215-compat-v2-shared106"
+APPROVED_INVENTORY = ROOT / "experiments/gurobi14_shared106_inventory_20261120.json"
 ENV_CLAIM = BASE / ".mvp3-gurobi14-environment-v1"
 PYTHON = Path("/home/vrrcelestino/venv313_g14/bin/python")
 LICENSE = Path("/home/vrrcelestino/model-agrologistic/secrets/gurobi.lic")
@@ -367,6 +368,66 @@ def environment_receipt():
     return checks
 
 
+
+def distribution_inventory():
+    """Read installed metadata only; do not import packages or open a WLS session."""
+    packages = {}
+    for distribution in importlib.metadata.distributions():
+        name = re.sub(r"[-_.]+", "-", distribution.metadata["Name"]).lower()
+        require(name not in packages, "duplicate_distribution_metadata")
+        metadata = distribution.read_text("METADATA")
+        require(metadata is not None, "missing_distribution_metadata")
+        packages[name] = {
+            "version": distribution.version,
+            "metadata_sha256": hashlib.sha256(metadata.encode()).hexdigest(),
+        }
+    return packages
+
+
+def runtime_snapshot():
+    """Attest the separately approved shared inventory, never rewrite clone history."""
+    expected = read(APPROVED_INVENTORY)
+    require(
+        expected["distribution_count"] == 106
+        and len(expected["packages"]) == 106
+        and expected["packages"]["gurobipy"] == "14.0.0",
+        "invalid_shared_baseline_specification",
+    )
+    after = read(ENV_CLAIM / "clone-after.json")
+    require(
+        platform.python_version() == expected["python"] == after["python"] == "3.13.15",
+        "python_changed",
+    )
+    require(
+        sys.prefix == expected["prefix"] == str(PYTHON.parent.parent),
+        "wrong_runtime_prefix",
+    )
+    require(digest(sys.executable) == after["python_sha256"], "python_binary_changed")
+    packages = distribution_inventory()
+    require(
+        {key: value["version"] for key, value in packages.items()} == expected["packages"],
+        "shared_distribution_versions_changed",
+    )
+    return {
+        "baseline_id": expected["baseline_id"],
+        "specification_sha256": digest(APPROVED_INVENTORY),
+        "historical_clone_receipt_sha256": digest(ENV_CLAIM / "clone-after.json"),
+        "python": platform.python_version(),
+        "python_sha256": digest(sys.executable),
+        "prefix": sys.prefix,
+        "distribution_count": len(packages),
+        "packages": packages,
+        "scope": "Installed versions and METADATA hashes; not all installed package bytes",
+        "original_69_package_baseline_preserved": True,
+    }
+
+
+def verify_runtime_snapshot():
+    frozen = read(CLAIM / "runtime-baseline.json")
+    require(runtime_snapshot() == frozen, "shared_runtime_metadata_changed")
+    return frozen
+
+
 def batch_text(claim, source_sha):
     q = shlex.quote
     return f"""#!/bin/bash
@@ -409,8 +470,10 @@ def prepare(args):
     )
     inventory = source_inventory(args.archive, args.source_sha, args.archive_sha256)
     environment = environment_receipt()
+    runtime = runtime_snapshot()
     require(args.expected_license_id > 0, "license_identity_required")
     CLAIM.mkdir()
+    publish(CLAIM / "runtime-baseline.json", runtime)
     (CLAIM / "input").mkdir()
     (CLAIM / "tmp").mkdir()
     (CLAIM / "cache").mkdir()
@@ -433,6 +496,10 @@ def prepare(args):
         "source_files": inventory,
         "inputs": inputs,
         "environment_files": environment,
+        "runtime_baseline_sha256": digest(CLAIM / "runtime-baseline.json"),
+        "runtime_baseline_id": runtime["baseline_id"],
+        "predecessor_job_id": "2278573",
+        "predecessor_claim": str(BASE / ".mvp3-gurobi14-h215-compat-v1"),
         "expected_license_id": args.expected_license_id,
         "job_sha256": digest(CLAIM / "job.sh"),
         "optimization_parameters": {"TimeLimit": 300},
@@ -460,6 +527,10 @@ def load_plan(source_sha):
     verify_files(ROOT, plan["source_files"])
     verify_files(CLAIM / "input", plan["inputs"])
     verify_files(ENV_CLAIM, plan["environment_files"])
+    require(
+        digest(CLAIM / "runtime-baseline.json") == plan["runtime_baseline_sha256"],
+        "runtime_baseline_receipt_changed",
+    )
     require(digest(CLAIM / "job.sh") == plan["job_sha256"], "batch_drift")
     return plan
 
@@ -577,23 +648,7 @@ def run(source_sha):
     started, env = time.monotonic(), None
     with silence_native_output():
         try:
-            after = read(ENV_CLAIM / "clone-after.json")
-            require(
-                platform.python_version() == after["python"] == "3.13.15",
-                "python_changed",
-            )
-            require(
-                digest(sys.executable) == after["python_sha256"],
-                "python_binary_changed",
-            )
-            versions = {
-                re.sub(r"[-_.]+", "-", d.metadata["Name"]).lower(): d.version
-                for d in importlib.metadata.distributions()
-            }
-            require(
-                versions == {k: v["version"] for k, v in after["packages"].items()},
-                "distribution_versions_changed",
-            )
+            runtime = verify_runtime_snapshot()
             state["stage"] = "input_preparation"
             sys.path.insert(0, str(ROOT))
             data, model_config = scientific_input()
@@ -623,6 +678,9 @@ def run(source_sha):
                 "executable": sys.executable,
                 "gurobi": list(gp.gurobi.version()),
                 "clone_receipt_sha256": digest(ENV_CLAIM / "environment-result.json"),
+                "runtime_baseline_sha256": plan["runtime_baseline_sha256"],
+                "runtime_baseline_id": runtime["baseline_id"],
+                "distribution_count": runtime["distribution_count"],
                 "affinity_logical_cpus": sorted(os.sched_getaffinity(0)),
                 "gpu_requested": False,
             }
@@ -668,6 +726,7 @@ def run(source_sha):
                 publish(CLAIM / "independent-validation.json", validation)
                 state["validation_status"] = validation["status"]
             load_plan(source_sha)
+            verify_runtime_snapshot()
             state["stage"] = "complete"
         except BaseException as error:  # noqa: BLE001 - sanitize all native failure paths
             state["error"] = {"kind": type(error).__name__}
@@ -736,6 +795,9 @@ def collect(source_sha):
     target = Path(tempfile.mkdtemp(prefix="gurobi14-h215-readback-", dir=BASE))
     (target / "sacct.txt").write_text(completed.stdout)
     names = [
+        "runtime-baseline.json",
+        "release.stdout",
+        "release.stderr",
         "plan.json",
         "started.json",
         "input-receipt.json",
