@@ -109,7 +109,8 @@ def test_reader_facing_editorial_structure_and_attribution():
     assert not re.search(r"\b(?:SCIP|CBC)\b", discussion + final)
     normalized = " ".join(final.split())
     assert "met the target in all 15 runs" in normalized
-    assert "Completion of the controlled h300 campaign will show" in normalized
+    assert "The controlled h300 campaign is closed with one temporal block" in normalized
+    assert "Completion of the controlled h300 campaign will show" not in normalized
     assert "HiGHS" not in discussion + final
     assert "# Conclusions" not in text and "# Future work:" not in text
     assert "Repository deposition of the licensed input data" not in text
