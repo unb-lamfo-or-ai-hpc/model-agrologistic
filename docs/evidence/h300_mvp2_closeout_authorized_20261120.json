@@ -1,0 +1,30 @@
+{
+  "date": "2026-11-20",
+  "timezone": "America/Sao_Paulo",
+  "decision": "Researcher requests cancelling remaining array2252608 and complete MVP2 evidence consolidation",
+  "array_job": "2252608",
+  "original_source": "9d43c963ed53b968e2e6c508de8dc06ed7e6693a",
+  "original_plan_sha256": "de528d6ac5f15ecc4be37a6540d0d1159e2e6990049c25a574eb21567de60f32",
+  "claim": "/home/vrrcelestino/model-agrologistic-hygiene-audit/.mvp2-h300-gurobi-root-cpu-v2",
+  "cancellation_authorized": true,
+  "cancellation_execution_reported": false,
+  "final_collection_received": false,
+  "blocks_2_and_3_follow_on_authorization": false,
+  "do_not_cancel_job": "2278573",
+  "mvp3_development": "Deferred while closing MVP2; existing compatibility job may finish",
+  "destination_pr": 157,
+  "destination_state": "open Draft verified before documentation update",
+  "collector_sha256": "12895faddb81bd765ba58436b6391d8421214e26d0e29e3ca4cbf738254ad906",
+  "archive_scope": "All regular files in original claim, including available vectors; private custody, no raw data publication",
+  "originals_modified": false,
+  "local_control_tests": {
+    "passed": 5,
+    "failures": 0,
+    "skipped": 0,
+    "ruff": "passed",
+    "solver_calls": 0,
+    "scheduler_calls": 0
+  },
+  "merges": 0,
+  "handoff_preparation": "Later upon researcher request, after compatibility and methodological-plan completion"
+}
