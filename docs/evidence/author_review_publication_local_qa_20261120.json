@@ -24,5 +24,11 @@
   "optimizer_executed": false,
   "pages_dispatched": false,
   "main_merge_performed": false,
-  "scope": "Local publication-pipeline qualification; manual exact-main publication acknowledgement remains pending."
+  "scope": "Local publication-pipeline qualification; manual exact-main publication acknowledgement remains pending.",
+  "remote_asset_integrity": {
+    "bytes": 8855854,
+    "sha256": "9bda04b2ba50d7214353e9b5378ccb8c8571ec96cccffbb957d3c8f6f4e1b187",
+    "git_blob_sha": "8b69bb33c43fa5dc5d91b5bb547648a697f1684b",
+    "initial_incomplete_upload": "Detected by exact-head CI; corrected without changing the integrity expectations or approved local assets."
+  }
 }
