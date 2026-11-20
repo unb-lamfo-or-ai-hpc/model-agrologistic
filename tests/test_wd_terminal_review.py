@@ -59,8 +59,9 @@ def test_pages_build_includes_current_supplement_dependencies():
     text = (ROOT / ".github/workflows/manuscript-pages.yml").read_text()
     for required in (
         "--publication", "publish_reviewed_snapshot", "refs/heads/main", "pdfpages",
-        "eso-pic", "librsvg2-bin", "pip install", "build_wd_manuscript --check",
-        "build_s6a_assets", "--rendered", "published-s6a-review-package",
+        "eso-pic", "pip install", "build_author_review.py --check-assets",
+        "scripts/build_author_review.py", "pages_publication.py check",
+        "published-s6a-review-package",
     ):
         assert required in text
     assert "default: false" in text

@@ -1,0 +1,28 @@
+{
+  "date": "2026-11-20",
+  "approved_editorial_commit": "3081a81f5b74d33747aecacb7c12dab40d282b98",
+  "develop_merge_commit": "32cfa1846ebde278ba4ebbb4eea990a14b461770",
+  "local_build": {
+    "index.pdf": {
+      "pages": 36,
+      "all_page_text_identical_to_approved": true,
+      "pixel_qa_dpi": 40,
+      "pages_with_pixel_differences": [],
+      "sha256": "c44155f1eb75ae3f19a27173b3f1ce6c43226642a6fd472488f024549f8c6171"
+    },
+    "supplementary-review.pdf": {
+      "pages": 81,
+      "all_page_text_identical_to_approved": true,
+      "pixel_qa_dpi": 40,
+      "pages_with_pixel_differences": [],
+      "sha256": "c0e2b2dbd0e4e9dcb601d4605cb6d144717ea2f2eb4929edeeb82a907ea03f6f"
+    }
+  },
+  "portable_members_verified": 49,
+  "zip_pdf_and_tex_bytes_match": true,
+  "shell_escape": false,
+  "optimizer_executed": false,
+  "pages_dispatched": false,
+  "main_merge_performed": false,
+  "scope": "Local publication-pipeline qualification; manual exact-main publication acknowledgement remains pending."
+}
