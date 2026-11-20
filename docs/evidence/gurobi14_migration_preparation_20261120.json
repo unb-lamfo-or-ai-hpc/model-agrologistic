@@ -1,0 +1,29 @@
+{
+  "schema_version": "gurobi14-minimal-migration-preparation-v1",
+  "recorded_on": "2026-11-20",
+  "mandate": "AGRO-MVP3-GRB14",
+  "inspected_develop_commit": "245bb3894a3bb0adc34275e8f3eaff6fe3378455",
+  "scope": "One future operator-executed real h215 DET/W compatibility job; no comparison",
+  "gurobipy_target": "14.0.0",
+  "optimization_parameter_overrides": {
+    "TimeLimit": 300
+  },
+  "native_source_files_unchanged": true,
+  "historical_environment_unchanged": true,
+  "correct_npad_environment_receipt_received": false,
+  "supplied_package_listing": {
+    "host": "dgx-dasci",
+    "environment": "tfm_env",
+    "gurobipy": "13.0.1",
+    "qualifies_npad_environment": false,
+    "python_version": null
+  },
+  "environment_clone_performed": false,
+  "license_session_opened": false,
+  "hpc_job_submitted": false,
+  "compatibility_verdict": "pending_execution",
+  "manuscript_changed": false,
+  "automatic_retry": false,
+  "merge_authorized": false,
+  "methodological_revision": "Deferred until two forthcoming researcher mandates"
+}
