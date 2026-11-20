@@ -1,0 +1,64 @@
+name: Gurobi 14 environment preparation without solver
+on:
+  pull_request:
+    paths:
+      - experiments/gurobi14_shared106_inventory_20261120.json
+      - tests/test_gurobi14_shared_inventory.py
+      - scripts/npad_gurobi14_clone.sh
+      - scripts/gurobi14_h215_compat.py
+      - scripts/collect_gurobi14_2278573.sh
+      - scripts/npad_gurobi14_h215_compat.sh
+      - tests/test_gurobi14_environment_preparation.py
+      - tests/test_gurobi14_h215_compat.py
+      - .github/workflows/gurobi14-environment.yml
+permissions:
+  contents: read
+jobs:
+  environment-controls:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      SOURCE_SHA: ${{ github.event.pull_request.head.sha }}
+      BASE_SHA: ${{ github.event.pull_request.base.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Check operator shell syntax without execution
+        run: |
+          bash -n scripts/npad_gurobi14_clone.sh
+          bash -n scripts/npad_gurobi14_h215_compat.sh
+          bash -n scripts/collect_gurobi14_2278573.sh
+      - name: Test controls without Gurobi or solver installation
+        run: python -B -m unittest discover -s tests -p 'test_gurobi14*.py' -v
+      - name: Verify retained mathematical and validation sources are unchanged
+        run: |
+          git diff --exit-code "$BASE_SHA" "$SOURCE_SHA" -- \
+            src/logic/optimization_gurobipy.py \
+            src/logic/optimization_gurobipy_stochastic.py \
+            src/logic/mathematical_contract.py src/logic/model_config.py \
+            src/logic/solution_validation.py experiments/mvp2_scalar_r3a_h215.yaml
+      - name: Inspect the pinned public source archive and generated job
+        run: |
+          curl --fail --location --retry 0 \
+            "https://codeload.github.com/unb-lamfo-or-ai-hpc/model-agrologistic/tar.gz/$SOURCE_SHA" \
+            --output "$RUNNER_TEMP/gurobi14-source.tar.gz"
+          python -B - <<'PY'
+          import os
+          from pathlib import Path
+          from scripts.gurobi14_h215_compat import source_inventory, digest, batch_text
+          archive = Path(os.environ['RUNNER_TEMP'])/'gurobi14-source.tar.gz'
+          checksum = digest(archive)
+          inventory = source_inventory(archive, os.environ['SOURCE_SHA'], checksum)
+          print('SOURCE_ARCHIVE_SHA256=' + checksum)
+          print('SOURCE_ARCHIVE_FILES=' + str(len(inventory)))
+          Path(os.environ['RUNNER_TEMP'], 'gurobi14-job.sh').write_text(
+              batch_text(Path('/audit/compatibility-claim'), os.environ['SOURCE_SHA']))
+          PY
+          bash -n "$RUNNER_TEMP/gurobi14-job.sh"
