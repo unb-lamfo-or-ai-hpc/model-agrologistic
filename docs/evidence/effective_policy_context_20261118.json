@@ -1,0 +1,16 @@
+{
+  "status": "proposal_context_from_existing_accepted_evidence",
+  "source": "Earlier local A1-A5 investigation, findings.json; source retained in custody",
+  "source_sha256": "dd9b973f56a6092bd906e2239e8338569796e09e9b3a9896c3b4752b75d5a2ea",
+  "case": "pyomo_gurobi_h215_w_native8h_license_v2",
+  "validation_label": "accepted",
+  "expected_supply_tonnes": 1374420353.0847967,
+  "expected_export_tonnes": 746247114.2067482,
+  "ratio_of_expected_export_to_expected_supply": 0.5429540624393734,
+  "interpretation": "Ratio of expected totals, not a per-product/scenario upper bound",
+  "initial_stock_zero_h215_det_sto": true,
+  "initial_stock_records_checked": 860,
+  "qualified_bundle_manifest_sha256": "cfee936a62fa9a98d5a5c86967fc202ebf1b7a03509c2af5b13db6607f3e97b6",
+  "new_optimization": false,
+  "new_hpc_jobs": 0
+}

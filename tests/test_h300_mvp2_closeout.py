@@ -26,8 +26,13 @@ class CloseoutControls(unittest.TestCase):
         self.claim = self.base / ".mvp2-h300-gurobi-root-cpu-v2"
         self.claim.mkdir()
         rows = [
-            {"id": f"cell-{i}", "repetition": i // 60 + 1,
-             "options": {"Method": 1}, "profile": "standard", "threads": 1}
+            {
+                "id": f"cell-{i}",
+                "repetition": i // 60 + 1,
+                "options": {"Method": 1},
+                "profile": "standard",
+                "threads": 1,
+            }
             for i in range(180)
         ]
         plan = json.dumps({"source": COLLECTOR.SOURCE, "rows": rows}).encode()
@@ -39,11 +44,12 @@ class CloseoutControls(unittest.TestCase):
         vectors.write_bytes(b"origin,destination,tonnes\na,b,7\n")
         self.originals = {
             p.relative_to(self.claim).as_posix(): p.read_bytes()
-            for p in self.claim.rglob("*") if p.is_file()
+            for p in self.claim.rglob("*")
+            if p.is_file()
         }
         failures = {6, 17, 19, 21, 24, 44, 54}
         self.accounting = "".join(
-            f"2252608_{i}|{3000000+i}|"
+            f"2252608_{i}|{3000000 + i}|"
             f"{'CANCELLED by 1271' if i >= 56 else 'FAILED' if i in failures else 'COMPLETED'}|"
             f"{'0:15' if i >= 56 else '1:0' if i in failures else '0:0'}|123|1K|64|192G|node\n"
             for i in range(60)
@@ -52,12 +58,19 @@ class CloseoutControls(unittest.TestCase):
     def run_report(self, accounting=None):
         output = io.StringIO()
         reply = accounting if accounting is not None else self.accounting
-        with patch.object(COLLECTOR, "PLAN_SHA", self.plan_hash), \
-             patch.object(COLLECTOR.shutil, "disk_usage", return_value=SimpleNamespace(free=100 * 1024**3)), \
-             patch.object(COLLECTOR.subprocess, "check_output",
-                          side_effect=reply if callable(reply) else None,
-                          return_value=reply) as command, \
-             contextlib.redirect_stdout(output):
+        with (
+            patch.object(COLLECTOR, "PLAN_SHA", self.plan_hash),
+            patch.object(
+                COLLECTOR.shutil, "disk_usage", return_value=SimpleNamespace(free=100 * 1024**3)
+            ),
+            patch.object(
+                COLLECTOR.subprocess,
+                "check_output",
+                side_effect=reply if callable(reply) else None,
+                return_value=reply,
+            ) as command,
+            contextlib.redirect_stdout(output),
+        ):
             COLLECTOR.report(self.base)
         self.assertEqual(command.call_count, 1)
         self.assertEqual(command.call_args.args[0][:3], ["sacct", "-j", "2252608"])
@@ -82,10 +95,12 @@ class CloseoutControls(unittest.TestCase):
             manifest = json.load(archive.extractfile("inventory.json"))
         for task in (57, 58, 59):
             self.assertIn(f"{task},2252608_{task},", tasks)
-            self.assertEqual(manifest["task_accounting_sources"][str(task)]["reported_job"],
-                             "2252608_[57-59%1]")
-            self.assertEqual(manifest["task_accounting_sources"][str(task)]["reported_raw_job"],
-                             "2252608")
+            self.assertEqual(
+                manifest["task_accounting_sources"][str(task)]["reported_job"], "2252608_[57-59%1]"
+            )
+            self.assertEqual(
+                manifest["task_accounting_sources"][str(task)]["reported_raw_job"], "2252608"
+            )
 
     def test_truncated_group_is_rejected(self):
         with self.assertRaisesRegex(SystemExit, "truncado"):
@@ -111,7 +126,9 @@ class CloseoutControls(unittest.TestCase):
             self.assertEqual(manifest["terminal_tasks"], 60)
             self.assertEqual(manifest["original_files"], len(self.originals))
             for name, digest in manifest["files_sha256"].items():
-                self.assertEqual(hashlib.sha256(archive.extractfile(name).read()).hexdigest(), digest)
+                self.assertEqual(
+                    hashlib.sha256(archive.extractfile(name).read()).hexdigest(), digest
+                )
             self.assertIn("claim/cell-0/case/products/cell-0/flows.csv", archive.getnames())
             for name, original in self.originals.items():
                 self.assertEqual(archive.extractfile("claim/" + name).read(), original)
@@ -134,8 +151,10 @@ class CloseoutControls(unittest.TestCase):
 
     def test_plan_drift_is_rejected_before_scheduler_query(self):
         (self.claim / "plan.json").write_text("{}")
-        with patch.object(COLLECTOR.subprocess, "check_output") as command, \
-             self.assertRaisesRegex(SystemExit, "Identidade"):
+        with (
+            patch.object(COLLECTOR.subprocess, "check_output") as command,
+            self.assertRaisesRegex(SystemExit, "Identidade"),
+        ):
             COLLECTOR.report(self.base)
         command.assert_not_called()
 

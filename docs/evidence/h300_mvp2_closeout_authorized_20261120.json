@@ -8,7 +8,7 @@
   "claim": "/home/vrrcelestino/model-agrologistic-hygiene-audit/.mvp2-h300-gurobi-root-cpu-v2",
   "cancellation_authorized": true,
   "cancellation_execution_reported": true,
-  "final_collection_received": false,
+  "final_collection_received": true,
   "blocks_2_and_3_follow_on_authorization": false,
   "do_not_cancel_job": "2278573",
   "mvp3_development": "Deferred while closing MVP2; existing compatibility job may finish",
@@ -81,5 +81,14 @@
       "collector_executed": false
     }
   ],
-  "shared_environment_note": "Researcher clarifies gurobipy version restriction concern is CFL-GNN shared-environment compatibility, independent of collection; no package/project dependency changed here."
+  "shared_environment_note": "Researcher clarifies gurobipy version restriction concern is CFL-GNN shared-environment compatibility, independent of collection; no package/project dependency changed here.",
+  "final_archive_sha256": "92491a1489c11c3267c30109d90e81cff4c4553a76d3a67b3d542188574a6ff0",
+  "final_integrity": "14 transfer files and1763 inventory members locally verified",
+  "scientific_outcomes": {
+    "accepted": 33,
+    "time_limit": 9,
+    "native_soft_memory": 7,
+    "job_guard": 7,
+    "cancelled": 4
+  }
 }

@@ -23,23 +23,20 @@ separately in the complete lists, allowing activation without material capacity
 to be distinguished from a positive investment. This display threshold does
 not replace the original feasibility tolerances.
 
-Each map is presented individually. All maps use the same national extent and
-IBGE boundary dataset, with attribution retained in the image. The paragraph
-following each figure explains its projection and interpretation. Companion
-capacity views use circle area proportional to added candidate plus expansion
-storage, measured in tonnes. Original facility coordinates are retained.
+The individual maps share the national extent, IBGE boundaries and
+Albers equal-area projection. Map lines delineate study areas and do not
+necessarily depict accepted national boundaries. Capacity views use
+circle area proportional to added candidate and expansion storage, in
+tonnes. OSRM road distances were calculated and stored in the processed workbooks
+listed in Appendix D. The flow-distance tables associate those values with
+the exported flows. The maps show facility positions and investments and
+omit route lines for legibility.
 
-The configurations comprise the deterministic and stochastic warehouse-only
-plans, the larger stochastic populations, the two h215 plans permitting direct
-origin-destination movements, and the accepted Pyomo solutions. The historical native-Gurobi h300 runs
-with 1, 2, 4, 8 and 16 solver threads have byte-identical original warehouse,
-flow, inventory and shortage exports. Their common investment map and flow
-matrices are therefore represented by the single-thread vector; their runtime
-observations remain distinct. The accepted Pyomo Gurobi and HiGHS solutions
-retain their own exported vectors, attained gaps and investment summaries.
-The two common-Pyomo h300 pilots are separate observations. Their own
-maps and investment lists follow the historical configurations; their full
-flow-distance companions retain separate source and solution identities.
+The maps cover validated native and Pyomo Gurobi plans. The historical native
+h300 runs at five thread ceilings share byte-identical planning exports.
+The figures show the one-thread vector. The Pyomo h300 figures use their
+own source-bound investment and operating outputs. The h400 geographic
+outputs retain the original native vector.
 
 ## E2 From exported flows to sparse matrices
 
@@ -102,15 +99,14 @@ lists are linked under each configuration. Full-resolution flow-distance tables
 are prepared as compressed CSVs and a separate SQLite database; they are not
 currently public GitHub downloads. Access to their processed-source data and
 redistribution conditions follows the availability statement in Appendix D.
-The software license does not by itself establish unrestricted input-data access.
+The routing pair cache supports workbook preparation. The geographic
+SQLite binds coordinates and decisions for the maps. The separate
+numerical SQLite organizes sparse flows and directed distances from the
+accepted exports and frozen workbook. These stores serve different
+stages and carry separate source identities.
 
-The versioned delivery sequence in Appendix D11 applies to these companions:
-the present GitHub indices identify their contents and original sources,
-while the planned Zenodo version will provide reviewed full-resolution files.
-They are currently prepared locally, not newly deposited. Original coordinate
-rows and scenario weights remain available in the companions rather than
-being replaced by a rendered map. Later campaign records without a usable
-incumbent have no investment map or flow matrix to contribute.
+Appendix F documents access to the original flow companions and the national
+investment summaries prepared for deposit.
 
 {{< include appendix_e_case_tables.qmd >}}
 

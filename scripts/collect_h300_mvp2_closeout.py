@@ -19,8 +19,16 @@ ARRAY = "2252608"
 SOURCE = "9d43c963ed53b968e2e6c508de8dc06ed7e6693a"
 PLAN_SHA = "de528d6ac5f15ecc4be37a6540d0d1159e2e6990049c25a574eb21567de60f32"
 TERMINAL = {
-    "COMPLETED", "FAILED", "CANCELLED", "TIMEOUT", "OUT_OF_MEMORY",
-    "NODE_FAIL", "PREEMPTED", "BOOT_FAIL", "DEADLINE", "REVOKED",
+    "COMPLETED",
+    "FAILED",
+    "CANCELLED",
+    "TIMEOUT",
+    "OUT_OF_MEMORY",
+    "NODE_FAIL",
+    "PREEMPTED",
+    "BOOT_FAIL",
+    "DEADLINE",
+    "REVOKED",
 }
 
 
@@ -96,11 +104,11 @@ def report(base):
         raise SystemExit("Identidade do plano ou do array diverge da coleta parcial.")
 
     columns = (
-        "JobID%512,JobIDRaw%512,State%60,ExitCode,ElapsedRaw,"
-        "MaxRSS,AllocCPUS,ReqMem,NodeList%120"
+        "JobID%512,JobIDRaw%512,State%60,ExitCode,ElapsedRaw,MaxRSS,AllocCPUS,ReqMem,NodeList%120"
     )
     accounting = subprocess.check_output(
-        ["sacct", "-j", ARRAY, "-n", "-P", f"--format={columns}"], text=True,
+        ["sacct", "-j", ARRAY, "-n", "-P", f"--format={columns}"],
+        text=True,
         env={**os.environ, "SLURM_BITSTR_LEN": "0"},
     )
     tasks = {}
@@ -116,17 +124,19 @@ def report(base):
             task_sources[str(index)] = {"reported_job": job, "reported_raw_job": raw}
 
     unfinished = [
-        index for index in range(60)
+        index
+        for index in range(60)
         if index not in tasks or tasks[index][1].split()[0].rstrip("+") not in TERMINAL
     ]
     if unfinished:
-        raise SystemExit(f"Coleta final ainda indisponível. Tarefas faltantes ou ativas: {unfinished}")
+        raise SystemExit(
+            f"Coleta final ainda indisponível. Tarefas faltantes ou ativas: {unfinished}"
+        )
 
     items = plan["rows"][:60]
     cells = [item["id"] for item in items]
     if len(set(cells)) != 60 or any(
-        item["repetition"] != 1 or not re.fullmatch(r"[a-z0-9_-]+", item["id"])
-        for item in items
+        item["repetition"] != 1 or not re.fullmatch(r"[a-z0-9_-]+", item["id"]) for item in items
     ):
         raise SystemExit("Identificadores inválidos no primeiro bloco.")
 
@@ -145,17 +155,31 @@ def report(base):
     relative_set = set(relatives)
     # This check covers filesystem space; the operator also checks the home quota.
     if shutil.disk_usage(base).free < total_bytes * 1.02 + 5 * 1024**3:
-        raise SystemExit("Insufficient filesystem space for a conservative full snapshot; originals preserved.")
+        raise SystemExit(
+            "Insufficient filesystem space for a conservative full snapshot; originals preserved."
+        )
     output = Path(tempfile.mkdtemp(prefix="h300-2252608-closeout-", dir=base))
     bundle = output / "h300-2252608-closeout.tar.gz"
     ledger = io.StringIO(newline="")
     writer = csv.writer(ledger)
-    writer.writerow(["task", "job", "case", "method", "profile", "cores",
-                     "state", "exit_code", "elapsed_seconds"])
+    writer.writerow(
+        [
+            "task",
+            "job",
+            "case",
+            "method",
+            "profile",
+            "cores",
+            "state",
+            "exit_code",
+            "elapsed_seconds",
+        ]
+    )
     hashes = {}
     missing = []
 
     with tarfile.open(bundle, "x:gz", compresslevel=1) as archive:
+
         def add_bytes(name, data):
             info = tarfile.TarInfo(name)
             info.size = len(data)
@@ -183,7 +207,9 @@ def report(base):
                 hashes[info.name] = reader.digest.hexdigest()
             after = path.stat()
             if (before.st_size, before.st_mtime_ns) != (after.st_size, after.st_mtime_ns):
-                raise SystemExit("Original changed during collection; preserve partial archive for review.")
+                raise SystemExit(
+                    "Original changed during collection; preserve partial archive for review."
+                )
 
         # Retain every file, including decision vectors and interrupted artifacts.
         # Terminal accounting is required before reading the claim.
@@ -193,32 +219,70 @@ def report(base):
             raw, state, code, elapsed = tasks[index]
             job = f"{ARRAY}_{index}"
             case = item["id"]
-            writer.writerow([index, job, case, item["options"]["Method"],
-                             item["profile"], item["threads"], state, code, elapsed])
+            writer.writerow(
+                [
+                    index,
+                    job,
+                    case,
+                    item["options"]["Method"],
+                    item["profile"],
+                    item["threads"],
+                    state,
+                    code,
+                    elapsed,
+                ]
+            )
             expected = (
-                "runtime.json", "memory.json", "worker.out", "worker.err",
-                "gurobi-native.log", "case/case_outcome.json",
+                "runtime.json",
+                "memory.json",
+                "worker.out",
+                "worker.err",
+                "gurobi-native.log",
+                "case/case_outcome.json",
                 f"case/products/{case}/run_summary.json",
                 f"case/products/{case}/independent_validation.json",
             )
-            missing.extend(f"{case}/{name}" for name in expected
-                           if f"{case}/{name}" not in relative_set)
+            missing.extend(
+                f"{case}/{name}" for name in expected if f"{case}/{name}" not in relative_set
+            )
 
         add_bytes("accounting.txt", (columns.replace(",", "|") + "\n" + accounting).encode())
         add_bytes("tasks.csv", ledger.getvalue().encode())
-        add_bytes("inventory.json", json_bytes({
-            "array": ARRAY, "source": SOURCE, "plan_sha256": PLAN_SHA, "terminal_tasks": 60,
-            "files_sha256": hashes, "missing_originals": missing,
-            "task_accounting_sources": task_sources,
-            "grouped_accounting_policy": "Individual identities derived only from explicit Slurm ranges; raw grouped rows retained, no distinct raw job IDs invented.",
-            "scope": "Complete regular-file claim snapshot, including all available decision vectors, logs and receipts; private transfer only.",
-            "original_files": len(relatives),
-            "original_bytes": total_bytes,
-            "closure_reason": "Researcher requested ending MVP2 and cancelling remaining block-1 tasks on 2026-11-20; actual states come only from sacct.",
-            "remaining_temporal_blocks": "Not executed under this closeout instruction",
-            "missing_originals_policy": "Absence is retained; cancelled/unstarted tasks may have no result files.",
-            "referenced_external_inputs_and_source": "Identified by original plan; not copied from outside the claim.",
-        }))
+        add_bytes(
+            "inventory.json",
+            json_bytes(
+                {
+                    "array": ARRAY,
+                    "source": SOURCE,
+                    "plan_sha256": PLAN_SHA,
+                    "terminal_tasks": 60,
+                    "files_sha256": hashes,
+                    "missing_originals": missing,
+                    "task_accounting_sources": task_sources,
+                    "grouped_accounting_policy": (
+                        "Individual identities derived only from explicit Slurm ranges; "
+                        "raw grouped rows retained, no distinct raw job IDs invented."
+                    ),
+                    "scope": (
+                        "Complete regular-file claim snapshot, including all available "
+                        "decision vectors, logs and receipts; private transfer only."
+                    ),
+                    "original_files": len(relatives),
+                    "original_bytes": total_bytes,
+                    "closure_reason": (
+                        "Researcher requested ending MVP2 and cancelling remaining block-1 "
+                        "tasks on 2026-11-20; actual states come only from sacct."
+                    ),
+                    "remaining_temporal_blocks": "Not executed under this closeout instruction",
+                    "missing_originals_policy": (
+                        "Absence is retained; cancelled/unstarted tasks may have no result files."
+                    ),
+                    "referenced_external_inputs_and_source": (
+                        "Identified by original plan; not copied from outside the claim."
+                    ),
+                }
+            ),
+        )
 
     with bundle.open("rb") as stream:
         sha = hashlib.file_digest(stream, "sha256").hexdigest()

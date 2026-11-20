@@ -1,0 +1,70 @@
+{
+  "schema": "agrologistic-historical-baseline-identities-v1",
+  "cases": {
+    "215:det": "fed875c1d239fc0282eeaf5b8656ed6511facd328f81b926698863a9f3b2fd3b",
+    "215:sto": "b2f44950d3b6f9b5185e033a29993b6a0b94805543e09046c5d5c8603826be53",
+    "300:sto": "eb66de76a7ed5031be428d437a9f8a1c7aad72e800f8267e36da88678fb2d759",
+    "400:sto": "899d0d8a0952af75012411f3c785f1fa5ac215417e4a8c8a4b99d0220d34c84f",
+    "500:sto": "0fa80c3dac61bba7248b1f28821c89944a8f5cede34d3e98b660d7fd2b7a0cfe"
+  },
+  "original_sources": {
+    "workbook_h215": {
+      "sha256": "40edb66585daca9cc393cab1f86bde6d4528a5f34b6afc57260cc1684396da4e",
+      "description": "data/processed/policy_population_v020_osrm/warehouses_215/model_input.xlsx"
+    },
+    "receipt_h215_det": {
+      "sha256": "233aff05d516366d2d67613051b5f5b2ade219d906da62501955dab3d70673ca",
+      "description": "Original input_receipt.json: scalar_h215_det"
+    },
+    "receipt_h215_sto": {
+      "sha256": "e917c11995ac37c8d0150b3298c02f4188743339d6a375c55f292d22327625fc",
+      "description": "Original input_receipt.json: scalar_h215_sto"
+    },
+    "workbook_h300": {
+      "sha256": "7761cce77cf93dcba2f617714f0117c1f2ead4de0c3f27149daceba447e0c7d1",
+      "description": "data/processed/nine_population_osrm_v1/warehouses_300/model_input.xlsx"
+    },
+    "receipt_h300_sto": {
+      "sha256": "6d51e1ca482fdbe4d082a8241cb49c868b95dec7da5f67795dd76551c539388d",
+      "description": "Original input_receipt.json: scalar_h300_t1"
+    },
+    "workbook_h400": {
+      "sha256": "c3085456997714ef5a8bdbf61e2c9a5e578c2636003947427cf58933d21ceb13",
+      "description": "data/processed/nine_population_osrm_v1/warehouses_400/model_input.xlsx"
+    },
+    "receipt_h400_sto": {
+      "sha256": "c6c729df9acbf1bbe9e26a0c769ecbd41a176a907192a84f057f279790375b89",
+      "description": "Original input_receipt.json: scalar_h400_t1"
+    },
+    "workbook_h500": {
+      "sha256": "888fbff42e4f80817d4d5f0101049495c86c6ed4cda75f00813779dadab41515",
+      "description": "data/processed/nine_population_osrm_v1/warehouses_500/model_input.xlsx"
+    },
+    "receipt_h500_sto": {
+      "sha256": "6a85f0f5fbe2c32dd26faa8ab340cbb7d4d211e5358977a50d1b9a0dcc9953dc",
+      "description": "Original input_receipt.json: scalar_h500_t1"
+    },
+    "registry_original": {
+      "sha256": "0d19865ac72eca0706960d10b6dbd1647a4951378a831715e39af8029ecb77f2",
+      "description": "external-inputs/Warehouses_Existing_Candidate_All.xlsx"
+    },
+    "data/templates/model_agrologistic_padrao_ouro.xlsx": {
+      "sha256": "de3bdc51b2c338194a5013165bec2884b68784fb207ae8c762984a1b44856082",
+      "description": "data/templates/model_agrologistic_padrao_ouro.xlsx"
+    },
+    "data/processed/warehouse_population_v020/warehouse_population_manifest.json": {
+      "sha256": "4134147f45188d2e8722476dd325b40e584c3746affe99889e045a547d283505",
+      "description": "data/processed/warehouse_population_v020/warehouse_population_manifest.json"
+    },
+    "data/processed/nine_population_inputs_v1/population_order.csv": {
+      "sha256": "001b11a69551492170e25dd820565a53461257055818ca895af38530ccf10c43",
+      "description": "data/processed/nine_population_inputs_v1/population_order.csv"
+    },
+    "data/processed/nine_population_inputs_v1/population_workbook_manifest.json": {
+      "sha256": "8683dd6834870601295da0bf2e9ea964f45fb5d567f1d6a874d5e1acbb3637e1",
+      "description": "data/processed/nine_population_inputs_v1/population_workbook_manifest.json"
+    }
+  },
+  "qualification_scope": "Effective values and same Pyomo algebra; no new optimized solution",
+  "reference": "docs/evidence/effective_h215_equivalence_20261118.json"
+}

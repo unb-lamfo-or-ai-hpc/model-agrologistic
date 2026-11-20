@@ -1,0 +1,22 @@
+{
+  "tests": 65,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "python": "3.13.15",
+  "pyomo": "6.10.1",
+  "solver_calls": 0,
+  "wheel_source_match": true,
+  "wheel_sha256": "df3fd1e66290a47d62d01a0d0e3cf3732df3c9ec5b106083ea27c4f9819d55d7",
+  "ci": "Not executed: existing workflows call optimizers; draft uses skip-ci commit",
+  "scope": "Local data and algebra controls, not numerical optimization",
+  "wheel_python_modules": 48,
+  "ruff": "passed",
+  "node_syntax": "passed",
+  "source_and_qualified_inputs": "exact_match",
+  "worksheet_previews_reviewed": 20,
+  "renderer_heap_limit_correction": "Separate workbook processes; registry render/export accepted",
+  "primary_qualifier_execution_sha256": "a834232e5c43d403d26fc9c7420afafe7a321ae1e3bd2c988effea5991bad042",
+  "qualifier_current_sha256": "11c8df5e6721816131d48d19ecc8cf3052576064f861fb285f270117f4104c84",
+  "qualifier_change_after_execution": "Optional selected-block reporting only; seven algebra modules unchanged"
+}

@@ -1,35 +1,11 @@
-## E12 h300 STO/W, Gurobi, Pyomo/APPSI, one thread
+## E11 h300 STO/W, Gurobi, Pyomo/APPSI, one thread
 
 ![Figure E.19. Investments in the common-Pyomo h300 Gurobi solution.](../figures/h300_w_sto_gurobi_t1_r1.png){fig-pos="H"}
-
-The Albers equal-area conic projection preserves relative display areas. Original facility coordinates are retained. Stars identify export ports; symbols indicate investments rather than observed operating use.
 
 The original accepted plan has 154 candidates with positive capacity, 70 positive expansions and 76 positive bulk-handling investments. The [complete investment list](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/083ef96cc99a346204df22551ce0739c10e8a2f7/manuscript/supplement/investments/h300_w_sto_gurobi_t1_r1.csv) retains facility IDs, flags and quantities in tonnes.
 
 ![Figure E.20. Added static capacity in the common-Pyomo h300 Gurobi solution.](../figures/h300_w_sto_gurobi_t1_r1_capacity.png){fig-pos="H"}
 
-The same Albers projection and geographic extent are used. Circle area represents added candidate plus expansion static tonnes; bulk handling is a separate handling gain.
+Circle area represents added candidate plus expansion static tonnes; bulk handling is a separate handling gain.
 
 The source-bound companion contains 225,891 positive flow records and 5,079 expected-horizon OD coordinates. Each flow is joined to its exact directed distance in the frozen workbook. The [companion inventory](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/083ef96cc99a346204df22551ce0739c10e8a2f7/docs/evidence/paired_h300_flow_companions_20261101.json) records hashes and aggregation scopes. Full CSV.gz and SQLite files are prepared locally for a subsequent reviewed data release; no new public download or exact-zero optimum is implied.
-
-## E13 h300 STO/W, HiGHS, Pyomo/APPSI, one thread
-
-![Figure E.21. Investments in the common-Pyomo h300 HiGHS solution.](../figures/h300_w_sto_highs_t1_r1.png){fig-pos="H"}
-
-The Albers equal-area conic projection preserves relative display areas. Original facility coordinates are retained. Stars identify export ports; symbols indicate investments rather than observed operating use.
-
-The original accepted plan has 154 candidates with positive capacity, 69 positive expansions and 77 positive bulk-handling investments. The [complete investment list](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/083ef96cc99a346204df22551ce0739c10e8a2f7/manuscript/supplement/investments/h300_w_sto_highs_t1_r1.csv) retains facility IDs, flags and quantities in tonnes.
-
-![Figure E.22. Added static capacity in the common-Pyomo h300 HiGHS solution.](../figures/h300_w_sto_highs_t1_r1_capacity.png){fig-pos="H"}
-
-The same Albers projection and geographic extent are used. Circle area represents added candidate plus expansion static tonnes; bulk handling is a separate handling gain.
-
-The source-bound companion contains 215,100 positive flow records and 4,902 expected-horizon OD coordinates. Each flow is joined to its exact directed distance in the frozen workbook. The [companion inventory](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/083ef96cc99a346204df22551ce0739c10e8a2f7/docs/evidence/paired_h300_flow_companions_20261101.json) records hashes and aggregation scopes. Full CSV.gz and SQLite files are prepared locally for a subsequent reviewed data release; no new public download or exact-zero optimum is implied.
-
-
-Facilities at the same recorded coordinates can overlap on the national
-maps. Consequently, visually identical marks do not establish identical
-investment vectors. For example, facility 47.0287.0007-0 receives expansion
-in the Gurobi plan and bulk handling in the HiGHS plan, while another facility
-at the same coordinates also has bulk handling. The complete ID-based lists,
-rather than symbol counts, determine the reported investment differences.
