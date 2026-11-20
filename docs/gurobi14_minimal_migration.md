@@ -27,9 +27,8 @@ a new scientific campaign, or evidence that Gurobi 14 is already accepted.
 6. Read back the original accounting and compatibility receipt. Preserve
    failures and missing values. Append actual results to this PR.
 
-The initial package listing supplied on 20 November belongs to tfm_env on
-dgx-dasci and includes a CFL-GNN editable installation. It is not an NPAD
-environment receipt and must not select the environment to clone.
+The NPAD environment preflight is pending. A package listing withdrawn by
+the researcher as belonging to another project is excluded from this assessment.
 
 ## Qualified real input
 

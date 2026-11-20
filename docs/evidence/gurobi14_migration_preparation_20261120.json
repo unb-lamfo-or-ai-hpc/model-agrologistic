@@ -11,13 +11,6 @@
   "native_source_files_unchanged": true,
   "historical_environment_unchanged": true,
   "correct_npad_environment_receipt_received": false,
-  "supplied_package_listing": {
-    "host": "dgx-dasci",
-    "environment": "tfm_env",
-    "gurobipy": "13.0.1",
-    "qualifies_npad_environment": false,
-    "python_version": null
-  },
   "environment_clone_performed": false,
   "license_session_opened": false,
   "hpc_job_submitted": false,
@@ -25,5 +18,6 @@
   "manuscript_changed": false,
   "automatic_retry": false,
   "merge_authorized": false,
-  "methodological_revision": "Deferred until two forthcoming researcher mandates"
+  "methodological_revision": "Deferred until two forthcoming researcher mandates",
+  "unrelated_package_message_excluded_by_researcher": true
 }

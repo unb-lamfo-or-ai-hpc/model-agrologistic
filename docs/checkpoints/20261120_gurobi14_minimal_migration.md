@@ -7,9 +7,10 @@ optimization defaults. All NPAD commands remain human-executed.
 
 Read docs/gurobi14_minimal_migration.md and its preparation evidence JSON.
 No environment clone, license session, optimizer invocation, or HPC submission
-has occurred. The initial package list is from dgx-dasci/tfm_env/CFL-GNN, not
-the requested NPAD environment. Await the read-only NPAD version/package/input
-receipt before choosing a clone procedure or supplying a submission block.
+has occurred. The researcher withdrew the package-list message as unrelated
+to this project; exclude it entirely from the assessment. Await the read-only
+NPAD version/package/input receipt before choosing a clone procedure or
+supplying a submission block.
 
 Preserve PR157, PR159 and all existing claims/campaigns. Do not run their
 launchers for this test. The historical native parameter helper sets a gap
