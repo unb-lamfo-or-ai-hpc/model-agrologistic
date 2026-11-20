@@ -11,7 +11,7 @@
   "native_source_files_unchanged": true,
   "historical_environment_unchanged": true,
   "correct_npad_environment_receipt_received": true,
-  "environment_clone_performed": false,
+  "environment_clone_performed": true,
   "license_session_opened": false,
   "hpc_job_submitted": false,
   "compatibility_verdict": "pending_execution",
@@ -36,13 +36,17 @@
   "new_environment_prefix_authorized": "/home/vrrcelestino/venv313_g14",
   "clone_script_sha256": "45f51fd123948c43a0dbe129f21a73ebbf7adda66e6db76a6a8126d539d28408",
   "local_environment_control_tests": {
-    "passed": 7,
+    "passed": 18,
     "failed": 0,
     "errors": 0,
     "skipped": 0,
     "ruff": "passed",
     "real_gurobi_imported": false,
     "optimizer_calls": 0,
-    "scope": "Embedded fingerprint/guard checks with synthetic environment receipts and a fake module; not native numerical qualification"
-  }
+    "scope": "Seven environment controls and eleven native-bridge/admission/verdict/archive controls with doubles; no Gurobi/solver calls"
+  },
+  "environment_clone_evidence_scope": "Operator-reported original preparation result; no independent NPAD access",
+  "environment_clone_accepted_as_reported": true,
+  "single_job_prepared": true,
+  "cli_submission_authorized": false
 }

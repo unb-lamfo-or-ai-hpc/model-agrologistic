@@ -1,6 +1,6 @@
 # Minimal Gurobi 14 compatibility assessment
 
-Date: 20 November 2026. Status: preparation only; NPAD execution pending.
+Date: 20 November 2026. Status: clone reported verified; native compatibility execution pending authorization.
 
 This follows the researcher-authorized AGRO-MVP3-GRB14 mandate dated
 19 November 2026. It is a compatibility test, not a performance comparison,
@@ -10,8 +10,8 @@ a new scientific campaign, or evidence that Gurobi 14 is already accepted.
 
 1. Confirm the existing NPAD interpreter, environment type, package versions
    and qualified h215 input identities with the read-only preflight.
-2. Clone the historical environment into a fresh directory below
-   /home/vrrcelestino/model-agrologistic-hygiene-audit/.
+2. Clone the historical environment to the researcher-selected
+   /home/vrrcelestino/venv313_g14 prefix. Keep other new artifacts below the audit project.
    Preserve the original environment and record its identity before and after.
 3. Change only the cloned environment's gurobipy distribution to 14.0.0.
    Do not upgrade pip or resolve/install other dependencies.
@@ -27,8 +27,8 @@ a new scientific campaign, or evidence that Gurobi 14 is already accepted.
 6. Read back the original accounting and compatibility receipt. Preserve
    failures and missing values. Append actual results to this PR.
 
-The NPAD environment preflight is pending. A package listing withdrawn by
-the researcher as belonging to another project is excluded from this assessment.
+The NPAD preflight and environment-clone report have now been received.
+An unrelated withdrawn package listing is excluded from this assessment.
 
 ## Qualified real input
 
@@ -74,8 +74,9 @@ seed, logging and additional options. Its normal campaign configuration is not
 a Gurobi-14-default configuration. A narrowly scoped migration entry must
 isolate this parameter application from the unchanged mathematical constructor,
 use the version-14 defaults, set only TimeLimit=300, and audit effective
-algorithmic parameters immediately before optimize. This entry is pending;
-no unreviewed execution command is supplied by this preparation.
+algorithmic parameters immediately before optimize. The scoped entry is now
+prepared in scripts/gurobi14_h215_compat.py; see the execution protocol below.
+Actual submission still requires the researcher's explicit CLI authorization.
 
 An audit must not dump credentials, environment variables, a license file,
 a parameter file containing authentication fields, or unrestricted exceptions.
@@ -137,7 +138,8 @@ parameter and must be reported separately.
 Choose the job wall limit using retained h215 construction/validation times,
 allowing setup, model construction, 300 native seconds, result extraction and
 collection. It is not a five-minute wall job. The final reviewed batch command
-and its wall envelope are pending NPAD preflight and execution preparation.
+and its one-hour/192GiB wall envelope are prepared for exact-head review and
+CLI authorization. See [single-job execution protocol](gurobi14_h215_compatibility_execution.md).
 
 ## Minimal evidence and decision
 
@@ -164,7 +166,9 @@ No execution means no operational GO/NO-GO yet.
 
 - Read-only source and official documentation review: completed.
 - Correct NPAD environment/input preflight: received and matching on 20 November.
-- Environment clone and one-dependency change: not performed.
+- Environment clone and one-dependency change: operator reports verified, exit0.
+- Original clone-file hashes: will be rechecked from the preserved ledger during preparation.
+- Single-job native execution entry: prepared; no actual job submitted.
 - Real h215 job and license acceptance: not performed.
 - Compatibility decision: pending.
 - PR merge: not authorized by this preparation.

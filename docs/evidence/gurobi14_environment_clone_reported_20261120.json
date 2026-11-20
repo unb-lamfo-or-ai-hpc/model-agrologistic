@@ -1,0 +1,30 @@
+{
+  "schema_version": "gurobi14-environment-clone-human-report-v1",
+  "recorded_on": "2026-11-20",
+  "evidence_scope": "Original preparation output pasted by the operator; no agent NPAD access or independent raw-file read",
+  "qualified_clone_script_source": "7c709a9b883159a8c1820e2793ef9f8ea73cb44c",
+  "clone_script_sha256": "45f51fd123948c43a0dbe129f21a73ebbf7adda66e6db76a6a8126d539d28408",
+  "reported_result": {
+    "status": "cloned_environment_verified",
+    "original_environment_preserved": true,
+    "only_changed_distribution": "gurobipy",
+    "source_version": "13.0.3",
+    "target_version": "14.0.0",
+    "gurobi_loaded": [
+      14,
+      0,
+      0
+    ],
+    "python": "3.13.15",
+    "new_prefix": "/home/vrrcelestino/venv313_g14",
+    "license_tested": false,
+    "optimizer_called": false,
+    "hpc_job_submitted": false
+  },
+  "reported_exit_code": 0,
+  "original_claim_preserved": true,
+  "raw_environment_result_sha256": null,
+  "raw_snapshot_hashes_supplied_in_chat": false,
+  "fresh_original_ledger_check": "Prepared login-safe step before any future submission; not executed by agent",
+  "next_step": "Exact-source review and explicit CLI authorization for one real h215 DET/W job, no extra license/capacity optimization"
+}
