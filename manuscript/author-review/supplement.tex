@@ -1540,87 +1540,148 @@ options, time budget and validation criteria for each cell.
 
 The earlier Gurobi h300 W STO records all report one processed branch-and-bound node under the historical automatic method and heuristic settings. This count describes the realized search under its stopping policy; it does not establish a structural one-node bound on the MILP. In the historical common-Pyomo h300 runs, the matrix contains 25,107,544 variables (392 binaries) and 94,967,766 nonzero coefficients. The initial linear-programming (LP) relaxation can therefore be computationally substantial even when no extended search tree is observed. These observations motivate separating root-relaxation effort, incumbent attainment and gap certification. A small final MIP gap is a certificate for the penalized scalar objective, not for the financial subtotal or physical service. The controlled root-method experiment is a distinct exploratory cohort and is not combined with the historical thread-ceiling data in Sections C8--C9.
 
-\subsection{C11 Partial h300 root-method experiment}\label{c11-partial-h300-root-method-experiment}
+\subsection{C11 Closed h300 root-method block}\label{c11-partial-h300-root-method-experiment}
 
-The first operator readback for Slurm array \texttt{2252608} contains 28 terminal tasks from the initial 60-task h300 W STO block. At that cutoff one task was running and 31 remained pending. The planned design crosses four explicitly selected Gurobi root LP methods (Method=1, dual simplex; 2, barrier; 4, deterministic concurrent; 6, PDHG), three heuristic profiles (standard; \texttt{Heuristics=0}; and default heuristics with a fixed NoRel work budget) and five allocations of distinct physical cores (1, 2, 4, 8, 16). The 60 tasks represent one temporal block, not 60 complete factorial repetitions. They use the common input and 1\% gap target with an eight-hour native time allowance. Effective socket and affinity observations were checked against Slurm receipts.
+This appendix reports all 60 configurations in the closed first temporal block. The design crossed \texttt{Method=1,2,4,6}, thread ceilings of 1, 2, 4, 8 and 16 on distinct physical cores, and three profiles: standard (\texttt{Heuristics=0.05}, \texttt{NoRelHeurWork=0}); H0 (\texttt{Heuristics=0}, \texttt{NoRelHeurWork=0}); and NR (\texttt{Heuristics=0.05}, \texttt{NoRelHeurWork=600}). The common settings included Gurobi 13.0.3, seed 42, a 28,800-second native limit, a 1\% MIP-gap target, \texttt{ConcurrentMIP=1}, CPU-only execution and \texttt{SoftMemLimit=160} in Gurobi's memory units. Slurm requested 192 GiB per job. The retained affinity records identify the configured number of distinct physical cores. NoRel was controlled by deterministic work, rather than a wall-time heuristic budget.
 
-Sixteen terminal tasks had independently validated incumbents at the prescribed gap; five timed out without usable incumbents, five stopped at the memory guard, and two returned errors without usable incumbents. The five guard stops had zero deltas in the retained cgroup OOM-kill and failure counters; a protective guard stop is not a demonstrated kernel out-of-memory termination. The two error causes were not established from the partial readback. Table~\ref{tab:c11-method} records the incomplete and unequal coverage by method and profile.
+The 49 Slurm-completed tasks comprised 33 accepted solutions, nine time-limited returns and seven native memory-limited returns. Seven other tasks stopped at the external memory guard. One PDHG/H0 execution at eight cores was cancelled during optimization, and three configurations were cancelled before starting. The remaining two temporal blocks, comprising 120 planned configurations, were not submitted. Tables~\ref{tab:c11-method} and~\ref{tab:c11-jobs} retain this coverage explicitly.
 
-\begin{table}[htbp]
-\centering\small
-\caption{Partial h300 terminal outcomes by root method and heuristic profile. These are observation counts, not estimated success probabilities.}
+\begin{table}[htbp]\centering\small
+\caption{Table~\thetable. Outcomes by method and heuristic profile in the closed first h300 block. Each row contains five planned core settings. GMem denotes Gurobi's native soft memory limit, Guard the external memory monitor, and Cancel researcher-requested cancellation.}
 \label{tab:c11-method}
-\begin{tabular}{llrrrrr}
-\toprule
-Method & Profile & Terminal & Validated & Time limit & Guard & Error\\
-\midrule
-1 dual simplex & Standard & 1 & 1 & 0 & 0 & 0\\
-1 dual simplex & Heuristics=0 & 1 & 1 & 0 & 0 & 0\\
-1 dual simplex & NoRel & 2 & 2 & 0 & 0 & 0\\
-2 barrier & Standard & 3 & 3 & 0 & 0 & 0\\
-2 barrier & Heuristics=0 & 3 & 2 & 0 & 0 & 1\\
-2 barrier & NoRel & 2 & 0 & 0 & 2 & 0\\
-4 concurrent & Standard & 3 & 3 & 0 & 0 & 0\\
-4 concurrent & Heuristics=0 & 3 & 2 & 0 & 0 & 1\\
-4 concurrent & NoRel & 3 & 1 & 0 & 2 & 0\\
-6 PDHG & Standard & 3 & 1 & 2 & 0 & 0\\
-6 PDHG & Heuristics=0 & 2 & 0 & 2 & 0 & 0\\
-6 PDHG & NoRel & 2 & 0 & 1 & 1 & 0\\
-\midrule
-Total & & 28 & 16 & 5 & 5 & 2\\
-\bottomrule
-\end{tabular}
-\end{table}
+\begin{tabular}{llrrrrr}\toprule
+Method & Profile & Accepted & Time & GMem & Guard & Cancel\\\midrule
+1 & Std & 4 & 0 & 0 & 0 & 1\\
+1 & H0 & 3 & 0 & 2 & 0 & 0\\
+1 & NR & 3 & 0 & 0 & 1 & 1\\
+2 & Std & 4 & 0 & 0 & 0 & 1\\
+2 & H0 & 3 & 0 & 2 & 0 & 0\\
+2 & NR & 3 & 0 & 0 & 2 & 0\\
+4 & Std & 5 & 0 & 0 & 0 & 0\\
+4 & H0 & 3 & 0 & 2 & 0 & 0\\
+4 & NR & 3 & 0 & 0 & 2 & 0\\
+6 & Std & 2 & 3 & 0 & 0 & 0\\
+6 & H0 & 0 & 3 & 1 & 0 & 1\\
+6 & NR & 0 & 3 & 0 & 2 & 0\\
+\midrule Total & & 33 & 9 & 7 & 7 & 4\\\bottomrule
+\end{tabular}\end{table}
 
-Under standard heuristics, the observed barrier root times were 122.3, 94.9 and 68.4 min with one, two and eight physical cores, respectively; the corresponding native terminal times were 137.8, 114.6 and 85.3 min. The descriptive 1-to-8-core root-phase ratio is approximately 1.79 and the terminal-time ratio approximately 1.62. These are single observations at each setting and do not establish repeatable strong-scaling estimates. The accepted sixteen-core PDHG task had 296.8 min of root time and 312.9 min of native time; five other PDHG terminal tasks reached the eight-hour limit without a usable incumbent.
+The seven native logs end with \emph{Memory limit reached} and zero solutions, despite the application's original generic error label. They occur for H0 at eight or sixteen cores. Their original summary and rejected-validation records remain unchanged. All seven external guard stops occur for NR at eight or sixteen cores; their reported OOM-kill and fail-count deltas are zero. The maximum retained job-cgroup peak among guard stops was 184.10 GiB. These are resource-censored observations, and no feasible plan or service value is assigned to them. The cancelled running task lacks a final memory receipt and solver terminal clock; its Slurm step RSS remains a separate accounting observation.
 
-A notable distinction is that the historical fifteen h300 Pyomo Gurobi runs all explored one node under their recorded configurations, whereas the new \texttt{Heuristics=0} and some NoRel runs explored more than one node (up to 47 in this readback). Therefore, the earlier one-node observation is not an intrinsic limit of the formulation. Table~\ref{tab:c11-jobs} presents the complete 28-task terminal checkpoint with root and native clocks, node counts and cgroup memory when available. Missing root clocks and node counts for guard stops are intentionally left unavailable, rather than reconstructed.
+\begingroup\small\setlength{\tabcolsep}{3pt}
+\begin{longtable}{@{}rrlrlrrrr@{}}
+\caption{Table~\thetable. All configurations in the closed h300 block. Root and native terminal times are minutes from native log events; memory is the job-cgroup peak in GiB. Time denotes no usable incumbent at the time limit. NA preserves unavailable events. Task is the original array index.}\label{tab:c11-jobs}\\
+\toprule Task & Method & Profile & Cores & Outcome & Root & Native & Nodes & Peak\\\midrule\endfirsthead
+\multicolumn{9}{l}{\small Closed h300 block (continued)}\\
+\toprule Task & Method & Profile & Cores & Outcome & Root & Native & Nodes & Peak\\\midrule\endhead
+0 & 2 & H0 & 8 & GRB mem & 69.5 & 93.9 & 17 & 153.31\\
+1 & 6 & Std & 1 & Time & 473.1 & 480.3 & 1 & 70.93\\
+2 & 4 & Std & 8 & Accepted & 47.5 & 65.3 & 1 & 101.40\\
+3 & 2 & Std & 1 & Accepted & 122.3 & 137.8 & 1 & 74.48\\
+4 & 2 & Std & 8 & Accepted & 68.4 & 85.3 & 1 & 85.19\\
+5 & 6 & H0 & 2 & Time & 474.3 & 480.2 & 1 & 69.79\\
+6 & 4 & NR & 8 & Guard & NA & NA & NA & 173.40\\
+7 & 4 & Std & 4 & Accepted & 37.7 & 55.1 & 1 & 89.30\\
+8 & 4 & H0 & 4 & Accepted & 39.9 & 63.1 & 39 & 112.19\\
+9 & 4 & H0 & 8 & GRB mem & 48.1 & 72.6 & 28 & 154.40\\
+10 & 1 & NR & 4 & Accepted & 26.3 & 87.9 & 43 & 120.32\\
+11 & 1 & Std & 16 & Accepted & 29.4 & 50.1 & 1 & 82.29\\
+12 & 6 & Std & 2 & Time & 474.0 & 480.3 & 1 & 70.93\\
+13 & 4 & Std & 16 & Accepted & 48.8 & 66.5 & 1 & 103.94\\
+14 & 6 & H0 & 4 & Time & 474.8 & 480.2 & 1 & 69.75\\
+15 & 1 & NR & 2 & Accepted & 24.4 & 74.8 & 1 & 94.12\\
+16 & 6 & NR & 2 & Time & 455.3 & 480.4 & 1 & 94.12\\
+17 & 2 & NR & 8 & Guard & NA & NA & NA & 174.55\\
+18 & 2 & Std & 2 & Accepted & 94.9 & 114.6 & 1 & 74.79\\
+19 & 2 & NR & 16 & Guard & NA & NA & NA & 177.57\\
+20 & 1 & H0 & 4 & Accepted & 27.3 & 51.5 & 47 & 113.96\\
+21 & 6 & NR & 8 & Guard & NA & NA & NA & 173.99\\
+22 & 2 & H0 & 2 & Accepted & 94.9 & 119.3 & 25 & 87.08\\
+23 & 2 & H0 & 1 & Accepted & 115.9 & 138.5 & 19 & 74.97\\
+24 & 4 & NR & 16 & Guard & NA & NA & NA & 174.82\\
+25 & 4 & H0 & 1 & Accepted & 25.9 & 45.4 & 17 & 74.25\\
+26 & 4 & NR & 4 & Accepted & 39.0 & 93.3 & 1 & 120.27\\
+27 & 6 & Std & 16 & Accepted & 296.8 & 312.9 & 1 & 80.05\\
+28 & 6 & NR & 1 & Time & 451.5 & 480.7 & 1 & 80.20\\
+29 & 1 & Std & 2 & Accepted & 25.1 & 41.7 & 1 & 75.68\\
+30 & 1 & Std & 8 & Accepted & 30.6 & 53.5 & 1 & 82.39\\
+31 & 2 & H0 & 4 & Accepted & 84.4 & 110.0 & 39 & 113.79\\
+32 & 6 & H0 & 1 & Time & 474.1 & 480.2 & 1 & 69.75\\
+33 & 4 & H0 & 2 & Accepted & 35.9 & 57.5 & 27 & 88.67\\
+34 & 2 & Std & 16 & Accepted & 61.3 & 78.1 & 1 & 85.38\\
+35 & 6 & Std & 8 & Accepted & 343.9 & 360.4 & 1 & 82.41\\
+36 & 4 & NR & 1 & Accepted & 26.9 & 81.6 & 1 & 80.19\\
+37 & 6 & H0 & 16 & GRB mem & 296.8 & 318.6 & 10 & 162.29\\
+38 & 4 & Std & 2 & Accepted & 35.1 & 50.8 & 1 & 83.02\\
+39 & 1 & Std & 1 & Accepted & 26.3 & 41.1 & 1 & 75.73\\
+40 & 1 & H0 & 2 & Accepted & 25.5 & 47.2 & 25 & 87.87\\
+41 & 6 & Std & 4 & Time & 473.0 & 480.1 & 1 & 79.17\\
+42 & 2 & NR & 2 & Accepted & 94.7 & 135.1 & 1 & 94.14\\
+43 & 4 & H0 & 16 & GRB mem & 49.6 & 72.0 & 10 & 162.30\\
+44 & 1 & NR & 16 & Guard & NA & NA & NA & 184.10\\
+45 & 4 & Std & 1 & Accepted & 26.9 & 41.7 & 1 & 75.79\\
+46 & 4 & NR & 2 & Accepted & 34.9 & 91.3 & 1 & 94.06\\
+47 & 1 & H0 & 8 & GRB mem & 28.8 & 52.1 & 27 & 153.82\\
+48 & 2 & NR & 1 & Accepted & 121.4 & 158.8 & 1 & 80.21\\
+49 & 1 & NR & 1 & Accepted & 26.4 & 80.4 & 1 & 80.18\\
+50 & 1 & H0 & 16 & GRB mem & 29.8 & 52.2 & 10 & 162.06\\
+51 & 2 & NR & 4 & Accepted & 83.7 & 139.4 & 1 & 121.32\\
+52 & 2 & H0 & 16 & GRB mem & 59.9 & 85.0 & 10 & 162.51\\
+53 & 1 & H0 & 1 & Accepted & 26.6 & 47.5 & 17 & 74.39\\
+54 & 6 & NR & 16 & Guard & NA & NA & NA & 180.59\\
+55 & 6 & NR & 4 & Time & 449.8 & 480.1 & 1 & 121.30\\
+56 & 6 & H0 & 8 & Cancel & NA & NA & NA & NA\\
+57 & 1 & NR & 8 & Not run & NA & NA & NA & NA\\
+58 & 1 & Std & 4 & Not run & NA & NA & NA & NA\\
+59 & 2 & Std & 4 & Not run & NA & NA & NA & NA\\
+\bottomrule\end{longtable}\endgroup
 
-\begin{longtable}{@{}r r l r l r r r r@{}}
-\caption{Terminal observations from the first readback of array 2252608. Core counts are distinct physical cores, root/native times are minutes, and peaks are job-cgroup GiB. NA means the event is unavailable.}\label{tab:c11-jobs}\\
-\toprule
-Task & Method & Profile & Cores & Outcome & Root & Native & Nodes & Peak\\
-\midrule
-\endfirsthead
-\multicolumn{9}{l}{\small Table C11 (continued)}\\
-\toprule
-Task & Method & Profile & Cores & Outcome & Root & Native & Nodes & Peak\\
-\midrule
-\endhead
-0 & 2 & H=0 & 8 & Error & 69.5 & 93.9 & 17 & 153.31\\
-1 & 6 & Std & 1 & Time limit & 473.1 & 480.3 & 1 & 70.93\\
-2 & 4 & Std & 8 & Validated & 47.5 & 65.3 & 1 & 101.40\\
-3 & 2 & Std & 1 & Validated & 122.3 & 137.8 & 1 & 74.48\\
-4 & 2 & Std & 8 & Validated & 68.4 & 85.3 & 1 & 85.19\\
-5 & 6 & H=0 & 2 & Time limit & 474.3 & 480.2 & 1 & 69.79\\
-6 & 4 & NoRel & 8 & Guard & NA & NA & NA & 173.40\\
-7 & 4 & Std & 4 & Validated & 37.7 & 55.1 & 1 & 89.30\\
-8 & 4 & H=0 & 4 & Validated & 39.9 & 63.1 & 39 & 112.19\\
-9 & 4 & H=0 & 8 & Error & 48.1 & 72.6 & 28 & 154.40\\
-10 & 1 & NoRel & 4 & Validated & 26.3 & 87.9 & 43 & 120.32\\
-11 & 1 & Std & 16 & Validated & 29.4 & 50.1 & 1 & 82.29\\
-12 & 6 & Std & 2 & Time limit & 474.0 & 480.3 & 1 & 70.93\\
-13 & 4 & Std & 16 & Validated & 48.8 & 66.5 & 1 & 103.94\\
-14 & 6 & H=0 & 4 & Time limit & 474.8 & 480.2 & 1 & 69.75\\
-15 & 1 & NoRel & 2 & Validated & 24.4 & 74.8 & 1 & 94.12\\
-16 & 6 & NoRel & 2 & Time limit & 455.3 & 480.4 & 1 & 94.12\\
-17 & 2 & NoRel & 8 & Guard & NA & NA & NA & 174.55\\
-18 & 2 & Std & 2 & Validated & 94.9 & 114.6 & 1 & 74.79\\
-19 & 2 & NoRel & 16 & Guard & NA & NA & NA & 177.57\\
-20 & 1 & H=0 & 4 & Validated & 27.3 & 51.5 & 47 & 113.96\\
-21 & 6 & NoRel & 8 & Guard & NA & NA & NA & 173.99\\
-22 & 2 & H=0 & 2 & Validated & 94.9 & 119.3 & 25 & 87.08\\
-23 & 2 & H=0 & 1 & Validated & 115.9 & 138.5 & 19 & 74.97\\
-24 & 4 & NoRel & 16 & Guard & NA & NA & NA & 174.82\\
-25 & 4 & H=0 & 1 & Validated & 25.9 & 45.4 & 17 & 74.25\\
-26 & 4 & NoRel & 4 & Validated & 39.0 & 93.3 & 1 & 120.27\\
-27 & 6 & Std & 16 & Validated & 296.8 & 312.9 & 1 & 80.05\\
-\bottomrule
-\end{longtable}
+Root clocks for time-limited cases measure effort before interruption, not a completed LP solve. The original source, plan and matrix guard are preserved. Accepted certificates use absolute tolerance $10^{-5}$ and relative tolerance $10^{-8}$, with zero failed checks and objective reconstruction against the original inputs. Table~\ref{tab:c11-quality} reports the accepted scalar and agricultural outcomes. The scalar dual bound certifies the penalized objective; it supplies no separate economic-only MIP gap.
 
-The five memory-guard stops all occurred with NoRel at eight or sixteen physical cores. Both error returns occurred with \texttt{Heuristics=0} and eight physical cores. These associations are descriptive and cannot identify the causes of the errors or the exact internal source of memory demand. Different statuses also preclude treating all terminal times as time to a valid incumbent. The partial block is insufficient for a ranking of root methods, a causal evaluation of NoRel, or a general speedup claim. Later blocks and logs require separate reconciliation and author approval before any stronger conclusions are reported.
+\begingroup\small\setlength{\tabcolsep}{3pt}
+\begin{longtable}{@{}rrlr rrrr@{}}
+\caption{Table~\thetable. Accepted h300 outcomes: total objective in trillion BRL, economic cost in billion BRL, scalar relative gap in percent and domestic service in percent. Std, H0 and NR are defined above. Economic-only gaps are unavailable.}\label{tab:c11-quality}\\
+\toprule Task & Method & Profile & Cores & Objective & Economic & Gap & Service\\\midrule\endfirsthead
+\multicolumn{8}{l}{\small Accepted h300 outcomes (continued)}\\
+\toprule Task & Method & Profile & Cores & Objective & Economic & Gap & Service\\\midrule\endhead
+2 & 4 & Std & 8 & 9.289109 & 385.502 & 0.004120 & 91.3256\\
+3 & 2 & Std & 1 & 9.289109 & 385.502 & 0.004122 & 91.3256\\
+4 & 2 & Std & 8 & 9.289109 & 385.502 & 0.004123 & 91.3256\\
+7 & 4 & Std & 4 & 9.289109 & 385.502 & 0.004120 & 91.3256\\
+8 & 4 & H0 & 4 & 9.288940 & 385.450 & 0.001350 & 91.3258\\
+10 & 1 & NR & 4 & 9.289205 & 385.409 & 0.004199 & 91.3237\\
+11 & 1 & Std & 16 & 9.289109 & 385.502 & 0.004105 & 91.3256\\
+13 & 4 & Std & 16 & 9.289109 & 385.502 & 0.004120 & 91.3256\\
+15 & 1 & NR & 2 & 9.288940 & 385.438 & 0.002283 & 91.3248\\
+18 & 2 & Std & 2 & 9.289109 & 385.502 & 0.004107 & 91.3256\\
+20 & 1 & H0 & 4 & 9.288940 & 385.450 & 0.001359 & 91.3258\\
+22 & 2 & H0 & 2 & 9.289214 & 385.421 & 0.004904 & 91.3247\\
+23 & 2 & H0 & 1 & 9.289359 & 385.486 & 0.006014 & 91.3252\\
+25 & 4 & H0 & 1 & 9.289372 & 385.408 & 0.006175 & 91.3254\\
+26 & 4 & NR & 4 & 9.288940 & 385.438 & 0.002284 & 91.3248\\
+27 & 6 & Std & 16 & 9.289109 & 385.502 & 0.004122 & 91.3256\\
+29 & 1 & Std & 2 & 9.289109 & 385.502 & 0.004120 & 91.3256\\
+30 & 1 & Std & 8 & 9.289109 & 385.502 & 0.004105 & 91.3256\\
+31 & 2 & H0 & 4 & 9.289205 & 385.409 & 0.004223 & 91.3237\\
+33 & 4 & H0 & 2 & 9.289228 & 385.343 & 0.005053 & 91.3249\\
+34 & 2 & Std & 16 & 9.289109 & 385.502 & 0.004123 & 91.3256\\
+35 & 6 & Std & 8 & 9.289109 & 385.502 & 0.004123 & 91.3256\\
+36 & 4 & NR & 1 & 9.289122 & 385.425 & 0.004248 & 91.3258\\
+38 & 4 & Std & 2 & 9.289109 & 385.502 & 0.004122 & 91.3256\\
+39 & 1 & Std & 1 & 9.289109 & 385.502 & 0.004120 & 91.3256\\
+40 & 1 & H0 & 2 & 9.289214 & 385.421 & 0.004902 & 91.3247\\
+42 & 2 & NR & 2 & 9.289109 & 385.502 & 0.004107 & 91.3256\\
+45 & 4 & Std & 1 & 9.289109 & 385.502 & 0.004120 & 91.3256\\
+46 & 4 & NR & 2 & 9.288940 & 385.438 & 0.002284 & 91.3248\\
+48 & 2 & NR & 1 & 9.289109 & 385.502 & 0.004122 & 91.3256\\
+49 & 1 & NR & 1 & 9.289122 & 385.425 & 0.004248 & 91.3258\\
+51 & 2 & NR & 4 & 9.289205 & 385.409 & 0.005145 & 91.3237\\
+53 & 1 & H0 & 1 & 9.289372 & 385.408 & 0.006175 & 91.3254\\
+\bottomrule\end{longtable}\endgroup
 
-The \href{https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/47ada8e167f466aee9b0446ee7e72b1c338bfffe/docs/evidence/h300_root_block1_partial_2252608_20261116.json}{evidence record} identifies the readback and each task's available source hashes. The 17 November 2026 accounting update reports tasks 28--31 as \texttt{COMPLETED}, task 32 as \texttt{RUNNING}, and tasks 33--59 as \texttt{PENDING}. Scientific classification for tasks 28--31 awaits their solver and validation receipts.
+Under standard heuristics, barrier's observed one-to-sixteen-core root-time ratio is 1.99 and its terminal speedup is 1.77; nominal terminal efficiency is 11.0\%. Dual simplex and deterministic concurrent optimization have terminal ratios below one at sixteen cores, while accepted PDHG observations lack an accepted one-core baseline. These are single-configuration observations in one temporal block. Accepted node counts range from one to 47. The results locate the method-dependent response in root relaxation and subsequent incumbent search, while differences in paths and hardware-level contention remain unisolated.
+
+The final archive, all 14 transfer-ledger files and all 1,763 inventory member hashes were checked locally. The 49 expected-but-absent records belong to guard-stopped or cancelled configurations and remain listed in the technical evidence. These absences do not reduce the 33 accepted certificates. Complete vectors and raw receipts remain in custody; the repository contains aggregate results, identities and the audit record. The earlier 28-task checkpoint is retained as provenance and is superseded for final outcome counts.
 
 \subsection{C12 Network utilization, model size and objective
 certificates}\label{c12-network-utilization-model-size-and-objective-certificates}

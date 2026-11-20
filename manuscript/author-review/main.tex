@@ -2377,33 +2377,42 @@ scopes. Appendix C identifies this pair within the h300 repetition grid
 and gives the full timing, gap and memory ranges for each setting.
 
 
-\subsection{Exploratory h300 root-relaxation results}\label{exploratory-h300-root-relaxation-results}
+\subsection{Controlled h300 root-relaxation results}\label{exploratory-h300-root-relaxation-results}
 
-The partial readback of Slurm array \texttt{2252608} covers 28 terminal tasks from the first 60-task h300 block; 32 tasks were still running or pending at the observation cutoff. Sixteen tasks attained the prescribed 1\% gap and returned independently validated incumbents. Five terminated at the time limit without a usable incumbent, five were interrupted by the protective memory monitor, and two returned errors without a usable incumbent. These statuses are distinct; a memory-guard stop is not evidence of an operating-system out-of-memory kill. Table~\ref{tbl-root-partial} reports the incomplete, unequal coverage by root method.
+The controlled h300 STO/W assessment varied four root-relaxation methods, three heuristic profiles and five thread ceilings on distinct physical cores, with an eight-hour native time budget and 192 GiB per job. The first 60-configuration block was closed with 33 independently validated incumbents, nine time-limited returns without a usable incumbent, seven native memory-limit returns and seven job-memory-guard stops. One execution was cancelled during optimization and three configurations were cancelled before starting. The two additional temporal blocks were not executed. Table~\ref{tbl-root-partial} summarizes the resulting coverage; Appendix C11 gives individual configurations, original validation outcomes and resource measurements.
 
 \begin{table}[htbp]
-\centering
-\caption{Partial terminal outcomes for the first h300 root-method block, from the PR156 checkpoint. Counts must not be interpreted as replicated success probabilities.}
+\centering\small
+\caption{Outcomes of the closed first h300 block. Native memory denotes Gurobi's soft memory limit; guard denotes the external job-memory monitor. Cancellation includes one interrupted and three unstarted configurations. Counts describe this block, without estimating success probabilities.}
 \label{tbl-root-partial}
-\begin{tabular}{lrrrr}
+\begin{tabular}{lrrrrr}
 \toprule
-Root LP method & Validated & Time limit & Memory guard & Error\\
+Root LP method & Accepted & Time & Native memory & Guard & Cancelled\\
 \midrule
-Dual simplex (1) & 4 & 0 & 0 & 0\\
-Barrier (2) & 5 & 0 & 2 & 1\\
-Deterministic concurrent (4) & 6 & 0 & 2 & 1\\
-PDHG (6) & 1 & 5 & 1 & 0\\
+Dual simplex (1) & 10 & 0 & 2 & 1 & 2\\
+Barrier (2) & 10 & 0 & 2 & 2 & 1\\
+Deterministic concurrent (4) & 11 & 0 & 2 & 2 & 0\\
+PDHG (6) & 2 & 9 & 1 & 2 & 1\\
 \midrule
-Total & 16 & 5 & 5 & 2\\
+Total & 33 & 9 & 7 & 7 & 4\\
 \bottomrule
 \end{tabular}
 \end{table}
 
-Under standard heuristics, the observed barrier root times at one, two and eight physical cores were 122.3, 94.9 and 68.4 minutes, respectively; the corresponding native terminal times were 137.8, 114.6 and 85.3 minutes. The ratio 122.3/68.4 is approximately 1.79 for the measured root phase; the analogous terminal-time ratio is approximately 1.62. Each setting has only one observation in this readback. These observations are preliminary phase comparisons, not estimates of reproducible parallel speedup.
+Figure~\ref{fig-root-final} separates the completed root-relaxation clock from the native terminal clock for accepted observations under the standard heuristic profile. Barrier root time decreased from 122.3 minutes at one core to 61.3 minutes at sixteen cores; native terminal time decreased from 137.8 to 78.1 minutes. These observations correspond to a root-phase time ratio of 1.99 and an observed terminal speedup of 1.77, with nominal terminal efficiency of 11.0\% at sixteen cores. The four-core barrier configuration was cancelled before execution. Each available configuration has one observation, so these values describe the observed fixed-instance response under the stated protocol.
 
-Historically, all 15 repeated common-Pyomo h300 Gurobi observations recorded one explored branch-and-bound node. The new controlled experiment demonstrates that this is not an invariant structural property of the model: some runs with standard heuristics disabled explored 17 to 47 nodes. The difference is consistent with a change in the optimization trajectory, but the available evidence does not isolate its cause. The five recorded memory-guard stops occurred in NoRel profiles at eight or sixteen physical cores. The two error returns occurred with \texttt{Heuristics=0} at eight cores; the underlying causes remain unresolved pending complete native logs and receipts. PDHG had one validated terminal outcome in this partial sample; most of its other terminal tasks reached the time limit without a usable incumbent. No final ranking of methods or heuristics follows from this incomplete, unbalanced block.
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth]{h300_root_final.pdf}
+\caption{Completed root-relaxation and native terminal times for accepted h300 STO/W observations with standard heuristics. Methods 1, 2, 4 and 6 denote dual simplex, barrier, deterministic concurrent optimization and PDHG. Each point represents one configuration; line segments connect adjacent available core settings. Unshown settings have no accepted result in this block; Appendix C11 retains their outcomes.}
+\label{fig-root-final}
+\end{figure}
 
-The source-bound readback is available in the \href{https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/47ada8e167f466aee9b0446ee7e72b1c338bfffe/docs/evidence/h300_root_block1_partial_2252608_20261116.json}{experimental evidence record}. Subsequent Slurm accounting from 17 November 2026 listed 32 terminal tasks (27 completed and five failed). The four newly completed tasks await receipt review, so the scientific outcomes in Table~\ref{tbl-root-partial} still cover 28 tasks.
+Dual simplex returned accepted solutions in 41.1 minutes at one core and 50.1 minutes at sixteen cores. Deterministic concurrent optimization took 41.7 and 66.5 minutes at these settings. Thus, the method with the clearest observed response to additional cores was slower in absolute time than the accepted one-core dual-simplex solution. PDHG returned accepted standard-profile solutions at eight and sixteen cores in 360.4 and 312.9 minutes; its standard-profile runs at one, two and four cores reached the time limit without a usable incumbent.
+
+Complete logs resolve the seven returns labelled as errors by the application: Gurobi reported \emph{Memory limit reached} with no incumbent. All occurred with the general heuristics disabled at eight or sixteen cores. The seven external memory-guard stops occurred with the NoRel profile at eight or sixteen cores. Their retained cgroup counters show zero OOM-kill and failure-count increments. Native memory accounting, job-cgroup memory and the Slurm allocation have distinct scopes. Slurm reported 49 completed tasks, including the nine time-limited and seven native memory-limited returns, whereas 33 had accepted solutions.
+
+Across those 33 solutions, relative gaps ranged from 0.001350\% to 0.006175\%, and the total penalized objective ranged from BRL 9.288940 to 9.289372 trillion. Economic cost ranged from BRL 385.343 to 385.502 billion, while domestic service remained between 91.3237\% and 91.3258\%. Artificial penalties accounted for approximately 95.85\% of the objective. The different solution methods therefore changed computational effort and attainment more substantially than these aggregate agricultural outcomes. Accepted runs explored between one and 47 nodes, showing that the earlier one-node behavior depends on the solver configuration and trajectory.
 
 \section{Discussion}\label{discussion}
 
@@ -2468,7 +2477,7 @@ gives the scope and limits for each observation. A completed single
 repetition provides evidence for those runs and leaves the memory
 requirements of repetitions and h500 open.
 
-The newly examined root-method block provides a more specific explanation to investigate, not a proven causal mechanism: the initial LP relaxation can consume most of the observed native time despite a one-node tree in the historical configuration. Varying the LP algorithm and incumbent-search controls changes both termination outcomes and node counts. The partial barrier observations suggest a reduction in root time with more physical cores for those individual runs, while NoRel profiles reveal memory limitations and PDHG frequently fails to deliver a usable incumbent within the budget. Since the first block is incomplete and some errors lack resolved causes, neither an algorithm ranking nor a claim of robust physical-core scaling is yet warranted.
+The closed root-method block locates an important part of the computational response in the initial LP relaxation. With standard heuristics, barrier reduced root time as physical cores increased, while dual simplex and deterministic concurrent optimization had higher terminal times at sixteen cores than at one. Barrier's greater parallel responsiveness coexisted with a longer absolute solution time than one-core dual simplex. Selecting a solver configuration therefore requires considering elapsed time, memory and accepted solution quality together. The nine time-limited PDHG returns and the two distinct memory protections explain why terminal runtime alone cannot rank all configurations. These observations characterize one fixed instance and one temporal block; the omitted repetitions leave temporal repeatability unmeasured.
 
 \subsection{Implications for grain-storage
 investment}\label{implications-for-grain-storage-investment}
@@ -2555,7 +2564,7 @@ usable incumbent in all five. The fastest observed Gurobi setting was
 two threads. The h500 computational result comes from the historical
 native implementation.
 
-The preliminary root-method readback is restricted to 28 terminal tasks out of 60 in its first block; it cannot support a completed factorial comparison or general solver configuration recommendations. The observed one-node behavior is not a structural limit on branch-and-bound.
+The controlled h300 block closed with 33 accepted solutions, nine time-limited returns, fourteen memory-related stops and four cancellations. It provides conditional evidence of barrier's fixed-instance parallel response and of the different behavior of the other root methods. The study contains one temporal block; two planned repetitions were not executed. The observed one-node behavior is not a structural limit on branch-and-bound.
 
 The main limitations are the fixed sets of instances and scenarios,
 three temporal repetitions per repeated setting, finite compute budgets
@@ -2566,7 +2575,7 @@ costs, site suitability and explicit service requirements.
 
 \subsection{Future work}\label{future-work}
 
-Complete the already authorized root-method evidence reconciliation, establish the causes of the two error returns using original logs, and evaluate whether temporal repetitions substantiate the observed differences in root time, incumbent attainment and memory. Such qualification should not be conflated with new results already established here.
+Future studies should assess the repeatability of the method-specific root-time response, examine formulations or decomposition strategies that reduce the extensive-form memory burden, and evaluate service, export and capacity scenarios against an explicitly frozen effective baseline. These investigations extend the closed MVP2 assessment and require separate experimental protocols. Agricultural improvement should be measured through admissible investment and operating plans, domestic service and physical exceedances alongside economic cost.
 
 
 Repeat the h400 thread grid under comparable conditions to quantify

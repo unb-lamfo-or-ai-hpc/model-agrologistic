@@ -1,25 +1,21 @@
-# PR #156 author-reviewed sources
+# PR157 final MVP2 author-reviewed sources
 
-The editable article and supplements use the researcher-supplied
-`main_revisado.tex` and `supplement_revisado.tex` as their textual base.
+Based on the author-reviewed PR156 snapshot merged into develop at245bb389.
+The article front matter, Introduction, Related Work and Methods are unchanged;
+the bibliography retains SHA-256 d4215c0fdcb0ce75d7fa8092d6b088b1e1d1f7d957689230064eee01d941daa6.
 
-| Source received | SHA-256 |
-| --- | --- |
-| Article | `9d87231dba62e129de8a310604d632268a2be0e0c36721cdd096acc143887f09` |
-| Supplements | `94b12d6ca42257a8954f7fecfd6c0c518fd6b16aeff13958966dc170187bdd4a` |
-| Bibliography from the PR #151 LaTeX package | `d4215c0fdcb0ce75d7fa8092d6b088b1e1d1f7d957689230064eee01d941daa6` |
+Results, Discussion, Final considerations and Appendix C11 incorporate the final
+audited array2252608:33 accepted solutions,9 time-limited returns,7 native
+soft-memory stops,7 external memory-guard stops and4 cancellations. All60
+configurations are catalogued. Two planned temporal blocks were not submitted.
+Original sources, partial evidence and result labels remain preserved.
 
-The partial [PR #157 evidence](../../docs/evidence/h300_root_block1_partial_2252608_20261116.json)
-supports scientific outcomes for 28 terminal tasks. Later Slurm accounting
-shows four more completions. Their scientific outcomes are pending receipt
-review. The supplements retain the reviewed root-relaxation diagnostics,
-restore the historical network-utilization tables in C12 and restore Appendix F
-on research data and access. The HiGHS comparisons explicitly retained in the
-researcher's files are historical context. The new root-method experiment
-uses CPU-only Gurobi.
+The portable review ZIP includes all figure assets, bibliography, original
+Appendix A and template dependencies beside main.tex and supplement.tex.
+Compile main.tex with pdfLaTeX, BibTeX and sufficient pdfLaTeX passes; compile
+supplement.tex twice. The figure h300_root_final.pdf is vector artwork.
 
-The portable review ZIP contains the bibliography, figure assets, original
-Appendix A and template dependencies at the same directory level as the two
-TeX files. Run pdfLaTeX, BibTeX and two further pdfLaTeX passes for the article.
-Run pdfLaTeX twice for the supplements. The Quarto publication source is a
-separate build and still requires reconciliation with this review revision.
+Quarto and author-reviewed TeX remain separate source formats. Their root-method
+result accounts are updated together; full publication-source reconciliation
+and any GitHub Pages deployment require the subsequent authorized main workflow.
+No data deposit or publication is performed by this review build.

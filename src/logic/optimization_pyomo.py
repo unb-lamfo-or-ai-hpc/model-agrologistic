@@ -35,6 +35,7 @@ from src.logic.pyomo_linear_matrix import matrix_identity
 from src.logic.route_filtering import select_routes
 
 PHASE_OBSERVER = ContextVar("pyomo_phase_observer", default=None)
+GUROBI_ROOT_EXPERIMENT = ContextVar("gurobi_root_experiment", default=None)
 
 
 def notify_phase(name):
@@ -336,6 +337,13 @@ def solve_model_pyomo(data, model_config, solver_config):
         common_matrix = matrix_identity(model)
         identity_seconds = perf_counter() - identity_started
         effective_options, native_version, counters = None, None, {}
+        root_experiment = GUROBI_ROOT_EXPERIMENT.get()
+        if root_experiment is not None:
+            if (
+                selected != "appsi_gurobi"
+                or common_matrix["sha256"] != root_experiment["matrix_sha256"]
+            ):
+                raise ValueError("The root experiment requires its frozen Gurobi matrix.")
         if selected == "appsi_highs":
             from pyomo.contrib.appsi.solvers import Highs
 
@@ -406,6 +414,8 @@ def solve_model_pyomo(data, model_config, solver_config):
                 "Seed": solver_config.seed or 0,
                 "FeasibilityTol": 1e-9, "IntFeasTol": 1e-9,
             })
+            if root_experiment is not None:
+                adapter.gurobi_options.update(root_experiment["options"])
             transfer_started = perf_counter()
             adapter.set_instance(model)
             transfer_seconds = perf_counter() - transfer_started
@@ -432,6 +442,15 @@ def solve_model_pyomo(data, model_config, solver_config):
             }
             versions = {"pyomo": version("pyomo"), "gurobipy": version("gurobipy")}
             counters = {"nodes": native.NodeCount, "lp_iterations": native.IterCount}
+            if root_experiment is not None:
+                for key, expected in root_experiment["options"].items():
+                    value = native.getParamInfo(key)[2]
+                    if value != expected:
+                        raise ValueError("Gurobi root experiment parameter differs: " + key)
+                    effective_options[key] = value
+                counters.update(barrier_iterations=native.BarIterCount, work=native.Work)
+                if effective_options["Method"] == 6:
+                    counters["pdhg_iterations"] = native.PDHGIterCount
         elif selected == "pyscipopt_linear":
             from src.logic.pyomo_scip_adapter import ScipAdapter
 

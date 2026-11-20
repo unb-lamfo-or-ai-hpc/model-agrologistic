@@ -398,8 +398,8 @@ a fixed NoRel work budget. Presolve, cuts and the single MIP search are held
 constant. Records distinguish time to the first incumbent, time to the gap
 target where observed, and completion of independent validation. Effective
 algorithms, including the concurrent winner where logged, are retained with
-memory and Slurm receipts. Three temporal blocks characterize run variation on
-one instance.
+memory and Slurm receipts. Three temporal blocks were planned on one instance. Only the first block was
+submitted; its final outcomes are reported in Results and Appendix C11.
 
 ## HPC experimental environment
 
@@ -631,10 +631,10 @@ requirements.
 
 ## Future work
 
-Completion of the controlled h300 campaign will show whether the observed differences
-in root time, incumbent attainment and memory persist across the temporal blocks. Further
-h400 repetitions and h500 comparisons depend on the measured resource
-requirements and phase timings.
+The controlled h300 campaign is closed with one temporal block. Future work
+should assess repeatability of the method-specific root-time response and
+evaluate strategies that reduce extensive-form memory requirements. Further
+h400 and h500 comparisons require separate protocols and resource qualification.
 
 A separate planning study could test calibrated costs and service
 requirements. That comparison would evaluate how the resulting
