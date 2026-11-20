@@ -1,6 +1,9 @@
 """No solver, license, private data or scheduler is used by these controls."""
 
+import ast
 import importlib.util
+import json
+import math
 import tarfile
 import tempfile
 import types
@@ -16,7 +19,7 @@ c = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(c)
 
 DEFAULTS = {
-    "TimeLimit": 1e100,
+    "TimeLimit": math.inf,
     "Method": -1,
     "Threads": 0,
     "MIPGap": 1e-4,
@@ -26,7 +29,7 @@ DEFAULTS = {
     "Presolve": -1,
     "FeasibilityTol": 1e-6,
     "IntFeasTol": 1e-5,
-    "SoftMemLimit": 1e100,
+    "SoftMemLimit": math.inf,
     "PDHGGPU": -1,
     "OutputFlag": 1,
     "LogFile": "",
@@ -212,6 +215,132 @@ class SourceIntegrity(unittest.TestCase):
                 stream.addfile(member)
             with patch.object(c, "ROOT", root), self.assertRaises(c.CompatibilityError):
                 c.source_inventory(archive, sha, c.digest(archive))
+
+
+class ReceiptEncoding(unittest.TestCase):
+    def test_historical_collection_helper_parses_without_scientific_imports(self):
+        text = (ROOT / "scripts/collect_gurobi14_2278573.sh").read_text()
+        body = text.split("<<'PY'\n", 1)[1].rsplit("\nPY\n", 1)[0]
+        tree = ast.parse(body)
+        modules = {
+            alias.name.split(".")[0]
+            for node in ast.walk(tree) if isinstance(node, ast.Import)
+            for alias in node.names
+        }
+        self.assertTrue(modules.isdisjoint({"gurobipy", "torch", "pyomo", "highspy"}))
+        for forbidden in ("sbatch", "scontrol release", "scancel", "pip install"):
+            self.assertNotIn(forbidden, text)
+
+    def test_default_infinite_memory_is_metadata_and_does_not_set_a_limit(self):
+        model = FakeModel()
+        model.setParam("TimeLimit", 300)
+        audit = c.audit_defaults(model, DEFAULTS)
+        self.assertEqual(audit["parameters"]["SoftMemLimit"], "Infinity")
+        self.assertTrue(math.isinf(model.values["SoftMemLimit"]))
+        self.assertEqual(model.set_calls, [("TimeLimit", 300)])
+        self.assertEqual(json.loads(c.encoded(audit)), audit)
+
+    def test_special_parameter_values_retain_their_meaning(self):
+        for native, expected in ((math.inf, "Infinity"), (-math.inf, "-Infinity"),
+                                 (math.nan, "NaN"), (1e100, 1e100), (-1, -1), ("", "")):
+            with self.subTest(expected=expected):
+                self.assertEqual(c.parameter_record(native), expected)
+
+    def test_failed_encoding_does_not_leave_an_empty_receipt(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "result.json"
+            with self.assertRaises(ValueError):
+                c.publish(path, {"unexpected_nonfinite_statistic": math.inf})
+            self.assertFalse(path.exists())
+
+    def test_publishing_cannot_overwrite_an_original_receipt(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "result.json"
+            original = b"original incomplete evidence"
+            path.write_bytes(original)
+            with self.assertRaises(FileExistsError):
+                c.publish(path, {"replacement": "forbidden"})
+            self.assertEqual(path.read_bytes(), original)
+
+    def test_collection_distinguishes_missing_empty_invalid_and_nonobject_json(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "result.json"
+            self.assertEqual(c.json_receipt_status(path)["status"], "absent_or_linked")
+            for raw, expected in ((b"", "empty"), (b"{", "invalid_json"),
+                                  (b'{"gap":Infinity}', "invalid_json"),
+                                  (b'{"gap":NaN}', "invalid_json"),
+                                  (b"\xff", "invalid_json"), (b"null", "nonobject_json"),
+                                  (b"{}", "valid_json_object")):
+                path.write_bytes(raw)
+                answer = c.json_receipt_status(path)
+                self.assertEqual(answer["status"], expected)
+                self.assertEqual(answer["bytes"], len(raw))
+                self.assertEqual(path.read_bytes(), raw)
+
+    def test_real_receipt_encoding_follows_all_three_fake_native_phases(self):
+        model = FakeModel()
+
+        def original_optimize(native, grb, *, native_phase_hook):
+            for phase in ("native_ready", "optimization", "export_validation"):
+                native_phase_hook(phase, native, grb)
+
+        core = types.SimpleNamespace(_import_gurobi=None, _apply_solver_parameters=None,
+                                     _optimize_scalar=original_optimize)
+        parameter_type = type("Params", (), {name: name for name in DEFAULTS})
+        gp = types.SimpleNamespace(GRB=types.SimpleNamespace(Param=parameter_type),
+                                   Model=lambda *args, **kwargs: model)
+        state = {"models": 0, "optimization_attempts": 0}
+        with tempfile.TemporaryDirectory() as directory:
+            folder = Path(directory)
+            with c.native_binding(core, gp, object(), state,
+                                  lambda name, value: c.publish(folder / name, value)):
+                proxy, grb = core._import_gurobi()
+                native = proxy.Model("public-api-double")
+                core._apply_solver_parameters(native, types.SimpleNamespace(mip_gap=None))
+                core._optimize_scalar(native, grb)
+            self.assertEqual(len(list(folder.glob("*.json"))), 3)
+            self.assertTrue(state["optimization_returned"])
+            self.assertEqual(state["optimization_attempts"], 1)
+            self.assertEqual(json.loads((folder / "native-ready.json").read_bytes())[
+                "parameter_audit"]["parameters"]["SoftMemLimit"], "Infinity")
+            self.assertEqual(model.set_calls, [("TimeLimit", 300)])
+
+
+    def test_terminal_failed_collection_keeps_invalid_originals_and_never_accepts_them(self):
+        for content, expected in ((None, "absent_or_linked"), (b"", "empty"),
+                                  (b"{", "invalid_json"), (b"{}", "valid_json_object")):
+            with self.subTest(status=expected), tempfile.TemporaryDirectory() as directory:
+                base = Path(directory)
+                claim = base / "original-claim"
+                claim.mkdir()
+                (claim / "job-id.txt").write_text("2278573")
+                (claim / "native-ready.json").write_bytes(b"")
+                if content is not None:
+                    (claim / "result.json").write_bytes(content)
+                accounting = types.SimpleNamespace(
+                    stdout="JobIDRaw|State|ElapsedRaw\n2278573|FAILED|78\n"
+                )
+                with (
+                    patch.dict(c.os.environ, {}, clear=True),
+                    patch.object(c, "BASE", base), patch.object(c, "CLAIM", claim),
+                    patch.object(c, "load_plan", return_value={}),
+                    patch.object(c.subprocess, "run", return_value=accounting) as command,
+                ):
+                    report = c.collect("f" * 40)
+                command.assert_called_once()
+                self.assertEqual(command.call_args.args[0][0], "sacct")
+                self.assertEqual(report["native_result_present"], content is not None)
+                self.assertEqual(report["native_result_json_status"]["status"], expected)
+                target = Path(report["transfer_dir"])
+                review = json.loads((target / "collection-review.json").read_bytes())
+                self.assertEqual(review["compatibility_verdict"], "pending_original_receipt_review")
+                self.assertIsNone(review["receipt_hashes_verified"])
+                self.assertEqual(review["json_receipts"]["native-ready.json"]["status"], "empty")
+                self.assertFalse((claim / "SHA256SUMS").exists())
+                if content is not None:
+                    self.assertEqual((claim / "result.json").read_bytes(), content)
+                    self.assertEqual((target / "result.json").read_bytes(), content)
+                self.assertTrue((target / "TRANSFER_SHA256SUMS").is_file())
 
 
 if __name__ == "__main__":

@@ -1,8 +1,10 @@
 # Single h215 DET/W compatibility test: Gurobi 14
 
-Status on 20 November 2026: execution prepared, not submitted. PR160 remains Draft.
-The environment clone is reported verified; license acceptance and the real
-optimization are not yet tested. The researcher requires CLI authorization.
+Status on 20 November 2026: the authorized job2278573 failed during receipt
+serialization before optimize entry. Its original archive is locally audited.
+See the [failure analysis and prospective correction](gurobi14_h215_2278573_failure_analysis.md).
+The historical execution source and claim remain preserved. PR160 remains Draft;
+this repair does not authorize another job or modification of the shared prefix.
 
 ## Purpose and fixed scope
 
@@ -19,6 +21,13 @@ parameter is compared with its native default before optimization and after retu
 Any additional nondefault parameter stops the test. The queried default MIPGap
 is copied into the result configuration for accurate description, not assigned
 as a native option. There is no tuning or performance comparison with Gurobi13.
+
+Nonfinite parameter defaults are represented explicitly as strings in the JSON
+audit (for example SoftMemLimit="Infinity"). This is a metadata representation,
+not a native parameter assignment. Numeric solution statistics retain the existing
+finite/null policy. JSON is encoded before exclusive file creation, preserving
+originals and avoiding empty receipts on serialization failure. Collection reports
+JSON integrity separately from file existence and scheduler termination.
 
 ## Reuse and ownership
 
@@ -106,6 +115,12 @@ Keep full local receipts in custody. They may include installation paths, instan
 validation details and the designated license identity. GitHub receives a redacted
 summary and hashes after review, not private inputs, solution vectors, credentials
 or unrestricted logs. The clone itself is never recreated by this launcher.
+
+The shared prefix was subsequently expanded from69 to106 distributions by the
+other project's authorized installation. The original guard still requires its
+exact frozen baseline. A prospective environment identity requires separate review;
+do not overwrite the original clone ledger, alter the shared environment, relax
+the guard or reuse the consumed compatibility claim to enable a repeat.
 
 ## Verification before the CLI handoff
 

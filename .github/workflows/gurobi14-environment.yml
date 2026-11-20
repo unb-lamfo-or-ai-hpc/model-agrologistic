@@ -4,6 +4,7 @@ on:
     paths:
       - scripts/npad_gurobi14_clone.sh
       - scripts/gurobi14_h215_compat.py
+      - scripts/collect_gurobi14_2278573.sh
       - scripts/npad_gurobi14_h215_compat.sh
       - tests/test_gurobi14_environment_preparation.py
       - tests/test_gurobi14_h215_compat.py
@@ -31,6 +32,7 @@ jobs:
         run: |
           bash -n scripts/npad_gurobi14_clone.sh
           bash -n scripts/npad_gurobi14_h215_compat.sh
+          bash -n scripts/collect_gurobi14_2278573.sh
       - name: Test controls without Gurobi or solver installation
         run: python -B -m unittest discover -s tests -p 'test_gurobi14*.py' -v
       - name: Verify retained mathematical and validation sources are unchanged

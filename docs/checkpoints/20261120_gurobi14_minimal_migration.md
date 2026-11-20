@@ -1,5 +1,31 @@
 # Gurobi14 compatibility checkpoint — 20 November 2026
 
+## Original failure audited; recording correction prepared
+
+Job2278573 is FAILED1:0 in78s. Its final archive SHA-256
+`a79e0872b4d5bcede1f7094a02096dba8ba917598f13d503cfc0dae8f5f50988`
+and sidecar match locally; all37 transfer-manifest entries and15 nested official
+entries verify. The original native-ready.json and result.json are empty. Native
+optimization-entry/return, validation and worker-ledger receipts are absent.
+See the [failure analysis](../gurobi14_h215_2278573_failure_analysis.md).
+
+The identified defect is JSON recording of nonfinite parameter metadata after
+opening the receipt file; the failure sequence reproduces with the exact old
+controller and documented SoftMemLimit infinite default using API doubles only.
+Prospective corrections preserve parameter semantics, serialize before file
+creation, protect originals and report invalid/empty collected JSON explicitly.
+Tests now cover actual JSON publication of all phase records with infinite defaults.
+The old source72fd9f52 and consumed claim are untouched; no rerun is authorized.
+
+The current shared prefix contains106 distributions against the frozen69, with37
+additions and no changes to existing versions. This does not establish the job-start
+inventory. The exact original environment guard remains active; a new execution
+baseline is a separate decision, not an automatic acceptance of the shared changes.
+Operational adoption remains unqualified because optimize never began. No new job,
+optimizer, WLS session, shared-environment modification, manuscript change or merge
+is performed. PR160 remains Draft. Earlier PENDING and qualification-pending
+statements below are historical and superseded by this section.
+
 ## Operator update: submitted job and partial array accounting
 
 The researcher authorized and submitted exactly one compatibility job, **2278573**,

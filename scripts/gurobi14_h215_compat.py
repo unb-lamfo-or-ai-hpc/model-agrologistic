@@ -115,12 +115,45 @@ def encoded(value):
 
 
 def publish(path, value):
+    # A serialization error must not create an empty, misleading receipt.
+    raw = encoded(value)
     with Path(path).open("xb") as stream:
-        stream.write(encoded(value))
+        stream.write(raw)
 
 
 def read(path):
     return json.loads(Path(path).read_bytes())
+
+
+def parameter_record(value):
+    """Represent nonfinite parameter metadata explicitly, without setting a parameter."""
+    if isinstance(value, float) and not math.isfinite(value):
+        if math.isnan(value):
+            return "NaN"
+        return "Infinity" if value > 0 else "-Infinity"
+    return value
+
+
+def json_receipt_status(path):
+    """Describe incomplete original JSON without modifying it or treating it as accepted."""
+    path = Path(path)
+    if not path.is_file() or path.is_symlink():
+        return {"status": "absent_or_linked", "bytes": None}
+    raw = path.read_bytes()
+    answer = {"bytes": len(raw), "sha256": hashlib.sha256(raw).hexdigest()}
+    if not raw:
+        return {**answer, "status": "empty"}
+    def reject_constant(_value):
+        raise ValueError("nonstandard_json_number")
+
+    try:
+        value = json.loads(raw, parse_constant=reject_constant)
+    except (ValueError, UnicodeDecodeError):
+        return {**answer, "status": "invalid_json"}
+    return {
+        **answer,
+        "status": "valid_json_object" if isinstance(value, dict) else "nonobject_json",
+    }
 
 
 def audit_defaults(model, parameter_names):
@@ -135,7 +168,7 @@ def audit_defaults(model, parameter_names):
         if info[2] != info[5]:
             changed.append(name)
         if name in DISPLAY_PARAMS:
-            displayed[name] = info[2]
+            displayed[name] = parameter_record(info[2])
     require(checked >= len(DISPLAY_PARAMS), "parameter_audit_incomplete")
     require(changed == ["TimeLimit"], "unexpected_nondefault_parameter")
     require(model.getParamInfo("TimeLimit")[2] == 300, "incorrect_native_time_limit")
@@ -743,6 +776,13 @@ def collect(source_sha):
         {
             "receipt_hashes_verified": verified,
             "compatibility_verdict": "pending_original_receipt_review",
+            "json_receipts": {
+                name: json_receipt_status(target / name)
+                for name in (
+                    "result.json", "native-ready.json", "optimization-entry.json",
+                    "native-return.json", "independent-validation.json",
+                )
+            },
         },
     )
     files = [p for p in target.iterdir() if p.is_file()]
@@ -755,6 +795,7 @@ def collect(source_sha):
         "job_id": job,
         "scheduler_root_state": root[0][1],
         "native_result_present": (target / "result.json").is_file(),
+        "native_result_json_status": json_receipt_status(target / "result.json"),
     }
 
 
