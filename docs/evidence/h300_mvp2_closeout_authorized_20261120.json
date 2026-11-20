@@ -1,0 +1,94 @@
+{
+  "date": "2026-11-20",
+  "timezone": "America/Sao_Paulo",
+  "decision": "Researcher requests cancelling remaining array2252608 and complete MVP2 evidence consolidation",
+  "array_job": "2252608",
+  "original_source": "9d43c963ed53b968e2e6c508de8dc06ed7e6693a",
+  "original_plan_sha256": "de528d6ac5f15ecc4be37a6540d0d1159e2e6990049c25a574eb21567de60f32",
+  "claim": "/home/vrrcelestino/model-agrologistic-hygiene-audit/.mvp2-h300-gurobi-root-cpu-v2",
+  "cancellation_authorized": true,
+  "cancellation_execution_reported": true,
+  "final_collection_received": true,
+  "blocks_2_and_3_follow_on_authorization": false,
+  "do_not_cancel_job": "2278573",
+  "mvp3_development": "Deferred while closing MVP2; existing compatibility job may finish",
+  "destination_pr": 157,
+  "destination_state": "open Draft verified before documentation update",
+  "collector_sha256": "88165be470064564a16cf54aa17758fd676a27d4f385f2743c87c66a09c9c22d",
+  "archive_scope": "All regular files in original claim, including available vectors; private custody, no raw data publication",
+  "originals_modified": false,
+  "local_control_tests": {
+    "passed": 9,
+    "failures": 0,
+    "skipped": 0,
+    "ruff": "passed",
+    "solver_calls": 0,
+    "scheduler_calls": 0
+  },
+  "merges": 0,
+  "handoff_preparation": "Later upon researcher request, after compatibility and methodological-plan completion",
+  "cancellation_evidence_scope": "Two operator-pasted NPAD outputs inspected locally; no agent cluster access",
+  "terminal_counts": {
+    "COMPLETED": 49,
+    "FAILED": 7,
+    "CANCELLED": 4
+  },
+  "cancelled_tasks": [
+    56,
+    57,
+    58,
+    59
+  ],
+  "cancelled_task_56": {
+    "root_state": "CANCELLED by 1271",
+    "root_exit_code": "0:0",
+    "worker_step_state": "CANCELLED",
+    "worker_step_exit_code": "0:15"
+  },
+  "unstarted_cancelled_range_as_reported": "2252608_[57-59%1]",
+  "original_cli_receipt_directory": "/home/vrrcelestino/model-agrologistic-hygiene-audit/mvp2-h300-closeout-cli-VtxzVRUE",
+  "failed_collection": {
+    "collector_sha256": "12895faddb81bd765ba58436b6391d8421214e26d0e29e3ca4cbf738254ad906",
+    "operator_hash_check": "SUCESSO",
+    "error": "Coleta final ainda indisponível. Tarefas faltantes ou ativas: [57, 58, 59]",
+    "diagnosis": "Collector did not request sacct --array and skipped the grouped cancellation row; not evidence of active tasks",
+    "archive_created": false
+  },
+  "repair": "Use version-compatible sacct query without --array; request full bit strings and decode explicit bounded task ranges with original grouped-row provenance",
+  "operator_attachment_sha256": [
+    {
+      "bytes": 10785,
+      "sha256": "ac7e7f0a3b55d7293342214df1f757c9271f33ef946cab584bcaa76231592af1"
+    },
+    {
+      "bytes": 18305,
+      "sha256": "e5964fab94666a60ba8406cb70bebe0edc2ea0f29e7bc72ff14a1a74280b78d0"
+    }
+  ],
+  "previous_collection_attempts": [
+    {
+      "collector_sha256": "12895faddb81bd765ba58436b6391d8421214e26d0e29e3ca4cbf738254ad906",
+      "operator_hash_check": "SUCESSO",
+      "error": "Coleta final ainda indisponível. Tarefas faltantes ou ativas: [57, 58, 59]",
+      "diagnosis": "Collector did not request sacct --array and skipped the grouped cancellation row; not evidence of active tasks",
+      "archive_created": false
+    },
+    {
+      "collector_sha256": "5b05d1fb7fc9c99cd157744fe1246d3729bb6fb7bfe02e4ad9998388dc14ea73",
+      "cli_directory": "/home/vrrcelestino/model-agrologistic-hygiene-audit/mvp2-h300-closeout-recollect-01T1N0cO",
+      "command_failed": "sacct --array",
+      "operator_error": "sacct: unrecognized option '--array'",
+      "collector_executed": false
+    }
+  ],
+  "shared_environment_note": "Researcher clarifies gurobipy version restriction concern is CFL-GNN shared-environment compatibility, independent of collection; no package/project dependency changed here.",
+  "final_archive_sha256": "92491a1489c11c3267c30109d90e81cff4c4553a76d3a67b3d542188574a6ff0",
+  "final_integrity": "14 transfer files and1763 inventory members locally verified",
+  "scientific_outcomes": {
+    "accepted": 33,
+    "time_limit": 9,
+    "native_soft_memory": 7,
+    "job_guard": 7,
+    "cancelled": 4
+  }
+}

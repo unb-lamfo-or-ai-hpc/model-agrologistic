@@ -1,0 +1,1411 @@
+{
+  "source": "NPAD operator readback provided 2026-11-16",
+  "source_commit": "9d43c963ed53b968e2e6c508de8dc06ed7e6693a",
+  "readback_sha256": "eed37c311abd3e54e5148fcf5da3440be6878926fb07e7258a51fe4eecbb1912",
+  "array_snapshot": {
+    "array": "2252608",
+    "plan_sha256": "de528d6ac5f15ecc4be37a6540d0d1159e2e6990049c25a574eb21567de60f32",
+    "accounting": [
+      "2252608_0|COMPLETED|0:0|02:12:02",
+      "2252608_1|COMPLETED|0:0|08:38:47",
+      "2252608_2|COMPLETED|0:0|01:52:23",
+      "2252608_3|COMPLETED|0:0|03:04:11",
+      "2252608_4|COMPLETED|0:0|02:11:37",
+      "2252608_5|COMPLETED|0:0|08:38:01",
+      "2252608_6|FAILED|1:0|00:51:47",
+      "2252608_7|COMPLETED|0:0|01:42:52",
+      "2252608_8|COMPLETED|0:0|01:50:33",
+      "2252608_9|COMPLETED|0:0|01:51:22",
+      "2252608_10|COMPLETED|0:0|02:13:43",
+      "2252608_11|COMPLETED|0:0|01:35:54",
+      "2252608_12|COMPLETED|0:0|08:37:40",
+      "2252608_13|COMPLETED|0:0|01:53:02",
+      "2252608_14|COMPLETED|0:0|08:37:01",
+      "2252608_15|COMPLETED|0:0|02:00:19",
+      "2252608_16|COMPLETED|0:0|08:37:41",
+      "2252608_17|FAILED|1:0|00:51:35",
+      "2252608_18|COMPLETED|0:0|02:41:25",
+      "2252608_19|FAILED|1:0|00:51:25",
+      "2252608_20|COMPLETED|0:0|01:38:29",
+      "2252608_21|FAILED|1:0|00:51:35",
+      "2252608_22|COMPLETED|0:0|02:46:05",
+      "2252608_23|COMPLETED|0:0|03:04:04",
+      "2252608_24|FAILED|1:0|00:48:30",
+      "2252608_25|COMPLETED|0:0|01:30:36",
+      "2252608_26|COMPLETED|0:0|02:19:14",
+      "2252608_27|COMPLETED|0:0|05:59:12",
+      "2252608_28|RUNNING|0:0|00:32:22",
+      "2252608_[29-59%1]|PENDING|0:0|00:00:00"
+    ]
+  },
+  "observations": [
+    {
+      "job": "2252608_0",
+      "method": 2,
+      "profile": "heuristics_off",
+      "threads": 8,
+      "status": "Error return",
+      "slurm": [
+        "COMPLETED",
+        "0:0",
+        "02:12:02"
+      ],
+      "native_log_seconds": 5632.06,
+      "root_log_seconds": 4171.46,
+      "bnb_nodes": 17,
+      "memory": {
+        "peak_bytes": 164615962624,
+        "guard_triggered": false,
+        "oom_kill_delta": 0,
+        "failcnt_delta": 0
+      },
+      "summary": {
+        "status": "error",
+        "objective_value": null,
+        "objective_bound": null,
+        "mip_gap": null,
+        "economic_cost": null,
+        "runtime_seconds": 7675.830793692032,
+        "end_to_end_seconds": 7736.996506525204,
+        "independent_validation_status": "rejected"
+      },
+      "validation": "rejected",
+      "root_events": [
+        "Warning: Model contains large matrix coefficients",
+        "Presolve time: 352.61s",
+        "Presolved: 856009 rows, 23263756 columns, 89013095 nonzeros",
+        "Crossover time: 598.58 seconds (198.08 work units)",
+        "Root relaxation: objective 9.288720e+12, 23425930 iterations, 4171.46 seconds (2977.15 work units)",
+        "Explored 17 nodes (23505260 simplex iterations) in 5632.06 seconds (3867.04 work units)"
+      ],
+      "receipt_hashes": {
+        "summary": "1487f90d6c9b6462532ad9a819467300cca6df515e33ba75da4c47f51ba7a693",
+        "validation": "2b85a2c5a08cb01234d0e606796a67b0c158f265a40f6af40dc685411634130c",
+        "memory": "9d24f0d2d9aee137bd764ef4c32e765d6af9bfd6e2c2bf8a8a7a698116f4a15c",
+        "runtime": "fb0d2b8f8721f7616284170d2cae4811e03b6e7d6eabd0cec139ed5b3a16ca5a",
+        "case": "ed752eb14dcd0f9d29ba1135a31236de994eb78050835aeaf1e9a0a112bc7879",
+        "log": "da297f5331b416f255586bfb28ac252105f779d57a345394e3def55334857b52"
+      }
+    },
+    {
+      "job": "2252608_1",
+      "method": 6,
+      "profile": "standard",
+      "threads": 1,
+      "status": "Time limit",
+      "slurm": [
+        "COMPLETED",
+        "0:0",
+        "08:38:47"
+      ],
+      "native_log_seconds": 28815.47,
+      "root_log_seconds": 28386.19,
+      "bnb_nodes": 1,
+      "memory": {
+        "peak_bytes": 76165373952,
+        "guard_triggered": false,
+        "oom_kill_delta": 0,
+        "failcnt_delta": 0
+      },
+      "summary": {
+        "status": "time_limit",
+        "objective_value": null,
+        "objective_bound": -316392073990.60236,
+        "mip_gap": null,
+        "economic_cost": null,
+        "runtime_seconds": 30884.747197959106,
+        "end_to_end_seconds": 30943.784310981864,
+        "independent_validation_status": "rejected"
+      },
+      "validation": "rejected",
+      "root_events": [
+        "Warning: Model contains large matrix coefficients",
+        "Presolve time: 352.19s",
+        "Presolved: 856009 rows, 23263756 columns, 89013095 nonzeros",
+        "Root relaxation: time limit, 0 iterations, 28386.19 seconds (51392.46 work units)",
+        "Explored 1 nodes (0 simplex iterations) in 28815.47 seconds (51931.90 work units)"
+      ],
+      "receipt_hashes": {
+        "summary": "e2117c069d205c8b72c42ff240264591945990efd76037e2bdfcc62d6d69d699",
+        "validation": "f3202a1a988d5493157c1ae899d1e63a140e7cef57f3231394de371a37d736ee",
+        "memory": "a2a862c3bd324d8fba112ecd2c6f53bddd0e6ed43ced2ecafc8ba59ec83b4077",
+        "runtime": "7330a789ca6eed99b05da5959db06ab12683b4bba66244d307b9be620d3168f8",
+        "case": "416497c4ee2c152383d1694012781cf817a738c81d24e410c07c9aaec2579c49",
+        "log": "586cae26e67537c73ebbd12a9aa1492f5576d321d716702fe9ac9ab2eeb1972c"
+      }
+    },
+    {
+      "job": "2252608_2",
+      "method": 4,
+      "profile": "standard",
+      "threads": 8,
+      "status": "Validated",
+      "slurm": [
+        "COMPLETED",
+        "0:0",
+        "01:52:23"
+      ],
+      "native_log_seconds": 3915.33,
+      "root_log_seconds": 2849.37,
+      "bnb_nodes": 1,
+      "memory": {
+        "peak_bytes": 108873805824,
+        "guard_triggered": false,
+        "oom_kill_delta": 0,
+        "failcnt_delta": 0
+      },
+      "summary": {
+        "status": "optimal",
+        "objective_value": 9289108634158.754,
+        "objective_bound": 9288725890686.93,
+        "mip_gap": 4.120346600498994e-05,
+        "economic_cost": 385502284842.8588,
+        "runtime_seconds": 5991.159320465988,
+        "end_to_end_seconds": 6558.665369933005,
+        "independent_validation_status": "accepted"
+      },
+      "validation": "accepted",
+      "root_events": [
+        "Warning: Model contains large matrix coefficients",
+        "Presolve time: 349.56s",
+        "Presolved: 856009 rows, 23263756 columns, 89013095 nonzeros",
+        "Solved with dual simplex",
+        "Root relaxation: objective 9.288720e+12, 3357297 iterations, 2849.37 seconds (1365.89 work units)",
+        "H    0     0                    9.391144e+12 9.2887e+12  1.09%     - 3346s",
+        "H    0     0                    9.289109e+12 9.2887e+12  0.00%     - 3911s",
+        "Explored 1 nodes (3374429 simplex iterations) in 3915.33 seconds (2087.76 work units)",
+        "Warning: max constraint violation (5.4188e-09) exceeds tolerance"
+      ],
+      "receipt_hashes": {
+        "summary": "e222d944c8b02ff18be090662b812faf5f3affb4d76244de61c4732fbe9889ed",
+        "validation": "fb8f8bc789b4aa058c2479a7b54320375d92789976f59dcca9a2eb4f8b4a3d8d",
+        "memory": "f43f451f594d265f725a5ffea910e8849a78abc39e9ec6667428bc04b10b5c91",
+        "runtime": "72ef1a88a346eaeacfb78e8c9a53bf450cb6fa0ae742843e03965d27126aaa32",
+        "case": "291984928ee4eaec799c7db1daeacc599b57f00c3a7a2441cb34e5dfe7f8386b",
+        "log": "26ca49d02cf15f2d289999977cb5bea36b2e64f845cb6edc676fe4dd10e65fda"
+      }
+    },
+    {
+      "job": "2252608_3",
+      "method": 2,
+      "profile": "standard",
+      "threads": 1,
+      "status": "Validated",
+      "slurm": [
+        "COMPLETED",
+        "0:0",
+        "03:04:11"
+      ],
+      "native_log_seconds": 8268.83,
+      "root_log_seconds": 7337.19,
+      "bnb_nodes": 1,
+      "memory": {
+        "peak_bytes": 79972446208,
+        "guard_triggered": false,
+        "oom_kill_delta": 0,
+        "failcnt_delta": 0
+      },
+      "summary": {
+        "status": "optimal",
+        "objective_value": 9289108634158.754,
+        "objective_bound": 9288725745227.936,
+        "mip_gap": 4.1219125095637855e-05,
+        "economic_cost": 385502284842.8588,
+        "runtime_seconds": 10324.073068555212,
+        "end_to_end_seconds": 10866.889388293028,
+        "independent_validation_status": "accepted"
+      },
+      "validation": "accepted",
+      "root_events": [
+        "Warning: Model contains large matrix coefficients",
+        "Presolve time: 363.48s",
+        "Presolved: 856009 rows, 23263756 columns, 89013095 nonzeros",
+        "Crossover time: 534.57 seconds (204.55 work units)",
+        "Root relaxation: objective 9.288720e+12, 23425913 iterations, 7337.19 seconds (4837.52 work units)",
+        "H    0     0                    9.391144e+12 9.2887e+12  1.09%     - 7846s",
+        "H    0     0                    9.289109e+12 9.2887e+12  0.00%     - 8265s",
+        "Explored 1 nodes (23436816 simplex iterations) in 8268.83 seconds (5561.31 work units)",
+        "Warning: max constraint violation (2.6075e-09) exceeds tolerance"
+      ],
+      "receipt_hashes": {
+        "summary": "83847d57baf24f1841bc247c52b3ffd4576af05421d2ab88954c6a2b0fc74529",
+        "validation": "2370ef30c1e1bc32c4000947229ac44bdfafcf2874c001683eccbb2e95843cfd",
+        "memory": "5252ffa3fdb59bd747c59a0f293a80204b2afe1b9e3f07b73d2e91de53520c7c",
+        "runtime": "86aa209250155a2c0eca8123896f24bc0076a0b36a418998bc7754753513c632",
+        "case": "8b4ee8d8e5ee0f2c3f817e1295f1ca4c80df38c91f71610a9f74d9f776262c41",
+        "log": "babeb0217021a3ff37c7f7bea4da6ddc4d9e96519a88a2d9f6904ae99d595e11"
+      }
+    },
+    {
+      "job": "2252608_4",
+      "method": 2,
+      "profile": "standard",
+      "threads": 8,
+      "status": "Validated",
+      "slurm": [
+        "COMPLETED",
+        "0:0",
+        "02:11:37"
+      ],
+      "native_log_seconds": 5118.53,
+      "root_log_seconds": 4104.7,
+      "bnb_nodes": 1,
+      "memory": {
+        "peak_bytes": 91475828736,
+        "guard_triggered": false,
+        "oom_kill_delta": 0,
+        "failcnt_delta": 0
+      },
+      "summary": {
+        "status": "optimal",
+        "objective_value": 9289108634158.754,
+        "objective_bound": 9288725642931.486,
+        "mip_gap": 4.1230137610750726e-05,
+        "economic_cost": 385502284842.8588,
+        "runtime_seconds": 7162.700226219138,
+        "end_to_end_seconds": 7717.041850273032,
+        "independent_validation_status": "accepted"
+      },
+      "validation": "accepted",
+      "root_events": [
+        "Warning: Model contains large matrix coefficients",
+        "Presolve time: 344.88s",
+        "Presolved: 856009 rows, 23263756 columns, 89013095 nonzeros",
+        "Crossover time: 633.36 seconds (211.65 work units)",
+        "Root relaxation: objective 9.288720e+12, 23439200 iterations, 4104.70 seconds (2883.30 work units)",
+        "H    0     0                    9.391144e+12 9.2887e+12  1.09%     - 4596s",
+        "H    0     0                    9.289109e+12 9.2887e+12  0.00%     - 5114s",
+        "Explored 1 nodes (23450453 simplex iterations) in 5118.53 seconds (3591.38 work units)",
+        "Warning: max constraint violation (5.4188e-09) exceeds tolerance"
+      ],
+      "receipt_hashes": {
+        "summary": "b097232c3d608d39ae67bf79dcc209aec74b31a373b9849a760637335616a4c1",
+        "validation": "9aa5d968ce47b1ac533f31928df60eb95bc93faf920f816259bdb19f166f9341",
+        "memory": "e3cdb06221b9886db516ec632d8c11191f06d8855d7ff568426bb4b39e9fdca2",
+        "runtime": "ae03fa4f7f237b4bdf4fceba1272279ade7abd91bba2587e065f93323f505760",
+        "case": "0e2d5376ea4956c04c91a065b2f3b77b42920f84af278e55ca2ec15de402e0ee",
+        "log": "16af58e3a7151871642f2f3896cb4ae1ea92831371636dfcd22f4e7a3ccfe337"
+      }
+    },
+    {
+      "job": "2252608_5",
+      "method": 6,
+      "profile": "heuristics_off",
+      "threads": 2,
+      "status": "Time limit",
+      "slurm": [
+        "COMPLETED",
+        "0:0",
+        "08:38:01"
+      ],
+      "native_log_seconds": 28810.32,
+      "root_log_seconds": 28456.46,
+      "bnb_nodes": 1,
+      "memory": {
+        "peak_bytes": 74932666368,
+        "guard_triggered": false,
+        "oom_kill_delta": 0,
+        "failcnt_delta": 0
+      },
+      "summary": {
+        "status": "time_limit",
+        "objective_value": null,
+        "objective_bound": -316392073990.60236,
+        "mip_gap": null,
+        "economic_cost": null,
+        "runtime_seconds": 30871.5625884349,
+        "end_to_end_seconds": 30922.957555835834,
+        "independent_validation_status": "rejected"
+      },
+      "validation": "rejected",
+      "root_events": [
+        "Warning: Model contains large matrix coefficients",
+        "Presolve time: 340.58s",
+        "Presolved: 856009 rows, 23263756 columns, 89013095 nonzeros",
+        "Root relaxation: time limit, 0 iterations, 28456.46 seconds (41714.47 work units)",
+        "Explored 1 nodes (0 simplex iterations) in 28810.32 seconds (42229.23 work units)"
+      ],
+      "receipt_hashes": {
+        "summary": "b2f777a5a50df35bc40849b8fe5feb8719eebe536dff1e6e7777e62242af4a0d",
+        "validation": "45ad856d01009f378685e866823947c7d201c79e2bf84a2628da2afebb006ea1",
+        "memory": "5b91da261e5cca97a1ed18fd11f98077341199b14a3fa6758c1a9b20ae63f933",
+        "runtime": "2c14b5d58752ba9b5448448b357a331e88cea3a6e882d961fe46f17d24e6cf8b",
+        "case": "3617f62bda74c0581c2a9544fb9487aa49d683f5dd152b69305650dea82809ff",
+        "log": "a10710527ce796142b63cce05640006efadd22bfb87477a081de5b13dede938e"
+      }
+    },
+    {
+      "job": "2252608_6",
+      "method": 4,
+      "profile": "norel",
+      "threads": 8,
+      "status": "Guard stop",
+      "slurm": [
+        "FAILED",
+        "1:0",
+        "00:51:47"
+      ],
+      "native_log_seconds": null,
+      "root_log_seconds": null,
+      "bnb_nodes": null,
+      "memory": {
+        "peak_bytes": 186183585792,
+        "guard_triggered": true,
+        "oom_kill_delta": 0,
+        "failcnt_delta": 0
+      },
+      "summary": {
+        "status": null,
+        "objective_value": null,
+        "objective_bound": null,
+        "mip_gap": null,
+        "economic_cost": null,
+        "runtime_seconds": null,
+        "end_to_end_seconds": null,
+        "independent_validation_status": null
+      },
+      "validation": null,
+      "root_events": [
+        "Warning: Model contains large matrix coefficients",
+        "Presolve time: 343.28s",
+        "Presolved: 856009 rows, 23263756 columns, 89013095 nonzeros"
+      ],
+      "receipt_hashes": {
+        "summary": null,
+        "validation": null,
+        "memory": "d262b8dcd04dc56ac704dde42c43f5988a502f9075001a926c95d088dac4fa2c",
+        "runtime": "aaa9076947409b8a2c1f3f983e7819f7908b24353af1261b47562696a17b0a7c",
+        "case": null,
+        "log": "afe4cf372af6134d26e3cc2e38f29e483e8133712eed7c28de4c2d411b01c709"
+      }
+    },
+    {
+      "job": "2252608_7",
+      "method": 4,
+      "profile": "standard",
+      "threads": 4,
+      "status": "Validated",
+      "slurm": [
+        "COMPLETED",
+        "0:0",
+        "01:42:52"
+      ],
+      "native_log_seconds": 3303.71,
+      "root_log_seconds": 2262.7,
+      "bnb_nodes": 1,
+      "memory": {
+        "peak_bytes": 95888285696,
+        "guard_triggered": false,
+        "oom_kill_delta": 0,
+        "failcnt_delta": 0
+      },
+      "summary": {
+        "status": "optimal",
+        "objective_value": 9289108634158.756,
+        "objective_bound": 9288725916082.922,
+        "mip_gap": 4.1200732051579056e-05,
+        "economic_cost": 385502284842.85986,
+        "runtime_seconds": 5409.284769103862,
+        "end_to_end_seconds": 5988.760010472499,
+        "independent_validation_status": "accepted"
+      },
+      "validation": "accepted",
+      "root_events": [
+        "Warning: Model contains large matrix coefficients",
+        "Presolve time: 346.28s",
+        "Presolved: 856009 rows, 23263756 columns, 89013095 nonzeros",
+        "Solved with dual simplex",
+        "Root relaxation: objective 9.288720e+12, 3351460 iterations, 2262.70 seconds (1339.62 work units)",
+        "H    0     0                    9.391144e+12 9.2887e+12  1.09%     - 2749s",
+        "H    0     0                    9.289109e+12 9.2887e+12  0.00%     - 3299s",
+        "Explored 1 nodes (3359576 simplex iterations) in 3303.71 seconds (2062.03 work units)",
+        "Warning: max constraint violation (3.9436e-09) exceeds tolerance"
+      ],
+      "receipt_hashes": {
+        "summary": "a8a5da8aaf881213812b6be3a1926dde152cfd4d14588aa5a5ece8bc58dcfac5",
+        "validation": "6a3c4a129bdeca119e0c2f4866af9f0c4603e860d4d4d3dc8664c1c79475e16b",
+        "memory": "e279006f2506c164f094e3faf03ea3c5bc77713d581278e3b093ad7cfeb86a13",
+        "runtime": "7811dbbfeb395bb8549ee8ce95ad603c41277c23def86ec20e2bc21e2a314436",
+        "case": "fb1a2ce06bb969522e33ca24e3f07b92e3f5c34e5f711e0e495526b40fe0da34",
+        "log": "243a1025d444bd200d599e01d4f77423e20ff8aa9e2834710ecee1fb3bbbe9c3"
+      }
+    },
+    {
+      "job": "2252608_8",
+      "method": 4,
+      "profile": "heuristics_off",
+      "threads": 4,
+      "status": "Validated",
+      "slurm": [
+        "COMPLETED",
+        "0:0",
+        "01:50:33"
+      ],
+      "native_log_seconds": 3785.86,
+      "root_log_seconds": 2394.93,
+      "bnb_nodes": 39,
+      "memory": {
+        "peak_bytes": 120457744384,
+        "guard_triggered": false,
+        "oom_kill_delta": 0,
+        "failcnt_delta": 0
+      },
+      "summary": {
+        "status": "optimal",
+        "objective_value": 9288940272214.766,
+        "objective_bound": 9288814877453.254,
+        "mip_gap": 1.3499361373525209e-05,
+        "economic_cost": 385450228253.2662,
+        "runtime_seconds": 5867.926617925055,
+        "end_to_end_seconds": 6450.689971704967,
+        "independent_validation_status": "accepted"
+      },
+      "validation": "accepted",
+      "root_events": [
+        "Warning: Model contains large matrix coefficients",
+        "Presolve time: 336.84s",
+        "Presolved: 856009 rows, 23263756 columns, 89013095 nonzeros",
+        "Solved with dual simplex",
+        "Root relaxation: objective 9.288720e+12, 3351460 iterations, 2394.93 seconds (1339.62 work units)",
+        "*   35    38               8    9.288940e+12 9.2888e+12  0.00%  2644 3780s",
+        "Explored 39 nodes (3488195 simplex iterations) in 3785.86 seconds (2311.70 work units)",
+        "Warning: max constraint violation (6.3328e-09) exceeds tolerance"
+      ],
+      "receipt_hashes": {
+        "summary": "810ab0f1f73a76e8818394b0c72214b321599fbdab5c8bf5d44c5e924c272fc4",
+        "validation": "def434029658752ac45cd4e95ea125d2965c159a9e0fc5e9b6e1f90ab67dd1d5",
+        "memory": "5f5cd347051ae3ee46eb58aa54987d040d0ce41a06086df4c751180330da2210",
+        "runtime": "7f1af5e5a625606fabdb71593bb8938a989b8869df95aaee70ab419d875c18c0",
+        "case": "4048ba63f56adaa8aa16577755f4af405b47cfd2d3c5c10c7f20c5cfd7853824",
+        "log": "c86f8199d48d32bc6ba2cca1ea82cf25e74c04f4c58cde6e0bad2917703afb62"
+      }
+    },
+    {
+      "job": "2252608_9",
+      "method": 4,
+      "profile": "heuristics_off",
+      "threads": 8,
+      "status": "Error return",
+      "slurm": [
+        "COMPLETED",
+        "0:0",
+        "01:51:22"
+      ],
+      "native_log_seconds": 4353.62,
+      "root_log_seconds": 2886.31,
+      "bnb_nodes": 28,
+      "memory": {
+        "peak_bytes": 165782577152,
+        "guard_triggered": false,
+        "oom_kill_delta": 0,
+        "failcnt_delta": 0
+      },
+      "summary": {
+        "status": "error",
+        "objective_value": null,
+        "objective_bound": null,
+        "mip_gap": null,
+        "economic_cost": null,
+        "runtime_seconds": 6468.331551856361,
+        "end_to_end_seconds": 6519.653871802613,
+        "independent_validation_status": "rejected"
+      },
+      "validation": "rejected",
+      "root_events": [
+        "Warning: Model contains large matrix coefficients",
+        "Presolve time: 355.69s",
+        "Presolved: 856009 rows, 23263756 columns, 89013095 nonzeros",
+        "Solved with dual simplex",
+        "Root relaxation: objective 9.288720e+12, 3357297 iterations, 2886.31 seconds (1365.89 work units)",
+        "Explored 28 nodes (3475405 simplex iterations) in 4353.62 seconds (2266.64 work units)"
+      ],
+      "receipt_hashes": {
+        "summary": "16f417c0ec450d0686f8fdbfb5c20e5d3dc4423399a1de62ae4450b4288dcbf4",
+        "validation": "e4c9ee99367fef5aa42b206f5997101cfe772714e2cfe529c9449dcf5c40cbbb",
+        "memory": "84e1b040b4823339acced866e8dbd4f49dcc2b0efdb6679d4ad7f759e1f8aca6",
+        "runtime": "dacb430c92efd1ca4bd83420171ae0c8b82d1e5cf9c1b8b5ac754e40a2ca39e8",
+        "case": "5115c4a84d3fbf9aec614f41283382794594116089fd6f52413074baa938d7dc",
+        "log": "634a4a65806de375d347bab9b347e9cc1e3d8784ca6b4f3bad4cf2b5f31d79fe"
+      }
+    },
+    {
+      "job": "2252608_10",
+      "method": 1,
+      "profile": "norel",
+      "threads": 4,
+      "status": "Validated",
+      "slurm": [
+        "COMPLETED",
+        "0:0",
+        "02:13:43"
+      ],
+      "native_log_seconds": 5275.21,
+      "root_log_seconds": 1580.91,
+      "bnb_nodes": 43,
+      "memory": {
+        "peak_bytes": 129189462016,
+        "guard_triggered": false,
+        "oom_kill_delta": 0,
+        "failcnt_delta": 0
+      },
+      "summary": {
+        "status": "optimal",
+        "objective_value": 9289205464706.947,
+        "objective_bound": 9288815433206.17,
+        "mip_gap": 4.198760618001341e-05,
+        "economic_cost": 385408541758.3318,
+        "runtime_seconds": 7285.417927052127,
+        "end_to_end_seconds": 7842.537991666002,
+        "independent_validation_status": "accepted"
+      },
+      "validation": "accepted",
+      "root_events": [
+        "Warning: Model contains large matrix coefficients",
+        "Presolve time: 312.32s",
+        "Presolved: 856009 rows, 23263756 columns, 89013095 nonzeros",
+        "NoRel heuristic complete",
+        "Root relaxation: objective 9.288720e+12, 3362327 iterations, 1580.91 seconds (1198.79 work units)",
+        "H    0     0                    9.391144e+12 9.2887e+12  1.09%     - 3300s",
+        "*   40    42               8    9.289205e+12 9.2888e+12  0.00%  3932 5271s",
+        "Explored 43 nodes (3554553 simplex iterations) in 5275.21 seconds (3235.58 work units)",
+        "Warning: max constraint violation (1.8626e-09) exceeds tolerance",
+        "Warning: max bound violation (5.3818e-09) exceeds tolerance"
+      ],
+      "receipt_hashes": {
+        "summary": "222e48611788b77716af80a476692bb5e203dc6f1b4242e97197f0d899fd549c",
+        "validation": "7a95cba5b889f2032f43407e94766df6f21d9b008100a0e61f92d8fd4f4504e7",
+        "memory": "1d3be62581046a8a81d2703c0345d6dbcd857f80b7d7c2be7de3ddc898ce2d9e",
+        "runtime": "c6992516c8d7a19b30951a73e5ad7337534a59dc7b18fc94474e05d541d657c9",
+        "case": "83e499a11f327343a5038c287f45ed5e8ba9c6f6a009e12b25c18a1f82fa8751",
+        "log": "6fe7713a3bfed8895036af788a01167a1caf40bb29203901a8621a30927a8686"
+      }
+    },
+    {
+      "job": "2252608_11",
+      "method": 1,
+      "profile": "standard",
+      "threads": 16,
+      "status": "Validated",
+      "slurm": [
+        "COMPLETED",
+        "0:0",
+        "01:35:54"
+      ],
+      "native_log_seconds": 3005.01,
+      "root_log_seconds": 1763.95,
+      "bnb_nodes": 1,
+      "memory": {
+        "peak_bytes": 88359940096,
+        "guard_triggered": false,
+        "oom_kill_delta": 0,
+        "failcnt_delta": 0
+      },
+      "summary": {
+        "status": "optimal",
+        "objective_value": 9289108634158.756,
+        "objective_bound": 9288727345960.957,
+        "mip_gap": 4.1046801454847935e-05,
+        "economic_cost": 385502284842.8604,
+        "runtime_seconds": 5028.011145641794,
+        "end_to_end_seconds": 5577.887239772128,
+        "independent_validation_status": "accepted"
+      },
+      "validation": "accepted",
+      "root_events": [
+        "Warning: Model contains large matrix coefficients",
+        "Presolve time: 319.63s",
+        "Presolved: 856009 rows, 23263756 columns, 89013095 nonzeros",
+        "Root relaxation: objective 9.288720e+12, 3330931 iterations, 1763.95 seconds (1192.80 work units)",
+        "H    0     0                    9.391144e+12 9.2887e+12  1.09%     - 2216s",
+        "H    0     0                    9.289109e+12 9.2887e+12  0.00%     - 3001s",
+        "Explored 1 nodes (3355422 simplex iterations) in 3005.01 seconds (1993.12 work units)",
+        "Warning: max constraint violation (3.7253e-09) exceeds tolerance"
+      ],
+      "receipt_hashes": {
+        "summary": "13f3708b0db591a5f992f00f49b94ee3ef85f607f7eb16541c593c97afa493c5",
+        "validation": "f673b46ddf47fe29dcc91b8d545eb90efcb5beab61ce173e45b9a380f0775805",
+        "memory": "6f619fe729ff6f28f89ab870a37dbc060792d107a9e061765203c483cab241c9",
+        "runtime": "e44250aa0c3eb9b7f0e273f63b066445398272ca0160c5e5c95848ef08e162e2",
+        "case": "f4ad430651b69678b36adff1304fb98fdb1ca18ce9522bfefdb0be1afd3bf076",
+        "log": "7d183093381d6f7e6637c92d27e8535ddd908d22a74f35419815d4cdc9030aac"
+      }
+    },
+    {
+      "job": "2252608_12",
+      "method": 6,
+      "profile": "standard",
+      "threads": 2,
+      "status": "Time limit",
+      "slurm": [
+        "COMPLETED",
+        "0:0",
+        "08:37:40"
+      ],
+      "native_log_seconds": 28816.27,
+      "root_log_seconds": 28439.05,
+      "bnb_nodes": 1,
+      "memory": {
+        "peak_bytes": 76156825600,
+        "guard_triggered": false,
+        "oom_kill_delta": 0,
+        "failcnt_delta": 0
+      },
+      "summary": {
+        "status": "time_limit",
+        "objective_value": null,
+        "objective_bound": -316392073990.60236,
+        "mip_gap": null,
+        "economic_cost": null,
+        "runtime_seconds": 30848.177415060112,
+        "end_to_end_seconds": 30905.161592605058,
+        "independent_validation_status": "rejected"
+      },
+      "validation": "rejected",
+      "root_events": [
+        "Warning: Model contains large matrix coefficients",
+        "Presolve time: 305.94s",
+        "Presolved: 856009 rows, 23263756 columns, 89013095 nonzeros",
+        "Root relaxation: time limit, 0 iterations, 28439.05 seconds (43966.22 work units)",
+        "Explored 1 nodes (0 simplex iterations) in 28816.27 seconds (44496.93 work units)"
+      ],
+      "receipt_hashes": {
+        "summary": "6479c5130fede5f954cf204dc40e831881fea4e6c99ae252bfa976bd022a3485",
+        "validation": "3a94b46de93491ae8b26c854e726d5b8762fa0bd77a763e9304592e1e40630b3",
+        "memory": "db823873efa123d00456d1db2ccbdd8261f3dcf6bd5149565e70b7c71b3bc078",
+        "runtime": "ac202c1056ce182942e761791d50ee630e4ad286211985c7723a55d833b1bb7f",
+        "case": "4b93fc76c290d2722150f029cd1a2b8ff0695fce57fdadba38b6b11f560b5081",
+        "log": "9097dddb7a97ee78ec7f952b70220226251b110adf237998f69f971afc1b29e2"
+      }
+    },
+    {
+      "job": "2252608_13",
+      "method": 4,
+      "profile": "standard",
+      "threads": 16,
+      "status": "Validated",
+      "slurm": [
+        "COMPLETED",
+        "0:0",
+        "01:53:02"
+      ],
+      "native_log_seconds": 3991.63,
+      "root_log_seconds": 2926.47,
+      "bnb_nodes": 1,
+      "memory": {
+        "peak_bytes": 111603580928,
+        "guard_triggered": false,
+        "oom_kill_delta": 0,
+        "failcnt_delta": 0
+      },
+      "summary": {
+        "status": "optimal",
+        "objective_value": 9289108634158.754,
+        "objective_bound": 9288725890686.93,
+        "mip_gap": 4.120346600498994e-05,
+        "economic_cost": 385502284842.8588,
+        "runtime_seconds": 6051.271226145793,
+        "end_to_end_seconds": 6601.4145593689755,
+        "independent_validation_status": "accepted"
+      },
+      "validation": "accepted",
+      "root_events": [
+        "Warning: Model contains large matrix coefficients",
+        "Presolve time: 349.59s",
+        "Presolved: 856009 rows, 23263756 columns, 89013095 nonzeros",
+        "Solved with dual simplex",
+        "Root relaxation: objective 9.288720e+12, 3357297 iterations, 2926.47 seconds (1365.89 work units)",
+        "H    0     0                    9.391144e+12 9.2887e+12  1.09%     - 3423s",
+        "H    0     0                    9.289109e+12 9.2887e+12  0.00%     - 3987s",
+        "Explored 1 nodes (3374429 simplex iterations) in 3991.63 seconds (2087.76 work units)",
+        "Warning: max constraint violation (5.4188e-09) exceeds tolerance"
+      ],
+      "receipt_hashes": {
+        "summary": "06bce15933f9b352a2a3b86b359f65528a66b91b8880b80c23cdc55b61a8911b",
+        "validation": "a12f60b3bf841679438980767c581fad1a6a3e3f42e42d4d45439319771ff4ab",
+        "memory": "801e5fa501610e88bcf4ff563fd77a75d2e8b6784530eb3f0cee9b38c963f0e3",
+        "runtime": "545ba18aa8150bc86af331e815cc75a5fd21e44c0da5a47bacaa4815b0399cef",
+        "case": "00b7642d1cfa72442d93f717faa5c76b444f4c0b1162c9e4feb45d518f62857d",
+        "log": "8898203798ca63dbc0ff1a97ebd36c6faf1c43a9eaa894ce3103dc6650167741"
+      }
+    },
+    {
+      "job": "2252608_14",
+      "method": 6,
+      "profile": "heuristics_off",
+      "threads": 4,
+      "status": "Time limit",
+      "slurm": [
+        "COMPLETED",
+        "0:0",
+        "08:37:01"
+      ],
+      "native_log_seconds": 28812.7,
+      "root_log_seconds": 28485.37,
+      "bnb_nodes": 1,
+      "memory": {
+        "peak_bytes": 74889551872,
+        "guard_triggered": false,
+        "oom_kill_delta": 0,
+        "failcnt_delta": 0
+      },
+      "summary": {
+        "status": "time_limit",
+        "objective_value": null,
+        "objective_bound": -316392073990.60236,
+        "mip_gap": null,
+        "economic_cost": null,
+        "runtime_seconds": 30823.120859724935,
+        "end_to_end_seconds": 30871.495883906027,
+        "independent_validation_status": "rejected"
+      },
+      "validation": "rejected",
+      "root_events": [
+        "Warning: Model contains large matrix coefficients",
+        "Presolve time: 314.68s",
+        "Presolved: 856009 rows, 23263756 columns, 89013095 nonzeros",
+        "Root relaxation: time limit, 0 iterations, 28485.37 seconds (38306.57 work units)",
+        "Explored 1 nodes (0 simplex iterations) in 28812.70 seconds (38816.75 work units)"
+      ],
+      "receipt_hashes": {
+        "summary": "438fcbadb5abacf428fff854d6ffe65da3ecf79751a3b1dce2b51d12febe16d8",
+        "validation": "85c010006f2811f6585d258b0e604e6294cb4c0cc491042694170bedc7c24fcf",
+        "memory": "5d0922220edac8f7eddbe414f701d1be2bb38f1a480b2ec2156db6b0d7d8845e",
+        "runtime": "c278b228e338af9b73d5c8e75b199147ab6af95b4787d6303162aeb28548c4a6",
+        "case": "8435941a9730247c4023b9bcd83e8bbee51f1b81b877e10ca7c2f5f587f9feee",
+        "log": "c4528d313f4d90fb6152c67013e0ab65dc38efef79b2aa495d0fad681c09eceb"
+      }
+    },
+    {
+      "job": "2252608_15",
+      "method": 1,
+      "profile": "norel",
+      "threads": 2,
+      "status": "Validated",
+      "slurm": [
+        "COMPLETED",
+        "0:0",
+        "02:00:19"
+      ],
+      "native_log_seconds": 4487.76,
+      "root_log_seconds": 1463.57,
+      "bnb_nodes": 1,
+      "memory": {
+        "peak_bytes": 101056798720,
+        "guard_triggered": false,
+        "oom_kill_delta": 0,
+        "failcnt_delta": 0
+      },
+      "summary": {
+        "status": "optimal",
+        "objective_value": 9288939983638.035,
+        "objective_bound": 9288727895067.365,
+        "mip_gap": 2.2832376034671816e-05,
+        "economic_cost": 385437798189.42,
+        "runtime_seconds": 6503.624910358107,
+        "end_to_end_seconds": 7050.842308060033,
+        "independent_validation_status": "accepted"
+      },
+      "validation": "accepted",
+      "root_events": [
+        "Warning: Model contains large matrix coefficients",
+        "Presolve time: 312.75s",
+        "Presolved: 856009 rows, 23263756 columns, 89013095 nonzeros",
+        "NoRel heuristic complete",
+        "Root relaxation: objective 9.288720e+12, 3413339 iterations, 1463.57 seconds (1174.80 work units)",
+        "H    0     0                    9.391144e+12 9.2887e+12  1.09%     - 3011s",
+        "H    0     0                    9.288940e+12 9.2887e+12  0.00%     - 4484s",
+        "Explored 1 nodes (3442025 simplex iterations) in 4487.76 seconds (2877.33 work units)",
+        "Warning: max constraint violation (5.4274e-09) exceeds tolerance"
+      ],
+      "receipt_hashes": {
+        "summary": "8ece2e1946cf12da8da9e9f234820a3be9332fcf042dc65d78c09a48dd4b3698",
+        "validation": "3fd160160c8fdc2e68a0e37255fdd15b429bc265653987705fef4fb948934012",
+        "memory": "926474b5199ebcf491cd525bd0943c2e952ee6008785c7a17ba9d602f6212473",
+        "runtime": "94781f176466edbc22721cd6938fd0a9f715d2f25084325eb42f2f4dd84bafea",
+        "case": "0c45b46545f9a8a5620cae55713ae915bde68dc767f14c898890fdf20a1cbae5",
+        "log": "a2285a7312ed84896bf88a2d79a7cec7aa9063817f9e8fe7a76c72bb4f1f6b7f"
+      }
+    },
+    {
+      "job": "2252608_16",
+      "method": 6,
+      "profile": "norel",
+      "threads": 2,
+      "status": "Time limit",
+      "slurm": [
+        "COMPLETED",
+        "0:0",
+        "08:37:41"
+      ],
+      "native_log_seconds": 28823.65,
+      "root_log_seconds": 27318.05,
+      "bnb_nodes": 1,
+      "memory": {
+        "peak_bytes": 101064032256,
+        "guard_triggered": false,
+        "oom_kill_delta": 0,
+        "failcnt_delta": 0
+      },
+      "summary": {
+        "status": "time_limit",
+        "objective_value": null,
+        "objective_bound": 55867236686.666115,
+        "mip_gap": null,
+        "economic_cost": null,
+        "runtime_seconds": 30858.387587083038,
+        "end_to_end_seconds": 30907.664879322052,
+        "independent_validation_status": "rejected"
+      },
+      "validation": "rejected",
+      "root_events": [
+        "Warning: Model contains large matrix coefficients",
+        "Presolve time: 318.24s",
+        "Presolved: 856009 rows, 23263756 columns, 89013095 nonzeros",
+        "NoRel heuristic complete",
+        "Root relaxation: time limit, 0 iterations, 27318.05 seconds (42248.72 work units)",
+        "Explored 1 nodes (0 simplex iterations) in 28823.65 seconds (43407.10 work units)"
+      ],
+      "receipt_hashes": {
+        "summary": "b8c36fd8d2d097b02d148fb7df42408563ec3dbb8ad3ab8e167b9c6756c7d916",
+        "validation": "9169c45e1c6b78ab1ab409b9159e4f47c2bab0cc007365d5643b37510a06e325",
+        "memory": "0f5d7d8a49e090b9fca52476d97e15ad1834a42aef4c40c279a297aabc57876e",
+        "runtime": "cc950b264ddea82c4e9e65c7df0497609e33483ae876e986e86a0a1fe9c1aec1",
+        "case": "281fcc2b774d8d97eb59ae93ffc103ff2a5b6fda2a97b3ab411d319a25eadb32",
+        "log": "bca031f9a71e9e5e0d73948979cafed067ab1e5b50885e8993acb68f6e701fb2"
+      }
+    },
+    {
+      "job": "2252608_17",
+      "method": 2,
+      "profile": "norel",
+      "threads": 8,
+      "status": "Guard stop",
+      "slurm": [
+        "FAILED",
+        "1:0",
+        "00:51:35"
+      ],
+      "native_log_seconds": null,
+      "root_log_seconds": null,
+      "bnb_nodes": null,
+      "memory": {
+        "peak_bytes": 187426107392,
+        "guard_triggered": true,
+        "oom_kill_delta": 0,
+        "failcnt_delta": 0
+      },
+      "summary": {
+        "status": null,
+        "objective_value": null,
+        "objective_bound": null,
+        "mip_gap": null,
+        "economic_cost": null,
+        "runtime_seconds": null,
+        "end_to_end_seconds": null,
+        "independent_validation_status": null
+      },
+      "validation": null,
+      "root_events": [
+        "Warning: Model contains large matrix coefficients",
+        "Presolve time: 345.90s",
+        "Presolved: 856009 rows, 23263756 columns, 89013095 nonzeros"
+      ],
+      "receipt_hashes": {
+        "summary": null,
+        "validation": null,
+        "memory": "eef7d0263069f745306bc96b595e9a64aafb56092f3fbd35b83d0be87136f0cb",
+        "runtime": "ba26b35b5c3dc103947a24004a16f7ec15ab1babaa618a958a309ab2a65fe59c",
+        "case": null,
+        "log": "333337e2b6d573a689cebfae5bcd60d086dc2c9589acd7500d5e6b4555666643"
+      }
+    },
+    {
+      "job": "2252608_18",
+      "method": 2,
+      "profile": "standard",
+      "threads": 2,
+      "status": "Validated",
+      "slurm": [
+        "COMPLETED",
+        "0:0",
+        "02:41:25"
+      ],
+      "native_log_seconds": 6873.58,
+      "root_log_seconds": 5693.24,
+      "bnb_nodes": 1,
+      "memory": {
+        "peak_bytes": 80302256128,
+        "guard_triggered": false,
+        "oom_kill_delta": 0,
+        "failcnt_delta": 0
+      },
+      "summary": {
+        "status": "optimal",
+        "objective_value": 9289108634158.754,
+        "objective_bound": 9288727172662.418,
+        "mip_gap": 4.106545755458093e-05,
+        "economic_cost": 385502284842.8588,
+        "runtime_seconds": 8934.146066279849,
+        "end_to_end_seconds": 9488.056281730998,
+        "independent_validation_status": "accepted"
+      },
+      "validation": "accepted",
+      "root_events": [
+        "Warning: Model contains large matrix coefficients",
+        "Presolve time: 348.74s",
+        "Presolved: 856009 rows, 23263756 columns, 89013095 nonzeros",
+        "Crossover time: 538.56 seconds (200.21 work units)",
+        "Root relaxation: objective 9.288720e+12, 23415146 iterations, 5693.24 seconds (4113.29 work units)",
+        "H    0     0                    9.391144e+12 9.2887e+12  1.09%     - 6188s",
+        "H    0     0                    9.289109e+12 9.2887e+12  0.00%     - 6870s",
+        "Explored 1 nodes (23432897 simplex iterations) in 6873.58 seconds (4905.85 work units)",
+        "Warning: max constraint violation (3.7253e-09) exceeds tolerance"
+      ],
+      "receipt_hashes": {
+        "summary": "8f08720a9bfff86313dfa9f2cfe00a462538b6c35c532864ac16b5284da30eec",
+        "validation": "9ea3259905297614c2748d3c953d1b60e0f8ccb21d1c102af92187859dbcb729",
+        "memory": "51e4a168a8a35cdc2a7c08f682a9dcf47ae55006fd47724dead4dfe582dc92ed",
+        "runtime": "dd824ec6a53f0e940bc837fde3b5022854277edf58bcfcea44f6db5acf239818",
+        "case": "e7d313a49b32f8a65954a21367168b0d2bc450e969b4dc8885160b0749aba478",
+        "log": "0584221d5324b52a3f21d21de7e95285700c0a97784efaecc6d1c563be432738"
+      }
+    },
+    {
+      "job": "2252608_19",
+      "method": 2,
+      "profile": "norel",
+      "threads": 16,
+      "status": "Guard stop",
+      "slurm": [
+        "FAILED",
+        "1:0",
+        "00:51:25"
+      ],
+      "native_log_seconds": null,
+      "root_log_seconds": null,
+      "bnb_nodes": null,
+      "memory": {
+        "peak_bytes": 190668918784,
+        "guard_triggered": true,
+        "oom_kill_delta": 0,
+        "failcnt_delta": 0
+      },
+      "summary": {
+        "status": null,
+        "objective_value": null,
+        "objective_bound": null,
+        "mip_gap": null,
+        "economic_cost": null,
+        "runtime_seconds": null,
+        "end_to_end_seconds": null,
+        "independent_validation_status": null
+      },
+      "validation": null,
+      "root_events": [
+        "Warning: Model contains large matrix coefficients",
+        "Presolve time: 350.20s",
+        "Presolved: 856009 rows, 23263756 columns, 89013095 nonzeros"
+      ],
+      "receipt_hashes": {
+        "summary": null,
+        "validation": null,
+        "memory": "dca99ba1d53ff131c1728e110726d17777cfd7af78625e60172d55142bc04406",
+        "runtime": "6301f4ff691b7f1dbebd3bceb349e5901040d464ea8056b013081cb91a3dd3f2",
+        "case": null,
+        "log": "47ab942f0bc68f8394db708bc157ee10d8f05b12823f75cd4e4c8bee74dbea65"
+      }
+    },
+    {
+      "job": "2252608_20",
+      "method": 1,
+      "profile": "heuristics_off",
+      "threads": 4,
+      "status": "Validated",
+      "slurm": [
+        "COMPLETED",
+        "0:0",
+        "01:38:29"
+      ],
+      "native_log_seconds": 3088.06,
+      "root_log_seconds": 1636.54,
+      "bnb_nodes": 47,
+      "memory": {
+        "peak_bytes": 122359173120,
+        "guard_triggered": false,
+        "oom_kill_delta": 0,
+        "failcnt_delta": 0
+      },
+      "summary": {
+        "status": "optimal",
+        "objective_value": 9288940272214.768,
+        "objective_bound": 9288814074273.791,
+        "mip_gap": 1.3585827584019232e-05,
+        "economic_cost": 385450228253.26855,
+        "runtime_seconds": 5143.985721850069,
+        "end_to_end_seconds": 5716.077742172871,
+        "independent_validation_status": "accepted"
+      },
+      "validation": "accepted",
+      "root_events": [
+        "Warning: Model contains large matrix coefficients",
+        "Presolve time: 347.62s",
+        "Presolved: 856009 rows, 23263756 columns, 89013095 nonzeros",
+        "Root relaxation: objective 9.288720e+12, 3362327 iterations, 1636.54 seconds (1198.79 work units)",
+        "*   42    46               8    9.288940e+12 9.2888e+12  0.00%  3943 3083s",
+        "Explored 47 nodes (3580019 simplex iterations) in 3088.06 seconds (2239.75 work units)",
+        "Warning: max constraint violation (1.8626e-09) exceeds tolerance",
+        "Warning: max bound violation (5.3818e-09) exceeds tolerance"
+      ],
+      "receipt_hashes": {
+        "summary": "cca5faecc509d12ce933f08c174d59fbf741dba6050b5e01b3f05abd3d444e08",
+        "validation": "917c54dfaff5f8d783c172496867e46ab518125d58d725be0010c03e0720d568",
+        "memory": "9dde1ca26179025fc9142966cc4e1aee0f627f3198604f563286a7d114e538bf",
+        "runtime": "7d92b7b62325725d5f900f5161a9c80a98aab327d3568221f65981396a4e3522",
+        "case": "00dd7654aae36c3a80e5035920f765868ec8f003f62e1c3a7171c02529769193",
+        "log": "1be58379307917a444a0744ac5ee21cb169440e85010efb924d1edf17ce61a24"
+      }
+    },
+    {
+      "job": "2252608_21",
+      "method": 6,
+      "profile": "norel",
+      "threads": 8,
+      "status": "Guard stop",
+      "slurm": [
+        "FAILED",
+        "1:0",
+        "00:51:35"
+      ],
+      "native_log_seconds": null,
+      "root_log_seconds": null,
+      "bnb_nodes": null,
+      "memory": {
+        "peak_bytes": 186816950272,
+        "guard_triggered": true,
+        "oom_kill_delta": 0,
+        "failcnt_delta": 0
+      },
+      "summary": {
+        "status": null,
+        "objective_value": null,
+        "objective_bound": null,
+        "mip_gap": null,
+        "economic_cost": null,
+        "runtime_seconds": null,
+        "end_to_end_seconds": null,
+        "independent_validation_status": null
+      },
+      "validation": null,
+      "root_events": [
+        "Warning: Model contains large matrix coefficients",
+        "Presolve time: 343.52s",
+        "Presolved: 856009 rows, 23263756 columns, 89013095 nonzeros"
+      ],
+      "receipt_hashes": {
+        "summary": null,
+        "validation": null,
+        "memory": "295108e8341bc91cc286eb747e7becaf76977524cccd84e81f6aab31d68efd01",
+        "runtime": "084fb1f814206e6cf56374992989280210a5db0683fbe7f7fd9c062bc233d8be",
+        "case": null,
+        "log": "69a422dcbe4c898fe30347a7cb29b316a272b4ab34b7ce6184e02ce05755add5"
+      }
+    },
+    {
+      "job": "2252608_22",
+      "method": 2,
+      "profile": "heuristics_off",
+      "threads": 2,
+      "status": "Validated",
+      "slurm": [
+        "COMPLETED",
+        "0:0",
+        "02:46:05"
+      ],
+      "native_log_seconds": 7155.69,
+      "root_log_seconds": 5691.09,
+      "bnb_nodes": 25,
+      "memory": {
+        "peak_bytes": 93497143296,
+        "guard_triggered": false,
+        "oom_kill_delta": 0,
+        "failcnt_delta": 0
+      },
+      "summary": {
+        "status": "optimal",
+        "objective_value": 9289213683034.604,
+        "objective_bound": 9288758184973.463,
+        "mip_gap": 4.9035158053531045e-05,
+        "economic_cost": 385420826573.1049,
+        "runtime_seconds": 9207.406002250034,
+        "end_to_end_seconds": 9768.111941345967,
+        "independent_validation_status": "accepted"
+      },
+      "validation": "accepted",
+      "root_events": [
+        "Warning: Model contains large matrix coefficients",
+        "Presolve time: 349.52s",
+        "Presolved: 856009 rows, 23263756 columns, 89013095 nonzeros",
+        "Crossover time: 542.38 seconds (200.21 work units)",
+        "Root relaxation: objective 9.288720e+12, 23415146 iterations, 5691.09 seconds (4113.29 work units)",
+        "*   23    24               9    9.289214e+12 9.2888e+12  0.00%  3205 7151s",
+        "Explored 25 nodes (23516587 simplex iterations) in 7155.69 seconds (5175.34 work units)",
+        "Warning: max constraint violation (1.8626e-09) exceeds tolerance"
+      ],
+      "receipt_hashes": {
+        "summary": "5a0ca579b5b2ffb0ea6b3a2c2d20fca9ddc371ea7532968e7071172043f26c8b",
+        "validation": "5b8ee45e9c4367df728e407a4328eedcbb34ed24d9c0738a022c0f473abd8dac",
+        "memory": "0d537818fbf445c621e4388c83c8cab0f4f9ed01abea6cc76672cb152394c091",
+        "runtime": "1e82955b98d26d3dc0282a1c0476384dbfda2cdc84972d3588cbcee56d04a20c",
+        "case": "3968c5cb26dc1710341fcfa3edf570828e57ab0daec4cfc8e5de623b9988de0f",
+        "log": "cfd776c0927cbbbea9788d7502fe16303bd4c07eda41ac645feadee754c31045"
+      }
+    },
+    {
+      "job": "2252608_23",
+      "method": 2,
+      "profile": "heuristics_off",
+      "threads": 1,
+      "status": "Validated",
+      "slurm": [
+        "COMPLETED",
+        "0:0",
+        "03:04:04"
+      ],
+      "native_log_seconds": 8307.8,
+      "root_log_seconds": 6955.56,
+      "bnb_nodes": 19,
+      "memory": {
+        "peak_bytes": 80495558656,
+        "guard_triggered": false,
+        "oom_kill_delta": 0,
+        "failcnt_delta": 0
+      },
+      "summary": {
+        "status": "optimal",
+        "objective_value": 9289358555936.28,
+        "objective_bound": 9288799889805.863,
+        "mip_gap": 6.014044210393894e-05,
+        "economic_cost": 385485756620.3837,
+        "runtime_seconds": 10309.174890218768,
+        "end_to_end_seconds": 10863.940380552085,
+        "independent_validation_status": "accepted"
+      },
+      "validation": "accepted",
+      "root_events": [
+        "Warning: Model contains large matrix coefficients",
+        "Presolve time: 322.29s",
+        "Presolved: 856009 rows, 23263756 columns, 89013095 nonzeros",
+        "Crossover time: 490.51 seconds (204.55 work units)",
+        "Root relaxation: objective 9.288720e+12, 23425913 iterations, 6955.56 seconds (4837.52 work units)",
+        "*   18    12              11    9.289359e+12 9.2888e+12  0.01%  3664 8304s",
+        "Explored 19 nodes (23523141 simplex iterations) in 8307.80 seconds (5832.34 work units)",
+        "Warning: max constraint violation (6.3328e-09) exceeds tolerance"
+      ],
+      "receipt_hashes": {
+        "summary": "d1b7184a6e4c0c97479e0ecd336aa212c036e0b37d28152fd351ce5e9ea350d1",
+        "validation": "f623ab824f98ae55647fd4b6f75ae5df3b343422b8d5a14bf9ffb35799b400ae",
+        "memory": "604f88dab738bef96de9750050f1b8d602c6259f8c2f015092f73475ab9306ad",
+        "runtime": "7429984a9424e1f832e04540a2930bcc49f6ec633e3751049352712931456787",
+        "case": "0d18f8324a9338e586a87127d8ae09a313321963e4b24c3155916d280238504f",
+        "log": "49c251502e60bae11795d08c31e07f38236802db3e04e8ae656584ffff68653e"
+      }
+    },
+    {
+      "job": "2252608_24",
+      "method": 4,
+      "profile": "norel",
+      "threads": 16,
+      "status": "Guard stop",
+      "slurm": [
+        "FAILED",
+        "1:0",
+        "00:48:30"
+      ],
+      "native_log_seconds": null,
+      "root_log_seconds": null,
+      "bnb_nodes": null,
+      "memory": {
+        "peak_bytes": 187708125184,
+        "guard_triggered": true,
+        "oom_kill_delta": 0,
+        "failcnt_delta": 0
+      },
+      "summary": {
+        "status": null,
+        "objective_value": null,
+        "objective_bound": null,
+        "mip_gap": null,
+        "economic_cost": null,
+        "runtime_seconds": null,
+        "end_to_end_seconds": null,
+        "independent_validation_status": null
+      },
+      "validation": null,
+      "root_events": [
+        "Warning: Model contains large matrix coefficients",
+        "Presolve time: 307.15s",
+        "Presolved: 856009 rows, 23263756 columns, 89013095 nonzeros"
+      ],
+      "receipt_hashes": {
+        "summary": null,
+        "validation": null,
+        "memory": "1d11f5c826e2420c39589780ee391b65a0f6cda8633d8f15b75098f245b01d63",
+        "runtime": "857eb3dd009940a809427fe9951068db4397b0dc597adc16b840a489e913fb07",
+        "case": null,
+        "log": "51661261d44858c593b55c9e1caf0eee2ebb7ad51ea5f3759d4bed3a27ee2056"
+      }
+    },
+    {
+      "job": "2252608_25",
+      "method": 4,
+      "profile": "heuristics_off",
+      "threads": 1,
+      "status": "Validated",
+      "slurm": [
+        "COMPLETED",
+        "0:0",
+        "01:30:36"
+      ],
+      "native_log_seconds": 2725.78,
+      "root_log_seconds": 1556.87,
+      "bnb_nodes": 17,
+      "memory": {
+        "peak_bytes": 79728455680,
+        "guard_triggered": false,
+        "oom_kill_delta": 0,
+        "failcnt_delta": 0
+      },
+      "summary": {
+        "status": "optimal",
+        "objective_value": 9289372383132.178,
+        "objective_bound": 9288798799214.186,
+        "mip_gap": 6.174625091289399e-05,
+        "economic_cost": 385408333816.2825,
+        "runtime_seconds": 4728.392342325067,
+        "end_to_end_seconds": 5270.903568143956,
+        "independent_validation_status": "accepted"
+      },
+      "validation": "accepted",
+      "root_events": [
+        "Warning: Model contains large matrix coefficients",
+        "Presolve time: 327.45s",
+        "Presolved: 856009 rows, 23263756 columns, 89013095 nonzeros",
+        "Root relaxation: objective 9.288720e+12, 3371325 iterations, 1556.87 seconds (1219.69 work units)",
+        "*   16    12              10    9.289372e+12 9.2888e+12  0.01%  2925 2722s",
+        "Explored 17 nodes (3445682 simplex iterations) in 2725.78 seconds (2132.38 work units)",
+        "Warning: max constraint violation (6.3328e-09) exceeds tolerance"
+      ],
+      "receipt_hashes": {
+        "summary": "34c4c99212d3accb274bc4208bd092af26cf6f3969a9bb04567e99be51c10a9e",
+        "validation": "b7a3aeade33e30490e457833169586614e42cb2c21ded1e50e1efcfb0aa72517",
+        "memory": "79aef1e38b1f662d5821f21f3b5d3a217ae85347c48c87d692c32796b743960c",
+        "runtime": "3af24235f15d97c3e23acdc5add5cb935fdee82a53b955b8712b58808938abc7",
+        "case": "f4b6cf06b1ffaa53f6c18108c985e8f86f515f2cc80f6cfecf7cd504495803a3",
+        "log": "76d83329a920e30be8be9772ec69e40521b433677a126b14157ca12a52257b67"
+      }
+    },
+    {
+      "job": "2252608_26",
+      "method": 4,
+      "profile": "norel",
+      "threads": 4,
+      "status": "Validated",
+      "slurm": [
+        "COMPLETED",
+        "0:0",
+        "02:19:14"
+      ],
+      "native_log_seconds": 5597.51,
+      "root_log_seconds": 2337.87,
+      "bnb_nodes": 1,
+      "memory": {
+        "peak_bytes": 129143504896,
+        "guard_triggered": false,
+        "oom_kill_delta": 0,
+        "failcnt_delta": 0
+      },
+      "summary": {
+        "status": "optimal",
+        "objective_value": 9288939983638.035,
+        "objective_bound": 9288727830165.266,
+        "mip_gap": 2.2839363064378508e-05,
+        "economic_cost": 385437798189.4211,
+        "runtime_seconds": 7643.893655465683,
+        "end_to_end_seconds": 8188.9403231111355,
+        "independent_validation_status": "accepted"
+      },
+      "validation": "accepted",
+      "root_events": [
+        "Warning: Model contains large matrix coefficients",
+        "Presolve time: 311.20s",
+        "Presolved: 856009 rows, 23263756 columns, 89013095 nonzeros",
+        "NoRel heuristic complete",
+        "Solved with dual simplex",
+        "Root relaxation: objective 9.288720e+12, 3351460 iterations, 2337.87 seconds (1339.62 work units)",
+        "H    0     0                    9.391144e+12 9.2887e+12  1.09%     - 4055s",
+        "H    0     0                    9.288940e+12 9.2887e+12  0.00%     - 5594s",
+        "Explored 1 nodes (3377902 simplex iterations) in 5597.51 seconds (3093.61 work units)",
+        "Warning: max constraint violation (3.9436e-09) exceeds tolerance"
+      ],
+      "receipt_hashes": {
+        "summary": "9ce18f58671e264b43f8bfa13c5f5ecbfeacfdb910eea9fdb201622169f502b8",
+        "validation": "976920c5c0f477ff20d33b96a6ef4b8f8b1cf199195997bff3c0013562e0e327",
+        "memory": "8dba5b1a35b1fefc2058230b9eb1ca3df97d18afc0dc6a73e851412b5b660666",
+        "runtime": "c037d7262d5d135c43c1163e0b150177427804a48aab1535ace5a583acab0709",
+        "case": "9b899b3c267f5efd7ea56f17afc1eb6b76aae24388230394f11892268af57f16",
+        "log": "6d09cb65b42349f9e001d047c70b0e31044e1d21ae56a57cc12bfd627bb1c00f"
+      }
+    },
+    {
+      "job": "2252608_27",
+      "method": 6,
+      "profile": "standard",
+      "threads": 16,
+      "status": "Validated",
+      "slurm": [
+        "COMPLETED",
+        "0:0",
+        "05:59:12"
+      ],
+      "native_log_seconds": 18772.9,
+      "root_log_seconds": 17810.94,
+      "bnb_nodes": 1,
+      "memory": {
+        "peak_bytes": 85955338240,
+        "guard_triggered": false,
+        "oom_kill_delta": 0,
+        "failcnt_delta": 0
+      },
+      "summary": {
+        "status": "optimal",
+        "objective_value": 9289108634158.754,
+        "objective_bound": 9288725764095.883,
+        "mip_gap": 4.12170939053473e-05,
+        "economic_cost": 385502284842.8588,
+        "runtime_seconds": 20840.710501172114,
+        "end_to_end_seconds": 21362.231966280146,
+        "independent_validation_status": "accepted"
+      },
+      "validation": "accepted",
+      "root_events": [
+        "Warning: Model contains large matrix coefficients",
+        "Presolve time: 352.68s",
+        "Presolved: 856009 rows, 23263756 columns, 89013095 nonzeros",
+        "Crossover time: 102.52 seconds (47.81 work units)",
+        "Root relaxation: objective 9.288720e+12, 786381 iterations, 17810.94 seconds (9950.50 work units)",
+        "H    0     0                    9.391144e+12 9.2887e+12  1.09%     - 18320s",
+        "H    0     0                    9.289109e+12 9.2887e+12  0.00%     - 18768s",
+        "Explored 1 nodes (793676 simplex iterations) in 18772.90 seconds (10648.70 work units)",
+        "Warning: max constraint violation (4.2392e-09) exceeds tolerance"
+      ],
+      "receipt_hashes": {
+        "summary": "d0c803312cda300faa2527f5162b70086a7a8ea7400c40f4aa756e122f0cc225",
+        "validation": "f79a2f291a89e68bc1eff1a914210fe9d4843f1707e7514ed624f4f77fb56c0f",
+        "memory": "1c5849180486923684e90c8ae1dfc809b7dec476530d031b2f6a67665e47f84e",
+        "runtime": "f189d68f8015930fe97676780e0e3a2fc71d4d7d8162b0e3fcc657ff314f8177",
+        "case": "cb42eaec50b6d9c935b55985317ccd2b33ef221ad5dc82fb09c70cf7d983edce",
+        "log": "6c06c18db3c1cddd97f4ae1c43d479228facb55073bc5d68df6fc160dc70861d"
+      }
+    }
+  ]
+}

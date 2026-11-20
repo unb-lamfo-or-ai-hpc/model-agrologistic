@@ -10,7 +10,11 @@ permissions:
   contents: read
 
 jobs:
+  scope:
+    uses: ./.github/workflows/ci-scope.yml
   test:
+    needs: scope
+    if: needs.scope.outputs.data_only != 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 20
 
@@ -27,7 +31,7 @@ jobs:
       - name: Install project
         run: |
           python -m pip install --upgrade pip
-          python -m pip install -e ".[dev]"
+          python -m pip install -e ".[dev]" 'pyomo==6.10.1'
 
       - name: Lint
         run: python -m ruff check .

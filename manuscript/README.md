@@ -2,9 +2,16 @@
 
 The article is **Computational Scalability of Deterministic and Two-Stage
 Stochastic MILP Models for Grain-Storage Network Design and Hub Location**.
-Its authoritative sources are [the article](index.qmd) and
-[the supplementary material](supplement/index.qmd). The source currently under
-review must be distinguished from the version published on GitHub Pages.
+The PR #156 coauthor revision uses the researcher-supplied LaTeX as its
+editorial source. Read the [revised article](author-review/main.tex),
+[revised appendices](author-review/supplement.tex) and
+[revision record](author-review/README.md).
+
+The next GitHub Pages edition builds the exact author-reviewed LaTeX sources
+and frozen dependencies, with complete PDF viewers and matching editable downloads.
+The [Quarto article](index.qmd) and [Quarto supplements](supplement/index.qmd)
+remain a separate editorial representation in GitHub. They are not substituted
+for the researcher-approved article and supplements.
 
 ## Reading route
 
@@ -71,20 +78,9 @@ and document assets are prepared offline from tracked definitions. See
 [asset preparation](../scripts/prepare_document_assets.py).
 Rendering a document does not start a solver or an HPC job.
 
-For the current development cycle, full-document PDFs and editable-package
-regeneration are deferred. Technical checks and publication preparation can
-proceed without claiming new rendered documents. Promotion to develop and the
-separate main/Pages publication remain distinct reviewed steps. Final Pages
-delivery includes article/supplement PDFs and editable TeX downloads after the
-authorized publication build.
-
-The [current documentation exit matrix](../docs/checkpoints/20261102_documentation_exit_matrix.md)
-records completed checks and remaining source/data/publication work. Historical
-editorial and execution notes remain in Git history and the repository's dated
-checkpoints, outside this reader guide.
-
-The [versioned data release plan](../data/manifests/zenodo_release_plan_20261102.json)
-and [current Zenodo guide](../docs/mvp_release_and_zenodo.md) separate the existing
-open0.2.0 from locally prepared next-version assets. AppendixD11 andE carry
-that distinction into the reader text. Prepared companions do not imply a
-new public download, and the90-cell campaign is not reported as complete.
+PR157's working article (36 pages), supplements (81 pages) and complete editable
+project were approved by the researcher on 20 November 2026, followed by its
+authorized merge into develop. See the [promotion and publication plan](../docs/mvp2_main_pages_promotion_20261120.md).
+The pending Pages manifest still requires explicit manual activation on the exact
+authorized main commit. Main promotion, Pages deployment, data deposition and
+journal submission remain separate actions.

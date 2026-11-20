@@ -1,0 +1,38 @@
+{
+  "date": "2026-11-12",
+  "editorial_snapshot": "f8ee519b45477c593930692e71601cf1f406896e",
+  "editorial_branch": "docs/editorial-reconciliation-20261105",
+  "disposition": "Historical review superseded by Gurobi-only editorial scope. Keep branch and all evidence.",
+  "scope": {
+    "gpu": "closed",
+    "highs_and_scip": "GitHub historical evidence only",
+    "zenodo": "prepare Gurobi-only candidate; no deposit",
+    "h300": {
+      "methods": [
+        1,
+        2,
+        4,
+        6
+      ],
+      "threads": [
+        1,
+        2,
+        4,
+        8,
+        16
+      ],
+      "memory_gib": 192,
+      "device": "CPU"
+    }
+  },
+  "author_supplement_sha256": "3c21e3fff272718ea262f8b9001c183a0d0a72d7dd90ab75f57d334edc707113",
+  "supplement_integration": "Author edits to front matter and Appendices B–D reconciled in Quarto. Appendix F added from locally verified S6-B proposal. Evidence and source-bound tables retained.",
+  "next": "Gurobi-only editorial review and separately qualified h300 CPU campaign.",
+  "historical_evidence": {
+    "pr148": "final reconciliation on PR 151 branch",
+    "h400_e1": "four gate receipts and descriptive observations",
+    "h400_e2": "six additional configurations collected",
+    "h300_gurobi_full_logs_sha256": "041b932b55535bbc9a280c6f01dc5e735a99288dd7d432dac0391dce73511da7"
+  },
+  "gurobot_comment_sha256": "841263076ecc350f33c9fc04efcdaae8cbc4fecb8f3b1d6c68de834eb9bce99f"
+}

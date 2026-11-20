@@ -66,7 +66,6 @@ def package(output: Path, *, root: Path = ROOT) -> None:
         "appendix_d_inventory.json": supplement / "appendix_d_inventory.json",
         "appendix_e_sources.json": supplement / "appendix_e_sources.json",
         "appendix_e_summary.json": supplement / "appendix_e_summary.json",
-        "solver_comparison_evidence.json": manuscript / "solver_comparison_evidence.json",
         "input_reproduction_guide.json": (
             root / "docs/evidence/appendix_input_reproduction_20261028.json"
         ),

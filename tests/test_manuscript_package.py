@@ -115,7 +115,7 @@ def test_allowlisted_portable_package_and_checksums(tmp_path):
                 "appendix_c_readme.md", "appendix_d_inventory.json"} <= set(names)
         assert "data.inc" not in names
         assert "unused-solver-history.png" not in names
-        assert "solver_comparison_evidence.json" in names
+        assert "solver_comparison_evidence.json" not in names
         assert not any("scip" in name.lower() for name in names)
         assert "open_source_comparison_status.json" not in names
         assert "pyomo_solver_campaign.json" not in names

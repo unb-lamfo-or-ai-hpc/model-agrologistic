@@ -1,0 +1,771 @@
+{
+  "schema_version": "mvp2-s6b-reproducibility-inventory-v1",
+  "date": "2026-11-12",
+  "manuscript_revision": "f8ee519b45477c593930692e71601cf1f406896e",
+  "operations_develop_base": "f35ef4f29ed98118778a6e38487e33dd6a2dd005",
+  "manuscript_references": {
+    "inputs_and_network": [
+      {
+        "path": "data/templates/model_agrologistic_padrao_ouro.xlsx",
+        "git_blob": "f53b663b81b69ec999cd77eaec3e186a00f45999",
+        "sha256": "de3bdc51b2c338194a5013165bec2884b68784fb207ae8c762984a1b44856082"
+      },
+      {
+        "path": "docs/evidence/appendix_input_reproduction_20261028.json",
+        "git_blob": "9553ad65397285eecabe0df56ac85c04e5abfab1",
+        "sha256": "87a8d696ef8fbba6b83b785cb2cbca13460aa674b95c73bca629423674077fe6"
+      },
+      {
+        "path": "data/manifests/research_data_distribution_v1.json",
+        "git_blob": "1e16ff3e131aca778f4ff85c9cabb9b395c3fa25",
+        "sha256": "e4eead575a058cf1d7870b6041a1b791cc09f812064d82453a8dc2643beabc3a"
+      },
+      {
+        "path": "src/logic/route_filtering.py",
+        "git_blob": "34dcd78753178aed05ec67434452aef20160952d",
+        "sha256": "57dbef062720e4926fcaa54a6dc004137b70a79f2e0209b64d6c82ac61254b14"
+      },
+      {
+        "path": "docs/mvp2_scalar_contract.md",
+        "git_blob": "4959507afc0408e39bd393683ef70f8cc9b64437",
+        "sha256": "085cbb9ad2cd578dfcd03719887683c89b3a8b900157ee277e83eedaf107c478"
+      }
+    ],
+    "native_gurobi": [
+      {
+        "path": "manuscript/scalar_results.qmd",
+        "git_blob": "54ade1b95e8b32703a8eb2e94a338f76141fb535",
+        "sha256": "7f203eb395d28edfa4589d677ac19e442c25f788e7a480c52c0d417df5ae4131"
+      },
+      {
+        "path": "manuscript/wd_results.qmd",
+        "git_blob": "0cbabbef0e17914ee3069966b73e9fceb850d4ab",
+        "sha256": "2fce120c97a4e007f5f87c664d9be698cee1981131f29b8a28565d85f696c038"
+      },
+      {
+        "path": "docs/evidence/scalar_wd_h215_2221443_review.json",
+        "git_blob": "dafdeaa9aa97b46790f728157529b9440ad16a74",
+        "sha256": "be344e48ab3928b69e88175c54f9d0459ac1fffc8f097df58e7cac136a51e608"
+      },
+      {
+        "path": "docs/evidence/scalar_h215_2217990_review.json",
+        "git_blob": "a0946b5d829ea8c70710d39c8335a856328b80e4",
+        "sha256": "30f4b568428088bf2e12440dc2e545175a081966b56c6addf746ecfcd9e3522a"
+      },
+      {
+        "path": "docs/evidence/scalar_h300_2218193_review.json",
+        "git_blob": "51603f1e31a7c58d41c63d7f0c24575ec676a3a0",
+        "sha256": "3b93343a09d8697fcdd59c03dc273ddff46bcb5919a1bd7a3749e1980dc5e6c2"
+      },
+      {
+        "path": "docs/evidence/scalar_h400_2219884_review.json",
+        "git_blob": "6fed269bc944a1f98deb7d265d63d4867a50e6e0",
+        "sha256": "ee9fcbcdb1f1b9d2e30981412def01213d2f6095318a8bce6d2df31688d38ae2"
+      },
+      {
+        "path": "docs/evidence/scalar_h500_2220382_review.json",
+        "git_blob": "d9a44f0c6fad814ea7b059f1f23436ecbc10107d",
+        "sha256": "046cca60e44738765a503bba8fd0d4bf98ea639dce2fd39f6c5c6b6ede0ef74d"
+      },
+      {
+        "path": "src/logic/optimization_gurobipy_stochastic.py",
+        "git_blob": "08fbe6b52a12b42106161bfb4767774aba3afd23",
+        "sha256": "669edcb0e6174bc70f1209e5c3bdb4fdeb18e161c772295551f192a100f6e271"
+      },
+      {
+        "path": "src/logic/solution_validation.py",
+        "git_blob": "6d0f9dd64264e452b3247cb96e683b1a7fd831bd",
+        "sha256": "1260f22598c0021e1456368e030c37c2940220e65eb29da09a0505b60096a4e0"
+      }
+    ],
+    "pyomo_h215": [
+      {
+        "path": "manuscript/solver_results.qmd",
+        "git_blob": "1c884302f935bb139cab85787d62922e2ccb7934",
+        "sha256": "37d512f2406fee14496a50f634d89e7f1105a50f38da7480e0fd338e7d2eee38"
+      },
+      {
+        "path": "manuscript/solver_comparison_evidence.json",
+        "git_blob": "ecec88612d1de32eff26ff62aed745120d8b825d",
+        "sha256": "248bd729b5d8827e719374d2291cbc87af6a62485adfca9067fb78ed0480fa5e"
+      },
+      {
+        "path": "docs/evidence/pyomo_gurobi_2228514_original_inspection_20261030.json",
+        "git_blob": "c30e5aaeb28c68b86dcb42ae221750d4015fbc62",
+        "sha256": "36bf25b236251e13d34d43469518f51b54b6826ed99c32289f6823ef875acaaa"
+      },
+      {
+        "path": "docs/evidence/scalar_highs_h215_2226536_inspection.json",
+        "git_blob": "1d7bbeb10ad49ecd950f92dcca81da0a72fad2ad",
+        "sha256": "242802398cd806345a1ec2198c89d51c418a6de763aabba87d8ba1fbf1a9af47"
+      },
+      {
+        "path": "src/logic/optimization_pyomo.py",
+        "git_blob": "7b8b2cdeef0af9ff58eca05587fa11a42f33d07b",
+        "sha256": "fbea6bdc5870a3120006838e8fb090f9c53420766d23783ff6087dcd9a03fe1d"
+      }
+    ],
+    "original_pyomo_campaign": [
+      {
+        "path": "manuscript/scaling_analysis_results.qmd",
+        "git_blob": "a2c7ab1323641f4c799fe5caadd5c008ef978f62",
+        "sha256": "b111e9e95bc713510680d779cda9a9b51d073ae55bbe155ed41f22dfa75318ec"
+      },
+      {
+        "path": "docs/experiments/pyomo_scaling_serial_plan_20261101.md",
+        "git_blob": "3d8dbef963fc252510ecf644074d32f745a3b9c7",
+        "sha256": "c4c0902fbd5fa2fe2783f76d0db391cbee6bd0a454b78f43a8b30fd8db5f55d9"
+      },
+      {
+        "path": "docs/evidence/pyomo_serial_final_export_20261109/configurations.csv",
+        "git_blob": "c97bd39db1e107617dbbb681076bd57a5427815e",
+        "sha256": "3e2ec326760855d6494e3cc461ca344de853600c5c876356571f59efb0a98af5"
+      },
+      {
+        "path": "docs/evidence/pyomo_serial_final_export_20261109/results.csv",
+        "git_blob": "56abd270517e26a40a750c53587a8ad8421cb02e",
+        "sha256": "64a158effa6c1c0fcc7d3fffbcc31b5f52f61c416adfe03acd74262a2f796619"
+      },
+      {
+        "path": "docs/evidence/pyomo_serial_final_export_20261109/final_result.json",
+        "git_blob": "d07d2608ae0e1a569164038863f72bfcf377fddd",
+        "sha256": "2bc4d11ceed3b3ad943b352c82c6563f781a54b357baeb0172dd0e2a1f9af96b"
+      },
+      {
+        "path": "docs/evidence/pyomo_serial_final_export_20261109/reconciliation.json",
+        "git_blob": "738bcc02dd5b4a278eb0648862bf9b6fa4b3d2e8",
+        "sha256": "7063601c37bca9ddfca974fe51a0314585c9376512f6d5e219bef2d07c7f0e73"
+      }
+    ],
+    "paired_h300_decisions": [
+      {
+        "path": "manuscript/scaling_pilot_results.qmd",
+        "git_blob": "e76af1c76b27690a191565d1ba757077b54be9f5",
+        "sha256": "c8f3efff4ee4d085def84adb6d4d90abf4f0117d1c60137dbd0a4b10b0204bad"
+      },
+      {
+        "path": "docs/evidence/paired_h300_first_pair_20261101.json",
+        "git_blob": "5a3a51853fea34150b1900d15f6e7e46c6b0e1a9",
+        "sha256": "cb386527f654133712cf126c3d32ac6926a7a62a38f01159fa3ac686aebeaabc"
+      },
+      {
+        "path": "docs/evidence/paired_h300_flow_companions_20261101.json",
+        "git_blob": "9b1b96499e60fc6db9f4bf2b545a6ecba71419b4",
+        "sha256": "b0a77a89a0b04efc2de7594426e505d18220ef5e016d5ecad83ca15683900077"
+      },
+      {
+        "path": "docs/evidence/h300_selected_graph_release_20261101.json",
+        "git_blob": "0908f3197f932d56c431060fc495580bbef830e2",
+        "sha256": "2585e5e3078ca80e7d9e70984f55094be653ed3feb60e5ee60bad2b390216efc"
+      },
+      {
+        "path": "manuscript/supplement/appendix_e_paired_h300_index.json",
+        "git_blob": "0f5ea5c0144c58af8d036ee011b3e0773ce59f3c",
+        "sha256": "3fd693594fd2d0738dc7b51430c5d4a9ee257ce4fae205a17da268d82384b1ae"
+      },
+      {
+        "path": "manuscript/supplement/investments/h300_w_sto_gurobi_t1_r1.csv",
+        "git_blob": "59b2b7d2e1fb7bc94335ed6b7f1cda5bbfe544fa",
+        "sha256": "4b303a92ff2e862b166be1730fa8ca888c7a35914cd985e5be8361521d96db3a"
+      },
+      {
+        "path": "manuscript/supplement/investments/h300_w_sto_highs_t1_r1.csv",
+        "git_blob": "448e06080d53d9469e21d9edc6cb44cbf31f1f0f",
+        "sha256": "caae5b3a67575e36a0c6cb2bc2e5555d6b3d72a034a1ab447f79658fb412d848"
+      }
+    ],
+    "h400_e1_e2_followup": [
+      {
+        "path": "docs/checkpoints/20261112_pr154_e2_encerramento.md",
+        "git_blob": "668c25784e9cedaf7eae6cc3952486c11ec2ca5f",
+        "sha256": "707e69b8e8761425c40ad2d7d2de64730d64d0f63aa8abb28220f9254b4f17d5"
+      },
+      {
+        "path": "docs/evidence/h400_e1_e2_final_20261112/h400-e1-e2.csv",
+        "git_blob": "008ee33fd64baed4559916082bb38096e3652057",
+        "sha256": "85990e8d640bd51d53858aeeb005b0fb1b4634f6709180d3dd41836846c2ec3a"
+      },
+      {
+        "path": "docs/evidence/h400_e1_e2_final_20261112/verification.json",
+        "git_blob": "050e53281e06ead29d1c82af1ef7a2d73f3e78f4",
+        "sha256": "2da2a3933e2b260910af50ad8512b0eb31c8dc3ca3b4de604dba9024ddc61a14"
+      },
+      {
+        "path": "docs/evidence/h400_e1_e2_final_20261112/e1-gate-final.json",
+        "git_blob": "406e697fb86f6c0dc65af3df5f60ce47d5cd0771",
+        "sha256": "1c532269480f4f7fd4ff3fc820dc4bed405478fb077181a84e20e4bb7cd87616"
+      },
+      {
+        "path": "docs/evidence/h400_e1_e2_final_20261112/gate-6.json",
+        "git_blob": "b3c273224329ad9834d8b0681fdc66b53313f3ed",
+        "sha256": "182dde5b7cad9767e9a2a0a721fb32a296e6c0ac6e8719485541c0f7321dd7aa"
+      }
+    ],
+    "appendix_outputs": [
+      {
+        "path": "manuscript/supplement/appendix_a_original.pdf",
+        "git_blob": "21d1a884e53a95a90e26fa3768222ac8a8ee00c8",
+        "sha256": "859dc52b64b6bcf471f7616182d8cadf2b693dbfd19ad4b9248637b5c231b3ed"
+      },
+      {
+        "path": "manuscript/supplement/appendix_c.qmd",
+        "git_blob": "759390f2b46c49a1d6755dbbf3e825727a5389e6",
+        "sha256": "e7b93ea52529b8a83b25213b1cb1b3a23bb9be7a06947ad2d0e9f887f4eb97d1"
+      },
+      {
+        "path": "manuscript/supplement/appendix_d.qmd",
+        "git_blob": "af80edd188a8b5cfb4f818b2c1bb6a0802d90371",
+        "sha256": "f2a5557446f45452b78fd044a133ef0724b69e7dd5f815c5e1f9d59e331b1e03"
+      },
+      {
+        "path": "manuscript/supplement/appendix_e.qmd",
+        "git_blob": "dee0dfc168318d2a053edf64d55b01aec9267fb8",
+        "sha256": "61270cc5f46ae597335f4f0f0e5a206d1fbba2b1be4d3e3ff8d9354f6b38fb3b"
+      },
+      {
+        "path": "manuscript/supplement/appendix_e_sources.json",
+        "git_blob": "167a9ed3c4cdf49e45cadecdbb1aa46de98c31fb",
+        "sha256": "349198b0150a5c616ecbee47a745ffd896739abb42ac9c5d4c23d445102e07ce"
+      },
+      {
+        "path": "manuscript/supplement/appendix_e_summary.json",
+        "git_blob": "f7b414724de26b5f77c0d3d2a630039254b9276a",
+        "sha256": "0cf81f875f37603b66f0784a627410a2a435b9f1ca7524e2431abf0e48333e1d"
+      },
+      {
+        "path": "docs/appendix_e_reproduction_20261031.md",
+        "git_blob": "40c126172a1217a69cbf549d2b9cdfde065b3633",
+        "sha256": "5f6287b5987ca0213ac7fe04ff86f028e342448c76c51623b117f19ed49def0d"
+      }
+    ],
+    "release_inventory": [
+      {
+        "path": "docs/evidence/zenodo_public_metadata_20261102.json",
+        "git_blob": "402eedfa4c3593aac77e4e80e516144fd76c8996",
+        "sha256": "c62d11d6d8c6a827110a039978a6e34ac3f149d57cc7c00bf35f3285a0fa2c59"
+      },
+      {
+        "path": "data/manifests/zenodo_next_release_inventory_20261101.json",
+        "git_blob": "fd02911db90e97e9af3731a000245c8751b1777f",
+        "sha256": "516aa242ccaaf39addb425c30744b02a681e2890859241da2a3ebd47641631bf"
+      },
+      {
+        "path": "data/manifests/zenodo_release_readiness_20261102.json",
+        "git_blob": "2a9532202042abe44944da0b302a1aa7fb4beeee",
+        "sha256": "3070de1ad7fe4405854912996f77981b113f395c5311251a9ddc3e7776dac4fd"
+      },
+      {
+        "path": "data/manifests/zenodo_release_plan_20261102.json",
+        "git_blob": "94f03b5d8c8a84c28f7c79aea8c9cd06b309179f",
+        "sha256": "4d96939a5e695ff13c3a82d8c6a1f4082adb1d0bdabf1bd333d19c5c9081bb02"
+      }
+    ],
+    "document_sources": [
+      {
+        "path": "manuscript/index.qmd",
+        "git_blob": "9a56fad490db9e7066c5f24e1b344f2e21006c6e",
+        "sha256": "3834c0ad7646ab1cbd28c7cdd19a63f5786f2acafb0f444993762e9bc6b041b0"
+      },
+      {
+        "path": "manuscript/supplement/index.qmd",
+        "git_blob": "c3ff34637436117e06f7989138787339592063db",
+        "sha256": "f460db3f12ce010181d08d7360ea761afbb1372507e447977f13be6651a0544f"
+      },
+      {
+        "path": "manuscript/references.bib",
+        "git_blob": "ba1b452e83b2af8bc56e3433a2a76d83e7eb5ae3",
+        "sha256": "d4215c0fdcb0ce75d7fa8092d6b088b1e1d1f7d957689230064eee01d941daa6"
+      },
+      {
+        "path": "manuscript/pages_approval.json",
+        "git_blob": "2a223ee830bb12c9b1e7a86c1afb1feed261b8f4",
+        "sha256": "b054e5be6db511fb1b03d79ca996de72a05827fa3e6f219d20f7bec734c1a1fc"
+      },
+      {
+        "path": "scripts/check_manuscript_appendix_inputs.py",
+        "git_blob": "4bf6f9ec63a7e9c39ad2463c95896f958906ac41",
+        "sha256": "f900d92891bb536fd84d86098fc3444ef7900e1c8b2aec283fb6dc88844c2044"
+      },
+      {
+        "path": "scripts/package_manuscript.py",
+        "git_blob": "13f8df38853f5c32e573f7007af4b83c311769be",
+        "sha256": "7b3041e58f08e355bd5c509a0ef3a69d42f37b501381337e6141b7931d2dfa2c"
+      }
+    ]
+  },
+  "operations_references": [
+    {
+      "path": "docs/experiments/npad_pyomo_h400_e1_queue_20261109.md",
+      "git_blob": "5c7c2d67cf4da98206f1ee3c828639421f3c2c89"
+    },
+    {
+      "path": "docs/experiments/npad_pyomo_h400_e2_192g_20261110.md",
+      "git_blob": "6a8594e73bca18dd270b732c4557b43026bb615e"
+    },
+    {
+      "path": "scripts/pyomo_h400_e2_queue.py",
+      "git_blob": "81307a98abe2cf5c56ed502e1b120543e7a5e658"
+    }
+  ],
+  "prepared": {
+    "inventory_sha256": "516aa242ccaaf39addb425c30744b02a681e2890859241da2a3ebd47641631bf",
+    "inventory_sha256_in_readiness_register": "777ad552a7f0e532a1afbc43e9f7336ab66059667f874e57151f6e8c695ea9d7",
+    "readiness_sha256": "3070de1ad7fe4405854912996f77981b113f395c5311251a9ddc3e7776dac4fd",
+    "receipt_digests": {
+      "manuscript/supplement/appendix_e_sources.json": {
+        "recorded_sha256": "349198b0150a5c616ecbee47a745ffd896739abb42ac9c5d4c23d445102e07ce",
+        "observed_sha256": "349198b0150a5c616ecbee47a745ffd896739abb42ac9c5d4c23d445102e07ce"
+      },
+      "data/manifests/research_data_distribution_v1.json": {
+        "recorded_sha256": "b4ee3eb180f733eb3d7dd8a82aa38edb44a10b2f5ac227c2dc6f62c588bd41bc",
+        "observed_sha256": "e4eead575a058cf1d7870b6041a1b791cc09f812064d82453a8dc2643beabc3a"
+      },
+      "docs/evidence/paired_h300_flow_companions_20261101.json": {
+        "recorded_sha256": "d15ed0c7d3a5c55db45f7b7359e229ab773b9f8827773f8a5fb8239519491ced",
+        "observed_sha256": "b0a77a89a0b04efc2de7594426e505d18220ef5e016d5ecad83ca15683900077"
+      },
+      "docs/evidence/h300_selected_graph_release_20261101.json": {
+        "recorded_sha256": "afefca05398de1e9bbd703b0e234c66722b6fd9326195419b72738c14255740a",
+        "observed_sha256": "2585e5e3078ca80e7d9e70984f55094be653ed3feb60e5ee60bad2b390216efc"
+      }
+    },
+    "files": [
+      {
+        "proposed_member": "historical-companions/appendix_e.sqlite3",
+        "sha256": "bf9cd01828cdb31507e26b91fa2b020f52556577612a977a69d27ead0cae75e2",
+        "bytes": 319369216
+      },
+      {
+        "proposed_member": "historical-companions/pyomo_gurobi_h215_w_native8h_license_v2_flows.csv.gz",
+        "sha256": "30cb6fdaa23f68b5089317406e91c7ad8cfad3543b1784e52e777b039ebb9072",
+        "bytes": 2985032
+      },
+      {
+        "proposed_member": "historical-companions/pyomo_gurobi_h215_w_native8h_license_v2_investments.csv.gz",
+        "sha256": "2b84344f3354609f265e2d91383d0c2405734c39c71412f71c1ddfabddb9bca7",
+        "bytes": 3265
+      },
+      {
+        "proposed_member": "historical-companions/pyomo_gurobi_h215_w_native8h_license_v2_od_matrix.csv.gz",
+        "sha256": "f76f55e98064b3f12085b22d96f8905e630d3c9b8d8949a908c2a320e200fb29",
+        "bytes": 68294
+      },
+      {
+        "proposed_member": "historical-companions/scalar_h215_det_flows.csv.gz",
+        "sha256": "e78fb751d6d9a9ffe49ad81a5f822552072b298c4a593c1f02066089183341bf",
+        "bytes": 253840
+      },
+      {
+        "proposed_member": "historical-companions/scalar_h215_det_investments.csv.gz",
+        "sha256": "6ebaeac682ab785d8eaeb18e5262e5922ac539bd33d81820619ce00d3c9ec55b",
+        "bytes": 3265
+      },
+      {
+        "proposed_member": "historical-companions/scalar_h215_det_od_matrix.csv.gz",
+        "sha256": "bc2d338b9535a0cc4a1dcb49d0b08bd979a15e48743497c78d20541bde32e853",
+        "bytes": 46471
+      },
+      {
+        "proposed_member": "historical-companions/scalar_h215_d_det_flows.csv.gz",
+        "sha256": "c5d0c7050d9c900d2efa8119ac1553504cfe877d99d2fb526935db06aafe28e5",
+        "bytes": 181091
+      },
+      {
+        "proposed_member": "historical-companions/scalar_h215_d_det_investments.csv.gz",
+        "sha256": "713d28cafb3a510a9653984710be6d7d5b3926b56f38d0d0c989c400676dae47",
+        "bytes": 3227
+      },
+      {
+        "proposed_member": "historical-companions/scalar_h215_d_det_od_matrix.csv.gz",
+        "sha256": "43a073643c9935903b3262f655a1d45bf8f8b0d729020470461847481c1aeae4",
+        "bytes": 40665
+      },
+      {
+        "proposed_member": "historical-companions/scalar_h215_d_sto_flows.csv.gz",
+        "sha256": "ca7c4000ddcf7d276f3476e60be68224a96cbfd2beb833c5f212e267086aea54",
+        "bytes": 2117183
+      },
+      {
+        "proposed_member": "historical-companions/scalar_h215_d_sto_investments.csv.gz",
+        "sha256": "28154a52db1438d4b08f450002a0b6f1a70cdd0516875d835469135ac897b35b",
+        "bytes": 3227
+      },
+      {
+        "proposed_member": "historical-companions/scalar_h215_d_sto_od_matrix.csv.gz",
+        "sha256": "bac0f89e805351acb0cfac16b6393c8db2fb3f6757e1acc50fd5a03461011581",
+        "bytes": 62576
+      },
+      {
+        "proposed_member": "historical-companions/scalar_h215_sto_flows.csv.gz",
+        "sha256": "442e9baffc34dd31c3ea5a6c2ea181d508b9f90509602d395682cbcb50b7b091",
+        "bytes": 2992584
+      },
+      {
+        "proposed_member": "historical-companions/scalar_h215_sto_investments.csv.gz",
+        "sha256": "70ad49783b685da36f8ef40713fc8841f1466eda5abf2e791e443abdc520ad7c",
+        "bytes": 3266
+      },
+      {
+        "proposed_member": "historical-companions/scalar_h215_sto_od_matrix.csv.gz",
+        "sha256": "d12a28cb696eaac55261a1e229d575e8729542d24a2f81d0bfb5214a23958ca2",
+        "bytes": 66895
+      },
+      {
+        "proposed_member": "historical-companions/scalar_h300_t1_flows.csv.gz",
+        "sha256": "10d6b75afc89c78ba89ed59f83955c216cdd41f2c25544afb5a37d0aea14a103",
+        "bytes": 3235021
+      },
+      {
+        "proposed_member": "historical-companions/scalar_h300_t1_investments.csv.gz",
+        "sha256": "3ce65d0664db62c20d2512203921794c23ae9de46a42bb404d8c31ecca3f2af5",
+        "bytes": 4630
+      },
+      {
+        "proposed_member": "historical-companions/scalar_h300_t1_od_matrix.csv.gz",
+        "sha256": "f2d6713d0d95e8c927b80d042bcc40e2716b8c5fe31e8ba3ad73b8a8cf6d6c47",
+        "bytes": 82252
+      },
+      {
+        "proposed_member": "historical-companions/scalar_h400_t1_flows.csv.gz",
+        "sha256": "001648888a4d15f5a9319d1fd35e41ad19a735e6c6124436894a6a7daf3aaac4",
+        "bytes": 3534503
+      },
+      {
+        "proposed_member": "historical-companions/scalar_h400_t1_investments.csv.gz",
+        "sha256": "73232f9382cf0429e62a019c94d015e0149893168d153c7c93eec0db15e5ab18",
+        "bytes": 6161
+      },
+      {
+        "proposed_member": "historical-companions/scalar_h400_t1_od_matrix.csv.gz",
+        "sha256": "fa394ce4f439c3d8df6caff71add3d8acfaf718abcc539819a97d3c6fa541239",
+        "bytes": 99578
+      },
+      {
+        "proposed_member": "historical-companions/scalar_h500_t1_flows.csv.gz",
+        "sha256": "14bcb42272d57fb361084b36aab2511bd15b2787cc9922829c13677464321541",
+        "bytes": 3717505
+      },
+      {
+        "proposed_member": "historical-companions/scalar_h500_t1_investments.csv.gz",
+        "sha256": "998cdd97e59707109138b36d0cc2d69609383e45f006b14a3c2ffd3fb64271a9",
+        "bytes": 7684
+      },
+      {
+        "proposed_member": "historical-companions/scalar_h500_t1_od_matrix.csv.gz",
+        "sha256": "b24dfcd8446dcc7e952136e6b2cf1c0cb6fcb0f6a3145d49ca4ee4fe300178ca",
+        "bytes": 115320
+      },
+      {
+        "proposed_member": "historical-companions/scalar_highs_h215_w_native8h_startup_v2_flows.csv.gz",
+        "sha256": "37ba325e35d0a7f3e61beb9ab90ec4865b9648c816ceb42507b74edd250fc4fc",
+        "bytes": 2905167
+      },
+      {
+        "proposed_member": "historical-companions/scalar_highs_h215_w_native8h_startup_v2_investments.csv.gz",
+        "sha256": "eb96670e8e65ee6d32f2fc764e1e1fa2124166938ea9d7c467c300087dddb2af",
+        "bytes": 3300
+      },
+      {
+        "proposed_member": "historical-companions/scalar_highs_h215_w_native8h_startup_v2_od_matrix.csv.gz",
+        "sha256": "414196cf0f5ce7ca44cf32b4bce7c24965986d75bb454ca95222f7cffde87282",
+        "bytes": 65017
+      },
+      {
+        "proposed_member": "osrm/osrm_h215_distances_km.csv.gz",
+        "sha256": "174190f3fd2832d0855c59054f6dc8c8120aca5e9bc7d4f173d701da7971a62c",
+        "bytes": 679880
+      },
+      {
+        "proposed_member": "osrm/osrm_h300_distances_km.csv.gz",
+        "sha256": "80f77a8c150ec6e76b87edc99b8a96a94af5e6dc046d070c54b8c48f26ce6156",
+        "bytes": 1318036
+      },
+      {
+        "proposed_member": "osrm/osrm_h400_distances_km.csv.gz",
+        "sha256": "dfcaeeac383491888db97465235b8636b6830a4ce8b28015bfa466283276d4bf",
+        "bytes": 2309796
+      },
+      {
+        "proposed_member": "osrm/osrm_h500_distances_km.csv.gz",
+        "sha256": "84ac2bfd7b96f8d324bf7352cc8a605e7924acfe7e354a3ecda53af05a583dca",
+        "bytes": 3623012
+      },
+      {
+        "proposed_member": "paired-h300/h300-w-sto-gurobi-t1-r1_flows.csv.gz",
+        "sha256": "f5b22dd8ae8d108eb33f2d876a839f6030111988ed10f575ca31296e0c31bf4b",
+        "bytes": 3226214
+      },
+      {
+        "proposed_member": "paired-h300/h300-w-sto-gurobi-t1-r1_investments.csv.gz",
+        "sha256": "3ce65d0664db62c20d2512203921794c23ae9de46a42bb404d8c31ecca3f2af5",
+        "bytes": 4630
+      },
+      {
+        "proposed_member": "paired-h300/h300-w-sto-gurobi-t1-r1_od_matrix.csv.gz",
+        "sha256": "dab2dd3205e5d1f6c742d20eb820293aee60cbcd54b95ec2c2bc542fa17b4a63",
+        "bytes": 83889
+      },
+      {
+        "proposed_member": "paired-h300/h300-w-sto-highs-t1-r1_flows.csv.gz",
+        "sha256": "767f1fb31952bc461ba72b0ceadc6bb5574f9c884ce9117d37b25face15a7ab5",
+        "bytes": 3124490
+      },
+      {
+        "proposed_member": "paired-h300/h300-w-sto-highs-t1-r1_investments.csv.gz",
+        "sha256": "8fabf1d9983e316e3881c80dea6f94e6b149aac27a944919d366cc6a8922542f",
+        "bytes": 4684
+      },
+      {
+        "proposed_member": "paired-h300/h300-w-sto-highs-t1-r1_od_matrix.csv.gz",
+        "sha256": "311e05b3dbcdb9a2f546ea4666a289edae77e570316a7e7e6906fefd024e4237",
+        "bytes": 81206
+      },
+      {
+        "proposed_member": "paired-h300/h300_pair_flow_distance.sqlite3",
+        "sha256": "77ca579727277a0de9a70c097c997cb7b685f4a6218d25a7223f4116461f26ca",
+        "bytes": 93220864
+      },
+      {
+        "proposed_member": "paired-h300/h300_W_selected_arcs.csv.gz",
+        "sha256": "acd90e7ea89ec6154d542f11c380f7ffe7b438e4c7ad4681c3b522f25b7fe655",
+        "bytes": 266939
+      },
+      {
+        "proposed_member": "paired-h300/h300_W_selected_graph.json.gz",
+        "sha256": "7eeb43663e9f5c9a7bbc48998cad49be702dc336e57a1d983e5e81f608f707c2",
+        "bytes": 137517
+      }
+    ],
+    "groups": {
+      "historical-companions": 28,
+      "osrm": 4,
+      "paired-h300": 9
+    },
+    "total_bytes": 450057392,
+    "rights_review": "sources_mapped_asset_specific_clearance_pending",
+    "hash_reconciliation": {
+      "status": "four_legacy_hashes_reproduced_by_crlf_conversion",
+      "active_reference_scheme": "exact_git_blob_bytes",
+      "details": "mvp2_s6b_zenodo_asset_review_20261112.json"
+    },
+    "private_fields_review": {
+      "status": "logical_payload_review_complete",
+      "files_scanned": 41,
+      "files_linkable_to_source_registry": 41,
+      "files_with_heuristic_hits": 0,
+      "details": "mvp2_s6b_zenodo_asset_review_20261112.json"
+    }
+  },
+  "observed_schemas": {
+    "appendix_e.sqlite3": {
+      "configurations": [
+        "case_id",
+        "metadata_json"
+      ],
+      "flows": [
+        "case_id",
+        "route_type",
+        "origin",
+        "destination",
+        "destination_role",
+        "product",
+        "period",
+        "scenario",
+        "probability",
+        "tonnes",
+        "osrm_km"
+      ],
+      "investments": [
+        "case_id",
+        "warehouse",
+        "record_json"
+      ]
+    },
+    "flows": [
+      "route_type",
+      "movement",
+      "origin",
+      "destination",
+      "destination_role",
+      "product",
+      "period",
+      "scenario",
+      "probability",
+      "tonnes",
+      "osrm_km",
+      "expected_tonnes"
+    ],
+    "investments": [
+      "warehouse",
+      "municipality",
+      "uf",
+      "role",
+      "candidate_capacity_t",
+      "expansion_capacity_t",
+      "bulk_capacity_t",
+      "open",
+      "expand",
+      "bulkify"
+    ],
+    "od_matrix": [
+      "route_type",
+      "origin",
+      "destination",
+      "destination_role",
+      "product",
+      "expected_horizon_tonnes",
+      "osrm_km"
+    ],
+    "distances": [
+      "Tipo_Arco",
+      "Origem",
+      "Destino",
+      "Distancia_km",
+      "Duracao_s",
+      "Fonte_Distancia",
+      "Motivo_Fallback"
+    ],
+    "h300_pair_flow_distance.sqlite3": {
+      "flows": [
+        "case_id",
+        "route_type",
+        "origin",
+        "destination",
+        "role",
+        "product",
+        "period",
+        "scenario",
+        "probability",
+        "tonnes",
+        "osrm_km"
+      ]
+    },
+    "selected_arcs": [
+      "route_type",
+      "origin",
+      "destination",
+      "product",
+      "osrm_km",
+      "connectivity_repair"
+    ]
+  },
+  "input_archive": {
+    "version": "0.2.0",
+    "receipt_date": "2026-11-02",
+    "doi": "10.5281/zenodo.22751909",
+    "name": "agrologistic-v020-inputs.zip",
+    "sha256": "583b04afb49c4cba13c9d0aaa18131e12a18bac1da410cd801616bd0b639811f",
+    "published_md5": "md5:79f85dfe638df1c2dfa5cca9cf343d88",
+    "verified_local_members": [
+      {
+        "population": 215,
+        "member": "data/processed/policy_population_v020_osrm/warehouses_215/model_input.xlsx",
+        "sha256": "40edb66585daca9cc393cab1f86bde6d4528a5f34b6afc57260cc1684396da4e"
+      },
+      {
+        "population": 215,
+        "member": "data/processed/policy_population_v020_osrm/warehouses_215/osrm_materialization_audit.json",
+        "sha256": "3ed582e8a8f1131fc52d634370ace58bfdc078d257c75362421e2f77484d3b9a"
+      },
+      {
+        "population": 300,
+        "member": "data/processed/nine_population_osrm_v1/warehouses_300/model_input.xlsx",
+        "sha256": "7761cce77cf93dcba2f617714f0117c1f2ead4de0c3f27149daceba447e0c7d1"
+      },
+      {
+        "population": 300,
+        "member": "data/processed/nine_population_osrm_v1/warehouses_300/osrm_materialization_audit.json",
+        "sha256": "644567aa884296d23629fb4e84befc8accdf19dcf0c8feb7e3c7747ce41e914d"
+      },
+      {
+        "population": 400,
+        "member": "data/processed/nine_population_osrm_v1/warehouses_400/model_input.xlsx",
+        "sha256": "c3085456997714ef5a8bdbf61e2c9a5e578c2636003947427cf58933d21ceb13"
+      },
+      {
+        "population": 400,
+        "member": "data/processed/nine_population_osrm_v1/warehouses_400/osrm_materialization_audit.json",
+        "sha256": "a4ca64408f7e4b374533cbf5d961c13a8ab7aa963f1fbfdec58dd0b925671471"
+      },
+      {
+        "population": 500,
+        "member": "data/processed/nine_population_osrm_v1/warehouses_500/model_input.xlsx",
+        "sha256": "888fbff42e4f80817d4d5f0101049495c86c6ed4cda75f00813779dadab41515"
+      },
+      {
+        "population": 500,
+        "member": "data/processed/nine_population_osrm_v1/warehouses_500/osrm_materialization_audit.json",
+        "sha256": "997d84446de2b6987cd4af0e07e11b2367efd479ad1a4ae3d50cac95e5c4f19a"
+      },
+      {
+        "member": "external-inputs/Warehouses_Existing_Candidate_All.xlsx",
+        "sha256": "0d19865ac72eca0706960d10b6dbd1647a4951378a831715e39af8029ecb77f2"
+      }
+    ]
+  },
+  "portable_bundle": {
+    "sha256": "3b7ad3ed2f2583c2b72ca9d0e023f88414da40d44a83050356182d1ee5e5a34b",
+    "source_commit": "f8ee519b45477c593930692e71601cf1f406896e",
+    "file_count": 69,
+    "reference_bib_sha256": "d4215c0fdcb0ce75d7fa8092d6b088b1e1d1f7d957689230064eee01d941daa6",
+    "appendix_a_sha256": "859dc52b64b6bcf471f7616182d8cadf2b693dbfd19ad4b9248637b5c231b3ed",
+    "clean_standalone_extraction": true,
+    "tex_runtime": "pdfTeX 3.141592653-2.6-1.40.29 (TeX Live 2026), pdfLaTeX and BibTeX",
+    "scope": "Independent compile from the extracted portable ZIP. Quarto source rebuild and new optimization outside this receipt.",
+    "compiled": {
+      "main.pdf": {
+        "pages": 34,
+        "page_text_and_order_equal": true,
+        "rebuilt_pdf_sha256": "d8371aee9d7e06051b009b4ccd17eeca54a92527d363160efd28943e1fb32a36",
+        "reference_pdf_sha256": "fea11554b247e3701efa85442bc6265784f146508cd3ff51651082332530f1ce"
+      },
+      "supplement.pdf": {
+        "pages": 69,
+        "page_text_and_order_equal": true,
+        "rebuilt_pdf_sha256": "1d291bc2e09d2464c742e3fce1b4970b961468500c06d42a2872900a8f1b1973",
+        "reference_pdf_sha256": "9e62a1583355969d6906a1f8db82ef56fa6b2ec990f61565eb592d38d7e1c893"
+      }
+    },
+    "undefined_or_duplicate_references": false
+  },
+  "campaign_inventory": {
+    "original_pr148": {
+      "cells": 90,
+      "classifications": {
+        "validated_feasible": 20,
+        "no_usable_incumbent": 14,
+        "not_executed": 56
+      },
+      "export_sha256": {
+        "final_result.json": "2bc4d11ceed3b3ad943b352c82c6563f781a54b357baeb0172dd0e2a1f9af96b",
+        "configurations.csv": "3e2ec326760855d6494e3cc461ca344de853600c5c876356571f59efb0a98af5",
+        "results.csv": "64a158effa6c1c0fcc7d3fffbcc31b5f52f61c416adfe03acd74262a2f796619"
+      },
+      "controller_commit": "334827d5e3669b4fcdf2801fd4cea466e5a71d06",
+      "engine_commit": "c493be8cd127c5175fc7eb111400229e64b8e3c0"
+    },
+    "h400_followup": {
+      "cells": 10,
+      "repetitions_per_setting": 1,
+      "outcomes": {
+        "validated_at_target": 5,
+        "time_limit_without_incumbent": 5
+      },
+      "matrix_sha256": "d90f1121a75817702db52fa0d190642433feb66d111743811fca2c653b649330",
+      "source_commits": [
+        "9dbfe04b81d80ae6a9ee4a9136b6f198d2180662",
+        "a4abdf79549ccafc2c2e1db9728e3e3e4d482c7f"
+      ],
+      "new_release_payload_prepared": false
+    }
+  },
+  "release_state": {
+    "planned_version_label": "0.3.0",
+    "registered_record_id": null,
+    "new_doi": null,
+    "asset_specific_rights_and_private_field_review": "logical_payload_review_complete_release_clearance_pending",
+    "new_deposit_created": false,
+    "new_files_uploaded": false,
+    "hpc_jobs_submitted": false
+  }
+}
