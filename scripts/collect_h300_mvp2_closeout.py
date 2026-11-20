@@ -73,7 +73,7 @@ def report(base):
         "MaxRSS,AllocCPUS,ReqMem,NodeList%120"
     )
     accounting = subprocess.check_output(
-        ["sacct", "-j", ARRAY, "-n", "-P", f"--format={columns}"], text=True,
+        ["sacct", "-j", ARRAY, "--array", "-n", "-P", f"--format={columns}"], text=True,
     )
     tasks = {}
     for record in csv.reader(io.StringIO(accounting), delimiter="|"):

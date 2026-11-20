@@ -51,14 +51,39 @@ class CloseoutControls(unittest.TestCase):
 
     def run_report(self, accounting=None):
         output = io.StringIO()
+        reply = accounting if accounting is not None else self.accounting
         with patch.object(COLLECTOR, "PLAN_SHA", self.plan_hash), \
              patch.object(COLLECTOR.shutil, "disk_usage", return_value=SimpleNamespace(free=100 * 1024**3)), \
-             patch.object(COLLECTOR.subprocess, "check_output", return_value=accounting or self.accounting) as command, \
+             patch.object(COLLECTOR.subprocess, "check_output",
+                          side_effect=reply if callable(reply) else None,
+                          return_value=reply) as command, \
              contextlib.redirect_stdout(output):
             COLLECTOR.report(self.base)
         self.assertEqual(command.call_count, 1)
         self.assertEqual(command.call_args.args[0][:3], ["sacct", "-j", "2252608"])
+        self.assertIn("--array", command.call_args.args[0])
         return output.getvalue()
+
+    def grouped_tail(self):
+        return "\n".join(self.accounting.splitlines()[:57]) + (
+            "\n2252608_[57-59%1]|2252608|CANCELLED by 1271|0:0|0||24|192G|\n"
+        )
+
+    def test_slurm_grouped_cancelled_tail_is_expanded_by_request(self):
+        def slurm(argv, **kwargs):
+            return self.accounting if "--array" in argv else self.grouped_tail()
+
+        self.run_report(slurm)
+        bundle = next(self.base.glob("h300-2252608-closeout-*/*.tar.gz"))
+        with tarfile.open(bundle) as archive:
+            tasks = archive.extractfile("tasks.csv").read().decode()
+        for task in (57, 58, 59):
+            self.assertIn(f"{task},2252608_{task},", tasks)
+
+    def test_unexpanded_accounting_still_refuses_instead_of_inventing_tasks(self):
+        with self.assertRaisesRegex(SystemExit, "57, 58, 59"):
+            self.run_report(self.grouped_tail())
+        self.assertFalse(list(self.base.glob("h300-2252608-closeout-*")))
 
     def test_full_snapshot_includes_vectors_and_retains_all_source_bytes(self):
         self.run_report()
