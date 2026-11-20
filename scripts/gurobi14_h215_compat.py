@@ -432,12 +432,11 @@ def load_plan(source_sha):
 
 
 def scientific_input():
+    from scripts import mvp2_warehouse_receipt as warehouses
     from src.logic.excel_loader import load_model_data_from_excel
     from src.logic.experiment_runner import load_experiment_manifest
     from src.logic.mathematical_contract import prepare_model_data
     from src.logic.route_filtering import select_routes
-
-    from scripts import mvp2_warehouse_receipt as warehouses
 
     spec = load_experiment_manifest(
         ROOT / "experiments/mvp2_scalar_r3a_h215.yaml"
@@ -566,6 +565,7 @@ def run(source_sha):
             sys.path.insert(0, str(ROOT))
             data, model_config = scientific_input()
             import gurobipy as gp
+
             from src.logic import optimization_gurobipy_stochastic as core
             from src.logic.model_config import SolverConfig
             from src.logic.optimization_gurobipy import solve_model_gurobipy
