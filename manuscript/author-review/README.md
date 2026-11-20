@@ -15,7 +15,16 @@ Appendix A and template dependencies beside main.tex and supplement.tex.
 Compile main.tex with pdfLaTeX, BibTeX and sufficient pdfLaTeX passes; compile
 supplement.tex twice. The figure h300_root_final.pdf is vector artwork.
 
-Quarto and author-reviewed TeX remain separate source formats. Their root-method
-result accounts are updated together; full publication-source reconciliation
-and any GitHub Pages deployment require the subsequent authorized main workflow.
-No data deposit or publication is performed by this review build.
+The researcher approved the working PDFs and authorized PR157's develop merge
+on 20 November 2026. The source of the next Pages edition is this author-reviewed
+LaTeX, preserving its exact text and bibliography. publication-source.json binds
+all dependency bytes to the approved portable project. publication-assets.zip
+contains only its reviewed artwork, template dependencies and documentary assets;
+it includes no private numerical vectors, credentials, input workbooks or logs.
+
+scripts/build_author_review.py verifies this allowlist before compiling, preserves
+the original Appendix A page sequence, and assembles matching PDF/TeX/ZIP downloads.
+The website embeds these complete PDFs instead of showing a different Quarto text.
+Quarto sources remain in GitHub as a separate historical editorial representation.
+The committed approval remains pending; the later main merge and explicit manual
+Pages acknowledgement require separate authorization. No deployment is performed.

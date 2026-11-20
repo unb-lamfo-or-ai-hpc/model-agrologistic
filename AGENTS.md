@@ -1,3 +1,7 @@
+## Approved MVP2 closeout and pending main publication — 20 November 2026
+
+PR157 was explicitly authorized and merged into develop at 32cfa1846ebde278ba4ebbb4eea990a14b461770 after six passing exact-head workflows and researcher PDF approval. Preserve the final h300 audit, author-reviewed LaTeX and historical evidence. Read docs/mvp2_main_pages_promotion_20261120.md. The next Pages edition uses manuscript/author-review and its frozen dependency manifest; it must not silently substitute the separate Quarto text. Publication preparation and the develop-to-main promotion require their own explicit merge approvals. Keep the promotion Draft until its dependencies and ancestry pass. No Pages dispatch, data deposit, journal submission or HPC action is authorized by preparation. The unrelated h215 policy and Gurobi14 work remain independent.
+
 ## Serial graph released; publication preparation — 2 November 2026
 
 The researcher reports prepared_no_new_job, all_new_jobs_submitted_held and
