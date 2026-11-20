@@ -14,11 +14,11 @@
   "mvp3_development": "Deferred while closing MVP2; existing compatibility job may finish",
   "destination_pr": 157,
   "destination_state": "open Draft verified before documentation update",
-  "collector_sha256": "5b05d1fb7fc9c99cd157744fe1246d3729bb6fb7bfe02e4ad9998388dc14ea73",
+  "collector_sha256": "88165be470064564a16cf54aa17758fd676a27d4f385f2743c87c66a09c9c22d",
   "archive_scope": "All regular files in original claim, including available vectors; private custody, no raw data publication",
   "originals_modified": false,
   "local_control_tests": {
-    "passed": 7,
+    "passed": 9,
     "failures": 0,
     "skipped": 0,
     "ruff": "passed",
@@ -54,7 +54,7 @@
     "diagnosis": "Collector did not request sacct --array and skipped the grouped cancellation row; not evidence of active tasks",
     "archive_created": false
   },
-  "repair": "Add sacct --array to request one task per row; retain refusal for missing/unexpanded records",
+  "repair": "Use version-compatible sacct query without --array; request full bit strings and decode explicit bounded task ranges with original grouped-row provenance",
   "operator_attachment_sha256": [
     {
       "bytes": 10785,
@@ -64,5 +64,22 @@
       "bytes": 18305,
       "sha256": "e5964fab94666a60ba8406cb70bebe0edc2ea0f29e7bc72ff14a1a74280b78d0"
     }
-  ]
+  ],
+  "previous_collection_attempts": [
+    {
+      "collector_sha256": "12895faddb81bd765ba58436b6391d8421214e26d0e29e3ca4cbf738254ad906",
+      "operator_hash_check": "SUCESSO",
+      "error": "Coleta final ainda indisponível. Tarefas faltantes ou ativas: [57, 58, 59]",
+      "diagnosis": "Collector did not request sacct --array and skipped the grouped cancellation row; not evidence of active tasks",
+      "archive_created": false
+    },
+    {
+      "collector_sha256": "5b05d1fb7fc9c99cd157744fe1246d3729bb6fb7bfe02e4ad9998388dc14ea73",
+      "cli_directory": "/home/vrrcelestino/model-agrologistic-hygiene-audit/mvp2-h300-closeout-recollect-01T1N0cO",
+      "command_failed": "sacct --array",
+      "operator_error": "sacct: unrecognized option '--array'",
+      "collector_executed": false
+    }
+  ],
+  "shared_environment_note": "Researcher clarifies gurobipy version restriction concern is CFL-GNN shared-environment compatibility, independent of collection; no package/project dependency changed here."
 }

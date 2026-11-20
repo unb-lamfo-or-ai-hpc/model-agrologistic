@@ -61,7 +61,8 @@ class CloseoutControls(unittest.TestCase):
             COLLECTOR.report(self.base)
         self.assertEqual(command.call_count, 1)
         self.assertEqual(command.call_args.args[0][:3], ["sacct", "-j", "2252608"])
-        self.assertIn("--array", command.call_args.args[0])
+        self.assertNotIn("--array", command.call_args.args[0])
+        self.assertEqual(command.call_args.kwargs["env"]["SLURM_BITSTR_LEN"], "0")
         return output.getvalue()
 
     def grouped_tail(self):
@@ -69,21 +70,36 @@ class CloseoutControls(unittest.TestCase):
             "\n2252608_[57-59%1]|2252608|CANCELLED by 1271|0:0|0||24|192G|\n"
         )
 
-    def test_slurm_grouped_cancelled_tail_is_expanded_by_request(self):
+    def test_old_slurm_grouped_cancelled_tail_is_collected_with_provenance(self):
         def slurm(argv, **kwargs):
-            return self.accounting if "--array" in argv else self.grouped_tail()
+            self.assertNotIn("--array", argv)
+            return self.grouped_tail()
 
         self.run_report(slurm)
         bundle = next(self.base.glob("h300-2252608-closeout-*/*.tar.gz"))
         with tarfile.open(bundle) as archive:
             tasks = archive.extractfile("tasks.csv").read().decode()
+            manifest = json.load(archive.extractfile("inventory.json"))
         for task in (57, 58, 59):
             self.assertIn(f"{task},2252608_{task},", tasks)
+            self.assertEqual(manifest["task_accounting_sources"][str(task)]["reported_job"],
+                             "2252608_[57-59%1]")
+            self.assertEqual(manifest["task_accounting_sources"][str(task)]["reported_raw_job"],
+                             "2252608")
 
-    def test_unexpanded_accounting_still_refuses_instead_of_inventing_tasks(self):
-        with self.assertRaisesRegex(SystemExit, "57, 58, 59"):
-            self.run_report(self.grouped_tail())
+    def test_truncated_group_is_rejected(self):
+        with self.assertRaisesRegex(SystemExit, "truncado"):
+            self.run_report(self.grouped_tail().replace("2252608_[57-59%1]", "2252608_[57+"))
         self.assertFalse(list(self.base.glob("h300-2252608-closeout-*")))
+
+    def test_invalid_or_overlapping_group_ranges_are_rejected(self):
+        for group in ("57-99", "59-57", "57,57", "57--59", "57,", "60"):
+            with self.subTest(group=group), self.assertRaises(SystemExit):
+                COLLECTOR.task_indices(f"2252608_[{group}]")
+
+    def test_group_and_individual_overlap_is_rejected(self):
+        with self.assertRaisesRegex(SystemExit, "repetido"):
+            self.run_report(self.grouped_tail() + self.accounting.splitlines()[57] + "\n")
 
     def test_full_snapshot_includes_vectors_and_retains_all_source_bytes(self):
         self.run_report()

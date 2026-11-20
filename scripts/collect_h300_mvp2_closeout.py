@@ -5,6 +5,7 @@ import csv
 import hashlib
 import io
 import json
+import os
 import re
 import shutil
 import stat
@@ -38,6 +39,32 @@ def json_bytes(value):
     return (json.dumps(value, indent=2, ensure_ascii=False) + "\n").encode()
 
 
+def task_indices(job):
+    """Decode only the explicit individual/range identity reported by Slurm."""
+    single = re.fullmatch(rf"{ARRAY}_(\d+)", job)
+    group = re.fullmatch(rf"{ARRAY}_\[([0-9,-]+)(?:%[1-9][0-9]*)?\]", job)
+    if single:
+        indices = [int(single[1])]
+    elif group:
+        indices = []
+        for part in group[1].split(","):
+            segment = re.fullmatch(r"(\d+)(?:-(\d+))?", part)
+            if segment is None:
+                raise SystemExit("Intervalo Slurm inválido; preservar a saída original.")
+            first = int(segment[1])
+            last = int(segment[2]) if segment[2] is not None else first
+            if not 0 <= first <= last < 60:
+                raise SystemExit("Intervalo Slurm fora do bloco original.")
+            indices.extend(range(first, last + 1))
+    elif job.startswith(f"{ARRAY}_") and "." not in job:
+        raise SystemExit("Identificador Slurm truncado ou não suportado; preservar a saída.")
+    else:
+        return []
+    if any(index not in range(60) for index in indices) or len(set(indices)) != len(indices):
+        raise SystemExit("Tarefa Slurm inválida ou repetida no intervalo.")
+    return indices
+
+
 def report(base):
     claim = base / ".mvp2-h300-gurobi-root-cpu-v2"
     if not claim.is_dir() or claim.resolve() != claim:
@@ -69,24 +96,24 @@ def report(base):
         raise SystemExit("Identidade do plano ou do array diverge da coleta parcial.")
 
     columns = (
-        "JobID%40,JobIDRaw%40,State%60,ExitCode,ElapsedRaw,"
+        "JobID%512,JobIDRaw%512,State%60,ExitCode,ElapsedRaw,"
         "MaxRSS,AllocCPUS,ReqMem,NodeList%120"
     )
     accounting = subprocess.check_output(
-        ["sacct", "-j", ARRAY, "--array", "-n", "-P", f"--format={columns}"], text=True,
+        ["sacct", "-j", ARRAY, "-n", "-P", f"--format={columns}"], text=True,
+        env={**os.environ, "SLURM_BITSTR_LEN": "0"},
     )
     tasks = {}
+    task_sources = {}
     for record in csv.reader(io.StringIO(accounting), delimiter="|"):
         if not record:
             continue
         job, raw, state, code, elapsed, *_ = (part.strip() for part in record)
-        match = re.fullmatch(rf"{ARRAY}_(\d+)", job)
-        if match is None:
-            continue
-        index = int(match[1])
-        if index not in range(60) or index in tasks:
-            raise SystemExit(f"Registro Slurm inesperado ou repetido: {job}")
-        tasks[index] = (raw, state, code, elapsed)
+        for index in task_indices(job):
+            if index in tasks:
+                raise SystemExit(f"Registro Slurm inesperado ou repetido: {job}")
+            tasks[index] = (raw, state, code, elapsed)
+            task_sources[str(index)] = {"reported_job": job, "reported_raw_job": raw}
 
     unfinished = [
         index for index in range(60)
@@ -182,6 +209,8 @@ def report(base):
         add_bytes("inventory.json", json_bytes({
             "array": ARRAY, "source": SOURCE, "plan_sha256": PLAN_SHA, "terminal_tasks": 60,
             "files_sha256": hashes, "missing_originals": missing,
+            "task_accounting_sources": task_sources,
+            "grouped_accounting_policy": "Individual identities derived only from explicit Slurm ranges; raw grouped rows retained, no distinct raw job IDs invented.",
             "scope": "Complete regular-file claim snapshot, including all available decision vectors, logs and receipts; private transfer only.",
             "original_files": len(relatives),
             "original_bytes": total_bytes,
