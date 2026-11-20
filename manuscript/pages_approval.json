@@ -24,7 +24,7 @@
   "schema_version": "manuscript-pages-approval-v1",
   "scope": "public_coauthor_review",
   "source_sha256": {
-    ".gitattributes": "25502efbd00a3f80407efbea99ec04eab514fae055b8e4cadc5dddb15ff2ea34",
+    ".gitattributes": "ce2c6220f98338212e4288996afddd171c73497ef7e5f7ab541d36a7ab78891a",
     ".gitignore": "a82bc4db89d23bf1557627a1ca26f8dd01767808731530acf70ea59c867c0286",
     "README.md": "f8bb1d558d7cbdb5157a4b299db925ab5240934b2de1497f1c6cfcd5762b1ceb",
     "_extensions/elsevier/_extension.yml": "30ac38fe5b169802321da4b79e96b0bc30e6dc533e2cf1be6372c766c764b8a9",
