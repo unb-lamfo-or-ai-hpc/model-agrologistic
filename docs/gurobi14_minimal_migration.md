@@ -83,6 +83,30 @@ Licensing parameters are required environment configuration, distinct from
 the optimization parameters that must remain at their defaults. Logging
 redaction must not silently change the optimization configuration.
 
+## Received NPAD preflight and clone preparation
+
+The operator's explicit-interpreter receipt confirms Python 3.13.15, Conda,
+x86_64, glibc 2.28 and gurobipy 13.0.3. numpy, pandas, openpyxl, PyYAML and
+psutil are installed. The workbook and both population hashes match the three
+accepted identities above. The selected license file is readable; its contents
+were not read and no WLS acceptance has been tested.
+
+The researcher specifically selected /home/vrrcelestino/venv313_g14 as the new
+environment prefix. This is the sole explicit exception to the audit-directory
+rule for new artifacts. Original environment: /home/vrrcelestino/venv313.
+All receipts, caches and temporary files remain below the audit directory.
+
+Source scripts/npad_gurobi14_clone.sh from a Conda-enabled login shell once.
+It refuses an existing target or claim, clones with --copy and changes only
+gurobipy using an exact 14.0.0 pip pin, --no-deps and no project reinstall.
+It compares installed versions immediately after cloning, then fingerprints
+Python and recorded distribution files before/after the installation and
+rechecks the original environment. Bytecode and license files are excluded
+from file hashing. Import/version inspection opens no optimizer/license session.
+The reported success means environment preparation only, not an operational GO.
+No scheduler or optimization command exists in this script. Preserve failed or
+partial targets and receipts; do not delete/retry automatically.
+
 ## Environment and license feasibility
 
 Official Gurobi documentation supports Python 3.13 for gurobipy 14.0.0.
@@ -139,7 +163,7 @@ No execution means no operational GO/NO-GO yet.
 ## Status and boundaries
 
 - Read-only source and official documentation review: completed.
-- Correct NPAD environment/input preflight: pending operator readback.
+- Correct NPAD environment/input preflight: received and matching on 20 November.
 - Environment clone and one-dependency change: not performed.
 - Real h215 job and license acceptance: not performed.
 - Compatibility decision: pending.

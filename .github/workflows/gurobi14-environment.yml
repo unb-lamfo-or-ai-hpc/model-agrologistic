@@ -1,0 +1,14 @@
+name: Gurobi 14 environment preparation without solver
+on:
+  pull_request:
+    paths:
+      - scripts/npad_gurobi14_clone.sh
+      - tests/test_gurobi14_environment_preparation.py
+      - .github/workflows/gurobi14-environment.yml
+jobs:
+  environment-controls:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash -n scripts/npad_gurobi14_clone.sh
+      - run: python -m unittest discover -s tests -p test_gurobi14_environment_preparation.py -v

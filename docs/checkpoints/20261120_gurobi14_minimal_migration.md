@@ -30,3 +30,17 @@ Only after their reconciliation revise the methodological plan in English EN
 with proper mathematical typesetting, tables/figures, editable source/PDF and
 GitHub documentation. No Benders development, manuscript edits, old-result
 replacement, extra experiments or automatic merge is authorized here.
+
+## NPAD preflight received; clone prefix authorized
+
+The explicit interpreter reports Python3.13.15, Conda, x86_64/glibc2.28,
+gurobipy13.0.3 and the required data dependencies. All three input hashes match.
+License-file readability is not WLS acceptance. The source version13.0.3 from
+this selected interpreter supersedes the earlier pip-list value for this test.
+The researcher authorizes cloning to /home/vrrcelestino/venv313_g14. The new
+clone script prepares only that environment and records distribution fingerprints;
+no license, optimizer or scheduler call is included. Clone results remain pending.
+
+The researcher clarified that develop/main synchronization uses already merged
+content and need not wait for the open PRs. Preserve those PRs for later develop
+integration; do not merge them as a prerequisite to main promotion.
