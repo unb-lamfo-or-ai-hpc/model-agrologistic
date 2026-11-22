@@ -1,3 +1,39 @@
+# Current checkpoint: Gurobi 14 minimum compatibility accepted — 22 November 2026
+
+Job **2280449** has an independently reviewed **GO** for the single historical
+h215 DET/W compatibility criterion. The transferred archive/sidecar and all
+22 transfer-ledger plus 10 original-ledger entries match locally. Python3.13.15,
+Gurobi14.0.0, the approved shared106 runtime guards and designated WLS were accepted.
+Exactly one model and optimize call returned. TimeLimit=300 was the sole override;
+182 checked parameters agree before and after execution.
+
+Native status2/OPTIMAL, runtime128.59140491485596s, Work63.49538579832624,
+one node, objective11437426626463.027, bound11437249568809.72,
+gap0.00154805498727291%. Original independent validation accepted with zero failed
+checks. Application225.15056724473834s; all Slurm rows COMPLETED0:0 in227s.
+Worker peak RSS6724984832bytes; native peak5.33292412decimalGB.
+
+Read [the acceptance review](../gurobi14_h215_2280449_compatibility_review.md) and
+[machine-readable evidence](../evidence/gurobi14_h215_2280449_accepted_20261122.json).
+The original collector's pending-review label remains preserved; this separate
+review closes the decision. No original receipt is rewritten.
+
+The observed affinity includes64logical CPUs despite32-CPU/nomultithread hints;
+physical topology and effective worker count were not recorded. Do not claim
+physical-only binding, actual parallel efficiency or a root LP algorithm.
+This does not block minimum compatibility; future production instrumentation
+requires its own qualification.
+
+PR160 stays Draft with no merge authorization. This evidence-only follow-up
+preserves executed source6683c8af, failed predecessor2278573, the original69-package
+clone ledger and both consumed claims. Do not prepare, submit, release or retry.
+No shared environment, manuscript, scientific input or historical result changes.
+MVP3 XLSX/SQLite reconciliation, methodological approval and production/Benders
+qualification remain separate pending work. Earlier pending-result statements
+below are historical and superseded by this section only.
+
+---
+
 # Checkpoint: approved shared106 baseline and new v2 preparation
 
 The researcher adopts the exact reviewed106-distribution inventory as a separate
