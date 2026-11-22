@@ -1,0 +1,65 @@
+{
+  "schema_version": "gurobi14-h215-submission-and-h300-accounting-v1",
+  "recorded_on": "2026-11-20",
+  "evidence_scope": "Operator-reported NPAD CLI receipts; attachment bytes inspected locally, no agent access to NPAD",
+  "compatibility_job": {
+    "job_id": "2278573",
+    "source_commit": "72fd9f52e1b439b46576d7d33cfaf928a63a51df",
+    "claim": "/home/vrrcelestino/model-agrologistic-hygiene-audit/.mvp3-gurobi14-h215-compat-v1",
+    "source_directory": "/home/vrrcelestino/model-agrologistic-hygiene-audit/gurobi14-h215-source-QDDQUuMt/model-agrologistic-72fd9f52e1b439b46576d7d33cfaf928a63a51df",
+    "bootstrap": "/home/vrrcelestino/model-agrologistic-hygiene-audit/gurobi14-test-fetch-oSWR1eLe",
+    "plan_sha256_as_reported": "a5b74cf5608e125bbb686074d06a9064af77b152926f0df425537ec16e67fe09",
+    "plan_digest_length": 64,
+    "plan_hash_independently_verified": false,
+    "submission_consumed": true,
+    "release_reported": true,
+    "last_reported_state": "PENDING",
+    "last_reported_pending_reason": "Resources",
+    "collector_status": "nonterminal_or_accounting_pending",
+    "native_result_received": false,
+    "license_acceptance": null,
+    "compatibility_verdict": "pending_execution",
+    "latest_attachment_contains_fresh_job_accounting": false
+  },
+  "h300_original_array": {
+    "job_id": "2252608",
+    "completed": 49,
+    "failed": 7,
+    "running": 1,
+    "pending": 3,
+    "failed_tasks": [
+      6,
+      17,
+      19,
+      21,
+      24,
+      44,
+      54
+    ],
+    "failed_exit_code": "1:0",
+    "running_task": 56,
+    "running_elapsed": "04:37:32",
+    "pending_tasks": [
+      57,
+      58,
+      59
+    ],
+    "pending_range_evidence": "Latest pasted sacct abbreviates the pending row; full 57-59 range is retained from immediately preceding operator squeue",
+    "scientific_validation_counts": null,
+    "failure_causes": null,
+    "final_collection_ready": false
+  },
+  "attachment": {
+    "sha256": "62b52873b157c2a614a6a17a4fa87ccd1ab808f7a95bb7e74a44dff4fd1fbf0d",
+    "bytes": 15861,
+    "description": "Operator sacct snapshot of array 2252608; root task rows counted once, excluding batch/extern/worker steps"
+  },
+  "actions": {
+    "new_submissions": 0,
+    "retries": 0,
+    "solver_calls_by_agent": 0,
+    "merges": 0,
+    "manuscript_changes": 0
+  },
+  "next_step": "Read-only status/collection of existing job 2278573 after termination; preserve claims and collect array 2252608 only after all tasks are terminal"
+}
