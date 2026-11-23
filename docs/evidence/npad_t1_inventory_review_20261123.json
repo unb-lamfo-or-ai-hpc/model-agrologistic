@@ -1,0 +1,230 @@
+{
+  "schema_version": "npad-t1-inventory-review-v1",
+  "reviewed_on": "2026-11-23",
+  "evidence_scope": "Read-only local audit of operator-transferred live metadata inventory; no NPAD agent access",
+  "archive": {
+    "name": "npad-t1-inventory.tar.gz",
+    "sha256": "c0127ce8c9fe76409ab192f877eaf05213d39eb560a78579db95fb116a8d59d0",
+    "bytes": 3072522,
+    "sidecar_matches": true,
+    "internal_manifest_entries_verified": 7,
+    "hash_mismatches": 0
+  },
+  "inventory": {
+    "rows": 150773,
+    "regular_files": 122882,
+    "directories": 25672,
+    "symlinks": 2214,
+    "opaque_directories": 84,
+    "scan_errors": 0,
+    "logical_bytes_by_path": 19034672522,
+    "unique_regular_inodes": 122881,
+    "unique_inode_logical_bytes": 19034667610,
+    "observed_hardlinked_inode_groups": 1,
+    "special_entries": 5
+  },
+  "classification": {
+    "ARCHIVE_PROPOSAL": {
+      "files": 110369,
+      "logical_bytes_by_path": 16360561173,
+      "allocated_bytes_by_path": 16656764928
+    },
+    "ACTIVE_KEEP": {
+      "files": 11951,
+      "logical_bytes_by_path": 2620401287,
+      "allocated_bytes_by_path": 2660732928
+    },
+    "DELETION_CANDIDATE": {
+      "files": 338,
+      "logical_bytes_by_path": 1849971,
+      "allocated_bytes_by_path": 2904064
+    },
+    "HOLD_REVIEW": {
+      "files": 224,
+      "logical_bytes_by_path": 51860091,
+      "allocated_bytes_by_path": 52412416
+    }
+  },
+  "root_classification": [
+    {
+      "root": "model-agrologistic",
+      "classification": "ACTIVE_KEEP",
+      "files": 368,
+      "logical_bytes_by_path": 70804573
+    },
+    {
+      "root": "model-agrologistic",
+      "classification": "ARCHIVE_PROPOSAL",
+      "files": 2018,
+      "logical_bytes_by_path": 3867661223
+    },
+    {
+      "root": "model-agrologistic",
+      "classification": "DELETION_CANDIDATE",
+      "files": 30,
+      "logical_bytes_by_path": 387121
+    },
+    {
+      "root": "model-agrologistic-hygiene-audit",
+      "classification": "ACTIVE_KEEP",
+      "files": 11564,
+      "logical_bytes_by_path": 230844759
+    },
+    {
+      "root": "model-agrologistic-hygiene-audit",
+      "classification": "ARCHIVE_PROPOSAL",
+      "files": 106769,
+      "logical_bytes_by_path": 12422386427
+    },
+    {
+      "root": "model-agrologistic-hygiene-audit",
+      "classification": "DELETION_CANDIDATE",
+      "files": 264,
+      "logical_bytes_by_path": 1404941
+    },
+    {
+      "root": "model-agrologistic-hygiene-audit",
+      "classification": "HOLD_REVIEW",
+      "files": 12,
+      "logical_bytes_by_path": 193
+    },
+    {
+      "root": "model-agrologistic-inputs",
+      "classification": "ACTIVE_KEEP",
+      "files": 1,
+      "logical_bytes_by_path": 1660348
+    },
+    {
+      "root": "model-agrologistic-quarantine",
+      "classification": "HOLD_REVIEW",
+      "files": 207,
+      "logical_bytes_by_path": 51859554
+    },
+    {
+      "root": "model-agrologistic-scientific-archive",
+      "classification": "ARCHIVE_PROPOSAL",
+      "files": 1437,
+      "logical_bytes_by_path": 70162745
+    },
+    {
+      "root": "model-agrologistic-scientific-archive",
+      "classification": "DELETION_CANDIDATE",
+      "files": 44,
+      "logical_bytes_by_path": 57909
+    },
+    {
+      "root": "model-agrologistic-scientific-archive",
+      "classification": "HOLD_REVIEW",
+      "files": 5,
+      "logical_bytes_by_path": 344
+    },
+    {
+      "root": "osrm-agrologistic",
+      "classification": "ACTIVE_KEEP",
+      "files": 18,
+      "logical_bytes_by_path": 2317091607
+    },
+    {
+      "root": "osrm-agrologistic",
+      "classification": "ARCHIVE_PROPOSAL",
+      "files": 145,
+      "logical_bytes_by_path": 350778
+    }
+  ],
+  "rule_file_counts": {
+    "historical_results": 2018,
+    "current_checkout_or_input": 368,
+    "regenerable_cache": 338,
+    "historical_audit_or_execution_snapshot": 106769,
+    "migration_or_inventory_dependency": 2072,
+    "consumed_claim_control": 9492,
+    "credential_or_opaque_scope": 17,
+    "original_registry_input": 1,
+    "quarantine": 207,
+    "existing_scientific_custody": 1437,
+    "routing_materialization_evidence": 145,
+    "routing_data_and_tools": 18
+  },
+  "classification_basis": "Conservative metadata/name/known-contract rules; no original file contents or source SHA-256s supplied",
+  "deletion_approved_files": 0,
+  "archive_action_approved_files": 0,
+  "source_duplicates_verified_by_hash": 0,
+  "same_name_size_hints": {
+    "groups": 4673,
+    "path_rows": 116277,
+    "content_match": "not tested",
+    "deletion_permission": false
+  },
+  "workbook_search": {
+    "exact_basenames": [
+      "agrologistic_effective_baseline_v1.xlsx",
+      "agrologistic_warehouse_registry_v1.xlsx"
+    ],
+    "matches_in_enumerated_files": 0,
+    "scope": "Only the six enumerated roots; opaque contents, links and other locations remain unknown"
+  },
+  "routing_locations": {
+    "sqlite": "osrm-agrologistic/cache/policy-pairs-v020.sqlite3",
+    "sqlite_metadata_bytes": 212803584,
+    "pbf": "osrm-agrologistic/data/brazil-260901/brazil-260901.osm.pbf",
+    "pbf_metadata_bytes": 2080086409,
+    "contents_read": false,
+    "hash_or_consistent_snapshot_qualified": false
+  },
+  "queue_snapshot": {
+    "captured_with_inventory_on": "2026-11-22",
+    "stdout_bytes": 0,
+    "stderr_bytes": 0,
+    "interpretation": "No user jobs returned in that captured query; not current 23-Nov dependency clearance."
+  },
+  "migration": {
+    "pr": 160,
+    "state": "merged",
+    "merged_into": "develop",
+    "merge_commit": "a62f867bb5a3810f1f7e35355daaa31c5ca19084",
+    "minimal_compatibility_verdict": "GO"
+  },
+  "legacy_policy": {
+    "pr": 159,
+    "state": "Draft",
+    "scientific_execution_source_preserved": "23c63aea90827f770f8f72981436ae099deceb46",
+    "mvp3_recipe_reconciled": false,
+    "no_launch": true
+  },
+  "preservation": {
+    "originals_modified": false,
+    "shared_environment_changed": false,
+    "new_npad_jobs": 0,
+    "solver_calls": 0,
+    "files_deleted": 0,
+    "source_archives_created": 0,
+    "manuscripts_changed": false,
+    "raw_path_inventory_published": false
+  },
+  "limitations": [
+    "Classifications are custody proposals based on names/metadata and known contracts, not verified file contents.",
+    "Original source contents were not supplied or hashed; zero files are approved for deletion or moving.",
+    "Full private path CSVs remain local; GitHub receives a redacted summary and reproducible classifier.",
+    "The two new XLSX basenames were not found among enumerated files; opaque areas/other locations remain unknown.",
+    "Shared environments live outside these six roots and remain excluded.",
+    "No compression ratio, whole-project size or reclaimable-space claim follows from path byte totals."
+  ],
+  "next_review": [
+    "Consistent SQLite snapshot and current effective XLSX/registry location for T2.",
+    "Read-only source/hash/dependency and Git-tracked/untracked review before cleanup approval.",
+    "Restore and external custody verification before any future archive relocation.",
+    "Keep claim markers/absolute-source dependencies and unresolved quarantine material intact."
+  ],
+  "collector_source": {
+    "sha256": "febcca91e85052f5531f5f9849552a0f31785df5e2451f728c4c05d3888685bd",
+    "matches_authorized_local_source": true,
+    "attached_source_executed_by_auditor": false
+  },
+  "local_verification": {
+    "safe_archive_and_ledger_audit": true,
+    "root_and_top_directory_totals_reconciled": true,
+    "ruff": "passed",
+    "classification_replay_csvs_byte_identical": 8,
+    "source_originals_touched": false
+  }
+}
