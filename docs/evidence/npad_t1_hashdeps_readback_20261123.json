@@ -1,0 +1,178 @@
+{
+  "schema_version": "npad-t1-hashdeps-accepted-readback-v1",
+  "reviewed_on": "2026-11-23",
+  "decision": "ACCEPT_READBACK_WITH_COVERAGE_LIMITS",
+  "scope": "Custody/source-hash observations only; no cleanup or scientific experiment approval",
+  "archives": [
+    {
+      "name": "t1-hashdeps-reports-3bb356281ac2.tar.gz",
+      "bytes": 4809464,
+      "sha256": "35caa71a5bad5d5b0eca6f48116dbc225f1b2f9bf19bdafecb908745bd258a63",
+      "sidecar_matches": true,
+      "internal_manifest_entries_verified": 8,
+      "hash_mismatches": 0
+    },
+    {
+      "name": "t1-hashdeps-reports-caaa456c51c4.tar.gz",
+      "bytes": 6097368,
+      "sha256": "d6842db7a92974d1666aa4b0256c7db308db65b25e02660367c705288433956b",
+      "sidecar_matches": true,
+      "internal_manifest_entries_verified": 11,
+      "hash_mismatches": 0
+    }
+  ],
+  "preserved_shared_report_files": 8,
+  "source": {
+    "executed_sha": "d3a0c654b1b20ae86ae1fbd0bf18992fdcc9cb41",
+    "plan_sha256": "c15b488dd8283864a241b8b20d6bbcb07d48a2ceb7e282a767b52a9d6da402ab",
+    "helpers_sha256": {
+      "audit_inventory_bundle.py": "1ff4f48409ae4e7e74d3c9fa00b402b8186e4a9978ecd530040d8356f0f84373",
+      "classify_inventory_metadata.py": "f5e7b3b3ba00b4eab407883e9ae8cb52c94e387dd0ee1aa29be2f45d2548a522",
+      "verify_hash_dependencies.py": "e56ab87d9246a44f3e9d30dc6e8a5c49e4542f735f43feb4435adad00885988f"
+    },
+    "classification_csv_sha256": "7c53bfd7517604ad228a435e1e6daa00da9affb5ffcc4d5db6127fec3c80e6aa"
+  },
+  "readback": {
+    "expected_records": 113304,
+    "archival_and_cache_targets": 110707,
+    "retained_comparisons": 2597,
+    "unique_records": 113304,
+    "duplicate_record_ids": 0,
+    "missing_record_ids": 0,
+    "stable_hashes": 113302,
+    "database_guarded": 2,
+    "guarded_bytes": 31,
+    "hash_phase_bytes_read": 16430804142,
+    "incomplete_prior_journals": 0,
+    "status": "finite_scope_read_complete",
+    "classifications": {
+      "ARCHIVE_PROPOSAL": {
+        "records": 110369,
+        "stable": 110367,
+        "dependency_flag_true": 106779,
+        "stable_bytes": 16360561142
+      },
+      "DELETION_CANDIDATE": {
+        "records": 338,
+        "stable": 338,
+        "dependency_flag_true": 264,
+        "stable_bytes": 1849971
+      },
+      "ACTIVE_KEEP": {
+        "records": 2597,
+        "stable": 2597,
+        "dependency_flag_true": 2280,
+        "stable_bytes": 68393029
+      }
+    }
+  },
+  "stages": [
+    {
+      "readback": "readback-6d347adb0960",
+      "records": 91685,
+      "statuses": {
+        "database_requires_consistent_snapshot": 2,
+        "stable": 91683
+      },
+      "hash_phase_bytes_read": 14560388750,
+      "dependency_observed_utc": "2026-11-23T12:33:44Z",
+      "dependency_coverage": {
+        "control_bytes_read": 41537150,
+        "control_jsons_omitted": 14,
+        "control_jsons_read": 9606,
+        "dependency_time_guard": false,
+        "proc_processes_seen": 17,
+        "proc_unreadable_entries": 18,
+        "queue_array_group_tokens": 0,
+        "queue_jobs_not_inspected": 0,
+        "queue_unparsed_lines": 0,
+        "symlink_references_read": 2214,
+        "symlink_references_unreadable": 0
+      },
+      "queue_query_succeeded": true,
+      "queue_jobs_returned": 0,
+      "reference_count": 4920
+    },
+    {
+      "readback": "readback-872241e6f9b9",
+      "records": 21619,
+      "statuses": {
+        "stable": 21619
+      },
+      "hash_phase_bytes_read": 1870415392,
+      "dependency_observed_utc": "2026-11-23T12:53:12Z",
+      "dependency_coverage": {
+        "control_bytes_read": 41537150,
+        "control_jsons_omitted": 14,
+        "control_jsons_read": 9606,
+        "dependency_time_guard": false,
+        "proc_processes_seen": 14,
+        "proc_unreadable_entries": 18,
+        "queue_array_group_tokens": 0,
+        "queue_jobs_not_inspected": 0,
+        "queue_unparsed_lines": 0,
+        "symlink_references_read": 2214,
+        "symlink_references_unreadable": 0
+      },
+      "queue_query_succeeded": true,
+      "queue_jobs_returned": 0,
+      "reference_count": 4916
+    }
+  ],
+  "guarded_files_scope": "Two filenames inside historical test-fixture paths, 17 and 14 bytes. Content and actual SQLite validity unverified; neither is the active OSRM cache.",
+  "content_matches": {
+    "nonempty_groups": 4087,
+    "nonempty_paths": 89455,
+    "logical_extra_bytes_over_one_observed_inode_per_group": 3376348759,
+    "cross_active_archive_groups": 1136,
+    "stable_empty_file_records": 1737,
+    "external_github_or_zenodo_identity_qualification": "not established by this readback",
+    "reclaimable_space_qualified": false
+  },
+  "dependency_refinement": {
+    "ARCHIVE_PROPOSAL": {
+      "no_reference_observed_partial_scope": 3590,
+      "exact_file_reference": 151,
+      "specific_directory_reference": 54517,
+      "broad_root_cwd_only": 52111
+    },
+    "DELETION_CANDIDATE": {
+      "no_reference_observed_partial_scope": 74,
+      "specific_directory_reference": 104,
+      "broad_root_cwd_only": 160
+    },
+    "ACTIVE_KEEP": {
+      "no_reference_observed_partial_scope": 317,
+      "specific_directory_reference": 2029,
+      "broad_root_cwd_only": 215,
+      "exact_file_reference": 36
+    }
+  },
+  "dependency_limitations": {
+    "visible_proc_unreadable_entries_per_snapshot": 18,
+    "control_json_omissions_per_snapshot": 14,
+    "remote_processes_other_users_containers_and_closed_references": "not fully observed",
+    "broad_root_cwd_prefix_flag": "A shell cwd at the audit root generated broad flags; it does not establish that every child is in use.",
+    "negative_reference_result": "Not evidence of dependency absence",
+    "archive_plan_or_deletion_approved": false
+  },
+  "original_source_contents_exported": false,
+  "raw_private_path_tables_published": false,
+  "preservation": {
+    "original_source_files_modified": false,
+    "shared_environment_changed": false,
+    "new_npad_jobs": 0,
+    "solver_calls": 0,
+    "source_archives_created": 0,
+    "files_deleted": 0,
+    "merge": false,
+    "pr159": "Draft",
+    "pr163": "Draft"
+  },
+  "remaining": [
+    "Resolve the 14 per-snapshot omitted control JSONs with a targeted read-only diagnostic if needed for specific decisions.",
+    "Compare proposed retained copies with immutable external references and verify restoration before any cleanup proposal.",
+    "Preserve per-observation provenance and consumed-claim controls even when payload bytes match.",
+    "Keep the active OSRM SQLite and the two draft effective/registry XLSX in the separate T2/researcher-review workstream."
+  ]
+}
