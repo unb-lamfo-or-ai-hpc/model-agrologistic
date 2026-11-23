@@ -319,7 +319,10 @@ def run(args):
                 "gate": g,
                 "classified_control_omissions": omitted,
                 "classified_process_errors": classes,
-                "limitations": "SSH/PAM lineage exceptions are bounded infrastructure exceptions, not global dependency clearance",
+                "limitations": (
+                    "SSH/PAM lineage exceptions are bounded infrastructure exceptions, "
+                    "not global dependency clearance"
+                ),
             },
         )
         return g, omitted, classes
@@ -353,14 +356,18 @@ def run(args):
         "duplicate_unlinked": 0,
         "retained": 0,
         "logical_bytes_unlinked": 0,
+        "uncertain_outcomes": 0,
     }
     target_rows = [r for r in rows if r["action"] in {"cache", "duplicate"}]
     m.require(len(target_rows) == EXPECTED_TARGETS, "Target cardinality changed")
     stopped = None
-    with (out / "actions.jsonl").open("x", encoding="utf-8") as journal:
+    with (out / "actions.jsonl").open("x+", encoding="utf-8") as journal:
         for i, row in enumerate(target_rows):
+            checking_gate = False
+            journal_offset = journal.tell()
             try:
                 if i % 1000 == 0:
+                    checking_gate = True
                     if i:
                         gate, omitted, classes = gate_snapshot(i)
                     # Detect changes/replacement of the backup without rehashing it for each file.
@@ -371,6 +378,7 @@ def run(args):
                             and now.st_ctime_ns == backup_stat.st_ctime_ns,
                             "Verified backup identity changed",
                         )
+                checking_gate = False
                 reason = eligible(row, gate, omitted, classes)
                 m.require(reason is None, reason or "retained")
                 keeper = lookup[row["keeper"]] if row["action"] == "duplicate" else None
@@ -378,14 +386,32 @@ def run(args):
                 counts[row["action"] + "_unlinked"] += 1
                 counts["logical_bytes_unlinked"] += int(row["logical_bytes"])
             except (OSError, ValueError, KeyError) as exc:
+                journal.flush()
+                journal.seek(journal_offset)
+                emitted = [json.loads(line) for line in journal.read().splitlines()]
+                journal.seek(0, 2)
+                if any(
+                    e.get("status") == "unlink_intent" and e.get("id") == row["id"]
+                    for e in emitted
+                ):
+                    counts["uncertain_outcomes"] += 1
+                    m.event(
+                        journal,
+                        {
+                            "status": "outcome_uncertain",
+                            "id": row["id"],
+                            "reason": str(exc),
+                            "do_not_retry_automatically": True,
+                        },
+                    )
+                    stopped = "Ambiguous unlink; inspect intent before continuing"
+                    break
                 counts["retained"] += 1
                 m.event(
                     journal, {"status": "retained", "id": row["id"], "reason": str(exc)}
                 )
-                if "SFTP session appeared" in str(exc) or "User jobs present" in str(
-                    exc
-                ):
-                    stopped = str(exc)
+                if checking_gate:
+                    stopped = "Gate or backup custody changed: " + str(exc)
                     break
             if (i + 1) % 100 == 0:
                 print(
@@ -398,7 +424,15 @@ def run(args):
         else "cleanup_interrupted_preserved",
         **counts,
         "unprocessed": len(target_rows)
-        - sum(counts[k] for k in ("cache_unlinked", "duplicate_unlinked", "retained")),
+        - sum(
+            counts[k]
+            for k in (
+                "cache_unlinked",
+                "duplicate_unlinked",
+                "retained",
+                "uncertain_outcomes",
+            )
+        ),
         "stop_reason": stopped,
         "new_backup_created": False,
         "backup_preserved": str(backup),

@@ -74,10 +74,12 @@ contract nor development environment is changed by storage preparation.
 ## Qualification and handoff
 
 A dedicated Linux workflow runs the previous 24 custody/probe controls and
-11 new resume controls. New cases cover real temporary-file backup reuse with no
+12 new resume controls. New cases cover real temporary-file backup reuse with no
 recompression, corrupt-backup source retention, SFTP refusal before hashing/
 unlinking, strict SSH/PAM lineage, unknown processes and changed control hashes.
-Local Ruff passes. Consult exact-source Actions results before the pinned
+Any changed checkpoint gate or ambiguous post-intent outcome stops the remaining
+operation; ambiguous intents are recorded separately and never retried automatically.
+Local Ruff passes with the repository configuration. Consult exact-source Actions results before the pinned
 human-only handoff. PR #159 and PR #163 remain Draft, without a merge.
 
 The new wrapper is the only prospective apply command. Never rerun the original

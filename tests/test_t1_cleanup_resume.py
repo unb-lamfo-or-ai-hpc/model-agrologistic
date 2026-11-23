@@ -187,7 +187,13 @@ class Controls(unittest.TestCase):
     def test_corrupt_existing_backup_preserves_all_sources(self):
         self.integration(True)
 
-    def integration(self, corrupt):
+    @unittest.skipUnless(
+        os.name == "posix", "Real post-intent ambiguity control runs on Linux"
+    )
+    def test_post_intent_failure_stops_before_next_file(self):
+        self.integration(False, uncertain=True)
+
+    def integration(self, corrupt, uncertain=False):
         with tempfile.TemporaryDirectory() as d:
             parent = Path(d)
             base = parent / "model-agrologistic-hygiene-audit"
@@ -284,15 +290,36 @@ class Controls(unittest.TestCase):
                     )
                 )
                 stack.enter_context(contextlib.redirect_stdout(io.StringIO()))
+                if uncertain:
+
+                    def fail_after_unlink(row, keeper, journal, backup_sha):
+                        r.m.event(journal, {"status": "unlink_intent", "id": row["id"]})
+                        cache.unlink()
+                        raise OSError(
+                            "directory durability acknowledgement unavailable"
+                        )
+
+                    stack.enter_context(
+                        patch.object(r.m, "remove_one", side_effect=fail_after_unlink)
+                    )
                 if corrupt:
                     with self.assertRaises(ValueError):
                         r.run(args)
+                elif uncertain:
+                    self.assertEqual(r.run(args), 2)
                 else:
                     self.assertEqual(r.run(args), 0)
             self.assertEqual(backup.read_bytes(), before)
             self.assertEqual(keeper.read_bytes(), b"same")
             self.assertEqual(cache.exists(), corrupt)
-            self.assertEqual(dup.exists(), corrupt)
+            self.assertEqual(dup.exists(), corrupt or uncertain)
+            if uncertain:
+                out = next(base.glob("t1-reuse-backup-cleanup-*"))
+                result = json.loads((out / "cleanup-result.json").read_text())
+                self.assertEqual(result["uncertain_outcomes"], 1)
+                self.assertEqual(result["duplicate_unlinked"], 0)
+                self.assertEqual(result["unprocessed"], 1)
+                self.assertEqual(result["status"], "cleanup_interrupted_preserved")
 
 
 if __name__ == "__main__":
