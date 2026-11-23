@@ -1,0 +1,944 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=23mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,amsmath,amssymb,booktabs,longtable,array,graphicx,xcolor}
+\usepackage[authoryear,round]{natbib}
+\usepackage{needspace,float}
+\definecolor{navy}{RGB}{22,53,75}
+\definecolor{teal}{RGB}{22,116,129}
+\usepackage[colorlinks=true,linkcolor=navy,urlcolor=teal,citecolor=navy]{hyperref}
+\usepackage{bookmark}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.16}
+\emergencystretch=2em
+\clubpenalty=10000\widowpenalty=10000\displaywidowpenalty=10000
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcommand{\code}[1]{{\small\texttt{#1}}}
+\newcommand{\technical}[2]{\footnote{#1: \url{#2}.}}
+\hypersetup{pdftitle={Agrologistic MVP3.0: Agricultural Policy and Capacity Planning},pdfauthor={Model Agrologistic research team}}
+\title{\color{navy}Agrologistic MVP3.0\\[5pt]\large Agricultural Policy, Capacity Planning and\\Economic--Service Trade-offs with Gurobi 14}
+\author{Methodological plan}
+\date{23 November 2026}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Grain-storage planning links investment in warehouses to the movement and retention of grain across production regions, domestic markets and export destinations. A computationally accurate solution becomes useful for agricultural planning when its costs, capacity requirements and service outcomes can also be explained in physical and economic terms. This study develops that assessment through deterministic and two-stage stochastic mixed-integer linear models of Brazil's grain-storage network. Domestic-service requirements, export ceilings and investment-capacity limits define a structured set of policy cases. Gurobi 14 supplies the native Python optimization implementation, while numerical certificates, complete material balances and independent validation establish the evidence for interpretation. The principal analytical product is an empirical Pareto frontier relating economic expenditure to achieved domestic service, accompanied by investment, export, inventory and capacity-exceedance measures. Progressive warehouse populations and systematic solver-log analysis reveal the computational resources required to produce these planning alternatives. The plan specifies the data sources, mathematical controls, experimental design, analysis pipeline and research deliverables.
+\end{abstract}
+
+\begingroup\small\setlength{\parskip}{0pt}\tableofcontents\endgroup
+\clearpage
+\section{Introduction and research purpose}
+\label{sec:intro}
+
+Brazilian grain logistics requires decisions about where to locate warehouses, how much static storage to provide, and how quickly facilities can receive and dispatch grain. These decisions interact over time. Grain received during a harvest can be stored for later domestic consumption, transferred between warehouses or delivered to export destinations. Their economic value depends on the admissible transport network, handling rates, seasonal supply and demand, and the timing of investment.
+
+The agricultural formulation follows the research of \citet{rosa2026thesis}, drawing on Brazilian public data and expert-based estimates for the parameters required by the planning model. The literature review by \citet{rosa2025} places such investment and operating decisions within the grain-facility-location literature. The published MVP2.0 study provides the mathematical and computational reference for this plan.\technical{Published Model Agrologistic article and supplements}{https://unb-lamfo-or-ai-hpc.github.io/model-agrologistic/} The present document states the methodological choices needed for the new investigation and refers readers to that reference for the complete historical study.
+
+\subsection{Agricultural relevance and the MVP3.0 contribution}
+
+An optimization certificate describes how close a feasible plan is to the best value of its specified objective. Agricultural relevance additionally concerns whether the plan supplies domestic markets, uses credible storage and handling capacities, and explains its allocation between exports, inventories and domestic deliveries. These two assessments complement each other. A small optimality gap can accompany substantial shortages or capacity exceedances when those outcomes are permitted and priced by the formulation.
+
+MVP3.0 therefore examines the planning mechanisms behind those outcomes. Its data foundation is an explicit effective-baseline workbook and a warehouse registry, together with the road-distance evidence used to construct the network. Its policy controls establish a domestic-service floor, an export ceiling and a common multiplier of investible capacity limits. These controls make it possible to ask how much additional investment opportunity is needed to support a specified level of domestic service and how the resulting economic expenditure changes.
+
+MVP2.0 developed a native Gurobi implementation through its Python interface, \code{gurobipy}, and a solver-independent implementation through Pyomo.\technical{Gurobi Python interface}{https://docs.gurobi.com/projects/optimizer/en/current/reference/python/overview.html}\technical{Pyomo modelling documentation}{https://pyomo.readthedocs.io/en/stable/} In a native implementation, the program creates the variables, constraints and objective directly through the optimizer's interface. Pyomo expresses the mathematical model through a separate modelling layer. MVP3.0 uses native \code{gurobipy} to construct and solve the proposed policy cases with Gurobi 14.
+
+Table~\ref{tab:contribution} summarises the methodological progression in terms relevant to the new study.
+\begin{table}[H]\centering\small
+\caption{Methodological progression}\label{tab:contribution}
+\begin{tabular}{P{31mm}P{53mm}P{62mm}}\toprule
+Dimension&MVP2.0 reference&MVP3.0 research design\\\midrule
+Planning model&Deterministic and two-stage stochastic grain logistics&The same decision structure with explicit service, export and investment-limit policies\\
+Data representation&Historical workbooks and prepared network inputs&Effective-baseline XLSX, registry XLSX and traceable computational tables\\
+Optimization implementation&Native Gurobi and Pyomo implementations&Native Gurobi 14 with automatic reference settings\\
+Scientific emphasis&Computational behaviour and returned planning solutions&Economic--service frontiers, capacity requirements and agricultural interpretation\\
+Computational assessment&Instance and solver-configuration observations&Problem-size growth, quality trajectories, log-based diagnosis and resource use\\\bottomrule
+\end{tabular}
+\end{table}
+The contribution is the integration of agricultural interpretation with a reproducible experimental design. The model supplies alternative plans; the analysis explains the service, investment and resource implications of each alternative.
+
+\Needspace{12\baselineskip}
+\subsection{Research question and objectives}
+
+The proposed research question is:
+\begin{quote}
+How do domestic-service requirements, export ceilings and investible-capacity limits shape economically interpretable grain-storage plans, and what computational resources does Gurobi 14 require to identify and validate their economic--service trade-offs as the network grows?
+\end{quote}
+
+The general objective is to construct and evaluate a reproducible set of agricultural planning alternatives that connects domestic service, logistics expenditure, storage investment and computational effort.
+
+The specific objectives are to establish a traceable effective-data foundation; explain the physical and economic mechanisms associated with shortages and capacity exceedances; characterise empirical Pareto frontiers under controlled policy and capacity settings; and assess solution quality, time and memory across progressively larger deterministic and stochastic instances. A further methodological objective is to evaluate selected reformulation and tuning measures through diagnosed bottlenecks and matched computational comparisons.
+
+\subsection{Research hypotheses and evaluation criteria}
+
+The first hypothesis is that investible static capacity and its associated handling gains help explain the domestic-service outcomes. It is assessed by changing the capacity-limit multiplier while preserving initial capacities, unit costs and the remaining policy controls.
+
+The second hypothesis is that export ceilings and domestic-service floors reveal economically meaningful allocation choices among domestic delivery, export and terminal stock. It is assessed through complete physical balances and cost decomposition, followed by the identification of nondominated validated plans.
+
+The third hypothesis concerns computational effort. Automatic algorithm selection and the newer solution strategies in Gurobi 14 may improve the availability or quality of feasible plans on difficult cases. This hypothesis is evaluated through quality trajectories, diagnosed phases and selected matched treatments. The resulting evidence describes the conditions under which a treatment is useful.
+
+These hypotheses support an explanatory study. Their evaluation combines numerical certificates with facility-level flows, capacity utilisation and the economic consequences of admissible changes.
+
+\section{Planning models and policy controls}
+\label{sec:models}
+
+The deterministic and stochastic models represent the same investment and grain-logistics decisions. The deterministic model, abbreviated DET, uses one supply--demand realisation. The two-stage stochastic model, abbreviated STO, uses nine equally weighted realisations and a common investment decision made before the realisation is known. This distinction separates uncertainty in the agricultural data from the policy settings varied by the experiment.
+
+\subsection{Network, horizon and model notation}
+
+The warehouse-only topology, W, routes grain from origins to warehouses, between warehouses, and from warehouses to domestic or export destinations. The geographical labels OW, WW and WD correspond to the published mathematical arc families $A^{OD}$, $A^{DD}$ and $A^{DC}$. The planning horizon consists of 60 monthly periods from January 2021 to December 2025, with 30 operating days per period.
+
+The notation in Table~\ref{tab:notation} follows the published model and provides the basis for the equations used below.
+\begin{table}[H]\centering\small
+\caption{Core model notation}\label{tab:notation}
+\begin{tabular}{P{41mm}P{105mm}}\toprule
+Symbol&Meaning\\\midrule
+$O,W,C^D,C^X$&Supply origins, warehouses, domestic destinations and export destinations\\
+$W^E,W^N,W^X,W^B$&Existing sites, candidate sites, expansion-eligible sites and bulk-handling-eligible sites\\
+$P,T,S$&Products, ordered planning periods and uncertainty scenarios\\
+$X=(y,z,g,k,e,b)$&Investment activations and quantities shared across scenarios\\
+$x^{OD,s}_{owpt},x^{DC,s}_{wcpt},x^{DD,s}_{wvpt}$&Directed operational flows, tonnes within a period\\
+$I^s_{wpt},u^s_{cpt},q^{K,s}_{wt},q^{R,s}_{wt}$&Stocks, domestic shortage, static exceedance and reception overflow\\
+$K_w(X),R_w(X),H_w(X)$&Available static tonnes and daily reception/shipping rates\\
+$\beta_{ps},\alpha_{ps},K$&Domestic-service floor, export-share ceiling and investible-capacity-limit multiplier\\\bottomrule
+\end{tabular}
+\end{table}
+The superscript $s$ identifies scenario-dependent operations. DET uses the same operational concepts with its single deterministic realisation. The symbol $K_w(X)$ is a physical capacity in tonnes; the unindexed experimental control $K$ is dimensionless.
+
+The initial populations and their selected product-indexed arc counts appear in Table~\ref{tab:population}.
+\begin{table}[H]\centering\small
+\caption{Initial warehouse populations}\label{tab:population}
+\begin{tabular}{lrrrr}\toprule
+Population&Existing&Candidates&Total warehouses&Selected W arcs\\\midrule
+h215&146&69&215&25,112\\
+h300&146&154&300&45,240\\
+h400&146&254&400&76,320\\
+h500&146&354&500&115,400\\\bottomrule
+\end{tabular}
+\end{table}
+These populations preserve their recorded facility order. Subsequent network growth uses a cumulative, purposive snowballing strategy: the established population is retained and successive blocks of 100 eligible sites are added from the documented candidate order. The registry contains 18,086 facilities in total. Eligibility, existing-site membership and data completeness determine the actual candidate pool.
+
+This operational definition of snowballing describes progressive enlargement of the planning network. Each new level records the added sites and the resulting graph. Expansion continues while the added population contributes useful information about investment patterns, service trade-offs or computational requirements. The initial h215 level is followed by h300 and then the 100-site increments.
+
+\subsubsection{The historical 80/20 edge-selection rule}
+
+The expression \emph{80/20 Pareto rule} names a distance-based network-reduction heuristic in the preparation code. For each enabled arc family, routes are grouped by their source node and product. Routes in each group are ordered by increasing OSRM road distance, with their indexed route identifiers providing a deterministic tie-break. For a group containing $n$ eligible routes, the base rule retains
+\begin{equation}
+n_{\mathrm{keep}}=\max\{1,\lceil0.20n\rceil\}.
+\label{eq:edgefilter}
+\end{equation}
+Thus an origin--product group keeps its nearest warehouses, a warehouse--product group keeps its nearest destinations, and an inter-warehouse group keeps its nearest receiving warehouses. The resulting fraction can exceed 20\% for small groups because the retained count is rounded upwards.
+
+Connectivity is then checked over the directed graph, allowing paths through intermediate warehouses. The implemented repair policy connects every active domestic destination--product pair to at least one active supply origin. For exports, the frozen reference policy requires at least one reachable export sink per active product. A destination or origin is active for this check when its relevant demand or supply has a positive entry in the applicable realisation set.
+
+When a required path is missing, the repair searches the full eligible graph and ranks paths lexicographically: first by the number of additional arcs, then by the total distance of those additional arcs, then by total path distance and finally by a deterministic identifier order. Each accepted path is added before the next destination is checked. This sequential procedure reuses earlier additions. Appendix~\ref{app:registry} records its exact scope, evidence and reproducibility checks.
+
+The edge-selection rule and the economic--service Pareto frontier have different roles. The former constructs the admissible transport graph using road distances; the latter identifies nondominated validated planning outcomes using economic expenditure and achieved service. The 80/20 rule supplies no economic dominance test, and a connectivity path alone provides no certificate of sufficient handling capacity, timely delivery or attainable service.
+
+\subsection{Investment, operating cost and physical feasibility}
+
+The objective combines economic expenditure and three explicitly priced departures from desired operation into one monetary total. The published model denotes these components by investment, transport, holding and penalty costs:
+\begin{align}
+\min_{X,Y}\ Z_D
+ &=C^{INV}(X)+C^{TR}(Y)+C^{HOLD}(Y)+C^{PEN}(Y),\label{eq:detobj}\\
+\min_{X,\{Y^s\}}\ Z_{STO}
+ &=C^{INV}(X)+\sum_{s\in S}\pi_s
+   \bigl[C^{TR}(Y^s)+C^{HOLD}(Y^s)+C^{PEN}(Y^s)\bigr].
+ \label{eq:stoobj}
+\end{align}
+Investment is charged once. STO weights each operating realisation by $\pi_s=1/9$. For economic interpretation, the analysis reports
+\begin{align}
+C_{\mathrm{econ}}
+ &=C^{INV}(X)+\sum_s\pi_s[C^{TR}(Y^s)+C^{HOLD}(Y^s)],\\
+C_{\mathrm{pen}}
+ &=\sum_s\pi_s C^{PEN}(Y^s),\qquad Z=C_{\mathrm{econ}}+C_{\mathrm{pen}}.
+\end{align}
+The economic subtotal measures the investment and operating expenditure of the model. Penalty decomposition then reveals the quantity and monetary weight of domestic shortage, stock exceedance and reception overflow.
+
+Candidate opening uses a binary decision $y_w$ and an investment quantity $k_w$. Expansion and bulk-handling conversion use the respective pairs $(z_w,e_w)$ and $(g_w,b_w)$. Eligibility and activation connect each quantity to a permitted site decision. The existing restriction on simultaneous expansion and conversion applies at sites eligible for both actions. These relationships make the investment plan physically interpretable.
+
+Static capacity and daily handling rates retain the published coupling:
+\begin{align}
+K_w(X)&=K_w^0+k_w+e_w,\label{eq:static}\\
+R_w(X)&=R_w^0+\rho^Nk_w+\rho^Xe_w+\rho^Bb_w,\\
+H_w(X)&=H_w^0+\eta^Nk_w+\eta^Xe_w+\eta^Bb_w.
+\label{eq:handling}
+\end{align}
+The coefficients $\rho$ and $\eta$ express daily handling gained per investment-tonne. Opening and expansion therefore contribute both storage space and handling capacity. Bulk-handling conversion increases throughput through its specified coefficients. Appendix~\ref{app:data} identifies the workbook fields and values that supply these coefficients.
+
+The stock-balance equations link consecutive months. The shared capacity rows combine products at each warehouse. Reception and shipping limits multiply their daily rates by the operating days once. These relationships explain why a planning intervention must be evaluated over the complete horizon and across all products.
+
+\subsection{Domestic-service requirement and export ceiling}
+\label{sec:policies}
+
+The parameter $\beta_{ps}$ specifies the minimum share of domestic demand to be delivered for product $p$ in scenario $s$. For example, $\beta_{ps}=0.95$ requests delivery of at least 95\% of that product's domestic demand over the horizon. The demand quantity itself is controlled independently by the existing demand multiplier $\delta_D$.
+
+Domestic demand retains the published equality, with an explicit shortage variable:
+\begin{equation}
+ \sum_{w:(w,c,p)\in A^{DC}}x^{DC,s}_{wcpt}+u^s_{cpt}
+   =\delta_D D^{0,s}_{cpt},\qquad c\in C^D.
+ \label{eq:domestic}
+\end{equation}
+The additional service requirement is
+\begin{equation}
+ \sum_{c\in C^D,t\in T}u^s_{cpt}
+ \le (1-\beta_{ps})\sum_{c\in C^D,t\in T}\delta_D D^{0,s}_{cpt},
+ \qquad p\in P,\ s\in S.
+ \label{eq:service}
+\end{equation}
+The requirement applies separately to each product and each scenario. Its horizon aggregation allows the model to coordinate deliveries over time and space. Monthly and destination-level service measures accompany the aggregate result.
+
+The parameter $\alpha_{ps}$ controls the maximum exported share of the exogenous supply of that same product and scenario:
+\begin{equation}
+ \sum_{w,c\in C^X,t}x^{DC,s}_{wcpt}
+ \le \alpha_{ps}\sum_{o\in O,t}a^s_{opt},
+ \qquad p\in P,\ s\in S.
+ \label{eq:export}
+\end{equation}
+For example, $\alpha_{ps}=0.50$ permits export delivery of up to half of the scenario's supplied tonnes. The original destination-period export bounds remain part of the model. Domestic service, exports and terminal stock are consequently linked through the physical allocation of the same supplied grain.
+
+The published transport model also uses an unindexed $\alpha$ as an interwarehouse freight multiplier. This plan preserves that coefficient and uses the indexed $\alpha_{ps}$ for the export policy. The experiment schema maps the export control to its existing \code{alpha} field and the freight coefficient to \code{interhub\_factor}.
+
+The neutral reference retains $\delta_D=1$ and disabled additional service/export requirements. An enabled value of zero is recorded as an explicit policy setting. This distinction preserves the identity of the reference while supporting controlled policy contrasts.
+
+\subsection{K: a common multiplier of investible-capacity limits}
+\label{sec:K}
+
+The capacity question concerns how much additional capacity the model is allowed to install. A warehouse's current storage capacity and its maximum permitted investment are distinct inputs. The new dimensionless control $K$ scales the latter inputs uniformly, allowing a systematic assessment of whether the inherited investment ceilings restrict a credible domestic-service plan.
+
+Let $\overline{k}^{\,ref}_w$ and $\overline{e}^{\,ref}_w$ be the frozen reference upper bounds for candidate opening capacity and eligible expansion. The proposed experimental transformation is
+\begin{align}
+ \overline{k}_w(K)&=K\,\overline{k}^{\,ref}_w,\qquad w\in W^N,\label{eq:Kcandidate}\\
+ \overline{e}_w(K)&=K\,\overline{e}^{\,ref}_w,\qquad w\in W^X.
+ \label{eq:Kexpand}
+\end{align}
+The investment rows then use the transformed coefficients:
+\begin{equation}
+ 0\le k_w\le \overline{k}_w(K)y_w,\qquad
+ 0\le e_w\le \overline{e}_w(K)z_w.
+ \label{eq:Kactivation}
+\end{equation}
+The common factor applies to every indexed reference bound in its respective field. Each facility retains its own reference value, so the transformation preserves the heterogeneity of the input data.
+
+At $K=1$, the investment ceilings reproduce the reference. At $K=1.5$, each candidate-capacity and expansion ceiling is 50\% higher. A larger ceiling creates additional feasible investment choices. The quantities actually installed remain the endogenous decisions $k_w$ and $e_w$, selected together with flows, inventories and costs.
+
+The relationship between K and the retained input fields is made explicit in Table~\ref{tab:Kmap}.
+\begin{table}[H]\centering\small
+\caption{Definition and scope of K}\label{tab:Kmap}
+\begin{tabular}{P{40mm}P{106mm}}\toprule
+Input or decision&Treatment in a K experiment\\\midrule
+Candidate-capacity upper bounds&Every \code{max\_candidate\_capacity} value is multiplied by K\\
+Expansion upper bounds&Every \code{max\_expand\_capacity} value is multiplied by K\\
+Initial static/handling capacities&The same frozen $K_w^0,R_w^0,H_w^0$ values are used\\
+Unit and fixed investment costs&The same installation-indexed cost coefficients are used\\
+Bulk-handling investment bounds&The existing \code{bulk\_limit} control is specified separately\\
+Installed quantities and locations&The optimizer chooses $k_w,e_w,y_w,z_w$ within the transformed ceilings\\
+Handling gains&The existing $\rho,\eta$ coefficients apply to the chosen investments\\\bottomrule
+\end{tabular}
+\end{table}
+This scope isolates the effect of investment opportunity. It preserves existing assets and cost accounting, while keeping the bulk-handling decision identifiable through its established control. The high-level K specification maps once to the existing \code{candidate\_limit} and \code{expansion\_limit} transformations.
+
+A worked example based on actual input cells appears in Table~\ref{tab:Kexample}. The candidate reference comes from \code{Investments!C2}; the expansion reference comes from \code{Investments!C209} in the effective-baseline workbook. The two rows refer to different facility records.
+\begin{table}[H]\centering\small
+\caption{Investment ceilings under K}\label{tab:Kexample}
+\begin{tabular}{lrrr}\toprule
+Reference input&K=1&K=1.5&K=2\\\midrule
+Candidate ceiling, t&190,610&285,915&381,220\\
+Expansion ceiling, t&222.5&333.75&445\\\bottomrule
+\end{tabular}
+\end{table}
+The calculation multiplies each stored reference value once. For the candidate, K=1.5 makes 285,915 tonnes available as an investment ceiling. The optimizer can choose any admissible installed quantity up to that ceiling when opening is activated. The expansion example applies the same rule to its smaller, facility-specific reference bound.
+
+The resulting installed storage is computed through Equation~\eqref{eq:static}. Reception and shipping follow Equations~\eqref{eq:handling}. Thus, choosing a larger investment can enlarge daily handling through the retained physical coupling. K itself scales the upper bounds, while the chosen investment quantity determines the physical and economic consequence.
+
+The proposed levels $K\in\{1,1.25,1.5,2\}$ create a reference, a 25\% increase, a 50\% increase and a doubling of the investment ceilings. They form a structured sensitivity design. Facility typology, land or equipment constraints and the agricultural plausibility of the resulting investments inform the interpretation of the larger levels.
+
+This analysis treats K as an investment-opportunity parameter. The study separately reports the additional capacity actually selected, its location and its cost. Combining K with $\beta$ and $\alpha$ then reveals whether higher domestic service requires more investible capacity, a different allocation of supply or both.
+
+\subsection{Native Gurobi 14 implementation and automatic settings}
+\label{sec:gurobi}
+
+The program constructs each DET or STO case through the native Python interface and solves the complete scenario system represented by that case. DET uses a single realisation with probability one. STO shares the investment vector across its nine operational realisations. Input, policy and representation identities accompany each model.
+
+The CPU reference uses \code{Method=-1} and \code{Threads=0}, which select automatic algorithm and thread settings. The main budget is \code{TimeLimit=28800} seconds. Gurobi's default \code{MIPGap=0.0001} corresponds to the 0.01\% terminal target described in Section~\ref{sec:quality}.\technical{Gurobi parameter reference}{https://docs.gurobi.com/projects/optimizer/en/current/reference/parameters.html}
+
+For a linear root relaxation, the available algorithm families include primal and dual simplex, barrier and concurrent optimization; PDHG is an additional first-order option. Simplex operates through successive bases. Barrier follows an interior-point trajectory, and crossover can recover a basic solution. Concurrent optimization runs alternative LP strategies within the available resource envelope. This algorithmic diversity motivates identification of the method actually observed in the log.
+
+Automatic thread selection uses the available processor envelope and applies a soft ceiling of 32 threads. The chosen limit is distinct from the workers busy in a particular phase. Presolve, LP algorithms, heuristics and tree search can use the envelope differently. The study therefore records the log's thread limit alongside measured process CPU consumption and hardware affinity.
+
+A single MIP search can use multiple threads. Concurrent MIP describes a separate arrangement of multiple MIP searches.\technical{Concurrent optimization}{https://docs.gurobi.com/projects/optimizer/en/current/features/concurrent.html} The reference comparison is defined by the recorded automatic settings, physical allocation and observed phases.
+
+Gurobi 14 adds a NoRel tree heuristic and a PDHG-based MIP heuristic. The former is also activated through a feasibility-focused strategy; the latter can seek incumbents before an expensive root LP completes. The release also develops concurrent crossover for PDHG.\technical{Gurobi 14 release notes}{https://docs.gurobi.com/projects/optimizer/en/current/reference/releasenotes/changes.html} These capabilities motivate the diagnosis-led treatments in Appendix~\ref{app:diagnosis}. Their value is assessed through attained quality, agricultural validation and resource use.
+
+\subsection{Indicators and equivalent representations}
+
+An indicator constraint expresses a logical implication in the model. Here, closing a candidate warehouse implies zero emergency stock/reception exceedance at that site. This connects a mathematical relaxation variable to a physical activation decision.
+
+An equivalent representation preserves the relevant investment and operating decisions and their objective values under an explicit mapping. For example, a bounded linear expression can represent an activation implication when a valid bound has been established. Such a bound must cover the same policy domain, including the enlarged investment ceilings under K.
+
+Reformulation work begins with a statement of the physical meaning and a comparison of the original and alternative constraint systems. Variable domains, stock balances, activation, investment costs and scenario weights are checked together. This procedure supports computational improvement while retaining the planning problem specified in this section.
+
+
+\section{Experimental design and computational resources}
+\label{sec:experiments}
+
+The experiment varies policy and investment opportunity through a finite, identified set of cases. Its design separates agricultural contrasts from computational interventions. The primary cases use the same reference solver settings; subsequent diagnostic treatments address a documented computational pattern.
+
+\subsection{Identification of a case}
+
+A case identifies a warehouse population, model mode, input revision, policy profile, K level and solver profile. It also records the network, mathematical representation, resource class and execution budget. These fields make the intended comparison explicit and connect each result to its data.
+
+For example, a case identifier can be read as \code{h215-sto-P8-K150-AUTO-r1}: population h215, stochastic mode, policy P8, K=1.50, automatic reference settings and first temporal repetition. A repetition evaluates the same agricultural case at a different execution time. It contributes evidence about runtime variability.
+
+Each execution builds a fresh model from its identified inputs, applies its declared settings and records the parameter values in effect. Closure exports the decisions and measurements and releases the model. This lifecycle gives each case an independent initial solver state. The Python interface also provides explicit reset operations for software verification.\technical{Model reset and parameter reset}{https://docs.gurobi.com/projects/optimizer/en/current/reference/python/model.html}
+
+\subsection{Policy and capacity matrix}
+
+The nine policy profiles in Table~\ref{tab:policies} specify the first set of domestic-service and export contrasts. A single profile value is applied to each product--scenario pair; the associated constraints retain their separate indexing.
+\begin{table}[H]\centering\small
+\caption{Policy profiles}\label{tab:policies}
+\begin{tabular}{cllP{73mm}}\toprule
+Profile&$\beta$&$\alpha$&Planning question\\\midrule
+P0&Disabled&Disabled&Reference allocation under the inherited objective\\
+P1&0.90&Disabled&Effect of a 90\% domestic-service floor\\
+P2&0.95&Disabled&Effect of a 95\% domestic-service floor\\
+P3&Disabled&0.60&Effect of a 60\% export ceiling\\
+P4&Disabled&0.50&Effect of a 50\% export ceiling\\
+P5&0.90&0.60&Joint moderate service/export control\\
+P6&0.90&0.50&Moderate service with the tighter export ceiling\\
+P7&0.95&0.60&Higher service with the moderate export ceiling\\
+P8&0.95&0.50&Higher service with the tighter export ceiling\\\bottomrule
+\end{tabular}
+\end{table}
+The isolated profiles identify each policy's contribution. The joint profiles reveal interactions through the same supply, inventory and handling constraints. All profiles are evaluated against the same effective costs and demand reference.
+
+Table~\ref{tab:cases} specifies the complete initial case families, including their K levels and modes.
+\begin{table}[H]\centering\small
+\caption{Initial experimental case families}\label{tab:cases}
+\begin{tabular}{lP{35mm}P{31mm}P{26mm}r}\toprule
+Population&Policy profiles&K levels&Modes&Cases\\\midrule
+h215&P0--P8&1, 1.25, 1.5, 2&DET and STO&72\\
+h300&P0, P2, P4, P8&1, 1.25, 1.5, 2&DET and STO&32\\
+h400&P0, P2, P4, P8&1, 1.25, 1.5, 2&DET and STO&32\\
+h500&P0, P2, P4, P8&1, 1.25, 1.5, 2&DET and STO&32\\\midrule
+Total&&&&168\\\bottomrule
+\end{tabular}
+\end{table}
+A case is one optimisation of the complete DET or STO model. The nine STO uncertainty scenarios form a single stochastic case. The 72 h215 cases provide the detailed policy--capacity study. The larger-population panels retain the reference, isolated stronger policies and their joint profile, enabling matched size comparisons with a smaller experimental burden.
+
+Further profiles can refine intervals where service, investment or feasibility changes sharply. Each refinement is specified as an extension of the initial design, with its own identified case list. The same principle applies to successive 100-site populations after h500.
+
+\subsection{Execution pipeline and temporal repetitions}
+
+Figure~\ref{fig:pipeline} shows how a case moves from input verification to agricultural analysis.
+\begin{figure}[H]\centering
+\setlength{\unitlength}{1mm}
+\begin{picture}(158,31)
+\put(0,8){\framebox(35,20){\shortstack{\small Identified data\\\small and policy case\\\small $(\alpha,\beta,K)$}}}
+\put(41,8){\framebox(35,20){\shortstack{\small Fresh native\\\small DET/STO model\\\small and solve}}}
+\put(82,8){\framebox(35,20){\shortstack{\small Decisions, logs\\\small resource events\\\small and validation}}}
+\put(123,8){\framebox(35,20){\shortstack{\small Cost--service\\\small frontier and\\\small physical diagnosis}}}
+\put(35,18){\vector(1,0){6}}\put(76,18){\vector(1,0){6}}\put(117,18){\vector(1,0){6}}
+\end{picture}
+\caption{Case execution and analysis}\label{fig:pipeline}
+\end{figure}
+The sequence makes validation part of the evidence chain. A result reaches the economic--service analysis with its decisions, numerical certificate and physical checks attached. Operational and computational outcomes remain visible alongside successful target attainment.
+
+The initial matrix contains one observation per case. A pre-specified subset of h215 reference and policy-corner cases is then repeated three times in total. This subset includes P0 and P8 at K=1 and K=2 in both modes, giving eight repeated cases and 16 additional observations. Repetition order is balanced across profiles and execution periods. Individual observations and their median/range accompany the comparison.
+
+Diagnostic solver treatments form a separate panel. Each compares the same data and policy case under the reference and the chosen treatment, using the same hardware class, resource envelope and validation rules. Appendix~\ref{app:diagnosis} specifies how the diagnosed pattern determines that panel.
+
+\subsection{Time budgets and experimental workload}
+
+Each primary optimisation receives \code{TimeLimit=28800}, or eight hours of native solver time. Its Slurm allocation permits up to 12 hours of elapsed job time. The remaining job envelope accommodates input processing, model construction, result extraction, validation and file collection.
+
+Application clocks identify these phases individually. The native TimeLimit controls the optimisation call; the job limit controls the complete scheduled process. The final record identifies which limit determined termination. Gurobi can require a short finalisation interval to complete its termination attributes, so the recorded native runtime remains the observed value.
+
+The 168 primary cases represent at most 1,344 native solver-hours and 2,016 allocated job-hours at these limits. The 16 additional repeated observations raise these envelopes to 1,472 native hours and 2,208 job-hours. Actual elapsed campaign time also depends on queue availability and permitted concurrent solver sessions. With two simultaneous executions, the primary job-time envelope alone corresponds to 42 days of uninterrupted allocation. This calculation supports a realistic schedule and prioritisation of the h215 evidence.
+
+\subsection{CPU allocation, memory and larger nodes}
+
+The computation uses the NPAD high-performance computing facility at the Federal University of Rio Grande do Norte. A scheduled job receives a defined processor and memory envelope on a compute node. A CPU is the general-purpose processor on that node; physical cores and logical processors describe its execution resources.
+
+The NPAD hardware documentation identifies Intel Xeon E5 nodes with 256 GB and 512 GB nominal RAM in the \code{intel-256} and \code{intel-512} partitions.\technical{NPAD hardware documentation}{https://npad.ufrn.br/npad/hardware} Table~\ref{tab:resources} defines the proposed use of these resource classes.
+\begin{table}[H]\centering\small
+\caption{Computational resource classes}\label{tab:resources}
+\begin{tabular}{P{31mm}P{45mm}P{70mm}}\toprule
+Class&Working envelope&Scientific role\\\midrule
+Reference&192 GiB requested on intel-256; CPU execution&Common resource class for the initial matrix\\
+Larger-memory&Allocation on intel-512, sized from measured peaks&Qualified extension for cases that exceed the reference envelope\\
+Matched verification&Selected cases repeated in the comparison class&Separates hardware/resource effects from policy and algorithm effects\\\bottomrule
+\end{tabular}
+\end{table}
+Nominal installed RAM and Slurm-allocatable memory are recorded separately. Current partition limits and allocation rules are verified when preparing the execution package. Cases using a different memory or hardware class retain that class in their identifiers and analysis.
+
+Memory management covers the Python input objects, native matrix, presolved model, search state, retained solutions and export buffers. Construction releases intermediate objects when their role is complete, and export uses bounded, sequential output operations. The measured simultaneous application peak provides evidence for the next case's allocation.
+
+The initial reference uses automatic threads within the qualified CPU allocation. Hardware topology and affinity are measured directly because an allocation count alone can combine physical cores and SMT siblings. This instrumentation supports interpretation of observed utilisation under automatic selection.
+
+\subsection{MIP gap and time to quality}
+\label{sec:quality}
+
+For a minimisation problem, a feasible incumbent supplies an upper bound on the optimal objective, while the best global objective bound supplies a lower bound. The relative MIP gap measures the separation between these two certificates. Gurobi defines it as
+\begin{equation}
+ g(t)=\frac{|z_P(t)-z_D(t)|}{|z_P(t)|},\qquad
+ g_{\%}(t)=100\,g(t),
+ \label{eq:gap}
+\end{equation}
+where $z_P$ is the incumbent objective and $z_D$ the global bound. A pair of zero bounds gives zero gap; a zero incumbent with a nonzero bound gives infinite relative gap. A run with a pending incumbent has an undefined incumbent-relative gap. The native status and both bounds accompany this quantity.
+
+Table~\ref{tab:quality} defines the quality milestones recorded within each run.
+\begin{table}[H]\centering\small
+\caption{Quality milestones}\label{tab:quality}
+\begin{tabular}{lll}\toprule
+Label&Relative gap&Role\\\midrule
+Q10&10\%&Early usable-quality milestone\\
+Q05&5\%&Intermediate-quality milestone\\
+Q01&1\%&Tighter planning-quality milestone\\
+Q001&0.01\%&Reference terminal target\\\bottomrule
+\end{tabular}
+\end{table}
+These milestones refer to the complete penalised monetary objective. Agricultural service, economic expenditure and capacity exceedances are reported separately at retained solutions.
+
+For a threshold $\tau$, the recorded attainment time is
+\begin{equation}
+ T(\tau)=\inf\{t\ \text{among recorded events}:g(t)\le\tau\}.
+ \label{eq:target}
+\end{equation}
+The event includes the incumbent, global bound and node count. An improving bound can attain a threshold while the incumbent stays unchanged, so observation covers both incumbent and bound updates. Native and application-clock times identify the same event on their respective clocks.
+
+A milestone that remains unattained is reported with the terminal gap, elapsed budget and termination status. This treatment preserves the information supplied by time and memory limits. Log timestamps provide observed intervals; callback records provide finer event locations where the interface exposes them.
+
+\section{Data collection and reproducibility}
+\label{sec:collection}
+
+Data collection connects the agricultural inputs, the numerical trajectory and the returned planning decisions. Its central unit is the identified case introduced in Section~\ref{sec:experiments}. Each case carries an input manifest, an execution record and an independent validation record.
+
+\subsection{Workbooks and effective inputs}
+
+The effective-baseline workbook organises supply, domestic demand, export bounds, capacities, investments, costs, penalties, scenarios and transformations. The warehouse registry preserves the facility identifiers, coordinates, registered capacities and membership/order of the modelled populations. Appendices~\ref{app:data} and \ref{app:registry} describe their contents and give readers a practical route from each parameter to its source field.
+
+The data originate in Brazilian public information and expert-based parameter estimates assembled for the model of \citet{rosa2026thesis}. Provenance distinguishes directly sourced values, derived quantities, reference estimates and effective coefficients. The source columns and transformation records explain how a value becomes an input to the mathematical model.
+
+The computational pipeline reads the identified XLSX values, validates their fields and units, exports normalised tables and constructs the existing ModelData structure. A scenario applies its declared transformations to that effective reference. K changes the investment ceilings once, while the experiment retains the identified costs, initial capacities and remaining controls.
+
+Source precision is preserved through export and ingestion. Dataset identity covers indexed values and their order as well as file hashes. A scientific discrepancy receives a field-level explanation, retaining the two versions and their respective origins.
+
+\subsection{Road distances and the SQLite cache}
+
+Road distances come from OSRM, the Open Source Routing Machine, operating on a prepared road network.\technical{Project OSRM}{https://project-osrm.org/} The implementation runs its routing service in a Singularity container on NPAD.\technical{Singularity container documentation}{https://docs.sylabs.io/guides/3.5/user-guide/introduction.html} The recorded dataset, routing profile and container identities make a distance interpretable as the output of a specified routing system.
+
+The surrounding Python preparation process stores reusable ordered coordinate-pair results in SQLite.\technical{SQLite database engine}{https://www.sqlite.org/} SQLite is used through Python's in-process database interface; the retained preparation script places the routing service inside the container and the Python cache client outside it. This distinguishes the routing deployment from the database-access mechanism.
+
+A cache record and a selected model arc represent different objects. A coordinate pair may support several product-indexed arcs, while network selection determines which arcs enter a case. Reconciliation therefore joins facility identity, ordered coordinates, routing provenance, arc direction and distance units.
+
+The retained client includes a documented treatment of small negative routing round-off values when reading cached distances. The audit preserves the raw record and its effective interpretation, with the normalisation rule identified. Valid zero distances, unavailable distances and absent arcs retain distinct meanings. Appendix~\ref{app:registry} describes the source-to-graph checks.
+
+\subsection{Logs, events and complete decisions}
+
+Every execution saves the native Gurobi log and structured application events. The log documents model size, coefficient ranges, algorithm messages, presolve and root progress, MIP progress and termination. Structured callbacks record the incumbent/bound trajectory and quality milestones through their supported contexts.\technical{Gurobi MIP logging}{https://docs.gurobi.com/projects/optimizer/en/current/concepts/logging/mip.html}\technical{Gurobi callback fields}{https://docs.gurobi.com/projects/optimizer/en/current/reference/numericcodes/callbacks.html}
+
+The analysis uses gurobi-logtools, formerly known as grblogtools, as a standard component of offline log processing.\technical{Official gurobi-logtools repository}{https://github.com/Gurobi/gurobi-logtools} The parser produces tabular summaries and trajectories, which are crosschecked against callback and terminal records. Versioned parser outputs retain the raw-log identity and the fields successfully recovered.
+
+The decision export includes investment activations and quantities, all relevant flows, stocks, domestic shortages and the two capacity-exceedance quantities. Product, facility, period and scenario indices accompany each value. Dense policy-critical records preserve zero deliveries and shortages when they are required for independent service/export verification.
+
+Export precision is specified with the output schema. Python and Gurobi use floating-point arithmetic; input decimal values are represented numerically and calculations carry the resulting precision. Binary64-safe decimal export and round-trip checks preserve the effective values used for reconstruction. Display rounding is applied after the validation dataset is retained.\technical{Gurobi numerical guidance on input rounding}{https://docs.gurobi.com/projects/optimizer/en/current/concepts/numericguide/rounding.html}
+
+The independent validator recomputes balances, investment activation, operating capacities, service/export policies and cost components in original units. Its retained local checks use absolute tolerance $10^{-5}$ and relative tolerance $10^{-8}$ with the declared export-rounding allowance. Native feasibility/integrality tolerances are recorded separately. Together, these records distinguish numerical acceptance from printed precision.
+
+\subsection{CPU utilisation, clocks and memory}
+
+The processor measurements distinguish four quantities: the CPUs allocated by Slurm, the solver's thread setting, the thread limit reported in the log, and the CPU work actually observed. The log header identifies physical cores, logical processors and the upper thread count for that solve.\technical{Gurobi log header}{https://docs.gurobi.com/projects/optimizer/en/current/concepts/logging/header.html} The process-thread count measures existing software threads, while CPU-time accumulation measures their activity.
+
+For a sampled phase of duration $\Delta t$, the ratio of aggregate process CPU seconds to $\Delta t$ estimates the average number of busy logical processors over that interval. The value can differ by phase. It is reported alongside topology and affinity, allowing readers to interpret what automatic Threads=0 actually produced.
+
+Native Runtime measures the optimisation lifecycle recognised by the solver. A monotonic application clock measures data reading, construction, transfer, optimisation, extraction and validation. Gurobi Work supplies a solver effort measure with its recorded version and settings. These measures answer complementary questions about effort and elapsed time.
+
+Memory measurements include root-process and aggregate process-tree RSS, Gurobi's own memory attributes and the Slurm cgroup limit, peak and OOM counters where exposed. Aggregate peaks are computed from simultaneous samples. Native decimal GB and binary GiB are converted explicitly and labelled in the result tables. The sampling interval and any observation gaps accompany the reported peak.
+
+\subsection{Diagnosis before computational intervention}
+
+The diagnostic pipeline classifies the observable computational bottleneck before choosing a treatment. Presolve reduction, root-relaxation time, crossover progress, time to first incumbent, bound progress, node activity and memory growth provide the main evidence.
+
+Each diagnosis names the observed pattern and its competing explanations. For example, a long initial relaxation motivates examination of LP method and numerical scaling. A strong bound with late incumbents motivates examination of feasible-solution search. A large process peak motivates examination of model construction, native copies and retained state.
+
+The course \emph{Reformulation and Tuning} by Juan Orozco provides the methodological principle of comparing equivalent representations and tuning through measurable computational evidence \citep{orozco}. Appendix~\ref{app:diagnosis} translates that principle into concrete tests for this model. Log analysis forms part of every primary observation; a computational intervention becomes a separately identified matched treatment.
+
+\section{Analysis of agricultural and computational outcomes}
+\label{sec:analysis}
+
+The analysis starts with independently validated planning decisions. It then reconstructs the movement of grain, explains the cost components and compares the economic--service outcomes. Computational trajectories show how much evidence each resource budget supplied. This order connects the numerical result to the agricultural mechanism being investigated.
+
+\subsection{Physical accounting and the five diagnostic analyses}
+
+The first analysis, A1, reconstructs the physical balance of every product in every scenario. Aggregating the warehouse conservation equations over facilities and periods cancels internal warehouse transfers. With the model's retained loss conventions, the resulting accounting identity is
+\begin{equation}
+ A_{ps}+I^{0}_{ps}=D^{\mathrm{served}}_{ps}
+       +E^{\mathrm{shipped}}_{ps}+I^{T}_{ps}.
+ \label{eq:aggregatebalance}
+\end{equation}
+Here $A_{ps}$ is total supplied grain, $I^{0}_{ps}$ is initial stock, $D^{\mathrm{served}}_{ps}$ is delivery to domestic destinations, $E^{\mathrm{shipped}}_{ps}$ is export delivery and $I^{T}_{ps}$ is terminal stock. The reference initial stock is zero. The audit retains the underlying indexed balances, so a residual can be traced to an origin, warehouse, destination or period.
+
+A2 interprets the destination of the supply. Domestic delivery, export delivery and terminal inventory are expressed in tonnes and as shares of supply, separately by product and scenario. Monthly profiles reveal whether harvest concentration, handling limits or storage decisions explain the final allocation. Inter-warehouse flow is reported as transport activity and removed from the aggregate supply-disposition total to avoid counting the same grain repeatedly.
+
+A3 decomposes the penalties. Domestic shortage is a quantity of unmet demand; reception overflow is excess throughput; static exceedance is stock above capacity within a period. Summing the last quantity over periods measures tonne-period exposure. Multiplication by the corresponding coefficient gives the monetary contribution of each component. The analysis reports these quantities alongside investment, transport and holding expenditure.
+
+A4 examines whether an additional tonne could have been delivered through a physically admissible change. It traces an available route or warehouse path, the relevant dates, spare or investible capacities and the consequences for stock and handling. For a change that reduces domestic shortage by one tonne, its objective effect in a deterministic or scenario-specific calculation is
+\begin{equation}
+ \Delta Z=\Delta C_{\mathrm{econ}}
+       +\lambda_K\Delta Q_K+\lambda_R\Delta Q_R-\lambda_D.
+ \label{eq:marginal}
+\end{equation}
+In STO, first-stage investment is charged once and scenario-dependent changes carry their scenario probabilities. A change spanning several periods includes all affected static-exceedance charges. A negative $\Delta Z$ identifies an improving admissible change. A positive value identifies a more expensive admissible change under the stated prices. If a required route, capacity or timing condition fails, the proposed change supplies a physical explanation rather than an economic preference for shortage.
+
+A5 compares complete validated plans from the controlled policy cases. It examines how their flows, capacities, investments and shortages differ, and identifies the changes associated with improved domestic service. The comparison preserves the input and policy identities, allowing a benefit caused by a larger investment ceiling to be distinguished from a benefit caused by an export restriction.
+
+Table~\ref{tab:Aanalyses} connects these five analyses to their evidence and interpretation.
+\begin{table}[H]\centering\small
+\caption{Agricultural diagnostic analyses}\label{tab:Aanalyses}
+\begin{tabular}{P{14mm}P{43mm}P{49mm}P{37mm}}\toprule
+Analysis&Question&Evidence&Interpretation\\\midrule
+A1&Where did the supplied grain go?&Indexed flows, stock and conservation residuals&Complete material accounting\\
+A2&How was supply allocated?&Domestic/export deliveries and final stock&Destination and timing of grain\\
+A3&Which departures dominate penalties?&Shortage, static and reception exceedances&Physical quantities and monetary weights\\
+A4&Could one more tonne be delivered?&An admissible path and all associated capacity/cost changes&Physical obstruction or marginal economic explanation\\
+A5&Which planning changes improve service?&Matched policy solutions and full decision differences&Mechanisms behind alternative plans\\\bottomrule
+\end{tabular}
+\end{table}
+Together, these analyses turn a terminal objective value into an explanation of the planning solution. The marginal diagnosis is especially important when interpreting high shortage penalties.
+
+\subsection{Service and export indicators}
+
+For positive total domestic demand, achieved service is measured by
+\begin{equation}
+ L_{ps}=
+ 1-\frac{\sum_{c\in C^D,t}u^s_{cpt}}
+          {\sum_{c\in C^D,t}\delta_D D^{0,s}_{cpt}}.
+ \label{eq:achievedservice}
+\end{equation}
+The achieved export share is
+\begin{equation}
+ X_{ps}=
+ \frac{\sum_{c\in C^X,w,t}x^{DC,s}_{wcpt}}
+      {\sum_{o,t}a^s_{opt}}.
+ \label{eq:exportshare}
+\end{equation}
+A zero denominator is recorded as a case in which the corresponding ratio is undefined, together with its numerator and denominator. Physical totals remain available for interpretation.
+
+The principal tables report every product--scenario pair. Expected service and expenditure summarise STO with the declared probabilities, while the minimum product--scenario service describes the least-served component. Aggregate summaries retain their weighting definition. This prevents a large-volume product or favourable realisation from concealing poor service elsewhere.
+
+Investment reporting separates the number of activated sites, the tonnes selected for opening and expansion, and the bulk-handling investment basis. The added static capacity $\sum_w(k_w+e_w)$ is an outcome of optimization. K is an input controlling what investment is permitted; it therefore remains distinct from the capacity actually selected and paid for.
+
+\subsection{Constructing the empirical economic--service frontier}
+
+Each validated plan provides a pair consisting of economic expenditure and an explicitly defined service indicator. For plans $i$ and $j$, plan $j$ dominates $i$ when
+\begin{equation}
+ C_{\mathrm{econ},j}\le C_{\mathrm{econ},i},
+ \qquad L_j\ge L_i,
+ \label{eq:dominance}
+\end{equation}
+with at least one strict improvement. Numerical comparison uses declared tolerances and retained unrounded values. The empirical frontier contains the plans that remain nondominated within the evaluated set.
+
+The first frontiers condition on population, DET/STO, input dataset and comparable resource/quality classes. Policy and capacity settings identify each point. Comparisons across different alpha values or investment ceilings describe alternative policy opportunities; labels retain those differences. An envelope pooling several policy settings is presented as the envelope of those evaluated opportunities.
+
+The retained objective still minimises the complete monetary total in Equations~\ref{eq:detobj}--\ref{eq:stoobj}. Economic expenditure and achieved service are then used to analyse the resulting plans. Consequently, the empirical frontier characterises the validated plans actually obtained. A global economic--service frontier would additionally require an appropriate economic objective or an economic-optimality certificate for each service level. This distinction establishes the scientific scope of the reported trade-offs while preserving the approved objective.
+
+Figure~\ref{fig:frontier} illustrates the dominance rule without using experimental results.
+\begin{figure}[H]\centering
+\setlength{\unitlength}{1mm}
+\begin{picture}(145,69)
+\put(13,10){\vector(1,0){122}}
+\put(13,10){\vector(0,1){54}}
+\put(39,0){\makebox(84,7){Achieved domestic service (increasing)}}
+\put(0,62){\makebox(45,6)[l]{Economic expenditure}}
+\put(29,24){\circle*{2}}\put(32,21){\makebox(27,6)[l]{Plan A}}
+\put(61,35){\circle*{2}}\put(64,32){\makebox(27,6)[l]{Plan B}}
+\put(98,46){\circle*{2}}\put(101,43){\makebox(27,6)[l]{Plan C}}
+\put(43,50){\circle{2.6}}\put(15,54){\makebox(62,6)[l]{Plan D: dominated by B}}
+\put(29,24){\line(3,1){32}}
+\put(61,35){\line(3,1){37}}
+\end{picture}
+\caption{Illustration of economic--service dominance}\label{fig:frontier}
+\end{figure}
+Plan B supplies more service at lower economic expenditure than D. Plans A, B and C illustrate a trade-off between increasing service and increasing expenditure. The joining lines guide the eye; they represent neither interpolation feasibility nor a certified continuous frontier.
+
+\subsection{Quality, uncertainty and computational effort}
+
+The result table retains terminal status, incumbent, bound, total-objective MIP gap, validation outcome, native time, Work, total time and memory. Time-to-quality curves use the milestones in Table~\ref{tab:quality}. A time-limited observation with a usable incumbent contributes a qualified planning point; an observation without one contributes evidence about computational difficulty and resource exposure.
+
+The bound certifies the total objective specified by the model. Subtracting an incumbent's penalty value from the global bound does not create a valid bound on its economic subtotal: another feasible plan can have a different penalty composition. Economic-cost gap claims require their own valid certificate. The plan therefore reports the certified total-objective gap and the separately recomputed economic expenditure.
+
+Temporal repetitions describe variation under the same case definition. Summary tables report the individual values, median and range, together with node and affinity identities. Larger-instance assessments compare problem size, feasibility/quality attainment, time and memory under the declared resource classes. Because Gurobi chooses algorithms and threads automatically, the computational interpretation concerns problem-size growth and observable resource demand.
+
+Selected computational treatments are assessed using matched inputs, policy settings, resource classes and termination budgets. An improvement is interpreted through its diagnosed phase and quality trajectory, then checked on a held-out case. This procedure connects computational claims to both reproducibility and agricultural usefulness.
+
+\section{Research stages, deliverables and indicative schedule}
+\label{sec:stages}
+
+The study proceeds through short research stages with explicit outputs and acceptance criteria. Data and model qualification establish the foundation; the h215 cycle develops the agricultural explanation; larger populations then test its generality and computational requirements. Table~\ref{tab:sprints} sets out an indicative schedule measured from the start of the qualified research cycle.
+
+\begin{table}[H]\centering\small
+\caption{Research stages and indicative schedule}\label{tab:sprints}
+\begin{tabular}{P{15mm}P{22mm}P{59mm}P{48mm}}\toprule
+Stage&Indicative weeks&Main activities&Acceptance evidence\\\midrule
+S0&1--2&Reconcile XLSX, registry, normalised tables and routing evidence; freeze the case dictionary&Traceable data identities, explained discrepancies and qualified neutral case\\
+S1&3--4&Instrument native DET/STO; qualify K, beta and alpha; verify policy-critical exports&Construction and independent-validation checks with preserved reference semantics\\
+S2&5--10&Evaluate the h215 policy/capacity matrix; reconstruct A1--A5 and initial frontiers&Complete balances, validated plans and explained shortages/exceedances\\
+S3&11--14&Evaluate selected reformulation or tuning treatments from the diagnosed bottlenecks&Matched comparisons and held-out confirmation\\
+S4&15--22&Advance through h300, h400 and h500; extend by documented 100-site blocks where informative&Population-specific service frontiers, quality trajectories and resource envelopes\\
+S5&23--24&Consolidate agricultural interpretation, reproducibility materials and scientific reporting&Traceable tables/figures, reviewed conclusions and complete evidence package\\\bottomrule
+\end{tabular}
+\end{table}
+The ranges allow for queue availability, long-running cases and analysis between execution stages. The h215 findings determine which larger cases are most informative. The initial workload estimate remains an upper planning envelope for the proposed matrix, rather than a promise of uninterrupted access to the cluster.
+
+Each stage ends with an interpretable research product. Data qualification produces the effective reference; h215 produces the first economic--service explanation; computational diagnosis produces justified interventions; and network growth produces evidence about the resources and planning changes associated with scale. This progression supports coauthor review through concrete results at each stage.
+
+\clearpage
+\appendix
+\section{Effective-baseline workbook: contents and parameter interpretation}
+\label{app:data}
+
+The workbook \code{agrologistic\_effective\_baseline\_v1.xlsx} provides a readable description of the effective data consumed by the model. Its source fields preserve the distinction between received data, preparation transformations and the resulting coefficients. The accompanying computational tables retain the same indexed values for reconstruction.
+
+The workbook is derived from the historical model inputs and the parameterisation of \citet{rosa2026thesis}. It includes observed source information, derived values and reference estimates used in the agricultural formulation. The provenance columns identify those origins. This classification makes the effective reference auditable while providing a separate place for future empirical calibration.
+
+Table~\ref{tab:sheets} describes the workbook's sheets and the number of populated data rows in the retained reference file.
+\begin{longtable}{P{34mm}rP{103mm}}
+\caption{Effective-baseline workbook structure}\label{tab:sheets}\\
+\toprule Sheet&Rows&Purpose\\\midrule\endfirsthead
+\toprule Sheet&Rows&Purpose\\\midrule\endhead
+Identification&7&Workbook identity, schema and reconstruction context\\
+Dictionary&32&Parameter definitions and unit conventions\\
+Calendar&60&Monthly sequence, January 2021--December 2025\\
+Supply&44,400&Indexed supply entries for the retained population/mode scopes\\
+DomesticDemand&32,400&Domestic demand entries with product, time and realisation indices\\
+Exports&12,000&Historical destination-period export bounds\\
+Capacities&2,500&Effective initial static, reception and shipping values\\
+Investments&1,776&Eligibility-related investment ceilings and fixed/proportional costs\\
+Costs&2,074&Freight, storage and transshipment coefficients\\
+Penalties&1,054&Shortage, static exceedance and reception-overflow coefficients\\
+Scenarios&9&Scenario identifiers and probabilities\\
+Durations&0&Reserved indexed duration table; the reference uses 30 days per period\\
+Sets&4,771&Indexed members of the model sets\\
+Configurations&145&Effective mathematical and network settings across five retained scopes\\
+Sources&14&Source identities and evidence links\\
+NetworkReferences&4&References to frozen population-specific networks\\
+Transformations&7&Declared transformations from inputs to effective values\\
+ParameterTemplate&1&Neutral template for an identified experimental transformation\\\bottomrule
+\end{longtable}
+Repeated values across scopes are intentional when the same effective coefficient applies to more than one retained model. A row count describes workbook records rather than the number of distinct agricultural entities. The reference contains h215 DET/W and STO/W, and h300--h500 STO/W. Larger DET instances receive their own data and construction qualification before they enter the proposed campaign.
+
+\subsection{How to trace a parameter}
+
+The parameter sheets use a common structure: field name, indexed key, value, unit, applicable scopes, source identities, transformation, origin classification and usage classification. In these sheets the value is in column C and its unit is in column D. The Configurations sheet instead stores a scope, a parameter name and a JSON-encoded value.
+
+Table~\ref{tab:locators} gives concrete locations in the retained workbook. A location identifies a particular reference record; a complete parameter uses all matching indexed rows.
+\begin{longtable}{P{37mm}P{38mm}P{67mm}}
+\caption{Example parameter locations}\label{tab:locators}\\
+\toprule Parameter&Reference location&Meaning and interpretation\\\midrule\endfirsthead
+\toprule Parameter&Reference location&Meaning and interpretation\\\midrule\endhead
+Candidate capacity ceiling&Investments!C2&190,610 t; an example candidate-specific limit before K\\
+Expansion ceiling&Investments!C209&222.5 t; an example expansion-specific limit before K\\
+Opening proportional cost&Investments!C140&1,250 BRL/t of candidate capacity\\
+Expansion proportional cost&Investments!C501&900 BRL/t of expansion capacity\\
+Bulk-handling cost&Investments!C831&520 BRL/t of its investment basis\\
+Opening fixed cost&Investments!C71&0 BRL in the prepared reference record\\
+Expansion fixed cost&Investments!C355&0 BRL in the prepared reference record\\
+Bulk-handling fixed cost&Investments!C739&0 BRL in the prepared reference record\\
+Domestic-shortage penalty&Penalties!C2&90,000 BRL/t of unmet demand\\
+Static-exceedance penalty&Penalties!C56&45,000 BRL per tonne of exceedance in each period\\
+Reception-overflow penalty&Penalties!C271&45,000 BRL/t of excess incoming flow\\
+Scenario probability&Scenarios!C2&$1/9$ for the displayed stochastic realisation\\
+Storage tariff&Costs, \code{storage\_tariff} rows&45 BRL/(t$\cdot$period) for soybean and 48 for maize\\
+Period duration&Configurations, \code{days\_per\_period}&30 operating days per monthly period\\
+Network filter&Configurations, \code{pareto\_fraction}&0.20, used in the historical edge-selection heuristic\\\bottomrule
+\end{longtable}
+The candidate and expansion examples refer to different facility records. Their values illustrate where K acts; they supply neither a uniform national ceiling nor a recommended physical capacity for every facility.
+
+\subsection{Dimensions and coupled investment effects}
+
+Static capacity is measured in tonnes. Reception and shipping are daily rates, converted to period quantities using the declared operating days. Supply, domestic demand and transport flow are tonnes within a period. Freight expressed in BRL/(t$\cdot$km) is multiplied by the retained road distance; holding cost in BRL/(t$\cdot$period) applies to stock exposure.
+
+Proportional investment costs refer to their respective investment bases. Opening and expansion add static tonnes and associated handling rates. Bulk-handling conversion has its own eligible basis and handling effect. The fixed costs are retained at their effective values, including zero. Multiplying a zero fixed cost produces zero, so a future experiment on positive fixed costs requires explicit absolute values and an empirical rationale.
+
+The K transformation changes the frozen candidate and expansion ceilings as specified in Section~\ref{sec:K}. It leaves initial capacities, proportional costs, fixed costs, penalty coefficients and handling-coupling factors at their reference values. Derived mathematical bounds are reconstructed consistently with the modified admissible investment range and receive the scenario identity.
+
+\subsection{Reference estimates and future economic calibration}
+
+The effective reference reproduces the historical coefficients. Future calibration is organised as separately identified alternatives. The main questions concern harmonisation of supply and demand across 2021--2025, economic interpretation of the storage tariffs, investment costs by technology, and daily handling rates by facility type. Historical export values represent modelled destination bounds; their interpretation as physical port capacity requires separate evidence.
+
+Freight alternatives can use a proportional rate $c(d)=rd$, a fixed-plus-distance rate $c(d)=a+bd$, or an empirically supported route-specific relationship. Because the OSRM distance is fixed, coefficients can be prepared before optimization while retaining linear transport costs. Each alternative records its source, units and calibration evidence. This organisation preserves a clear distinction between historical reproduction and a newly calibrated planning case.
+
+\section{Warehouse registry and the construction of the selected road network}
+\label{app:registry}
+
+The workbook \code{agrologistic\_warehouse\_registry\_v1.xlsx} preserves 18,086 CDA identifiers and their associated registration information. It is an inspection and reconciliation resource for the modelled populations. Its membership columns indicate whether a site belongs to h215, h300, h400 or h500. Investment activation and positive operational use are separate solution outcomes.
+
+\subsection{Facility attributes and ordered populations}
+
+Registry fields include municipality, state, coordinates, facility type, registered capacity, modelled initial static/reception/shipping capacity, investible limits and source/transformation information. Each population has an inclusion flag and an order field. The ordered population manifests therefore remain the reference for reproducible instance construction.
+
+Candidate sites start with zero installed capacity in the prepared model. Their registered capacity can still inform an investment ceiling. Registered capacity, initial modelled capacity, admissible investment and selected investment have different meanings and remain separate fields. The 146 retained existing facilities occur in all four initial populations.
+
+The population sequence is nested in facility membership. Its selected arcs are reconstructed by the declared grouping and distance ranking. Adding candidate facilities can change the ranks and retained counts, so arc-set nesting is checked explicitly rather than inferred from membership nesting. Frozen historical arc sets remain identified individually.
+
+\subsection{Recovery of the 80/20 selection and connectivity procedure}
+
+The historical procedure is recoverable from the retained implementation and the effective-baseline configuration. The code separates the initial distance filter from the connectivity repair. The functions \code{select\_routes} and \code{\_select\_thesis\_pareto\_routes} implement the source--product grouping and the 20\% cutoff.\technical{Versioned route-selection implementation}{https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/2391137cdbe4f86cdb784f9e4e545944fac2a688/src/logic/route_filtering.py} The function \code{apply\_connectivity\_repair} implements the subsequent directed-path checks and additions.\technical{Versioned connectivity-repair implementation}{https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/2391137cdbe4f86cdb784f9e4e545944fac2a688/src/logic/route_connectivity.py}
+
+Table~\ref{tab:networkstages} provides the reproducible sequence.
+\begin{longtable}{P{16mm}P{42mm}P{86mm}}
+\caption{Network selection and connectivity checks}\label{tab:networkstages}\\
+\toprule Step&Operation&Recorded rule\\\midrule\endfirsthead
+\toprule Step&Operation&Recorded rule\\\midrule\endhead
+1&Define eligible routes&Use the materialised directed OSRM routes, the product index and the enabled W arc families.\\
+2&Form source--product groups&OW: origin/product; WD: warehouse/product; WW: sending warehouse/product.\\
+3&Apply the 80/20 rule&Sort by road distance and indexed route identifier; retain $\max(1,\lceil0.20n\rceil)$ per nonempty group.\\
+4&Identify active endpoints&Positive supply identifies origin/product sources; positive demand or export bounds identify the relevant destination/product pairs. STO considers entries across its realisation set.\\
+5&Check domestic reachability&For each active domestic destination/product pair, find a directed path from an active source of that product, allowing warehouse hops.\\
+6&Repair when needed&Choose a path with fewest added arcs, then least added distance, then least total distance and a deterministic identifier tie-break; retain its additions for subsequent checks.\\
+7&Check the export policy&Require a reachable export sink per active product under \code{one\_sink\_per\_product}; stronger all-sink coverage is a distinct setting.\\
+8&Freeze the resulting graph&Save selected product-indexed routes, repair subsets, policy identity and route/coverage diagnostics.\\\bottomrule
+\end{longtable}
+The procedure operates on real eligible routes and their retained distances. A path can contain OW, several WW links and a final WD link. The repair is a sequential coverage procedure: its path ordering is deterministic and parsimonious, while the resulting network is not claimed to be a globally minimum repair network.
+
+There are two important levels of evidence. The configuration specifies which procedure applies. The frozen route sets and repair subsets describe the graph that was actually retained. Table~\ref{tab:arcledger} gives those recorded counts in the effective reference.
+\begin{table}[H]\centering\small
+\caption{Frozen product-indexed arc ledger}\label{tab:arcledger}
+\begin{tabular}{lrrrrr}\toprule
+Population&OW&WD&WW&Total&Recorded repair additions\\\midrule
+h215&3,182&3,440&18,490&25,112&0\\
+h300&4,440&4,800&36,000&45,240&0\\
+h400&5,920&6,400&64,000&76,320&0\\
+h500&7,400&8,000&100,000&115,400&0\\\bottomrule
+\end{tabular}
+\end{table}
+The h215 DET and STO scopes retain the same graph. All four reference populations have empty recorded repair subsets. This observation documents their frozen ledger; it does not imply that every possible origin--destination pair was retained. Reproduction verifies the actual paths and policy coverage against the frozen graph.
+
+A separate graph traversal of the frozen effective tables confirms that all 54 active domestic destination--product pairs and all 20 active export destination--product pairs are reachable from some active source of the same product in each initial population. In h215, one domestic pair requires a shortest path with three edges, including a warehouse-to-warehouse hop; the remaining 53 pairs have two-edge paths. In h300, h400 and h500, all 54 domestic pairs have a two-edge path. These are structural reachability results aggregated over the applicable positive supply/demand entries, with capacity and timing feasibility assessed separately.
+
+The implemented connectivity requirement is source-to-destination reachability. Each domestic destination needs a path from some active supply origin of the relevant product. The export setting requires at least one accessible export sink per product. Strong connectivity among all warehouses is a separate optional policy and is disabled in the effective reference. Route coverage therefore remains distinct from origin-specific access to every destination, from all-port coverage and from the capacity feasibility of an agricultural delivery plan.
+
+\subsection{The two uses of Pareto}
+
+The \emph{80/20 Pareto edge-selection rule} is the historical name of a nearest-distance sparsification heuristic. It retains approximately 20\% of each group's eligible routes before any necessary repair. It does not estimate that these routes carry 80\% of grain, represent 80\% of economic value or dominate excluded routes under a multiobjective criterion.
+
+The \emph{economic--service Pareto frontier} is an analysis of complete validated planning outcomes. Its dominance rule compares expenditure and achieved domestic service, as defined in Section~\ref{sec:analysis}. The manuscript consistently uses the full expressions where ambiguity is possible. Network sparsification is an input-preparation choice; economic--service dominance is a result-analysis criterion.
+
+\subsection{SQLite reconciliation, absent pairs and physical zero}
+
+The SQLite cache stores routing results for ordered coordinate pairs and routing identities. An eligible route, a selected product-indexed arc and an arc carrying positive solution flow are different objects. A cache can contain distances that never enter the selected graph, while one cached pair can support multiple product-indexed arcs.
+
+The reconciliation proceeds from registry identity to exact ordered coordinates, then to the cache key, routing provenance and effective distance. The cache's metre distances are converted to kilometres once. Coordinate coincidence is inspected at the stored precision, with node identity and arc eligibility retained separately.
+
+The historical OSRM client accepts a bounded negative-distance round-off tolerance of 1 metre and maps values within $[-1,0)$ metres to an effective zero on reading. Larger negative values and non-finite values are invalid. The raw cached value remains preserved alongside the normalised value and the rule identity.\technical{Versioned OSRM distance validation and normalisation}{https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/2391137cdbe4f86cdb784f9e4e545944fac2a688/src/logic/osrm.py} The tolerance documents a numerical interpretation; geographical proximity alone supplies no replacement distance.
+
+Table~\ref{tab:distancestates} distinguishes the states required for reconciliation.
+\begin{table}[H]\centering\small
+\caption{Distance and arc states}\label{tab:distancestates}
+\begin{tabular}{P{43mm}P{100mm}}\toprule
+State&Meaning\\\midrule
+Finite positive distance&An identified routing result, potentially eligible for selection\\
+Valid effective zero&An actual zero result or a recorded bounded round-off normalisation\\
+Eligible but filtered arc&A route excluded by the 80/20 rule and absent from the final selected set\\
+Connectivity addition&A previously excluded eligible route restored by the repair procedure\\
+Unavailable distance&A pair for which the required routing result is unavailable\\
+Absent selected arc&A route that does not belong to this case's admissible graph\\
+Positive-flow arc&A selected arc used by the returned planning solution\\\bottomrule
+\end{tabular}
+\end{table}
+An intentionally filtered arc explains graph sparsity. An unavailable cache pair is a separate reconciliation question. Neither state is encoded as a zero distance. This distinction preserves both the historical network policy and the physical meaning of transport cost.
+
+\section{Model construction and independent qualification}
+\label{app:qualification}
+
+Qualification establishes that an identified input produces the intended model and that a returned solution satisfies it within declared tolerances. The neutral policy case reproduces the effective reference; each non-neutral case carries explicit changes. Construction and algebra checks precede numerical interpretation.
+
+\subsection{Core balances and capacities}
+
+The warehouse balance for a product, period and scenario equates incoming grain and previous stock to outgoing grain and closing stock:
+\begin{align}
+ I^s_{wpt}
+ &=I^s_{wp,t-1}+\sum_o x^{OD,s}_{owpt}
+   +\sum_v x^{DD,s}_{vwpt} \notag\\
+ &\quad-\sum_c x^{DC,s}_{wcpt}-\sum_v x^{DD,s}_{wvpt}.
+ \label{eq:warehousebalance}
+\end{align}
+Each sum uses the selected directed arcs of the relevant family. Supply allocation, domestic equality and the historical export bounds complete the material accounting. The optional aggregate beta and alpha policies add the requirements defined in Section~\ref{sec:policies}.
+
+Static storage and reception use their respective exceedance quantities. Shipping remains a hard operating limit. With $d_t=30$ operating days, representative capacity restrictions are
+\begin{align}
+ \sum_p I^s_{wpt}&\le K_w(X)+q^{K,s}_{wt},\\
+ \sum_p\left[\sum_o x^{OD,s}_{owpt}
+             +\sum_v x^{DD,s}_{vwpt}\right]
+   &\le d_t R_w(X)+q^{R,s}_{wt},\\
+ \sum_p\left[\sum_c x^{DC,s}_{wcpt}
+             +\sum_v x^{DD,s}_{wvpt}\right]
+   &\le d_t H_w(X).
+\end{align}
+The daily handling gains in Equation~\ref{eq:handling} are converted to period capacity once. Investment activation, eligibility and the inherited exclusivity relationships remain part of the complete model.
+
+\subsection{Neutral and transformed cases}
+
+The qualification checks the indexed parameters and ordered sets before examining rows and columns. It then compares variable domains, coefficients, bounds and objective terms for corresponding representations. Native indicators and a bounded linear reformulation require algebraic equivalence appropriate to their representations.
+
+Table~\ref{tab:qualification} states the acceptance evidence for the principal transformations.
+\begin{table}[H]\centering\small
+\caption{Qualification of the model and policy controls}\label{tab:qualification}
+\begin{tabular}{P{36mm}P{107mm}}\toprule
+Check&Required evidence\\\midrule
+Neutral reference&The same facility order, products, periods, scenarios, arcs, costs, capacities and penalties\\
+K transformation&Every candidate/expansion ceiling scaled once; initial capacities and all undeclared coefficients unchanged\\
+Beta policy&Independent product--scenario shortage totals satisfy the full-horizon service requirement\\
+Alpha policy&Export tonnes satisfy both historical destination-period bounds and the declared supply-share ceiling\\
+Investment coupling&Selected opening/expansion quantities generate the original daily handling increments\\
+Decision validity&Balances, domains, eligibility and capacities recomputed from the exported solution\\
+Cost accounting&Investment, transport, holding and each penalty independently reconciled to the native objective\\
+Numerical precision&Residuals and tolerances retained in original units, with display rounding separate\\\bottomrule
+\end{tabular}
+\end{table}
+A discrepancy is reported at its first differing field or algebraic element, with both identities retained. Agreement of data and model construction is distinguished from reproduction of an optimized numerical result.
+
+\section{Reformulation, tuning and computational diagnosis}
+\label{app:diagnosis}
+
+Reformulation changes how an equivalent planning problem is represented. Tuning changes how the optimizer searches that representation. Both become scientifically useful when a measurable diagnosis motivates them and a controlled comparison demonstrates their effect. This approach follows the teaching principles in \citet{orozco}.
+
+\subsection{Diagnosing the source of computational difficulty}
+
+Model statistics describe the original and presolved rows, columns, nonzeros and integer variables. Coefficient ranges and numerical warnings identify possible scaling issues. The root log separates relaxation progress, barrier work and crossover where reported. MIP events show feasible-solution arrival, bound progress, node counts and termination.
+
+Solving a MIP at the root is compatible with a difficult initial relaxation and a strong bound. A large node count is therefore neither a requirement for a meaningful model nor a sufficient measure of computational difficulty. The agricultural explanation examines the continuous flow structure, investment choices and penalties together with the presolve and root evidence.
+
+Table~\ref{tab:diagnosistreatment} links observable patterns to candidate investigations.
+\begin{table}[H]\centering\small
+\caption{Diagnosis and candidate computational treatments}\label{tab:diagnosistreatment}
+\begin{tabular}{P{40mm}P{51mm}P{52mm}}\toprule
+Observed pattern&Question&Candidate investigation\\\midrule
+Long presolve or root LP&Which reductions and LP algorithms dominate time?&Phase analysis, coefficient scaling and selected LP-method comparisons\\
+Late feasible incumbent&Is feasible-plan construction the limiting phase?&MIPFocus=1 and relevant Gurobi 14 feasibility heuristics\\
+Slow bound improvement&Which relaxation or search component limits certification?&Bound-focused strategies, valid tightening and formulation inspection\\
+High model-construction peak&Are temporary representations or native copies retained?&Construction lifecycle, sparse assembly and explicit release of unused state\\
+Numerical warnings&Are units, ranges or redundant restrictions causing difficulty?&Dimension checks and equivalent scaling, validated in original units\\
+Time limit with useful incumbent&What quality and service became available?&Quality milestones, trajectories and physical-plan interpretation\\\bottomrule
+\end{tabular}
+\end{table}
+The table defines diagnostic options. Each selected treatment receives a stated hypothesis, a matched reference case and an acceptance rule.
+
+\subsection{Equivalent formulations and valid tightening}
+
+The first formulation review checks avoidable variables and rows, redundant representations, coefficient magnitudes and the bounds used in logical relationships. A valid tightening follows from the existing agricultural constraints and the case's data. It preserves all feasible planning decisions relevant to the original contract.
+
+Indicator constraints express logical activation directly. A bounded linear alternative requires valid bounds that account for supply, admissible capacities and the enabled exceedance quantities. The comparison records model size, construction memory, presolve reduction and numerical behaviour. Independent validation reconstructs the same original-unit constraints.
+
+Unit scaling is considered when the coefficient ranges and numerical evidence justify it. Currency or quantity scaling changes the numerical representation consistently across objective and constraints. Returned decisions and objective components are mapped back to the retained original units for validation.
+
+\subsection{Gurobi 14 strategies and controlled tuning}
+
+The automatic reference remains Method=-1 and Threads=0. A diagnosed follow-up can examine dual simplex, barrier, deterministic concurrent LP or CPU PDHG under an explicitly identified method setting. These alternatives concern relaxation work; MIP heuristics concern feasible integer plans.
+
+Gurobi 14 adds a NoRel tree-search heuristic associated with MIPFocus=1 and PDHG-based MIP heuristics for expensive initial relaxations. Their individual effects are investigated through logged activation and matched treatments.\technical{Gurobi 14 algorithmic changes}{https://docs.gurobi.com/projects/optimizer/en/current/reference/releasenotes/changes.html} The chosen parameter settings and effective algorithms are retained with each observation.
+
+Automated tuning can complement the diagnosis through the Gurobi tuning tools.\technical{Gurobi tuning documentation}{https://docs.gurobi.com/projects/optimizer/en/current/features/tuning.html} Its training cases and budget are fixed before the tuning exercise. Selected settings are evaluated on held-out policy or population cases using the same quality, time and memory measures. This separation supports conclusions about transfer beyond the cases used to choose the settings.
+
+\section{Interpreting trade-offs, certificates and planning limitations}
+\label{app:interpretation}
+
+The empirical frontier is a structured description of available validated plans. Its usefulness depends on the meaning of its axes, the physical plausibility of each plan and the strength of the optimization evidence. The following interpretation rules keep those three aspects connected.
+
+\subsection{Economic expenditure and agricultural service}
+
+Economic expenditure includes modelled investment, transport and holding costs. Agricultural service is delivery relative to the applicable domestic demand. Penalties are reported alongside those measures because a plan with high service may still use substantial static or reception exceedance. A broader planning assessment therefore considers service, actual investment, export, final stock and both capacity exceedances.
+
+K changes the investment opportunity set. A larger value makes additional capacity admissible at the retained investment prices; the resulting plan reveals whether that opportunity is used. If service stays unchanged, the explanation can involve shipping limits, route availability, timing, another binding investment relationship or the model's cost trade-offs. A4 tests such explanations using a fully admissible change.
+
+\subsection{Numerical certificates and admissible alternatives}
+
+The terminal MIP gap certifies the full objective for its identified case. It supplies a bound on the remaining improvement of that objective. It does not separately certify the economic subtotal, each product's service or the true minimum investment required for a given service level.
+
+A feasible point obtained under a tight beta requirement demonstrates that the reported service was attainable under that case's constraints and numerical tolerance. An infeasibility claim requires the corresponding solver certificate and formulation identity. An observation ending without an incumbent identifies the planning evidence that remained unavailable within its resource budget.
+
+The next methodological refinement, if a certified economic frontier becomes essential, is to define and approve an economic-objective or lexicographic study with explicit service and exceedance controls. Such a refinement is a separate scientific design choice. The present study retains the original monetary objective and makes the empirical scope of its frontiers explicit.
+
+\section{Reproducibility package and research outputs}
+\label{app:reproducibility}
+
+The reproducibility package links the input reference, the case transformations, model construction, solver trajectory and independent validation. Its purpose is to let a reader identify exactly what was evaluated and reconstruct the reported tables from retained evidence.
+
+Table~\ref{tab:package} describes the evidence layers.
+\begin{table}[H]\centering\small
+\caption{Reproducibility evidence layers}\label{tab:package}
+\begin{tabular}{P{34mm}P{109mm}}\toprule
+Layer&Contents\\\midrule
+Data reference&Effective-baseline and registry workbooks; source identities, units and transformations\\
+Network reference&Ordered populations, selected product-indexed arcs, OSRM provenance and distance interpretation\\
+Case definition&DET/STO, population, policy profile, K, explicit parameter changes and software identity\\
+Construction evidence&Model statistics, coefficient/bound checks and representation identity\\
+Execution evidence&Native log, structured callbacks, resource samples, terminal attributes and status\\
+Planning evidence&Investment, flow, inventory, shortage and capacity-exceedance vectors\\
+Validation evidence&Recomputed balances, policies, capacities, costs and residuals\\
+Analysis evidence&Versioned parsers, complete result tables, frontier membership and figure inputs\\\bottomrule
+\end{tabular}
+\end{table}
+The accompanying editable package contains this plan's LaTeX source and the two inspection workbooks. The workbooks preserve the reviewed reference values; subsequent data corrections receive a new version and a documented reconciliation.
+
+Public release is organised by source-specific redistribution permissions. Code, documentation, parameter definitions and eligible aggregate results can be separated from restricted facility-level or flow data. A dataset manifest states which files are available, which remain in controlled custody and how authorised researchers can identify the corresponding evidence.
+
+The principal research outputs are a qualified effective-data reference, an agricultural explanation of the h215 policy cycle, population-specific empirical economic--service frontiers, and a computational assessment of the resources required to obtain useful planning evidence. Their shared case identifiers connect the scientific narrative to reproducible inputs and results.
+
+\clearpage
+\section*{References}
+\addcontentsline{toc}{section}{References}
+\begingroup
+\renewcommand{\section}[2]{}
+\begin{thebibliography}{99}
+\bibitem[Rosa(2026)]{rosa2026thesis}
+Rosa, A. G. (2026).
+\emph{Mathematical modeling and decision support systems for grain allocation and storage logistics in Brazil}.
+Doctoral thesis, Universidade de Bras\'ilia. Original work in Portuguese.\technical{University thesis record}{https://sigaa.unb.br/sigaa/public/programa/noticias_desc.jsf?id=853&lc=pt_BR&noticia=23891799}
+
+\bibitem[Rosa et al.(2025)]{rosa2025}
+Rosa, A. G., Santos, A. P., Delgrossi, M. E., and dos Reis, S. A. (2025).
+Mathematical models for the grain warehouse location problem: a systematic literature review.
+\emph{Gest\~ao \& Produ\c{c}\~ao}, 32, e4925.\technical{Article DOI}{https://doi.org/10.1590/1806-9649-2025v32e4925}
+
+\bibitem[Model Agrologistic research team(2026)]{agrologistic}
+Model Agrologistic research team (2026).
+\emph{Model Agrologistic: MVP2.0 article, supplementary material and research software}.\technical{Project publication}{https://unb-lamfo-or-ai-hpc.github.io/model-agrologistic/}
+
+\bibitem[Orozco(undated)]{orozco}
+Orozco, J. (undated).
+\emph{Reformulation and Tuning}.
+Gurobi OptAI 101 course material and lecture transcript. Author-supplied instructional material.
+
+\bibitem[Gurobi Optimization(2026)]{gurobi}
+Gurobi Optimization (2026).
+\emph{Gurobi Optimizer Reference Manual, version 14}.
+Parameter, Python-interface, logging and algorithm documentation.\technical{Reference manual}{https://docs.gurobi.com/projects/optimizer/en/current/}
+
+\bibitem[Gurobi Optimization(logtools)]{logtools}
+Gurobi Optimization (accessed 2026).
+\emph{gurobi-logtools}.
+Tools for parsing and analysing Gurobi log files.\technical{Software repository}{https://github.com/Gurobi/gurobi-logtools}
+
+\bibitem[Project OSRM(2026)]{osrm}
+Project OSRM (accessed 2026).
+\emph{Open Source Routing Machine documentation}.\technical{OSRM project}{https://project-osrm.org/}
+
+\bibitem[Sylabs(2026)]{singularity}
+Sylabs (accessed 2026).
+\emph{Singularity User Guide}.\technical{Container documentation}{https://docs.sylabs.io/guides/3.5/user-guide/introduction.html}
+
+\bibitem[SQLite(2026)]{sqlite}
+SQLite (accessed 2026).
+\emph{SQLite documentation}.\technical{Database documentation}{https://www.sqlite.org/docs.html}
+
+\bibitem[NPAD(2026)]{npad}
+N\'ucleo de Processamento de Alto Desempenho, Universidade Federal do Rio Grande do Norte (accessed 2026).
+\emph{Hardware infrastructure}.\technical{Official hardware description}{https://npad.ufrn.br/npad/hardware}
+\end{thebibliography}
+\endgroup
+\end{document}
