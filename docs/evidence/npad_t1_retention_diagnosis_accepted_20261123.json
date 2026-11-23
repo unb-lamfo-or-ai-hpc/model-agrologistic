@@ -1,0 +1,59 @@
+{
+  "date": "2026-11-23",
+  "decision": "prepare_bounded_backup_reuse_cleanup_with_sftp_gate",
+  "diagnosis": {
+    "archive_bytes": 2635,
+    "sha256": "7be1b4a77bdc13a1dedc3080f9d2e5aff6af1fe68b8a2371afb34add8e9a71b5",
+    "sidecar_matches": true,
+    "manifest_members_verified": 2,
+    "source_identity_matches": true
+  },
+  "process_metadata": {
+    "prior_pids": 10,
+    "no_longer_visible": 3,
+    "observed_names": {
+      "sshd": 3,
+      "sftp-server": 3,
+      "(sd-pam)": 1
+    },
+    "uid_fields": 1271,
+    "file_use_clearance": false
+  },
+  "control_metadata": {
+    "empty_historical_outputs": 8,
+    "empty_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "malformed_test_fixtures": 6,
+    "unchanged_originals": true
+  },
+  "resume": {
+    "targets": {
+      "cache": 338,
+      "disposable_duplicates": 8111
+    },
+    "backup_sha256": "d093e7defbca502ccc3c7e27a827f6baab13c1bdf14370cc9fca3133c7df1dd0",
+    "backup_bytes": 2088818486,
+    "new_backup": false,
+    "whole_archive_rehash_required": true,
+    "active_sftp_blocks": true,
+    "ssh_pam_exceptions_require_verified_uid_and_parent_lineage": true,
+    "unknown_processes_remain_blockers": true,
+    "specific_references_remain_blockers": true
+  },
+  "qualification": {
+    "previous_controls": 24,
+    "new_controls": 11,
+    "local_ruff": "passed",
+    "linux_source_run_required": true
+  },
+  "preservation": {
+    "pr159": "Draft",
+    "pr163": "Draft",
+    "npad_execution_by_agent": false,
+    "actual_new_removals_known": false,
+    "environment_changed": false,
+    "new_jobs": 0,
+    "merge": false,
+    "scientific_originals_pruned": false,
+    "private_pid_tables_published": false
+  }
+}

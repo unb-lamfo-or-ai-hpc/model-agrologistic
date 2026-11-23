@@ -2,6 +2,8 @@ name: T1 authorized cleanup controls without solver
 on:
   pull_request:
     paths:
+      - scripts/t1/resume_t1_verified_cleanup.py
+      - tests/test_t1_cleanup_resume.py
       - scripts/t1/authorized_t1_cleanup.py
       - scripts/t1/inspect_t1_cleanup_retention.py
       - tests/test_t1_retention_probe.py
@@ -25,3 +27,4 @@ jobs:
         run: |
           python -B -I -S -m unittest discover -s tests -p test_authorized_t1_cleanup.py -v
           python -B -I -S -m unittest discover -s tests -p test_t1_retention_probe.py -v
+          python -B -I -S -m unittest discover -s tests -p test_t1_cleanup_resume.py -v
