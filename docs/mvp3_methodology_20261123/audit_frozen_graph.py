@@ -3,6 +3,7 @@ This audit reads effective tables; it does not select or repair routes, solve a
 model, open a routing database, or certify capacity/time feasibility.
 """
 from __future__ import annotations
+
 import argparse
 import collections
 import csv
