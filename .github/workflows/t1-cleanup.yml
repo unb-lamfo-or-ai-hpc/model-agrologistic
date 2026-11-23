@@ -1,0 +1,23 @@
+name: T1 authorized cleanup controls without solver
+on:
+  pull_request:
+    paths:
+      - scripts/t1/authorized_t1_cleanup.py
+      - tests/test_authorized_t1_cleanup.py
+      - .github/workflows/t1-cleanup.yml
+permissions:
+  contents: read
+jobs:
+  file-custody:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Temporary-file backup, restoration, no-follow and mutation controls
+        run: python -B -I -S -m unittest discover -s tests -p test_authorized_t1_cleanup.py -v
