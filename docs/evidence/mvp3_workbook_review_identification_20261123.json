@@ -1,0 +1,41 @@
+{
+  "schema_version": "agrologistic-mvp3-workbook-review-identification-v1",
+  "reviewed_on": "2026-11-23",
+  "scientific_status": "Working review copies; require researcher revision and a final MVP3 identity",
+  "eligible_as_final_mvp3_input": false,
+  "workbooks_edited": false,
+  "methodological_plan_edited": false,
+  "scope": "ZIP CRC/container inspection and SHA-256 comparison of the two XLSX members only",
+  "copies_byte_identical_between_packages": true,
+  "workbooks": [
+    {
+      "name": "agrologistic_effective_baseline_v1.xlsx",
+      "bytes": 4061143,
+      "compressed_bytes": 2773013,
+      "sha256": "d5babec48bb40a61843ccb4e7c9c059429b4d8ac32cefec945fda4e4fb84c917"
+    },
+    {
+      "name": "agrologistic_warehouse_registry_v1.xlsx",
+      "bytes": 2609853,
+      "compressed_bytes": 2367930,
+      "sha256": "f39c2f29862aecb9a64fd0d37548eb788e402c805a5db6def6c5ec8a351d25bc"
+    }
+  ],
+  "packages": [
+    {
+      "name": "Agrologistic_MVP3_Methodological_Plan_20261121.zip",
+      "sha256": "35b1dcf57be16197f047431f5c82b60805b48fd2c0132ea6c57edd69598ce95d",
+      "bytes": 5511731,
+      "workbook_directory": "appendices/"
+    },
+    {
+      "name": "Agrologistic_MVP3_Plano_e_Planilhas_20261119.zip",
+      "sha256": "65eba9640d1be7bd8acdd12020c36a28643435951dc3edfb00c422607f683cd5",
+      "bytes": 10414072,
+      "workbook_directory": "apendices/"
+    }
+  ],
+  "npad_location_status": "Still pending: no exact basename match in the enumerated 22-Nov snapshot; local identification does not establish an NPAD copy.",
+  "rights_scope": "Local private review artifacts; no workbook bytes uploaded to GitHub or a public deposit.",
+  "next": "Preserve review originals; record final revised workbooks and plan as new versions, then qualify NPAD XLSX/CSV/SQLite provenance before MVP3 execution."
+}
