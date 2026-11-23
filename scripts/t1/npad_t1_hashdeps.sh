@@ -32,13 +32,13 @@ printf '%s  %s\n' \
   "$CLASSIFIER_SHA" "$FETCH/classify_inventory_metadata.py" \
   | sha256sum --strict -c -
 ENTRY="$FETCH/verify_hash_dependencies.py"
-"$PY" -B -I "$ENTRY" prepare --workspace "$WORKSPACE" \
+"$PY" -B -I -S "$ENTRY" prepare --workspace "$WORKSPACE" \
   --inventory "$INVENTORY" --source-sha "$SOURCE"
-printf 'VERIFY_COMMAND=%s -B -I %s verify --workspace %s --max-gib 24 --max-files 150000 --max-seconds 900\n' \
+printf 'VERIFY_COMMAND=%s -B -I -S %s verify --workspace %s --max-gib 24 --max-files 150000 --max-seconds 900\n' \
   "$PY" "$ENTRY" "$WORKSPACE"
-printf 'COLLECT_COMMAND=%s -B -I %s collect --workspace %s\n' "$PY" "$ENTRY" "$WORKSPACE"
-"$PY" -B -I "$ENTRY" verify --workspace "$WORKSPACE" \
+printf 'COLLECT_COMMAND=%s -B -I -S %s collect --workspace %s\n' "$PY" "$ENTRY" "$WORKSPACE"
+"$PY" -B -I -S "$ENTRY" verify --workspace "$WORKSPACE" \
   --max-gib 24 --max-files 150000 --max-seconds 900
-"$PY" -B -I "$ENTRY" collect --workspace "$WORKSPACE"
+"$PY" -B -I -S "$ENTRY" collect --workspace "$WORKSPACE"
 printf 'NO_JOB_OR_SOLVER; NO_ENVIRONMENT_CHANGE; NO_DELETION_OR_SOURCE_ARCHIVING\n'
 )

@@ -3,6 +3,8 @@
 This is a human-executed, read-only login-shell operation for the six inventoried
 NPAD roots. It creates only new audit reports below
 /home/vrrcelestino/model-agrologistic-hygiene-audit/.
+Python is launched with -I -S -B: site initialization, user packages and bytecode
+writes are disabled; only standard-library analysis is invoked.
 It neither starts nor cancels a scheduler job, imports a solver, installs a
 dependency, alters the shared Python prefix, deletes originals or archives
 original source data.

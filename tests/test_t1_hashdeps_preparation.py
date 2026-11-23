@@ -71,7 +71,11 @@ class Controls(unittest.TestCase):
             r = row(p)
             before = p.stat()
             fd = os.open(p, os.O_RDONLY)
-            with patch.object(m, "open_source", return_value=(fd, os.fstat(fd), p)):
+            with (
+                patch.object(m, "open_source", return_value=(fd, before, p)),
+                patch.object(m.os, "fstat", return_value=before),
+                patch.object(Path, "lstat", return_value=before),
+            ):
                 value, status, count = m.stable_read(r)
             self.assertEqual(status, "stable")
             self.assertEqual(value, m.hashlib.sha256(original).hexdigest())

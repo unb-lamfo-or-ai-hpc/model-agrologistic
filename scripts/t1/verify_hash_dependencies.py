@@ -168,7 +168,7 @@ def prepare(args):
         ("classify_inventory_metadata.py", [str(review)]),
     ):
         result = subprocess.run(
-            [sys.executable, "-B", "-I", str(source / script), *extra],
+            [sys.executable, "-B", "-I", "-S", str(source / script), *extra],
             capture_output=True,
             check=False,
             timeout=600,
