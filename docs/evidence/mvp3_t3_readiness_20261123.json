@@ -1,0 +1,50 @@
+{
+  "schema": "agrologistic-mvp3-t3-readiness-v1",
+  "date": "2026-11-23",
+  "status": "engineering_preparation_authorized_scientific_review_in_progress",
+  "executable": false,
+  "submit_jobs": false,
+  "merge_authorized": false,
+  "coauthor_review_window": [
+    "2026-12-09",
+    "2026-12-18"
+  ],
+  "development_before_coauthor_agreement": true,
+  "platform": {
+    "solver": "native_gurobipy",
+    "gurobi": "14.0.0",
+    "cpu_only": true,
+    "Method": -1,
+    "Threads": 0,
+    "other_solver_parameters": "defaults_unless_explicitly_approved",
+    "memory_target_gib": 192
+  },
+  "comparisons": [
+    "DET_W_EXT",
+    "STO_W_EXT",
+    "matched_external_iterative_BEN"
+  ],
+  "data_acceptance": "pending_T2_NPAD_and_algebra",
+  "historical_results": "preserved_separate_from_new_observations",
+  "policy_level_menu": "experiments/effective_sensitivity_proposal_v1.json",
+  "policy_campaign_selection": "requires_baseline_informed_finite_protocol",
+  "not_authorized": [
+    "GPU",
+    "initial_method_thread_factorial",
+    "new_HPC_jobs",
+    "shared_environment_mutation",
+    "merge",
+    "data_publication"
+  ],
+  "pending": [
+    "NPAD_XLSX_and_support_identity",
+    "consistent_SQLite_acquisition",
+    "routing_provenance_crosswalk",
+    "data_and_algebra_qualification",
+    "native_beta_alpha_integration",
+    "EXT_BEN_representation_equivalence",
+    "global_time_and_memory_budgets",
+    "paired_repetitions_and_case_selection",
+    "coauthor_methodological_review"
+  ]
+}

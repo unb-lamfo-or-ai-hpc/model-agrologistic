@@ -1,0 +1,64 @@
+{
+  "schema": "agrologistic-mvp3-t2-local-preparation-v1",
+  "review_date": "2026-11-23",
+  "base_develop": "2391137cdbe4f86cdb784f9e4e545944fac2a688",
+  "scope": "Read-only local workbook metadata/membership/calendar checks; preparation for NPAD reconciliation",
+  "workbooks": [
+    {
+      "name": "agrologistic_effective_baseline_v1.xlsx",
+      "sha256": "d5babec48bb40a61843ccb4e7c9c059429b4d8ac32cefec945fda4e4fb84c917",
+      "sheets": 18,
+      "formula_cells": 0
+    },
+    {
+      "name": "agrologistic_warehouse_registry_v1.xlsx",
+      "sha256": "f39c2f29862aecb9a64fd0d37548eb788e402c805a5db6def6c5ec8a351d25bc",
+      "sheets": 2,
+      "formula_cells": 0
+    }
+  ],
+  "registry_cda_records": 18086,
+  "ordered_population_counts": {
+    "215": {
+      "existing": 146,
+      "candidates": 69
+    },
+    "300": {
+      "existing": 146,
+      "candidates": 154
+    },
+    "400": {
+      "existing": 146,
+      "candidates": 254
+    },
+    "500": {
+      "existing": 146,
+      "candidates": 354
+    }
+  },
+  "calendar": {
+    "periods": 60,
+    "first": "2021-01",
+    "last": "2025-12",
+    "operating_days_per_period": 30
+  },
+  "candidate_initial_static_reception_shipping": "zero_for_selected_candidates",
+  "h215_det_sto_membership": "matched",
+  "support_files": "pending_verification",
+  "npad_source_identity": "pending_operator_receipt",
+  "consistent_sqlite_snapshot": "pending",
+  "routing_provenance_crosswalk": "pending",
+  "model_data_and_algebra_equivalence": "not_run",
+  "final_mvp3_input_accepted": false,
+  "tests": {
+    "standard_library_controls": 27,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "linux_no_follow": "pending_CI; local_Windows_branch_not_exercised"
+  },
+  "source_workbooks_edited": false,
+  "shared_environment_changed": false,
+  "optimizer_calls": 0,
+  "jobs_submitted": 0
+}
