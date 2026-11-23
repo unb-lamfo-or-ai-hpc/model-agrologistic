@@ -28,7 +28,9 @@ jobs:
         with:
           python-version: '3.13'
       - name: Check shell syntax without execution
-        run: bash -n scripts/t2/npad_t2_verify.sh
+        run: |
+          bash -n scripts/t2/npad_t2_verify.sh
+          bash -n scripts/t2/npad_t2_stage.sh
       - name: Standard-library controls without site initialization
         run: python -B -I -S -m unittest discover -s tests/t2 -v
       - name: Preserve historical scientific, campaign and environment bytes

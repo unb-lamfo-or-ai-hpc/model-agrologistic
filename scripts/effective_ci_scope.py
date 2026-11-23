@@ -8,6 +8,8 @@ import subprocess
 from pathlib import Path
 
 RUNTIME_PATHS = {
+    "scripts/t2/stage_offline_reconciliation.py", "scripts/t2/npad_t2_stage.sh",
+    "tests/t2/test_stage_capture.py",
     "scripts/t2/reconcile_inputs.py", "scripts/t2/npad_t2_verify.sh",
     "tests/t2/test_reconciliation.py",
     "src/logic/effective_baseline.py", "src/logic/parametric_scenarios.py",

@@ -1,0 +1,63 @@
+{
+  "schema": "agrologistic-t2-readback-review-v1",
+  "review_date": "2026-11-23",
+  "archive_sha256": "3414a7e39a4c12e51128e1249bb7c93829e92fa5c76140fb3e461adcb92b8624",
+  "members": 2,
+  "ledger_entries_verified": 1,
+  "report_bytes": 1020,
+  "report_sha256": "3530e50aba7490dc4fd94c57d66dbe2ef3cff28a6c25e1240d5f548f3c692fff",
+  "original_report_preserved": true,
+  "controller_sha256": "d27936d62242b83b78d60cf333400c3710d662e9996da33fa2b500ddbb140024",
+  "npad": {
+    "python": "3.13.15",
+    "sqlite": "3.53.4",
+    "inventory_finished": true,
+    "entries": 140136,
+    "errors": 0,
+    "review_workbooks_found": false,
+    "support_candidate_found": false,
+    "cache_bytes": 212803584,
+    "cache_header_hint": "WAL",
+    "sidecars_observed": false,
+    "consistent_database_sha256": null
+  },
+  "local_followup": {
+    "support_selected": "seed by exact NetworkReferences match",
+    "support_manifest_sha256": "80dfd864af958387a229ef5719a76fd6ca1db5fd060a658f89b404214be2b31f",
+    "support_ledger_entries": 7,
+    "exporter_source_files_match": 56,
+    "effective_input_identities_matched": [
+      "215:det",
+      "215:sto",
+      "300:sto",
+      "400:sto",
+      "500:sto"
+    ],
+    "optimizer_calls": 0,
+    "blocked_execution_attempts": 0,
+    "new_algebra_rebuilt": false
+  },
+  "private_transfer": {
+    "name": "mvp3-t2-review-inputs-v1.tar.gz",
+    "sha256": "10136eb9888c5b20532b1eb8d8fca4274c5b381fa74d5e892320d75a591c13e9",
+    "bytes": 11413233,
+    "published": false,
+    "actual_package_staging_test": "passed"
+  },
+  "next_capture": {
+    "status": "prepared_not_executed",
+    "original_sqlite_opened_by_engine": false,
+    "source_consistency_certified": false,
+    "final_mvp3_input_accepted": false,
+    "policy": "Stable source-image guards; backup engine only on new private image; exploratory crosswalk."
+  },
+  "tests": {
+    "local_standard_library_controls": 38,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0
+  },
+  "no_jobs_or_merge": true,
+  "no_shared_environment_change": true,
+  "pr159_draft_unchanged": true
+}

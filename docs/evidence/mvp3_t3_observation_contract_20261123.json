@@ -1,0 +1,100 @@
+{
+  "schema": "agrologistic-mvp3-observation-proposal-v1",
+  "status": "protocol_preparation_not_executable",
+  "executable": false,
+  "data_gate": {
+    "review_workbooks_accepted_as_final": false,
+    "npad_copies_verified": false,
+    "support_bundle_locally_matched": true,
+    "sqlite_source_consistency_certified": false,
+    "new_algebra_qualification": false
+  },
+  "identity_fields": [
+    "observation_id",
+    "data_revision",
+    "effective_xlsx_sha256",
+    "registry_xlsx_sha256",
+    "effective_manifest_sha256",
+    "sqlite_snapshot_sha256",
+    "sqlite_acquisition_receipt_sha256",
+    "source_consistency_status",
+    "population",
+    "mode",
+    "topology",
+    "policy_specification_sha256",
+    "algebraic_representation",
+    "architecture",
+    "code_commit",
+    "gurobi_version",
+    "runtime_inventory_identity"
+  ],
+  "events": [
+    "input_verified",
+    "build_started",
+    "build_finished",
+    "native_optimize_entered",
+    "quality_target_attained",
+    "native_optimize_returned",
+    "independent_validation_finished",
+    "observation_closed"
+  ],
+  "timing_fields": [
+    "monotonic_elapsed_seconds",
+    "build_seconds",
+    "native_runtime_seconds",
+    "native_work",
+    "coordination_seconds",
+    "validation_seconds",
+    "end_to_end_seconds"
+  ],
+  "resource_fields": [
+    "allocated_logical_cpus",
+    "physical_cores",
+    "affinity",
+    "smt_layout",
+    "configured_threads",
+    "solver_reported_thread_limit",
+    "observed_busy_cpus",
+    "process_tree_peak_rss_bytes",
+    "native_peak_memory",
+    "slurm_memory_request_bytes"
+  ],
+  "result_fields": [
+    "native_status",
+    "incumbent_total_objective",
+    "global_lower_bound_total_objective",
+    "common_total_gap_fraction",
+    "nodes",
+    "economic_subtotal",
+    "shortage_cost",
+    "stock_excess_cost",
+    "reception_overflow_cost",
+    "service_by_product_scenario",
+    "exports_by_product_scenario",
+    "terminal_stock_by_product_scenario",
+    "validation_status"
+  ],
+  "nullable_policy": "Unobservable, undefined and missing values remain null with a reason; never invented zeros.",
+  "quality_targets_fraction": [
+    0.1,
+    0.05,
+    0.01,
+    0.0001
+  ],
+  "quality_target_rule": "Observe first attained time and nodes; targets do not assign solver parameters.",
+  "benders_rule": "Global externally certified UB/LB, not the master-only gap; full reconstruction and validation.",
+  "economic_gap_rule": "No gap for the economic subtotal inferred from the scalar-objective bound.",
+  "default_solver_contract": {
+    "Method": -1,
+    "Threads": 0,
+    "cpu_only": true,
+    "other_parameters": "defaults_unless_explicitly_approved"
+  },
+  "unapproved_execution_details": [
+    "production_global_deadline",
+    "sampling_interval",
+    "repetition_count",
+    "selected_new_data_policy_cases",
+    "recourse_worker_concurrency"
+  ]
+}

@@ -167,3 +167,44 @@ S2's essential measurement interfaces, with solver-free tests and no launch.
 BEN then follows as a separate, reviewable implementation increment. Finalize the
 coauthor plan with the author's corrections and T2 findings rather than presenting
 this preparatory document as already agreed methodology.
+
+## T2 receipt incorporation and observation interface
+
+The23November NPAD report is now hash-verified. Both review XLSX files and their
+support bundle were absent from the scoped scan. A private transfer package now
+supplies the exact local review inputs and matching seed references. Local
+re-export through the existing guarded exporter reproduces five historical
+effective-input identities, with no optimization or new algebra construction.
+
+The reported SQLite cache remains at its original location, with a WAL header
+and no observed sidecars. The next capture is a stable-read candidate followed by
+an engine-consistent backup of that private image. Source atomicity/quiescence
+is not certified. Treat any resulting cache crosswalk as exploratory until
+custody and routing provenance are resolved. See the
+[T2 readback review](mvp3_t2_readback_review_20261123.md).
+
+The [observation interface](evidence/mvp3_t3_observation_contract_20261123.json)
+makes the next engineering increment concrete. A case identity binds both XLSX
+hashes, the effective manifest, the cache snapshot/acquisition, scientific policy,
+algebraic representation, architecture, code and runtime. Production admission
+must reject missing data acceptance and must not promote candidate acquisition
+receipts automatically.
+
+Record build/native/coordination/validation/application clocks without summing
+overlapping phases. Target-attainment events retain both time and node counts.
+The scalar-gap equation requires finite consistent global bounds and a nonzero
+incumbent denominator. Undefined gaps remain null with a reason. An economic
+subtotal receives no invented optimality certificate from the scalar bound.
+
+For the first native-policy increment, qualify neutral DET/W and STO/W parity,
+then check beta/alpha row indexing, original domestic equalities and export limits,
+and independent validator agreement. Pure code/construction tests must not be
+reported as new agricultural observations. Preserve the original mathematical
+builder until its explicit integration is reviewable, rather than silently
+routing the retained PR159 recipe into MVP3.
+
+The immediate work can therefore progress on source-controlled engineering:
+native adapter specifications, no-solver policy tests, telemetry/event schemas,
+receipt validation and model-lifetime tests. Final case selection, budgets and
+new solves remain outside this increment. The author-reviewed plan source and
+manuscripts remain unchanged.
