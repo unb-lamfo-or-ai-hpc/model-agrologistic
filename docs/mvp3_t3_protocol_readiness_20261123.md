@@ -170,7 +170,7 @@ this preparatory document as already agreed methodology.
 
 ## T2 receipt incorporation and observation interface
 
-The23November NPAD report is now hash-verified. Both review XLSX files and their
+The 23 November NPAD report is now hash-verified. Both review XLSX files and their
 support bundle were absent from the scoped scan. A private transfer package now
 supplies the exact local review inputs and matching seed references. Local
 re-export through the existing guarded exporter reproduces five historical

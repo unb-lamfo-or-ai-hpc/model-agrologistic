@@ -10,12 +10,12 @@ The original report is retained verbatim in the evidence directory.
 
 The controller hash matches the qualified source at90166047:
 `d27936d62242b83b78d60cf333400c3710d662e9996da33fa2b500ddbb140024`.
-The original receipt reports Python3.13.15 and SQLite3.53.4.
+The original receipt reports Python 3.13.15 and SQLite 3.53.4.
 It records no optimizer, job or source modification.
 
 | Check | Observed result | Consequence |
 | --- | --- | --- |
-| Inventory | Finished;140,136 entries;zero errors | This was a completed scoped scan, not a timeout |
+| Inventory | Finished; 140,136 entries; zero errors | This was a completed scoped scan, not a timeout |
 | Two review XLSX files | Neither found in the scanned non-opaque roots | Transfer the exact locally identified copies |
 | Effective support bundle | No matching candidate directory discovered | Transfer the support explicitly referenced by the XLSX |
 | OSRM candidate | policy-pairs-v020.sqlite3;212,803,584 bytes | Exact original remains at its current path |
@@ -41,7 +41,7 @@ substituted for seed merely because they are later exports. The workbook's own
 references determine which support must accompany its inspection/export.
 
 The existing exporter was then rerun locally against the XLSX and matched seed.
-All56checked source/entry-point files match their Git blobs at90166047. The existing
+All 56 checked source/entry-point files match their Git blobs at90166047. The existing
 NoSolverGuard blocked optimizer and child-process entry points throughout export.
 No such execution was attempted. The five effective-input identities match:
 
@@ -62,7 +62,7 @@ The files remain review copies, not final approved MVP3 data.
 
 A local private package contains the two unchanged XLSX files, eight support
 files including manifest.json, and its own transfer manifest. It contains no
-license, environment or solution vector. Its compressed size is11,413,233bytes:
+license, environment or solution vector. Its compressed size is11,413,233 bytes:
 
 `mvp3-t2-review-inputs-v1.tar.gz`
 
@@ -101,7 +101,7 @@ The next controller performs one bounded attempt:
    containing the review, acquisition receipt, both captured/derived databases
    where present, and an internal hash ledger.
 
-The SQLite backup progress deadline is120seconds. Package/file caps remain finite;
+The SQLite backup progress deadline is 120 seconds. Package/file caps remain finite;
 filesystem reads and the complete comparison do not have a hard global timeout.
 This is data preparation under the audit project, with no HPC allocation or optimizer.
 
@@ -131,7 +131,7 @@ economic/service quantities. It remains non-executable. The English EN protocol
 now incorporates these actual data-custody findings and the native-policy
 integration dependency.
 
-Engineering preparation may advance before the9–18December coauthor discussion.
+Engineering preparation may advance before the 9–18 December coauthor discussion.
 Current source-consistency/data-review gaps still prevent claiming a qualified
 production campaign. The next S1/S2 increment should implement native-policy
 parity and essential telemetry with solver-free tests, leaving execution to a

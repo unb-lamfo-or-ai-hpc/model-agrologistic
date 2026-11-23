@@ -1,20 +1,20 @@
 # Checkpoint: T2 receipts and T3 observation interface — 23 November 2026
 
-The transferred T2 archive3414a7e3 and its sidecar/internal ledger match.
-The original1020-byte report is preserved. The scoped NPAD inventory finished
-140,136entries with no errors, but found neither review XLSX nor support bundle.
-The212,803,584-byte OSRM cache has a WAL header and no observed sidecars.
+The transferred T2 archive 3414a7e3 and its sidecar/internal ledger match.
+The original 1,020-byte report is preserved. The scoped NPAD inventory finished
+140,136 entries with no errors, but found neither review XLSX nor support bundle.
+The 212,803,584-byte OSRM cache has a WAL header and no observed sidecars.
 No consistent source-database identity, source quiescence or live SQL inspection
 is claimed.
 
 Locally, all four XLSX support references match seed, whose seven manifest files
 verify. Later export directories have different metadata/source catalogs and
-are not silently substituted. The existing exporter, with56source files checked
+are not silently substituted. The existing exporter, with 56 source files checked
 against90166047 and NoSolverGuard installed, reproduces all five existing
 effective-input identities. No optimizer, external process or new matrix build.
 The two review workbooks remain under author review.
 
-A private11,413,233-byte transfer package is ready:
+A private 11,413,233-byte transfer package is ready:
 mvp3-t2-review-inputs-v1.tar.gz, SHA-256
 10136eb9888c5b20532b1eb8d8fca4274c5b381fa74d5e892320d75a591c13e9.
 It contains unchanged XLSX copies and their exact support, never credentials.
@@ -34,7 +34,7 @@ with PR159 unchanged. No job, merge, shared environment edit or manuscript chang
 
 T3 English EN preparation now includes the observation/event contract, nullable
 quality/resource fields and native beta/alpha integration requirements.
-Engineering may advance before9–18December coauthor agreement, without implying
+Engineering may advance before 9–18 December coauthor agreement, without implying
 final data acceptance or experiment authorization. The next S1/S2 increment remains
 a separate reviewable code/validation work package. Preserve the author's plan.
 
