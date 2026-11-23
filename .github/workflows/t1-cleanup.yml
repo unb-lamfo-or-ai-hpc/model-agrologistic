@@ -3,6 +3,8 @@ on:
   pull_request:
     paths:
       - scripts/t1/authorized_t1_cleanup.py
+      - scripts/t1/inspect_t1_cleanup_retention.py
+      - tests/test_t1_retention_probe.py
       - tests/test_authorized_t1_cleanup.py
       - .github/workflows/t1-cleanup.yml
 permissions:
@@ -20,4 +22,6 @@ jobs:
         with:
           python-version: '3.13'
       - name: Temporary-file backup, restoration, no-follow and mutation controls
-        run: python -B -I -S -m unittest discover -s tests -p test_authorized_t1_cleanup.py -v
+        run: |
+          python -B -I -S -m unittest discover -s tests -p test_authorized_t1_cleanup.py -v
+          python -B -I -S -m unittest discover -s tests -p test_t1_retention_probe.py -v

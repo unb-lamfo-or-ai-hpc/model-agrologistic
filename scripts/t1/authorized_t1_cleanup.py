@@ -269,7 +269,7 @@ def dependency_gate(controls):
                     "test_fixture_path": fixture,
                 }
             )
-    process_refs, process_errors = [], []
+    process_refs, process_errors, process_observations = [], [], []
     for p in Path("/proc").iterdir():
         if not p.name.isdigit() or int(p.name) == os.getpid():
             continue
@@ -279,9 +279,15 @@ def dependency_gate(controls):
             for key in ("cwd", "exe"):
                 try:
                     value = os.readlink(p / key)
-                    # A shell at a root does not consume every descendant.
-                    if value not in {str(PARENT), *(str(PARENT / r) for r in ROOTS)}:
-                        process_refs.append(value.rstrip("/"))
+                    item = process_reference(
+                        "proc_" + key,
+                        p.name,
+                        value,
+                        "directory" if key == "cwd" else "file",
+                    )
+                    process_observations.append(item)
+                    if item["blocks_target_prefix"]:
+                        process_refs.append(item["path"])
                 except FileNotFoundError:
                     pass
                 except OSError as exc:
@@ -291,7 +297,20 @@ def dependency_gate(controls):
             try:
                 for fd in (p / "fd").iterdir():
                     try:
-                        process_refs.append(os.readlink(fd).rstrip("/"))
+                        value = os.readlink(fd)
+                        target = os.stat(fd)
+                        target_type = (
+                            "directory"
+                            if stat.S_ISDIR(target.st_mode)
+                            else "file"
+                            if stat.S_ISREG(target.st_mode)
+                            else "other"
+                        )
+                        item = process_reference("proc_fd", p.name, value, target_type)
+                        item["fd"] = fd.name
+                        process_observations.append(item)
+                        if item["blocks_target_prefix"]:
+                            process_refs.append(item["path"])
                     except FileNotFoundError:
                         pass
                     except OSError as exc:
@@ -317,15 +336,72 @@ def dependency_gate(controls):
     return {
         "references": sorted(set(refs)),
         "process_references": sorted(set(process_refs)),
+        "process_observations": process_observations,
         "control_omissions": omissions,
         "process_errors": process_errors,
         "scope": "Partial known-control/local same-user observation, not global clearance",
     }
 
 
+def canonical_reference(value):
+    """Reject non-path/ambiguous values without turning root into an empty prefix."""
+    if (
+        not isinstance(value, str)
+        or not value
+        or any(c in value for c in ("\x00", "\n", "\r"))
+    ):
+        return None
+    if not value.startswith("/") or value.startswith("//"):
+        return None
+    q = PurePosixPath(value)
+    if ".." in q.parts:
+        return None
+    return q.as_posix()
+
+
+def process_reference(kind, pid, value, target_type="unknown"):
+    path = canonical_reference(value)
+    broad = {"/", PARENT.as_posix(), *((PARENT / r).as_posix() for r in ROOTS)}
+    inside = path is not None and any(
+        path == (PARENT / r).as_posix()
+        or path.startswith((PARENT / r).as_posix() + "/")
+        for r in ROOTS
+    )
+    scope = (
+        "not_a_filesystem_path"
+        if path is None
+        else "broad_directory"
+        if path in broad
+        else "inventory_path"
+        if inside
+        else "outside_inventory"
+    )
+    return {
+        "kind": kind,
+        "pid": str(pid),
+        "path": path,
+        "target_type": target_type,
+        "scope": scope,
+        "blocks_target_prefix": scope == "inventory_path",
+    }
+
+
 def referenced(name, values):
     p = (PARENT / name).as_posix()
-    return any(p == x or p.startswith(x + "/") for x in values)
+    for value in values:
+        x = canonical_reference(value)
+        if x and x != "/" and (p == x or p.startswith(x.rstrip("/") + "/")):
+            return True
+    return False
+
+
+def cleanup_outcome(counts):
+    removed = counts["cache_unlinked"] + counts["duplicate_unlinked"]
+    if counts["retained"] and not removed:
+        return "backup_verified_cleanup_withheld"
+    if counts["retained"]:
+        return "backup_verified_cleanup_partial"
+    return "bounded_cleanup_completed"
 
 
 def make_archive(path, rows):
@@ -575,7 +651,7 @@ def run(args):
     save(
         out / "cleanup-result.json",
         {
-            "status": "bounded_cleanup_finished",
+            "status": cleanup_outcome(counts),
             **counts,
             "backup": str(archive),
             "backup_sha256": backup_sha,
@@ -617,8 +693,14 @@ def run(args):
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("--manifest-sha256", required=True)
+    p.add_argument(
+        "--apply",
+        action="store_true",
+        help="Explicit mutation mode; use the separate read-only probe first",
+    )
     args = p.parse_args()
     require(re.fullmatch("[a-f0-9]{64}", args.manifest_sha256), "Invalid manifest SHA")
+    require(args.apply, "No implicit cleanup; run the read-only retention probe first")
     run(args)
 
 

@@ -211,6 +211,77 @@ class Controls(unittest.TestCase):
             )
         )
 
+    def test_empty_and_root_never_block_all_targets(self):
+        for value in ("", "/", "pipe:[123]", "anon_inode:inotify", None):
+            with self.subTest(value=value):
+                self.assertFalse(
+                    m.referenced("model-agrologistic/.ruff_cache/x", [value])
+                )
+
+    def test_canonical_reference_keeps_root_and_rejects_ambiguous_paths(self):
+        self.assertEqual(m.canonical_reference("/"), "/")
+        self.assertIsNone(m.canonical_reference(""))
+        self.assertIsNone(m.canonical_reference("//host/path"))
+        self.assertIsNone(m.canonical_reference("/a/../b"))
+        self.assertEqual(m.canonical_reference("/a/b/"), "/a/b")
+
+    def test_broad_process_directories_remain_typed_and_nonblocking(self):
+        for value in (
+            "/",
+            m.PARENT.as_posix(),
+            (m.PARENT / "model-agrologistic").as_posix(),
+        ):
+            for kind in ("proc_cwd", "proc_fd"):
+                r = m.process_reference(kind, 123, value, "directory")
+                self.assertEqual(r["path"], value)
+                self.assertEqual(r["pid"], "123")
+                self.assertEqual(r["kind"], kind)
+                self.assertEqual(r["scope"], "broad_directory")
+                self.assertFalse(r["blocks_target_prefix"])
+
+    def test_specific_open_target_still_blocks(self):
+        value = (m.PARENT / "model-agrologistic/.ruff_cache/x").as_posix()
+        r = m.process_reference("proc_fd", 123, value, "file")
+        self.assertTrue(r["blocks_target_prefix"])
+        self.assertTrue(m.referenced("model-agrologistic/.ruff_cache/x", [r["path"]]))
+
+    def test_specific_working_directory_still_blocks(self):
+        value = (m.PARENT / "model-agrologistic/scripts/work").as_posix()
+        r = m.process_reference("proc_cwd", 123, value, "directory")
+        self.assertTrue(
+            m.referenced("model-agrologistic/scripts/work/x.py", [r["path"]])
+        )
+
+    def test_nonfilesystem_and_outside_process_refs_not_admitted(self):
+        for value in (
+            "socket:[12]",
+            "anon_inode:inotify",
+            "/usr/bin/bash",
+            "/dev/null",
+        ):
+            r = m.process_reference("proc_fd", 123, value, "other")
+            self.assertFalse(r["blocks_target_prefix"])
+
+    def test_outcome_distinguishes_backup_only_and_partial_cleanup(self):
+        self.assertEqual(
+            m.cleanup_outcome(
+                {"cache_unlinked": 0, "duplicate_unlinked": 0, "retained": 8449}
+            ),
+            "backup_verified_cleanup_withheld",
+        )
+        self.assertEqual(
+            m.cleanup_outcome(
+                {"cache_unlinked": 1, "duplicate_unlinked": 0, "retained": 8448}
+            ),
+            "backup_verified_cleanup_partial",
+        )
+        self.assertEqual(
+            m.cleanup_outcome(
+                {"cache_unlinked": 338, "duplicate_unlinked": 8111, "retained": 0}
+            ),
+            "bounded_cleanup_completed",
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
