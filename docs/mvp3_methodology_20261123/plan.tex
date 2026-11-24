@@ -21,7 +21,7 @@
 \hypersetup{pdftitle={Agrologistic MVP3.0: Agricultural Policy and Capacity Planning},pdfauthor={Model Agrologistic research team}}
 \title{\color{navy}Agrologistic MVP3.0\\[5pt]\large Agricultural Policy, Capacity Planning and\\Economic--Service Trade-offs with Gurobi 14}
 \author{Methodological plan}
-\date{23 November 2026}
+\date{23 November 2026\\Documentary revision: 24 November 2026}
 \begin{document}
 \maketitle
 
@@ -423,7 +423,7 @@ The effective-baseline workbook organises supply, domestic demand, export bounds
 
 The data originate in Brazilian public information and expert-based parameter estimates assembled for the model of \citet{rosa2026thesis}. Provenance distinguishes directly sourced values, derived quantities, reference estimates and effective coefficients. The source columns and transformation records explain how a value becomes an input to the mathematical model.
 
-The computational pipeline reads the identified XLSX values, validates their fields and units, exports normalised tables and constructs the existing ModelData structure. A scenario applies its declared transformations to that effective reference. K changes the investment ceilings once, while the experiment retains the identified costs, initial capacities and remaining controls.
+The qualified pipeline validates the effective-baseline v2 XLSX and exports its values through normalised CSVs to the existing ModelData structure, retaining frozen network support. The registry v2 is an inspection and reconciliation resource, without a separate direct loader input. Declared scenarios apply K once to investment ceilings while preserving identified costs, initial capacities and remaining controls.
 
 Source precision is preserved through export and ingestion. Dataset identity covers indexed values and their order as well as file hashes. A scientific discrepancy receives a field-level explanation, retaining the two versions and their respective origins.
 
@@ -601,7 +601,9 @@ Each stage ends with an interpretable research product. Data qualification produ
 \section{Effective-baseline workbook: contents and parameter interpretation}
 \label{app:data}
 
-The workbook \code{agrologistic\_effective\_baseline\_v1.xlsx} provides a readable description of the effective data consumed by the model. Its source fields preserve the distinction between received data, preparation transformations and the resulting coefficients. The accompanying computational tables retain the same indexed values for reconstruction.
+The workbook \code{agrologistic\_effective\_baseline\_v2.xlsx} provides a readable description of the effective data consumed by the model. Its source fields preserve the distinction between received data, preparation transformations and the resulting coefficients. The accompanying computational tables retain the same indexed values for reconstruction.
+
+Workbook edition 2 uses presentation schema \code{\nolinkurl{agrologistic-workbook-view-v2}}. Its computational schema remains \code{\nolinkurl{agrologistic-effective-baseline-v1}}, identifying the compatible CSV/ModelData contract rather than the workbook edition. The source-hash fields identify upstream inputs; the accompanying file manifest identifies the delivered v2 workbook. Original v1 files remain preserved as historical provenance.
 
 The workbook is derived from the historical model inputs and the parameterisation of \citet{rosa2026thesis}. It includes observed source information, derived values and reference estimates used in the agricultural formulation. The provenance columns identify those origins. This classification makes the effective reference auditable while providing a separate place for future empirical calibration.
 
@@ -610,8 +612,10 @@ Table~\ref{tab:sheets} describes the workbook's sheets and the number of populat
 \caption{Effective-baseline workbook structure}\label{tab:sheets}\\
 \toprule Sheet&Rows&Purpose\\\midrule\endfirsthead
 \toprule Sheet&Rows&Purpose\\\midrule\endhead
-Identification&7&Workbook identity, schema and reconstruction context\\
-Dictionary&32&Parameter definitions and unit conventions\\
+Identification&15&Workbook identity, schema versions and reconstruction context\\
+Controls&9&Authoritative optional alpha, beta and K settings; neutral reference retained\\
+InvestmentLimits&592&Reference investment ceilings, one-time K transformation and installed-tonne cost basis\\
+Dictionary&39&Parameter definitions, units, distance fields and approved controls\\
 Calendar&60&Monthly sequence, January 2021--December 2025\\
 Supply&44,400&Indexed supply entries for the retained population/mode scopes\\
 DomesticDemand&32,400&Domestic demand entries with product, time and realisation indices\\
@@ -621,12 +625,12 @@ Investments&1,776&Eligibility-related investment ceilings and fixed/proportional
 Costs&2,074&Freight, storage and transshipment coefficients\\
 Penalties&1,054&Shortage, static exceedance and reception-overflow coefficients\\
 Scenarios&9&Scenario identifiers and probabilities\\
-Durations&0&Reserved indexed duration table; the reference uses 30 days per period\\
+Durations&0&Optional travel durations in seconds, unpopulated and unused for freight\\
 Sets&4,771&Indexed members of the model sets\\
 Configurations&145&Effective mathematical and network settings across five retained scopes\\
 Sources&14&Source identities and evidence links\\
 NetworkReferences&4&References to frozen population-specific networks\\
-Transformations&7&Declared transformations from inputs to effective values\\
+Transformations&8&Declared transformations and investment-cost interpretation\\
 ParameterTemplate&1&Neutral template for an identified experimental transformation\\\bottomrule
 \end{longtable}
 Repeated values across scopes are intentional when the same effective coefficient applies to more than one retained model. A row count describes workbook records rather than the number of distinct agricultural entities. The reference contains h215 DET/W and STO/W, and h300--h500 STO/W. Larger DET instances receive their own data and construction qualification before they enter the proposed campaign.
@@ -675,7 +679,9 @@ Freight alternatives can use a proportional rate $c(d)=rd$, a fixed-plus-distanc
 \section{Warehouse registry and the construction of the selected road network}
 \label{app:registry}
 
-The workbook \code{agrologistic\_warehouse\_registry\_v1.xlsx} preserves 18,086 CDA identifiers and their associated registration information. It is an inspection and reconciliation resource for the modelled populations. Its membership columns indicate whether a site belongs to h215, h300, h400 or h500. Investment activation and positive operational use are separate solution outcomes.
+The workbook \code{agrologistic\_warehouse\_registry\_v2.xlsx} preserves 18,086 CDA identifiers and their associated registration information. It is an inspection and reconciliation resource for the modelled populations. Its membership columns indicate whether a site belongs to h215, h300, h400 or h500. Investment activation and positive operational use are separate solution outcomes.
+
+Workbook edition 2 uses presentation schema \code{\nolinkurl{agrologistic-warehouse-view-v2}}. It contains Identification, Dictionary and Registry sheets. The Dictionary defines the 32 Registry columns, their units, roles and treatment of missing values. Source maximum-capacity and opening-cost placeholders remain distinct from effective initial capacities, reference investment ceilings and proportional investment costs. The full accepted registry and its ordered population membership are preserved.
 
 \subsection{Facility attributes and ordered populations}
 
@@ -883,7 +889,7 @@ Validation evidence&Recomputed balances, policies, capacities, costs and residua
 Analysis evidence&Versioned parsers, complete result tables, frontier membership and figure inputs\\\bottomrule
 \end{tabular}
 \end{table}
-The accompanying editable package contains this plan's LaTeX source and the two inspection workbooks. The workbooks preserve the reviewed reference values; subsequent data corrections receive a new version and a documented reconciliation.
+The accompanying editable package contains this plan's LaTeX source, the two v2 inspection workbooks and their SHA-256 file manifest. The v2 presentation retains the qualified effective reference values and full accepted registry. Historical v1 originals and their identities remain in the provenance record. Subsequent data corrections receive a new version and a documented reconciliation.
 
 Public release is organised by source-specific redistribution permissions. Code, documentation, parameter definitions and eligible aggregate results can be separated from restricted facility-level or flow data. A dataset manifest states which files are available, which remain in controlled custody and how authorised researchers can identify the corresponding evidence.
 

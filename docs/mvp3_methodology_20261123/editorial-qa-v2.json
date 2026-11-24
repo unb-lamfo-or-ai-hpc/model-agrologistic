@@ -1,0 +1,35 @@
+{
+  "status": "accepted_documentary_revision_and_visual_review",
+  "scientific_reference": "2026-11-23",
+  "documentary_revision": "2026-11-24",
+  "pdf_sha256": "fee72a0d578c7a1ed8b5f47a171ae5e9b87c2b60fbc8ec4ec3fa3ddbb31e25ab",
+  "source_sha256": "12c5f4fccc97d22ca15cd9657f59b3c6551c36134ca00ebf8c3f3aa8725035ef",
+  "pages": 32,
+  "all_pages_rendered": true,
+  "math_expressions_unchanged": 93,
+  "abstract_unchanged": true,
+  "research_design_before_data_collection_unchanged": true,
+  "bibliography_unchanged": true,
+  "excluded_scope_terms": [],
+  "unresolved_or_overfull_issues": [],
+  "characters_outside_page": [],
+  "workbook_attachment_sha256": {
+    "agrologistic_effective_baseline_v2.xlsx": "92698e05b869d67292cf7b080f56b43f7ccc93a27470b2eee559eadbeebd4a3d",
+    "agrologistic_warehouse_registry_v2.xlsx": "68b9933cc171541b151b7ea60c5d0501d5cecc01675819777af1ffefc11cbe7b"
+  },
+  "optimizer_called": false,
+  "jobs_submitted": 0,
+  "merges": 0,
+  "shared_environment_changed": false,
+  "all_final_pages_visually_reviewed": true,
+  "full_page_visual_checks": [
+    1,
+    21,
+    24
+  ],
+  "scope": "Workbook-version documentary update only; scientific methodology dated 23 November 2026 retained",
+  "source_reference_commit": "2ff8ac46522518c2e804e24bc83e7fdb0152818d",
+  "workbook_qualification_commit": "cfb99965c613105dfb3bdc9745e7599fe74ed183",
+  "scientific_runtime_implementation_changed": false,
+  "ci_execution": "Suppressed for the documentation-only commit to avoid retained operational solver workflows; local TeX/PDF/checksum checks completed"
+}
