@@ -21,7 +21,7 @@
 \hypersetup{pdftitle={Agrologistic MVP3.0: Agricultural Policy and Capacity Planning},pdfauthor={Model Agrologistic research team}}
 \title{\color{navy}Agrologistic MVP3.0\\[5pt]\large Agricultural Policy, Capacity Planning and\\Economic--Service Trade-offs with Gurobi 14}
 \author{Methodological plan}
-\date{23 November 2026\\Documentary revision: 24 November 2026}
+\date{Scientific reference: 23 November 2026\\Approved design revision: 24 November 2026 (Rev3)}
 \begin{document}
 \maketitle
 
@@ -254,9 +254,9 @@ The calculation multiplies each stored reference value once. For the candidate, 
 
 The resulting installed storage is computed through Equation~\eqref{eq:static}. Reception and shipping follow Equations~\eqref{eq:handling}. Thus, choosing a larger investment can enlarge daily handling through the retained physical coupling. K itself scales the upper bounds, while the chosen investment quantity determines the physical and economic consequence.
 
-The proposed levels $K\in\{1,1.25,1.5,2\}$ create a reference, a 25\% increase, a 50\% increase and a doubling of the investment ceilings. They form a structured sensitivity design. Facility typology, land or equipment constraints and the agricultural plausibility of the resulting investments inform the interpretation of the larger levels.
+The approved levels $K\in\{1,1.25,1.5,2\}$ create a reference, a 25\% increase, a 50\% increase and a doubling of the investment ceilings. They form a structured sensitivity design. Facility typology, land or equipment constraints and the agricultural plausibility of the resulting investments inform the interpretation of the larger levels.
 
-This analysis treats K as an investment-opportunity parameter. The study separately reports the additional capacity actually selected, its location and its cost. Combining K with $\beta$ and $\alpha$ then reveals whether higher domestic service requires more investible capacity, a different allocation of supply or both.
+This analysis treats K as an investment-opportunity parameter. The study separately reports the additional capacity actually selected, its location and its cost. The initial design examines capacity-ceiling changes with the additional service/export controls disabled, and then examines those policies at K=1. These contrasts explain investment opportunity and allocation separately. They do not estimate interactions between K greater than one and active service/export controls; any such combined extension requires its own approved case list.
 
 \subsection{Native Gurobi 14 implementation and automatic settings}
 \label{sec:gurobi}
@@ -291,18 +291,23 @@ The experiment varies policy and investment opportunity through a finite, identi
 
 A case identifies a warehouse population, model mode, input revision, policy profile, K level and solver profile. It also records the network, mathematical representation, resource class and execution budget. These fields make the intended comparison explicit and connect each result to its data.
 
-For example, a case identifier can be read as \code{h215-sto-P8-K150-AUTO-r1}: population h215, stochastic mode, policy P8, K=1.50, automatic reference settings and first temporal repetition. A repetition evaluates the same agricultural case at a different execution time. It contributes evidence about runtime variability.
+For example, a case identifier can be read as \code{h215-sto-P8-K100-AUTO-r1}: population h215, stochastic mode, policy P8, K=1, automatic reference settings and first temporal repetition. A repetition evaluates the same agricultural case at a different execution time. It contributes evidence about runtime variability.
 
 Each execution builds a fresh model from its identified inputs, applies its declared settings and records the parameter values in effect. Closure exports the decisions and measurements and releases the model. This lifecycle gives each case an independent initial solver state. The Python interface also provides explicit reset operations for software verification.\technical{Model reset and parameter reset}{https://docs.gurobi.com/projects/optimizer/en/current/reference/python/model.html}
 
-\subsection{Policy and capacity matrix}
+\subsection{The staged h215 policy and capacity matrix}
 
-The nine policy profiles in Table~\ref{tab:policies} specify the first set of domestic-service and export contrasts. A single profile value is applied to each product--scenario pair; the associated constraints retain their separate indexing.
+The first empirical cycle concentrates on h215. It separates the effect of a larger investment ceiling from the effects of domestic-service and export policies. Both stages use the same effective inputs, economic coefficients, penalty weights, selected network and automatic Gurobi reference. Each setting is evaluated in DET and STO.
+
+Stage A evaluates P0, with the additional beta and alpha controls disabled, at $K\in\{1,1.25,1.5,2\}$. Its eight cases reveal whether additional investment opportunity changes actual investment, domestic service, exports and capacity exceedances. The domestic-demand equality and its shortage variable remain in force even when beta is disabled.
+
+Stage B evaluates the profiles in Table~\ref{tab:policies} at K=1. P0/K=1 is the shared reference already evaluated in Stage A. Stage B therefore adds P1--P8, giving sixteen further cases rather than eighteen new cases. The complete first pass contains 24 unique cases, twelve per model mode.
+
 \begin{table}[H]\centering\small
-\caption{Policy profiles}\label{tab:policies}
+\caption{Domestic-service and export profiles at K=1}\label{tab:policies}
 \begin{tabular}{cllP{73mm}}\toprule
 Profile&$\beta$&$\alpha$&Planning question\\\midrule
-P0&Disabled&Disabled&Reference allocation under the inherited objective\\
+P0&Disabled&Disabled&Shared reference; reused from Stage A\\
 P1&0.90&Disabled&Effect of a 90\% domestic-service floor\\
 P2&0.95&Disabled&Effect of a 95\% domestic-service floor\\
 P3&Disabled&0.60&Effect of a 60\% export ceiling\\
@@ -313,23 +318,20 @@ P7&0.95&0.60&Higher service with the moderate export ceiling\\
 P8&0.95&0.50&Higher service with the tighter export ceiling\\\bottomrule
 \end{tabular}
 \end{table}
-The isolated profiles identify each policy's contribution. The joint profiles reveal interactions through the same supply, inventory and handling constraints. All profiles are evaluated against the same effective costs and demand reference.
+The disabled state means the absence of an additional policy row. It is distinct from a zero export fraction or a specified service target. Uniform profile values retain the separate product--scenario indexing of their constraints.
 
-Table~\ref{tab:cases} specifies the complete initial case families, including their K levels and modes.
 \begin{table}[H]\centering\small
-\caption{Initial experimental case families}\label{tab:cases}
-\begin{tabular}{lP{35mm}P{31mm}P{26mm}r}\toprule
-Population&Policy profiles&K levels&Modes&Cases\\\midrule
-h215&P0--P8&1, 1.25, 1.5, 2&DET and STO&72\\
-h300&P0, P2, P4, P8&1, 1.25, 1.5, 2&DET and STO&32\\
-h400&P0, P2, P4, P8&1, 1.25, 1.5, 2&DET and STO&32\\
-h500&P0, P2, P4, P8&1, 1.25, 1.5, 2&DET and STO&32\\\midrule
-Total&&&&168\\\bottomrule
+\caption{Initial h215 case matrix, with the common reference counted once}\label{tab:cases}
+\begin{tabular}{P{27mm}P{32mm}P{28mm}rrr}\toprule
+Stage&Profiles&K levels&DET&STO&Total\\\midrule
+A: capacity&P0 only&1, 1.25, 1.5, 2&4&4&8\\
+B: policy&P1--P8; P0 reused&1&8&8&16\\\midrule
+First-pass union&&&12&12&24\\\bottomrule
 \end{tabular}
 \end{table}
-A case is one optimisation of the complete DET or STO model. The nine STO uncertainty scenarios form a single stochastic case. The 72 h215 cases provide the detailed policy--capacity study. The larger-population panels retain the reference, isolated stronger policies and their joint profile, enabling matched size comparisons with a smaller experimental burden.
+A case is one optimisation of the complete DET or joint STO model. The nine STO scenarios share the investment decision and form one stochastic case, not nine independent observations. The 24-case first pass replaces the earlier full policy--capacity crossing. It does not imply that the research has established a complete frontier or that any job has been authorised.
 
-Further profiles can refine intervals where service, investment or feasibility changes sharply. Each refinement is specified as an extension of the initial design, with its own identified case list. The same principle applies to successive 100-site populations after h500.
+The isolated and joint policy profiles support comparisons of service and export controls at the reference investment ceiling. They do not identify the response to active policies combined with K greater than one. If the physical diagnosis indicates that such a combination is scientifically important, it is proposed as a separate extension before execution. Larger populations and any refinement after h500 are also conditional, rather than additional fixed cases in this initial matrix.
 
 \subsection{Execution pipeline and temporal repetitions}
 
@@ -347,17 +349,42 @@ Figure~\ref{fig:pipeline} shows how a case moves from input verification to agri
 \end{figure}
 The sequence makes validation part of the evidence chain. A result reaches the economic--service analysis with its decisions, numerical certificate and physical checks attached. Operational and computational outcomes remain visible alongside successful target attainment.
 
-The initial matrix contains one observation per case. A pre-specified subset of h215 reference and policy-corner cases is then repeated three times in total. This subset includes P0 and P8 at K=1 and K=2 in both modes, giving eight repeated cases and 16 additional observations. Repetition order is balanced across profiles and execution periods. Individual observations and their median/range accompany the comparison.
+The initial matrix contains one observation per unique case. Additional repeated cases, contrasts and counts are selected after the first h215 interpretation and documented before a follow-up launch. P0/K=1 is reused as the same reference in each relevant comparison, rather than submitted again because it appears in both stages. Repeat selection retains matched reference contrasts and examines selection bias; repeating only favourable first-pass outcomes cannot establish general stability.
+
+Temporal repetitions describe variability under the same inputs and default parameter reference, not independent agricultural samples, random-seed experiments or statistical significance. Individual observations remain available, with execution timestamps, node, topology and affinity. Runtime medians and ranges can summarise repeated observations, but a component-wise median of costs and flows is not a feasible synthetic planning solution. The first-pass frontier remains preliminary until its stability has been assessed.
 
 Diagnostic solver treatments form a separate panel. Each compares the same data and policy case under the reference and the chosen treatment, using the same hardware class, resource envelope and validation rules. Appendix~\ref{app:diagnosis} specifies how the diagnosed pattern determines that panel.
 
-\subsection{Time budgets and experimental workload}
+\subsection{Time budgets, conditional repetitions and experimental workload}
 
-Each primary optimisation receives \code{TimeLimit=28800}, or eight hours of native solver time. Its Slurm allocation permits up to 12 hours of elapsed job time. The remaining job envelope accommodates input processing, model construction, result extraction, validation and file collection.
+Each primary optimisation receives \code{TimeLimit=28800}, or eight hours of native solver time. Its Slurm allocation permits up to twelve hours for the complete process, including input processing, model construction, optimisation, export, independent validation and collection. The memory reference is 192 GiB. These limits are planning ceilings, not predictions of observed consumption.
 
-Application clocks identify these phases individually. The native TimeLimit controls the optimisation call; the job limit controls the complete scheduled process. The final record identifies which limit determined termination. Gurobi can require a short finalisation interval to complete its termination attributes, so the recorded native runtime remains the observed value.
+Application clocks distinguish the phases individually. The native limit controls the optimisation call; the job limit controls the scheduled process. The final record identifies which condition determined termination and preserves the observed native runtime, including any finalisation interval. Nested timing intervals are not added as independent phases.
 
-The 168 primary cases represent at most 1,344 native solver-hours and 2,016 allocated job-hours at these limits. The 16 additional repeated observations raise these envelopes to 1,472 native hours and 2,208 job-hours. Actual elapsed campaign time also depends on queue availability and permitted concurrent solver sessions. With two simultaneous executions, the primary job-time envelope alone corresponds to 42 days of uninterrupted allocation. This calculation supports a realistic schedule and prioritisation of the h215 evidence.
+\begin{table}[H]\centering\small
+\caption{Initial h215 budget and an optional repetition scenario}\label{tab:budget}
+\begin{tabular}{P{56mm}rrrr}\toprule
+Block&Observations&Native h&Job h&Serial days\\\midrule
+Stage A, first pass&8&64&96&4\\
+Stage B, additional cases&16&128&192&8\\\midrule
+Fixed initial cycle&24&192&288&12\\
+Optional two further balanced passes&48&384&576&24\\
+Optional three-observation total&72&576&864&36\\\bottomrule
+\end{tabular}
+\end{table}
+Table~\ref{tab:budget} assumes one worker and continuous allocation at the full twelve-hour ceiling. It excludes queue delay, public qualification, scientific review and any separately authorised diagnostic run. No concurrent sessions are assumed. The fixed initial reservation is 55,296 GiB-hours, or 54 TiB-hours, of memory. CPU-hours depend on the scheduler's actual allocation, not the automatic Threads setting.
+
+For budget comparison only, three observations of every initial case would require 72 observations in all and at most 864 allocated hours. This is a balanced alternative with 48 additional observations, not the approved initial execution matrix. Its memory ceiling is 165,888 GiB-hours, or 162 TiB-hours. The actual repetition subset and its workload remain to be justified after the first pass.
+
+For a later population $h$ and mode $m$, let $n_{hm}$ be the selected number of distinct cases, including any retained reference once, and let $r_{hm}$ be the approved number of observations per case. These are workload counts, not new optimization controls. The larger-instance observation count is
+\begin{equation}
+ N_{\mathrm{larger}}=\sum_{h\in\{300,400,500\}}
+                    \sum_{m\in\{\mathrm{DET},\mathrm{STO}\}}n_{hm}r_{hm}.
+ \label{eq:largerbudget}
+\end{equation}
+Neither count is fixed before h215 selection. At the same resource limits, $N$ observations imply ceilings of $8N$ native hours, $12N$ allocated hours and $192\times12N$ GiB-hours of reserved memory. For illustration, three cases per mode at each larger population and three observations per case would add 54 observations and 648 allocated hours. This example is not a larger-instance case list or an execution request.
+
+Progression is governed by the gates in Section~\ref{sec:stages}. The twelve serial allocation days of the initial cycle are an upper workload calculation, not a calendar promise. Queue access, independently qualified construction/export memory and licence validity for the intended execution window must be checked before a launch package is authorised.
 
 \subsection{CPU allocation, memory and larger nodes}
 
@@ -369,11 +396,11 @@ The NPAD hardware documentation identifies Intel Xeon E5 nodes with 256 GB and 5
 \begin{tabular}{P{31mm}P{45mm}P{70mm}}\toprule
 Class&Working envelope&Scientific role\\\midrule
 Reference&192 GiB requested on intel-256; CPU execution&Common resource class for the initial matrix\\
-Larger-memory&Allocation on intel-512, sized from measured peaks&Qualified extension for cases that exceed the reference envelope\\
+Larger-memory&Potential intel-512 allocation sized from measured peaks&Separate authorised extension after resource qualification\\
 Matched verification&Selected cases repeated in the comparison class&Separates hardware/resource effects from policy and algorithm effects\\\bottomrule
 \end{tabular}
 \end{table}
-Nominal installed RAM and Slurm-allocatable memory are recorded separately. Current partition limits and allocation rules are verified when preparing the execution package. Cases using a different memory or hardware class retain that class in their identifiers and analysis.
+Nominal installed RAM and Slurm-allocatable memory are recorded separately. Current partition limits and allocation rules are verified when preparing the execution package. Any move beyond the 192 GiB reference requires a revised resource protocol and explicit execution authorisation. Cases using a different memory or hardware class retain that class in their identifiers and analysis; no automatic escalation follows a censored run.
 
 Memory management covers the Python input objects, native matrix, presolved model, search state, retained solutions and export buffers. Construction releases intermediate objects when their role is complete, and export uses bounded, sequential output operations. The measured simultaneous application peak provides evidence for the next case's allocation.
 
@@ -528,7 +555,14 @@ The achieved export share is
 \end{equation}
 A zero denominator is recorded as a case in which the corresponding ratio is undefined, together with its numerator and denominator. Physical totals remain available for interpretation.
 
-The principal tables report every product--scenario pair. Expected service and expenditure summarise STO with the declared probabilities, while the minimum product--scenario service describes the least-served component. Aggregate summaries retain their weighting definition. This prevents a large-volume product or favourable realisation from concealing poor service elsewhere.
+The principal tables report every product--scenario pair. For the aggregate frontier axis, STO service is the ratio of probability-weighted delivered tonnes to probability-weighted domestic demand:
+\begin{equation}
+ L_{\mathrm{agg}}=
+ 1-\frac{\sum_{s\in S}\pi_s\sum_{p\in P}\sum_{c\in C^D,t\in T}u^s_{cpt}}
+         {\sum_{s\in S}\pi_s\sum_{p\in P}\sum_{c\in C^D,t\in T}\delta_D D^{0,s}_{cpt}}.
+ \label{eq:aggregateservice}
+\end{equation}
+This ratio is not an unweighted mean of scenario percentages. DET uses its single realisation with probability one. When the total denominator is zero, the aggregate ratio is undefined. Product--scenario ratios and their minimum over positive-demand pairs accompany the aggregate, preventing high-volume or favourable components from concealing poor service elsewhere. Economic expenditure charges first-stage investment once and probability-weights STO operating costs; the three penalties remain separately reported.
 
 Investment reporting separates the number of activated sites, the tonnes selected for opening and expansion, and the bulk-handling investment basis. The added static capacity $\sum_w(k_w+e_w)$ is an outcome of optimization. K is an input controlling what investment is permitted; it therefore remains distinct from the capacity actually selected and paid for.
 
@@ -542,7 +576,11 @@ Each validated plan provides a pair consisting of economic expenditure and an ex
 \end{equation}
 with at least one strict improvement. Numerical comparison uses declared tolerances and retained unrounded values. The empirical frontier contains the plans that remain nondominated within the evaluated set.
 
-The first frontiers condition on population, DET/STO, input dataset and comparable resource/quality classes. Policy and capacity settings identify each point. Comparisons across different alpha values or investment ceilings describe alternative policy opportunities; labels retain those differences. An envelope pooling several policy settings is presented as the envelope of those evaluated opportunities.
+Construct separate frontiers for DET and STO, conditioned on population and input revision. Their demand realisations and cost aggregation differ, so a pooled ranking requires a separately approved common evaluation basis. Within each model, compare validated economic expenditure and the defined service axis while retaining every point's policy, K, resource class, terminal status and computational quality. An envelope across policy settings describes the evaluated opportunities, not a single common feasible set.
+
+Dominance comparisons retain unrounded values and documented tolerances derived from accepted validation residuals and export precision. Near-equal points are identified explicitly. Only independently validated solutions with sufficiently complete service/export/cost vectors are eligible. A usable time-limited incumbent can contribute a labelled point; an observation without an incumbent has no point. An incomplete vector is not certified by treating omitted entries as zeros. Every excluded, failed or censored observation remains in the accounting. Identical solutions retain their source and repetition identities; no original evidence is deleted.
+
+The scalar bound and total-objective gap accompany the frontier rather than becoming a certificate for economic expenditure alone. Individual feasible observations, not component-wise median plans, define its points. Repetition summaries and changes in frontier membership describe stability without asserting statistical significance.
 
 The retained objective still minimises the complete monetary total in Equations~\ref{eq:detobj}--\ref{eq:stoobj}. Economic expenditure and achieved service are then used to analyse the resulting plans. Consequently, the empirical frontier characterises the validated plans actually obtained. A global economic--service frontier would additionally require an appropriate economic objective or an economic-optimality certificate for each service level. This distinction establishes the scientific scope of the reported trade-offs while preserving the approved objective.
 
@@ -565,6 +603,28 @@ Figure~\ref{fig:frontier} illustrates the dominance rule without using experimen
 \end{figure}
 Plan B supplies more service at lower economic expenditure than D. Plans A, B and C illustrate a trade-off between increasing service and increasing expenditure. The joining lines guide the eye; they represent neither interpolation feasibility nor a certified continuous frontier.
 
+\subsection{Selecting scientifically representative up-scale cases}
+
+The first-pass h215 frontiers and A1--A5 diagnosis determine the candidates for larger populations. Selection is made separately for DET and STO. It seeks validated, empirically nondominated low-economic-cost and high-service outcomes, with a meaningful intermediate trade-off when one exists. The selection record explains each case's scientific role, numerical quality and stability. A matched P0/K=1 anchor is retained for interpretation even if dominated, and is labelled as a reference outside the selected frontier sample. If already selected, it is counted once.
+
+The same observed control triples are first evaluated at h300 after input and model qualification. The h300 findings then determine whether progression to h400, and subsequently h500, is informative and feasible within the approved envelope. A reference from historical STO observations does not qualify a new DET input automatically. Unobserved combinations of K greater than one and active policies are not introduced as if h215 had evaluated them.
+
+Each progression gate reviews source and selected-graph identity, validated service/cost evidence, construction and export feasibility, time/memory censoring and a revised workload. Case counts and repetitions remain conditional until that review. A failed or censored case informs the scientific assessment; it does not trigger an automatic retry, larger-memory request or solver-parameter change.
+
+\begin{figure}[H]\centering
+\setlength{\unitlength}{1mm}
+\begin{picture}(158,32)
+\put(0,7){\framebox(26,22){\shortstack{\small h215 A\\\small P0 with K\\\small 8 cases}}}
+\put(33,7){\framebox(26,22){\shortstack{\small h215 B\\\small P1--P8/K=1\\\small 16 new cases}}}
+\put(66,7){\framebox(26,22){\shortstack{\small Validate\\\small frontier and\\\small repetition review}}}
+\put(99,7){\framebox(26,22){\shortstack{\small Select cases\\\small and qualify\\\small each population}}}
+\put(132,7){\framebox(26,22){\shortstack{\small h300\\\small then h400\\\small then h500}}}
+\put(26,18){\vector(1,0){7}}\put(59,18){\vector(1,0){7}}
+\put(92,18){\vector(1,0){7}}\put(125,18){\vector(1,0){7}}
+\end{picture}
+\caption{Staged h215 evidence and conditional population growth}\label{fig:staged}
+\end{figure}
+
 \subsection{Quality, uncertainty and computational effort}
 
 The result table retains terminal status, incumbent, bound, total-objective MIP gap, validation outcome, native time, Work, total time and memory. Time-to-quality curves use the milestones in Table~\ref{tab:quality}. A time-limited observation with a usable incumbent contributes a qualified planning point; an observation without one contributes evidence about computational difficulty and resource exposure.
@@ -578,23 +638,25 @@ Selected computational treatments are assessed using matched inputs, policy sett
 \section{Research stages, deliverables and indicative schedule}
 \label{sec:stages}
 
-The study proceeds through short research stages with explicit outputs and acceptance criteria. Data and model qualification establish the foundation; the h215 cycle develops the agricultural explanation; larger populations then test its generality and computational requirements. Table~\ref{tab:sprints} sets out an indicative schedule measured from the start of the qualified research cycle.
+The programme advances through explicit evidence gates. Data and native-model qualification establish the foundation; h215 develops the agricultural explanation; the selected larger cases then assess its transfer and computational requirements. Calendar dates depend on authorisation, queue access and licence validity. The table therefore states progression conditions rather than promising a fixed 24-week completion.
 
 \begin{table}[H]\centering\small
-\caption{Research stages and indicative schedule}\label{tab:sprints}
-\begin{tabular}{P{15mm}P{22mm}P{59mm}P{48mm}}\toprule
-Stage&Indicative weeks&Main activities&Acceptance evidence\\\midrule
-S0&1--2&Reconcile XLSX, registry, normalised tables and routing evidence; freeze the case dictionary&Traceable data identities, explained discrepancies and qualified neutral case\\
-S1&3--4&Instrument native DET/STO; qualify K, beta and alpha; verify policy-critical exports&Construction and independent-validation checks with preserved reference semantics\\
-S2&5--10&Evaluate the h215 policy/capacity matrix; reconstruct A1--A5 and initial frontiers&Complete balances, validated plans and explained shortages/exceedances\\
-S3&11--14&Evaluate selected reformulation or tuning treatments from the diagnosed bottlenecks&Matched comparisons and held-out confirmation\\
-S4&15--22&Advance through h300, h400 and h500; extend by documented 100-site blocks where informative&Population-specific service frontiers, quality trajectories and resource envelopes\\
-S5&23--24&Consolidate agricultural interpretation, reproducibility materials and scientific reporting&Traceable tables/figures, reviewed conclusions and complete evidence package\\\bottomrule
+\caption{Research stages, workload and progression gates}\label{tab:sprints}
+\begin{tabular}{P{12mm}P{32mm}P{54mm}P{46mm}}\toprule
+Stage&Timing or workload&Main activities&Exit evidence\\\midrule
+S0&Before execution&Reconcile XLSX v2, registry, normalised inputs and routing custody&Explained discrepancies, traceable identities and a qualified neutral reference\\
+S1&After S0&Qualify native DET/STO, beta/alpha/K, default parameters and policy-critical exports&Construction, independent validation and public resource qualification\\
+S2-A&8 initial cases; up to 4 serial allocation days&Evaluate P0 over the four K levels in both modes&Validated A1--A5 accounting and explained capacity effects\\
+S2-B&16 additional cases; up to 8 further serial days&Evaluate P1--P8 at K=1; reuse the P0/K=1 reference&Model-specific preliminary frontiers and policy contrasts\\
+S2-R&Scope decided after initial h215&Select and approve repeated contrasts; assess stability&Individual observations and documented selection/variability limits\\
+S3&Conditional diagnostic panel&Propose treatments only for evidenced bottlenecks&Separately authorised matched and held-out comparisons\\
+S4&After h215 review; case counts unset&Select representative observed controls; qualify h300, then h400 and h500&Population-specific planning evidence and resource envelopes\\
+S5&After accepted analyses&Consolidate reproducibility materials and scientific reporting&Traceable tables/figures, reviewed conclusions and retained evidence\\\bottomrule
 \end{tabular}
 \end{table}
-The ranges allow for queue availability, long-running cases and analysis between execution stages. The h215 findings determine which larger cases are most informative. The initial workload estimate remains an upper planning envelope for the proposed matrix, rather than a promise of uninterrupted access to the cluster.
+The first h215 pass has a twelve-day serial allocation ceiling, excluding queue delays, qualification and review. Repetitions and up-scale add only their later-approved workload. The optional balanced repetition example in Table~\ref{tab:budget} adds up to 24 serial days and is not a fixed campaign commitment. Initial validated findings can support an interim coauthor meeting, but do not constitute a completed repeated campaign.
 
-Each stage ends with an interpretable research product. Data qualification produces the effective reference; h215 produces the first economic--service explanation; computational diagnosis produces justified interventions; and network growth produces evidence about the resources and planning changes associated with scale. This progression supports coauthor review through concrete results at each stage.
+Every stage ends with an interpretable product: a qualified reference, a physical/economic explanation, a justified computational treatment when needed, or a documented larger-instance comparison. Before any execution, verify the licence entitlement for the intended window; no extension beyond a previously reported expiry is assumed. Neither the approved scientific design nor this document's generation authorises a scheduler submission or automatic retry.
 
 \clearpage
 \appendix
@@ -859,7 +921,7 @@ The empirical frontier is a structured description of available validated plans.
 
 Economic expenditure includes modelled investment, transport and holding costs. Agricultural service is delivery relative to the applicable domestic demand. Penalties are reported alongside those measures because a plan with high service may still use substantial static or reception exceedance. A broader planning assessment therefore considers service, actual investment, export, final stock and both capacity exceedances.
 
-K changes the investment opportunity set. A larger value makes additional capacity admissible at the retained investment prices; the resulting plan reveals whether that opportunity is used. If service stays unchanged, the explanation can involve shipping limits, route availability, timing, another binding investment relationship or the model's cost trade-offs. A4 tests such explanations using a fully admissible change.
+K changes the investment opportunity set. In Stage A, a larger value makes additional capacity admissible at the retained investment prices while beta and alpha remain disabled; the resulting plan reveals whether that opportunity is used. Stage B compares the service/export profiles only at K=1. If service stays unchanged, the explanation can involve shipping limits, route availability, timing, another binding investment relationship or the model's cost trade-offs. A4 tests such explanations using a fully admissible change.
 
 \subsection{Numerical certificates and admissible alternatives}
 
@@ -893,7 +955,7 @@ The accompanying editable package contains this plan's LaTeX source, the two v2 
 
 Public release is organised by source-specific redistribution permissions. Code, documentation, parameter definitions and eligible aggregate results can be separated from restricted facility-level or flow data. A dataset manifest states which files are available, which remain in controlled custody and how authorised researchers can identify the corresponding evidence.
 
-The principal research outputs are a qualified effective-data reference, an agricultural explanation of the h215 policy cycle, population-specific empirical economic--service frontiers, and a computational assessment of the resources required to obtain useful planning evidence. Their shared case identifiers connect the scientific narrative to reproducible inputs and results.
+The principal research outputs are a qualified effective-data reference, an agricultural explanation of the staged h215 cycle, validated model-specific empirical economic--service frontiers, and a conditional computational assessment at scientifically selected larger instances. Their shared case identifiers connect the scientific narrative to reproducible inputs and results.
 
 \clearpage
 \section*{References}

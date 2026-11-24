@@ -106,8 +106,10 @@
     "finite_source_bound_queue_and_separate_human_execution_authorization"
   ],
   "historical_observations_reused_as_MVP3": false,
-  "status": "proposed_pending_researcher_approval",
-  "official_plan_modified": false,
+  "status": "approved_design_execution_withheld",
+  "approval_date": "2026-11-24",
+  "plan_revision_in_draft_pr": true,
+  "develop_plan_changed": false,
   "proposal_date": "2026-11-24",
   "stages": {
     "A": {

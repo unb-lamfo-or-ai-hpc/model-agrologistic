@@ -1,7 +1,9 @@
 # Review of the supplied Rev2 presentation
 
-Date: 24 November 2026. This review accompanies the new Draft methodological
-proposal. It does not amend the official plan, the supplied PDF or the workbooks.
+Date: 24 November 2026. This review accompanied the Draft methodological
+proposal. The researcher approved its dispositions on 24 November; the plan
+changes are now incorporated in Rev3 in Draft PR #166. The supplied presentation
+PDF and workbooks remain unchanged.
 
 Source: `Agrologistic_MVP3_Plano_Metodologico_PTBR_Rev2_20261124.pdf`.
 SHA-256: `15cfa057c0180c492523ad929947fb78f8924b8535e166bbd602ad1401d8a4d2`.
@@ -43,8 +45,8 @@ schematic, not experimental evidence.
 
 The A1–A5 explanatory sequence and the final message on slide 43 are consistent
 with interpretable agricultural plans, independent validation and explicit
-computational quality. They should be retained. The proposed scientific revision
-still requires researcher approval before it replaces the official plan.
+computational quality. They should be retained. The scientific revision was approved and incorporated in the English EN Rev3
+plan within Draft PR #166. A merge remains separately unauthorised.
 
 This review is linked in the final section of the new PR description, as
 requested. Original source bytes, historical results, claims, the shared

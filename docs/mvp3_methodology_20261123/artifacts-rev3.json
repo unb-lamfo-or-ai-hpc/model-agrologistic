@@ -1,0 +1,19 @@
+{
+  "pdf_sha256": "475dd8583bdfd9bf0db4fbd0f097d8a3cf01410a53c6a26eab25acb8fc7ecb3c",
+  "source_sha256": "2b1c2cc6a10ff7336beefbfc4927fabe52457b3acc3f10d91adf8e9b972820ba",
+  "zip_sha256": "11891a3cd50ca28f47ac7ebf2e2872fdafed513009223b0f9687fef3ec5d2cef",
+  "zip_bytes": 5821648,
+  "members": 18,
+  "pages": 34,
+  "attachments_unchanged": true,
+  "scientific_design_approved": true,
+  "execution_authorized": false,
+  "prs_164_166_remain_draft": true,
+  "jobs_submitted": 0,
+  "merges": 0,
+  "delivered_zip_hashes_verified": true,
+  "delivered_source_rebuilt": true,
+  "rebuilt_pages": 34,
+  "rebuilt_pdf_text_identical": true,
+  "byte_identical_rebuilt_pdf_claimed": false
+}

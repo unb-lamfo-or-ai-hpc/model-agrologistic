@@ -1,11 +1,11 @@
 # Proposed revision: staged h215 experiments and empirical up-scale selection
 
-**Status: proposal for researcher approval, 24 November 2026.** The official
-English EN methodological plan approved earlier today remains unchanged in
-`develop` through PR #159, merge `84f4d50e9876afeb83933ce8e235fec970bb53d6`.
-This companion specifies replacement passages and tables for its experimental
-design, analysis and scheduling sections. It becomes the scientific plan only
-after approval. No optimization, job submission or environment change is made.
+**Status: approved by the researcher on 24 November 2026.** The reviewed
+changes are incorporated in the English EN Rev3 plan and its local PDF/editable
+package in Draft PR #166. The prior edition remains in `develop` through PR #159
+until a separately authorised merge. The original proposal wording below records
+the rationale; Rev3 is the current author-approved document in this Draft PR.
+Scientific approval does not admit execution. No job or environment change occurs.
 
 ## Purpose and retained research contract
 
@@ -241,9 +241,8 @@ payload hashes, workbook provenance and h215 DET/STO coefficient identities are
 verified. This byte-level inspection does not close source/SQLite custody or an
 atomic routing snapshot; those remain in Draft PR #164. No workbook is edited.
 
-After approval, replace the official plan's experimental matrix, repetition,
-frontier, up-scale and scheduling passages with this reviewed design, regenerate
-the English EN PDF and editable package, and preserve the earlier approved
-edition as historical evidence. Until then, this new Draft PR contains the
-proposed changes only. PR #164 remains Draft and unmerged; no scientific result,
-original receipt, environment or HPC campaign is modified.
+Following approval, the experimental matrix, repetition, frontier, up-scale and
+scheduling passages were incorporated into Rev3 and the PDF/editable package was
+regenerated and checked. The earlier approved edition remains historical evidence.
+PRs #164 and #166 remain Draft and unmerged. No scientific result, original receipt,
+environment or HPC campaign is modified.

@@ -36,14 +36,14 @@ def selected(mode="det", profile="P8", k=1):
     )
 
 
-def test_catalog_matches_proposed_staged_design_and_never_admits_execution():
+def test_catalog_matches_approved_staged_design_and_never_admits_execution():
     cases = case_catalog()
     assert len(cases) == len({c["id"] for c in cases}) == 24
     assert len({c["case_sha256"] for c in cases}) == 24
     assert sum(c["population"] == 215 and c["repetition"] == 1 for c in cases) == 24
     assert sum(c["repetition"] > 1 for c in cases) == 0
     assert all(c["execution_authorized"] is False and c["job_id"] is None for c in cases)
-    assert all(c["population"] == 215 and c["scientific_approval"] == "pending" for c in cases)
+    assert all(c["population"] == 215 and c["scientific_approval"] == "approved" for c in cases)
     assert {c["K"] for c in cases} == {1, 1.25, 1.5, 2}
     assert {c["mode"] for c in cases} == {"det", "sto"}
     primary = [c for c in cases if c["repetition"] == 1]
@@ -219,8 +219,9 @@ def test_preparation_report_is_not_native_or_execution_qualification():
     assert report["native_engine_or_license_tested"] is False
     assert report["native_policy_integration_qualified"] is False
     assert report["pending_admission_gates"]
-    assert report["status"] == "proposed_pending_researcher_approval"
-    assert report["official_plan_modified"] is False
+    assert report["status"] == "approved_design_execution_withheld"
+    assert report["develop_plan_changed"] is False
+    assert report["plan_revision_in_draft_pr"] is True
     assert report["h215_primary_cases"] == 24
     assert report["h215_additional_repetitions"] == 0
     assert report["later_population_primary_cases"] == 0

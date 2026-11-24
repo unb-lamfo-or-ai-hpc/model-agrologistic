@@ -124,8 +124,9 @@ def preparation_report(inputs=None):
     except importlib.metadata.PackageNotFoundError:
         installed = None
     return {
-        "status": "proposed_pending_researcher_approval",
-        "official_plan_modified": False,
+        "status": protocol["status"],
+        "develop_plan_changed": False,
+        "plan_revision_in_draft_pr": protocol["plan_revision_in_draft_pr"],
         "new_jobs": 0,
         "execution_authorized": False,
         "implementation": protocol["implementation"],

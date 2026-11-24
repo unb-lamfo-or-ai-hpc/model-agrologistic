@@ -1,0 +1,50 @@
+{
+  "revision": "Rev3",
+  "approval_date": "2026-11-24",
+  "language": "English EN",
+  "status": "accepted_static_and_visual_review",
+  "pages": 34,
+  "source_sha256": "2b1c2cc6a10ff7336beefbfc4927fabe52457b3acc3f10d91adf8e9b972820ba",
+  "pdf_sha256": "475dd8583bdfd9bf0db4fbd0f097d8a3cf01410a53c6a26eab25acb8fc7ecb3c",
+  "abstract_unchanged": true,
+  "research_question_and_objectives_unchanged": true,
+  "bibliography_unchanged": true,
+  "appendices_A_to_D_unchanged": true,
+  "preserved_original_equation_labels": [
+    "eq:edgefilter",
+    "eq:domestic",
+    "eq:service",
+    "eq:export",
+    "eq:Kactivation",
+    "eq:gap",
+    "eq:target",
+    "eq:aggregatebalance",
+    "eq:marginal",
+    "eq:achievedservice",
+    "eq:exportshare",
+    "eq:dominance"
+  ],
+  "overfull_or_unresolved_issues": [],
+  "characters_outside_page": [],
+  "workbook_sha256": {
+    "agrologistic_effective_baseline_v2.xlsx": "92698e05b869d67292cf7b080f56b43f7ccc93a27470b2eee559eadbeebd4a3d",
+    "agrologistic_warehouse_registry_v2.xlsx": "68b9933cc171541b151b7ea60c5d0501d5cecc01675819777af1ffefc11cbe7b"
+  },
+  "jobs_submitted": 0,
+  "optimizer_called": false,
+  "shared_environment_changed": false,
+  "merges": 0,
+  "all_pages_rendered": true,
+  "all_pages_visually_reviewed": true,
+  "full_size_revised_page_checks": [
+    13,
+    19,
+    21,
+    22
+  ],
+  "original_displayed_model_expressions_preserved": true,
+  "previous_plan_git_blob": "9af118fd40ac2d0134f33e5e00409e6b22904842",
+  "previous_plan_merge": "84f4d50e9876afeb83933ce8e235fec970bb53d6",
+  "pr166_parent_commit": "479eea945052aba30eabf16ddf26b692c89cbc39",
+  "reviewed_original_pdf_unchanged": true
+}

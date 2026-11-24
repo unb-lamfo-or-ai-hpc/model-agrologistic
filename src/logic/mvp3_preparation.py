@@ -1,4 +1,4 @@
-"""Proposed staged T3 identities and canonical native-policy row specifications.
+"""Approved staged T3 identities and canonical native-policy row specifications.
 
 Preparation only: no Gurobi import, model allocation, optimizer or scheduler.
 The row interface is not a qualified native execution adapter.
@@ -28,8 +28,8 @@ def read_protocol():
     record = json.loads(PROTOCOL.read_text(encoding="utf-8"))
     if record["execution_authorized"] is not False:
         raise ValueError("This preparation source cannot admit execution.")
-    if record["status"] != "proposed_pending_researcher_approval":
-        raise ValueError("The staged design remains a proposal, not an official-plan replacement.")
+    if record["status"] != "approved_design_execution_withheld":
+        raise ValueError("The source-bound scientific approval status differs.")
     if record["native_options"] != {"Method": -1, "Threads": 0, "TimeLimit": 28800}:
         raise ValueError("The approved automatic reference profile differs.")
     return record
@@ -67,10 +67,10 @@ def case_catalog():
                             },
                             "reference_input_sha256": protocol["h215_input_identities"][mode],
                             "input_qualification": "v2_neutral_identity_retained",
-                            "scientific_approval": "pending",
+                            "scientific_approval": "approved",
                             "execution_authorized": False,
                             "job_id": None,
-                            "status": "proposed_no_job",
+                            "status": "prepared_no_job",
                         }
                         spec["case_sha256"] = canonical_hash(spec)
                         result.append(spec)
@@ -83,15 +83,13 @@ def case_scenario(case):
     """K maps only to existing bound multipliers; physical tonne prices stay fixed."""
     expected = next((c for c in case_catalog() if c["id"] == case.get("id")), None)
     if expected is None or case != expected:
-        raise ValueError("Case differs from the source-bound proposed catalog.")
+        raise ValueError("Case differs from the source-bound approved catalog.")
     return ParameterScenario(
         case["id"],
         multipliers={"candidate_limit": case["K"], "expansion_limit": case["K"]},
         beta=case["beta"],
         alpha=case["alpha"],
-        justification=(
-            "Proposed staged T3 design; scientific approval pending; software checks only."
-        ),
+        justification=("Approved staged T3 design; execution withheld; software preparation only."),
     )
 
 

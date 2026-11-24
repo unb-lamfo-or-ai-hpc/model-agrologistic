@@ -1,78 +1,61 @@
-# Agrologistic MVP3.0 methodological plan — English EN
+# Agrologistic MVP3.0 methodological plan - English EN, Rev3
 
-Scientific reference: 23 November 2026. Authorized documentary revision:
-24 November 2026. Workbook references and inventories are updated. The research
-question, hypotheses, equations, policy/capacity design, bibliography and
-analysis plan are preserved.
+Scientific reference: 23 November 2026. Approved staged-design revision:
+24 November 2026. Prepared in Draft PR #166; no merge or HPC execution is authorised.
 
-The source is `plan.tex` in GitHub and `main.tex` in the editable package.
-The plan uses native Gurobi 14 DET/STO W models and approved beta, alpha and K
-controls. It contains no Benders or thread-speedup study. It remains under
-author review in Draft PR159.
+The GitHub source is `plan.tex` in this directory; the editable package uses
+`main.tex`. Rev3 replaces the earlier experimental-design edition within
+Draft PR #166. The earlier edition remains in Git history.
 
-## Active v2 workbook references
+## Approved research design
 
-| File | SHA-256 |
-|---|---|
-| agrologistic_effective_baseline_v2.xlsx | 92698e05b869d67292cf7b080f56b43f7ccc93a27470b2eee559eadbeebd4a3d |
-| agrologistic_warehouse_registry_v2.xlsx | 68b9933cc171541b151b7ea60c5d0501d5cecc01675819777af1ffefc11cbe7b |
+Stage A evaluates P0 with beta/alpha disabled at K={1,1.25,1.5,2} in DET and STO:
+8 cases. Stage B adds P1-P8 at K=1 in both modes: 16 cases. P0/K=1 is reused,
+giving 24 distinct initial observations. Repetitions and larger-population cases
+are selected after the initial h215 analysis. The balanced 72-observation example
+is an optional budget calculation only. The fixed initial ceiling is 192 native
+hours and 288 allocation hours at 192 GiB, excluding queue and qualification.
 
-Both declare `workbook_version=2`. Their presentation identifiers are
-`agrologistic-workbook-view-v2` and `agrologistic-warehouse-view-v2`.
-The computational identifier `agrologistic-effective-baseline-v1` is the
-compatible CSV/ModelData schema, not an obsolete XLSX edition. Do not rename
-this schema merely to match the workbook filename.
+Native Gurobi 14, Method=-1, Threads=0, W topology, the scalar objective and the
+approved beta/alpha/K controls are retained. The plan examines validated empirical
+economic-cost/domestic-service frontiers separately for DET/STO. It contains no
+Benders or thread-speedup study. The abstract, research question/objectives,
+original displayed model expressions and bibliography remain unchanged.
 
-The qualified export used the effective-baseline v2 XLSX, identified by its
-exact hash in the normalized bundle. The registry v2 supports inspection and
-reconciliation; it is not a separate direct ModelData-loader input. The exporter
-combines effective values with hash-identified frozen network support. This
-documentary revision does not establish a global change of NPAD runtime defaults.
+## Contents and reproduction
 
-Appendix A now documents 20 baseline sheets, including Controls (9 rows),
-InvestmentLimits (592), Identification (15), Dictionary (39) and Transformations
-(8). Optional travel-duration fields are seconds and unused for freight.
-Appendix B documents three registry sheets, 32 field definitions and 18,086
-accepted facility rows. The worked parameter locators remain valid.
+- `main.tex`: complete editable LaTeX source. Figures use native LaTeX drawing;
+  the bibliography is embedded in the source, so no external graphics/BibTeX
+  file is required.
+- The revised PDF is included at the package root.
+- `appendices/`: the two unchanged v2 XLSX inspection workbooks.
+- `workbook-versions.json`: workbook identities and edition/schema distinction.
+- `review/`: current QA, approved design, solver-free tests and retained historical
+  reviews. Earlier QA files describe their own editions, not Rev3 acceptance.
+- `SHA256SUMS`: SHA-256 of every other package member.
+- `build.py`: optional standard-library helper for document compilation only.
 
-Workbook identities and unchanged production coefficients are recorded in
-[the PR164 qualification](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/cfb99965c613105dfb3bdc9745e7599fe74ed183/docs/evidence/workbook_v2_qualification_20261124.json).
-No data/calibration, scientific runtime implementation or experiment was changed.
-
-## Historical provenance
-
-Original v1 workbooks remain preserved, rather than renamed or overwritten:
-
-| Historical file | SHA-256 |
-|---|---|
-| agrologistic_effective_baseline_v1.xlsx | d5babec48bb40a61843ccb4e7c9c059429b4d8ac32cefec945fda4e4fb84c917 |
-| agrologistic_warehouse_registry_v1.xlsx | f39c2f29862aecb9a64fd0d37548eb788e402c805a5db6def6c5ec8a351d25bc |
-
-The earlier PDF/package retain their identities in
-[the 23 November checkpoint](https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/2ff8ac46522518c2e804e24bc83e7fdb0152818d/docs/checkpoints/20261123_mvp3_methodological_revision.md).
-The new package attaches only the active v2 workbooks. Their internal source
-hashes identify upstream files. The package SHA256SUMS identifies delivered files.
-
-## Build and review
-
-Use an existing TeX distribution with the packages declared in the preamble:
+Using an existing TeX distribution with the packages declared in the preamble,
+compile `main.tex` three times:
 
 ```text
-pdflatex -no-shell-escape -interaction=nonstopmode -halt-on-error plan.tex
-pdflatex -no-shell-escape -interaction=nonstopmode -halt-on-error plan.tex
+pdflatex -no-shell-escape -interaction=nonstopmode -halt-on-error main.tex
 ```
 
-In the editable package use `main.tex`. Figures use native LaTeX drawing
-primitives. The bibliography is embedded in the source. The package contains
-the revised PDF/source, unchanged v2 XLSX attachments, a version manifest and
-checksums. PDF/workbook attachments remain local review artifacts, not published
-datasets.
+Alternatively: `python build.py --pdflatex <path-to-existing-pdflatex>`.
+No package installation, environment modification, solver or HPC job is involved.
 
-The current render/identity record is `editorial-qa-v2.json`. The original
-`editorial-qa.json` and 89 annotation dispositions remain the record of the
-earlier review. Earlier dispositions and the recovered 80/20 graph method are
-preserved. The new PDF is checked for references/citations, overfull boxes,
-page-boundary problems and excluded study scope, then visually reviewed in full.
+## Data identity and limits
 
-No new HPC job, optimizer invocation, shared-environment change or merge is
-part of this revision. PR159 and PR164 remain Draft.
+The active files are `agrologistic_effective_baseline_v2.xlsx` and
+`agrologistic_warehouse_registry_v2.xlsx`. Their exact hashes are in
+`workbook-versions.json` and `SHA256SUMS`. Workbook edition 2 retains the compatible
+computational schema `agrologistic-effective-baseline-v1`. The effective workbook
+supplies the normalised ModelData bundle; the registry is an inspection and
+reconciliation reference rather than a second implicit override source.
+
+These local review attachments are not a newly published dataset. Full source
+and SQLite custody acceptance remains a separate gate in Draft PR #164.
+The source, protocols and checks are documented in GitHub; PDF/XLSX/ZIP review
+attachments are delivered locally. Original workbooks, PDFs and scientific
+results are preserved. Neither PR #164 nor PR #166 is merged by this revision.
