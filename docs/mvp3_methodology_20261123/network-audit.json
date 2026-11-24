@@ -1,0 +1,173 @@
+{
+  "manifest_sha256": "80dfd864af958387a229ef5719a76fd6ca1db5fd060a658f89b404214be2b31f",
+  "all_manifest_files_verified": true,
+  "method": "Multi-source breadth-first traversal per product; active endpoints are unions of positive entries in the applicable realisation set. Tagged origin/warehouse/customer roles are derived from arc families.",
+  "interpretation": "Reachability from some active source; no origin-to-every-destination, throughput, timing or achieved-service feasibility certificate.",
+  "cases": {
+    "215:det": {
+      "arc_counts": {
+        "OW": 3182,
+        "WD": 3440,
+        "WW": 18490
+      },
+      "active_origin_product_pairs": 44,
+      "active_domestic_product_pairs": 54,
+      "reachable_domestic_pairs": 54,
+      "domestic_shortest_path_edge_counts": {
+        "2": 53,
+        "3": 1
+      },
+      "active_export_product_pairs": 20,
+      "reachable_export_pairs": 20,
+      "export_shortest_path_edge_counts": {
+        "2": 20
+      },
+      "frozen_repair_counts": {
+        "repair_od": 0,
+        "repair_dc": 0,
+        "repair_dd": 0,
+        "repair_oc": 0
+      },
+      "route_policy": {
+        "route_filter_strategy": "connectivity_preserving_pareto",
+        "pareto_fraction": 0.2,
+        "route_top_k": null,
+        "connectivity_export_policy": "one_sink_per_product",
+        "use_direct_origin_customer": false,
+        "use_warehouse_transshipment": true
+      }
+    },
+    "215:sto": {
+      "arc_counts": {
+        "OW": 3182,
+        "WD": 3440,
+        "WW": 18490
+      },
+      "active_origin_product_pairs": 44,
+      "active_domestic_product_pairs": 54,
+      "reachable_domestic_pairs": 54,
+      "domestic_shortest_path_edge_counts": {
+        "2": 53,
+        "3": 1
+      },
+      "active_export_product_pairs": 20,
+      "reachable_export_pairs": 20,
+      "export_shortest_path_edge_counts": {
+        "2": 20
+      },
+      "frozen_repair_counts": {
+        "repair_od": 0,
+        "repair_dc": 0,
+        "repair_dd": 0,
+        "repair_oc": 0
+      },
+      "route_policy": {
+        "route_filter_strategy": "connectivity_preserving_pareto",
+        "pareto_fraction": 0.2,
+        "route_top_k": null,
+        "connectivity_export_policy": "one_sink_per_product",
+        "use_direct_origin_customer": false,
+        "use_warehouse_transshipment": true
+      }
+    },
+    "300:sto": {
+      "arc_counts": {
+        "OW": 4440,
+        "WD": 4800,
+        "WW": 36000
+      },
+      "active_origin_product_pairs": 44,
+      "active_domestic_product_pairs": 54,
+      "reachable_domestic_pairs": 54,
+      "domestic_shortest_path_edge_counts": {
+        "2": 54
+      },
+      "active_export_product_pairs": 20,
+      "reachable_export_pairs": 20,
+      "export_shortest_path_edge_counts": {
+        "2": 20
+      },
+      "frozen_repair_counts": {
+        "repair_od": 0,
+        "repair_dc": 0,
+        "repair_dd": 0,
+        "repair_oc": 0
+      },
+      "route_policy": {
+        "route_filter_strategy": "connectivity_preserving_pareto",
+        "pareto_fraction": 0.2,
+        "route_top_k": null,
+        "connectivity_export_policy": "one_sink_per_product",
+        "use_direct_origin_customer": false,
+        "use_warehouse_transshipment": true
+      }
+    },
+    "400:sto": {
+      "arc_counts": {
+        "OW": 5920,
+        "WD": 6400,
+        "WW": 64000
+      },
+      "active_origin_product_pairs": 44,
+      "active_domestic_product_pairs": 54,
+      "reachable_domestic_pairs": 54,
+      "domestic_shortest_path_edge_counts": {
+        "2": 54
+      },
+      "active_export_product_pairs": 20,
+      "reachable_export_pairs": 20,
+      "export_shortest_path_edge_counts": {
+        "2": 20
+      },
+      "frozen_repair_counts": {
+        "repair_od": 0,
+        "repair_dc": 0,
+        "repair_dd": 0,
+        "repair_oc": 0
+      },
+      "route_policy": {
+        "route_filter_strategy": "connectivity_preserving_pareto",
+        "pareto_fraction": 0.2,
+        "route_top_k": null,
+        "connectivity_export_policy": "one_sink_per_product",
+        "use_direct_origin_customer": false,
+        "use_warehouse_transshipment": true
+      }
+    },
+    "500:sto": {
+      "arc_counts": {
+        "OW": 7400,
+        "WD": 8000,
+        "WW": 100000
+      },
+      "active_origin_product_pairs": 44,
+      "active_domestic_product_pairs": 54,
+      "reachable_domestic_pairs": 54,
+      "domestic_shortest_path_edge_counts": {
+        "2": 54
+      },
+      "active_export_product_pairs": 20,
+      "reachable_export_pairs": 20,
+      "export_shortest_path_edge_counts": {
+        "2": 20
+      },
+      "frozen_repair_counts": {
+        "repair_od": 0,
+        "repair_dc": 0,
+        "repair_dd": 0,
+        "repair_oc": 0
+      },
+      "route_policy": {
+        "route_filter_strategy": "connectivity_preserving_pareto",
+        "pareto_fraction": 0.2,
+        "route_top_k": null,
+        "connectivity_export_policy": "one_sink_per_product",
+        "use_direct_origin_customer": false,
+        "use_warehouse_transshipment": true
+      }
+    }
+  },
+  "optimizer_called": false,
+  "database_opened": false,
+  "jobs_submitted": 0
+}

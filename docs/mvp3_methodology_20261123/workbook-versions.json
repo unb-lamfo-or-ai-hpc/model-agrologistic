@@ -1,0 +1,42 @@
+{
+  "scientific_reference_date": "2026-11-23",
+  "documentary_revision_date": "2026-11-24",
+  "computational_schema": "agrologistic-effective-baseline-v1",
+  "workbook_version": 2,
+  "presentation_schemas": {
+    "baseline": "agrologistic-workbook-view-v2",
+    "registry": "agrologistic-warehouse-view-v2"
+  },
+  "active_attachments": {
+    "agrologistic_effective_baseline_v2.xlsx": "92698e05b869d67292cf7b080f56b43f7ccc93a27470b2eee559eadbeebd4a3d",
+    "agrologistic_warehouse_registry_v2.xlsx": "68b9933cc171541b151b7ea60c5d0501d5cecc01675819777af1ffefc11cbe7b"
+  },
+  "qualified_pipeline": "effective-baseline v2 XLSX -> normalized CSV -> existing ModelData; frozen network support retained",
+  "registry_role": "Inspection/reconciliation view; not a separate direct ModelData-loader input",
+  "historical_v1_files_preserved": true,
+  "scope_changes": false,
+  "scientific_data_changed": false,
+  "source_historical_plan_commit": "2ff8ac46522518c2e804e24bc83e7fdb0152818d",
+  "source_workbook_qualification_commit": "cfb99965c613105dfb3bdc9745e7599fe74ed183",
+  "neutral_case": {
+    "K": 1,
+    "beta": null,
+    "alpha": null
+  },
+  "sheet_inventory": {
+    "baseline": {
+      "sheets": 20,
+      "Identification": 15,
+      "Dictionary": 39,
+      "Controls": 9,
+      "InvestmentLimits": 592,
+      "Transformations": 8
+    },
+    "registry": {
+      "sheets": 3,
+      "Dictionary": 32,
+      "Registry": 18086,
+      "registry_columns": 32
+    }
+  }
+}

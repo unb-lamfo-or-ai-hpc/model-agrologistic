@@ -5,8 +5,7 @@ from __future__ import annotations
 import importlib.abc
 import sys
 
-NATIVE_MODULES = {"gurobipy", "highspy", "pyscipopt", "cplex", "xpress", "mosek",
-                  "swiglpk", "cylp"}
+NATIVE_MODULES = {"gurobipy", "highspy", "pyscipopt", "cplex", "xpress", "mosek", "swiglpk", "cylp"}
 
 
 class NoSolverViolation(RuntimeError):
@@ -44,8 +43,9 @@ class NoSolverGuard(importlib.abc.MetaPathFinder):
             return
         module = frame.f_globals.get("__name__") or ""
         name = frame.f_code.co_name
-        if ((module.startswith("src.logic.") and name.startswith("solve_model"))
-                or (module.startswith("pyomo.") and name in {"solve", "_solve", "optimize"})):
+        if (
+            module.startswith("src.logic.") and name.startswith(("solve_model", "solve_effective_"))
+        ) or (module.startswith("pyomo.") and name in {"solve", "_solve", "optimize"}):
             self.reject("Optimizer entry point forbidden in data/algebra CI.")
 
     def install(self):

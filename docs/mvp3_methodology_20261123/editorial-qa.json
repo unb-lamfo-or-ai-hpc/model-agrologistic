@@ -1,0 +1,37 @@
+{
+  "pdf_sha256": "b410b5bd6496bbba1c628be20691f1a0a911d2d9838376b75b9d75906823e422",
+  "pages": 31,
+  "rendered_pages": 31,
+  "all_pages_rendered": true,
+  "missing_reference_markers": [],
+  "replacement_glyphs": [],
+  "legacy_architecture_terms": [],
+  "editorial_operations_terms": [],
+  "nonempty_page_text": true,
+  "source_sha256": "33429522012e89933d2a458a09f38d7ba0e0a231fcaf97b33e2c9328d8843342",
+  "annotated_source_sha256": "fe31d2ca823b097a36309a6d7c6b52bfdd77e9063ad98ddebf9136e6cc3cd99d",
+  "review_annotations": 89,
+  "annotation_dispositions": 89,
+  "all_review_annotation_ids_covered": true,
+  "all_final_pages_visually_reviewed": true,
+  "full_page_visual_checks": [
+    6,
+    8,
+    9,
+    24,
+    25
+  ],
+  "latex_unresolved_or_overfull_issues": [],
+  "characters_outside_page": [],
+  "native_latex_figures": 2,
+  "tables": 19,
+  "workbook_attachment_sha256": {
+    "agrologistic_effective_baseline_v1.xlsx": "d5babec48bb40a61843ccb4e7c9c059429b4d8ac32cefec945fda4e4fb84c917",
+    "agrologistic_warehouse_registry_v1.xlsx": "f39c2f29862aecb9a64fd0d37548eb788e402c805a5db6def6c5ec8a351d25bc"
+  },
+  "optimizer_called": false,
+  "jobs_submitted": 0,
+  "shared_environment_changed": false,
+  "scientific_runtime_implementation_changed": false,
+  "scope": "Editorial plan and independent aggregate graph replay; proposed experiment design, not campaign activation."
+}
