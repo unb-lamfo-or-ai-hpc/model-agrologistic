@@ -21,7 +21,7 @@
 \hypersetup{pdftitle={Agrologistic MVP3.0: Agricultural Policy and Capacity Planning},pdfauthor={Model Agrologistic research team}}
 \title{\color{navy}Agrologistic MVP3.0\\[5pt]\large Agricultural Policy, Capacity Planning and\\Economic--Service Trade-offs with Gurobi 14}
 \author{Methodological plan}
-\date{Scientific reference: 23 November 2026\\Approved design revision: 24 November 2026 (Rev3)}
+\date{Scientific reference: 23 November 2026\\Staged design approved: 24 November 2026\\Editorial review: 24 November 2026 (Rev4)}
 \begin{document}
 \maketitle
 
@@ -46,7 +46,8 @@ MVP3.0 therefore examines the planning mechanisms behind those outcomes. Its dat
 
 MVP2.0 developed a native Gurobi implementation through its Python interface, \code{gurobipy}, and a solver-independent implementation through Pyomo.\technical{Gurobi Python interface}{https://docs.gurobi.com/projects/optimizer/en/current/reference/python/overview.html}\technical{Pyomo modelling documentation}{https://pyomo.readthedocs.io/en/stable/} In a native implementation, the program creates the variables, constraints and objective directly through the optimizer's interface. Pyomo expresses the mathematical model through a separate modelling layer. MVP3.0 uses native \code{gurobipy} to construct and solve the proposed policy cases with Gurobi 14.
 
-Table~\ref{tab:contribution} summarises the methodological progression in terms relevant to the new study.
+Table~\ref{tab:contribution} compares the planning models, data representation, implementation and scientific emphasis of MVP2.0 and MVP3.0. Reading across each row identifies what the new study retains and which part of its evidence or interpretation is extended.
+
 \begin{table}[H]\centering\small
 \caption{Methodological progression}\label{tab:contribution}
 \begin{tabular}{P{31mm}P{53mm}P{62mm}}\toprule
@@ -58,7 +59,8 @@ Scientific emphasis&Computational behaviour and returned planning solutions&Econ
 Computational assessment&Instance and solver-configuration observations&Problem-size growth, quality trajectories, log-based diagnosis and resource use\\\bottomrule
 \end{tabular}
 \end{table}
-The contribution is the integration of agricultural interpretation with a reproducible experimental design. The model supplies alternative plans; the analysis explains the service, investment and resource implications of each alternative.
+
+Table~\ref{tab:contribution} locates the contribution in the combined assessment of agricultural outcomes and computational evidence. The model supplies alternative plans, while the analysis explains their service, investment and resource implications through a reproducible experimental design.
 
 \Needspace{12\baselineskip}
 \subsection{Research question and objectives}
@@ -91,7 +93,8 @@ The deterministic and stochastic models represent the same investment and grain-
 
 The warehouse-only topology, W, routes grain from origins to warehouses, between warehouses, and from warehouses to domestic or export destinations. The geographical labels OW, WW and WD correspond to the published mathematical arc families $A^{OD}$, $A^{DD}$ and $A^{DC}$. The planning horizon consists of 60 monthly periods from January 2021 to December 2025, with 30 operating days per period.
 
-The notation in Table~\ref{tab:notation} follows the published model and provides the basis for the equations used below.
+Table~\ref{tab:notation} introduces the node sets, time/scenario indices, decision variables and policy controls used in the equations. It distinguishes physical capacities and operational quantities from the dimensionless experimental settings.
+
 \begin{table}[H]\centering\small
 \caption{Core model notation}\label{tab:notation}
 \begin{tabular}{P{41mm}P{105mm}}\toprule
@@ -106,9 +109,11 @@ $K_w(X),R_w(X),H_w(X)$&Available static tonnes and daily reception/shipping rate
 $\beta_{ps},\alpha_{ps},K$&Domestic-service floor, export-share ceiling and investible-capacity-limit multiplier\\\bottomrule
 \end{tabular}
 \end{table}
-The superscript $s$ identifies scenario-dependent operations. DET uses the same operational concepts with its single deterministic realisation. The symbol $K_w(X)$ is a physical capacity in tonnes; the unindexed experimental control $K$ is dimensionless.
 
-The initial populations and their selected product-indexed arc counts appear in Table~\ref{tab:population}.
+Table~\ref{tab:notation} should be read with the units attached to each physical quantity. The superscript $s$ identifies scenario-dependent operations. DET uses the same operational concepts with its single deterministic realisation. The symbol $K_w(X)$ is a physical capacity in tonnes; the unindexed experimental control $K$ is dimensionless.
+
+Table~\ref{tab:population} reports the existing and candidate warehouses in each retained population, together with the selected product-indexed W arcs. The counts describe the admissible network before optimization, rather than the facilities opened or routes used by a solution.
+
 \begin{table}[H]\centering\small
 \caption{Initial warehouse populations}\label{tab:population}
 \begin{tabular}{lrrrr}\toprule
@@ -119,7 +124,8 @@ h400&146&254&400&76,320\\
 h500&146&354&500&115,400\\\bottomrule
 \end{tabular}
 \end{table}
-These populations preserve their recorded facility order. Subsequent network growth uses a cumulative, purposive snowballing strategy: the established population is retained and successive blocks of 100 eligible sites are added from the documented candidate order. The registry contains 18,086 facilities in total. Eligibility, existing-site membership and data completeness determine the actual candidate pool.
+
+Table~\ref{tab:population} shows that population growth adds candidates while the 146 existing warehouses remain fixed. These populations preserve their recorded facility order. Subsequent network growth uses a cumulative, purposive snowballing strategy: the established population is retained and successive blocks of 100 eligible sites are added from the documented candidate order. The registry contains 18,086 facilities in total. Eligibility, existing-site membership and data completeness determine the actual candidate pool.
 
 This operational definition of snowballing describes progressive enlargement of the planning network. Each new level records the added sites and the resulting graph. Expansion continues while the added population contributes useful information about investment patterns, service trade-offs or computational requirements. The initial h215 level is followed by h300 and then the 100-site increments.
 
@@ -225,7 +231,8 @@ The common factor applies to every indexed reference bound in its respective fie
 
 At $K=1$, the investment ceilings reproduce the reference. At $K=1.5$, each candidate-capacity and expansion ceiling is 50\% higher. A larger ceiling creates additional feasible investment choices. The quantities actually installed remain the endogenous decisions $k_w$ and $e_w$, selected together with flows, inventories and costs.
 
-The relationship between K and the retained input fields is made explicit in Table~\ref{tab:Kmap}.
+Table~\ref{tab:Kmap} maps K to the retained input fields and identifies the quantities that remain fixed. It separates changes to investment ceilings from the optimizer's subsequent installation decisions and their coupled handling effects.
+
 \begin{table}[H]\centering\small
 \caption{Definition and scope of K}\label{tab:Kmap}
 \begin{tabular}{P{40mm}P{106mm}}\toprule
@@ -239,9 +246,11 @@ Installed quantities and locations&The optimizer chooses $k_w,e_w,y_w,z_w$ withi
 Handling gains&The existing $\rho,\eta$ coefficients apply to the chosen investments\\\bottomrule
 \end{tabular}
 \end{table}
-This scope isolates the effect of investment opportunity. It preserves existing assets and cost accounting, while keeping the bulk-handling decision identifiable through its established control. The high-level K specification maps once to the existing \code{candidate\_limit} and \code{expansion\_limit} transformations.
+
+Table~\ref{tab:Kmap} distinguishes a larger investment opportunity from greater installed capacity. The transformation preserves existing assets and cost accounting, while the bulk-handling decision retains its separate control. The high-level K specification maps once to the existing \code{candidate\_limit} and \code{expansion\_limit} transformations; installed tonnes remain optimization decisions within those ceilings.
 
 A worked example based on actual input cells appears in Table~\ref{tab:Kexample}. The candidate reference comes from \code{Investments!C2}; the expansion reference comes from \code{Investments!C209} in the effective-baseline workbook. The two rows refer to different facility records.
+
 \begin{table}[H]\centering\small
 \caption{Investment ceilings under K}\label{tab:Kexample}
 \begin{tabular}{lrrr}\toprule
@@ -250,7 +259,8 @@ Candidate ceiling, t&190,610&285,915&381,220\\
 Expansion ceiling, t&222.5&333.75&445\\\bottomrule
 \end{tabular}
 \end{table}
-The calculation multiplies each stored reference value once. For the candidate, K=1.5 makes 285,915 tonnes available as an investment ceiling. The optimizer can choose any admissible installed quantity up to that ceiling when opening is activated. The expansion example applies the same rule to its smaller, facility-specific reference bound.
+
+Table~\ref{tab:Kexample} demonstrates the transformation for two facility-specific records, not a uniform capacity assumption. The calculation multiplies each stored reference value once. For the candidate, K=1.5 makes 285,915 tonnes available as an investment ceiling. The optimizer can choose any admissible installed quantity up to that ceiling when opening is activated. The expansion example applies the same rule to its smaller, facility-specific reference bound.
 
 The resulting installed storage is computed through Equation~\eqref{eq:static}. Reception and shipping follow Equations~\eqref{eq:handling}. Thus, choosing a larger investment can enlarge daily handling through the retained physical coupling. K itself scales the upper bounds, while the chosen investment quantity determines the physical and economic consequence.
 
@@ -295,47 +305,74 @@ For example, a case identifier can be read as \code{h215-sto-P8-K100-AUTO-r1}: p
 
 Each execution builds a fresh model from its identified inputs, applies its declared settings and records the parameter values in effect. Closure exports the decisions and measurements and releases the model. This lifecycle gives each case an independent initial solver state. The Python interface also provides explicit reset operations for software verification.\technical{Model reset and parameter reset}{https://docs.gurobi.com/projects/optimizer/en/current/reference/python/model.html}
 
-\subsection{The staged h215 policy and capacity matrix}
 
-The first empirical cycle concentrates on h215. It separates the effect of a larger investment ceiling from the effects of domestic-service and export policies. Both stages use the same effective inputs, economic coefficients, penalty weights, selected network and automatic Gurobi reference. Each setting is evaluated in DET and STO.
+\subsection{The experimental sequence: capacity, policy and conditional up-scale}
 
-Stage A evaluates P0, with the additional beta and alpha controls disabled, at $K\in\{1,1.25,1.5,2\}$. Its eight cases reveal whether additional investment opportunity changes actual investment, domestic service, exports and capacity exceedances. The domestic-demand equality and its shortage variable remain in force even when beta is disabled.
+The initial experiment concerns h215 only. Stage A first asks what changes when investment ceilings increase while the additional domestic-service and export controls remain disabled. Stage B then asks what changes when those controls are introduced at the reference investment ceiling, K=1. Both stages use the same frozen effective inputs, economic coefficients, penalty weights, selected network and automatic Gurobi reference. DET and STO are evaluated separately at every initial setting.
 
-Stage B evaluates the profiles in Table~\ref{tab:policies} at K=1. P0/K=1 is the shared reference already evaluated in Stage A. Stage B therefore adds P1--P8, giving sixteen further cases rather than eighteen new cases. The complete first pass contains 24 unique cases, twelve per model mode.
+\Needspace{22\baselineskip}
 
-\begin{table}[H]\centering\small
-\caption{Domestic-service and export profiles at K=1}\label{tab:policies}
-\begin{tabular}{cllP{73mm}}\toprule
-Profile&$\beta$&$\alpha$&Planning question\\\midrule
-P0&Disabled&Disabled&Shared reference; reused from Stage A\\
-P1&0.90&Disabled&Effect of a 90\% domestic-service floor\\
-P2&0.95&Disabled&Effect of a 95\% domestic-service floor\\
-P3&Disabled&0.60&Effect of a 60\% export ceiling\\
-P4&Disabled&0.50&Effect of a 50\% export ceiling\\
-P5&0.90&0.60&Joint moderate service/export control\\
-P6&0.90&0.50&Moderate service with the tighter export ceiling\\
-P7&0.95&0.60&Higher service with the moderate export ceiling\\
-P8&0.95&0.50&Higher service with the tighter export ceiling\\\bottomrule
-\end{tabular}
-\end{table}
-The disabled state means the absence of an additional policy row. It is distinct from a zero export fraction or a specified service target. Uniform profile values retain the separate product--scenario indexing of their constraints.
+Table~\ref{tab:cases} specifies Stage A. Each row is one K setting under P0, evaluated once in DET and once in the joint STO model. Beta and alpha remain disabled throughout this table. K changes the candidate-opening and existing-expansion ceilings; it leaves initial capacity, unit prices and the original domestic-demand equality with shortage unchanged.
 
 \begin{table}[H]\centering\small
-\caption{Initial h215 case matrix, with the common reference counted once}\label{tab:cases}
-\begin{tabular}{P{27mm}P{32mm}P{28mm}rrr}\toprule
-Stage&Profiles&K levels&DET&STO&Total\\\midrule
-A: capacity&P0 only&1, 1.25, 1.5, 2&4&4&8\\
-B: policy&P1--P8; P0 reused&1&8&8&16\\\midrule
-First-pass union&&&12&12&24\\\bottomrule
+\caption{Stage A: h215 capacity-ceiling experiments with beta and alpha disabled}\label{tab:cases}
+\begin{tabular}{rllrrr}\toprule
+K&$\beta$&$\alpha$&DET cases&STO cases&Total\\\midrule
+1.00&Disabled&Disabled&1&1&2\\
+1.25&Disabled&Disabled&1&1&2\\
+1.50&Disabled&Disabled&1&1&2\\
+2.00&Disabled&Disabled&1&1&2\\\midrule
+Stage A total&&&4&4&8\\\bottomrule
 \end{tabular}
 \end{table}
-A case is one optimisation of the complete DET or joint STO model. The nine STO scenarios share the investment decision and form one stochastic case, not nine independent observations. The 24-case first pass replaces the earlier full policy--capacity crossing. It does not imply that the research has established a complete frontier or that any job has been authorised.
 
-The isolated and joint policy profiles support comparisons of service and export controls at the reference investment ceiling. They do not identify the response to active policies combined with K greater than one. If the physical diagnosis indicates that such a combination is scientifically important, it is proposed as a separate extension before execution. Larger populations and any refinement after h500 are also conditional, rather than additional fixed cases in this initial matrix.
+The eight cases in Table~\ref{tab:cases} isolate investment opportunity under the retained objective. They show whether a larger admissible investment is actually selected and whether service, exports or exceedances change as a result. A higher K permits more capacity but does not require the optimizer to install it. The two P0/K=1 observations, one per model, also supply the common reference for Stage B.
+
+\Needspace{30\baselineskip}
+
+Table~\ref{tab:policies} specifies Stage B at K=1. It lists all nine policy profiles so that their relationship to P0 is visible, but the P0 row reuses the reference from Stage A and contributes no new submission. Each of P1--P8 adds one DET and one STO case, giving sixteen additional initial observations.
+
+\begin{table}[H]\centering\small
+\caption{Stage B: h215 service/export experiments at K=1, reusing P0}\label{tab:policies}
+\begin{tabular}{cllrrP{53mm}}\toprule
+Profile&$\beta$&$\alpha$&K&\shortstack{New cases\\DET+STO}&Comparison at h215\\\midrule
+P0&Disabled&Disabled&1&0&Reference already obtained in Stage A\\
+P1&0.90&Disabled&1&2&90\% domestic-service floor\\
+P2&0.95&Disabled&1&2&95\% domestic-service floor\\
+P3&Disabled&0.60&1&2&60\% export-share ceiling\\
+P4&Disabled&0.50&1&2&50\% export-share ceiling\\
+P5&0.90&0.60&1&2&Joint moderate service/export policy\\
+P6&0.90&0.50&1&2&Moderate service, tighter export ceiling\\
+P7&0.95&0.60&1&2&Higher service, moderate export ceiling\\
+P8&0.95&0.50&1&2&Higher service, tighter export ceiling\\\midrule
+Stage B total&&&&16&Eight new profiles in both modes\\\bottomrule
+\end{tabular}
+\end{table}
+
+Table~\ref{tab:policies} separates the service-only contrasts P1--P2, the export-only contrasts P3--P4, and the joint policy contrasts P5--P8. The disabled state means that an additional policy row is absent; it does not mean a zero export fraction or a prescribed service target. Profile values apply uniformly across products and scenarios while the constraints retain their separate product--scenario indexing. All these policy comparisons use K=1, so they do not measure interactions between active policies and K greater than one.
+
+Together, Tables~\ref{tab:cases} and \ref{tab:policies} define 24 distinct first-pass h215 cases: eight in Stage A and sixteen additional cases in Stage B, or twelve per model mode. A case is one optimization of the complete DET or joint STO model. The nine STO scenarios share investment decisions within that model and do not constitute nine independent cases. P0/K=1 is counted once per mode even though it supports both stages. Additional repetitions remain conditional on the first h215 analysis.
+
+\Needspace{27\baselineskip}
+
+Table~\ref{tab:upscale_cases} describes the subsequent, conditional population progression. Its settings are selected from independently validated, empirically nondominated h215 solutions, separately for DET and STO. The selected objects are observed triples $(\beta,\alpha,K)$, not a new crossing of all possible control levels.
+
+\begin{table}[H]\centering\small
+\caption{Conditional up-scale after h215: selected nondominated configurations only}\label{tab:upscale_cases}
+\begin{tabular}{lP{55mm}P{40mm}P{23mm}}\toprule
+Population&Configuration source&Progression gate&Case count\\\midrule
+h300&Observed nondominated h215 triples, selected separately for DET/STO&Accepted h215 analysis and h300 input/model qualification&To be selected\\
+h400&The selected controls, with their identities retained&Review of h300 evidence and h400 qualification&Conditional\\
+h500&The selected controls, with their identities retained&Review of h400 evidence and h500 qualification&Conditional\\\bottomrule
+\end{tabular}
+\end{table}
+
+Table~\ref{tab:upscale_cases} is a progression rule rather than a scheduled factorial matrix. It fixes neither a larger-instance sample size nor its repetitions. A representative selection can cover low economic cost, high service and an intermediate trade-off when such points exist. Nondominance at h215 does not guarantee nondominance at a larger population; the resulting plans are validated and assessed again. If no usable h215 solutions are validated, selection pauses for diagnosis instead of promoting failed or incomplete observations. Any supplementary control combination or comparison outside this selected sample receives an explicit justification before execution.
 
 \subsection{Execution pipeline and temporal repetitions}
 
-Figure~\ref{fig:pipeline} shows how a case moves from input verification to agricultural analysis.
+Figure~\ref{fig:pipeline} follows an identified policy case through fresh native model construction, collection of decisions and computational measurements, and independent validation before agricultural analysis. The diagram places the numerical certificate and the physical interpretation in the same evidence chain.
+
 \begin{figure}[H]\centering
 \setlength{\unitlength}{1mm}
 \begin{picture}(158,31)
@@ -347,7 +384,8 @@ Figure~\ref{fig:pipeline} shows how a case moves from input verification to agri
 \end{picture}
 \caption{Case execution and analysis}\label{fig:pipeline}
 \end{figure}
-The sequence makes validation part of the evidence chain. A result reaches the economic--service analysis with its decisions, numerical certificate and physical checks attached. Operational and computational outcomes remain visible alongside successful target attainment.
+
+Figure~\ref{fig:pipeline} makes a validated complete plan the entry condition for cost--service analysis. Each retained result carries its decisions, numerical certificate and physical checks. Operational failures and computational censoring remain visible alongside successful target attainment, so the analysis represents the complete execution record.
 
 The initial matrix contains one observation per unique case. Additional repeated cases, contrasts and counts are selected after the first h215 interpretation and documented before a follow-up launch. P0/K=1 is reused as the same reference in each relevant comparison, rather than submitted again because it appears in both stages. Repeat selection retains matched reference contrasts and examines selection bias; repeating only favourable first-pass outcomes cannot establish general stability.
 
@@ -361,6 +399,8 @@ Each primary optimisation receives \code{TimeLimit=28800}, or eight hours of nat
 
 Application clocks distinguish the phases individually. The native limit controls the optimisation call; the job limit controls the scheduled process. The final record identifies which condition determined termination and preserves the observed native runtime, including any finalisation interval. Nested timing intervals are not added as independent phases.
 
+Table~\ref{tab:budget} translates the eight Stage A cases and sixteen additional Stage B cases into native-time and job-allocation ceilings. It also separates the fixed 24-case first pass from the optional balanced repetition scenario, whose additional observations are not part of the initial matrix.
+
 \begin{table}[H]\centering\small
 \caption{Initial h215 budget and an optional repetition scenario}\label{tab:budget}
 \begin{tabular}{P{56mm}rrrr}\toprule
@@ -372,6 +412,7 @@ Optional two further balanced passes&48&384&576&24\\
 Optional three-observation total&72&576&864&36\\\bottomrule
 \end{tabular}
 \end{table}
+
 Table~\ref{tab:budget} assumes one worker and continuous allocation at the full twelve-hour ceiling. It excludes queue delay, public qualification, scientific review and any separately authorised diagnostic run. No concurrent sessions are assumed. The fixed initial reservation is 55,296 GiB-hours, or 54 TiB-hours, of memory. CPU-hours depend on the scheduler's actual allocation, not the automatic Threads setting.
 
 For budget comparison only, three observations of every initial case would require 72 observations in all and at most 864 allocated hours. This is a balanced alternative with 48 additional observations, not the approved initial execution matrix. Its memory ceiling is 165,888 GiB-hours, or 162 TiB-hours. The actual repetition subset and its workload remain to be justified after the first pass.
@@ -391,6 +432,7 @@ Progression is governed by the gates in Section~\ref{sec:stages}. The twelve ser
 The computation uses the NPAD high-performance computing facility at the Federal University of Rio Grande do Norte. A scheduled job receives a defined processor and memory envelope on a compute node. A CPU is the general-purpose processor on that node; physical cores and logical processors describe its execution resources.
 
 The NPAD hardware documentation identifies Intel Xeon E5 nodes with 256 GB and 512 GB nominal RAM in the \code{intel-256} and \code{intel-512} partitions.\technical{NPAD hardware documentation}{https://npad.ufrn.br/npad/hardware} Table~\ref{tab:resources} defines the proposed use of these resource classes.
+
 \begin{table}[H]\centering\small
 \caption{Computational resource classes}\label{tab:resources}
 \begin{tabular}{P{31mm}P{45mm}P{70mm}}\toprule
@@ -400,7 +442,8 @@ Larger-memory&Potential intel-512 allocation sized from measured peaks&Separate 
 Matched verification&Selected cases repeated in the comparison class&Separates hardware/resource effects from policy and algorithm effects\\\bottomrule
 \end{tabular}
 \end{table}
-Nominal installed RAM and Slurm-allocatable memory are recorded separately. Current partition limits and allocation rules are verified when preparing the execution package. Any move beyond the 192 GiB reference requires a revised resource protocol and explicit execution authorisation. Cases using a different memory or hardware class retain that class in their identifiers and analysis; no automatic escalation follows a censored run.
+
+Table~\ref{tab:resources} defines the common comparison envelope and identifies extensions that require separate qualification. Nominal installed RAM and Slurm-allocatable memory are recorded separately. Current partition limits and allocation rules are verified when preparing the execution package. Any move beyond the 192 GiB reference requires a revised resource protocol and explicit execution authorisation. Cases using a different memory or hardware class retain that class in their identifiers and analysis; no automatic escalation follows a censored run.
 
 Memory management covers the Python input objects, native matrix, presolved model, search state, retained solutions and export buffers. Construction releases intermediate objects when their role is complete, and export uses bounded, sequential output operations. The measured simultaneous application peak provides evidence for the next case's allocation.
 
@@ -417,7 +460,8 @@ For a minimisation problem, a feasible incumbent supplies an upper bound on the 
 \end{equation}
 where $z_P$ is the incumbent objective and $z_D$ the global bound. A pair of zero bounds gives zero gap; a zero incumbent with a nonzero bound gives infinite relative gap. A run with a pending incumbent has an undefined incumbent-relative gap. The native status and both bounds accompany this quantity.
 
-Table~\ref{tab:quality} defines the quality milestones recorded within each run.
+Table~\ref{tab:quality} lists the four total-objective gap thresholds tracked within each run, from early usable quality to the reference terminal target. These are milestones on a single optimization trajectory, not four separately submitted experiments.
+
 \begin{table}[H]\centering\small
 \caption{Quality milestones}\label{tab:quality}
 \begin{tabular}{lll}\toprule
@@ -428,7 +472,8 @@ Q01&1\%&Tighter planning-quality milestone\\
 Q001&0.01\%&Reference terminal target\\\bottomrule
 \end{tabular}
 \end{table}
-These milestones refer to the complete penalised monetary objective. Agricultural service, economic expenditure and capacity exceedances are reported separately at retained solutions.
+
+Table~\ref{tab:quality} supports comparisons of quality attainment at more than one point in a run. These milestones refer to the complete penalised monetary objective. Agricultural service, economic expenditure and capacity exceedances are reported separately at retained solutions.
 
 For a threshold $\tau$, the recorded attainment time is
 \begin{equation}
@@ -523,7 +568,8 @@ In STO, first-stage investment is charged once and scenario-dependent changes ca
 
 A5 compares complete validated plans from the controlled policy cases. It examines how their flows, capacities, investments and shortages differ, and identifies the changes associated with improved domestic service. The comparison preserves the input and policy identities, allowing a benefit caused by a larger investment ceiling to be distinguished from a benefit caused by an export restriction.
 
-Table~\ref{tab:Aanalyses} connects these five analyses to their evidence and interpretation.
+Table~\ref{tab:Aanalyses} connects each A1--A5 question to its required physical or economic evidence. It shows how material accounting, supply allocation, penalty decomposition and admissible alternative plans contribute different parts of the explanation.
+
 \begin{table}[H]\centering\small
 \caption{Agricultural diagnostic analyses}\label{tab:Aanalyses}
 \begin{tabular}{P{14mm}P{43mm}P{49mm}P{37mm}}\toprule
@@ -535,7 +581,8 @@ A4&Could one more tonne be delivered?&An admissible path and all associated capa
 A5&Which planning changes improve service?&Matched policy solutions and full decision differences&Mechanisms behind alternative plans\\\bottomrule
 \end{tabular}
 \end{table}
-Together, these analyses turn a terminal objective value into an explanation of the planning solution. The marginal diagnosis is especially important when interpreting high shortage penalties.
+
+Table~\ref{tab:Aanalyses} prevents an objective subtotal from being treated as a physical explanation on its own. Together, these analyses turn a terminal objective value into an explanation of the planning solution. The marginal diagnosis is especially important when interpreting high shortage penalties.
 
 \subsection{Service and export indicators}
 
@@ -584,7 +631,10 @@ The scalar bound and total-objective gap accompany the frontier rather than beco
 
 The retained objective still minimises the complete monetary total in Equations~\ref{eq:detobj}--\ref{eq:stoobj}. Economic expenditure and achieved service are then used to analyse the resulting plans. Consequently, the empirical frontier characterises the validated plans actually obtained. A global economic--service frontier would additionally require an appropriate economic objective or an economic-optimality certificate for each service level. This distinction establishes the scientific scope of the reported trade-offs while preserving the approved objective.
 
-Figure~\ref{fig:frontier} illustrates the dominance rule without using experimental results.
+\Needspace{29\baselineskip}
+
+Figure~\ref{fig:frontier} illustrates economic expenditure on the vertical axis and achieved domestic service on the horizontal axis. The schematic contrasts the trade-off points A, B and C with point D, which offers less service at greater cost than B; it contains no experimental observations.
+
 \begin{figure}[H]\centering
 \setlength{\unitlength}{1mm}
 \begin{picture}(145,69)
@@ -601,15 +651,20 @@ Figure~\ref{fig:frontier} illustrates the dominance rule without using experimen
 \end{picture}
 \caption{Illustration of economic--service dominance}\label{fig:frontier}
 \end{figure}
-Plan B supplies more service at lower economic expenditure than D. Plans A, B and C illustrate a trade-off between increasing service and increasing expenditure. The joining lines guide the eye; they represent neither interpolation feasibility nor a certified continuous frontier.
+
+In Figure~\ref{fig:frontier}, Plan B supplies more service at lower economic expenditure than D. Plans A, B and C illustrate a trade-off between increasing service and increasing expenditure. The joining lines guide the eye; they represent neither interpolation feasibility nor a certified continuous frontier.
 
 \subsection{Selecting scientifically representative up-scale cases}
 
-The first-pass h215 frontiers and A1--A5 diagnosis determine the candidates for larger populations. Selection is made separately for DET and STO. It seeks validated, empirically nondominated low-economic-cost and high-service outcomes, with a meaningful intermediate trade-off when one exists. The selection record explains each case's scientific role, numerical quality and stability. A matched P0/K=1 anchor is retained for interpretation even if dominated, and is labelled as a reference outside the selected frontier sample. If already selected, it is counted once.
+The first-pass h215 frontiers and A1--A5 diagnosis determine the candidates for larger populations through Table~\ref{tab:upscale_cases}. Selection is made separately for DET and STO and draws from validated, empirically nondominated observations. It seeks low-economic-cost and high-service outcomes, with a meaningful intermediate trade-off when one exists. The record explains each selected case's scientific role, numerical quality and stability. P0/K=1 remains the shared h215 reference; it is not labelled nondominated when it is dominated. Any additional larger-population reference outside the selected nondominated sample is identified as a separate comparison and justified before execution, rather than silently added to the frontier sample.
 
-The same observed control triples are first evaluated at h300 after input and model qualification. The h300 findings then determine whether progression to h400, and subsequently h500, is informative and feasible within the approved envelope. A reference from historical STO observations does not qualify a new DET input automatically. Unobserved combinations of K greater than one and active policies are not introduced as if h215 had evaluated them.
+The selected observed control triples are first evaluated at h300 after input and model qualification. The h300 findings then determine whether progression to h400, and subsequently h500, is informative and feasible within the approved envelope. A reference from historical STO observations does not qualify a new DET input automatically. Unobserved combinations of K greater than one and active policies are not introduced as if h215 had evaluated them.
 
 Each progression gate reviews source and selected-graph identity, validated service/cost evidence, construction and export feasibility, time/memory censoring and a revised workload. Case counts and repetitions remain conditional until that review. A failed or censored case informs the scientific assessment; it does not trigger an automatic retry, larger-memory request or solver-parameter change.
+
+\Needspace{20\baselineskip}
+
+Figure~\ref{fig:staged} summarises the experimental order: the eight h215 capacity cases precede the sixteen additional policy cases, followed by validation, frontier/repetition review and selection of nondominated controls for larger populations. The arrows express conditional progression after evidence review, rather than an automatically released queue.
 
 \begin{figure}[H]\centering
 \setlength{\unitlength}{1mm}
@@ -617,13 +672,15 @@ Each progression gate reviews source and selected-graph identity, validated serv
 \put(0,7){\framebox(26,22){\shortstack{\small h215 A\\\small P0 with K\\\small 8 cases}}}
 \put(33,7){\framebox(26,22){\shortstack{\small h215 B\\\small P1--P8/K=1\\\small 16 new cases}}}
 \put(66,7){\framebox(26,22){\shortstack{\small Validate\\\small frontier and\\\small repetition review}}}
-\put(99,7){\framebox(26,22){\shortstack{\small Select cases\\\small and qualify\\\small each population}}}
+\put(99,7){\framebox(26,22){\shortstack{\small Select\\\small nondominated\\\small controls}}}
 \put(132,7){\framebox(26,22){\shortstack{\small h300\\\small then h400\\\small then h500}}}
 \put(26,18){\vector(1,0){7}}\put(59,18){\vector(1,0){7}}
 \put(92,18){\vector(1,0){7}}\put(125,18){\vector(1,0){7}}
 \end{picture}
 \caption{Staged h215 evidence and conditional population growth}\label{fig:staged}
 \end{figure}
+
+Figure~\ref{fig:staged} keeps the h215 capacity and policy evidence separate before it is used for selection. A configuration advances because its validated outcome is nondominated and scientifically informative, not because it belongs to a preset larger-instance grid. The resulting larger plans must be validated again, and their own cost--service position can change with population size.
 
 \subsection{Quality, uncertainty and computational effort}
 
@@ -640,6 +697,8 @@ Selected computational treatments are assessed using matched inputs, policy sett
 
 The programme advances through explicit evidence gates. Data and native-model qualification establish the foundation; h215 develops the agricultural explanation; the selected larger cases then assess its transfer and computational requirements. Calendar dates depend on authorisation, queue access and licence validity. The table therefore states progression conditions rather than promising a fixed 24-week completion.
 
+Table~\ref{tab:sprints} aligns the research stages with their workload or progression condition and the evidence needed to move forward. It distinguishes the fixed initial h215 cases from conditional repetitions, diagnostic treatments and larger-population comparisons.
+
 \begin{table}[H]\centering\small
 \caption{Research stages, workload and progression gates}\label{tab:sprints}
 \begin{tabular}{P{12mm}P{32mm}P{54mm}P{46mm}}\toprule
@@ -654,7 +713,8 @@ S4&After h215 review; case counts unset&Select representative observed controls;
 S5&After accepted analyses&Consolidate reproducibility materials and scientific reporting&Traceable tables/figures, reviewed conclusions and retained evidence\\\bottomrule
 \end{tabular}
 \end{table}
-The first h215 pass has a twelve-day serial allocation ceiling, excluding queue delays, qualification and review. Repetitions and up-scale add only their later-approved workload. The optional balanced repetition example in Table~\ref{tab:budget} adds up to 24 serial days and is not a fixed campaign commitment. Initial validated findings can support an interim coauthor meeting, but do not constitute a completed repeated campaign.
+
+Table~\ref{tab:sprints} ties progression to accepted evidence rather than elapsed calendar time alone. The first h215 pass has a twelve-day serial allocation ceiling, excluding queue delays, qualification and review. Repetitions and up-scale add only their later-approved workload. The optional balanced repetition example in Table~\ref{tab:budget} adds up to 24 serial days and is not a fixed campaign commitment. Initial validated findings can support an interim coauthor meeting, but do not constitute a completed repeated campaign.
 
 Every stage ends with an interpretable product: a qualified reference, a physical/economic explanation, a justified computational treatment when needed, or a documented larger-instance comparison. Before any execution, verify the licence entitlement for the intended window; no extension beyond a previously reported expiry is assumed. Neither the approved scientific design nor this document's generation authorises a scheduler submission or automatic retry.
 
@@ -669,7 +729,8 @@ Workbook edition 2 uses presentation schema \code{\nolinkurl{agrologistic-workbo
 
 The workbook is derived from the historical model inputs and the parameterisation of \citet{rosa2026thesis}. It includes observed source information, derived values and reference estimates used in the agricultural formulation. The provenance columns identify those origins. This classification makes the effective reference auditable while providing a separate place for future empirical calibration.
 
-Table~\ref{tab:sheets} describes the workbook's sheets and the number of populated data rows in the retained reference file.
+Table~\ref{tab:sheets} describes each effective-baseline worksheet, its populated record count and its role in the data contract. It gives readers an inspection guide to the retained workbook without reproducing every parameter value.
+
 \begin{longtable}{P{34mm}rP{103mm}}
 \caption{Effective-baseline workbook structure}\label{tab:sheets}\\
 \toprule Sheet&Rows&Purpose\\\midrule\endfirsthead
@@ -695,13 +756,15 @@ NetworkReferences&4&References to frozen population-specific networks\\
 Transformations&8&Declared transformations and investment-cost interpretation\\
 ParameterTemplate&1&Neutral template for an identified experimental transformation\\\bottomrule
 \end{longtable}
-Repeated values across scopes are intentional when the same effective coefficient applies to more than one retained model. A row count describes workbook records rather than the number of distinct agricultural entities. The reference contains h215 DET/W and STO/W, and h300--h500 STO/W. Larger DET instances receive their own data and construction qualification before they enter the proposed campaign.
+
+Table~\ref{tab:sheets} describes records and roles, so its row counts must be interpreted at their stated scope. Repeated values across scopes are intentional when the same effective coefficient applies to more than one retained model. A row count describes workbook records rather than the number of distinct agricultural entities. The reference contains h215 DET/W and STO/W, and h300--h500 STO/W. Larger DET instances receive their own data and construction qualification before they enter the proposed campaign.
 
 \subsection{How to trace a parameter}
 
 The parameter sheets use a common structure: field name, indexed key, value, unit, applicable scopes, source identities, transformation, origin classification and usage classification. In these sheets the value is in column C and its unit is in column D. The Configurations sheet instead stores a scope, a parameter name and a JSON-encoded value.
 
-Table~\ref{tab:locators} gives concrete locations in the retained workbook. A location identifies a particular reference record; a complete parameter uses all matching indexed rows.
+Table~\ref{tab:locators} gives specific worksheet/cell or field locations for capacities, costs, penalties and other reference parameters. Each locator identifies a particular record or indexed field; reconstructing a full parameter requires all of its applicable rows.
+
 \begin{longtable}{P{37mm}P{38mm}P{67mm}}
 \caption{Example parameter locations}\label{tab:locators}\\
 \toprule Parameter&Reference location&Meaning and interpretation\\\midrule\endfirsthead
@@ -722,7 +785,8 @@ Storage tariff&Costs, \code{storage\_tariff} rows&45 BRL/(t$\cdot$period) for so
 Period duration&Configurations, \code{days\_per\_period}&30 operating days per monthly period\\
 Network filter&Configurations, \code{pareto\_fraction}&0.20, used in the historical edge-selection heuristic\\\bottomrule
 \end{longtable}
-The candidate and expansion examples refer to different facility records. Their values illustrate where K acts; they supply neither a uniform national ceiling nor a recommended physical capacity for every facility.
+
+Table~\ref{tab:locators} provides traceable examples rather than a new calibration. The candidate and expansion examples refer to different facility records. Their values illustrate where K acts; they supply neither a uniform national ceiling nor a recommended physical capacity for every facility.
 
 \subsection{Dimensions and coupled investment effects}
 
@@ -757,7 +821,8 @@ The population sequence is nested in facility membership. Its selected arcs are 
 
 The historical procedure is recoverable from the retained implementation and the effective-baseline configuration. The code separates the initial distance filter from the connectivity repair. The functions \code{select\_routes} and \code{\_select\_thesis\_pareto\_routes} implement the source--product grouping and the 20\% cutoff.\technical{Versioned route-selection implementation}{https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/2391137cdbe4f86cdb784f9e4e545944fac2a688/src/logic/route_filtering.py} The function \code{apply\_connectivity\_repair} implements the subsequent directed-path checks and additions.\technical{Versioned connectivity-repair implementation}{https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/2391137cdbe4f86cdb784f9e4e545944fac2a688/src/logic/route_connectivity.py}
 
-Table~\ref{tab:networkstages} provides the reproducible sequence.
+Table~\ref{tab:networkstages} describes the ordered steps for selecting eligible directed arcs, applying the historical 80/20 distance rule, checking reachability and recording any repair. It separates the selection algorithm from the frozen graph evidence used by an experiment.
+
 \begin{longtable}{P{16mm}P{42mm}P{86mm}}
 \caption{Network selection and connectivity checks}\label{tab:networkstages}\\
 \toprule Step&Operation&Recorded rule\\\midrule\endfirsthead
@@ -771,9 +836,11 @@ Table~\ref{tab:networkstages} provides the reproducible sequence.
 7&Check the export policy&Require a reachable export sink per active product under \code{one\_sink\_per\_product}; stronger all-sink coverage is a distinct setting.\\
 8&Freeze the resulting graph&Save selected product-indexed routes, repair subsets, policy identity and route/coverage diagnostics.\\\bottomrule
 \end{longtable}
-The procedure operates on real eligible routes and their retained distances. A path can contain OW, several WW links and a final WD link. The repair is a sequential coverage procedure: its path ordering is deterministic and parsimonious, while the resulting network is not claimed to be a globally minimum repair network.
+
+Table~\ref{tab:networkstages} explains how an admissible path can survive network sparsification. The procedure operates on real eligible routes and their retained distances. A path can contain OW, several WW links and a final WD link. The repair is a sequential coverage procedure: its path ordering is deterministic and parsimonious, while the resulting network is not claimed to be a globally minimum repair network.
 
 There are two important levels of evidence. The configuration specifies which procedure applies. The frozen route sets and repair subsets describe the graph that was actually retained. Table~\ref{tab:arcledger} gives those recorded counts in the effective reference.
+
 \begin{table}[H]\centering\small
 \caption{Frozen product-indexed arc ledger}\label{tab:arcledger}
 \begin{tabular}{lrrrrr}\toprule
@@ -784,7 +851,8 @@ h400&5,920&6,400&64,000&76,320&0\\
 h500&7,400&8,000&100,000&115,400&0\\\bottomrule
 \end{tabular}
 \end{table}
-The h215 DET and STO scopes retain the same graph. All four reference populations have empty recorded repair subsets. This observation documents their frozen ledger; it does not imply that every possible origin--destination pair was retained. Reproduction verifies the actual paths and policy coverage against the frozen graph.
+
+Table~\ref{tab:arcledger} reports the graph that was retained, not the set of arcs carrying positive solution flow. The h215 DET and STO scopes retain the same graph. All four reference populations have empty recorded repair subsets. This observation documents their frozen ledger; it does not imply that every possible origin--destination pair was retained. Reproduction verifies the actual paths and policy coverage against the frozen graph.
 
 A separate graph traversal of the frozen effective tables confirms that all 54 active domestic destination--product pairs and all 20 active export destination--product pairs are reachable from some active source of the same product in each initial population. In h215, one domestic pair requires a shortest path with three edges, including a warehouse-to-warehouse hop; the remaining 53 pairs have two-edge paths. In h300, h400 and h500, all 54 domestic pairs have a two-edge path. These are structural reachability results aggregated over the applicable positive supply/demand entries, with capacity and timing feasibility assessed separately.
 
@@ -804,7 +872,8 @@ The reconciliation proceeds from registry identity to exact ordered coordinates,
 
 The historical OSRM client accepts a bounded negative-distance round-off tolerance of 1 metre and maps values within $[-1,0)$ metres to an effective zero on reading. Larger negative values and non-finite values are invalid. The raw cached value remains preserved alongside the normalised value and the rule identity.\technical{Versioned OSRM distance validation and normalisation}{https://github.com/unb-lamfo-or-ai-hpc/model-agrologistic/blob/2391137cdbe4f86cdb784f9e4e545944fac2a688/src/logic/osrm.py} The tolerance documents a numerical interpretation; geographical proximity alone supplies no replacement distance.
 
-Table~\ref{tab:distancestates} distinguishes the states required for reconciliation.
+Table~\ref{tab:distancestates} distinguishes recorded distances, selected or filtered arcs, unavailable pairs and positive-flow solution arcs. These categories serve different roles in data reconciliation and must remain distinguishable in the computational inputs.
+
 \begin{table}[H]\centering\small
 \caption{Distance and arc states}\label{tab:distancestates}
 \begin{tabular}{P{43mm}P{100mm}}\toprule
@@ -818,7 +887,8 @@ Absent selected arc&A route that does not belong to this case's admissible graph
 Positive-flow arc&A selected arc used by the returned planning solution\\\bottomrule
 \end{tabular}
 \end{table}
-An intentionally filtered arc explains graph sparsity. An unavailable cache pair is a separate reconciliation question. Neither state is encoded as a zero distance. This distinction preserves both the historical network policy and the physical meaning of transport cost.
+
+Table~\ref{tab:distancestates} keeps network selection, missing data and solution use separate. An intentionally filtered arc explains graph sparsity. An unavailable cache pair is a separate reconciliation question. Neither state is encoded as a zero distance. This distinction preserves both the historical network policy and the physical meaning of transport cost.
 
 \section{Model construction and independent qualification}
 \label{app:qualification}
@@ -853,7 +923,8 @@ The daily handling gains in Equation~\ref{eq:handling} are converted to period c
 
 The qualification checks the indexed parameters and ordered sets before examining rows and columns. It then compares variable domains, coefficients, bounds and objective terms for corresponding representations. Native indicators and a bounded linear reformulation require algebraic equivalence appropriate to their representations.
 
-Table~\ref{tab:qualification} states the acceptance evidence for the principal transformations.
+Table~\ref{tab:qualification} identifies the construction and independent-validation evidence required for the neutral case, K transformation, service/export policies and their costs. The checks establish what must agree before an optimized result is interpreted.
+
 \begin{table}[H]\centering\small
 \caption{Qualification of the model and policy controls}\label{tab:qualification}
 \begin{tabular}{P{36mm}P{107mm}}\toprule
@@ -868,7 +939,8 @@ Cost accounting&Investment, transport, holding and each penalty independently re
 Numerical precision&Residuals and tolerances retained in original units, with display rounding separate\\\bottomrule
 \end{tabular}
 \end{table}
-A discrepancy is reported at its first differing field or algebraic element, with both identities retained. Agreement of data and model construction is distinguished from reproduction of an optimized numerical result.
+
+Table~\ref{tab:qualification} makes discrepancies a qualification issue before they become a result interpretation. A discrepancy is reported at its first differing field or algebraic element, with both identities retained. Agreement of data and model construction is distinguished from reproduction of an optimized numerical result.
 
 \section{Reformulation, tuning and computational diagnosis}
 \label{app:diagnosis}
@@ -881,7 +953,8 @@ Model statistics describe the original and presolved rows, columns, nonzeros and
 
 Solving a MIP at the root is compatible with a difficult initial relaxation and a strong bound. A large node count is therefore neither a requirement for a meaningful model nor a sufficient measure of computational difficulty. The agricultural explanation examines the continuous flow structure, investment choices and penalties together with the presolve and root evidence.
 
-Table~\ref{tab:diagnosistreatment} links observable patterns to candidate investigations.
+Table~\ref{tab:diagnosistreatment} relates observable solver-log or resource patterns to a diagnostic question and a possible follow-up treatment. Its entries are conditional investigative options, rather than changes activated in the automatic reference.
+
 \begin{table}[H]\centering\small
 \caption{Diagnosis and candidate computational treatments}\label{tab:diagnosistreatment}
 \begin{tabular}{P{40mm}P{51mm}P{52mm}}\toprule
@@ -894,7 +967,8 @@ Numerical warnings&Are units, ranges or redundant restrictions causing difficult
 Time limit with useful incumbent&What quality and service became available?&Quality milestones, trajectories and physical-plan interpretation\\\bottomrule
 \end{tabular}
 \end{table}
-The table defines diagnostic options. Each selected treatment receives a stated hypothesis, a matched reference case and an acceptance rule.
+
+Table~\ref{tab:diagnosistreatment} supports a diagnosis-led decision about whether a computational intervention is warranted. The table defines diagnostic options. Each selected treatment receives a stated hypothesis, a matched reference case and an acceptance rule.
 
 \subsection{Equivalent formulations and valid tightening}
 
@@ -936,7 +1010,8 @@ The next methodological refinement, if a certified economic frontier becomes ess
 
 The reproducibility package links the input reference, the case transformations, model construction, solver trajectory and independent validation. Its purpose is to let a reader identify exactly what was evaluated and reconstruct the reported tables from retained evidence.
 
-Table~\ref{tab:package} describes the evidence layers.
+Table~\ref{tab:package} organises the reproducibility evidence from input identity and case definition to native execution, full decisions, independent validation and analysis. Each layer records a different link between the experiment and a reported scientific conclusion.
+
 \begin{table}[H]\centering\small
 \caption{Reproducibility evidence layers}\label{tab:package}
 \begin{tabular}{P{34mm}P{109mm}}\toprule
@@ -951,7 +1026,8 @@ Validation evidence&Recomputed balances, policies, capacities, costs and residua
 Analysis evidence&Versioned parsers, complete result tables, frontier membership and figure inputs\\\bottomrule
 \end{tabular}
 \end{table}
-The accompanying editable package contains this plan's LaTeX source, the two v2 inspection workbooks and their SHA-256 file manifest. The v2 presentation retains the qualified effective reference values and full accepted registry. Historical v1 originals and their identities remain in the provenance record. Subsequent data corrections receive a new version and a documented reconciliation.
+
+Table~\ref{tab:package} shows why model inputs and terminal solver logs alone do not constitute the complete scientific evidence. The accompanying editable package contains this plan's LaTeX source, the two v2 inspection workbooks and their SHA-256 file manifest. The v2 presentation retains the qualified effective reference values and full accepted registry. Historical v1 originals and their identities remain in the provenance record. Subsequent data corrections receive a new version and a documented reconciliation.
 
 Public release is organised by source-specific redistribution permissions. Code, documentation, parameter definitions and eligible aggregate results can be separated from restricted facility-level or flow data. A dataset manifest states which files are available, which remain in controlled custody and how authorised researchers can identify the corresponding evidence.
 

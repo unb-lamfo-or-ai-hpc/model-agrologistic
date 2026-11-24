@@ -39,10 +39,13 @@
       "registry_columns": 32
     }
   },
-  "plan_revision": "Rev3",
+  "plan_revision": "Rev4",
   "design_approval_date": "2026-11-24",
   "experimental_design": "24 initial h215 cases: A=8, B=16; reference reused",
   "repetitions_and_larger_cases": "Conditional on h215 evidence; not fixed",
   "pr": 166,
-  "merge_authorized": false
+  "merge_authorized": false,
+  "editorial_revision_date": "2026-11-24",
+  "editorial_approval_pending": true,
+  "scientific_design_changed": false
 }

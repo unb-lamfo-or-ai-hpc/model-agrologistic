@@ -1,61 +1,52 @@
-# Agrologistic MVP3.0 methodological plan - English EN, Rev3
+# Agrologistic MVP3.0 methodological plan - English EN, Rev4
 
-Scientific reference: 23 November 2026. Approved staged-design revision:
-24 November 2026. Prepared in Draft PR #166; no merge or HPC execution is authorised.
+Scientific design approved on 24 November 2026; Rev4 editorial review prepared
+on the same date for researcher approval. PRs #164 and #166 remain Draft.
 
-The GitHub source is `plan.tex` in this directory; the editable package uses
-`main.tex`. Rev3 replaces the earlier experimental-design edition within
-Draft PR #166. The earlier edition remains in Git history.
+The GitHub source is `plan.tex`; the delivered editable package uses `main.tex`.
+Use `python audit_display_context.py plan.tex` to repeat the source-context audit
+in this directory. Earlier editions and their QA remain historical evidence.
 
-## Approved research design
+## Experimental order
 
-Stage A evaluates P0 with beta/alpha disabled at K={1,1.25,1.5,2} in DET and STO:
-8 cases. Stage B adds P1-P8 at K=1 in both modes: 16 cases. P0/K=1 is reused,
-giving 24 distinct initial observations. Repetitions and larger-population cases
-are selected after the initial h215 analysis. The balanced 72-observation example
-is an optional budget calculation only. The fixed initial ceiling is 192 native
-hours and 288 allocation hours at 192 GiB, excluding queue and qualification.
+1. Table 6: Stage A, h215 only, K={1,1.25,1.5,2}, beta/alpha disabled,
+   DET and STO: 8 cases.
+2. Table 7: Stage B, h215 only, K=1, profiles P1-P8, DET and STO: 16 additional
+   cases. P0/K=1 is reused from A, giving 24 distinct initial observations.
+3. Table 8: conditional h300, h400 and h500 cases, selected from validated
+   nondominated h215 configurations separately for DET/STO. Counts and
+   repetitions remain conditional; no new factorial crossing is prescribed.
 
-Native Gurobi 14, Method=-1, Threads=0, W topology, the scalar objective and the
-approved beta/alpha/K controls are retained. The plan examines validated empirical
-economic-cost/domestic-service frontiers separately for DET/STO. It contains no
-Benders or thread-speedup study. The abstract, research question/objectives,
-original displayed model expressions and bibliography remain unchanged.
+Every table and figure has an adjacent paragraph introducing its contents and
+one or more paragraphs interpreting it. The 24-display audit is in `review/`.
+The initial resource ceiling remains 192 native hours and 288 allocation hours
+at 192 GiB, excluding queue and qualification. The 72-observation example is only
+an optional repetition budget. Native Gurobi 14 automatic settings, W topology,
+the scalar objective and beta/alpha/K semantics are retained. No Benders,
+GPU or thread-speedup experiment is introduced.
 
-## Contents and reproduction
+## Editable project and verification
 
-- `main.tex`: complete editable LaTeX source. Figures use native LaTeX drawing;
-  the bibliography is embedded in the source, so no external graphics/BibTeX
-  file is required.
-- The revised PDF is included at the package root.
-- `appendices/`: the two unchanged v2 XLSX inspection workbooks.
-- `workbook-versions.json`: workbook identities and edition/schema distinction.
-- `review/`: current QA, approved design, solver-free tests and retained historical
-  reviews. Earlier QA files describe their own editions, not Rev3 acceptance.
-- `SHA256SUMS`: SHA-256 of every other package member.
-- `build.py`: optional standard-library helper for document compilation only.
+`main.tex` is the complete editable source, including native LaTeX figures and
+the embedded bibliography. `appendices/` contains the two unchanged v2 workbooks.
+`workbook-versions.json` distinguishes workbook edition 2 from the compatible v1
+computational schema. The registry is an inspection/reconciliation reference,
+not a second implicit source of parameter overrides. Full source/SQLite custody
+acceptance remains a separate gate in Draft PR #164.
 
-Using an existing TeX distribution with the packages declared in the preamble,
-compile `main.tex` three times:
+The revised PDF is at the package root. `review/` contains current QA/context
+audits and earlier editions/reviews for provenance. Earlier QA files refer to
+their own versions. `SHA256SUMS` covers every other archive member.
+
+Using an existing TeX installation, compile `main.tex` three times with:
 
 ```text
 pdflatex -no-shell-escape -interaction=nonstopmode -halt-on-error main.tex
 ```
 
-Alternatively: `python build.py --pdflatex <path-to-existing-pdflatex>`.
-No package installation, environment modification, solver or HPC job is involved.
-
-## Data identity and limits
-
-The active files are `agrologistic_effective_baseline_v2.xlsx` and
-`agrologistic_warehouse_registry_v2.xlsx`. Their exact hashes are in
-`workbook-versions.json` and `SHA256SUMS`. Workbook edition 2 retains the compatible
-computational schema `agrologistic-effective-baseline-v1`. The effective workbook
-supplies the normalised ModelData bundle; the registry is an inspection and
-reconciliation reference rather than a second implicit override source.
-
-These local review attachments are not a newly published dataset. Full source
-and SQLite custody acceptance remains a separate gate in Draft PR #164.
-The source, protocols and checks are documented in GitHub; PDF/XLSX/ZIP review
-attachments are delivered locally. Original workbooks, PDFs and scientific
-results are preserved. Neither PR #164 nor PR #166 is merged by this revision.
+Alternatively use `python build.py --pdflatex <existing-executable>`.
+The standard-library-only `review/audit_display_context.py main.tex` checks
+display references and adjacent prose. Human review remains necessary to assess
+the quality of the explanations. The PDF and workbooks are local review
+deliverables, not a newly published dataset. No solver, job, installation,
+shared-environment change or merge is part of this revision.
