@@ -1,0 +1,20 @@
+{
+  "date": "2026-11-23",
+  "authorized_scope": "Historical-file compression, backed-up conditional caches and redundant disposable source/download copies only",
+  "counts": {
+    "archive": 102256,
+    "cache": 338,
+    "duplicate": 8111,
+    "keep": 2597
+  },
+  "logical_bytes": {
+    "cache": 1849971,
+    "duplicate": 89051300,
+    "archive": 16271509842,
+    "keep": 68393029
+  },
+  "control_rows": 11834,
+  "database_guards_omitted": 2,
+  "deletion_of_scientific_originals_claims_inputs_osrm": false,
+  "expected_deletions_not_guaranteed_live_guards_apply": true
+}

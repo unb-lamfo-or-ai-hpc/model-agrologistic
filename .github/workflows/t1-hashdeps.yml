@@ -1,0 +1,37 @@
+name: T1 hash and dependency controls without solver
+on:
+  pull_request:
+    paths:
+      - scripts/t1/verify_hash_dependencies.py
+      - scripts/t1/npad_t1_hashdeps.sh
+      - tests/test_t1_hashdeps_preparation.py
+      - .github/workflows/t1-hashdeps.yml
+permissions:
+  contents: read
+jobs:
+  readonly-controls:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Check operator shell syntax without execution
+        run: bash -n scripts/t1/npad_t1_hashdeps.sh
+      - name: Standard-library controls and real Linux no-follow kernel check
+        run: python -B -I -S -m unittest discover -s tests -p test_t1_hashdeps_preparation.py -v
+      - name: Retain scientific implementation, inputs and manuscript bytes
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          git diff --exit-code "$BASE_SHA" "$HEAD_SHA" -- \
+            src/logic data manuscript \
+            scripts/gurobi14_h215_compat.py scripts/h300_gurobi_root_campaign.py

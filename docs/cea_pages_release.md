@@ -1,3 +1,7 @@
+> Historical guide. For the approved author-reviewed MVP2 edition and the current
+> main/Pages sequence, use [the 20 November publication plan](mvp2_main_pages_promotion_20261120.md).
+> Its frozen LaTeX pipeline supersedes the Quarto publication route described below.
+
 # Reviewed Quarto Pages publication — 2 November 2026
 
 PR144 merged at50a77a7527541a9f00769928164dc71457dbc38c. PR148's finite graph

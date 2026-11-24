@@ -34,10 +34,11 @@ CONTROL_PATHS = {
 }
 
 
-def classify(paths):
+def classify(paths, *, gurobi14_metadata_verified=False):
     paths = sorted(set(paths))
     outside = [p for p in paths if not (
         p in RUNTIME_PATHS or p in CONTROL_PATHS or p.startswith("docs/")
+        or (p == "pyproject.toml" and gurobi14_metadata_verified)
     )]
     return {"data_only": bool(paths) and not outside,
             "changed_paths": paths, "outside_data_scope": outside}
@@ -55,13 +56,37 @@ def changed_paths(base, head, *, cwd=None):
     return [p.decode("utf-8") for p in result.stdout.split(b"\0") if p]
 
 
+def gurobi14_dependency_only(before, after):
+    """Permit exactly the four approved upper-bound edits and no other bytes."""
+    old = '"gurobipy>=13.0.2,<14"'
+    new = '"gurobipy>=13.0.2,<15"'
+    return before.count(old) == 4 and after.count(new) == 4 and before.replace(old, new) == after
+
+
+def dependency_scope_verified(base, head):
+    """Read the two tracked metadata blobs before deciding the CI route."""
+    contents = [
+        subprocess.run(
+            ["git", "show", f"{ref}:pyproject.toml"],
+            check=True, capture_output=True, text=True,
+        ).stdout
+        for ref in (base, head)
+    ]
+    return gurobi14_dependency_only(*contents)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--base", required=True)
     parser.add_argument("--head", required=True)
     parser.add_argument("--github-output")
     args = parser.parse_args()
-    result = classify(changed_paths(args.base, args.head))
+    paths = changed_paths(args.base, args.head)
+    metadata_verified = (
+        "pyproject.toml" in paths and dependency_scope_verified(args.base, args.head)
+    )
+    result = classify(paths, gurobi14_metadata_verified=metadata_verified)
+    result["gurobi14_metadata_verified"] = metadata_verified
     if args.github_output:
         with Path(args.github_output).open("a", encoding="utf-8") as f:
             f.write(f"data_only={str(result['data_only']).lower()}\n")

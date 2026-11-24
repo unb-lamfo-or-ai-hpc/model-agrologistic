@@ -1,0 +1,72 @@
+{
+  "schema_version": "npad-t1-final-closeout-audited-v1",
+  "reviewed_on": "2026-11-23",
+  "decision": "ACCEPT_BOUNDED_T1_FILE_CLEANUP_CLOSEOUT",
+  "archive": {
+    "name": "reused-backup-cleanup-reports.tar.gz",
+    "sha256": "4988beeeaa0e1fcc7666b2155f5ee45da083ec1791b34d24ffb99c4c8e2119c8",
+    "sidecar_matches": true,
+    "safe_member_checks": true,
+    "internal_manifest_entries_verified": 14
+  },
+  "operator_log_sha256": "04f6059f8077ef7946e380b5857a1116d26538ef26df4dd856ca69b32d7cdec1",
+  "qualified_executable_source": "6118a2613584792af8e8592d589298fab93e04e6",
+  "source_sha256": {
+    "resume_t1_verified_cleanup": "55bfd347be7c9d7ae89f5fa82d93ac16f6cb1f33d5f431d11f89d636617695cd",
+    "authorized_t1_cleanup": "1dfb3d3d611bc804a1a5f9718ca86889f4b8299650b5d3b61d7048cde248fb9a",
+    "inspect_t1_cleanup_retention": "5d751ac1fd0767335bd28397de1bfe17205f95f05169c00e408968d163679756"
+  },
+  "journal": {
+    "events": 16898,
+    "unlink_intents": 8449,
+    "confirmed_unlinked": 8449,
+    "unique_target_ids": 8449,
+    "intent_result_pairs_match_original_selection": true,
+    "cache_files": 338,
+    "disposable_duplicate_files": 8111,
+    "logical_bytes_unlinked": 90901271,
+    "retained": 0,
+    "uncertain_outcomes": 0,
+    "unprocessed": 0,
+    "keepers_disjoint_from_removal": true,
+    "keeper_hashes_match_targets": true
+  },
+  "backup": {
+    "sha256": "d093e7defbca502ccc3c7e27a827f6baab13c1bdf14370cc9fca3133c7df1dd0",
+    "members": 110705,
+    "archive_bytes": 2088818486,
+    "original_source_logical_bytes": 16362411113,
+    "original_independent_member_hash_check": true,
+    "current_whole_archive_hash_check_on_npad": true,
+    "reuse_receipt_verified_locally": true,
+    "new_archive_created": false,
+    "scope": "Listed historical regular files; not a complete filesystem or SQLite snapshot"
+  },
+  "checkpoints": {
+    "snapshots": 10,
+    "pruning_checkpoints_audited": 9,
+    "unknown_processes_in_governing_classifications": 0,
+    "control_omission_counts_reconciled": true,
+    "original_claims_and_receipts_preserved": true
+  },
+  "proof_scope": "Independent local audit of original report archive, hash-identified custody chain, journal, source/keeper records and backup-reuse receipt; not a new live NPAD filesystem inventory",
+  "physical_free_space_gain_measured": false,
+  "private_path_or_pid_tables_published": false,
+  "source_qualification": {
+    "head": "6118a2613584792af8e8592d589298fab93e04e6",
+    "successful_workflows": 8,
+    "dedicated_linux_controls": 36,
+    "failures": 0,
+    "skips": 0
+  },
+  "preservation": {
+    "scientific_models_inputs_results_or_manuscripts_changed": false,
+    "shared_environment_changed": false,
+    "new_hpc_jobs": 0,
+    "agent_npad_execution": false,
+    "merge_performed": false,
+    "pr159": "Draft",
+    "pr163": "Draft pending researcher merge approval"
+  },
+  "next": "Document-only final-head CI, explicit merge approval, then separate T2 XLSX/OSRM reconciliation"
+}

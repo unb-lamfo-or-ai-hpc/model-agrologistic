@@ -7,3 +7,6 @@
 /figures/runtime_memory_comparison.pdf -text
 /figures/human_ai_workflow.svg -text
 /supplement/appendix_e_paired_h300_index.json -text
+
+# Frozen reviewed dependencies must never receive text normalization.
+/author-review/publication-assets.zip binary

@@ -1,0 +1,91 @@
+{
+  "schema": "t1-cleanup-reports-independently-audited-v1",
+  "date": "2026-11-23",
+  "archive": {
+    "name": "cleanup-reports.tar.gz",
+    "bytes": 6351997,
+    "sha256": "29d5df4f4c65a1b92219a27e773e04e67790782692d5eabc5abf88eb6ada87a6",
+    "sidecar_matches": true,
+    "internal_manifest_entries_verified": 17,
+    "safe_member_checks_passed": true
+  },
+  "actions": {
+    "retained": 8449,
+    "cache_unlinked": 0,
+    "duplicate_unlinked": 0,
+    "unlink_intents": 0,
+    "logical_bytes_unlinked": 0,
+    "ids_match_planned_targets": true,
+    "reason": "Observed process dependency"
+  },
+  "backup_receipt": {
+    "sha256": "d093e7defbca502ccc3c7e27a827f6baab13c1bdf14370cc9fca3133c7df1dd0",
+    "members": 110705,
+    "source_logical_bytes": 16362411113,
+    "archive_bytes": 2088818486,
+    "member_hash_check_reported": true,
+    "review_scope": "Backup receipt independently verified as part of report archive; actual large backup bytes remain on NPAD and have not been rehashed here"
+  },
+  "diagnosis": {
+    "empty_process_reference_in_all_nine_prune_snapshots": true,
+    "all_retained_due_first_process_reference_guard": true,
+    "normalized_historical_observed_process_matches": {
+      "cache": 0,
+      "duplicate": 0
+    },
+    "historical_control_or_symlink_prefix_matches": {
+      "cache": 104,
+      "duplicate": 0
+    },
+    "global_duplicate_blockers_after_empty_reference_fix": {
+      "permission_errors": 30,
+      "distinct_pids": 10,
+      "non_test_control_omissions": 8
+    }
+  },
+  "omissions": {
+    "total": 14,
+    "decode_errors": 14,
+    "non_test": 8,
+    "test_paths": 6,
+    "non_test_prior_inventory_bytes_each": 0,
+    "non_test_scope": "Four copies of two empty original outputs from failed compatibility job 2278573",
+    "locally_preserved_original_package_sha256": "a79e0872b4d5bcede1f7094a02096dba8ba917598f13d503cfc0dae8f5f50988",
+    "actual_zero_byte_members_checked_in_local_original_package": 4,
+    "current_npad_content_confirmation": "pending read-only probe"
+  },
+  "process_gaps": {
+    "reason": "PermissionError",
+    "cwd": 10,
+    "exe": 10,
+    "fd_directory": 10,
+    "pid_metadata_required": true,
+    "credentials_arguments_or_environment_collection": false,
+    "no_elevation_proposed": true
+  },
+  "correction": {
+    "canonical_typed_process_references": true,
+    "invalid_or_root_prefix_no_longer_matches_all": true,
+    "specific_inventory_references_preserved": true,
+    "withheld_status_explicit": true,
+    "implicit_apply_disabled": true,
+    "old_npad_bootstrap_must_not_be_repeated": true
+  },
+  "next_step": "Pinned read-only probe of existing report and original error PIDs/controls only. No eligibility clearance or mutation follows automatically.",
+  "qualification": {
+    "local_ruff": "passed",
+    "windows_portable_controls_passed": 18,
+    "linux_kernel_cases_deferred_to_ci": 6,
+    "total_linux_tests_expected": 24,
+    "scientific_files_or_environments_changed": false
+  },
+  "preservation": {
+    "pr159": "Draft",
+    "pr163": "Draft",
+    "new_jobs": 0,
+    "merge": false,
+    "no_new_backup": true,
+    "no_source_deletion": true,
+    "private_paths_and_pid_tables_published": false
+  }
+}

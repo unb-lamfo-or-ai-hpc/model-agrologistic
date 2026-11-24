@@ -60,7 +60,7 @@ reviewed the proposed changes and decided which ones to adopt.
 The numerical tools had distinct roles. Python organized the data and
 calculations. The native Gurobi implementation and the common Pyomo
 formulation provided the mathematical-programming pipelines evaluated here.
-Pyomo's APPSI interfaces connected that formulation to Gurobi and HiGHS. GitHub retained versioned source and
+Pyomo's APPSI interface connected that formulation to Gurobi. GitHub retained versioned source and
 experiment records, and Slurm scheduled the HPC calculations. Researchers
 executed the experimental commands and assessed their outputs.
 

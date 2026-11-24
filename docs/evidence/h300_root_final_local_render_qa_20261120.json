@@ -1,0 +1,41 @@
+{
+  "date": "2026-11-20",
+  "scientific_source_commit": "6f93f71a982038308990160c75a578b34106cdd1",
+  "archive_sha256": "92491a1489c11c3267c30109d90e81cff4c4553a76d3a67b3d542188574a6ff0",
+  "integrity": {
+    "transfer_files_verified": 14,
+    "inventory_hashes_verified": 1763,
+    "original_claim_files": 1761,
+    "task_mappings": 60,
+    "originals_modified": false
+  },
+  "local_checks": {
+    "ruff": "passed",
+    "manuscript_integrity": "accepted;38 cited references",
+    "original_document_tests": 107,
+    "additional_final_evidence_tests": 4,
+    "subtests": 6,
+    "stale_future_tense_assertion": "Updated to require closed one-block campaign; no test removed or skipped",
+    "ci_status": "Exact final head pending workflow completion"
+  },
+  "pdf": {
+    "article_pages": 36,
+    "supplement_pages": 81,
+    "shell_escape": false,
+    "unresolved_reference_markers": 0,
+    "visual_review": "All-page contact sheets plus full-resolution changed pages; final C11 captions checked",
+    "inherited_warnings": "Existing tiny overfull boxes in unchanged material and empty pages field for pera2026; reviewed bibliography preserved"
+  },
+  "editable_package": {
+    "verified_members": 49,
+    "standalone_pdf_bytes_equal_bundled_pdfs": true
+  },
+  "permissions": {
+    "draft": true,
+    "merge": false,
+    "pages": false,
+    "zenodo": false,
+    "hpc_jobs": 0,
+    "new_optimizations": 0
+  }
+}

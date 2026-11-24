@@ -1,0 +1,36 @@
+{
+  "schema": "t1-cleanup-operator-return-v1",
+  "date": "2026-11-23",
+  "operator_log_sha256": "92fc624515dba960026513d02cb2d77bb5ce167bab0779007c7970b0e9c593ac",
+  "executed_source_sha": "5398107141ad2f1abef1d75caf4e1d7287214077",
+  "operator_reported": {
+    "cache_unlinked": 0,
+    "duplicate_unlinked": 0,
+    "retained": 8449,
+    "logical_bytes_unlinked": 0,
+    "report_sha256": "29d5df4f4c65a1b92219a27e773e04e67790782692d5eabc5abf88eb6ada87a6",
+    "backup_created_and_member_verification_returned": true
+  },
+  "qualification_scope": "Operator-pasted output only; report archive, backup receipt, action journal and omission reasons have not yet been independently inspected",
+  "code_diagnosis": {
+    "root_rstrip_yields_empty_reference": true,
+    "empty_reference_matches_every_absolute_target": true,
+    "locally_reproduced_without_npad_calls": true,
+    "actual_cause_of_8449_retained": "Unconfirmed until action reasons and dependency snapshots are read"
+  },
+  "next_step": "Read and verify existing receipts only; no repeated cleanup, archive construction, full source hashing or pruning",
+  "remaining": [
+    "Audit transferred cleanup report and original ledger",
+    "Confirm whether empty/broad process references occurred and account for omission reasons",
+    "Classify references by type and retain their PID/origin; reject empty/nonnormalized reference values",
+    "Require explicit postcondition/status that distinguishes backup-only closure from completed cleanup",
+    "Qualify regressions and reuse verified backup before any separately pinned follow-up within authorized scope"
+  ],
+  "preservation": {
+    "pr159": "Draft",
+    "pr163": "Draft",
+    "new_jobs": 0,
+    "environment_changes": false,
+    "merge": false
+  }
+}

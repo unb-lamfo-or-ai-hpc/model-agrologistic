@@ -21,6 +21,7 @@ EXCLUDED_PARTS = {".quarto", "_manuscript", "_supplement", "_freeze", "__pycache
 PIPELINE = (
     ".github/workflows/manuscript-pages.yml",
     "scripts/pages_publication.py",
+    "scripts/build_author_review.py",
     "scripts/check_manuscript.py",
     "scripts/assemble_manuscript_outputs.py",
     "scripts/package_manuscript.py",
@@ -243,7 +244,11 @@ def finalize(root: Path = ROOT) -> dict:
         "schema_version": "reviewed-pages-downloads-v1",
         "source_commit": approval["activation"]["source_commit"],
         "workflow": approval["activation"],
-        "tex_scope": "Quarto keep-tex, flattened automatically in the checked portable ZIP",
+        "tex_scope": (
+            "Author-reviewed LaTeX, unchanged from the checked editorial sources"
+            if "author-review-source.json" in payload else
+            "Quarto keep-tex, flattened automatically in the checked portable ZIP"
+        ),
         "files": {
             name: {"bytes": (output / name).stat().st_size,
                    "sha256": digest((output / name).read_bytes())}

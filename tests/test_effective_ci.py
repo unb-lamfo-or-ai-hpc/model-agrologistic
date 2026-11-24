@@ -5,7 +5,7 @@ from types import SimpleNamespace
 import pytest
 import yaml
 
-from scripts.effective_ci_scope import changed_paths, classify
+from scripts.effective_ci_scope import changed_paths, classify, gurobi14_dependency_only
 from scripts.no_solver_guard import NativeSolverUnavailable, NoSolverGuard, NoSolverViolation
 
 
@@ -69,3 +69,40 @@ def test_retained_workflows_use_one_shared_router_and_keep_solver_steps():
         assert job["needs"] == "scope"
         assert job["if"] == "needs.scope.outputs.data_only != 'true'"
         assert job["steps"]  # retained qualification has not been deleted
+
+
+def test_only_the_four_gurobi_ceiling_edits_can_use_solver_free_metadata_route():
+    old = '\n'.join(['    "gurobipy>=13.0.2,<14",'] * 4)
+    new = old.replace("<14", "<15")
+    assert gurobi14_dependency_only(old, new)
+    assert classify(["pyproject.toml"], gurobi14_metadata_verified=True)["data_only"]
+    assert not classify(["pyproject.toml"])["data_only"]
+    assert not classify(
+        ["pyproject.toml", "src/logic/optimization_gurobipy.py"],
+        gurobi14_metadata_verified=True,
+    )["data_only"]
+    for changed in (new + "\n", new.replace("13.0.2", "13.0.3"),
+                    new.replace("<15", "<16"), new.replace("gurobipy", "other")):
+        assert not gurobi14_dependency_only(old, changed)
+    assert not gurobi14_dependency_only(old, old)
+    assert not gurobi14_dependency_only(old.replace("<14", "<15", 1), new)
+
+
+def test_declared_gurobi_range_accepts_14_and_preserves_the_other_requirements():
+    import tomllib
+    from pathlib import Path
+
+    from packaging.requirements import Requirement
+
+    project = tomllib.loads(Path("pyproject.toml").read_text())["project"]
+    entries = list(project["dependencies"])
+    for extra in ("gurobi", "hpc", "all"):
+        entries.extend(project["optional-dependencies"][extra])
+    requirements = [Requirement(value) for value in entries
+                    if Requirement(value).name == "gurobipy"]
+    assert len(requirements) == 4
+    for requirement in requirements:
+        assert "13.0.2" in requirement.specifier
+        assert "14.0.0" in requirement.specifier
+        assert "13.0.1" not in requirement.specifier
+        assert "15.0.0" not in requirement.specifier
