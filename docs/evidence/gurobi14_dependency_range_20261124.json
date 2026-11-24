@@ -1,0 +1,30 @@
+{
+  "date": "2026-11-24",
+  "scope": "Declaration-only Gurobi upper bound; no application, research or performance solve",
+  "python": "3.13.15",
+  "gurobipy": "14.0.0",
+  "distributions": 203,
+  "license_file": "C:\\gurobi1400\\gurobi.lic",
+  "license_accepted": true,
+  "license_credentials_read_copied_or_committed": false,
+  "optimizer_called": false,
+  "installed_metadata_refreshed": false,
+  "shared_environment_modified": false,
+  "base_environment_modified": false,
+  "local_editable_source_branch": "main",
+  "local_editable_source_head": "7e953f07f829b4ea4521253eca4bb8f1e2b3c994",
+  "local_editable_source_clean": true,
+  "local_editable_pyproject_sha256_before": "11e752d2bc0261eda5e7d219e85be7c5b5457f872c4d646ae30cffb8c89fef49",
+  "source_requirement_before": "gurobipy>=13.0.2,<14",
+  "source_requirement_after": "gurobipy>=13.0.2,<15",
+  "declaration_groups": [
+    "project.dependencies",
+    "project.optional-dependencies.gurobi",
+    "project.optional-dependencies.hpc",
+    "project.optional-dependencies.all"
+  ],
+  "local_metadata_and_ci_controls_passed": 20,
+  "forecasting_or_all_extras_installed": false,
+  "jobs_submitted": 0,
+  "merges": 0
+}
