@@ -58,8 +58,8 @@
     "tab:package"
   ],
   "appendix_numeric_table_values_preserved": true,
-  "source_sha256": "e78a18ad145a53094f09c2d4a66be1f263db5c5ad0094e0de65347ce0785acd7",
-  "pdf_sha256": "6e9ab47d809f954f846f2f07efb6d2e77c99b5fafb47bb0c6638cdd980bec1bc",
+  "source_sha256": "ce1c536e26e8321d11a10aa935dc5f2703a5568c5638057ed7ba162282de40eb",
+  "pdf_sha256": "63a467115b1b8cfd8f91097c01966fa25b60a14e3ed2b7d4552499c513b4c7e5",
   "overfull_or_unresolved_issues": [],
   "characters_outside_page": [],
   "workbook_sha256": {
@@ -71,6 +71,26 @@
   "jobs_submitted": 0,
   "shared_environment_changed": false,
   "merges": 0,
+  "reference_url_formatting_correction": {
+    "revision": "Rev4",
+    "change": "URLs inline in References only; body URLs retain footnotes",
+    "date": "2026-11-24",
+    "parent_commit": "5fdbd58d058b05ddae5f2456bf271f3a06d1507c",
+    "latex_formatting_lines_added": 1,
+    "reference_urls": 9,
+    "reference_url_targets_preserved": true,
+    "bibliographic_entry_bytes_unchanged": true,
+    "pre_references_source_byte_identical": true,
+    "unchanged_body_pdf_pages": 35,
+    "total_pages": 36,
+    "reference_page_visually_reviewed": true,
+    "source_sha256": "ce1c536e26e8321d11a10aa935dc5f2703a5568c5638057ed7ba162282de40eb",
+    "pdf_sha256": "63a467115b1b8cfd8f91097c01966fa25b60a14e3ed2b7d4552499c513b4c7e5",
+    "scientific_content_changed": false,
+    "runtime_changed": false,
+    "jobs": 0,
+    "merges": 0
+  },
   "all_pages_rendered": true,
   "all_pages_visually_reviewed": true,
   "full_size_page_checks": [
