@@ -34,6 +34,7 @@ jobs:
         run: |
           python -m ruff check .
           node --check scripts/render_effective_workbooks.mjs
+          node --check scripts/t2/render_workbooks_v2.mjs
       - name: Test the data boundary with solver and process barriers
         run: python -B scripts/check_effective_contract.py --output "$RUNNER_TEMP/effective-contract"
       - name: Package without dependency installation or optimizer invocation

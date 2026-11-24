@@ -49,7 +49,7 @@ dependencies = [
     "openpyxl>=3.1,<4",
 
     # Primary and validated optimization backend for the TRL 6 demonstrator.
-    "gurobipy>=13.0.2,<14",
+    "gurobipy>=13.0.2,<15",
 
     # Versioned experiment manifests.
     "pyyaml>=6.0,<7",
@@ -96,7 +96,7 @@ visualization = [
 ]
 
 gurobi = [
-    "gurobipy>=13.0.2,<14",
+    "gurobipy>=13.0.2,<15",
 ]
 
 pyomo = [
@@ -113,7 +113,7 @@ scip = [
 ]
 
 hpc = [
-    "gurobipy>=13.0.2,<14",
+    "gurobipy>=13.0.2,<15",
     "pyyaml>=6.0,<7",
 ]
 
@@ -127,7 +127,7 @@ forecasting = [
 
 all = [
     "build>=1.2,<2",
-    "gurobipy>=13.0.2,<14",
+    "gurobipy>=13.0.2,<15",
     "importlib-resources>=6,<7",
     "matplotlib>=3.9,<4",
     "mypy>=1.13,<2",
@@ -200,3 +200,4 @@ ignore = []
 python_version = "3.13"
 ignore_missing_imports = true
 strict = false
+

@@ -1,5 +1,11 @@
 # Revised workbook investigation and proposed adjustment plan
 
+> Superseded disposition, 24 November 2026: items 1–4, 6 and 7 were approved and
+> implemented as versioned derivatives. Item 5 was cancelled by the researcher.
+> Preserve the complete CONAB list; no warehouse/coordinate audit is requested.
+> See [the v2 implementation](workbooks_v2_implementation_20261124.md).
+> Earlier findings below are the preserved pre-approval investigation.
+
 Date: 24 November 2026. Scope: read-only author-review workbooks and existing scientific code. The workbooks have not been edited, recalculated or saved.
 
 ## Source identities and author comments

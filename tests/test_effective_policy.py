@@ -15,6 +15,57 @@ from tests.test_effective_baseline import baseline
 from tests.test_solution_validation import analytical_solution
 
 
+@pytest.mark.parametrize("mode", ["det", "sto"])
+def test_K_changes_investment_ceilings_once_and_not_installed_tonne_prices(mode):
+    data, cfg = baseline(mode)
+    data.warehouses.append("N")
+    data.candidate_warehouses.append("N")
+    for name in ("static_capacity", "reception_capacity", "shipping_capacity"):
+        getattr(data, name)["N"] = 0
+    data.emergency_static_capacity_penalty["N"] = 2000
+    data.emergency_reception_capacity_penalty["N"] = 3000
+    data.max_candidate_capacity["N"] = 50
+    data.max_expand_capacity["W"] = 25
+    data.candidate_capacity_cost["N"] = 1250
+    data.expand_variable_cost["W"] = 900
+    data.opening_fixed_cost["N"] = 0
+    data.expand_fixed_cost["W"] = 0
+    for name in ("effective_baseline", "mathematical_contract", "_frozen_routes"):
+        data.metadata.pop(name, None)
+    data = seal(effective_projection(data, cfg), cfg, {"scenario_id": "baseline"})
+    changed, _ = apply_scenario(
+        data,
+        cfg,
+        ParameterScenario(
+            "K2",
+            {"candidate_limit": 2, "expansion_limit": 2},
+            justification="Approved K construction check; no optimization.",
+        ),
+    )
+    assert changed.max_candidate_capacity["N"] == 100
+    assert changed.max_expand_capacity["W"] == 50
+    old = build_effective_model(data, cfg).model
+    new = build_effective_model(changed, cfg).model
+    for model in (old, new):
+        repn = generate_standard_repn(model.objective.expr)
+        costs = {v.name: c for v, c in zip(repn.linear_vars, repn.linear_coefs, strict=False)}
+        assert costs[model.candidate["N"].name] == 1250
+        assert costs[model.expansion["W"].name] == 900
+        # Physical installed tonnes, independent of the enlarged bound.
+        assert 40 * costs[model.candidate["N"].name] == 50000
+        assert 10 * costs[model.expansion["W"].name] == 9000
+    assert changed.unmet_demand_penalty == data.unmet_demand_penalty
+    assert changed.static_capacity == data.static_capacity
+    with pytest.raises(ValueError, match="immutable baseline"):
+        apply_scenario(
+            changed,
+            cfg,
+            ParameterScenario(
+                "second", {"candidate_limit": 2}, justification="Reject duplicate K scaling."
+            ),
+        )
+
+
 def scenario(data, cfg, **controls):
     return apply_scenario(
         data,

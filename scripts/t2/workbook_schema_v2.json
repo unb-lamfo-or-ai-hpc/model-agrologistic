@@ -1,0 +1,608 @@
+{
+  "view_schema": "agrologistic-workbook-view-v2",
+  "computational_schema": "agrologistic-effective-baseline-v1",
+  "workbook_version": 2,
+  "parameter_record_key": [
+    "field",
+    "key_json",
+    "scopes"
+  ],
+  "registry_key": "CDA",
+  "coefficient_policy": "Effective baseline values and ordered indices unchanged",
+  "controls": {
+    "neutral": {
+      "K": 1,
+      "beta_enabled": 0,
+      "beta": null,
+      "alpha_enabled": 0,
+      "alpha": null
+    },
+    "K_mapping": [
+      "candidate_limit",
+      "expansion_limit"
+    ],
+    "K_application": "once to reference bounds; never to already installed tonnes",
+    "beta_scope": "product/scenario, full horizon domestic service floor",
+    "alpha_scope": "product/scenario, full horizon export supply-share ceiling"
+  },
+  "missingness": {
+    "source_placeholders": "Keep original zero values with source role",
+    "outside_population": "Effective registry fields remain blank",
+    "inactive_policy": "Null fraction with enabled=0",
+    "distance": "Unavailable is never automatically zero"
+  },
+  "baseline_dictionary": [
+    {
+      "field": "supply",
+      "unit": "t/period",
+      "definition": "Tonnes offered at each origin, product and month in DET.",
+      "indices": "Ordered key_json indices in parameter sheet",
+      "role": "Effective baseline input",
+      "missingness": "Required effective keys retained exactly; no zero substitution"
+    },
+    {
+      "field": "demand_dom",
+      "unit": "t/period",
+      "definition": "Domestic required tonnes per customer, product and month in DET.",
+      "indices": "Ordered key_json indices in parameter sheet",
+      "role": "Effective baseline input",
+      "missingness": "Required effective keys retained exactly; no zero substitution"
+    },
+    {
+      "field": "demand_exp",
+      "unit": "t/period",
+      "definition": "Historical export upper bound per destination, product and month.",
+      "indices": "Ordered key_json indices in parameter sheet",
+      "role": "Effective baseline input",
+      "missingness": "Required effective keys retained exactly; no zero substitution"
+    },
+    {
+      "field": "scenario_prob",
+      "unit": "probability",
+      "definition": "Probability of one of the nine STO trajectories, equal to 1/9.",
+      "indices": "Ordered key_json indices in parameter sheet",
+      "role": "Effective baseline input",
+      "missingness": "Required effective keys retained exactly; no zero substitution"
+    },
+    {
+      "field": "supply_s",
+      "unit": "t/period",
+      "definition": "Tonnes offered at each scenario, origin, product and month in STO.",
+      "indices": "Ordered key_json indices in parameter sheet",
+      "role": "Effective baseline input",
+      "missingness": "Required effective keys retained exactly; no zero substitution"
+    },
+    {
+      "field": "demand_dom_s",
+      "unit": "t/period",
+      "definition": "Domestic required tonnes per scenario, customer, product and month.",
+      "indices": "Ordered key_json indices in parameter sheet",
+      "role": "Effective baseline input",
+      "missingness": "Required effective keys retained exactly; no zero substitution"
+    },
+    {
+      "field": "demand_exp_s",
+      "unit": "t/period",
+      "definition": "Historical export upper bound per scenario, destination, product and month.",
+      "indices": "Ordered key_json indices in parameter sheet",
+      "role": "Effective baseline input",
+      "missingness": "Required effective keys retained exactly; no zero substitution"
+    },
+    {
+      "field": "duration_od",
+      "unit": "s",
+      "definition": "Optional travel duration in seconds. Empty in this baseline; not used to calculate freight.",
+      "indices": "Ordered key_json indices in parameter sheet",
+      "role": "Optional unused annotation",
+      "missingness": "Absent values remain absent; never interpreted as distance zero"
+    },
+    {
+      "field": "duration_dc",
+      "unit": "s",
+      "definition": "Optional travel duration in seconds. Empty in this baseline; not used to calculate freight.",
+      "indices": "Ordered key_json indices in parameter sheet",
+      "role": "Optional unused annotation",
+      "missingness": "Absent values remain absent; never interpreted as distance zero"
+    },
+    {
+      "field": "duration_dd",
+      "unit": "s",
+      "definition": "Optional travel duration in seconds. Empty in this baseline; not used to calculate freight.",
+      "indices": "Ordered key_json indices in parameter sheet",
+      "role": "Optional unused annotation",
+      "missingness": "Absent values remain absent; never interpreted as distance zero"
+    },
+    {
+      "field": "duration_oc",
+      "unit": "s",
+      "definition": "Optional travel duration in seconds. Empty in this baseline; not used to calculate freight.",
+      "indices": "Ordered key_json indices in parameter sheet",
+      "role": "Optional unused annotation",
+      "missingness": "Absent values remain absent; never interpreted as distance zero"
+    },
+    {
+      "field": "freight_origin",
+      "unit": "BRL/(t*km)",
+      "definition": "Unit freight rate for origin outbound transport.",
+      "indices": "Ordered key_json indices in parameter sheet",
+      "role": "Effective baseline input",
+      "missingness": "Required effective keys retained exactly; no zero substitution"
+    },
+    {
+      "field": "freight_dest",
+      "unit": "BRL/(t*km)",
+      "definition": "Unit freight rate for direct origin-customer transport, inactive in W.",
+      "indices": "Ordered key_json indices in parameter sheet",
+      "role": "Effective baseline input",
+      "missingness": "Required effective keys retained exactly; no zero substitution"
+    },
+    {
+      "field": "freight_warehouse",
+      "unit": "BRL/(t*km)",
+      "definition": "Unit freight rate for warehouse outbound transport.",
+      "indices": "Ordered key_json indices in parameter sheet",
+      "role": "Effective baseline input",
+      "missingness": "Required effective keys retained exactly; no zero substitution"
+    },
+    {
+      "field": "transshipment_cost",
+      "unit": "BRL/t",
+      "definition": "Handling cost per tonne passing through the facility.",
+      "indices": "Ordered key_json indices in parameter sheet",
+      "role": "Effective baseline input",
+      "missingness": "Required effective keys retained exactly; no zero substitution"
+    },
+    {
+      "field": "storage_tariff",
+      "unit": "BRL/(t*period)",
+      "definition": "Charge per warehouse, product and tonne held for one period.",
+      "indices": "Ordered key_json indices in parameter sheet",
+      "role": "Effective baseline input",
+      "missingness": "Required effective keys retained exactly; no zero substitution"
+    },
+    {
+      "field": "static_capacity",
+      "unit": "t",
+      "definition": "Initial installed static tonnes. Selected candidates start at zero.",
+      "indices": "Ordered key_json indices in parameter sheet",
+      "role": "Effective baseline input",
+      "missingness": "Required effective keys retained exactly; no zero substitution"
+    },
+    {
+      "field": "reception_capacity",
+      "unit": "t/day",
+      "definition": "Effective daily rate. Multiply by Calendar operating days once when constructing period capacity.",
+      "indices": "Ordered key_json indices in parameter sheet",
+      "role": "Effective baseline input",
+      "missingness": "Required effective keys retained exactly; no zero substitution"
+    },
+    {
+      "field": "shipping_capacity",
+      "unit": "t/day",
+      "definition": "Effective daily rate. Multiply by Calendar operating days once when constructing period capacity.",
+      "indices": "Ordered key_json indices in parameter sheet",
+      "role": "Effective baseline input",
+      "missingness": "Required effective keys retained exactly; no zero substitution"
+    },
+    {
+      "field": "max_candidate_capacity",
+      "unit": "t",
+      "definition": "Reference candidate opening ceiling. Controls K scales this bound once. Initial candidate capacity remains zero.",
+      "indices": "Ordered key_json indices in parameter sheet",
+      "role": "Effective baseline input",
+      "missingness": "Required effective keys retained exactly; no zero substitution"
+    },
+    {
+      "field": "opening_fixed_cost",
+      "unit": "BRL",
+      "definition": "Effective fixed investment charge, including verified zero. A multiplier cannot make a zero charge positive.",
+      "indices": "Ordered key_json indices in parameter sheet",
+      "role": "Effective baseline input",
+      "missingness": "Required effective keys retained exactly; no zero substitution"
+    },
+    {
+      "field": "candidate_capacity_cost",
+      "unit": "BRL/t",
+      "definition": "Unit investment cost per physical installed tonne of the respective investment basis. K changes bounds, not this rate.",
+      "indices": "Ordered key_json indices in parameter sheet",
+      "role": "Effective baseline input",
+      "missingness": "Required effective keys retained exactly; no zero substitution"
+    },
+    {
+      "field": "max_expand_capacity",
+      "unit": "t",
+      "definition": "Reference existing-site expansion ceiling, 25% of initial static capacity. Controls K scales this bound once.",
+      "indices": "Ordered key_json indices in parameter sheet",
+      "role": "Effective baseline input",
+      "missingness": "Required effective keys retained exactly; no zero substitution"
+    },
+    {
+      "field": "expand_fixed_cost",
+      "unit": "BRL",
+      "definition": "Effective fixed investment charge, including verified zero. A multiplier cannot make a zero charge positive.",
+      "indices": "Ordered key_json indices in parameter sheet",
+      "role": "Effective baseline input",
+      "missingness": "Required effective keys retained exactly; no zero substitution"
+    },
+    {
+      "field": "expand_variable_cost",
+      "unit": "BRL/t",
+      "definition": "Unit investment cost per physical installed tonne of the respective investment basis. K changes bounds, not this rate.",
+      "indices": "Ordered key_json indices in parameter sheet",
+      "role": "Effective baseline input",
+      "missingness": "Required effective keys retained exactly; no zero substitution"
+    },
+    {
+      "field": "max_bulk_capacity",
+      "unit": "t",
+      "definition": "Reference bulk-handling investment basis; unchanged by K.",
+      "indices": "Ordered key_json indices in parameter sheet",
+      "role": "Effective baseline input",
+      "missingness": "Required effective keys retained exactly; no zero substitution"
+    },
+    {
+      "field": "bulk_fixed_cost",
+      "unit": "BRL",
+      "definition": "Effective fixed investment charge, including verified zero. A multiplier cannot make a zero charge positive.",
+      "indices": "Ordered key_json indices in parameter sheet",
+      "role": "Effective baseline input",
+      "missingness": "Required effective keys retained exactly; no zero substitution"
+    },
+    {
+      "field": "bulk_variable_cost",
+      "unit": "BRL/t",
+      "definition": "Unit investment cost per physical installed tonne of the respective investment basis. K changes bounds, not this rate.",
+      "indices": "Ordered key_json indices in parameter sheet",
+      "role": "Effective baseline input",
+      "missingness": "Required effective keys retained exactly; no zero substitution"
+    },
+    {
+      "field": "initial_inventory",
+      "unit": "t",
+      "definition": "Initial stock tonnes per facility and product, zero in baseline.",
+      "indices": "Ordered key_json indices in parameter sheet",
+      "role": "Effective baseline input",
+      "missingness": "Required effective keys retained exactly; no zero substitution"
+    },
+    {
+      "field": "unmet_demand_penalty",
+      "unit": "BRL/t",
+      "definition": "Charge per unmet domestic tonne by customer and product.",
+      "indices": "Ordered key_json indices in parameter sheet",
+      "role": "Effective baseline input",
+      "missingness": "Required effective keys retained exactly; no zero substitution"
+    },
+    {
+      "field": "emergency_static_capacity_penalty",
+      "unit": "BRL/t_excess_per_period",
+      "definition": "Charge per tonne of inventory above installed static capacity in each period.",
+      "indices": "Ordered key_json indices in parameter sheet",
+      "role": "Effective baseline input",
+      "missingness": "Required effective keys retained exactly; no zero substitution"
+    },
+    {
+      "field": "emergency_reception_capacity_penalty",
+      "unit": "BRL/t",
+      "definition": "Charge per tonne of reception above installed period capacity.",
+      "indices": "Ordered key_json indices in parameter sheet",
+      "role": "Effective baseline input",
+      "missingness": "Required effective keys retained exactly; no zero substitution"
+    },
+    {
+      "field": "dist_od",
+      "unit": "km",
+      "definition": "OSRM road distance: origin to warehouse (OW). Freight = BRL/(t*km) x km x flow tonnes. No duration-to-distance conversion.",
+      "indices": "origin, destination; product-indexed selected arcs in arcs.csv",
+      "role": "Frozen normalized network support",
+      "missingness": "Unavailable/absent arcs differ from valid zero distance"
+    },
+    {
+      "field": "dist_dc",
+      "unit": "km",
+      "definition": "OSRM road distance: warehouse to customer (WD). Freight = BRL/(t*km) x km x flow tonnes. No duration-to-distance conversion.",
+      "indices": "origin, destination; product-indexed selected arcs in arcs.csv",
+      "role": "Frozen normalized network support",
+      "missingness": "Unavailable/absent arcs differ from valid zero distance"
+    },
+    {
+      "field": "dist_dd",
+      "unit": "km",
+      "definition": "OSRM road distance: warehouse to warehouse (WW). Freight = BRL/(t*km) x km x flow tonnes. No duration-to-distance conversion.",
+      "indices": "origin, destination; product-indexed selected arcs in arcs.csv",
+      "role": "Frozen normalized network support",
+      "missingness": "Unavailable/absent arcs differ from valid zero distance"
+    },
+    {
+      "field": "dist_oc",
+      "unit": "km",
+      "definition": "OSRM road distance: direct origin to customer; inactive in W. Freight = BRL/(t*km) x km x flow tonnes. No duration-to-distance conversion.",
+      "indices": "origin, destination; product-indexed selected arcs in arcs.csv",
+      "role": "Frozen normalized network support",
+      "missingness": "Unavailable/absent arcs differ from valid zero distance"
+    },
+    {
+      "field": "K",
+      "unit": "multiplier",
+      "definition": "Positive multiplier of reference candidate and expansion ceilings, applied once. K=1 is neutral. Initial capacities and unit costs are unchanged.",
+      "indices": "Controls; same value for all selected sites",
+      "role": "Approved optional scenario input",
+      "missingness": "Required positive finite number"
+    },
+    {
+      "field": "beta",
+      "unit": "fraction",
+      "definition": "Minimum domestic service share, per product and scenario, aggregated over the full horizon. Disabled in the neutral reference.",
+      "indices": "product, scenario; common fraction in Controls",
+      "role": "Approved optional policy",
+      "missingness": "Blank when disabled; [0,1] required when enabled"
+    },
+    {
+      "field": "alpha",
+      "unit": "fraction",
+      "definition": "Maximum exported share of offered supply, per product and scenario over the full horizon. Existing destination-period export bounds remain.",
+      "indices": "product, scenario; common fraction in Controls",
+      "role": "Approved optional policy",
+      "missingness": "Blank when disabled; [0,1] required when enabled"
+    }
+  ],
+  "registry_dictionary": [
+    {
+      "field": "CDA",
+      "unit": "identifier",
+      "definition": "Accepted source registry value; complete list retained.",
+      "role": "Source registry",
+      "missingness": "Preserve source blanks and zeros",
+      "key": "CDA; stable source order"
+    },
+    {
+      "field": "Status",
+      "unit": "text",
+      "definition": "Accepted source registry value; complete list retained.",
+      "role": "Source registry",
+      "missingness": "Preserve source blanks and zeros",
+      "key": "CDA; stable source order"
+    },
+    {
+      "field": "Município",
+      "unit": "text",
+      "definition": "Accepted source registry value; complete list retained.",
+      "role": "Source registry",
+      "missingness": "Preserve source blanks and zeros",
+      "key": "CDA; stable source order"
+    },
+    {
+      "field": "UF",
+      "unit": "text",
+      "definition": "Accepted source registry value; complete list retained.",
+      "role": "Source registry",
+      "missingness": "Preserve source blanks and zeros",
+      "key": "CDA; stable source order"
+    },
+    {
+      "field": "Latitude",
+      "unit": "degrees",
+      "definition": "Accepted source coordinate preserved without rounding or coalescing.",
+      "role": "Source registry",
+      "missingness": "Preserve source blanks and zeros",
+      "key": "CDA; stable source order"
+    },
+    {
+      "field": "Longitude",
+      "unit": "degrees",
+      "definition": "Accepted source coordinate preserved without rounding or coalescing.",
+      "role": "Source registry",
+      "missingness": "Preserve source blanks and zeros",
+      "key": "CDA; stable source order"
+    },
+    {
+      "field": "Armazenador",
+      "unit": "text",
+      "definition": "Accepted source registry value; complete list retained.",
+      "role": "Source registry",
+      "missingness": "Preserve source blanks and zeros",
+      "key": "CDA; stable source order"
+    },
+    {
+      "field": "Tipo",
+      "unit": "text",
+      "definition": "Accepted source registry value; complete list retained.",
+      "role": "Source registry",
+      "missingness": "Preserve source blanks and zeros",
+      "key": "CDA; stable source order"
+    },
+    {
+      "field": "Cap. Estática (t)",
+      "unit": "t",
+      "definition": "Declared source static capacity; candidates start at modeled capacity zero and may invest up to K times this reference.",
+      "role": "Source registry",
+      "missingness": "Preserve source blanks and zeros",
+      "key": "CDA; stable source order"
+    },
+    {
+      "field": "Reception source value (model t/day)",
+      "unit": "t/day (model convention)",
+      "definition": "Source heading omitted /day. Numerical value retained. Model uses daily rate; multiply by 30 once for period capacity.",
+      "role": "Source registry",
+      "missingness": "Preserve source blanks and zeros",
+      "key": "CDA; stable source order"
+    },
+    {
+      "field": "Shipping source value (model t/day)",
+      "unit": "t/day (model convention)",
+      "definition": "Source heading omitted /day. Numerical value retained. Model uses daily rate; multiply by 30 once for period capacity.",
+      "role": "Source registry",
+      "missingness": "Preserve source blanks and zeros",
+      "key": "CDA; stable source order"
+    },
+    {
+      "field": "Maximum static capacity - source placeholder (t)",
+      "unit": "t",
+      "definition": "Original zero placeholder, not the effective candidate or expansion investment limit.",
+      "role": "Source registry",
+      "missingness": "Preserve source blanks and zeros",
+      "key": "CDA; stable source order"
+    },
+    {
+      "field": "Opening cost - source placeholder (BRL)",
+      "unit": "BRL",
+      "definition": "Original zero placeholder; effective installed-tonne investment rates appear in separate fields.",
+      "role": "Source registry",
+      "missingness": "Preserve source blanks and zeros",
+      "key": "CDA; stable source order"
+    },
+    {
+      "field": "Em_h215",
+      "unit": "0/1",
+      "definition": "Membership only; not opening, investment or use.",
+      "role": "Frozen population membership",
+      "missingness": "Preserve source blanks and zeros",
+      "key": "CDA; stable source order"
+    },
+    {
+      "field": "Em_h300",
+      "unit": "0/1",
+      "definition": "Membership only; not opening, investment or use.",
+      "role": "Frozen population membership",
+      "missingness": "Preserve source blanks and zeros",
+      "key": "CDA; stable source order"
+    },
+    {
+      "field": "Em_h400",
+      "unit": "0/1",
+      "definition": "Membership only; not opening, investment or use.",
+      "role": "Frozen population membership",
+      "missingness": "Preserve source blanks and zeros",
+      "key": "CDA; stable source order"
+    },
+    {
+      "field": "Em_h500",
+      "unit": "0/1",
+      "definition": "Membership only; not opening, investment or use.",
+      "role": "Frozen population membership",
+      "missingness": "Preserve source blanks and zeros",
+      "key": "CDA; stable source order"
+    },
+    {
+      "field": "order_h215",
+      "unit": "zero-based position",
+      "definition": "Frozen population selection order.",
+      "role": "Frozen population order",
+      "missingness": "Blank outside the population",
+      "key": "CDA; stable source order"
+    },
+    {
+      "field": "order_h300",
+      "unit": "zero-based position",
+      "definition": "Frozen population selection order.",
+      "role": "Frozen population order",
+      "missingness": "Blank outside the population",
+      "key": "CDA; stable source order"
+    },
+    {
+      "field": "order_h400",
+      "unit": "zero-based position",
+      "definition": "Frozen population selection order.",
+      "role": "Frozen population order",
+      "missingness": "Blank outside the population",
+      "key": "CDA; stable source order"
+    },
+    {
+      "field": "order_h500",
+      "unit": "zero-based position",
+      "definition": "Frozen population selection order.",
+      "role": "Frozen population order",
+      "missingness": "Blank outside the population",
+      "key": "CDA; stable source order"
+    },
+    {
+      "field": "modeled_in_baseline",
+      "unit": "0/1",
+      "definition": "Included in frozen h500 effective baseline, not an optimized decision.",
+      "role": "Source registry",
+      "missingness": "Preserve source blanks and zeros",
+      "key": "CDA; stable source order"
+    },
+    {
+      "field": "model_K0_t",
+      "unit": "t",
+      "definition": "Effective initial capacity",
+      "role": "Effective baseline reference",
+      "missingness": "Blank outside h500; zero only when defined",
+      "key": "CDA; stable source order"
+    },
+    {
+      "field": "model_R0_t_day",
+      "unit": "t/day",
+      "definition": "Effective initial capacity",
+      "role": "Effective baseline reference",
+      "missingness": "Blank outside h500; zero only when defined",
+      "key": "CDA; stable source order"
+    },
+    {
+      "field": "model_H0_t_day",
+      "unit": "t/day",
+      "definition": "Effective initial capacity",
+      "role": "Effective baseline reference",
+      "missingness": "Blank outside h500; zero only when defined",
+      "key": "CDA; stable source order"
+    },
+    {
+      "field": "candidate_limit_t",
+      "unit": "t",
+      "definition": "Reference investment ceiling at K=1. Candidate/expansion scenario ceilings are derived in baseline InvestmentLimits.",
+      "role": "Effective baseline reference",
+      "missingness": "Blank outside h500; zero only when defined",
+      "key": "CDA; stable source order"
+    },
+    {
+      "field": "source_id",
+      "unit": "text",
+      "definition": "Accepted source registry value; complete list retained.",
+      "role": "Source registry",
+      "missingness": "Preserve source blanks and zeros",
+      "key": "CDA; stable source order"
+    },
+    {
+      "field": "transformation",
+      "unit": "text",
+      "definition": "Accepted source registry value; complete list retained.",
+      "role": "Source registry",
+      "missingness": "Preserve source blanks and zeros",
+      "key": "CDA; stable source order"
+    },
+    {
+      "field": "expansion_limit_ref_t",
+      "unit": "t",
+      "definition": "Reference investment ceiling at K=1. Candidate/expansion scenario ceilings are derived in baseline InvestmentLimits.",
+      "role": "Effective baseline reference",
+      "missingness": "Blank outside h500; zero only when defined",
+      "key": "CDA; stable source order"
+    },
+    {
+      "field": "opening_unit_cost_BRL_t",
+      "unit": "BRL/t",
+      "definition": "Multiply by physical installed tonnes once. Missing for non-applicable investment types.",
+      "role": "Effective model investment rate",
+      "missingness": "Blank where not applicable",
+      "key": "CDA; stable source order"
+    },
+    {
+      "field": "expansion_unit_cost_BRL_t",
+      "unit": "BRL/t",
+      "definition": "Multiply by physical installed tonnes once. Missing for non-applicable investment types.",
+      "role": "Effective model investment rate",
+      "missingness": "Blank where not applicable",
+      "key": "CDA; stable source order"
+    },
+    {
+      "field": "bulk_unit_cost_BRL_t",
+      "unit": "BRL/t",
+      "definition": "Multiply by physical installed tonnes once. Missing for non-applicable investment types.",
+      "role": "Effective model investment rate",
+      "missingness": "Blank where not applicable",
+      "key": "CDA; stable source order"
+    }
+  ],
+  "warehouse_audit": "Cancelled by the researcher; complete accepted list preserved",
+  "optimization_performed": false
+}
