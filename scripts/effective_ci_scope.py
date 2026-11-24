@@ -8,6 +8,8 @@ import subprocess
 from pathlib import Path
 
 RUNTIME_PATHS = {
+    "src/logic/mvp3_preparation.py", "scripts/prepare_mvp3_t3.py",
+    "tests/test_mvp3_preparation.py",
     "src/logic/effective_gurobi_execution.py", "scripts/effective_h215_protocol.py",
     "scripts/effective_h215_public.py", "scripts/effective_h215_public_controls.py",
     "tests/test_effective_h215_preparation.py",
@@ -22,6 +24,7 @@ RUNTIME_PATHS = {
     "scripts/summarize_effective_policy_reference.py", "tests/test_effective_policy.py",
 }
 CONTROL_PATHS = {
+    "experiments/proposals/mvp3_t3_staged_design_20261124.json",
     "experiments/h215_policy_protocol_v1.json",
     ".gitignore", "PROJECT_STATE.md",
     "data/manifests/effective_baseline_sources_v1.json",
