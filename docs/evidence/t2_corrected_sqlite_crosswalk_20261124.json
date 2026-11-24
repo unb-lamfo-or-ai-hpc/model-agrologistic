@@ -1,0 +1,40 @@
+{
+  "sqlite_version": "3.53.1",
+  "snapshot_sha256": "5f2ecca8c45a82b2d8fd815f8135b2c0ba19450bead26d8a3cc796e5b2bdb081",
+  "cache_records": 235224,
+  "arc_comparison": {
+    "distance_equal_provenance_review_pending": 222202,
+    "distance_equal_unit_conversion_roundoff_provenance_review_pending": 39870
+  },
+  "arc_comparison_by_population": {
+    "215": {
+      "distance_equal_provenance_review_pending": 22050,
+      "distance_equal_unit_conversion_roundoff_provenance_review_pending": 3062
+    },
+    "300": {
+      "distance_equal_provenance_review_pending": 38640,
+      "distance_equal_unit_conversion_roundoff_provenance_review_pending": 6600
+    },
+    "400": {
+      "distance_equal_provenance_review_pending": 64550,
+      "distance_equal_unit_conversion_roundoff_provenance_review_pending": 11770
+    },
+    "500": {
+      "distance_equal_provenance_review_pending": 96962,
+      "distance_equal_unit_conversion_roundoff_provenance_review_pending": 18438
+    }
+  },
+  "normalised_cache_records": 4,
+  "selected_arc_records_using_normalisation": 40,
+  "negative_roundoff_rule": "[-1,0) metres to derived effective zero",
+  "binary64_comparison_rule": "exact or adjacent positive representations",
+  "maximum_conversion_delta_km": 4.547473508864641e-13,
+  "raw_cache_or_frozen_arc_values_changed": false,
+  "cache_identity_acceptance": "pending_routing_provenance_and_acquisition_review",
+  "unit_conversion": "distance_m / 1000 once",
+  "source_engine_opened": false,
+  "original_snapshot_unchanged_after": true,
+  "source_consistency_certified": false,
+  "comparison_scope": "Frozen selected-arc distances; not full live-source certification",
+  "corrected_comparator_sha256": "b63258718f4dd477da82fa95dcee645d70cd7a095ab31efc102f36e515b44779"
+}

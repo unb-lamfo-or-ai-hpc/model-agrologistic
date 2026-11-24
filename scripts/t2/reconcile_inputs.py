@@ -358,6 +358,45 @@ def cache_header(path):
     }
 
 
+# Historical OSRM client policy, pinned in the review evidence. This applies
+# to the derived comparison only; no raw cache or frozen arc value is changed.
+NEGATIVE_DISTANCE_ROUNDOFF_TOLERANCE_M = 1.0
+
+
+def effective_cache_distance(distance):
+    """Return kilometres and a normalisation flag, preserving invalid values."""
+    require(
+        isinstance(distance, (int, float)) and not isinstance(distance, bool)
+        and math.isfinite(distance)
+        and distance >= -NEGATIVE_DISTANCE_ROUNDOFF_TOLERANCE_M,
+        "Invalid cache distance",
+    )
+    normalised = distance < 0.0
+    return (0.0 if normalised else distance / 1000.0), normalised
+
+
+def distance_comparison(frozen_km, cache_km):
+    """Classify exact equality or adjacent binary64 values after m-to-km conversion.
+
+    Adjacent positive representations are recorded explicitly. A true zero is
+    never equated with a positive distance, and larger differences remain open.
+    This numerical comparison does not certify routing provenance.
+    """
+    require(
+        all(isinstance(value, (int, float)) and not isinstance(value, bool)
+            and math.isfinite(value) and value >= 0.0
+            for value in (frozen_km, cache_km)),
+        "Invalid effective distance",
+    )
+    if frozen_km == cache_km:
+        return "distance_equal_provenance_review_pending"
+    if frozen_km > 0.0 and cache_km > 0.0 and (
+        math.nextafter(frozen_km, cache_km) == cache_km
+    ):
+        return "distance_equal_unit_conversion_roundoff_provenance_review_pending"
+    return "distance_differs"
+
+
 def cache_crosswalk(snapshot, expected_sha, support, acquisition):
     """Inspect an explicitly supplied OFFLINE, single-file consistent snapshot.
 
@@ -399,6 +438,7 @@ def cache_crosswalk(snapshot, expected_sha, support, acquisition):
         require(required <= columns, "Unknown OSRM cache schema")
         lookup = collections.defaultdict(list)
         bad_keys = 0
+        normalised_cache_records = 0
         for key, payload, distance, source, version in db.execute(
             "SELECT cache_key,key_payload_json,distance_m,source,data_version FROM osrm_pair_cache"
         ):
@@ -408,17 +448,16 @@ def cache_crosswalk(snapshot, expected_sha, support, acquisition):
             )
             if digest(canonical.encode()) != key:
                 bad_keys += 1
-            require(
-                isinstance(distance, (int, float))
-                and math.isfinite(distance)
-                and distance >= 0,
-                "Invalid cache distance",
-            )
+            effective_km, normalised = effective_cache_distance(distance)
+            normalised_cache_records += int(normalised)
             pair = (tuple(parsed["origin"]), tuple(parsed["destination"]))
-            lookup[pair].append((distance / 1000.0, source, version, key))
+            lookup[pair].append((effective_km, source, version, key, normalised))
         require(bad_keys == 0, "Cache payload/key disagreement")
         nodes = json.loads(read_stable(Path(support) / "nodes.json"))
         counts = collections.Counter()
+        normalised_arc_records = 0
+        maximum_conversion_delta_km = 0.0
+        by_population = collections.defaultdict(collections.Counter)
         with io.StringIO(
             read_stable(Path(support) / "arcs.csv").decode("utf-8")
         ) as stream:
@@ -436,16 +475,30 @@ def cache_crosswalk(snapshot, expected_sha, support, acquisition):
                     label = "ambiguous_routing_identity"
                 elif matches[0][1] != "osrm":
                     label = "non_osrm_source"
-                elif float(row["osrm_distance_km"]) != matches[0][0]:
-                    label = "distance_differs"
                 else:
-                    label = "distance_equal_provenance_review_pending"
+                    frozen_km = float(row["osrm_distance_km"])
+                    label = distance_comparison(frozen_km, matches[0][0])
+                    normalised_arc_records += int(matches[0][4])
+                    if label.startswith("distance_equal_unit_conversion"):
+                        maximum_conversion_delta_km = max(
+                            maximum_conversion_delta_km, abs(frozen_km - matches[0][0])
+                        )
                 counts[label] += 1
+                by_population[row["population"]][label] += 1
         return {
             "sqlite_version": sqlite3.sqlite_version,
             "snapshot_sha256": expected_sha,
             "cache_records": sum(map(len, lookup.values())),
             "arc_comparison": dict(counts),
+            "arc_comparison_by_population": {
+                population: dict(values) for population, values in by_population.items()
+            },
+            "normalised_cache_records": normalised_cache_records,
+            "selected_arc_records_using_normalisation": normalised_arc_records,
+            "negative_roundoff_rule": "[-1,0) metres to derived effective zero",
+            "binary64_comparison_rule": "exact or adjacent positive representations",
+            "maximum_conversion_delta_km": maximum_conversion_delta_km,
+            "raw_cache_or_frozen_arc_values_changed": False,
             "cache_identity_acceptance": "pending_routing_provenance_and_acquisition_review",
             "unit_conversion": "distance_m / 1000 once",
             "source_engine_opened": False,

@@ -22,7 +22,7 @@ import tempfile
 import time
 from pathlib import Path
 
-HELPER_SHA = "d27936d62242b83b78d60cf333400c3710d662e9996da33fa2b500ddbb140024"
+HELPER_SHA = "b63258718f4dd477da82fa95dcee645d70cd7a095ab31efc102f36e515b44779"
 HELPER_PATH = Path(__file__).with_name("reconcile_inputs.py")
 if hashlib.sha256(HELPER_PATH.read_bytes()).hexdigest() != HELPER_SHA:
     raise ValueError("Original reconciliation helper hash differs.")

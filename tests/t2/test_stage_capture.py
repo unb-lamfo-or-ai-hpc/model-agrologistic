@@ -147,6 +147,18 @@ class CaptureControls(unittest.TestCase):
             (self.root / "t2-offline-reconciliation-readback.tar.gz").exists()
         )
 
+    def test_bootstrap_pins_match_the_current_reviewed_sources(self):
+        helper = ROOT / "scripts/t2/reconcile_inputs.py"
+        controller = ROOT / "scripts/t2/stage_offline_reconciliation.py"
+        bootstrap = (ROOT / "scripts/t2/npad_t2_stage.sh").read_text()
+        verify = (ROOT / "scripts/t2/npad_t2_verify.sh").read_text()
+        helper_sha = hashlib.sha256(helper.read_bytes()).hexdigest()
+        controller_sha = hashlib.sha256(controller.read_bytes()).hexdigest()
+        self.assertIn("HELPER=" + helper_sha, bootstrap)
+        self.assertIn("CONTROLLER=" + controller_sha, bootstrap)
+        self.assertIn("EXPECTED=" + helper_sha, verify)
+        self.assertEqual(CAP.HELPER_SHA, helper_sha)
+
     def test_new_capture_paths_keep_solver_free_routing(self):
         spec = importlib.util.spec_from_file_location(
             "capture_scope", ROOT / "scripts/effective_ci_scope.py"

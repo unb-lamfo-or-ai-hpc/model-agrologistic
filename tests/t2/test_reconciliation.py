@@ -3,6 +3,7 @@
 import hashlib
 import importlib.util
 import json
+import math
 import os
 import sqlite3
 import sys
@@ -230,6 +231,67 @@ class ReconciliationTests(unittest.TestCase):
         p, sha, receipt = self.fixture_cache(distance=1000.0000001)
         result = T2.cache_crosswalk(p, sha, self.root, receipt)
         self.assertEqual(result["arc_comparison"], {"distance_differs": 1})
+
+    def test_historical_negative_roundoff_is_bounded(self):
+        for raw in (-1.0, -0.4, -0.2):
+            with self.subTest(raw=raw):
+                self.assertEqual(T2.effective_cache_distance(raw), (0.0, True))
+        self.assertEqual(T2.effective_cache_distance(0.0), (0.0, False))
+        self.assertEqual(T2.effective_cache_distance(1000.0), (1.0, False))
+
+    def test_invalid_cache_distance_is_not_normalised(self):
+        for raw in (-1.000001, float("nan"), float("inf"), True, None, "1"):
+            with self.subTest(raw=raw), self.assertRaisesRegex(ValueError, "Invalid"):
+                T2.effective_cache_distance(raw)
+
+    def test_normalised_cache_matches_zero_without_source_write(self):
+        p, sha, receipt = self.fixture_cache(distance=-0.4)
+        (self.root / "arcs.csv").write_text(
+            "population,origin_id,destination_id,osrm_distance_km\n215,a,b,0.0\n"
+        )
+        before = p.read_bytes()
+        result = T2.cache_crosswalk(p, sha, self.root, receipt)
+        self.assertEqual(
+            result["arc_comparison"], {"distance_equal_provenance_review_pending": 1}
+        )
+        self.assertEqual(result["normalised_cache_records"], 1)
+        self.assertEqual(result["selected_arc_records_using_normalisation"], 1)
+        self.assertEqual(p.read_bytes(), before)
+        self.assertFalse(result["raw_cache_or_frozen_arc_values_changed"])
+        self.assertIn("pending", result["cache_identity_acceptance"])
+
+    def test_adjacent_positive_unit_conversion_is_reported_separately(self):
+        value = 1234.5678
+        adjacent = math.nextafter(value, math.inf)
+        self.assertEqual(
+            T2.distance_comparison(value, adjacent),
+            "distance_equal_unit_conversion_roundoff_provenance_review_pending",
+        )
+
+    def test_larger_difference_and_zero_remain_distinct(self):
+        value = 1234.5678
+        twice = math.nextafter(math.nextafter(value, math.inf), math.inf)
+        self.assertEqual(T2.distance_comparison(value, twice), "distance_differs")
+        self.assertEqual(T2.distance_comparison(0.0, math.ulp(0.0)), "distance_differs")
+
+    def test_nonfinite_or_negative_effective_values_fail(self):
+        for value in (-0.1, float("nan"), float("inf"), None, True):
+            with self.subTest(value=value), self.assertRaises(ValueError):
+                T2.distance_comparison(value, 0.0)
+
+    def test_crosswalk_retains_unit_conversion_classification_by_population(self):
+        p, sha, receipt = self.fixture_cache(distance=1234567.8)
+        cache_km, _ = T2.effective_cache_distance(1234567.8)
+        frozen = math.nextafter(cache_km, math.inf)
+        (self.root / "arcs.csv").write_text(
+            "population,origin_id,destination_id,osrm_distance_km\n"
+            f"215,a,b,{frozen!r}\n"
+        )
+        result = T2.cache_crosswalk(p, sha, self.root, receipt)
+        label = "distance_equal_unit_conversion_roundoff_provenance_review_pending"
+        self.assertEqual(result["arc_comparison_by_population"], {"215": {label: 1}})
+        self.assertGreater(result["maximum_conversion_delta_km"], 0.0)
+        self.assertIn("pending", result["cache_identity_acceptance"])
 
     def test_snapshot_hash_mismatch_rejected(self):
         p, _, receipt = self.fixture_cache()

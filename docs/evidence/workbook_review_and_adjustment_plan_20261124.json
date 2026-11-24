@@ -1,0 +1,305 @@
+{
+  "date": "2026-11-24",
+  "scope": "Read-only workbook investigation and proposed adjustment plan",
+  "inputs": [
+    {
+      "role": "baseline",
+      "filename": "agrologistic_effective_baseline_v1_revised.xlsx",
+      "sha256": "0e6efdeb5366ef0913ae3117f5f45b8413814b294bd9b9b9596bf2eff8f1caac",
+      "unchanged_after_review": true,
+      "review_comments": 2
+    },
+    {
+      "role": "registry",
+      "filename": "agrologistic_warehouse_registry_v1_revised.xlsx",
+      "sha256": "e2f671bad45d8a6b28e123482dba854321c8e94b4076a2e21034bc5fa1646132",
+      "unchanged_after_review": true,
+      "review_comments": 2
+    }
+  ],
+  "workbooks_edited_recalculated_or_saved": false,
+  "keyed_baseline_changes": {
+    "Supply": {
+      "added_keys": 0,
+      "removed_keys": 0,
+      "changed_records": 0
+    },
+    "DomesticDemand": {
+      "added_keys": 0,
+      "removed_keys": 0,
+      "changed_records": 0
+    },
+    "Exports": {
+      "added_keys": 0,
+      "removed_keys": 0,
+      "changed_records": 0
+    },
+    "Capacities": {
+      "added_keys": 0,
+      "removed_keys": 0,
+      "changed_records": 0
+    },
+    "Investments": {
+      "added_keys": 0,
+      "removed_keys": 0,
+      "changed_records": 0
+    },
+    "Costs": {
+      "added_keys": 0,
+      "removed_keys": 0,
+      "changed_records": 0
+    },
+    "Penalties": {
+      "added_keys": 0,
+      "removed_keys": 0,
+      "changed_records": 0
+    },
+    "Scenarios": {
+      "added_keys": 0,
+      "removed_keys": 0,
+      "changed_records": 0
+    }
+  },
+  "registry_keyed_changes": {
+    "added_ids": 0,
+    "removed_ids": 0,
+    "changed_coordinate_cells": 3,
+    "row_order_changed": true,
+    "classification": "Three adjacent-binary64 longitude changes after Excel round trip; no input substitution"
+  },
+  "registry_record_count": 18086,
+  "registry_unique_cda": 18086,
+  "duplicate_profiles": {
+    "all_columns": {
+      "groups": 0,
+      "participating_rows": 0,
+      "excess_rows": 0,
+      "largest_group": 0
+    },
+    "same_CDA": {
+      "groups": 0,
+      "participating_rows": 0,
+      "excess_rows": 0,
+      "largest_group": 0
+    },
+    "name_type_static": {
+      "groups": 325,
+      "participating_rows": 776,
+      "excess_rows": 451,
+      "largest_group": 8
+    },
+    "all_source_attributes_except_CDA": {
+      "groups": 111,
+      "participating_rows": 262,
+      "excess_rows": 151,
+      "largest_group": 7
+    },
+    "name_type_static_municipality_state": {
+      "groups": 271,
+      "participating_rows": 633,
+      "excess_rows": 362,
+      "largest_group": 8
+    },
+    "same_coordinates": {
+      "groups": 1522,
+      "participating_rows": 3914,
+      "excess_rows": 2392,
+      "largest_group": 29
+    }
+  },
+  "selected_attribute_duplicate_groups": {
+    "215": {
+      "source_identical_groups_with_multiple_selected_CDAs": 10,
+      "selected_rows_in_those_groups": 28
+    },
+    "300": {
+      "source_identical_groups_with_multiple_selected_CDAs": 11,
+      "selected_rows_in_those_groups": 30
+    },
+    "400": {
+      "source_identical_groups_with_multiple_selected_CDAs": 11,
+      "selected_rows_in_those_groups": 30
+    },
+    "500": {
+      "source_identical_groups_with_multiple_selected_CDAs": 11,
+      "selected_rows_in_those_groups": 30
+    }
+  },
+  "selection_profile": {
+    "eligible_candidates": 17939,
+    "eligible_static_median": 5000,
+    "by_population": {
+      "215": {
+        "candidates": 69,
+        "median": 69850,
+        "mean": 107368.7536231884,
+        "min": 9240,
+        "max": 307079,
+        "sum": 7408444,
+        "selected_from_global_top69": 24,
+        "states": 12,
+        "types": {
+          "Silo": 19,
+          "Estrutural": 10,
+          "Deposito": 10,
+          "Convencional": 10,
+          "Graneleiro": 10,
+          "Chapeu Chines": 10
+        }
+      },
+      "300": {
+        "candidates": 154,
+        "median": 17900.0,
+        "mean": 55342.954545454544,
+        "min": 30,
+        "max": 307079,
+        "sum": 8522815,
+        "selected_from_global_top69": 25,
+        "states": 13,
+        "types": {
+          "Silo": 70,
+          "Estrutural": 10,
+          "Deposito": 10,
+          "Convencional": 27,
+          "Graneleiro": 27,
+          "Chapeu Chines": 10
+        }
+      },
+      "400": {
+        "candidates": 254,
+        "median": 10180.0,
+        "mean": 37606.88976377953,
+        "min": 30,
+        "max": 307079,
+        "sum": 9552150,
+        "selected_from_global_top69": 25,
+        "states": 15,
+        "types": {
+          "Silo": 122,
+          "Estrutural": 10,
+          "Graneleiro": 46,
+          "Deposito": 10,
+          "Convencional": 55,
+          "Chapeu Chines": 11
+        }
+      },
+      "500": {
+        "candidates": 354,
+        "median": 8010.0,
+        "mean": 31052.906779661018,
+        "min": 30,
+        "max": 307079,
+        "sum": 10992729,
+        "selected_from_global_top69": 26,
+        "states": 17,
+        "types": {
+          "Silo": 178,
+          "Estrutural": 10,
+          "Graneleiro": 67,
+          "Deposito": 12,
+          "Convencional": 76,
+          "Chapeu Chines": 11
+        }
+      }
+    },
+    "global_top69_min_static": 128000
+  },
+  "source_max_static_placeholder_zero_count": 18086,
+  "candidate_limits": {
+    "records": 18086,
+    "blank": 17732,
+    "zero": 0,
+    "nonzero": 354,
+    "minimum": 30.0,
+    "median": 8010.0,
+    "maximum": 307079.0,
+    "sum": 10992729.0
+  },
+  "existing_initial_static_tonnes": 2026655,
+  "expansion_limits": {
+    "records": 146,
+    "blank": 0,
+    "zero": 0,
+    "nonzero": 146,
+    "minimum": 222.5,
+    "median": 1712.5,
+    "maximum": 25000.0,
+    "sum": 506663.75
+  },
+  "all_146_expansion_limits_equal_fraction_of_initial_static": 0.25,
+  "aggregate_investment_budget_in_current_contract": false,
+  "K_contract": {
+    "approval": "author_confirmed",
+    "candidate_upper_bound": "K * declared_reference_capacity_tonnes",
+    "existing_expansion_upper_bound": "K * 0.25 * initial_static_capacity_tonnes",
+    "installed_capacity": "initial plus chosen paid investment",
+    "cost": "unit_cost * actual_physical_tonnes_once",
+    "pre_scaled_equivalent": "physical_tonnes=K*q; cost=unit_cost*K*q",
+    "bulk_conversion_limit": "separate",
+    "workbook_changes": "proposed only"
+  },
+  "effective_proportional_costs_BRL_per_tonne": {
+    "candidate": 1250,
+    "expansion": 900,
+    "bulk_conversion_basis": 520
+  },
+  "dictionary_distance_issue": "duration_* are optional seconds, empty Durations; dist_* km stored in arcs.csv but omitted from Dictionary",
+  "effective_penalties": {
+    "unmet_BRL_per_tonne": 90000,
+    "static_BRL_per_excess_tonne_period": 45000,
+    "reception_BRL_per_excess_tonne": 45000
+  },
+  "stale_interface_fields": [
+    "Identification!B7",
+    "Transformations!B2",
+    "Transformations!C7",
+    "ParameterTemplate!A2:B2",
+    "Registry transformation column"
+  ],
+  "existing_zero_handling_facilities": 2,
+  "corrected_crosswalk": {
+    "sqlite_version": "3.53.1",
+    "snapshot_sha256": "5f2ecca8c45a82b2d8fd815f8135b2c0ba19450bead26d8a3cc796e5b2bdb081",
+    "cache_records": 235224,
+    "arc_comparison": {
+      "distance_equal_provenance_review_pending": 222202,
+      "distance_equal_unit_conversion_roundoff_provenance_review_pending": 39870
+    },
+    "arc_comparison_by_population": {
+      "215": {
+        "distance_equal_provenance_review_pending": 22050,
+        "distance_equal_unit_conversion_roundoff_provenance_review_pending": 3062
+      },
+      "300": {
+        "distance_equal_provenance_review_pending": 38640,
+        "distance_equal_unit_conversion_roundoff_provenance_review_pending": 6600
+      },
+      "400": {
+        "distance_equal_provenance_review_pending": 64550,
+        "distance_equal_unit_conversion_roundoff_provenance_review_pending": 11770
+      },
+      "500": {
+        "distance_equal_provenance_review_pending": 96962,
+        "distance_equal_unit_conversion_roundoff_provenance_review_pending": 18438
+      }
+    },
+    "normalised_cache_records": 4,
+    "selected_arc_records_using_normalisation": 40,
+    "negative_roundoff_rule": "[-1,0) metres to derived effective zero",
+    "binary64_comparison_rule": "exact or adjacent positive representations",
+    "maximum_conversion_delta_km": 4.547473508864641e-13,
+    "raw_cache_or_frozen_arc_values_changed": false,
+    "cache_identity_acceptance": "pending_routing_provenance_and_acquisition_review",
+    "unit_conversion": "distance_m / 1000 once",
+    "source_engine_opened": false,
+    "original_snapshot_unchanged_after": true,
+    "source_consistency_certified": false,
+    "comparison_scope": "Frozen selected-arc distances; not full live-source certification",
+    "corrected_comparator_sha256": "b63258718f4dd477da82fa95dcee645d70cd7a095ab31efc102f36e515b44779"
+  },
+  "local_solver_free_controls_passed": 46,
+  "ruff": "passed",
+  "optimizer_called": false,
+  "jobs_submitted": 0,
+  "environment_modified": false
+}

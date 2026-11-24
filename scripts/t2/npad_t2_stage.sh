@@ -19,8 +19,8 @@ curl --fail --location --proto '=https' --tlsv1.2 \
 curl --fail --location --proto '=https' --tlsv1.2 \
   "$URL/$SOURCE/scripts/t2/stage_offline_reconciliation.py" \
   -o "$WORK/stage_offline_reconciliation.py"
-HELPER=d27936d62242b83b78d60cf333400c3710d662e9996da33fa2b500ddbb140024
-CONTROLLER=8cec8446bc07d60da66a251dd0c096fa187c4381859226630fe47fb7880ac551
+HELPER=b63258718f4dd477da82fa95dcee645d70cd7a095ab31efc102f36e515b44779
+CONTROLLER=8e0331d5a960404b0220a93867374e02d5b5b536632370a0519521896a7550b7
 printf '%s  %s\n' \
   "$HELPER" "$WORK/reconcile_inputs.py" \
   "$CONTROLLER" "$WORK/stage_offline_reconciliation.py" | sha256sum --strict -c -
