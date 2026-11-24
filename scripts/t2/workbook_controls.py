@@ -67,6 +67,12 @@ def read_specification(workbook):
 
     wb = openpyxl.load_workbook(workbook, read_only=True, data_only=True)
     try:
+        identification = dict(list(wb["Identification"].values)[1:])
+        if (
+            identification.get("workbook_version") != 2
+            or identification.get("schema") != "agrologistic-effective-baseline-v1"
+        ):
+            raise ValueError("Expected the approved version-two workbook view.")
         rows = iter(wb["Controls"].values)
         if list(next(rows)) != ["parameter", "value", "unit", "meaning", "reference"]:
             raise ValueError("Unexpected Controls schema.")

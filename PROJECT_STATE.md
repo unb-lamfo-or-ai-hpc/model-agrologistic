@@ -1,3 +1,20 @@
+## Approved workbook v2 derivatives and Gurobi metadata — 24 November 2026
+
+PR165 was explicitly authorized and merged into develop at
+522a1465d524f1e0de4bd3f414bdfc3465b09b46. The local editable package metadata
+now accepts Gurobi14, with pip check clean and the other 202 distributions
+unchanged. PR159 remains Draft for the author's methodology review.
+
+In Draft PR164, workbook adjustment items 1–4, 6 and 7 are approved. Item5,
+the proposed warehouse/coordinate audit, is cancelled. Preserve the complete
+CONAB list confirmed by the researcher (Artur,2026), all originals and routing
+identities. New v2 XLSX views separate raw placeholders, effective reference
+bounds and optional case controls. K scales candidate and 25%-based expansion
+ceilings once; costs use physical installed tonnes. Alpha/beta retain their
+approved scopes and are disabled in the neutral reference. Read
+docs/workbooks_v2_implementation_20261124.md and its qualification evidence.
+No scientific optimization, NPAD job or PR164 merge is authorized.
+
 ## Approved optional policy implementation — 18 November 2026
 
 The researcher approved beta/alpha scopes/levels and implementation in PR158,

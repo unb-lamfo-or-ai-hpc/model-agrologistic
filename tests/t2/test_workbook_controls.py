@@ -3,6 +3,8 @@
 import importlib.util
 import pathlib
 import unittest
+from types import SimpleNamespace
+from unittest.mock import patch
 
 PATH = pathlib.Path(__file__).resolve().parents[2] / "scripts/t2/workbook_controls.py"
 spec = importlib.util.spec_from_file_location("workbook_controls", PATH)
@@ -25,6 +27,54 @@ def rows(**changes):
 
 
 class WorkbookControls(unittest.TestCase):
+    def test_reader_requires_v2_and_closes_on_rejection(self):
+        class Book(dict):
+            closed = False
+
+            def close(self):
+                self.closed = True
+
+        book = Book(
+            Identification=SimpleNamespace(
+                values=[
+                    ("item", "value"),
+                    ("schema", "agrologistic-effective-baseline-v1"),
+                    ("workbook_version", 1),
+                ]
+            )
+        )
+        loader = SimpleNamespace(load_workbook=lambda *a, **kw: book)
+        with patch.dict("sys.modules", {"openpyxl": loader}):
+            with self.assertRaisesRegex(ValueError, "version-two"):
+                controls.read_specification("unused.xlsx")
+        self.assertTrue(book.closed)
+
+    def test_reader_returns_the_one_authoritative_control_selection(self):
+        class Book(dict):
+            def close(self):
+                pass
+
+        book = Book(
+            Identification=SimpleNamespace(
+                values=[
+                    ("item", "value"),
+                    ("schema", "agrologistic-effective-baseline-v1"),
+                    ("workbook_version", 2),
+                ]
+            ),
+            Controls=SimpleNamespace(
+                values=[
+                    ("parameter", "value", "unit", "meaning", "reference"),
+                    *rows(scenario_id="K2", K=2),
+                ]
+            ),
+        )
+        with patch.dict(
+            "sys.modules", {"openpyxl": SimpleNamespace(load_workbook=lambda *a, **kw: book)}
+        ):
+            got = controls.read_specification("unused.xlsx")
+        self.assertEqual(got["multipliers"], {"candidate_limit": 2, "expansion_limit": 2})
+
     def test_neutral_disables_policies(self):
         got = controls.specification(rows())
         self.assertEqual(got["multipliers"], {"candidate_limit": 1, "expansion_limit": 1})

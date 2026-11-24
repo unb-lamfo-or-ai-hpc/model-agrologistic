@@ -131,7 +131,7 @@
     {
       "field": "freight_dest",
       "unit": "BRL/(t*km)",
-      "definition": "Unit freight rate for direct origin-customer transport, inactive in W.",
+      "definition": "Destination-indexed freight map retained as source data. The current W transport-cost functions use origin and warehouse rates.",
       "indices": "Ordered key_json indices in parameter sheet",
       "role": "Effective baseline input",
       "missingness": "Required effective keys retained exactly; no zero substitution"

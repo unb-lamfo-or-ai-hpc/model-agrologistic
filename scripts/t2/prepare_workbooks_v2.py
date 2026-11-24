@@ -81,12 +81,11 @@ def payloads(support, reviewed_registry, frozen_manifest):
             "scenario_prob": "Probability of one of the nine STO trajectories, equal to 1/9.",
             "static_capacity": "Initial installed static tonnes. "
             "Selected candidates start at zero.",
-            "initial_inventory": "Initial stock tonnes per facility and product, "
-            "zero in baseline.",
+            "initial_inventory": "Initial stock tonnes per facility and product, zero in baseline.",
             "storage_tariff": "Charge per warehouse, product and tonne held for one period.",
             "freight_origin": "Unit freight rate for origin outbound transport.",
-            "freight_dest": "Unit freight rate for direct origin-customer transport, "
-            "inactive in W.",
+            "freight_dest": "Destination-indexed freight map retained as source data. "
+            "The current W transport-cost functions use origin and warehouse rates.",
             "freight_warehouse": "Unit freight rate for warehouse outbound transport.",
             "transshipment_cost": "Handling cost per tonne passing through the facility.",
             "unmet_demand_penalty": "Charge per unmet domestic tonne by customer and product.",
@@ -420,7 +419,7 @@ def payloads(support, reviewed_registry, frozen_manifest):
         finally:
             wb.close()
     else:
-        reviewed = json.loads(reviewed_registry.read_text(encoding="utf8"))
+        raise ValueError("Pass the hash-frozen reviewed registry XLSX, not an unpinned copy.")
     registry = [list(row) for row in reviewed["Registry"] if any(v is not None for v in row)]
     columns, rows = registry[0], registry[1:]
     original_columns = list(columns)
@@ -579,14 +578,14 @@ def payloads(support, reviewed_registry, frozen_manifest):
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--support", type=Path, required=True)
-    p.add_argument("--registry-records", type=Path, required=True)
+    p.add_argument("--registry-workbook", type=Path, required=True)
     p.add_argument("--frozen-manifest", type=Path, required=True)
     p.add_argument("--output", type=Path, required=True)
     a = p.parse_args()
     a.output.mkdir(parents=True, exist_ok=True)
     manifest = json.loads(a.frozen_manifest.read_text(encoding="utf8"))
     for name, payload in zip(
-        ("baseline", "registry"), payloads(a.support, a.registry_records, manifest), strict=False
+        ("baseline", "registry"), payloads(a.support, a.registry_workbook, manifest), strict=True
     ):
         target = a.output / f"{name}-workbook-v2.json"
         target.write_text(json.dumps(payload, ensure_ascii=False, allow_nan=False), encoding="utf8")

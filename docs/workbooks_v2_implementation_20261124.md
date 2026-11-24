@@ -80,7 +80,8 @@ facilities. Membership columns continue to mean population inclusion only.
 
 1. Verify the original support manifest and the frozen review identities.
 2. Run `scripts/t2/prepare_workbooks_v2.py` with the frozen effective support,
-   accepted registry-record JSON and frozen input manifest. This writes payloads.
+   hash-frozen reviewed registry XLSX (`--registry-workbook`) and frozen input
+   manifest. This writes payloads and refuses an unpinned registry file.
 3. Render the two new workbooks using `scripts/t2/render_workbooks_v2.mjs`
    and the bundled artifact-tool runtime. Recalculate, inspect formulas and
    render all worksheet views. A disposable K=2 change verifies live ceiling

@@ -1,0 +1,43 @@
+{
+  "merge_commit": "522a1465d524f1e0de4bd3f414bdfc3465b09b46",
+  "source_declaration_changes": 4,
+  "source_before_sha256": "11e752d2bc0261eda5e7d219e85be7c5b5457f872c4d646ae30cffb8c89fef49",
+  "source_after_sha256": "ff096fcb364d2b95f86b6f6eeeb3187107871f15325484c7b0d6db51497c4b80",
+  "editable_refresh_exit": 0,
+  "pip_check_before_exit": 1,
+  "pip_check_after_exit": 0,
+  "pip_check_after": "No broken requirements found.",
+  "distribution_count": 203,
+  "version_changes": {
+    "model-agrologistic": {
+      "before": "0.1.0",
+      "after": "0.2.0"
+    }
+  },
+  "all_other_distributions_unchanged": true,
+  "gurobipy": "14.0.0",
+  "installed_metadata": {
+    "version": "0.2.0",
+    "gurobi_requirements": [
+      "gurobipy<15,>=13.0.2",
+      "gurobipy<15,>=13.0.2; extra == \"gurobi\"",
+      "gurobipy<15,>=13.0.2; extra == \"hpc\"",
+      "gurobipy<15,>=13.0.2; extra == \"all\""
+    ]
+  },
+  "extras_installed": false,
+  "optimizer_called": false,
+  "base_environment_changed": false,
+  "local_checkout_branch_changed": false,
+  "metadata_refresh_command": [
+    "python",
+    "-m",
+    "pip",
+    "install",
+    "--no-index",
+    "--no-deps",
+    "--no-build-isolation",
+    "-e",
+    "EXISTING_EDITABLE_SOURCE"
+  ]
+}
