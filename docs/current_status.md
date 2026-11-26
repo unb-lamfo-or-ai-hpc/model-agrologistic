@@ -1,5 +1,21 @@
 # Current project status — 26 November 2026
 
+**Public native v4 accepted: 32/32 fixed controls**, with 26 optima and six
+expected infeasibilities, in 20.590 seconds. Read the
+[accepted checkpoint](checkpoints/20261126_s1_native_public_v4_accepted.md),
+[audit](evidence/mvp3_s1_public_native_v4_accepted_20261126.json) and
+[original public JSON archive](evidence/mvp3_s1_public_native_v4_originals_20261126.zip).
+All positive vectors were revalidated without a solver; all 32 model disposals
+and parameter audits passed. V1/v2/v3 originals and shared settings are preserved.
+
+This closes the exact-source local tiny public numerical-software gate only.
+PR167 stays Draft; large-license capacity, production memory/resource telemetry,
+finite scientific queue admission and live-source consistency remain open.
+No repeat, h215, HPC or merge is authorized. Remote CI remains withheld and the
+scientific EN Rev4 design/budgets are unchanged.
+
+## Historical v3 return snapshot
+
 V3's explicit child-only GRB_LICENSE_FILE selection successfully started the
 native environment, then the first DET solve facade raised ValueError. The
 0.837-second attempt is consumed, with zero control receipts; the exact cause

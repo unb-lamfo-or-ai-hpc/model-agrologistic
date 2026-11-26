@@ -1,5 +1,12 @@
 # MVP3 S1: native effective-data and policy integration
 
+Current qualification: the exact-source local v4 public cohort at runtime
+`74ba024cccb9533a589b2594ce8d4ab69f79cd1f` passed all 32 fixed tiny controls.
+Read [the accepted checkpoint](checkpoints/20261126_s1_native_public_v4_accepted.md).
+The preparation account below retains its original scope; v4 adds licensed tiny
+numerical evidence, with no agricultural h215/HPC run or merge. PR167 remains Draft
+while review and the distinct production/admission gates remain open.
+
 Base: develop `22fd493fd74f99320b9f2757d9c4927ffb7551bc` (PR164 merged).
 Scientific reference: approved English EN Rev4, 24 November 2026.
 
@@ -107,8 +114,10 @@ precision, independent validation and missing/duplicate vector rejection.
 The follow-up public qualification package is documented in
 [the prepared public runbook](mvp3_s1_public_native_qualification_20261126.md).
 Its fixed synthetic fixtures use a separately typed 60-second software profile;
-the scientific configuration above remains unchanged. Preparation has not
-executed the native package or qualified a license. Existing native callers keep
+the scientific configuration above remains unchanged. The preparation-only
+checkpoint did not execute the native package; the separately authorized v4
+cohort now accepts tiny numerical behavior, not production license capacity.
+Existing native callers keep
 their historical model environment; only the public profile accepts an explicitly
 owned environment for silent startup and deterministic cleanup.
 

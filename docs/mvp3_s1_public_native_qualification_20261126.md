@@ -1,6 +1,22 @@
 # MVP3 S1 public native qualification
 
-Latest return: v3 explicitly selected the supplied license address in the child
+## Current accepted v4 result
+
+The single authorized v4 cohort passed **32/32** public controls: 26 optimal and
+six deliberately infeasible. Read the
+[accepted v4 checkpoint](checkpoints/20261126_s1_native_public_v4_accepted.md),
+[full audit](evidence/mvp3_s1_public_native_v4_accepted_20261126.json) and
+[36 original public JSON receipts](evidence/mvp3_s1_public_native_v4_originals_20261126.zip).
+All positive vectors were independently revalidated after return; 32 model
+disposals, 181 software-parameter checks/model and source/engine/interpreter
+hashes passed. V1/v2/v3 originals remain unchanged. All four starts are consumed;
+do not rerun them. No further native execution, h215/HPC or merge is authorized.
+Production capacity/memory, complete resource telemetry and source consistency
+are outside this tiny qualification. PR167 remains Draft and remote CI is withheld.
+
+## Historical return snapshots and preparation contract
+
+Historical v3 return: it explicitly selected the supplied license address in the child
 and successfully initialized its environment, then failed with ValueError in the
 first DET solve facade. All v1/v2/v3 starts are consumed and preserved. Read
 [the v3 return checkpoint](checkpoints/20261126_s1_native_public_v3_return.md).
@@ -8,7 +24,7 @@ The prospective audit correction normalizes connection names before querying,
 keeps strict software-default checks, and records safe source origin/audit reason
 plus the existing native phase events. It has not been executed natively.
 
-Latest return: v2's single authorized attempt failed during environment startup
+Historical v2 return: its single authorized attempt failed during environment startup
 with native `NO_LICENSE` 10009, before any model or optimizer call. Both v1/v2
 claims are consumed and frozen. Read the
 [v2 license checkpoint](checkpoints/20261126_s1_native_public_v2_license_return.md).
@@ -16,7 +32,7 @@ The prospective correction pins an existing local license path for the child
 process only. It has not been executed; candidate-file validity is untested.
 No user/machine environment setting or license contents are changed or inspected.
 
-Current return: the single researcher-authorized v1 attempt was consumed and
+Historical v1 return: the single researcher-authorized attempt was consumed and
 rejected before the first control receipt, in 0.578 seconds. No native numerical
 qualification was established. The original capsule is frozen; do not retry it.
 Read [the return checkpoint](checkpoints/20261126_s1_native_public_v1_return.md)
@@ -25,7 +41,7 @@ The preparation description below records the original finite public scope.
 
 PR167 remains Draft, based on develop
 `22fd493fd74f99320b9f2757d9c4927ffb7551bc`. This increment prepares a local,
-source-bound qualification capsule. Native execution requires the researcher's
+source-bound qualification capsule. Further native execution requires the researcher's
 separate CLI authorization. Preparation does not grant merge permission.
 
 ## Fixed public scope

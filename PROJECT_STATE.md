@@ -1,4 +1,22 @@
-## MVP3 S1 public v3 license starts; first DET solve rejected — 26 November 2026
+## MVP3 S1 public native v4 accepted, 32/32 — 26 November 2026
+
+Read docs/checkpoints/20261126_s1_native_public_v4_accepted.md. The single
+authorized v4 cohort at runtime 74ba024 / plan f9e69634 passed all 32 literal
+public controls in 20.590 s: 26 optima and six expected native infeasibilities.
+All 26 positive JSON vectors were independently revalidated without a solver;
+all 32 models show disposed status and 181 software-parameter checks each.
+Only OutputFlag/TimeLimit differ from native defaults. Original JSONs are
+preserved losslessly in the public receipt archive; v1/v2/v3 remain unchanged.
+
+The supplied license path was selected through GRB_LICENSE_FILE only in the
+owned child. This accepts the exact-source local tiny numerical-software gate,
+not large-license capacity, production memory/telemetry, source consistency or
+scientific execution admission. The v4 start is consumed; no repeat or follow-on
+is authorized. Keep runtime bytes unchanged during evidence closeout. PR167
+remains Draft, remote CI withheld, and no h215, HPC, shared-setting change or merge.
+Continue only non-executing S2 gate/queue preparation under the approved EN Rev4.
+
+## Historical v3 return — 26 November 2026
 
 Read docs/checkpoints/20261126_s1_native_public_v3_return.md. The authorized v3
 child explicitly selected C:\gurobi1400\gurobi.lic through GRB_LICENSE_FILE and
