@@ -46,12 +46,15 @@ def test_external_process_and_optimizer_entry_guards():
         guard.audit("subprocess.Popen", ("solver",))
     for module, name in [("src.logic.optimization", "solve_model"),
                          ("src.logic.effective_gurobi_execution", "solve_effective_gurobi"),
+                         ("src.logic.optimization_gurobipy_stochastic",
+                          "solve_stochastic_model_gurobipy"),
+                         ("src.logic.optimization_gurobipy", "_optimize_scalar"),
                          ("pyomo.contrib.appsi.solvers.gurobi", "solve")]:
         frame = SimpleNamespace(f_globals={"__name__": module},
                                 f_code=SimpleNamespace(co_name=name))
         with pytest.raises(NoSolverViolation):
             guard.profile(frame, "call", None)
-    assert guard.blocked == 4
+    assert guard.blocked == 6
     # Module globals can be cleared while Python shuts down logging handlers.
     guard.profile(SimpleNamespace(f_globals={"__name__": None},
                                   f_code=SimpleNamespace(co_name="cleanup")), "call", None)

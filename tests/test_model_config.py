@@ -41,6 +41,12 @@ def test_negative_mip_gap_raises_error():
         SolverConfig(mip_gap=-0.01)
 
 
+def test_unset_native_gap_preserves_other_backend_contracts():
+    assert SolverConfig(mip_gap=None).mip_gap is None
+    with pytest.raises(ValueError, match="only by the native Gurobi"):
+        SolverConfig(backend="pyomo", solver_name="gurobi", mip_gap=None)
+
+
 def test_default_model_config_is_deterministic():
     config = ModelConfig()
 

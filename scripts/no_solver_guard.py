@@ -44,7 +44,10 @@ class NoSolverGuard(importlib.abc.MetaPathFinder):
         module = frame.f_globals.get("__name__") or ""
         name = frame.f_code.co_name
         if (
-            module.startswith("src.logic.") and name.startswith(("solve_model", "solve_effective_"))
+            module.startswith("src.logic.") and (
+                name.startswith(("solve_model", "solve_effective_", "solve_stochastic_model"))
+                or name == "_optimize_scalar"
+            )
         ) or (module.startswith("pyomo.") and name in {"solve", "_solve", "optimize"}):
             self.reject("Optimizer entry point forbidden in data/algebra CI.")
 

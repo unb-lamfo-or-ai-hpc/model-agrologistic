@@ -97,7 +97,7 @@ class SolverConfig:
     backend: SolverBackend = "gurobipy"
     solver_name: str = "gurobi"
 
-    mip_gap: float = 0.01
+    mip_gap: float | None = 0.01
     time_limit: int | None = 3600
     threads: int | None = 0
     seed: int | None = 0
@@ -132,7 +132,9 @@ class SolverConfig:
         }:
             raise ValueError("When backend='pyscipopt', solver_name must be 'scip' or 'pyscipopt'.")
 
-        if self.mip_gap < 0:
+        if self.mip_gap is None and self.backend != "gurobipy":
+            raise ValueError("An unset MIPGap is supported only by the native Gurobi backend.")
+        if self.mip_gap is not None and self.mip_gap < 0:
             raise ValueError("mip_gap must be non-negative.")
 
         if self.time_limit is not None and self.time_limit <= 0:

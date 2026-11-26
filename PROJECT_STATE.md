@@ -1,3 +1,29 @@
+## MVP3 S1 native integration preparation — 26 November 2026
+
+The researcher authorizes an isolated S1 PR from merged develop
+22fd493fd74f99320b9f2757d9c4927ffb7551bc, with local verification only. PR164 is
+merged; prior Draft164 statements below are dated historical records. Preserve
+the previous dirty checkout and the approved English EN Rev4 scientific plan.
+
+Read docs/mvp3_s1_native_integration_20261126.md. S1 connects the sealed effective
+data and full-horizon beta/alpha rows to the retained native DET/STO W builder,
+keeps K as a one-time investment-ceiling transformation, and adds dense decision
+coverage before independent validation. Automatic Method=-1/Threads=0 remains
+the reference, with MIPGap/Seed left at native defaults by a fresh configuration.
+
+Software construction/export checks are distinct from licensed native/public
+qualification, production memory, source consistency and execution admission.
+Remote CI is withheld under the local-checks-only instruction. No optimizer,
+license test, NPAD action, environment modification, merge or publication is
+authorized by S1 preparation. Keep the PR Draft while these qualification gates
+remain open; every merge and scientific CLI execution requires authorization.
+
+The initial catalog remains 24 h215 cases: 8 P0/K cases and 16 additional P1-P8
+cases at K=1, reusing P0/K=1. The Rev4 evidence-based schedule governs progression;
+repetitions and selected h300/h400/h500 cases remain conditional. Preserve the
+complete registry, frozen arcs, accepted receipts and consumed claims, and keep
+source_consistency_certified=false. No Benders, GPU or thread-speedup study.
+
 ## T2 reconciliation and same-machine handoff — 26 November 2026
 
 PR166's approved English EN Rev4 is merged into develop at

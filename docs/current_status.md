@@ -1,5 +1,21 @@
 # Current project status — 26 November 2026
 
+MVP3 S1 native integration is being prepared in an isolated worktree from
+`22fd493fd74f99320b9f2757d9c4927ffb7551bc`. PR164 is merged; the older Draft164
+wording below is retained as history. The approved English EN Rev4 governs the
+24-case h215 sequence and its evidence-based schedule.
+
+Read [S1 integration and local verification](mvp3_s1_native_integration_20261126.md).
+The scope is sealed effective DET/STO W inputs, one-time K ceilings, native
+beta/alpha rows, automatic reference parameters and dense decisions with
+independent coverage/residual validation. Only local solver-free checks are
+authorized. Native/public execution qualification, telemetry/queue admission,
+merge and human scientific CLI execution remain separate gates. The prior
+checkout, data, environment and historical claims are preserved. Remote CI is
+withheld, and the S1 PR remains Draft pending the applicable qualification gates.
+
+## Historical T2 reconciliation snapshot
+
 Approved English EN Rev4 entered develop through PR166 at
 `783b95c2e5d942011e3c46171c0a80cc2d68111c`. Draft PR164 is being reconciled
 with that state. Its scope is the v2 input/control and offline routing-lineage

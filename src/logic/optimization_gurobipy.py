@@ -23,13 +23,20 @@ def _finite_attribute(model, name):
 def solve_model_gurobipy(data, model_config, solver_config):
     """Use one extensive-form builder for DET and STO, with one scalar solve."""
     from src.logic.mathematical_contract import extensive_form_inputs
+    from src.logic.native_effective import finish_effective_result, prepare_effective_native
     from src.logic.optimization import configure_gurobi_wls_license, project_deterministic_result
     from src.logic.optimization_gurobipy_stochastic import solve_stochastic_model_gurobipy
 
+    effective = prepare_effective_native(data, model_config, solver_config)
     configure_gurobi_wls_license(solver_config)
     prepared, config = extensive_form_inputs(data, model_config)
-    result = solve_stochastic_model_gurobipy(prepared, config, solver_config)
-    return project_deterministic_result(result) if model_config.mode == "det" else result
+    kwargs = {"effective_context": effective} if effective is not None else {}
+    result = solve_stochastic_model_gurobipy(prepared, config, solver_config, **kwargs)
+    if model_config.mode == "det":
+        result = project_deterministic_result(result)
+        if effective is not None:
+            finish_effective_result(effective, result)
+    return result
 
 
 def _solve_deterministic_core(data, model_config, solver_config):
@@ -82,7 +89,8 @@ def _apply_solver_parameters(model: Any, solver_config: SolverConfig) -> None:
     if solver_config.time_limit is not None:
         model.Params.TimeLimit = solver_config.time_limit
 
-    model.Params.MIPGap = solver_config.mip_gap
+    if solver_config.mip_gap is not None:
+        model.Params.MIPGap = solver_config.mip_gap
 
     if solver_config.threads is not None:
         model.Params.Threads = solver_config.threads

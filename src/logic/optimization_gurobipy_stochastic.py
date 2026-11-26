@@ -10,12 +10,20 @@ penalty contract rather than selecting a new network for each realization.
 from __future__ import annotations
 
 from time import perf_counter
+from types import SimpleNamespace
 from typing import Any
 
 from src.logic.mathematical_contract import prepare_model_data
 from src.logic.model_config import ModelConfig, SolverConfig
 from src.logic.model_data import ModelData
 from src.logic.model_lifecycle import managed_model_solve, own_model
+from src.logic.native_effective import (
+    attach_native_policies,
+    audit_reference_parameters,
+    check_native_embedding,
+    finish_effective_result,
+    prepare_effective_native,
+)
 from src.logic.optimization import OptimizationResult, scalar_mip_gap
 from src.logic.optimization_gurobipy import (
     DEFAULT_PENALTY,
@@ -49,9 +57,14 @@ def solve_stochastic_model_gurobipy(
     solver_config: SolverConfig,
     *,
     native_phase_hook: Any = None,
+    effective_context: Any = None,
 ) -> OptimizationResult:
     """Solve the risk-neutral two-stage extensive form."""
 
+    if effective_context is None:
+        effective_context = prepare_effective_native(data, model_config, solver_config)
+    else:
+        check_native_embedding(effective_context, data, model_config, solver_config)
     gp, GRB = _import_gurobi()
     started_at = perf_counter()
 
@@ -60,6 +73,173 @@ def solve_stochastic_model_gurobipy(
     model = own_model(gp.Model("model_agrologistic_stochastic_extensive_form"), "gurobipy")
     _apply_solver_parameters(model, solver_config)
 
+    parameter_audit = (
+        audit_reference_parameters(model, gp, solver_config)
+        if effective_context is not None else None
+    )
+    built = populate_native_model(
+        gp, GRB, model, data, model_config, solver_config,
+        effective_context=effective_context,
+    )
+    od_keys = built.od_keys
+    dc_keys = built.dc_keys
+    oc_keys = built.oc_keys
+    dd_keys = built.dd_keys
+    inventory_keys = built.inventory_keys
+    unmet_keys = built.unmet_keys
+    emergency_keys = built.emergency_keys
+    open_candidate = built.open_candidate
+    candidate_capacity = built.candidate_capacity
+    expand_warehouse = built.expand_warehouse
+    expand_capacity = built.expand_capacity
+    bulkify_warehouse = built.bulkify_warehouse
+    bulk_capacity = built.bulk_capacity
+    flow_od = built.flow_od
+    flow_dc = built.flow_dc
+    flow_oc = built.flow_oc
+    flow_dd = built.flow_dd
+    inventory = built.inventory
+    unmet_demand = built.unmet_demand
+    emergency_static_capacity = built.emergency_static_capacity
+    emergency_reception_capacity = built.emergency_reception_capacity
+    investment_costs = built.investment_costs
+    scenario_costs = built.scenario_costs
+    expected_costs = built.expected_costs
+    del built
+
+    if solver_config.compact_python_indices:
+        phase("python_index_compaction")
+        released_entries = sum(
+            len(keys)
+            for keys in (
+                od_keys,
+                dc_keys,
+                oc_keys,
+                dd_keys,
+                inventory_keys,
+                unmet_keys,
+                emergency_keys,
+            )
+        )
+        del od_keys, dc_keys, oc_keys, dd_keys, inventory_keys, unmet_keys, emergency_keys
+        for mapping in (
+            flow_od,
+            flow_dc,
+            flow_oc,
+            flow_dd,
+            inventory,
+            unmet_demand,
+            emergency_static_capacity,
+            emergency_reception_capacity,
+        ):
+            mapping.clean()
+        event("python_index_compaction", python_index_entries=released_entries)
+        phase("model_build_complete")
+
+    model_build_seconds = perf_counter() - started_at
+    optimization_started_at = perf_counter()
+    scalar_progress = _optimize_scalar(model, GRB, native_phase_hook=native_phase_hook)
+    optimization_seconds = perf_counter() - optimization_started_at
+    runtime_seconds = perf_counter() - started_at
+    status = _map_gurobi_status(model, GRB)
+
+    common_metadata = {
+        "mathematical_contract": data.metadata.get("mathematical_contract", {}),
+        "gurobi_status_code": model.Status,
+        "gurobi_status_name": _gurobi_status_name(model, GRB),
+        "solution_count": model.SolCount,
+        **scalar_progress,
+        "gurobi_native_gap": _finite_attribute(model, "MIPGap"),
+        "solver_peak_memory_decimal_gb": _finite_attribute(model, "MaxMemUsed"),
+        "work_units": _finite_attribute(model, "Work"),
+        "iteration_count": _finite_attribute(model, "IterCount"),
+        "node_count": _finite_attribute(model, "NodeCount"),
+        "timings": {
+            "model_build_seconds": model_build_seconds,
+            "optimization_seconds": optimization_seconds,
+        },
+        "formulation": "two_stage_extensive_form",
+        "scenario_probabilities": dict(data.scenario_prob),
+        "first_stage_decisions": [
+            "open_candidate",
+            "candidate_capacity",
+            "expand_warehouse",
+            "expand_capacity",
+            "bulkify_warehouse",
+            "bulk_capacity",
+        ],
+        "objective_policy": model_config.objective_policy,
+        "objective_name": "penalized_cost",
+        "objective_bound": _finite_attribute(model, "ObjBound"),
+        "matrix": {
+            "variables": int(model.NumVars),
+            "constraints": int(model.NumConstrs),
+            "nonzeros": int(model.NumNZs),
+        },
+        **_infeasibility_metadata(model, GRB, solver_config),
+    }
+    if effective_context is not None:
+        common_metadata["effective_native_parameters"] = parameter_audit
+    if model.SolCount == 0:
+        result = OptimizationResult(
+            status=status,
+            solver_backend="gurobipy",
+            solver_name=solver_config.solver_name,
+            model_mode=model_config.mode,
+            runtime_seconds=runtime_seconds,
+            metadata=common_metadata,
+        )
+        if effective_context is not None and effective_context.config.mode == "sto":
+            finish_effective_result(effective_context, result)
+        return result
+
+    extraction_started = perf_counter()
+    phase("result_extraction")
+    result = _extract_stochastic_result(
+        data=data,
+        model_config=model_config,
+        solver_config=solver_config,
+        model=model,
+        GRB=GRB,
+        status=status,
+        runtime_seconds=runtime_seconds,
+        flow_od=flow_od,
+        flow_dc=flow_dc,
+        flow_oc=flow_oc,
+        flow_dd=flow_dd,
+        inventory=inventory,
+        unmet_demand=unmet_demand,
+        emergency_static_capacity=emergency_static_capacity,
+        emergency_reception_capacity=emergency_reception_capacity,
+        open_candidate=open_candidate,
+        candidate_capacity=candidate_capacity,
+        expand_warehouse=expand_warehouse,
+        expand_capacity=expand_capacity,
+        bulkify_warehouse=bulkify_warehouse,
+        bulk_capacity=bulk_capacity,
+        investment_costs=investment_costs,
+        expected_costs=expected_costs,
+        scenario_costs=scenario_costs,
+        metadata=common_metadata,
+    )
+    result.metadata["timings"]["result_extraction_seconds"] = perf_counter() - extraction_started
+    result.metadata["timings"]["solver_reported_runtime_seconds"] = float(model.Runtime)
+    if effective_context is not None and effective_context.config.mode == "sto":
+        finish_effective_result(effective_context, result)
+    return result
+
+
+def populate_native_model(gp, GRB, model, data, model_config, solver_config, *,
+                          effective_context=None):
+    """Populate the retained native formulation without optimizing or opening a model.
+
+    The caller owns the model. Symbolic local controls exercise this exact
+    construction function without loading Gurobi or replacing its equations.
+    """
+    if effective_context is not None:
+        check_native_embedding(effective_context, data, model_config, solver_config)
+    elif "effective_baseline" in data.metadata:
+        raise ValueError("Sealed effective data require a verified native context.")
     scenarios = list(data.scenarios)
     routes = select_routes(data, model_config)
     od_keys = [
@@ -260,97 +440,24 @@ def solve_stochastic_model_gurobipy(
             bulk_capacity=bulk_capacity,
         )
 
-    if solver_config.compact_python_indices:
-        phase("python_index_compaction")
-        released_entries = sum(
-            len(keys)
-            for keys in (
-                od_keys,
-                dc_keys,
-                oc_keys,
-                dd_keys,
-                inventory_keys,
-                unmet_keys,
-                emergency_keys,
-            )
+    if effective_context is not None:
+        attach_native_policies(
+            model, gp, effective_context, unmet=unmet_demand, exports=flow_dc,
         )
-        del od_keys, dc_keys, oc_keys, dd_keys, inventory_keys, unmet_keys, emergency_keys
-        for mapping in (
-            flow_od,
-            flow_dc,
-            flow_oc,
-            flow_dd,
-            inventory,
-            unmet_demand,
-            emergency_static_capacity,
-            emergency_reception_capacity,
-        ):
-            mapping.clean()
-        event("python_index_compaction", python_index_entries=released_entries)
-        phase("model_build_complete")
-
-    model_build_seconds = perf_counter() - started_at
-    optimization_started_at = perf_counter()
-    scalar_progress = _optimize_scalar(model, GRB, native_phase_hook=native_phase_hook)
-    optimization_seconds = perf_counter() - optimization_started_at
-    runtime_seconds = perf_counter() - started_at
-    status = _map_gurobi_status(model, GRB)
-
-    common_metadata = {
-        "mathematical_contract": data.metadata.get("mathematical_contract", {}),
-        "gurobi_status_code": model.Status,
-        "gurobi_status_name": _gurobi_status_name(model, GRB),
-        "solution_count": model.SolCount,
-        **scalar_progress,
-        "gurobi_native_gap": _finite_attribute(model, "MIPGap"),
-        "solver_peak_memory_decimal_gb": _finite_attribute(model, "MaxMemUsed"),
-        "work_units": _finite_attribute(model, "Work"),
-        "iteration_count": _finite_attribute(model, "IterCount"),
-        "node_count": _finite_attribute(model, "NodeCount"),
-        "timings": {
-            "model_build_seconds": model_build_seconds,
-            "optimization_seconds": optimization_seconds,
-        },
-        "formulation": "two_stage_extensive_form",
-        "scenario_probabilities": dict(data.scenario_prob),
-        "first_stage_decisions": [
-            "open_candidate",
-            "candidate_capacity",
-            "expand_warehouse",
-            "expand_capacity",
-            "bulkify_warehouse",
-            "bulk_capacity",
-        ],
-        "objective_policy": model_config.objective_policy,
-        "objective_name": "penalized_cost",
-        "objective_bound": _finite_attribute(model, "ObjBound"),
-        "matrix": {
-            "variables": int(model.NumVars),
-            "constraints": int(model.NumConstrs),
-            "nonzeros": int(model.NumNZs),
-        },
-        **_infeasibility_metadata(model, GRB, solver_config),
-    }
-    if model.SolCount == 0:
-        return OptimizationResult(
-            status=status,
-            solver_backend="gurobipy",
-            solver_name=solver_config.solver_name,
-            model_mode=model_config.mode,
-            runtime_seconds=runtime_seconds,
-            metadata=common_metadata,
-        )
-
-    extraction_started = perf_counter()
-    phase("result_extraction")
-    result = _extract_stochastic_result(
-        data=data,
-        model_config=model_config,
-        solver_config=solver_config,
-        model=model,
-        GRB=GRB,
-        status=status,
-        runtime_seconds=runtime_seconds,
+    return SimpleNamespace(
+        od_keys=od_keys,
+        dc_keys=dc_keys,
+        oc_keys=oc_keys,
+        dd_keys=dd_keys,
+        inventory_keys=inventory_keys,
+        unmet_keys=unmet_keys,
+        emergency_keys=emergency_keys,
+        open_candidate=open_candidate,
+        candidate_capacity=candidate_capacity,
+        expand_warehouse=expand_warehouse,
+        expand_capacity=expand_capacity,
+        bulkify_warehouse=bulkify_warehouse,
+        bulk_capacity=bulk_capacity,
         flow_od=flow_od,
         flow_dc=flow_dc,
         flow_oc=flow_oc,
@@ -359,20 +466,10 @@ def solve_stochastic_model_gurobipy(
         unmet_demand=unmet_demand,
         emergency_static_capacity=emergency_static_capacity,
         emergency_reception_capacity=emergency_reception_capacity,
-        open_candidate=open_candidate,
-        candidate_capacity=candidate_capacity,
-        expand_warehouse=expand_warehouse,
-        expand_capacity=expand_capacity,
-        bulkify_warehouse=bulkify_warehouse,
-        bulk_capacity=bulk_capacity,
         investment_costs=investment_costs,
-        expected_costs=expected_costs,
         scenario_costs=scenario_costs,
-        metadata=common_metadata,
+        expected_costs=expected_costs,
     )
-    result.metadata["timings"]["result_extraction_seconds"] = perf_counter() - extraction_started
-    result.metadata["timings"]["solver_reported_runtime_seconds"] = float(model.Runtime)
-    return result
 
 
 def _build_investment_costs(
@@ -774,10 +871,11 @@ def _extract_stochastic_result(
     scenario_costs: dict[str, dict[str, Any]],
     metadata: dict[str, Any],
 ) -> OptimizationResult:
+    dense = "effective_baseline" in data.metadata
     flows: list[dict[str, Any]] = []
     for scenario, origin, warehouse, product, period in flow_od.keys():
         value = _value(flow_od[scenario, origin, warehouse, product, period])
-        if value > VALUE_TOL:
+        if dense or value > VALUE_TOL:
             flows.append(
                 {
                     "scenario": scenario,
@@ -792,7 +890,7 @@ def _extract_stochastic_result(
             )
     for scenario, warehouse, customer, product, period in flow_dc.keys():
         value = _value(flow_dc[scenario, warehouse, customer, product, period])
-        if value > VALUE_TOL:
+        if dense or value > VALUE_TOL:
             flows.append(
                 {
                     "scenario": scenario,
@@ -810,7 +908,7 @@ def _extract_stochastic_result(
             )
     for scenario, origin, customer, product, period in flow_oc.keys():
         value = _value(flow_oc[scenario, origin, customer, product, period])
-        if value > VALUE_TOL:
+        if dense or value > VALUE_TOL:
             flows.append(
                 {
                     "scenario": scenario,
@@ -828,7 +926,7 @@ def _extract_stochastic_result(
             )
     for scenario, warehouse_from, warehouse_to, product, period in flow_dd.keys():
         value = _value(flow_dd[scenario, warehouse_from, warehouse_to, product, period])
-        if value > VALUE_TOL:
+        if dense or value > VALUE_TOL:
             flows.append(
                 {
                     "scenario": scenario,
@@ -844,10 +942,12 @@ def _extract_stochastic_result(
     inventories = _extract_scenario_values(
         inventory,
         ("scenario", "warehouse", "product", "period"),
+        dense=dense,
     )
     unmet_records = _extract_scenario_values(
         unmet_demand,
         ("scenario", "customer", "product", "period"),
+        dense=dense,
     )
     emergency_records: list[dict[str, Any]] = []
     for capacity_type, variables in (
@@ -856,7 +956,7 @@ def _extract_stochastic_result(
     ):
         for scenario, warehouse, period in variables.keys():
             value = _value(variables[scenario, warehouse, period])
-            if value > VALUE_TOL:
+            if dense or value > VALUE_TOL:
                 emergency_records.append(
                     {
                         "scenario": scenario,
@@ -975,11 +1075,12 @@ def _extract_stochastic_result(
 def _extract_scenario_values(
     variables: Any,
     fields: tuple[str, ...],
+    *, dense: bool = False,
 ) -> list[dict[str, Any]]:
     records: list[dict[str, Any]] = []
     for key in variables.keys():
         value = _value(variables[key])
-        if value > VALUE_TOL:
+        if dense or value > VALUE_TOL:
             records.append({**dict(zip(fields, key, strict=False)), "value": value})
     return records
 

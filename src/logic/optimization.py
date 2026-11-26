@@ -254,7 +254,11 @@ def solve_model(
             require_distances=require_distances,
         )
 
-    if uses_gurobi(solver_config):
+    # Effective native seals/profile precede license selection; historical dispatch stays intact.
+    effective_native = (
+        solver_config.backend == "gurobipy" and "effective_baseline" in data.metadata
+    )
+    if uses_gurobi(solver_config) and not effective_native:
         configure_gurobi_wls_license(solver_config)
 
     if solver_config.backend == "gurobipy":
