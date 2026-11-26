@@ -1,3 +1,110 @@
+## MVP3 S1 public native v4 accepted, 32/32 — 26 November 2026
+
+Read docs/checkpoints/20261126_s1_native_public_v4_accepted.md. The single
+authorized v4 cohort at runtime 74ba024 / plan f9e69634 passed all 32 literal
+public controls in 20.590 s: 26 optima and six expected native infeasibilities.
+All 26 positive JSON vectors were independently revalidated without a solver;
+all 32 models show disposed status and 181 software-parameter checks each.
+Only OutputFlag/TimeLimit differ from native defaults. Original JSONs are
+preserved losslessly in the public receipt archive; v1/v2/v3 remain unchanged.
+
+The supplied license path was selected through GRB_LICENSE_FILE only in the
+owned child. This accepts the exact-source local tiny numerical-software gate,
+not large-license capacity, production memory/telemetry, source consistency or
+scientific execution admission. The v4 start is consumed; no repeat or follow-on
+is authorized. Keep runtime bytes unchanged during evidence closeout. PR167
+remains Draft, remote CI withheld, and no h215, HPC, shared-setting change or merge.
+Continue only non-executing S2 gate/queue preparation under the approved EN Rev4.
+
+## Historical v3 return — 26 November 2026
+
+Read docs/checkpoints/20261126_s1_native_public_v3_return.md. The authorized v3
+child explicitly selected C:\gurobi1400\gurobi.lic through GRB_LICENSE_FILE and
+started its native environment. It then returned ValueError at the first DET
+control_solve, in 0.837 s, with zero control receipts. The exact error origin and
+optimizer activity counts are unknown. All v1/v2/v3 starts are consumed and their
+original sources/receipts preserved. No retry or further native execution.
+
+Only solver-free follow-up is admitted: fix the case-sensitive connection-name
+exclusion (Username versus API UserName), retain safe error origin/audit reason
+and forward the existing native phase hook. The defect's causal role in v3 is
+not proven. Keep the strict optimizer/default gate, scientific eight-hour profile
+and finite public limits. A fresh capsule needs new CLI authorization. Keep
+PR167 Draft, CI withheld, and no h215, HPC, shared-setting changes or merge.
+
+## Historical v2 return — 26 November 2026
+
+Read docs/checkpoints/20261126_s1_native_public_v2_license_return.md. The single
+authorized v2 execution returned rejected in 0.508 s at environment_start, with
+GurobiError/NO_LICENSE 10009 and no completed environment or model/optimizer call.
+Its failure receipt is hash-bound and audited; all original v1/v2 sources and
+receipts are preserved. V1's unknown cause/activity counts remain unknown.
+
+Existence-only inspection found an absent file selected by the process/user
+GRB_LICENSE_FILE and an existing C:\gurobi1400\gurobi.lic candidate. Its contents
+and validity were not inspected. Prepare explicit license-path selection only for
+a fresh owned child; keep parent/user/machine settings unchanged. The prospective
+correction has only solver-free tests. Both prior authorizations are consumed;
+any new native attempt requires a fresh capsule and explicit CLI approval. Keep
+PR167 Draft, remote CI withheld, and no h215, HPC or merge.
+
+## Historical v1 return — 26 November 2026
+
+Read docs/checkpoints/20261126_s1_native_public_v1_return.md. The researcher
+authorized exactly one local run of the prepared 32 public controls. Its original
+aff3d69 capsule/plan 2e17397d returned rejected in 0.578 s, with a consumed start
+and zero control receipts. All source hashes and original start/terminal records
+are preserved. No retry is authorized. This is not numerical qualification or an
+observed infeasibility/license diagnosis; the v1 worker failure detail was not
+retained, so native import/license/optimizer activity counts remain unknown.
+
+Only solver-free diagnosis and a safe failure-receipt correction follow the
+return. A future native attempt requires its own fresh capsule and explicit CLI
+authorization. Keep PR167 Draft; no h215, HPC, merge or remote CI. Native builder,
+scientific budgets, data, existing environments and prior claims are unchanged.
+
+## Historical S1 public qualification preparation — 26 November 2026
+
+PR167 remains Draft on the isolated S1 branch from develop 22fd493. Read
+docs/mvp3_s1_public_native_qualification_20261126.md. A source-bound capsule now
+prepares 32 literal public DET/STO controls, with a distinct 60-second software
+profile, one sequential worker and a 2,700-second wall ceiling. The scientific
+reference remains 28,800 seconds. Exact-fixture checks prevent the public budget
+from selecting private or modified input. No native execution is reported.
+
+Preparation and guarded local checks are authorized. The researcher must
+explicitly authorize the concrete public CLI before native import, environment
+initialization or optimization. A public return would not establish large-license
+capacity, production admission or source consistency. Preserve all prior receipts
+and checkouts; do not retry consumed claims. Remote CI remains withheld, every
+merge needs separate approval, and all NPAD actions remain human-only.
+
+## MVP3 S1 native integration preparation — 26 November 2026
+
+The researcher authorizes an isolated S1 PR from merged develop
+22fd493fd74f99320b9f2757d9c4927ffb7551bc, with local verification only. PR164 is
+merged; prior Draft164 statements below are dated historical records. Preserve
+the previous dirty checkout and the approved English EN Rev4 scientific plan.
+
+Read docs/mvp3_s1_native_integration_20261126.md. S1 connects the sealed effective
+data and full-horizon beta/alpha rows to the retained native DET/STO W builder,
+keeps K as a one-time investment-ceiling transformation, and adds dense decision
+coverage before independent validation. Automatic Method=-1/Threads=0 remains
+the reference, with MIPGap/Seed left at native defaults by a fresh configuration.
+
+Software construction/export checks are distinct from licensed native/public
+qualification, production memory, source consistency and execution admission.
+Remote CI is withheld under the local-checks-only instruction. No optimizer,
+license test, NPAD action, environment modification, merge or publication is
+authorized by S1 preparation. Keep the PR Draft while these qualification gates
+remain open; every merge and scientific CLI execution requires authorization.
+
+The initial catalog remains 24 h215 cases: 8 P0/K cases and 16 additional P1-P8
+cases at K=1, reusing P0/K=1. The Rev4 evidence-based schedule governs progression;
+repetitions and selected h300/h400/h500 cases remain conditional. Preserve the
+complete registry, frozen arcs, accepted receipts and consumed claims, and keep
+source_consistency_certified=false. No Benders, GPU or thread-speedup study.
+
 ## T2 reconciliation and same-machine handoff — 26 November 2026
 
 PR166's approved English EN Rev4 is merged into develop at

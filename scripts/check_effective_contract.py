@@ -24,13 +24,22 @@ TESTS = (
     "tests/test_effective_policy.py",
     "tests/test_effective_h215_preparation.py",
     "tests/test_mvp3_preparation.py",
+    "tests/test_native_effective.py",
+    "tests/test_native_public_qualification.py",
 )
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", required=True)
+    parser.add_argument("--native-only", action="store_true",
+                        help="Run the local native construction/export and config controls only.")
     args = parser.parse_args()
+    tests = (
+        ("tests/test_native_effective.py", "tests/test_model_config.py",
+         "tests/test_native_public_qualification.py")
+        if args.native_only else TESTS
+    )
     output = Path(args.output).resolve()
     output.mkdir(parents=True, exist_ok=False)
     os.chdir(ROOT)
@@ -42,7 +51,7 @@ def main():
     guard.install()
     import pytest
 
-    result = pytest.main(["-q", "-p", "no:cacheprovider", *TESTS,
+    result = pytest.main(["-q", "-p", "no:cacheprovider", *tests,
                           f"--junitxml={output / 'tests.xml'}"])
     suites = list(ET.parse(output / "tests.xml").getroot().iter("testsuite"))
     counts = {k: sum(int(s.get(k, 0)) for s in suites)
@@ -53,13 +62,14 @@ def main():
               hashlib.sha256(p.read_bytes()).hexdigest()
               for p in sorted((ROOT / "src/logic").glob("*.py"))}
     hashes.update({name: hashlib.sha256((ROOT/name).read_bytes()).hexdigest()
-                   for name in (*TESTS, "scripts/no_solver_guard.py",
+                   for name in (*tests, "scripts/no_solver_guard.py",
                                 "scripts/check_effective_contract.py",
                                 "scripts/effective_ci_scope.py",
                                 "scripts/prepare_mvp3_t3.py",
+                                "scripts/qualify_mvp3_native.py",
                                 "experiments/proposals/mvp3_t3_staged_design_20261124.json")})
     report = {"status": "accepted" if accepted else "rejected", **counts,
-              "test_inventory": TESTS, "source_files": hashes,
+              "test_inventory": tests, "source_files": hashes,
               "guard_blocks_during_tests": guard.blocked, "optimizer_calls": 0,
               "native_import_probes_blocked": guard.import_blocks,
               "forbidden_execution_attempts": guard.execution_blocks,

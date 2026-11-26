@@ -1,0 +1,103 @@
+{
+  "schema": "mvp3-s1-public-native-v2-return-v1",
+  "date": "2026-11-26",
+  "runtime_commit": "fc89f3d3b7bdd606581d49a82e1a58384f346428",
+  "plan_sha256": "41649e0771d47c670f607df64e0447d9f79b1b88f5ff97e884d38aa2caa040ed",
+  "status": "rejected_not_qualified",
+  "researcher_authorization": "Exactly one local v2 run of 32 fixed public controls; preserve v1; no h215, HPC or merge",
+  "authorization_sha256": "5a736756f2441bc7727ecd5a4db2ead457b60c05290464f1e00f15b615eab57c",
+  "limits": {
+    "Method": -1,
+    "Threads": 0,
+    "models": 32,
+    "native_seconds_each": 60,
+    "wall_seconds": 2700,
+    "workers": 1
+  },
+  "started_at_utc": "2026-11-26T17:54:41.296056+00:00",
+  "original_receipts_sha256": {
+    "plan.json": "41649e0771d47c670f607df64e0447d9f79b1b88f5ff97e884d38aa2caa040ed",
+    "started.json": "a3f4d98f003e4abfd765a22b704c96990ddbd3e71a5361d05567a917ec2548e7",
+    "terminal.json": "56777e36ff8d67efd794d2685d72a678fe9e943f29ce9f28a1e37633fa9ae029",
+    "worker-failure.json": "4326719a8f9bcdfc5f71fe4f7ec0c29a7cf492fa30b94e56ea1915b3d3c9c219"
+  },
+  "terminal": {
+    "claim_consumed": true,
+    "finished_at_utc": "2026-11-26T17:54:41.804225+00:00",
+    "new_hpc_jobs": 0,
+    "parent_error_class": null,
+    "plan_sha256": "41649e0771d47c670f607df64e0447d9f79b1b88f5ff97e884d38aa2caa040ed",
+    "production_admission": false,
+    "status": "rejected",
+    "wall_elapsed_seconds": 0.508203199977288,
+    "worker_failure_sha256": "4326719a8f9bcdfc5f71fe4f7ec0c29a7cf492fa30b94e56ea1915b3d3c9c219",
+    "worker_returncode": 1
+  },
+  "worker_failure": {
+    "control_id": null,
+    "control_receipts": 0,
+    "environment_started": false,
+    "error_class": "GurobiError",
+    "exception_text_or_traceback_retained": false,
+    "native_error_code": 10009,
+    "native_import_completed": true,
+    "phase": "environment_start",
+    "plan_sha256": "41649e0771d47c670f607df64e0447d9f79b1b88f5ff97e884d38aa2caa040ed",
+    "schema": "mvp3-public-worker-failure-v1"
+  },
+  "original_source_verified_after": true,
+  "original_v1_source_and_receipts_preserved": true,
+  "planned_controls": 32,
+  "control_receipts": 0,
+  "accepted_controls": 0,
+  "native_import_completed": true,
+  "environment_start_completed": false,
+  "model_construction_calls": 0,
+  "optimizer_calls": 0,
+  "zero_model_calls_basis": "Source order: environment.start raised before the fixed control loop and solve facade",
+  "failure_category": "NO_LICENSE during environment initialization",
+  "specific_license_failure_subtype": "Not retained; numeric code alone is insufficient",
+  "official_reference": "https://support.gurobi.com/hc/en-us/articles/20183546353169-How-do-I-resolve-ERROR-10009",
+  "license_path_existence_inspection": {
+    "scope": "Read-only path existence; not license validity or initialization",
+    "environment": {
+      "process": {
+        "configured": true,
+        "points_to_existing_file": false
+      },
+      "user": {
+        "configured": true,
+        "points_to_existing_file": false
+      },
+      "machine": {
+        "configured": false,
+        "points_to_existing_file": false
+      }
+    },
+    "candidate_presence": {
+      "current_checkout_secrets": false,
+      "previous_checkout_secrets": false,
+      "common_checkout_secrets": false,
+      "default_windows_gurobi": false,
+      "default_windows_gurobi14": true,
+      "default_user_home": false,
+      "repository_root_secrets_default": false
+    },
+    "native_imported": false,
+    "license_contents_read_or_hashed": false,
+    "environment_modified": false,
+    "no_recursive_secret_search": true
+  },
+  "path_configuration_finding": "Process and user GRB_LICENSE_FILE point to an absent file; a documented default Gurobi14 candidate file exists",
+  "candidate_license_validity": "Not tested; no license contents read or hashed",
+  "attempt_consumed": true,
+  "retry_performed": false,
+  "new_h215_runs": 0,
+  "new_hpc_jobs": 0,
+  "merge_performed": false,
+  "system_or_user_environment_modified": false,
+  "source_consistency_certified": false,
+  "production_admission": false,
+  "next_native_attempt_authorized": false,
+  "followup": "Prepare an explicitly pinned existing license path for the child only; native reuse requires fresh capsule and authorization"
+}

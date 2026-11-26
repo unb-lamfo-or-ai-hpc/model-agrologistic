@@ -1,0 +1,373 @@
+{
+  "schema": "agrologistic-mvp3-s1-local-input-check-v1",
+  "status": "accepted",
+  "preflight": {
+    "workbooks": {
+      "baseline": {
+        "sha256": "92698e05b869d67292cf7b080f56b43f7ccc93a27470b2eee559eadbeebd4a3d",
+        "workbook_version": 2,
+        "presentation_schema": "agrologistic-workbook-view-v2"
+      },
+      "registry": {
+        "sha256": "68b9933cc171541b151b7ea60c5d0501d5cecc01675819777af1ffefc11cbe7b",
+        "workbook_version": 2,
+        "presentation_schema": "agrologistic-warehouse-view-v2"
+      }
+    },
+    "normalized_manifest_sha256": "4889bfee9928c86d91319edbbfca46c6be847f45898cae40f62f9b17c3861354",
+    "normalized_files_verified": 7,
+    "h215_input_identities": {
+      "det": "fed875c1d239fc0282eeaf5b8656ed6511facd328f81b926698863a9f3b2fd3b",
+      "sto": "b2f44950d3b6f9b5185e033a29993b6a0b94805543e09046c5d5c8603826be53"
+    }
+  },
+  "source_sha256": "c6e475330fdcc861f190ead1721754eaf15ba993fd774604ebd60dd5dca42e82",
+  "cases": [
+    {
+      "case_id": "h215-det-P0-K100-AUTO-r1",
+      "case_sha256": "c54061b69b06d5305f82577277a182b1fbdf1cd5e35bdb8b475cd03d1b0a51af",
+      "mode": "det",
+      "K": 1,
+      "policy_rows": {
+        "beta": 0,
+        "alpha": 0
+      },
+      "input_sha256": "fed875c1d239fc0282eeaf5b8656ed6511facd328f81b926698863a9f3b2fd3b",
+      "scenario_sha256": "e78a9181df9c3da3988dd6a0393e5febe58a23960902d6c6c282c2c4df7a1d4c",
+      "native_embedding_input_sha256": "653fb5a62730890fbf3c423e19b0613e0258c000699dfd79a97db4e2bfb30e06",
+      "K_once_and_other_parameter_maps_unchanged": true
+    },
+    {
+      "case_id": "h215-det-P0-K125-AUTO-r1",
+      "case_sha256": "c3674a0dc8a11405bb56ce8fb9ad13c4ee5ecce0671ef8d04b7bff8e77dc1b92",
+      "mode": "det",
+      "K": 1.25,
+      "policy_rows": {
+        "beta": 0,
+        "alpha": 0
+      },
+      "input_sha256": "a38a80b033ebc2e00c7acf361bd60c318c321b4ee1e635ea840fc9af06494ea7",
+      "scenario_sha256": "8cc6d5f38414abc9bd62452046fb058084069f5558db23ee48f1ab97da8f17d6",
+      "native_embedding_input_sha256": "ddf5e715c290579c4db5cd31fecb90fb303cf257550476ac4709fedf17b187b1",
+      "K_once_and_other_parameter_maps_unchanged": true
+    },
+    {
+      "case_id": "h215-det-P0-K150-AUTO-r1",
+      "case_sha256": "e31e2e917b2d69115e082b661d09a9f0f1da72c957386db54ac58ef64d863903",
+      "mode": "det",
+      "K": 1.5,
+      "policy_rows": {
+        "beta": 0,
+        "alpha": 0
+      },
+      "input_sha256": "52aeb125f152f73b859e7a82c697378ef388e6048d81ce17d2852f2868e406e9",
+      "scenario_sha256": "6735163822006c5070095a888e0cac2d126d9d23307f9316aa068c7726478045",
+      "native_embedding_input_sha256": "4c4c778ec90122dbe4635911346c2f2982e557edd46aa38c454eede33b8676f5",
+      "K_once_and_other_parameter_maps_unchanged": true
+    },
+    {
+      "case_id": "h215-det-P0-K200-AUTO-r1",
+      "case_sha256": "50e32c6a7f8e384f67f694836cec19eb429a5ba50872fb8f239455a90554add0",
+      "mode": "det",
+      "K": 2,
+      "policy_rows": {
+        "beta": 0,
+        "alpha": 0
+      },
+      "input_sha256": "f4fbd26ed42b8bb2bb4d0554177f238f82bee57217ddcc26b35996cd79656df6",
+      "scenario_sha256": "7b8c7884705aad34c7e786658e2e1dd920f0bd373ba3ffede6a1fb8e0a19cce1",
+      "native_embedding_input_sha256": "2fda0cdbc942e416aaaebd510aa90ade90a11e70fe9ef55b43e62fe68d7c2bba",
+      "K_once_and_other_parameter_maps_unchanged": true
+    },
+    {
+      "case_id": "h215-det-P1-K100-AUTO-r1",
+      "case_sha256": "e35612685fe1d7035ce1e1e2e5b91828303350d7c7ff57c075c9ee49515205d5",
+      "mode": "det",
+      "K": 1,
+      "policy_rows": {
+        "beta": 2,
+        "alpha": 0
+      },
+      "input_sha256": "fed875c1d239fc0282eeaf5b8656ed6511facd328f81b926698863a9f3b2fd3b",
+      "scenario_sha256": "5dd847e98c1c007185a08dd418260b5aa7a9f433c11329fdafbabb77e5e44094",
+      "native_embedding_input_sha256": "653fb5a62730890fbf3c423e19b0613e0258c000699dfd79a97db4e2bfb30e06",
+      "K_once_and_other_parameter_maps_unchanged": true
+    },
+    {
+      "case_id": "h215-det-P2-K100-AUTO-r1",
+      "case_sha256": "1c045d094d8789815cda3ebbba8464c715281cc0e66168631733ce155b21fa8a",
+      "mode": "det",
+      "K": 1,
+      "policy_rows": {
+        "beta": 2,
+        "alpha": 0
+      },
+      "input_sha256": "fed875c1d239fc0282eeaf5b8656ed6511facd328f81b926698863a9f3b2fd3b",
+      "scenario_sha256": "e30d769770d0512335fb0f406573fd6242d8fb7785bdc1ccf42c0fc82d451f74",
+      "native_embedding_input_sha256": "653fb5a62730890fbf3c423e19b0613e0258c000699dfd79a97db4e2bfb30e06",
+      "K_once_and_other_parameter_maps_unchanged": true
+    },
+    {
+      "case_id": "h215-det-P3-K100-AUTO-r1",
+      "case_sha256": "5cc15bdc898535c9c8c31e449b77cde8767c6652ab1ad9f4a6e67ffcc015cffe",
+      "mode": "det",
+      "K": 1,
+      "policy_rows": {
+        "beta": 0,
+        "alpha": 2
+      },
+      "input_sha256": "fed875c1d239fc0282eeaf5b8656ed6511facd328f81b926698863a9f3b2fd3b",
+      "scenario_sha256": "3fc7d899bb85c3071e74e1f42180beaad20cfeb93089f6690d157f5c33b9d76d",
+      "native_embedding_input_sha256": "653fb5a62730890fbf3c423e19b0613e0258c000699dfd79a97db4e2bfb30e06",
+      "K_once_and_other_parameter_maps_unchanged": true
+    },
+    {
+      "case_id": "h215-det-P4-K100-AUTO-r1",
+      "case_sha256": "bfb25bf5b3bfd06a7ddb4ec25e4068e8bc64430efc7998afb4be4cd8aa84951b",
+      "mode": "det",
+      "K": 1,
+      "policy_rows": {
+        "beta": 0,
+        "alpha": 2
+      },
+      "input_sha256": "fed875c1d239fc0282eeaf5b8656ed6511facd328f81b926698863a9f3b2fd3b",
+      "scenario_sha256": "c5d75903bae4c9f528c126209b02cc023e546fadca71c85a4ff7c69c871c1cce",
+      "native_embedding_input_sha256": "653fb5a62730890fbf3c423e19b0613e0258c000699dfd79a97db4e2bfb30e06",
+      "K_once_and_other_parameter_maps_unchanged": true
+    },
+    {
+      "case_id": "h215-det-P5-K100-AUTO-r1",
+      "case_sha256": "9af2e171cb1dcd19796643ba44e879c107809769371b8f2e1d466ca7e548eee2",
+      "mode": "det",
+      "K": 1,
+      "policy_rows": {
+        "beta": 2,
+        "alpha": 2
+      },
+      "input_sha256": "fed875c1d239fc0282eeaf5b8656ed6511facd328f81b926698863a9f3b2fd3b",
+      "scenario_sha256": "6da1e14955030cefccdd4f9a4134658fa3f715d2b9400498c0bf9feda7b1da31",
+      "native_embedding_input_sha256": "653fb5a62730890fbf3c423e19b0613e0258c000699dfd79a97db4e2bfb30e06",
+      "K_once_and_other_parameter_maps_unchanged": true
+    },
+    {
+      "case_id": "h215-det-P6-K100-AUTO-r1",
+      "case_sha256": "2d69cdfd24aeb582b54b290f3f546b903322d00f238b5a5b82bd249a6875a2c2",
+      "mode": "det",
+      "K": 1,
+      "policy_rows": {
+        "beta": 2,
+        "alpha": 2
+      },
+      "input_sha256": "fed875c1d239fc0282eeaf5b8656ed6511facd328f81b926698863a9f3b2fd3b",
+      "scenario_sha256": "3a32fed442bc6c1b62d7a709fa3e70eb5faf19a91b2d5fea1433990dc4932542",
+      "native_embedding_input_sha256": "653fb5a62730890fbf3c423e19b0613e0258c000699dfd79a97db4e2bfb30e06",
+      "K_once_and_other_parameter_maps_unchanged": true
+    },
+    {
+      "case_id": "h215-det-P7-K100-AUTO-r1",
+      "case_sha256": "951829df7f0a26ca73e9f2b3c71f36a79e10576e788de686c2e8f2d12da4c32b",
+      "mode": "det",
+      "K": 1,
+      "policy_rows": {
+        "beta": 2,
+        "alpha": 2
+      },
+      "input_sha256": "fed875c1d239fc0282eeaf5b8656ed6511facd328f81b926698863a9f3b2fd3b",
+      "scenario_sha256": "e2283f766f5a7e73f8c070367532d44f40a6aff254818a4d2f94f45128eb547f",
+      "native_embedding_input_sha256": "653fb5a62730890fbf3c423e19b0613e0258c000699dfd79a97db4e2bfb30e06",
+      "K_once_and_other_parameter_maps_unchanged": true
+    },
+    {
+      "case_id": "h215-det-P8-K100-AUTO-r1",
+      "case_sha256": "4d27e27275d9ac2ed3cd8917f81012994effa861a75ac3f48cd052f0f1a4dbac",
+      "mode": "det",
+      "K": 1,
+      "policy_rows": {
+        "beta": 2,
+        "alpha": 2
+      },
+      "input_sha256": "fed875c1d239fc0282eeaf5b8656ed6511facd328f81b926698863a9f3b2fd3b",
+      "scenario_sha256": "32bf69aefe68b6b2b5e6ef6141ba857d7a39aae711d07187bc4748a422e7b666",
+      "native_embedding_input_sha256": "653fb5a62730890fbf3c423e19b0613e0258c000699dfd79a97db4e2bfb30e06",
+      "K_once_and_other_parameter_maps_unchanged": true
+    },
+    {
+      "case_id": "h215-sto-P0-K100-AUTO-r1",
+      "case_sha256": "982a91b221514226ddb3b3b71db9e4f7319f2750234d3e1c04d7547b7f967058",
+      "mode": "sto",
+      "K": 1,
+      "policy_rows": {
+        "beta": 0,
+        "alpha": 0
+      },
+      "input_sha256": "b2f44950d3b6f9b5185e033a29993b6a0b94805543e09046c5d5c8603826be53",
+      "scenario_sha256": "06e3e88b29e9ac9921689ddbb408bdc2b95f51cf39eb6d4d17ec51b3931a3c68",
+      "native_embedding_input_sha256": "b2f44950d3b6f9b5185e033a29993b6a0b94805543e09046c5d5c8603826be53",
+      "K_once_and_other_parameter_maps_unchanged": true
+    },
+    {
+      "case_id": "h215-sto-P0-K125-AUTO-r1",
+      "case_sha256": "769602d8bada82389815ca1e7c9eb244a4dc6dbc0345457c401b42ef5e2f8fd1",
+      "mode": "sto",
+      "K": 1.25,
+      "policy_rows": {
+        "beta": 0,
+        "alpha": 0
+      },
+      "input_sha256": "df0f3800240a150716af7e8813cc8e2e268b1b5a10eccc0eef8e1515ba97af65",
+      "scenario_sha256": "38d89cc77d682425eca37e6ad466c05b5652b756ebb45bdb1cd840d942601a45",
+      "native_embedding_input_sha256": "df0f3800240a150716af7e8813cc8e2e268b1b5a10eccc0eef8e1515ba97af65",
+      "K_once_and_other_parameter_maps_unchanged": true
+    },
+    {
+      "case_id": "h215-sto-P0-K150-AUTO-r1",
+      "case_sha256": "013b97282ee2c01941851e89b9f60f6182aa9fe7a9dcbcd8d022e4be147d1978",
+      "mode": "sto",
+      "K": 1.5,
+      "policy_rows": {
+        "beta": 0,
+        "alpha": 0
+      },
+      "input_sha256": "fa12192c0ced16df1232ee4f64f4357e3ebf2e96b074fe62f7f45ab8be4efe82",
+      "scenario_sha256": "5fb27632846c2ceaa0aec281caf6b0fee62bf0df724fc7d8664a9f345238c758",
+      "native_embedding_input_sha256": "fa12192c0ced16df1232ee4f64f4357e3ebf2e96b074fe62f7f45ab8be4efe82",
+      "K_once_and_other_parameter_maps_unchanged": true
+    },
+    {
+      "case_id": "h215-sto-P0-K200-AUTO-r1",
+      "case_sha256": "eb2423eb0e111d64f65cb9a4c491bed5aeb569584262db83683c27302ddd94a5",
+      "mode": "sto",
+      "K": 2,
+      "policy_rows": {
+        "beta": 0,
+        "alpha": 0
+      },
+      "input_sha256": "22bd735ec3fc4b91873e0c83b861753147990fc2122cedf5c721a44a6979b2d8",
+      "scenario_sha256": "6d793c5b1b67b60b965a5a11608afba0e63f8c0b616d21dd29c24c3e2d043a67",
+      "native_embedding_input_sha256": "22bd735ec3fc4b91873e0c83b861753147990fc2122cedf5c721a44a6979b2d8",
+      "K_once_and_other_parameter_maps_unchanged": true
+    },
+    {
+      "case_id": "h215-sto-P1-K100-AUTO-r1",
+      "case_sha256": "53f9da38ad8439cfa06362c9b321e7e3fd8b1a631fc6df6540c47b603deb10d1",
+      "mode": "sto",
+      "K": 1,
+      "policy_rows": {
+        "beta": 18,
+        "alpha": 0
+      },
+      "input_sha256": "b2f44950d3b6f9b5185e033a29993b6a0b94805543e09046c5d5c8603826be53",
+      "scenario_sha256": "9ffede85209f2f9da8d7c919d7426e100aa03d02660b8655a4b6a44a046d4619",
+      "native_embedding_input_sha256": "b2f44950d3b6f9b5185e033a29993b6a0b94805543e09046c5d5c8603826be53",
+      "K_once_and_other_parameter_maps_unchanged": true
+    },
+    {
+      "case_id": "h215-sto-P2-K100-AUTO-r1",
+      "case_sha256": "a9a5c027289cb5739d69da1f8228cba63b6782a951c505c3ef21309bff0b824e",
+      "mode": "sto",
+      "K": 1,
+      "policy_rows": {
+        "beta": 18,
+        "alpha": 0
+      },
+      "input_sha256": "b2f44950d3b6f9b5185e033a29993b6a0b94805543e09046c5d5c8603826be53",
+      "scenario_sha256": "194dfc76ada4a421f7334d545562193ceb944219e4e23e2849bbafb6012bf7cf",
+      "native_embedding_input_sha256": "b2f44950d3b6f9b5185e033a29993b6a0b94805543e09046c5d5c8603826be53",
+      "K_once_and_other_parameter_maps_unchanged": true
+    },
+    {
+      "case_id": "h215-sto-P3-K100-AUTO-r1",
+      "case_sha256": "62f13cd3ae70549fe2c9bf15545dde7a51d8b79ea3c52564c979e5518ac7a38e",
+      "mode": "sto",
+      "K": 1,
+      "policy_rows": {
+        "beta": 0,
+        "alpha": 18
+      },
+      "input_sha256": "b2f44950d3b6f9b5185e033a29993b6a0b94805543e09046c5d5c8603826be53",
+      "scenario_sha256": "7c7fb7a26ede543c77ebdfa0c925385798823b2438e584690f48d4f20e17cd62",
+      "native_embedding_input_sha256": "b2f44950d3b6f9b5185e033a29993b6a0b94805543e09046c5d5c8603826be53",
+      "K_once_and_other_parameter_maps_unchanged": true
+    },
+    {
+      "case_id": "h215-sto-P4-K100-AUTO-r1",
+      "case_sha256": "cb2fc85cb2c08ac370d5b22cf4a78905e9bf19228c2cd404bbf1ca18049c052f",
+      "mode": "sto",
+      "K": 1,
+      "policy_rows": {
+        "beta": 0,
+        "alpha": 18
+      },
+      "input_sha256": "b2f44950d3b6f9b5185e033a29993b6a0b94805543e09046c5d5c8603826be53",
+      "scenario_sha256": "c36d120bcae4e5e3caf3c8ec38cc48eef1895f3abdc413c9a8603ada8f5bc383",
+      "native_embedding_input_sha256": "b2f44950d3b6f9b5185e033a29993b6a0b94805543e09046c5d5c8603826be53",
+      "K_once_and_other_parameter_maps_unchanged": true
+    },
+    {
+      "case_id": "h215-sto-P5-K100-AUTO-r1",
+      "case_sha256": "d13589a1f2c1b05f86650a7f89d2870f262e90978db971d58ca334a325548858",
+      "mode": "sto",
+      "K": 1,
+      "policy_rows": {
+        "beta": 18,
+        "alpha": 18
+      },
+      "input_sha256": "b2f44950d3b6f9b5185e033a29993b6a0b94805543e09046c5d5c8603826be53",
+      "scenario_sha256": "e6c7559d3bc8a1ebe225aebde72addd1a314e794f5de346ed8bde974e2eb2f19",
+      "native_embedding_input_sha256": "b2f44950d3b6f9b5185e033a29993b6a0b94805543e09046c5d5c8603826be53",
+      "K_once_and_other_parameter_maps_unchanged": true
+    },
+    {
+      "case_id": "h215-sto-P6-K100-AUTO-r1",
+      "case_sha256": "f3f1f55056b3a834e18c8ea52a20d908a5933585644296166182e0f8c36dba57",
+      "mode": "sto",
+      "K": 1,
+      "policy_rows": {
+        "beta": 18,
+        "alpha": 18
+      },
+      "input_sha256": "b2f44950d3b6f9b5185e033a29993b6a0b94805543e09046c5d5c8603826be53",
+      "scenario_sha256": "3bae763800fb71886927ea77ef8295ea38f6aaa1e669b368cc16a3aee09e6afd",
+      "native_embedding_input_sha256": "b2f44950d3b6f9b5185e033a29993b6a0b94805543e09046c5d5c8603826be53",
+      "K_once_and_other_parameter_maps_unchanged": true
+    },
+    {
+      "case_id": "h215-sto-P7-K100-AUTO-r1",
+      "case_sha256": "3884abe0b9b57d3197f382dc9cb48e419b97e1c45ad53fced37f52b2b12ed0f9",
+      "mode": "sto",
+      "K": 1,
+      "policy_rows": {
+        "beta": 18,
+        "alpha": 18
+      },
+      "input_sha256": "b2f44950d3b6f9b5185e033a29993b6a0b94805543e09046c5d5c8603826be53",
+      "scenario_sha256": "deb43e7eef0c0841417b0956a07f809b3c7f093dec7aa82e91f18fd52a1e4999",
+      "native_embedding_input_sha256": "b2f44950d3b6f9b5185e033a29993b6a0b94805543e09046c5d5c8603826be53",
+      "K_once_and_other_parameter_maps_unchanged": true
+    },
+    {
+      "case_id": "h215-sto-P8-K100-AUTO-r1",
+      "case_sha256": "a5710ae5c4abd9e3950f48ff09c7679c8fb486eca396e9fe63e08ee38cce3e7e",
+      "mode": "sto",
+      "K": 1,
+      "policy_rows": {
+        "beta": 18,
+        "alpha": 18
+      },
+      "input_sha256": "b2f44950d3b6f9b5185e033a29993b6a0b94805543e09046c5d5c8603826be53",
+      "scenario_sha256": "2a19dfd7c6c4dff638bdbf2b5e827c220b786e337868c9e65657dc4142359c0e",
+      "native_embedding_input_sha256": "b2f44950d3b6f9b5185e033a29993b6a0b94805543e09046c5d5c8603826be53",
+      "K_once_and_other_parameter_maps_unchanged": true
+    }
+  ],
+  "originals_unchanged": true,
+  "source_consistency_certified": false,
+  "native_model_or_license_opened": false,
+  "optimizer_calls": 0,
+  "forbidden_execution_attempts": 0,
+  "native_import_attempts": 0,
+  "new_jobs": 0,
+  "full_native_matrix_qualified": false,
+  "execution_authorized": false,
+  "scope": "Real frozen h215 data/scenario/native-row assembly; not a native solve"
+}

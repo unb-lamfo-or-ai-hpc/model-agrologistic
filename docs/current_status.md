@@ -1,5 +1,81 @@
 # Current project status — 26 November 2026
 
+**Public native v4 accepted: 32/32 fixed controls**, with 26 optima and six
+expected infeasibilities, in 20.590 seconds. Read the
+[accepted checkpoint](checkpoints/20261126_s1_native_public_v4_accepted.md),
+[audit](evidence/mvp3_s1_public_native_v4_accepted_20261126.json) and
+[original public JSON archive](evidence/mvp3_s1_public_native_v4_originals_20261126.zip).
+All positive vectors were revalidated without a solver; all 32 model disposals
+and parameter audits passed. V1/v2/v3 originals and shared settings are preserved.
+
+This closes the exact-source local tiny public numerical-software gate only.
+PR167 stays Draft; large-license capacity, production memory/resource telemetry,
+finite scientific queue admission and live-source consistency remain open.
+No repeat, h215, HPC or merge is authorized. Remote CI remains withheld and the
+scientific EN Rev4 design/budgets are unchanged.
+
+## Historical v3 return snapshot
+
+V3's explicit child-only GRB_LICENSE_FILE selection successfully started the
+native environment, then the first DET solve facade raised ValueError. The
+0.837-second attempt is consumed, with zero control receipts; the exact cause
+and optimizer-call count are unknown. Read the
+[v3 checkpoint](checkpoints/20261126_s1_native_public_v3_return.md).
+V1/v2/v3 originals are preserved. A connection-name exclusion defect is corrected
+with solver-free checks, plus finer future diagnostics and existing phase-hook
+forwarding. No numerical qualification or repeat native action is claimed.
+PR167 remains Draft; any fresh capsule requires new explicit CLI authorization.
+No h215, HPC, merge or shared environment change; remote CI remains withheld.
+
+## Historical v2 return snapshot
+
+The single authorized public v2 attempt failed at native environment startup
+with `NO_LICENSE` 10009 in 0.508 seconds, before model construction or optimization.
+V1/v2 sources and consumed claims are preserved. Read the
+[v2 checkpoint](checkpoints/20261126_s1_native_public_v2_license_return.md).
+The configured process/user license path points to an absent file, while a
+standard Gurobi14 candidate file exists. A prospective child-only path selection
+is prepared without reading license contents or changing shared settings. The
+candidate's validity is untested. Further native execution requires new explicit
+authorization; PR167 stays Draft, without h215, HPC, merge or remote CI.
+
+## Historical v1 return snapshot
+
+PR167 remains Draft after its single authorized local public attempt returned
+`rejected` in 0.578 seconds. The start is consumed; zero control receipts were
+generated. The cause and native activity counts are unknown because v1 did not
+persist worker failure detail. Source and original receipts are verified and
+preserved. Read the [return checkpoint](checkpoints/20261126_s1_native_public_v1_return.md).
+A safe diagnostic correction is prepared and tested without a solver. No repeat,
+h215, HPC or merge is authorized. Remote CI remains withheld.
+
+## Historical preparation snapshot
+
+PR167 is Draft. Its follow-up prepares a source-bound package of 32 public
+synthetic DET/STO native controls. Read the
+[public qualification runbook](mvp3_s1_public_native_qualification_20261126.md).
+The package has not executed. Each model has a separate 60-second software
+budget, with one sequential worker and a 45-minute wall ceiling; the scientific
+eight-hour reference is unchanged. The concrete public CLI still needs explicit
+authorization. Public acceptance would not admit h215/HPC execution, qualify
+large-license capacity or authorize merge. Prior local evidence is preserved.
+
+MVP3 S1 native integration is being prepared in an isolated worktree from
+`22fd493fd74f99320b9f2757d9c4927ffb7551bc`. PR164 is merged; the older Draft164
+wording below is retained as history. The approved English EN Rev4 governs the
+24-case h215 sequence and its evidence-based schedule.
+
+Read [S1 integration and local verification](mvp3_s1_native_integration_20261126.md).
+The scope is sealed effective DET/STO W inputs, one-time K ceilings, native
+beta/alpha rows, automatic reference parameters and dense decisions with
+independent coverage/residual validation. Only local solver-free checks are
+authorized. Native/public execution qualification, telemetry/queue admission,
+merge and human scientific CLI execution remain separate gates. The prior
+checkout, data, environment and historical claims are preserved. Remote CI is
+withheld, and the S1 PR remains Draft pending the applicable qualification gates.
+
+## Historical T2 reconciliation snapshot
+
 Approved English EN Rev4 entered develop through PR166 at
 `783b95c2e5d942011e3c46171c0a80cc2d68111c`. Draft PR164 is being reconciled
 with that state. Its scope is the v2 input/control and offline routing-lineage
