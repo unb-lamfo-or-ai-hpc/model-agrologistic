@@ -1,5 +1,13 @@
 # MVP3 S1 public native qualification
 
+Latest return: v3 explicitly selected the supplied license address in the child
+and successfully initialized its environment, then failed with ValueError in the
+first DET solve facade. All v1/v2/v3 starts are consumed and preserved. Read
+[the v3 return checkpoint](checkpoints/20261126_s1_native_public_v3_return.md).
+The prospective audit correction normalizes connection names before querying,
+keeps strict software-default checks, and records safe source origin/audit reason
+plus the existing native phase events. It has not been executed natively.
+
 Latest return: v2's single authorized attempt failed during environment startup
 with native `NO_LICENSE` 10009, before any model or optimizer call. Both v1/v2
 claims are consumed and frozen. Read the

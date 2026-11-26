@@ -1,5 +1,18 @@
 # Current project status — 26 November 2026
 
+V3's explicit child-only GRB_LICENSE_FILE selection successfully started the
+native environment, then the first DET solve facade raised ValueError. The
+0.837-second attempt is consumed, with zero control receipts; the exact cause
+and optimizer-call count are unknown. Read the
+[v3 checkpoint](checkpoints/20261126_s1_native_public_v3_return.md).
+V1/v2/v3 originals are preserved. A connection-name exclusion defect is corrected
+with solver-free checks, plus finer future diagnostics and existing phase-hook
+forwarding. No numerical qualification or repeat native action is claimed.
+PR167 remains Draft; any fresh capsule requires new explicit CLI authorization.
+No h215, HPC, merge or shared environment change; remote CI remains withheld.
+
+## Historical v2 return snapshot
+
 The single authorized public v2 attempt failed at native environment startup
 with `NO_LICENSE` 10009 in 0.508 seconds, before model construction or optimization.
 V1/v2 sources and consumed claims are preserved. Read the

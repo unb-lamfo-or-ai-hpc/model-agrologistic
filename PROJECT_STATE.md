@@ -1,4 +1,20 @@
-## MVP3 S1 public v2 license failure; v1/v2 starts consumed — 26 November 2026
+## MVP3 S1 public v3 license starts; first DET solve rejected — 26 November 2026
+
+Read docs/checkpoints/20261126_s1_native_public_v3_return.md. The authorized v3
+child explicitly selected C:\gurobi1400\gurobi.lic through GRB_LICENSE_FILE and
+started its native environment. It then returned ValueError at the first DET
+control_solve, in 0.837 s, with zero control receipts. The exact error origin and
+optimizer activity counts are unknown. All v1/v2/v3 starts are consumed and their
+original sources/receipts preserved. No retry or further native execution.
+
+Only solver-free follow-up is admitted: fix the case-sensitive connection-name
+exclusion (Username versus API UserName), retain safe error origin/audit reason
+and forward the existing native phase hook. The defect's causal role in v3 is
+not proven. Keep the strict optimizer/default gate, scientific eight-hour profile
+and finite public limits. A fresh capsule needs new CLI authorization. Keep
+PR167 Draft, CI withheld, and no h215, HPC, shared-setting changes or merge.
+
+## Historical v2 return — 26 November 2026
 
 Read docs/checkpoints/20261126_s1_native_public_v2_license_return.md. The single
 authorized v2 execution returned rejected in 0.508 s at environment_start, with

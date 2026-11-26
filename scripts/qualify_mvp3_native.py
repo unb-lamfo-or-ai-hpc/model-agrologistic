@@ -30,7 +30,7 @@ ACK = "PUBLIC_NATIVE_TINY_ONLY_NO_H215_OR_HPC"
 LIMITS = {"models": 32, "native_seconds_each": 60, "wall_seconds": 2700,
           "workers": 1, "Method": -1, "Threads": 0}
 CONNECTION = {"ComputeServer", "LicenseID", "ServerPassword", "ServerTimeout", "TokenServer",
-              "TSPort", "Username", "JobID", "TLSInsecure"}
+              "TSPort", "UserName", "JobID", "TLSInsecure"}
 
 
 def encoded(record):
@@ -144,25 +144,40 @@ def verify_plan(claim, plan_sha256):
     return claim, plan
 
 
+class PublicParameterAuditError(ValueError):
+    def __init__(self, reason, report):
+        super().__init__("Public native parameter audit rejected.")
+        self.public_diagnostic = {"reason": reason, **report}
+
+
+def connection_parameter(name):
+    key = name.replace("_", "").casefold()
+    excluded = {item.replace("_", "").casefold() for item in CONNECTION}
+    return key in excluded or key.startswith(("wls", "cs", "cloud", "worker"))
+
+
 def full_default_audit(model, grb):
     checked, changed = 0, []
     names = {getattr(grb.Param, n) for n in dir(grb.Param)
              if not n.startswith("_") and isinstance(getattr(grb.Param, n), str)}
     for name in sorted(names):
-        if name in CONNECTION or name.startswith(("WLS", "CS", "Cloud", "Worker")):
+        if connection_parameter(name):
             continue
         info = model.getParamInfo(name)
         if info is None or len(info) != 6:
-            raise ValueError("Parameter introspection unavailable.")
+            raise PublicParameterAuditError("introspection_unavailable", {
+                "parameter": name, "checked": checked,
+                "connection_parameter_values_read_or_exported": False})
         checked += 1
         if info[2] != info[5]:
             changed.append(name)
+    report = {"checked": checked, "nondefaults": changed,
+              "connection_parameter_values_read_or_exported": False}
     if checked < 100 or changed != ["OutputFlag", "TimeLimit"]:
-        raise ValueError("Unexpected public native parameter state.")
+        raise PublicParameterAuditError("nondefault_or_inventory_mismatch", report)
     if model.getParamInfo("TimeLimit")[2] != 60 or model.getParamInfo("OutputFlag")[2] != 0:
-        raise ValueError("Incorrect public native limits/display state.")
-    return {"checked": checked, "nondefaults": changed,
-            "connection_parameter_values_read_or_exported": False}
+        raise PublicParameterAuditError("public_budget_or_display_mismatch", report)
+    return report
 
 
 def accept_result(control, result):
@@ -206,7 +221,8 @@ def worker(claim, plan_sha256, nonce):
         raise ValueError("Owned qualification worker required.")
     state = {"phase": "native_import", "control_id": None,
              "native_import_completed": False, "environment_started": False,
-             "control_receipts": 0}
+             "control_receipts": 0, "native_phase": None,
+             "optimization_entered": False, "optimization_returned": False}
     with record_worker_failure(claim, plan_sha256, state):
         run_public_controls(claim, plan, plan_sha256, state)
 
@@ -222,9 +238,30 @@ def record_worker_failure(claim, plan_sha256, state):
             "schema": "mvp3-public-worker-failure-v1", "plan_sha256": plan_sha256,
             **state, "error_class": type(exc).__name__,
             "native_error_code": code if type(code) is int else None,
+            "public_source_origin": public_error_origin(exc),
+            "public_parameter_audit": (
+                exc.public_diagnostic if isinstance(exc, PublicParameterAuditError) else None),
             "exception_text_or_traceback_retained": False,
         })
         raise
+
+
+def public_error_origin(error):
+    """Return the final public-source location, excluding messages, locals and stack text."""
+    origin, traceback = None, error.__traceback__
+    while traceback is not None:
+        frame = traceback.tb_frame
+        filename = frame.f_code.co_filename
+        if filename.endswith(".py"):
+            try:
+                relative = Path(filename).resolve().relative_to(ROOT.resolve())
+            except ValueError:
+                relative = None
+            if relative is not None and relative.parts[0] in {"src", "scripts"}:
+                origin = {"file": relative.as_posix(), "function": frame.f_code.co_name,
+                          "line": traceback.tb_lineno}
+        traceback = traceback.tb_next
+    return origin
 
 
 def run_public_controls(claim, plan, plan_sha256, state):
@@ -261,13 +298,23 @@ def run_public_controls(claim, plan, plan_sha256, state):
             return record
 
         core.audit_reference_parameters = checked_parameters
+
+        def observed_phase(phase, model, api):
+            state["native_phase"] = phase
+            if phase == "optimization":
+                state["optimization_entered"] = True
+            elif phase == "export_validation":
+                state["optimization_returned"] = True
+
         try:
             for control in plan["controls"]:
-                state.update(phase="control_data", control_id=control["id"])
+                state.update(phase="control_data", control_id=control["id"], native_phase=None,
+                             optimization_entered=False, optimization_returned=False)
                 data, cfg = make_control(control["id"])
                 state["phase"] = "control_solve"
                 result = solve_model_gurobipy(data, cfg, public_solver_config(),
-                                             native_environment=environment)
+                                             native_environment=environment,
+                                             native_phase_hook=observed_phase)
                 state["phase"] = "control_acceptance"
                 accepted = accept_result(control, result)
                 path = claim / (control["id"] + ".json")

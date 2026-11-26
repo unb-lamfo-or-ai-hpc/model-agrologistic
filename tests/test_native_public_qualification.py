@@ -226,21 +226,59 @@ def test_collector_rejects_duplicate_or_missing_controls(tmp_path, monkeypatch):
 
 
 def test_public_defaults_audit_does_not_read_connection_values():
-    names = [f"SoftwareParameter{i}" for i in range(100)] + ["OutputFlag", "TimeLimit", "WLSSecret"]
+    names = [f"SoftwareParameter{i}" for i in range(100)] + [
+        "OutputFlag", "TimeLimit", "WLSSecret", "UserName", "Username", "user_name",
+        "Compute_Server", "worker_password", "cSAuthToken", "license_id"]
     parameters = type("Parameters", (), {n: n for n in names})
     calls = []
 
     def info(name):
         calls.append(name)
-        assert name != "WLSSecret"
+        assert not cli.connection_parameter(name)
         current = {"TimeLimit": 60, "OutputFlag": 0}.get(name, 0)
         default = {"TimeLimit": float("inf"), "OutputFlag": 1}.get(name, 0)
         return name, float, current, 0, 1e100, default
 
     report = cli.full_default_audit(SimpleNamespace(getParamInfo=info),
                                     SimpleNamespace(Param=parameters))
-    assert report["checked"] == 102 and "WLSSecret" not in calls
+    assert report["checked"] == 102 and "UserName" not in calls
     assert report["connection_parameter_values_read_or_exported"] is False
+
+
+def test_nondefault_software_parameter_is_rejected_with_safe_source_and_names(tmp_path):
+    names = [f"SoftwareParameter{i}" for i in range(100)] + [
+        "OutputFlag", "TimeLimit", "Heuristics", "LogFile"]
+    parameters = type("Parameters", (), {n: n for n in names})
+
+    def info(name):
+        default = {"TimeLimit": float("inf"), "OutputFlag": 1, "Heuristics": 0.05,
+                   "LogFile": ""}.get(name, 0)
+        current = {"TimeLimit": 60, "OutputFlag": 0, "Heuristics": 0.99}.get(name, default)
+        return name, type(default), current, None, None, default
+
+    with pytest.raises(cli.PublicParameterAuditError) as caught:
+        with cli.record_worker_failure(tmp_path, "a"*64, {"phase": "control_solve"}):
+            cli.full_default_audit(SimpleNamespace(getParamInfo=info),
+                                   SimpleNamespace(Param=parameters))
+    diagnostic = caught.value.public_diagnostic
+    assert diagnostic["reason"] == "nondefault_or_inventory_mismatch"
+    assert diagnostic["nondefaults"] == ["Heuristics", "OutputFlag", "TimeLimit"]
+    assert diagnostic["checked"] == 104
+    record = cli.read(tmp_path / "worker-failure.json")
+    assert record["public_source_origin"]["file"] == "scripts/qualify_mvp3_native.py"
+    assert record["public_source_origin"]["function"] == "full_default_audit"
+    assert record["public_source_origin"]["line"] > 0
+    assert record["public_parameter_audit"] == diagnostic
+    assert "0.99" not in (tmp_path / "worker-failure.json").read_text()
+
+
+def test_unavailable_parameter_introspection_is_not_silently_ignored():
+    parameters = type("Parameters", (), {"LogFile": "LogFile"})
+    with pytest.raises(cli.PublicParameterAuditError) as caught:
+        cli.full_default_audit(SimpleNamespace(getParamInfo=lambda _: None),
+                               SimpleNamespace(Param=parameters))
+    assert caught.value.public_diagnostic["reason"] == "introspection_unavailable"
+    assert caught.value.public_diagnostic["parameter"] == "LogFile"
 
 
 def test_incomplete_native_certificate_cannot_be_accepted():
