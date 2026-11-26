@@ -20,17 +20,21 @@ def _finite_attribute(model, name):
         return None
 
 
-def solve_model_gurobipy(data, model_config, solver_config):
+def solve_model_gurobipy(data, model_config, solver_config, *, native_environment=None):
     """Use one extensive-form builder for DET and STO, with one scalar solve."""
     from src.logic.mathematical_contract import extensive_form_inputs
     from src.logic.native_effective import finish_effective_result, prepare_effective_native
+    from src.logic.native_public_controls import check_native_environment
     from src.logic.optimization import configure_gurobi_wls_license, project_deterministic_result
     from src.logic.optimization_gurobipy_stochastic import solve_stochastic_model_gurobipy
 
+    check_native_environment(solver_config, native_environment)
     effective = prepare_effective_native(data, model_config, solver_config)
     configure_gurobi_wls_license(solver_config)
     prepared, config = extensive_form_inputs(data, model_config)
     kwargs = {"effective_context": effective} if effective is not None else {}
+    if native_environment is not None:
+        kwargs["native_environment"] = native_environment
     result = solve_stochastic_model_gurobipy(prepared, config, solver_config, **kwargs)
     if model_config.mode == "det":
         result = project_deterministic_result(result)

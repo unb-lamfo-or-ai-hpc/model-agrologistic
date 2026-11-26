@@ -1,3 +1,19 @@
+## MVP3 S1 public native qualification prepared — 26 November 2026
+
+PR167 remains Draft on the isolated S1 branch from develop 22fd493. Read
+docs/mvp3_s1_public_native_qualification_20261126.md. A source-bound capsule now
+prepares 32 literal public DET/STO controls, with a distinct 60-second software
+profile, one sequential worker and a 2,700-second wall ceiling. The scientific
+reference remains 28,800 seconds. Exact-fixture checks prevent the public budget
+from selecting private or modified input. No native execution is reported.
+
+Preparation and guarded local checks are authorized. The researcher must
+explicitly authorize the concrete public CLI before native import, environment
+initialization or optimization. A public return would not establish large-license
+capacity, production admission or source consistency. Preserve all prior receipts
+and checkouts; do not retry consumed claims. Remote CI remains withheld, every
+merge needs separate approval, and all NPAD actions remain human-only.
+
 ## MVP3 S1 native integration preparation — 26 November 2026
 
 The researcher authorizes an isolated S1 PR from merged develop

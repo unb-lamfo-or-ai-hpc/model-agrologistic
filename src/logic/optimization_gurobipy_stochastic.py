@@ -24,6 +24,7 @@ from src.logic.native_effective import (
     finish_effective_result,
     prepare_effective_native,
 )
+from src.logic.native_public_controls import check_native_environment
 from src.logic.optimization import OptimizationResult, scalar_mip_gap
 from src.logic.optimization_gurobipy import (
     DEFAULT_PENALTY,
@@ -58,9 +59,11 @@ def solve_stochastic_model_gurobipy(
     *,
     native_phase_hook: Any = None,
     effective_context: Any = None,
+    native_environment: Any = None,
 ) -> OptimizationResult:
     """Solve the risk-neutral two-stage extensive form."""
 
+    check_native_environment(solver_config, native_environment)
     if effective_context is None:
         effective_context = prepare_effective_native(data, model_config, solver_config)
     else:
@@ -70,7 +73,7 @@ def solve_stochastic_model_gurobipy(
 
     data = prepare_model_data(data, model_config)
 
-    model = own_model(gp.Model("model_agrologistic_stochastic_extensive_form"), "gurobipy")
+    model = create_native_model(gp, native_environment)
     _apply_solver_parameters(model, solver_config)
 
     parameter_audit = (
@@ -227,6 +230,13 @@ def solve_stochastic_model_gurobipy(
     if effective_context is not None and effective_context.config.mode == "sto":
         finish_effective_result(effective_context, result)
     return result
+
+
+def create_native_model(gp, environment=None):
+    """Keep default historical ownership; accept an explicitly owned public-test environment."""
+    options = {"env": environment} if environment is not None else {}
+    model = gp.Model("model_agrologistic_stochastic_extensive_form", **options)
+    return own_model(model, "gurobipy")
 
 
 def populate_native_model(gp, GRB, model, data, model_config, solver_config, *,

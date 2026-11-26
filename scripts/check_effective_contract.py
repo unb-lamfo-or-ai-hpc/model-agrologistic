@@ -25,6 +25,7 @@ TESTS = (
     "tests/test_effective_h215_preparation.py",
     "tests/test_mvp3_preparation.py",
     "tests/test_native_effective.py",
+    "tests/test_native_public_qualification.py",
 )
 
 
@@ -35,7 +36,8 @@ def main():
                         help="Run the local native construction/export and config controls only.")
     args = parser.parse_args()
     tests = (
-        ("tests/test_native_effective.py", "tests/test_model_config.py")
+        ("tests/test_native_effective.py", "tests/test_model_config.py",
+         "tests/test_native_public_qualification.py")
         if args.native_only else TESTS
     )
     output = Path(args.output).resolve()
@@ -64,6 +66,7 @@ def main():
                                 "scripts/check_effective_contract.py",
                                 "scripts/effective_ci_scope.py",
                                 "scripts/prepare_mvp3_t3.py",
+                                "scripts/qualify_mvp3_native.py",
                                 "experiments/proposals/mvp3_t3_staged_design_20261124.json")})
     report = {"status": "accepted" if accepted else "rejected", **counts,
               "test_inventory": tests, "source_files": hashes,

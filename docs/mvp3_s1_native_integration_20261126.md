@@ -104,6 +104,14 @@ precision, independent validation and missing/duplicate vector rejection.
 
 ## Scientific sequence and pending gates
 
+The follow-up public qualification package is documented in
+[the prepared public runbook](mvp3_s1_public_native_qualification_20261126.md).
+Its fixed synthetic fixtures use a separately typed 60-second software profile;
+the scientific configuration above remains unchanged. Preparation has not
+executed the native package or qualified a license. Existing native callers keep
+their historical model environment; only the public profile accepts an explicitly
+owned environment for silent startup and deterministic cleanup.
+
 The Rev4 initial catalog remains 8 P0/K cases followed by 16 P1-P8/K=1 cases,
 reusing P0/K=1. There are 24 first observations, not a mandatory repeated grid.
 The ceilings remain 192 native hours and 288 allocation hours at 192 GiB.

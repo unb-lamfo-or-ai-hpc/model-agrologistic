@@ -28,10 +28,13 @@ def reference_solver_config(*, log_file=None):
 
 
 def check_reference_config(config):
+    from src.logic.native_public_controls import PublicNativeConfig
+
+    limit = 60 if isinstance(config, PublicNativeConfig) else 28800
     if (
         config.backend != "gurobipy"
         or config.solver_name.lower() not in {"gurobi", "gurobipy"}
-        or type(config.time_limit) is not int or config.time_limit != 28800
+        or type(config.time_limit) is not int or config.time_limit != limit
         or type(config.threads) is not int or config.threads != 0
         or config.mip_gap is not None or config.seed is not None
         or config.solver_options.get("Method") != -1
@@ -55,6 +58,10 @@ def prepare_effective_native(data, config, solver_config):
     DET verification precedes embedding; the original DET seal must never be
     checked against an invented stochastic input or silently replaced by one.
     """
+    from src.logic.native_public_controls import PublicNativeConfig, verify_public_control
+
+    if isinstance(solver_config, PublicNativeConfig):
+        verify_public_control(data, config)
     if "effective_baseline" not in data.metadata:
         return None
     check_reference_config(solver_config)
@@ -99,7 +106,7 @@ def audit_reference_parameters(model, gp, config):
         if info is None:
             raise ValueError(f"Native parameter readback unavailable: {name}")
         values[name], defaults[name] = info[2], info[5]
-        expected = {"Method": -1, "Threads": 0, "TimeLimit": 28800}.get(name, info[5])
+        expected = {"Method": -1, "Threads": 0, "TimeLimit": config.time_limit}.get(name, info[5])
         if values[name] != expected:
             raise ValueError(f"Effective native parameter differs: {name}")
     # Infinite default limits are legitimate but are not JSON numeric values.
@@ -110,7 +117,7 @@ def audit_reference_parameters(model, gp, config):
 
     return {
         "gurobi_version": list(version),
-        "configured": {"Method": -1, "Threads": 0, "TimeLimit": 28800},
+        "configured": {"Method": -1, "Threads": 0, "TimeLimit": config.time_limit},
         "effective": serializable(values), "defaults": serializable(defaults),
         "scope": "Selected parameter readback; broader telemetry is a later gate",
     }

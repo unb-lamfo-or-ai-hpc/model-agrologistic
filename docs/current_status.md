@@ -1,5 +1,14 @@
 # Current project status — 26 November 2026
 
+PR167 is Draft. Its follow-up prepares a source-bound package of 32 public
+synthetic DET/STO native controls. Read the
+[public qualification runbook](mvp3_s1_public_native_qualification_20261126.md).
+The package has not executed. Each model has a separate 60-second software
+budget, with one sequential worker and a 45-minute wall ceiling; the scientific
+eight-hour reference is unchanged. The concrete public CLI still needs explicit
+authorization. Public acceptance would not admit h215/HPC execution, qualify
+large-license capacity or authorize merge. Prior local evidence is preserved.
+
 MVP3 S1 native integration is being prepared in an isolated worktree from
 `22fd493fd74f99320b9f2757d9c4927ffb7551bc`. PR164 is merged; the older Draft164
 wording below is retained as history. The approved English EN Rev4 governs the
