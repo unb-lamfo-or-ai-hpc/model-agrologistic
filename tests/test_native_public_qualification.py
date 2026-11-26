@@ -308,3 +308,59 @@ def test_owned_worker_failure_is_retained_before_any_native_import(tmp_path, mon
     assert record["phase"] == "native_import" and record["error_class"] == "ImportError"
     assert record["native_import_completed"] is False
     assert "SECRET" not in (claim / "worker-failure.json").read_text()
+
+
+def test_explicit_license_path_affects_only_child_without_content_read(tmp_path, monkeypatch):
+    license_file = tmp_path / "dummy-public-test.lic"
+    license_file.write_text("SECRET synthetic test content must never be opened")
+    missing = str(tmp_path / "missing-old-selection.lic")
+    monkeypatch.setenv("GRB_LICENSE_FILE", missing)
+    selection = cli.selected_license(license_file)
+    original_read = type(license_file).read_bytes
+
+    def refuse_license_read(path):
+        assert path != license_file, "License content must not be read"
+        return original_read(path)
+
+    monkeypatch.setattr(type(license_file), "read_bytes", refuse_license_read)
+    plan = cli.plan_record("a"*40, {}, license_selection=selection)
+    environment = cli.worker_environment(plan)
+    assert environment["GRB_LICENSE_FILE"] == str(license_file)
+    assert cli.os.environ["GRB_LICENSE_FILE"] == missing
+    assert cli.worker_environment(cli.plan_record("a"*40, {})) is None
+    claim, plan, _ = prepared(tmp_path, monkeypatch)
+    plan["license_selection"] = selection
+    (claim / "plan.json").write_bytes(cli.encoded(plan))
+    monkeypatch.setattr(cli.importlib.metadata, "version", lambda _: "14.0.0")
+
+    def child_double(*args, **kwargs):
+        assert kwargs["env"]["GRB_LICENSE_FILE"] == str(license_file)
+        assert cli.os.environ["GRB_LICENSE_FILE"] == missing
+        return SimpleNamespace(returncode=1)
+
+    monkeypatch.setattr(cli.subprocess, "run", child_double)
+    assert cli.execute(claim, cli.sha(cli.encoded(plan)), cli.ACK)["status"] == "rejected"
+    assert cli.os.environ["GRB_LICENSE_FILE"] == missing
+
+
+def test_absent_selected_license_is_rejected_before_consuming_start(tmp_path, monkeypatch):
+    claim, plan, _ = prepared(tmp_path, monkeypatch)
+    plan["license_selection"] = {"source": "explicit_local_file",
+                                 "path": str(tmp_path / "missing-local.lic")}
+    (claim / "plan.json").write_bytes(cli.encoded(plan))
+    monkeypatch.setattr(cli.importlib.metadata, "version", lambda _: "14.0.0")
+    with pytest.raises(ValueError, match="no longer present"):
+        cli.execute(claim, cli.sha(cli.encoded(plan)), cli.ACK)
+    assert not (claim / "started.json").exists()
+
+
+def test_collection_does_not_depend_on_future_license_file_availability(tmp_path, monkeypatch):
+    claim, plan, _ = prepared(tmp_path, monkeypatch)
+    plan["license_selection"] = {"source": "explicit_local_file",
+                                 "path": str(tmp_path / "not-present-at-collection.lic")}
+    (claim / "plan.json").write_bytes(cli.encoded(plan))
+    digest = cli.sha(cli.encoded(plan))
+    cli.write_new(claim / "terminal.json", {"status": "rejected", "plan_sha256": digest})
+    assert cli.collect(claim, digest)["status"] == "rejected"
+    with pytest.raises(ValueError, match="existing local license"):
+        cli.selected_license(tmp_path / "missing.lic")

@@ -1,5 +1,13 @@
 # MVP3 S1 public native qualification
 
+Latest return: v2's single authorized attempt failed during environment startup
+with native `NO_LICENSE` 10009, before any model or optimizer call. Both v1/v2
+claims are consumed and frozen. Read the
+[v2 license checkpoint](checkpoints/20261126_s1_native_public_v2_license_return.md).
+The prospective correction pins an existing local license path for the child
+process only. It has not been executed; candidate-file validity is untested.
+No user/machine environment setting or license contents are changed or inspected.
+
 Current return: the single researcher-authorized v1 attempt was consumed and
 rejected before the first control receipt, in 0.578 seconds. No native numerical
 qualification was established. The original capsule is frozen; do not retry it.
@@ -44,6 +52,14 @@ copies Git blob bytes for Python runtime source into a new local capsule. It
 creates a plan with SHA-256 digests, the fixed controls and finite limits.
 Only `prepare` was authorized at the initial preparation checkpoint. It does not import Gurobi,
 initialize a license, construct a native model or optimize.
+
+The prospective schema also freezes `license_selection`. Optional preparation
+argument `--license-file <existing-local-file>` records only the path and does
+not copy/read/hash its contents. Execute accepts no license override. Only the
+owned worker's environment receives the pinned `GRB_LICENSE_FILE`; parent and OS
+settings remain untouched. A missing selected file is refused before start
+consumption. Later collection verifies evidence without requiring that license
+file. Use each original frozen capsule to collect its own older plan schema.
 
 After explicit CLI authorization, execute the copied script inside the capsule
 with its exact claim directory, plan digest and public-only acknowledgement:

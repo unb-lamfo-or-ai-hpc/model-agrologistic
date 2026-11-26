@@ -70,17 +70,29 @@ def source_snapshot(revision):
     return snapshot
 
 
-def plan_record(revision, files):
-    return {"schema": "mvp3-native-public-qualification-v1", "revision": revision,
+def selected_license(license_file):
+    """Pin only a path; never open, copy or hash license contents."""
+    if license_file is None:
+        return {"source": "inherited_environment"}
+    path = Path(license_file).absolute()
+    if not path.is_file():
+        raise ValueError("An existing local license file is required.")
+    return {"source": "explicit_local_file", "path": str(path)}
+
+
+def plan_record(revision, files, *, license_selection=None):
+    return {"schema": "mvp3-native-public-qualification-v2", "revision": revision,
             "files": {name: sha(raw) for name, raw in sorted(files.items())},
             "controls": control_specs(), "limits": dict(LIMITS),
+            "license_selection": license_selection or selected_license(None),
             "execution_authorized": False, "private_inputs": False,
             "scope": "Public tiny native software checks; not license capacity or h215 admission"}
 
 
-def prepare(output, revision):
+def prepare(output, revision, *, license_file=None):
+    selection = selected_license(license_file)
     snapshot = source_snapshot(revision)
-    plan = plan_record(revision, snapshot)
+    plan = plan_record(revision, snapshot, license_selection=selection)
     output = Path(output).absolute()
     if output.is_symlink():
         raise ValueError("A new regular claim directory is required.")
@@ -107,8 +119,15 @@ def verify_plan(claim, plan_sha256):
     if (encoded(plan["limits"]) != encoded(LIMITS)
             or encoded(plan["controls"]) != encoded(control_specs())
             or plan["execution_authorized"] is not False or plan["private_inputs"] is not False
-            or plan["schema"] != "mvp3-native-public-qualification-v1"):
+            or plan["schema"] != "mvp3-native-public-qualification-v2"):
         raise ValueError("Prepared public scope differs from the fixed source contract.")
+    selection = plan.get("license_selection")
+    if selection != {"source": "inherited_environment"} and not (
+        isinstance(selection, dict) and set(selection) == {"source", "path"}
+        and selection["source"] == "explicit_local_file" and isinstance(selection["path"], str)
+        and Path(selection["path"]).is_absolute()
+    ):
+        raise ValueError("Invalid pinned license selection.")
     source = (claim / "source").resolve()
     actual_files = {p.relative_to(source).as_posix() for p in (source / "src").rglob("*.py")}
     actual_files.add("scripts/qualify_mvp3_native.py")
@@ -271,12 +290,23 @@ def run_public_controls(claim, plan, plan_sha256, state):
               "production_or_license_capacity_qualified": False, "new_hpc_jobs": 0})
 
 
+def worker_environment(plan):
+    """Override the selected path only in the owned child; leave the parent/OS alone."""
+    selection = plan["license_selection"]
+    if selection["source"] == "inherited_environment":
+        return None
+    if not Path(selection["path"]).is_file():
+        raise ValueError("The selected local license file is no longer present.")
+    return {**os.environ, "GRB_LICENSE_FILE": selection["path"]}
+
+
 def execute(claim, plan_sha256, acknowledgement):
     if acknowledgement != ACK:
         raise ValueError("Explicit public-only operator acknowledgement required.")
-    claim, _ = verify_plan(claim, plan_sha256)
+    claim, plan = verify_plan(claim, plan_sha256)
     if sys.version_info[:2] != (3, 13) or importlib.metadata.version("gurobipy") != "14.0.0":
         raise ValueError("Use the existing Python 3.13 / Gurobi 14.0.0 environment.")
+    environment = worker_environment(plan)
     nonce = secrets.token_hex(24)
     clock = time.monotonic()
     write_new(claim / "started.json", {"plan_sha256": plan_sha256, "parent_pid": os.getpid(),
@@ -289,6 +319,7 @@ def execute(claim, plan_sha256, acknowledgement):
              "--claim", str(claim),
              "--plan-sha256", plan_sha256, "--nonce", nonce],
             timeout=LIMITS["wall_seconds"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            env=environment,
         )
         returncode = completed.returncode
         verify_plan(claim, plan_sha256)
@@ -355,14 +386,18 @@ def main(argv=None):
     parser.add_argument("action", choices=("prepare", "execute", "collect", "worker"))
     parser.add_argument("--output", type=Path)
     parser.add_argument("--revision")
+    parser.add_argument("--license-file", type=Path,
+                        help="Preparation only: pin an existing local file for the child process.")
     parser.add_argument("--claim", type=Path)
     parser.add_argument("--plan-sha256")
     parser.add_argument("--ack")
     parser.add_argument("--nonce")
     args = parser.parse_args(argv)
     try:
+        if args.license_file is not None and args.action != "prepare":
+            raise ValueError("License selection must be frozen during preparation.")
         if args.action == "prepare":
-            result = prepare(args.output, args.revision)
+            result = prepare(args.output, args.revision, license_file=args.license_file)
         elif args.action == "execute":
             result = execute(args.claim, args.plan_sha256, args.ack)
         elif args.action == "collect":

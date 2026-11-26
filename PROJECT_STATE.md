@@ -1,4 +1,20 @@
-## MVP3 S1 public native v1 rejected; single start consumed — 26 November 2026
+## MVP3 S1 public v2 license failure; v1/v2 starts consumed — 26 November 2026
+
+Read docs/checkpoints/20261126_s1_native_public_v2_license_return.md. The single
+authorized v2 execution returned rejected in 0.508 s at environment_start, with
+GurobiError/NO_LICENSE 10009 and no completed environment or model/optimizer call.
+Its failure receipt is hash-bound and audited; all original v1/v2 sources and
+receipts are preserved. V1's unknown cause/activity counts remain unknown.
+
+Existence-only inspection found an absent file selected by the process/user
+GRB_LICENSE_FILE and an existing C:\gurobi1400\gurobi.lic candidate. Its contents
+and validity were not inspected. Prepare explicit license-path selection only for
+a fresh owned child; keep parent/user/machine settings unchanged. The prospective
+correction has only solver-free tests. Both prior authorizations are consumed;
+any new native attempt requires a fresh capsule and explicit CLI approval. Keep
+PR167 Draft, remote CI withheld, and no h215, HPC or merge.
+
+## Historical v1 return — 26 November 2026
 
 Read docs/checkpoints/20261126_s1_native_public_v1_return.md. The researcher
 authorized exactly one local run of the prepared 32 public controls. Its original

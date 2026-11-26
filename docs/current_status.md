@@ -1,5 +1,17 @@
 # Current project status — 26 November 2026
 
+The single authorized public v2 attempt failed at native environment startup
+with `NO_LICENSE` 10009 in 0.508 seconds, before model construction or optimization.
+V1/v2 sources and consumed claims are preserved. Read the
+[v2 checkpoint](checkpoints/20261126_s1_native_public_v2_license_return.md).
+The configured process/user license path points to an absent file, while a
+standard Gurobi14 candidate file exists. A prospective child-only path selection
+is prepared without reading license contents or changing shared settings. The
+candidate's validity is untested. Further native execution requires new explicit
+authorization; PR167 stays Draft, without h215, HPC, merge or remote CI.
+
+## Historical v1 return snapshot
+
 PR167 remains Draft after its single authorized local public attempt returned
 `rejected` in 0.578 seconds. The start is consumed; zero control receipts were
 generated. The cause and native activity counts are unknown because v1 did not
