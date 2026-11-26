@@ -22,6 +22,8 @@ TESTS = (
     "tests/test_route_filtering.py", "tests/test_effective_ci.py",
     "tests/test_effective_proposal.py",
     "tests/test_effective_policy.py",
+    "tests/test_effective_h215_preparation.py",
+    "tests/test_mvp3_preparation.py",
 )
 
 
@@ -53,7 +55,9 @@ def main():
     hashes.update({name: hashlib.sha256((ROOT/name).read_bytes()).hexdigest()
                    for name in (*TESTS, "scripts/no_solver_guard.py",
                                 "scripts/check_effective_contract.py",
-                                "scripts/effective_ci_scope.py")})
+                                "scripts/effective_ci_scope.py",
+                                "scripts/prepare_mvp3_t3.py",
+                                "experiments/proposals/mvp3_t3_staged_design_20261124.json")})
     report = {"status": "accepted" if accepted else "rejected", **counts,
               "test_inventory": TESTS, "source_files": hashes,
               "guard_blocks_during_tests": guard.blocked, "optimizer_calls": 0,

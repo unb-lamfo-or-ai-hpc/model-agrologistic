@@ -1,3 +1,32 @@
+# Current project status — 26 November 2026
+
+Approved English EN Rev4 entered develop through PR166 at
+`783b95c2e5d942011e3c46171c0a80cc2d68111c`. Draft PR164 is being reconciled
+with that state. Its scope is the v2 input/control and offline routing-lineage
+gate, with final solver-free checks and a same-machine DELL5300 handoff.
+
+Read [the T2 checklist](t2_closeout_and_merge_checklist_20261126.md) and
+[handoff](handoff/mvp3_dell5300_20261126.md). The approved initial design is
+24 h215 DET/STO W cases: eight K cases, then sixteen additional P1-P8 cases at
+K=1, reusing P0/K=1. Native Gurobi14 uses automatic methods/threads. Benders,
+GPU and thread-speedup studies are excluded. No jobs, solver/license calls,
+environment changes, merge or publication are performed in this task.
+
+## Historical snapshot — 19 November 2026
+
+# Current project status — 19 November 2026
+
+PR158 merged into develop at `b0a6b6849770a05eddca9f4a860246eabb5374da`
+after explicit authorization and exact-head CI review. PR156 remains Draft.
+Read [the current checkpoint](checkpoints/20261119_h215_policy_preparation.md),
+[the h215 protocol](h215_policy_experimental_protocol.md) and
+[public qualification preparation](h215_policy_public_qualification.md).
+18 scientific observations are prospective;48 tiny public numerical controls
+and the default license probe are prepared, not executed. No new HPC submission,
+private launch, manuscript/data publication or new merge is authorized.
+
+## Historical snapshot — 18 November 2026
+
 # Current project status — 18 November 2026
 
 The current researcher authorization is [optional policy implementation](effective_policy_implementation.md)

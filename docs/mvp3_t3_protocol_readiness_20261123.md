@@ -1,3 +1,26 @@
+# Current T3 readiness — 26 November 2026
+
+The approved English EN Rev4 plan, merged through PR166 as
+`783b95c2e5d942011e3c46171c0a80cc2d68111c`, supersedes the historical proposal
+below. Native Gurobi14 DET/STO W, Method=-1, Threads=0 and the approved
+alpha/beta/K semantics are retained. Benders, GPU and thread-speedup studies
+are outside the current scope. PR159 is merged; PR164 remains Draft.
+
+The approved first pass has eight h215 K cases with alpha/beta disabled,
+then sixteen P1-P8 cases at K=1, reusing P0/K=1. Larger cases and additional
+repetitions remain conditional on h215 evidence. See the
+[current T2 checklist](t2_closeout_and_merge_checklist_20261126.md) and
+[same-machine handoff](handoff/mvp3_dell5300_20261126.md).
+
+Data/control preparation is not native production qualification. The next
+engineering work is native integration, independent validation and measurement
+with a finite queue. No new job, optimizer, environment change or merge is
+authorized. The section below is preserved as a dated proposal only; its
+Benders architecture, old dependency range, old PR states and open design
+assumptions must not be used as current instructions.
+
+## Historical proposal — superseded by approved Rev4
+
 # T3: methodological protocol and early engineering preparation
 
 Status: English EN working proposal, 23 November 2026. This document advances the

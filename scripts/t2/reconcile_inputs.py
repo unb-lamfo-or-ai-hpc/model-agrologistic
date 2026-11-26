@@ -437,12 +437,18 @@ def cache_crosswalk(snapshot, expected_sha, support, acquisition):
         }
         require(required <= columns, "Unknown OSRM cache schema")
         lookup = collections.defaultdict(list)
+        provenance = collections.Counter()
         bad_keys = 0
         normalised_cache_records = 0
         for key, payload, distance, source, version in db.execute(
             "SELECT cache_key,key_payload_json,distance_m,source,data_version FROM osrm_pair_cache"
         ):
             parsed = json.loads(payload)
+            identity = {name: parsed.get(name) for name in (
+                "dataset_id", "profile", "service", "schema_version", "annotations"
+            )}
+            identity.update(source=source, data_version=version)
+            provenance[json.dumps(identity, sort_keys=True, separators=(",", ":"))] += 1
             canonical = json.dumps(
                 parsed, sort_keys=True, separators=(",", ":"), ensure_ascii=True
             )
@@ -489,6 +495,11 @@ def cache_crosswalk(snapshot, expected_sha, support, acquisition):
             "sqlite_version": sqlite3.sqlite_version,
             "snapshot_sha256": expected_sha,
             "cache_records": sum(map(len, lookup.values())),
+            "routing_identity_groups": [
+                {**json.loads(identity), "records": count}
+                for identity, count in sorted(provenance.items())
+            ],
+            "cache_key_disagreements": bad_keys,
             "arc_comparison": dict(counts),
             "arc_comparison_by_population": {
                 population: dict(values) for population, values in by_population.items()
@@ -503,6 +514,43 @@ def cache_crosswalk(snapshot, expected_sha, support, acquisition):
             "unit_conversion": "distance_m / 1000 once",
             "source_engine_opened": False,
         }
+
+
+def review_routing_provenance(groups, distance_assets, accepted_workbook_hashes):
+    """Match recorded fingerprints to hash-bound historical workbooks.
+
+    This reviews a frozen image, not current binaries or live SQLite atomicity.
+    A filename, coordinate match or equal distance cannot pass alone.
+    """
+    require(bool(groups) and bool(accepted_workbook_hashes), "Empty provenance review")
+    matched = []
+    for population, expected_sha in accepted_workbook_hashes.items():
+        assets = [a for a in distance_assets if str(a["population"]) == str(population)]
+        require(len(assets) == 1, "Missing or ambiguous workbook provenance")
+        asset = assets[0]
+        require(asset["workbook_sha256"] == expected_sha, "Workbook provenance SHA differs")
+        expected = asset["distance_provenance"]
+        require(bool(expected.get("dataset_id")), "Missing routing dataset identity")
+        for group in groups:
+            require(
+                group["source"] == expected["provider"] == "osrm"
+                and group["dataset_id"] == expected["dataset_id"]
+                and group["profile"] == expected["profile"]
+                and group["data_version"] in expected["osrm_data_versions"]
+                and group["service"] == "table"
+                and group["schema_version"] == 1
+                and set(group["annotations"] or []) == {"distance", "duration"},
+                "Routing fingerprint differs or is incomplete",
+            )
+        matched.append(str(population))
+    return {
+        "status": "matched_frozen_historical_provenance",
+        "populations": sorted(matched, key=int),
+        "cache_records_reviewed": sum(g["records"] for g in groups),
+        "source_consistency_certified": False,
+        "current_server_verified": False,
+        "scope": "Recorded snapshot fingerprints versus hash-bound historical manifest",
+    }
 
 
 def discover(roots, max_entries=180000, max_seconds=600):

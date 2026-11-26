@@ -1,0 +1,22 @@
+{
+  "revision": "Rev4",
+  "pages": 36,
+  "tables": 21,
+  "figures": 3,
+  "context_checks_passed": 24,
+  "pdf_sha256": "63a467115b1b8cfd8f91097c01966fa25b60a14e3ed2b7d4552499c513b4c7e5",
+  "source_sha256": "ce1c536e26e8321d11a10aa935dc5f2703a5568c5638057ed7ba162282de40eb",
+  "zip_sha256": "f7aa5ed69f7336c8fce9e874d3e5321f061f4a1b745026046d1549fc55986f91",
+  "zip_bytes": 5900449,
+  "members": 26,
+  "workbook_attachments_unchanged": true,
+  "editorial_approval_pending": true,
+  "scientific_runtime_changed": false,
+  "jobs_submitted": 0,
+  "merges": 0,
+  "delivered_zip_hashes_verified": true,
+  "delivered_source_rebuilt": true,
+  "rebuilt_pages": 36,
+  "rebuilt_pdf_text_identical": true,
+  "byte_identical_rebuilt_pdf_claimed": false
+}

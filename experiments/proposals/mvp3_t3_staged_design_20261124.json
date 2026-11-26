@@ -1,0 +1,162 @@
+{
+  "schema": "agrologistic-mvp3-t3-design-proposal-v1",
+  "scientific_reference": "2026-11-23",
+  "plan_source_commit": "84f4d50e9876afeb83933ce8e235fec970bb53d6",
+  "implementation": "native_gurobipy",
+  "gurobi_version": "14.0.0",
+  "topology": "W",
+  "workbooks": {
+    "baseline": {
+      "name": "agrologistic_effective_baseline_v2.xlsx",
+      "sha256": "92698e05b869d67292cf7b080f56b43f7ccc93a27470b2eee559eadbeebd4a3d",
+      "workbook_version": 2,
+      "presentation_schema": "agrologistic-workbook-view-v2"
+    },
+    "registry": {
+      "name": "agrologistic_warehouse_registry_v2.xlsx",
+      "sha256": "68b9933cc171541b151b7ea60c5d0501d5cecc01675819777af1ffefc11cbe7b",
+      "workbook_version": 2,
+      "presentation_schema": "agrologistic-warehouse-view-v2",
+      "role": "Inspection/reconciliation; not a separate direct ModelData-loader input"
+    }
+  },
+  "computational_schema": "agrologistic-effective-baseline-v1",
+  "normalized_manifest_sha256": "4889bfee9928c86d91319edbbfca46c6be847f45898cae40f62f9b17c3861354",
+  "h215_input_identities": {
+    "det": "fed875c1d239fc0282eeaf5b8656ed6511facd328f81b926698863a9f3b2fd3b",
+    "sto": "b2f44950d3b6f9b5185e033a29993b6a0b94805543e09046c5d5c8603826be53"
+  },
+  "profiles": {
+    "P0": {
+      "beta": null,
+      "alpha": null
+    },
+    "P1": {
+      "beta": 0.9,
+      "alpha": null
+    },
+    "P2": {
+      "beta": 0.95,
+      "alpha": null
+    },
+    "P3": {
+      "beta": null,
+      "alpha": 0.6
+    },
+    "P4": {
+      "beta": null,
+      "alpha": 0.5
+    },
+    "P5": {
+      "beta": 0.9,
+      "alpha": 0.6
+    },
+    "P6": {
+      "beta": 0.9,
+      "alpha": 0.5
+    },
+    "P7": {
+      "beta": 0.95,
+      "alpha": 0.6
+    },
+    "P8": {
+      "beta": 0.95,
+      "alpha": 0.5
+    }
+  },
+  "K_levels": [
+    1,
+    1.25,
+    1.5,
+    2
+  ],
+  "modes": [
+    "det",
+    "sto"
+  ],
+  "native_options": {
+    "Method": -1,
+    "Threads": 0,
+    "TimeLimit": 28800
+  },
+  "other_parameters": "Gurobi14 defaults; record configured and effective values. No seed, MIPGap, heuristic or method/thread grid override.",
+  "quality_milestones_fraction": {
+    "Q10": 0.1,
+    "Q05": 0.05,
+    "Q01": 0.01,
+    "Q001": 0.0001
+  },
+  "resources": {
+    "partition": "intel-256",
+    "memory_gib": 192,
+    "max_job_wall_seconds": 43200,
+    "device": "CPU",
+    "worker_processes": 1,
+    "cpu_allocation": "Verify physical/logical cores, affinity/SMT, limit and measured utilization before admission",
+    "concurrency_authorized": false
+  },
+  "execution_authorized": false,
+  "required_admission_gates": [
+    "accepted_v2_inputs_and_selected_graph",
+    "resolved_source_acquisition_and_routing_provenance",
+    "native_DET_STO_policy_and_neutral_equivalence",
+    "independent_service_export_cost_validation",
+    "Gurobi14_default_parameter_and_dense_export_qualification",
+    "public_compute_resource_license_and_memory_qualification",
+    "finite_source_bound_queue_and_separate_human_execution_authorization"
+  ],
+  "historical_observations_reused_as_MVP3": false,
+  "status": "approved_design_execution_withheld",
+  "approval_date": "2026-11-24",
+  "plan_revision_in_draft_pr": true,
+  "develop_plan_changed": false,
+  "proposal_date": "2026-11-24",
+  "stages": {
+    "A": {
+      "population": 215,
+      "profiles": [
+        "P0"
+      ],
+      "K_levels": [
+        1,
+        1.25,
+        1.5,
+        2
+      ]
+    },
+    "B": {
+      "population": 215,
+      "profiles": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5",
+        "P6",
+        "P7",
+        "P8"
+      ],
+      "K_levels": [
+        1
+      ],
+      "reused_reference": "P0/K=1 is supplied by Stage A; never duplicated"
+    }
+  },
+  "repetition_proposal": {
+    "primary_repetitions": 1,
+    "total_repetitions": 1,
+    "additional_repetitions_fixed": false,
+    "scope": "24 initial observations; further repetition cases and counts selected after h215 review",
+    "budget_scenario_only": "Three observations of every case would mean 72 observations; this is not the fixed catalog"
+  },
+  "upscale": {
+    "selection": "Validated, empirically non-dominated and scientifically representative h215 cases; select separately for DET/STO",
+    "populations": [
+      300,
+      400,
+      500
+    ],
+    "fixed_larger_cases": 0,
+    "execution_authorized": false
+  }
+}

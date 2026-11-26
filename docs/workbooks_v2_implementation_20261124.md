@@ -1,5 +1,10 @@
 # Approved workbook views v2
 
+Current status, 26 November 2026: the approved English EN Rev4 is merged through
+PR166. PR164 remains Draft. The new frozen input/routing review and merge
+checklist are documented in `t2_closeout_and_merge_checklist_20261126.md`.
+Earlier PR159 Draft statements below describe their dated historical state.
+
 The researcher approved adjustment items 1–4, 6 and 7 on 24 November 2026.
 Item 5 was cancelled: retain the complete CONAB registry downloaded by Artur
 (2026). The prior proposed identity/coordinate audit is superseded. No sites
