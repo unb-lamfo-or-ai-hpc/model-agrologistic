@@ -16,6 +16,7 @@ import secrets
 import subprocess
 import sys
 import time
+from contextlib import contextmanager
 from dataclasses import asdict
 from datetime import UTC, datetime
 from pathlib import Path, PurePosixPath
@@ -184,25 +185,55 @@ def worker(claim, plan_sha256, nonce):
     start = read(claim / "started.json")
     if start["parent_pid"] != os.getppid() or start["nonce_sha256"] != sha(nonce.encode()):
         raise ValueError("Owned qualification worker required.")
+    state = {"phase": "native_import", "control_id": None,
+             "native_import_completed": False, "environment_started": False,
+             "control_receipts": 0}
+    with record_worker_failure(claim, plan_sha256, state):
+        run_public_controls(claim, plan, plan_sha256, state)
+
+
+@contextmanager
+def record_worker_failure(claim, plan_sha256, state):
+    """Retain phase/class/code only; never serialize exception text or credentials."""
+    try:
+        yield
+    except Exception as exc:
+        code = getattr(exc, "errno", None) if type(exc).__module__.startswith("gurobipy") else None
+        write_new(claim / "worker-failure.json", {
+            "schema": "mvp3-public-worker-failure-v1", "plan_sha256": plan_sha256,
+            **state, "error_class": type(exc).__name__,
+            "native_error_code": code if type(code) is int else None,
+            "exception_text_or_traceback_retained": False,
+        })
+        raise
+
+
+def run_public_controls(claim, plan, plan_sha256, state):
     # This is the only native import in the package, beyond explicit execute admission.
     import gurobipy as gp
 
+    state.update(phase="runtime_imports", native_import_completed=True)
     from src.logic import optimization_gurobipy_stochastic as core
     from src.logic.native_public_controls import public_solver_config
     from src.logic.optimization_gurobipy import solve_model_gurobipy
 
+    state["phase"] = "native_version"
     if tuple(gp.gurobi.version())[:2] != (14, 0):
         raise ValueError("Gurobi 14.0 required.")
     records = []
+    state["phase"] = "engine_fingerprint"
     distribution = importlib.metadata.distribution("gurobipy")
     engine_files = {str(p): sha(distribution.locate_file(p).read_bytes())
                     for p in distribution.files or ()
                     if str(p).endswith((".py", ".pyd", ".dll", ".so"))}
     if not engine_files:
         raise ValueError("Native package code inventory unavailable.")
+    state["phase"] = "environment_construct"
     with gp.Env(empty=True) as environment:
+        state["phase"] = "environment_start"
         environment.setParam("OutputFlag", 0)
         environment.start()
+        state.update(phase="audit_setup", environment_started=True)
         original = core.audit_reference_parameters
 
         def checked_parameters(model, api, config):
@@ -213,20 +244,28 @@ def worker(claim, plan_sha256, nonce):
         core.audit_reference_parameters = checked_parameters
         try:
             for control in plan["controls"]:
+                state.update(phase="control_data", control_id=control["id"])
                 data, cfg = make_control(control["id"])
+                state["phase"] = "control_solve"
                 result = solve_model_gurobipy(data, cfg, public_solver_config(),
                                              native_environment=environment)
+                state["phase"] = "control_acceptance"
                 accepted = accept_result(control, result)
                 path = claim / (control["id"] + ".json")
+                state["phase"] = "control_receipt"
                 write_new(path, {"control": control, "expected": expected(control),
                                  "accepted": accepted, "result": asdict(result)})
+                state["control_receipts"] += 1
                 records.append({"id": control["id"], "sha256": sha(path.read_bytes()),
                                 "accepted": accepted})
                 if not accepted:
                     raise ValueError("Public analytical/native control rejected.")
+            state.update(phase="environment_dispose", control_id=None)
         finally:
             core.audit_reference_parameters = original
+    state.update(phase="source_recheck", control_id=None)
     verify_plan(claim, plan_sha256)
+    state["phase"] = "worker_summary"
     write_new(claim / "worker-result.json", {"status": "accepted", "records": records,
               "engine_code": engine_files, "python_sha256": sha(Path(sys.executable).read_bytes()),
               "production_or_license_capacity_qualified": False, "new_hpc_jobs": 0})
@@ -243,7 +282,7 @@ def execute(claim, plan_sha256, acknowledgement):
     write_new(claim / "started.json", {"plan_sha256": plan_sha256, "parent_pid": os.getpid(),
                                        "started_at_utc": datetime.now(UTC).isoformat(),
                                        "nonce_sha256": sha(nonce.encode())})
-    status = "rejected"
+    status, returncode, parent_error = "rejected", None, None
     try:
         completed = subprocess.run(
             [sys.executable, "-B", "-I", str(Path(__file__).resolve()), "worker",
@@ -251,14 +290,21 @@ def execute(claim, plan_sha256, acknowledgement):
              "--plan-sha256", plan_sha256, "--nonce", nonce],
             timeout=LIMITS["wall_seconds"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
         )
+        returncode = completed.returncode
         verify_plan(claim, plan_sha256)
         if completed.returncode == 0:
             verify_worker_report(claim)
             status = "accepted"
     except subprocess.TimeoutExpired:
         status = "owned_worker_wall_timeout"
+    except Exception as exc:
+        parent_error = type(exc).__name__
+        raise
     finally:
+        failure = claim / "worker-failure.json"
         write_new(claim / "terminal.json", {"status": status, "plan_sha256": plan_sha256,
+                  "worker_returncode": returncode, "parent_error_class": parent_error,
+                  "worker_failure_sha256": sha(failure.read_bytes()) if failure.is_file() else None,
                   "finished_at_utc": datetime.now(UTC).isoformat(),
                   "wall_elapsed_seconds": time.monotonic() - clock,
                   "claim_consumed": True, "production_admission": False, "new_hpc_jobs": 0})
@@ -288,6 +334,11 @@ def collect(claim, plan_sha256):
     terminal = read(claim / "terminal.json")
     if terminal["plan_sha256"] != plan_sha256:
         raise ValueError("Terminal plan binding differs.")
+    if terminal.get("worker_failure_sha256") is not None:
+        failure = claim / "worker-failure.json"
+        if (sha(failure.read_bytes()) != terminal["worker_failure_sha256"]
+                or read(failure)["plan_sha256"] != plan_sha256):
+            raise ValueError("Worker failure receipt differs.")
     if terminal["status"] == "accepted":
         verify_worker_report(claim)
     return terminal

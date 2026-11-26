@@ -248,3 +248,63 @@ def test_incomplete_native_certificate_cannot_be_accepted():
     assert not cli.accept_result(control_specs()[0], result)
     with pytest.raises(ValueError, match="source commit"):
         cli.source_snapshot("--not-a-revision")
+
+
+def test_worker_failure_preserves_safe_phase_and_numeric_code_without_text(tmp_path):
+    native_error = type("GurobiError", (Exception,), {"__module__": "gurobipy"})
+    error = native_error("SECRET account and license material must never be retained")
+    error.errno = 10009
+    state = {"phase": "environment_start", "control_id": None,
+             "native_import_completed": True, "environment_started": False,
+             "control_receipts": 0}
+    with pytest.raises(native_error):
+        with cli.record_worker_failure(tmp_path, "a"*64, state):
+            raise error
+    raw = (tmp_path / "worker-failure.json").read_bytes()
+    record = cli.read(tmp_path / "worker-failure.json")
+    assert b"SECRET" not in raw and b"license material" not in raw
+    assert record["phase"] == "environment_start"
+    assert record["error_class"] == "GurobiError" and record["native_error_code"] == 10009
+    assert record["exception_text_or_traceback_retained"] is False
+    with pytest.raises(FileExistsError):
+        with cli.record_worker_failure(tmp_path, "a"*64, state):
+            raise ValueError("Do not replace an original failure")
+    assert (tmp_path / "worker-failure.json").read_bytes() == raw
+
+
+def test_rejected_worker_report_is_collected_and_tampering_rejected(tmp_path, monkeypatch):
+    claim, _, digest = prepared(tmp_path, monkeypatch)
+    monkeypatch.setattr(cli.importlib.metadata, "version", lambda _: "14.0.0")
+
+    def rejected(*args, **kwargs):
+        cli.write_new(claim / "worker-failure.json", {
+            "plan_sha256": digest, "phase": "runtime_imports", "error_class": "ImportError"})
+        return SimpleNamespace(returncode=1)
+
+    monkeypatch.setattr(cli.subprocess, "run", rejected)
+    assert cli.execute(claim, digest, cli.ACK)["status"] == "rejected"
+    terminal = cli.collect(claim, digest)
+    assert terminal["worker_returncode"] == 1
+    failure_digest = cli.sha((claim / "worker-failure.json").read_bytes())
+    assert terminal["worker_failure_sha256"] == failure_digest
+    (claim / "worker-failure.json").write_bytes(b"changed")
+    with pytest.raises(ValueError, match="failure receipt differs"):
+        cli.collect(claim, digest)
+
+
+def test_owned_worker_failure_is_retained_before_any_native_import(tmp_path, monkeypatch):
+    claim, _, digest = prepared(tmp_path, monkeypatch)
+    nonce = "owned-test-nonce"
+    cli.write_new(claim / "started.json", {"parent_pid": cli.os.getppid(),
+                  "nonce_sha256": cli.sha(nonce.encode())})
+
+    def import_double(claim, plan, digest, state):
+        raise ImportError("SECRET account text must not appear in diagnostics")
+
+    monkeypatch.setattr(cli, "run_public_controls", import_double)
+    with pytest.raises(ImportError):
+        cli.worker(claim, digest, nonce)
+    record = cli.read(claim / "worker-failure.json")
+    assert record["phase"] == "native_import" and record["error_class"] == "ImportError"
+    assert record["native_import_completed"] is False
+    assert "SECRET" not in (claim / "worker-failure.json").read_text()

@@ -1,5 +1,15 @@
 # Current project status — 26 November 2026
 
+PR167 remains Draft after its single authorized local public attempt returned
+`rejected` in 0.578 seconds. The start is consumed; zero control receipts were
+generated. The cause and native activity counts are unknown because v1 did not
+persist worker failure detail. Source and original receipts are verified and
+preserved. Read the [return checkpoint](checkpoints/20261126_s1_native_public_v1_return.md).
+A safe diagnostic correction is prepared and tested without a solver. No repeat,
+h215, HPC or merge is authorized. Remote CI remains withheld.
+
+## Historical preparation snapshot
+
 PR167 is Draft. Its follow-up prepares a source-bound package of 32 public
 synthetic DET/STO native controls. Read the
 [public qualification runbook](mvp3_s1_public_native_qualification_20261126.md).

@@ -1,4 +1,19 @@
-## MVP3 S1 public native qualification prepared — 26 November 2026
+## MVP3 S1 public native v1 rejected; single start consumed — 26 November 2026
+
+Read docs/checkpoints/20261126_s1_native_public_v1_return.md. The researcher
+authorized exactly one local run of the prepared 32 public controls. Its original
+aff3d69 capsule/plan 2e17397d returned rejected in 0.578 s, with a consumed start
+and zero control receipts. All source hashes and original start/terminal records
+are preserved. No retry is authorized. This is not numerical qualification or an
+observed infeasibility/license diagnosis; the v1 worker failure detail was not
+retained, so native import/license/optimizer activity counts remain unknown.
+
+Only solver-free diagnosis and a safe failure-receipt correction follow the
+return. A future native attempt requires its own fresh capsule and explicit CLI
+authorization. Keep PR167 Draft; no h215, HPC, merge or remote CI. Native builder,
+scientific budgets, data, existing environments and prior claims are unchanged.
+
+## Historical S1 public qualification preparation — 26 November 2026
 
 PR167 remains Draft on the isolated S1 branch from develop 22fd493. Read
 docs/mvp3_s1_public_native_qualification_20261126.md. A source-bound capsule now

@@ -1,4 +1,11 @@
-# MVP3 S1 public native qualification: prepared, not executed
+# MVP3 S1 public native qualification
+
+Current return: the single researcher-authorized v1 attempt was consumed and
+rejected before the first control receipt, in 0.578 seconds. No native numerical
+qualification was established. The original capsule is frozen; do not retry it.
+Read [the return checkpoint](checkpoints/20261126_s1_native_public_v1_return.md)
+for observed evidence, the unknown cause and the unexecuted diagnostic correction.
+The preparation description below records the original finite public scope.
 
 PR167 remains Draft, based on develop
 `22fd493fd74f99320b9f2757d9c4927ffb7551bc`. This increment prepares a local,
@@ -35,7 +42,7 @@ S2 telemetry. No input-file option, scheduler interface or retry is provided.
 `scripts/qualify_mvp3_native.py prepare` requires a full committed revision and
 copies Git blob bytes for Python runtime source into a new local capsule. It
 creates a plan with SHA-256 digests, the fixed controls and finite limits.
-Only `prepare` is authorized at this checkpoint. It does not import Gurobi,
+Only `prepare` was authorized at the initial preparation checkpoint. It does not import Gurobi,
 initialize a license, construct a native model or optimize.
 
 After explicit CLI authorization, execute the copied script inside the capsule
@@ -57,6 +64,12 @@ native startup/exception text is not retained because it can contain account
 information. Exceptions expose their class only. No license file contents are
 read, hashed or exported. Existing license availability is tested implicitly
 only when the separately authorized public worker initializes its environment.
+
+The original v1 parent discarded the child's class-only output, leaving no
+failure diagnosis. The current source correction preserves phase/class/integer
+native-code fields in a dedicated receipt without exception text, and binds its
+digest to the terminal record. This correction has only solver-free test evidence;
+it is not an executed replacement for the rejected capsule.
 
 Native parameter auditing reads available public software parameters, excluding
 connection and credential parameters before querying values. At least 100
