@@ -1,0 +1,15 @@
+{
+  "status": "effective_inputs_reconstructed_and_identities_matched",
+  "cases": {
+    "215:det": "fed875c1d239fc0282eeaf5b8656ed6511facd328f81b926698863a9f3b2fd3b",
+    "215:sto": "b2f44950d3b6f9b5185e033a29993b6a0b94805543e09046c5d5c8603826be53",
+    "300:sto": "eb66de76a7ed5031be428d437a9f8a1c7aad72e800f8267e36da88678fb2d759",
+    "400:sto": "899d0d8a0952af75012411f3c785f1fa5ac215417e4a8c8a4b99d0220d34c84f",
+    "500:sto": "0fa80c3dac61bba7248b1f28821c89944a8f5cede34d3e98b660d7fd2b7a0cfe"
+  },
+  "optimizer_calls": 0,
+  "execution_attempts_blocked": 0,
+  "import_probes_blocked": 0,
+  "source_files_checked": 56,
+  "algebra_rebuilt": false
+}

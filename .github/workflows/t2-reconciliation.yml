@@ -1,0 +1,44 @@
+name: T2 reconciliation without solver
+on:
+  pull_request:
+    branches: [develop, main]
+    paths:
+      - 'scripts/t2/**'
+      - 'tests/t2/**'
+      - scripts/effective_ci_scope.py
+      - docs/mvp3_t2_verification_protocol_20261123.md
+      - docs/mvp3_t3_protocol_readiness_20261123.md
+      - docs/evidence/mvp3_t3_readiness_20261123.json
+      - .github/workflows/t2-reconciliation.yml
+permissions:
+  contents: read
+jobs:
+  data-custody:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Check shell syntax without execution
+        run: |
+          bash -n scripts/t2/npad_t2_verify.sh
+          bash -n scripts/t2/npad_t2_stage.sh
+      - name: Standard-library controls without site initialization
+        run: python -B -I -S -m unittest discover -s tests/t2 -v
+      - name: Preserve historical scientific, campaign and environment bytes
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          git diff --exit-code "$BASE_SHA" "$HEAD_SHA" -- \
+            src/logic data manuscript pyproject.toml scripts/t1 \
+            scripts/gurobi14_h215_compat.py scripts/h300_gurobi_root_campaign.py \
+            scripts/h215_policy_campaign.py

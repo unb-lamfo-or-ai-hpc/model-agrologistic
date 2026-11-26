@@ -1,0 +1,32 @@
+{
+  "status": "inventory_only_reconciliation_pending",
+  "python": "3.13.15",
+  "sqlite_runtime_version": "3.53.4",
+  "source_controller_sha256": "d27936d62242b83b78d60cf333400c3710d662e9996da33fa2b500ddbb140024",
+  "optimizer_calls": 0,
+  "jobs_submitted": 0,
+  "sources_modified": false,
+  "inventory": {
+    "status": "inventory_finished",
+    "candidates": [
+      {
+        "path": "/home/vrrcelestino/osrm-agrologistic/cache/policy-pairs-v020.sqlite3",
+        "bytes": 212803584,
+        "header_sha256": "08310875937ba24d6eb133bf4d6442b8f430de7eb55a33751e4309f9d8d203fd",
+        "read_version": 2,
+        "write_version": 2,
+        "header_journal_hint": "wal",
+        "sidecars": {},
+        "consistent_database_sha256": null,
+        "status": "snapshot_method_review_pending",
+        "live_engine_opened": false
+      }
+    ],
+    "errors": [],
+    "entries": 140136
+  },
+  "missing_review_workbooks": [
+    "agrologistic_effective_baseline_v1.xlsx",
+    "agrologistic_warehouse_registry_v1.xlsx"
+  ]
+}

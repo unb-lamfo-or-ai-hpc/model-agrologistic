@@ -106,3 +106,4 @@ def test_declared_gurobi_range_accepts_14_and_preserves_the_other_requirements()
         assert "14.0.0" in requirement.specifier
         assert "13.0.1" not in requirement.specifier
         assert "15.0.0" not in requirement.specifier
+

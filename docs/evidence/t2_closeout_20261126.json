@@ -1,0 +1,240 @@
+{
+  "schema": "agrologistic-t2-closeout-v1",
+  "date": "2026-11-26",
+  "reconciled_develop": "783b95c2e5d942011e3c46171c0a80cc2d68111c",
+  "prior_pr164_head": "cfb99965c613105dfb3bdc9745e7599fe74ed183",
+  "status": "local_solver_free_and_frozen_input_gate_passed",
+  "merge_authorized": false,
+  "hpc_jobs_submitted": 0,
+  "optimizer_calls": 0,
+  "shared_environment_changed": false,
+  "pr164_draft": true,
+  "data_suite": {
+    "tests": 204,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0,
+    "forbidden_execution_attempts": 0
+  },
+  "t2_suite": {
+    "tests": 63,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0,
+    "python_flags": "-B -I -S"
+  },
+  "lint": "passed",
+  "shell_and_renderer_syntax": "passed_without_execution",
+  "production_inputs": {
+    "date": "2026-11-26",
+    "status": "frozen_inputs_verified_not_execution_admission",
+    "scope": "Frozen v2 input continuity, controls and offline routing lineage; no optimization",
+    "preflight": {
+      "workbooks": {
+        "baseline": {
+          "sha256": "92698e05b869d67292cf7b080f56b43f7ccc93a27470b2eee559eadbeebd4a3d",
+          "workbook_version": 2,
+          "presentation_schema": "agrologistic-workbook-view-v2"
+        },
+        "registry": {
+          "sha256": "68b9933cc171541b151b7ea60c5d0501d5cecc01675819777af1ffefc11cbe7b",
+          "workbook_version": 2,
+          "presentation_schema": "agrologistic-warehouse-view-v2"
+        }
+      },
+      "normalized_manifest_sha256": "4889bfee9928c86d91319edbbfca46c6be847f45898cae40f62f9b17c3861354",
+      "normalized_files_verified": 7,
+      "h215_input_identities": {
+        "det": "fed875c1d239fc0282eeaf5b8656ed6511facd328f81b926698863a9f3b2fd3b",
+        "sto": "b2f44950d3b6f9b5185e033a29993b6a0b94805543e09046c5d5c8603826be53"
+      }
+    },
+    "original_receipts_preserved": true,
+    "original_archives": {
+      "t2-reconciliation-reports.tar.gz": {
+        "sha256": "3414a7e39a4c12e51128e1249bb7c93829e92fa5c76140fb3e461adcb92b8624",
+        "fresh_archive_check": "not_located",
+        "prior_verification": "Retained original review evidence; not re-certified here"
+      },
+      "t2-offline-reconciliation-readback.tar.gz": {
+        "sha256": "4cffdb1a947b40db23f0f79ce75680e55433edc13e24484a54db9b6b1f1d3c2c",
+        "fresh_archive_check": "not_located",
+        "prior_verification": "Retained original review evidence; not re-certified here"
+      }
+    },
+    "reexport": {
+      "normalized_manifest_sha256": "4889bfee9928c86d91319edbbfca46c6be847f45898cae40f62f9b17c3861354",
+      "payloads_verified": 7,
+      "manifest_byte_identical": true
+    },
+    "cases": {
+      "215:det": {
+        "identity": "fed875c1d239fc0282eeaf5b8656ed6511facd328f81b926698863a9f3b2fd3b",
+        "neutral_equal": true,
+        "K_once": true,
+        "unchanged_unit_costs_initial_assets_other_maps_and_graph": true,
+        "policy_rows_per_control": 2,
+        "product_arcs": 25112
+      },
+      "215:sto": {
+        "identity": "b2f44950d3b6f9b5185e033a29993b6a0b94805543e09046c5d5c8603826be53",
+        "neutral_equal": true,
+        "K_once": true,
+        "unchanged_unit_costs_initial_assets_other_maps_and_graph": true,
+        "policy_rows_per_control": 18,
+        "product_arcs": 25112
+      },
+      "300:sto": {
+        "identity": "eb66de76a7ed5031be428d437a9f8a1c7aad72e800f8267e36da88678fb2d759",
+        "neutral_equal": true,
+        "K_once": true,
+        "unchanged_unit_costs_initial_assets_other_maps_and_graph": true,
+        "policy_rows_per_control": 18,
+        "product_arcs": 45240
+      },
+      "400:sto": {
+        "identity": "899d0d8a0952af75012411f3c785f1fa5ac215417e4a8c8a4b99d0220d34c84f",
+        "neutral_equal": true,
+        "K_once": true,
+        "unchanged_unit_costs_initial_assets_other_maps_and_graph": true,
+        "policy_rows_per_control": 18,
+        "product_arcs": 76320
+      },
+      "500:sto": {
+        "identity": "0fa80c3dac61bba7248b1f28821c89944a8f5cede34d3e98b660d7fd2b7a0cfe",
+        "neutral_equal": true,
+        "K_once": true,
+        "unchanged_unit_costs_initial_assets_other_maps_and_graph": true,
+        "policy_rows_per_control": 18,
+        "product_arcs": 115400
+      }
+    },
+    "investment_limit_rows_verified": 592,
+    "registry": {
+      "records": 18086,
+      "accepted_source_values_and_order_preserved": true,
+      "cancelled_site_audit_performed": false
+    },
+    "saved_workbook_error_cells": 0,
+    "sqlite": {
+      "sqlite_version": "3.53.4",
+      "snapshot_sha256": "5f2ecca8c45a82b2d8fd815f8135b2c0ba19450bead26d8a3cc796e5b2bdb081",
+      "cache_records": 235224,
+      "routing_identity_groups": [
+        {
+          "annotations": [
+            "distance",
+            "duration"
+          ],
+          "data_version": "brazil-260901-osrm-v6.0.0-driving-mld",
+          "dataset_id": "pbf:brazil-260901@sha256:95c432ac3219338bbc7d4f5f7d20a5de709348ea928f656efd34609a51319fde;osrm:v6.0.0;oci:sha256:5116c66d814485be70bc7b239be890e4d36f62b1025a2f1c8139c20fa2697309;sif:sha256:1d6d8c47996ee31d1d2282433e13a94a1d48e9b218912fdf39741bf3b5b05249;profile:driving@sha256:9809a111a8fc8c465c2d6ef3208938a2a7c35fab0d3cda407ffa7ff187a96477;algorithm:MLD",
+          "profile": "driving",
+          "schema_version": 1,
+          "service": "table",
+          "source": "osrm",
+          "records": 235224
+        }
+      ],
+      "cache_key_disagreements": 0,
+      "arc_comparison": {
+        "distance_equal_provenance_review_pending": 222202,
+        "distance_equal_unit_conversion_roundoff_provenance_review_pending": 39870
+      },
+      "arc_comparison_by_population": {
+        "215": {
+          "distance_equal_provenance_review_pending": 22050,
+          "distance_equal_unit_conversion_roundoff_provenance_review_pending": 3062
+        },
+        "300": {
+          "distance_equal_provenance_review_pending": 38640,
+          "distance_equal_unit_conversion_roundoff_provenance_review_pending": 6600
+        },
+        "400": {
+          "distance_equal_provenance_review_pending": 64550,
+          "distance_equal_unit_conversion_roundoff_provenance_review_pending": 11770
+        },
+        "500": {
+          "distance_equal_provenance_review_pending": 96962,
+          "distance_equal_unit_conversion_roundoff_provenance_review_pending": 18438
+        }
+      },
+      "normalised_cache_records": 4,
+      "selected_arc_records_using_normalisation": 40,
+      "negative_roundoff_rule": "[-1,0) metres to derived effective zero",
+      "binary64_comparison_rule": "exact or adjacent positive representations",
+      "maximum_conversion_delta_km": 4.547473508864641e-13,
+      "raw_cache_or_frozen_arc_values_changed": false,
+      "cache_identity_acceptance": "frozen_image_lineage_and_distance_comparison_verified_live_source_not_certified",
+      "unit_conversion": "distance_m / 1000 once",
+      "source_engine_opened": false,
+      "original_snapshot_unchanged_after": true,
+      "source_consistency_certified": false,
+      "recorded_routing_provenance_review": {
+        "status": "matched_frozen_historical_provenance",
+        "populations": [
+          "215",
+          "300",
+          "400",
+          "500"
+        ],
+        "cache_records_reviewed": 235224,
+        "source_consistency_certified": false,
+        "current_server_verified": false,
+        "scope": "Recorded snapshot fingerprints versus hash-bound historical manifest"
+      },
+      "provenance_catalog_sha256": "b4ee3eb180f733eb3d7dd8a82aa38edb44a10b2f5ac227c2dc6f62c588bd41bc",
+      "acquisition_receipt_sha256": "0d7236c77bd8f87f650f6a88a673fc1e4bc0126533e651c3d6532ab952c5bdaf"
+    },
+    "source_consistency_certified": false,
+    "environment": {
+      "python": "3.13.15",
+      "distributions": 203,
+      "inventory_sha256": "d1a93276a028679a251a197715147f9ad21f934b14f1d6a76db90d6444f29c45",
+      "versions_unchanged": true,
+      "gurobipy_distribution": "14.0.0",
+      "native_module_imported": false,
+      "license_opened": false
+    },
+    "guard": {
+      "optimizer_calls": 0,
+      "execution_attempts": 0,
+      "native_import_probes": 0,
+      "profile": "Import and process barriers; separate tiny algebra suite uses full call-profile barrier"
+    },
+    "limitations": [
+      "Live NPAD cache atomicity and current server are not certified.",
+      "No new full h215 STO matrix or numerical reproduction was performed.",
+      "No fresh verification of final v2 workbook copies on NPAD is claimed.",
+      "Larger DET input algebra remains a future qualification."
+    ],
+    "input_files_unchanged_after": true
+  },
+  "code_hashes": {
+    "scripts/t2/npad_t2_stage.sh": "927907982fe8d93d4e556898ebcbccf30bcf1f1d55e1c305a9dc51e654eda951",
+    "scripts/t2/npad_t2_verify.sh": "a6890f84691d8e1fd01ef21eaab9183ca22225555bc4c22e677d419a929fcf27",
+    "scripts/t2/prepare_workbooks_v2.py": "4f67a7200db2dbaf2ea7ff4d32e74f730aea7fae720db9eae088b8b29f50c498",
+    "scripts/t2/reconcile_inputs.py": "a8ede44b2250a236c9525c06fcd6359e24dc9e1e5f08dfeeead341bcd9c70804",
+    "scripts/t2/render_workbooks_v2.mjs": "26111d414ea020f068d1094e434f9af8b3700a53071c1263fb84bb2dffdb2cc2",
+    "scripts/t2/stage_offline_reconciliation.py": "bc32c4134a4ef930ca700a700e72bf0b8e85e04060ceea2c62007059688fc88e",
+    "scripts/t2/workbook_controls.py": "3e1d49e7dbeaedab8e9155f4aeee5c4d7aa5a385c25f3d85b0056a79a184d7d4",
+    "scripts/t2/workbook_schema_v2.json": "74d7b094bc1d37ded5a81cbc6710e9df7125af0a047817e825a27e763b67288d"
+  },
+  "unchanged_scope": [
+    "native_scientific_builders",
+    "historical_data_and_results",
+    "manuscripts",
+    "dependency_declarations",
+    "T1_operational_files"
+  ],
+  "qualification_exclusions": [
+    "Live cache atomicity/current server",
+    "New full STO matrix",
+    "Numerical reproduction",
+    "Fresh NPAD v2 staging",
+    "Production admission"
+  ],
+  "remaining_merge_gates": [
+    "Exact-head remote CI",
+    "Separate researcher merge authorization"
+  ]
+}

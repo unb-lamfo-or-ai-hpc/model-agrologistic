@@ -8,6 +8,13 @@ import subprocess
 from pathlib import Path
 
 RUNTIME_PATHS = {
+    "scripts/t2/stage_offline_reconciliation.py", "scripts/t2/npad_t2_stage.sh",
+    "tests/t2/test_stage_capture.py",
+    "scripts/t2/reconcile_inputs.py", "scripts/t2/npad_t2_verify.sh",
+    "tests/t2/test_reconciliation.py", "tests/t2/test_routing_provenance.py",
+    "scripts/t2/prepare_workbooks_v2.py", "scripts/t2/render_workbooks_v2.mjs",
+    "scripts/t2/workbook_controls.py", "tests/t2/test_workbook_controls.py",
+    "scripts/t2/workbook_schema_v2.json",
     "src/logic/mvp3_preparation.py", "scripts/prepare_mvp3_t3.py",
     "tests/test_mvp3_preparation.py",
     "src/logic/effective_gurobi_execution.py", "scripts/effective_h215_protocol.py",
@@ -24,9 +31,9 @@ RUNTIME_PATHS = {
     "scripts/summarize_effective_policy_reference.py", "tests/test_effective_policy.py",
 }
 CONTROL_PATHS = {
+    ".gitignore", "PROJECT_STATE.md", ".github/workflows/t2-reconciliation.yml",
     "experiments/proposals/mvp3_t3_staged_design_20261124.json",
     "experiments/h215_policy_protocol_v1.json",
-    ".gitignore", "PROJECT_STATE.md",
     "data/manifests/effective_baseline_sources_v1.json",
     "data/manifests/effective_calibration_catalog_v1.json",
     "experiments/effective_parameter_neutral_v1.json",
@@ -98,3 +105,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

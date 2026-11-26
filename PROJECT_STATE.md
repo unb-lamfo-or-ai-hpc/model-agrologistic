@@ -1,3 +1,34 @@
+## T2 reconciliation and same-machine handoff — 26 November 2026
+
+PR166's approved English EN Rev4 is merged into develop at
+783b95c2e5d942011e3c46171c0a80cc2d68111c. PR164 remains Draft and reconciles
+that develop state without merging back. Read
+docs/t2_closeout_and_merge_checklist_20261126.md and
+docs/handoff/mvp3_dell5300_20261126.md. Preserve the full CONAB registry and the
+cancelled site-audit decision, v2 workbook hashes, original receipts and source
+data. New verification concerns frozen v2 continuity and recorded SQLite routing
+lineage, not current live-source consistency or numerical reproduction.
+No Benders, GPU or thread-speedup studies enter the active scope. No job,
+optimizer, shared-environment modification, PR merge or publication is authorized.
+Older dated status sections below remain historical, including Draft PR159 text.
+
+## Approved workbook v2 derivatives and Gurobi metadata — 24 November 2026
+
+PR165 was explicitly authorized and merged into develop at
+522a1465d524f1e0de4bd3f414bdfc3465b09b46. The local editable package metadata
+now accepts Gurobi14, with pip check clean and the other 202 distributions
+unchanged. PR159 remains Draft for the author's methodology review.
+
+In Draft PR164, workbook adjustment items 1–4, 6 and 7 are approved. Item5,
+the proposed warehouse/coordinate audit, is cancelled. Preserve the complete
+CONAB list confirmed by the researcher (Artur,2026), all originals and routing
+identities. New v2 XLSX views separate raw placeholders, effective reference
+bounds and optional case controls. K scales candidate and 25%-based expansion
+ceilings once; costs use physical installed tonnes. Alpha/beta retain their
+approved scopes and are disabled in the neutral reference. Read
+docs/workbooks_v2_implementation_20261124.md and its qualification evidence.
+No scientific optimization, NPAD job or PR164 merge is authorized.
+
 ## PR158 merged; h215 policy qualification prepared — 19 November 2026
 
 Explicitly authorized merge into develop: b0a6b6849770a05eddca9f4a860246eabb5374da.

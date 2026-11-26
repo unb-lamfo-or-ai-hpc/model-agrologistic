@@ -19,3 +19,4 @@ After acceptance, the bounded installation operation is a metadata-only editable
 ## Validation and limitation
 
 Twenty local metadata/routing controls and Ruff passed. They accept Gurobi 14, retain 13.0.2 compatibility in the declaration and reject 15.0.0. The existing license acceptance is a technical environment check, not a full Agrologistic qualification or a new scientific result. No NPAD/DGX call, optimization, training, benchmark, merge or publication is performed.
+

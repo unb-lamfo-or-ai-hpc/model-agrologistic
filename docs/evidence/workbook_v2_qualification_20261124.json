@@ -1,0 +1,131 @@
+{
+  "date": "2026-11-24",
+  "authorization": "Approved items 1-4,6-7; item5 cancelled",
+  "status": "accepted_data_and_construction_gate_no_optimization",
+  "frozen_inputs": {
+    "agrologistic_effective_baseline_v1_revised.xlsx": "0e6efdeb5366ef0913ae3117f5f45b8413814b294bd9b9b9596bf2eff8f1caac",
+    "agrologistic_warehouse_registry_v1_revised.xlsx": "269337ccd354dbe306ca2dde1726a4e248b65fab8fea8fbedccd8fbe31f5d789",
+    "agrologistic_effective_baseline_v1.xlsx": "d5babec48bb40a61843ccb4e7c9c059429b4d8ac32cefec945fda4e4fb84c917",
+    "agrologistic_warehouse_registry_v1.xlsx": "f39c2f29862aecb9a64fd0d37548eb788e402c805a5db6def6c5ec8a351d25bc"
+  },
+  "comments_ledger_sha256": "82c1ccdbe665fef973da5c725a852a4a2515d230a886435002795605476a6f5f",
+  "outputs": {
+    "agrologistic_effective_baseline_v2.xlsx": {
+      "sha256": "92698e05b869d67292cf7b080f56b43f7ccc93a27470b2eee559eadbeebd4a3d",
+      "bytes": 4104165,
+      "sheets": 20,
+      "saved_error_cells": 0
+    },
+    "agrologistic_warehouse_registry_v2.xlsx": {
+      "sha256": "68b9933cc171541b151b7ea60c5d0501d5cecc01675819777af1ffefc11cbe7b",
+      "bytes": 2634214,
+      "sheets": 3,
+      "saved_error_cells": 0
+    }
+  },
+  "derived_investment_rows": 592,
+  "source_code_normalized_LF_sha256": {
+    "scripts/t2/prepare_workbooks_v2.py": "be9eb9031fb27a21eca2d9dd4fcfee0f2eeb9e335e504d1a3328f6c48f1b4f47",
+    "scripts/t2/render_workbooks_v2.mjs": "a7a5fff9c2a4cc55426c845546bc727db13e93a79e425cbccfc5b2d29fd63a4f",
+    "scripts/t2/workbook_controls.py": "04e65178aeef467d6e7385e0fb1a40df2d2711561278c05dad88b4dbca8224fc",
+    "scripts/t2/workbook_schema_v2.json": "241e0a853c303564140fc97e60a8d25c9d1abbaa919199135dff5f1b9b0137f4"
+  },
+  "production_cases": {
+    "215:det": {
+      "identity": "fed875c1d239fc0282eeaf5b8656ed6511facd328f81b926698863a9f3b2fd3b",
+      "neutral_identity_equal": true,
+      "one_time_K_scaling": true,
+      "unmodified_other_maps": true,
+      "product_scenario_policy_rows_per_control": 2,
+      "product_indexed_arcs": 25112,
+      "existing_expansion_fraction": 0.25
+    },
+    "215:sto": {
+      "identity": "b2f44950d3b6f9b5185e033a29993b6a0b94805543e09046c5d5c8603826be53",
+      "neutral_identity_equal": true,
+      "one_time_K_scaling": true,
+      "unmodified_other_maps": true,
+      "product_scenario_policy_rows_per_control": 18,
+      "product_indexed_arcs": 25112,
+      "existing_expansion_fraction": 0.25
+    },
+    "300:sto": {
+      "identity": "eb66de76a7ed5031be428d437a9f8a1c7aad72e800f8267e36da88678fb2d759",
+      "neutral_identity_equal": true,
+      "one_time_K_scaling": true,
+      "unmodified_other_maps": true,
+      "product_scenario_policy_rows_per_control": 18,
+      "product_indexed_arcs": 45240,
+      "existing_expansion_fraction": 0.25
+    },
+    "400:sto": {
+      "identity": "899d0d8a0952af75012411f3c785f1fa5ac215417e4a8c8a4b99d0220d34c84f",
+      "neutral_identity_equal": true,
+      "one_time_K_scaling": true,
+      "unmodified_other_maps": true,
+      "product_scenario_policy_rows_per_control": 18,
+      "product_indexed_arcs": 76320,
+      "existing_expansion_fraction": 0.25
+    },
+    "500:sto": {
+      "identity": "0fa80c3dac61bba7248b1f28821c89944a8f5cede34d3e98b660d7fd2b7a0cfe",
+      "neutral_identity_equal": true,
+      "one_time_K_scaling": true,
+      "unmodified_other_maps": true,
+      "product_scenario_policy_rows_per_control": 18,
+      "product_indexed_arcs": 115400,
+      "existing_expansion_fraction": 0.25
+    }
+  },
+  "reviewed_numeric_inputs_preserved": true,
+  "registry_preservation": {
+    "rows": 18086,
+    "all_accepted_source_values_and_order_preserved": true,
+    "cancelled_identity_audit_performed": false
+  },
+  "algebra_continuity": {
+    "optimization_pyomo.py": "build_model AST identical; later solver instrumentation differs outside construction",
+    "optimization_gurobipy.py": "Identical after line-ending normalization",
+    "optimization_gurobipy_stochastic.py": "Identical after line-ending normalization",
+    "mathematical_contract.py": "Identical after line-ending normalization",
+    "pyomo_bounds.py": "Identical after line-ending normalization",
+    "pyomo_linear_matrix.py": "Identical after line-ending normalization",
+    "route_filtering.py": "Identical after line-ending normalization"
+  },
+  "matrix_scope": "Historical qualified h215 full DET and nine projected STO block matrices retained. Full DET/STO matrices were not rebuilt in this v2 gate. Production coefficients/ordered sets/arcs match, and reused construction algebra is unchanged.",
+  "guarded_data_algebra_tests": {
+    "tests": 114,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0,
+    "optimizer_calls": 0,
+    "forbidden_execution_attempts": 0
+  },
+  "standard_library_T2_controls": {
+    "tests": 56,
+    "failures": 0,
+    "errors": 0
+  },
+  "saved_workbook_errors": 0,
+  "all_worksheet_views_rendered": true,
+  "K2_live_formula_check": "Passed; restored K1 before export",
+  "final_XLSX_export": {
+    "status": "accepted_final_xlsx_export",
+    "cases": {
+      "215:det": "fed875c1d239fc0282eeaf5b8656ed6511facd328f81b926698863a9f3b2fd3b",
+      "215:sto": "b2f44950d3b6f9b5185e033a29993b6a0b94805543e09046c5d5c8603826be53",
+      "300:sto": "eb66de76a7ed5031be428d437a9f8a1c7aad72e800f8267e36da88678fb2d759",
+      "400:sto": "899d0d8a0952af75012411f3c785f1fa5ac215417e4a8c8a4b99d0220d34c84f",
+      "500:sto": "0fa80c3dac61bba7248b1f28821c89944a8f5cede34d3e98b660d7fd2b7a0cfe"
+    },
+    "workbook_sha256": "92698e05b869d67292cf7b080f56b43f7ccc93a27470b2eee559eadbeebd4a3d",
+    "solver_imports_blocked": 0,
+    "execution_attempts_blocked": 0,
+    "optimizer_calls": 0
+  },
+  "published_dataset": false,
+  "new_HPC_jobs": 0,
+  "PR159": "Draft and unchanged",
+  "PR164": "Draft; no merge authorization",
+  "PR165_merge_commit": "522a1465d524f1e0de4bd3f414bdfc3465b09b46"
+}

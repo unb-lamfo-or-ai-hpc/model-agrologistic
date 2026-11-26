@@ -1,0 +1,66 @@
+{
+  "schema": "agrologistic-t2-offline-review-v1",
+  "review_date": "2026-11-23",
+  "transferred_archive_sha256": "4cffdb1a947b40db23f0f79ce75680e55433edc13e24484a54db9b6b1f1d3c2c",
+  "original_stage_status": "verification_failed",
+  "original_failure": "Invalid cache distance",
+  "original_receipts_preserved": true,
+  "archive_and_internal_hashes_verified": true,
+  "raw_capture_sha256": "3603303a3bfb890cf679a8a288dd9bcb3cd45e09a0a4063bd70b6f7af10e0ebd",
+  "snapshot_sha256": "5f2ecca8c45a82b2d8fd815f8135b2c0ba19450bead26d8a3cc796e5b2bdb081",
+  "snapshot_unchanged_after": true,
+  "source_engine_opened": false,
+  "cache_records": 235224,
+  "cache_key_disagreements": 0,
+  "raw_negative_values_m": {
+    "-0.2": 2,
+    "-0.4": 2
+  },
+  "normalisation_rule": "Historical OSRM client: [-1,0) metres to effective 0; raw cache preserved",
+  "arc_comparison_by_population": {
+    "215": {
+      "distance_equal_provenance_review_pending": 22050,
+      "distance_differs": 3062
+    },
+    "300": {
+      "distance_equal_provenance_review_pending": 38640,
+      "distance_differs": 6600
+    },
+    "400": {
+      "distance_equal_provenance_review_pending": 64550,
+      "distance_differs": 11770
+    },
+    "500": {
+      "distance_equal_provenance_review_pending": 96962,
+      "distance_differs": 18438
+    }
+  },
+  "selected_arcs_matching_normalised_records": {
+    "215": 8,
+    "300": 8,
+    "400": 12,
+    "500": 12
+  },
+  "max_absolute_distance_difference_km": {
+    "215": 4.547473508864641e-13,
+    "300": 4.547473508864641e-13,
+    "400": 4.547473508864641e-13,
+    "500": 4.547473508864641e-13
+  },
+  "binary_difference_ulps": {
+    "1.0": 39870
+  },
+  "decimal_equality_for_binary_differences": {
+    "True": 38726,
+    "False": 1144
+  },
+  "acceptance": "pending_routing_provenance_and_live_source_acquisition_review",
+  "jobs_submitted": 0,
+  "optimizer_called": false,
+  "source_consistency_certified": false,
+  "normalisation_source_commit": "2391137cdbe4f86cdb784f9e4e545944fac2a688",
+  "normalisation_source_path": "src/logic/osrm.py",
+  "normalisation_is_derived_read_interpretation_only": true,
+  "frozen_arc_values_overwritten": false,
+  "scientific_equivalence_acceptance": "pending_explicit_unit_conversion_comparison_rule_and_routing_provenance_review"
+}
